@@ -27,6 +27,7 @@
 <!DOCTYPE HTML>
 
 <%@page import="oscar.oscarProvider.data.*,java.util.*,org.oscarehr.util.SpringUtils,org.oscarehr.common.dao.QueueDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -91,7 +92,7 @@ if(!authed) {
                         List<Hashtable> queues=queueDao.getQueues();
                         for(Hashtable qht:queues){
                         %>                            
-                                <li><%=(String)qht.get("queue")%></li>     
+                                <li><%= Encode.forHtml((String) qht.get("queue")) %></li> 
                         <%}%>
                         </ol>
  
@@ -132,7 +133,7 @@ $( document ).ready(function( $ ) {
                 $('.alert').addClass('alert-success');
                 $('.alert').show();
                 
-            	 $('#addQueueSuccessMsg').html("<strong>Success!</strong> Queue Name <em>"+qn+"</em> has been added.");
+                $('#addQueueSuccessMsg').html("<strong>Success!</strong> Queue Name <em>"+ $('<div/>').text(qn).html() +"</em> has been added.");
                  $('#newQueueName').val("");
 
                  var json = data.addNewQueue;
@@ -142,14 +143,14 @@ $( document ).ready(function( $ ) {
                         $('.alert').addClass('alert-success');
                         $('.alert').show();
                          
-                        $('#addQueueSuccessMsg').html("<strong>Success!</strong> Queue Name <em>"+qn+"</em> has been added.");
+                        $('#addQueueSuccessMsg').html("<strong>Success!</strong> Queue Name <em>"+ $('<div/>').text(qn).html() +"</em> has been added.");
                         $('#newQueueName').val("");
                      }else{
                     	 $('.alert').removeClass('alert-success');
                          $('.alert').addClass('alert-error');
                          $('.alert').show();
                          
-                         $('#addQueueSuccessMsg').html("<strong>Error!</strong> Queue Name <em>"+qn+"</em> has NOT been added which is probably because it already exists.");
+                         $('#addQueueSuccessMsg').html("<strong>Error!</strong> Queue Name <em>"+ $('<div/>').text(qn).html() +"</em> has NOT been added which is probably because it already exists.");
                      }
                  }
                
@@ -159,7 +160,7 @@ $( document ).ready(function( $ ) {
             	 $('.alert').addClass('alert-error');
                  $('.alert').show();
                  
-                 $('#addQueueSuccessMsg').html("<strong>Error!</strong> Queue Name <em>"+qn+"</em> has NOT been added, please contact support.");
+                 $('#addQueueSuccessMsg').html("<strong>Error!</strong> Queue Name <em>"+ $('<div/>').text(qn).html() +"</em> has NOT been added, please contact support.");
              }
 
         
