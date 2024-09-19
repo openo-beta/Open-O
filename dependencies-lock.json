@@ -1227,11 +1227,11 @@
   }, {
     "groupId" : "org.apache.commons",
     "artifactId" : "commons-text",
-    "version" : "1.9",
+    "version" : "1.10.0",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:rTl4fJZEVzeQTjQ1k8A6pMTna9FRb/RecPwe/YpTQ5sbEEw7D+1OQx2Skeur9L/y5VR+DGUQ9ZFguOpiC60q4g=="
+    "integrity" : "sha512:r9g2oQlESeCnkf7mc2NmbEe20krP81OlCJuDezMsD0r4lWXDVGglIeNwYtIOa1LXDHe7TyTMqblTLCdPxwioMQ=="
   }, {
     "groupId" : "org.apache.cxf.services.sts",
     "artifactId" : "cxf-services-sts-core",
