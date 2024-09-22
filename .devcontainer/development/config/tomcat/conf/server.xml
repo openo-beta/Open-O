@@ -26,13 +26,7 @@
                 <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
                        resourceName="UserDatabase"/>
             </Realm>
-
             <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
-                <!-- Adding swallowOutput to capture stdout/stderr logs -->
-                <Context swallowOutput="true">
-                    <!-- Other Context settings can go here -->
-                </Context>
-
                 <Valve className="org.apache.catalina.valves.AccessLogValve"
                        directory="logs"
                        prefix="localhost_access_log." suffix=".txt"
