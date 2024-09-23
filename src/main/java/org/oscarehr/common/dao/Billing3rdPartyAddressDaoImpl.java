@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -64,46 +64,46 @@ public class Billing3rdPartyAddressDaoImpl extends AbstractDaoImpl<Billing3rdPar
     @NativeSql("billing_on_3rdPartyAddress")
     public List<Billing3rdPartyAddress> findAddresses(String searchModeParam, String orderByParam, String keyword, String limit1, String limit2) {
         String search_mode = searchModeParam == null ? "search_name" : searchModeParam;
-		String orderBy = orderByParam == null ? "company_name" : orderByParam;
-		String where = "";
-		Map<String, Object> params = new HashMap<String, Object>();
-		if ("search_name".equals(search_mode)) {
-			if (keyword == null) {
-				keyword = "";
-			}
-			
-			String[] temp = keyword.split("\\,\\p{Space}*");
-			if (temp.length > 1) {
-				where = "company_name like :compName0 and company_name like :compName1";
-				params.put("compName0", temp[0] + "%");
-				params.put("compName1", temp[1] + "%");
-			} else {
-				where = "company_name like :compName0";
-				params.put("compName0", temp[0] + "%");
-			}
-		} else {
-			where = search_mode + " like :searchMode";
-			params.put("searchMode", keyword + "%");
-		}
-		
-		String strLimit1 = "0";
-		String strLimit2 = "20";
-		if (limit1 != null)
-			strLimit1 = limit1;
-		if (limit2 != null)
-			strLimit2 = limit2;
-		String sql = "select * from billing_on_3rdPartyAddress where " + where + " order by " + orderBy + " limit "
-				+ strLimit1 + "," + strLimit2;
-		
-		try {
-			Query q = entityManager.createNativeQuery(sql, modelClass);
-			for(Entry<String, Object> o : params.entrySet()) {
-				q.setParameter(o.getKey(), o.getValue());
-			}
-			return q.getResultList();
-		} catch (Exception e ) {
-			MiscUtils.getLogger().error("error", e);
-			return new ArrayList<Billing3rdPartyAddress>();
-		}
+        String orderBy = orderByParam == null ? "company_name" : orderByParam;
+        String where = "";
+        Map<String, Object> params = new HashMap<String, Object>();
+        if ("search_name".equals(search_mode)) {
+            if (keyword == null) {
+                keyword = "";
+            }
+
+            String[] temp = keyword.split("\\,\\p{Space}*");
+            if (temp.length > 1) {
+                where = "company_name like :compName0 and company_name like :compName1";
+                params.put("compName0", temp[0] + "%");
+                params.put("compName1", temp[1] + "%");
+            } else {
+                where = "company_name like :compName0";
+                params.put("compName0", temp[0] + "%");
+            }
+        } else {
+            where = search_mode + " like :searchMode";
+            params.put("searchMode", keyword + "%");
+        }
+
+        String strLimit1 = "0";
+        String strLimit2 = "20";
+        if (limit1 != null)
+            strLimit1 = limit1;
+        if (limit2 != null)
+            strLimit2 = limit2;
+        String sql = "select * from billing_on_3rdPartyAddress where " + where + " order by " + orderBy + " limit "
+                + strLimit1 + "," + strLimit2;
+
+        try {
+            Query q = entityManager.createNativeQuery(sql, modelClass);
+            for (Entry<String, Object> o : params.entrySet()) {
+                q.setParameter(o.getKey(), o.getValue());
+            }
+            return q.getResultList();
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("error", e);
+            return new ArrayList<Billing3rdPartyAddress>();
+        }
     }
 }

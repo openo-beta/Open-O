@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -79,103 +79,105 @@ import oscar.oscarDB.DBHandler;
 
 
 public class FrmStudyXMLClientSend {
-//	private String DBName = null;
-	private String URLService = null;
+    //	private String DBName = null;
+    private String URLService = null;
 
-	Properties param = new Properties();
-	Vector studyContent = new Vector();
-	Vector studyNo = new Vector();
-	String sql = null;
-	ResultSet rs = null;
+    Properties param = new Properties();
+    Vector studyContent = new Vector();
+    Vector studyNo = new Vector();
+    String sql = null;
+    ResultSet rs = null;
 
-//	Properties studyTableName = null;
-	String dateYesterday = null;
-	String dateTomorrow = null;
+    //	Properties studyTableName = null;
+    String dateYesterday = null;
+    String dateTomorrow = null;
 
-	public static void main (String[] args) throws java.sql.SQLException, java.io.IOException  {
-		if (args.length != 3) {
-			MiscUtils.getLogger().debug("Please run: java path/FrmStudyXMLClient dbname WebServiceUrl");
-			return;
-		}
-		FrmStudyXMLClientSend aStudy = new FrmStudyXMLClientSend();
+    public static void main(String[] args) throws java.sql.SQLException, java.io.IOException {
+        if (args.length != 3) {
+            MiscUtils.getLogger().debug("Please run: java path/FrmStudyXMLClient dbname WebServiceUrl");
+            return;
+        }
+        FrmStudyXMLClientSend aStudy = new FrmStudyXMLClientSend();
 
-		//initial
-		aStudy.init(args[0], args[1]);
-		aStudy.getStudyContent();
-		if (aStudy.studyContent.size() == 0) {return;}
+        //initial
+        aStudy.init(args[0], args[1]);
+        aStudy.getStudyContent();
+        if (aStudy.studyContent.size() == 0) {
+            return;
+        }
 
-		//loop for each content record
-		for (int i = 0; i < aStudy.studyContent.size() ; i++ )	{
-			aStudy.sendJaxmMsg((String)aStudy.studyContent.get(i), args[2]);
-			aStudy.updateStatus((String)aStudy.studyNo.get(i));
-		}
+        //loop for each content record
+        for (int i = 0; i < aStudy.studyContent.size(); i++) {
+            aStudy.sendJaxmMsg((String) aStudy.studyContent.get(i), args[2]);
+            aStudy.updateStatus((String) aStudy.studyNo.get(i));
+        }
 
-	}
+    }
 
-	private synchronized void init (String file, String url) throws java.io.IOException  {
-		URLService = url;
-		param.load(new FileInputStream(file));
+    private synchronized void init(String file, String url) throws java.io.IOException {
+        URLService = url;
+        param.load(new FileInputStream(file));
 
-		GregorianCalendar now=new GregorianCalendar();
-		now.add(Calendar.DATE, -1);
-		dateYesterday = now.get(Calendar.YEAR) +"-" +(now.get(Calendar.MONTH)+1) +"-"+now.get(Calendar.DAY_OF_MONTH) ;
-		now.add(Calendar.DATE, +2);
-		dateTomorrow = now.get(Calendar.YEAR) +"-" +(now.get(Calendar.MONTH)+1) +"-"+now.get(Calendar.DAY_OF_MONTH) ;
-	}
+        GregorianCalendar now = new GregorianCalendar();
+        now.add(Calendar.DATE, -1);
+        dateYesterday = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
+        now.add(Calendar.DATE, +2);
+        dateTomorrow = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
+    }
 
-	private synchronized void getStudyContent () throws java.sql.SQLException  {
+    private synchronized void getStudyContent() throws java.sql.SQLException {
         sql = "SELECT studydata_no, content from studydata where timestamp > '" + dateYesterday + "' and timestamp < '" + dateTomorrow + "' and status='ready' order by studydata_no";
         rs = DBHandler.GetSQL(sql);
-        while(rs.next()) {
-			studyContent.add(oscar.Misc.getString(rs, "content"));
-			studyNo.add(oscar.Misc.getString(rs, "studydata_no"));
-		}
+        while (rs.next()) {
+            studyContent.add(oscar.Misc.getString(rs, "content"));
+            studyNo.add(oscar.Misc.getString(rs, "studydata_no"));
+        }
         rs.close();
-	}
+    }
 
-	private synchronized void updateStatus (String studyDataNo)   {
-		StudyDataDao dao = SpringUtils.getBean(StudyDataDao.class);
-		StudyData s = dao.find(Integer.parseInt(studyDataNo));
-		if(s != null) {
-			s.setStatus("sent");
-			dao.merge(s);
-		}
-	}
+    private synchronized void updateStatus(String studyDataNo) {
+        StudyDataDao dao = SpringUtils.getBean(StudyDataDao.class);
+        StudyData s = dao.find(Integer.parseInt(studyDataNo));
+        if (s != null) {
+            s.setStatus("sent");
+            dao.merge(s);
+        }
+    }
 
 
-	private void sendJaxmMsg (String aMsg, String u)  {
-		try	{
-			System.setProperty("javax.net.ssl.trustStore", u);
+    private void sendJaxmMsg(String aMsg, String u) {
+        try {
+            System.setProperty("javax.net.ssl.trustStore", u);
 
-			SOAPConnectionFactory scf = SOAPConnectionFactory.newInstance();
-			SOAPConnection connection = scf.createConnection();
+            SOAPConnectionFactory scf = SOAPConnectionFactory.newInstance();
+            SOAPConnection connection = scf.createConnection();
 
-			MessageFactory mf = MessageFactory.newInstance();
-		    SOAPMessage message = mf.createMessage();
+            MessageFactory mf = MessageFactory.newInstance();
+            SOAPMessage message = mf.createMessage();
 
-			SOAPPart sp = message.getSOAPPart();
-		    SOAPEnvelope envelope = sp.getEnvelope();
+            SOAPPart sp = message.getSOAPPart();
+            SOAPEnvelope envelope = sp.getEnvelope();
 
-			SOAPHeader header = envelope.getHeader();
-		    SOAPBody body = envelope.getBody();
+            SOAPHeader header = envelope.getHeader();
+            SOAPBody body = envelope.getBody();
 
-			SOAPHeaderElement headerElement = header.addHeaderElement(envelope.createName("OSCAR", "DT", "http://www.oscarhome.org/"));
-		    headerElement.addTextNode("header");
+            SOAPHeaderElement headerElement = header.addHeaderElement(envelope.createName("OSCAR", "DT", "http://www.oscarhome.org/"));
+            headerElement.addTextNode("header");
 
-			SOAPBodyElement bodyElement = body.addBodyElement(envelope.createName("Service"));
-		    bodyElement.addTextNode("compete");
+            SOAPBodyElement bodyElement = body.addBodyElement(envelope.createName("Service"));
+            bodyElement.addTextNode("compete");
 
-			AttachmentPart ap1 = message.createAttachmentPart();
-			ap1.setContent(aMsg, "text/plain");
+            AttachmentPart ap1 = message.createAttachmentPart();
+            ap1.setContent(aMsg, "text/plain");
 
-			message.addAttachmentPart(ap1);
+            message.addAttachmentPart(ap1);
 
-			URLEndpoint endPoint = new URLEndpoint (URLService);  //"https://67.69.12.115:8443/OscarComm/DummyReceiver");
-			SOAPMessage reply = connection.call(message, endPoint);
+            URLEndpoint endPoint = new URLEndpoint(URLService);  //"https://67.69.12.115:8443/OscarComm/DummyReceiver");
+            SOAPMessage reply = connection.call(message, endPoint);
 
-			connection.close();
-		} catch (Exception e)	{
-			MiscUtils.getLogger().error("Error", e);
-		}
-	}
+            connection.close();
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+        }
+    }
 }

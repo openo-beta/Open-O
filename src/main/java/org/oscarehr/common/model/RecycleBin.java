@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,75 +38,75 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="recyclebin")
+@Table(name = "recyclebin")
 public class RecycleBin extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="recyclebin_no")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recyclebin_no")
+    private Integer id;
 
-	@Column(name="provider_no")
-	private String providerNo;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	@Column(name="updatedatetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateDateTime;
+    @Column(name = "updatedatetime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDateTime;
 
-	@Column(name="table_name")
-	private String tableName;
+    @Column(name = "table_name")
+    private String tableName;
 
-	private String keyword;
+    private String keyword;
 
-	@Column(name="table_content")
-	private String tableContent;
+    @Column(name = "table_content")
+    private String tableContent;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public Date getUpdateDateTime() {
-    	return updateDateTime;
+    public Date getUpdateDateTime() {
+        return updateDateTime;
     }
 
-	public void setUpdateDateTime(Date updateDateTime) {
-    	this.updateDateTime = updateDateTime;
+    public void setUpdateDateTime(Date updateDateTime) {
+        this.updateDateTime = updateDateTime;
     }
 
-	public String getTableName() {
-    	return tableName;
+    public String getTableName() {
+        return tableName;
     }
 
-	public void setTableName(String tableName) {
-    	this.tableName = tableName;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
-	public String getKeyword() {
-    	return keyword;
+    public String getKeyword() {
+        return keyword;
     }
 
-	public void setKeyword(String keyword) {
-    	this.keyword = keyword;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
-	public String getTableContent() {
-    	return tableContent;
+    public String getTableContent() {
+        return tableContent;
     }
 
-	public void setTableContent(String tableContent) {
-    	this.tableContent = tableContent;
+    public void setTableContent(String tableContent) {
+        this.tableContent = tableContent;
     }
 
 

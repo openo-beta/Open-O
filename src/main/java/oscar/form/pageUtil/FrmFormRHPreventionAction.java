@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -92,108 +92,109 @@ import oscar.util.UtilDateUtilities;
  */
 
 
-
- /* 
+/*
  * @author jay
  */
-public class FrmFormRHPreventionAction extends Action{
-	
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
-    public ActionForward execute(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response){    
+public class FrmFormRHPreventionAction extends Action {
+
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         MiscUtils.getLogger().debug("FrmFormRHPrevention Action");
-        
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "w", null)) {
-			throw new SecurityException("missing required security object (_form)");
-		}
-        
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "w", null)) {
+            throw new SecurityException("missing required security object (_form)");
+        }
+
         // <action path="/form/AddRHWorkFlow" scope="request" name="FrmForm" type="oscar.form.pageUtil.FrmFormAddRHWorkFlowAction">
         String demographicNo = request.getParameter("demographic_no");
-        if (demographicNo == null){
+        if (demographicNo == null) {
             demographicNo = (String) request.getAttribute("demographic_no");
         }
         String ip = request.getRemoteAddr();
         String providerNo = (String) request.getSession().getAttribute("user");
         String workflowId = request.getParameter("workflowId");
         String state = request.getParameter("state");
-        
-        MiscUtils.getLogger().debug("FrmFormRHPreventionAction demographic "+demographicNo);
+
+        MiscUtils.getLogger().debug("FrmFormRHPreventionAction demographic " + demographicNo);
         ActionForward af = mapping.findForward("success");
-        
+
         int workId = -1;
-        
+
         String workflowType = "RH";
         WorkFlowFactory flowFactory = new WorkFlowFactory();
         WorkFlow flow = flowFactory.getWorkFlow(workflowType);
         ArrayList currentWorkFlows = flow.getActiveWorkFlowList(demographicNo);
 
         String dateToParse = request.getParameter("edd");
-        MiscUtils.getLogger().debug("New workflow for "+demographicNo+" EDD "+dateToParse);
-        Date endDate = UtilDateUtilities.StringToDate(dateToParse);   
+        MiscUtils.getLogger().debug("New workflow for " + demographicNo + " EDD " + dateToParse);
+        Date endDate = UtilDateUtilities.StringToDate(dateToParse);
 
         //Currently open work flows ?
-        if(currentWorkFlows != null && currentWorkFlows.size() > 0){
-            MiscUtils.getLogger().debug("size of current workflows "+currentWorkFlows.size());
-            request.setAttribute("currentWorkFlow",currentWorkFlows.get(0));
-             Hashtable h = (Hashtable) currentWorkFlows.get(0);
-             String currentId = (String) h.get("ID");
-             if (workflowId != null ){
-            //LOG CHANGE NOW
-                MiscUtils.getLogger().debug("Changing workflow for  "+demographicNo+ " to "+state);
-                
+        if (currentWorkFlows != null && currentWorkFlows.size() > 0) {
+            MiscUtils.getLogger().debug("size of current workflows " + currentWorkFlows.size());
+            request.setAttribute("currentWorkFlow", currentWorkFlows.get(0));
+            Hashtable h = (Hashtable) currentWorkFlows.get(0);
+            String currentId = (String) h.get("ID");
+            if (workflowId != null) {
+                //LOG CHANGE NOW
+                MiscUtils.getLogger().debug("Changing workflow for  " + demographicNo + " to " + state);
+
                 WorkFlowState wfs = new WorkFlowState();
-                
-                wfs.updateWorkFlowState( workflowId, state,endDate );
-                LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, "WF_"+workflowType, state, ip);
+
+                wfs.updateWorkFlowState(workflowId, state, endDate);
+                LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, "WF_" + workflowType, state, ip);
             }
-        } else{  
+        } else {
             //if none are found open, offer to create a new one  (could be existing but closed)
-            request.setAttribute("newWorkFlowNeeded","true");   
-          
-            workId = flow.addToWorkFlow(providerNo, demographicNo, endDate);        
-            LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, "WF_"+workflowType, state, ip);
-        
+            request.setAttribute("newWorkFlowNeeded", "true");
+
+            workId = flow.addToWorkFlow(providerNo, demographicNo, endDate);
+            LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, "WF_" + workflowType, state, ip);
+
         }
-        
-   
+
+
         //SAVE RECORD   
-            FrmRecord rec = null;
-            String where = ""; 
-            int newID = 0;
+        FrmRecord rec = null;
+        String where = "";
+        int newID = 0;
 
-            FrmRecordFactory recorder = new FrmRecordFactory();
-            try{
-                rec = recorder.factory(request.getParameter("form_class"));
-                Properties props = new Properties();
-                for (Enumeration varEnum = request.getParameterNames(); varEnum.hasMoreElements();) {
-                    String name = (String) varEnum.nextElement();                    
-                    props.setProperty(name, request.getParameter(name));                    
-                }
-                if (!props.containsKey("workflowId")){
-                    props.setProperty("workflowId",""+workId);
-                }
-
-                props.setProperty("provider_no", providerNo);
-                newID = rec.saveFormRecord(props);
-                LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, request.getParameter("form_class"), "" + newID, ip);
-            }catch(Exception factEx){
-            	MiscUtils.getLogger().error("Error", factEx);
+        FrmRecordFactory recorder = new FrmRecordFactory();
+        try {
+            rec = recorder.factory(request.getParameter("form_class"));
+            Properties props = new Properties();
+            for (Enumeration varEnum = request.getParameterNames(); varEnum.hasMoreElements(); ) {
+                String name = (String) varEnum.nextElement();
+                props.setProperty(name, request.getParameter(name));
+            }
+            if (!props.containsKey("workflowId")) {
+                props.setProperty("workflowId", "" + workId);
             }
 
-            request.setAttribute("demographic_no",demographicNo); 
-            where = af.getPath();
-            try {
-                where = rec.createActionURL(where, "save", demographicNo, "" + newID);
-            } catch (SQLException ex) {MiscUtils.getLogger().error("Error", ex);
-            }
-        
-            af = new ActionForward(where);
-       
-        
-        return af ;
+            props.setProperty("provider_no", providerNo);
+            newID = rec.saveFormRecord(props);
+            LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, request.getParameter("form_class"), "" + newID, ip);
+        } catch (Exception factEx) {
+            MiscUtils.getLogger().error("Error", factEx);
+        }
+
+        request.setAttribute("demographic_no", demographicNo);
+        where = af.getPath();
+        try {
+            where = rec.createActionURL(where, "save", demographicNo, "" + newID);
+        } catch (SQLException ex) {
+            MiscUtils.getLogger().error("Error", ex);
+        }
+
+        af = new ActionForward(where);
+
+
+        return af;
     }
+
     /** Creates a new instance of FrmFormRHPreventionAction */
     public FrmFormRHPreventionAction() {
     }
-    
+
 }

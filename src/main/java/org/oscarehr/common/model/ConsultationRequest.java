@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,54 +38,54 @@ import java.util.List;
 @Table(name = "consultationRequests")
 public class ConsultationRequest extends AbstractModel<Integer> implements Serializable {
 
-	private static final String ACTIVE_MARKER = "1";
+    private static final String ACTIVE_MARKER = "1";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "requestId")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "requestId")
+    private Integer id;
 
-	@Column(name = "referalDate")
-	@Temporal(TemporalType.DATE)
-	private Date referralDate;
+    @Column(name = "referalDate")
+    @Temporal(TemporalType.DATE)
+    private Date referralDate;
 
-	private Integer serviceId;
+    private Integer serviceId;
 
-	@ManyToOne(fetch=FetchType.EAGER, targetEntity=ProfessionalSpecialist.class, cascade= CascadeType.MERGE)
-	@JoinColumn( name="specId", referencedColumnName="specId"  )
-	private ProfessionalSpecialist professionalSpecialist;
-	
-	@ManyToOne(fetch=FetchType.EAGER, targetEntity=DemographicContact.class)
-	@JoinColumn(name="demographicContactId", referencedColumnName="id")
-	private DemographicContact demographicContact;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = ProfessionalSpecialist.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "specId", referencedColumnName = "specId")
+    private ProfessionalSpecialist professionalSpecialist;
 
-	@Temporal(TemporalType.DATE)
-	private Date appointmentDate;	
-	@Temporal(TemporalType.TIME)
-	private Date appointmentTime;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = DemographicContact.class)
+    @JoinColumn(name = "demographicContactId", referencedColumnName = "id")
+    private DemographicContact demographicContact;
 
-	@Column(name = "reason")
-	private String reasonForReferral;
+    @Temporal(TemporalType.DATE)
+    private Date appointmentDate;
+    @Temporal(TemporalType.TIME)
+    private Date appointmentTime;
 
-	private String clinicalInfo;
-	private String currentMeds;
-	private String allergies;
-	private String providerNo;
+    @Column(name = "reason")
+    private String reasonForReferral;
 
-	@Column(name = "demographicNo")
-	private Integer demographicId;
+    private String clinicalInfo;
+    private String currentMeds;
+    private String allergies;
+    private String providerNo;
 
-	private String status = ACTIVE_MARKER;
-	private String statusText;
-	private String sendTo;
-	private String concurrentProblems;
-	private String urgency;
-	private String appointmentInstructions;
-	private boolean patientWillBook;	
-	
-	@Column(name = "site_name")
-	private String siteName;
-        
+    @Column(name = "demographicNo")
+    private Integer demographicId;
+
+    private String status = ACTIVE_MARKER;
+    private String statusText;
+    private String sendTo;
+    private String concurrentProblems;
+    private String urgency;
+    private String appointmentInstructions;
+    private boolean patientWillBook;
+
+    @Column(name = "site_name")
+    private String siteName;
+
     @Temporal(TemporalType.DATE)
     private Date followUpDate;
     @Column(name = "signature_img")
@@ -94,159 +94,159 @@ public class ConsultationRequest extends AbstractModel<Integer> implements Seria
     private String letterheadAddress;
     private String letterheadPhone;
     private String letterheadFax;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdateDate;
-    
+
     private Integer fdid = null;
     private String source;
-    
-    @ManyToOne(fetch=FetchType.EAGER, targetEntity=LookupListItem.class)
-    @JoinColumn(name="appointmentInstructions", referencedColumnName="value", insertable = false, updatable = false)
+
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = LookupListItem.class)
+    @JoinColumn(name = "appointmentInstructions", referencedColumnName = "value", insertable = false, updatable = false)
     private LookupListItem lookupListItem;
 
-	@Transient
-	private List<ConsultationRequestExt> extras = Collections.emptyList();
-    
-	@Override
+    @Transient
+    private List<ConsultationRequestExt> extras = Collections.emptyList();
+
+    @Override
     public Integer getId() {
-	    return(id);
+        return (id);
     }
 
-	public Date getReferralDate() {
-    	return referralDate;
+    public Date getReferralDate() {
+        return referralDate;
     }
 
-	public void setReferralDate(Date referralDate) {
-    	this.referralDate = referralDate;
+    public void setReferralDate(Date referralDate) {
+        this.referralDate = referralDate;
     }
 
-	public Integer getServiceId() {
-    	return serviceId;
+    public Integer getServiceId() {
+        return serviceId;
     }
 
-	public void setServiceId(Integer serviceId) {
-    	this.serviceId = serviceId;
+    public void setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
     }
 
-	public Date getAppointmentDate() {
-    	return appointmentDate;
+    public Date getAppointmentDate() {
+        return appointmentDate;
     }
 
-	public void setAppointmentDate(Date appointmentDate) {
-    	this.appointmentDate = appointmentDate;
+    public void setAppointmentDate(Date appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
-	public Date getAppointmentTime() {
-    	return appointmentTime;
+    public Date getAppointmentTime() {
+        return appointmentTime;
     }
 
-	public void setAppointmentTime(Date appointmentTime) {
-    	this.appointmentTime = appointmentTime;
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
-	public String getReasonForReferral() {
-    	return reasonForReferral;
+    public String getReasonForReferral() {
+        return reasonForReferral;
     }
 
-	public void setReasonForReferral(String reasonForReferral) {
-    	this.reasonForReferral = StringUtils.trimToNull(reasonForReferral);
+    public void setReasonForReferral(String reasonForReferral) {
+        this.reasonForReferral = StringUtils.trimToNull(reasonForReferral);
     }
 
-	public String getClinicalInfo() {
-    	return clinicalInfo;
+    public String getClinicalInfo() {
+        return clinicalInfo;
     }
 
-	public void setClinicalInfo(String clinicalInfo) {
-    	this.clinicalInfo = StringUtils.trimToNull(clinicalInfo);
+    public void setClinicalInfo(String clinicalInfo) {
+        this.clinicalInfo = StringUtils.trimToNull(clinicalInfo);
     }
 
-	public String getCurrentMeds() {
-    	return currentMeds;
+    public String getCurrentMeds() {
+        return currentMeds;
     }
 
-	public void setCurrentMeds(String currentMeds) {
-    	this.currentMeds = StringUtils.trimToNull(currentMeds);
+    public void setCurrentMeds(String currentMeds) {
+        this.currentMeds = StringUtils.trimToNull(currentMeds);
     }
 
-	public String getAllergies() {
-    	return allergies;
+    public String getAllergies() {
+        return allergies;
     }
 
-	public void setAllergies(String allergies) {
-    	this.allergies = StringUtils.trimToNull(allergies);
+    public void setAllergies(String allergies) {
+        this.allergies = StringUtils.trimToNull(allergies);
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = StringUtils.trimToNull(providerNo);
+    public void setProviderNo(String providerNo) {
+        this.providerNo = StringUtils.trimToNull(providerNo);
     }
 
-	public Integer getDemographicId() {
-    	return demographicId;
+    public Integer getDemographicId() {
+        return demographicId;
     }
 
-	public void setDemographicId(Integer demographicId) {
-    	this.demographicId = demographicId;
+    public void setDemographicId(Integer demographicId) {
+        this.demographicId = demographicId;
     }
 
-	public String getStatus() {
-    	return status;
+    public String getStatus() {
+        return status;
     }
 
-	public void setStatus(String status) {
-    	this.status = StringUtils.trimToNull(status);
+    public void setStatus(String status) {
+        this.status = StringUtils.trimToNull(status);
     }
 
-	public String getStatusText() {
-    	return statusText;
+    public String getStatusText() {
+        return statusText;
     }
 
-	public void setStatusText(String statusText) {
-    	this.statusText = StringUtils.trimToNull(statusText);
+    public void setStatusText(String statusText) {
+        this.statusText = StringUtils.trimToNull(statusText);
     }
 
-	public String getSendTo() {
-    	return sendTo;
+    public String getSendTo() {
+        return sendTo;
     }
 
-	public void setSendTo(String sendTo) {
-    	this.sendTo = StringUtils.trimToNull(sendTo);
+    public void setSendTo(String sendTo) {
+        this.sendTo = StringUtils.trimToNull(sendTo);
     }
 
-	public String getConcurrentProblems() {
-    	return concurrentProblems;
+    public String getConcurrentProblems() {
+        return concurrentProblems;
     }
 
-	public void setConcurrentProblems(String concurrentProblems) {
-    	this.concurrentProblems = StringUtils.trimToNull(concurrentProblems);
+    public void setConcurrentProblems(String concurrentProblems) {
+        this.concurrentProblems = StringUtils.trimToNull(concurrentProblems);
     }
 
-	public String getUrgency() {
-    	return urgency;
+    public String getUrgency() {
+        return urgency;
     }
 
-	public void setUrgency(String urgency) {
-    	this.urgency = StringUtils.trimToNull(urgency);
-    }
-	
-	public String getSiteName() {
-    	return siteName;
+    public void setUrgency(String urgency) {
+        this.urgency = StringUtils.trimToNull(urgency);
     }
 
-	public void setSiteName(String siteName) {
-    	this.siteName = siteName;
+    public String getSiteName() {
+        return siteName;
     }
 
-	public boolean isPatientWillBook() {
-    	return patientWillBook;
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
     }
 
-	public void setPatientWillBook(boolean patientWillBook) {
-    	this.patientWillBook = patientWillBook;
+    public boolean isPatientWillBook() {
+        return patientWillBook;
+    }
+
+    public void setPatientWillBook(boolean patientWillBook) {
+        this.patientWillBook = patientWillBook;
     }
 
     /**
@@ -268,7 +268,7 @@ public class ConsultationRequest extends AbstractModel<Integer> implements Seria
      */
     public ProfessionalSpecialist getProfessionalSpecialist() {
         return professionalSpecialist;
-}
+    }
 
     /**
      * @param professionalSpecialist the professionalSpecialist to set
@@ -278,148 +278,147 @@ public class ConsultationRequest extends AbstractModel<Integer> implements Seria
     }
 
     public Integer getSpecialistId() {
-    	if(professionalSpecialist != null)
-    		return this.professionalSpecialist.getId();
-    	else
-    		return null;
+        if (professionalSpecialist != null)
+            return this.professionalSpecialist.getId();
+        else
+            return null;
     }
 
-	public DemographicContact getDemographicContact() {
-		return demographicContact;
-	}
-
-	public void setDemographicContact(DemographicContact demographicContact) {
-		this.demographicContact = demographicContact;
-	}
-	
-	public Integer getDemographicContactId() {
-		if( demographicContact != null ) {
-			return this.demographicContact.getId();
-		}
-		return null;
-	}
-
-	public String getSignatureImg() {
-	    return signatureImg;
+    public DemographicContact getDemographicContact() {
+        return demographicContact;
     }
 
-	public void setSignatureImg(String signatureImg) {
-	    this.signatureImg = signatureImg;
+    public void setDemographicContact(DemographicContact demographicContact) {
+        this.demographicContact = demographicContact;
     }
 
-	public String getLetterheadName() {
-	    return letterheadName;
+    public Integer getDemographicContactId() {
+        if (demographicContact != null) {
+            return this.demographicContact.getId();
+        }
+        return null;
     }
 
-	public void setLetterheadName(String letterheadName) {
-	    this.letterheadName = letterheadName;
+    public String getSignatureImg() {
+        return signatureImg;
     }
 
-	public String getLetterheadAddress() {
-	    return letterheadAddress;
+    public void setSignatureImg(String signatureImg) {
+        this.signatureImg = signatureImg;
     }
 
-	public void setLetterheadAddress(String letterheadAddress) {
-	    this.letterheadAddress = letterheadAddress;
+    public String getLetterheadName() {
+        return letterheadName;
     }
 
-	public String getLetterheadPhone() {
-	    return letterheadPhone;
+    public void setLetterheadName(String letterheadName) {
+        this.letterheadName = letterheadName;
     }
 
-	public void setLetterheadPhone(String letterheadPhone) {
-	    this.letterheadPhone = letterheadPhone;
+    public String getLetterheadAddress() {
+        return letterheadAddress;
     }
 
-	public String getLetterheadFax() {
-	    return letterheadFax;
+    public void setLetterheadAddress(String letterheadAddress) {
+        this.letterheadAddress = letterheadAddress;
     }
 
-	public void setLetterheadFax(String letterheadFax) {
-	    this.letterheadFax = letterheadFax;
+    public String getLetterheadPhone() {
+        return letterheadPhone;
     }
-	
-	
-	public Integer getFdid() {
-		return fdid;
-	}
 
-	public void setFdid(Integer fdid) {
-		this.fdid = fdid;
-	}
-	
-	
+    public void setLetterheadPhone(String letterheadPhone) {
+        this.letterheadPhone = letterheadPhone;
+    }
 
-	public String getSource() {
-		return source;
-	}
+    public String getLetterheadFax() {
+        return letterheadFax;
+    }
 
-	public void setSource(String source) {
-		this.source = source;
-	}
+    public void setLetterheadFax(String letterheadFax) {
+        this.letterheadFax = letterheadFax;
+    }
 
-	@PrePersist
-	@PreUpdate
-	protected void jpa_updateLastDateUpdated() {
-		lastUpdateDate = new Date();
-	}
-	
-	/**
-	 * returns the appointment instructions value. 
-	 * This can be a display value or select list value 
-	 * if the Lookup List interface is used. 
-	 * If the table contains a hash key it most likely is a 
-	 * primary key association in the LookupListItem table.
-	 */
-	public String getAppointmentInstructions() {
-		return appointmentInstructions;
-	}
 
-	public void setAppointmentInstructions(String appointmentInstructions) {
-		this.appointmentInstructions = appointmentInstructions;
-	}
+    public Integer getFdid() {
+        return fdid;
+    }
 
-	/**
-	 * Returns the display label of the Appointment Instruction if
-	 * the Lookup List interface is being used.
-	 * Empty string otherwise.
-	 */
-	@Transient
-	public String getAppointmentInstructionsLabel() {
-		if( lookupListItem != null ) {
-			return lookupListItem.getLabel();
-		}
-		return "";
-	}
+    public void setFdid(Integer fdid) {
+        this.fdid = fdid;
+    }
 
-	/**
-	 * This will be bound if the Appointment Instructions
-	 * value is found as a unique match in the LookupListItem
-	 * table. 
-	 */
-	public LookupListItem getLookupListItem() {
-		return lookupListItem;
-	}
 
-	public void setLookupListItem(LookupListItem lookupListItem) {
-		this.lookupListItem = lookupListItem;
-	}
+    public String getSource() {
+        return source;
+    }
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public void setSource(String source) {
+        this.source = source;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    @PrePersist
+    @PreUpdate
+    protected void jpa_updateLastDateUpdated() {
+        lastUpdateDate = new Date();
+    }
 
-	public List<ConsultationRequestExt> getExtras() {
-		return extras;
-	}
-	
-	public void setExtras(List<ConsultationRequestExt> extras) {
-		this.extras = extras;
-	}
+    /**
+     * returns the appointment instructions value.
+     * This can be a display value or select list value
+     * if the Lookup List interface is used.
+     * If the table contains a hash key it most likely is a
+     * primary key association in the LookupListItem table.
+     */
+    public String getAppointmentInstructions() {
+        return appointmentInstructions;
+    }
+
+    public void setAppointmentInstructions(String appointmentInstructions) {
+        this.appointmentInstructions = appointmentInstructions;
+    }
+
+    /**
+     * Returns the display label of the Appointment Instruction if
+     * the Lookup List interface is being used.
+     * Empty string otherwise.
+     */
+    @Transient
+    public String getAppointmentInstructionsLabel() {
+        if (lookupListItem != null) {
+            return lookupListItem.getLabel();
+        }
+        return "";
+    }
+
+    /**
+     * This will be bound if the Appointment Instructions
+     * value is found as a unique match in the LookupListItem
+     * table.
+     */
+    public LookupListItem getLookupListItem() {
+        return lookupListItem;
+    }
+
+    public void setLookupListItem(LookupListItem lookupListItem) {
+        this.lookupListItem = lookupListItem;
+    }
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public List<ConsultationRequestExt> getExtras() {
+        return extras;
+    }
+
+    public void setExtras(List<ConsultationRequestExt> extras) {
+        this.extras = extras;
+    }
 
 
 }

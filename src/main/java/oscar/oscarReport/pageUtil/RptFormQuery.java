@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -76,7 +76,7 @@ public class RptFormQuery {
             subQuery += ",demographic ";
         }
         // test for vecVarValue
-        if ((getQueryWhere(vecVarValue).length()>0)||(reportCreator.getWhereJoinClause(tableName, bDemo).length()>0)) {
+        if ((getQueryWhere(vecVarValue).length() > 0) || (reportCreator.getWhereJoinClause(tableName, bDemo).length() > 0)) {
             subQuery += " where " + getQueryWhere(vecVarValue) + reportCreator.getWhereJoinClause(tableName, bDemo);
         }
         subQuery += " group by " + tableName + ".demographic_no," + tableName + ".formCreated ";
@@ -90,13 +90,13 @@ public class RptFormQuery {
         String rltSubQuery = reportCreator.getRltSubQuery(subQuery);
 
         reportSql += " where " + tableName + ".ID in (" + rltSubQuery + ")";
-        if (reportCreator.getWhereJoinClause(tableName, bDemo).length()>0) {
-                    reportSql += " and " + reportCreator.getWhereJoinClause(tableName, bDemo);
-	}
+        if (reportCreator.getWhereJoinClause(tableName, bDemo).length() > 0) {
+            reportSql += " and " + reportCreator.getWhereJoinClause(tableName, bDemo);
+        }
         return reportSql;
     }
 
-    private Vector[] getValueParam(HttpServletRequest request)  {
+    private Vector[] getValueParam(HttpServletRequest request) {
         Vector[] ret = new Vector[2];
         String serialNo = "";
         Vector vecValue = new Vector();
@@ -142,11 +142,11 @@ public class RptFormQuery {
 
     public String getQueryWhere(Vector vecVarValue) {
         String ret = "";
-        if (vecVarValue.size()>0) {
+        if (vecVarValue.size() > 0) {
             ret = (String) vecVarValue.get(0);
         }
         for (int i = 1; i < vecVarValue.size(); i++) {
-            ret +=  " and " + (String) vecVarValue.get(i);
+            ret += " and " + (String) vecVarValue.get(i);
         }
         return ret;
     }

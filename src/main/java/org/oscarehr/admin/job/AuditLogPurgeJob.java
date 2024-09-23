@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,72 +47,71 @@ import oscar.OscarProperties;
  */
 public class AuditLogPurgeJob implements OscarRunnable {
 
-	private Provider provider;
-	private Security security;
-	Logger logger = MiscUtils.getLogger();
+    private Provider provider;
+    private Security security;
+    Logger logger = MiscUtils.getLogger();
 
-	
-	
-	@Override
-	public void run() {
-		AuditLogManager manager = SpringUtils.getBean(AuditLogManager.class);
-		
-		logger.info("AuditLogPurgeJob running as " + provider.getFormattedName() + " login is " + security.getUserName());
 
-		LoggedInInfo loggedInInfo = new LoggedInInfo();
-		loggedInInfo.setLoggedInProvider(provider);
-		loggedInInfo.setLoggedInSecurity(security);
+    @Override
+    public void run() {
+        AuditLogManager manager = SpringUtils.getBean(AuditLogManager.class);
 
-		String daysFromNowToRemove =  OscarProperties.getInstance().getProperty("log.purge.daysfromnowtopurge");
-		
-		
-		Integer daysRemove = null;
-		if(daysFromNowToRemove != null) {
-			try {
-				daysRemove = Integer.parseInt(daysFromNowToRemove);
-			} catch(NumberFormatException e) {
-				logger.warn("Invalid value in log.purge.daysfromnowtopurge");
-				return;
-			}
-		}
-		if(daysRemove == null) {
-			logger.warn("Aborting. You need to set log.purge.daysfromnowtopurge if you want this job to work");
-			return;
-		}
-		
-		Date endDateToPurge = null;
-		
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_YEAR, -daysRemove);
-		c.set(Calendar.HOUR_OF_DAY, 23);
-		c.set(Calendar.MINUTE, 59);
-		c.set(Calendar.SECOND, 59);
-		endDateToPurge = c.getTime();
-		
-		logger.info("Calling AuditLogManager.purgeAuditLog with date " + endDateToPurge);
-		
-		try {
-			int numRecordsDeleted = manager.purgeAuditLog(loggedInInfo, endDateToPurge);
-		}catch(Exception e) {
-			logger.error("Error", e);
-		}
-		
-		logger.info("Job complete");
+        logger.info("AuditLogPurgeJob running as " + provider.getFormattedName() + " login is " + security.getUserName());
 
-	}
+        LoggedInInfo loggedInInfo = new LoggedInInfo();
+        loggedInInfo.setLoggedInProvider(provider);
+        loggedInInfo.setLoggedInSecurity(security);
 
-	@Override
-	public void setLoggedInProvider(Provider provider) {
-		this.provider = provider;
-	}
+        String daysFromNowToRemove = OscarProperties.getInstance().getProperty("log.purge.daysfromnowtopurge");
 
-	@Override
-	public void setLoggedInSecurity(Security security) {
-		this.security = security;
-	}
-	
-	@Override
-	public void setConfig(String string) {
-	}
+
+        Integer daysRemove = null;
+        if (daysFromNowToRemove != null) {
+            try {
+                daysRemove = Integer.parseInt(daysFromNowToRemove);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid value in log.purge.daysfromnowtopurge");
+                return;
+            }
+        }
+        if (daysRemove == null) {
+            logger.warn("Aborting. You need to set log.purge.daysfromnowtopurge if you want this job to work");
+            return;
+        }
+
+        Date endDateToPurge = null;
+
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_YEAR, -daysRemove);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        endDateToPurge = c.getTime();
+
+        logger.info("Calling AuditLogManager.purgeAuditLog with date " + endDateToPurge);
+
+        try {
+            int numRecordsDeleted = manager.purgeAuditLog(loggedInInfo, endDateToPurge);
+        } catch (Exception e) {
+            logger.error("Error", e);
+        }
+
+        logger.info("Job complete");
+
+    }
+
+    @Override
+    public void setLoggedInProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    @Override
+    public void setLoggedInSecurity(Security security) {
+        this.security = security;
+    }
+
+    @Override
+    public void setConfig(String string) {
+    }
 
 }

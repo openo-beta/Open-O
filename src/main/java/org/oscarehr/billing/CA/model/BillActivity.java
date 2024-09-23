@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,177 +41,177 @@ import javax.persistence.TemporalType;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="billactivity")
+@Table(name = "billactivity")
 public class BillActivity extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String monthCode;
+    private String monthCode;
 
-	@Column(name="batchcount")
-	private int batchCount;
+    @Column(name = "batchcount")
+    private int batchCount;
 
-	@Column(name="htmlfilename")
-	private String htmlFilename;
+    @Column(name = "htmlfilename")
+    private String htmlFilename;
 
-	@Column(name="ohipfilename")
-	private String ohipFilename;
+    @Column(name = "ohipfilename")
+    private String ohipFilename;
 
-	@Column(name="providerohipno")
-	private String providerOhipNo;
+    @Column(name = "providerohipno")
+    private String providerOhipNo;
 
-	@Column(name="groupno")
-	private String groupNo;
+    @Column(name = "groupno")
+    private String groupNo;
 
-	@Column(name="creator")
-	private String creator;
+    @Column(name = "creator")
+    private String creator;
 
-	@Column(name="htmlcontext")
-	private String htmlContext;
+    @Column(name = "htmlcontext")
+    private String htmlContext;
 
-	@Column(name="ohipcontext")
-	private String ohipContext;
+    @Column(name = "ohipcontext")
+    private String ohipContext;
 
-	@Column(name="claimrecord")
-	private String claimRecord;
+    @Column(name = "claimrecord")
+    private String claimRecord;
 
-	@Column(name="updatedatetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateDateTime;
+    @Column(name = "updatedatetime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDateTime;
 
-	private String status;
+    private String status;
 
-	private String total;
+    private String total;
 
-	@Column(name="sentdate")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date sentDate;
+    @Column(name = "sentdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date sentDate;
 
 
-	@Override
+    @Override
     public Integer getId() {
-		return id;
-	}
-
-	public String getMonthCode() {
-    	return monthCode;
+        return id;
     }
 
-	public void setMonthCode(String monthCode) {
-    	this.monthCode = monthCode;
+    public String getMonthCode() {
+        return monthCode;
     }
 
-	public int getBatchCount() {
-    	return batchCount;
+    public void setMonthCode(String monthCode) {
+        this.monthCode = monthCode;
     }
 
-	public void setBatchCount(int batchCount) {
-    	this.batchCount = batchCount;
+    public int getBatchCount() {
+        return batchCount;
     }
 
-	public String getHtmlFilename() {
-    	return htmlFilename;
+    public void setBatchCount(int batchCount) {
+        this.batchCount = batchCount;
     }
 
-	public void setHtmlFilename(String htmlFilename) {
-    	this.htmlFilename = htmlFilename;
+    public String getHtmlFilename() {
+        return htmlFilename;
     }
 
-	public String getOhipFilename() {
-    	return ohipFilename;
+    public void setHtmlFilename(String htmlFilename) {
+        this.htmlFilename = htmlFilename;
     }
 
-	public void setOhipFilename(String ohipFilename) {
-    	this.ohipFilename = ohipFilename;
+    public String getOhipFilename() {
+        return ohipFilename;
     }
 
-	public String getProviderOhipNo() {
-    	return providerOhipNo;
+    public void setOhipFilename(String ohipFilename) {
+        this.ohipFilename = ohipFilename;
     }
 
-	public void setProviderOhipNo(String providerOhipNo) {
-    	this.providerOhipNo = providerOhipNo;
+    public String getProviderOhipNo() {
+        return providerOhipNo;
     }
 
-	public String getGroupNo() {
-    	return groupNo;
+    public void setProviderOhipNo(String providerOhipNo) {
+        this.providerOhipNo = providerOhipNo;
     }
 
-	public void setGroupNo(String groupNo) {
-    	this.groupNo = groupNo;
+    public String getGroupNo() {
+        return groupNo;
     }
 
-	public String getCreator() {
-    	return creator;
+    public void setGroupNo(String groupNo) {
+        this.groupNo = groupNo;
     }
 
-	public void setCreator(String creator) {
-    	this.creator = creator;
+    public String getCreator() {
+        return creator;
     }
 
-	public String getHtmlContext() {
-    	return htmlContext;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-	public void setHtmlContext(String htmlContext) {
-    	this.htmlContext = htmlContext;
+    public String getHtmlContext() {
+        return htmlContext;
     }
 
-	public String getOhipContext() {
-    	return ohipContext;
+    public void setHtmlContext(String htmlContext) {
+        this.htmlContext = htmlContext;
     }
 
-	public void setOhipContext(String ohipContext) {
-    	this.ohipContext = ohipContext;
+    public String getOhipContext() {
+        return ohipContext;
     }
 
-	public String getClaimRecord() {
-    	return claimRecord;
+    public void setOhipContext(String ohipContext) {
+        this.ohipContext = ohipContext;
     }
 
-	public void setClaimRecord(String claimRecord) {
-    	this.claimRecord = claimRecord;
+    public String getClaimRecord() {
+        return claimRecord;
     }
 
-	public Date getUpdateDateTime() {
-    	return updateDateTime;
+    public void setClaimRecord(String claimRecord) {
+        this.claimRecord = claimRecord;
     }
 
-	public void setUpdateDateTime(Date updateDateTime) {
-    	this.updateDateTime = updateDateTime;
+    public Date getUpdateDateTime() {
+        return updateDateTime;
     }
 
-	public String getStatus() {
-    	return status;
+    public void setUpdateDateTime(Date updateDateTime) {
+        this.updateDateTime = updateDateTime;
     }
 
-	public void setStatus(String status) {
-    	this.status = status;
+    public String getStatus() {
+        return status;
     }
 
-	public String getTotal() {
-    	return total;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-	public void setTotal(String total) {
-    	this.total = total;
+    public String getTotal() {
+        return total;
     }
 
-	public Date getSentDate() {
-    	return sentDate;
+    public void setTotal(String total) {
+        this.total = total;
     }
 
-	public void setSentDate(Date sentDate) {
-    	this.sentDate = sentDate;
+    public Date getSentDate() {
+        return sentDate;
+    }
+
+    public void setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
     }
 
 
     public static final Comparator<BillActivity> UpdateDateTimeComparator = new Comparator<BillActivity>() {
         public int compare(BillActivity o1, BillActivity o2) {
-                return o2.getUpdateDateTime().compareTo(o1.getUpdateDateTime());
+            return o2.getUpdateDateTime().compareTo(o1.getUpdateDateTime());
         }
-    }; 
+    };
 
 }

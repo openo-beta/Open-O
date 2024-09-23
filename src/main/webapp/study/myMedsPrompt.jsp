@@ -25,47 +25,47 @@
 --%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MyMeds Prompt</title>
-<script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
-<script type="text/javascript">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>MyMeds Prompt</title>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
+    <script type="text/javascript">
 
-function submitAnswer(frm) {
-	
-	var func = '<%=request.getParameter("func")%>'
-	
-	if( func == "Print") {
-		window.opener.updateSaveAllDrugsPrintContinue();
-	}
-	else {
-		window.opener.updateSaveAllDrugsContinue();
-	}
-	
-	frm.submit();	
-}
+        function submitAnswer(frm) {
 
-function confirm() {
-	var windowprops = "height=350,width=650,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";	
-	window.open("myMedsConfirm.html","myMeds2",windowprops);
-}
-</script>
+            var func = '<%=request.getParameter("func")%>'
+
+            if (func == "Print") {
+                window.opener.updateSaveAllDrugsPrintContinue();
+            } else {
+                window.opener.updateSaveAllDrugsContinue();
+            }
+
+            frm.submit();
+        }
+
+        function confirm() {
+            var windowprops = "height=350,width=650,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
+            window.open("myMedsConfirm.html", "myMeds2", windowprops);
+        }
+    </script>
 </head>
 <body>
 <form method="post" action="ManageStudy.do" onsubmit="submitAnswer(this);">
-<input type="hidden" name="studyId" value="<%=request.getParameter("studyId")%>"/>
-<input type="hidden" name="providerNo" value="<%=request.getParameter("providerNo")%>"/>
-<input type="hidden" name="demographicNo" value="<%=request.getParameter("demographicNo")%>"/>
-<input type="hidden" name="method" value="saveStudyData"/>
-<input type="hidden" name="key" value="answer"/>
-<p style="text-align:center; border border: 1pt 1pt 1pt 1pt; border-style:solid;">
-<b>THIS PATIENT MEETS THE ELIGIBILITY CRITERIA TO PARTICIPATE IN MyMEDS.</b><br/>
-Records indicate he/she (1) is &gt;= 65 years of age and (2) was just prescribed a new antihypertensive medication.<br/> 
-Please confirm this patient meets the eligibility criteria: 
-</p>
-<input type="submit" name="content" value="Eligible - ask now" onclick="confirm()"/>&nbsp;
-<input type="submit" name="content" value="Eligible - ask later"/>&nbsp;
-<input type="submit" name="content" value="Eligible - Don't ask again"/>&nbsp;
-<input type="submit" name="content" value="Not Eligible"/>
+    <input type="hidden" name="studyId" value="<%=request.getParameter("studyId")%>"/>
+    <input type="hidden" name="providerNo" value="<%=request.getParameter("providerNo")%>"/>
+    <input type="hidden" name="demographicNo" value="<%=request.getParameter("demographicNo")%>"/>
+    <input type="hidden" name="method" value="saveStudyData"/>
+    <input type="hidden" name="key" value="answer"/>
+    <p style="text-align:center; border border: 1pt 1pt 1pt 1pt; border-style:solid;">
+        <b>THIS PATIENT MEETS THE ELIGIBILITY CRITERIA TO PARTICIPATE IN MyMEDS.</b><br/>
+        Records indicate he/she (1) is &gt;= 65 years of age and (2) was just prescribed a new antihypertensive
+        medication.<br/>
+        Please confirm this patient meets the eligibility criteria:
+    </p>
+    <input type="submit" name="content" value="Eligible - ask now" onclick="confirm()"/>&nbsp;
+    <input type="submit" name="content" value="Eligible - ask later"/>&nbsp;
+    <input type="submit" name="content" value="Eligible - Don't ask again"/>&nbsp;
+    <input type="submit" name="content" value="Not Eligible"/>
 </form>
 </body>
 </html>

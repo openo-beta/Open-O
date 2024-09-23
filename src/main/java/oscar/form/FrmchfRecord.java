@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,10 +39,10 @@ import oscar.util.UtilDateUtilities;
 public class FrmchfRecord extends FrmRecord {
     public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException {
         Properties props = new Properties();
-  
+
         if (existingID <= 0) {
-            
-   
+
+
             String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
                     + "sex, year_of_birth, month_of_birth, date_of_birth "
                     + "FROM demographic WHERE demographic_no = " + demographicNo;
@@ -60,7 +60,7 @@ public class FrmchfRecord extends FrmRecord {
                 // UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("birthDate", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
                 props.setProperty("sex", oscar.Misc.getString(rs, "sex"));
- 
+
             }
             rs.close();
         } else {
@@ -97,12 +97,12 @@ public class FrmchfRecord extends FrmRecord {
 
         if (action.equalsIgnoreCase("print")) {
             temp = where + "?demoNo=" + demoId + "&formId=" + formId; // + "&study_no=" + studyId +
-                                                                      // "&study_link" + studyLink;
+            // "&study_link" + studyLink;
         } else if (action.equalsIgnoreCase("save")) {
             temp = where + "?demographic_no=" + demoId + "&formId=" + formId; // "&study_no=" +
-                                                                              // studyId +
-                                                                              // "&study_link" +
-                                                                              // studyLink; //+
+            // studyId +
+            // "&study_link" +
+            // studyLink; //+
         } else if (action.equalsIgnoreCase("exit")) {
             temp = where;
         } else {

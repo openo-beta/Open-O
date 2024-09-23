@@ -24,19 +24,19 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<script language=javascript>
-        window.close();
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <script language=javascript>
+            window.close();
         </script>
-</head>
-<body>
-<bean:message key="oscarEncounter.close.msgClick1" />
-<a href="javascript:window.close();"><bean:message
-	key="oscarEncounter.close.btnHere" /></a>
-</body>
+    </head>
+    <body>
+    <bean:message key="oscarEncounter.close.msgClick1"/>
+    <a href="javascript:window.close();"><bean:message
+            key="oscarEncounter.close.btnHere"/></a>
+    </body>
 </html:html>

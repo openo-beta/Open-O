@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,7 +31,9 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class FormBCAR2020DataDao extends AbstractDaoImpl<FormBCAR2020Data> {
-    public FormBCAR2020DataDao() { super(FormBCAR2020Data.class); }
+    public FormBCAR2020DataDao() {
+        super(FormBCAR2020Data.class);
+    }
 
     public List<FormBCAR2020Data> findFields(Integer formId) {
         String sql = "select f from FormBCAR2020Data f " +
@@ -49,7 +51,7 @@ public class FormBCAR2020DataDao extends AbstractDaoImpl<FormBCAR2020Data> {
         query = query.setParameter("pageNo", pageNo);
         return query.getResultList();
     }
-    
+
     public FormBCAR2020Data findFieldForPage(Integer formId, Integer pageNo, String fieldName) {
         String sql = "SELECT f FROM FormBCAR2020Data f " +
                 "WHERE f.formId = :formId AND (f.pageNo = :pageNo OR f.pageNo = 0) AND f.field = :fieldName";

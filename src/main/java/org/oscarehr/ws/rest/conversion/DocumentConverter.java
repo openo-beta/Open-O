@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,7 +33,7 @@ public class DocumentConverter extends AbstractConverter<Document, DocumentTo1> 
     @Override
     public Document getAsDomainObject(LoggedInInfo loggedInInfo, DocumentTo1 t) throws ConversionException {
         Document d = new Document();
-        
+
         d.setDocumentNo(t.getId());
         d.setDoctype(t.getType());
         d.setDocClass(t.getDocClass());
@@ -60,20 +60,20 @@ public class DocumentConverter extends AbstractConverter<Document, DocumentTo1> 
         d.setAbnormal(t.getAbnormal());
         d.setRestrictToProgram(t.getRestrictToProgram());
 
-        if(t.getReviews() != null){
+        if (t.getReviews() != null) {
             DocumentReviewConverter reviewConverter = new DocumentReviewConverter();
-            for(DocumentReviewTo1 reviewTo1: t.getReviews()){
+            for (DocumentReviewTo1 reviewTo1 : t.getReviews()) {
                 d.getReviews().add(reviewConverter.getAsDomainObject(loggedInInfo, reviewTo1));
             }
         }
-        
+
         return d;
     }
 
     @Override
     public DocumentTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Document d) throws ConversionException {
         DocumentTo1 t = new DocumentTo1();
-        
+
         t.setId(d.getDocumentNo());
         t.setType(d.getDoctype());
         t.setDocClass(d.getDocClass());
@@ -99,7 +99,7 @@ public class DocumentConverter extends AbstractConverter<Document, DocumentTo1> 
         t.setAbnormal(d.isAbnormal());
         t.setRestrictToProgram(d.isRestrictToProgram());
 
-        if(d.getReviews() != null){
+        if (d.getReviews() != null) {
             DocumentReviewConverter reviewConverter = new DocumentReviewConverter();
             t.setReviews(reviewConverter.getAllAsTransferObjects(loggedInInfo, d.getReviews()));
         }

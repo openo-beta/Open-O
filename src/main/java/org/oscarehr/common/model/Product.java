@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,48 +32,48 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Product extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Integer id;
 
-	private String name;
-	private String code;
-	private Integer location;
-	
-	
-	public Integer getId() {
-		return id;
-	}
+    private String name;
+    private String code;
+    private Integer location;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
-	public String getName() {
-		return name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getLocation() {
-		return location;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setLocation(Integer location) {
-		this.location = location;
-	}
-	
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getLocation() {
+        return location;
+    }
+
+    public void setLocation(Integer location) {
+        this.location = location;
+    }
+
 }

@@ -24,143 +24,153 @@
 
 --%>
 
-<%@ include file="/casemgmt/taglibs.jsp"%>
+<%@ include file="/casemgmt/taglibs.jsp" %>
 
 <%
-if(session.getValue("user") == null)
-    response.sendRedirect("../logout.htm");
-  String curUser_no;
-  curUser_no = (String) session.getAttribute("user");
-   String tite = (String) request.getAttribute("provider.title");
+    if (session.getValue("user") == null)
+        response.sendRedirect("../logout.htm");
+    String curUser_no;
+    curUser_no = (String) session.getAttribute("user");
+    String tite = (String) request.getAttribute("provider.title");
 
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}"
-	scope="request" />
+       scope="request"/>
 <html:html>
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<html:base />
-<title><bean-el:message key="${providertitle}" /></title>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <html:base/>
+        <title><bean-el:message key="${providertitle}"/></title>
 
-<link rel="stylesheet" type="text/css"
-	href="../oscarEncounter/encounterStyles.css">
-<!-- calendar stylesheet -->
-<link rel="stylesheet" type="text/css" media="all"
-	href="<c:out value="${ctx}"/>/share/calendar/calendar.css"
-	title="win2k-cold-1">
+        <link rel="stylesheet" type="text/css"
+              href="../oscarEncounter/encounterStyles.css">
+        <!-- calendar stylesheet -->
+        <link rel="stylesheet" type="text/css" media="all"
+              href="<c:out value="${ctx}"/>/share/calendar/calendar.css"
+              title="win2k-cold-1">
 
-<script src="<c:out value="${ctx}"/>/share/javascript/prototype.js"
-	type="text/javascript"></script>
-<script src="<c:out value="${ctx}"/>/share/javascript/scriptaculous.js"
-	type="text/javascript"></script>
+        <script src="<c:out value="${ctx}"/>/share/javascript/prototype.js"
+                type="text/javascript"></script>
+        <script src="<c:out value="${ctx}"/>/share/javascript/scriptaculous.js"
+                type="text/javascript"></script>
 
-<!-- main calendar program -->
-<script type="text/javascript"
-	src="<c:out value="${ctx}"/>/share/calendar/calendar.js"></script>
+        <!-- main calendar program -->
+        <script type="text/javascript"
+                src="<c:out value="${ctx}"/>/share/calendar/calendar.js"></script>
 
-<!-- language for the calendar -->
-<script type="text/javascript"
-	src="<c:out value="${ctx}"/>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+        <!-- language for the calendar -->
+        <script type="text/javascript"
+                src="<c:out value="${ctx}"/>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
 
-<!-- the following script defines the Calendar.setup helper function, which makes
-               adding a calendar a matter of 1 or 2 lines of code. -->
-<script type="text/javascript"
-	src="<c:out value="${ctx}"/>/share/calendar/calendar-setup.js"></script>
-<script type="text/javascript">
+        <!-- the following script defines the Calendar.setup helper function, which makes
+                       adding a calendar a matter of 1 or 2 lines of code. -->
+        <script type="text/javascript"
+                src="<c:out value="${ctx}"/>/share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript">
             function setup() {
-                Calendar.setup({ inputField : "staleDate", ifFormat : "%Y-%m-%d", showsTime :false, button : "staleDate_cal", singleClick : true, step : 1 });
+                Calendar.setup({
+                    inputField: "staleDate",
+                    ifFormat: "%Y-%m-%d",
+                    showsTime: false,
+                    button: "staleDate_cal",
+                    singleClick: true,
+                    step: 1
+                });
             }
 
             function validate() {
                 var date = document.getElementById("staleDate");
-                if( date.value == "" ) {
+                if (date.value == "") {
                     alert("Please select a date before saving");
                     return false;
                 }
 
                 return true;
             }
-            function showhide(){
-                var id1='fromExisting';
-                var id2='saveNew';
-                    if($(id1).getStyle('display')=='none'){
-                        Effect.BlindDown(id1)
-                        Effect.BlindUp(id2);
-                        $('chooseMode').value='existing' ;
-                    }else{
-                        Effect.BlindUp(id1);
-                        Effect.BlindDown(id2);
-                        $('chooseMode').value='new';
-                    }
+
+            function showhide() {
+                var id1 = 'fromExisting';
+                var id2 = 'saveNew';
+                if ($(id1).getStyle('display') == 'none') {
+                    Effect.BlindDown(id1)
+                    Effect.BlindUp(id2);
+                    $('chooseMode').value = 'existing';
+                } else {
+                    Effect.BlindUp(id1);
+                    Effect.BlindDown(id2);
+                    $('chooseMode').value = 'new';
+                }
             }
         </script>
 
-</head>
+    </head>
 
-<body class="BodyStyle" vlink="#0000FF">
+    <body class="BodyStyle" vlink="#0000FF">
 
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn"><bean-el:message
-			key="${providermsgPrefs}" /></td>
-		<td style="color: white" class="MainTableTopRowRightColumn"><bean-el:message
-			key="${providermsgProvider}" /></td>
-	</tr>
-        <%if( request.getAttribute("status") == null ){%>
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn"><bean-el:message
+                    key="${providermsgPrefs}"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><bean-el:message
+                    key="${providermsgProvider}"/></td>
+        </tr>
+        <%if (request.getAttribute("status") == null) {%>
         <html:form action="/setProviderStaleDate.do">
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
-                    <td class="MainTableRightColumn">
-                        <a href="javascript:void(0);" onclick="showhide();"> <bean-el:message key="${providermsgEditFromExisting}" /></a>
-                    </td>
-            </tr>
-            <tr>
-                    <td class="MainTableLeftColumn">&nbsp;</td>
-                    <td class="MainTableRightColumn">
-                        <div id="fromExisting">
-                     <c:out value="${defaultDocQueueProperty.value}" />
-                            <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                            <html:select property="existingDefaultDocQueueProperty.value">
-                                <html:options collection="viewChoices" property="value" labelProperty="label"/>
-                            </html:select>
-                        </div>
-                    </td>
+                <td class="MainTableRightColumn">
+                    <a href="javascript:void(0);" onclick="showhide();"> <bean-el:message
+                            key="${providermsgEditFromExisting}"/></a>
+                </td>
             </tr>
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
-                 <td class="MainTableRightColumn">
-                     <a  href="javascript:void(0);" onclick="showhide();"> <bean-el:message key="${providermsgEditSaveNew}" /></a>
-                 </td>
+                <td class="MainTableRightColumn">
+                    <div id="fromExisting">
+                        <c:out value="${defaultDocQueueProperty.value}"/>
+                        <input type="hidden" name="method" value="<c:out value="${method}"/>">
+                        <html:select property="existingDefaultDocQueueProperty.value">
+                            <html:options collection="viewChoices" property="value" labelProperty="label"/>
+                        </html:select>
+                    </div>
+                </td>
             </tr>
             <tr>
-                    <td class="MainTableLeftColumn">&nbsp;</td>
-                    <td class="MainTableRightColumn">
+                <td class="MainTableLeftColumn">&nbsp;</td>
+                <td class="MainTableRightColumn">
+                    <a href="javascript:void(0);" onclick="showhide();"> <bean-el:message
+                            key="${providermsgEditSaveNew}"/></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="MainTableLeftColumn">&nbsp;</td>
+                <td class="MainTableRightColumn">
                     <div id="saveNew" style="display:none">
                         <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                        <html:text property="newDefaultDocQueueProperty.value"  />
+                        <html:text property="newDefaultDocQueueProperty.value"/>
                     </div>
-                    </td>
+                </td>
             </tr>
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
                     <input id="chooseMode" name="chooseMode" type="hidden" value="existing"/>
-                    <input type="submit" value="<bean-el:message key="${providerbtnSubmit}" />" />
+                    <input type="submit" value="<bean-el:message key="${providerbtnSubmit}" />"/>
                 </td>
             </tr>
-             </html:form> 
-        <%}else {%>
-            <tr>
-                <td class="MainTableLeftColumn">&nbsp;</td>
-                <td><bean-el:message key="${providermsgSuccess}" /> </td>
-            </tr>
-	<%}%>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</body>
+        </html:form>
+        <%} else {%>
+        <tr>
+            <td class="MainTableLeftColumn">&nbsp;</td>
+            <td><bean-el:message key="${providermsgSuccess}"/></td>
+        </tr>
+        <%}%>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
+    </body>
 </html:html>

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -48,89 +48,89 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 public class dxResearchUpdateQuickListAction extends Action {
-	private static SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private static SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_dxresearch", "w", null)) {
-			throw new RuntimeException("missing required security object (_dxresearch)");
-		}
-		
-		dxResearchUpdateQuickListForm frm = (dxResearchUpdateQuickListForm) form;
-		String quickListName = frm.getQuickListName();
-		String forward = frm.getForward();
-		String codingSystem = frm.getSelectedCodingSystem();
-		String curUser = (String) request.getSession().getAttribute("user");
-		dxResearchLoadQuickListItemsForm qLItemsFrm = (dxResearchLoadQuickListItemsForm) request.getSession().getAttribute("dxResearchLoadQuickListItemsFrm");
-		qLItemsFrm.setQuickListName(quickListName);
-		boolean valid = true;
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_dxresearch", "w", null)) {
+            throw new RuntimeException("missing required security object (_dxresearch)");
+        }
 
-		if (forward.equals("add")) {
-			valid = doAdd(request, frm, quickListName, codingSystem, curUser);
-		} else if (forward.equals("remove")) {
-			doRemove(frm, quickListName);
-		}
+        dxResearchUpdateQuickListForm frm = (dxResearchUpdateQuickListForm) form;
+        String quickListName = frm.getQuickListName();
+        String forward = frm.getForward();
+        String codingSystem = frm.getSelectedCodingSystem();
+        String curUser = (String) request.getSession().getAttribute("user");
+        dxResearchLoadQuickListItemsForm qLItemsFrm = (dxResearchLoadQuickListItemsForm) request.getSession().getAttribute("dxResearchLoadQuickListItemsFrm");
+        qLItemsFrm.setQuickListName(quickListName);
+        boolean valid = true;
 
-		if (!valid) {
-			return (new ActionForward(mapping.getInput()));
-		}
+        if (forward.equals("add")) {
+            valid = doAdd(request, frm, quickListName, codingSystem, curUser);
+        } else if (forward.equals("remove")) {
+            doRemove(frm, quickListName);
+        }
 
-		return mapping.findForward("success");
-	}
+        if (!valid) {
+            return (new ActionForward(mapping.getInput()));
+        }
 
-	private void doRemove(dxResearchUpdateQuickListForm frm, String quickListName) {
-		String[] removedItems = frm.getQuickListItems();
-		String[] itemValues;
-		if (removedItems != null) {
-			for (int i = 0; i < removedItems.length; i++) {
-				itemValues = removedItems[i].split(",");
+        return mapping.findForward("success");
+    }
 
-				QuickListDao quickListDao = SpringUtils.getBean(QuickListDao.class);
-				List<QuickList> quickLists = quickListDao.findByNameResearchCodeAndCodingSystem(quickListName, itemValues[1], itemValues[0]);
-				for (QuickList q : quickLists) {
-					quickListDao.remove(q.getId());
-				}
-			}
-		}
-	}
+    private void doRemove(dxResearchUpdateQuickListForm frm, String quickListName) {
+        String[] removedItems = frm.getQuickListItems();
+        String[] itemValues;
+        if (removedItems != null) {
+            for (int i = 0; i < removedItems.length; i++) {
+                itemValues = removedItems[i].split(",");
 
-	@SuppressWarnings("unchecked")
-	private boolean doAdd(HttpServletRequest request, dxResearchUpdateQuickListForm frm, String quickListName, String codingSystem, String curUser) {
-		boolean valid = true;
-		String[] xml_research = frm.getXmlResearch();
-		ActionMessages errors = new ActionMessages();
-		AbstractCodeSystemDao<AbstractCodeSystemModel<?>> dao = (AbstractCodeSystemDao<AbstractCodeSystemModel<?>>) SpringUtils.getBean(AbstractCodeSystemDao.getDaoName(AbstractCodeSystemDaoImpl.codingSystem.valueOf(codingSystem)));
+                QuickListDao quickListDao = SpringUtils.getBean(QuickListDao.class);
+                List<QuickList> quickLists = quickListDao.findByNameResearchCodeAndCodingSystem(quickListName, itemValues[1], itemValues[0]);
+                for (QuickList q : quickLists) {
+                    quickListDao.remove(q.getId());
+                }
+            }
+        }
+    }
 
-		for (int i = 0; i < xml_research.length; i++) {
-			if (xml_research[i] == null || xml_research[i].equals("")) {
-				continue;
-			}
+    @SuppressWarnings("unchecked")
+    private boolean doAdd(HttpServletRequest request, dxResearchUpdateQuickListForm frm, String quickListName, String codingSystem, String curUser) {
+        boolean valid = true;
+        String[] xml_research = frm.getXmlResearch();
+        ActionMessages errors = new ActionMessages();
+        AbstractCodeSystemDao<AbstractCodeSystemModel<?>> dao = (AbstractCodeSystemDao<AbstractCodeSystemModel<?>>) SpringUtils.getBean(AbstractCodeSystemDao.getDaoName(AbstractCodeSystemDaoImpl.codingSystem.valueOf(codingSystem)));
 
-			//need to validate the dxresearch code before write to the database
-			AbstractCodeSystemModel<?> codingSystemEntity = dao.findByCodingSystem(xml_research[i]);
-			boolean isCodingSystemEntitySet = codingSystemEntity != null;
-			if (!isCodingSystemEntitySet) {
-				valid = false;
-				errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.codeNotFound", xml_research[i], codingSystem));
-				saveErrors(request, errors);
-			} else {
-				QuickListDao quickListDao = SpringUtils.getBean(QuickListDao.class);
-				List<QuickList> quickLists = quickListDao.findByNameResearchCodeAndCodingSystem(quickListName, xml_research[i], codingSystem);
-				if (!quickLists.isEmpty()) {
-					continue;
-				}
+        for (int i = 0; i < xml_research.length; i++) {
+            if (xml_research[i] == null || xml_research[i].equals("")) {
+                continue;
+            }
 
-				QuickList ql = new QuickList();
-				ql.setQuickListName(quickListName);
-				ql.setDxResearchCode(xml_research[i]);
-				ql.setCreatedByProvider(curUser);
-				ql.setCodingSystem(codingSystem);
+            //need to validate the dxresearch code before write to the database
+            AbstractCodeSystemModel<?> codingSystemEntity = dao.findByCodingSystem(xml_research[i]);
+            boolean isCodingSystemEntitySet = codingSystemEntity != null;
+            if (!isCodingSystemEntitySet) {
+                valid = false;
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.codeNotFound", xml_research[i], codingSystem));
+                saveErrors(request, errors);
+            } else {
+                QuickListDao quickListDao = SpringUtils.getBean(QuickListDao.class);
+                List<QuickList> quickLists = quickListDao.findByNameResearchCodeAndCodingSystem(quickListName, xml_research[i], codingSystem);
+                if (!quickLists.isEmpty()) {
+                    continue;
+                }
 
-				quickListDao.persist(ql);
+                QuickList ql = new QuickList();
+                ql.setQuickListName(quickListName);
+                ql.setDxResearchCode(xml_research[i]);
+                ql.setCreatedByProvider(curUser);
+                ql.setCodingSystem(codingSystem);
 
-			}
+                quickListDao.persist(ql);
 
-		}
-		return valid;
-	}
+            }
+
+        }
+        return valid;
+    }
 
 }

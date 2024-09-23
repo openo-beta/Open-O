@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,124 +38,124 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="surveyData")
+@Table(name = "surveyData")
 public class SurveyData extends AbstractModel<Integer> {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="surveyDataId")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "surveyDataId")
+    private Integer id;
 
-	private String surveyId;
+    private String surveyId;
 
-	@Column(name="demographic_no")
-	private int demographicNo;
+    @Column(name = "demographic_no")
+    private int demographicNo;
 
-	@Column(name="provider_no")
-	private String providerNo;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	private String status;
+    private String status;
 
-	@Column(name="survey_date")
-	@Temporal(TemporalType.DATE)
-	private Date surveyDate;
+    @Column(name = "survey_date")
+    @Temporal(TemporalType.DATE)
+    private Date surveyDate;
 
-	private String answer;
+    private String answer;
 
-	private Integer processed= 0;
-	
-	private Integer period;
-	
-	private Integer randomness;
-	
-	private Integer version = 2;
+    private Integer processed = 0;
 
-	public Integer getId() {
-    	return id;
+    private Integer period;
+
+    private Integer randomness;
+
+    private Integer version = 2;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getSurveyId() {
-    	return surveyId;
+    public String getSurveyId() {
+        return surveyId;
     }
 
-	public void setSurveyId(String surveyId) {
-    	this.surveyId = surveyId;
+    public void setSurveyId(String surveyId) {
+        this.surveyId = surveyId;
     }
 
-	public int getDemographicNo() {
-    	return demographicNo;
+    public int getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setDemographicNo(int demographicNo) {
-    	this.demographicNo = demographicNo;
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public String getStatus() {
-    	return status;
+    public String getStatus() {
+        return status;
     }
 
-	public void setStatus(String status) {
-    	this.status = status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-	public Date getSurveyDate() {
-    	return surveyDate;
+    public Date getSurveyDate() {
+        return surveyDate;
     }
 
-	public void setSurveyDate(Date surveyDate) {
-    	this.surveyDate = surveyDate;
+    public void setSurveyDate(Date surveyDate) {
+        this.surveyDate = surveyDate;
     }
 
-	public String getAnswer() {
-    	return answer;
+    public String getAnswer() {
+        return answer;
     }
 
-	public void setAnswer(String answer) {
-    	this.answer = answer;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
-	public int getProcessed() {
-    	return processed;
+    public int getProcessed() {
+        return processed;
     }
 
-	public void setProcessed(int processed) {
-    	this.processed = processed;
+    public void setProcessed(int processed) {
+        this.processed = processed;
     }
 
-	public int getPeriod() {
-		return period;
-	}
+    public int getPeriod() {
+        return period;
+    }
 
-	public void setPeriod(int period) {
-		this.period = period;
-	}
+    public void setPeriod(int period) {
+        this.period = period;
+    }
 
-	public int getRandomness() {
-		return randomness;
-	}
+    public int getRandomness() {
+        return randomness;
+    }
 
-	public void setRandomness(int randomness) {
-		this.randomness = randomness;
-	}
+    public void setRandomness(int randomness) {
+        this.randomness = randomness;
+    }
 
-	public Integer getVersion() {
-		return version;
-	}
+    public Integer getVersion() {
+        return version;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
 
 }

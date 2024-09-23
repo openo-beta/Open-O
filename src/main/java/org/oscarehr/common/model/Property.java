@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,53 +35,56 @@ import java.io.Serializable;
 @Table(name = "property")
 public class Property extends AbstractModel<Integer> implements Serializable {
 
-	public enum PROPERTY_KEY {invoice_payee_display_clinic, invoice_payee_info, default_billing_provider, default_billing_form,
-		bc_default_service_location, auto_populate_refer}
+    public enum PROPERTY_KEY {
+        invoice_payee_display_clinic, invoice_payee_info, default_billing_provider, default_billing_form,
+        bc_default_service_location, auto_populate_refer
+    }
 
-	public enum PROPERTY_VALUE {clinicdefault}
+    public enum PROPERTY_VALUE {clinicdefault}
 
-	public Property() {}
-	
-	public Property(String name) {
-		setName(name);
-	}
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
-	private String value;
-	
+    public Property() {
+    }
+
+    public Property(String name) {
+        setName(name);
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private String value;
+
     @Column(name = "provider_no")
-	private String providerNo;
+    private String providerNo;
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return (name);
-	}
+    public String getName() {
+        return (name);
+    }
 
-	public void setName(String name) {
-		this.name = StringUtils.trimToNull(name);
-	}
+    public void setName(String name) {
+        this.name = StringUtils.trimToNull(name);
+    }
 
-	public String getValue() {
-		return (value);
-	}
+    public String getValue() {
+        return (value);
+    }
 
-	public void setValue(String value) {
-		this.value = StringUtils.trimToNull(value);
-	}
+    public void setValue(String value) {
+        this.value = StringUtils.trimToNull(value);
+    }
 
-	public String getProviderNo() {
-		return (providerNo);
-	}
+    public String getProviderNo() {
+        return (providerNo);
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = StringUtils.trimToNull(providerNo);
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = StringUtils.trimToNull(providerNo);
+    }
 
 }

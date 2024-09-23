@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,64 +33,64 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
  */
 public class IndicatorBean extends AbstractDataDisplayBean {
 
-	private List<GraphPlot[]> graphPlots;
-	private String jsonPlots;
-	private String jsonTooltips;
-	private String stringArrayPlots;
-	private String stringArrayTooltips;
-	private String originalJsonPlots;
+    private List<GraphPlot[]> graphPlots;
+    private String jsonPlots;
+    private String jsonTooltips;
+    private String stringArrayPlots;
+    private String stringArrayTooltips;
+    private String originalJsonPlots;
 
-	public List<GraphPlot[]> getGraphPlots() {
-		return graphPlots;
-	}
+    public List<GraphPlot[]> getGraphPlots() {
+        return graphPlots;
+    }
 
-	public void setGraphPlots(List<GraphPlot[]> graphPlots) {
-		this.graphPlots = graphPlots;
-	}
+    public void setGraphPlots(List<GraphPlot[]> graphPlots) {
+        this.graphPlots = graphPlots;
+    }
 
-	public String getJsonPlots() {
-		return jsonPlots;
-	}
+    public String getJsonPlots() {
+        return jsonPlots;
+    }
 
-	public void setJsonPlots(String jsonPlots) {
-		this.jsonPlots = jsonPlots;
-	}
+    public void setJsonPlots(String jsonPlots) {
+        this.jsonPlots = jsonPlots;
+    }
 
-	public String getJsonTooltips() {
-		return jsonTooltips;
-	}
+    public String getJsonTooltips() {
+        return jsonTooltips;
+    }
 
-	public void setJsonTooltips(String jsonTooltips) {
-		this.jsonTooltips = jsonTooltips;
-	}
+    public void setJsonTooltips(String jsonTooltips) {
+        this.jsonTooltips = jsonTooltips;
+    }
 
-	public String getStringArrayPlots() {
-		return stringArrayPlots;
-	}
+    public String getStringArrayPlots() {
+        return stringArrayPlots;
+    }
 
-	public void setStringArrayPlots(String stringArrayPlots) {
-		this.stringArrayPlots = stringArrayPlots;
-	}
+    public void setStringArrayPlots(String stringArrayPlots) {
+        this.stringArrayPlots = stringArrayPlots;
+    }
 
-	public String getStringArrayTooltips() {
-		return stringArrayTooltips;
-	}
+    public String getStringArrayTooltips() {
+        return stringArrayTooltips;
+    }
 
-	public void setStringArrayTooltips(String stringArrayTooltips) {
-		this.stringArrayTooltips = stringArrayTooltips;
-	}
-	
-	public String getOriginalJsonPlots() {
-		return originalJsonPlots;
-	}
+    public void setStringArrayTooltips(String stringArrayTooltips) {
+        this.stringArrayTooltips = stringArrayTooltips;
+    }
 
-	public void setOriginalJsonPlots(String originalJsonPlots) {
-		this.originalJsonPlots = originalJsonPlots;
-	}
+    public String getOriginalJsonPlots() {
+        return originalJsonPlots;
+    }
 
-	@Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
-	}
+    public void setOriginalJsonPlots(String originalJsonPlots) {
+        this.originalJsonPlots = originalJsonPlots;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 
 }

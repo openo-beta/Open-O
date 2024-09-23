@@ -25,114 +25,114 @@
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
 <head>
 
-<title>MyOSCAR Measurement: Glucose</title>
+    <title>MyOSCAR Measurement: Glucose</title>
 
-<c:import url="header.jsp" />
+    <c:import url="header.jsp"/>
 
-<c:import url="plot_javascript.jsp">
-	<c:param name="series1" value="${measurements.asMap['Glucose']}"/>
-	<c:param name="series1Label" value="Glucose"/>
-	<c:param name="yaxisLabel" value="mmol/L"/>
-</c:import>
+    <c:import url="plot_javascript.jsp">
+        <c:param name="series1" value="${measurements.asMap['Glucose']}"/>
+        <c:param name="series1Label" value="Glucose"/>
+        <c:param name="yaxisLabel" value="mmol/L"/>
+    </c:import>
 
-<html:base />
+    <html:base/>
 </head>
 
-<body >
-	<body>
-	<h2>Glucose History</h2>
-	<div>
-		<c:import url="filter.jsp">
-			<c:param name="sourcePage" value="glucose" />
-		</c:import>
-	</div>
-	
-	<div id="chart">
-	</div>
+<body>
+<body>
+<h2>Glucose History</h2>
+<div>
+    <c:import url="filter.jsp">
+        <c:param name="sourcePage" value="glucose"/>
+    </c:import>
+</div>
 
-	<c:choose>
-		<c:when test="${empty measurements}">
-			<h4>Measurements information is not available</h4>
-		</c:when>
-		<c:otherwise>
-			
-			<div class="container-fluid" >
-				<div class="col-sm-5">
-					<h2>Statistics</h2>
-					<table class="table table-condensed">
-						<tr>
-							<td></td>
-							<th>Min</th>
-							<th>Max</th>
-							<th>Average</th>
-						</tr>
-						<tr>
-							<th>Glucose</th>
-							<td>
-								<c:choose>
-									<c:when test="${empty measurements.minima}">N/A</c:when>
-									<c:otherwise>
-											<c:out value="${measurements.minima['Glucose']}"></c:out>
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose> 
-									<c:when test="${empty measurements.maxima}">N/A</c:when>
-									<c:otherwise>	
-										<c:out value="${measurements.maxima['Glucose']}"></c:out>	
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${empty measurements.average}">N/A</c:when> 
-									<c:otherwise>
-										<c:out value="${measurements.average['Glucose']}"></c:out>
-									</c:otherwise>
-								</c:choose>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div class="col-sm-7">
-					<h2>Log</h2>
-					<table class="table table-condensed">
-						<tr>
-							<th>Type</th>
-							<th>Measurement date</th>
-							<th>Data</th>
-							<th>Comments</th>
-						</tr>
-				
-					    <c:forEach var="m" items="${measurements.measurements}">
-						<tr>
-							<td>G</td>
-							<td>
-								<fmt:formatDate value="${m.date}" dateStyle="short" />
-							</td>
-							<td>
-								<c:out value="${m}"></c:out>
-							</td>
-							<td>
-								<c:out value="${m.comments}"></c:out>
-							</td>
-						</tr>
-						</c:forEach>
-				
-					</table>
-				</div>
-			</div>
-		</c:otherwise>
-	</c:choose>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div id="chart">
+</div>
+
+<c:choose>
+    <c:when test="${empty measurements}">
+        <h4>Measurements information is not available</h4>
+    </c:when>
+    <c:otherwise>
+
+        <div class="container-fluid">
+            <div class="col-sm-5">
+                <h2>Statistics</h2>
+                <table class="table table-condensed">
+                    <tr>
+                        <td></td>
+                        <th>Min</th>
+                        <th>Max</th>
+                        <th>Average</th>
+                    </tr>
+                    <tr>
+                        <th>Glucose</th>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty measurements.minima}">N/A</c:when>
+                                <c:otherwise>
+                                    <c:out value="${measurements.minima['Glucose']}"></c:out>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty measurements.maxima}">N/A</c:when>
+                                <c:otherwise>
+                                    <c:out value="${measurements.maxima['Glucose']}"></c:out>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty measurements.average}">N/A</c:when>
+                                <c:otherwise>
+                                    <c:out value="${measurements.average['Glucose']}"></c:out>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-7">
+                <h2>Log</h2>
+                <table class="table table-condensed">
+                    <tr>
+                        <th>Type</th>
+                        <th>Measurement date</th>
+                        <th>Data</th>
+                        <th>Comments</th>
+                    </tr>
+
+                    <c:forEach var="m" items="${measurements.measurements}">
+                        <tr>
+                            <td>G</td>
+                            <td>
+                                <fmt:formatDate value="${m.date}" dateStyle="short"/>
+                            </td>
+                            <td>
+                                <c:out value="${m}"></c:out>
+                            </td>
+                            <td>
+                                <c:out value="${m.comments}"></c:out>
+                            </td>
+                        </tr>
+                    </c:forEach>
+
+                </table>
+            </div>
+        </div>
+    </c:otherwise>
+</c:choose>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
 
 </html>

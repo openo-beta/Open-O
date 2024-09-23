@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,89 +35,89 @@ import oscar.util.DateUtils;
 
 public class EctMyOscarFilterForm extends ActionForm {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String type;
-	
-	private String demoNo;
+    private String type;
 
-	private String from;
+    private String demoNo;
 
-	private String to;
-	
-	public String getFrom() {
-		return from;
-	}
+    private String from;
 
-	public void setFrom(String from) {
-		this.from = from;
-	}
+    private String to;
 
-	public String getTo() {
-		return to;
-	}
+    public String getFrom() {
+        return from;
+    }
 
-	public void setTo(String to) {
-		this.to = to;
-	}
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getTo() {
+        return to;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setTo(String to) {
+        this.to = to;
+    }
 
-	public MedicalDataType getMedicalDataType() {
-		if (getType() == null) {
-			return null;
-		}
-		
-		String type = getType().toLowerCase();
-		
-		for(MedicalDataType m : MedicalDataType.values()) {
-			if (m.name().toLowerCase().equals(type)) {
-				return m;
-			}
-		}
-		
-		return null;
-	}
-	
-	public DateRange getDateRange() {
-		Date fromDate = null;
-		if (getFrom() != null && !getFrom().isEmpty()) {
-			try {
-				fromDate = DateUtils.toDate(getFrom());			
-			} catch (Exception e) {
-				// swallow
-			}
-		}
-		
-		Date toDate = null;
-		if (getTo() != null && !getTo().isEmpty()) {
-			try {
-				toDate = DateUtils.toDate(getTo());
-			} catch (Exception e) {
-				// swallow
-			}
-		}
-		
-		DateRange range = new DateRange(fromDate, toDate);
-		return range;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getDemoNo() {
-		return demoNo;
-	}
-	
-	public Integer getDemoNoAsInt() {
-		return ConversionUtils.fromIntString(getDemoNo());
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setDemoNo(String demoNo) {
-		this.demoNo = demoNo;
-	}
+    public MedicalDataType getMedicalDataType() {
+        if (getType() == null) {
+            return null;
+        }
+
+        String type = getType().toLowerCase();
+
+        for (MedicalDataType m : MedicalDataType.values()) {
+            if (m.name().toLowerCase().equals(type)) {
+                return m;
+            }
+        }
+
+        return null;
+    }
+
+    public DateRange getDateRange() {
+        Date fromDate = null;
+        if (getFrom() != null && !getFrom().isEmpty()) {
+            try {
+                fromDate = DateUtils.toDate(getFrom());
+            } catch (Exception e) {
+                // swallow
+            }
+        }
+
+        Date toDate = null;
+        if (getTo() != null && !getTo().isEmpty()) {
+            try {
+                toDate = DateUtils.toDate(getTo());
+            } catch (Exception e) {
+                // swallow
+            }
+        }
+
+        DateRange range = new DateRange(fromDate, toDate);
+        return range;
+    }
+
+    public String getDemoNo() {
+        return demoNo;
+    }
+
+    public Integer getDemoNoAsInt() {
+        return ConversionUtils.fromIntString(getDemoNo());
+    }
+
+    public void setDemoNo(String demoNo) {
+        this.demoNo = demoNo;
+    }
 
 }

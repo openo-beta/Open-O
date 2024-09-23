@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,93 +34,93 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="mdsPID")
-public class MdsPID extends AbstractModel<Integer>{
+@Table(name = "mdsPID")
+public class MdsPID extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="segmentID")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "segmentID")
+    private Integer id;
 
-	@Column(name="intPatientID")
-	private String internalPatientId;
+    @Column(name = "intPatientID")
+    private String internalPatientId;
 
-	@Column(name="altPatientID")
-	private String alternatePatientId;
+    @Column(name = "altPatientID")
+    private String alternatePatientId;
 
-	private String patientName;
+    private String patientName;
 
-	@Column(name="dOB")
-	private String dob;
+    @Column(name = "dOB")
+    private String dob;
 
-	private String sex;
+    private String sex;
 
-	private String homePhone;
+    private String homePhone;
 
-	private String healthNumber;
+    private String healthNumber;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getInternalPatientId() {
-    	return internalPatientId;
+    public String getInternalPatientId() {
+        return internalPatientId;
     }
 
-	public void setInternalPatientId(String internalPatientId) {
-    	this.internalPatientId = internalPatientId;
+    public void setInternalPatientId(String internalPatientId) {
+        this.internalPatientId = internalPatientId;
     }
 
-	public String getAlternatePatientId() {
-    	return alternatePatientId;
+    public String getAlternatePatientId() {
+        return alternatePatientId;
     }
 
-	public void setAlternatePatientId(String alternatePatientId) {
-    	this.alternatePatientId = alternatePatientId;
+    public void setAlternatePatientId(String alternatePatientId) {
+        this.alternatePatientId = alternatePatientId;
     }
 
-	public String getPatientName() {
-    	return patientName;
+    public String getPatientName() {
+        return patientName;
     }
 
-	public void setPatientName(String patientName) {
-    	this.patientName = patientName;
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
     }
 
-	public String getDob() {
-    	return dob;
+    public String getDob() {
+        return dob;
     }
 
-	public void setDob(String dob) {
-    	this.dob = dob;
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
-	public String getSex() {
-    	return sex;
+    public String getSex() {
+        return sex;
     }
 
-	public void setSex(String sex) {
-    	this.sex = sex;
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
-	public String getHomePhone() {
-    	return homePhone;
+    public String getHomePhone() {
+        return homePhone;
     }
 
-	public void setHomePhone(String homePhone) {
-    	this.homePhone = homePhone;
+    public void setHomePhone(String homePhone) {
+        this.homePhone = homePhone;
     }
 
-	public String getHealthNumber() {
-    	return healthNumber;
+    public String getHealthNumber() {
+        return healthNumber;
     }
 
-	public void setHealthNumber(String healthNumber) {
-    	this.healthNumber = healthNumber;
+    public void setHealthNumber(String healthNumber) {
+        this.healthNumber = healthNumber;
     }
 
 

@@ -24,24 +24,24 @@ import org.xml.sax.SAXException;
  */
 public class DocumentSerializer extends AbstractSerializer {
 
-	/**
+    /**
      * @param source
      * @param ctx
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
     public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException {
-		try {
-			return attemptDeserialize(source, ctx);
-		} catch (Exception e) {
-			return attemptDeserialize(Base64.encodeBase64(source), ctx);
-		}
-	}
+        try {
+            return attemptDeserialize(source, ctx);
+        } catch (Exception e) {
+            return attemptDeserialize(Base64.encodeBase64(source), ctx);
+        }
+    }
 
-	private Node attemptDeserialize(byte[] source, Node ctx) throws XMLEncryptionException {
-		byte[] fragment = createContext(source, ctx);
-		return deserialize(ctx, new InputSource(new ByteArrayInputStream(fragment)));
-	}
+    private Node attemptDeserialize(byte[] source, Node ctx) throws XMLEncryptionException {
+        byte[] fragment = createContext(source, ctx);
+        return deserialize(ctx, new InputSource(new ByteArrayInputStream(fragment)));
+    }
 
     /**
      * @param source
@@ -66,7 +66,7 @@ public class DocumentSerializer extends AbstractSerializer {
 
             Document contextDocument = null;
             if (Node.DOCUMENT_NODE == ctx.getNodeType()) {
-                contextDocument = (Document)ctx;
+                contextDocument = (Document) ctx;
             } else {
                 contextDocument = ctx.getOwnerDocument();
             }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,9 +51,9 @@ import org.oscarehr.util.SpringUtils;
 
 public class OcularProcAction extends DispatchAction {
 
-	EyeformOcularProcedureDao dao = SpringUtils.getBean(EyeformOcularProcedureDao.class);
-	
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    EyeformOcularProcedureDao dao = SpringUtils.getBean(EyeformOcularProcedureDao.class);
+
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         return form(mapping, form, request, response);
     }
 
@@ -62,87 +62,86 @@ public class OcularProcAction extends DispatchAction {
     }
 
     public ActionForward list(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	String demographicNo = request.getParameter("demographicNo");
+        String demographicNo = request.getParameter("demographicNo");
 
-    	List<EyeformOcularProcedure> procs = dao.getByDemographicNo(Integer.parseInt(demographicNo));
-    	request.setAttribute("procs", procs);
+        List<EyeformOcularProcedure> procs = dao.getByDemographicNo(Integer.parseInt(demographicNo));
+        request.setAttribute("procs", procs);
 
         return mapping.findForward("list");
     }
 
     public ActionForward form(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	ProviderDao providerDao = (ProviderDao)SpringUtils.getBean(ProviderDao.class);
-    	
-    	request.setAttribute("providers",providerDao.getActiveProviders());
+        ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
 
-    	if(request.getParameter("proc.id") != null) {
-    		int procId = Integer.parseInt(request.getParameter("proc.id"));
-    		EyeformOcularProcedure procedure = dao.find(procId);
-    		DynaValidatorForm f = (DynaValidatorForm)form;
-    		f.set("proc", procedure);
+        request.setAttribute("providers", providerDao.getActiveProviders());
+
+        if (request.getParameter("proc.id") != null) {
+            int procId = Integer.parseInt(request.getParameter("proc.id"));
+            EyeformOcularProcedure procedure = dao.find(procId);
+            DynaValidatorForm f = (DynaValidatorForm) form;
+            f.set("proc", procedure);
 
 
-    		if (request.getParameter("json") != null && request.getParameter("json").equalsIgnoreCase("true")) {
-    			try {
-    				HashMap<String, EyeformOcularProcedure> hashMap = new HashMap<String, EyeformOcularProcedure>();
+            if (request.getParameter("json") != null && request.getParameter("json").equalsIgnoreCase("true")) {
+                try {
+                    HashMap<String, EyeformOcularProcedure> hashMap = new HashMap<String, EyeformOcularProcedure>();
 
-    				hashMap.put("proc", procedure);
+                    hashMap.put("proc", procedure);
 
-    				JsonConfig config = new JsonConfig();
-    		    	config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+                    JsonConfig config = new JsonConfig();
+                    config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
-    				JSONObject json = JSONObject.fromObject(hashMap, config);
-    				response.getOutputStream().write(json.toString().getBytes());
-    			} catch (Exception e) {
-    				MiscUtils.getLogger().error("Can't write json encoded message", e);
-    			}
+                    JSONObject json = JSONObject.fromObject(hashMap, config);
+                    response.getOutputStream().write(json.toString().getBytes());
+                } catch (Exception e) {
+                    MiscUtils.getLogger().error("Can't write json encoded message", e);
+                }
 
-    			return null;
-    		}
+                return null;
+            }
 
-    	}
-
+        }
 
 
         return mapping.findForward("form");
     }
 
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	DynaValidatorForm f = (DynaValidatorForm)form;
-    	EyeformOcularProcedure procedure = (EyeformOcularProcedure)f.get("proc");
+        DynaValidatorForm f = (DynaValidatorForm) form;
+        EyeformOcularProcedure procedure = (EyeformOcularProcedure) f.get("proc");
 
-    	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-    	EyeformOcularProcedureDao dao = (EyeformOcularProcedureDao)SpringUtils.getBean(EyeformOcularProcedureDao.class);
-		procedure.setProvider(loggedInInfo.getLoggedInProviderNo());
+        EyeformOcularProcedureDao dao = (EyeformOcularProcedureDao) SpringUtils.getBean(EyeformOcularProcedureDao.class);
+        procedure.setProvider(loggedInInfo.getLoggedInProviderNo());
 
-    	if(request.getParameter("proc.id") != null && request.getParameter("proc.id").length()>0) {
-    		procedure.setId(Integer.parseInt(request.getParameter("proc.id")));
-    	}
+        if (request.getParameter("proc.id") != null && request.getParameter("proc.id").length() > 0) {
+            procedure.setId(Integer.parseInt(request.getParameter("proc.id")));
+        }
 
-    	if(procedure.getId() != null && procedure.getId() == 0) {
-    		procedure.setId(null);
-    	}
-    	procedure.setUpdateTime(new Date());
+        if (procedure.getId() != null && procedure.getId() == 0) {
+            procedure.setId(null);
+        }
+        procedure.setUpdateTime(new Date());
 
-    	if(procedure.getId() == null) {
-    		dao.persist(procedure);
-    	} else {
-    		dao.merge(procedure);
-    	}
+        if (procedure.getId() == null) {
+            dao.persist(procedure);
+        } else {
+            dao.merge(procedure);
+        }
 
-    	if (request.getParameter("json") != null && request.getParameter("json").equalsIgnoreCase("true")) {
-			HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
-			hashMap.put("saved", procedure.getId());
+        if (request.getParameter("json") != null && request.getParameter("json").equalsIgnoreCase("true")) {
+            HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+            hashMap.put("saved", procedure.getId());
 
-			JSONObject json = JSONObject.fromObject(hashMap);
-			response.getOutputStream().write(json.toString().getBytes());
+            JSONObject json = JSONObject.fromObject(hashMap);
+            response.getOutputStream().write(json.toString().getBytes());
 
-			return null;
-		}
+            return null;
+        }
 
-    	request.setAttribute("parentAjaxId", "ocularprocedure");
-    	return mapping.findForward("success");
+        request.setAttribute("parentAjaxId", "ocularprocedure");
+        return mapping.findForward("success");
     }
 
 }

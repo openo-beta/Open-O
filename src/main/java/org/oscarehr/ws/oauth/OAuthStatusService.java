@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -45,25 +45,25 @@ import net.sf.json.processors.JsDateJsonBeanProcessor;
 
 @Path("/oauth")
 public class OAuthStatusService extends AbstractServiceImpl {
-	
-	@GET
-	@Path("/info")
-	@Produces("application/json")
-	public String oauthInfo() {
+
+    @GET
+    @Path("/info")
+    @Produces("application/json")
+    public String oauthInfo() {
 
         try {
 
             LoggedInInfo loggedInInfo = getLoggedInInfo();
             Provider provider = loggedInInfo.getLoggedInProvider();
 
-    		JsonConfig config = new JsonConfig();
-        	config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+            JsonConfig config = new JsonConfig();
+            config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
             String login = getOAuthContext().getSubject().getLogin();
             List<String> roles = getOAuthContext().getSubject().getRoles();
 
             JSONObject obj = new JSONObject();
-            obj.put("provider", JSONObject.fromObject(provider,config));
+            obj.put("provider", JSONObject.fromObject(provider, config));
             obj.put("login", login);
             obj.put("roles", roles);
 
@@ -72,6 +72,6 @@ public class OAuthStatusService extends AbstractServiceImpl {
         } catch (Exception e) {
             return "Sorry, there was an error building your resposne: " + e.toString();
         }
-	}
-	
+    }
+
 }

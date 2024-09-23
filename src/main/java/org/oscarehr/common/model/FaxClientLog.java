@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,96 +37,96 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class FaxClientLog extends AbstractModel<Integer>{
-	@Column(name="faxLogId")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	@Column(name="provider_no")
-	private String providerNo;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date startTime;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date endTime;
-	private String result;
-	private int requestId;
-	private int faxId;
-	private String transactionType;
+public class FaxClientLog extends AbstractModel<Integer> {
+    @Column(name = "faxLogId")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "provider_no")
+    private String providerNo;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endTime;
+    private String result;
+    private int requestId;
+    private int faxId;
+    private String transactionType;
 
 
-	@Override
+    @Override
     public Integer getId() {
-	   return id;
+        return id;
     }
 
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
 
-	public Date getStartTime() {
-    	return startTime;
+    public Date getStartTime() {
+        return startTime;
     }
 
 
-	public void setStartTime(Date startTime) {
-    	this.startTime = startTime;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
 
-	public Date getEndTime() {
-    	return endTime;
+    public Date getEndTime() {
+        return endTime;
     }
 
 
-	public void setEndTime(Date endTime) {
-    	this.endTime = endTime;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
 
-	public String getResult() {
-    	return result;
+    public String getResult() {
+        return result;
     }
 
 
-	public void setResult(String result) {
-    	this.result = result;
+    public void setResult(String result) {
+        this.result = result;
     }
 
 
-	public int getRequestId() {
-    	return requestId;
+    public int getRequestId() {
+        return requestId;
     }
 
 
-	public void setRequestId(int requestId) {
-    	this.requestId = requestId;
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 
 
-	public int getFaxId() {
-    	return faxId;
+    public int getFaxId() {
+        return faxId;
     }
 
 
-	public void setFaxId(int faxId) {
-    	this.faxId = faxId;
+    public void setFaxId(int faxId) {
+        this.faxId = faxId;
     }
 
 
-	public String getTransactionType() {
-		return transactionType;
-	}
+    public String getTransactionType() {
+        return transactionType;
+    }
 
 
-	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
-	}
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
 
 }

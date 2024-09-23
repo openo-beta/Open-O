@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,33 +38,33 @@ import org.oscarehr.util.SpringUtils;
 
 public class ORNPreImplementationReportThread extends Thread {
 
-	private String providerNo = null;
-	
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
-	
-	public void run() {
-		try {
-		ReportDataContainer r = ReportHelper.getPreImplementationReportData();
-		ORNPreImplementationReportLogDao oRNPreImplementationReportLogDao = SpringUtils.getBean(ORNPreImplementationReportLogDao.class);
-			JAXBContext context = JAXBContext.newInstance(ReportDataContainer.class);
-		    Marshaller m = context.createMarshaller();
-		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-	
-		    StringWriter sw = new StringWriter();
-		    m.marshal(r, sw);
-		    
-		    ORNPreImplementationReportLog loggedReport = new ORNPreImplementationReportLog();
-		    loggedReport.setProviderNo(providerNo);
-		    loggedReport.setReportData(sw.toString());
-		    oRNPreImplementationReportLogDao.persist(loggedReport);
-		    
-		}catch(JAXBException e) {
-			MiscUtils.getLogger().error("Error",e);
-		} finally {
-			DbConnectionFilter.releaseAllThreadDbResources();
-		}
-	}
-	
+    private String providerNo = null;
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public void run() {
+        try {
+            ReportDataContainer r = ReportHelper.getPreImplementationReportData();
+            ORNPreImplementationReportLogDao oRNPreImplementationReportLogDao = SpringUtils.getBean(ORNPreImplementationReportLogDao.class);
+            JAXBContext context = JAXBContext.newInstance(ReportDataContainer.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            StringWriter sw = new StringWriter();
+            m.marshal(r, sw);
+
+            ORNPreImplementationReportLog loggedReport = new ORNPreImplementationReportLog();
+            loggedReport.setProviderNo(providerNo);
+            loggedReport.setReportData(sw.toString());
+            oRNPreImplementationReportLogDao.persist(loggedReport);
+
+        } catch (JAXBException e) {
+            MiscUtils.getLogger().error("Error", e);
+        } finally {
+            DbConnectionFilter.releaseAllThreadDbResources();
+        }
+    }
+
 }

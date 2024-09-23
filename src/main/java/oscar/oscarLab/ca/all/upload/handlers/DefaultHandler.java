@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -54,82 +54,81 @@ public class DefaultHandler implements MessageHandler {
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     String hl7Type = null;
 
-    String getHl7Type(){
+    String getHl7Type() {
         return hl7Type;
     }
-    
-    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName,int fileId, String ipAddr){
+
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
         Document xmlDoc = getXML(fileName);
-        
+
         /*
          *  If the message is in xml format parse through all the nodes looking for
          *  data that contains a pid segment
          */
-        if(xmlDoc != null){
+        if (xmlDoc != null) {
             String hl7Body = null;
             int msgCount = 0;
-            try{
-                NodeList allNodes = xmlDoc.getElementsByTagNameNS("*","*");
-                for (int i=1; i<allNodes.getLength(); i++){
+            try {
+                NodeList allNodes = xmlDoc.getElementsByTagNameNS("*", "*");
+                for (int i = 1; i < allNodes.getLength(); i++) {
                     hl7Body = allNodes.item(i).getFirstChild().getTextContent();
-                    
-                    if (hl7Body != null && hl7Body.indexOf("\nPID|") > 0){
+
+                    if (hl7Body != null && hl7Body.indexOf("\nPID|") > 0) {
                         msgCount++;
-                        logger.debug("using xml HL7 Type "+getHl7Type());
-                        MessageUploader.routeReport(loggedInInfo, serviceName, getHl7Type(), hl7Body,fileId);
+                        logger.debug("using xml HL7 Type " + getHl7Type());
+                        MessageUploader.routeReport(loggedInInfo, serviceName, getHl7Type(), hl7Body, fileId);
                     }
                 }
-            }catch(Exception e){
-            	MessageUploader.clean(fileId);
+            } catch (Exception e) {
+                MessageUploader.clean(fileId);
                 logger.error("ERROR:", e);
                 return null;
             }
-        }else{
+        } else {
             int i = 0;
-            try{
+            try {
                 ArrayList<String> messages = Utilities.separateMessages(fileName);
-                for (i=0; i < messages.size(); i++){
+                for (i = 0; i < messages.size(); i++) {
                     String msg = messages.get(i);
-                    logger.info("using HL7 Type "+getHl7Type());
-                    MessageUploader.routeReport(loggedInInfo, serviceName, getHl7Type(), msg,fileId);
+                    logger.info("using HL7 Type " + getHl7Type());
+                    MessageUploader.routeReport(loggedInInfo, serviceName, getHl7Type(), msg, fileId);
                 }
-            }catch(Exception e){
-            	MessageUploader.clean(fileId);
+            } catch (Exception e) {
+                MessageUploader.clean(fileId);
                 logger.error("ERROR:", e);
                 return null;
             }
         }
-        return("success");
+        return ("success");
     }
-    
-    
-    
+
+
     /*
      *  Return the message as an xml document if it is in the xml format
      */
-    private Document getXML(String fileName){
-        try{
+    private Document getXML(String fileName) {
+        try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
             Document doc = factory.newDocumentBuilder().parse(new FileInputStream(fileName));
-            return(doc);
-            
+            return (doc);
+
             // Ignore exceptions and return false
-        }catch(Exception e){
-            return(null);
+        } catch (Exception e) {
+            return (null);
         }
-    }   
-    
-    
+    }
+
+
     //TODO: Dont think this needs to be in this class.  Better as a util method
     public String readTextFile(String fullPathFilename) throws IOException {
         StringBuilder sb = new StringBuilder(1024);
         BufferedReader reader = new BufferedReader(new FileReader(fullPathFilename));
-                        
+
         char[] chars = new char[1024];
         int numRead = 0;
-        while( (numRead = reader.read(chars)) > -1){
-                sb.append(String.valueOf(chars));       
+        while ((numRead = reader.read(chars)) > -1) {
+            sb.append(String.valueOf(chars));
         }
 
         reader.close();

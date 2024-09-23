@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,55 +32,54 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="formLabReq07")
+@Table(name = "formLabReq07")
 public class FormLabReq07 extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer id;
 
-	@Column(name="demographic_no")
-	private int demographicNo;
-	
-	@Column(name="b_creatinine")
-	private boolean creatinine;
-	
-	@Column(name="b_acRatioUrine")
-	private boolean acr;
-	
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "demographic_no")
+    private int demographicNo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "b_creatinine")
+    private boolean creatinine;
 
-	public int getDemographicNo() {
-		return demographicNo;
-	}
+    @Column(name = "b_acRatioUrine")
+    private boolean acr;
 
-	public void setDemographicNo(int demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public boolean isCreatinine() {
-		return creatinine;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setCreatinine(boolean creatinine) {
-		this.creatinine = creatinine;
-	}
+    public int getDemographicNo() {
+        return demographicNo;
+    }
 
-	public boolean isAcr() {
-		return acr;
-	}
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public void setAcr(boolean acr) {
-		this.acr = acr;
-	}
-	
-	
-	
+    public boolean isCreatinine() {
+        return creatinine;
+    }
+
+    public void setCreatinine(boolean creatinine) {
+        this.creatinine = creatinine;
+    }
+
+    public boolean isAcr() {
+        return acr;
+    }
+
+    public void setAcr(boolean acr) {
+        this.acr = acr;
+    }
+
+
 }

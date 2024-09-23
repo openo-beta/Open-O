@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -43,35 +43,35 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 public class PHRLogoutAction extends DispatchAction {
-	private static Logger log = MiscUtils.getLogger();
+    private static Logger log = MiscUtils.getLogger();
 
-	public PHRLogoutAction() {
-	}
+    public PHRLogoutAction() {
+    }
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String providerNo=loggedInInfo.getLoggedInProviderNo();
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-		HttpSession session = request.getSession();
-		MyOscarLoggedInInfo.setLoggedInInfo(session, null);
+        HttpSession session = request.getSession();
+        MyOscarLoggedInInfo.setLoggedInInfo(session, null);
 
-		clearSavedMyOscarPassword(providerNo);
+        clearSavedMyOscarPassword(providerNo);
 
-		String forwardTo = request.getParameter("forwardto");
-		ActionRedirect ar = new ActionRedirect(forwardTo);
-		return ar;
-	}
+        String forwardTo = request.getParameter("forwardto");
+        ActionRedirect ar = new ActionRedirect(forwardTo);
+        return ar;
+    }
 
-	private void clearSavedMyOscarPassword(String providerNo) {
-		try {
-			ProviderPreferenceDao providerPreferenceDao = (ProviderPreferenceDao) SpringUtils.getBean(ProviderPreferenceDao.class);
-			ProviderPreference providerPreference = providerPreferenceDao.find(providerNo);
-			if (providerPreference.getEncryptedMyOscarPassword() != null) {
-				providerPreference.setEncryptedMyOscarPassword(null);
-				providerPreferenceDao.merge(providerPreference);
-			}
-		} catch (Exception e) {
-			log.error("Error clearing myoscarPassword.", e);
-		}
-	}
+    private void clearSavedMyOscarPassword(String providerNo) {
+        try {
+            ProviderPreferenceDao providerPreferenceDao = (ProviderPreferenceDao) SpringUtils.getBean(ProviderPreferenceDao.class);
+            ProviderPreference providerPreference = providerPreferenceDao.find(providerNo);
+            if (providerPreference.getEncryptedMyOscarPassword() != null) {
+                providerPreference.setEncryptedMyOscarPassword(null);
+                providerPreferenceDao.merge(providerPreference);
+            }
+        } catch (Exception e) {
+            log.error("Error clearing myoscarPassword.", e);
+        }
+    }
 }

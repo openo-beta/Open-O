@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -13,8 +13,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.upload.FormFile;
 
 public class DocumentUploadForm extends ActionForm {
-	private static final long serialVersionUID = 1L;
-	private String function = "";
+    private static final long serialVersionUID = 1L;
+    private String function = "";
     private String functionId = "";
     private String docType = "";
     private String docDesc = "";
@@ -24,7 +24,7 @@ public class DocumentUploadForm extends ActionForm {
     private FormFile docFile;
 
     private FormFile filedata;
-    
+
     private String docPublic = "";
     private String mode = "";
     private String observationDate = "";
@@ -32,7 +32,7 @@ public class DocumentUploadForm extends ActionForm {
     private String reviewDateTime = "";
     private boolean reviewDoc = false;
     private String html = "";
-    
+
     public DocumentUploadForm() {
     }
 
@@ -68,7 +68,7 @@ public class DocumentUploadForm extends ActionForm {
         this.docDesc = docDesc;
     }
 
-    
+
     public String getDocCreator() {
         return docCreator;
     }
@@ -86,13 +86,13 @@ public class DocumentUploadForm extends ActionForm {
     }
 
     public String getSource() {
-	return source;
+        return source;
     }
-    
+
     public void setSource(String source) {
-	this.source = source;
+        this.source = source;
     }
-    
+
     public FormFile getDocFile() {
         return docFile;
     }
@@ -124,31 +124,31 @@ public class DocumentUploadForm extends ActionForm {
     public void setObservationDate(String observationDate) {
         this.observationDate = observationDate;
     }
-    
+
     public String getReviewerId() {
-	return reviewerId;
+        return reviewerId;
     }
-    
+
     public void setReviewerId(String reviewerId) {
-	this.reviewerId = reviewerId;
+        this.reviewerId = reviewerId;
     }
-    
+
     public String getReviewDateTime() {
-	return reviewDateTime;
+        return reviewDateTime;
     }
-    
+
     public void setReviewDateTime(String reviewDateTime) {
-	this.reviewDateTime = reviewDateTime;
+        this.reviewDateTime = reviewDateTime;
     }
-    
+
     public boolean getReviewDoc() {
-	return reviewDoc;
+        return reviewDoc;
     }
-    
+
     public void setReviewDoc(boolean reviewDoc) {
-	this.reviewDoc = reviewDoc;
+        this.reviewDoc = reviewDoc;
     }
-    
+
     public String getHtml() {
         return html;
     }
@@ -164,5 +164,5 @@ public class DocumentUploadForm extends ActionForm {
     public void setFiledata(FormFile Filedata) {
         this.filedata = Filedata;
     }
-    
+
 }

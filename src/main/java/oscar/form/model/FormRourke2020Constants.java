@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -24,20 +24,20 @@
  */
 package oscar.form.model;
 
-public class FormRourke2020Constants  {
-    public static final String[] BOOLEAN_FIELD_SUFFIXES = new String[] { "", "Ok", "OkConcerns", "No", "NotDiscussed" };
-    public static final String[] BOOLEAN_FIELD_NAMES = new String[] { 
-            "p1_birthRemarksr1", 
-            "p1_birthRemarksr2", 
-            "p1_birthRemarksr3", 
-            "p1_2ndhandsmoke", 
-            "p1_alcohol", 
+public class FormRourke2020Constants {
+    public static final String[] BOOLEAN_FIELD_SUFFIXES = new String[]{"", "Ok", "OkConcerns", "No", "NotDiscussed"};
+    public static final String[] BOOLEAN_FIELD_NAMES = new String[]{
+            "p1_birthRemarksr1",
+            "p1_birthRemarksr2",
+            "p1_birthRemarksr3",
+            "p1_2ndhandsmoke",
+            "p1_alcohol",
             "p1_drugs",
-            "p1_neckTorticollis2w", 
-            "p2_2ndSmoke", 
-            "p1_2ndSmoke", 
-            "p1_fontanelles1w", 
-            "p2_vegFruit6m", 
+            "p1_neckTorticollis2w",
+            "p2_2ndSmoke",
+            "p1_2ndSmoke",
+            "p1_fontanelles1w",
+            "p2_vegFruit6m",
             "p1_focusGaze1m",
             "p4_noParentsConcerns24m",
             "p4_highRisk24m",
@@ -183,7 +183,7 @@ public class FormRourke2020Constants  {
             "p3_safeToys",
             "p3_formulaFeeding9m",
             "p1_hepatitisVaccine1m",
-            "p3_simpleRequests",    
+            "p3_simpleRequests",
             "p4_walksbackAlone18m",
             "p4_noBottle18m",
             "p3_stands",
@@ -492,6 +492,6 @@ public class FormRourke2020Constants  {
             "p2_vitaminD2m",
             "p2_vitaminD4m",
             "p2_vitaminD6m"
-            
+
     };
 }

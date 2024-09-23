@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,79 +37,79 @@ import javax.persistence.Transient;
 import org.oscarehr.common.dao.AbstractCodeSystemDao.codingSystem;
 
 @Entity
-@Table(name="diagnosticcode")
+@Table(name = "diagnosticcode")
 public class DiagnosticCode extends AbstractCodeSystemModel<Integer> implements java.io.Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="diagnosticcode_no")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "diagnosticcode_no")
+    private Integer id;
 
-	@Column(name="diagnostic_code")
-	private String diagnosticCode;
+    @Column(name = "diagnostic_code")
+    private String diagnosticCode;
 
-	private String description;
+    private String description;
 
-	private String status;
+    private String status;
 
-	private String region;
+    private String region;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getDiagnosticCode() {
-    	return diagnosticCode;
+    public String getDiagnosticCode() {
+        return diagnosticCode;
     }
 
-	public void setDiagnosticCode(String diagnosticCode) {
-    	this.diagnosticCode = diagnosticCode;
+    public void setDiagnosticCode(String diagnosticCode) {
+        this.diagnosticCode = diagnosticCode;
     }
 
-	public String getDescription() {
-    	return description;
+    public String getDescription() {
+        return description;
     }
 
-	public void setDescription(String description) {
-    	this.description = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-	public String getStatus() {
-    	return status;
+    public String getStatus() {
+        return status;
     }
 
-	public void setStatus(String status) {
-    	this.status = status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-	public String getRegion() {
-    	return region;
+    public String getRegion() {
+        return region;
     }
 
-	public void setRegion(String region) {
-    	this.region = region;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
-	@Override
-	@Transient
-	public String getCode() {
-		return this.diagnosticCode;
-	}
+    @Override
+    @Transient
+    public String getCode() {
+        return this.diagnosticCode;
+    }
 
-	@Override
-	@Transient
-	public String getCodingSystem() {
-		return codingSystem.msp.name();
-	}
+    @Override
+    @Transient
+    public String getCodingSystem() {
+        return codingSystem.msp.name();
+    }
 
-	@Override
-	@Transient
-	public void setCode(String code) {
-		setDiagnosticCode(code);		
-	}
+    @Override
+    @Transient
+    public void setCode(String code) {
+        setDiagnosticCode(code);
+    }
 
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -58,171 +58,168 @@ import oscar.oscarPrevention.PreventionData;
 @Deprecated
 @Component
 public class PreventionManager {
-	private static Logger logger = MiscUtils.getLogger();
-	private static final QueueCache<String, String> dataCache=new QueueCache<String, String>(4, 500, DateUtils.MILLIS_PER_HOUR, null);
-	
+    private static Logger logger = MiscUtils.getLogger();
+    private static final QueueCache<String, String> dataCache = new QueueCache<String, String>(4, 500, DateUtils.MILLIS_PER_HOUR, null);
+
     @Autowired
     private PreventionDS pf = null;
-    
-  
 
-    public  String getWarnings(LoggedInInfo loggedInInfo, String demo) {
+
+    public String getWarnings(LoggedInInfo loggedInInfo, String demo) {
         String ret = dataCache.get(demo);
-      
-        if( ret == null ) {
-                try {
 
-                	Prevention prev = PreventionData.getLocalandRemotePreventions(loggedInInfo, Integer.parseInt(demo));
-                    pf.getMessages(prev);
-                    
-                    @SuppressWarnings("unchecked")
-                    Map<String,Object> m = prev.getWarningMsgs();
-                    
-                    @SuppressWarnings("rawtypes")
-                    Set set = m.entrySet();
-                    
-                    @SuppressWarnings("rawtypes")
-                    Iterator i = set.iterator();
-                    // Display elements
-                    String k="";
-                    if(ret==null || ret.equals("null")){
-                    	ret="";
-                    }
-                    
-	                 while(i.hasNext()) {
-	                 @SuppressWarnings("rawtypes")
-	                 Map.Entry me = (Map.Entry)i.next();
+        if (ret == null) {
+            try {
 
-	                 k="["+me.getKey()+"="+me.getValue()+"]";
-	                 boolean prevCheck = PreventionManager.isPrevDisabled(me.getKey().toString());
-	                 	if(prevCheck==false){
-		                 ret=ret+k;
-	                 	}
+                Prevention prev = PreventionData.getLocalandRemotePreventions(loggedInInfo, Integer.parseInt(demo));
+                pf.getMessages(prev);
 
-	                 } 	
-                                         
-	                 dataCache.put(demo, ret);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> m = prev.getWarningMsgs();
 
-                } catch(Exception e) {
+                @SuppressWarnings("rawtypes")
+                Set set = m.entrySet();
+
+                @SuppressWarnings("rawtypes")
+                Iterator i = set.iterator();
+                // Display elements
+                String k = "";
+                if (ret == null || ret.equals("null")) {
                     ret = "";
-                    logger.error("Error", e);
                 }
-            
+
+                while (i.hasNext()) {
+                    @SuppressWarnings("rawtypes")
+                    Map.Entry me = (Map.Entry) i.next();
+
+                    k = "[" + me.getKey() + "=" + me.getValue() + "]";
+                    boolean prevCheck = PreventionManager.isPrevDisabled(me.getKey().toString());
+                    if (prevCheck == false) {
+                        ret = ret + k;
+                    }
+
+                }
+
+                dataCache.put(demo, ret);
+
+            } catch (Exception e) {
+                ret = "";
+                logger.error("Error", e);
+            }
+
         }
-        
+
         return ret;
-        
+
     }
 
-     public void removePrevention(String demo) {
-    	 dataCache.remove(demo);
-     }
-
-   
-
-public static String checkNames(String k){
-	String rebuilt="";
-  	Pattern pattern = Pattern.compile("(\\[)(.*?)(\\])");
-  	Matcher matcher = pattern.matcher(k);
-  	
-  	while(matcher.find()){
-  		String[] key = matcher.group(2).split("=");
-	  	boolean prevCheck = PreventionManager.isPrevDisabled(key[0]);
-	  	
-	  	if(prevCheck==false){
-	  		rebuilt=rebuilt+"["+key[1]+"]";
-	  	}
-  	} 
-  	
-	return rebuilt;
-}
-     
-     
-public static boolean isDisabled(){
-	String getStatus="";
-	PropertyDao propDao = (PropertyDao)SpringUtils.getBean(PropertyDao.class);
-	List<Property> pList = propDao.findByName("hide_prevention_stop_signs"); 
-	
-  	Iterator<Property> i = pList.iterator();
-
-  	while (i.hasNext()) {
-  	Property item = i.next();
-  	getStatus  = item.getValue();
-  	
-  	}
-  	
-  	//disable all preventions warnings if result is master
-  	if(getStatus.equals("master")){
-  		return true;
-  	}else{
-  		return false;
-  	}
-	
-}
+    public void removePrevention(String demo) {
+        dataCache.remove(demo);
+    }
 
 
-public static boolean isCreated(){
-	String getStatus="";
-	PropertyDao propDao = (PropertyDao)SpringUtils.getBean(PropertyDao.class);
-	List<Property> pList = propDao.findByName("hide_prevention_stop_signs"); 
-	
-  	Iterator<Property> i = pList.iterator();
+    public static String checkNames(String k) {
+        String rebuilt = "";
+        Pattern pattern = Pattern.compile("(\\[)(.*?)(\\])");
+        Matcher matcher = pattern.matcher(k);
 
-  	while (i.hasNext()) {
-  	Property item = i.next();
-  	getStatus  = item.getName();
-  	
-  	}
-  	
-  	if(getStatus.equals("hide_prevention_stop_signs")){
-  		return true;
-  	}else{
-  		return false;
-  	}
-	
-}
+        while (matcher.find()) {
+            String[] key = matcher.group(2).split("=");
+            boolean prevCheck = PreventionManager.isPrevDisabled(key[0]);
 
-public static boolean isPrevDisabled(String name){
-	String getStatus="";
-	PropertyDao propDao = (PropertyDao)SpringUtils.getBean(PropertyDao.class);
-	List<Property> pList = propDao.findByName("hide_prevention_stop_signs"); 
-	
-  	Iterator<Property> i = pList.iterator();
-
-  	while (i.hasNext()) {
-  	Property item = i.next();
-  	getStatus  = item.getValue();
-  	
-  	}
-  	
-  	Pattern pattern = Pattern.compile("(\\[)(.*?)(\\])");
-  	Matcher matcher = pattern.matcher(getStatus);
-  	List<String> listMatches = new ArrayList<String>();
-
-  	while(matcher.find()){
-
-  	listMatches.add(matcher.group(2));
-
-  	} 
-  	
-  	int x=0;
-  	for(String s : listMatches){
-		
-        if(name.equals(s)){
-        	x++;
+            if (prevCheck == false) {
+                rebuilt = rebuilt + "[" + key[1] + "]";
+            }
         }
-	
-  	}
-  	
-  	if(x>0){
-  		return true;
-  	}else{
-  		return false;
-  	}
-  	
-  	
-}
+
+        return rebuilt;
+    }
 
 
-  	
+    public static boolean isDisabled() {
+        String getStatus = "";
+        PropertyDao propDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
+        List<Property> pList = propDao.findByName("hide_prevention_stop_signs");
+
+        Iterator<Property> i = pList.iterator();
+
+        while (i.hasNext()) {
+            Property item = i.next();
+            getStatus = item.getValue();
+
+        }
+
+        //disable all preventions warnings if result is master
+        if (getStatus.equals("master")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    public static boolean isCreated() {
+        String getStatus = "";
+        PropertyDao propDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
+        List<Property> pList = propDao.findByName("hide_prevention_stop_signs");
+
+        Iterator<Property> i = pList.iterator();
+
+        while (i.hasNext()) {
+            Property item = i.next();
+            getStatus = item.getName();
+
+        }
+
+        if (getStatus.equals("hide_prevention_stop_signs")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public static boolean isPrevDisabled(String name) {
+        String getStatus = "";
+        PropertyDao propDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
+        List<Property> pList = propDao.findByName("hide_prevention_stop_signs");
+
+        Iterator<Property> i = pList.iterator();
+
+        while (i.hasNext()) {
+            Property item = i.next();
+            getStatus = item.getValue();
+
+        }
+
+        Pattern pattern = Pattern.compile("(\\[)(.*?)(\\])");
+        Matcher matcher = pattern.matcher(getStatus);
+        List<String> listMatches = new ArrayList<String>();
+
+        while (matcher.find()) {
+
+            listMatches.add(matcher.group(2));
+
+        }
+
+        int x = 0;
+        for (String s : listMatches) {
+
+            if (name.equals(s)) {
+                x++;
+            }
+
+        }
+
+        if (x > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+
+    }
+
+
 }

@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -58,18 +58,18 @@ public interface PrescriptionManager {
     public Prescription getPrescription(LoggedInInfo loggedInInfo, Integer prescriptionId);
 
     public List<Prescription> getPrescriptionUpdatedAfterDate(LoggedInInfo loggedInInfo,
-            Date updatedAfterThisDateExclusive, int itemsToReturn);
+                                                              Date updatedAfterThisDateExclusive, int itemsToReturn);
 
     public List<Prescription> getPrescriptionByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo,
-            Integer demographicId, Date updatedAfterThisDateExclusive);
+                                                                             Integer demographicId, Date updatedAfterThisDateExclusive);
 
     public List<Drug> getDrugsByScriptNo(LoggedInInfo loggedInInfo, Integer scriptNo, Boolean archived);
 
     public List<Drug> getUniqueDrugsByPatient(LoggedInInfo loggedInInfo, Integer demographicNo);
 
     public List<Prescription> getPrescriptionsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo,
-            Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive,
-            int itemsToReturn);
+                                                                               Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive,
+                                                                               int itemsToReturn);
 
     public Prescription createNewPrescription(LoggedInInfo info, List<Drug> drugs, Integer demographicNo);
 

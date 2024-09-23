@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,51 +36,51 @@ public final class EctSaveEncounterForm extends ActionForm {
     private String reminders;
     private String encounter;
 
-    public void setSocialHistory(String RHS)  {
+    public void setSocialHistory(String RHS) {
         socialHistory = RHS;
     }
 
-    public String getSocialHistory()    {
+    public String getSocialHistory() {
         return socialHistory;
     }
 
-    public void setFamilyHistory(String RHS)    {
+    public void setFamilyHistory(String RHS) {
         familyHistory = RHS;
     }
 
-    public String getFamilyHistory()    {
+    public String getFamilyHistory() {
         return familyHistory;
     }
 
-    public void setMedicalHistory(String RHS)    {
+    public void setMedicalHistory(String RHS) {
         medicalHistory = RHS;
     }
 
-    public String getMedicalHistory()    {
+    public String getMedicalHistory() {
         return medicalHistory;
     }
 
-    public void setOngoingConcerns(String RHS)    {
+    public void setOngoingConcerns(String RHS) {
         ongoingConcerns = RHS;
     }
 
-    public String getOngoingConcerns()    {
+    public String getOngoingConcerns() {
         return ongoingConcerns;
     }
 
-    public void setReminders(String RHS)    {
+    public void setReminders(String RHS) {
         reminders = RHS;
     }
 
-    public String getReminders()    {
+    public String getReminders() {
         return reminders;
     }
 
-    public void setEncounter(String RHS)    {
+    public void setEncounter(String RHS) {
         encounter = RHS;
     }
 
-    public String getEncounter()    {
+    public String getEncounter() {
         return encounter;
     }
 

@@ -64,14 +64,13 @@ import com.lowagie.text.pdf.PdfWriter;
 
 /**
  *
- *
  */
 public class FrmPDFServlet extends HttpServlet {
 
     public static final String HSFO_RX_DATA_KEY = "hsfo.rx.data";
     Logger log = org.oscarehr.util.MiscUtils.getLogger();
+
     /**
-     *
      *
      */
     public FrmPDFServlet() {
@@ -91,26 +90,26 @@ public class FrmPDFServlet extends HttpServlet {
             java.io.IOException {
 
         ByteArrayOutputStream baosPDF = null;
-        LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(req);
-        
-        try {        	
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(req);
+
+        try {
             File tmpFile = null;
-            
-            if(req.getParameter("multiple")!=null) {
-            	ArrayList<Object> files = new ArrayList<Object>();
-            	for(int x=0;x<Integer.parseInt(req.getParameter("multiple"));x++) {
-            		baosPDF = new ByteArrayOutputStream();
-                    baosPDF = generatePDFDocumentBytes(req, this.getServletContext(),baosPDF,x);
-            		tmpFile = File.createTempFile("formpdf", String.valueOf((int)Math.random()*10000));
+
+            if (req.getParameter("multiple") != null) {
+                ArrayList<Object> files = new ArrayList<Object>();
+                for (int x = 0; x < Integer.parseInt(req.getParameter("multiple")); x++) {
+                    baosPDF = new ByteArrayOutputStream();
+                    baosPDF = generatePDFDocumentBytes(req, this.getServletContext(), baosPDF, x);
+                    tmpFile = File.createTempFile("formpdf", String.valueOf((int) Math.random() * 10000));
                     baosPDF.writeTo(new FileOutputStream(tmpFile));
                     files.add(tmpFile.getAbsolutePath());
-            	}
-            	tmpFile = File.createTempFile("formpdf", String.valueOf((int)Math.random()*10000));
-            	ConcatPDF.concat(files, tmpFile.getAbsolutePath());
+                }
+                tmpFile = File.createTempFile("formpdf", String.valueOf((int) Math.random() * 10000));
+                ConcatPDF.concat(files, tmpFile.getAbsolutePath());
             } else {
-            	baosPDF = new ByteArrayOutputStream();
-                baosPDF = generatePDFDocumentBytes(req, this.getServletContext(),baosPDF,0);
-            	tmpFile = File.createTempFile("formpdf", String.valueOf((int)Math.random()*10000));
+                baosPDF = new ByteArrayOutputStream();
+                baosPDF = generatePDFDocumentBytes(req, this.getServletContext(), baosPDF, 0);
+                tmpFile = File.createTempFile("formpdf", String.valueOf((int) Math.random() * 10000));
                 baosPDF.writeTo(new FileOutputStream(tmpFile));
             }
             StringBuilder sbFilename = new StringBuilder();
@@ -137,31 +136,29 @@ public class FrmPDFServlet extends HttpServlet {
 
             res.setHeader("Content-disposition", sbContentDispValue.toString());
 
-            
-            res.setContentLength((int)tmpFile.length());
+
+            res.setContentLength((int) tmpFile.length());
 
 
             ServletOutputStream sout = res.getOutputStream();
             FileInputStream fis = new FileInputStream(tmpFile);
             try {
-	            byte[] buffer = new byte[64000];  
-	            int bytesRead = 0;  
-	                                
-	            while(true)  
-                {  
-                       bytesRead = fis.read(buffer);  
-                       if (bytesRead == -1)  
-                              break;  
-                                    
-                       sout.write(buffer,0,bytesRead);  
+                byte[] buffer = new byte[64000];
+                int bytesRead = 0;
+
+                while (true) {
+                    bytesRead = fis.read(buffer);
+                    if (bytesRead == -1)
+                        break;
+
+                    sout.write(buffer, 0, bytesRead);
                 }
-            }
-            finally {
-            	fis.close();
+            } finally {
+                fis.close();
             }
 
-            LogAction.addLogSynchronous(loggedInInfo,"FrmPDFServlet", "formID=" + req.getParameter("formId") + ",form_class=" + req.getParameter("form_class"));
-            
+            LogAction.addLogSynchronous(loggedInInfo, "FrmPDFServlet", "formID=" + req.getParameter("formId") + ",form_class=" + req.getParameter("form_class"));
+
         } catch (DocumentException dex) {
             res.setContentType("text/html");
             PrintWriter writer = res.getWriter();
@@ -179,52 +176,51 @@ public class FrmPDFServlet extends HttpServlet {
     }
 
     // added by vic, hsfo
-    private ByteArrayOutputStream generateHsfoRxPDF(HttpServletRequest req){
+    private ByteArrayOutputStream generateHsfoRxPDF(HttpServletRequest req) {
         HsfoRxDataHolder rx = (HsfoRxDataHolder) req.getSession()
-        .getAttribute(HSFO_RX_DATA_KEY);
+                .getAttribute(HSFO_RX_DATA_KEY);
 
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rx.getOutlines());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/oscar/form/prop/Hsfo_Rx.jasper");
-       
+
         try {
             JasperRunManager.runReportToPdfStream(is, baos, rx.getParams(), ds);
         } catch (JRException e) {
             throw new RuntimeException(e);
+        } finally {
+            IOUtils.closeQuietly(is);
         }
-        finally {
-        	IOUtils.closeQuietly(is);
-        }
-        
+
         return baos;
     }
 
     /**
      * the form txt file has lines in the form:
-     *
+     * <p>
      * For Checkboxes:
      * ie.  ohip : left, 76, 193, 0, BaseFont.ZAPFDINGBATS, 8, \u2713
      * requestParamName : alignment, Xcoord, Ycoord, 0, font, fontSize, textToPrint[if empty, prints the value of the request param]
      * NOTE: the Xcoord and Ycoord refer to the bottom-left corner of the element
-     *
+     * <p>
      * For single-line text:
      * ie. patientCity  : left, 242, 261, 0, BaseFont.HELVETICA, 12
      * See checkbox explanation
-     *
+     * <p>
      * For multi-line text (textarea)
      * ie.  aci : left, 20, 308, 0, BaseFont.HELVETICA, 8, _, 238, 222, 10
      * requestParamName : alignment, bottomLeftXcoord, bottomLeftYcoord, 0, font, fontSize, _, topRightXcoord, topRightYcoord, spacingBtwnLines
-     *
-     *NOTE: When working on these forms in linux, it helps to load the PDF file into gimp, switch to pt. coordinate system and use the mouse to find the coordinates.
-     *Prepare to be bored!
+     * <p>
+     * NOTE: When working on these forms in linux, it helps to load the PDF file into gimp, switch to pt. coordinate system and use the mouse to find the coordinates.
+     * Prepare to be bored!
      */
     protected ByteArrayOutputStream generatePDFDocumentBytes(final HttpServletRequest req, final ServletContext ctx, ByteArrayOutputStream baosPDF, int multiple)
-    throws DocumentException, java.io.IOException {
+            throws DocumentException, java.io.IOException {
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(req);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(req);
 
-    	// added by vic, hsfo
+        // added by vic, hsfo
         if (HSFO_RX_DATA_KEY.equals(req.getParameter("__title")))
             return generateHsfoRxPDF(req);
 
@@ -232,31 +228,31 @@ public class FrmPDFServlet extends HttpServlet {
         Document document = new Document();
         //document = new Document(psize, 50, 50, 50, 50);
 
-        String suffix = (multiple>0)?String.valueOf(multiple):"";
+        String suffix = (multiple > 0) ? String.valueOf(multiple) : "";
 
         PdfWriter writer = null;
 
         try {
             writer = PdfWriterFactory.newInstance(document, baosPDF, FontSettings.HELVETICA_6PT);
 
-            String title = req.getParameter("__title"+suffix) != null ? req.getParameter("__title"+suffix) : "Unknown";
+            String title = req.getParameter("__title" + suffix) != null ? req.getParameter("__title" + suffix) : "Unknown";
 
-            String template = req.getParameter("__template"+suffix) != null ? req.getParameter("__template"+suffix) + ".pdf" : "";
+            String template = req.getParameter("__template" + suffix) != null ? req.getParameter("__template" + suffix) + ".pdf" : "";
 
             int numPages = 1;
-            String pages = req.getParameter("__numPages"+suffix);
-            if( pages != null ) {
-            	numPages = Integer.parseInt(pages);
+            String pages = req.getParameter("__numPages" + suffix);
+            if (pages != null) {
+                numPages = Integer.parseInt(pages);
             }
 
             Properties[] printCfg = null;
             int cfgFileNo;
-            String[] cfgFile = req.getParameterValues("__cfgfile"+suffix);
+            String[] cfgFile = req.getParameterValues("__cfgfile" + suffix);
 
             cfgFileNo = cfgFile == null ? 0 : cfgFile.length;
-            if( cfgFileNo > 0 ) {
-            	printCfg = new Properties[cfgFileNo];
-            	for (int idx2 = 0; idx2 < cfgFileNo; ++idx2) {
+            if (cfgFileNo > 0) {
+                printCfg = new Properties[cfgFileNo];
+                for (int idx2 = 0; idx2 < cfgFileNo; ++idx2) {
                     cfgFile[idx2] += ".txt";
                     if (cfgFile[idx2].indexOf("/") > 0) {
                         cfgFile[idx2] = "";
@@ -267,31 +263,28 @@ public class FrmPDFServlet extends HttpServlet {
             }
 
 
-
             Properties[][] graphicCfg = new Properties[numPages][];
             String[] cfgGraphicFile;
             String paramName;
             int cfgGraphicFileNo;
-            for( int idx = 0; idx < numPages; ++idx ) {
-            	if( idx == 0 ) {
-            		cfgGraphicFile = req.getParameterValues("__cfgGraphicFile"+suffix);
-            	}
-            	else {
-            		paramName = "__cfgGraphicFile" + String.valueOf(idx) + suffix;
-            		cfgGraphicFile = req.getParameterValues(paramName);
-            	}
+            for (int idx = 0; idx < numPages; ++idx) {
+                if (idx == 0) {
+                    cfgGraphicFile = req.getParameterValues("__cfgGraphicFile" + suffix);
+                } else {
+                    paramName = "__cfgGraphicFile" + String.valueOf(idx) + suffix;
+                    cfgGraphicFile = req.getParameterValues(paramName);
+                }
 
-            	cfgGraphicFileNo = cfgGraphicFile == null ? 0: cfgGraphicFile.length;
-            	if( cfgGraphicFileNo == 0 ) {
-            		graphicCfg[idx] = null;
-            	}
-            	else {
-            		graphicCfg[idx] = new Properties[cfgGraphicFileNo];
-            		for( int idx2 = 0; idx2 < cfgGraphicFileNo; ++idx2 ) {
-            			cfgGraphicFile[idx2] += ".txt";
-            			graphicCfg[idx][idx2] = getCfgProp(cfgGraphicFile[idx2]);
-            		}
-            	}
+                cfgGraphicFileNo = cfgGraphicFile == null ? 0 : cfgGraphicFile.length;
+                if (cfgGraphicFileNo == 0) {
+                    graphicCfg[idx] = null;
+                } else {
+                    graphicCfg[idx] = new Properties[cfgGraphicFileNo];
+                    for (int idx2 = 0; idx2 < cfgGraphicFileNo; ++idx2) {
+                        cfgGraphicFile[idx2] += ".txt";
+                        graphicCfg[idx][idx2] = getCfgProp(cfgGraphicFile[idx2]);
+                    }
+                }
             }
 
             String[] cfgVal = null;
@@ -300,63 +293,63 @@ public class FrmPDFServlet extends HttpServlet {
 
             //load from DB
             int demoNo = Integer.parseInt(req.getParameter("demographic_no"));
-            String strFormId =req.getParameter("formId");
+            String strFormId = req.getParameter("formId");
             int formId = 0;
             try {
-            	formId =  Integer.parseInt(strFormId);
-            }catch(NumberFormatException e){/*ignore*/}
+                formId = Integer.parseInt(strFormId);
+            } catch (NumberFormatException e) {/*ignore*/}
 
-            String formClass=req.getParameter("form_class");
+            String formClass = req.getParameter("form_class");
             FrmRecord record = (new FrmRecordFactory()).factory(formClass);
             java.util.Properties props = new Properties();
-            if(record != null) {
-	            try {
-	            	props = record.getFormRecord(loggedInInfo, demoNo, formId);
-	            }catch(SQLException e) {
-	            	MiscUtils.getLogger().error("Error",e);
-	            }
+            if (record != null) {
+                try {
+                    props = record.getFormRecord(loggedInInfo, demoNo, formId);
+                } catch (SQLException e) {
+                    MiscUtils.getLogger().error("Error", e);
+                }
             }
 
             // get the print prop values
             //Properties props = new Properties();
             StringBuilder temp = new StringBuilder("");
-            for (Enumeration<String> e = req.getParameterNames(); e.hasMoreElements();) {
+            for (Enumeration<String> e = req.getParameterNames(); e.hasMoreElements(); ) {
                 temp = new StringBuilder(e.nextElement().toString());
                 props.setProperty(temp.toString(), req.getParameter(temp.toString()));
             }
 
-            if(req.getParameter("postProcessor"+suffix)!=null) {
-            	String className = "oscar.form.pdfservlet."+req.getParameter("postProcessor"+suffix);
-            	try {
-            		FrmPDFPostValueProcessor pp = (FrmPDFPostValueProcessor)Class.forName(className).newInstance();
-            		props = pp.process(props);
-            	}catch(Exception e) {
-            		//ignore
-            	}
+            if (req.getParameter("postProcessor" + suffix) != null) {
+                String className = "oscar.form.pdfservlet." + req.getParameter("postProcessor" + suffix);
+                try {
+                    FrmPDFPostValueProcessor pp = (FrmPDFPostValueProcessor) Class.forName(className).newInstance();
+                    props = pp.process(props);
+                } catch (Exception e) {
+                    //ignore
+                }
             }
 
             String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
             int totalPages = 1;
-            if(req.getParameter("multiple")!=null)
-            	totalPages = Integer.parseInt(req.getParameter("multiple"));
+            if (req.getParameter("multiple") != null)
+                totalPages = Integer.parseInt(req.getParameter("multiple"));
             String currentUser = loggedInInfo.getLoggedInProvider().getFormattedName();
-            String pg = suffix.length()==0||suffix.equals("0")?"0":suffix;
-            String currentPage = String.valueOf(Integer.parseInt(pg)+1);
+            String pg = suffix.length() == 0 || suffix.equals("0") ? "0" : suffix;
+            String currentPage = String.valueOf(Integer.parseInt(pg) + 1);
 
-            props.setProperty("total_pages",String.valueOf(totalPages));
-            props.setProperty("current_page",currentPage);
+            props.setProperty("total_pages", String.valueOf(totalPages));
+            props.setProperty("current_page", currentPage);
             props.setProperty("current_user", currentUser);
             props.setProperty("current_date", currentDate);
 
-            props.setProperty("printer_info", "Printed on " + currentDate + " by " + currentUser + ": Page " + currentPage + " of " + totalPages );
+            props.setProperty("printer_info", "Printed on " + currentDate + " by " + currentUser + ": Page " + currentPage + " of " + totalPages);
 
             //initialise measurement collections = a list of pages sections measurements
-            List<List<List<String>>>xMeasurementValues = new ArrayList<List<List<String>>>();
-            List<List<List<String>>>yMeasurementValues = new ArrayList<List<List<String>>>();
-            for( int idx = 0; idx < numPages; ++idx ) {
-            	MiscUtils.getLogger().debug("Adding page " + idx);
-            	xMeasurementValues.add(new ArrayList<List<String>>());
-            	yMeasurementValues.add(new ArrayList<List<String>>());
+            List<List<List<String>>> xMeasurementValues = new ArrayList<List<List<String>>>();
+            List<List<List<String>>> yMeasurementValues = new ArrayList<List<List<String>>>();
+            for (int idx = 0; idx < numPages; ++idx) {
+                MiscUtils.getLogger().debug("Adding page " + idx);
+                xMeasurementValues.add(new ArrayList<List<String>>());
+                yMeasurementValues.add(new ArrayList<List<String>>());
             }
 
             String elementNum;
@@ -376,48 +369,47 @@ public class FrmPDFServlet extends HttpServlet {
                 //num uniquely identifies value so x num should = y num
                 //section allows graphing of more than one measurement axis e.g. if top of page is different graph than bottom of page see rourke
                 //page is the pdf page it should be plotted on
-                if( temp.toString().startsWith("xVal_") ) {
-                	MiscUtils.getLogger().debug("Processing " + temp.toString());
+                if (temp.toString().startsWith("xVal_")) {
+                    MiscUtils.getLogger().debug("Processing " + temp.toString());
 
-                	index = temp.indexOf("_");
-                	index2 = temp.indexOf("_", index+1);
-                	elementNum = temp.substring(index+1,index2);
+                    index = temp.indexOf("_");
+                    index2 = temp.indexOf("_", index + 1);
+                    elementNum = temp.substring(index + 1, index2);
 
-                	index3 = temp.lastIndexOf("_");
-                	section = Integer.parseInt(temp.substring(index2 + 1, index3));
-                	page = Integer.parseInt(temp.substring(index3+1));
+                    index3 = temp.lastIndexOf("_");
+                    section = Integer.parseInt(temp.substring(index2 + 1, index3));
+                    page = Integer.parseInt(temp.substring(index3 + 1));
 
-                	//page is zero based, numPages is not
-                	if( page >= numPages ) {
-                		continue;
-                	}
+                    //page is zero based, numPages is not
+                    if (page >= numPages) {
+                        continue;
+                    }
 
-                	//if this is the first measurement of the section init array
-                	while( xMeasurementValues.get(page).size() <= section ) {
-                		MiscUtils.getLogger().debug("Adding section " + section);
-                		List<List<String>> list = xMeasurementValues.get(page);
-                		list.add(new ArrayList<String>());
-                	}
+                    //if this is the first measurement of the section init array
+                    while (xMeasurementValues.get(page).size() <= section) {
+                        MiscUtils.getLogger().debug("Adding section " + section);
+                        List<List<String>> list = xMeasurementValues.get(page);
+                        list.add(new ArrayList<String>());
+                    }
 
-                	while( yMeasurementValues.get(page).size() <= section ) {
-                		List<List<String>> list = yMeasurementValues.get(page);
-                		list.add(new ArrayList<String>());
-                	}
+                    while (yMeasurementValues.get(page).size() <= section) {
+                        List<List<String>> list = yMeasurementValues.get(page);
+                        list.add(new ArrayList<String>());
+                    }
 
-                	xMeasurementValues.get(page).get(section).add((String)req.getAttribute(temp.toString()));
-                	MiscUtils.getLogger().debug("Setting xMeasurementDate to " + (String)req.getAttribute(temp.toString()));
+                    xMeasurementValues.get(page).get(section).add((String) req.getAttribute(temp.toString()));
+                    MiscUtils.getLogger().debug("Setting xMeasurementDate to " + (String) req.getAttribute(temp.toString()));
 
-                	temp = new StringBuilder("yVal_");
-                	temp = temp.append(elementNum);
-                	temp = temp.append("_"+section);
-                	temp = temp.append("_"+page);
-                	MiscUtils.getLogger().debug("Key " + temp);
-                	tempValue = (String)req.getAttribute(temp.toString());
-                	yMeasurementValues.get(page).get(section).add(tempValue);
-                	MiscUtils.getLogger().debug("Setting yMeasurementValue to " + tempValue);
-                }
-                else {
-                	props.setProperty(temp.toString(), req.getAttribute(temp.toString()).toString());
+                    temp = new StringBuilder("yVal_");
+                    temp = temp.append(elementNum);
+                    temp = temp.append("_" + section);
+                    temp = temp.append("_" + page);
+                    MiscUtils.getLogger().debug("Key " + temp);
+                    tempValue = (String) req.getAttribute(temp.toString());
+                    yMeasurementValues.get(page).get(section).add(tempValue);
+                    MiscUtils.getLogger().debug("Setting yMeasurementValue to " + tempValue);
+                } else {
+                    props.setProperty(temp.toString(), req.getAttribute(temp.toString()).toString());
                 }
             }
 
@@ -445,25 +437,23 @@ public class FrmPDFServlet extends HttpServlet {
             PdfReader reader = null;
             float height;
             int n;
-            try
-            {
-	            try {
-	                reader = new PdfReader(propFilename);
-	                log.info("Found template at " + propFilename);
-	            } catch (Exception dex) {
-	                log.debug("change path to inside oscar from :" + propFilename);
-	                reader = new PdfReader("/oscar/form/prop/" + template);
-	                log.debug("Found template at /oscar/form/prop/" + template);
-	            }
+            try {
+                try {
+                    reader = new PdfReader(propFilename);
+                    log.info("Found template at " + propFilename);
+                } catch (Exception dex) {
+                    log.debug("change path to inside oscar from :" + propFilename);
+                    reader = new PdfReader("/oscar/form/prop/" + template);
+                    log.debug("Found template at /oscar/form/prop/" + template);
+                }
 
-	            // retrieve the total number of pages
-	            n = reader.getNumberOfPages();
-	            // retrieve the size of the first page
-	            Rectangle pSize = reader.getPageSize(1);
-	            height = pSize.getHeight();
-            }
-            finally {
-            	reader.close();
+                // retrieve the total number of pages
+                n = reader.getNumberOfPages();
+                // retrieve the size of the first page
+                Rectangle pSize = reader.getPageSize(1);
+                height = pSize.getHeight();
+            } finally {
+                reader.close();
             }
 
             PdfContentByte cb = writer.getDirectContent();
@@ -488,111 +478,111 @@ public class FrmPDFServlet extends HttpServlet {
                 //cb.showTextAligned(PdfContentByte.ALIGN_LEFT, "Cathy
                 // Pacific", 126, height-50, 0);
 
-                if ( i <= cfgFileNo ) {
+                if (i <= cfgFileNo) {
 
-	                String[] fontType;
-	                for (Enumeration e = printCfg[i - 1].propertyNames(); e.hasMoreElements();) {
-	                    tempName = new StringBuilder(e.nextElement().toString());
-	                    cfgVal = printCfg[i - 1].getProperty(tempName.toString()).split(",");
-	                    for(int x=0;x<cfgVal.length;x++) {
-	                    	cfgVal[x].trim();
-	                    }
+                    String[] fontType;
+                    for (Enumeration e = printCfg[i - 1].propertyNames(); e.hasMoreElements(); ) {
+                        tempName = new StringBuilder(e.nextElement().toString());
+                        cfgVal = printCfg[i - 1].getProperty(tempName.toString()).split(",");
+                        for (int x = 0; x < cfgVal.length; x++) {
+                            cfgVal[x].trim();
+                        }
 
-	                    if( cfgVal[4].indexOf(";") > -1 ) {
-	                        fontType = cfgVal[4].split(";");
-	                        if( fontType[1].trim().equals("italic") )
-	                            fontFlags = Font.ITALIC;
-	                        else if( fontType[1].trim().equals("bold") )
-	                            fontFlags = Font.BOLD;
-	                        else if( fontType[1].trim().equals("bolditalic") )
-	                            fontFlags = Font.BOLDITALIC;
-	                        else
-	                            fontFlags = Font.NORMAL;
-	                    } else {
-	                        fontFlags = Font.NORMAL;
-	                        fontType = new String[] { cfgVal[4].trim() };
-	                    }
+                        if (cfgVal[4].indexOf(";") > -1) {
+                            fontType = cfgVal[4].split(";");
+                            if (fontType[1].trim().equals("italic"))
+                                fontFlags = Font.ITALIC;
+                            else if (fontType[1].trim().equals("bold"))
+                                fontFlags = Font.BOLD;
+                            else if (fontType[1].trim().equals("bolditalic"))
+                                fontFlags = Font.BOLDITALIC;
+                            else
+                                fontFlags = Font.NORMAL;
+                        } else {
+                            fontFlags = Font.NORMAL;
+                            fontType = new String[]{cfgVal[4].trim()};
+                        }
 
-	                    if(fontType[0].trim().equals("BaseFont.HELVETICA")) {
-	                        fontType[0] = BaseFont.HELVETICA;
-	                        encoding = BaseFont.CP1252;  //latin1 encoding
-	                    } else if(fontType[0].trim().equals("BaseFont.HELVETICA_OBLIQUE")) {
-	                        fontType[0] = BaseFont.HELVETICA_OBLIQUE;
-	                        encoding = BaseFont.CP1252;
-	                    } else if(fontType[0].trim().equals("BaseFont.ZAPFDINGBATS")) {
-	                        fontType[0] = BaseFont.ZAPFDINGBATS;
-	                        encoding = BaseFont.ZAPFDINGBATS;
-	                    } else {
-	                        fontType[0] = BaseFont.COURIER;
-	                        encoding = BaseFont.CP1252;
-	                    }
+                        if (fontType[0].trim().equals("BaseFont.HELVETICA")) {
+                            fontType[0] = BaseFont.HELVETICA;
+                            encoding = BaseFont.CP1252;  //latin1 encoding
+                        } else if (fontType[0].trim().equals("BaseFont.HELVETICA_OBLIQUE")) {
+                            fontType[0] = BaseFont.HELVETICA_OBLIQUE;
+                            encoding = BaseFont.CP1252;
+                        } else if (fontType[0].trim().equals("BaseFont.ZAPFDINGBATS")) {
+                            fontType[0] = BaseFont.ZAPFDINGBATS;
+                            encoding = BaseFont.ZAPFDINGBATS;
+                        } else {
+                            fontType[0] = BaseFont.COURIER;
+                            encoding = BaseFont.CP1252;
+                        }
 
-	                    bf = BaseFont.createFont(fontType[0],encoding,BaseFont.NOT_EMBEDDED);
-	                    propValue = props.getProperty(tempName.toString());
-	                    //if not in regular config then check measurements
-	                    if(propValue == null ) {
-	                    	propValue = measurements.getProperty(tempName.toString(),"");
-	                    }
+                        bf = BaseFont.createFont(fontType[0], encoding, BaseFont.NOT_EMBEDDED);
+                        propValue = props.getProperty(tempName.toString());
+                        //if not in regular config then check measurements
+                        if (propValue == null) {
+                            propValue = measurements.getProperty(tempName.toString(), "");
+                        }
 
-	                    // write in a rectangle area
-	                    if (cfgVal.length >= 9) {
+                        // write in a rectangle area
+                        if (cfgVal.length >= 9) {
                             Font font;
-	                        if (fontFlags == Font.BOLD) { // Hack to stop blue outline from bold text
+                            if (fontFlags == Font.BOLD) { // Hack to stop blue outline from bold text
                                 font = new Font(bf, Integer.parseInt(cfgVal[5].trim()), fontFlags, Color.black);
                             } else {
                                 font = new Font(bf, Integer.parseInt(cfgVal[5].trim()), fontFlags);
                             }
-	                        //ct.setSimpleColumn(60, 300, 200, 500, 10,
-	                        // Element.ALIGN_LEFT);
-	                        //ct.addText(new Phrase(15, "xxxx xxxxx xxxxx xxxxx xxx
-	                        // xxxxx xxxxx xxxx xxxxx xxxxxx xxxx xxxxxxx xxxxx
-	                        // xxxx", font));
-	                        ct.setSimpleColumn(Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2]
-	                                .trim())), Integer.parseInt(cfgVal[7].trim()), (height - Integer.parseInt(cfgVal[8]
-	                                .trim())), Integer.parseInt(cfgVal[9].trim()), (cfgVal[0].trim().equals("left") ?
-	                                    Element.ALIGN_LEFT: (cfgVal[0].trim().equals("right") ? Element.ALIGN_RIGHT :
-	                                        Element.ALIGN_CENTER)));
+                            //ct.setSimpleColumn(60, 300, 200, 500, 10,
+                            // Element.ALIGN_LEFT);
+                            //ct.addText(new Phrase(15, "xxxx xxxxx xxxxx xxxxx xxx
+                            // xxxxx xxxxx xxxx xxxxx xxxxxx xxxx xxxxxxx xxxxx
+                            // xxxx", font));
+                            ct.setSimpleColumn(Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2]
+                                    .trim())), Integer.parseInt(cfgVal[7].trim()), (height - Integer.parseInt(cfgVal[8]
+                                    .trim())), Integer.parseInt(cfgVal[9].trim()), (cfgVal[0].trim().equals("left") ?
+                                    Element.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? Element.ALIGN_RIGHT :
+                                    Element.ALIGN_CENTER)));
 
-	                        //ct.addText(new Phrase(12, props.getProperty(tempName.toString(), ""), font)); // page
-	                        ct.setText(new Phrase(12, propValue, font));
-	                        // size
-	                        // leading
-	                        // space between two
-	                        // lines
-	                        ct.go();
-	                        continue;
-	                    }
+                            //ct.addText(new Phrase(12, props.getProperty(tempName.toString(), ""), font)); // page
+                            ct.setText(new Phrase(12, propValue, font));
+                            // size
+                            // leading
+                            // space between two
+                            // lines
+                            ct.go();
+                            continue;
+                        }
 
-	                    //adapted by DENNIS WARREN June 2012 to allow a colour rectangle
-	                    // handy for covering up parts of a document
-	                    if(tempName.toString().startsWith("__$rectangle")) {
+                        //adapted by DENNIS WARREN June 2012 to allow a colour rectangle
+                        // handy for covering up parts of a document
+                        if (tempName.toString().startsWith("__$rectangle")) {
 
-	                    	float llx = Float.parseFloat(cfgVal[0].trim());
-		                	float lly = Float.parseFloat(cfgVal[1].trim());
-		                	float urx = Float.parseFloat(cfgVal[2].trim());
-		                	float ury = Float.parseFloat(cfgVal[3].trim());
+                            float llx = Float.parseFloat(cfgVal[0].trim());
+                            float lly = Float.parseFloat(cfgVal[1].trim());
+                            float urx = Float.parseFloat(cfgVal[2].trim());
+                            float ury = Float.parseFloat(cfgVal[3].trim());
 
-		                    Rectangle rec = new Rectangle(llx, lly, urx, ury);
-		                    rec.setBackgroundColor(java.awt.Color.WHITE);
-		                    cb.rectangle(rec);
+                            Rectangle rec = new Rectangle(llx, lly, urx, ury);
+                            rec.setBackgroundColor(java.awt.Color.WHITE);
+                            cb.rectangle(rec);
 
-	                    } else if (tempName.toString().startsWith("__$line")) {
-	                        cb.setRGBColorStrokeF(0f, 0f, 0f);
-	                        cb.setLineWidth(Float.parseFloat(cfgVal[4].trim()));
-	                        cb.moveTo(Float.parseFloat(cfgVal[0].trim()), Float.parseFloat(cfgVal[1].trim()));
-	                        cb.lineTo(Float.parseFloat(cfgVal[2].trim()), Float.parseFloat(cfgVal[3].trim()));
-	                        cb.stroke();
+                        } else if (tempName.toString().startsWith("__$line")) {
+                            cb.setRGBColorStrokeF(0f, 0f, 0f);
+                            cb.setLineWidth(Float.parseFloat(cfgVal[4].trim()));
+                            cb.moveTo(Float.parseFloat(cfgVal[0].trim()), Float.parseFloat(cfgVal[1].trim()));
+                            cb.lineTo(Float.parseFloat(cfgVal[2].trim()), Float.parseFloat(cfgVal[3].trim()));
+                            cb.stroke();
 
-	                    } else if (tempName.toString().startsWith("__")) {
-	                        cb.beginText();
-	                        cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
-	                        cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT
-	                                : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT
-	                                : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? (cfgVal[6]
-	                                .trim()) : propValue), Integer
-	                                .parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
-	                        cb.endText();
-	                    } else if (tempName.toString().equals("forms_promotext")){
+                        } else if (tempName.toString().startsWith("__")) {
+                            cb.beginText();
+                            cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
+                            cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT
+                                    : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT
+                                    : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? (cfgVal[6]
+                                    .trim()) : propValue), Integer
+                                    .parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
+                            cb.endText();
+                        } else if (tempName.toString().equals("forms_promotext")) {
 //	                        if ( OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null ){
 //	                            log.info("adding user placed forms_promotext");
 //	                            cb.beginText();
@@ -605,22 +595,22 @@ public class FrmPDFServlet extends HttpServlet {
 //
 //	                            cb.endText();
 //	                        }
-	                    } else { // write prop text
-	                        cb.beginText();
-	                        cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
-	                        cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT
-	                                : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT
-	                                : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? ((propValue.equals("") ? "" : cfgVal[6].trim()))
-	                                : propValue), Integer.parseInt(cfgVal[1]
-	                                .trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
+                        } else { // write prop text
+                            cb.beginText();
+                            cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
+                            cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT
+                                    : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT
+                                    : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? ((propValue.equals("") ? "" : cfgVal[6].trim()))
+                                    : propValue), Integer.parseInt(cfgVal[1]
+                                    .trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
 
-	                        cb.endText();
-	                    }
+                            cb.endText();
+                        }
 
-	                }
+                    }
 
-	                //----------
-	                if ( OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null && printCfg[i-1].getProperty("forms_promotext") == null){
+                    //----------
+                    if (OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null && printCfg[i - 1].getProperty("forms_promotext") == null) {
 //	                    log.info("adding forms_promotext");
 //
 //	                    // remove elements of the PDF file
@@ -632,8 +622,7 @@ public class FrmPDFServlet extends HttpServlet {
 //	                    cb.setFontAndSize(BaseFont.createFont(BaseFont.HELVETICA,BaseFont.CP1252,BaseFont.NOT_EMBEDDED), 6);
 //	                    cb.showTextAligned(PdfContentByte.ALIGN_CENTER, OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT"), width/2, 16, 0);
 //	                    cb.endText();
-	                }
-
+                    }
 
 
                 } //end if there are print properties
@@ -641,143 +630,115 @@ public class FrmPDFServlet extends HttpServlet {
                 //graphic
                 //if ((graphicPageArray.contains(Integer.toString(i)) || i == 1 && graphicPageArray.size() == 0 ) && cfgGraphicFileNo > 0) {
 
-                    int origX = 0;
-                    int origY = 0;
+                int origX = 0;
+                int origY = 0;
 
-                    String className = null;
-                    Properties[] tempPropertiesArray;
-                    if( i <= graphicCfg.length ) {
-                    	tempPropertiesArray = graphicCfg[i-1];
-                    	MiscUtils.getLogger().debug("Plotting page " + i);
-                    }
-                    else {
-                    	tempPropertiesArray = null;
-                    	MiscUtils.getLogger().debug("Skipped Plotting page " + i);
-                    }
-                    String[] tempYcoords;
+                String className = null;
+                Properties[] tempPropertiesArray;
+                if (i <= graphicCfg.length) {
+                    tempPropertiesArray = graphicCfg[i - 1];
+                    MiscUtils.getLogger().debug("Plotting page " + i);
+                } else {
+                    tempPropertiesArray = null;
+                    MiscUtils.getLogger().debug("Skipped Plotting page " + i);
+                }
+                String[] tempYcoords;
 
-                    //if there are properties to plot
-                    if( tempPropertiesArray != null ) {
-                    	MiscUtils.getLogger().debug("TEMP PROP LENGTH " + tempPropertiesArray.length);
-	                    for (int k = 0; k < tempPropertiesArray.length; k++) {
-	                    	//initialise with measurement values which are mapped to config file by form get graphic function
-	                    	List<String> xDate, yHeight;
-	                    	if( xMeasurementValues.get(i-1).size() > k && yMeasurementValues.get(i-1).size() > k ) {
-	                    		xDate = new ArrayList<String>(xMeasurementValues.get(i-1).get(k));
-	                    		yHeight = new ArrayList<String>(yMeasurementValues.get(i-1).get(k));
-	                    	}
-	                    	else {
-	                    		xDate = new ArrayList<String>();
-	                    		yHeight = new ArrayList<String>();
-	                    	}
+                //if there are properties to plot
+                if (tempPropertiesArray != null) {
+                    MiscUtils.getLogger().debug("TEMP PROP LENGTH " + tempPropertiesArray.length);
+                    for (int k = 0; k < tempPropertiesArray.length; k++) {
+                        //initialise with measurement values which are mapped to config file by form get graphic function
+                        List<String> xDate, yHeight;
+                        if (xMeasurementValues.get(i - 1).size() > k && yMeasurementValues.get(i - 1).size() > k) {
+                            xDate = new ArrayList<String>(xMeasurementValues.get(i - 1).get(k));
+                            yHeight = new ArrayList<String>(yMeasurementValues.get(i - 1).get(k));
+                        } else {
+                            xDate = new ArrayList<String>();
+                            yHeight = new ArrayList<String>();
+                        }
 
-	                        Properties args = new Properties();
+                        Properties args = new Properties();
 
 
-	                        for (Enumeration e = tempPropertiesArray[k].propertyNames(); e.hasMoreElements();) {
-	                            tempName = new StringBuilder(e.nextElement().toString());
-	                            tempValue = tempPropertiesArray[k].getProperty(tempName.toString()).trim();
+                        for (Enumeration e = tempPropertiesArray[k].propertyNames(); e.hasMoreElements(); ) {
+                            tempName = new StringBuilder(e.nextElement().toString());
+                            tempValue = tempPropertiesArray[k].getProperty(tempName.toString()).trim();
 
-	                            if (tempName.toString().equals("__finalEDB"))
-	                            {
-	                            	/*
-	                            	 * there is a certain condition when the EDD value is not in the properties
-	                            	 * this catches that condition before throwing a nasty NPE
-	                            	 * Try not to think about it too much - it will make you insane. Someone
-	                            	 * thought it would be cool to interchange the map.
-	                            	 */
-	                            	if(props.containsKey(tempValue))
-	                            	{
-	                            		args.setProperty(tempName.toString(), props.getProperty(tempValue));
-	                            	}
-	                            }
-	                            else if (tempName.toString().equals("__xDateScale"))
-	                            {
-	                                args.setProperty(tempName.toString(), props.getProperty(tempValue));
-	                            }
-	                            else if (tempName.toString().equals("__dateFormat"))
-	                            {
-	                                args.setProperty(tempName.toString(),tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__nMaxPixX"))
-	                            {
-	                                args.setProperty(tempName.toString(),tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__nMaxPixY"))
-	                            {
-	                                args.setProperty(tempName.toString(),tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__fStartX"))
-	                            {
-	                                args.setProperty(tempName.toString(),tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__fEndX"))
-	                            {
-	                                args.setProperty(tempName.toString(),tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__fStartY"))
-	                            {
-	                                args.setProperty(tempName.toString(),tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__fEndY"))
-	                            {
-	                                args.setProperty(tempName.toString(),tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__origX"))
-	                            {
-	                                origX = Integer.parseInt(tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__origY"))
-	                            {
-	                                origY = Integer.parseInt(tempValue);
-	                            }
-	                            else if (tempName.toString().equals("__className"))
-	                            {
-	                                className = tempValue;
-	                            }
-	                            else
-	                            {
-	                            	MiscUtils.getLogger().debug("Adding xDate " + tempName.toString() + " VAL: " + props.getProperty(tempName.toString()));
-	                            	MiscUtils.getLogger().debug("Adding yHeight " + tempValue + " VAL: " + props.getProperty(tempValue));
-	                                xDate.add(props.getProperty(tempName.toString()));
-	                                yHeight.add(props.getProperty(tempValue));
-	                            }
-	                        } // end for read in from config file
+                            if (tempName.toString().equals("__finalEDB")) {
+                                /*
+                                 * there is a certain condition when the EDD value is not in the properties
+                                 * this catches that condition before throwing a nasty NPE
+                                 * Try not to think about it too much - it will make you insane. Someone
+                                 * thought it would be cool to interchange the map.
+                                 */
+                                if (props.containsKey(tempValue)) {
+                                    args.setProperty(tempName.toString(), props.getProperty(tempValue));
+                                }
+                            } else if (tempName.toString().equals("__xDateScale")) {
+                                args.setProperty(tempName.toString(), props.getProperty(tempValue));
+                            } else if (tempName.toString().equals("__dateFormat")) {
+                                args.setProperty(tempName.toString(), tempValue);
+                            } else if (tempName.toString().equals("__nMaxPixX")) {
+                                args.setProperty(tempName.toString(), tempValue);
+                            } else if (tempName.toString().equals("__nMaxPixY")) {
+                                args.setProperty(tempName.toString(), tempValue);
+                            } else if (tempName.toString().equals("__fStartX")) {
+                                args.setProperty(tempName.toString(), tempValue);
+                            } else if (tempName.toString().equals("__fEndX")) {
+                                args.setProperty(tempName.toString(), tempValue);
+                            } else if (tempName.toString().equals("__fStartY")) {
+                                args.setProperty(tempName.toString(), tempValue);
+                            } else if (tempName.toString().equals("__fEndY")) {
+                                args.setProperty(tempName.toString(), tempValue);
+                            } else if (tempName.toString().equals("__origX")) {
+                                origX = Integer.parseInt(tempValue);
+                            } else if (tempName.toString().equals("__origY")) {
+                                origY = Integer.parseInt(tempValue);
+                            } else if (tempName.toString().equals("__className")) {
+                                className = tempValue;
+                            } else {
+                                MiscUtils.getLogger().debug("Adding xDate " + tempName.toString() + " VAL: " + props.getProperty(tempName.toString()));
+                                MiscUtils.getLogger().debug("Adding yHeight " + tempValue + " VAL: " + props.getProperty(tempValue));
+                                xDate.add(props.getProperty(tempName.toString()));
+                                yHeight.add(props.getProperty(tempValue));
+                            }
+                        } // end for read in from config file
 
-	                        FrmPdfGraphic pdfGraph = FrmGraphicFactory.create(className);
-	                        pdfGraph.init(args);
+                        FrmPdfGraphic pdfGraph = FrmGraphicFactory.create(className);
+                        pdfGraph.init(args);
 
-	                        Properties gProp = pdfGraph.getGraphicXYProp(xDate, yHeight);
+                        Properties gProp = pdfGraph.getGraphicXYProp(xDate, yHeight);
 
-	                        //draw the pic
-	                        cb.setLineWidth(1.5f);
+                        //draw the pic
+                        cb.setLineWidth(1.5f);
 
-	                        if (k % 2 == 0) {
-	                            cb.setRGBColorStrokeF(0f, 0f, 255f);
-	                        } else {
-	                            cb.setRGBColorStrokeF(255f, 0f, 0f);
-	                        }
+                        if (k % 2 == 0) {
+                            cb.setRGBColorStrokeF(0f, 0f, 255f);
+                        } else {
+                            cb.setRGBColorStrokeF(255f, 0f, 0f);
+                        }
 
 
-	                        for (Enumeration e = gProp.propertyNames(); e.hasMoreElements();) {
-	                            tempName = new StringBuilder(e.nextElement().toString());
-	                            tempValue = gProp.getProperty(tempName.toString(), "");
+                        for (Enumeration e = gProp.propertyNames(); e.hasMoreElements(); ) {
+                            tempName = new StringBuilder(e.nextElement().toString());
+                            tempValue = gProp.getProperty(tempName.toString(), "");
 
-	                            if (tempValue.equals("")) {
-	                                continue;
-	                            }
+                            if (tempValue.equals("")) {
+                                continue;
+                            }
 
-	                            tempYcoords = tempValue.split(",");
-	                            for( int idx = 0; idx < tempYcoords.length; ++idx ) {
-	                            	tempValue = tempYcoords[idx];
-	                            	MiscUtils.getLogger().debug("COORDS: cfg_pg " + k + " : " + String.valueOf(origX + Float.parseFloat(tempName.toString())) + ", " + String.valueOf(height - origY + Float
-	                                    .parseFloat(tempValue)));
+                            tempYcoords = tempValue.split(",");
+                            for (int idx = 0; idx < tempYcoords.length; ++idx) {
+                                tempValue = tempYcoords[idx];
+                                MiscUtils.getLogger().debug("COORDS: cfg_pg " + k + " : " + String.valueOf(origX + Float.parseFloat(tempName.toString())) + ", " + String.valueOf(height - origY + Float
+                                        .parseFloat(tempValue)));
 
-	                            	cb.circle((origX + Float.parseFloat(tempName.toString())), (height - origY + Float
-	                                    .parseFloat(tempValue)), 1.5f);
-	                            	cb.stroke();
-	                            }
-	                        }
+                                cb.circle((origX + Float.parseFloat(tempName.toString())), (height - origY + Float
+                                        .parseFloat(tempValue)), 1.5f);
+                                cb.stroke();
+                            }
+                        }
 	                        /*
 	                        if (fEDB != null && fEDB.length() >= 8) {
 	                            //make the graphic class
@@ -827,8 +788,8 @@ public class FrmPDFServlet extends HttpServlet {
 	                                cb.stroke();
 	                            }
 	                        } // end of first pic */
-	                    } // end of for loop
-                    } //end if there are properties to process
+                    } // end of for loop
+                } //end if there are properties to process
 
             }
 
@@ -854,28 +815,26 @@ public class FrmPDFServlet extends HttpServlet {
             log.debug("1Looking for the prop file! " + propFilename);
             InputStream is = new FileInputStream(propFilename); //getServletContext().getResourceAsStream(propFilename);
             try {
-	            if (is != null) {
-	                log.debug("2Found the prop file! " + cfgFilename);
-	                ret.load(is);
-	                is.close();
-	            }
-            }
-            finally {
-            	is.close();
+                if (is != null) {
+                    log.debug("2Found the prop file! " + cfgFilename);
+                    ret.load(is);
+                    is.close();
+                }
+            } finally {
+                is.close();
             }
         } catch (Exception e) {
             try {
                 String propPath = "/WEB-INF/classes/oscar/form/prop/";
                 InputStream is = getServletContext().getResourceAsStream(propPath + cfgFilename);
                 try {
-	                if (is != null) {
-	                    log.debug("found prop file " + propPath + cfgFilename);
-	                    ret.load(is);
-	                    is.close();
-	                }
-                }
-                finally {
-                	is.close();
+                    if (is != null) {
+                        log.debug("found prop file " + propPath + cfgFilename);
+                        ret.load(is);
+                        is.close();
+                    }
+                } finally {
+                    is.close();
                 }
             } catch (Exception ee) {
                 log.warn("Can't find the prop file! " + cfgFilename);

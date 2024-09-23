@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,46 +39,46 @@ import org.oscarehr.util.SpringUtils;
 
 public class RptMeasurementTypesBeanHandler {
 
-	Vector<RptMeasurementTypesBean> measurementTypeVector = new Vector<RptMeasurementTypesBean>();
-	Vector<RptMeasuringInstructionBeanHandler> measuringInstrcBeanVector = new Vector<RptMeasuringInstructionBeanHandler>();
+    Vector<RptMeasurementTypesBean> measurementTypeVector = new Vector<RptMeasurementTypesBean>();
+    Vector<RptMeasuringInstructionBeanHandler> measuringInstrcBeanVector = new Vector<RptMeasuringInstructionBeanHandler>();
 
-	public RptMeasurementTypesBeanHandler(String groupName) {
-		init(groupName);
-	}
+    public RptMeasurementTypesBeanHandler(String groupName) {
+        init(groupName);
+    }
 
-	@SuppressWarnings("unchecked")
-	public boolean init(String groupName) {
-		boolean verdict = true;
-		try {
-			MeasurementGroupDao mgDao = SpringUtils.getBean(MeasurementGroupDao.class);
-			MeasurementTypeDao mtDao = SpringUtils.getBean(MeasurementTypeDao.class);
-			List<MeasurementGroup> groups = mgDao.findByName(groupName);
-			Collections.sort(groups, new BeanComparator("typeDisplayName"));
-			for (MeasurementGroup g : groups) {
-				String typeDisplayName = g.getTypeDisplayName();
+    @SuppressWarnings("unchecked")
+    public boolean init(String groupName) {
+        boolean verdict = true;
+        try {
+            MeasurementGroupDao mgDao = SpringUtils.getBean(MeasurementGroupDao.class);
+            MeasurementTypeDao mtDao = SpringUtils.getBean(MeasurementTypeDao.class);
+            List<MeasurementGroup> groups = mgDao.findByName(groupName);
+            Collections.sort(groups, new BeanComparator("typeDisplayName"));
+            for (MeasurementGroup g : groups) {
+                String typeDisplayName = g.getTypeDisplayName();
 
-				List<MeasurementType> mts = mtDao.findByTypeDisplayName(typeDisplayName);
-				Collections.sort(mts, new BeanComparator("typeDescription"));
-				for (MeasurementType mt : mts) {
-					RptMeasurementTypesBean measurementTypes = new RptMeasurementTypesBean(mt.getId(), mt.getType(), mt.getTypeDisplayName(), mt.getTypeDescription(), mt.getMeasuringInstruction(), mt.getValidation());
-					measurementTypeVector.add(measurementTypes);
+                List<MeasurementType> mts = mtDao.findByTypeDisplayName(typeDisplayName);
+                Collections.sort(mts, new BeanComparator("typeDescription"));
+                for (MeasurementType mt : mts) {
+                    RptMeasurementTypesBean measurementTypes = new RptMeasurementTypesBean(mt.getId(), mt.getType(), mt.getTypeDisplayName(), mt.getTypeDescription(), mt.getMeasuringInstruction(), mt.getValidation());
+                    measurementTypeVector.add(measurementTypes);
 
-					RptMeasuringInstructionBeanHandler hd = new RptMeasuringInstructionBeanHandler(typeDisplayName);
-					measuringInstrcBeanVector.add(hd);
-				}
-			}
-		} catch (Exception e) {
-			MiscUtils.getLogger().error("Error", e);
-			verdict = false;
-		}
-		return verdict;
-	}
+                    RptMeasuringInstructionBeanHandler hd = new RptMeasuringInstructionBeanHandler(typeDisplayName);
+                    measuringInstrcBeanVector.add(hd);
+                }
+            }
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+            verdict = false;
+        }
+        return verdict;
+    }
 
-	public Vector<RptMeasurementTypesBean> getMeasurementTypeVector() {
-		return measurementTypeVector;
-	}
+    public Vector<RptMeasurementTypesBean> getMeasurementTypeVector() {
+        return measurementTypeVector;
+    }
 
-	public Vector<RptMeasuringInstructionBeanHandler> getMeasuringInstrcBeanVector() {
-		return measuringInstrcBeanVector;
-	}
+    public Vector<RptMeasuringInstructionBeanHandler> getMeasuringInstrcBeanVector() {
+        return measuringInstrcBeanVector;
+    }
 }

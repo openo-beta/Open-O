@@ -18,7 +18,8 @@
 
 --%>
 
-<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat" errorPage="/errorpage.jsp"%>
+<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat"
+         errorPage="/errorpage.jsp" %>
 
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.RaHeader" %>
@@ -28,74 +29,74 @@
 <%@page import="org.oscarehr.common.model.RaDetail" %>
 <%@page import="org.oscarehr.common.dao.RaDetailDao" %>
 <%
-	RaHeaderDao dao = SpringUtils.getBean(RaHeaderDao.class);
-	BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
-	RaDetailDao raDetailDao = SpringUtils.getBean(RaDetailDao.class);
+    RaHeaderDao dao = SpringUtils.getBean(RaHeaderDao.class);
+    BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
+    RaDetailDao raDetailDao = SpringUtils.getBean(RaDetailDao.class);
 %>
 
-<% 
-String raNo = "", flag="", plast="", pfirst="", pohipno="", proNo="";
-String filepath="", filename = "", header="", headerCount="", total="", paymentdate="", payable="", totalStatus="", deposit=""; //request.getParameter("filename");
-String transactiontype="", providerno="", specialty="", account="", patient_last="", patient_first="", provincecode="", hin="", ver="", billtype="", location="";
-String servicedate="", serviceno="", servicecode="", amountsubmit="", amountpay="", amountpaysign="", explain="", error="";
-String proFirst="", proLast="", demoFirst="", demoLast="", apptDate="", apptTime="", checkAccount="";
-String errorAccount ="", eFlag="", noErrorAccount="";
+<%
+    String raNo = "", flag = "", plast = "", pfirst = "", pohipno = "", proNo = "";
+    String filepath = "", filename = "", header = "", headerCount = "", total = "", paymentdate = "", payable = "", totalStatus = "", deposit = ""; //request.getParameter("filename");
+    String transactiontype = "", providerno = "", specialty = "", account = "", patient_last = "", patient_first = "", provincecode = "", hin = "", ver = "", billtype = "", location = "";
+    String servicedate = "", serviceno = "", servicecode = "", amountsubmit = "", amountpay = "", amountpaysign = "", explain = "", error = "";
+    String proFirst = "", proLast = "", demoFirst = "", demoLast = "", apptDate = "", apptTime = "", checkAccount = "";
+    String errorAccount = "", eFlag = "", noErrorAccount = "";
 
 
-raNo = request.getParameter("rano");
-if (raNo == null || raNo.compareTo("") == 0) return;
+    raNo = request.getParameter("rano");
+    if (raNo == null || raNo.compareTo("") == 0) return;
 
-ArrayList noErrorBill = new ArrayList();
-ArrayList errorBill = new ArrayList();
+    ArrayList noErrorBill = new ArrayList();
+    ArrayList errorBill = new ArrayList();
 
-for(RaDetail rad:raDetailDao.search_raerror35(Integer.parseInt(raNo),"I2","35",proNo+"%")) {
-	account = String.valueOf(rad.getBillingNo());
-	errorBill.add(account);	
-}
-
-
-account = "";
-List<Integer> res = raDetailDao.search_ranoerror35(Integer.parseInt(raNo),"I2","35",proNo+"%");
-
-for (Integer r:res) {   
-	account = String.valueOf(r);
-	eFlag="1";
-	for (int i=0; i< errorBill.size(); i++){
-		errorAccount = (String) errorBill.get(i);
-		if(errorAccount.compareTo(account)==0) {
-			eFlag = "0";
-			break;
-		}
-	}
-
-	if(eFlag.compareTo("1")==0) noErrorBill.add(account);
-}      
-
-for (int j=0; j< noErrorBill.size();j++){
-	noErrorAccount=(String) noErrorBill.get(j);
+    for (RaDetail rad : raDetailDao.search_raerror35(Integer.parseInt(raNo), "I2", "35", proNo + "%")) {
+        account = String.valueOf(rad.getBillingNo());
+        errorBill.add(account);
+    }
 
 
-	int recordAffected = 0;
-	for(Billing b:billingDao.findActive(Integer.parseInt(noErrorAccount))) {
-          if(b != null) {
-        	  b.setStatus("S");
-        	  billingDao.merge(b);
-        	  recordAffected++;
-          }
-      }
-}
+    account = "";
+    List<Integer> res = raDetailDao.search_ranoerror35(Integer.parseInt(raNo), "I2", "35", proNo + "%");
 
-int recordAffected1 = 0;
+    for (Integer r : res) {
+        account = String.valueOf(r);
+        eFlag = "1";
+        for (int i = 0; i < errorBill.size(); i++) {
+            errorAccount = (String) errorBill.get(i);
+            if (errorAccount.compareTo(account) == 0) {
+                eFlag = "0";
+                break;
+            }
+        }
 
-RaHeader raHeader = dao.find(Integer.parseInt(raNo));
-if(raHeader != null) {
-	 raHeader.setStatus("S");
-	 dao.merge(raHeader);
-	recordAffected1++;
-}
+        if (eFlag.compareTo("1") == 0) noErrorBill.add(account);
+    }
+
+    for (int j = 0; j < noErrorBill.size(); j++) {
+        noErrorAccount = (String) noErrorBill.get(j);
+
+
+        int recordAffected = 0;
+        for (Billing b : billingDao.findActive(Integer.parseInt(noErrorAccount))) {
+            if (b != null) {
+                b.setStatus("S");
+                billingDao.merge(b);
+                recordAffected++;
+            }
+        }
+    }
+
+    int recordAffected1 = 0;
+
+    RaHeader raHeader = dao.find(Integer.parseInt(raNo));
+    if (raHeader != null) {
+        raHeader.setStatus("S");
+        dao.merge(raHeader);
+        recordAffected1++;
+    }
 %>
 
 <script LANGUAGE="JavaScript">
-	self.close();
-	self.opener.refresh();
+    self.close();
+    self.opener.refresh();
 </script>

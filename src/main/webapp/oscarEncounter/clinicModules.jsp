@@ -24,52 +24,52 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_eChart");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_eChart");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@page import="java.net.URLEncoder"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite"%>
-<%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar"%>
+<%@page import="java.net.URLEncoder" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
+<%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
-  long startTime = System.currentTimeMillis();
-  oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
-  if((bean=(oscar.oscarEncounter.pageUtil.EctSessionBean)request.getSession().getAttribute("EctSessionBean"))==null) {
-      response.sendError(response.SC_FORBIDDEN);    
-      //response.sendRedirect("error.jsp");
-      return;
-  }
-  java.util.Locale vLocale =(java.util.Locale)session.getAttribute(org.apache.struts.Globals.LOCALE_KEY);  
-  oscar.util.UtilDateUtilities dateConvert = new oscar.util.UtilDateUtilities();
-  String pAge = Integer.toString(dateConvert.calcAge(bean.yearOfBirth,bean.monthOfBirth,bean.dateOfBirth));
-  String winName = "";
+    long startTime = System.currentTimeMillis();
+    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
+    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
+        response.sendError(response.SC_FORBIDDEN);
+        //response.sendRedirect("error.jsp");
+        return;
+    }
+    java.util.Locale vLocale = (java.util.Locale) session.getAttribute(org.apache.struts.Globals.LOCALE_KEY);
+    oscar.util.UtilDateUtilities dateConvert = new oscar.util.UtilDateUtilities();
+    String pAge = Integer.toString(dateConvert.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
+    String winName = "";
 %>
 
-<h3>&nbsp;<bean:message key="oscarEncounter.Index.clinicalModules" /></h3>
+<h3>&nbsp;<bean:message key="oscarEncounter.Index.clinicalModules"/></h3>
 <ul id="ModuleList">
 
-	<li><oscar:oscarPropertiesCheck property="PREVENTION" value="yes">
-		<%
-                               winName = "Prevention" + bean.demographicNo;
-                            %>
-		<a class="links" onmouseover="this.className='linkhover'"
-			onmouseout="this.className='links'"
-			href="javascript:popupPage(700,960,'<%=winName%>','../oscarPrevention/index.jsp?demographic_no=<%=bean.demographicNo%>')">
-		<oscar:preventionWarnings demographicNo="<%=bean.demographicNo%>">prevention</oscar:preventionWarnings></a>
-	</oscar:oscarPropertiesCheck></li>
-	<%-- <li>
+    <li><oscar:oscarPropertiesCheck property="PREVENTION" value="yes">
+        <%
+            winName = "Prevention" + bean.demographicNo;
+        %>
+        <a class="links" onmouseover="this.className='linkhover'"
+           onmouseout="this.className='links'"
+           href="javascript:popupPage(700,960,'<%=winName%>','../oscarPrevention/index.jsp?demographic_no=<%=bean.demographicNo%>')">
+            <oscar:preventionWarnings demographicNo="<%=bean.demographicNo%>">prevention</oscar:preventionWarnings></a>
+    </oscar:oscarPropertiesCheck></li>
+    <%-- <li>
                         <%
                            winName = "Disease" + bean.demographicNo;
                         %>
@@ -86,15 +86,15 @@ if(!authed) {
                         <a class="links" onmouseover="this.className='linkhover'"  onmouseout="this.className='links'" href="#" onClick="popupPage(700,1000,'<%=winName%>','../tickler/ticklerDemoMain.jsp?demoview=<%=bean.demographicNo%>');return false;"><bean:message key="global.viewTickler"/></a><br>
                         
                     </li> --%>
-	<li>
-	<%
-                           winName = "Calculator" + bean.demographicNo;
-                        %> <a class="links"
-		onmouseover="this.className='linkhover'"
-		onmouseout="this.className='links'"
-		href="javascript: function myFunction() {return false; }"
-		onClick="popupPage(150,200,'<%=winName%>','calculators.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>'); return false;"><bean:message
-		key="oscarEncounter.Index.calculators" /></a></li>
+    <li>
+        <%
+            winName = "Calculator" + bean.demographicNo;
+        %> <a class="links"
+              onmouseover="this.className='linkhover'"
+              onmouseout="this.className='links'"
+              href="javascript: function myFunction() {return false; }"
+              onClick="popupPage(150,200,'<%=winName%>','calculators.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>'); return false;"><bean:message
+            key="oscarEncounter.Index.calculators"/></a></li>
 
 </ul>
 <input type="hidden" id="modCount" value="7">

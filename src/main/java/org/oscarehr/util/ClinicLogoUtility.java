@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * The Pharmacists Clinic
  * Faculty of Pharmaceutical Sciences
@@ -69,59 +69,58 @@ public final class ClinicLogoUtility {
         OscarProperties props = OscarProperties.getInstance();
 
         String filename = "";
-        if(props.getProperty("multisites")!=null && "on".equalsIgnoreCase(props.getProperty("multisites")) && ectConsultationFormRequestUtil != null) {
+        if (props.getProperty("multisites") != null && "on".equalsIgnoreCase(props.getProperty("multisites")) && ectConsultationFormRequestUtil != null) {
             DocumentDao documentDao = (DocumentDao) SpringUtils.getBean(DocumentDao.class);
             SiteDao siteDao = (SiteDao) SpringUtils.getBean(SiteDao.class);
             Site site = siteDao.getById(Integer.valueOf(ectConsultationFormRequestUtil.siteName));
-            if(site!=null) {
-                if(site.getSiteLogoId()!=null) {
+            if (site != null) {
+                if (site.getSiteLogoId() != null) {
                     org.oscarehr.common.model.Document d = documentDao.getDocument(String.valueOf(site.getSiteLogoId()));
                     String dir = props.getProperty("DOCUMENT_DIR");
                     filename = dir.concat(d.getDocfilename());
                 } else {
                     //If no logo file uploaded for this site, use the default one defined in oscar properties file.
                     filename = props.getProperty("clinicLetterheadLogo");
-                    if(filename == null) {
+                    if (filename == null) {
                         filename = props.getProperty("faxLogoInConsultation");
                     }
                 }
             }
         } else {
             filename = props.getProperty("clinicLetterheadLogo");
-            if(filename == null) {
+            if (filename == null) {
                 filename = props.getProperty("faxLogoInConsultation");
             }
         }
 
         Path path = Paths.get(filename);
-        if(Files.exists(path))
-        {
-            addImage( infoTable, filename, PageSize.LETTER.getWidth() * 0.5f, LOGO_HEIGHT );
+        if (Files.exists(path)) {
+            addImage(infoTable, filename, PageSize.LETTER.getWidth() * 0.5f, LOGO_HEIGHT);
         }
         return infoTable;
 
     }
 
     public static PdfPTable createLogoHeader(EctConsultationFormRequestUtil ectConsultationFormRequestUtil) {
-        ClinicLogoUtility.ectConsultationFormRequestUtil =  ectConsultationFormRequestUtil;
+        ClinicLogoUtility.ectConsultationFormRequestUtil = ectConsultationFormRequestUtil;
         return createLogoHeader();
     }
 
-    private static void addImage( PdfPTable pdfPTable, String filename, float width, float height ) {
-        try (FileInputStream fileInputStream = new FileInputStream( filename )){
+    private static void addImage(PdfPTable pdfPTable, String filename, float width, float height) {
+        try (FileInputStream fileInputStream = new FileInputStream(filename)) {
             PdfPCell cell = new PdfPCell();
             byte[] faxLogImage = new byte[1024 * 256];
-            fileInputStream.read( faxLogImage );
-            Image image = Image.getInstance( faxLogImage );
-            image.scaleToFit( width, height );
+            fileInputStream.read(faxLogImage);
+            Image image = Image.getInstance(faxLogImage);
+            image.scaleToFit(width, height);
             image.setBorder(0);
-            cell.addElement( image );
+            cell.addElement(image);
             cell.setPadding(-11);
             cell.setBorder(0);
             cell.setFixedHeight(HEADER_HEIGHT);
             pdfPTable.addCell(cell);
         } catch (FileNotFoundException e) {
-            logger.error("Failed to locate file at " + filename , e);
+            logger.error("Failed to locate file at " + filename, e);
         } catch (BadElementException e) {
             logger.error("Unexpected error.", e);
         } catch (MalformedURLException e) {

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,63 +34,63 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="groupMembers_tbl")
-public class GroupMembers extends AbstractModel<Integer>{
+@Table(name = "groupMembers_tbl")
+public class GroupMembers extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="groupID")
-	private int groupId;
+    @Column(name = "groupID")
+    private int groupId;
 
-	@Column(name="provider_no")
-	private String providerNo;
-	
-	@Column(name="facilityId")
-	private int facilityId;
-	
-	@Column(name="clinicLocationNo")
-	private int clinicLocationNo;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	public Integer getId() {
-    	return id;
+    @Column(name = "facilityId")
+    private int facilityId;
+
+    @Column(name = "clinicLocationNo")
+    private int clinicLocationNo;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public int getGroupId() {
-    	return groupId;
+    public int getGroupId() {
+        return groupId;
     }
 
-	public void setGroupId(int groupId) {
-    	this.groupId = groupId;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public int getFacilityId() {
-		return facilityId;
-	}
+    public int getFacilityId() {
+        return facilityId;
+    }
 
-	public void setFacilityId(int facilityId) {
-		this.facilityId = facilityId;
-	}
+    public void setFacilityId(int facilityId) {
+        this.facilityId = facilityId;
+    }
 
-	public int getClinicLocationNo() {
-		return clinicLocationNo;
-	}
+    public int getClinicLocationNo() {
+        return clinicLocationNo;
+    }
 
-	public void setClinicLocationNo(int clinicLocationNo) {
-		this.clinicLocationNo = clinicLocationNo;
-	}
+    public void setClinicLocationNo(int clinicLocationNo) {
+        this.clinicLocationNo = clinicLocationNo;
+    }
 
 }

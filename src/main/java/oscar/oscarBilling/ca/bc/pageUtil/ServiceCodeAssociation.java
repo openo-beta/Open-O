@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,57 +42,58 @@ import java.util.List;
  * @version 1.0
  */
 public class ServiceCodeAssociation {
-  private List dxCodes = new ArrayList();
-  private String serviceCode;
-  public ServiceCodeAssociation() {
+    private List dxCodes = new ArrayList();
+    private String serviceCode;
 
-  }
+    public ServiceCodeAssociation() {
 
-  /**
-   * Returns a String List of associated diagnostic codes
-   * @return List
-   */
-  public List getDxCodes() {
-    return dxCodes;
-  }
+    }
 
-  /**
-   * Returns the service code
-   * @return String
-   */
-  public String getServiceCode() {
-    return serviceCode;
-  }
+    /**
+     * Returns a String List of associated diagnostic codes
+     * @return List
+     */
+    public List getDxCodes() {
+        return dxCodes;
+    }
 
-  /**
-   * Sets a String list of associated diagonostic codes
-   * @param dxCodes List
-   */
-  public void setDxCodes(List dxCodes) {
-    this.dxCodes = dxCodes;
-  }
+    /**
+     * Returns the service code
+     * @return String
+     */
+    public String getServiceCode() {
+        return serviceCode;
+    }
 
-  /**
-   * Sets the service code
-   * @param serviceCode String
-   */
-  public void setServiceCode(String serviceCode) {
-    this.serviceCode = serviceCode;
-  }
+    /**
+     * Sets a String list of associated diagonostic codes
+     * @param dxCodes List
+     */
+    public void setDxCodes(List dxCodes) {
+        this.dxCodes = dxCodes;
+    }
 
-  /**
-   * Associates a diagnostic code with the service code
-   * @param code String
-   */
-  public void addDXCode(String code) {
-    this.dxCodes.add(code);
-  }
+    /**
+     * Sets the service code
+     * @param serviceCode String
+     */
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
+    }
 
-  /**
-   * Returns true if this service code is associate with atleast one dx code
-   * @return boolean
-   */
-  public boolean hasDXCodes(){
-   return !this.dxCodes.isEmpty();
-  }
+    /**
+     * Associates a diagnostic code with the service code
+     * @param code String
+     */
+    public void addDXCode(String code) {
+        this.dxCodes.add(code);
+    }
+
+    /**
+     * Returns true if this service code is associate with atleast one dx code
+     * @return boolean
+     */
+    public boolean hasDXCodes() {
+        return !this.dxCodes.isEmpty();
+    }
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -59,8 +59,7 @@ public class dbExtract implements Serializable {
             con = DbConnectionFilter.getThreadLocalDbConnection();
             stmt = con.createStatement();
             stmt2 = con.createStatement();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             MiscUtils.getLogger().debug("Cannot get connection ");
             MiscUtils.getLogger().debug("Exception is: " + e);
         }
@@ -74,8 +73,7 @@ public class dbExtract implements Serializable {
             // statement
             resultSet = stmt.executeQuery(SQLString);
             return resultSet;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             MiscUtils.getLogger().debug("Cannot get connection ");
             MiscUtils.getLogger().debug("Exception is: " + e);
             return resultSet;
@@ -89,8 +87,7 @@ public class dbExtract implements Serializable {
             // statement
             resultSet2 = stmt2.executeQuery(SQLString);
             return resultSet2;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             MiscUtils.getLogger().debug("Cannot get connection ");
             MiscUtils.getLogger().debug("Exception is: " + e);
             return resultSet2;
@@ -104,8 +101,7 @@ public class dbExtract implements Serializable {
             // statement
             resultSet3 = stmt3.executeQuery(SQLString);
             return resultSet3;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             MiscUtils.getLogger().debug("Cannot get connection ");
             MiscUtils.getLogger().debug("Exception is: " + e);
             return resultSet3;
@@ -119,8 +115,7 @@ public class dbExtract implements Serializable {
                 stmt.close();
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
 

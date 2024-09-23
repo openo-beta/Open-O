@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -71,19 +71,18 @@ public class HRMPDFCreator extends PdfPageEventHelper {
 
             //If the list is not null and it has items in it
             if (hrmDocuments != null && hrmDocuments.size() > 0) {
-                hrmDocument =  hrmDocuments.get(0);
+                hrmDocument = hrmDocuments.get(0);
 
                 logger.info("Parsing the HRM Document into a report for printing");
                 //Gets and parses the HRMReport storing it in the class variable
                 hrmReport = HRMReportParser.parseReport(loggedInInfo, hrmDocument.getReportFile());
             }
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             logger.error("HRM Id is not a valid integer", e);
         }
     }
 
-    public void printPdf()  {
+    public void printPdf() {
         try {
             if (!hrmReport.isBinary()) {
                 document = new Document();
@@ -92,9 +91,9 @@ public class HRMPDFCreator extends PdfPageEventHelper {
                 writer.setPageEvent(this);
 
                 document.setPageSize(PageSize.LETTER);
-                
+
                 document.open();
-                
+
                 if (hrmReport != null) {
                     generateHRMReport(hrmReport);
                 } else {
@@ -102,19 +101,18 @@ public class HRMPDFCreator extends PdfPageEventHelper {
                 }
 
                 document.close();
-            }
-            else if (hrmReport.getFileExtension() != null && (hrmReport.getFileExtension().equals(".gif") || hrmReport.getFileExtension().equals(".jpg") || hrmReport.getFileExtension().equals(".png"))) {
+            } else if (hrmReport.getFileExtension() != null && (hrmReport.getFileExtension().equals(".gif") || hrmReport.getFileExtension().equals(".jpg") || hrmReport.getFileExtension().equals(".png"))) {
                 document = new Document();
 
                 PdfWriter writer = PdfWriter.getInstance(document, outputStream);
                 writer.setPageEvent(this);
 
                 document.setPageSize(PageSize.LETTER);
-                
+
                 //Sets the margins to 0 so that the entire page is used
                 document.setMargins(0, 0, 0, 0);
                 document.open();
-      
+
                 //Add confidentiality statement to PDF
                 float footerHeight = 0f;
                 HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
@@ -164,7 +162,7 @@ public class HRMPDFCreator extends PdfPageEventHelper {
                     image.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight() - footerHeight);
 
                 }
-                
+
                 document.add(image);
 
                 if (confidentialityStatementTable != null) {
@@ -173,25 +171,21 @@ public class HRMPDFCreator extends PdfPageEventHelper {
                 }
 
                 document.close();
-            }
-            else if (hrmReport.getFileExtension() != null && (hrmReport.getFileExtension().equals(".html"))) {
+            } else if (hrmReport.getFileExtension() != null && (hrmReport.getFileExtension().equals(".html"))) {
                 EFormData eFormData = new EFormData();
                 byte[] htmlHrmReportData = hrmReport.getBinaryContent();
                 eFormData.setFormData(new String(htmlHrmReportData, StandardCharsets.UTF_8));
                 Path path = ConvertToEdoc.saveAsTempPDF(eFormData);
                 outputStream.write(Files.readAllBytes(path));
-            }
-            else {
+            } else {
                 logger.info("HRM Report is binary, only printing the attachment");
                 outputStream.write(hrmReport.getBinaryContent());
             }
-            
+
             outputStream.flush();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.error("An I/O Exception has occurred while either getting a PDFWriter Instance or creating the BaseFont", e);
-        }
-        catch (DocumentException e) {
+        } catch (DocumentException e) {
             logger.error("A Document Exception occurred while either getting a PDFWriter or creating the BaseFont", e);
         }
     }
@@ -268,7 +262,7 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         }
 
         //Creates a box at the bottom of the report that contains the metadata
-        float [] metaDataBoxWidths = {1f, 2f};
+        float[] metaDataBoxWidths = {1f, 2f};
         PdfPTable metaDataBox = new PdfPTable(metaDataBoxWidths);
 
         cell.setPhrase(new Phrase("Message Unique ID: ", boldFont));
@@ -282,11 +276,11 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         cell.setPhrase(new Phrase("Sending Author: ", boldFont));
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         metaDataBox.addCell(cell);
-        
+
         cell.setPhrase(new Phrase(hrmReport.getSendingAuthor(), font));
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         metaDataBox.addCell(cell);
-        
+
         cell.setPhrase(new Phrase("Sending Facility ID: ", boldFont));
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         metaDataBox.addCell(cell);

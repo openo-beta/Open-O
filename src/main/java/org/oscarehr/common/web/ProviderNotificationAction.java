@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,50 +49,50 @@ import org.oscarehr.util.SpringUtils;
  */
 public class ProviderNotificationAction extends Action {
 
-	private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-	private UserDSMessagePrefsDao userDsMessagePrefsDao = SpringUtils.getBean(UserDSMessagePrefsDao.class);
+    private UserDSMessagePrefsDao userDsMessagePrefsDao = SpringUtils.getBean(UserDSMessagePrefsDao.class);
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String providerNo=loggedInInfo.getLoggedInProviderNo();
-		String resourceId = request.getParameter("id");
-		String resourceType = request.getParameter("type");
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        String resourceId = request.getParameter("id");
+        String resourceType = request.getParameter("type");
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Processing notification");
-		}
+        if (logger.isDebugEnabled()) {
+            logger.debug("Processing notification");
+        }
 
-		List<UserDSMessagePrefs> prefs = userDsMessagePrefsDao.findMessages(providerNo, resourceType, resourceId, false);
-		for(UserDSMessagePrefs p : prefs) {
-			p.setArchived(true);
-			userDsMessagePrefsDao.merge(p);
-		}
+        List<UserDSMessagePrefs> prefs = userDsMessagePrefsDao.findMessages(providerNo, resourceType, resourceId, false);
+        for (UserDSMessagePrefs p : prefs) {
+            p.setArchived(true);
+            userDsMessagePrefsDao.merge(p);
+        }
 
-		UserDSMessagePrefs pref = new UserDSMessagePrefs();
-		pref.setProviderNo(providerNo);
-		pref.setResourceId(resourceId);
-		pref.setResourceType(resourceType);
-		pref.setArchived(false);
-		pref.setResourceUpdatedDate(new Date());
+        UserDSMessagePrefs pref = new UserDSMessagePrefs();
+        pref.setProviderNo(providerNo);
+        pref.setResourceId(resourceId);
+        pref.setResourceType(resourceType);
+        pref.setArchived(false);
+        pref.setResourceUpdatedDate(new Date());
 
-		userDsMessagePrefsDao.persist(pref);
+        userDsMessagePrefsDao.persist(pref);
 
-		JSONObject json = new JSONObject();
-		json.put("id", pref.getId());
-		json.put("status", "success");
+        JSONObject json = new JSONObject();
+        json.put("id", pref.getId());
+        json.put("status", "success");
 
-		Writer writer = null;
-		try {
-			writer = new OutputStreamWriter(response.getOutputStream());
-			json.write(writer);
-			writer.flush();
-		} finally {
-			writer.close();
-		}
+        Writer writer = null;
+        try {
+            writer = new OutputStreamWriter(response.getOutputStream());
+            json.write(writer);
+            writer.flush();
+        } finally {
+            writer.close();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 
 }

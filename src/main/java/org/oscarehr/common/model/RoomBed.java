@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,58 +34,58 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="room_bed")
-public class RoomBed extends AbstractModel<RoomBedPK>{
+@Table(name = "room_bed")
+public class RoomBed extends AbstractModel<RoomBedPK> {
 
-	@EmbeddedId
-	private RoomBedPK id;
-	
-	@Column(name="assign_start")
-	@Temporal(TemporalType.DATE)
-	private Date assignStart;
-	
-	@Column(name="assign_end")
-	@Temporal(TemporalType.DATE)
-	private Date assignEnd;
-	
-	@Column(name="comments",length=50)
-	private String comment;
-	
-	public RoomBed() {
-		id = new RoomBedPK();
-	}
+    @EmbeddedId
+    private RoomBedPK id;
 
-	public RoomBedPK getId() {
-		return id;
-	}
+    @Column(name = "assign_start")
+    @Temporal(TemporalType.DATE)
+    private Date assignStart;
 
-	public void setId(RoomBedPK id) {
-		this.id = id;
-	}
+    @Column(name = "assign_end")
+    @Temporal(TemporalType.DATE)
+    private Date assignEnd;
 
-	public Date getAssignStart() {
-		return assignStart;
-	}
+    @Column(name = "comments", length = 50)
+    private String comment;
 
-	public void setAssignStart(Date assignStart) {
-		this.assignStart = assignStart;
-	}
+    public RoomBed() {
+        id = new RoomBedPK();
+    }
 
-	public Date getAssignEnd() {
-		return assignEnd;
-	}
+    public RoomBedPK getId() {
+        return id;
+    }
 
-	public void setAssignEnd(Date assignEnd) {
-		this.assignEnd = assignEnd;
-	}
+    public void setId(RoomBedPK id) {
+        this.id = id;
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    public Date getAssignStart() {
+        return assignStart;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-	
-	
+    public void setAssignStart(Date assignStart) {
+        this.assignStart = assignStart;
+    }
+
+    public Date getAssignEnd() {
+        return assignEnd;
+    }
+
+    public void setAssignEnd(Date assignEnd) {
+        this.assignEnd = assignEnd;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,9 +35,9 @@ public class CheckBillingData {
 
     // check batchHeader VS1
     public String checkVS1(String recordCode, String dataCentreNum,
-            String dataCentreSeq, String vendorMSPDCNum, String softName,
-            String softVer, String softInsDate, String vendorName,
-            String vendorContact, String vendorConName, String filler) {
+                           String dataCentreSeq, String vendorMSPDCNum, String softName,
+                           String softVer, String softInsDate, String vendorName,
+                           String vendorContact, String vendorConName, String filler) {
         String ret = checkVS1DataCenterNum(dataCentreNum);
         ret = printWarningMsg(ret);
         return ret;
@@ -92,7 +92,7 @@ public class CheckBillingData {
             }
         }
         if (m != null && m.equals("") && ins != null && !ins.equals(""))
-                ret = "";
+            ret = "";
         return ret;
     }
 
@@ -128,7 +128,7 @@ public class CheckBillingData {
     public boolean checkPHN(String m) {
         boolean ret = false;
         if (m.matches("\\d+") && m.startsWith("9")) {
-            int[] consWeight = { 0, 2, 4, 8, 5, 10, 9, 7, 3, 0};
+            int[] consWeight = {0, 2, 4, 8, 5, 10, 9, 7, 3, 0};
             int temp = 0;
 
             // calculate weight result
@@ -223,7 +223,7 @@ public class CheckBillingData {
         String ret = "C02:P52 Birth Date Wrong! ";
         if (m != null
                 && (m.equals("") || m
-                        .matches("0{8}|[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
+                .matches("0{8}|[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
             ret = "";
         }
         return ret;
@@ -257,7 +257,7 @@ public class CheckBillingData {
         String ret = "C02:P100 OIN Insurer Code Wrong! ";
         if (m != null
                 && (m.equals("") || m
-                        .matches("AB|SK|MB|ON|NS|PE|NF|NL|NT|NB|YT|IN|PP|WC"))) {
+                .matches("AB|SK|MB|ON|NS|PE|NF|NL|NT|NB|YT|IN|PP|WC"))) {
             ret = "";
         }
         return ret;
@@ -267,7 +267,7 @@ public class CheckBillingData {
         String ret = "C02:P104 OIN Birth Date Wrong! ";
         if (m != null
                 && (m.equals("") || m
-                        .matches("[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
+                .matches("[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
             ret = "";
         }
         return ret;

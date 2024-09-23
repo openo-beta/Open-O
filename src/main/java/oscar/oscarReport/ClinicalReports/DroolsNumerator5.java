@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -54,7 +54,7 @@ import oscar.util.ConversionUtils;
  *
  * @author jay
  */
-public class DroolsNumerator5 implements Numerator{
+public class DroolsNumerator5 implements Numerator {
     String name = null;
     String id = null;
     String file = null;
@@ -65,7 +65,7 @@ public class DroolsNumerator5 implements Numerator{
     public DroolsNumerator5() {
     }
 
-     public String getId() {
+    public String getId() {
         return id;
     }
 
@@ -73,28 +73,28 @@ public class DroolsNumerator5 implements Numerator{
         return name;
     }
 
-    public void setNumeratorName(String name){
-        this.name= name;
+    public void setNumeratorName(String name) {
+        this.name = name;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
 
     public boolean evaluate(LoggedInInfo loggedInInfo, String demographicNo) {
         boolean evalTrue = false;
-        try{
+        try {
 
             Iterator terator = replaceableValues.entrySet().iterator();
-            while(terator.hasNext()){
+            while (terator.hasNext()) {
                 Entry en = (Entry) terator.next();
-                MiscUtils.getLogger().debug("IN DROOLS5 key "+en.getKey()+" val "+en.getValue());
+                MiscUtils.getLogger().debug("IN DROOLS5 key " + en.getKey() + " val " + en.getValue());
             }
 
             String measurement = (String) replaceableValues.get("measurements");
-            String value =  (String) replaceableValues.get("value");
-            String startDate =  (String) replaceableValues.get("startDate");
-            String endDate =  (String) replaceableValues.get("endDate");
+            String value = (String) replaceableValues.get("value");
+            String startDate = (String) replaceableValues.get("startDate");
+            String endDate = (String) replaceableValues.get("endDate");
 
             Date startDateAsDate = ConversionUtils.fromDateString(startDate, "yyyy-MM-dd");
             Date endDateAsDate = ConversionUtils.fromDateString(endDate, "yyyy-MM-dd");
@@ -113,7 +113,6 @@ public class DroolsNumerator5 implements Numerator{
             RuleBaseCreator rcb = new RuleBaseCreator();
 
 
-
             RuleBase ruleBase = rcb.getRuleBase("rulesetName", list2);
 
 //            EctMeasurementsDataBeanHandler ect = new EctMeasurementsDataBeanHandler(demographicNo, measurement);
@@ -121,7 +120,7 @@ public class DroolsNumerator5 implements Numerator{
 //           measurementList.add(new ArrayList(v));
 
             MeasurementDSHelper dshelper = new MeasurementDSHelper(loggedInInfo, demographicNo);
-            dshelper.setMeasurement(measurement,startDateAsDate,endDateAsDate);
+            dshelper.setMeasurement(measurement, startDateAsDate, endDateAsDate);
 
 
             MiscUtils.getLogger().debug("new working mem");
@@ -137,7 +136,7 @@ public class DroolsNumerator5 implements Numerator{
             evalTrue = dshelper.isInRange();
 
             MiscUtils.getLogger().debug("right before catch");
-        }catch(Exception e){
+        } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
         return evalTrue;
@@ -147,34 +146,34 @@ public class DroolsNumerator5 implements Numerator{
         this.file = file;
     }
 
-    public String getFile(){
+    public String getFile() {
         return file;
     }
 
 
-    public RuleBase loadMeasurementRuleBase(String string){
+    public RuleBase loadMeasurementRuleBase(String string) {
         RuleBase measurementRuleBase = null;
-        try{
+        try {
             boolean fileFound = false;
             String measurementDirPath = OscarProperties.getInstance().getProperty("MEASUREMENT_DS_DIRECTORY");
 
-            if ( measurementDirPath != null){
-            //if (measurementDirPath.charAt(measurementDirPath.length()) != /)
-            File file = new File(OscarProperties.getInstance().getProperty("MEASUREMENT_DS_DIRECTORY")+string);
-               if(file.isFile() || file.canRead()) {
-                   MiscUtils.getLogger().debug("Loading from file "+file.getName());
-                   FileInputStream fis = new FileInputStream(file);
-                   measurementRuleBase = RuleBaseLoader.loadFromInputStream(fis);
-                   fileFound = true;
-               }
+            if (measurementDirPath != null) {
+                //if (measurementDirPath.charAt(measurementDirPath.length()) != /)
+                File file = new File(OscarProperties.getInstance().getProperty("MEASUREMENT_DS_DIRECTORY") + string);
+                if (file.isFile() || file.canRead()) {
+                    MiscUtils.getLogger().debug("Loading from file " + file.getName());
+                    FileInputStream fis = new FileInputStream(file);
+                    measurementRuleBase = RuleBaseLoader.loadFromInputStream(fis);
+                    fileFound = true;
+                }
             }
 
-            if (!fileFound){
-             URL url = MeasurementFlowSheet.class.getResource( "/oscar/oscarEncounter/oscarMeasurements/flowsheets/decisionSupport/"+string );  //TODO: change this so it is configurable;
-             MiscUtils.getLogger().debug("loading from URL "+url.getFile());
-             measurementRuleBase = RuleBaseLoader.loadFromUrl( url );
+            if (!fileFound) {
+                URL url = MeasurementFlowSheet.class.getResource("/oscar/oscarEncounter/oscarMeasurements/flowsheets/decisionSupport/" + string);  //TODO: change this so it is configurable;
+                MiscUtils.getLogger().debug("loading from URL " + url.getFile());
+                measurementRuleBase = RuleBaseLoader.loadFromUrl(url);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
         return measurementRuleBase;
@@ -184,22 +183,22 @@ public class DroolsNumerator5 implements Numerator{
         return outputValues;
     }
 
-    public void parseOutputFields(String str){
-        if (str != null){
-           try{
-              if (str.indexOf(",") != -1){
-                 outputfields = str.split(",");
-              }else{
-                 outputfields =  new String[1];
-                 outputfields[0] = str;
-              }
-           }catch(Exception e){
-              MiscUtils.getLogger().error("Error", e);
-           }
+    public void parseOutputFields(String str) {
+        if (str != null) {
+            try {
+                if (str.indexOf(",") != -1) {
+                    outputfields = str.split(",");
+                } else {
+                    outputfields = new String[1];
+                    outputfields[0] = str;
+                }
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
+            }
         }
     }
 
-    public String[] getOutputFields(){
+    public String[] getOutputFields() {
         return outputfields;
     }
 
@@ -207,29 +206,30 @@ public class DroolsNumerator5 implements Numerator{
     /////NEW FIELDS
     String[] replaceKeys = null;
     Hashtable replaceableValues = null;
-    public String[] getReplaceableKeys(){
+
+    public String[] getReplaceableKeys() {
         return replaceKeys;
     }
 
-    public void parseReplaceValues(String str){
-        if (str != null){
-            try{
-                MiscUtils.getLogger().debug("parsing string "+str);
-                if (str.indexOf(",") != -1){
-                replaceKeys = str.split(",");
-                }else{
-                    replaceKeys =  new String[1];
+    public void parseReplaceValues(String str) {
+        if (str != null) {
+            try {
+                MiscUtils.getLogger().debug("parsing string " + str);
+                if (str.indexOf(",") != -1) {
+                    replaceKeys = str.split(",");
+                } else {
+                    replaceKeys = new String[1];
                     replaceKeys[0] = str;
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
             }
         }
     }
 
-    public boolean hasReplaceableValues(){
+    public boolean hasReplaceableValues() {
         boolean repVal = false;
-        if (replaceKeys != null){
+        if (replaceKeys != null) {
             repVal = true;
         }
         return repVal;

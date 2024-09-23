@@ -26,7 +26,8 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 
 <p class="info">
-	<a class="hand-hover" ng-click="openPopup()"><bean:message key="document.panel" bundle="ui"/></a>&nbsp;<bean:message key="document.popupMessage" bundle="ui"/>
+    <a class="hand-hover" ng-click="openPopup()"><bean:message key="document.panel" bundle="ui"/></a>&nbsp;<bean:message
+        key="document.popupMessage" bundle="ui"/>
 </p>
 
 <p><a ui-sref="dashboard"><bean:message key="global.goToDashboard" bundle="ui"/></a></p>

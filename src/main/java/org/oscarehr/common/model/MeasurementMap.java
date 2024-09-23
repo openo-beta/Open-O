@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,65 +32,65 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="measurementMap")
-public class MeasurementMap extends AbstractModel<Integer>{
+@Table(name = "measurementMap")
+public class MeasurementMap extends AbstractModel<Integer> {
 
-	public enum LAB_TYPE {PATHL7, FLOWSHEET, CML, GDML, ICL}
+    public enum LAB_TYPE {PATHL7, FLOWSHEET, CML, GDML, ICL}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="loinc_code")
-	private String loincCode;
-	
-	@Column(name="ident_code")
-	private String identCode;
-	
-	private String name;
-	
-	@Column(name="lab_type")
-	private String labType;
+    @Column(name = "loinc_code")
+    private String loincCode;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "ident_code")
+    private String identCode;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String name;
 
-	public String getLoincCode() {
-		return loincCode;
-	}
+    @Column(name = "lab_type")
+    private String labType;
 
-	public void setLoincCode(String loincCode) {
-		this.loincCode = loincCode;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getIdentCode() {
-		return identCode;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setIdentCode(String identCode) {
-		this.identCode = identCode;
-	}
+    public String getLoincCode() {
+        return loincCode;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setLoincCode(String loincCode) {
+        this.loincCode = loincCode;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getIdentCode() {
+        return identCode;
+    }
 
-	public String getLabType() {
-		return labType;
-	}
+    public void setIdentCode(String identCode) {
+        this.identCode = identCode;
+    }
 
-	public void setLabType(String labType) {
-		this.labType = labType;
-	}
-	
-	
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLabType() {
+        return labType;
+    }
+
+    public void setLabType(String labType) {
+        this.labType = labType;
+    }
+
+
 }

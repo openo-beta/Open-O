@@ -18,34 +18,34 @@ public class FrmStudyPING_DiabetesRecord extends FrmStudyRecord {
             throws SQLException {
         Properties props = new Properties();
         if (existingID <= 0) {
-            
+
             String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = "
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-				Date dob = UtilDateUtilities.calcDate(rs.getString("year_of_birth"), rs.getString("month_of_birth"), rs.getString("date_of_birth"));
-				props.setProperty("demographic_no", rs.getString("demographic_no"));
-				props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
-				props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
+                Date dob = UtilDateUtilities.calcDate(rs.getString("year_of_birth"), rs.getString("month_of_birth"), rs.getString("date_of_birth"));
+                props.setProperty("demographic_no", rs.getString("demographic_no"));
+                props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
+                props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("birthDate", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
-				props.setProperty("pName", oscar.Misc.getString(rs, "pName"));
-			}
+                props.setProperty("pName", oscar.Misc.getString(rs, "pName"));
+            }
             rs.close();
         } else {
             String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no = "
-                + demographicNo + " AND ID = " + existingID;
-			props = (new oscar.form.FrmRecordHelp()).getFormRecord(sql);
+                    + demographicNo + " AND ID = " + existingID;
+            props = (new oscar.form.FrmRecordHelp()).getFormRecord(sql);
         }
 
         return props;
     }
-    
+
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
         String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no="
-            + demographic_no + " AND ID=0";
+                + demographic_no + " AND ID=0";
 
-		return ((new oscar.form.FrmRecordHelp()).saveFormRecord(props, sql));
+        return ((new oscar.form.FrmRecordHelp()).saveFormRecord(props, sql));
     }
 
 
@@ -62,7 +62,7 @@ public class FrmStudyPING_DiabetesRecord extends FrmStudyRecord {
     }
 
     public String createActionURL(String where, String action, String demoId,
-            String formId, String studyId, String studyLink)
+                                  String formId, String studyId, String studyLink)
             throws SQLException {
         String temp = null;
 

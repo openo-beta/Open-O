@@ -6,29 +6,30 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
 
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.common.model.ClinicLocation;
 import org.springframework.stereotype.Repository;
 
@@ -38,7 +39,7 @@ public class ClinicLocationDaoImpl extends AbstractDaoImpl<ClinicLocation> imple
     public ClinicLocationDaoImpl() {
         super(ClinicLocation.class);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<ClinicLocation> findAll() {
         Query query = entityManager.createQuery("SELECT x FROM " + modelClass.getSimpleName() + " x");
@@ -49,7 +50,7 @@ public class ClinicLocationDaoImpl extends AbstractDaoImpl<ClinicLocation> imple
     public List<ClinicLocation> findByClinicNo(Integer clinicNo) {
         String sql = "select c from ClinicLocation c where c.clinicNo=?1 order by c.clinicLocationNo";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1,clinicNo);
+        query.setParameter(1, clinicNo);
 
         @SuppressWarnings("unchecked")
         List<ClinicLocation> results = query.getResultList();
@@ -60,11 +61,11 @@ public class ClinicLocationDaoImpl extends AbstractDaoImpl<ClinicLocation> imple
     public String searchVisitLocation(String clinicLocationNo) {
         String sql = "select c from ClinicLocation c where c.clinicLocationNo=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1,clinicLocationNo);
+        query.setParameter(1, clinicLocationNo);
 
         @SuppressWarnings("unchecked")
         List<ClinicLocation> results = query.getResultList();
-        if(!results.isEmpty()) {
+        if (!results.isEmpty()) {
             return results.get(0).getClinicLocationName();
         }
         return null;
@@ -73,8 +74,8 @@ public class ClinicLocationDaoImpl extends AbstractDaoImpl<ClinicLocation> imple
     public ClinicLocation searchBillLocation(Integer clinicNo, String clinicLocationNo) {
         String sql = "select c from ClinicLocation c where c.clinicNo=?1 and c.clinicLocationNo=?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1,clinicNo);
-        query.setParameter(2,clinicLocationNo);
+        query.setParameter(1, clinicNo);
+        query.setParameter(2, clinicLocationNo);
 
         return this.getSingleResultOrNull(query);
     }
@@ -82,11 +83,11 @@ public class ClinicLocationDaoImpl extends AbstractDaoImpl<ClinicLocation> imple
     public void removeByClinicLocationNo(String clinicLocationNo) {
         String sql = "select c from ClinicLocation c where c.clinicLocationNo=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1,clinicLocationNo);
+        query.setParameter(1, clinicLocationNo);
 
         @SuppressWarnings("unchecked")
         List<ClinicLocation> results = query.getResultList();
-        for(ClinicLocation clinicLocation:results) {
+        for (ClinicLocation clinicLocation : results) {
             this.remove(clinicLocation);
         }
     }

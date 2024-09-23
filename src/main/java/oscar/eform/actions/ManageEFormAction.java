@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,15 +46,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class ManageEFormAction extends DispatchAction {
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward exportEForm(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "r", null)) {
-			throw new SecurityException("missing required security object (_eform)");
-		}
-    	
+                                     HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "r", null)) {
+            throw new SecurityException("missing required security object (_eform)");
+        }
+
         String fid = request.getParameter("fid");
         MiscUtils.getLogger().debug("fid: " + fid);
         response.setContentType("application/zip");  //octet-stream
@@ -68,11 +68,11 @@ public class ManageEFormAction extends DispatchAction {
     }
 
     public ActionForward importEForm(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                     HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
-			throw new SecurityException("missing required security object (_eform)");
-		}
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
+            throw new SecurityException("missing required security object (_eform)");
+        }
 
         FormFile zippedForm = (FormFile) form.getMultipartRequestHandler().getFileElements().get("zippedForm");
         List<String> errors = Collections.emptyList();
@@ -81,12 +81,12 @@ public class ManageEFormAction extends DispatchAction {
             EFormExportZip eFormExportZip = new EFormExportZip();
             errors = eFormExportZip.importForm(zippedFormStream);
         }
-        if(!errors.isEmpty()){
+        if (!errors.isEmpty()) {
             request.setAttribute("importErrors", errors);
-        	return mapping.findForward("fail");
-        }else{
-	        request.setAttribute("status", "success");
-	        return mapping.findForward("success");
+            return mapping.findForward("fail");
+        } else {
+            request.setAttribute("status", "success");
+            return mapping.findForward("success");
         }
     }
 

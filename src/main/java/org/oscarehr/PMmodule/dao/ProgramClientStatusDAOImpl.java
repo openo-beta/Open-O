@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.PMmodule.dao;
@@ -39,12 +39,12 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 
-public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements ProgramClientStatusDAO{
+public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements ProgramClientStatusDAO {
 
-    private Logger log=MiscUtils.getLogger();
+    private Logger log = MiscUtils.getLogger();
     public SessionFactory sessionFactory;
 
-	@Autowired
+    @Autowired
     public void setSessionFactoryOverride(SessionFactory sessionFactory) {
         super.setSessionFactory(sessionFactory);
     }
@@ -81,21 +81,21 @@ public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements P
             throw new IllegalArgumentException();
         }
 
-       // Session session = getSession();
+        // Session session = getSession();
         Session session = sessionFactory.getCurrentSession();
         List teams = new ArrayList();
         try {
-	        Query query =session.createQuery("select pt.id from ProgramClientStatus pt where pt.programId = ? and pt.name = ?");
-	        query.setLong(0, programId.longValue());
-	        query.setString(1, statusName);
-	
-	        teams = query.list();
-	
-	        if (log.isDebugEnabled()) {
-	            log.debug("teamNameExists: programId = " + programId + ", statusName = " + statusName + ", result = " + !teams.isEmpty());
-	        }
-        }finally {
-        	//releaseSession(session);
+            Query query = session.createQuery("select pt.id from ProgramClientStatus pt where pt.programId = ? and pt.name = ?");
+            query.setLong(0, programId.longValue());
+            query.setString(1, statusName);
+
+            teams = query.list();
+
+            if (log.isDebugEnabled()) {
+                log.debug("teamNameExists: programId = " + programId + ", statusName = " + statusName + ", result = " + !teams.isEmpty());
+            }
+        } finally {
+            //releaseSession(session);
             session.close();
         }
         return !teams.isEmpty();
@@ -110,7 +110,7 @@ public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements P
             throw new IllegalArgumentException();
         }
 
-        List<Admission> results = (List<Admission>) this.getHibernateTemplate().find("from Admission a where a.ProgramId = ? and a.TeamId = ? and a.AdmissionStatus='current'", new Object[] {programId, statusId});
+        List<Admission> results = (List<Admission>) this.getHibernateTemplate().find("from Admission a where a.ProgramId = ? and a.TeamId = ? and a.AdmissionStatus='current'", new Object[]{programId, statusId});
 
         if (log.isDebugEnabled()) {
             log.debug("getAdmissionsInTeam: programId= " + programId + ",statusId=" + statusId + ",# results=" + results.size());

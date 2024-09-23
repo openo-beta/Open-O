@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -26,30 +26,30 @@ import org.oscarehr.documentManager.data.ChangeDocStatusForm;
 
 public class ChangeDocStatusAction extends DispatchAction {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
-		
-		ChangeDocStatusForm fm = (ChangeDocStatusForm) form;
-		
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-			throw new SecurityException("missing required security object (_edoc)");
-		}
-	
-		if ((fm.getDocTypeD()!="")&&(fm.getStatusD()!="")) {
-				EDocUtil.changeDocTypeStatusSQL(fm.getDocTypeD(),"Demographic",fm.getStatusD());
-				
-		} 
-		
-		if ((fm.getDocTypeP()!="")&&(fm.getStatusP()!="")){
-				EDocUtil.changeDocTypeStatusSQL(fm.getDocTypeP(),"Provider",fm.getStatusP());
-				
-		}
-		
-		return(mapping.findForward("success"));
-		
-	}
-	
-	
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+                                 HttpServletRequest request, HttpServletResponse response) {
+
+        ChangeDocStatusForm fm = (ChangeDocStatusForm) form;
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
+            throw new SecurityException("missing required security object (_edoc)");
+        }
+
+        if ((fm.getDocTypeD() != "") && (fm.getStatusD() != "")) {
+            EDocUtil.changeDocTypeStatusSQL(fm.getDocTypeD(), "Demographic", fm.getStatusD());
+
+        }
+
+        if ((fm.getDocTypeP() != "") && (fm.getStatusP() != "")) {
+            EDocUtil.changeDocTypeStatusSQL(fm.getDocTypeP(), "Provider", fm.getStatusP());
+
+        }
+
+        return (mapping.findForward("success"));
+
+    }
+
+
 }

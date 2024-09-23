@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,52 +41,51 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-public class EctConEditDepartmentsAction extends Action{
-	private static SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	@Override
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "u", null)) {
-			throw new SecurityException("missing required security object (_con)");
-		}
-		
-		DepartmentDao DepartmentDao= SpringUtils.getBean(DepartmentDao.class);
+public class EctConEditDepartmentsAction extends Action {
+    private static SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		EctConEditDepartmentsForm editDepartmentsForm = (EctConEditDepartmentsForm) form;
-		String id = editDepartmentsForm.getId();
-		String delete = editDepartmentsForm.getDelete();
-		String specialists[] = editDepartmentsForm.getSpecialists();
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "u", null)) {
+            throw new SecurityException("missing required security object (_con)");
+        }
 
-		if (delete.equals(oscarR.getString("oscarEncounter.oscarConsultationRequest.config.EditSpecialists.btnDeleteSpecialist"))) {
-			if (specialists.length > 0) {
-				for (int i = 0; i < specialists.length; i++)
-				{
-					DepartmentDao.remove(Integer.parseInt(specialists[i]));
-				}
-			}
-			EctConConstructSpecialistsScriptsFile constructSpecialistsScriptsFile = new EctConConstructSpecialistsScriptsFile();
-			constructSpecialistsScriptsFile.makeString(request.getLocale());
-			return mapping.findForward("delete");
-		}
+        DepartmentDao DepartmentDao = SpringUtils.getBean(DepartmentDao.class);
 
-		// not delete request, just update one entry
-		Department Department=DepartmentDao.find(Integer.parseInt(id));
+        EctConEditDepartmentsForm editDepartmentsForm = (EctConEditDepartmentsForm) form;
+        String id = editDepartmentsForm.getId();
+        String delete = editDepartmentsForm.getDelete();
+        String specialists[] = editDepartmentsForm.getSpecialists();
 
-		int updater = 0;
-		request.setAttribute("name", Department.getName());
-	
-		request.setAttribute("id", id);
-		
-		request.setAttribute("annotation", Department.getAnnotation());
-       
+        ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
-		request.setAttribute("upd", new Integer(updater));
-		EctConConstructSpecialistsScriptsFile constructSpecialistsScriptsFile = new EctConConstructSpecialistsScriptsFile();
-		request.setAttribute("verd", constructSpecialistsScriptsFile.makeFile());
-		constructSpecialistsScriptsFile.makeString(request.getLocale());
-		return mapping.findForward("success");
-	}
+        if (delete.equals(oscarR.getString("oscarEncounter.oscarConsultationRequest.config.EditSpecialists.btnDeleteSpecialist"))) {
+            if (specialists.length > 0) {
+                for (int i = 0; i < specialists.length; i++) {
+                    DepartmentDao.remove(Integer.parseInt(specialists[i]));
+                }
+            }
+            EctConConstructSpecialistsScriptsFile constructSpecialistsScriptsFile = new EctConConstructSpecialistsScriptsFile();
+            constructSpecialistsScriptsFile.makeString(request.getLocale());
+            return mapping.findForward("delete");
+        }
+
+        // not delete request, just update one entry
+        Department Department = DepartmentDao.find(Integer.parseInt(id));
+
+        int updater = 0;
+        request.setAttribute("name", Department.getName());
+
+        request.setAttribute("id", id);
+
+        request.setAttribute("annotation", Department.getAnnotation());
+
+
+        request.setAttribute("upd", new Integer(updater));
+        EctConConstructSpecialistsScriptsFile constructSpecialistsScriptsFile = new EctConConstructSpecialistsScriptsFile();
+        request.setAttribute("verd", constructSpecialistsScriptsFile.makeFile());
+        constructSpecialistsScriptsFile.makeString(request.getLocale());
+        return mapping.findForward("success");
+    }
 }

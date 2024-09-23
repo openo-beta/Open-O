@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -64,21 +63,21 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cIndependentCompetitive",
-    "cAssistedSupportive",
-    "cAlternativeBusinesses",
-    "cShelteredWorkshop",
-    "cNonPaidWorkExperience",
-    "cNoEmploymentOtherActivity",
-    "cCasualSporadic",
-    "cNoEmploymentOfAnyKind",
-    "cUnknown",
-    "cClientDeclinedToAnswer"
+        "cIndependentCompetitive",
+        "cAssistedSupportive",
+        "cAlternativeBusinesses",
+        "cShelteredWorkshop",
+        "cNonPaidWorkExperience",
+        "cNoEmploymentOtherActivity",
+        "cCasualSporadic",
+        "cNoEmploymentOfAnyKind",
+        "cUnknown",
+        "cClientDeclinedToAnswer"
 })
 @XmlRootElement(name = "CWhat_is_your_current_employment_status___select_one_")
 public class CWhatIsYourCurrentEmploymentStatusSelectOne {
@@ -106,11 +105,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cIndependentCompetitive property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCIndependentCompetitive() {
         return cIndependentCompetitive;
@@ -118,11 +117,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cIndependentCompetitive property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCIndependentCompetitive(String value) {
         this.cIndependentCompetitive = value;
@@ -130,11 +129,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cAssistedSupportive property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAssistedSupportive() {
         return cAssistedSupportive;
@@ -142,11 +141,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cAssistedSupportive property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAssistedSupportive(String value) {
         this.cAssistedSupportive = value;
@@ -154,11 +153,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cAlternativeBusinesses property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAlternativeBusinesses() {
         return cAlternativeBusinesses;
@@ -166,11 +165,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cAlternativeBusinesses property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAlternativeBusinesses(String value) {
         this.cAlternativeBusinesses = value;
@@ -178,11 +177,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cShelteredWorkshop property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCShelteredWorkshop() {
         return cShelteredWorkshop;
@@ -190,11 +189,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cShelteredWorkshop property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCShelteredWorkshop(String value) {
         this.cShelteredWorkshop = value;
@@ -202,11 +201,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cNonPaidWorkExperience property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCNonPaidWorkExperience() {
         return cNonPaidWorkExperience;
@@ -214,11 +213,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cNonPaidWorkExperience property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCNonPaidWorkExperience(String value) {
         this.cNonPaidWorkExperience = value;
@@ -226,11 +225,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cNoEmploymentOtherActivity property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCNoEmploymentOtherActivity() {
         return cNoEmploymentOtherActivity;
@@ -238,11 +237,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cNoEmploymentOtherActivity property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCNoEmploymentOtherActivity(String value) {
         this.cNoEmploymentOtherActivity = value;
@@ -250,11 +249,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cCasualSporadic property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCCasualSporadic() {
         return cCasualSporadic;
@@ -262,11 +261,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cCasualSporadic property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCCasualSporadic(String value) {
         this.cCasualSporadic = value;
@@ -274,11 +273,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cNoEmploymentOfAnyKind property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCNoEmploymentOfAnyKind() {
         return cNoEmploymentOfAnyKind;
@@ -286,11 +285,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cNoEmploymentOfAnyKind property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCNoEmploymentOfAnyKind(String value) {
         this.cNoEmploymentOfAnyKind = value;
@@ -298,11 +297,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cUnknown property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCUnknown() {
         return cUnknown;
@@ -310,11 +309,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cUnknown property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -322,11 +321,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -334,11 +333,11 @@ public class CWhatIsYourCurrentEmploymentStatusSelectOne {
 
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -61,78 +61,78 @@ import oscar.util.SqlUtils;
 public class ViewWCBAction extends Action {
 
 
-	DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
-	
-  public ActionForward execute(ActionMapping mapping,
-                               ActionForm form,
-                               HttpServletRequest request,
-                               HttpServletResponse servletResponse) {
-    WCBForm frm = (WCBForm) form;
-    request.setAttribute("WCBForm", frm);
-    String demoNo = request.getParameter("demographic_no");
-    String providerNo = request.getParameter("provNo");
-    BillingFormData data = new BillingFormData();
-    String formId = request.getParameter("formId");
-    frm.setWcbFormId(formId);
-    //if the formId is zero, this is a new form
+    DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
 
-    if ("0".equals(formId)) {
-      frm.setFormNeeded("1");
-      Demographic demographic = demographicManager.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo);
+    public ActionForward execute(ActionMapping mapping,
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse servletResponse) {
+        WCBForm frm = (WCBForm) form;
+        request.setAttribute("WCBForm", frm);
+        String demoNo = request.getParameter("demographic_no");
+        String providerNo = request.getParameter("provNo");
+        BillingFormData data = new BillingFormData();
+        String formId = request.getParameter("formId");
+        frm.setWcbFormId(formId);
+        //if the formId is zero, this is a new form
 
-      if (demographic != null) {
-        frm.setDemographic(demographic.getDemographicNo().toString());
-        frm.setW_fname(demographic.getFirstName());
-        frm.setW_lname(demographic.getLastName());
-        frm.setW_gender(demographic.getSex());
-        if(demographic.getPhone() != null && demographic.getPhone().length()>0) {
-        	frm.setW_phone(Misc.phoneNumber(demographic.getPhone().replaceAll("-","")));
-        	frm.setW_area(Misc.areaCode(demographic.getPhone()));
+        if ("0".equals(formId)) {
+            frm.setFormNeeded("1");
+            Demographic demographic = demographicManager.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo);
+
+            if (demographic != null) {
+                frm.setDemographic(demographic.getDemographicNo().toString());
+                frm.setW_fname(demographic.getFirstName());
+                frm.setW_lname(demographic.getLastName());
+                frm.setW_gender(demographic.getSex());
+                if (demographic.getPhone() != null && demographic.getPhone().length() > 0) {
+                    frm.setW_phone(Misc.phoneNumber(demographic.getPhone().replaceAll("-", "")));
+                    frm.setW_area(Misc.areaCode(demographic.getPhone()));
+                }
+
+                String[] pc = demographic.getPostal().split(" ");
+
+                String postal = "";
+                for (int i = 0; i < pc.length; i++) {  // DOES THIS JUST REMOVE SPACES???
+                    postal += pc[i];
+                }
+                frm.setW_postal(postal);
+
+                frm.setW_phn(demographic.getHin());
+                String seperator = "-";
+                String dob = demographic.getYearOfBirth() + seperator +
+                        demographic.getMonthOfBirth() + seperator + demographic.getDateOfBirth();
+                frm.setW_dob(dob);
+                frm.setW_address(demographic.getAddress());
+                frm.setW_opcity(demographic.getCity());
+                frm.setW_city(demographic.getCity());
+                frm.setInjuryLocations(data.getInjuryLocationList());
+
+                //Retrieve provider ohip number and payee number
+
+                List lstResults = SqlUtils.getQueryResultsList("select ohip_no,billing_no from provider where provider_no = " + providerNo);
+                if (lstResults != null) {
+                    String[] providerData = (String[]) lstResults.get(0);
+                    frm.setW_pracno(providerData[0]);
+                    frm.setW_payeeno(providerData[1]);
+                }
+
+                frm.setProviderNo(providerNo);
+
+                SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
+                String fmtStrDate = fm.format(new Date());
+                frm.setW_servicedate(fmtStrDate);
+            }
         }
-       
-        String[] pc = demographic.getPostal().split(" ");
+        //If the incoming request is for an existing form, retrieve the WCB form data
+        //for readonly viewing on the WCB Form Screen
+        else {
+            request.setAttribute("readonly", "true");
+            WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
+            BillingmasterDAO billingmasterDAO = (BillingmasterDAO) ctx.getBean(BillingmasterDAO.class);
 
-        String postal = "";
-        for (int i = 0; i < pc.length; i++) {  // DOES THIS JUST REMOVE SPACES???
-          postal += pc[i];
+            frm.setWCBForms(billingmasterDAO.getWCBForm(formId));
         }
-        frm.setW_postal(postal);
-
-        frm.setW_phn(demographic.getHin());
-        String seperator = "-";
-        String dob = demographic.getYearOfBirth() + seperator +
-        		demographic.getMonthOfBirth() + seperator + demographic.getDateOfBirth();
-        frm.setW_dob(dob);
-        frm.setW_address(demographic.getAddress());
-        frm.setW_opcity(demographic.getCity());
-        frm.setW_city(demographic.getCity());
-        frm.setInjuryLocations(data.getInjuryLocationList());
-
-        //Retrieve provider ohip number and payee number
-
-        List lstResults = SqlUtils.getQueryResultsList("select ohip_no,billing_no from provider where provider_no = " + providerNo);
-        if(lstResults!=null){
-          String[] providerData = (String[])lstResults.get(0);
-          frm.setW_pracno(providerData[0]);
-          frm.setW_payeeno(providerData[1]);
-        }
-
-        frm.setProviderNo(providerNo);
-
-        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
-        String fmtStrDate = fm.format(new Date());
-        frm.setW_servicedate(fmtStrDate);
-      }
+        return (mapping.findForward("success"));
     }
-    //If the incoming request is for an existing form, retrieve the WCB form data
-    //for readonly viewing on the WCB Form Screen
-    else {
-      request.setAttribute("readonly", "true");
-       WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
-       BillingmasterDAO billingmasterDAO = (BillingmasterDAO) ctx.getBean(BillingmasterDAO.class);
-
-       frm.setWCBForms(billingmasterDAO.getWCBForm(formId));
-    }
-    return (mapping.findForward("success"));
-  }
 }

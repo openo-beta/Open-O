@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,54 +30,55 @@ package oscar.entities;
  *
  */
 public class Billcenter {
-  private String billcenterCode;
-  private String billcenterDesc;
+    private String billcenterCode;
+    private String billcenterDesc;
 
-  /**
-   * Class constructor with no arguments.
-   */
-  public Billcenter() {}
+    /**
+     * Class constructor with no arguments.
+     */
+    public Billcenter() {
+    }
 
-  /**
-   * Full constructor
-   *
-   * @param billcenterCode String
-   * @param billcenterDesc String
-   */
-  public Billcenter(String billcenterCode, String billcenterDesc) {
-    this.billcenterCode = billcenterCode;
-    this.billcenterDesc = billcenterDesc;
-  }
+    /**
+     * Full constructor
+     *
+     * @param billcenterCode String
+     * @param billcenterDesc String
+     */
+    public Billcenter(String billcenterCode, String billcenterDesc) {
+        this.billcenterCode = billcenterCode;
+        this.billcenterDesc = billcenterDesc;
+    }
 
-  /**
-   * Gets the billcenterCode
-   * @return String billcenterCode
-   */
-  public String getBillcenterCode() {
-    return (billcenterCode != null ? billcenterCode : "");
-  }
+    /**
+     * Gets the billcenterCode
+     * @return String billcenterCode
+     */
+    public String getBillcenterCode() {
+        return (billcenterCode != null ? billcenterCode : "");
+    }
 
-  /**
-   * Gets the billcenterDesc
-   * @return String billcenterDesc
-   */
-  public String getBillcenterDesc() {
-    return (billcenterDesc != null ? billcenterDesc : "");
-  }
+    /**
+     * Gets the billcenterDesc
+     * @return String billcenterDesc
+     */
+    public String getBillcenterDesc() {
+        return (billcenterDesc != null ? billcenterDesc : "");
+    }
 
-  /**
-   * Sets the billcenterCode
-   * @param billcenterCode String
-   */
-  public void setBillcenterCode(String billcenterCode) {
-    this.billcenterCode = billcenterCode;
-  }
+    /**
+     * Sets the billcenterCode
+     * @param billcenterCode String
+     */
+    public void setBillcenterCode(String billcenterCode) {
+        this.billcenterCode = billcenterCode;
+    }
 
-  /**
-   * Sets the billcenterDesc
-   * @param billcenterDesc String
-   */
-  public void setBillcenterDesc(String billcenterDesc) {
-    this.billcenterDesc = billcenterDesc;
-  }
+    /**
+     * Sets the billcenterDesc
+     * @param billcenterDesc String
+     */
+    public void setBillcenterDesc(String billcenterDesc) {
+        this.billcenterDesc = billcenterDesc;
+    }
 }

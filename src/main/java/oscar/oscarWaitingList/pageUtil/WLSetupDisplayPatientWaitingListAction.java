@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,28 +42,28 @@ import oscar.oscarDemographic.data.DemographicData;
 import oscar.oscarWaitingList.bean.WLPatientWaitingListBeanHandler;
 
 public final class WLSetupDisplayPatientWaitingListAction extends Action {
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response)
-        throws Exception {
-        
-    	if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
-			throw new RuntimeException("missing required security object (_demographic)");
-		}
-    	
+            throws Exception {
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
+            throw new RuntimeException("missing required security object (_demographic)");
+        }
+
         String demographicNo = request.getParameter("demographic_no");
         DemographicData demoData = new DemographicData();
         org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
         String demoInfo = demo.getLastName() + ", " + demo.getFirstName() + " " + demo.getSex() + " " + demo.getAge();
-        WLPatientWaitingListBeanHandler hd = new WLPatientWaitingListBeanHandler(demographicNo);           
+        WLPatientWaitingListBeanHandler hd = new WLPatientWaitingListBeanHandler(demographicNo);
         HttpSession session = request.getSession();
         session.setAttribute("demoInfo", demoInfo);
-        session.setAttribute( "patientWaitingList", hd );  
+        session.setAttribute("patientWaitingList", hd);
         session.setAttribute("demographicNo", demographicNo);
-       
+
         return (mapping.findForward("continue"));
     }
 }

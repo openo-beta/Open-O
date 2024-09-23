@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,80 +42,98 @@ public final class RptInitializeFrequencyOfRelevantTestsCDMReportForm extends Ac
     public Object getValue(String key) {
         return values.get(key);
     }
-    
+
     private String[] patientSeenCheckbox;
-    public String[] getPatientSeenCheckbox(){
+
+    public String[] getPatientSeenCheckbox() {
         return patientSeenCheckbox;
     }
-    public void setPatientSeenCheckbox(String[] patientSeenCheckbox){
-        this.patientSeenCheckbox=patientSeenCheckbox;
+
+    public void setPatientSeenCheckbox(String[] patientSeenCheckbox) {
+        this.patientSeenCheckbox = patientSeenCheckbox;
     }
-    
+
     private String startDateA;
-    public String getStartDateA(){
+
+    public String getStartDateA() {
         return startDateA;
     }
-    public void setStartDateA(String startDateA){
+
+    public void setStartDateA(String startDateA) {
         this.startDateA = startDateA;
     }
-    
+
     private String endDateA;
-    public String getEndDateA(){
+
+    public String getEndDateA() {
         return endDateA;
     }
-    public void setEndDateA(String endDateA){
+
+    public void setEndDateA(String endDateA) {
         this.endDateA = endDateA;
-    }    
-      
+    }
+
 
     /******************************************************************
      *Getter and Setter for Frequency of Relevant tests being performed
      ******************************************************************/
     private String[] frequencyCheckbox;
-    public String[] getFrequencyCheckbox(){
+
+    public String[] getFrequencyCheckbox() {
         return frequencyCheckbox;
     }
-    public void setFrequencyCheckbox(String[] frequencyCheckbox){
+
+    public void setFrequencyCheckbox(String[] frequencyCheckbox) {
         this.frequencyCheckbox = frequencyCheckbox;
     }
-    
+
     private String[] startDateD;
-    public String[] getStartDateD(){
+
+    public String[] getStartDateD() {
         return startDateD;
     }
-    public void setStartDateD(String[] startDateD){
+
+    public void setStartDateD(String[] startDateD) {
         this.startDateD = startDateD;
     }
-    
+
     private String[] endDateD;
-        public String[] getEndDateD(){
+
+    public String[] getEndDateD() {
         return endDateD;
     }
-    public void setEndDateD(String[] endDateD){
+
+    public void setEndDateD(String[] endDateD) {
         this.endDateD = endDateD;
-    }    
-    
+    }
+
     private int[] exactly;
-    public int[] getExactly(){
+
+    public int[] getExactly() {
         return exactly;
     }
-    public void setExactly(int[] exactly){
+
+    public void setExactly(int[] exactly) {
         this.exactly = exactly;
-    } 
-    
+    }
+
     private int[] moreThan;
-        public int[] getMoreThan(){
+
+    public int[] getMoreThan() {
         return moreThan;
     }
-    public void setMoreThan(int[] moreThan){
+
+    public void setMoreThan(int[] moreThan) {
         this.moreThan = moreThan;
-    } 
-    
+    }
+
     private int[] lessThan;
-        public int[] getLessThan(){
+
+    public int[] getLessThan() {
         return lessThan;
     }
-    public void setLessThan(int[] lessThan){
+
+    public void setLessThan(int[] lessThan) {
         this.lessThan = lessThan;
     } 
 /*    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request)
@@ -138,5 +156,5 @@ public final class RptInitializeFrequencyOfRelevantTestsCDMReportForm extends Ac
         return errors;
     }
     */
-    
+
 }

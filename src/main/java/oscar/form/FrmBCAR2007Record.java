@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -45,9 +45,9 @@ public class FrmBCAR2007Record extends FrmRecord {
     private DemographicExtDao demographicExtDao = SpringUtils.getBean(DemographicExtDao.class);
 
     public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException {
-        
-    	Demographic demo = null;
-    	Properties props = new Properties();
+
+        Demographic demo = null;
+        Properties props = new Properties();
 
         if (existingID <= 0) {
 
@@ -56,7 +56,7 @@ public class FrmBCAR2007Record extends FrmRecord {
             if (demo != null) {
                 java.util.Date date = UtilDateUtilities.calcDate(demo.getYearOfBirth(), demo.getMonthOfBirth(), demo.getDateOfBirth());
                 props.setProperty("demographic_no", demo.getDemographicNo().toString());
-                props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(),_dateFormat));
+                props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), _dateFormat));
 
                 props.setProperty("c_surname", demo.getLastName());
                 props.setProperty("c_givenName", demo.getFirstName());
@@ -72,15 +72,15 @@ public class FrmBCAR2007Record extends FrmRecord {
                 props.setProperty("pg1_formDate", UtilDateUtilities.DateToString(new Date(), _dateFormat));
                 props.setProperty("pg2_formDate", UtilDateUtilities.DateToString(new Date(), _dateFormat));
                 props.setProperty("pg3_formDate", UtilDateUtilities.DateToString(new Date(), _dateFormat));
-                
+
                 String rd = SxmlMisc.getXmlContent(demo.getFamilyDoctor(), "rd");
                 rd = rd != null ? rd : "";
                 props.setProperty("pg1_famPhy", rd);
 
-                Map<String,String> demoExt = demographicExtDao.getAllValuesForDemo(demographicNo);
+                Map<String, String> demoExt = demographicExtDao.getAllValuesForDemo(demographicNo);
                 String cell = demoExt.get("demo_cell");
-                if ( cell != null ){
-                    props.setProperty("c_phoneAlt2",cell );
+                if (cell != null) {
+                    props.setProperty("c_phoneAlt2", cell);
                 }
             }
         } else {
@@ -90,7 +90,7 @@ public class FrmBCAR2007Record extends FrmRecord {
             props = (frh).getFormRecord(sql);
 
             demo = demographicManager.getDemographic(loggedInInfo, demographicNo);
-            
+
             if (demo != null) {
                 props.setProperty("c_surname_cur", demo.getLastName());
                 props.setProperty("c_givenName_cur", demo.getFirstName());
@@ -101,10 +101,10 @@ public class FrmBCAR2007Record extends FrmRecord {
                 props.setProperty("c_phn_cur", demo.getHin());
                 props.setProperty("c_phone_cur", demo.getPhone());
                 props.setProperty("c_phoneAlt1_cur", demo.getPhone2());
-                Map<String,String> demoExt = demographicExtDao.getAllValuesForDemo(demographicNo);
+                Map<String, String> demoExt = demographicExtDao.getAllValuesForDemo(demographicNo);
                 String cell = demoExt.get("demo_cell");
-                if ( cell != null ){
-                    props.setProperty("c_phoneAlt2_cur",cell );
+                if (cell != null) {
+                    props.setProperty("c_phoneAlt2_cur", cell);
                 }
             }
         }

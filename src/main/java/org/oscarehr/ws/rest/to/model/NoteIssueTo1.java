@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,66 +30,66 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="noteIssue")
+@XmlRootElement(name = "noteIssue")
 public class NoteIssueTo1 {
 
-	private NoteTo1 encounterNote = new NoteTo1();
-	private NoteExtTo1 groupNoteExt = new NoteExtTo1();
-	private IssueTo1 issue = new IssueTo1();
-	private String annotation_attrib;
-	
-	private List<IssueTo1> assignedIssues = new ArrayList<IssueTo1>();
+    private NoteTo1 encounterNote = new NoteTo1();
+    private NoteExtTo1 groupNoteExt = new NoteExtTo1();
+    private IssueTo1 issue = new IssueTo1();
+    private String annotation_attrib;
 
-	private List<CaseManagementIssueTo1> assignedCMIssues = new ArrayList<CaseManagementIssueTo1>();
+    private List<IssueTo1> assignedIssues = new ArrayList<IssueTo1>();
 
-	
-	public NoteTo1 getEncounterNote() {
-	    return encounterNote;
+    private List<CaseManagementIssueTo1> assignedCMIssues = new ArrayList<CaseManagementIssueTo1>();
+
+
+    public NoteTo1 getEncounterNote() {
+        return encounterNote;
     }
 
-	public void setEncounterNote(NoteTo1 encounterNote) {
-	    this.encounterNote = encounterNote;
-    }
-	
-	public NoteExtTo1 getGroupNoteExt() {
-	    return groupNoteExt;
+    public void setEncounterNote(NoteTo1 encounterNote) {
+        this.encounterNote = encounterNote;
     }
 
-	public void setGroupNoteExt(NoteExtTo1 groupNoteExt) {
-	    this.groupNoteExt = groupNoteExt;
+    public NoteExtTo1 getGroupNoteExt() {
+        return groupNoteExt;
     }
 
-	public IssueTo1 getIssue() {
-	    return issue;
+    public void setGroupNoteExt(NoteExtTo1 groupNoteExt) {
+        this.groupNoteExt = groupNoteExt;
     }
 
-	public void setIssue(IssueTo1 issue) {
-	    this.issue = issue;
+    public IssueTo1 getIssue() {
+        return issue;
     }
 
-	public String getAnnotation_attrib() {
-	    return annotation_attrib;
+    public void setIssue(IssueTo1 issue) {
+        this.issue = issue;
     }
 
-	public void setAnnotation_attrib(String annotation_attrib) {
-	    this.annotation_attrib = annotation_attrib;
+    public String getAnnotation_attrib() {
+        return annotation_attrib;
     }
 
-	public List<IssueTo1> getAssignedIssues() {
-		return assignedIssues;
-	}
+    public void setAnnotation_attrib(String annotation_attrib) {
+        this.annotation_attrib = annotation_attrib;
+    }
 
-	public void setAssignedIssues(List<IssueTo1> assignedIssues) {
-		this.assignedIssues = assignedIssues;
-	}
+    public List<IssueTo1> getAssignedIssues() {
+        return assignedIssues;
+    }
 
-	public List<CaseManagementIssueTo1> getAssignedCMIssues() {
-		return assignedCMIssues;
-	}
+    public void setAssignedIssues(List<IssueTo1> assignedIssues) {
+        this.assignedIssues = assignedIssues;
+    }
 
-	public void setAssignedCMIssues(List<CaseManagementIssueTo1> assignedCMIssues) {
-		this.assignedCMIssues = assignedCMIssues;
-	}
+    public List<CaseManagementIssueTo1> getAssignedCMIssues() {
+        return assignedCMIssues;
+    }
+
+    public void setAssignedCMIssues(List<CaseManagementIssueTo1> assignedCMIssues) {
+        this.assignedCMIssues = assignedCMIssues;
+    }
 
 
 }

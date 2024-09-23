@@ -24,97 +24,97 @@
 
 --%>
 
-<%@ page errorPage="error.jsp"%>
+<%@ page errorPage="error.jsp" %>
 
 <!DOCTYPE html>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <html:html>
-<head>
+    <head>
 
-<jsp:include page="head-includes.jsp" />
+        <jsp:include page="head-includes.jsp"/>
 
-<script language="javascript">
-	function cancel(control) {
-		return submitForm('cancel', control);
-	}
-	
-	function modifyResource(resourceId) {
-		window.location.href = "updateUpload.jsp?resourceId=" + resourceId;
-		return false;
-	}
-	
-	function modify(control) {
-		return submitForm('sendUpdateRequest', control);
-	}
+        <script language="javascript">
+            function cancel(control) {
+                return submitForm('cancel', control);
+            }
 
-	function submitForm(methodType, control){
-		if (control) {
-			control.disabled = true;
-		}
-		
-		var method = jQuery("#method");
-		method.val(methodType);
-		
-		var form = jQuery("form");
-		form.submit();
-		return true;
-	}
-</script>
+            function modifyResource(resourceId) {
+                window.location.href = "updateUpload.jsp?resourceId=" + resourceId;
+                return false;
+            }
+
+            function modify(control) {
+                return submitForm('sendUpdateRequest', control);
+            }
+
+            function submitForm(methodType, control) {
+                if (control) {
+                    control.disabled = true;
+                }
+
+                var method = jQuery("#method");
+                method.val(methodType);
+
+                var form = jQuery("form");
+                form.submit();
+                return true;
+            }
+        </script>
 
 
-<title>MCEDT: Updates</title>
+        <title>MCEDT: Updates</title>
 
-<html:base />
-</head>
+        <html:base/>
+    </head>
 
-<body>
-	<div class="container-fluid">
-		<div class="row-fluid">
+    <body>
+    <div class="container-fluid">
+        <div class="row-fluid">
 
-			<h2>Update Resource</h2>
+            <h2>Update Resource</h2>
 
-			<html:form action="/mcedt/update.do" method="post" styleId="form">
+            <html:form action="/mcedt/update.do" method="post" styleId="form">
 
-				<html:errors />
-				
-				<html:messages id="message" bundle="mcedt" message="true">
-					<c:out value="${message}" />
-				</html:messages>
+                <html:errors/>
 
-				<input id="method" name="method" type="hidden" value="cancel" />
+                <html:messages id="message" bundle="mcedt" message="true">
+                    <c:out value="${message}"/>
+                </html:messages>
 
-				<table class="table table-striped  table-condensed">
-					<c:forEach var="d" items="${mcedtUploadDetails.data}" varStatus="i">
-						<tr>
-							<td><c:out value="${d.resourceID}" /> <c:out
-									value="${d.resourceType}" /> <c:out value="${d.description}" />
-							</td>
-							<td><c:choose>
-									<c:when test="${empty d.modifyTimestamp}">
-										<button class="btn" onclick="return modifyResource(${d.resourceID})">Modify</button>
-									</c:when>
-									<c:otherwise>
-										<button class="btn" disabled="disabled">Modify</button>
-									</c:otherwise>
-								</c:choose></td>
-						</tr>
-					</c:forEach>
-				</table>
+                <input id="method" name="method" type="hidden" value="cancel"/>
 
-				<div>
-					<button class="btn btn-primary" onclick="modify(this)">Save Changes</button>
-					<button class="btn" onclick="return cancel(this)">Cancel</button>
-				</div>
+                <table class="table table-striped  table-condensed">
+                    <c:forEach var="d" items="${mcedtUploadDetails.data}" varStatus="i">
+                        <tr>
+                            <td><c:out value="${d.resourceID}"/> <c:out
+                                    value="${d.resourceType}"/> <c:out value="${d.description}"/>
+                            </td>
+                            <td><c:choose>
+                                <c:when test="${empty d.modifyTimestamp}">
+                                    <button class="btn" onclick="return modifyResource(${d.resourceID})">Modify</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="btn" disabled="disabled">Modify</button>
+                                </c:otherwise>
+                            </c:choose></td>
+                        </tr>
+                    </c:forEach>
+                </table>
 
-			</html:form>
-		</div>
-	</div>
-</body>
+                <div>
+                    <button class="btn btn-primary" onclick="modify(this)">Save Changes</button>
+                    <button class="btn" onclick="return cancel(this)">Cancel</button>
+                </div>
+
+            </html:form>
+        </div>
+    </div>
+    </body>
 </html:html>

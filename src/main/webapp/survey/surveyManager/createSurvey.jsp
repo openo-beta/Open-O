@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,48 +24,47 @@
 --%>
 
 
+<%@ include file="/survey/taglibs.jsp" %>
 
-<%@ include file="/survey/taglibs.jsp"%>
-
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
+<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
 <html:form action="/SurveyManager" method="POST" styleId="surveyForm">
-	<input type="hidden" name="method" value="create_survey" />
-	<input type="hidden" name="numPages" id="numPages" value="1" />
+    <input type="hidden" name="method" value="create_survey"/>
+    <input type="hidden" name="numPages" id="numPages" value="1"/>
 
-	<html:hidden property="survey.id" />
-	<br />
-	<table width="100%">
-		<logic:messagesPresent message="true">
-			<html:messages id="message" message="true" bundle="survey">
-				<tr>
-					<td colspan="3" class="message"><c:out value="${message}" /></td>
-				</tr>
-			</html:messages>
-		</logic:messagesPresent>
-		<logic:messagesPresent>
-			<html:messages id="error" bundle="survey">
-				<tr>
-					<td colspan="3" class="error"><c:out value="${error}" /></td>
-				</tr>
-			</html:messages>
-		</logic:messagesPresent>
-		<tr>
-			<td class="leftfield">Form Name:&nbsp;&nbsp; <html:text
-				property="survey.description" styleClass="formElement" />&nbsp;&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td class="leftfield">Template:&nbsp;&nbsp; <html:select
-				property="web.templateId" styleClass="formElement">
-				<html:option value="0">&nbsp;</html:option>
-				<html:options collection="templates" property="id"
-					labelProperty="description" />
-			</html:select></td>
-		</tr>
-		<tr>
-			<td><br />
-			<html:submit>Create Form</html:submit></td>
-		</tr>
-	</table>
+    <html:hidden property="survey.id"/>
+    <br/>
+    <table width="100%">
+        <logic:messagesPresent message="true">
+            <html:messages id="message" message="true" bundle="survey">
+                <tr>
+                    <td colspan="3" class="message"><c:out value="${message}"/></td>
+                </tr>
+            </html:messages>
+        </logic:messagesPresent>
+        <logic:messagesPresent>
+            <html:messages id="error" bundle="survey">
+                <tr>
+                    <td colspan="3" class="error"><c:out value="${error}"/></td>
+                </tr>
+            </html:messages>
+        </logic:messagesPresent>
+        <tr>
+            <td class="leftfield">Form Name:&nbsp;&nbsp; <html:text
+                    property="survey.description" styleClass="formElement"/>&nbsp;&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td class="leftfield">Template:&nbsp;&nbsp; <html:select
+                    property="web.templateId" styleClass="formElement">
+                <html:option value="0">&nbsp;</html:option>
+                <html:options collection="templates" property="id"
+                              labelProperty="description"/>
+            </html:select></td>
+        </tr>
+        <tr>
+            <td><br/>
+                <html:submit>Create Form</html:submit></td>
+        </tr>
+    </table>
 </html:form>

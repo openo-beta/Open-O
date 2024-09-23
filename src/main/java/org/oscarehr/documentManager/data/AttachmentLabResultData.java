@@ -13,14 +13,15 @@ public class AttachmentLabResultData {
     private Date labDate;
     private Map<String, String> labVersionIds = new LinkedHashMap<>();
 
-    public AttachmentLabResultData() { }
+    public AttachmentLabResultData() {
+    }
 
     public AttachmentLabResultData(String segmentID, String labName, Date labDate) {
         this.segmentID = segmentID;
         this.labName = labName;
         this.labDate = labDate;
     }
-    
+
     public String getSegmentID() {
         return segmentID;
     }

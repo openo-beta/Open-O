@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,72 +32,72 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-@XmlSeeAlso({ DemographicResponse.class })
+@XmlSeeAlso({DemographicResponse.class})
 public class AbstractSearchResponse<T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private int offset;
+    private int offset;
 
-	private int limit;
+    private int limit;
 
-	private int total;
+    private int total;
 
-	private Date timestamp = new Date();
+    private Date timestamp = new Date();
 
-	private List<T> content = new ArrayList<T>();
-	
-	private String query;
-	
+    private List<T> content = new ArrayList<T>();
 
-	@XmlAnyElement(lax = true)
-	public List<T> getContent() {
-		return content;
-	}
+    private String query;
 
-	public void setContent(List<T> content) {
-		this.content = content;
-	}
 
-	public int getOffset() {
-		return offset;
-	}
+    @XmlAnyElement(lax = true)
+    public List<T> getContent() {
+        return content;
+    }
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+    public void setContent(List<T> content) {
+        this.content = content;
+    }
 
-	public int getLimit() {
-		return limit;
-	}
+    public int getOffset() {
+        return offset;
+    }
 
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    public int getLimit() {
+        return limit;
+    }
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
 
-	public int getTotal() {
-		return total;
-	}
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-	public void setTotal(int total) {
-		this.total = total;
-	}
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public String getQuery() {
-		return query;
-	}
+    public int getTotal() {
+        return total;
+    }
 
-	public void setQuery(String query) {
-		this.query = query;
-	}
+    public void setTotal(int total) {
+        this.total = total;
+    }
 
-	
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+
 }

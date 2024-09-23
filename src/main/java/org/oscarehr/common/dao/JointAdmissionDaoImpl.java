@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -38,48 +38,48 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JointAdmissionDaoImpl extends AbstractDaoImpl<JointAdmission> implements JointAdmissionDao {
 
-	public JointAdmissionDaoImpl() {
-		super(JointAdmission.class);
-	}
-	
-    public List<JointAdmission> getSpouseAndDependents(Integer clientId){
-		Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.headClientId=?");
-		query.setParameter(0,clientId);
-		@SuppressWarnings("unchecked")
-        List<JointAdmission> results = query.getResultList();
-		return results;
+    public JointAdmissionDaoImpl() {
+        super(JointAdmission.class);
     }
-    
-    public JointAdmission getJointAdmission(Integer clientId){
-    	Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.clientId=?");
-		query.setParameter(0,clientId);
-		@SuppressWarnings("unchecked")
+
+    public List<JointAdmission> getSpouseAndDependents(Integer clientId) {
+        Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.headClientId=?");
+        query.setParameter(0, clientId);
+        @SuppressWarnings("unchecked")
         List<JointAdmission> results = query.getResultList();
-		
+        return results;
+    }
+
+    public JointAdmission getJointAdmission(Integer clientId) {
+        Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.clientId=?");
+        query.setParameter(0, clientId);
+        @SuppressWarnings("unchecked")
+        List<JointAdmission> results = query.getResultList();
+
         ListIterator<JointAdmission> li = results.listIterator();
-        
-        if(li.hasNext()){
+
+        if (li.hasNext()) {
             return li.next();
-        }else{
+        } else {
             return null;
         }
     }
-    
-    public void removeJointAdmission(Integer clientId,String providerNo){
+
+    public void removeJointAdmission(Integer clientId, String providerNo) {
         JointAdmission jadm = getJointAdmission(clientId);
-        if(jadm != null) {
-        	jadm.setArchivingProviderNo(providerNo);
-        	removeJointAdmission(jadm);
+        if (jadm != null) {
+            jadm.setArchivingProviderNo(providerNo);
+            removeJointAdmission(jadm);
         }
     }
-    
-    
-    public void removeJointAdmission(JointAdmission admission){
-    	JointAdmission tmp = find(admission.getId());
-    	if(tmp != null) {
-    		tmp.setArchived(true);
-    		merge(tmp);
-    	}
+
+
+    public void removeJointAdmission(JointAdmission admission) {
+        JointAdmission tmp = find(admission.getId());
+        if (tmp != null) {
+            tmp.setArchived(true);
+            merge(tmp);
+        }
     }
-    
+
 }

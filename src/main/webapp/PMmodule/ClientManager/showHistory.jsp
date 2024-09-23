@@ -24,9 +24,9 @@
 
 --%>
 
-<%@ include file="/casemgmt/taglibs.jsp"%>
+<%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ page
-	import="org.springframework.web.context.*,org.springframework.web.context.support.*, org.oscarehr.PMmodule.service.ProviderManager, org.oscarehr.casemgmt.model.CaseManagementNote"%>
+        import="org.springframework.web.context.*,org.springframework.web.context.support.*, org.oscarehr.PMmodule.service.ProviderManager, org.oscarehr.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Admission" %>
 <%@page import="org.oscarehr.common.dao.AdmissionDao" %>
@@ -35,43 +35,44 @@
 <%@page import="java.util.List" %>
 
 <%
-	String admissionId = request.getParameter("id");
+    String admissionId = request.getParameter("id");
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-    ProviderManager pMgr = (ProviderManager)ctx.getBean(ProviderManager.class);
+    ProviderManager pMgr = (ProviderManager) ctx.getBean(ProviderManager.class);
     AdmissionDao admissionDao = SpringUtils.getBean(AdmissionDao.class);
-    
+
     Admission admission = admissionDao.find(Integer.parseInt(admissionId));
-    
+
     OscarLogDao oscarLogDao = SpringUtils.getBean(OscarLogDao.class);
     List<OscarLog> logs = oscarLogDao.findByActionAndData(request.getParameter("type"), admissionId);
-    
+
     pageContext.setAttribute("history", logs);
- %>
+%>
 <html>
 <head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>Note History</title>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <title>Note History</title>
 </head>
 <body>
-<h3 style="text-align: center;"><%=request.getParameter("title") %></h3>
+<h3 style="text-align: center;"><%=request.getParameter("title") %>
+</h3>
 <h3 style="text-align: center;"></h3>
 <nested:iterate indexId="idx" id="log" name="history">
-	<div
-		style="width: 99%; background-color: #EFEFEF; font-size: 12px; border-left: thin groove #000000; border-bottom: thin groove #000000; border-right: thin groove #000000;">
-		<p>
-			<%	
-				String providerName = pMgr.getProvider(((OscarLog)log).getProviderNo()).getFormattedName();
-			%>
-			<%=providerName%> updated AdmissionDate to <nested:write name="log"
-			property="content" format="dd-MMM-yyyy H:mm" />
-			
-		</p>
-		<div style="color: #0000FF;">
-		
-	        Documentation Date: <nested:write name="log"
-			property="created" format="dd-MMM-yyyy H:mm" />
-		</div>
-	</div>
+    <div
+            style="width: 99%; background-color: #EFEFEF; font-size: 12px; border-left: thin groove #000000; border-bottom: thin groove #000000; border-right: thin groove #000000;">
+        <p>
+            <%
+                String providerName = pMgr.getProvider(((OscarLog) log).getProviderNo()).getFormattedName();
+            %>
+            <%=providerName%> updated AdmissionDate to <nested:write name="log"
+                                                                     property="content" format="dd-MMM-yyyy H:mm"/>
+
+        </p>
+        <div style="color: #0000FF;">
+
+            Documentation Date: <nested:write name="log"
+                                              property="created" format="dd-MMM-yyyy H:mm"/>
+        </div>
+    </div>
 </nested:iterate>
 </body>
 </html>

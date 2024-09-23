@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,73 +35,72 @@ import org.oscarehr.common.model.AbstractModel;
 
 
 @Entity
-@Table(name="teleplan_response_log")
-public class TeleplanResponseLog extends AbstractModel<Integer>{
+@Table(name = "teleplan_response_log")
+public class TeleplanResponseLog extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="transaction_no")
-	private String transactionNo;
-	
-	private String result;
-	
-	private String filename;
-	
-	@Column(name="real_filename")
-	private String realFilename;
-	
-	private String msgs;
+    @Column(name = "transaction_no")
+    private String transactionNo;
 
-	public Integer getId() {
-		return id;
-	}
+    private String result;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String filename;
 
-	public String getTransactionNo() {
-		return transactionNo;
-	}
+    @Column(name = "real_filename")
+    private String realFilename;
 
-	public void setTransactionNo(String transactionNo) {
-		this.transactionNo = transactionNo;
-	}
+    private String msgs;
 
-	public String getResult() {
-		return result;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setResult(String result) {
-		this.result = result;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getFilename() {
-		return filename;
-	}
+    public String getTransactionNo() {
+        return transactionNo;
+    }
 
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
+    public void setTransactionNo(String transactionNo) {
+        this.transactionNo = transactionNo;
+    }
 
-	public String getRealFilename() {
-		return realFilename;
-	}
+    public String getResult() {
+        return result;
+    }
 
-	public void setRealFilename(String realFilename) {
-		this.realFilename = realFilename;
-	}
+    public void setResult(String result) {
+        this.result = result;
+    }
 
-	public String getMsgs() {
-		return msgs;
-	}
+    public String getFilename() {
+        return filename;
+    }
 
-	public void setMsgs(String msgs) {
-		this.msgs = msgs;
-	}
-	
-	
-	
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getRealFilename() {
+        return realFilename;
+    }
+
+    public void setRealFilename(String realFilename) {
+        this.realFilename = realFilename;
+    }
+
+    public String getMsgs() {
+        return msgs;
+    }
+
+    public void setMsgs(String msgs) {
+        this.msgs = msgs;
+    }
+
+
 }

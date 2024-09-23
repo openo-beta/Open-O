@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -58,144 +58,144 @@ import oscar.oscarLab.ca.all.upload.MessageUploader;
 @Deprecated
 /**
  * @Deprecated use IHAPOIHandler
- * 
+ *
  */
 public class IHAHandler extends DefaultGenericHandler implements MessageHandler {
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     String hl7Type = null;
-    String proNo,UserID, Password,Alias;
+    String proNo, UserID, Password, Alias;
     ArrayList<String> headerList = null;
     Object terser;
     Object msg = null;
 
 
-    String getHl7Type(){
+    String getHl7Type() {
         return "IHA";
     }
 
     @Override
-    public String getMsgType(){
-        return("IHA");
+    public String getMsgType() {
+        return ("IHA");
     }
 
     @Override
-    public ArrayList<String> getHeaders(){
-       headerList = new ArrayList<String>();
+    public ArrayList<String> getHeaders() {
+        headerList = new ArrayList<String>();
 
-       for (int i = 0; i < getOBRCount();i++){
+        for (int i = 0; i < getOBRCount(); i++) {
             headerList.add(getOBRName(i));
-            logger.debug("ADDING to header "+getOBRName(i));
-       }
-       return headerList;
+            logger.debug("ADDING to header " + getOBRName(i));
+        }
+        return headerList;
     }
-    
+
     @Override
-    public String getObservationHeader(int i, int j){
+    public String getObservationHeader(int i, int j) {
         return headerList.get(i);
     }
 
     @Override
-    public String getOBXReferenceRange(int i, int j){
-        return(getOBXField(i, j, 7, 0, 3));
+    public String getOBXReferenceRange(int i, int j) {
+        return (getOBXField(i, j, 7, 0, 3));
     }
 
     @Override
-    public String getAccessionNum(){
-        try{
-            String accessionNum = getString(DynamicHapiLoaderUtils.terserGet(terser,"/.MSH-10-1"));
+    public String getAccessionNum() {
+        try {
+            String accessionNum = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.MSH-10-1"));
             int firstDash = accessionNum.indexOf("-");
-            int secondDash = accessionNum.indexOf("-", firstDash+1);
-            return(accessionNum.substring(firstDash+1, secondDash));
-        }catch(Exception e){
-            return("");
+            int secondDash = accessionNum.indexOf("-", firstDash + 1);
+            return (accessionNum.substring(firstDash + 1, secondDash));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public void setParameters(String proNo,String UserID,String Password,String Alias) {
-        this.proNo=proNo;
-        this.UserID=UserID;
-        this.Password=Password;
-        this.Alias=Alias;
+    public void setParameters(String proNo, String UserID, String Password, String Alias) {
+        this.proNo = proNo;
+        this.UserID = UserID;
+        this.Password = Password;
+        this.Alias = Alias;
     }
 
     @Override
-	public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
         Document xmlDoc = getXML(fileName);
-        Node          node;
-        Element       element;
-        NamedNodeMap  nnm = null;
+        Node node;
+        Element element;
+        NamedNodeMap nnm = null;
         String msgId = null;
         String result = null;
 
-        if(xmlDoc != null){
+        if (xmlDoc != null) {
             String hl7Body = null;
             String attrName = null;
-            try{
-                msgId=null;
-                NodeList allNodes = xmlDoc.getElementsByTagNameNS("*","*");
+            try {
+                msgId = null;
+                NodeList allNodes = xmlDoc.getElementsByTagNameNS("*", "*");
 
-                for (int i=1; i<allNodes.getLength(); i++){
-                	try {
-	                    element = (Element)allNodes.item(i);
-	                    nnm = element.getAttributes();
-	                    if (nnm != null) {
-	                        for (int j=0; j<nnm.getLength(); j++) {
-	                            node = nnm.item(j);
-	                            attrName = node.getNodeName();
-	                            if(attrName.equals("msgId")) {
-	                                msgId=node.getNodeValue();
-	                            }
-	                        }
-	                    }
-	                    hl7Body = allNodes.item(i).getFirstChild().getTextContent();
-	                    
-	                    logger.debug("MESSAGE ID: " + msgId);
-	                    logger.debug("MESSAGE: ");
-	                    logger.debug(hl7Body);
-	                    
-	                    if (hl7Body != null && hl7Body.indexOf("\nPID|") > 0){
-	                        logger.info("using xml HL7 Type "+getHl7Type());
-	                        MessageUploader.routeReport(loggedInInfo, serviceName, "IHA", hl7Body, fileId);
-	                        result += "success:" + msgId + ",";
-	                    }
-	                    
-                	}catch(Exception e) {
-                		
-                		logger.debug("NESTED EXCEPTION RESULT: " + result);
-                		
-                		result += "fail:" + msgId + ",";
-                	}
-                	
-                	// The exception handling here is very dangerous. 
+                for (int i = 1; i < allNodes.getLength(); i++) {
+                    try {
+                        element = (Element) allNodes.item(i);
+                        nnm = element.getAttributes();
+                        if (nnm != null) {
+                            for (int j = 0; j < nnm.getLength(); j++) {
+                                node = nnm.item(j);
+                                attrName = node.getNodeName();
+                                if (attrName.equals("msgId")) {
+                                    msgId = node.getNodeValue();
+                                }
+                            }
+                        }
+                        hl7Body = allNodes.item(i).getFirstChild().getTextContent();
+
+                        logger.debug("MESSAGE ID: " + msgId);
+                        logger.debug("MESSAGE: ");
+                        logger.debug(hl7Body);
+
+                        if (hl7Body != null && hl7Body.indexOf("\nPID|") > 0) {
+                            logger.info("using xml HL7 Type " + getHl7Type());
+                            MessageUploader.routeReport(loggedInInfo, serviceName, "IHA", hl7Body, fileId);
+                            result += "success:" + msgId + ",";
+                        }
+
+                    } catch (Exception e) {
+
+                        logger.debug("NESTED EXCEPTION RESULT: " + result);
+
+                        result += "fail:" + msgId + ",";
+                    }
+
+                    // The exception handling here is very dangerous.
                 }
-            }catch(Exception e){
-            	
+            } catch (Exception e) {
+
                 logger.debug("EXCEPTION RESULT: " + result);
-                
+
                 MessageUploader.clean(fileId);
                 logger.error("ERROR:", e);
                 return null;
             }
         }
-        
+
         logger.debug("FINAL RESULT: " + result);
-        
-        return(result);
+
+        return (result);
     }
 
     /*
      *  Return the message as an xml document if it is in the xml format
      */
-    private Document getXML(String fileName){
-        try{
+    private Document getXML(String fileName) {
+        try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
             Document doc = factory.newDocumentBuilder().parse(new FileInputStream(fileName));
-            return(doc);
+            return (doc);
 
             // Ignore exceptions and return false
-        }catch(Exception e){
-            return(null);
+        } catch (Exception e) {
+            return (null);
         }
     }
 }

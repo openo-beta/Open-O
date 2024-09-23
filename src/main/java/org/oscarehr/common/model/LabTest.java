@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,112 +30,141 @@ import java.util.Date;
 
 public class LabTest {
 
-	private Long id;
-	private Date date;
-	private String name;
-	private String description;
-	private String codeType;
-	private String code;
-	private String codeValue;
-	private String codeUnit;
-	private String refRangeLow;
-	private String refRangeHigh;
-	private String refRangeText;
-	private String flag;
-	private String stat;
-	private String blocked;
-	private String notes;
-	
-	public Long getId() {
-    	return id;
+    private Long id;
+    private Date date;
+    private String name;
+    private String description;
+    private String codeType;
+    private String code;
+    private String codeValue;
+    private String codeUnit;
+    private String refRangeLow;
+    private String refRangeHigh;
+    private String refRangeText;
+    private String flag;
+    private String stat;
+    private String blocked;
+    private String notes;
+
+    public Long getId() {
+        return id;
     }
-	public void setId(Long id) {
-    	this.id = id;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-	public Date getDate() {
-    	return date;
+
+    public Date getDate() {
+        return date;
     }
-	public void setDate(Date date) {
-    	this.date = date;
+
+    public void setDate(Date date) {
+        this.date = date;
     }
-	public String getName() {
-    	return name;
+
+    public String getName() {
+        return name;
     }
-	public void setName(String name) {
-    	this.name = name;
+
+    public void setName(String name) {
+        this.name = name;
     }
-	public String getDescription() {
-    	return description;
+
+    public String getDescription() {
+        return description;
     }
-	public void setDescription(String description) {
-    	this.description = description;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
-	public String getCodeType() {
-    	return codeType;
+
+    public String getCodeType() {
+        return codeType;
     }
-	public void setCodeType(String codeType) {
-    	this.codeType = codeType;
+
+    public void setCodeType(String codeType) {
+        this.codeType = codeType;
     }
-	public String getCode() {
-    	return code;
+
+    public String getCode() {
+        return code;
     }
-	public void setCode(String code) {
-    	this.code = code;
+
+    public void setCode(String code) {
+        this.code = code;
     }
-	public String getCodeValue() {
-    	return codeValue;
+
+    public String getCodeValue() {
+        return codeValue;
     }
-	public void setCodeValue(String codeValue) {
-    	this.codeValue = codeValue;
+
+    public void setCodeValue(String codeValue) {
+        this.codeValue = codeValue;
     }
-	public String getCodeUnit() {
-    	return codeUnit;
+
+    public String getCodeUnit() {
+        return codeUnit;
     }
-	public void setCodeUnit(String codeUnit) {
-    	this.codeUnit = codeUnit;
+
+    public void setCodeUnit(String codeUnit) {
+        this.codeUnit = codeUnit;
     }
-	public String getRefRangeLow() {
-    	return refRangeLow;
+
+    public String getRefRangeLow() {
+        return refRangeLow;
     }
-	public void setRefRangeLow(String refRangeLow) {
-    	this.refRangeLow = refRangeLow;
+
+    public void setRefRangeLow(String refRangeLow) {
+        this.refRangeLow = refRangeLow;
     }
-	public String getRefRangeHigh() {
-    	return refRangeHigh;
+
+    public String getRefRangeHigh() {
+        return refRangeHigh;
     }
-	public void setRefRangeHigh(String refRangeHigh) {
-    	this.refRangeHigh = refRangeHigh;
+
+    public void setRefRangeHigh(String refRangeHigh) {
+        this.refRangeHigh = refRangeHigh;
     }
-	public String getRefRangeText() {
-    	return refRangeText;
+
+    public String getRefRangeText() {
+        return refRangeText;
     }
-	public void setRefRangeText(String refRangeText) {
-    	this.refRangeText = refRangeText;
+
+    public void setRefRangeText(String refRangeText) {
+        this.refRangeText = refRangeText;
     }
-	public String getFlag() {
-    	return flag;
+
+    public String getFlag() {
+        return flag;
     }
-	public void setFlag(String flag) {
-    	this.flag = flag;
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
-	public String getStat() {
-    	return stat;
+
+    public String getStat() {
+        return stat;
     }
-	public void setStat(String stat) {
-    	this.stat = stat;
+
+    public void setStat(String stat) {
+        this.stat = stat;
     }
-	public String getBlocked() {
-    	return blocked;
+
+    public String getBlocked() {
+        return blocked;
     }
-	public void setBlocked(String blocked) {
-    	this.blocked = blocked;
+
+    public void setBlocked(String blocked) {
+        this.blocked = blocked;
     }
-	public String getNotes() {
-    	return notes;
+
+    public String getNotes() {
+        return notes;
     }
-	public void setNotes(String notes) {
-    	this.notes = notes;
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
-	
-	
+
+
 }

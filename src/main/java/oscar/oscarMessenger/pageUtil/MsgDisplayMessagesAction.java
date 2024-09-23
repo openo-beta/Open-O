@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -48,73 +48,72 @@ import oscar.util.ConversionUtils;
 
 public class MsgDisplayMessagesAction extends Action {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "r", null)) {
-			throw new SecurityException("missing required security object (_msg)");
-		}
-		
-		// Setup variables            
-		oscar.oscarMessenger.pageUtil.MsgSessionBean bean = null;
-		String[] messageNo = ((MsgDisplayMessagesForm) form).getMessageNo();
-		String providerNo;
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-		//Initialize forward location
-		String findForward = "success";
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "r", null)) {
+            throw new SecurityException("missing required security object (_msg)");
+        }
 
-		if (request.getParameter("providerNo") != null && request.getParameter("userName") != null) {
+        // Setup variables
+        oscar.oscarMessenger.pageUtil.MsgSessionBean bean = null;
+        String[] messageNo = ((MsgDisplayMessagesForm) form).getMessageNo();
+        String providerNo;
 
-			bean = new oscar.oscarMessenger.pageUtil.MsgSessionBean();
-			bean.setProviderNo(request.getParameter("providerNo"));
-			bean.setUserName(request.getParameter("userName"));
-			request.getSession().setAttribute("msgSessionBean", bean);
+        //Initialize forward location
+        String findForward = "success";
 
-		}//if
-		else if(request.getParameter("providerNo") != null && request.getParameter("userName") == null) {
-			ProviderManager2 providerManager = SpringUtils.getBean(ProviderManager2.class);
-			Provider p = providerManager.getProvider(LoggedInInfo.getLoggedInInfoFromSession(request), request.getParameter("providerNo"));
-			if(p != null) {
-				bean = new oscar.oscarMessenger.pageUtil.MsgSessionBean();
-				bean.setProviderNo(request.getParameter("providerNo"));
-				bean.setUserName(p.getFirstName() + " " + p.getLastName());
-				request.getSession().setAttribute("msgSessionBean", bean);
-			}
-		}
-		else {
-			bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
-		}//else
+        if (request.getParameter("providerNo") != null && request.getParameter("userName") != null) {
 
-		/*
-		 *edit 2006-0811-01 by wreby
-		 *  Adding a search and clear search action to the DisplayMessages JSP
-		 */
-		if (request.getParameter("btnSearch") != null) {
-			oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean displayMsgBean = (oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean) request.getSession().getAttribute("DisplayMessagesBeanId");
+            bean = new oscar.oscarMessenger.pageUtil.MsgSessionBean();
+            bean.setProviderNo(request.getParameter("providerNo"));
+            bean.setUserName(request.getParameter("userName"));
+            request.getSession().setAttribute("msgSessionBean", bean);
 
-			displayMsgBean.setFilter(request.getParameter("searchString"));
-		} else if (request.getParameter("btnClearSearch") != null) {
-			oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean displayMsgBean = (oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean) request.getSession().getAttribute("DisplayMessagesBeanId");
-			displayMsgBean.clearFilter();
-		} else if (request.getParameter("btnDelete") != null) {
-			//This will go through the array of message Numbers and set them
-			//to del.which stands for deleted. but you prolly could have figured that out
+        }//if
+        else if (request.getParameter("providerNo") != null && request.getParameter("userName") == null) {
+            ProviderManager2 providerManager = SpringUtils.getBean(ProviderManager2.class);
+            Provider p = providerManager.getProvider(LoggedInInfo.getLoggedInInfoFromSession(request), request.getParameter("providerNo"));
+            if (p != null) {
+                bean = new oscar.oscarMessenger.pageUtil.MsgSessionBean();
+                bean.setProviderNo(request.getParameter("providerNo"));
+                bean.setUserName(p.getFirstName() + " " + p.getLastName());
+                request.getSession().setAttribute("msgSessionBean", bean);
+            }
+        } else {
+            bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
+        }//else
 
-			providerNo = bean.getProviderNo();
-			MessageListDao dao = SpringUtils.getBean(MessageListDao.class);
-			for (int i = 0; i < messageNo.length; i++) {
-				List<MessageList> msgs = dao.findByProviderNoAndMessageNo(providerNo, ConversionUtils.fromLongString(messageNo[i]));
-				for (MessageList msg : msgs) {
-					msg.setDeleted(true);
-					dao.merge(msg);
-				}
-			}//for
-		} else {
-			MiscUtils.getLogger().debug("Unexpected action in MsgDisplayMessagesBean.java");
-		}
+        /*
+         *edit 2006-0811-01 by wreby
+         *  Adding a search and clear search action to the DisplayMessages JSP
+         */
+        if (request.getParameter("btnSearch") != null) {
+            oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean displayMsgBean = (oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean) request.getSession().getAttribute("DisplayMessagesBeanId");
 
-		return (mapping.findForward(findForward));
-	}
+            displayMsgBean.setFilter(request.getParameter("searchString"));
+        } else if (request.getParameter("btnClearSearch") != null) {
+            oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean displayMsgBean = (oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean) request.getSession().getAttribute("DisplayMessagesBeanId");
+            displayMsgBean.clearFilter();
+        } else if (request.getParameter("btnDelete") != null) {
+            //This will go through the array of message Numbers and set them
+            //to del.which stands for deleted. but you prolly could have figured that out
+
+            providerNo = bean.getProviderNo();
+            MessageListDao dao = SpringUtils.getBean(MessageListDao.class);
+            for (int i = 0; i < messageNo.length; i++) {
+                List<MessageList> msgs = dao.findByProviderNoAndMessageNo(providerNo, ConversionUtils.fromLongString(messageNo[i]));
+                for (MessageList msg : msgs) {
+                    msg.setDeleted(true);
+                    dao.merge(msg);
+                }
+            }//for
+        } else {
+            MiscUtils.getLogger().debug("Unexpected action in MsgDisplayMessagesBean.java");
+        }
+
+        return (mapping.findForward(findForward));
+    }
 
 }

@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * Class FrmPdfGraphicGrowthChart : all pdf class files are temp. Need OO design
  */
-public final class FrmPdfGraphicGrowthChart extends FrmPdfGraphic {   
+public final class FrmPdfGraphicGrowthChart extends FrmPdfGraphic {
 
     float fEndX = 0f;
     float fEndY = 0f;
@@ -34,7 +34,7 @@ public final class FrmPdfGraphicGrowthChart extends FrmPdfGraphic {
 
         ret[0] = "" + xNum;
         ret[1] = "" + yNum;
-        
+
         return ret;
     }
 
@@ -56,22 +56,22 @@ public final class FrmPdfGraphicGrowthChart extends FrmPdfGraphic {
     public void init(Properties prop) {
         String str = prop.getProperty("__nMaxPixX");
         nMaxPixX = isDigitNum(str) ? Integer.parseInt(str) : 0;
-        
+
         str = prop.getProperty("__nMaxPixY");
         nMaxPixY = isDigitNum(str) ? Integer.parseInt(str) : 0;
-        
+
         str = prop.getProperty("__fStartX");
         fStartX = isDigitNum(str) ? Float.parseFloat(str) : 0f;
-        
+
         str = prop.getProperty("__fEndX");
         fEndX = isDigitNum(str) ? Float.parseFloat(str) : 0f;
-        
+
         str = prop.getProperty("__fStartY");
         fStartY = isDigitNum(str) ? Float.parseFloat(str) : 0f;
-        
+
         str = prop.getProperty("__fEndY");
         fEndY = isDigitNum(str) ? Float.parseFloat(str) : 0f;
-    }   
+    }
 
     private boolean isDigit(String str) {
         boolean ret = true;

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -265,9 +265,9 @@ public class StringUtils {
             fmt.parse(dateString);
             ret = true;
         } catch (ParseException ex) {
-        	MiscUtils.getLogger().error("Looks bad, too bad original author didn't document how bad", ex);
+            MiscUtils.getLogger().error("Looks bad, too bad original author didn't document how bad", ex);
         }
-            return ret;
+        return ret;
 
     }
 
@@ -391,36 +391,36 @@ public class StringUtils {
     }
 
     public static boolean nullSafeEquals(String s1, String s2) {
-    	if (s1==null && s2==null) return true;
-    	if (s1!=null)
-    		return s1.equals(s2);
-    	else
-    		return s2==null;
+        if (s1 == null && s2 == null) return true;
+        if (s1 != null)
+            return s1.equals(s2);
+        else
+            return s2 == null;
 
     }
 
     public static boolean nullSafeEqualsIgnoreCase(String s1, String s2) {
-		return nullSafeEquals(s1.toUpperCase(), s2.toUpperCase());
+        return nullSafeEquals(s1.toUpperCase(), s2.toUpperCase());
     }
 
     public static boolean containsIgnoreCase(String text, String searchWord) {
-    	if (text==null || searchWord==null) return false;
+        if (text == null || searchWord == null) return false;
 
-    	text = text.toUpperCase();
-    	searchWord = searchWord.toUpperCase();
+        text = text.toUpperCase();
+        searchWord = searchWord.toUpperCase();
 
-    	return text.contains(searchWord);
+        return text.contains(searchWord);
     }
 
     static public String noNull(String maybeNullText) {
-		return filled(maybeNullText) ? maybeNullText : "";
+        return filled(maybeNullText) ? maybeNullText : "";
     }
 
     static public boolean empty(String s) {
-		return isNullOrEmpty(s);
+        return isNullOrEmpty(s);
     }
 
     static public boolean filled(String s) {
-		return !isNullOrEmpty(s);
+        return !isNullOrEmpty(s);
     }
 }

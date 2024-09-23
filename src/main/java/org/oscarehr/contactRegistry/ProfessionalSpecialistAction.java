@@ -18,56 +18,56 @@ import java.util.List;
 
 public class ProfessionalSpecialistAction extends JSONAction {
 
-	private final ProfessionalSpecialistsManager professionalSpecialistsManager = SpringUtils.getBean(ProfessionalSpecialistsManager.class);
+    private final ProfessionalSpecialistsManager professionalSpecialistsManager = SpringUtils.getBean(ProfessionalSpecialistsManager.class);
 
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form,
-	                                 HttpServletRequest request, HttpServletResponse response) {
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form,
+                                     HttpServletRequest request, HttpServletResponse response) {
 
-		/*
-		 * Designed for backwards compatibility.
-		 * Otherwise use the dispatch action methods.
-		 */
-		String path = mapping.getPath();
+        /*
+         * Designed for backwards compatibility.
+         * Otherwise use the dispatch action methods.
+         */
+        String path = mapping.getPath();
 
-		if("/getProfessionalSpecialist".equals(path)) {
-			this.get(mapping, form, request, response);
-		}
+        if ("/getProfessionalSpecialist".equals(path)) {
+            this.get(mapping, form, request, response);
+        }
 
-		if("/searchProfessionalSpecialist".equals(path)) {
-			this.search(mapping, form, request, response);
-		}
+        if ("/searchProfessionalSpecialist".equals(path)) {
+            this.search(mapping, form, request, response);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public void get(ActionMapping mapping, ActionForm form,HttpServletRequest request, HttpServletResponse response) {
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		String specialistId = request.getParameter("id");
-		ProfessionalSpecialist professionalSpecialist = null;
+    public void get(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String specialistId = request.getParameter("id");
+        ProfessionalSpecialist professionalSpecialist = null;
 
-		if(specialistId != null && !specialistId.isEmpty()) {
-			professionalSpecialist = professionalSpecialistsManager.getProfessionalSpecialist(loggedInInfo, Integer.parseInt(specialistId));
-		}
+        if (specialistId != null && !specialistId.isEmpty()) {
+            professionalSpecialist = professionalSpecialistsManager.getProfessionalSpecialist(loggedInInfo, Integer.parseInt(specialistId));
+        }
 
-		if(professionalSpecialist != null) {
-			JSONObject professionalSpecialistJSON = JsonUtil.pojoToJson(professionalSpecialist);
-			super.jsonResponse(response, professionalSpecialistJSON.toString());
-		}
-	}
+        if (professionalSpecialist != null) {
+            JSONObject professionalSpecialistJSON = JsonUtil.pojoToJson(professionalSpecialist);
+            super.jsonResponse(response, professionalSpecialistJSON.toString());
+        }
+    }
 
-	public void search(ActionMapping mapping, ActionForm form,HttpServletRequest request, HttpServletResponse response) {
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		String search_keyword = request.getParameter("keyword");
-		List<ProfessionalSpecialist> professionalSpecialist = null;
+    public void search(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String search_keyword = request.getParameter("keyword");
+        List<ProfessionalSpecialist> professionalSpecialist = null;
 
-		if(search_keyword != null && !search_keyword.isEmpty()) {
-			professionalSpecialist = professionalSpecialistsManager.searchProfessionalSpecialist(loggedInInfo, search_keyword);
-		}
+        if (search_keyword != null && !search_keyword.isEmpty()) {
+            professionalSpecialist = professionalSpecialistsManager.searchProfessionalSpecialist(loggedInInfo, search_keyword);
+        }
 
-		if(professionalSpecialist != null) {
-			String professionalSpecialistJSON = JsonUtil.pojoCollectionToJson(professionalSpecialist);
-			super.jsonResponse(response, professionalSpecialistJSON);
-		}
-	}
+        if (professionalSpecialist != null) {
+            String professionalSpecialistJSON = JsonUtil.pojoCollectionToJson(professionalSpecialist);
+            super.jsonResponse(response, professionalSpecialistJSON);
+        }
+    }
 
 }

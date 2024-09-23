@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -33,122 +32,122 @@ import org.oscarehr.casemgmt.model.CaseManagementNoteLink;
 import oscar.oscarRx.data.RxPrescriptionData;
 
 public interface NoteDisplay {
-	public static Comparator<NoteDisplay> noteProviderComparator = new Comparator<NoteDisplay>() {
-		public int compare(NoteDisplay note1, NoteDisplay note2) {
-			if (note1 == null || note2 == null) {
-				return 0;
-			}
+    public static Comparator<NoteDisplay> noteProviderComparator = new Comparator<NoteDisplay>() {
+        public int compare(NoteDisplay note1, NoteDisplay note2) {
+            if (note1 == null || note2 == null) {
+                return 0;
+            }
 
-			return note1.getProviderName().compareTo(note2.getProviderName());
-		}
-	};
+            return note1.getProviderName().compareTo(note2.getProviderName());
+        }
+    };
 
-	public static Comparator<NoteDisplay> noteProgramComparator = new Comparator<NoteDisplay>() {
-		public int compare(NoteDisplay note1, NoteDisplay note2) {
-			if (note1 == null || note1.getProgramName() == null || note2 == null || note2.getProgramName() == null) {
-				return 0;
-			}
-			return note1.getProgramName().compareTo(note2.getProgramName());
-		}
-	};
+    public static Comparator<NoteDisplay> noteProgramComparator = new Comparator<NoteDisplay>() {
+        public int compare(NoteDisplay note1, NoteDisplay note2) {
+            if (note1 == null || note1.getProgramName() == null || note2 == null || note2.getProgramName() == null) {
+                return 0;
+            }
+            return note1.getProgramName().compareTo(note2.getProgramName());
+        }
+    };
 
-	public static Comparator<NoteDisplay> noteRoleComparator = new Comparator<NoteDisplay>() {
-		public int compare(NoteDisplay note1, NoteDisplay note2) {
-			if (note1 == null || note2 == null) {
-				return 0;
-			}
-			return note1.getRoleName().compareTo(note2.getRoleName());
-		}
-	};
+    public static Comparator<NoteDisplay> noteRoleComparator = new Comparator<NoteDisplay>() {
+        public int compare(NoteDisplay note1, NoteDisplay note2) {
+            if (note1 == null || note2 == null) {
+                return 0;
+            }
+            return note1.getRoleName().compareTo(note2.getRoleName());
+        }
+    };
 
-	public static Comparator<NoteDisplay> noteObservationDateComparator = new Comparator<NoteDisplay>() {
-		public int compare(NoteDisplay note1, NoteDisplay note2) {
-			if (note1 == null || note2 == null) {
-				return 0;
-			}
-			
-			if( note2.getObservationDate() == null || note1.getObservationDate() == null ) {
-				return 0;
-			}
-			
-			return note2.getObservationDate().compareTo(note1.getObservationDate());
-		}
-	};
+    public static Comparator<NoteDisplay> noteObservationDateComparator = new Comparator<NoteDisplay>() {
+        public int compare(NoteDisplay note1, NoteDisplay note2) {
+            if (note1 == null || note2 == null) {
+                return 0;
+            }
 
-	public Integer getNoteId();
+            if (note2.getObservationDate() == null || note1.getObservationDate() == null) {
+                return 0;
+            }
 
-	public boolean isSigned();
+            return note2.getObservationDate().compareTo(note1.getObservationDate());
+        }
+    };
 
-	public boolean isEditable();
+    public Integer getNoteId();
 
-	public Date getObservationDate();
+    public boolean isSigned();
 
-	public String getRevision();
+    public boolean isEditable();
 
-	public Date getUpdateDate();
+    public Date getObservationDate();
 
-	public String getProviderName();
+    public String getRevision();
 
-	public String getProviderNo();
+    public Date getUpdateDate();
 
-	public String getStatus();
+    public String getProviderName();
 
-	public String getProgramName();
+    public String getProviderNo();
 
-	public String getLocation();
+    public String getStatus();
 
-	public String getRoleName();
+    public String getProgramName();
 
-	public Integer getRemoteFacilityId();
+    public String getLocation();
 
-	public String getUuid();
+    public String getRoleName();
 
-	public boolean getHasHistory();
+    public Integer getRemoteFacilityId();
 
-	public boolean isLocked();
+    public String getUuid();
 
-	public String getNote();
+    public boolean getHasHistory();
 
-	public boolean isDocument();
+    public boolean isLocked();
 
-	public boolean isRxAnnotation();
+    public String getNote();
 
-	public boolean isEformData();
+    public boolean isDocument();
 
-	public boolean isEncounterForm();
+    public boolean isRxAnnotation();
 
-	public boolean isInvoice();
+    public boolean isEformData();
 
-	public boolean isTicklerNote();
+    public boolean isEncounterForm();
 
-	public boolean isExternalNote();
-	
+    public boolean isInvoice();
 
-	public boolean isEmailNote();
-	
-	public CaseManagementNoteLink getNoteLink();
+    public boolean isTicklerNote();
 
-	public RxPrescriptionData.Prescription getRxFromAnnotation(CaseManagementNoteLink cmnl);
+    public boolean isExternalNote();
 
-	public String getEncounterType();
 
-	public ArrayList<String> getEditorNames();
+    public boolean isEmailNote();
 
-	public ArrayList<String> getIssueDescriptions();
+    public CaseManagementNoteLink getNoteLink();
 
-	//not controlled by note attributes / business logic like "editable".
-	//use this for a category of notes - like integrator, group notes, etc
-	public boolean isReadOnly();
+    public RxPrescriptionData.Prescription getRxFromAnnotation(CaseManagementNoteLink cmnl);
 
-	public boolean isGroupNote();
+    public String getEncounterType();
 
-	public boolean isCpp();
+    public ArrayList<String> getEditorNames();
 
-	public boolean containsIssue(String issueCode);
+    public ArrayList<String> getIssueDescriptions();
 
-	public String getEncounterTime();
+    //not controlled by note attributes / business logic like "editable".
+    //use this for a category of notes - like integrator, group notes, etc
+    public boolean isReadOnly();
 
-	public String getEncounterTransportationTime();
-	
-	public Integer getAppointmentNo();
+    public boolean isGroupNote();
+
+    public boolean isCpp();
+
+    public boolean containsIssue(String issueCode);
+
+    public String getEncounterTime();
+
+    public String getEncounterTransportationTime();
+
+    public Integer getAppointmentNo();
 }

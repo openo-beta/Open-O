@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,94 +30,94 @@ import java.util.List;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 public class DashboardBean {
-	
-	private Integer id;
-	private String name;
-	private String description;
-	private String creator;
-	private Date edited;
-	private boolean active;
-	private boolean locked;
-	
-	private Date lastChecked;
-	
-	// by Indicator Category
-	private List<PanelBean> panelBeans;
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer id;
+    private String name;
+    private String description;
+    private String creator;
+    private Date edited;
+    private boolean active;
+    private boolean locked;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private Date lastChecked;
 
-	public String getName() {
-		return name;
-	}
+    // by Indicator Category
+    private List<PanelBean> panelBeans;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Date getEdited() {
-		return edited;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setEdited(Date edited) {
-		this.edited = edited;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public Date getEdited() {
+        return edited;
+    }
 
-	public boolean isLocked() {
-		return locked;
-	}
+    public void setEdited(Date edited) {
+        this.edited = edited;
+    }
 
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public List<PanelBean> getPanelBeans() {
-		return panelBeans;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public void setPanelBeans(List<PanelBean> panelBeans) {
-		this.panelBeans = panelBeans;
-	}
+    public boolean isLocked() {
+        return locked;
+    }
 
-	public Date getLastChecked() {
-		return lastChecked;
-	}
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 
-	public void setLastChecked(Date lastChecked) {
-		this.lastChecked = lastChecked;
-	}
+    public List<PanelBean> getPanelBeans() {
+        return panelBeans;
+    }
 
-	@Override
-	public String toString() {
-	   return ReflectionToStringBuilder.toString(this);
-	}
+    public void setPanelBeans(List<PanelBean> panelBeans) {
+        this.panelBeans = panelBeans;
+    }
+
+    public Date getLastChecked() {
+        return lastChecked;
+    }
+
+    public void setLastChecked(Date lastChecked) {
+        this.lastChecked = lastChecked;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }

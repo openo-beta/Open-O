@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,185 +29,184 @@ import java.io.Serializable;
 
 public class NewAppointmentTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	
-	private String providerNo;
+    private static final long serialVersionUID = 1L;
 
-	private String appointmentDate;
 
-	private String startTime;
+    private String providerNo;
 
-	private String startTime12hWithMedian;
-	
-	
-	private String name;
+    private String appointmentDate;
 
-	private int demographicNo;
+    private String startTime;
 
+    private String startTime12hWithMedian;
 
-	private String notes;
-	private String reason;
-	private String location;
-	private String resources;
-	private String type;
-	private String status;
 
-	private int duration;
-	
-	private String urgency;
+    private String name;
 
-	private Integer reasonCode;
+    private int demographicNo;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
 
+    private String notes;
+    private String reason;
+    private String location;
+    private String resources;
+    private String type;
+    private String status;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    private int duration;
 
+    private String urgency;
 
-	public String getAppointmentDate() {
-		return appointmentDate;
-	}
+    private Integer reasonCode;
 
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setAppointmentDate(String appointmentDate) {
-		this.appointmentDate = appointmentDate;
-	}
 
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public String getStartTime() {
-		return startTime;
-	}
 
+    public String getAppointmentDate() {
+        return appointmentDate;
+    }
 
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
-	}
 
+    public void setAppointmentDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
 
-	public String getName() {
-		return name;
-	}
 
+    public String getStartTime() {
+        return startTime;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
-	public int getDemographicNo() {
-		return demographicNo;
-	}
 
+    public String getName() {
+        return name;
+    }
 
-	public void setDemographicNo(int demographicNo) {
-		this.demographicNo = demographicNo;
-	}
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
 
+    public int getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
 
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public String getReason() {
-		return reason;
-	}
 
+    public String getNotes() {
+        return notes;
+    }
 
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
 
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	public String getLocation() {
-		return location;
-	}
 
+    public String getReason() {
+        return reason;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
 
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
-	public String getResources() {
-		return resources;
-	}
 
+    public String getLocation() {
+        return location;
+    }
 
-	public void setResources(String resources) {
-		this.resources = resources;
-	}
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	public String getType() {
-		return type;
-	}
 
+    public String getResources() {
+        return resources;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
 
+    public void setResources(String resources) {
+        this.resources = resources;
+    }
 
-	public String getStatus() {
-		return status;
-	}
 
+    public String getType() {
+        return type;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
 
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getUrgency() {
-		return urgency;
-	}
 
+    public String getStatus() {
+        return status;
+    }
 
-	public void setUrgency(String urgency) {
-		this.urgency = urgency;
-	}
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public int getDuration() {
-		return duration;
-	}
 
+    public String getUrgency() {
+        return urgency;
+    }
 
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
 
+    public void setUrgency(String urgency) {
+        this.urgency = urgency;
+    }
 
-	public String getStartTime12hWithMedian() {
-		return startTime12hWithMedian;
-	}
 
+    public int getDuration() {
+        return duration;
+    }
 
-	public void setStartTime12hWithMedian(String startTime12hWithMedian) {
-		this.startTime12hWithMedian = startTime12hWithMedian;
-	}
 
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
-	public Integer getReasonCode() {
-		return reasonCode;
-	}
 
+    public String getStartTime12hWithMedian() {
+        return startTime12hWithMedian;
+    }
 
-	public void setReasonCode(Integer reasonCode) {
-		this.reasonCode = reasonCode;
-	}
-	
-	
-	
+
+    public void setStartTime12hWithMedian(String startTime12hWithMedian) {
+        this.startTime12hWithMedian = startTime12hWithMedian;
+    }
+
+
+    public Integer getReasonCode() {
+        return reasonCode;
+    }
+
+
+    public void setReasonCode(Integer reasonCode) {
+        this.reasonCode = reasonCode;
+    }
+
+
 }

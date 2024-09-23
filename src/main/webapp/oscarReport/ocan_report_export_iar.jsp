@@ -23,55 +23,55 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@page import="org.oscarehr.common.model.Facility"%>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="org.oscarehr.util.WebUtils"%>
-<%@page import="java.io.PrintWriter"%>
-<%@page import="java.io.ByteArrayOutputStream"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.oscarehr.web.OcanReportUIBean"%>
+<%@page import="org.oscarehr.common.model.Facility" %>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="java.util.HashMap" %>
+<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="java.io.PrintWriter" %>
+<%@page import="java.io.ByteArrayOutputStream" %>
+<%@page import="java.util.ArrayList" %>
+<%@page import="org.oscarehr.web.OcanReportUIBean" %>
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-	Facility facility=loggedInInfo.getCurrentFacility();
-   		 
-	int startYear = Integer.parseInt(request.getParameter("startYear"));
-	int startMonth = Integer.parseInt(request.getParameter("startMonth"));
-	int endYear = Integer.parseInt(request.getParameter("endYear"));
-	int endMonth = Integer.parseInt(request.getParameter("endMonth"));
-	String ocanType = request.getParameter("ocanType");
-		
-	//response.setHeader("Content-Disposition", "attachment; filename="+OcanReportUIBean.getFilename(startYear,startMonth,1));
-	
-	//ByteArrayOutputStream sos = new ByteArrayOutputStream();
-	OcanReportUIBean.sendSubmissionToIAR(facility,OcanReportUIBean.generateOCANSubmission(facility.getId(), startYear, startMonth,endYear, endMonth, 1,ocanType));
-	//String data = sos.toString();
-	
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    Facility facility = loggedInInfo.getCurrentFacility();
+
+    int startYear = Integer.parseInt(request.getParameter("startYear"));
+    int startMonth = Integer.parseInt(request.getParameter("startMonth"));
+    int endYear = Integer.parseInt(request.getParameter("endYear"));
+    int endMonth = Integer.parseInt(request.getParameter("endMonth"));
+    String ocanType = request.getParameter("ocanType");
+
+    //response.setHeader("Content-Disposition", "attachment; filename="+OcanReportUIBean.getFilename(startYear,startMonth,1));
+
+    //ByteArrayOutputStream sos = new ByteArrayOutputStream();
+    OcanReportUIBean.sendSubmissionToIAR(facility, OcanReportUIBean.generateOCANSubmission(facility.getId(), startYear, startMonth, endYear, endMonth, 1, ocanType));
+    //String data = sos.toString();
+
 //	OcanReportUIBean.writeIARExportData(data,response.getOutputStream());
-	
+
 //	response.getOutputStream().flush();
-	
-	
+
+
 //	OcanReportUIBean.testLog();
 %>
 <html>
 <head>
-<title>OCAN Submission</title>
+    <title>OCAN Submission</title>
 </head>
 <body>
 Testing

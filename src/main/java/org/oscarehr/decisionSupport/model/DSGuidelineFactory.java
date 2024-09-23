@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,22 +47,24 @@ import org.jdom.input.SAXBuilder;
 import org.oscarehr.decisionSupport.model.conditionValue.DSValue;
 import org.oscarehr.decisionSupport.model.impl.drools.DSGuidelineDrools;
 import org.oscarehr.util.MiscUtils;
+
 /**
  *
  * @author apavel
  */
 public class DSGuidelineFactory {
     private static Logger _log = MiscUtils.getLogger();
+
     public DSGuideline createGuidelineFromXml(String xml) throws DecisionSupportParseException {
-       if (xml == null || xml.equals("")) throw new DecisionSupportParseException("Xml not set");
+        if (xml == null || xml.equals("")) throw new DecisionSupportParseException("Xml not set");
         SAXBuilder parser = new SAXBuilder();
         Document doc;
         try {
             doc = parser.build(new StringReader(xml));
         } catch (JDOMException jdome) {
-                   throw new DecisionSupportParseException("Failed to read the xml string for parsing",jdome);
+            throw new DecisionSupportParseException("Failed to read the xml string for parsing", jdome);
         } catch (IOException ioe) {
-            throw new DecisionSupportParseException("Failed to read the xml string for parsing",ioe);
+            throw new DecisionSupportParseException("Failed to read the xml string for parsing", ioe);
         }
         //<guideline evidence="" significance="" title="Plavix Drug DS">
         Element guidelineRoot = doc.getRootElement();
@@ -79,9 +81,9 @@ public class DSGuidelineFactory {
         ArrayList<DSParameter> parameters = new ArrayList<DSParameter>();
         @SuppressWarnings("unchecked")
         List<Element> parameterTags = guidelineRoot.getChildren("parameter");
-        for( Element parameterTag : parameterTags ) {
+        for (Element parameterTag : parameterTags) {
             String alias = parameterTag.getAttributeValue("identifier");
-            if( alias == null ) {
+            if (alias == null) {
                 throw new DecisionSupportParseException(guidelineTitle, "Parameter identifier attribute is mandatory");
             }
 
@@ -102,7 +104,7 @@ public class DSGuidelineFactory {
         ArrayList<DSCondition> conditions = new ArrayList<DSCondition>();
         @SuppressWarnings("unchecked")
         List<Element> conditionTags = guidelineRoot.getChild("conditions").getChildren("condition");
-        for (Element conditionTag: conditionTags) {
+        for (Element conditionTag : conditionTags) {
 
             String conditionTypeStr = conditionTag.getAttributeValue("type");
             if (conditionTypeStr == null)
@@ -119,12 +121,12 @@ public class DSGuidelineFactory {
             String conditionDescStr = conditionTag.getAttributeValue("desc");
 
 
-            Hashtable<String,String> paramHashtable = new Hashtable<String,String>();
+            Hashtable<String, String> paramHashtable = new Hashtable<String, String>();
             @SuppressWarnings("unchecked")
             List<Element> paramList = conditionTag.getChildren("param");
-            if (paramList != null){
-                for (Element param :paramList){
-                    String key   = param.getAttributeValue("key");
+            if (paramList != null) {
+                for (Element param : paramList) {
+                    String key = param.getAttributeValue("key");
                     String value = param.getAttributeValue("value");
                     paramHashtable.put(key, value);
                 }
@@ -132,7 +134,7 @@ public class DSGuidelineFactory {
 
             @SuppressWarnings("unchecked")
             List<Attribute> attributes = conditionTag.getAttributes();
-            for (Attribute attribute: attributes) {
+            for (Attribute attribute : attributes) {
                 if (attribute.getName().equalsIgnoreCase("type")) continue;
                 if (attribute.getName().equalsIgnoreCase("desc")) continue;
                 DSCondition.ListOperator operator;
@@ -145,8 +147,8 @@ public class DSGuidelineFactory {
                 dsCondition.setConditionType(conditionType);
                 dsCondition.setDesc(conditionDescStr);
                 dsCondition.setListOperator(operator); //i.e. any, all, not
-                if (paramHashtable != null && !paramHashtable.isEmpty()){
-                    _log.debug("THIS IS THE HASH STRING "+paramHashtable.toString());
+                if (paramHashtable != null && !paramHashtable.isEmpty()) {
+                    _log.debug("THIS IS THE HASH STRING " + paramHashtable.toString());
                     dsCondition.setParam(paramHashtable);
                 }
 
@@ -160,7 +162,7 @@ public class DSGuidelineFactory {
         ArrayList<DSConsequence> dsConsequences = new ArrayList<DSConsequence>();
         @SuppressWarnings("unchecked")
         List<Element> consequenceElements = guidelineRoot.getChild("consequence").getChildren();
-        for (Element consequenceElement: consequenceElements) {
+        for (Element consequenceElement : consequenceElements) {
             DSConsequence dsConsequence = new DSConsequence();
 
             String consequenceTypeStr = consequenceElement.getName();
@@ -176,7 +178,7 @@ public class DSGuidelineFactory {
 
             if (consequenceType == DSConsequence.ConsequenceType.warning) {
                 String strengthStr = consequenceElement.getAttributeValue("strength");
-                if( strengthStr == null ) {
+                if (strengthStr == null) {
                     strengthStr = "warning";
                 }
                 DSConsequence.ConsequenceStrength strength = null;

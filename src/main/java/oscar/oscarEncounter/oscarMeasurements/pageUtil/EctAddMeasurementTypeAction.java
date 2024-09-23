@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,125 +51,123 @@ import oscar.oscarEncounter.oscarMeasurements.data.MeasurementTypes;
 
 public class EctAddMeasurementTypeAction extends Action {
 
-	private MeasurementTypeDao dao = SpringUtils.getBean(MeasurementTypeDao.class);
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+    private MeasurementTypeDao dao = SpringUtils.getBean(MeasurementTypeDao.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         EctAddMeasurementTypeForm frm = (EctAddMeasurementTypeForm) form;
 
-        if( securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null) || securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin.measurements", "w", null) )  {
-       
-        request.getSession().setAttribute("EctAddMeasurementTypeForm", frm);
-        
-        List<String> messages = new LinkedList<String>();
-         
+        if (securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null) || securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin.measurements", "w", null)) {
 
-        String type = frm.getType();
-        String typeUp = type.toUpperCase();
-        String typeDesc = frm.getTypeDesc();
-        String typeDisplayName = frm.getTypeDisplayName();
-        String measuringInstrc = frm.getMeasuringInstrc();
-        String validation = frm.getValidation();
-        if (!allInputIsValid(request, type, typeDesc, typeDisplayName, measuringInstrc)){
-            return (new ActionForward(mapping.getInput()));
+            request.getSession().setAttribute("EctAddMeasurementTypeForm", frm);
+
+            List<String> messages = new LinkedList<String>();
+
+
+            String type = frm.getType();
+            String typeUp = type.toUpperCase();
+            String typeDesc = frm.getTypeDesc();
+            String typeDisplayName = frm.getTypeDisplayName();
+            String measuringInstrc = frm.getMeasuringInstrc();
+            String validation = frm.getValidation();
+            if (!allInputIsValid(request, type, typeDesc, typeDisplayName, measuringInstrc)) {
+                return (new ActionForward(mapping.getInput()));
+            }
+
+            MeasurementType mt = new MeasurementType();
+            mt.setType(typeUp);
+            mt.setTypeDescription(typeDesc);
+            mt.setTypeDisplayName(typeDisplayName);
+            mt.setMeasuringInstruction(measuringInstrc);
+            mt.setValidation(validation);
+            dao.persist(mt);
+
+
+            MessageResources mr = getResources(request);
+            String msg = mr.getMessage("oscarEncounter.oscarMeasurements.AddMeasurementType.successful", "!");
+            messages.add(msg);
+            request.setAttribute("messages", messages);
+            MeasurementTypes mts = MeasurementTypes.getInstance();
+            mts.reInit();
+            return mapping.findForward("success");
+
+        } else {
+            throw new SecurityException("Access Denied!"); //missing required security object (_admin)
         }
 
-        MeasurementType mt = new MeasurementType();
-        mt.setType(typeUp);
-        mt.setTypeDescription(typeDesc);
-        mt.setTypeDisplayName(typeDisplayName);
-        mt.setMeasuringInstruction(measuringInstrc);
-        mt.setValidation(validation);
-        dao.persist(mt);
-        
-                
-        
-        MessageResources mr = getResources(request);
-        String msg = mr.getMessage("oscarEncounter.oscarMeasurements.AddMeasurementType.successful", "!");
-        messages.add(msg);
-        request.setAttribute("messages", messages);
-        MeasurementTypes mts =  MeasurementTypes.getInstance();
-        mts.reInit();
-        return mapping.findForward("success");
-        
-		}else{
-			throw new SecurityException("Access Denied!"); //missing required security object (_admin)
-		}
-
     }
-    
-    private boolean allInputIsValid(HttpServletRequest request, String type, String typeDesc, String typeDisplayName, String measuringInstrc){
-        
-        ActionMessages errors = new ActionMessages();  
+
+    private boolean allInputIsValid(HttpServletRequest request, String type, String typeDesc, String typeDisplayName, String measuringInstrc) {
+
+        ActionMessages errors = new ActionMessages();
         EctValidation validate = new EctValidation();
         String regExp = validate.getRegCharacterExp();
         boolean isValid = true;
-        
-        for(MeasurementType mt:dao.findByType(type)) {
-        	errors.add(type, new ActionMessage("error.oscarEncounter.Measurements.duplicateTypeName"));
-            saveErrors(request, errors);
-            isValid = false;            
-        }
-        
-        String errorField = "The type " + type;
-        if(!validate.matchRegExp(regExp, type)){
-            errors.add(type,
-            new ActionMessage("errors.invalid", errorField));
+
+        for (MeasurementType mt : dao.findByType(type)) {
+            errors.add(type, new ActionMessage("error.oscarEncounter.Measurements.duplicateTypeName"));
             saveErrors(request, errors);
             isValid = false;
         }
-        if(!validate.maxLength(50, type)){
+
+        String errorField = "The type " + type;
+        if (!validate.matchRegExp(regExp, type)) {
             errors.add(type,
-            new ActionMessage("errors.maxlength", errorField, "4"));
+                    new ActionMessage("errors.invalid", errorField));
+            saveErrors(request, errors);
+            isValid = false;
+        }
+        if (!validate.maxLength(50, type)) {
+            errors.add(type,
+                    new ActionMessage("errors.maxlength", errorField, "4"));
             saveErrors(request, errors);
             isValid = false;
         }
 
         errorField = "The type description " + typeDesc;
-        if(!validate.matchRegExp(regExp, typeDesc)){
+        if (!validate.matchRegExp(regExp, typeDesc)) {
             errors.add(typeDesc,
-            new ActionMessage("errors.invalid", errorField));
+                    new ActionMessage("errors.invalid", errorField));
             saveErrors(request, errors);
             isValid = false;
         }
-        if(!validate.maxLength(255, type)){
+        if (!validate.maxLength(255, type)) {
             errors.add(type,
-            new ActionMessage("errors.maxlength", errorField, "255"));
+                    new ActionMessage("errors.maxlength", errorField, "255"));
             saveErrors(request, errors);
             isValid = false;
         }
-        
+
         errorField = "The display name " + typeDisplayName;
-        if(!validate.matchRegExp(regExp, typeDisplayName)){
+        if (!validate.matchRegExp(regExp, typeDisplayName)) {
             errors.add(typeDisplayName,
-            new ActionMessage("errors.invalid", errorField));
+                    new ActionMessage("errors.invalid", errorField));
             saveErrors(request, errors);
             isValid = false;
         }
-        if(!validate.maxLength(255, type)){
+        if (!validate.maxLength(255, type)) {
             errors.add(type,
-            new ActionMessage("errors.maxlength", errorField, "255"));
+                    new ActionMessage("errors.maxlength", errorField, "255"));
             saveErrors(request, errors);
             isValid = false;
         }
-        
+
         errorField = "The measuring instruction " + measuringInstrc;
-        if(!validate.matchRegExp(regExp, measuringInstrc)){
+        if (!validate.matchRegExp(regExp, measuringInstrc)) {
             errors.add(measuringInstrc,
-            new ActionMessage("errors.invalid", errorField));
+                    new ActionMessage("errors.invalid", errorField));
             saveErrors(request, errors);
             isValid = false;
         }
-        if(!validate.maxLength(255, type)){
+        if (!validate.maxLength(255, type)) {
             errors.add(type,
-            new ActionMessage("errors.maxlength", errorField, "255"));
+                    new ActionMessage("errors.maxlength", errorField, "255"));
             saveErrors(request, errors);
             isValid = false;
         }
-       
+
         return isValid;
-        
+
     }
 }

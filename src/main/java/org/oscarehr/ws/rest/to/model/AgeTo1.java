@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,54 +30,54 @@ import org.oscarehr.util.Age;
 
 public class AgeTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private int days;
-	private int months;
-	private int years;
+    private static final long serialVersionUID = 1L;
 
-	public AgeTo1() {
-		
-	}
-	
-	public AgeTo1(Age age) {
-		setDays(age.getDays());
-		setMonths(age.getMonths());
-		setYears(age.getYears());
-	}
+    private int days;
+    private int months;
+    private int years;
 
-	public AgeTo1(int days, int months, int years) {
-		this.days = days;
-		this.months = months;
-		this.years = years;
-	}
+    public AgeTo1() {
 
-	public int getDays() {
-		return days;
-	}
+    }
 
-	public void setDays(int days) {
-		this.days = days;
-	}
+    public AgeTo1(Age age) {
+        setDays(age.getDays());
+        setMonths(age.getMonths());
+        setYears(age.getYears());
+    }
 
-	public int getMonths() {
-		return months;
-	}
+    public AgeTo1(int days, int months, int years) {
+        this.days = days;
+        this.months = months;
+        this.years = years;
+    }
 
-	public void setMonths(int months) {
-		this.months = months;
-	}
+    public int getDays() {
+        return days;
+    }
 
-	public int getYears() {
-		return years;
-	}
+    public void setDays(int days) {
+        this.days = days;
+    }
 
-	public void setYears(int years) {
-		this.years = years;
-	}
+    public int getMonths() {
+        return months;
+    }
 
-	@Override
-	public String toString() {
-		return years + " Years, " + months + " Months, " + days + " Days";
-	}
+    public void setMonths(int months) {
+        this.months = months;
+    }
+
+    public int getYears() {
+        return years;
+    }
+
+    public void setYears(int years) {
+        this.years = years;
+    }
+
+    @Override
+    public String toString() {
+        return years + " Years, " + months + " Months, " + days + " Days";
+    }
 }

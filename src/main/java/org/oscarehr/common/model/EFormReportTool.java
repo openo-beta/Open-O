@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,102 +35,102 @@ import javax.persistence.PrePersist;
 
 @Entity
 public class EFormReportTool extends AbstractModel<Integer> {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String name;
-	
-	private String tableName;
-	
-	private int eformId;
-	
-	private Date expiryDate;
-	
-	private Date dateCreated;
-	
-	private String providerNo;
-	
-	private Date dateLastPopulated;
-	
-	private boolean latestMarked;
-	
 
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String name;
 
-	public String getTableName() {
-		return tableName;
-	}
+    private String tableName;
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    private int eformId;
 
-	public int getEformId() {
-		return eformId;
-	}
+    private Date expiryDate;
 
-	public void setEformId(int eformId) {
-		this.eformId = eformId;
-	}
+    private Date dateCreated;
 
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
+    private String providerNo;
 
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    private Date dateLastPopulated;
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    private boolean latestMarked;
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getTableName() {
+        return tableName;
+    }
 
-	public Date getDateLastPopulated() {
-		return dateLastPopulated;
-	}
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 
-	public void setDateLastPopulated(Date dateLastPopulated) {
-		this.dateLastPopulated = dateLastPopulated;
-	}
+    public int getEformId() {
+        return eformId;
+    }
 
-	public boolean isLatestMarked() {
-		return latestMarked;
-	}
+    public void setEformId(int eformId) {
+        this.eformId = eformId;
+    }
 
-	public void setLatestMarked(boolean latestMarked) {
-		this.latestMarked = latestMarked;
-	}
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
 
-	@PrePersist
-	protected void jpa_setDateCreated() {
-		dateCreated = new Date();
-	}
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getDateLastPopulated() {
+        return dateLastPopulated;
+    }
+
+    public void setDateLastPopulated(Date dateLastPopulated) {
+        this.dateLastPopulated = dateLastPopulated;
+    }
+
+    public boolean isLatestMarked() {
+        return latestMarked;
+    }
+
+    public void setLatestMarked(boolean latestMarked) {
+        this.latestMarked = latestMarked;
+    }
+
+    @PrePersist
+    protected void jpa_setDateCreated() {
+        dateCreated = new Date();
+    }
 }

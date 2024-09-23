@@ -6,18 +6,18 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
  */
 package com.quatro.web.lookup;
 
@@ -27,8 +27,8 @@ import org.apache.struts.action.ActionForm;
 
 import com.quatro.model.LookupTableDefValue;
 
-public class LookupListForm extends ActionForm{
-	List lookups;
+public class LookupListForm extends ActionForm {
+    List lookups;
     String openerForm;
     String codeName;
     String descName;
@@ -37,76 +37,76 @@ public class LookupListForm extends ActionForm{
     String parentCode;
     String grandParentCode;
     LookupTableDefValue tableDef;
-    
-	public List getLookups() {
-		return lookups;
-	}
 
-	public void setLookups(List lookups) {
-		this.lookups = lookups;
-	}
+    public List getLookups() {
+        return lookups;
+    }
 
-	public String getCodeName() {
-		return codeName;
-	}
+    public void setLookups(List lookups) {
+        this.lookups = lookups;
+    }
 
-	public void setCodeName(String codeName) {
-		this.codeName = codeName;
-	}
+    public String getCodeName() {
+        return codeName;
+    }
 
-	public String getDescName() {
-		return descName;
-	}
+    public void setCodeName(String codeName) {
+        this.codeName = codeName;
+    }
 
-	public void setDescName(String descName) {
-		this.descName = descName;
-	}
+    public String getDescName() {
+        return descName;
+    }
 
-	public String getOpenerForm() {
-		return openerForm;
-	}
+    public void setDescName(String descName) {
+        this.descName = descName;
+    }
 
-	public void setOpenerForm(String openerForm) {
-		this.openerForm = openerForm;
-	}
+    public String getOpenerForm() {
+        return openerForm;
+    }
 
-	public String getKeywordName() {
-		return keywordName;
-	}
+    public void setOpenerForm(String openerForm) {
+        this.openerForm = openerForm;
+    }
 
-	public void setKeywordName(String keywordName) {
-		this.keywordName = keywordName;
-	}
+    public String getKeywordName() {
+        return keywordName;
+    }
 
-	public String getTableId() {
-		return tableId;
-	}
+    public void setKeywordName(String keywordName) {
+        this.keywordName = keywordName;
+    }
 
-	public void setTableId(String tableId) {
-		this.tableId = tableId;
-	}
+    public String getTableId() {
+        return tableId;
+    }
 
-	public LookupTableDefValue getTableDef() {
-		return tableDef;
-	}
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
+    }
 
-	public void setTableDef(LookupTableDefValue tableDef) {
-		this.tableDef = tableDef;
-	}
+    public LookupTableDefValue getTableDef() {
+        return tableDef;
+    }
 
-	public String getGrandParentCode() {
-		return grandParentCode;
-	}
+    public void setTableDef(LookupTableDefValue tableDef) {
+        this.tableDef = tableDef;
+    }
 
-	public void setGrandParentCode(String grandParentCode) {
-		this.grandParentCode = grandParentCode;
-	}
+    public String getGrandParentCode() {
+        return grandParentCode;
+    }
 
-	public String getParentCode() {
-		return parentCode;
-	}
+    public void setGrandParentCode(String grandParentCode) {
+        this.grandParentCode = grandParentCode;
+    }
 
-	public void setParentCode(String parentCode) {
-		this.parentCode = parentCode;
-	}
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
 }

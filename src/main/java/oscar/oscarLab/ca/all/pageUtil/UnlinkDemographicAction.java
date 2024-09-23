@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,8 +52,8 @@ import java.util.List;
  *
  * @author mweston4
  */
-public class UnlinkDemographicAction  extends JSONAction {
-    
+public class UnlinkDemographicAction extends JSONAction {
+
     private final Logger logger = MiscUtils.getLogger();
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
@@ -61,17 +61,18 @@ public class UnlinkDemographicAction  extends JSONAction {
 
     private final ProviderLabRoutingDao providerLabRoutingDao = SpringUtils.getBean(ProviderLabRoutingDao.class);
 
-    public UnlinkDemographicAction () {}
-    
+    public UnlinkDemographicAction() {
+    }
+
     @Override
-    public ActionForward execute(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response){
-    	
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-    	if(!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "u", null)) {
-			throw new SecurityException("missing required security object (_lab)");
-		}
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "u", null)) {
+            throw new SecurityException("missing required security object (_lab)");
+        }
         boolean success = false;
-		//set the demographicNo in the patientLabRouting table 
+        //set the demographicNo in the patientLabRouting table
         String reason = request.getParameter("reason");
         String labNoStr = request.getParameter("labNo");
         Integer labNo = Integer.parseInt(labNoStr);
@@ -79,7 +80,7 @@ public class UnlinkDemographicAction  extends JSONAction {
         List<PatientLabRouting> plr = plrDao.findByLabNoAndLabType(labNo, ProviderLabRoutingDao.LAB_TYPE.HL7.name());
         Integer demoNo = PatientLabRoutingDao.UNMATCHED;
 
-        for(PatientLabRouting patientLabRouting : plr) {
+        for (PatientLabRouting patientLabRouting : plr) {
             demoNo = patientLabRouting.getDemographicNo();
             patientLabRouting.setDemographicNo(PatientLabRoutingDao.UNMATCHED);
             patientLabRouting.setDateModified(new Date());
@@ -96,7 +97,7 @@ public class UnlinkDemographicAction  extends JSONAction {
         /* ensure the lab requisitioning provider is aware by inserting lab back into their inbox.
          * or into the unattached inbox if no provider is identified.
          */
-        if(success) {
+        if (success) {
             List<ProviderLabRoutingModel> providerLabRoutingModel = providerLabRoutingDao.findAllLabRoutingByIdandType(labNo, ProviderLabRoutingDao.LAB_TYPE.HL7.name());
             for (ProviderLabRoutingModel providerLabRouting : providerLabRoutingModel) {
                 String currentStatus = providerLabRouting.getStatus();
@@ -110,7 +111,7 @@ public class UnlinkDemographicAction  extends JSONAction {
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("success",success);
+        jsonObject.put("success", success);
         jsonObject.put("unlinkedDemographicNo", demoNo);
         jsonObject.put("labNo", labNo);
         jsonObject.put("reason", reason);
@@ -119,6 +120,6 @@ public class UnlinkDemographicAction  extends JSONAction {
 
         return null;
     }
-    
-    
+
+
 }

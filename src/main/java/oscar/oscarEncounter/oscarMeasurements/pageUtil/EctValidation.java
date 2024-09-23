@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,203 +47,200 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.util.ConversionUtils;
 
-public class EctValidation{
+public class EctValidation {
 
-    public String regCharacterExp = "^[\\w\\s,.?]*$";        
+    public String regCharacterExp = "^[\\w\\s,.?]*$";
 
-    public EctValidation(){
+    public EctValidation() {
     }
-    
 
-    public String getRegCharacterExp(){
+
+    public String getRegCharacterExp() {
         return this.regCharacterExp;
     }
-              
-    public List<Validations> getValidationType(String inputType, String mInstrc){
+
+    public List<Validations> getValidationType(String inputType, String mInstrc) {
         List<Validations> result = new ArrayList<Validations>();
-        
-    	MeasurementTypeDao dao = SpringUtils.getBean(MeasurementTypeDao.class);
+
+        MeasurementTypeDao dao = SpringUtils.getBean(MeasurementTypeDao.class);
         List<MeasurementType> types = dao.findByTypeAndMeasuringInstruction(inputType, mInstrc);
         if (types.isEmpty()) {
-        	return result;
+            return result;
         }
-        
-        ValidationsDao vDao = SpringUtils.getBean(ValidationsDao.class); 
-        for(MeasurementType type : types) {
-        	Validations vs = vDao.find(ConversionUtils.fromIntString(type.getValidation()));
-		if(vs != null) {
-	        	result.add(vs);
-		}
+
+        ValidationsDao vDao = SpringUtils.getBean(ValidationsDao.class);
+        for (MeasurementType type : types) {
+            Validations vs = vDao.find(ConversionUtils.fromIntString(type.getValidation()));
+            if (vs != null) {
+                result.add(vs);
+            }
         }
         return result;
     }
-    
-    public boolean matchRegExp(String regExp, String inputValue){
 
-        boolean validation = true; 
-       
+    public boolean matchRegExp(String regExp, String inputValue) {
+
+        boolean validation = true;
+
         MiscUtils.getLogger().debug("matchRegExp function is called.");
-        
-        if (!GenericValidator.isBlankOrNull(regExp) && !GenericValidator.isBlankOrNull(inputValue)){
+
+        if (!GenericValidator.isBlankOrNull(regExp) && !GenericValidator.isBlankOrNull(inputValue)) {
             MiscUtils.getLogger().debug("both the regExp and inputValue is not blank nor null.");
-            if(!inputValue.matches(regExp)){
-                MiscUtils.getLogger().debug("Regexp not matched");                                            
-                validation=false;
-                
+            if (!inputValue.matches(regExp)) {
+                MiscUtils.getLogger().debug("Regexp not matched");
+                validation = false;
+
             }
 
         }
         return validation;
-     }
-    
-     
-    public boolean isInRange(Double dMax, Double dMin, String inputValue){
+    }
+
+
+    public boolean isInRange(Double dMax, Double dMin, String inputValue) {
 
         boolean validation = true;
-        
-        if ((dMax != null && dMax!=0) || (dMin != null && dMin!=0)){
-            if(GenericValidator.isDouble(inputValue)){
+
+        if ((dMax != null && dMax != 0) || (dMin != null && dMin != 0)) {
+            if (GenericValidator.isDouble(inputValue)) {
                 double dValue = Double.parseDouble(inputValue);
-                
-                if (!GenericValidator.isInRange(dValue, dMin, dMax)){                                       
-                    validation=false;
+
+                if (!GenericValidator.isInRange(dValue, dMin, dMax)) {
+                    validation = false;
                 }
+            } else if (!GenericValidator.isBlankOrNull(inputValue)) {
+                validation = false;
             }
-            else if(!GenericValidator.isBlankOrNull(inputValue)){                                
-                validation=false;
+        }
+        return validation;
+    }
+
+
+    public boolean maxLength(Integer iMax, String inputValue) {
+
+        boolean validation = true;
+
+        if (iMax != null && iMax != 0) {
+            if (!GenericValidator.maxLength(inputValue, iMax)) {
+                validation = false;
             }
         }
         return validation;
     }
-    
 
-    public boolean maxLength(Integer iMax, String inputValue){
+    public boolean minLength(Integer iMin, String inputValue) {
 
         boolean validation = true;
-       
-        if (iMax != null && iMax!=0){            
-            if(!GenericValidator.maxLength(inputValue, iMax)){                
-                    validation=false;
-                }                       
+
+        if (iMin != null && iMin != 0) {
+            if (!GenericValidator.minLength(inputValue, iMin)) {
+                validation = false;
+            }
         }
         return validation;
     }
 
-    public boolean minLength(Integer iMin, String inputValue){
+    public boolean isInteger(String inputValue) {
 
         boolean validation = true;
-       
-        if (iMin != null && iMin!=0){            
-            if(!GenericValidator.minLength(inputValue, iMin)){                
-                    validation=false;
-                }                       
-        }
-        return validation;
-    }    
-    
-    public boolean isInteger(String inputValue){
 
-        boolean validation = true;
-        
-        
-        if(!GenericValidator.isInt(inputValue)){                                                 
-            validation=false;
+
+        if (!GenericValidator.isInt(inputValue)) {
+            validation = false;
         }
-        
-       
+
+
         return validation;
     }
-    
-    public boolean isDate(String inputValue){
+
+    public boolean isDate(String inputValue) {
 
         boolean validation = true;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
-        
+
         try {
-			Date d = sdf.parse(inputValue);
-			Calendar c = Calendar.getInstance();
-			c.setTime(d);
-			if(c.get(Calendar.YEAR) > 9999) { // to prevent date parsing of more than 4-digit year
-				validation = false;
-			}
-		} catch (ParseException e) {
-			validation = false;
-		}
-               
+            Date d = sdf.parse(inputValue);
+            Calendar c = Calendar.getInstance();
+            c.setTime(d);
+            if (c.get(Calendar.YEAR) > 9999) { // to prevent date parsing of more than 4-digit year
+                validation = false;
+            }
+        } catch (ParseException e) {
+            validation = false;
+        }
+
         return validation;
     }
-    
-    public boolean isNumeric(Boolean numeric, String inputValue){
+
+    public boolean isNumeric(Boolean numeric, String inputValue) {
 
         boolean validation = true;
-       
-        if(numeric != null && numeric.booleanValue() == true) {
-	        try {
-	        	Double.valueOf(inputValue);
-	        } catch(NumberFormatException e) {
-	        	validation = false;
-	        }
+
+        if (numeric != null && numeric.booleanValue() == true) {
+            try {
+                Double.valueOf(inputValue);
+            } catch (NumberFormatException e) {
+                validation = false;
+            }
         }
-               
+
         return validation;
     }
 
-     public boolean isValidBloodPressure(String regExp, String inputValue){
+    public boolean isValidBloodPressure(String regExp, String inputValue) {
 
-         boolean validation = true;
+        boolean validation = true;
 
-         if(inputValue.split("/").length >1 && (regExp==null || regExp.isEmpty())){
-                 // this field is not blood pressure, no need to validate
-                 return validation;
-         }
+        if (inputValue.split("/").length > 1 && (regExp == null || regExp.isEmpty())) {
+            // this field is not blood pressure, no need to validate
+            return validation;
+        }
 
-         if(matchRegExp(regExp, inputValue)){
+        if (matchRegExp(regExp, inputValue)) {
             MiscUtils.getLogger().debug("/");
             int slashIndex = inputValue.indexOf("/");
             MiscUtils.getLogger().debug(slashIndex);
-            if (slashIndex >= 0){
+            if (slashIndex >= 0) {
                 String systolic = inputValue.substring(0, slashIndex);
-                String diastolic = inputValue.substring(slashIndex+1);
+                String diastolic = inputValue.substring(slashIndex + 1);
                 MiscUtils.getLogger().debug("The systolic value is " + systolic);
                 MiscUtils.getLogger().debug("The diastolic value is " + diastolic);
                 int iSystolic = 0;
                 int iDiastolic = 0;
                 try {
-                        iSystolic = Integer.parseInt(systolic);
-                        iDiastolic = Integer.parseInt(diastolic);
-                }
-                catch (NumberFormatException e) {
-                        MiscUtils.getLogger().error("Wrong input for blood pressure");
-                        validation =  false;
-                }
-                if( iDiastolic > iSystolic){
+                    iSystolic = Integer.parseInt(systolic);
+                    iDiastolic = Integer.parseInt(diastolic);
+                } catch (NumberFormatException e) {
+                    MiscUtils.getLogger().error("Wrong input for blood pressure");
                     validation = false;
                 }
-                else if (iDiastolic > 300 || iSystolic > 300){
+                if (iDiastolic > iSystolic) {
+                    validation = false;
+                } else if (iDiastolic > 300 || iSystolic > 300) {
                     validation = false;
                 }
             }
         }
         return validation;
-     }
+    }
 
-     
-     /*****************************************************************************************
+
+    /*****************************************************************************************
      * find the css path from the database.
      * Use commented code to find css path from properties file
      *
      * @return String
      ******************************************************************************************/
-    public String getCssPath(String inputGroupName){
+    public String getCssPath(String inputGroupName) {
         String cssLocation = null;
         MeasurementGroupStyleDao dao = SpringUtils.getBean(MeasurementGroupStyleDao.class);
         MeasurementCSSLocationDao cssDao = SpringUtils.getBean(MeasurementCSSLocationDao.class);
         List<MeasurementGroupStyle> styles = dao.findByGroupName(inputGroupName);
-        for(MeasurementGroupStyle style : styles) {
-        	MeasurementCSSLocation location = cssDao.find(style.getCssId());
-        	String place = "StreamStyleSheet.do?cssfilename="; // Streams by default
-        	
+        for (MeasurementGroupStyle style : styles) {
+            MeasurementCSSLocation location = cssDao.find(style.getCssId());
+            String place = "StreamStyleSheet.do?cssfilename="; // Streams by default
+
             // Use the following commented code in place of the above line to allow the
             // option of using the oscarMeasurement_css property to form the css path.
             // If using this code, also uncomment the line in oscar.login.Startup.java
@@ -259,28 +256,28 @@ public class EctValidation{
              *    place = "StreamStyleSheet.do?cssfilename=";
              * }
              */
-        	if (location != null) {
-        		cssLocation = place + location.getLocation();
-        	}
+            if (location != null) {
+                cssLocation = place + location.getLocation();
+            }
         }
         return cssLocation;
     }
-    
-     /*****************************************************************************************
+
+    /*****************************************************************************************
      * find the css name from the database
      *
      * @return String
      ******************************************************************************************/
-    public String getCssName(String inputGroupName){
+    public String getCssName(String inputGroupName) {
         String cssName = null;
-        
+
         MeasurementGroupStyleDao dao = SpringUtils.getBean(MeasurementGroupStyleDao.class);
         MeasurementCSSLocationDao cssDao = SpringUtils.getBean(MeasurementCSSLocationDao.class);
         List<MeasurementGroupStyle> styles = dao.findByGroupName(inputGroupName);
-        for(MeasurementGroupStyle style : styles) {
-        	MeasurementCSSLocation location = cssDao.find(style.getCssId());
-        	
-            if(location != null){                    
+        for (MeasurementGroupStyle style : styles) {
+            MeasurementCSSLocation location = cssDao.find(style.getCssId());
+
+            if (location != null) {
                 cssName = location.getLocation();
             }
         }

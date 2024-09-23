@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -27,47 +27,42 @@ package oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil;
 import org.apache.struts.action.ActionForm;
 import org.oscarehr.util.MiscUtils;
 
-public class EctConEditInstitutionsForm extends ActionForm{
+public class EctConEditInstitutionsForm extends ActionForm {
 
-	  
 
-	    public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-		public String getDelete()
-	    {
-	        MiscUtils.getLogger().debug("getter delete");
-	        if(delete == null)
-	            delete = new String();
-	        return delete;
-	    }
+    public String getDelete() {
+        MiscUtils.getLogger().debug("getter delete");
+        if (delete == null)
+            delete = new String();
+        return delete;
+    }
 
-	    public void setDelete(String str)
-	    {
-	        MiscUtils.getLogger().debug("setter delete");
-	        delete = str;
-	    }
+    public void setDelete(String str) {
+        MiscUtils.getLogger().debug("setter delete");
+        delete = str;
+    }
 
-	    public String[] getSpecialists()
-	    {
-	        MiscUtils.getLogger().debug("getter specialists");
-	        if(specialists == null)
-	            specialists = new String[0];
-	        return specialists;
-	    }
+    public String[] getSpecialists() {
+        MiscUtils.getLogger().debug("getter specialists");
+        if (specialists == null)
+            specialists = new String[0];
+        return specialists;
+    }
 
-	    public void setSpecialists(String str[])
-	    {
-	        MiscUtils.getLogger().debug("setter specialists");
-	        specialists = str;
-	    }
+    public void setSpecialists(String str[]) {
+        MiscUtils.getLogger().debug("setter specialists");
+        specialists = str;
+    }
 
-	    String id;
-	    String delete;
-	    String specialists[];
+    String id;
+    String delete;
+    String specialists[];
 }

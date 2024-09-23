@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,100 +37,98 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class DrugProduct extends AbstractModel<Integer> {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
-	private String name;
-	private String code;
-	private Integer location;
-	
-	private String lotNumber;
-	private Integer dispensingEvent;
-	
-	@Temporal(TemporalType.DATE)
-	private Date expiryDate;
-	
-	//# of doses or tablets so that we can patch to a prescription
-	private int amount;
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public String getLotNumber() {
-		return lotNumber;
-	}
+    private String name;
+    private String code;
+    private Integer location;
 
-	public void setLotNumber(String lotNumber) {
-		this.lotNumber = lotNumber;
-	}
+    private String lotNumber;
+    private Integer dispensingEvent;
 
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
+    @Temporal(TemporalType.DATE)
+    private Date expiryDate;
 
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
-	
-	public Integer getDispensingEvent() {
-		return dispensingEvent;
-	}
+    //# of doses or tablets so that we can patch to a prescription
+    private int amount;
 
-	public void setDispensingEvent(Integer dispensingEvent) {
-		this.dispensingEvent = dispensingEvent;
-	}
 
-	
-	
-	public int getAmount() {
-		return amount;
-	}
+    public String getLotNumber() {
+        return lotNumber;
+    }
 
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
+    public void setLotNumber(String lotNumber) {
+        this.lotNumber = lotNumber;
+    }
 
-	public String getExpiryDateAsString() {
-		if(getExpiryDate() != null) {
-			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-			return f.format(getExpiryDate());
-		}else {
-			return "";
-		}
-	}
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getDispensingEvent() {
+        return dispensingEvent;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setDispensingEvent(Integer dispensingEvent) {
+        this.dispensingEvent = dispensingEvent;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
-	public String getCode() {
-		return code;
-	}
+    public int getAmount() {
+        return amount;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 
-	public Integer getLocation() {
-		return location;
-	}
+    public String getExpiryDateAsString() {
+        if (getExpiryDate() != null) {
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            return f.format(getExpiryDate());
+        } else {
+            return "";
+        }
+    }
 
-	public void setLocation(Integer location) {
-		this.location = location;
-	}
-	
-	
-	
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getLocation() {
+        return location;
+    }
+
+    public void setLocation(Integer location) {
+        this.location = location;
+    }
+
+
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,59 +32,59 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="measurementsExt")
-public class MeasurementsExt extends AbstractModel<Integer>{
+@Table(name = "measurementsExt")
+public class MeasurementsExt extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name="measurement_id")
-	private int measurementId;
-	
-	private String keyVal;
-	
-	private String val;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public MeasurementsExt() {
-		
-	}
-	
-	public MeasurementsExt(int measurementId) {
-		setMeasurementId(measurementId);
-	}
-	
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "measurement_id")
+    private int measurementId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String keyVal;
 
-	public int getMeasurementId() {
-		return measurementId;
-	}
+    private String val;
 
-	public void setMeasurementId(int measurementId) {
-		this.measurementId = measurementId;
-	}
+    public MeasurementsExt() {
 
-	public String getKeyVal() {
-		return keyVal;
-	}
+    }
 
-	public void setKeyVal(String keyVal) {
-		this.keyVal = keyVal;
-	}
+    public MeasurementsExt(int measurementId) {
+        setMeasurementId(measurementId);
+    }
 
-	public String getVal() {
-		return val;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setVal(String val) {
-		this.val = val;
-	}
-	
-	
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getMeasurementId() {
+        return measurementId;
+    }
+
+    public void setMeasurementId(int measurementId) {
+        this.measurementId = measurementId;
+    }
+
+    public String getKeyVal() {
+        return keyVal;
+    }
+
+    public void setKeyVal(String keyVal) {
+        this.keyVal = keyVal;
+    }
+
+    public String getVal() {
+        return val;
+    }
+
+    public void setVal(String val) {
+        this.val = val;
+    }
+
+
 }

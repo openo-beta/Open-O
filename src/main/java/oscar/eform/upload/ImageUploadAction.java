@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,22 +47,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ImageUploadAction extends Action {
-    
-	private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+
+    private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
-			throw new SecurityException("missing required security object (_eform)");
-		}
-    	
-         ImageUploadForm fm = (ImageUploadForm) form;
-         FormFile image = fm.getImage();
-         try (OutputStream fos = ImageUploadAction.getEFormImageOutputStream(image.getFileName())) {
-             byte[] imagebytes = image.getFileData();
-             fos.write(imagebytes);
-         } catch (Exception e) { MiscUtils.getLogger().error("Error", e); }
-         return mapping.findForward("success");
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
+            throw new SecurityException("missing required security object (_eform)");
+        }
+
+        ImageUploadForm fm = (ImageUploadForm) form;
+        FormFile image = fm.getImage();
+        try (OutputStream fos = ImageUploadAction.getEFormImageOutputStream(image.getFileName())) {
+            byte[] imagebytes = image.getFileData();
+            fos.write(imagebytes);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+        }
+        return mapping.findForward("success");
     }
 
     public static OutputStream getEFormImageOutputStream(String imageFileName) throws IOException {
@@ -72,8 +74,9 @@ public class ImageUploadAction extends Action {
 
     public static File getImageFolder() throws IOException {
         File imageFolder = new File(OscarProperties.getInstance().getProperty("eform_image") + "/");
-        if (!imageFolder.exists() && !imageFolder.mkdirs()) throw new IOException("Could not create directory " + imageFolder.getAbsolutePath() + " check permissions and ensure the correct eform_image property is set in the properties file");
+        if (!imageFolder.exists() && !imageFolder.mkdirs())
+            throw new IOException("Could not create directory " + imageFolder.getAbsolutePath() + " check permissions and ensure the correct eform_image property is set in the properties file");
         return imageFolder;
     }
-    
+
 }

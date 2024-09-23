@@ -6,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -72,7 +72,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
 
     @Override
     public List<Prevention> getUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive,
-            int itemsToReturn) {
+                                                int itemsToReturn) {
         List<Prevention> results = preventionDao.findByUpdateDate(updatedAfterThisDateExclusive, itemsToReturn);
 
         LogAction.addLogSynchronous(loggedInInfo, "PreventionManager.getUpdatedAfterDate",
@@ -83,7 +83,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
 
     @Override
     public List<Prevention> getByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo, Integer demographicId,
-            Date updatedAfterThisDateExclusive) {
+                                                               Date updatedAfterThisDateExclusive) {
         List<Prevention> results = preventionDao.findByDemographicIdAfterDatetimeExclusive(demographicId,
                 updatedAfterThisDateExclusive);
         LogAction.addLogSynchronous(loggedInInfo, "PreventionManager.getByDemographicIdUpdatedAfterDate",
@@ -211,7 +211,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
      */
     @Override
     public List<Prevention> getPreventionsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId,
-            String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn) {
+                                                                           String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn) {
         List<Prevention> results = preventionDao.findByProviderDemographicLastUpdateDate(providerNo, demographicId,
                 updatedAfterThisDateExclusive.getTime(), itemsToReturn);
 
@@ -294,7 +294,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
     /**
      * refresh the prevention stop sign list with the newest list from the
      * database and then check if the module is enabled.
-     * 
+     *
      * @return
      */
     @Override
@@ -373,7 +373,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
     /**
      * Check if a specific prevention warning stop sign
      * is disabled.
-     * 
+     *
      * @param name prevention name
      * @return boolean
      */
@@ -384,7 +384,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
 
     /**
      * Call from the database
-     * 
+     *
      * @return String list of prevention values separated by []
      */
     private String getDisabledPreventionList() {
@@ -403,7 +403,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
      * String values
      * This method signature pre-existed therefore could not
      * change the name to something more meaningful
-     * 
+     *
      * @return List of string values.
      */
     @Override
@@ -436,7 +436,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
         for (String preventionName : newDisabledPreventions) {
 
             if ((newDisabled + "[" + preventionName + "]").length() > 255) { // a value in the property table holds a
-                                                                             // max of 255 characters
+                // max of 255 characters
 
                 Property newProp = new Property();
                 newProp.setName("hide_prevention_stop_signs");

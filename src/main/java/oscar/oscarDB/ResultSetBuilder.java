@@ -65,26 +65,26 @@ import org.oscarehr.common.model.ProviderLabRoutingModel;
 import oscar.util.Textualizer;
 
 /**
- * <p><code>ResultSetBuilder</code> builds a JDOM tree from a 
+ * <p><code>ResultSetBuilder</code> builds a JDOM tree from a
  * <code>java.sql.ResultSet</code>.  Many good ideas were leveraged from
  * SQLBuilder written from Jon Baer.</p>
- *
- * Notes:
- *   Uses name returned by rsmd.getColumnName(), not getColumnLabel() 
- *   because that is less likely to be a valid XML element title.
- *   Null values are given empty bodies, but you can mark them as empty with
- *   an attribute using the setNullAttribute() method.  Be aware that databases
- *   may change the case of column names.  setAsXXX() methods are case
- *   insensitive on input column name.  Assign each one a proper output name
- *   if you're worried.  Only build() throws JDOMException.  Any exceptions 
- *   encountered in the set methods are thrown during the build().  
- *   The setAsXXX(String columnName, ...) methods do not verify that a column 
- *   with the given name actually exists.
- *
- *   Still needs method-by-method Javadocs.
  * <p>
- * Issues: 
- *   Do attributes have to be added in a namespace?
+ * Notes:
+ * Uses name returned by rsmd.getColumnName(), not getColumnLabel()
+ * because that is less likely to be a valid XML element title.
+ * Null values are given empty bodies, but you can mark them as empty with
+ * an attribute using the setNullAttribute() method.  Be aware that databases
+ * may change the case of column names.  setAsXXX() methods are case
+ * insensitive on input column name.  Assign each one a proper output name
+ * if you're worried.  Only build() throws JDOMException.  Any exceptions
+ * encountered in the set methods are thrown during the build().
+ * The setAsXXX(String columnName, ...) methods do not verify that a column
+ * with the given name actually exists.
+ * <p>
+ * Still needs method-by-method Javadocs.
+ * <p>
+ * Issues:
+ * Do attributes have to be added in a namespace?
  *
  * @author Jason Hunter
  * @author Jon Baer
@@ -94,196 +94,204 @@ import oscar.util.Textualizer;
  */
 public class ResultSetBuilder {
 
-	/** The ResultSet that becomes a <code>Document</code> */
-	private ProviderLabRoutingModel rs;
+    /**
+     * The ResultSet that becomes a <code>Document</code>
+     */
+    private ProviderLabRoutingModel rs;
 
-	/** The <code>Namespace</code> to use for each <code>Element</code> */
-	private Namespace ns = Namespace.NO_NAMESPACE;
+    /**
+     * The <code>Namespace</code> to use for each <code>Element</code>
+     */
+    private Namespace ns = Namespace.NO_NAMESPACE;
 
-	/** The maximum rows to return from the result set */
-	int maxRows = Integer.MAX_VALUE; // default to all
+    /**
+     * The maximum rows to return from the result set
+     */
+    int maxRows = Integer.MAX_VALUE; // default to all
 
-	/** Name for the root <code>Element</code> of the <code>Document</code> */
-	private String rootName = "result";
+    /**
+     * Name for the root <code>Element</code> of the <code>Document</code>
+     */
+    private String rootName = "result";
 
-	/** Name for the each immediate child <code>Element</code> of the root */
-	private String rowName = "entry";
+    /**
+     * Name for the each immediate child <code>Element</code> of the root
+     */
+    private String rowName = "entry";
 
-	/** Name for attribute to mark that a field was null */
-	private String nullAttribName = null;
+    /**
+     * Name for attribute to mark that a field was null
+     */
+    private String nullAttribName = null;
 
-	/** Value for attribute to mark that a field was null  */
-	private String nullAttribValue = null;
+    /**
+     * Value for attribute to mark that a field was null
+     */
+    private String nullAttribValue = null;
 
-	/**
-	 * <p>
-	 *   This sets up a <code>java.sql.ResultSet</code> to be built
-	 *   as a <code>Document</code>.
-	 * </p>
-	 *
-	 * @param rs <code>java.sql.ResultSet</code> to build
-	 */
-	public ResultSetBuilder(ProviderLabRoutingModel rs) {
-		this.rs = rs;
-	}
+    /**
+     * <p>
+     * This sets up a <code>java.sql.ResultSet</code> to be built
+     * as a <code>Document</code>.
+     * </p>
+     *
+     * @param rs <code>java.sql.ResultSet</code> to build
+     */
+    public ResultSetBuilder(ProviderLabRoutingModel rs) {
+        this.rs = rs;
+    }
 
-	/**
-	 * <p>
-	 *   This sets up a <code>java.sql.ResultSet</code> to be built
-	 *   as a <code>Document</code>.
-	 * </p>
-	 *
-	 * @param rs <code>java.sql.ResultSet</code> to build from
-	 * @param rootName <code>String</code> name for the root
-	 * <code>Element</code> 
-	 * of the <code>Document</code>
-	 * @param rowName <code>String</code> name for the each immediate child 
-	 * <code>Element</code> of the root
-	 */
-	public ResultSetBuilder(ProviderLabRoutingModel rs, String rootName, String rowName) {
-		this(rs);
-		setRootName(rootName);
-		setRowName(rowName);
-	}
+    /**
+     * <p>
+     * This sets up a <code>java.sql.ResultSet</code> to be built
+     * as a <code>Document</code>.
+     * </p>
+     *
+     * @param rs       <code>java.sql.ResultSet</code> to build from
+     * @param rootName <code>String</code> name for the root
+     *                 <code>Element</code>
+     *                 of the <code>Document</code>
+     * @param rowName  <code>String</code> name for the each immediate child
+     *                 <code>Element</code> of the root
+     */
+    public ResultSetBuilder(ProviderLabRoutingModel rs, String rootName, String rowName) {
+        this(rs);
+        setRootName(rootName);
+        setRowName(rowName);
+    }
 
-	/**
-	 * <p>
-	 *   This sets up a <code>java.sql.ResultSet</code> to be built
-	 *   as a <code>Document</code>.
-	 * </p>
-	 *
-	 * @param rs <code>java.sql.ResultSet</code> to build from
-	 * @param rootName <code>String</code> name for the root
-	 * <code>Element</code> 
-	 * of the <code>Document</code>
-	 * @param rowName <code>String</code> name for the each immediate child 
-	 * <code>Element</code> of the root
-	 * @param ns <code>Namespace</code> to use for each <code>Element</code>
-	 */
-	public ResultSetBuilder(ProviderLabRoutingModel rs, String rootName, String rowName, Namespace ns) {
-		this(rs, rootName, rowName);
-		setNamespace(ns);
-	}
+    /**
+     * <p>
+     * This sets up a <code>java.sql.ResultSet</code> to be built
+     * as a <code>Document</code>.
+     * </p>
+     *
+     * @param rs       <code>java.sql.ResultSet</code> to build from
+     * @param rootName <code>String</code> name for the root
+     *                 <code>Element</code>
+     *                 of the <code>Document</code>
+     * @param rowName  <code>String</code> name for the each immediate child
+     *                 <code>Element</code> of the root
+     * @param ns       <code>Namespace</code> to use for each <code>Element</code>
+     */
+    public ResultSetBuilder(ProviderLabRoutingModel rs, String rootName, String rowName, Namespace ns) {
+        this(rs, rootName, rowName);
+        setNamespace(ns);
+    }
 
-	/**
-	 * <p>
-	 *   This builds a <code>Document</code> from the
-	 *   <code>java.sql.ResultSet</code>.
-	 * </p>
-	 *
-	 * @return <code>Document</code> - resultant Document object.
-	 * @throws <code>JDOMException</code> when there is a problem
-	 *                                    with the build.
-	 *
-	 */
-	public Document build() throws JDOMException {
-		try {
-			Element root = new Element(rootName, ns);
-			Document doc = new Document(root);
-			
-			// build the org.jdom.Document out of the result set 
-			String name;
-			String value;
-			Element entry;
-			Element child;
+    /**
+     * <p>
+     * This builds a <code>Document</code> from the
+     * <code>java.sql.ResultSet</code>.
+     * </p>
+     *
+     * @return <code>Document</code> - resultant Document object.
+     * @throws <code>JDOMException</code> when there is a problem
+     *                                    with the build.
+     */
+    public Document build() throws JDOMException {
+        try {
+            Element root = new Element(rootName, ns);
+            Document doc = new Document(root);
 
-			Textualizer txt = new Textualizer();
+            // build the org.jdom.Document out of the result set
+            String name;
+            String value;
+            Element entry;
+            Element child;
 
-			SortedMap<String, String> map;
-			try {
-				map = txt.toMap(rs);
-			} catch (Exception e1) {
-				throw new JDOMException("Unable to convert to map", e1);
-			}
+            Textualizer txt = new Textualizer();
 
-			entry = new Element(rowName, ns);
-			for (Entry<String, String> e : map.entrySet()) {
-				name = e.getKey();
-				value = e.getValue();
+            SortedMap<String, String> map;
+            try {
+                map = txt.toMap(rs);
+            } catch (Exception e1) {
+                throw new JDOMException("Unable to convert to map", e1);
+            }
 
-				child = new Element(name, ns);
+            entry = new Element(rowName, ns);
+            for (Entry<String, String> e : map.entrySet()) {
+                name = e.getKey();
+                value = e.getValue();
 
-				if (value == null || value.isEmpty()) {
-					if (nullAttribName != null) {
-						child.setAttribute(nullAttribName, nullAttribValue);
-					}
-				} else {
-					child.setText(value);
-				}
-				entry.addContent(child);
-			}
-			root.addContent(entry);
-		
+                child = new Element(name, ns);
 
-			return doc;
-		} catch (Exception e) {
-			throw new JDOMException("Database problem", e);
-		}
-	}
+                if (value == null || value.isEmpty()) {
+                    if (nullAttribName != null) {
+                        child.setAttribute(nullAttribName, nullAttribValue);
+                    }
+                } else {
+                    child.setText(value);
+                }
+                entry.addContent(child);
+            }
+            root.addContent(entry);
 
-	/**
-	 * Set the name to use as the root element in
-	 * the <code>Document</code>.
-	 *
-	 * @param rootName <code>String</code> the new name.
-	 *
-	 */
-	public void setRootName(String rootName) {
-		this.rootName = rootName;
-	}
 
-	/**
-	 * Set the name to use as the row element in
-	 * the <code>Document</code>.
-	 *
-	 * @param rowName <code>String</code> the new name.
-	 *
-	 */
-	public void setRowName(String rowName) {
-		this.rowName = rowName;
-	}
+            return doc;
+        } catch (Exception e) {
+            throw new JDOMException("Database problem", e);
+        }
+    }
 
-	/**
-	 * <p>
-	 *   Set the <code>Namespace</code> to use for
-	 *   each <code>Element</code> in the  <code>Document</code>.
-	 * </p>
-	 *
-	 * @param ns <code>String</code> the namespace to use.
-	 *
-	 */
-	public void setNamespace(Namespace ns) {
-		this.ns = ns;
-	}
+    /**
+     * Set the name to use as the root element in
+     * the <code>Document</code>.
+     *
+     * @param rootName <code>String</code> the new name.
+     */
+    public void setRootName(String rootName) {
+        this.rootName = rootName;
+    }
 
-	/**
-	* <p>
-	*   Set the maximum number of rows to add to your
-	*   <code>Document</code>.
-	* </p>
-	*
-	* @param maxRows <code>int</code>
-	*
-	*/
-	public void setMaxRows(int maxRows) {
-		this.maxRows = maxRows;
-	}
+    /**
+     * Set the name to use as the row element in
+     * the <code>Document</code>.
+     *
+     * @param rowName <code>String</code> the new name.
+     */
+    public void setRowName(String rowName) {
+        this.rowName = rowName;
+    }
 
-	/**
-	 * <p>
-	 *   Set a specific attribute to use to mark that a value in the 
-	 *   database was null, not just an empty string.  This is necessary
-	 *   because &lt;foo/&gt; semantically represents both null and empty.
-	 *   This method lets you have &lt;foo null="true"&gt;.
-	 * </p>
-	 *
-	 * @param nullAttribName <code>String</code> name of attribute to add
-	 * @param nullAttribValue <code>String</code> value to set it to.
-	 *
-	 */
-	public void setNullAttribute(String nullAttribName, String nullAttribValue) {
-		this.nullAttribName = nullAttribName;
-		this.nullAttribValue = nullAttribValue;
-	}
+    /**
+     * <p>
+     * Set the <code>Namespace</code> to use for
+     * each <code>Element</code> in the  <code>Document</code>.
+     * </p>
+     *
+     * @param ns <code>String</code> the namespace to use.
+     */
+    public void setNamespace(Namespace ns) {
+        this.ns = ns;
+    }
+
+    /**
+     * <p>
+     * Set the maximum number of rows to add to your
+     * <code>Document</code>.
+     * </p>
+     *
+     * @param maxRows <code>int</code>
+     */
+    public void setMaxRows(int maxRows) {
+        this.maxRows = maxRows;
+    }
+
+    /**
+     * <p>
+     * Set a specific attribute to use to mark that a value in the
+     * database was null, not just an empty string.  This is necessary
+     * because &lt;foo/&gt; semantically represents both null and empty.
+     * This method lets you have &lt;foo null="true"&gt;.
+     * </p>
+     *
+     * @param nullAttribName  <code>String</code> name of attribute to add
+     * @param nullAttribValue <code>String</code> value to set it to.
+     */
+    public void setNullAttribute(String nullAttribName, String nullAttribValue) {
+        this.nullAttribName = nullAttribName;
+        this.nullAttribValue = nullAttribValue;
+    }
 
 }

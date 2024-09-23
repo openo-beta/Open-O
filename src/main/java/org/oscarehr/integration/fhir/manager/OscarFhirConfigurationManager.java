@@ -7,16 +7,16 @@ package org.oscarehr.integration.fhir.manager;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,62 +37,62 @@ import org.oscarehr.util.MiscUtils;
 
 public final class OscarFhirConfigurationManager {
 
-	private static Logger logger = MiscUtils.getLogger();
-	
-	private Destination destination;
-	private Sender sender;
-	private LoggedInInfo loggedInInfo;
-	private ResourceAttributeFilter resourceAttributeFilter;
-	private Settings settings;
+    private static Logger logger = MiscUtils.getLogger();
 
-	/**
-	 * Inject a Settings Object and all the configuration Objects will be instantiated automatically. 
-	 * Including the Sender and Destination Objects. 
-	 */
-	public OscarFhirConfigurationManager( LoggedInInfo loggedInInfo, Settings settings ) {
-		
-		logger.debug( "Setting Oscar FHIR Configuration Manager with settings file: " + settings );
-		
-		this.loggedInInfo = loggedInInfo;
-		
-		this.destination = DestinationFactory.getDestination( settings );
-		
-		logger.debug( "Destination settings: " + this.destination );
-		
-		this.sender = SenderFactory.getSender( settings );
-		
-		logger.debug( "Sender settings: " + this.sender );
-		
-		this.resourceAttributeFilter = ResourceAttributeFilterFactory.getFilter( settings.getFhirDestination() );
-		
-		logger.debug( "FHIR Resource Attribute Filter: " + this.resourceAttributeFilter );
-	}
+    private Destination destination;
+    private Sender sender;
+    private LoggedInInfo loggedInInfo;
+    private ResourceAttributeFilter resourceAttributeFilter;
+    private Settings settings;
 
-	public Destination getDestination() {
-		return destination;
-	}
+    /**
+     * Inject a Settings Object and all the configuration Objects will be instantiated automatically.
+     * Including the Sender and Destination Objects.
+     */
+    public OscarFhirConfigurationManager(LoggedInInfo loggedInInfo, Settings settings) {
 
-	public Sender getSender() {
-		return sender;
-	}
+        logger.debug("Setting Oscar FHIR Configuration Manager with settings file: " + settings);
 
-	public LoggedInInfo getLoggedInInfo() {
-		return loggedInInfo;
-	}
+        this.loggedInInfo = loggedInInfo;
 
-	public ResourceAttributeFilter getResourceAttributeFilter( Class<?> targetResource ) {
-		if( resourceAttributeFilter == null ) {
-			return null;
-		}
-		return resourceAttributeFilter.getFilter( targetResource );
-	}
+        this.destination = DestinationFactory.getDestination(settings);
 
-	public Settings getSettings() {
-		return settings;
-	}
+        logger.debug("Destination settings: " + this.destination);
 
-	public void setSettings(Settings settings) {
-		this.settings = settings;
-	}
+        this.sender = SenderFactory.getSender(settings);
+
+        logger.debug("Sender settings: " + this.sender);
+
+        this.resourceAttributeFilter = ResourceAttributeFilterFactory.getFilter(settings.getFhirDestination());
+
+        logger.debug("FHIR Resource Attribute Filter: " + this.resourceAttributeFilter);
+    }
+
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public Sender getSender() {
+        return sender;
+    }
+
+    public LoggedInInfo getLoggedInInfo() {
+        return loggedInInfo;
+    }
+
+    public ResourceAttributeFilter getResourceAttributeFilter(Class<?> targetResource) {
+        if (resourceAttributeFilter == null) {
+            return null;
+        }
+        return resourceAttributeFilter.getFilter(targetResource);
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 
 }

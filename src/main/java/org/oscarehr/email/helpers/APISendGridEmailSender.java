@@ -43,7 +43,8 @@ public class APISendGridEmailSender {
     private String DEFAULT_END_POINT = "https://api.sendgrid.com/v3/mail/send";
     private List<EmailAttachment> attachments;
 
-    private APISendGridEmailSender() { }
+    private APISendGridEmailSender() {
+    }
 
     public APISendGridEmailSender(LoggedInInfo loggedInInfo, EmailConfig emailConfig, String[] recipients, String subject, String body, List<EmailAttachment> attachments) {
         this.loggedInInfo = loggedInInfo;
@@ -66,9 +67,9 @@ public class APISendGridEmailSender {
 
     public void send() throws EmailSendingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-			throw new RuntimeException("missing required security object (_email)");
-		} 
-        
+            throw new RuntimeException("missing required security object (_email)");
+        }
+
         try {
             SSLContext sslContext = SSLContexts.custom().build();
             sslContext.getDefaultSSLParameters().setNeedClientAuth(true);
@@ -83,7 +84,9 @@ public class APISendGridEmailSender {
             StringEntity entity = new StringEntity(createEmailJSON());
             httpPost.setEntity(entity);
             HttpResponse response = httpClient.execute(httpPost);
-            if (response.getStatusLine().getStatusCode() >= 400) { throw new EmailSendingException(response.getStatusLine() + "\n" + EntityUtils.toString(response.getEntity())); }
+            if (response.getStatusLine().getStatusCode() >= 400) {
+                throw new EmailSendingException(response.getStatusLine() + "\n" + EntityUtils.toString(response.getEntity()));
+            }
         } catch (Exception e) {
             throw new EmailSendingException(e.getMessage(), e);
         }
@@ -155,11 +158,11 @@ public class APISendGridEmailSender {
         }
         emailJson.put("attachments", jsonAttachments);
     }
-    
+
     private void addAdditionalParams(JSONObject emailJson) throws EmailSendingException {
         emailJson.put("additionalParams", additionalParams);
     }
-    
+
     private void addApiKey(JSONObject emailJson) throws EmailSendingException {
         emailJson.put("apiKey", getAPIKey());
     }

@@ -66,25 +66,26 @@
 
         <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     </head>
-    <script type="text/javascript" >
-      function setregexp() {
-        document.ADDAPPT.regexp.value = "^[" + document.ADDAPPT.last_name_from.value + "-"
-            + document.ADDAPPT.last_name_to.value + "]";
-      }
+    <script type="text/javascript">
+        function setregexp() {
+            document.ADDAPPT.regexp.value = "^[" + document.ADDAPPT.last_name_from.value + "-"
+                + document.ADDAPPT.last_name_to.value + "]";
+        }
 
-      function setregexp1() {
-        document.ADDAPPT1.regexp.value = "^[" + document.ADDAPPT1.last_name_from.value + "-"
-            + document.ADDAPPT1.last_name_to.value + "]";
-      }
+        function setregexp1() {
+            document.ADDAPPT1.regexp.value = "^[" + document.ADDAPPT1.last_name_from.value + "-"
+                + document.ADDAPPT1.last_name_to.value + "]";
+        }
 
-      function setregexp2() {
-        document.ADDAPPT2.regexp.value = "^[" + document.ADDAPPT2.last_name_from.value + "-"
-            + document.ADDAPPT2.last_name_to.value + "]";
-      }
-      function setregexp3() {
-          document.ADDMRP.regexp.value = "^[" + document.ADDMRP.last_name_from.value + "-"
-                  + document.ADDMRP.last_name_to.value + "]";
-      }
+        function setregexp2() {
+            document.ADDAPPT2.regexp.value = "^[" + document.ADDAPPT2.last_name_from.value + "-"
+                + document.ADDAPPT2.last_name_to.value + "]";
+        }
+
+        function setregexp3() {
+            document.ADDMRP.regexp.value = "^[" + document.ADDMRP.last_name_from.value + "-"
+                + document.ADDMRP.last_name_to.value + "]";
+        }
     </script>
     <%
         for (Provider p : providerManager.getProviders(loggedInInfo, true)) {
@@ -102,7 +103,7 @@
                 // find demographicNos for records with last name starting with and have a resident assigned
                 List<Integer> noList = demographicManager.getDemographicNumbersByResidentNumberAndDemographicLastNameRegex(
                         loggedInInfo, request.getParameter("oldcust2"), request.getParameter("regexp")
-                        );
+                );
                 int rowsAffected = 0;
                 if (noList != null) {
                     int nosize = noList.size();
@@ -123,7 +124,7 @@
                         // get demographicExt entries in demo list with old provider
                         List<DemographicExt> residents = demographicManager
                                 .getMultipleResidentForDemographicNumbersByProviderNumber(
-                                        loggedInInfo,demoList, param[1]
+                                        loggedInInfo, demoList, param[1]
                                 );
                         for (DemographicExt resident : residents) {
                             resident.setValue(param[0]);
@@ -141,10 +142,10 @@
             if (request.getParameter("update") != null
                     && request.getParameter("update").equals("UpdateNurse")) {
                 List<Integer> noList = demographicManager.getDemographicNumbersByNurseNumberAndDemographicLastNameRegex(
-                            loggedInInfo,
-                            request.getParameter("oldcust1"),
-                            request.getParameter("regexp")
-                        );
+                        loggedInInfo,
+                        request.getParameter("oldcust1"),
+                        request.getParameter("regexp")
+                );
                 int rowsAffected = 0;
                 if (noList != null) {
                     int nosize = noList.size();
@@ -164,7 +165,7 @@
                         }
                         List<DemographicExt> nurses = demographicManager.
                                 getMultipleNurseForDemographicNumbersByProviderNumber(
-                                    loggedInInfo, demoList, param[1]
+                                        loggedInInfo, demoList, param[1]
                                 );
                         for (DemographicExt nurse : nurses) {
                             nurse.setValue(param[0]);
@@ -182,10 +183,10 @@
             if (request.getParameter("update") != null
                     && request.getParameter("update").equals("UpdateMidwife")) {
                 List<Integer> noList = demographicManager.getDemographicNumbersByMidwifeNumberAndDemographicLastNameRegex(
-                            loggedInInfo,
-                            request.getParameter("oldcust4"),
-                            request.getParameter("regexp")
-                        );
+                        loggedInInfo,
+                        request.getParameter("oldcust4"),
+                        request.getParameter("regexp")
+                );
                 int rowsAffected = 0;
                 if (noList != null) {
                     int nosize = noList.size();
@@ -207,12 +208,12 @@
                         }
                         List<DemographicExt> midwives = demographicManager.getMultipleMidwifeForDemographicNumbersByProviderNumber(
                                 loggedInInfo,
-                                    demoList,
-                                    param[1]
-                                );
+                                demoList,
+                                param[1]
+                        );
                         for (DemographicExt midwife : midwives) {
                             midwife.setValue(param[0]);
-                            demographicManager.updateExtension(loggedInInfo,midwife);
+                            demographicManager.updateExtension(loggedInInfo, midwife);
                         }
                         rowsAffected = midwives.size();
                     }
@@ -231,11 +232,11 @@
                 int rowsAffected = 0;
                 if (noList != null) {
                     String newmrp = request.getParameter("newcust5");
-                    if(newmrp != null) {
-                        for(Demographic demographic : noList) {
+                    if (newmrp != null) {
+                        for (Demographic demographic : noList) {
                             demographic.setProviderNo(newmrp);
                             demographicManager.updateDemographic(loggedInInfo, demographic);
-                            rowsAffected ++;
+                            rowsAffected++;
                         }
                     }
                 }
@@ -326,9 +327,9 @@
                                     <bean:message key="admin.updatedemographicprovider.msgNoProvider"/>
                                 </option>
                                 <% for (int i = 0; i < names.size(); i = i + 2) { %>
-                                    <option value="<%= Encode.forHtmlContent(names.get(i)) %>">
-                                        <%= Encode.forHtmlContent(names.get(i + 1)) %>
-                                    </option>
+                                <option value="<%= Encode.forHtmlContent(names.get(i)) %>">
+                                    <%= Encode.forHtmlContent(names.get(i + 1)) %>
+                                </option>
                                 <% } %>
                             </select>
                             <bean:message key="admin.updatedemographicprovider.formWith"/>
@@ -337,9 +338,9 @@
                                     <bean:message key="admin.updatedemographicprovider.msgNoProvider"/>
                                 </option>
                                 <% for (int i = 0; i < names.size(); i = i + 2) { %>
-                                    <option value="<%=Encode.forHtmlContent(names.get(i))%>">
-                                        <%=Encode.forHtmlContent(names.get(i + 1))%>
-                                    </option>
+                                <option value="<%=Encode.forHtmlContent(names.get(i))%>">
+                                    <%=Encode.forHtmlContent(names.get(i + 1))%>
+                                </option>
                                 <% } %>
                             </select><br>
                             <bean:message key="admin.updatedemographicprovider.formCondition"/>
@@ -348,9 +349,9 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                    <option value="<%= (char) (cletter + i) %>">
-                                        <%= (char) (cletter + i) %>
-                                    </option>
+                                <option value="<%= (char) (cletter + i) %>">
+                                    <%= (char) (cletter + i) %>
+                                </option>
                                 <% } %>
                             </select>
                             <bean:message key="admin.updatedemographicprovider.formTo"/>
@@ -359,9 +360,9 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                    <option value="<%= (char) (cletter + i) %>">
-                                        <%= (char) (cletter + i) %>
-                                    </option>
+                                <option value="<%= (char) (cletter + i) %>">
+                                    <%= (char) (cletter + i) %>
+                                </option>
                                 <% } %>
                             </select> <br>
                             <INPUT type="hidden" name="regexp" value="">
@@ -403,9 +404,9 @@
                                     <bean:message key="admin.updatedemographicprovider.msgNoProvider"/>
                                 </option>
                                 <% for (int i = 0; i < names.size(); i = i + 2) { %>
-                                    <option value="<%= Encode.forHtmlContent(names.get(i)) %>">
-                                        <%= Encode.forHtmlContent(names.get(i + 1)) %>
-                                    </option>
+                                <option value="<%= Encode.forHtmlContent(names.get(i)) %>">
+                                    <%= Encode.forHtmlContent(names.get(i + 1)) %>
+                                </option>
                                 <% } %>
                             </select><br>
                             <bean:message key="admin.updatedemographicprovider.formCondition"/>
@@ -414,9 +415,9 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                    <option value="<%=(char) (cletter+i) %>">
-                                        <%= (char) (cletter + i) %>
-                                    </option>
+                                <option value="<%=(char) (cletter+i) %>">
+                                    <%= (char) (cletter + i) %>
+                                </option>
                                 <% } %>
                             </select>
                             <bean:message key="admin.updatedemographicprovider.formTo"/>
@@ -426,9 +427,9 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                    <option value="<%=(char) (cletter+i) %>">
-                                        <%= (char) (cletter + i) %>
-                                    </option>
+                                <option value="<%=(char) (cletter+i) %>">
+                                    <%= (char) (cletter + i) %>
+                                </option>
                                 <% } %>
                             </select> <br>
                             <input type="hidden" NAME="regexp" value="">
@@ -484,14 +485,14 @@
                                 <% } %>
                             </select>
                             <bean:message key="admin.updatedemographicprovider.formTo"/>
-                            <select  name="last_name_to">
+                            <select name="last_name_to">
                                 <%
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                    <option value="<%=(char) (cletter+i) %>">
-                                        <%= (char) (cletter + i) %>
-                                    </option>
+                                <option value="<%=(char) (cletter+i) %>">
+                                    <%= (char) (cletter + i) %>
+                                </option>
                                 <% } %>
                             </select> <br>
                             <INPUT TYPE="hidden" NAME="regexp" VALUE=""> <input

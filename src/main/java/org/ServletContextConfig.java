@@ -1,8 +1,11 @@
 //CHECKSTYLE:OFF
 package org;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import javax.servlet.ServletContext;
+
 import org.springframework.web.context.ServletContextAware;
 
 @Configuration

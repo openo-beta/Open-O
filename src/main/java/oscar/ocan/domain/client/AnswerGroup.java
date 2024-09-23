@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -59,16 +58,16 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cNoNeed",
-    "cMetNeed",
-    "cUnmetNeed",
-    "ciDonTWantToAnswer",
-    "cComments"
+        "cNoNeed",
+        "cMetNeed",
+        "cUnmetNeed",
+        "ciDonTWantToAnswer",
+        "cComments"
 })
 @XmlRootElement(name = "AnswerGroup")
 public class AnswerGroup {
@@ -86,11 +85,11 @@ public class AnswerGroup {
 
     /**
      * Gets the value of the cNoNeed property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCNoNeed() {
         return cNoNeed;
@@ -98,11 +97,11 @@ public class AnswerGroup {
 
     /**
      * Sets the value of the cNoNeed property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCNoNeed(String value) {
         this.cNoNeed = value;
@@ -110,11 +109,11 @@ public class AnswerGroup {
 
     /**
      * Gets the value of the cMetNeed property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCMetNeed() {
         return cMetNeed;
@@ -122,11 +121,11 @@ public class AnswerGroup {
 
     /**
      * Sets the value of the cMetNeed property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCMetNeed(String value) {
         this.cMetNeed = value;
@@ -134,11 +133,11 @@ public class AnswerGroup {
 
     /**
      * Gets the value of the cUnmetNeed property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCUnmetNeed() {
         return cUnmetNeed;
@@ -146,11 +145,11 @@ public class AnswerGroup {
 
     /**
      * Sets the value of the cUnmetNeed property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCUnmetNeed(String value) {
         this.cUnmetNeed = value;
@@ -158,11 +157,11 @@ public class AnswerGroup {
 
     /**
      * Gets the value of the ciDonTWantToAnswer property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCIDonTWantToAnswer() {
         return ciDonTWantToAnswer;
@@ -170,11 +169,11 @@ public class AnswerGroup {
 
     /**
      * Sets the value of the ciDonTWantToAnswer property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCIDonTWantToAnswer(String value) {
         this.ciDonTWantToAnswer = value;
@@ -182,11 +181,11 @@ public class AnswerGroup {
 
     /**
      * Gets the value of the cComments property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCComments() {
         return cComments;
@@ -194,11 +193,11 @@ public class AnswerGroup {
 
     /**
      * Sets the value of the cComments property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCComments(String value) {
         this.cComments = value;

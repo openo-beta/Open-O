@@ -25,43 +25,44 @@
 --%>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <div class="modal-body">
-	<div class="row">
-		<div class="col-xs-12">
-			 <h4>Configure Ticklers</h4>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Configure Ticklers</h4>
+        </div>
+    </div>
 
-<div class="row" style="margin-left:4px">
+    <div class="row" style="margin-left:4px">
 
-	<div class="col-md-12">
-		<div class="form-group">
-		  <label >Display overdue ticklers only:</label>
-		  <div class="controls">
-		    <label class="radio inline" for="radios-per-0">
-		      <input ng-model="prefs.expiredTicklersOnly" name="radios-per-0" id="radios-per-0" ng-value="true" type="radio">
-		      Enable
-		    </label>
-		    <label class="radio inline" for="radios-1">
-		      <input ng-model="prefs.expiredTicklersOnly" name="radios-per-0" id="radios-per-1" ng-value="false" type="radio">
-		      Disable
-		    </label>  
-		  </div>
-		  
-		</div>
-				
-		
-	</div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Display overdue ticklers only:</label>
+                <div class="controls">
+                    <label class="radio inline" for="radios-per-0">
+                        <input ng-model="prefs.expiredTicklersOnly" name="radios-per-0" id="radios-per-0"
+                               ng-value="true" type="radio">
+                        Enable
+                    </label>
+                    <label class="radio inline" for="radios-1">
+                        <input ng-model="prefs.expiredTicklersOnly" name="radios-per-0" id="radios-per-1"
+                               ng-value="false" type="radio">
+                        Disable
+                    </label>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
 </div>
-	
-	
-</div>
-  
 
-  
+
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" ng-click="save()">Save Changes</button>
-	<button class="btn btn-default" ng-click="close()"><bean:message key="global.close" bundle="ui"/></button>
+    <button class="btn btn-primary" ng-click="save()">Save Changes</button>
+    <button class="btn btn-default" ng-click="close()"><bean:message key="global.close" bundle="ui"/></button>
 </div>
 
 

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -53,40 +53,40 @@ import oscar.oscarLab.ca.all.upload.MessageUploader;
  */
 public class PATHL7Handler implements MessageHandler {
 
-	Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-	public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
-		Document doc = null;
-		try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			doc = docBuilder.parse(new FileInputStream(fileName));
-		} catch (Exception e) {
-			logger.error("Could not parse PATHL7 message", e);
-		}
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
+        Document doc = null;
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            doc = docBuilder.parse(new FileInputStream(fileName));
+        } catch (Exception e) {
+            logger.error("Could not parse PATHL7 message", e);
+        }
 
-		if (doc != null) {
-			int i = 0;
-			try {
-				Node messageSpec = doc.getFirstChild();
-				NodeList messages = messageSpec.getChildNodes();
-				for (i = 0; i < messages.getLength(); i++) {
+        if (doc != null) {
+            int i = 0;
+            try {
+                Node messageSpec = doc.getFirstChild();
+                NodeList messages = messageSpec.getChildNodes();
+                for (i = 0; i < messages.getLength(); i++) {
 
-					String hl7Body = messages.item(i).getFirstChild().getTextContent();
-					MessageUploader.routeReport(loggedInInfo, serviceName, "PATHL7", hl7Body, fileId);
+                    String hl7Body = messages.item(i).getFirstChild().getTextContent();
+                    MessageUploader.routeReport(loggedInInfo, serviceName, "PATHL7", hl7Body, fileId);
 
-				}
-			} catch (Exception e) {
-				logger.error("Could not upload PATHL7 message", e);
-				MiscUtils.getLogger().error("Error in Lab #" + (i+1) + " in batch file " + fileName, e);
-				MessageUploader.clean(fileId);
-				return null;
-			}
-			return ("success");
-		} else {
-			return null;
-		}
+                }
+            } catch (Exception e) {
+                logger.error("Could not upload PATHL7 message", e);
+                MiscUtils.getLogger().error("Error in Lab #" + (i + 1) + " in batch file " + fileName, e);
+                MessageUploader.clean(fileId);
+                return null;
+            }
+            return ("success");
+        } else {
+            return null;
+        }
 
-	}
+    }
 
 }

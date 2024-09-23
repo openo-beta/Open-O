@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -57,34 +57,34 @@ import org.springframework.stereotype.Component;
 @Produces("application/xml")
 public class ConsentService extends AbstractServiceImpl {
 
-	@Autowired
-	ProviderDao providerDao;
-	
-	@Autowired
-	ProviderManager2 providerManager; 
-	
-	@Autowired
-	OscarLogManager oscarLogManager;
-	
-	@Autowired
-	DemographicManager demographicManager;
-	
-	@Autowired
-	PatientConsentManager patientConsentManager;
-	
-	
-	protected SecurityContext getSecurityContext() {
-		Message m = PhaseInterceptorChain.getCurrentMessage();
-    	org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
-    	return sc;
-	}
-	
-	protected OAuthContext getOAuthContext() {
-		Message m = PhaseInterceptorChain.getCurrentMessage();
-		OAuthContext sc = m.getContent(OAuthContext.class);
-    	return sc;
-	}
-	
+    @Autowired
+    ProviderDao providerDao;
+
+    @Autowired
+    ProviderManager2 providerManager;
+
+    @Autowired
+    OscarLogManager oscarLogManager;
+
+    @Autowired
+    DemographicManager demographicManager;
+
+    @Autowired
+    PatientConsentManager patientConsentManager;
+
+
+    protected SecurityContext getSecurityContext() {
+        Message m = PhaseInterceptorChain.getCurrentMessage();
+        org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
+        return sc;
+    }
+
+    protected OAuthContext getOAuthContext() {
+        Message m = PhaseInterceptorChain.getCurrentMessage();
+        OAuthContext sc = m.getContent(OAuthContext.class);
+        return sc;
+    }
+
     public ConsentService() {
     }
 
@@ -92,74 +92,72 @@ public class ConsentService extends AbstractServiceImpl {
     @Path("/consentTypes")
     @Produces("application/json")
     public AbstractSearchResponse<ConsentTypeTo1> getActiveConsentTypes() {
-    	
-    		List<ConsentType> consents =     patientConsentManager.getActiveConsentTypes();
-    		List<ConsentTypeTo1> consentTypes = new ArrayList<ConsentTypeTo1>();
-    		
-    		for(ConsentType consent: consents) {
-    			ConsentTypeTo1 consentTypeTo1 = new ConsentTypeTo1();
-    			consentTypeTo1.setActive(consent.isActive());
-    			consentTypeTo1.setDescription(consent.getDescription());
-    			consentTypeTo1.setId(consent.getId());
-    			consentTypeTo1.setName(consent.getName());
-    			consentTypeTo1.setProviderNo(consent.getProviderNo());
-    			consentTypeTo1.setRemoteEnabled(consent.isRemoteEnabled());
-    			consentTypeTo1.setType(consent.getType());
-    			consentTypes.add(consentTypeTo1);
-    		}
-    		
-    		AbstractSearchResponse<ConsentTypeTo1> response = new AbstractSearchResponse<ConsentTypeTo1>();
-    		response.setContent(consentTypes);
-  
-    	return response;
+
+        List<ConsentType> consents = patientConsentManager.getActiveConsentTypes();
+        List<ConsentTypeTo1> consentTypes = new ArrayList<ConsentTypeTo1>();
+
+        for (ConsentType consent : consents) {
+            ConsentTypeTo1 consentTypeTo1 = new ConsentTypeTo1();
+            consentTypeTo1.setActive(consent.isActive());
+            consentTypeTo1.setDescription(consent.getDescription());
+            consentTypeTo1.setId(consent.getId());
+            consentTypeTo1.setName(consent.getName());
+            consentTypeTo1.setProviderNo(consent.getProviderNo());
+            consentTypeTo1.setRemoteEnabled(consent.isRemoteEnabled());
+            consentTypeTo1.setType(consent.getType());
+            consentTypes.add(consentTypeTo1);
+        }
+
+        AbstractSearchResponse<ConsentTypeTo1> response = new AbstractSearchResponse<ConsentTypeTo1>();
+        response.setContent(consentTypes);
+
+        return response;
     }
-    
+
     @GET
     @Path("/consentType/{id}")
     @Produces("application/json")
     public ConsentTypeTo1 getConsentType(@PathParam("id") Integer id) {
-    	
-    		ConsentType consent =     patientConsentManager.getConsentTypeByConsentTypeId(id);
-    		
-    		
-    			ConsentTypeTo1 consentTypeTo1 = new ConsentTypeTo1();
-    			consentTypeTo1.setActive(consent.isActive());
-    			consentTypeTo1.setDescription(consent.getDescription());
-    			consentTypeTo1.setId(consent.getId());
-    			consentTypeTo1.setName(consent.getName());
-    			consentTypeTo1.setProviderNo(consent.getProviderNo());
-    			consentTypeTo1.setRemoteEnabled(consent.isRemoteEnabled());
-    			consentTypeTo1.setType(consent.getType());
-    			
-    		
-    		
-    			return consentTypeTo1;
+
+        ConsentType consent = patientConsentManager.getConsentTypeByConsentTypeId(id);
+
+
+        ConsentTypeTo1 consentTypeTo1 = new ConsentTypeTo1();
+        consentTypeTo1.setActive(consent.isActive());
+        consentTypeTo1.setDescription(consent.getDescription());
+        consentTypeTo1.setId(consent.getId());
+        consentTypeTo1.setName(consent.getName());
+        consentTypeTo1.setProviderNo(consent.getProviderNo());
+        consentTypeTo1.setRemoteEnabled(consent.isRemoteEnabled());
+        consentTypeTo1.setType(consent.getType());
+
+
+        return consentTypeTo1;
     }
 
-    
-    	@POST
-	@Path("/consentType")
-	@Produces("application/json")
-	@Consumes("application/json")
-	public GenericRESTResponse addConsentType(ConsentTypeTo1 consentType){
-		GenericRESTResponse response = new GenericRESTResponse();
-		
-		
-		ConsentType consentTypeToAdd = new ConsentType();
-		
-		consentTypeToAdd.setActive(true);
-		consentTypeToAdd.setDescription(consentType.getDescription());
-		consentTypeToAdd.setName(consentType.getName());
-		consentTypeToAdd.setProviderNo(consentType.getProviderNo());
-		consentTypeToAdd.setRemoteEnabled(consentType.isRemoteEnabled());
-		consentTypeToAdd.setType(consentType.getType());
-		
-		patientConsentManager.addConsentType(getLoggedInInfo(), consentTypeToAdd);
-		
-		response.setSuccess(true);
-		return response;
-	}
-    	
-    	
-    	
+
+    @POST
+    @Path("/consentType")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public GenericRESTResponse addConsentType(ConsentTypeTo1 consentType) {
+        GenericRESTResponse response = new GenericRESTResponse();
+
+
+        ConsentType consentTypeToAdd = new ConsentType();
+
+        consentTypeToAdd.setActive(true);
+        consentTypeToAdd.setDescription(consentType.getDescription());
+        consentTypeToAdd.setName(consentType.getName());
+        consentTypeToAdd.setProviderNo(consentType.getProviderNo());
+        consentTypeToAdd.setRemoteEnabled(consentType.isRemoteEnabled());
+        consentTypeToAdd.setType(consentType.getType());
+
+        patientConsentManager.addConsentType(getLoggedInInfo(), consentTypeToAdd);
+
+        response.setSuccess(true);
+        return response;
+    }
+
+
 }

@@ -22,22 +22,22 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 
 <%
     Integer latestFrmId = (Integer) session.getAttribute("latestFrmId");
     session.removeAttribute("latestFrmId");
 %>
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<script language=javascript>
-          self.close();
-		  self.opener.location = "EditIntake.jsp?id=1&pub=<c:out value="${sessionScope.provider.formattedName}" />";
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <script language=javascript>
+            self.close();
+            self.opener.location = "EditIntake.jsp?id=1&pub=<c:out value="${sessionScope.provider.formattedName}" />";
         </script>
-</head>
-<body>
-<a href="javascript:window.close();"><bean:message
-	key="oscarEncounter.close.btnHere" /></a>
-</body>
+    </head>
+    <body>
+    <a href="javascript:window.close();"><bean:message
+            key="oscarEncounter.close.btnHere"/></a>
+    </body>
 </html:html>

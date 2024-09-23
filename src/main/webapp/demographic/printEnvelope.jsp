@@ -23,11 +23,11 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO"%>
-<%@ page import="org.oscarehr.common.model.UserProperty"%>
-<%@ page import="org.oscarehr.util.SpringUtils"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
+<%@ page import="org.oscarehr.common.model.UserProperty" %>
+<%@ page import="org.oscarehr.util.SpringUtils" %>
 <%
     String curUser_no = (String) session.getAttribute("user");
     UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
@@ -47,25 +47,29 @@
 %>
 <html:html lang="en">
     <head>
-        <title><bean:message key="report.printLabel.title" /></title>
+        <title><bean:message key="report.printLabel.title"/></title>
     </head>
     <body>
-        <% if (!defaultPrinterName.isEmpty()) { 
-            if( silentPrint == true) {%>
-                <bean:message key="report.printLabel.SilentlyPrintToDefaultPrinter"/>
-            <%} else {%> 
-                <bean:message key="report.printLabel.DefaultPrinter"/> 
-            <%}%>
-            <%=defaultPrinterName%>
-        <%}%>
-        <br>
-        
-        
-        <object id="pdf" type="application/pdf"  data="<%= request.getContextPath() %>/report/GenerateEnvelopes.do?demos=<%=request.getParameter("demos")%>" height="80%" width="100%" standby="Loading pdf...">
-        
-        Sorry the pdf failed to load...<a href="../report/GenerateEnvelopes.do?demos=<%=request.getParameter("demos")%>">click here to download the PDF</a>.
-        
-        </object>
+    <% if (!defaultPrinterName.isEmpty()) {
+        if (silentPrint == true) {%>
+    <bean:message key="report.printLabel.SilentlyPrintToDefaultPrinter"/>
+    <%} else {%>
+    <bean:message key="report.printLabel.DefaultPrinter"/>
+    <%}%>
+    <%=defaultPrinterName%>
+    <%}%>
+    <br>
+
+
+    <object id="pdf" type="application/pdf"
+            data="<%= request.getContextPath() %>/report/GenerateEnvelopes.do?demos=<%=request.getParameter("demos")%>"
+            height="80%" width="100%" standby="Loading pdf...">
+
+        Sorry the pdf failed to load...<a
+            href="../report/GenerateEnvelopes.do?demos=<%=request.getParameter("demos")%>">click here to download the
+        PDF</a>.
+
+    </object>
     </body>
 </html:html>
 

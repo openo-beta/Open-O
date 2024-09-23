@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,127 +29,127 @@ import java.util.Date;
 
 public class EFormTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private Integer id;
-	
-	private String formName;
+    private static final long serialVersionUID = 1L;
 
-	private String fileName;
+    private Integer id;
 
-	private String subject;
+    private String formName;
 
-	private boolean current;
+    private String fileName;
 
-	private Date formDate = new Date();
+    private String subject;
 
-	private Date formTime = formDate;
+    private boolean current;
 
-	private String creator;
+    private Date formDate = new Date();
 
-	private String formHtml;
+    private Date formTime = formDate;
 
-	private boolean showLatestFormOnly;
+    private String creator;
 
-	private boolean patientIndependent;
+    private String formHtml;
 
-	private String roleType;
+    private boolean showLatestFormOnly;
 
-	public Integer getId() {
-		return id;
-	}
+    private boolean patientIndependent;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String roleType;
 
-	public String getFormName() {
-		return formName;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setFormName(String formName) {
-		this.formName = formName;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public String getFormName() {
+        return formName;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setFormName(String formName) {
+        this.formName = formName;
+    }
 
-	public String getSubject() {
-		return subject;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public boolean isCurrent() {
-		return current;
-	}
+    public String getSubject() {
+        return subject;
+    }
 
-	public void setCurrent(boolean current) {
-		this.current = current;
-	}
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-	public Date getFormDate() {
-		return formDate;
-	}
+    public boolean isCurrent() {
+        return current;
+    }
 
-	public void setFormDate(Date formDate) {
-		this.formDate = formDate;
-	}
+    public void setCurrent(boolean current) {
+        this.current = current;
+    }
 
-	public Date getFormTime() {
-		return formTime;
-	}
+    public Date getFormDate() {
+        return formDate;
+    }
 
-	public void setFormTime(Date formTime) {
-		this.formTime = formTime;
-	}
+    public void setFormDate(Date formDate) {
+        this.formDate = formDate;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public Date getFormTime() {
+        return formTime;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public void setFormTime(Date formTime) {
+        this.formTime = formTime;
+    }
 
-	public String getFormHtml() {
-		return formHtml;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public void setFormHtml(String formHtml) {
-		this.formHtml = formHtml;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	public boolean isShowLatestFormOnly() {
-		return showLatestFormOnly;
-	}
+    public String getFormHtml() {
+        return formHtml;
+    }
 
-	public void setShowLatestFormOnly(boolean showLatestFormOnly) {
-		this.showLatestFormOnly = showLatestFormOnly;
-	}
+    public void setFormHtml(String formHtml) {
+        this.formHtml = formHtml;
+    }
 
-	public boolean isPatientIndependent() {
-		return patientIndependent;
-	}
+    public boolean isShowLatestFormOnly() {
+        return showLatestFormOnly;
+    }
 
-	public void setPatientIndependent(boolean patientIndependent) {
-		this.patientIndependent = patientIndependent;
-	}
+    public void setShowLatestFormOnly(boolean showLatestFormOnly) {
+        this.showLatestFormOnly = showLatestFormOnly;
+    }
 
-	public String getRoleType() {
-		return roleType;
-	}
+    public boolean isPatientIndependent() {
+        return patientIndependent;
+    }
 
-	public void setRoleType(String roleType) {
-		this.roleType = roleType;
-	}
+    public void setPatientIndependent(boolean patientIndependent) {
+        this.patientIndependent = patientIndependent;
+    }
 
-	
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
+    }
+
+
 }

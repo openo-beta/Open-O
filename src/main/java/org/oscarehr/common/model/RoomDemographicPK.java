@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,57 +32,56 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class RoomDemographicPK implements Serializable {
 
-	@Column(name="demographic_no")
+    @Column(name = "demographic_no")
     private Integer demographicNo;
-	
-	@Column(name="room_id")
-	private Integer roomId;
 
-	public RoomDemographicPK() {
-		//required by JPA
-	}
-   
-    public RoomDemographicPK(Integer demographicNo, Integer roomId) {
-	   	this.demographicNo = demographicNo;
-	   	this.roomId = roomId;   
+    @Column(name = "room_id")
+    private Integer roomId;
+
+    public RoomDemographicPK() {
+        //required by JPA
     }
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    public RoomDemographicPK(Integer demographicNo, Integer roomId) {
+        this.demographicNo = demographicNo;
+        this.roomId = roomId;
+    }
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
-	
-	public Integer getRoomId() {
-		return roomId;
-	}
-	
-	public void setRoomId(Integer roomId) {
-		this.roomId = roomId;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	@Override
-	public String toString() {
-		return ("demographicNo=" + demographicNo + ", roomId=" + roomId);
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	@Override
-	public int hashCode() {
-		return (toString().hashCode());
-	}
+    public Integer getRoomId() {
+        return roomId;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		try {
-			RoomDemographicPK o1 = (RoomDemographicPK) o;
-			return ((demographicNo == o1.getDemographicNo()) && (roomId == o1.getRoomId()));
-		} catch (RuntimeException e) {
-			return (false);
-		}
-	}
-	
-	
-   
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
+    @Override
+    public String toString() {
+        return ("demographicNo=" + demographicNo + ", roomId=" + roomId);
+    }
+
+    @Override
+    public int hashCode() {
+        return (toString().hashCode());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        try {
+            RoomDemographicPK o1 = (RoomDemographicPK) o;
+            return ((demographicNo == o1.getDemographicNo()) && (roomId == o1.getRoomId()));
+        } catch (RuntimeException e) {
+            return (false);
+        }
+    }
+
+
 }

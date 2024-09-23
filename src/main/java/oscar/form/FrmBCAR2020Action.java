@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -79,21 +79,22 @@ public class FrmBCAR2020Action extends DispatchAction {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private final Logger logger = MiscUtils.getLogger();
     private final String RECORD_NAME = "BCAR2020";
-    private SimpleDateFormat formDateFormat = new SimpleDateFormat( "yyyy/MM/dd");
+    private SimpleDateFormat formDateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
-    public FrmBCAR2020Action() { }
+    public FrmBCAR2020Action() {
+    }
 
     public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         return mapping.findForward("pg1");
     }
 
-    public ActionForward saveAndExit (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        save (mapping, form, request, response);
+    public ActionForward saveAndExit(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        save(mapping, form, request, response);
         return mapping.findForward("exit");
     }
-    
+
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        FrmBCAR2020Record bcar2020Record = (FrmBCAR2020Record)(new FrmRecordFactory()).factory(RECORD_NAME);
+        FrmBCAR2020Record bcar2020Record = (FrmBCAR2020Record) (new FrmRecordFactory()).factory(RECORD_NAME);
 
         int formId = StringUtils.isNotEmpty(request.getParameter("formId")) ? Integer.parseInt(request.getParameter("formId")) : 0;
         int demographicNo = StringUtils.isNotEmpty(request.getParameter("demographicNo")) ? Integer.parseInt(request.getParameter("demographicNo")) : 0;
@@ -105,19 +106,19 @@ public class FrmBCAR2020Action extends DispatchAction {
         List<FormBCAR2020Text> currentTextRecords = bcar2020TextDao.findFields(formId);
         List<FormBCAR2020Data> addRecords = new ArrayList<>();
         List<FormBCAR2020Text> addTextRecords = new ArrayList<>();
-        
+
         Map<String, String> currentValues = getMappedRecords(currentRecords);
         currentValues.putAll(getMappedTextRecords(currentTextRecords));
 
-		List<FormBCAR2020Data> persistRecords = new ArrayList<>();
+        List<FormBCAR2020Data> persistRecords = new ArrayList<>();
         List<FormBCAR2020Text> persistTextRecords = new ArrayList<>();
         Set<String> keys = request.getParameterMap().keySet();
-        
+
         FormBCAR2020 formBCAR2020 = new FormBCAR2020();
         formBCAR2020.setDemographicNo(demographicNo);
         formBCAR2020.setProviderNo(providerNo);
         formBCAR2020.setFormCreated(new Date());
-        
+
         bcar2020Dao.persist(formBCAR2020);
         formId = formBCAR2020.getId();
 
@@ -141,7 +142,7 @@ public class FrmBCAR2020Action extends DispatchAction {
                 String value = StringUtils.trimToNull(request.getParameter(key));
                 // If the field is a global field (exists on all pages), set the page number to 0
                 Integer setPage = bcar2020Record.isGlobalField(key) ? 0 : page;
-                
+
                 if (currentValues.get(setPage + "_" + key) != null) {
                     FormBCAR2020Text record = getTextRecordByKey(addTextRecords, key);
 
@@ -175,7 +176,7 @@ public class FrmBCAR2020Action extends DispatchAction {
 
                 } else if (currentValues.get(setPage + "_" + key) == null && value != null) {
                     value = ((key.startsWith("c_") && value.equals("checked")) || value.equals("on")) ? "X" : value;
-                    
+
                     addRecords.add(new FormBCAR2020Data(formId, providerNo, setPage, key, value));
                 }
             }
@@ -184,7 +185,7 @@ public class FrmBCAR2020Action extends DispatchAction {
         for (FormBCAR2020Data rec : addRecords) {
             persistRecords.add(rec);
         }
-        
+
         bcar2020DataDao.batchPersist(persistRecords, 50);
 
         for (FormBCAR2020Text rec : addTextRecords) {
@@ -193,9 +194,9 @@ public class FrmBCAR2020Action extends DispatchAction {
 
         bcar2020TextDao.batchPersist(persistTextRecords, 50);
 
-        return new ActionForward(mapping.findForward("pg"+forwardTo).getPath()+"?demographic_no=" + demographicNo + "&formId="+formId+"&provNo="+providerNo, true);
+        return new ActionForward(mapping.findForward("pg" + forwardTo).getPath() + "?demographic_no=" + demographicNo + "&formId=" + formId + "&provNo=" + providerNo, true);
     }
-    
+
     public ActionForward print(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         Integer demographicNo = Integer.parseInt(request.getParameter("demographicNo"));
         Integer formId = Integer.parseInt(request.getParameter("formId"));
@@ -221,8 +222,8 @@ public class FrmBCAR2020Action extends DispatchAction {
 
         return null;
     }
-    
-    public void printPdf (OutputStream os, LoggedInInfo loggedInInfo, Integer demographicNo, Integer formId, List<Integer> pagesToPrint)  {
+
+    public void printPdf(OutputStream os, LoggedInInfo loggedInInfo, Integer demographicNo, Integer formId, List<Integer> pagesToPrint) {
 
         // Creates a new print resource log item so we can track who has printed the perinatal form
         PrintResourceLog item = new PrintResourceLog();
@@ -241,7 +242,7 @@ public class FrmBCAR2020Action extends DispatchAction {
         ClassLoader cl = getClass().getClassLoader();
 
         try {
-            FrmBCAR2020Record bcar2020Record= (FrmBCAR2020Record)(new FrmRecordFactory()).factory(RECORD_NAME);
+            FrmBCAR2020Record bcar2020Record = (FrmBCAR2020Record) (new FrmRecordFactory()).factory(RECORD_NAME);
 
             try {
                 List<JasperPrint> pages = new ArrayList<>();
@@ -251,7 +252,7 @@ public class FrmBCAR2020Action extends DispatchAction {
 
                     Properties recordData = bcar2020Record.getFormRecord(loggedInInfo, demographicNo, formId, pageNumber);
                     recordData.setProperty("background_image", cl.getResource(pageImage).toString());
-                    recordData.setProperty("s_languagePreferred", LanguageUtil.getLanguage(recordData.getProperty("s_languagePreferred","")));
+                    recordData.setProperty("s_languagePreferred", LanguageUtil.getLanguage(recordData.getProperty("s_languagePreferred", "")));
 
                     JasperReport report = JasperCompileManager.compileReport(cl.getResource(reportUri).toURI().getPath());
                     JasperPrint jasperPrint = JasperFillManager.fillReport(report, (Map) recordData, new JREmptyDataSource());
@@ -275,7 +276,7 @@ public class FrmBCAR2020Action extends DispatchAction {
             logger.error("Could not retrieve record for BCAR2020 form", e);
         }
     }
-        
+
     private FormBCAR2020Data getRecordByKey(List<FormBCAR2020Data> records, String key) {
         FormBCAR2020Data record = null;
 
@@ -287,7 +288,7 @@ public class FrmBCAR2020Action extends DispatchAction {
 
         return record;
     }
-    
+
     private Map<String, String> getMappedRecords(List<FormBCAR2020Data> records) {
         Map<String, String> recordMap = new HashMap<String, String>();
 

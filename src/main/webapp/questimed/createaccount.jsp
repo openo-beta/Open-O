@@ -24,106 +24,108 @@
 
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao"%>
-<%@page import="org.oscarehr.common.model.Demographic"%>
+<%@page import="org.oscarehr.common.dao.DemographicDao" %>
+<%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
 <%@page import="java.util.Locale" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_demographic" rights="r" reverse="<%=true%>">
-    <%authed=false; %>
+    <%authed = false; %>
     <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_demographic");%>
 </security:oscarSec>
 <%
-        if(!authed) {
-                return;
-        }
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ page import="java.util.*"%>
+<%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.ws.rest.util.QuestimedUtil" %>
 
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/library/bootstrap/3.0.0/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+      href="<%=request.getContextPath()%>/library/bootstrap/3.0.0/css/bootstrap.min.css"/>
 
 <%
-        Locale locale = request.getLocale();
-        LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-        String demographicNo= request.getParameter("demographic_no");
-         DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
-        Demographic demo = demographicDao.getDemographic(demographicNo);
-        String errorMsg="";
-        String email=request.getParameter("email");
-        if(email!=null) {
-            errorMsg=QuestimedUtil.createAccount(loggedInInfo,demographicNo,email);
-            if(errorMsg==null) {
-                errorMsg = LocaleUtils.getMessage(locale, "questimed.connectionerror");
-            }
-            else if(errorMsg.isEmpty())
-            {
-                response.sendRedirect(request.getContextPath() + "/questimed/launch.jsp?demographic_no="+demographicNo);
-            }
-        } else {
-            email=demo.getEmail();
+    Locale locale = request.getLocale();
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    String demographicNo = request.getParameter("demographic_no");
+    DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
+    Demographic demo = demographicDao.getDemographic(demographicNo);
+    String errorMsg = "";
+    String email = request.getParameter("email");
+    if (email != null) {
+        errorMsg = QuestimedUtil.createAccount(loggedInInfo, demographicNo, email);
+        if (errorMsg == null) {
+            errorMsg = LocaleUtils.getMessage(locale, "questimed.connectionerror");
+        } else if (errorMsg.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/questimed/launch.jsp?demographic_no=" + demographicNo);
         }
+    } else {
+        email = demo.getEmail();
+    }
 %>
 <html:html lang="en">
     <head>
         <title>Questimed</title>
     </head>
     <body>
-        <form method="post">
-            <br>
-            <h4><bean:message key="questimed.patient.registration" /></h4>
-            <br>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-12 col-md-3 control-label"><bean:message key="questimed.patient" /></label>
-                        <div class="col-sm-12 col-md-9" id='patientInfo'><%=demo.getHin()%><br>
-                            <%=demo.getFirstName()%> <%=demo.getLastName()%><br>
-                            <%=demo.getBirthDayAsString()%> <%=demo.getSex()%><br>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-12 col-md-3  control-label"><bean:message key="questimed.email" /></label>
-                        <div class="col-sm-12 col-md-9 "><input type='text' class="form-control" name=email autofocus id='email' value="<%=email%>"></div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-12 col-md-3 control-label"></label>
-                        <div class="col-sm-12 col-md-9">
-                            <bean:message key="questimed.Authorization" /><br><br>
-                            <input type='submit' class="btn btn-primary" id='createAccountBtn'  value='<bean:message key="questimed.createAccount" />'>
-                        </div>
+    <form method="post">
+        <br>
+        <h4><bean:message key="questimed.patient.registration"/></h4>
+        <br>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-12 col-md-3 control-label"><bean:message key="questimed.patient"/></label>
+                    <div class="col-sm-12 col-md-9" id='patientInfo'><%=demo.getHin()%><br>
+                        <%=demo.getFirstName()%> <%=demo.getLastName()%><br>
+                        <%=demo.getBirthDayAsString()%> <%=demo.getSex()%><br>
                     </div>
                 </div>
             </div>
             <br>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <br>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-12 col-md-3 control-label"></label>
-                        <div class="col-sm-12 col-md-9" id="msg">
-                            <p class='text-danger'><%=errorMsg%></p>
-                        </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-12 col-md-3  control-label"><bean:message key="questimed.email"/></label>
+                    <div class="col-sm-12 col-md-9 "><input type='text' class="form-control" name=email autofocus
+                                                            id='email' value="<%=email%>"></div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-12 col-md-3 control-label"></label>
+                    <div class="col-sm-12 col-md-9">
+                        <bean:message key="questimed.Authorization"/><br><br>
+                        <input type='submit' class="btn btn-primary" id='createAccountBtn'
+                               value='<bean:message key="questimed.createAccount" />'>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
+        <br>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <br>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-12 col-md-3 control-label"></label>
+                    <div class="col-sm-12 col-md-9" id="msg">
+                        <p class='text-danger'><%=errorMsg%>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     </body>
 </html:html>

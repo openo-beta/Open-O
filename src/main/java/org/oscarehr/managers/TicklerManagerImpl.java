@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -202,7 +202,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
     @Override
     public List<Tickler> getTicklers(LoggedInInfo loggedInInfo, CustomFilter filter, String providerNo,
-            String programId) {
+                                     String programId) {
         checkPrivilege(loggedInInfo, PRIVILEGE_READ);
 
         List<Tickler> results = ticklerDao.getTicklers(filter);
@@ -296,7 +296,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
         String programId = "";
         // iterate through the tickler list
-        for (Iterator<Tickler> iter = ticklers.iterator(); iter.hasNext();) {
+        for (Iterator<Tickler> iter = ticklers.iterator(); iter.hasNext(); ) {
             Tickler t = iter.next();
             boolean add = false;
             List<ProgramProvider> ppList = new ArrayList<ProgramProvider>();
@@ -557,7 +557,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
     @Override
     public void resolveTicklersBySubstring(LoggedInInfo loggedInInfo, String providerNo, List<String> demographicIds,
-            String remString) {
+                                           String remString) {
         checkPrivilege(loggedInInfo, PRIVILEGE_UPDATE);
 
         List<Integer> tmp = new ArrayList<Integer>();
@@ -621,7 +621,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
     @Override
     public void addTickler(String demographic_no, String message, Tickler.STATUS status, String service_date,
-            String creator, Tickler.PRIORITY priority, String task_assigned_to) {
+                           String creator, Tickler.PRIORITY priority, String task_assigned_to) {
 
         String date = service_date;
         if (date != null && !date.equals("now()")) { // Just a hack for now.
@@ -666,7 +666,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
     @Override
     public void resolveTicklers(LoggedInInfo loggedInInfo, String providerNo, List<String> cdmPatientNos,
-            String remString) {
+                                String remString) {
         resolveTicklersBySubstring(loggedInInfo, providerNo, cdmPatientNos, remString);
     }
 
@@ -700,7 +700,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
     @Override
     public List<Tickler> search_tickler_bydemo(LoggedInInfo loggedInInfo, Integer demographicNo, String status,
-            Date beginDate, Date endDate) {
+                                               Date beginDate, Date endDate) {
         checkPrivilege(loggedInInfo, PRIVILEGE_READ);
 
         List<Tickler> result = ticklerDao.search_tickler_bydemo(demographicNo, status, beginDate, endDate);

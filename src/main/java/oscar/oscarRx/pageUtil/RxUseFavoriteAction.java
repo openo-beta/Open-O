@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -48,108 +48,106 @@ import oscar.oscarRx.util.RxUtil;
 
 
 public final class RxUseFavoriteAction extends DispatchAction {
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public ActionForward unspecified(ActionMapping mapping,
-    ActionForm form,
-    HttpServletRequest request,
-    HttpServletResponse response)
-    throws IOException, ServletException {
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response)
+            throws IOException, ServletException {
 
 
-    	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_rx", "r", null)) {
-			throw new RuntimeException("missing required security object (_rx)");
-		}
-    	
-    	
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_rx", "r", null)) {
+            throw new RuntimeException("missing required security object (_rx)");
+        }
+
+
         // Setup variables
         oscar.oscarRx.pageUtil.RxSessionBean bean =
-        (oscar.oscarRx.pageUtil.RxSessionBean)request.getSession().getAttribute("RxSessionBean");
-        if(bean==null){
+                (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+        if (bean == null) {
             response.sendRedirect("error.html");
             return null;
         }
 
         try {
-            int favoriteId = Integer.parseInt(((RxUseFavoriteForm)form).getFavoriteId());
+            int favoriteId = Integer.parseInt(((RxUseFavoriteForm) form).getFavoriteId());
             RxPrescriptionData rxData =
-            new RxPrescriptionData();
+                    new RxPrescriptionData();
 
             // get favorite
             RxPrescriptionData.Favorite fav =
-            rxData.getFavorite(favoriteId);
+                    rxData.getFavorite(favoriteId);
 
             // create Prescription
             RxPrescriptionData.Prescription rx =
-            rxData.newPrescription(bean.getProviderNo(), bean.getDemographicNo(), fav);
+                    rxData.newPrescription(bean.getProviderNo(), bean.getDemographicNo(), fav);
 
             bean.addAttributeName(rx.getAtcCode() + "-" + String.valueOf(bean.getStashIndex()));
 
             bean.setStashIndex(bean.addStashItem(loggedInInfo, rx));
             request.setAttribute("BoxNoFillFirstLoad", "true");
-        }
-        catch (Exception e) {
-           MiscUtils.getLogger().error("Error", e);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
         }
 
         return (mapping.findForward("success"));
     }
 
     public ActionForward useFav2(ActionMapping mapping,
-    ActionForm form,
-    HttpServletRequest request,
-    HttpServletResponse response)
-    throws IOException {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+            throws IOException {
 
-    	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_rx", "r", null)) {
-			throw new RuntimeException("missing required security object (_rx)");
-		}
-    	
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_rx", "r", null)) {
+            throw new RuntimeException("missing required security object (_rx)");
+        }
+
         // Setup variables
         oscar.oscarRx.pageUtil.RxSessionBean bean =
-        (oscar.oscarRx.pageUtil.RxSessionBean)request.getSession().getAttribute("RxSessionBean");
-        if(bean==null){
+                (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+        if (bean == null) {
             response.sendRedirect("error.html");
             return null;
         }
 
         try {
             int favoriteId = Integer.parseInt(request.getParameter("favoriteId"));
-            String randomId=request.getParameter("randomId");
+            String randomId = request.getParameter("randomId");
 
 
             RxPrescriptionData rxData =
-            new RxPrescriptionData();
+                    new RxPrescriptionData();
 
             // get favorite
             RxPrescriptionData.Favorite fav =
-            rxData.getFavorite(favoriteId);
+                    rxData.getFavorite(favoriteId);
 
             // create Prescription
             RxPrescriptionData.Prescription rx =
-            rxData.newPrescription(bean.getProviderNo(), bean.getDemographicNo(), fav);
+                    rxData.newPrescription(bean.getProviderNo(), bean.getDemographicNo(), fav);
             rx.setRandomId(Long.parseLong(randomId));
 
-                String spec=RxUtil.trimSpecial(rx);
-                rx.setSpecial(spec);
+            String spec = RxUtil.trimSpecial(rx);
+            rx.setSpecial(spec);
 
             bean.addAttributeName(rx.getAtcCode() + "-" + String.valueOf(bean.getStashIndex()));
 
-            List<RxPrescriptionData.Prescription> listRxDrugs=new ArrayList();
-            if(RxUtil.isRxUniqueInStash(bean, rx)){
+            List<RxPrescriptionData.Prescription> listRxDrugs = new ArrayList();
+            if (RxUtil.isRxUniqueInStash(bean, rx)) {
                 listRxDrugs.add(rx);
             }
-            int rxStashIndex=bean.addStashItem(loggedInInfo, rx);
+            int rxStashIndex = bean.addStashItem(loggedInInfo, rx);
             bean.setStashIndex(rxStashIndex);
 
 
-            request.setAttribute("listRxDrugs",listRxDrugs);
+            request.setAttribute("listRxDrugs", listRxDrugs);
             request.setAttribute("BoxNoFillFirstLoad", "true");
-        }
-        catch (Exception e) {
-           MiscUtils.getLogger().error("Error", e);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
         }
 
         RxUtil.printStashContent(bean);

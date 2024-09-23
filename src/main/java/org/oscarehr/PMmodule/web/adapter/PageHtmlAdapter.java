@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -28,42 +27,42 @@ import org.oscarehr.PMmodule.model.IntakeNode;
 
 public class PageHtmlAdapter extends AbstractHtmlAdapter {
 
-	public PageHtmlAdapter(int indent, IntakeNode node) {
-		super(indent, node);
-	}
+    public PageHtmlAdapter(int indent, IntakeNode node) {
+        super(indent, node);
+    }
 
-	/**
-	 * @see org.oscarehr.PMmodule.web.adapter.IntakeNodeHtmlAdapter#getPreBuilder()
-	 */
-	public StringBuilder getPreBuilder() {
-		StringBuilder preBuilder = super.getPreBuilder();
+    /**
+     * @see org.oscarehr.PMmodule.web.adapter.IntakeNodeHtmlAdapter#getPreBuilder()
+     */
+    public StringBuilder getPreBuilder() {
+        StringBuilder preBuilder = super.getPreBuilder();
 
-		indent(preBuilder).append("<div dojoType=\"ContentPane\" label=\"").append(getLabel()).append("\" class=\"intakePage\" question_id=\"" +  getQuestionId()  + "\">").append(EOL);
-		beginTag();
-		
-		if (!hasSections()) {
-			indent(preBuilder).append("<table class=\"intakeTable\">").append(EOL);
-			beginTag();
-		}
+        indent(preBuilder).append("<div dojoType=\"ContentPane\" label=\"").append(getLabel()).append("\" class=\"intakePage\" question_id=\"" + getQuestionId() + "\">").append(EOL);
+        beginTag();
 
-		return preBuilder;
-	}
+        if (!hasSections()) {
+            indent(preBuilder).append("<table class=\"intakeTable\">").append(EOL);
+            beginTag();
+        }
 
-	/**
-	 * @see org.oscarehr.PMmodule.web.adapter.IntakeNodeHtmlAdapter#getPostBuilder()
-	 */
-	public StringBuilder getPostBuilder() {
-		StringBuilder postBuilder = super.getPostBuilder();
+        return preBuilder;
+    }
 
-		if (!hasSections()) {
-			endTag();
-			indent(postBuilder).append("</table> <!-- End Question Table -->").append(EOL);
-		}
+    /**
+     * @see org.oscarehr.PMmodule.web.adapter.IntakeNodeHtmlAdapter#getPostBuilder()
+     */
+    public StringBuilder getPostBuilder() {
+        StringBuilder postBuilder = super.getPostBuilder();
 
-		endTag();
-		indent(postBuilder).append("</div> <!-- End Page -->").append(EOL);
+        if (!hasSections()) {
+            endTag();
+            indent(postBuilder).append("</table> <!-- End Question Table -->").append(EOL);
+        }
 
-		return postBuilder;
-	}
+        endTag();
+        indent(postBuilder).append("</div> <!-- End Page -->").append(EOL);
+
+        return postBuilder;
+    }
 
 }

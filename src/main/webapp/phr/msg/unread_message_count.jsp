@@ -23,32 +23,28 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="org.oscarehr.phr.util.MyOscarUtils"%>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo"%>
-<%@page import="org.oscarehr.myoscar.client.ws_manager.MessageManager"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
+<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
+<%@page import="org.oscarehr.myoscar.client.ws_manager.MessageManager" %>
 <%
-	MyOscarLoggedInInfo myOscarLoggedInInfo=MyOscarLoggedInInfo.getLoggedInInfo(session);
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+    MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-	if (myOscarLoggedInInfo!=null && myOscarLoggedInInfo.isLoggedIn())
-	{
-		try
-		{
-			int count=MessageManager.getUnreadActiveMessageCount(myOscarLoggedInInfo, myOscarLoggedInInfo.getLoggedInPersonId());
-			
-			if (count>0)
-			{
-				%>
-					<div style="color:white;vertical-align:top;font-size:smaller;background-color:red;border-radius:4px;padding-left:2px;padding-right:1px"><%=count%></div>
-				<%
-			}
-		}
-		catch (Exception e)
-		{
-			// we'll force a re-login if this ever fails for any reason what so ever.
-			MyOscarUtils.attemptMyOscarAutoLoginIfNotAlreadyLoggedInAsynchronously(loggedInInfo, true);
-		}
-	}
+    if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn()) {
+        try {
+            int count = MessageManager.getUnreadActiveMessageCount(myOscarLoggedInInfo, myOscarLoggedInInfo.getLoggedInPersonId());
+
+            if (count > 0) {
+%>
+<div style="color:white;vertical-align:top;font-size:smaller;background-color:red;border-radius:4px;padding-left:2px;padding-right:1px"><%=count%>
+</div>
+<%
+            }
+        } catch (Exception e) {
+            // we'll force a re-login if this ever fails for any reason what so ever.
+            MyOscarUtils.attemptMyOscarAutoLoginIfNotAlreadyLoggedInAsynchronously(loggedInInfo, true);
+        }
+    }
 %>
 

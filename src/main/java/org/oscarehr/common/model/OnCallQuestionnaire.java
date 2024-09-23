@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,97 +36,96 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="oncall_questionnaire")
+@Table(name = "oncall_questionnaire")
 public class OnCallQuestionnaire extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id = null;
 
-	private String providerNo;
-	
-	private String type;
-	
-	@Column(name="health_type")
-	private String healthType;
-	
-	@Column(name="nurse_involved")
-	private String nurseInvolved;
-	
-	@Column(name="course_of_action")
-	private String courseOfAction;
-	
-	@Column(name="physician_consultation_reqd")
-	private String physicialConsultationRequired;
-	
-	@Column(name="call_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date callTime;
+    private String providerNo;
 
-	public Integer getId() {
-		return id;
-	}
+    private String type;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "health_type")
+    private String healthType;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    @Column(name = "nurse_involved")
+    private String nurseInvolved;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    @Column(name = "course_of_action")
+    private String courseOfAction;
 
-	public String getType() {
-		return type;
-	}
+    @Column(name = "physician_consultation_reqd")
+    private String physicialConsultationRequired;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    @Column(name = "call_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date callTime;
 
-	public String getHealthType() {
-		return healthType;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setHealthType(String healthType) {
-		this.healthType = healthType;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getNurseInvolved() {
-		return nurseInvolved;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setNurseInvolved(String nurseInvolved) {
-		this.nurseInvolved = nurseInvolved;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public String getCourseOfAction() {
-		return courseOfAction;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setCourseOfAction(String courseOfAction) {
-		this.courseOfAction = courseOfAction;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getPhysicialConsultationRequired() {
-		return physicialConsultationRequired;
-	}
+    public String getHealthType() {
+        return healthType;
+    }
 
-	public void setPhysicialConsultationRequired(String physicialConsultationRequired) {
-		this.physicialConsultationRequired = physicialConsultationRequired;
-	}
+    public void setHealthType(String healthType) {
+        this.healthType = healthType;
+    }
 
-	public Date getCallTime() {
-		return callTime;
-	}
+    public String getNurseInvolved() {
+        return nurseInvolved;
+    }
 
-	public void setCallTime(Date callTime) {
-		this.callTime = callTime;
-	}
-	
-	
-	
+    public void setNurseInvolved(String nurseInvolved) {
+        this.nurseInvolved = nurseInvolved;
+    }
+
+    public String getCourseOfAction() {
+        return courseOfAction;
+    }
+
+    public void setCourseOfAction(String courseOfAction) {
+        this.courseOfAction = courseOfAction;
+    }
+
+    public String getPhysicialConsultationRequired() {
+        return physicialConsultationRequired;
+    }
+
+    public void setPhysicialConsultationRequired(String physicialConsultationRequired) {
+        this.physicialConsultationRequired = physicialConsultationRequired;
+    }
+
+    public Date getCallTime() {
+        return callTime;
+    }
+
+    public void setCallTime(Date callTime) {
+        this.callTime = callTime;
+    }
+
+
 }

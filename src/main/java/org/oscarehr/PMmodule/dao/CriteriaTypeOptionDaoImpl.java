@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -37,43 +37,43 @@ import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CriteriaTypeOptionDaoImpl extends AbstractDaoImpl<CriteriaTypeOption> implements CriteriaTypeOptionDao{
+public class CriteriaTypeOptionDaoImpl extends AbstractDaoImpl<CriteriaTypeOption> implements CriteriaTypeOptionDao {
 
-	public CriteriaTypeOptionDaoImpl() {
-		super(CriteriaTypeOption.class);
-	}
+    public CriteriaTypeOptionDaoImpl() {
+        super(CriteriaTypeOption.class);
+    }
 
-	public List<CriteriaTypeOption> findAll() {
-		Query query = entityManager.createQuery("select x from CriteriaTypeOption x");
-		
-		@SuppressWarnings("unchecked")
-	    List<CriteriaTypeOption> results = query.getResultList();
-		
-		return results;
-	}
-	
-	public List<CriteriaTypeOption> getCriteriaTypeOptionByTypeId(Integer typeId) {
-		Query query = entityManager.createQuery("select x from CriteriaTypeOption x where x.criteriaTypeId=?");
-		query.setParameter(0, typeId);
-		
-		@SuppressWarnings("unchecked")
-	    List<CriteriaTypeOption> results = query.getResultList();
-		
-		return results;
-	}
-	
-	public CriteriaTypeOption getByValue(String optionValue) {
-		Query query = entityManager.createQuery("select x from CriteriaTypeOption x where x.optionValue=?");
-		query.setParameter(0, optionValue);
-		
-		return this.getSingleResultOrNull(query);
-	}
-	
-	public CriteriaTypeOption getByValueAndTypeId(String optionValue, Integer typeId) {
-		Query query = entityManager.createQuery("select x from CriteriaTypeOption x where x.optionValue=? and x.criteriaTypeId=?");
-		query.setParameter(0, optionValue);
-		query.setParameter(1, typeId);
+    public List<CriteriaTypeOption> findAll() {
+        Query query = entityManager.createQuery("select x from CriteriaTypeOption x");
 
-		return this.getSingleResultOrNull(query);
-	}
+        @SuppressWarnings("unchecked")
+        List<CriteriaTypeOption> results = query.getResultList();
+
+        return results;
+    }
+
+    public List<CriteriaTypeOption> getCriteriaTypeOptionByTypeId(Integer typeId) {
+        Query query = entityManager.createQuery("select x from CriteriaTypeOption x where x.criteriaTypeId=?");
+        query.setParameter(0, typeId);
+
+        @SuppressWarnings("unchecked")
+        List<CriteriaTypeOption> results = query.getResultList();
+
+        return results;
+    }
+
+    public CriteriaTypeOption getByValue(String optionValue) {
+        Query query = entityManager.createQuery("select x from CriteriaTypeOption x where x.optionValue=?");
+        query.setParameter(0, optionValue);
+
+        return this.getSingleResultOrNull(query);
+    }
+
+    public CriteriaTypeOption getByValueAndTypeId(String optionValue, Integer typeId) {
+        Query query = entityManager.createQuery("select x from CriteriaTypeOption x where x.optionValue=? and x.criteriaTypeId=?");
+        query.setParameter(0, optionValue);
+        query.setParameter(1, typeId);
+
+        return this.getSingleResultOrNull(query);
+    }
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,93 +32,92 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.oscarehr.common.dao.DocumentDao.DocumentType;
 
 @XmlRootElement
-public class OtnEconsult implements Serializable  {
+public class OtnEconsult implements Serializable {
 
-	private static final DocumentType docType = DocumentType.ECONSULT; 
-	private static final char docTypeCode = 'E';
-	private final String defaultDocDescription = "OTN eConsult Consultation";
-	
-	private String contentType;
-	private Integer demographicNo;
-	private String fileName;
-	private byte[] contents;
-	private Date importDate;
-	private Integer consultId;
-	private String docDescription;
-	
-	/**
-	 * Default
-	 */
-	public OtnEconsult() {
-		// default
-	}
+    private static final DocumentType docType = DocumentType.ECONSULT;
+    private static final char docTypeCode = 'E';
+    private final String defaultDocDescription = "OTN eConsult Consultation";
 
-	public String getContentType() {
-		return contentType;
-	}
+    private String contentType;
+    private Integer demographicNo;
+    private String fileName;
+    private byte[] contents;
+    private Date importDate;
+    private Integer consultId;
+    private String docDescription;
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
+    /**
+     * Default
+     */
+    public OtnEconsult() {
+        // default
+    }
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    public String getContentType() {
+        return contentType;
+    }
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public byte[] getContents() {
-		return contents;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public void setContents(byte[] contents) {
-		this.contents = contents;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public Date getImportDate() {
-		return importDate;
-	}
+    public byte[] getContents() {
+        return contents;
+    }
 
-	public void setImportDate(Date importDate) {
-		this.importDate = importDate;
-	}
+    public void setContents(byte[] contents) {
+        this.contents = contents;
+    }
 
-	public Integer getConsultId() {
-		return consultId;
-	}
+    public Date getImportDate() {
+        return importDate;
+    }
 
-	public void setConsultId(Integer consultId) {
-		this.consultId = consultId;
-	}
+    public void setImportDate(Date importDate) {
+        this.importDate = importDate;
+    }
 
-	public static DocumentType getDoctype() {
-		return docType;
-	}
+    public Integer getConsultId() {
+        return consultId;
+    }
 
-	public static char getDoctypecode() {
-		return docTypeCode;
-	}
+    public void setConsultId(Integer consultId) {
+        this.consultId = consultId;
+    }
 
-	public String getDocDescription() {
-		if(this.docDescription == null || this.docDescription.isEmpty())
-		{
-			return defaultDocDescription;
-		}
-		return docDescription;
-	}
+    public static DocumentType getDoctype() {
+        return docType;
+    }
 
-	public void setDocDescription(String docDescription) {
-		this.docDescription = docDescription;
-	}
+    public static char getDoctypecode() {
+        return docTypeCode;
+    }
+
+    public String getDocDescription() {
+        if (this.docDescription == null || this.docDescription.isEmpty()) {
+            return defaultDocDescription;
+        }
+        return docDescription;
+    }
+
+    public void setDocDescription(String docDescription) {
+        this.docDescription = docDescription;
+    }
 
 }

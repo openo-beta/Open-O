@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,57 +50,50 @@ import oscar.log.LogAction;
  * We still want this interceptor here though as it's the only way I currently know of to make excludes for a global
  * security filter.
  */
-public class AuthenticationInWSS4JInterceptor extends WSS4JInInterceptor implements CallbackHandler
-{
-	private static final Logger logger = MiscUtils.getLogger();
+public class AuthenticationInWSS4JInterceptor extends WSS4JInInterceptor implements CallbackHandler {
+    private static final Logger logger = MiscUtils.getLogger();
 
-	public AuthenticationInWSS4JInterceptor()
-	{
-		HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
-		properties.put(WSHandlerConstants.PASSWORD_TYPE, WSS4JConstants.PW_TEXT);
-		properties.put(WSHandlerConstants.PW_CALLBACK_REF, this);
+    public AuthenticationInWSS4JInterceptor() {
+        HashMap<String, Object> properties = new HashMap<String, Object>();
+        properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+        properties.put(WSHandlerConstants.PASSWORD_TYPE, WSS4JConstants.PW_TEXT);
+        properties.put(WSHandlerConstants.PW_CALLBACK_REF, this);
 
-		setProperties(properties);
-	}
+        setProperties(properties);
+    }
 
-	@Override
-	public void handleMessage(SoapMessage message)
-	{
-		HttpServletRequest request = (HttpServletRequest)message.get(AbstractHTTPDestination.HTTP_REQUEST);
-		if (request==null) return; // it's an outgoing request
-		String ip = request.getRemoteAddr();
+    @Override
+    public void handleMessage(SoapMessage message) {
+        HttpServletRequest request = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
+        if (request == null) return; // it's an outgoing request
+        String ip = request.getRemoteAddr();
 
-		try
-		{
-			super.handleMessage(message);
+        try {
+            super.handleMessage(message);
 
-			// if it gets here that means it succeeded
-			LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromRequest(request);
-			
-			OscarLog oscarLog=new OscarLog();
-			oscarLog.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-			oscarLog.setAction("WS_LOGIN_SUCCESS");
-			oscarLog.setIp(ip);
-			LogAction.addLogSynchronous(oscarLog);
-		}
-		catch (SoapFault e)
-		{
-			logger.debug("exception thrown", e);
-			
-			// this means wrong user/password
-			OscarLog oscarLog=new OscarLog();
-			oscarLog.setAction("WS_LOGIN_FAILURE");
-			oscarLog.setIp(ip);
-			LogAction.addLogSynchronous(oscarLog);
+            // if it gets here that means it succeeded
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromRequest(request);
 
-			throw(e);
-		}
-	}
+            OscarLog oscarLog = new OscarLog();
+            oscarLog.setProviderNo(loggedInInfo.getLoggedInProviderNo());
+            oscarLog.setAction("WS_LOGIN_SUCCESS");
+            oscarLog.setIp(ip);
+            LogAction.addLogSynchronous(oscarLog);
+        } catch (SoapFault e) {
+            logger.debug("exception thrown", e);
 
-	@Override
-	public void handle(Callback[] callbacks)
-	{
-		// do nothing
-	}
+            // this means wrong user/password
+            OscarLog oscarLog = new OscarLog();
+            oscarLog.setAction("WS_LOGIN_FAILURE");
+            oscarLog.setIp(ip);
+            LogAction.addLogSynchronous(oscarLog);
+
+            throw (e);
+        }
+    }
+
+    @Override
+    public void handle(Callback[] callbacks) {
+        // do nothing
+    }
 }

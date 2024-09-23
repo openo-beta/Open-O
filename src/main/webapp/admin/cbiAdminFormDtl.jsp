@@ -23,134 +23,150 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_admin");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_admin");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="org.oscarehr.common.model.OcanStaffFormData"%>
-<%@page import="java.util.List"%>
-<%@page import="org.oscarehr.PMmodule.web.OcanForm"%>
-<%@page import="org.oscarehr.common.model.OcanStaffForm"%>
-<%@page import="oscar.util.CBIUtil"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.common.model.OcanStaffFormData" %>
+<%@page import="java.util.List" %>
+<%@page import="org.oscarehr.PMmodule.web.OcanForm" %>
+<%@page import="org.oscarehr.common.model.OcanStaffForm" %>
+<%@page import="oscar.util.CBIUtil" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
 
 <%!
-public String getFieldVal(int ocanStaffFormId, String key)
-{
-	String val = "";
-	
-	List<OcanStaffFormData> existingAnswers=OcanForm.getStaffAnswers(ocanStaffFormId, key, OcanForm.PRE_POPULATION_LEVEL_ALL);
+    public String getFieldVal(int ocanStaffFormId, String key) {
+        String val = "";
 
-	if(existingAnswers.size()>0) {
-		val = existingAnswers.get(0).getAnswer();
-	}
-	
-	return val;
-}
+        List<OcanStaffFormData> existingAnswers = OcanForm.getStaffAnswers(ocanStaffFormId, key, OcanForm.PRE_POPULATION_LEVEL_ALL);
+
+        if (existingAnswers.size() > 0) {
+            val = existingAnswers.get(0).getAnswer();
+        }
+
+        return val;
+    }
 %>
 
 <%
-CBIUtil cbiUtil = new CBIUtil();
-OcanStaffForm ocanStaffForm = null;
+    CBIUtil cbiUtil = new CBIUtil();
+    OcanStaffForm ocanStaffForm = null;
 
-LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-Integer currentFacilityId=loggedInInfo.getCurrentFacility().getId();
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    Integer currentFacilityId = loggedInInfo.getCurrentFacility().getId();
 
-String submissionId = "";
-int formId = -1;
-if(request.getParameter("submissionId")!=null && request.getParameter("submissionId").trim().length()>0)
-{
-	submissionId = request.getParameter("submissionId");
-	ocanStaffForm = cbiUtil.getCBIFormDataBySubmissionId(currentFacilityId, Integer.parseInt(submissionId));
-}
+    String submissionId = "";
+    int formId = -1;
+    if (request.getParameter("submissionId") != null && request.getParameter("submissionId").trim().length() > 0) {
+        submissionId = request.getParameter("submissionId");
+        ocanStaffForm = cbiUtil.getCBIFormDataBySubmissionId(currentFacilityId, Integer.parseInt(submissionId));
+    }
 
-if(ocanStaffForm!=null)
-{
-	formId = ocanStaffForm.getId();
-	%>
-	<table border="1" class="table_form_dtl" bordercolor="#C0CBDB">
-		<tr>
-			<td width="25%" class="label">Last Name at Birth: </td>
-			<td width="25%"><%=ocanStaffForm.getLastNameAtBirth() %></td>
-			<td width="25%" class="label">Current Last Name:</td>
-			<td width="25%"><%=ocanStaffForm.getLastName() %></td>
-		</tr>
-		<tr>
-			<td class="label">Middle Name: </td>
-			<td><%=getFieldVal(formId, "middle") %></td>
-			<td class="label">First Name: </td>
-			<td><%=ocanStaffForm.getFirstName() %></td>
-		</tr>
-		<tr>
-			<td class="label">Preferred Name: </td>
-			<td><%=getFieldVal(formId, "preferred") %></td>
-			<td class="label">Address Line 1: </td>
-			<td><%=ocanStaffForm.getAddressLine1()%></td>
-		</tr>
-		<tr>
-			<td class="label">Address Line 2: </td>
-			<td><%=ocanStaffForm.getAddressLine2()%></td>
-			<td class="label">City: </td>
-			<td><%=ocanStaffForm.getCity()%></td>
-		</tr>
-		<tr>
-			<td class="label">Province: </td>
-			<td><%=ocanStaffForm.getProvince()%></td>
-			<td class="label">Postal Code (e.g. M4H 2T1): </td>
-			<td><%=ocanStaffForm.getPostalCode()%></td>
-		</tr>
-		<tr>
-			<td class="label">Phone Number: </td>
-			<td><%=ocanStaffForm.getPhoneNumber()%></td>
-			<td class="label">Ext: </td>
-			<td><%=getFieldVal(formId, "extension") %></td>
-		</tr>
-		<tr>
-			<td class="label">Email address: </td>
-			<td><%=ocanStaffForm.getEmail()%></td>
-			<td class="label">Date of Birth (YYYY-MM-DD): </td>
-			<td><%=getFieldVal(formId, "date_of_birth") %></td>
-		</tr>
-		<tr>
-			<td class="label">Estimated Age: </td>
-			<td><%=ocanStaffForm.getEstimatedAge()%></td>
-			<td class="label">Health Card # and Version Code: </td>
-			<td><%=ocanStaffForm.getHcNumber()%>&nbsp;&nbsp;<%=ocanStaffForm.getHcVersion()%></td>
-		</tr>
-		<tr>
-			<td class="label">Issuing Territory: </td>
-			<td><%=getFieldVal(formId, "issuingTerritory") %></td>
-			<td class="label">Service Recipient Location: </td>
-			<td><%=getFieldVal(formId, "service_recipient_location") %></td>
-		</tr>
-		<tr>
-			<td class="label">LHIN Consumer Resides in: </td>
-			<td><%=getFieldVal(formId, "service_recipient_lhin") %></td>
-			<td class="label">Gender: </td>
-			<td><%=getFieldVal(formId, "gender") %></td>
-		</tr>
-		<tr>
-			<td class="label">Marital Status: </td>
-			<td><%=getFieldVal(formId, "marital_status") %></td>
-		</tr>
-	</table>
-	<%
-}
-else
-{
-	%>
-	<p><b>Form Details Not Found</b></p>
-	<%
-}
+    if (ocanStaffForm != null) {
+        formId = ocanStaffForm.getId();
+%>
+<table border="1" class="table_form_dtl" bordercolor="#C0CBDB">
+    <tr>
+        <td width="25%" class="label">Last Name at Birth:</td>
+        <td width="25%"><%=ocanStaffForm.getLastNameAtBirth() %>
+        </td>
+        <td width="25%" class="label">Current Last Name:</td>
+        <td width="25%"><%=ocanStaffForm.getLastName() %>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Middle Name:</td>
+        <td><%=getFieldVal(formId, "middle") %>
+        </td>
+        <td class="label">First Name:</td>
+        <td><%=ocanStaffForm.getFirstName() %>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Preferred Name:</td>
+        <td><%=getFieldVal(formId, "preferred") %>
+        </td>
+        <td class="label">Address Line 1:</td>
+        <td><%=ocanStaffForm.getAddressLine1()%>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Address Line 2:</td>
+        <td><%=ocanStaffForm.getAddressLine2()%>
+        </td>
+        <td class="label">City:</td>
+        <td><%=ocanStaffForm.getCity()%>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Province:</td>
+        <td><%=ocanStaffForm.getProvince()%>
+        </td>
+        <td class="label">Postal Code (e.g. M4H 2T1):</td>
+        <td><%=ocanStaffForm.getPostalCode()%>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Phone Number:</td>
+        <td><%=ocanStaffForm.getPhoneNumber()%>
+        </td>
+        <td class="label">Ext:</td>
+        <td><%=getFieldVal(formId, "extension") %>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Email address:</td>
+        <td><%=ocanStaffForm.getEmail()%>
+        </td>
+        <td class="label">Date of Birth (YYYY-MM-DD):</td>
+        <td><%=getFieldVal(formId, "date_of_birth") %>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Estimated Age:</td>
+        <td><%=ocanStaffForm.getEstimatedAge()%>
+        </td>
+        <td class="label">Health Card # and Version Code:</td>
+        <td><%=ocanStaffForm.getHcNumber()%>&nbsp;&nbsp;<%=ocanStaffForm.getHcVersion()%>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Issuing Territory:</td>
+        <td><%=getFieldVal(formId, "issuingTerritory") %>
+        </td>
+        <td class="label">Service Recipient Location:</td>
+        <td><%=getFieldVal(formId, "service_recipient_location") %>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">LHIN Consumer Resides in:</td>
+        <td><%=getFieldVal(formId, "service_recipient_lhin") %>
+        </td>
+        <td class="label">Gender:</td>
+        <td><%=getFieldVal(formId, "gender") %>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Marital Status:</td>
+        <td><%=getFieldVal(formId, "marital_status") %>
+        </td>
+    </tr>
+</table>
+<%
+} else {
+%>
+<p><b>Form Details Not Found</b></p>
+<%
+    }
 %>

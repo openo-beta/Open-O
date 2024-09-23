@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,7 +49,7 @@ import java.util.List;
 @Table(name = "consultationServices")
 public class ConsultationServices extends AbstractModel<Integer> implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -57,19 +57,20 @@ public class ConsultationServices extends AbstractModel<Integer> implements Seri
     private String serviceDesc;
     private String active;
 
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable( name="serviceSpecialists", joinColumns=@JoinColumn(name="serviceId"), inverseJoinColumns = @JoinColumn(name="specId") )
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "serviceSpecialists", joinColumns = @JoinColumn(name = "serviceId"), inverseJoinColumns = @JoinColumn(name = "specId"))
     private List<ProfessionalSpecialist> specialists;
 
-    public ConsultationServices() {}
-    
+    public ConsultationServices() {
+    }
+
     public ConsultationServices(String serviceDesc) {
-    	setServiceDesc(serviceDesc);
+        setServiceDesc(serviceDesc);
     }
 
     @Override
     public Integer getId() {
-	    return(serviceId);
+        return (serviceId);
     }
 
     public Integer getServiceId() {

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,79 +42,80 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="FaxJob")
+@XmlRootElement(name = "FaxJob")
 @Entity
-@Table(name="faxes")
+@Table(name = "faxes")
 public class FaxJob extends AbstractModel<Integer> implements Comparable<FaxJob> {
-	
-	public enum STATUS {RECEIVED,SENT,COMPLETE,ERROR,WAITING,CANCELLED,RESOLVED,UNKNOWN,RESENT}
-	public static enum Direction {IN, OUT}
-	
-	public FaxJob() {
-		// default
-	}
 
-	public FaxJob( FaxJob faxJob ) {		
-		this.user = faxJob.getUser();
-		this.password = faxJob.getPassword();
-		this.file_name = faxJob.getFile_name();
-		this.fax_line = faxJob.getFax_line();
-		this.destination = faxJob.getDestination();
-		this.recipient = faxJob.getRecipient();
-		this.status = faxJob.getStatus();
-		this.statusString = faxJob.getStatusString();
-		this.numPages = faxJob.getNumPages();
-		this.stamp = faxJob.getStamp();
-		this.document = faxJob.getDocument();
-		this.jobId = faxJob.getJobId();
-		this.senderEmail = faxJob.getSenderEmail();
-		this.direction = faxJob.getDirection();
-		this.demographicNo = faxJob.getDemographicNo();
-		this.oscarUser = faxJob.getOscarUser();
+    public enum STATUS {RECEIVED, SENT, COMPLETE, ERROR, WAITING, CANCELLED, RESOLVED, UNKNOWN, RESENT}
+
+    public static enum Direction {IN, OUT}
+
+    public FaxJob() {
+        // default
+    }
+
+    public FaxJob(FaxJob faxJob) {
+        this.user = faxJob.getUser();
+        this.password = faxJob.getPassword();
+        this.file_name = faxJob.getFile_name();
+        this.fax_line = faxJob.getFax_line();
+        this.destination = faxJob.getDestination();
+        this.recipient = faxJob.getRecipient();
+        this.status = faxJob.getStatus();
+        this.statusString = faxJob.getStatusString();
+        this.numPages = faxJob.getNumPages();
+        this.stamp = faxJob.getStamp();
+        this.document = faxJob.getDocument();
+        this.jobId = faxJob.getJobId();
+        this.senderEmail = faxJob.getSenderEmail();
+        this.direction = faxJob.getDirection();
+        this.demographicNo = faxJob.getDemographicNo();
+        this.oscarUser = faxJob.getOscarUser();
         this.faxAccount = faxJob.getFaxAccount();
-	}
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-        
+
     private String user;
-    
+
     @Transient
     private String password;
-        
-    @Column(name="filename")
+
+    @Column(name = "filename")
     private String file_name;
-    
-    @Column(name="faxline")
+
+    @Column(name = "faxline")
     private String fax_line;
-    
+
     private String destination;
-    
+
     private String recipient;
-    
+
     @Enumerated(EnumType.STRING)
     private STATUS status;
-    
+
     private Integer numPages;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date stamp;
-    
+
     private String document;
 
-    @Column(name="jobId")
+    @Column(name = "jobId")
     private Long jobId;
-    
+
     private String oscarUser;
-    
+
     private String statusString;
-    
+
     private Integer demographicNo;
-    
+
     @Transient
     private String senderEmail;
-    
+
     @Transient
     private Direction direction;
 
@@ -127,43 +128,49 @@ public class FaxJob extends AbstractModel<Integer> implements Comparable<FaxJob>
     public Integer getId() {
         return id;
     }
+
     /**
      * @param id the id to set
      */
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     /**
      * @return the file_namne
      */
     public String getFile_name() {
         return file_name;
     }
+
     /**
      * @param file_namne the file_namne to set
      */
     public void setFile_name(String file_namne) {
         this.file_name = file_namne;
     }
+
     /**
      * @return the fax_line
      */
     public String getFax_line() {
         return fax_line;
     }
+
     /**
      * @param fax_line the fax_line to set
      */
     public void setFax_line(String fax_line) {
         this.fax_line = fax_line;
     }
+
     /**
      * @return the destination
      */
     public String getDestination() {
         return destination;
     }
+
     /**
      * @param destination the destination to set
      */
@@ -172,79 +179,90 @@ public class FaxJob extends AbstractModel<Integer> implements Comparable<FaxJob>
     }
 
     public String getRecipient() {
-		return recipient;
-	}
+        return recipient;
+    }
 
-	public void setRecipient(String recipient) {
-		this.recipient = recipient;
-	}
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
 
-	/**
+    /**
      * @return the status
      */
     public STATUS getStatus() {
-    	return this.status;
+        return this.status;
     }
+
     /**
      * @param status the status to set
      */
     public void setStatus(STATUS status) {
-        this.status = status;       
+        this.status = status;
     }
+
     /**
      * @return the document
      */
     public String getDocument() {
         return document;
     }
+
     /**
      * @param document the document to set
      */
     public void setDocument(String document) {
         this.document = document;
     }
+
     /**
      * @return the user
      */
     public String getUser() {
         return user;
     }
+
     /**
      * @param user the user to set
      */
     public void setUser(String user) {
         this.user = user;
     }
+
     /**
      * @return the password
      */
     public String getPassword() {
         return password;
     }
+
     /**
      * @param password the password to set
      */
     public void setPassword(String password) {
         this.password = password;
     }
+
     /**
      * @return the numPages
      */
     public Integer getNumPages() {
         return numPages;
     }
+
     /**
      * @param numPages the numPages to set
      */
     public void setNumPages(Integer numPages) {
         this.numPages = numPages;
     }
+
     /**
      * @return the stamp
      */
     public Date getStamp() {
         return stamp;
     }
+
     /**
      * @param stamp the stamp to set
      */
@@ -252,87 +270,87 @@ public class FaxJob extends AbstractModel<Integer> implements Comparable<FaxJob>
         this.stamp = stamp;
     }
 
-	/**
-	 * @return the jobId
-	 */
+    /**
+     * @return the jobId
+     */
     public Long getJobId() {
-	    return jobId;
+        return jobId;
     }
 
-	/**
-	 * @param jobId the jobId to set
-	 */
+    /**
+     * @param jobId the jobId to set
+     */
     public void setJobId(Long jobId) {
-	    this.jobId = jobId;
+        this.jobId = jobId;
     }
 
-	@Override
+    @Override
     public int compareTo(FaxJob arg0) {
-	
-		if( arg0 == null || arg0.getStamp() == null) {
-			return 1;
-		}
-		
-		return stamp.compareTo(arg0.getStamp());
+
+        if (arg0 == null || arg0.getStamp() == null) {
+            return 1;
+        }
+
+        return stamp.compareTo(arg0.getStamp());
     }
 
-	/**
-	 * @return the oscarUser
-	 */
+    /**
+     * @return the oscarUser
+     */
     public String getOscarUser() {
-	    return oscarUser;
+        return oscarUser;
     }
 
-	/**
-	 * @param oscarUser the oscarUser to set
-	 */
+    /**
+     * @param oscarUser the oscarUser to set
+     */
     public void setOscarUser(String oscarUser) {
-	    this.oscarUser = oscarUser;
+        this.oscarUser = oscarUser;
     }
 
-	/**
-	 * @return the statusString
-	 */
+    /**
+     * @return the statusString
+     */
     public String getStatusString() {
-	    return statusString;
+        return statusString;
     }
 
-	/**
-	 * @param statusString the statusString to set
-	 */
+    /**
+     * @param statusString the statusString to set
+     */
     public void setStatusString(String statusString) {
-	    this.statusString = statusString;
+        this.statusString = statusString;
     }
 
-	/**
-	 * @return the demographic_no
-	 */
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    /**
+     * @return the demographic_no
+     */
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	/**
-	 * @param demographic_no the demographic_no to set
-	 */
-	public void setDemographicNo(Integer demographic_no) {
-		this.demographicNo = demographic_no;
-	}
+    /**
+     * @param demographic_no the demographic_no to set
+     */
+    public void setDemographicNo(Integer demographic_no) {
+        this.demographicNo = demographic_no;
+    }
 
-	public String getSenderEmail() {
-		return senderEmail;
-	}
+    public String getSenderEmail() {
+        return senderEmail;
+    }
 
-	public void setSenderEmail(String senderEmail) {
-		this.senderEmail = senderEmail;
-	}
+    public void setSenderEmail(String senderEmail) {
+        this.senderEmail = senderEmail;
+    }
 
-	public Direction getDirection() {
-		return direction;
-	}
+    public Direction getDirection() {
+        return direction;
+    }
 
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
     @Transient
     public FaxRecipient getFaxRecipient() {

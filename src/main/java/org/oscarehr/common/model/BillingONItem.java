@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,48 +35,48 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "billing_on_item")
-public class BillingONItem extends AbstractModel<Integer> implements Serializable{
-    
+public class BillingONItem extends AbstractModel<Integer> implements Serializable {
+
     public static final String DELETED = "D";
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column(name = "ch1_id")
     private Integer ch1Id;
-    
+
     @Column(name = "transc_id")
     private String transcId;
-    
+
     @Column(name = "rec_id")
     private String recId;
-    
+
     @Column(name = "service_code")
     private String serviceCode;
-     
-    @Column(name = "fee") 
+
+    @Column(name = "fee")
     private String fee;
-    
+
     @Column(name = "ser_num")
     private String serviceCount;
-    
+
     @Temporal(TemporalType.DATE)
-    @Column(name="service_date")
+    @Column(name = "service_date")
     private Date serviceDate;
-    
+
     @Column(name = "dx")
     private String dx;
-    
+
     @Column(name = "dx1")
     private String dx1;
-    
+
     @Column(name = "dx2")
     private String dx2;
-    
+
     @Column(name = "status")
     private String status;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "timestamp")
     private Date lastEditDT;
@@ -85,7 +85,7 @@ public class BillingONItem extends AbstractModel<Integer> implements Serializabl
     public Integer getId() {
         return id;
     }
-    
+
     public String getTranscId() {
         return transcId;
     }
@@ -181,7 +181,7 @@ public class BillingONItem extends AbstractModel<Integer> implements Serializabl
     public void setCh1Id(Integer ch1Id) {
         this.ch1Id = ch1Id;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -190,7 +190,7 @@ public class BillingONItem extends AbstractModel<Integer> implements Serializabl
         BillingONItem item = (BillingONItem) o;
 
         if ((id != null) && (item.getId() != null))
-            return id.equals(item.getId()); 
+            return id.equals(item.getId());
         else
             return ch1Id.equals(item.getCh1Id()) && this.serviceCode.equals(item.getServiceCode());
     }
@@ -198,11 +198,11 @@ public class BillingONItem extends AbstractModel<Integer> implements Serializabl
     @Override
     public int hashCode() {
         return (id != null ? id.hashCode() : 0);
-    }        
-    
+    }
+
     @PrePersist
     @PreUpdate
     protected void jpa_updateTimestamp() {
-    	this.lastEditDT = new Date();
+        this.lastEditDT = new Date();
     }
 }

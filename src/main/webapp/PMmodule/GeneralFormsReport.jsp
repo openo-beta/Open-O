@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,39 +24,38 @@
 --%>
 
 
+<%@ include file="/taglibs.jsp" %>
 
-<%@ include file="/taglibs.jsp"%>
-
 <script type="text/javascript"
-	src="<html:rewrite page="/share/calendar/calendar.js" />" /></script>
+        src="<html:rewrite page="/share/calendar/calendar.js" />"/>
+</script>
 <script type="text/javascript"
-	src="<html:rewrite page="/share/calendar/lang/calendar-en.js" />"></script>
+        src="<html:rewrite page="/share/calendar/lang/calendar-en.js" />"></script>
 <script type="text/javascript"
-	src="<html:rewrite page="/share/calendar/calendar-setup.js" />"></script>
+        src="<html:rewrite page="/share/calendar/calendar-setup.js" />"></script>
 
 <script type="text/javascript">
-			var djConfig = {
-				isDebug: false,
-				parseWidgets: false,
-				searchIds: ["addPopupTimePicker"]
-			};
-		</script>
+    var djConfig = {
+        isDebug: false,
+        parseWidgets: false,
+        searchIds: ["addPopupTimePicker"]
+    };
+</script>
 
 <script type="text/javascript"
-	src="<html:rewrite page="/dojoAjax/dojo.js" />">
-		</script>
+        src="<html:rewrite page="/dojoAjax/dojo.js" />">
+</script>
 
 <script type="text/javascript" language="JavaScript">
-            dojo.require("dojo.date.format");
-			dojo.require("dojo.widget.*");
-			dojo.require("dojo.validate.*");
-		</script>
-
+    dojo.require("dojo.date.format");
+    dojo.require("dojo.widget.*");
+    dojo.require("dojo.validate.*");
+</script>
 
 
 <script type="text/javascript">
-		
-	function popupPage2(varpage, windowname) {
+
+    function popupPage2(varpage, windowname) {
         var page = "" + varpage;
         var windowprops = "height=700,width=1000,top=10,left=0,location=yes,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
         var popup = window.open(page, windowname, windowprops);
@@ -68,45 +66,51 @@
             popup.focus();
         }
     }
-    
+
     function getIntakeReportByNodeId(nodeId) {
-    
-    var oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-  	
-    var startDate = prompt("Please enter a start date in this format (e.g. 2000-01-01)", dojo.date.format(oneWeekAgo, {selector:'dateOnly', datePattern:'yyyy-MM-dd'}));
-    
-    if (startDate == null) {
-        return;
-    }
-    if (!dojo.validate.isValidDate(startDate, 'YYYY-MM-DD')) {
-        alert("'" + startDate + "' is not a valid start date");
-        return;
-    }
 
-    var endDate = prompt("Please enter the end date in this format (e.g. 2000-12-01)", dojo.date.format(new Date(), {selector:'dateOnly', datePattern:'yyyy-MM-dd'}));
-    if (endDate == null) {
-        return;
+        var oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+        var startDate = prompt("Please enter a start date in this format (e.g. 2000-01-01)", dojo.date.format(oneWeekAgo, {
+            selector: 'dateOnly',
+            datePattern: 'yyyy-MM-dd'
+        }));
+
+        if (startDate == null) {
+            return;
+        }
+        if (!dojo.validate.isValidDate(startDate, 'YYYY-MM-DD')) {
+            alert("'" + startDate + "' is not a valid start date");
+            return;
+        }
+
+        var endDate = prompt("Please enter the end date in this format (e.g. 2000-12-01)", dojo.date.format(new Date(), {
+            selector: 'dateOnly',
+            datePattern: 'yyyy-MM-dd'
+        }));
+        if (endDate == null) {
+            return;
+        }
+        if (!dojo.validate.isValidDate(endDate, 'YYYY-MM-DD')) {
+            alert("'" + endDate + "' is not a valid end date");
+            return;
+        }
+
+        var includePast = confirm("Do you want to include past intake forms in your report? ([OK] for yes / [Cancel] for no)");
+
+        alert("Generating report from " + startDate + " to " + endDate + ". Please note: it is normal for the generation process to take up to a few minutes to complete, be patient.");
+
+        var url = '<html:rewrite action="/PMmodule/GenericIntake/Report"/>?' + 'nodeId=' + nodeId + '&method=report' + '&type=&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
+
+        popupPage2(url, "IntakeReport" + nodeId);
     }
-    if (!dojo.validate.isValidDate(endDate, 'YYYY-MM-DD')) {
-        alert("'" + endDate + "' is not a valid end date");
-        return;
-    }
-
-    var includePast = confirm("Do you want to include past intake forms in your report? ([OK] for yes / [Cancel] for no)");
-
-    alert("Generating report from " + startDate + " to " + endDate + ". Please note: it is normal for the generation process to take up to a few minutes to complete, be patient.");
-
-    var url = '<html:rewrite action="/PMmodule/GenericIntake/Report"/>?' + 'nodeId=' + nodeId + '&method=report' + '&type=&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
-    
-    popupPage2(url, "IntakeReport" + nodeId);
-}
 </script>
 
 Report:&nbsp;
 <select onchange="getIntakeReportByNodeId(this.options[this.selectedIndex].value);">
-	<option value="" selected></option>
-	<c:forEach var="node" items="${generalIntakeNodes}">
-		<option value="<c:out value="${node.id}"/>"><c:out value="${node.label.label}" /></option>
-	</c:forEach>
+    <option value="" selected></option>
+    <c:forEach var="node" items="${generalIntakeNodes}">
+        <option value="<c:out value="${node.id}"/>"><c:out value="${node.label.label}"/></option>
+    </c:forEach>
 </select>

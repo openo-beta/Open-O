@@ -24,14 +24,16 @@
 
 --%>
 <script>
-function newWindow(url) {
-    newwindow=window.open(url,'name','height=700,width=1000');
-    if (window.focus) {newwindow.focus()}
-    return false;
-}
+    function newWindow(url) {
+        newwindow = window.open(url, 'name', 'height=700,width=1000');
+        if (window.focus) {
+            newwindow.focus()
+        }
+        return false;
+    }
 
 
-newWindow('../report/reportindex.jsp','reportPage');
+    newWindow('../report/reportindex.jsp', 'reportPage');
 </script>
 <p class="info">Reports Panel is popped-out..ensure you do not have a popup blocker running.</p>
 

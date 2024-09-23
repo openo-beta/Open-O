@@ -23,23 +23,25 @@
     Ontario, Canada
 
 --%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ page import="oscar.eform.data.*"%>
-<%@ page import="org.oscarehr.util.LoggedInInfo"%>
-<%@ page import="oscar.oscarEncounter.data.EctFormData"%>
-<%@ page import="org.oscarehr.common.model.enumerator.DocumentType"%>
-<%@ page import="org.oscarehr.documentManager.DocumentAttachmentManager"%>
-<%@ page import="org.oscarehr.managers.EmailComposeManager"%>
-<%@ page import="org.oscarehr.util.SpringUtils"%>
+<%@ page import="oscar.eform.data.*" %>
+<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
+<%@ page import="org.oscarehr.common.model.enumerator.DocumentType" %>
+<%@ page import="org.oscarehr.documentManager.DocumentAttachmentManager" %>
+<%@ page import="org.oscarehr.managers.EmailComposeManager" %>
+<%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="oscar.util.StringUtils" %>
-<%@ page import="java.util.List"%>
+<%@ page import="java.util.List" %>
 
 <%!
     public void addHiddenEFormAttachments(LoggedInInfo loggedInInfo, EForm eForm, String eFormId) {
         Integer demographicNo = StringUtils.isInteger(eForm.getDemographicNo()) ? Integer.parseInt(eForm.getDemographicNo()) : null;
         Integer fdid = StringUtils.isInteger(eFormId) ? Integer.parseInt(eFormId) : null;
-        if (demographicNo == null || fdid == null) { return; }
+        if (demographicNo == null || fdid == null) {
+            return;
+        }
 
         DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
         List<String> attachedDocumentIds = documentAttachmentManager.getEFormAttachments(loggedInInfo, fdid, DocumentType.DOC, demographicNo);
@@ -62,14 +64,13 @@
 %>
 
 
-
 <%
     /**
      * TODO: Move all JSP scriptlet code from efmshowform_data.jsp and efmformadd_data.jsp to the ShowEFormAction.java (create if necessary) action file.
      */
-	String fid = request.getParameter("fid");
+    String fid = request.getParameter("fid");
     String fdid = StringUtils.isNullOrEmpty(request.getParameter("fdid")) ? ((String) request.getAttribute("fdid")) : request.getParameter("fdid");
-	String messageOnFailure = "No eform or appointment is available";
+    String messageOnFailure = "No eform or appointment is available";
     EForm eForm = null;
     if (fid == null) {  // form exists in patient
         String appointmentNo = request.getParameter("appointment");
@@ -82,12 +83,12 @@
         if (fdid != null) {
             eForm.setFdid(fdid);
         }
-        
-        if ( appointmentNo != null ) eForm.setAppointmentNo(appointmentNo);
-        if ( eformLink != null ) eForm.setEformLink(eformLink);
+
+        if (appointmentNo != null) eForm.setAppointmentNo(appointmentNo);
+        if (eformLink != null) eForm.setEformLink(eformLink);
 
         String parentAjaxId = request.getParameter("parentAjaxId");
-        if( parentAjaxId != null ) eForm.setAction(parentAjaxId);
+        if (parentAjaxId != null) eForm.setAction(parentAjaxId);
     } else {  //if form is viewed from admin screen
         eForm = new EForm(fid, "-1"); //form cannot be submitted, demographic_no "-1" indicate this specialty
         eForm.setContextPath(request.getContextPath());
@@ -112,9 +113,9 @@
     eForm.addCSS(request.getContextPath()+"/css/oscar_alert.css", "all");
     eForm.addBodyJavascript(request.getContextPath()+"/js/oscar-alert.js");
 
-    eForm.addCSS(request.getContextPath()+"/library/jquery/jquery-ui-1.12.1.min.css", "all");
-    eForm.addBodyJavascript(request.getContextPath()+"/eform/eformFloatingToolbar/eform_floating_toolbar.js");
-    eForm.addFontLibrary(request.getContextPath()+"/share/javascript/eforms/dejavufonts/ttf/DejaVuSans.ttf");
+    eForm.addCSS(request.getContextPath() + "/library/jquery/jquery-ui-1.12.1.min.css", "all");
+    eForm.addBodyJavascript(request.getContextPath() + "/eform/eformFloatingToolbar/eform_floating_toolbar.js");
+    eForm.addFontLibrary(request.getContextPath() + "/share/javascript/eforms/dejavufonts/ttf/DejaVuSans.ttf");
     eForm.addHiddenInputElement("context", request.getContextPath());
     eForm.addHiddenInputElement("demographicNo", eForm.getDemographicNo());
     eForm.addHiddenInputElement("fdid", fdid);
@@ -129,7 +130,6 @@
     eForm.addHiddenInputElement("eFormPDF", (String) request.getAttribute("eFormPDF"));
     eForm.addHiddenInputElement("isDownloadEForm", (String) request.getAttribute("isDownload"));
     eForm.addHiddenInputElement("newForm", "false");
-    eForm.addHiddenInputElement("isSuccess_Autoclose", (String) request.getAttribute("isSuccess_Autoclose"));
     // Add EForm attachments
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     addHiddenEFormAttachments(loggedInInfo, eForm, fdid);
@@ -138,4 +138,5 @@
     addHiddenEmailProperties(loggedInInfo, eForm, eForm.getDemographicNo());
 
     out.print(eForm.getFormHtml());
-%><script type="text/javascript" src="${oscar_javascript_path}/moment.js" ></script>
+%>
+<script type="text/javascript" src="${oscar_javascript_path}/moment.js"></script>

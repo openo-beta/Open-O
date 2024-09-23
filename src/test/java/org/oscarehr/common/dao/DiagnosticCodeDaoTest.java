@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,55 +37,55 @@ import org.oscarehr.util.SpringUtils;
 
 public class DiagnosticCodeDaoTest extends DaoTestFixtures {
 
-	protected DiagnosticCodeDao dao = SpringUtils.getBean(DiagnosticCodeDao.class);
+    protected DiagnosticCodeDao dao = SpringUtils.getBean(DiagnosticCodeDao.class);
 
-	public DiagnosticCodeDaoTest() {
-	}
+    public DiagnosticCodeDaoTest() {
+    }
 
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("diagnosticcode","ctl_diagcode");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("diagnosticcode", "ctl_diagcode");
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		DiagnosticCode entity = new DiagnosticCode();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		dao.persist(entity);
+    @Test
+    public void testCreate() throws Exception {
+        DiagnosticCode entity = new DiagnosticCode();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        dao.persist(entity);
 
-		assertNotNull(entity.getId());
-	}
+        assertNotNull(entity.getId());
+    }
 
-	@Test
-	public void testFindByDiagnosticCode() throws Exception {
-		DiagnosticCode entity = new DiagnosticCode();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		entity.setDiagnosticCode("a");
-		dao.persist(entity);
+    @Test
+    public void testFindByDiagnosticCode() throws Exception {
+        DiagnosticCode entity = new DiagnosticCode();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        entity.setDiagnosticCode("a");
+        dao.persist(entity);
 
-		assertEquals(1,dao.findByDiagnosticCode(entity.getDiagnosticCode()).size());
-	}
+        assertEquals(1, dao.findByDiagnosticCode(entity.getDiagnosticCode()).size());
+    }
 
-	@Test
-	public void testFindByDiagnosticCodeAndRegion() throws Exception {
-		DiagnosticCode entity = new DiagnosticCode();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		entity.setDiagnosticCode("a");
-		entity.setRegion("b");
-		dao.persist(entity);
+    @Test
+    public void testFindByDiagnosticCodeAndRegion() throws Exception {
+        DiagnosticCode entity = new DiagnosticCode();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        entity.setDiagnosticCode("a");
+        entity.setRegion("b");
+        dao.persist(entity);
 
-		assertEquals(1,dao.findByDiagnosticCodeAndRegion(entity.getDiagnosticCode(),entity.getRegion()).size());
-	}
-	
-	@Test
-	public void testFindByRegionAndType() {
-		List<DiagnosticCode> codes = dao.findByRegionAndType("REG", "TYPE");
-		assertNotNull(codes);
-	}
+        assertEquals(1, dao.findByDiagnosticCodeAndRegion(entity.getDiagnosticCode(), entity.getRegion()).size());
+    }
+
+    @Test
+    public void testFindByRegionAndType() {
+        List<DiagnosticCode> codes = dao.findByRegionAndType("REG", "TYPE");
+        assertNotNull(codes);
+    }
 
     @Test
     public void testFindDiagnosictsAndCtlDiagCodesByServiceType() {
-	    assertNotNull(dao.findDiagnosictsAndCtlDiagCodesByServiceType("TYPE"));
+        assertNotNull(dao.findDiagnosictsAndCtlDiagCodesByServiceType("TYPE"));
     }
 }

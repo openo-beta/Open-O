@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,11 +47,11 @@ import oscar.util.ConversionUtils;
 import oscar.util.UtilDateUtilities;
 
 public class ExtractBean implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
-	private static Logger logger=MiscUtils.getLogger(); 
-    private  BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
+
+    private static Logger logger = MiscUtils.getLogger();
+    private BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
 
     private String apptDate;
     private String batchCount = "";
@@ -305,8 +305,8 @@ public class ExtractBean implements Serializable {
             errorPartMsg += "Header2: Patient's Sex Code wrong! (1 or 2)<br>";
         if (hcType.length() != 2
                 || !(hcType.equals("AB") || hcType.equals("BC") || hcType.equals("MB") || hcType.equals("NL")
-                        || hcType.equals("NB") || hcType.equals("NT") || hcType.equals("NS") || hcType.equals("PE")
-                        || hcType.equals("SK") || hcType.equals("YT")))
+                || hcType.equals("NB") || hcType.equals("NT") || hcType.equals("NS") || hcType.equals("PE")
+                || hcType.equals("SK") || hcType.equals("YT")))
             errorPartMsg += "Header2: Patient's Province Code wrong!<br>";
         errorMsg += errorPartMsg;
     }
@@ -342,8 +342,8 @@ public class ExtractBean implements Serializable {
             value = batchHeader;
 
             BillingDao dao = SpringUtils.getBean(BillingDao.class);
-            BillingDetailDao bdDao = SpringUtils.getBean(BillingDetailDao.class); 
-            for(Billing b : dao.findByProviderStatusAndDates(providerNo, Arrays.asList(new String[] {"O", "W"}), dateRange)) {
+            BillingDetailDao bdDao = SpringUtils.getBean(BillingDetailDao.class);
+            for (Billing b : dao.findByProviderStatusAndDates(providerNo, Arrays.asList(new String[]{"O", "W"}), dateRange)) {
                 patientCount++;
                 invNo = "" + b.getId();
                 //   ohipVer = b.getorganization_spec_code");
@@ -362,14 +362,14 @@ public class ExtractBean implements Serializable {
                 htmlContent += printErrorPartMsg();
                 // build billing detail
                 invCount = 0;
-                for(BillingDetail bd : bdDao.findByBillingNoAndStatus(ConversionUtils.fromIntString(invNo), specCode)) {
+                for (BillingDetail bd : bdDao.findByBillingNoAndStatus(ConversionUtils.fromIntString(invNo), specCode)) {
                     recordCount++;
                     count = 0;
                     serviceCode = bd.getServiceCode();
                     fee = bd.getBillingAmount();
                     diagcode = bd.getDiagnosticCode();
                     // changed the following line for the no need of diagcode 
-                    diagcode = ":::".equals(diagcode)? "   " : diagcode; 
+                    diagcode = ":::".equals(diagcode) ? "   " : diagcode;
                     //appt = rs2.getDate("appointment_date").toString();
                     billingUnit = bd.getBillingUnit();
                     count = 6 - fee.length();
@@ -407,7 +407,7 @@ public class ExtractBean implements Serializable {
             //}
             //dbExt.closeConnection();
         } catch (Exception e) {
-        	MiscUtils.getLogger().error("error",e);
+            MiscUtils.getLogger().error("error", e);
         }
     }
 
@@ -452,11 +452,11 @@ public class ExtractBean implements Serializable {
     }
 
     public void setAsBilled(String newInvNo) {
-    	Billing b = billingDao.find(Integer.parseInt(newInvNo));
-    	if(b != null) {
-    		b.setStatus("B");
-    		billingDao.merge(b);
-    	}
+        Billing b = billingDao.find(Integer.parseInt(newInvNo));
+        if (b != null) {
+            b.setStatus("B");
+            billingDao.merge(b);
+        }
     }
 
     // batchCount 1 ???
@@ -494,7 +494,7 @@ public class ExtractBean implements Serializable {
     }
 
     public synchronized void setOscarHome(String oscarHOME) {
-    	//empty.potential problem here.
+        //empty.potential problem here.
     }
 
     public synchronized void setProviderNo(String newProviderNo) {

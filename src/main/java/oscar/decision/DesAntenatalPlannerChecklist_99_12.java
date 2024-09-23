@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,34 +41,34 @@ import org.xml.sax.XMLReader;
 
 public class DesAntenatalPlannerChecklist_99_12 {
 
-	public String doStuff(String uri, Properties savedar1params) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			df.parse(savedar1params.getProperty("finalEDB")); 
-		} catch (java.text.ParseException pe) {
-		  return "Error: final EDB";
-		}
+    public String doStuff(String uri, Properties savedar1params) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            df.parse(savedar1params.getProperty("finalEDB"));
+        } catch (java.text.ParseException pe) {
+            return "Error: final EDB";
+        }
 
-		try {
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser saxParser = factory.newSAXParser();
-			XMLReader reader = saxParser.getXMLReader();
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+            XMLReader reader = saxParser.getXMLReader();
 
-			ContentHandler contentHandler = new DesAntenatalPlannerChecklistHandler_99_12(savedar1params);
-			reader.setContentHandler( contentHandler );
-			reader.parse(uri);
+            ContentHandler contentHandler = new DesAntenatalPlannerChecklistHandler_99_12(savedar1params);
+            reader.setContentHandler(contentHandler);
+            reader.parse(uri);
 
-			return ((DesAntenatalPlannerChecklistHandler_99_12) contentHandler).getResults();
+            return ((DesAntenatalPlannerChecklistHandler_99_12) contentHandler).getResults();
 
-		} catch (IOException e) {
-			MiscUtils.getLogger().debug("Error reading URI: " + e.getMessage());
-		} catch (SAXException e) {
-			MiscUtils.getLogger().debug("Error in parsing: " + e.getMessage());
-		} catch (ParserConfigurationException e) {
-			MiscUtils.getLogger().debug("Error configuring parser: " + e.getMessage());
-		}
+        } catch (IOException e) {
+            MiscUtils.getLogger().debug("Error reading URI: " + e.getMessage());
+        } catch (SAXException e) {
+            MiscUtils.getLogger().debug("Error in parsing: " + e.getMessage());
+        } catch (ParserConfigurationException e) {
+            MiscUtils.getLogger().debug("Error configuring parser: " + e.getMessage());
+        }
 
-		return "Error: unable to parse the checklist xml file";
-  }
+        return "Error: unable to parse the checklist xml file";
+    }
 
 }

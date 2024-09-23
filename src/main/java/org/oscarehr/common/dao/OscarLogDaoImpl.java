@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -166,7 +166,7 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
 
     @Override
     public List<Integer> getRecentDemographicsAccessedByProvider(String providerNo, int startPosition,
-            int itemsToReturn) {
+                                                                 int itemsToReturn) {
         String sqlCommand = "select distinct demographicId from " + modelClass.getSimpleName()
                 + " l where l.providerNo = ?1 and l.demographicId is not null and l.demographicId != '-1' order by dateTime desc";
 
@@ -182,7 +182,7 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     }
 
     /**
-     * 
+     *
      * @param providerNo
      * @param startPosition
      * @param itemsToReturn
@@ -190,7 +190,7 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
      */
     @Override
     public List<Object[]> getRecentDemographicsViewedByProvider(String providerNo, int startPosition,
-            int itemsToReturn) {
+                                                                int itemsToReturn) {
         String sqlCommand = "select l.demographicId,MAX(l.created) as dt from " + modelClass.getSimpleName()
                 + " l where l.providerNo = ?1 and l.demographicId is not null and l.demographicId != '-1' group by l.demographicId order by MAX(l.created) desc";
 
@@ -214,7 +214,7 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
      */
     @Override
     public List<Object[]> getRecentDemographicsViewedByProviderAfterDateIncluded(String providerNo, Date date,
-            int startPosition, int itemsToReturn) {
+                                                                                 int startPosition, int itemsToReturn) {
         String sqlCommand = "select l.demographicId,MAX(l.created) as dt from " + modelClass.getSimpleName()
                 + " l where l.providerNo = :providerNo and l.created >= :date and l.demographicId is not null and l.demographicId != '-1' group by l.demographicId order by MAX(l.created) desc";
 

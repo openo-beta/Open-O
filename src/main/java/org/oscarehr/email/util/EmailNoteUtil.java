@@ -37,14 +37,15 @@ public class EmailNoteUtil {
     private EformDataManager eFormDataManager = SpringUtils.getBean(EformDataManager.class);
     private FormsManager formsManager = SpringUtils.getBean(FormsManager.class);
 
-    private EmailNoteUtil() { }
+    private EmailNoteUtil() {
+    }
 
     public EmailNoteUtil(LoggedInInfo loggedInInfo, EmailLog emailLog) {
         this.emailLog = emailLog;
         this.loggedInInfo = loggedInInfo;
         this.commonLabResultData = new CommonLabResultData();
     }
-    
+
     public String createNote() {
         StringBuilder noteBuilder = new StringBuilder();
         addHeader(emailLog, noteBuilder);
@@ -65,14 +66,18 @@ public class EmailNoteUtil {
     }
 
     private void addEncryptionInformation(EmailLog emailLog, StringBuilder noteBuilder) {
-        if (!emailLog.getIsEncrypted()) { return; }
+        if (!emailLog.getIsEncrypted()) {
+            return;
+        }
 
         noteBuilder.append("\n*****\n").append(emailLog.getPasswordClue().trim()).append("\n*****\n\n");
     }
 
     private void addAttachments(EmailLog emailLog, StringBuilder noteBuilder) {
         List<EmailAttachment> emailAttachmentList = emailLog.getEmailAttachments();
-        if (emailAttachmentList == null || emailAttachmentList.isEmpty()) { return; }
+        if (emailAttachmentList == null || emailAttachmentList.isEmpty()) {
+            return;
+        }
         noteBuilder.append("***Attached Files***").append("\n\n");
 
         List<EFormData> eFormDataList = new ArrayList<>();
@@ -84,23 +89,33 @@ public class EmailNoteUtil {
             switch (emailAttachment.getDocumentType()) {
                 case EFORM:
                     EFormData eFormData = eFormDataManager.findByFdid(loggedInInfo, emailAttachment.getDocumentId());
-                    if (eFormData != null) { eFormDataList.add(eFormData); }
+                    if (eFormData != null) {
+                        eFormDataList.add(eFormData);
+                    }
                     break;
                 case DOC:
                     EDoc eDoc = EDocUtil.getEDocFromDocId(String.valueOf(emailAttachment.getDocumentId()));
-                    if (eDoc != null) { eDocList.add(eDoc); }
+                    if (eDoc != null) {
+                        eDocList.add(eDoc);
+                    }
                     break;
                 case LAB:
                     LabResultData labResultData = commonLabResultData.getLab(new LabIdAndType(emailAttachment.getDocumentId(), "HL7"));
-                    if (labResultData != null) { labResultDataList.add(labResultData); }
+                    if (labResultData != null) {
+                        labResultDataList.add(labResultData);
+                    }
                     break;
                 case HRM:
                     HRMDocument hrmDocument = HRMUtil.getHRMDocumentById(loggedInInfo, emailAttachment.getDocumentId());
-                    if (hrmDocument != null) { hrmDocumentList.add(hrmDocument); }
+                    if (hrmDocument != null) {
+                        hrmDocumentList.add(hrmDocument);
+                    }
                     break;
                 case FORM:
                     PatientForm form = formsManager.getFormById(loggedInInfo, emailAttachment.getDocumentId(), emailLog.getDemographic().getDemographicNo());
-                    if (form != null) { formList.add(form); }
+                    if (form != null) {
+                        formList.add(form);
+                    }
                     break;
             }
         }
@@ -121,7 +136,9 @@ public class EmailNoteUtil {
             noteBuilder.append(eFormDisplayName).append(" ");
             noteBuilder.append(getFormattedDate(eFormData.getFormDate())).append(" ");
             noteBuilder.append("(").append("ID: ").append(eFormData.getId()).append(") ");
-            if (emailLog.getIsAttachmentEncrypted()) { noteBuilder.append("Password: ").append(emailLog.getPassword()); }
+            if (emailLog.getIsAttachmentEncrypted()) {
+                noteBuilder.append("Password: ").append(emailLog.getPassword());
+            }
             noteBuilder.append("\n");
         }
     }
@@ -132,7 +149,9 @@ public class EmailNoteUtil {
             noteBuilder.append("Doc: ").append(eDoc.getDescription()).append(" ");
             noteBuilder.append(getFormattedDate(eDoc.getObservationDate(), "yyyy/MM/dd")).append(" ");
             noteBuilder.append("(").append("ID: ").append(eDoc.getDocId()).append(") ");
-            if (emailLog.getIsAttachmentEncrypted()) { noteBuilder.append("Password: ").append(emailLog.getPassword()); }
+            if (emailLog.getIsAttachmentEncrypted()) {
+                noteBuilder.append("Password: ").append(emailLog.getPassword());
+            }
             noteBuilder.append("\n");
         }
     }
@@ -146,7 +165,9 @@ public class EmailNoteUtil {
             noteBuilder.append(labName).append(" ");
             noteBuilder.append(getFormattedDate(lab.getDateObjFormated(), "yyyy-MM-dd")).append(" ");
             noteBuilder.append("(").append("ID: ").append(lab.getSegmentID()).append(") ");
-            if (emailLog.getIsAttachmentEncrypted()) { noteBuilder.append("Password: ").append(emailLog.getPassword()); }
+            if (emailLog.getIsAttachmentEncrypted()) {
+                noteBuilder.append("Password: ").append(emailLog.getPassword());
+            }
             noteBuilder.append("\n");
         }
     }
@@ -157,7 +178,9 @@ public class EmailNoteUtil {
             noteBuilder.append("HRM: ").append(hrmDocument.getDisplayName()).append(" ");
             noteBuilder.append(getFormattedDate(hrmDocument.getReportDate())).append(" ");
             noteBuilder.append("(").append("ID: ").append(hrmDocument.getId()).append(") ");
-            if (emailLog.getIsAttachmentEncrypted()) { noteBuilder.append("Password: ").append(emailLog.getPassword()); }
+            if (emailLog.getIsAttachmentEncrypted()) {
+                noteBuilder.append("Password: ").append(emailLog.getPassword());
+            }
             noteBuilder.append("\n");
         }
     }
@@ -166,18 +189,20 @@ public class EmailNoteUtil {
         Collections.sort(formList, PatientForm.EDITED_DATE_COMPARATOR);
         for (PatientForm form : formList) {
             noteBuilder.append("Form: ").append(form.getFormName()).append(" ");
-            if (form.edited != null) { 
-                noteBuilder.append(getFormattedDate(form.getEdited(), "dd-MM-yyyy HH:mm:ss")).append(" "); 
+            if (form.edited != null) {
+                noteBuilder.append(getFormattedDate(form.getEdited(), "dd-MM-yyyy HH:mm:ss")).append(" ");
             }
             noteBuilder.append("(").append("ID: ").append(form.getFormId()).append(") ");
-            if (emailLog.getIsAttachmentEncrypted()) { noteBuilder.append("Password: ").append(emailLog.getPassword()); }
+            if (emailLog.getIsAttachmentEncrypted()) {
+                noteBuilder.append("Password: ").append(emailLog.getPassword());
+            }
             noteBuilder.append("\n");
         }
     }
 
     private void addEncryptedBody(EmailLog emailLog, StringBuilder noteBuilder) {
-        if (!emailLog.getIsEncrypted() || StringUtils.isNullOrEmpty(emailLog.getEncryptedMessage())) { 
-            return; 
+        if (!emailLog.getIsEncrypted() || StringUtils.isNullOrEmpty(emailLog.getEncryptedMessage())) {
+            return;
         }
 
         noteBuilder.append("***Attached Message (message.pdf with password ");
@@ -187,9 +212,9 @@ public class EmailNoteUtil {
     }
 
     private void addTechnicalInformation(EmailLog emailLog, StringBuilder noteBuilder) {
-        noteBuilder.append("***Technical Information***").append("\n\n");        
+        noteBuilder.append("***Technical Information***").append("\n\n");
         noteBuilder.append("From: ").append(emailLog.getFromEmail()).append("\n");
-        noteBuilder.append("To: ").append(getRecipientEmail()).append("\n");        
+        noteBuilder.append("To: ").append(getRecipientEmail()).append("\n");
         noteBuilder.append("Sent: ").append(getEmailTime()).append(" on ").append(getEmailDate()).append("\n");
         noteBuilder.append("Unique Email Log ID: ").append(emailLog.getId());
     }
@@ -197,9 +222,9 @@ public class EmailNoteUtil {
     private String getRecipientEmail() {
         String[] recipientEmailList = emailLog.getToEmail();
         StringBuilder formattedEmails = new StringBuilder();
-        
+
         for (int i = 0; i < recipientEmailList.length; i++) {
-            if (i == 0) { 
+            if (i == 0) {
                 formattedEmails.append(recipientEmailList[0]);
             } else if (i < recipientEmailList.length - 1) {
                 formattedEmails.append(", ").append(recipientEmailList[i]);

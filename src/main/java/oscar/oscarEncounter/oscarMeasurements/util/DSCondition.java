@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,27 +35,27 @@ public class DSCondition {
     private String param = null;
     private String comparision = null;
     private String value = null;
-    
-    public DSCondition(){
-        
+
+    public DSCondition() {
+
     }
-    
-    public DSCondition(String type, String param , String comparision,String value ){
+
+    public DSCondition(String type, String param, String comparision, String value) {
         this.type = type;
         this.param = param;
         this.comparision = comparision;
         this.value = value;
     }
-    
+
     public String getType() {
-        if (param == null || param.trim().equals("") ){
-            if (type.charAt(type.length()-1) == ')'){
-               return type; 
+        if (param == null || param.trim().equals("")) {
+            if (type.charAt(type.length() - 1) == ')') {
+                return type;
             }
-            return type+"()";
+            return type + "()";
         }
-        
-        return type+"(\""+param+"\")";
+
+        return type + "(\"" + param + "\")";
     }
 
     public void setType(String type) {

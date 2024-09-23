@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -101,7 +101,7 @@ public abstract class DSValue {
             Pattern stringSeparatorPattern = Pattern.compile("'[\\s]*,");
             String[] separatedValues = stringSeparatorPattern.split(values); // [ ',' ] is absolutely illegal in a quoted string
             ArrayList<String> dsValueStrArray = new ArrayList<String>();
-            for (String separatedValue: separatedValues) {
+            for (String separatedValue : separatedValues) {
                 if (!separatedValue.trim().endsWith("'")) {
                     separatedValue = separatedValue.trim() + "'";
                 }
@@ -115,7 +115,7 @@ public abstract class DSValue {
             dsValuesStr = StringUtils.split(values, ",");
         }
         ArrayList<DSValue> dsValues = new ArrayList<DSValue>();
-        for (String dsValueStr: dsValuesStr) {
+        for (String dsValueStr : dsValuesStr) {
             int hyphenIndex = -1;
             if (doHyphenSearch)
                 hyphenIndex = dsValueStr.indexOf("-");
@@ -124,9 +124,9 @@ public abstract class DSValue {
                 int colonIndex = dsValueStr.indexOf(":");
                 String type = "";
                 if (colonIndex != -1)
-                    type = dsValueStr.substring(0, colonIndex+1);
-                String value1 = dsValueStr.substring(colonIndex+1, hyphenIndex);
-                String value2 = dsValueStr.substring(hyphenIndex+1);
+                    type = dsValueStr.substring(0, colonIndex + 1);
+                String value1 = dsValueStr.substring(colonIndex + 1, hyphenIndex);
+                String value2 = dsValueStr.substring(hyphenIndex + 1);
                 String dsValueStr1 = type + ">=" + value1;
                 String dsValueStr2 = type + "<=" + value2;
                 dsValues.add(DSValue.createDSValue(dsValueStr1));
@@ -159,7 +159,7 @@ public abstract class DSValue {
             valueStr = typeOperatorValueUnit.trim();
         } else {
             typeStr = typeOperatorValueUnit.substring(0, typeSeparatorIndex).trim();
-            valueStr = typeOperatorValueUnit.substring(typeSeparatorIndex+1).trim();
+            valueStr = typeOperatorValueUnit.substring(typeSeparatorIndex + 1).trim();
         }
 
         Matcher operatorMatcher = Pattern.compile("[<>=-]+").matcher(valueStr);
@@ -189,7 +189,7 @@ public abstract class DSValue {
             dsValue.setValue(valueStr);
             returnDsValue = dsValue;
         }
-        _log.debug("DSValue type: "+returnDsValue.getValueType()+ " operator: " + returnDsValue.getValue()+" unit: " + returnDsValue.getValueUnit()+" object type: " + returnDsValue.getClass().getName());
+        _log.debug("DSValue type: " + returnDsValue.getValueType() + " operator: " + returnDsValue.getValue() + " unit: " + returnDsValue.getValueUnit() + " object type: " + returnDsValue.getClass().getName());
         return returnDsValue;
     }
 
@@ -201,7 +201,7 @@ public abstract class DSValue {
             Pattern stringQuotePattern = Pattern.compile("'.+?'");
             Pattern allCharacters = Pattern.compile(".");
             String[] quotedStrings = stringQuotePattern.split(str);
-            for (String quotedString: quotedStrings) {
+            for (String quotedString : quotedStrings) {
                 String blankedString = allCharacters.matcher(quotedString).replaceAll("'");
                 str = str.replace(quotedString, blankedString);
             }

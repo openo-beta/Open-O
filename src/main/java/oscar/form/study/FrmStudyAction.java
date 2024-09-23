@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -43,15 +43,15 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 public final class FrmStudyAction extends Action {
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException   {
-    	
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "w", null)) {
-			throw new SecurityException("missing required security object (_form)");
-		}
-    	
+            throws ServletException, IOException {
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "w", null)) {
+            throw new SecurityException("missing required security object (_form)");
+        }
+
         int newID = 0;
         FrmStudyRecord rec = null;
         String where = "";
@@ -60,17 +60,17 @@ public final class FrmStudyAction extends Action {
             rec = recorder.factory(request.getParameter("study_name"));
             Properties props = new Properties();
             String name;
-            for(Enumeration varEnum = request.getParameterNames(); varEnum.hasMoreElements(); props.setProperty(name, request.getParameter(name)))
-                name = (String)varEnum.nextElement();
+            for (Enumeration varEnum = request.getParameterNames(); varEnum.hasMoreElements(); props.setProperty(name, request.getParameter(name)))
+                name = (String) varEnum.nextElement();
 
             newID = rec.saveFormRecord(props);
-        
-						String strAction = rec.findActionValue(request.getParameter("submit"));
-		        ActionForward af = mapping.findForward(strAction);
-				    where = af.getPath();
-						where = rec.createActionURL(where, strAction, request.getParameter("demographic_no"), ""+newID, request.getParameter("study_no"), request.getParameter("study_link"));
 
-        } catch(Exception ex) {
+            String strAction = rec.findActionValue(request.getParameter("submit"));
+            ActionForward af = mapping.findForward(strAction);
+            where = af.getPath();
+            where = rec.createActionURL(where, strAction, request.getParameter("demographic_no"), "" + newID, request.getParameter("study_no"), request.getParameter("study_link"));
+
+        } catch (Exception ex) {
             throw new ServletException(ex);
         }
 

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,45 +47,45 @@ import oscar.log.LogAction;
 
 public class DemographicExtServiceAction extends DispatchAction {
 
-	DemographicExtDao demographicExtDao = SpringUtils.getBean(DemographicExtDao.class);
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	   
+    DemographicExtDao demographicExtDao = SpringUtils.getBean(DemographicExtDao.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-	public ActionForward saveNewValue(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException  {
-		String demographicNo = request.getParameter("demographicNo");
-		String key = request.getParameter("key");
-		String value = request.getParameter("value");
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		String providerNo = loggedInInfo.getLoggedInProviderNo();
-		
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+
+    public ActionForward saveNewValue(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String demographicNo = request.getParameter("demographicNo");
+        String key = request.getParameter("key");
+        String value = request.getParameter("value");
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
 
-		
-		DemographicExt existing = demographicExtDao.getDemographicExt(Integer.parseInt(demographicNo), key);
-		Integer id = null;
-		if(existing == null) {
-			DemographicExt d = new DemographicExt();
-			d.setDateCreated(new Date());
-			d.setDemographicNo(Integer.parseInt(demographicNo));
-			d.setKey(key);
-			d.setValue(value);
-			d.setProviderNo(providerNo);
-			
-			demographicExtDao.persist(d);
-			id = d.getId();
-		} else {
-			existing.setValue(value);
-			demographicExtDao.merge(existing);
-			id = existing.getId();
-		}
-			
-		
-		LogAction.addLog(providerNo, "write", id.toString(), value);
-		
-		JSONObject json = JSONObject.fromObject(new LabelValueBean("id",String.valueOf(id)));
-		response.getWriter().println(json);
-		return null;
-	}
+
+        DemographicExt existing = demographicExtDao.getDemographicExt(Integer.parseInt(demographicNo), key);
+        Integer id = null;
+        if (existing == null) {
+            DemographicExt d = new DemographicExt();
+            d.setDateCreated(new Date());
+            d.setDemographicNo(Integer.parseInt(demographicNo));
+            d.setKey(key);
+            d.setValue(value);
+            d.setProviderNo(providerNo);
+
+            demographicExtDao.persist(d);
+            id = d.getId();
+        } else {
+            existing.setValue(value);
+            demographicExtDao.merge(existing);
+            id = existing.getId();
+        }
+
+
+        LogAction.addLog(providerNo, "write", id.toString(), value);
+
+        JSONObject json = JSONObject.fromObject(new LabelValueBean("id", String.valueOf(id)));
+        response.getWriter().println(json);
+        return null;
+    }
 }

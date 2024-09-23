@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,46 +31,46 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AddressTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String province;
-	private String postal;
-	private String city;
-	private String address;
+    private String province;
+    private String postal;
+    private String city;
+    private String address;
 
-	public String getProvince() {
-		return province;
-	}
+    public String getProvince() {
+        return province;
+    }
 
-	public void setProvince(String province) {
-		this.province = province;
-	}
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
-	public String getPostal() {
-		return postal;
-	}
+    public String getPostal() {
+        return postal;
+    }
 
-	public void setPostal(String postal) {
-		this.postal = postal;
-	}
+    public void setPostal(String postal) {
+        this.postal = postal;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 }

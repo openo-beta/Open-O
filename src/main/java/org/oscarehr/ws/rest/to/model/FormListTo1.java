@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,27 +29,30 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="formlist")
+@XmlRootElement(name = "formlist")
 public class FormListTo1 {
-	
-	private String name;
-	private List<FormTo1> list = new ArrayList<FormTo1>();
-	
-	public void add(FormTo1 formTo1){
-		list.add(formTo1); 
-	}
-	
-	public String getName() {
-	    return name;
+
+    private String name;
+    private List<FormTo1> list = new ArrayList<FormTo1>();
+
+    public void add(FormTo1 formTo1) {
+        list.add(formTo1);
     }
-	public void setName(String name) {
-	    this.name = name;
+
+    public String getName() {
+        return name;
     }
-	public List<FormTo1> getList() {
-	    return list;
+
+    public void setName(String name) {
+        this.name = name;
     }
-	public void setList(List<FormTo1> list) {
-	    this.list = list;
+
+    public List<FormTo1> getList() {
+        return list;
+    }
+
+    public void setList(List<FormTo1> list) {
+        this.list = list;
     }
 
 }

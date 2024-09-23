@@ -25,117 +25,117 @@
 --%>
 <!DOCTYPE html>
 <%-- This JSP is the first page you see when you enter 'report by template' --%>
-<%@page import="org.oscarehr.common.dao.DemographicDao"%>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao"%>
-<%@page import="org.oscarehr.common.dao.FlowSheetUserCreatedDao"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@page import="org.oscarehr.common.dao.DemographicDao" %>
+<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
+<%@page import="org.oscarehr.common.dao.FlowSheetUserCreatedDao" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-	boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_admin");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_admin");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-	Provider provider = loggedInInfo.getLoggedInProvider();
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    Provider provider = loggedInInfo.getLoggedInProvider();
 %>
 <html:html lang="en">
-<head>
-<title>Flowsheet Editor</title>
-<link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
-<script src="<%=request.getContextPath() %>/js/global.js"></script>
-<script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
-<script src="<%=request.getContextPath() %>/share/javascript/Oscar.js"></script>
+    <head>
+        <title>Flowsheet Editor</title>
+        <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <script src="<%=request.getContextPath() %>/js/global.js"></script>
+        <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
+        <script src="<%=request.getContextPath() %>/share/javascript/Oscar.js"></script>
 
 
-<%
-	String flowsheetId = request.getParameter("flowsheetId");
-	String measurementType = request.getParameter("measurementType");
-%>
-<script>
-$(document).ready(function(){
+        <%
+            String flowsheetId = request.getParameter("flowsheetId");
+            String measurementType = request.getParameter("measurementType");
+        %>
+        <script>
+            $(document).ready(function () {
 
-});
+            });
 
-function saveItem() {
-	jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=saveFlowsheetItemWarning',
-   		jQuery('#theForm').serialize(),
-   		function(data){
-   			location.href='<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=flowsheetId %>&measurementType=<%=measurementType%>';
-   	});
-}
-</script>
-</head>
+            function saveItem() {
+                jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=saveFlowsheetItemWarning',
+                    jQuery('#theForm').serialize(),
+                    function (data) {
+                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=flowsheetId %>&measurementType=<%=measurementType%>';
+                    });
+            }
+        </script>
+    </head>
 
-<!--
-<recommendation strength="recommendation" >
-	<condition type="monthrange" param="BMI" value="3-6" />
-</recommendation>
+    <!--
+    <recommendation strength="recommendation" >
+    <condition type="monthrange" param="BMI" value="3-6" />
+    </recommendation>
 
- -->
-<body>
-<h2>Flowsheet Item Editor</h2>
-<br/>
-<form name="theForm" id="theForm">
-<input type="hidden" name="flowsheetId" value="<%=flowsheetId %>"/>
-<input type="hidden" name="measurementType" value="<%=measurementType %>"/>
+    -->
+    <body>
+    <h2>Flowsheet Item Editor</h2>
+    <br/>
+    <form name="theForm" id="theForm">
+        <input type="hidden" name="flowsheetId" value="<%=flowsheetId %>"/>
+        <input type="hidden" name="measurementType" value="<%=measurementType %>"/>
 
-<table style="width:20%">
-<tr>
-	<td><b>Strength:</b></td>
-	<td>
-		<select name="strength" id="strength">
-			<option value="recommendation">recommendation</option>
-			<option value="warning">warning</option>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td><b>Message:</b></td>
-	<td><input type="text" name="message" id="message" value=""/></td>
-</tr>
-<tr>
-	<td><b>Condition:</b></td>
-	<td>
-		<select name="condition" id="condition">
-			<option value="monthrange">Month Range</option>
-			<option value="lastValueAsInt">Last Int Value</option>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td><b>Parameter:</b></td>
-	<td><input type="text" name="param" id="param" value=""/>(Measurement Type)</td>
-</tr>
-<tr>
-	<td><b>Value:</b></td>
-	<td>
-		<input type="text" name="value" id="value" value=""/>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<input type="button" class="btn btn-primary" value="Save" onClick="saveItem()"/>
-	</td>
-</tr>
-</table>
-</form>
+        <table style="width:20%">
+            <tr>
+                <td><b>Strength:</b></td>
+                <td>
+                    <select name="strength" id="strength">
+                        <option value="recommendation">recommendation</option>
+                        <option value="warning">warning</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Message:</b></td>
+                <td><input type="text" name="message" id="message" value=""/></td>
+            </tr>
+            <tr>
+                <td><b>Condition:</b></td>
+                <td>
+                    <select name="condition" id="condition">
+                        <option value="monthrange">Month Range</option>
+                        <option value="lastValueAsInt">Last Int Value</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Parameter:</b></td>
+                <td><input type="text" name="param" id="param" value=""/>(Measurement Type)</td>
+            </tr>
+            <tr>
+                <td><b>Value:</b></td>
+                <td>
+                    <input type="text" name="value" id="value" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" class="btn btn-primary" value="Save" onClick="saveItem()"/>
+                </td>
+            </tr>
+        </table>
+    </form>
 
-</body>
+    </body>
 </html:html>

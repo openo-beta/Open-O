@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,52 +33,52 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="bed_demographic_status")
-public class BedDemographicStatus extends AbstractModel<Integer>{
+@Table(name = "bed_demographic_status")
+public class BedDemographicStatus extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="bed_demographic_status_id")
-	private Integer id;
-	
-	@Column(length=45)
-	private String name;
-	
-	private Integer duration = 0;
-	
-	private boolean dflt = false;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "bed_demographic_status_id")
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(length = 45)
+    private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private Integer duration = 0;
 
-	public String getName() {
-		return name;
-	}
+    private boolean dflt = false;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getDuration() {
-		return duration;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isDflt() {
-		return dflt;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDflt(boolean dflt) {
-		this.dflt = dflt;
-	}
-	
-	
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public boolean isDflt() {
+        return dflt;
+    }
+
+    public void setDflt(boolean dflt) {
+        this.dflt = dflt;
+    }
+
+
 }

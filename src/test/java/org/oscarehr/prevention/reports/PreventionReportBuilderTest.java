@@ -6,16 +6,16 @@ package org.oscarehr.prevention.reports;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,23 +36,23 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.ws.rest.to.model.PreventionSearchTo1;
 
 public class PreventionReportBuilderTest extends DaoTestFixtures {
-	private static Logger logger = MiscUtils.getLogger();
-	
-	@Before
- 	public void before() throws Exception {
-		SchemaUtils.restoreTable(new String[] { "demographic", "demographicArchive" });
-	}
-	
-	@Test
-	public void reportRunner()  {
-		String providerNo = "-1";
-		PreventionSearchTo1 preventionSearchTo1 = new PreventionSearchTo1();
+    private static Logger logger = MiscUtils.getLogger();
+
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable(new String[]{"demographic", "demographicArchive"});
+    }
+
+    @Test
+    public void reportRunner() {
+        String providerNo = "-1";
+        PreventionSearchTo1 preventionSearchTo1 = new PreventionSearchTo1();
 //		 {"id":null,"reportName":null,"ageStyle":1,"age1":"2","age2":null,"ageCalc":0,"ageAsOf":null,"rosterStat":"RO","rosterAsOf":null,"sex":1}
-		preventionSearchTo1.setAge1("2");
-		preventionSearchTo1.setAgeStyle("2");
-		preventionSearchTo1.setAgeCalc("0");
-		preventionSearchTo1.setRosterStat("RO");
-		preventionSearchTo1.setSex("1");
+        preventionSearchTo1.setAge1("2");
+        preventionSearchTo1.setAgeStyle("2");
+        preventionSearchTo1.setAgeCalc("0");
+        preventionSearchTo1.setRosterStat("RO");
+        preventionSearchTo1.setSex("1");
 		
 		
 		
@@ -86,14 +86,13 @@ public class PreventionReportBuilderTest extends DaoTestFixtures {
             		<option value="2">Male</option>
 			</select>
 		 */
-		
-		
-		
-		LoggedInInfo loggedInInfo = AuthUtils.initLoginContext();
-		ReportBuilder reportBuilder = new ReportBuilder();
-		Report report = reportBuilder.runReport(loggedInInfo, providerNo,preventionSearchTo1);
-		logger.error(" number of items "+report.getItems().size());
-		assertEquals(1,1);
-	}
-	
+
+
+        LoggedInInfo loggedInInfo = AuthUtils.initLoginContext();
+        ReportBuilder reportBuilder = new ReportBuilder();
+        Report report = reportBuilder.runReport(loggedInInfo, providerNo, preventionSearchTo1);
+        logger.error(" number of items " + report.getItems().size());
+        assertEquals(1, 1);
+    }
+
 }

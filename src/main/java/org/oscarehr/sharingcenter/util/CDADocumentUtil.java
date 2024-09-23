@@ -5,22 +5,28 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
+ * <p>
+ * This class is for the purpose of creating PhrExtract Documents in Oscar.
+ *
+ * @author Paul Brown
+ * @author Jacqueline Figueroa
+ * @author Nityan Khanna
  */
 /**
  * This class is for the purpose of creating PhrExtract Documents in Oscar.
@@ -231,20 +237,20 @@ public class CDADocumentUtil {
             setProviderInfo(docTemplate.addPerformer(), prov);
         }
     }
-    
+
     private static AuthorTemplate setProviderInfo(AuthorTemplate template, Provider provider) {
-    	AuthoringPersonTemplate author = (AuthoringPersonTemplate)template;
-    	author.addId(OidUtil.getOid(OidType.PROVIDER_OID), provider.getProviderNo());
-    	author.addName(EntityNameUse.Legal, provider.getTitle(), EntityNamePartType.Title);
-    	author.addName(EntityNameUse.Legal, provider.getFirstName(), EntityNamePartType.Given);
-    	author.addName(EntityNameUse.Legal, provider.getLastName(), EntityNamePartType.Family);
-    	author.addAddress(PostalAddressUse.WorkPlace, provider.getAddress(), AddressPartType.AddressLine);
-    	author.addTelecom(TelecommunicationsAddressUse.Home, provider.getPhone());
-    	author.addTelecom(TelecommunicationsAddressUse.WorkPlace, provider.getWorkPhone());
-    	author.addTelecom(TelecommunicationsAddressUse.WorkPlace, provider.getEmail());
+        AuthoringPersonTemplate author = (AuthoringPersonTemplate) template;
+        author.addId(OidUtil.getOid(OidType.PROVIDER_OID), provider.getProviderNo());
+        author.addName(EntityNameUse.Legal, provider.getTitle(), EntityNamePartType.Title);
+        author.addName(EntityNameUse.Legal, provider.getFirstName(), EntityNamePartType.Given);
+        author.addName(EntityNameUse.Legal, provider.getLastName(), EntityNamePartType.Family);
+        author.addAddress(PostalAddressUse.WorkPlace, provider.getAddress(), AddressPartType.AddressLine);
+        author.addTelecom(TelecommunicationsAddressUse.Home, provider.getPhone());
+        author.addTelecom(TelecommunicationsAddressUse.WorkPlace, provider.getWorkPhone());
+        author.addTelecom(TelecommunicationsAddressUse.WorkPlace, provider.getEmail());
         return template;
     }
-    
+
     private static Performer1Template setProviderInfo(Performer1Template template, Provider provider) {
         template.addId(OidUtil.getOid(OidType.PROVIDER_OID), provider.getProviderNo());
         template.addName(EntityNameUse.Legal, provider.getTitle(), EntityNamePartType.Title);
@@ -294,6 +300,7 @@ public class CDADocumentUtil {
             return AdministrativeGender.Undifferentiated;
         }
     }
+
     private static void createMeasurements(int demographicNo) {
         List<Measurement> measurements = MeasurementUtil.getMeasurements(demographicNo);
         VitalSignsSection vitalSignsSection = phrExtractDocument.getVitalSignsSection();
@@ -405,7 +412,7 @@ public class CDADocumentUtil {
                 //Place xPhrs in directory: workspace/tomcat-local/webapps/OscarDocument  
                 String base_doc_dir = oscarProperties.getProperty("BASE_DOCUMENT_DIR");
 
-				//Formatting & writing retrieved xPhr:
+                //Formatting & writing retrieved xPhr:
                 //Create string version of PhrExtract document for FileWriter to use:
                 String phrDocString = org.marc.shic.cda.utils.CdaUtils.toXmlString(phrExtractDocument.getDocument(), false);
 

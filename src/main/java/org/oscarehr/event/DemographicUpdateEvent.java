@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,21 +30,21 @@ import org.springframework.context.ApplicationEvent;
 
 public class DemographicUpdateEvent extends ApplicationEvent {
 
-	Logger logger = MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
-	private Integer demographicNo;
-	
-	public DemographicUpdateEvent(Object source,Integer demographicNo) {
-		super(source);
-		this.demographicNo = demographicNo;
+    private Integer demographicNo;
+
+    public DemographicUpdateEvent(Object source, Integer demographicNo) {
+        super(source);
+        this.demographicNo = demographicNo;
     }
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
-	
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
+
 }

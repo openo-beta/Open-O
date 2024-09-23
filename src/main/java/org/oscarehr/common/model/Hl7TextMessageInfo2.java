@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,43 +37,48 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "hl7TextMessageInfo2")
 public class Hl7TextMessageInfo2 extends AbstractModel<Integer> implements Serializable {
-	
-	 
-	public String message;
-	
-	public int lab_no_A;
-	public String labDate_A;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	public void setId(Integer id) {
-	    this.id = id;
+
+
+    public String message;
+
+    public int lab_no_A;
+    public String labDate_A;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    public void setId(Integer id) {
+        this.id = id;
     }
-	public Integer getId() {
-	    return id;
+
+    public Integer getId() {
+        return id;
     }
-	public String getMessage() {
-    	return message;
+
+    public String getMessage() {
+        return message;
     }
-	public void setMessage(String message) {
-    	this.message = message;
+
+    public void setMessage(String message) {
+        this.message = message;
     }
-	public int getLab_no_A() {
-    	return lab_no_A;
+
+    public int getLab_no_A() {
+        return lab_no_A;
     }
-	public void setLab_no_A(int lab_no_A) {
-    	this.lab_no_A = lab_no_A;
+
+    public void setLab_no_A(int lab_no_A) {
+        this.lab_no_A = lab_no_A;
     }
-	
-	public String getLabDate_A() {
-    	return labDate_A;
+
+    public String getLabDate_A() {
+        return labDate_A;
     }
-	public void setLabDate_A(String labDate_A) {
-    	this.labDate_A = labDate_A;
+
+    public void setLabDate_A(String labDate_A) {
+        this.labDate_A = labDate_A;
     }
-	
-	
-	
+
+
 }

@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.caisi.tickler.prepared;
@@ -35,7 +35,7 @@ import org.oscarehr.util.MiscUtils;
 
 public class PreparedTicklerManagerImpl implements PreparedTicklerManager {
 
-    static Logger log=MiscUtils.getLogger();
+    static Logger log = MiscUtils.getLogger();
 
     private List<PreparedTickler> ticklers;
 
@@ -47,13 +47,13 @@ public class PreparedTicklerManagerImpl implements PreparedTicklerManager {
     public void setPath(String path) {
         ticklers.clear();
         File f = new File(path + "/WEB-INF/classes/org/caisi/tickler/prepared/runtime");
-        if(f.isDirectory()) {
+        if (f.isDirectory()) {
             File[] files = f.listFiles();
-            for(int x=0;x<files.length;x++) {
+            for (int x = 0; x < files.length; x++) {
                 String fileName = files[x].getName();
-                fileName = fileName.substring(0,fileName.lastIndexOf('.'));
+                fileName = fileName.substring(0, fileName.lastIndexOf('.'));
                 PreparedTickler pt = null;
-                if((pt = loadClass("org.caisi.tickler.prepared.runtime." + fileName)) != null) {
+                if ((pt = loadClass("org.caisi.tickler.prepared.runtime." + fileName)) != null) {
                     ticklers.add(pt);
                 }
             }
@@ -66,8 +66,8 @@ public class PreparedTicklerManagerImpl implements PreparedTicklerManager {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         try {
-            pt = (PreparedTickler)cl.loadClass(className).newInstance();
-        }catch(Exception e) {
+            pt = (PreparedTickler) cl.loadClass(className).newInstance();
+        } catch (Exception e) {
             log.warn("Warning", e);
         }
 
@@ -79,9 +79,9 @@ public class PreparedTicklerManagerImpl implements PreparedTicklerManager {
     }
 
     public PreparedTickler getTickler(String name) {
-        for(int x=0;x<ticklers.size();x++) {
+        for (int x = 0; x < ticklers.size(); x++) {
             PreparedTickler tickler = ticklers.get(x);
-            if(tickler.getName().equals(name)) {
+            if (tickler.getName().equals(name)) {
                 return tickler;
             }
         }

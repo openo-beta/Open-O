@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -27,80 +27,81 @@ package org.oscarehr.appointment.search;
 import java.util.Calendar;
 
 public class AppointmentConfirmationTransfer {
-	private Calendar appointmentTime= null;
-	private Calendar appointmentEndTime = null;
-	private String appointmentDescription = null;
-	private String providerName = null;
-	private String location=null;
-	
-	private BookingError bookingError = null;
-	
-	public AppointmentConfirmationTransfer(){}
-	
-	public AppointmentConfirmationTransfer(Calendar appointmentTime,String appointmentDescription,String providerName,String location){
-		this.appointmentTime=appointmentTime; 
-		this.appointmentDescription = appointmentDescription;
-		this.providerName = providerName;
-		this.location = location;
-	}
-	
-	public AppointmentConfirmationTransfer(Calendar appointmentTime,Calendar endTime, String appointmentDescription,String providerName,String location){
-		this.appointmentTime=appointmentTime; 
-		this.appointmentEndTime = endTime;
-		this.appointmentDescription = appointmentDescription;
-		this.providerName = providerName;
-		this.location = location;
-	}
-	
-	public AppointmentConfirmationTransfer(BookingError bookingError){
-		this.bookingError = bookingError;
-	}
+    private Calendar appointmentTime = null;
+    private Calendar appointmentEndTime = null;
+    private String appointmentDescription = null;
+    private String providerName = null;
+    private String location = null;
 
-	public Calendar getAppointmentTime() {
-		return appointmentTime;
-	}
+    private BookingError bookingError = null;
 
-	public String getAppointmentDescription() {
-		return appointmentDescription;
-	}
+    public AppointmentConfirmationTransfer() {
+    }
 
-	public String getProviderName() {
-		return providerName;
-	}
+    public AppointmentConfirmationTransfer(Calendar appointmentTime, String appointmentDescription, String providerName, String location) {
+        this.appointmentTime = appointmentTime;
+        this.appointmentDescription = appointmentDescription;
+        this.providerName = providerName;
+        this.location = location;
+    }
 
-	public BookingError getBookingError() {
-		return bookingError;
-	}
+    public AppointmentConfirmationTransfer(Calendar appointmentTime, Calendar endTime, String appointmentDescription, String providerName, String location) {
+        this.appointmentTime = appointmentTime;
+        this.appointmentEndTime = endTime;
+        this.appointmentDescription = appointmentDescription;
+        this.providerName = providerName;
+        this.location = location;
+    }
 
-	public void setAppointmentTime(Calendar appointmentTime) {
-		this.appointmentTime = appointmentTime;
-	}
+    public AppointmentConfirmationTransfer(BookingError bookingError) {
+        this.bookingError = bookingError;
+    }
 
-	public void setAppointmentDescription(String appointmentDescription) {
-		this.appointmentDescription = appointmentDescription;
-	}
+    public Calendar getAppointmentTime() {
+        return appointmentTime;
+    }
 
-	public void setProviderName(String providerName) {
-		this.providerName = providerName;
-	}
+    public String getAppointmentDescription() {
+        return appointmentDescription;
+    }
 
-	public void setBookingError(BookingError bookingError) {
-		this.bookingError = bookingError;
-	}
+    public String getProviderName() {
+        return providerName;
+    }
 
-	public Calendar getAppointmentEndTime() {
-		return appointmentEndTime;
-	}
+    public BookingError getBookingError() {
+        return bookingError;
+    }
 
-	public void setAppointmentEndTime(Calendar appointmentEndTime) {
-		this.appointmentEndTime = appointmentEndTime;
-	}
+    public void setAppointmentTime(Calendar appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public void setAppointmentDescription(String appointmentDescription) {
+        this.appointmentDescription = appointmentDescription;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public void setBookingError(BookingError bookingError) {
+        this.bookingError = bookingError;
+    }
+
+    public Calendar getAppointmentEndTime() {
+        return appointmentEndTime;
+    }
+
+    public void setAppointmentEndTime(Calendar appointmentEndTime) {
+        this.appointmentEndTime = appointmentEndTime;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -48,56 +48,56 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class AuthenticationOutWSS4JInterceptorForIntegrator extends WSS4JOutInterceptor implements CallbackHandler {
-	private static final String REQUESTING_CAISI_PROVIDER_NO_KEY = "requestingCaisiProviderNo";
-	private static QName REQUESTING_CAISI_PROVIDER_NO_QNAME = new QName("http://oscarehr.org/caisi", REQUESTING_CAISI_PROVIDER_NO_KEY, "caisi");
+    private static final String REQUESTING_CAISI_PROVIDER_NO_KEY = "requestingCaisiProviderNo";
+    private static QName REQUESTING_CAISI_PROVIDER_NO_QNAME = new QName("http://oscarehr.org/caisi", REQUESTING_CAISI_PROVIDER_NO_KEY, "caisi");
 
-	private String password = null;
-	private String oscarProviderNo=null;
+    private String password = null;
+    private String oscarProviderNo = null;
 
-	public AuthenticationOutWSS4JInterceptorForIntegrator(String user, String password, String oscarProviderNo) {
-		this.password = password;
-		this.oscarProviderNo=oscarProviderNo;
+    public AuthenticationOutWSS4JInterceptorForIntegrator(String user, String password, String oscarProviderNo) {
+        this.password = password;
+        this.oscarProviderNo = oscarProviderNo;
 
-		HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
-		properties.put(WSHandlerConstants.USER, user);
-		properties.put(WSHandlerConstants.PASSWORD_TYPE, WSS4JConstants.PW_TEXT);
-		properties.put(WSHandlerConstants.PW_CALLBACK_REF, this);
+        HashMap<String, Object> properties = new HashMap<String, Object>();
+        properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+        properties.put(WSHandlerConstants.USER, user);
+        properties.put(WSHandlerConstants.PASSWORD_TYPE, WSS4JConstants.PW_TEXT);
+        properties.put(WSHandlerConstants.PW_CALLBACK_REF, this);
 
-		setProperties(properties);
-	}
+        setProperties(properties);
+    }
 
-	// don't like @override until jdk1.6?
-	// @Override
-	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-		for (Callback callback : callbacks) {
-			if (callback instanceof WSPasswordCallback) {
-				WSPasswordCallback wsPasswordCallback = (WSPasswordCallback) callback;
-				wsPasswordCallback.setPassword(password);
-			}
-		}
-	}
+    // don't like @override until jdk1.6?
+    // @Override
+    public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+        for (Callback callback : callbacks) {
+            if (callback instanceof WSPasswordCallback) {
+                WSPasswordCallback wsPasswordCallback = (WSPasswordCallback) callback;
+                wsPasswordCallback.setPassword(password);
+            }
+        }
+    }
 
-	public void handleMessage(SoapMessage message) throws Fault {		
-		addRequestingCaisiProviderNo(message, oscarProviderNo);
-		super.handleMessage(message);
-	}
+    public void handleMessage(SoapMessage message) throws Fault {
+        addRequestingCaisiProviderNo(message, oscarProviderNo);
+        super.handleMessage(message);
+    }
 
-	private static void addRequestingCaisiProviderNo(SoapMessage message, String providerNo) {
-		List<Header> headers = message.getHeaders();
+    private static void addRequestingCaisiProviderNo(SoapMessage message, String providerNo) {
+        List<Header> headers = message.getHeaders();
 
-		if (providerNo != null) {
-			headers.add(createHeader(REQUESTING_CAISI_PROVIDER_NO_QNAME, REQUESTING_CAISI_PROVIDER_NO_KEY, providerNo));
-		}
-	}
+        if (providerNo != null) {
+            headers.add(createHeader(REQUESTING_CAISI_PROVIDER_NO_QNAME, REQUESTING_CAISI_PROVIDER_NO_KEY, providerNo));
+        }
+    }
 
-	private static Header createHeader(QName qName, String key, String value) {
-		Document document = DOMUtils.createDocument();
+    private static Header createHeader(QName qName, String key, String value) {
+        Document document = DOMUtils.createDocument();
 
-		Element element = document.createElementNS("http://oscarehr.org/caisi", "caisi:" + key);
-		element.setTextContent(value);
+        Element element = document.createElementNS("http://oscarehr.org/caisi", "caisi:" + key);
+        element.setTextContent(value);
 
-		SoapHeader header = new SoapHeader(qName, element);
-		return (header);
-	}
+        SoapHeader header = new SoapHeader(qName, element);
+        return (header);
+    }
 }

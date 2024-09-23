@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,89 +36,89 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="workflow")
+@Table(name = "workflow")
 public class WorkFlow extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
-	private Integer id;
-	
-	@Column(name="workflow_type")
-	private String workflowType;
-	
-	@Column(name="provider_no")
-	private String providerNo;
-	
-	@Column(name="demographic_no")
-	private String demographicNo;
-	
-	@Column(name="completion_date")
-	@Temporal(TemporalType.DATE)
-	private Date completionDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer id;
 
-	@Column(name="current_state")
-	private String currentState;
-	
-	@Column(name="create_date_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDateTime;
+    @Column(name = "workflow_type")
+    private String workflowType;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "demographic_no")
+    private String demographicNo;
 
-	public String getWorkflowType() {
-		return workflowType;
-	}
+    @Column(name = "completion_date")
+    @Temporal(TemporalType.DATE)
+    private Date completionDate;
 
-	public void setWorkflowType(String workflowType) {
-		this.workflowType = workflowType;
-	}
+    @Column(name = "current_state")
+    private String currentState;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    @Column(name = "create_date_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDateTime;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getDemographicNo() {
-		return demographicNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDemographicNo(String demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public String getWorkflowType() {
+        return workflowType;
+    }
 
-	public Date getCompletionDate() {
-		return completionDate;
-	}
+    public void setWorkflowType(String workflowType) {
+        this.workflowType = workflowType;
+    }
 
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public String getCurrentState() {
-		return currentState;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setCurrentState(String currentState) {
-		this.currentState = currentState;
-	}
+    public String getDemographicNo() {
+        return demographicNo;
+    }
 
-	public Date getCreateDateTime() {
-		return createDateTime;
-	}
+    public void setDemographicNo(String demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public void setCreateDateTime(Date createDateTime) {
-		this.createDateTime = createDateTime;
-	}
-	
-	
+    public Date getCompletionDate() {
+        return completionDate;
+    }
+
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
+    }
+
+    public String getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(String currentState) {
+        this.currentState = currentState;
+    }
+
+    public Date getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public void setCreateDateTime(Date createDateTime) {
+        this.createDateTime = createDateTime;
+    }
+
+
 }

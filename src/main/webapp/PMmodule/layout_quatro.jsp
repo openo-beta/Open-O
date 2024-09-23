@@ -22,101 +22,99 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
-	scope="request" />
+       scope="request"/>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>Program Management Module</title>
-<link rel="stylesheet" type="text/css"
-	href='<html:rewrite page="/css/tigris.css" />' />
-<link rel="stylesheet" type="text/css"
-	href='<html:rewrite page="/css/displaytag.css" />' />
-<link rel="stylesheet" type="text/css"
-	href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />' />
-<link rel="stylesheet" type="text/css"
-	href='<html:rewrite page="/css/core.css" />' />
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title>Program Management Module</title>
+        <link rel="stylesheet" type="text/css"
+              href='<html:rewrite page="/css/tigris.css" />'/>
+        <link rel="stylesheet" type="text/css"
+              href='<html:rewrite page="/css/displaytag.css" />'/>
+        <link rel="stylesheet" type="text/css"
+              href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />'/>
+        <link rel="stylesheet" type="text/css"
+              href='<html:rewrite page="/css/core.css" />'/>
 
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
-<script type="text/javascript"
-	src="<html:rewrite page="/js/quatroLookup.js" />"></script>
-<script type="text/javascript"
-	src="<html:rewrite page="/js/validation.js" />"></script>
-<script type="text/javascript"
-	src="<html:rewrite page="/js/checkDate.js" />"></script>
+        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <script type="text/javascript"
+                src="<html:rewrite page="/js/quatroLookup.js" />"></script>
+        <script type="text/javascript"
+                src="<html:rewrite page="/js/validation.js" />"></script>
+        <script type="text/javascript"
+                src="<html:rewrite page="/js/checkDate.js" />"></script>
 
-<script type="text/javascript">
-			var isInFrame = true;
-			var readOnly = false;
-		    var win=null;
-			
-			/* date picker variables */
-			var timerId = 0;
-			var isDateValid = true;
-			var doOnBlur = true;
-			var deferSubmit = false;
-			/* end of datepicker variables */
-			
-			function setDivPosition()
-			{
-				 var ele = document.getElementById("scrollBar");
-				 if(ele==null) return;
-			     if (ele)
-			     {
-			        if(document.getElementById("scrollPosition")==null) return;
-			        var sp = document.getElementById("scrollPosition").value;
-			        if (!sp) sp = "0";
-			        document.getElementById("scrollBar").scrollTop = sp;
-			     }
-			 }
-			
-			 function getDivPosition()
-			 {
-			 	 var ele = document.getElementById("scrollBar");
-				 if(ele==null) return;
-			     if (ele) {
-			        if(document.getElementById("scrollPosition")==null) return;
-			     	document.getElementById("scrollPosition").value = ele.scrollTop;
-			     }
-			 }
-			 function initPage()
-			 {
-				setDivPosition();
-				if (typeof(init) == "function") eval("init()");
-				if (typeof(initHash) == "function") eval("initHash()");
-			 }
-		
-			
-			function unloadMe(){
-			  	if(win!=null) win.close();
-			}
-		</script>
-<html:base />
-</head>
-<body onload="initPage()" onunload="unloadMe()">
-<table border="0" cellspacing="0" cellpadding="0" width="100%"
-	height="100%">
-	<tr height="60px">
-		<td><tiles:insert name="Header_quatro.jsp">
-		</tiles:insert></td>
-	</tr>
-	<tr valign="top" height="100%">
-		<td>
-		<table width="100%" height="100%">
-			<tr>
-				<td id="leftcol" width="200px"><tiles:insert
-					attribute="leftNav" /></td>
-				<td valign="top" width="3px"><img
-					src='<html:rewrite page="/images/1x1.gif" />' width="3px" /></td>
-				<td align="left"><!--  div class="body" align="left"  this is the layout-->
-				<tiles:insert attribute="body" /> <!--  /div --></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-</table>
-</body>
+        <script type="text/javascript">
+            var isInFrame = true;
+            var readOnly = false;
+            var win = null;
+
+            /* date picker variables */
+            var timerId = 0;
+            var isDateValid = true;
+            var doOnBlur = true;
+            var deferSubmit = false;
+
+            /* end of datepicker variables */
+
+            function setDivPosition() {
+                var ele = document.getElementById("scrollBar");
+                if (ele == null) return;
+                if (ele) {
+                    if (document.getElementById("scrollPosition") == null) return;
+                    var sp = document.getElementById("scrollPosition").value;
+                    if (!sp) sp = "0";
+                    document.getElementById("scrollBar").scrollTop = sp;
+                }
+            }
+
+            function getDivPosition() {
+                var ele = document.getElementById("scrollBar");
+                if (ele == null) return;
+                if (ele) {
+                    if (document.getElementById("scrollPosition") == null) return;
+                    document.getElementById("scrollPosition").value = ele.scrollTop;
+                }
+            }
+
+            function initPage() {
+                setDivPosition();
+                if (typeof (init) == "function") eval("init()");
+                if (typeof (initHash) == "function") eval("initHash()");
+            }
+
+
+            function unloadMe() {
+                if (win != null) win.close();
+            }
+        </script>
+        <html:base/>
+    </head>
+    <body onload="initPage()" onunload="unloadMe()">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%"
+           height="100%">
+        <tr height="60px">
+            <td><tiles:insert name="Header_quatro.jsp">
+            </tiles:insert></td>
+        </tr>
+        <tr valign="top" height="100%">
+            <td>
+                <table width="100%" height="100%">
+                    <tr>
+                        <td id="leftcol" width="200px"><tiles:insert
+                                attribute="leftNav"/></td>
+                        <td valign="top" width="3px"><img
+                                src='<html:rewrite page="/images/1x1.gif" />' width="3px"/></td>
+                        <td align="left"><!--  div class="body" align="left"  this is the layout-->
+                            <tiles:insert attribute="body"/> <!--  /div --></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    </body>
 
 </html:html>

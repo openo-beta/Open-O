@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -56,105 +56,104 @@ import oscar.oscarBilling.ca.bc.pageUtil.BillingBillingManager.BillingItem;
 import oscar.oscarDemographic.data.DemographicData;
 
 public final class BillingViewAction
-    extends Action {
+        extends Action {
     private static Logger log = MiscUtils.getLogger();
 
-  public ActionForward execute(ActionMapping mapping,
-                               ActionForm form,
-                               HttpServletRequest request,
-                               HttpServletResponse response) throws IOException,
-      ServletException {
+    public ActionForward execute(ActionMapping mapping,
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws IOException,
+            ServletException {
 
-    Properties oscarVars = OscarProperties.getInstance();
+        Properties oscarVars = OscarProperties.getInstance();
 
-    if (oscarVars.getProperty("billregion").equals("ON")) {
-      String newURL = mapping.findForward("ON").getPath();
-      newURL = newURL + "?" + request.getQueryString();
-      return (new ActionForward(newURL));
-    }
-    else {
-      BillingViewForm frm = (BillingViewForm) form;
-      BillingViewBean bean = new BillingViewBean();
-      bean.loadBilling(request.getParameter("billing_no"));
-      BillingBillingManager bmanager = new BillingBillingManager();
-      ArrayList<BillingItem> billItem = new ArrayList<BillingItem>();
-      String[] billingN = request.getParameterValues("billing_no");
-
-      for (int i = 0; i < billingN.length; i++){
-          log.debug("billn "+i+" "+billingN[i]);
-         ArrayList<BillingItem> tempBillItem = bmanager.getBillView(billingN[i]);
-         billItem.addAll(tempBillItem);
-      }
-
-      log.debug("Calling getGrandTotal");
-      bean.setBillItem(billItem);
-
-      bean.calculateSubtotal();
-      log.debug("GrandTotal" + bmanager.getGrandTotal(billItem));
-      bean.setGrandtotal(bmanager.getGrandTotal(billItem));
-      DemographicData demoData = new DemographicData();
-      log.debug("Calling Demo");
-
-      org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), bean.getPatientNo());
-      bean.setPatientLastName(demo.getLastName());
-      bean.setPatientFirstName(demo.getFirstName());
-      bean.setPatientDoB(demo.getDateOfBirth());
-      bean.setPatientAddress1(demo.getAddress());
-      bean.setPatientAddress2(demo.getCity());
-      bean.setPatientPostal(demo.getPostal());
-      bean.setPatientSex(demo.getSex());
-      bean.setPatientPHN(demo.getHin()+demo.getVer());
-      bean.setPatientHCType(demo.getHcType());
-      bean.setPatientAge(demo.getAge());
-      frm.setBillingNo(bean.getBillingNo());
-      log.debug("End Demo Call billing No"+request.getParameter("billing_no"));
-      //Loading bill Recipient Data
-      List<BillRecipient> billRecipList = bean.getBillRecipient(request.getParameter("billing_no"));
-      if (!billRecipList.isEmpty()) {
-        log.debug("Filling recep with last details");
-        BillRecipient rec = billRecipList.get(0);
-        frm.setRecipientAddress(rec.getAddress());
-        frm.setRecipientCity(rec.getCity());
-        frm.setRecipientName(rec.getName());
-        frm.setRecipientPostal(rec.getPostal());
-        frm.setRecipientProvince(rec.getProvince());
-        frm.setBillPatient("0");
-      }else {
-        log.debug("Filling recep with demo details");
-        frm.setRecipientName(demo.getFirstName() + " " + demo.getLastName());
-        frm.setRecipientCity(demo.getCity());
-        frm.setRecipientAddress(demo.getAddress());
-        frm.setRecipientPostal(demo.getPostal());
-        frm.setRecipientProvince(demo.getProvince());
-        frm.setBillPatient("1");
-      }
-      frm.setMessageNotes(bean.getMessageNotes());
-      frm.setBillStatus(bean.getBillingType());
-      frm.setPaymentMethod(bean.getPaymentMethod());
-      request.getSession().setAttribute("billingViewBean", bean);
-      ActionForward actionForward = mapping.findForward("success");
-      String receipt = request.getParameter("receipt");
-      if (receipt != null && receipt.equals("yes")) {
-
-        BillingPreferencesDAO billingPreferencesDAO = SpringUtils.getBean(BillingPreferencesDAO.class);
-        BillingPreference pref = billingPreferencesDAO.getUserBillingPreference(bean.getBillingProvider());
-
-        if(pref == null || "NONE".equals(pref.getDefaultPayeeNo())){
-            bean.setDefaultPayeeInfo("");
-        } else if("CUSTOM".equals(pref.getDefaultPayeeNo())){
-            PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
-            List<Property> propList = propertyDao.findByNameAndProvider(Property.PROPERTY_KEY.invoice_payee_info, bean.getBillingProvider());
-            bean.setDefaultPayeeInfo(!propList.isEmpty() ? propList.get(0).getValue() : "");
+        if (oscarVars.getProperty("billregion").equals("ON")) {
+            String newURL = mapping.findForward("ON").getPath();
+            newURL = newURL + "?" + request.getQueryString();
+            return (new ActionForward(newURL));
         } else {
-            ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-            Provider p = providerDao.getProvider(pref.getDefaultPayeeNo());
-            bean.setDefaultPayeeInfo( p != null ? p.getFormattedName() : "");
+            BillingViewForm frm = (BillingViewForm) form;
+            BillingViewBean bean = new BillingViewBean();
+            bean.loadBilling(request.getParameter("billing_no"));
+            BillingBillingManager bmanager = new BillingBillingManager();
+            ArrayList<BillingItem> billItem = new ArrayList<BillingItem>();
+            String[] billingN = request.getParameterValues("billing_no");
+
+            for (int i = 0; i < billingN.length; i++) {
+                log.debug("billn " + i + " " + billingN[i]);
+                ArrayList<BillingItem> tempBillItem = bmanager.getBillView(billingN[i]);
+                billItem.addAll(tempBillItem);
+            }
+
+            log.debug("Calling getGrandTotal");
+            bean.setBillItem(billItem);
+
+            bean.calculateSubtotal();
+            log.debug("GrandTotal" + bmanager.getGrandTotal(billItem));
+            bean.setGrandtotal(bmanager.getGrandTotal(billItem));
+            DemographicData demoData = new DemographicData();
+            log.debug("Calling Demo");
+
+            org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), bean.getPatientNo());
+            bean.setPatientLastName(demo.getLastName());
+            bean.setPatientFirstName(demo.getFirstName());
+            bean.setPatientDoB(demo.getDateOfBirth());
+            bean.setPatientAddress1(demo.getAddress());
+            bean.setPatientAddress2(demo.getCity());
+            bean.setPatientPostal(demo.getPostal());
+            bean.setPatientSex(demo.getSex());
+            bean.setPatientPHN(demo.getHin() + demo.getVer());
+            bean.setPatientHCType(demo.getHcType());
+            bean.setPatientAge(demo.getAge());
+            frm.setBillingNo(bean.getBillingNo());
+            log.debug("End Demo Call billing No" + request.getParameter("billing_no"));
+            //Loading bill Recipient Data
+            List<BillRecipient> billRecipList = bean.getBillRecipient(request.getParameter("billing_no"));
+            if (!billRecipList.isEmpty()) {
+                log.debug("Filling recep with last details");
+                BillRecipient rec = billRecipList.get(0);
+                frm.setRecipientAddress(rec.getAddress());
+                frm.setRecipientCity(rec.getCity());
+                frm.setRecipientName(rec.getName());
+                frm.setRecipientPostal(rec.getPostal());
+                frm.setRecipientProvince(rec.getProvince());
+                frm.setBillPatient("0");
+            } else {
+                log.debug("Filling recep with demo details");
+                frm.setRecipientName(demo.getFirstName() + " " + demo.getLastName());
+                frm.setRecipientCity(demo.getCity());
+                frm.setRecipientAddress(demo.getAddress());
+                frm.setRecipientPostal(demo.getPostal());
+                frm.setRecipientProvince(demo.getProvince());
+                frm.setBillPatient("1");
+            }
+            frm.setMessageNotes(bean.getMessageNotes());
+            frm.setBillStatus(bean.getBillingType());
+            frm.setPaymentMethod(bean.getPaymentMethod());
+            request.getSession().setAttribute("billingViewBean", bean);
+            ActionForward actionForward = mapping.findForward("success");
+            String receipt = request.getParameter("receipt");
+            if (receipt != null && receipt.equals("yes")) {
+
+                BillingPreferencesDAO billingPreferencesDAO = SpringUtils.getBean(BillingPreferencesDAO.class);
+                BillingPreference pref = billingPreferencesDAO.getUserBillingPreference(bean.getBillingProvider());
+
+                if (pref == null || "NONE".equals(pref.getDefaultPayeeNo())) {
+                    bean.setDefaultPayeeInfo("");
+                } else if ("CUSTOM".equals(pref.getDefaultPayeeNo())) {
+                    PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
+                    List<Property> propList = propertyDao.findByNameAndProvider(Property.PROPERTY_KEY.invoice_payee_info, bean.getBillingProvider());
+                    bean.setDefaultPayeeInfo(!propList.isEmpty() ? propList.get(0).getValue() : "");
+                } else {
+                    ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+                    Provider p = providerDao.getProvider(pref.getDefaultPayeeNo());
+                    bean.setDefaultPayeeInfo(p != null ? p.getFormattedName() : "");
+                }
+                actionForward = mapping.findForward("private");
+            }
+
+
+            return actionForward;
         }
-        actionForward = mapping.findForward("private");
-      }
-
-
-      return actionForward;
     }
-  }
 }

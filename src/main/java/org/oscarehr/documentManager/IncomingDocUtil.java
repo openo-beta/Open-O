@@ -1,22 +1,22 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2012- Centre de Medecine Integree
- *
+ * <p>
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre de Medecine Integree, Saint-Laurent, Quebec, Canada to be provided
  * as part of the OSCAR McMaster EMR System
@@ -30,6 +30,7 @@ import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfNumber;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
@@ -40,6 +41,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.UserProperty;
 import org.oscarehr.util.MiscUtils;
@@ -54,7 +56,7 @@ public final class IncomingDocUtil {
             return o1.lastModified() == o2.lastModified() ? 0 : (o1.lastModified() > o2.lastModified() ? 1 : -1);
         }
     };
-   
+
     public ArrayList getPdfListModifiedDate() {
         return pdfListModifiedDate;
 
@@ -120,7 +122,7 @@ public final class IncomingDocUtil {
         return filePathName;
     }
 
-        public static String getAndCreateIncomingDocumentFilePathName(String queueId, String pdfDir, String pdfName) {
+    public static String getAndCreateIncomingDocumentFilePathName(String queueId, String pdfDir, String pdfName) {
         String filePathName = getAndCreateIncomingDocumentFilePath(queueId, pdfDir);
         filePathName += File.separator + pdfName;
 
@@ -173,17 +175,16 @@ public final class IncomingDocUtil {
     }
 
     public static String getAndCreateIncomingDocumentFilePath(String queueId, String pdfDir) {
-        String filePath=getIncomingDocumentFilePath( queueId, pdfDir);
+        String filePath = getIncomingDocumentFilePath(queueId, pdfDir);
         File filePathDir = new File(filePath);
 
         if (!filePathDir.exists()) {
             filePathDir.mkdir();
         }
         return filePath;
-        }
+    }
 
-    public static void rotatePage(String queueId, String myPdfDir, String myPdfName, String MyPdfPageNumber, int degrees) throws Exception 
-    {
+    public static void rotatePage(String queueId, String myPdfDir, String myPdfName, String MyPdfPageNumber, int degrees) throws Exception {
         long lastModified;
         String filePathName, tempFilePathName;
         int rot;
@@ -209,7 +210,7 @@ public final class IncomingDocUtil {
 
 
         } catch (Exception e) {
-                throw (e);                
+            throw (e);
         } finally {
             try {
                 if (stp != null) {
@@ -220,11 +221,11 @@ public final class IncomingDocUtil {
                     reader.close();
                 }
             } catch (Exception e) {
-                throw (e);                
+                throw (e);
             }
         }
 
-        
+
         boolean success = f.delete();
 
         if (success) {
@@ -233,14 +234,13 @@ public final class IncomingDocUtil {
             success = f1.renameTo(new File(filePathName));
             if (!success) {
                 throw new Exception("Error in renaming file from:" + tempFilePathName + " to " + filePathName);
-                }
+            }
         } else {
             throw new Exception("Error in deleting file:" + filePathName);
-            }
+        }
     }
 
-    public static void rotateAlPages(String queueId, String myPdfDir, String myPdfName, int degrees)  throws Exception
-    {
+    public static void rotateAlPages(String queueId, String myPdfDir, String myPdfName, int degrees) throws Exception {
         long lastModified;
         String filePathName, tempFilePathName;
         int rot;
@@ -268,7 +268,7 @@ public final class IncomingDocUtil {
             stp = new PdfStamper(reader, new FileOutputStream(tempFilePathName));
 
         } catch (Exception e) {
-           throw (e);
+            throw (e);
         } finally {
             try {
                 if (stp != null) {
@@ -291,14 +291,13 @@ public final class IncomingDocUtil {
             success = f1.renameTo(new File(filePathName));
             if (!success) {
                 throw new Exception("Error in renaming file from:" + tempFilePathName + "to " + filePathName);
-                }
+            }
         } else {
-                throw new Exception("Error in deleting file:" + filePathName);
+            throw new Exception("Error in deleting file:" + filePathName);
         }
     }
 
-    public static void deletePage(String queueId, String myPdfDir, String myPdfName, String PageNumberToDelete) throws Exception
-    {
+    public static void deletePage(String queueId, String myPdfDir, String myPdfName, String PageNumberToDelete) throws Exception {
         long lastModified;
         String filePathName, tempFilePathName;
 
@@ -383,8 +382,7 @@ public final class IncomingDocUtil {
         }
     }
 
-    public static void extractPage(String queueId, String myPdfDir, String myPdfName, String pageNumbersToExtract) throws Exception
-    {
+    public static void extractPage(String queueId, String myPdfDir, String myPdfName, String pageNumbersToExtract) throws Exception {
         long lastModified;
         String filePathName, tempFilePathName;
 
@@ -521,8 +519,7 @@ public final class IncomingDocUtil {
         }
     }
 
-    public static void DeletePDF(String queueId, String myPdfDir, String myPdfName) throws Exception
-    {
+    public static void DeletePDF(String queueId, String myPdfDir, String myPdfName) throws Exception {
         String filePathName;
         boolean success;
 
@@ -636,8 +633,7 @@ public final class IncomingDocUtil {
         return entryMode;
     }
 
-    public static void doPagesAction(String pdfAction, String queueIdStr, String pdfDir, String pdfName, String pdfPageNumber, String pdfExtractPageNumber, Locale locale) throws Exception
-    {
+    public static void doPagesAction(String pdfAction, String queueIdStr, String pdfDir, String pdfName, String pdfPageNumber, String pdfExtractPageNumber, Locale locale) throws Exception {
         String filePathName = getIncomingDocumentFilePathName(queueIdStr, pdfDir, pdfName);
         ResourceBundle props = ResourceBundle.getBundle("oscarResources", locale);
         int degree = 0;
@@ -647,18 +643,16 @@ public final class IncomingDocUtil {
                 || pdfAction.equals("RotateM90")) {
 
             if (pdfAction.equals("Rotate180")) {
-                degree=180;
+                degree = 180;
             } else if (pdfAction.equals("Rotate90")) {
-                degree=90;
+                degree = 90;
             } else if (pdfAction.equals("RotateM90")) {
-                degree=-90;
+                degree = -90;
             }
             try {
                 rotatePage(queueIdStr, pdfDir, pdfName, pdfPageNumber, degree);
-            }
-            catch (Exception e)
-            {
-                MiscUtils.getLogger().error("Error",e);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
                 throw new Exception(filePathName + " : " + props.getString("dms.incomingDocs.cannotRotatePage") + pdfPageNumber);
             }
         }
@@ -668,17 +662,16 @@ public final class IncomingDocUtil {
                 || pdfAction.equals("RotateAllM90")) {
 
             if (pdfAction.equals("RotateAll180")) {
-                degree=180;
+                degree = 180;
             } else if (pdfAction.equals("RotateAll90")) {
-                degree=90;
+                degree = 90;
             } else if (pdfAction.equals("RotateAllM90")) {
-                degree=-90;
+                degree = -90;
             }
             try {
                 rotateAlPages(queueIdStr, pdfDir, pdfName, degree);
-            } catch (Exception e)
-            {
-                MiscUtils.getLogger().error("Error",e);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
                 throw new Exception(filePathName + " : " + props.getString("dms.incomingDocs.cannotRotateAllPages"));
             }
         }
@@ -687,9 +680,8 @@ public final class IncomingDocUtil {
         if (pdfAction.equals("DeletePage")) {
             try {
                 deletePage(queueIdStr, pdfDir, pdfName, pdfPageNumber);
-            } catch (Exception e)
-            {
-                MiscUtils.getLogger().error("Error",e);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
                 throw new Exception(filePathName + " : " + props.getString("dms.incomingDocs.cannotDeletePage") + pdfPageNumber);
             }
         }
@@ -697,9 +689,8 @@ public final class IncomingDocUtil {
         if (pdfAction.equals("DeletePDF")) {
             try {
                 DeletePDF(queueIdStr, pdfDir, pdfName);
-            } catch (Exception e)
-            {
-                MiscUtils.getLogger().error("Error",e);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
                 throw new Exception(props.getString("dms.incomingDocs.cannotDelete") + filePathName);
             }
         }
@@ -707,9 +698,8 @@ public final class IncomingDocUtil {
         if (pdfAction.equals("ExtractPagePDF")) {
             try {
                 extractPage(queueIdStr, pdfDir, pdfName, pdfExtractPageNumber);
-            } catch (Exception e)
-            {
-                MiscUtils.getLogger().error("Error",e);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
                 throw e;
             }
         }

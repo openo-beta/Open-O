@@ -24,25 +24,25 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_con");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_con");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page
-	import="java.util.ArrayList, oscar.oscarLab.ca.on.*, oscar.util.StringUtils"%>
-<%@page	import="java.util.List"%>
+        import="java.util.ArrayList, oscar.oscarLab.ca.on.*, oscar.util.StringUtils" %>
+<%@page import="java.util.List" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.hospitalReportManager.dao.HRMDocumentDao" %>
 <%@ page import="org.oscarehr.hospitalReportManager.dao.HRMDocumentToDemographicDao" %>
@@ -53,78 +53,79 @@ if(!authed) {
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-  String demo = request.getParameter("demo") ;
-  String requestId = request.getParameter("requestId");
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    String demo = request.getParameter("demo");
+    String requestId = request.getParameter("requestId");
 %>
 <ul id="attachedList"
-	style="background-color: white; padding-left: 20px; list-style-position: outside; list-style-type: lower-roman;">
-	<%
-            ArrayList privatedocs = new ArrayList();
-            privatedocs = EDocUtil.listDocs(loggedInInfo, demo, requestId, EDocUtil.ATTACHED);
-            EDoc curDoc;
-            for(int idx = 0; idx < privatedocs.size(); ++idx)
-            {                    
-                curDoc = (EDoc)privatedocs.get(idx);                                            
-        %>
-	<li class="doc"><%=StringUtils.maxLenString(curDoc.getDescription(),19,16,"...")%></li>
-	<%                                           
+    style="background-color: white; padding-left: 20px; list-style-position: outside; list-style-type: lower-roman;">
+    <%
+        ArrayList privatedocs = new ArrayList();
+        privatedocs = EDocUtil.listDocs(loggedInInfo, demo, requestId, EDocUtil.ATTACHED);
+        EDoc curDoc;
+        for (int idx = 0; idx < privatedocs.size(); ++idx) {
+            curDoc = (EDoc) privatedocs.get(idx);
+    %>
+    <li class="doc"><%=StringUtils.maxLenString(curDoc.getDescription(), 19, 16, "...")%>
+    </li>
+    <%
+        }
+
+        CommonLabResultData labData = new CommonLabResultData();
+        ArrayList labs = labData.populateLabResultsData(loggedInInfo, demo, requestId, CommonLabResultData.ATTACHED);
+        LabResultData resData;
+        for (int idx = 0; idx < labs.size(); ++idx) {
+            resData = (LabResultData) labs.get(idx);
+    %>
+    <li class="lab"><%=resData.getDiscipline() + " " + resData.getDateTime()%>
+    </li>
+    <%
+        }
+        //Gets the DAOs for HRMDocumentToDemographic and HRMDocument
+        HRMDocumentToDemographicDao hrmDocumentToDemographicDao = (HRMDocumentToDemographicDao) SpringUtils.getBean(HRMDocumentToDemographicDao.class);
+        HRMDocumentDao hrmDocumentDao = (HRMDocumentDao) SpringUtils.getBean(HRMDocumentDao.class);
+        //Gets the list of attached HRM Documents with the consultation
+        List<HRMDocumentToDemographic> hrmDocumentToDemographicList = hrmDocumentToDemographicDao.findHRMDocumentsAttachedToConsultation(requestId);
+        //Declares an hrmDocument, a truncatedDisplayName, and a date for each attached HRM document
+        HRMDocument hrmDocument;
+        String truncatedDisplayName;
+        String date;
+        //For each HRMDocumentToDemographic in the list
+        for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographicList) {
+            //Gets the corresponding HRMDocument
+            hrmDocument = hrmDocumentDao.find(hrmDocumentToDemographic.getHrmDocumentId());
+            //Checks if the hrmDescription has data, if it does then it becomes the displayName, if it doesn't then the reportType becomes the display name
+            if (!hrmDocument.getDescription().equals("")) {
+                truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getDescription(), 14, 11, "");
+            } else {
+                truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getReportType(), 14, 11, "");
             }
 
-                CommonLabResultData labData = new CommonLabResultData();
-                ArrayList labs = labData.populateLabResultsData(loggedInInfo, demo, requestId, CommonLabResultData.ATTACHED);
-                LabResultData resData;
-                for(int idx = 0; idx < labs.size(); ++idx) 
-                {
-                    resData = (LabResultData)labs.get(idx);
-        %>
-	<li class="lab"><%=resData.getDiscipline()+" "+resData.getDateTime()%></li>
-	<%
-                }
-                //Gets the DAOs for HRMDocumentToDemographic and HRMDocument
-                HRMDocumentToDemographicDao hrmDocumentToDemographicDao = (HRMDocumentToDemographicDao) SpringUtils.getBean(HRMDocumentToDemographicDao.class);
-                HRMDocumentDao hrmDocumentDao = (HRMDocumentDao) SpringUtils.getBean(HRMDocumentDao.class);
-				//Gets the list of attached HRM Documents with the consultation
-                List<HRMDocumentToDemographic> hrmDocumentToDemographicList = hrmDocumentToDemographicDao.findHRMDocumentsAttachedToConsultation(requestId);
-				//Declares an hrmDocument, a truncatedDisplayName, and a date for each attached HRM document
-                HRMDocument hrmDocument;
-                String truncatedDisplayName;
-                String date;
-                //For each HRMDocumentToDemographic in the list
-                for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographicList) {
-                	//Gets the corresponding HRMDocument
-                	hrmDocument = hrmDocumentDao.find(hrmDocumentToDemographic.getHrmDocumentId());
-                	//Checks if the hrmDescription has data, if it does then it becomes the displayName, if it doesn't then the reportType becomes the display name
-                	if (!hrmDocument.getDescription().equals("")) {
-                		truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getDescription(),14,11,"");	
-                	}
-                	else {
-                		truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getReportType(),14,11,"");
-                	}
-                	
-                	//Outputs the list item
-                %>	
-					<li class="hrm"><%=truncatedDisplayName%></li>
-                <%
-                }
+            //Outputs the list item
+    %>
+    <li class="hrm"><%=truncatedDisplayName%>
+    </li>
+    <%
+        }
 
-				//Get attached eForms
-				List<EFormData> eForms = EFormUtil.listPatientEformsCurrentAttachedToConsult(requestId);
-				for (EFormData eForm : eForms) { %>
-					<li class="eForm"><%=(eForm.getFormName().length()>14)?eForm.getFormName().substring(0, 11)+"...":eForm.getFormName()%></li>
-				<%
-				}
-        %>
+        //Get attached eForms
+        List<EFormData> eForms = EFormUtil.listPatientEformsCurrentAttachedToConsult(requestId);
+        for (EFormData eForm : eForms) { %>
+    <li class="eForm"><%=(eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()%>
+    </li>
+    <%
+        }
+    %>
 </ul>
 <%
-           if( privatedocs.size() == 0 && labs.size() == 0 && hrmDocumentToDemographicList.size() == 0 && eForms.isEmpty()) {
-        %>
+    if (privatedocs.size() == 0 && labs.size() == 0 && hrmDocumentToDemographicList.size() == 0 && eForms.isEmpty()) {
+%>
 <p id="attachDefault"
-	style="background-color: white; text-align: center;"><bean:message
-	key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty" /></p>
+   style="background-color: white; text-align: center;"><bean:message
+        key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/></p>
 <%
-           }
-         %>
+    }
+%>

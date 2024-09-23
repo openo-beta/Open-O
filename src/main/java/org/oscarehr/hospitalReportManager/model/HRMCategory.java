@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -19,44 +19,44 @@ import org.oscarehr.common.model.AbstractModel;
 
 @Entity
 public class HRMCategory extends AbstractModel<Integer> {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String categoryName;
-	private String subClassNameMnemonic;
-	private String sendingFacilityId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String categoryName;
+    private String subClassNameMnemonic;
+    private String sendingFacilityId;
 
-	public HRMCategory() {
+    public HRMCategory() {
 
-	}
+    }
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public String getCategoryName() {
-		return categoryName;
-	}
+    public String getCategoryName() {
+        return categoryName;
+    }
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
-	public String getSubClassNameMnemonic() {
-		return (subClassNameMnemonic);
-	}
+    public String getSubClassNameMnemonic() {
+        return (subClassNameMnemonic);
+    }
 
-	public void setSubClassNameMnemonic(String subClassNameMnemonic) {
-		this.subClassNameMnemonic = subClassNameMnemonic;
-	}
+    public void setSubClassNameMnemonic(String subClassNameMnemonic) {
+        this.subClassNameMnemonic = subClassNameMnemonic;
+    }
 
-	public String getSendingFacilityId() {
-		return sendingFacilityId;
-	}
+    public String getSendingFacilityId() {
+        return sendingFacilityId;
+    }
 
-	public void setSendingFacilityId(String sendingFacilityId) {
-		this.sendingFacilityId = sendingFacilityId;
-	}
+    public void setSendingFacilityId(String sendingFacilityId) {
+        this.sendingFacilityId = sendingFacilityId;
+    }
 
 }

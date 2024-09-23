@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -66,38 +66,38 @@ import org.apache.commons.io.FileUtils;
 @Entity
 @Table(name = "document")
 @NamedQueries({
-    @NamedQuery(name = "Document.findAll", query = "SELECT d FROM Document d"),
-    @NamedQuery(name = "Document.findByDocumentNo", query = "SELECT d FROM Document d WHERE d.documentNo = :documentNo"),
-    @NamedQuery(name = "Document.findByDoctype", query = "SELECT d FROM Document d WHERE d.doctype = :doctype"),
-    @NamedQuery(name = "Document.findByDocdesc", query = "SELECT d FROM Document d WHERE d.docdesc = :docdesc"),
-    @NamedQuery(name = "Document.findByDocfilename", query = "SELECT d FROM Document d WHERE d.docfilename = :docfilename"),
-    @NamedQuery(name = "Document.findByDoccreator", query = "SELECT d FROM Document d WHERE d.doccreator = :doccreator"),
-    @NamedQuery(name = "Document.findByContentdatetime", query = "SELECT d FROM Document d WHERE d.contentdatetime = :contentdatetime"),
-    @NamedQuery(name = "Document.findByResponsible", query = "SELECT d FROM Document d WHERE d.responsible = :responsible"),
-    @NamedQuery(name = "Document.findBySource", query = "SELECT d FROM Document d WHERE d.source = :source"),
-    @NamedQuery(name = "Document.findByProgramId", query = "SELECT d FROM Document d WHERE d.programId = :programId"),
-    @NamedQuery(name = "Document.findByUpdatedatetime", query = "SELECT d FROM Document d WHERE d.updatedatetime = :updatedatetime"),
-    @NamedQuery(name = "Document.findByStatus", query = "SELECT d FROM Document d WHERE d.status = :status"),
-    @NamedQuery(name = "Document.findByContenttype", query = "SELECT d FROM Document d WHERE d.contenttype = :contenttype"),
-    @NamedQuery(name = "Document.findByPublic1", query = "SELECT d FROM Document d WHERE d.public1 = :public1"),
-    @NamedQuery(name = "Document.findByObservationdate", query = "SELECT d FROM Document d WHERE d.observationdate = :observationdate"),
-    @NamedQuery(name = "Document.findByReviewer", query = "SELECT d FROM Document d WHERE d.reviewer = :reviewer"),
-    @NamedQuery(name = "Document.findByReviewdatetime", query = "SELECT d FROM Document d WHERE d.reviewdatetime = :reviewdatetime"),
-    @NamedQuery(name = "Document.findByNumberOfPages", query = "SELECT d FROM Document d WHERE d.numberofpages = :numberofpages"),
-    @NamedQuery(name = "Document.findPhotosByAppointmentNo", query = "SELECT d FROM Document d WHERE d.appointmentNo = :appointmentNo and d.doctype='photo'")})
+        @NamedQuery(name = "Document.findAll", query = "SELECT d FROM Document d"),
+        @NamedQuery(name = "Document.findByDocumentNo", query = "SELECT d FROM Document d WHERE d.documentNo = :documentNo"),
+        @NamedQuery(name = "Document.findByDoctype", query = "SELECT d FROM Document d WHERE d.doctype = :doctype"),
+        @NamedQuery(name = "Document.findByDocdesc", query = "SELECT d FROM Document d WHERE d.docdesc = :docdesc"),
+        @NamedQuery(name = "Document.findByDocfilename", query = "SELECT d FROM Document d WHERE d.docfilename = :docfilename"),
+        @NamedQuery(name = "Document.findByDoccreator", query = "SELECT d FROM Document d WHERE d.doccreator = :doccreator"),
+        @NamedQuery(name = "Document.findByContentdatetime", query = "SELECT d FROM Document d WHERE d.contentdatetime = :contentdatetime"),
+        @NamedQuery(name = "Document.findByResponsible", query = "SELECT d FROM Document d WHERE d.responsible = :responsible"),
+        @NamedQuery(name = "Document.findBySource", query = "SELECT d FROM Document d WHERE d.source = :source"),
+        @NamedQuery(name = "Document.findByProgramId", query = "SELECT d FROM Document d WHERE d.programId = :programId"),
+        @NamedQuery(name = "Document.findByUpdatedatetime", query = "SELECT d FROM Document d WHERE d.updatedatetime = :updatedatetime"),
+        @NamedQuery(name = "Document.findByStatus", query = "SELECT d FROM Document d WHERE d.status = :status"),
+        @NamedQuery(name = "Document.findByContenttype", query = "SELECT d FROM Document d WHERE d.contenttype = :contenttype"),
+        @NamedQuery(name = "Document.findByPublic1", query = "SELECT d FROM Document d WHERE d.public1 = :public1"),
+        @NamedQuery(name = "Document.findByObservationdate", query = "SELECT d FROM Document d WHERE d.observationdate = :observationdate"),
+        @NamedQuery(name = "Document.findByReviewer", query = "SELECT d FROM Document d WHERE d.reviewer = :reviewer"),
+        @NamedQuery(name = "Document.findByReviewdatetime", query = "SELECT d FROM Document d WHERE d.reviewdatetime = :reviewdatetime"),
+        @NamedQuery(name = "Document.findByNumberOfPages", query = "SELECT d FROM Document d WHERE d.numberofpages = :numberofpages"),
+        @NamedQuery(name = "Document.findPhotosByAppointmentNo", query = "SELECT d FROM Document d WHERE d.appointmentNo = :appointmentNo and d.doctype='photo'")})
 public class Document extends AbstractModel<Integer> implements Serializable {
     private static final long serialVersionUID = 1L;
-   
-    public static final char STATUS_ACTIVE='A';
-    public static final char STATUS_DELETED='D';
-    
+
+    public static final char STATUS_ACTIVE = 'A';
+    public static final char STATUS_DELETED = 'D';
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "document_no")
     private Integer documentNo;
 
-   // private Integer id;
+    // private Integer id;
     @Column(name = "doctype")
     private String doctype;
 
@@ -152,30 +152,30 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     private String reviewer;
     @Column(name = "reviewdatetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date reviewdatetime;    
+    private Date reviewdatetime;
     @Column(name = "number_of_pages")
     private Integer numberofpages;
-    @Column(name="appointment_no")
+    @Column(name = "appointment_no")
     private Integer appointmentNo;
-    @Column(name="abnormal", columnDefinition = "integer default 0")
+    @Column(name = "abnormal", columnDefinition = "integer default 0")
     private boolean abnormal;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "document_no", insertable = false, updatable = false)
     private List<DocumentReview> reviews = new ArrayList<DocumentReview>();
 
-    private Boolean restrictToProgram=false;
+    private Boolean restrictToProgram = false;
     @Temporal(TemporalType.DATE)
     private Date receivedDate;
 
     @Transient
     private byte[] base64Binary;
-    
+
     public Document() {
     }
 
     public Document(Integer documentNo) {
         this.documentNo = documentNo;
-       // this.id=this.documentNo;
+        // this.id=this.documentNo;
     }
 
     public Document(Integer documentNo, String docdesc, String docfilename, String doccreator, String responsible, char status, String contenttype, int public1, int numberOfPages) {
@@ -191,9 +191,10 @@ public class Document extends AbstractModel<Integer> implements Serializable {
 //        this.id=this.documentNo;
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return documentNo;
     }
+
     public Integer getDocumentNo() {
         return documentNo;
     }
@@ -241,7 +242,7 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     public void setDoccreator(String doccreator) {
         this.doccreator = doccreator;
     }
-    
+
     public Date getContentdatetime() {
         return contentdatetime;
     }
@@ -261,6 +262,7 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     public Date getSentDateTime() {
         return sentDateTime;
     }
+
     public void setSentDateTime(Date sentDateTime) {
         this.sentDateTime = sentDateTime;
     }
@@ -367,43 +369,44 @@ public class Document extends AbstractModel<Integer> implements Serializable {
         this.numberofpages = numberOfPages;
     }
 
-	public Integer getAppointmentNo() {
-		return appointmentNo;
-	}
-
-	public void setAppointmentNo(Integer appointmentNo) {
-		this.appointmentNo = appointmentNo;
-	}
-
-	public boolean isAbnormal() {
-		return abnormal;
-	}
-	public void setAbnormal(boolean abnormal) {
-		this.abnormal = abnormal;
-	}
-
-	public String getDocClass() {
-    	return docClass;
+    public Integer getAppointmentNo() {
+        return appointmentNo;
     }
 
-	public void setDocClass(String docClass) {
-    	this.docClass = docClass;
+    public void setAppointmentNo(Integer appointmentNo) {
+        this.appointmentNo = appointmentNo;
     }
 
-	public String getDocSubClass() {
-    	return docSubClass;
+    public boolean isAbnormal() {
+        return abnormal;
     }
 
-	public void setDocSubClass(String docSubClass) {
-    	this.docSubClass = docSubClass;
+    public void setAbnormal(boolean abnormal) {
+        this.abnormal = abnormal;
     }
 
-	public String getSourceFacility() {
-    	return sourceFacility;
+    public String getDocClass() {
+        return docClass;
     }
 
-	public void setSourceFacility(String sourceFacility) {
-    	this.sourceFacility = sourceFacility;
+    public void setDocClass(String docClass) {
+        this.docClass = docClass;
+    }
+
+    public String getDocSubClass() {
+        return docSubClass;
+    }
+
+    public void setDocSubClass(String docSubClass) {
+        this.docSubClass = docSubClass;
+    }
+
+    public String getSourceFacility() {
+        return sourceFacility;
+    }
+
+    public void setSourceFacility(String sourceFacility) {
+        this.sourceFacility = sourceFacility;
     }
 
     public List<DocumentReview> getReviews() {
@@ -415,54 +418,52 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     }
 
     /**
-	 * @returns a string representing the path of the file on disk, i.e. document_dir+'/'+filename
-	 */
-	public String getDocumentFileFullPath()
-	{
-		String docDir = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-		return(docDir+'/'+docfilename);
-	}
-	
-	public byte[] getDocumentFileContentsAsBytes() throws IOException
-	{
-		return(FileUtils.readFileToByteArray(new File(getDocumentFileFullPath())));
-	}
+     * @returns a string representing the path of the file on disk, i.e. document_dir+'/'+filename
+     */
+    public String getDocumentFileFullPath() {
+        String docDir = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        return (docDir + '/' + docfilename);
+    }
 
-	@PreUpdate
-	protected void jpaUpdateDate() {
-		this.updatedatetime = new Date();
-	}
+    public byte[] getDocumentFileContentsAsBytes() throws IOException {
+        return (FileUtils.readFileToByteArray(new File(getDocumentFileFullPath())));
+    }
+
+    @PreUpdate
+    protected void jpaUpdateDate() {
+        this.updatedatetime = new Date();
+    }
 
     @PrePersist
     protected void jpaContentDate() {
-	    if (this.contentdatetime == null) {
+        if (this.contentdatetime == null) {
             this.contentdatetime = new Date();
         }
         this.updatedatetime = new Date();
     }
 
-	public Boolean isRestrictToProgram() {
-		return restrictToProgram;
-	}
+    public Boolean isRestrictToProgram() {
+        return restrictToProgram;
+    }
 
-	public void setRestrictToProgram(Boolean restrictToProgram) {
-		this.restrictToProgram = restrictToProgram;
-	}
+    public void setRestrictToProgram(Boolean restrictToProgram) {
+        this.restrictToProgram = restrictToProgram;
+    }
 
-	public Date getReceivedDate() {
-		return receivedDate;
-	}
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
 
-	public void setReceivedDate(Date receivedDate) {
-		this.receivedDate = receivedDate;
-	}
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
 
     public byte[] getBase64Binary() {
-		return base64Binary;
-	}
+        return base64Binary;
+    }
 
-	public void setBase64Binary(byte[] base64Binary) {
-		this.base64Binary = base64Binary;
-	}
-	
+    public void setBase64Binary(byte[] base64Binary) {
+        this.base64Binary = base64Binary;
+    }
+
 }

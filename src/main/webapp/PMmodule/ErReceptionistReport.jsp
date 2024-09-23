@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,15 +24,14 @@
 --%>
 
 
-
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
-	scope="request" />
+       scope="request"/>
 
 <html>
 <head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<META HTTP-EQUIV="refresh"
-	content="0;URL=<c:out value="${ctx}"/>/ReceptionistReport.do?id=<c:out value="${id}"/>">
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <META HTTP-EQUIV="refresh"
+          content="0;URL=<c:out value="${ctx}"/>/ReceptionistReport.do?id=<c:out value="${id}"/>">
 </head>
 </html>

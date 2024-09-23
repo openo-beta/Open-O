@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,20 +40,20 @@ import oscar.oscarDB.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 public class FrmRourkeRecord extends FrmRecord {
-    private static Logger logger=MiscUtils.getLogger(); 
+    private static Logger logger = MiscUtils.getLogger();
 
-	
+
     public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID)
-            throws SQLException    {
+            throws SQLException {
         Properties props = new Properties();
 
-        if(existingID <= 0) {
-			
+        if (existingID <= 0) {
+
             String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
-                + "year_of_birth, month_of_birth, date_of_birth, sex "
-                + "FROM demographic WHERE demographic_no = " + demographicNo;
+                    + "year_of_birth, month_of_birth, date_of_birth, sex "
+                    + "FROM demographic WHERE demographic_no = " + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
-            if(rs.next()) {
+            if (rs.next()) {
                 props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
                 props.setProperty("c_pName", oscar.Misc.getString(rs, "pName"));
                 props.setProperty("formDate", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
@@ -65,8 +65,8 @@ public class FrmRourkeRecord extends FrmRecord {
             }
             rs.close();
         } else {
-            String sql = "SELECT * FROM formRourke WHERE demographic_no = " +demographicNo +" AND ID = " +existingID;
-			props = (new FrmRecordHelp()).getFormRecord(sql);
+            String sql = "SELECT * FROM formRourke WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+            props = (new FrmRecordHelp()).getFormRecord(sql);
         }
 
         return props;
@@ -74,88 +74,90 @@ public class FrmRourkeRecord extends FrmRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
-        String sql = "SELECT * FROM formRourke WHERE demographic_no=" +demographic_no +" AND ID=0";
+        String sql = "SELECT * FROM formRourke WHERE demographic_no=" + demographic_no + " AND ID=0";
 
-		return ((new FrmRecordHelp()).saveFormRecord(props, sql));
+        return ((new FrmRecordHelp()).saveFormRecord(props, sql));
     }
 
-//////////////new/ Done By Jay////
-    public boolean isFemale(int demo){
-	boolean retval = false;
-	ResultSet rs;
-	String str = "M";
-	try{
-		rs = DBHandler.GetSQL("select sex from demographic where demographic_no = "+demo);
-		if(rs.next()){
-			str = oscar.Misc.getString(rs, "sex");	
-			if (str.equalsIgnoreCase("F")){
-				retval = true;
-			}
-		}
-	rs.close();
-	}catch(Exception exc){MiscUtils.getLogger().error("Error", exc);}	
-	return retval;
+    //////////////new/ Done By Jay////
+    public boolean isFemale(int demo) {
+        boolean retval = false;
+        ResultSet rs;
+        String str = "M";
+        try {
+            rs = DBHandler.GetSQL("select sex from demographic where demographic_no = " + demo);
+            if (rs.next()) {
+                str = oscar.Misc.getString(rs, "sex");
+                if (str.equalsIgnoreCase("F")) {
+                    retval = true;
+                }
+            }
+            rs.close();
+        } catch (Exception exc) {
+            MiscUtils.getLogger().error("Error", exc);
+        }
+        return retval;
     }
 ///////////////////////////////////
 
-    public Properties getGraph(int demographicNo, int existingID)  {
+    public Properties getGraph(int demographicNo, int existingID) {
         Properties props = new Properties();
 
-        
+
         ResultSet rs;
         String sql;
 
-        if(existingID==0) {
+        if (existingID == 0) {
             return props;
-        }  else {
+        } else {
             sql = "SELECT c_pName, c_birthDate, c_birthWeight, c_headCirc, c_length, "
-                + "p1_date1w, p1_date2w, p1_date1m, p1_date2m, "
-                + "p2_date4m, p2_date6m, p2_date9m, p2_date12m, p3_date18m, p3_date2y, "
-                + "p1_hc1w, p1_hc2w, p1_hc1m, p1_hc2m, "
-                + "p2_hc4m, p2_hc6m, p2_hc9m, p2_hc12m, p3_hc18m, "
-                + "p1_wt1w, p1_wt2w, p1_wt1m, p1_wt2m, "
-                + "p2_wt4m, p2_wt6m, p2_wt9m, p2_wt12m, p3_wt18m, p3_wt2y, "
-                + "p1_ht1w, p1_ht2w, p1_ht1m, p1_ht2m, "
-                + "p2_ht4m, p2_ht6m, p2_ht9m, p2_ht12m, p3_ht18m, p3_ht2y "
-                + "FROM formRourke "
-                + "WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+                    + "p1_date1w, p1_date2w, p1_date1m, p1_date2m, "
+                    + "p2_date4m, p2_date6m, p2_date9m, p2_date12m, p3_date18m, p3_date2y, "
+                    + "p1_hc1w, p1_hc2w, p1_hc1m, p1_hc2m, "
+                    + "p2_hc4m, p2_hc6m, p2_hc9m, p2_hc12m, p3_hc18m, "
+                    + "p1_wt1w, p1_wt2w, p1_wt1m, p1_wt2m, "
+                    + "p2_wt4m, p2_wt6m, p2_wt9m, p2_wt12m, p3_wt18m, p3_wt2y, "
+                    + "p1_ht1w, p1_ht2w, p1_ht1m, p1_ht2m, "
+                    + "p2_ht4m, p2_ht6m, p2_ht9m, p2_ht12m, p3_ht18m, p3_ht2y "
+                    + "FROM formRourke "
+                    + "WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
 
-            
-            	try {
-	                rs = DBHandler.GetSQL(sql);
 
-	                if(rs.next())           {
-	                    ResultSetMetaData md = rs.getMetaData();
-	                    String value;
+            try {
+                rs = DBHandler.GetSQL(sql);
 
-	                    for(int i=1; i<=md.getColumnCount(); i++)            {
-	                        String name = md.getColumnName(i);
+                if (rs.next()) {
+                    ResultSetMetaData md = rs.getMetaData();
+                    String value;
 
-	                        if(md.getColumnTypeName(i).equalsIgnoreCase("date"))               {
-	                            value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
-	                        } else {
-	                            value = oscar.Misc.getString(rs, i);
-	                        }
+                    for (int i = 1; i <= md.getColumnCount(); i++) {
+                        String name = md.getColumnName(i);
 
-	                        if(i<=6) {
-	                            name = name.substring(2);
-	                        }  else {
-	                            name = name.substring(3);
-	                        }
+                        if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
+                            value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
+                        } else {
+                            value = oscar.Misc.getString(rs, i);
+                        }
 
-	                        if(value!=null) {
-	                            props.setProperty(name, value);
-	                        }
-	                    }//end for
+                        if (i <= 6) {
+                            name = name.substring(2);
+                        } else {
+                            name = name.substring(3);
+                        }
 
-	                }//end if
-	                rs.close();
-                } catch (SQLException e) {
+                        if (value != null) {
+                            props.setProperty(name, value);
+                        }
+                    }//end for
 
-                	MiscUtils.getLogger().error("", e);
-                }
-            
-            
+                }//end if
+                rs.close();
+            } catch (SQLException e) {
+
+                MiscUtils.getLogger().error("", e);
+            }
+
+
         }
         return props;
     }
@@ -168,10 +170,10 @@ public class FrmRourkeRecord extends FrmRecord {
 
             Date tDob = (oscar.util.UtilDateUtilities.StringToDate(dob, "yyyy/MM/dd"));
 
-            age = (tToday.getTime() - tDob.getTime())/(1000*3600*24);
+            age = (tToday.getTime() - tDob.getTime()) / (1000 * 3600 * 24);
             double daysPerMonth = 30.4375;
-            age = age/daysPerMonth; // the approximate number of days in a month
-        } catch(Exception ex) {
+            age = age / daysPerMonth; // the approximate number of days in a month
+        } catch (Exception ex) {
             logger.error("", ex);
         }
         return age;
@@ -179,11 +181,11 @@ public class FrmRourkeRecord extends FrmRecord {
 
 
     public String findActionValue(String submit) throws SQLException {
- 		return ((new FrmRecordHelp()).findActionValue(submit));
+        return ((new FrmRecordHelp()).findActionValue(submit));
     }
 
     public String createActionURL(String where, String action, String demoId, String formId) throws SQLException {
- 		return ((new FrmRecordHelp()).createActionURL(where, action, demoId, formId));
+        return ((new FrmRecordHelp()).createActionURL(where, action, demoId, formId));
     }
 
 }

@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -37,30 +37,30 @@ import org.springframework.stereotype.Repository;
 
 public interface MeasurementMapDao extends AbstractDao<MeasurementMap> {
 
-	public void addMeasurementMap(MeasurementMap measurementMap);
+    public void addMeasurementMap(MeasurementMap measurementMap);
 
-	public List<MeasurementMap> getAllMaps();
+    public List<MeasurementMap> getAllMaps();
 
-	public List<MeasurementMap> getMapsByIdent(String identCode);
+    public List<MeasurementMap> getMapsByIdent(String identCode);
 
-	public List<MeasurementMap> findByLoincCode(String loincCode);
+    public List<MeasurementMap> findByLoincCode(String loincCode);
 
-	public List<MeasurementMap> getMapsByLoinc(String loinc);
+    public List<MeasurementMap> getMapsByLoinc(String loinc);
 
-	public List<MeasurementMap> findByLoincCodeAndLabType(String loincCode, String labType);
+    public List<MeasurementMap> findByLoincCodeAndLabType(String loincCode, String labType);
 
-	public MeasurementMap findByLonicCodeLabTypeAndMeasurementName(String loincCode, String labType,
-			String measurementName);
+    public MeasurementMap findByLonicCodeLabTypeAndMeasurementName(String loincCode, String labType,
+                                                                   String measurementName);
 
-	public List<String> findDistinctLabTypes();
+    public List<String> findDistinctLabTypes();
 
-	public List<String> findDistinctLoincCodes();
+    public List<String> findDistinctLoincCodes();
 
-	public List<String> findDistinctLoincCodesByLabType(MeasurementMap.LAB_TYPE lab_type);
+    public List<String> findDistinctLoincCodesByLabType(MeasurementMap.LAB_TYPE lab_type);
 
-	public List<Object[]> findMeasurements(String labType, String idCode, String name);
+    public List<Object[]> findMeasurements(String labType, String idCode, String name);
 
-	public List<MeasurementMap> findMeasurementsByName(String searchString);
+    public List<MeasurementMap> findMeasurementsByName(String searchString);
 
-	public List<MeasurementMap> searchMeasurementsByName(String searchString);
+    public List<MeasurementMap> searchMeasurementsByName(String searchString);
 }

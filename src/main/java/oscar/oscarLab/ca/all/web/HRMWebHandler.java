@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -28,56 +28,56 @@ import org.oscarehr.util.MiscUtils;
  */
 public class HRMWebHandler extends DispatchAction {
 
-	//private SettingsDAO settingsDAO = null;
+    //private SettingsDAO settingsDAO = null;
 
-	//public void setSystemSettingsDAO(SettingsDAO settingsDAO) {
-	//	this.settingsDAO = settingsDAO;
-	//}
+    //public void setSystemSettingsDAO(SettingsDAO settingsDAO) {
+    //	this.settingsDAO = settingsDAO;
+    //}
 
-	/**
-	 * Define your own methods for calling by issuing an extra parameter in your forms. Pass
-	 * "method=myCustomFormHandler" in the request to call myCustomFormHandler() ActionForward method.
-	 */
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) {
+    /**
+     * Define your own methods for calling by issuing an extra parameter in your forms. Pass
+     * "method=myCustomFormHandler" in the request to call myCustomFormHandler() ActionForward method.
+     */
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+                                     HttpServletResponse response) {
 
-		return null;
-	}
+        return null;
+    }
 
-	public ActionForward update(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) {
+    public ActionForward update(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+                                HttpServletResponse response) {
 
-		MiscUtils.getLogger().debug("System Settings Update");
-		//DynaActionForm frm = (DynaActionForm) form;
-		//Settings settings = (Settings) frm.get("settings");
-		//Settings settings = new Settings(request.getParameter("groupName"), request.getParameter("keyField"), request
-		//		.getParameter("valueField"));
+        MiscUtils.getLogger().debug("System Settings Update");
+        //DynaActionForm frm = (DynaActionForm) form;
+        //Settings settings = (Settings) frm.get("settings");
+        //Settings settings = new Settings(request.getParameter("groupName"), request.getParameter("keyField"), request
+        //		.getParameter("valueField"));
 
-		MiscUtils.getLogger().debug("settings : groupName" +request.getParameter("groupName")+"   keyField "+request.getParameter("keyField") +"   value  "+request.getParameter("valueField"));
+        MiscUtils.getLogger().debug("settings : groupName" + request.getParameter("groupName") + "   keyField " + request.getParameter("keyField") + "   value  " + request.getParameter("valueField"));
 
-		//settingsDAO.save(settings);
+        //settingsDAO.save(settings);
 
-		return mapping.findForward("success");
-	}
+        return mapping.findForward("success");
+    }
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+                                 HttpServletResponse response) {
 		/*
 				String method = request.getParameter("method");
 				if (method != null && method.equals("update")) {
 					return update(mapping, form, request, response);
 				}
 		*/
-		return mapping.findForward("success");
-	}
+        return mapping.findForward("success");
+    }
 
-	/**
-	 * Show current settings for all or any given group - typed or selected from available.
-	 */
-	public ActionForward showSettings(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response)  {
+    /**
+     * Show current settings for all or any given group - typed or selected from available.
+     */
+    public ActionForward showSettings(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+                                      HttpServletResponse response) {
 
-		return mapping.findForward("success");
-	}
+        return mapping.findForward("success");
+    }
 
 }

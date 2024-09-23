@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,16 +34,15 @@ import org.jdom.Element;
  * Stores Conditions for target Colours
  *
  <ruleset>
-  <rule indicationColor="HIGH">
-     <condition type="doubleValue"  value="&gt;=2.0"/>
-     <condition type="isfemale"/>
-  </rule>
-  <rule consequence="m.setIndicationColor(\"HIGH\");">
-  	 <condition type="doubleValue"  value="&gt;=2.0"/>
-     <condition type="isMale"/>
-  </rule>
-</ruleset>
-
+ <rule indicationColor="HIGH">
+ <condition type="doubleValue"  value="&gt;=2.0"/>
+ <condition type="isfemale"/>
+ </rule>
+ <rule consequence="m.setIndicationColor(\"HIGH\");">
+ <condition type="doubleValue"  value="&gt;=2.0"/>
+ <condition type="isMale"/>
+ </rule>
+ </ruleset>
  * @author jaygallagher
  */
 public class RecommendationCondition {
@@ -53,36 +52,34 @@ public class RecommendationCondition {
     private String param = null;
 
 
-
-
 //    public String toString(){
 //         return "monthrange "+monthrange+" strength "+strength+" text "+text+" ruleName "+ruleName+" measurement "+measurement;
 //    }
 
-    public RecommendationCondition(){
+    public RecommendationCondition() {
 
     }
 
-    public RecommendationCondition(Element recowarn){
-        type  = recowarn.getAttributeValue("type");
-        value = recowarn.getAttributeValue("value") ;
+    public RecommendationCondition(Element recowarn) {
+        type = recowarn.getAttributeValue("type");
+        value = recowarn.getAttributeValue("value");
         param = recowarn.getAttributeValue("param");
 
     }
 
-    public void getRuleBaseElement(ArrayList<DSCondition> list,String measurement){
+    public void getRuleBaseElement(ArrayList<DSCondition> list, String measurement) {
 
         //m.getLastDateRecordedInMonths("NOSK") &gt;= 3</java:condition>
         //<java:condition>m.getLastDateRecordedInMonths("NOSK") &lt; 6</java:condition>
         //<java:condition>m.getLastValueAsInt("NO
-        if (param == null || param.trim().equals("")){
+        if (param == null || param.trim().equals("")) {
             param = measurement;
         }
-        if ("monthrange".equals(type)){
+        if ("monthrange".equals(type)) {
             String toParse = value;
-            if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0 ){ //between style
+            if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0) { //between style
                 String[] betweenVals = toParse.split("-");
-                if (betweenVals.length == 2 ){
+                if (betweenVals.length == 2) {
                     list.add(new DSCondition("getLastDateRecordedInMonths", param, ">=", betweenVals[0]));
                     list.add(new DSCondition("getLastDateRecordedInMonths", param, "<=", betweenVals[1]));
                 }
@@ -93,9 +90,9 @@ public class RecommendationCondition {
                 double gt = Double.parseDouble(toParse.trim());
                 list.add(new DSCondition("getLastDateRecordedInMonths", param, ">", ""+gt));
 
-            }else if (toParse.indexOf("&lt;") != -1  ||  toParse.indexOf("<") != -1 ){ // less than style
-                toParse = toParse.replaceFirst("&lt;","");
-                toParse = toParse.replaceFirst("<","");
+            } else if (toParse.indexOf("&lt;") != -1 || toParse.indexOf("<") != -1) { // less than style
+                toParse = toParse.replaceFirst("&lt;", "");
+                toParse = toParse.replaceFirst("<", "");
 
                 double lt = Double.parseDouble(toParse);
                 list.add(new DSCondition("getLastDateRecordedInMonths", param, "<=", ""+lt));
@@ -103,11 +100,11 @@ public class RecommendationCondition {
                 double eq = Double.parseDouble(toParse.trim());
                 list.add(new DSCondition("getLastDateRecordedInMonths", param, "==", ""+eq));
             }
-        }else if ("lastValueAsInt".equals(type)){
+        } else if ("lastValueAsInt".equals(type)) {
             String toParse = value;
-            if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0 ){ //between style
+            if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0) { //between style
                 String[] betweenVals = toParse.split("-");
-                if (betweenVals.length == 2 ){
+                if (betweenVals.length == 2) {
                     list.add(new DSCondition("getLastValueAsInt", param, ">=", betweenVals[0]));
                     list.add(new DSCondition("getLastValueAsInt", param, "<=", betweenVals[1]));
                 }
@@ -118,9 +115,9 @@ public class RecommendationCondition {
                 double gt = Double.parseDouble(toParse);
                 list.add(new DSCondition("getLastValueAsInt", param, ">", ""+gt));
 
-            }else if (toParse.indexOf("&lt;") != -1  ||  toParse.indexOf("<") != -1 ){ // less than style
-                toParse = toParse.replaceFirst("&lt;","");
-                toParse = toParse.replaceFirst("<","");
+            } else if (toParse.indexOf("&lt;") != -1 || toParse.indexOf("<") != -1) { // less than style
+                toParse = toParse.replaceFirst("&lt;", "");
+                toParse = toParse.replaceFirst("<", "");
 
                 double lt = Double.parseDouble(toParse);
                 list.add(new DSCondition("getLastValueAsInt", param, "<=", ""+lt));
@@ -132,45 +129,47 @@ public class RecommendationCondition {
                 double eq = Double.parseDouble(toParse);
                 list.add(new DSCondition("getLastValueAsInt", param, "==", ""+eq));
             }
-        }else if ("patientAge".equals(type)){
+        } else if ("patientAge".equals(type)) {
             String toParse = value;
-            if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0 ){ //between style
+            if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0) { //between style
                 String[] betweenVals = toParse.split("-");
-                if (betweenVals.length == 2 ){
+                if (betweenVals.length == 2) {
                     list.add(new DSCondition("getAge", "", ">=", betweenVals[0]));
                     list.add(new DSCondition("getAge", "", "<=", betweenVals[1]));
                 }
-            }else if (toParse.indexOf("&gt;") != -1 ||  toParse.indexOf(">") != -1 ){ // greater than style
-                toParse = toParse.replaceFirst("&gt;","");
-                toParse = toParse.replaceFirst(">","");
+            } else if (toParse.indexOf("&gt;") != -1 || toParse.indexOf(">") != -1) { // greater than style
+                toParse = toParse.replaceFirst("&gt;", "");
+                toParse = toParse.replaceFirst(">", "");
                 int gt = Integer.parseInt(toParse);
-                list.add(new DSCondition("getAge", "", ">", ""+gt));
+                list.add(new DSCondition("getAge", "", ">", "" + gt));
 
-            }else if (toParse.indexOf("&lt;") != -1  ||  toParse.indexOf("<") != -1 ){ // less than style
-                toParse = toParse.replaceFirst("&lt;","");
-                toParse = toParse.replaceFirst("<","");
+            } else if (toParse.indexOf("&lt;") != -1 || toParse.indexOf("<") != -1) { // less than style
+                toParse = toParse.replaceFirst("&lt;", "");
+                toParse = toParse.replaceFirst("<", "");
 
                 int lt = Integer.parseInt(toParse);
-                list.add(new DSCondition("getAge", "", "<=", ""+lt));
-                
-            }else if (toParse.indexOf("!=") != -1 ){ // not equal style
-                toParse = toParse.replaceFirst("!=","");
+                list.add(new DSCondition("getAge", "", "<=", "" + lt));
+
+            } else if (toParse.indexOf("!=") != -1) { // not equal style
+                toParse = toParse.replaceFirst("!=", "");
                 int eq = Integer.parseInt(toParse);
-                list.add(new DSCondition("getAge", "", "!=", ""+eq));
-                
-            }else if (!toParse.equals("")){ // equal style
+                list.add(new DSCondition("getAge", "", "!=", "" + eq));
+
+            } else if (!toParse.equals("")) { // equal style
                 int eq = Integer.parseInt(toParse);
-                list.add(new DSCondition("getAge", "", "==", ""+eq));
+                list.add(new DSCondition("getAge", "", "==", "" + eq));
             }
-        }else if ("isMale".equals(type)){
-        	list.add(new DSCondition("getGender", "M", "==", "true"));
-        }else if ("isFemale".equals(type)){
-        	list.add(new DSCondition("getGender", "F", "==", "true"));
-	    }else if ("isDataEqualToYes".equals(type)){
-	    	int v = 0;
-	    	if(value.equals("Yes")){ v=1;}
-	        list.add(new DSCondition("isDataEqualToYes",param,"==",""+v)); //change "Yes" to ""+value
-	    }
+        } else if ("isMale".equals(type)) {
+            list.add(new DSCondition("getGender", "M", "==", "true"));
+        } else if ("isFemale".equals(type)) {
+            list.add(new DSCondition("getGender", "F", "==", "true"));
+        } else if ("isDataEqualToYes".equals(type)) {
+            int v = 0;
+            if (value.equals("Yes")) {
+                v = 1;
+            }
+            list.add(new DSCondition("isDataEqualToYes", param, "==", "" + v)); //change "Yes" to ""+value
+        }
 
         /*if ("getDataAsDouble".equals(type)){
             String toParse = value;
@@ -267,17 +266,17 @@ public class RecommendationCondition {
 
     }
 
-    public Element getFlowsheetXML(){
+    public Element getFlowsheetXML() {
         Element e = new Element("condition");
-            e.setAttribute("type",type);
-         if (param != null){
-            e.setAttribute("param",param) ;
-         }
-         if (value != null){
-            e.setAttribute("value",value);
-         }
+        e.setAttribute("type", type);
+        if (param != null) {
+            e.setAttribute("param", param);
+        }
+        if (value != null) {
+            e.setAttribute("value", value);
+        }
 
-         return e;
+        return e;
     }
 
     public String getType() {
@@ -311,23 +310,20 @@ public class RecommendationCondition {
         tc.setType("monthrange");
 
 
-
-
-
         tc.setValue("4-6");
-        tc.getRuleBaseElement(list,"test");
+        tc.getRuleBaseElement(list, "test");
 
 
         tc.setValue(">6");
-        tc.getRuleBaseElement(list,"test");
+        tc.getRuleBaseElement(list, "test");
 
         tc.setType("lastValueAsInt");
         tc.setValue("3-4");
-        tc.getRuleBaseElement(list,"test");
+        tc.getRuleBaseElement(list, "test");
 
 
         tc.setValue("0");
-        tc.getRuleBaseElement(list,"test");
+        tc.getRuleBaseElement(list, "test");
 
 
     }

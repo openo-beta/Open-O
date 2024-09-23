@@ -23,15 +23,15 @@
     Ontario, Canada
 
 --%>
-<%@ page session="true"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ page session="true" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <html:html>
 
-<html>
+    <html>
 
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<html:errors />
-</head>
-<html>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <html:errors/>
+    </head>
+    <html>
 </html:html>

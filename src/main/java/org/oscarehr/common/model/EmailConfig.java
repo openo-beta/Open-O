@@ -43,7 +43,8 @@ public class EmailConfig extends AbstractModel<Integer> {
     @OneToMany(mappedBy = "emailConfig", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<EmailLog> emailLogs;
 
-    public EmailConfig() {}
+    public EmailConfig() {
+    }
 
     public EmailConfig(EmailType emailType, EmailProvider emailProvider, String senderEmail) {
         this.emailType = emailType;

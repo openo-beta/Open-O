@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,21 +31,21 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="formECARES")
-public class FormeCARES  extends AbstractModel<Integer> {
+@Table(name = "formECARES")
+public class FormeCARES extends AbstractModel<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name="demographic_no")
+    @Column(name = "demographic_no")
     private int demographicNo;
-    @Column(name="provider_no")
+    @Column(name = "provider_no")
     private String providerNo;
     @Temporal(TemporalType.DATE)
-    @Column(name="formCreated")
+    @Column(name = "formCreated")
     private Date formCreated;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="formEdited")
+    @Column(name = "formEdited")
     private Date formEdited;
     @Lob
     private String formData;

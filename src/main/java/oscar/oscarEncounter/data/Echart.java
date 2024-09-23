@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,106 +30,108 @@ import java.util.Date;
 import oscar.util.UtilDateUtilities;
 
 public class Echart {
-  private Date eChartTimeStamp = new Date();
-        private String socialHistory = "";
-        private String familyHistory = "";
-        private String medicalHistory = "";
-        private String ongoingConcerns = "";
-        private String reminders = "";
-        private String encounter = "";
-        private String subject = "";
-        private String demographicNo = "";
-        private String providerNo = "";
-        public Echart() {
+    private Date eChartTimeStamp = new Date();
+    private String socialHistory = "";
+    private String familyHistory = "";
+    private String medicalHistory = "";
+    private String ongoingConcerns = "";
+    private String reminders = "";
+    private String encounter = "";
+    private String subject = "";
+    private String demographicNo = "";
+    private String providerNo = "";
 
-        }
-        public Date getEChartTimeStamp() {
-          return this.eChartTimeStamp;
-        }
+    public Echart() {
 
-        public String getSocialHistory() {
-          return this.socialHistory;
-        }
+    }
 
-        public String getFamilyHistory() {
-          return this.familyHistory;
-        }
+    public Date getEChartTimeStamp() {
+        return this.eChartTimeStamp;
+    }
 
-        public String getMedicalHistory() {
-          return this.medicalHistory;
-        }
+    public String getSocialHistory() {
+        return this.socialHistory;
+    }
 
-        public String getOngoingConcerns() {
-          return this.ongoingConcerns;
-        }
+    public String getFamilyHistory() {
+        return this.familyHistory;
+    }
 
-        public String getReminders() {
-          return this.reminders;
-        }
+    public String getMedicalHistory() {
+        return this.medicalHistory;
+    }
 
-        public String getEncounter() {
-          return this.encounter;
-        }
+    public String getOngoingConcerns() {
+        return this.ongoingConcerns;
+    }
 
-        public String getSubject() {
-          return this.subject;
-        }
+    public String getReminders() {
+        return this.reminders;
+    }
 
-        public String getDemographicNo(){
-          return this.demographicNo;
-        }
+    public String getEncounter() {
+        return this.encounter;
+    }
 
-        public String getProviderNo(){
-          return this.providerNo;
-        }
+    public String getSubject() {
+        return this.subject;
+    }
 
-        public String getTimeStampToString() {
-          return UtilDateUtilities.DateToString(eChartTimeStamp,
-                                                "yyyy-MM-dd HH:mm:ss");
-        }
+    public String getDemographicNo() {
+        return this.demographicNo;
+    }
 
-        public void setSubject(String subject) {
-          this.subject += subject;
-        }
+    public String getProviderNo() {
+        return this.providerNo;
+    }
 
-        public void setSocialHistory(String socialHistory) {
-          this.socialHistory += socialHistory;
-        }
+    public String getTimeStampToString() {
+        return UtilDateUtilities.DateToString(eChartTimeStamp,
+                "yyyy-MM-dd HH:mm:ss");
+    }
 
-        public void setFamilyHistory(String familyHistory) {
-          this.familyHistory += familyHistory;
-        }
+    public void setSubject(String subject) {
+        this.subject += subject;
+    }
 
-        public void setMedicalHistory(String medicalHistory) {
-          this.medicalHistory += medicalHistory;
-        }
+    public void setSocialHistory(String socialHistory) {
+        this.socialHistory += socialHistory;
+    }
 
-        public void setOngoingConcerns(String ongoingConcerns) {
-          this.ongoingConcerns += ongoingConcerns;
-        }
+    public void setFamilyHistory(String familyHistory) {
+        this.familyHistory += familyHistory;
+    }
 
-        public void setReminders(String reminders) {
-          this.reminders += reminders;
-        }
+    public void setMedicalHistory(String medicalHistory) {
+        this.medicalHistory += medicalHistory;
+    }
 
-        public void setEncounter(String encounter) {
-          this.encounter += encounter;
-        }
+    public void setOngoingConcerns(String ongoingConcerns) {
+        this.ongoingConcerns += ongoingConcerns;
+    }
 
-        public void setDemographicNo(String demographicNo){
-          this.demographicNo = demographicNo;
-        }
+    public void setReminders(String reminders) {
+        this.reminders += reminders;
+    }
 
-        public void setProviderNo(String providerNo){
-          this.providerNo = providerNo;
-      }
+    public void setEncounter(String encounter) {
+        this.encounter += encounter;
+    }
 
-  /**
-   * setTimeStamp
-   *
-   * @param date Date
-   */
-  public void setTimeStamp(Date date) {
-	  this.eChartTimeStamp = date;
-  }
+    public void setDemographicNo(String demographicNo) {
+        this.demographicNo = demographicNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    /**
+     * setTimeStamp
+     *
+     * @param date Date
+     */
+    public void setTimeStamp(Date date) {
+        this.eChartTimeStamp = date;
+    }
 }

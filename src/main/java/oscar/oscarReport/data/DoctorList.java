@@ -20,20 +20,20 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarProvider.bean.ProviderNameBean;
 
 public class DoctorList {
-	
-	public ArrayList<ProviderNameBean> getDoctorNameList() {
 
-		ArrayList<ProviderNameBean> dnl = new ArrayList<ProviderNameBean>();
+    public ArrayList<ProviderNameBean> getDoctorNameList() {
 
-		ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
-		List<Provider> docs = dao.getProvidersByType("doctor");
+        ArrayList<ProviderNameBean> dnl = new ArrayList<ProviderNameBean>();
 
-		for (Provider doc : docs) {
-			ProviderNameBean pb = new ProviderNameBean();
-			pb.setProviderID(doc.getProviderNo());
-			pb.setProviderName(doc.getFullName());
-			dnl.add(pb);
-		}
-		return dnl;
-	}
+        ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
+        List<Provider> docs = dao.getProvidersByType("doctor");
+
+        for (Provider doc : docs) {
+            ProviderNameBean pb = new ProviderNameBean();
+            pb.setProviderID(doc.getProviderNo());
+            pb.setProviderName(doc.getFullName());
+            dnl.add(pb);
+        }
+        return dnl;
+    }
 }

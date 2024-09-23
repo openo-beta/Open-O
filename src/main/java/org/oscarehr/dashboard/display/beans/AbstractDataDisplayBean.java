@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,219 +33,219 @@ import org.oscarehr.dashboard.query.RangeInterface;
 
 public abstract class AbstractDataDisplayBean {
 
-	private Integer id;
-	private Integer dashboardId;
-	private String queryVersion;
-	private String name;
-	private String category;
-	private String subCategory;
-	private String metricSetName;
-	private String metricLabel;
-	private String framework;
-	private String frameworkVersion;
-	private String definition;
-	private String notes;
-	private boolean active;
-	private boolean locked;
-	private String xmlTemplate;
-	private String dxUpdateICD9Code = null;
+    private Integer id;
+    private Integer dashboardId;
+    private String queryVersion;
+    private String name;
+    private String category;
+    private String subCategory;
+    private String metricSetName;
+    private String metricLabel;
+    private String framework;
+    private String frameworkVersion;
+    private String definition;
+    private String notes;
+    private boolean active;
+    private boolean locked;
+    private String xmlTemplate;
+    private String dxUpdateICD9Code = null;
 
-	private List<Parameter> parameters;
-	private List<DrillDownAction> actions;
-	private List<String> actionIds;
-	private List<RangeInterface> ranges;
-	private String rangeString;
-	private String queryString;
-	private List<?> queryResult;
+    private List<Parameter> parameters;
+    private List<DrillDownAction> actions;
+    private List<String> actionIds;
+    private List<RangeInterface> ranges;
+    private String rangeString;
+    private String queryString;
+    private List<?> queryResult;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getDashboardId() {
-		return dashboardId;
-	}
+    public Integer getDashboardId() {
+        return dashboardId;
+    }
 
-	public void setDashboardId(Integer dashboardId) {
-		this.dashboardId = dashboardId;
-	}
+    public void setDashboardId(Integer dashboardId) {
+        this.dashboardId = dashboardId;
+    }
 
-	public String getQueryVersion() {
-		return queryVersion;
-	}
+    public String getQueryVersion() {
+        return queryVersion;
+    }
 
-	public void setQueryVersion(String queryVersion) {
-		this.queryVersion = queryVersion;
-	}
+    public void setQueryVersion(String queryVersion) {
+        this.queryVersion = queryVersion;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getCategory() {
-		return category;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	public String getSubCategory() {
-		return subCategory;
-	}
+    public String getSubCategory() {
+        return subCategory;
+    }
 
-	public void setSubCategory(String subCategory) {
-		this.subCategory = subCategory;
-	}
-		
-	public String getMetricSetName() {
-		return metricSetName;
-	}
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
 
-	public void setMetricSetName(String metricSetName) {
-		this.metricSetName = metricSetName;
-	}
-	
-	public String getMetricLabel() {
-		return metricLabel;
-	}
+    public String getMetricSetName() {
+        return metricSetName;
+    }
 
-	public void setMetricLabel(String metricLabel) {
-		this.metricLabel = metricLabel;
-	}
-	
-	public String getFramework() {
-		return framework;
-	}
+    public void setMetricSetName(String metricSetName) {
+        this.metricSetName = metricSetName;
+    }
 
-	public void setFramework(String framework) {
-		this.framework = framework;
-	}
+    public String getMetricLabel() {
+        return metricLabel;
+    }
 
-	public String getFrameworkVersion() {
-		return frameworkVersion;
-	}
+    public void setMetricLabel(String metricLabel) {
+        this.metricLabel = metricLabel;
+    }
 
-	public void setFrameworkVersion(String frameworkVersion) {
-		this.frameworkVersion = frameworkVersion;
-	}
+    public String getFramework() {
+        return framework;
+    }
 
-	public String getDefinition() {
-		return definition;
-	}
+    public void setFramework(String framework) {
+        this.framework = framework;
+    }
 
-	public void setDefinition(String definition) {
-		this.definition = definition;
-	}
+    public String getFrameworkVersion() {
+        return frameworkVersion;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public void setFrameworkVersion(String frameworkVersion) {
+        this.frameworkVersion = frameworkVersion;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public String getDefinition() {
+        return definition;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public String getNotes() {
+        return notes;
+    }
 
-	public boolean isLocked() {
-		return locked;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public String getXmlTemplate() {
-		return xmlTemplate;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public void setXmlTemplate(String xmlTemplate) {
-		this.xmlTemplate = xmlTemplate;
-	}
+    public boolean isLocked() {
+        return locked;
+    }
 
-	public List<Parameter> getParameters() {
-		return parameters;
-	}
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 
-	public void setParameters(List<Parameter> parameters) {
-		this.parameters = parameters;
-	}
-	
-	public List<DrillDownAction> getActions() {
-		return actions;
-	}
-	
-	public void setActions(List<DrillDownAction> actions) {
-		this.actions = actions;
-		this.actionIds = new ArrayList<String>();
+    public String getXmlTemplate() {
+        return xmlTemplate;
+    }
 
-		if (actions != null && !actions.isEmpty()) {
-			for (DrillDownAction action: actions) {
-				actionIds.add(action.getId());
-				if ("dxUpdate".equals(action.getId())) {
-					setDxUpdateICD9Code(action.getValue());
-				}
-			}
-		}
-	}
+    public void setXmlTemplate(String xmlTemplate) {
+        this.xmlTemplate = xmlTemplate;
+    }
 
-	public List<String> getActionIds() {
-		return actionIds;
-	}
+    public List<Parameter> getParameters() {
+        return parameters;
+    }
 
-	public void setDxUpdateICD9Code(String dxUpdateICD9Code) {
-		this.dxUpdateICD9Code = dxUpdateICD9Code;
-	}
-	
-	public String getDxUpdateICD9Code() {
-		return dxUpdateICD9Code;
-	}
+    public void setParameters(List<Parameter> parameters) {
+        this.parameters = parameters;
+    }
 
-	public String getRangeString() {
-		return rangeString;
-	}
+    public List<DrillDownAction> getActions() {
+        return actions;
+    }
 
-	public void setRangeString(String rangeString) {
-		this.rangeString = rangeString;
-	}
+    public void setActions(List<DrillDownAction> actions) {
+        this.actions = actions;
+        this.actionIds = new ArrayList<String>();
 
-	public String getQueryString() {
-		return queryString;
-	}
+        if (actions != null && !actions.isEmpty()) {
+            for (DrillDownAction action : actions) {
+                actionIds.add(action.getId());
+                if ("dxUpdate".equals(action.getId())) {
+                    setDxUpdateICD9Code(action.getValue());
+                }
+            }
+        }
+    }
 
-	public void setQueryString(String queryString) {
-		this.queryString = queryString;
-	}
+    public List<String> getActionIds() {
+        return actionIds;
+    }
 
-	public List<?> getQueryResult() {
-		return queryResult;
-	}
+    public void setDxUpdateICD9Code(String dxUpdateICD9Code) {
+        this.dxUpdateICD9Code = dxUpdateICD9Code;
+    }
 
-	public void setQueryResult(List<?> queryResult) {
-		this.queryResult = queryResult;
-	}
+    public String getDxUpdateICD9Code() {
+        return dxUpdateICD9Code;
+    }
 
-	public List<RangeInterface> getRanges() {
-		return ranges;
-	}
+    public String getRangeString() {
+        return rangeString;
+    }
 
-	public void setRanges(List<RangeInterface> ranges) {
-		this.ranges = ranges;
-	}
+    public void setRangeString(String rangeString) {
+        this.rangeString = rangeString;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
+    }
+
+    public List<?> getQueryResult() {
+        return queryResult;
+    }
+
+    public void setQueryResult(List<?> queryResult) {
+        this.queryResult = queryResult;
+    }
+
+    public List<RangeInterface> getRanges() {
+        return ranges;
+    }
+
+    public void setRanges(List<RangeInterface> ranges) {
+        this.ranges = ranges;
+    }
 
 }

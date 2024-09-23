@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,25 +42,23 @@ import oscar.oscarProvider.data.ProviderFaxUpdater;
 public class ProEditFaxNumAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-        throws Exception
-    {
+            throws Exception {
         String forward;
         String providerNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
-        if ( providerNo == null)
-              return mapping.findForward("eject");
+        if (providerNo == null)
+            return mapping.findForward("eject");
 
-        DynaActionForm frm = (DynaActionForm)form;
-        
-        String faxNumber = (String)frm.get("faxNumber");
+        DynaActionForm frm = (DynaActionForm) form;
+
+        String faxNumber = (String) frm.get("faxNumber");
         ProviderFaxUpdater faxUpdater = new ProviderFaxUpdater(providerNo);
-        if(faxNumber != null && !faxNumber.isEmpty() && faxUpdater.setFax(faxNumber)) {
-            request.setAttribute("status",new String("complete"));
+        if (faxNumber != null && !faxNumber.isEmpty() && faxUpdater.setFax(faxNumber)) {
+            request.setAttribute("status", new String("complete"));
             forward = new String("success");
-        }
-        else
+        } else
             forward = new String("error");
-        
+
         return mapping.findForward(forward);
-        
+
     }
 }

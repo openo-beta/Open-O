@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,114 +31,113 @@ import javax.persistence.*;
 
 @Entity
 public class ResourceStorage extends AbstractModel<Integer> {
-	public static final String PREVENTION_RULES = "PREVENTION_RULES";
+    public static final String PREVENTION_RULES = "PREVENTION_RULES";
 
-	public static final String LU_CODES = "LU_CODES";
-	
-	public static final String SURVEILLANCE_CONFIGURATION = "SURVEILLANCE_CONFIGURATION";
-	
-	/*create table ResourceStorage (
-			id int(10)  NOT NULL auto_increment primary key,
-			resourceType varchar(100),
-			resourceName varchar(100),
-			uuid varchar(40),
-			fileContents mediumblob,
-			uploadDate datetime,
-			active boolean
-			);
-	*/
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    public static final String LU_CODES = "LU_CODES";
 
-	@Column(columnDefinition = "mediumblob")
-	private byte[] fileContents;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date uploadDate;
-	
-	@Column(name="update_date")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateDate = new Date();
+    public static final String SURVEILLANCE_CONFIGURATION = "SURVEILLANCE_CONFIGURATION";
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    /*create table ResourceStorage (
+            id int(10)  NOT NULL auto_increment primary key,
+            resourceType varchar(100),
+            resourceName varchar(100),
+            uuid varchar(40),
+            fileContents mediumblob,
+            uploadDate datetime,
+            active boolean
+            );
+    */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    @Column(columnDefinition = "mediumblob")
+    private byte[] fileContents;
 
-	public Date getReferenceDate() {
-		return referenceDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date uploadDate;
 
-	public void setReferenceDate(Date referenceDate) {
-		this.referenceDate = referenceDate;
-	}
+    @Column(name = "update_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDate = new Date();
 
-	@Column(name="reference_date")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date referenceDate;
-	
-	private String resourceType = null; 
-	private String resourceName = null;
-	private String uuid = null;
-	private boolean active;
-
-	public Date getUploadDate() {
-    	return uploadDate;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-	public void setUploadDate(Date uploadDate) {
-    	this.uploadDate = uploadDate;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    public Date getReferenceDate() {
+        return referenceDate;
+    }
 
-	public byte[] getFileContents() {
-		return fileContents;
-	}
+    public void setReferenceDate(Date referenceDate) {
+        this.referenceDate = referenceDate;
+    }
 
-	public void setFileContents(byte[] fileContents) {
-		this.fileContents = fileContents;
-	}
+    @Column(name = "reference_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date referenceDate;
 
-	public String getResourceType() {
-		return resourceType;
-	}
+    private String resourceType = null;
+    private String resourceName = null;
+    private String uuid = null;
+    private boolean active;
 
-	public void setResourceType(String resourceType) {
-		this.resourceType = resourceType;
-	}
+    public Date getUploadDate() {
+        return uploadDate;
+    }
 
-	public String getResourceName() {
-		return resourceName;
-	}
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
+    }
 
-	public void setResourceName(String resourceName) {
-		this.resourceName = resourceName;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public String getUuid() {
-		return uuid;
-	}
+    public byte[] getFileContents() {
+        return fileContents;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    public void setFileContents(byte[] fileContents) {
+        this.fileContents = fileContents;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public String getResourceType() {
+        return resourceType;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
-	
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
 
 }

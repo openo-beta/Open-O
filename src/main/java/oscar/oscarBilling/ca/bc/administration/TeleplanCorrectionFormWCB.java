@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Andromedia, to be provided as
  * part of the OSCAR McMaster
@@ -41,24 +41,24 @@ import oscar.util.ConversionUtils;
 public class TeleplanCorrectionFormWCB
         extends org.apache.struts.action.ActionForm {
 
-    private static Logger logger=MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
 
-    private String id = "",  demographicNumber = "",  lastName = "",  firstName = "",  yearOfBirth = "",  monthOfBirth = "",  dayOfBirth = "",  address = "",  city = "",  province = "",  postal = "",  hin = "",  practitioner = "",  billingUnit = "",  billingCode = "",  billingAmount = "",  serviceLocation = "",  date = "",  billingNo = "",  dataSeqNo = "",  w_reportype = "",  w_mname = "",  w_gender = "",  w_doi = "",  w_area = "",  w_phone = "",  w_empname = "",  w_emparea = "",  w_empphone = "",  w_wcbno = "",  w_opaddress = "",  w_opcity = "",  w_rphysician = "",  w_duration = "",  w_ftreatment = "",  w_problem = "",  w_servicedate = "",  w_diagnosis = "",  w_icd9 = "",  w_bp = "",  w_side = "",  w_noi = "",  w_work = "",  w_workdate = "",  w_clinicinfo = "",  w_capability = "",  w_capreason = "",  w_estimate = "",  w_rehab = "",  w_rehabtype = "",  w_estimatedate = "",  w_tofollow = "",  w_wcbadvisor = "",  w_feeitem = "",  w_extrafeeitem = "",  status = "",  formNeeded = "",  providerNo = "",  w_payeeno = "",  w_pracno = "";
+    private String id = "", demographicNumber = "", lastName = "", firstName = "", yearOfBirth = "", monthOfBirth = "", dayOfBirth = "", address = "", city = "", province = "", postal = "", hin = "", practitioner = "", billingUnit = "", billingCode = "", billingAmount = "", serviceLocation = "", date = "", billingNo = "", dataSeqNo = "", w_reportype = "", w_mname = "", w_gender = "", w_doi = "", w_area = "", w_phone = "", w_empname = "", w_emparea = "", w_empphone = "", w_wcbno = "", w_opaddress = "", w_opcity = "", w_rphysician = "", w_duration = "", w_ftreatment = "", w_problem = "", w_servicedate = "", w_diagnosis = "", w_icd9 = "", w_bp = "", w_side = "", w_noi = "", w_work = "", w_workdate = "", w_clinicinfo = "", w_capability = "", w_capreason = "", w_estimate = "", w_rehab = "", w_rehabtype = "", w_estimatedate = "", w_tofollow = "", w_wcbadvisor = "", w_feeitem = "", w_extrafeeitem = "", status = "", formNeeded = "", providerNo = "", w_payeeno = "", w_pracno = "";
     private String xml_status;
     private String adjType;
     private String adjAmount;
 
-    public  TeleplanCorrectionFormWCB( ) {
+    public TeleplanCorrectionFormWCB() {
         super();
 
     }
 
-   public TeleplanCorrectionFormWCB(ResultSet result) {
-      super();
-      try {
-         if (result.next()) {
-            this.demographicNumber = result.getString("demographic_no");
+    public TeleplanCorrectionFormWCB(ResultSet result) {
+        super();
+        try {
+            if (result.next()) {
+                this.demographicNumber = result.getString("demographic_no");
                 this.id = result.getString("billingmaster_no");
                 this.firstName = result.getString("first_name");
                 this.lastName = result.getString("last_name");
@@ -124,80 +124,80 @@ public class TeleplanCorrectionFormWCB
             logger.error("Teleplan Correction Form WCB: (Constructor) " + ex.getMessage());
         }
     }
-   
-   public TeleplanCorrectionFormWCB(List<Object[]> results) {
-	      super();
-	     
-         if (results.size()>0) {
-        	 Object[] result = results.get(0);
-        	 
+
+    public TeleplanCorrectionFormWCB(List<Object[]> results) {
+        super();
+
+        if (results.size() > 0) {
+            Object[] result = results.get(0);
+
             this.demographicNumber = String.valueOf(result[0]);
             this.id = String.valueOf(result[1]);
-	        this.firstName = (String)result[2];
-	        this.lastName = (String)result[3];
-	        this.address = (String)result[4];
-	        this.city = (String)result[5];
-	        this.province = (String)result[6];
-	        this.postal = (String)result[7];
-	        this.hin = (String)result[8];
-	        this.monthOfBirth = (String)result[9];
-	        this.dayOfBirth = (String)result[10];
-	        this.yearOfBirth = (String)result[11];
-	        this.practitioner = (String)result[12];
-	        this.billingCode = (String)result[13];
-	        this.billingAmount = (String)result[14];
-	        this.billingUnit = String.valueOf(result[15]);
-	        
-	        this.date = (String)result[16];
-	        this.billingNo = String.valueOf(result[17]);
-	        this.dataSeqNo = (String)result[18];
-	        this.serviceLocation = String.valueOf(result[19]);
-	        this.w_icd9 = (String)result[20];
-	        w_reportype = String.valueOf(result[21]);
-	        w_mname = String.valueOf(result[22]);
-	        w_gender = String.valueOf(result[23]);
-	        w_doi =ConversionUtils.toDateString((Date)result[24]);
-	        w_area = String.valueOf(result[25]);
-	        w_phone =(String)result[26];
-	        w_empname = (String)result[27];
-	        w_emparea =  String.valueOf(result[28]);
-	        w_empphone = (String)result[29];
-	        w_wcbno = (String)result[30];
-	        w_opaddress = (String)result[31];
-	        
-	        w_opcity = (String)result[32];
-	        w_rphysician =  String.valueOf(result[33]);
-	        w_duration =  String.valueOf(result[34]);
-	        w_ftreatment = (String)result[35];
-	        w_problem = (String)result[36];
-	        w_servicedate = ConversionUtils.toDateString((Date)result[37]);
-	        w_diagnosis = (String)result[38];
-	        w_icd9 = (String)result[39];
-	        w_bp =(String)result[40];
-	        w_side =  String.valueOf(result[41]);
-	        w_noi = (String)result[42];
-	        w_work =  String.valueOf(result[43]);
-	        w_workdate = (String)result[44];
-	        w_clinicinfo = (String)result[45];
-	        w_capability = (String)result[46];
-	        w_capreason = (String)result[47];
-	        w_estimate =(String)result[48];
-	        w_rehab = (String)result[49];
-	        w_rehabtype = (String)result[50];
-	        w_estimatedate = (String)result[51];
-	        w_tofollow = (String)result[52];
-	        w_wcbadvisor =(String)result[53];
-	        w_feeitem = (String)result[54];
-	        w_extrafeeitem = (String)result[55];
-	        
-	        status = (String)result[56];
-	        
-	        formNeeded = String.valueOf(result[57]);
-	        providerNo =  String.valueOf(result[58]);
-	        w_payeeno =(String)result[59];
-	        w_pracno = (String)result[60];
-         }
-   }
+            this.firstName = (String) result[2];
+            this.lastName = (String) result[3];
+            this.address = (String) result[4];
+            this.city = (String) result[5];
+            this.province = (String) result[6];
+            this.postal = (String) result[7];
+            this.hin = (String) result[8];
+            this.monthOfBirth = (String) result[9];
+            this.dayOfBirth = (String) result[10];
+            this.yearOfBirth = (String) result[11];
+            this.practitioner = (String) result[12];
+            this.billingCode = (String) result[13];
+            this.billingAmount = (String) result[14];
+            this.billingUnit = String.valueOf(result[15]);
+
+            this.date = (String) result[16];
+            this.billingNo = String.valueOf(result[17]);
+            this.dataSeqNo = (String) result[18];
+            this.serviceLocation = String.valueOf(result[19]);
+            this.w_icd9 = (String) result[20];
+            w_reportype = String.valueOf(result[21]);
+            w_mname = String.valueOf(result[22]);
+            w_gender = String.valueOf(result[23]);
+            w_doi = ConversionUtils.toDateString((Date) result[24]);
+            w_area = String.valueOf(result[25]);
+            w_phone = (String) result[26];
+            w_empname = (String) result[27];
+            w_emparea = String.valueOf(result[28]);
+            w_empphone = (String) result[29];
+            w_wcbno = (String) result[30];
+            w_opaddress = (String) result[31];
+
+            w_opcity = (String) result[32];
+            w_rphysician = String.valueOf(result[33]);
+            w_duration = String.valueOf(result[34]);
+            w_ftreatment = (String) result[35];
+            w_problem = (String) result[36];
+            w_servicedate = ConversionUtils.toDateString((Date) result[37]);
+            w_diagnosis = (String) result[38];
+            w_icd9 = (String) result[39];
+            w_bp = (String) result[40];
+            w_side = String.valueOf(result[41]);
+            w_noi = (String) result[42];
+            w_work = String.valueOf(result[43]);
+            w_workdate = (String) result[44];
+            w_clinicinfo = (String) result[45];
+            w_capability = (String) result[46];
+            w_capreason = (String) result[47];
+            w_estimate = (String) result[48];
+            w_rehab = (String) result[49];
+            w_rehabtype = (String) result[50];
+            w_estimatedate = (String) result[51];
+            w_tofollow = (String) result[52];
+            w_wcbadvisor = (String) result[53];
+            w_feeitem = (String) result[54];
+            w_extrafeeitem = (String) result[55];
+
+            status = (String) result[56];
+
+            formNeeded = String.valueOf(result[57]);
+            providerNo = String.valueOf(result[58]);
+            w_payeeno = (String) result[59];
+            w_pracno = (String) result[60];
+        }
+    }
 
     public String getServiceLocation() {
         return this.serviceLocation;
@@ -665,19 +665,19 @@ public class TeleplanCorrectionFormWCB
     public String[] getDemographic() {
 
         return new String[]{
-            oscar.Misc.mysqlEscape(this.firstName),
-            oscar.Misc.mysqlEscape(this.lastName),
-            oscar.Misc.mysqlEscape(this.address),
-            oscar.Misc.mysqlEscape(this.city),
-            oscar.Misc.mysqlEscape(this.province),
-            oscar.Misc.mysqlEscape(this.postal),
-            oscar.Misc.mysqlEscape(this.yearOfBirth),
-            oscar.Misc.mysqlEscape(this.monthOfBirth),
-            oscar.Misc.mysqlEscape(this.dayOfBirth),
-            oscar.Misc.mysqlEscape(this.hin),
-            oscar.Misc.mysqlEscape(this.w_gender),
-            oscar.Misc.mysqlEscape(this.w_area) + oscar.Misc.mysqlEscape(this.w_phone),
-            oscar.Misc.mysqlEscape(this.demographicNumber)
+                oscar.Misc.mysqlEscape(this.firstName),
+                oscar.Misc.mysqlEscape(this.lastName),
+                oscar.Misc.mysqlEscape(this.address),
+                oscar.Misc.mysqlEscape(this.city),
+                oscar.Misc.mysqlEscape(this.province),
+                oscar.Misc.mysqlEscape(this.postal),
+                oscar.Misc.mysqlEscape(this.yearOfBirth),
+                oscar.Misc.mysqlEscape(this.monthOfBirth),
+                oscar.Misc.mysqlEscape(this.dayOfBirth),
+                oscar.Misc.mysqlEscape(this.hin),
+                oscar.Misc.mysqlEscape(this.w_gender),
+                oscar.Misc.mysqlEscape(this.w_area) + oscar.Misc.mysqlEscape(this.w_phone),
+                oscar.Misc.mysqlEscape(this.demographicNumber)
         };
 
     }
@@ -691,52 +691,52 @@ public class TeleplanCorrectionFormWCB
         org.oscarehr.common.model.Demographic demo = demoData.getDemographic(loggedInInfo, this.demographicNumber);
 
         return new String[]{
-            oscar.Misc.mysqlEscape(this.w_reportype),
-            oscar.Misc.mysqlEscape(billamt),
-            demo.getFirstName(),//oscar.Misc.mysqlEscape(this.firstName),  //
-            demo.getLastName(),//oscar.Misc.mysqlEscape(this.lastName), //
-            "",//oscar.Misc.mysqlEscape(this.w_mname),//
-            demo.getSex(),//oscar.Misc.mysqlEscape(this.w_gender),//
-            DemographicData.getDob(demo, "-"),//oscar.Misc.mysqlEscape(this.DateOfBirth()),//
-            demo.getAddress(),//oscar.Misc.mysqlEscape(this.address),  //
-            demo.getCity(),//oscar.Misc.mysqlEscape(this.city),  //
-            demo.getPostal(),//oscar.Misc.mysqlEscape(this.postal), //
-            oscar.Misc.areaCode(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_area),//
-            oscar.Misc.phoneNumber(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_phone),//
-            demo.getHin()+demo.getVer(),//oscar.Misc.mysqlEscape(this.hin),  //
-            oscar.Misc.mysqlEscape(this.w_empname),
-            oscar.Misc.mysqlEscape(this.w_emparea),
-            oscar.Misc.mysqlEscape(this.w_empphone),
-            oscar.Misc.mysqlEscape(this.w_wcbno),
-            oscar.Misc.mysqlEscape(this.w_opaddress),
-            oscar.Misc.mysqlEscape(this.w_opcity),
-            oscar.Misc.mysqlEscape(this.w_rphysician),
-            oscar.Misc.mysqlEscape(this.w_duration),
-            oscar.Misc.mysqlEscape(this.w_problem),
-            oscar.Misc.mysqlEscape(this.w_servicedate),
-            oscar.Misc.mysqlEscape(this.w_diagnosis),
-            oscar.Misc.mysqlEscape(this.w_icd9),
-            oscar.Misc.mysqlEscape(this.w_bp),
-            oscar.Misc.mysqlEscape(this.w_side),
-            oscar.Misc.mysqlEscape(this.w_noi),
-            oscar.Misc.mysqlEscape(this.w_work),
-            oscar.Misc.mysqlEscape(this.w_workdate),
-            oscar.Misc.mysqlEscape(this.w_clinicinfo),
-            oscar.Misc.mysqlEscape(this.w_capability),
-            oscar.Misc.mysqlEscape(this.w_capreason),
-            oscar.Misc.mysqlEscape(this.w_estimate),
-            oscar.Misc.mysqlEscape(this.w_rehab),
-            oscar.Misc.mysqlEscape(this.w_rehabtype),
-            oscar.Misc.mysqlEscape(this.w_wcbadvisor),
-            oscar.Misc.mysqlEscape(this.w_ftreatment),
-            oscar.Misc.mysqlEscape(this.w_estimatedate),
-            oscar.Misc.mysqlEscape(this.w_tofollow),
-            oscar.Misc.mysqlEscape(this.practitioner),
-            oscar.Misc.mysqlEscape(this.w_doi),
-            oscar.Misc.mysqlEscape(this.serviceLocation),
-            oscar.Misc.mysqlEscape(this.w_feeitem),
-            oscar.Misc.mysqlEscape(this.w_extrafeeitem),
-            oscar.Misc.mysqlEscape(this.billingNo)
+                oscar.Misc.mysqlEscape(this.w_reportype),
+                oscar.Misc.mysqlEscape(billamt),
+                demo.getFirstName(),//oscar.Misc.mysqlEscape(this.firstName),  //
+                demo.getLastName(),//oscar.Misc.mysqlEscape(this.lastName), //
+                "",//oscar.Misc.mysqlEscape(this.w_mname),//
+                demo.getSex(),//oscar.Misc.mysqlEscape(this.w_gender),//
+                DemographicData.getDob(demo, "-"),//oscar.Misc.mysqlEscape(this.DateOfBirth()),//
+                demo.getAddress(),//oscar.Misc.mysqlEscape(this.address),  //
+                demo.getCity(),//oscar.Misc.mysqlEscape(this.city),  //
+                demo.getPostal(),//oscar.Misc.mysqlEscape(this.postal), //
+                oscar.Misc.areaCode(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_area),//
+                oscar.Misc.phoneNumber(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_phone),//
+                demo.getHin() + demo.getVer(),//oscar.Misc.mysqlEscape(this.hin),  //
+                oscar.Misc.mysqlEscape(this.w_empname),
+                oscar.Misc.mysqlEscape(this.w_emparea),
+                oscar.Misc.mysqlEscape(this.w_empphone),
+                oscar.Misc.mysqlEscape(this.w_wcbno),
+                oscar.Misc.mysqlEscape(this.w_opaddress),
+                oscar.Misc.mysqlEscape(this.w_opcity),
+                oscar.Misc.mysqlEscape(this.w_rphysician),
+                oscar.Misc.mysqlEscape(this.w_duration),
+                oscar.Misc.mysqlEscape(this.w_problem),
+                oscar.Misc.mysqlEscape(this.w_servicedate),
+                oscar.Misc.mysqlEscape(this.w_diagnosis),
+                oscar.Misc.mysqlEscape(this.w_icd9),
+                oscar.Misc.mysqlEscape(this.w_bp),
+                oscar.Misc.mysqlEscape(this.w_side),
+                oscar.Misc.mysqlEscape(this.w_noi),
+                oscar.Misc.mysqlEscape(this.w_work),
+                oscar.Misc.mysqlEscape(this.w_workdate),
+                oscar.Misc.mysqlEscape(this.w_clinicinfo),
+                oscar.Misc.mysqlEscape(this.w_capability),
+                oscar.Misc.mysqlEscape(this.w_capreason),
+                oscar.Misc.mysqlEscape(this.w_estimate),
+                oscar.Misc.mysqlEscape(this.w_rehab),
+                oscar.Misc.mysqlEscape(this.w_rehabtype),
+                oscar.Misc.mysqlEscape(this.w_wcbadvisor),
+                oscar.Misc.mysqlEscape(this.w_ftreatment),
+                oscar.Misc.mysqlEscape(this.w_estimatedate),
+                oscar.Misc.mysqlEscape(this.w_tofollow),
+                oscar.Misc.mysqlEscape(this.practitioner),
+                oscar.Misc.mysqlEscape(this.w_doi),
+                oscar.Misc.mysqlEscape(this.serviceLocation),
+                oscar.Misc.mysqlEscape(this.w_feeitem),
+                oscar.Misc.mysqlEscape(this.w_extrafeeitem),
+                oscar.Misc.mysqlEscape(this.billingNo)
         };
     }
 

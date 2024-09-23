@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,56 +31,56 @@ import javax.persistence.Embeddable;
 public class ProgramAccessRolesId implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Column(name = "id", nullable = false)
-	private long id;
-    
-	@Column(name = "role_id", nullable = false)
-	private long roleId;
+    private long id;
 
-	public ProgramAccessRolesId() {
-	}
+    @Column(name = "role_id", nullable = false)
+    private long roleId;
 
-	public ProgramAccessRolesId(long id, long roleId) {
-		this.id = id;
-		this.roleId = roleId;
-	}
+    public ProgramAccessRolesId() {
+    }
 
-	public long getId() {
-		return this.id;
-	}
+    public ProgramAccessRolesId(long id, long roleId) {
+        this.id = id;
+        this.roleId = roleId;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public long getId() {
+        return this.id;
+    }
 
-	public long getRoleId() {
-		return this.roleId;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
-	}
+    public long getRoleId() {
+        return this.roleId;
+    }
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof ProgramAccessRolesId))
-			return false;
-		ProgramAccessRolesId castOther = (ProgramAccessRolesId) other;
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
+    }
 
-		return (this.getId() == castOther.getId())
-				&& (this.getRoleId() == castOther.getRoleId());
-	}
+    public boolean equals(Object other) {
+        if ((this == other))
+            return true;
+        if ((other == null))
+            return false;
+        if (!(other instanceof ProgramAccessRolesId))
+            return false;
+        ProgramAccessRolesId castOther = (ProgramAccessRolesId) other;
 
-	public int hashCode() {
-		int result = 17;
+        return (this.getId() == castOther.getId())
+                && (this.getRoleId() == castOther.getRoleId());
+    }
 
-		result = 37 * result + (int) this.getId();
-		result = 37 * result + (int) this.getRoleId();
-		return result;
-	}
+    public int hashCode() {
+        int result = 17;
+
+        result = 37 * result + (int) this.getId();
+        result = 37 * result + (int) this.getRoleId();
+        return result;
+    }
 
 }

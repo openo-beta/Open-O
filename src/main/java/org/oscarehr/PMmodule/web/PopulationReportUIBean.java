@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -57,216 +56,216 @@ import org.oscarehr.util.SpringUtils;
 
 public class PopulationReportUIBean {
 
-	private static Logger logger=MiscUtils.getLogger();
-	private ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
-	
-	private IssueGroupDao issueGroupDao = (IssueGroupDao) SpringUtils.getBean(IssueGroupDao.class);
-	private PopulationReportDao populationReportDao = (PopulationReportDao) SpringUtils.getBean(PopulationReportDao.class);
-	private SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
-	private SecRoleDao secRoleDao=(SecRoleDao)SpringUtils.getBean(SecRoleDao.class);
-	private ProviderDao providerDao=(ProviderDao)SpringUtils.getBean(ProviderDao.class);
-	private FunctionalCentreDao functionalCentreDao = (FunctionalCentreDao) SpringUtils.getBean(FunctionalCentreDao.class);
-	
-	private Date startDate = null;
-	private Date endDate = null;
-	private Program program = null;
-	public boolean skipTotalRow=false;
-	private FunctionalCentre functionalCentre = null;
-	private LoggedInInfo loggedInInfo;
-	
-	public PopulationReportUIBean(LoggedInInfo loggedInInfo) {
-		this.loggedInInfo=loggedInInfo;
-	}
+    private static Logger logger = MiscUtils.getLogger();
+    private ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
 
-	public PopulationReportUIBean(LoggedInInfo loggedInInfo,String functionalCentreId, int programId, Date startDate, Date endDate) {
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.loggedInInfo=loggedInInfo;
-		setProgramId(programId);
-		setFunctionalCentreId(functionalCentreId);
-	}
+    private IssueGroupDao issueGroupDao = (IssueGroupDao) SpringUtils.getBean(IssueGroupDao.class);
+    private PopulationReportDao populationReportDao = (PopulationReportDao) SpringUtils.getBean(PopulationReportDao.class);
+    private SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
+    private SecRoleDao secRoleDao = (SecRoleDao) SpringUtils.getBean(SecRoleDao.class);
+    private ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+    private FunctionalCentreDao functionalCentreDao = (FunctionalCentreDao) SpringUtils.getBean(FunctionalCentreDao.class);
 
-	public void setFunctionalCentreId(String functionalCentreId) {
-		functionalCentre = functionalCentreDao.find(functionalCentreId);
-	}
-	
-	public void setProgramId(int programId) {
-		program = programDao.getProgram(programId);
-	}
+    private Date startDate = null;
+    private Date endDate = null;
+    private Program program = null;
+    public boolean skipTotalRow = false;
+    private FunctionalCentre functionalCentre = null;
+    private LoggedInInfo loggedInInfo;
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public PopulationReportUIBean(LoggedInInfo loggedInInfo) {
+        this.loggedInInfo = loggedInInfo;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+    public PopulationReportUIBean(LoggedInInfo loggedInInfo, String functionalCentreId, int programId, Date startDate, Date endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.loggedInInfo = loggedInInfo;
+        setProgramId(programId);
+        setFunctionalCentreId(functionalCentreId);
+    }
 
-	private Set<IssueGroup> allIssueGroups = null;
+    public void setFunctionalCentreId(String functionalCentreId) {
+        functionalCentre = functionalCentreDao.find(functionalCentreId);
+    }
 
-	public Set<IssueGroup> getIssueGroups() {
+    public void setProgramId(int programId) {
+        program = programDao.getProgram(programId);
+    }
 
-		if (allIssueGroups == null) allIssueGroups = new TreeSet<IssueGroup>(issueGroupDao.findAll());
-		return (allIssueGroups);
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public Program getProgram() {
-		return (program);
-	}
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-	public FunctionalCentre getFunctionalCentre() {
-		return (functionalCentre);
-	}
-	
-	public List<Program> getAllPrograms() {
-		return (programDao.getAllActivePrograms());
-	}
+    private Set<IssueGroup> allIssueGroups = null;
 
-	private List<SecRole> allRoles = null;
+    public Set<IssueGroup> getIssueGroups() {
 
-	public List<SecRole> getSecRoles() {
+        if (allIssueGroups == null) allIssueGroups = new TreeSet<IssueGroup>(issueGroupDao.findAll());
+        return (allIssueGroups);
+    }
 
-		if (allRoles == null) allRoles = secRoleDao.findAll();
-		return (allRoles);
-	}
+    public Program getProgram() {
+        return (program);
+    }
 
-	public RoleDataGrid getRoleDataGrid() {
+    public FunctionalCentre getFunctionalCentre() {
+        return (functionalCentre);
+    }
 
-		long startTime=System.currentTimeMillis();
-		
-		RoleDataGrid roleDataGrid = new RoleDataGrid();
+    public List<Program> getAllPrograms() {
+        return (programDao.getAllActivePrograms());
+    }
 
-		for (SecRole role : getSecRoles()) {
-			roleDataGrid.put(role, getEncounterTypeDataGrid(role));
-		}
+    private List<SecRole> allRoles = null;
 
-		if (!skipTotalRow) roleDataGrid.total=getEncounterTypeDataRow((Integer)null, null);
-		
-		long totalTime=System.currentTimeMillis()-startTime;
-		logger.debug("report generation in seconds : "+(totalTime/1000));
-		
-		return (roleDataGrid);
-	}
+    public List<SecRole> getSecRoles() {
 
-	/**
-	 * The Role is used to determine which providers to report on.
-	 */
-	public ProviderDataGrid getProviderDataGrid(Integer secRoleId) {
+        if (allRoles == null) allRoles = secRoleDao.findAll();
+        return (allRoles);
+    }
 
-		long startTime=System.currentTimeMillis();
-		
-		ProviderDataGrid providerDataGrid = new ProviderDataGrid();
+    public RoleDataGrid getRoleDataGrid() {
 
-		SecRole secRole=secRoleDao.find(secRoleId);
-		List<SecUserRole> secUserRoles=secUserRoleDao.getSecUserRolesByRoleName(secRole.getName());
-		HashSet<String> providerNos=new HashSet<String>();
-		for (SecUserRole secUserRole : secUserRoles) providerNos.add(secUserRole.getProviderNo());
-		
-		for (String providerNo : providerNos) {
-			Provider provider=providerDao.getProvider(providerNo);
-			if (provider!=null)	providerDataGrid.put(provider, getEncounterTypeDataGrid(provider));
-			else logger.warn("Provider doesn't exist but a secUserRole record does. providerNo="+providerNo);
-		}
+        long startTime = System.currentTimeMillis();
 
-		long totalTime=System.currentTimeMillis()-startTime;
-		logger.debug("report generation in seconds : "+(totalTime/1000));
-		
-		return (providerDataGrid);
-	}
+        RoleDataGrid roleDataGrid = new RoleDataGrid();
 
-	private EncounterTypeDataGrid getEncounterTypeDataGrid(SecRole role) {
+        for (SecRole role : getSecRoles()) {
+            roleDataGrid.put(role, getEncounterTypeDataGrid(role));
+        }
 
-		Integer roleId=null;
-		if (role!=null) roleId=role.getId().intValue();
-		
-		EncounterTypeDataGrid result = new EncounterTypeDataGrid();
+        if (!skipTotalRow) roleDataGrid.total = getEncounterTypeDataRow((Integer) null, null);
 
-		for (EncounterUtil.EncounterType encounterType : EncounterUtil.EncounterType.values()) {
-			result.put(encounterType, getEncounterTypeDataRow(roleId, encounterType));
-		}
+        long totalTime = System.currentTimeMillis() - startTime;
+        logger.debug("report generation in seconds : " + (totalTime / 1000));
 
-		if (!skipTotalRow) result.subTotal=getEncounterTypeDataRow(roleId, null);
-		
-		return (result);
-	}
+        return (roleDataGrid);
+    }
 
-	private EncounterTypeDataGrid getEncounterTypeDataGrid(Provider provider) {
+    /**
+     * The Role is used to determine which providers to report on.
+     */
+    public ProviderDataGrid getProviderDataGrid(Integer secRoleId) {
 
-		EncounterTypeDataGrid result = new EncounterTypeDataGrid();
+        long startTime = System.currentTimeMillis();
 
-		for (EncounterUtil.EncounterType encounterType : EncounterUtil.EncounterType.values()) {
-			result.put(encounterType, getEncounterTypeDataRow(provider, encounterType));
-		}
+        ProviderDataGrid providerDataGrid = new ProviderDataGrid();
 
-		return (result);
-	}
+        SecRole secRole = secRoleDao.find(secRoleId);
+        List<SecUserRole> secUserRoles = secUserRoleDao.getSecUserRolesByRoleName(secRole.getName());
+        HashSet<String> providerNos = new HashSet<String>();
+        for (SecUserRole secUserRole : secUserRoles) providerNos.add(secUserRole.getProviderNo());
 
-	private EncounterTypeDataRow getEncounterTypeDataRow(Integer roleId, EncounterUtil.EncounterType encounterType) {
+        for (String providerNo : providerNos) {
+            Provider provider = providerDao.getProvider(providerNo);
+            if (provider != null) providerDataGrid.put(provider, getEncounterTypeDataGrid(provider));
+            else logger.warn("Provider doesn't exist but a secUserRole record does. providerNo=" + providerNo);
+        }
 
-		EncounterTypeDataRow result = new EncounterTypeDataRow();
-		Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
-		int rowTotalUniqueEncounters = 0;
-		int rowTotalUniqueClients = 0;
-		
-		if(functionalCentre!=null) {
-			List<Program> programList = programDao.getProgramsByFacilityIdAndFunctionalCentreId(loggedInInfo.getCurrentFacility().getId(), functionalCentre.getId());
-			for(Program p : programList) {
-				Map<Integer, Integer> counts1 = populationReportDao.getCaseManagementNoteCountGroupedByIssueGroup(p.getId(), roleId, encounterType, startDate, endDate);
-							
-				counts.putAll(addNewCounts(counts, counts1));				
-				
-				rowTotalUniqueEncounters += populationReportDao.getCaseManagementNoteTotalUniqueEncounterCountInIssueGroups(p.getId(), roleId, encounterType, startDate, endDate);
-				rowTotalUniqueClients += populationReportDao.getCaseManagementNoteTotalUniqueClientCountInIssueGroups(p.getId(), roleId, encounterType, startDate, endDate);				
-			}
-		}
-		if(program!=null) {
-			Map<Integer, Integer> counts2 = populationReportDao.getCaseManagementNoteCountGroupedByIssueGroup(program.getId(), roleId, encounterType, startDate, endDate);
-			
-			counts.putAll(addNewCounts(counts, counts2));
-	
-			rowTotalUniqueEncounters += populationReportDao.getCaseManagementNoteTotalUniqueEncounterCountInIssueGroups(program.getId(), roleId, encounterType, startDate, endDate);
-			rowTotalUniqueClients += populationReportDao.getCaseManagementNoteTotalUniqueClientCountInIssueGroups(program.getId(), roleId, encounterType, startDate, endDate);
-		}
-		
-		for (IssueGroup issueGroup : getIssueGroups()) {
-			Integer count = counts.get(issueGroup.getId());
-			result.put(issueGroup, (count != null ? count : 0));
-		}
+        long totalTime = System.currentTimeMillis() - startTime;
+        logger.debug("report generation in seconds : " + (totalTime / 1000));
 
-		result.rowTotalUniqueEncounters = rowTotalUniqueEncounters;
-		result.rowTotalUniqueClients = rowTotalUniqueClients;
-		
-		return (result);
-	}
+        return (providerDataGrid);
+    }
 
-	private EncounterTypeDataRow getEncounterTypeDataRow(Provider provider, EncounterUtil.EncounterType encounterType) {
+    private EncounterTypeDataGrid getEncounterTypeDataGrid(SecRole role) {
 
-		EncounterTypeDataRow result = new EncounterTypeDataRow();
+        Integer roleId = null;
+        if (role != null) roleId = role.getId().intValue();
 
-		Map<Integer, Integer> counts = populationReportDao.getCaseManagementNoteCountGroupedByIssueGroup(program.getId(), provider, encounterType, startDate, endDate);
+        EncounterTypeDataGrid result = new EncounterTypeDataGrid();
 
-		for (IssueGroup issueGroup : getIssueGroups()) {
-			Integer count = counts.get(issueGroup.getId());
-			result.put(issueGroup, (count != null ? count : 0));
-		}
+        for (EncounterUtil.EncounterType encounterType : EncounterUtil.EncounterType.values()) {
+            result.put(encounterType, getEncounterTypeDataRow(roleId, encounterType));
+        }
 
-		result.rowTotalUniqueEncounters=populationReportDao.getCaseManagementNoteTotalUniqueEncounterCountInIssueGroups(program.getId(), provider, encounterType, startDate, endDate);
-		result.rowTotalUniqueClients=populationReportDao.getCaseManagementNoteTotalUniqueClientCountInIssueGroups(program.getId(), provider, encounterType, startDate, endDate);
-		
-		return (result);
-	}
-	
-	private Map<Integer, Integer> addNewCounts(Map<Integer, Integer> counts, Map<Integer, Integer> counts1) {
-		for (Map.Entry<Integer, Integer> entry : counts1.entrySet()) {
-			Integer value_old = counts.get(entry.getKey());
-			if(value_old == null)
-				counts.put(entry.getKey(), entry.getValue());
-			else {
-				Integer value_new = value_old + entry.getValue();
-				counts.remove(entry.getKey());
-				counts.put(entry.getKey(), value_new);
-			}
-		}
-		return counts;
-	}
+        if (!skipTotalRow) result.subTotal = getEncounterTypeDataRow(roleId, null);
+
+        return (result);
+    }
+
+    private EncounterTypeDataGrid getEncounterTypeDataGrid(Provider provider) {
+
+        EncounterTypeDataGrid result = new EncounterTypeDataGrid();
+
+        for (EncounterUtil.EncounterType encounterType : EncounterUtil.EncounterType.values()) {
+            result.put(encounterType, getEncounterTypeDataRow(provider, encounterType));
+        }
+
+        return (result);
+    }
+
+    private EncounterTypeDataRow getEncounterTypeDataRow(Integer roleId, EncounterUtil.EncounterType encounterType) {
+
+        EncounterTypeDataRow result = new EncounterTypeDataRow();
+        Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
+        int rowTotalUniqueEncounters = 0;
+        int rowTotalUniqueClients = 0;
+
+        if (functionalCentre != null) {
+            List<Program> programList = programDao.getProgramsByFacilityIdAndFunctionalCentreId(loggedInInfo.getCurrentFacility().getId(), functionalCentre.getId());
+            for (Program p : programList) {
+                Map<Integer, Integer> counts1 = populationReportDao.getCaseManagementNoteCountGroupedByIssueGroup(p.getId(), roleId, encounterType, startDate, endDate);
+
+                counts.putAll(addNewCounts(counts, counts1));
+
+                rowTotalUniqueEncounters += populationReportDao.getCaseManagementNoteTotalUniqueEncounterCountInIssueGroups(p.getId(), roleId, encounterType, startDate, endDate);
+                rowTotalUniqueClients += populationReportDao.getCaseManagementNoteTotalUniqueClientCountInIssueGroups(p.getId(), roleId, encounterType, startDate, endDate);
+            }
+        }
+        if (program != null) {
+            Map<Integer, Integer> counts2 = populationReportDao.getCaseManagementNoteCountGroupedByIssueGroup(program.getId(), roleId, encounterType, startDate, endDate);
+
+            counts.putAll(addNewCounts(counts, counts2));
+
+            rowTotalUniqueEncounters += populationReportDao.getCaseManagementNoteTotalUniqueEncounterCountInIssueGroups(program.getId(), roleId, encounterType, startDate, endDate);
+            rowTotalUniqueClients += populationReportDao.getCaseManagementNoteTotalUniqueClientCountInIssueGroups(program.getId(), roleId, encounterType, startDate, endDate);
+        }
+
+        for (IssueGroup issueGroup : getIssueGroups()) {
+            Integer count = counts.get(issueGroup.getId());
+            result.put(issueGroup, (count != null ? count : 0));
+        }
+
+        result.rowTotalUniqueEncounters = rowTotalUniqueEncounters;
+        result.rowTotalUniqueClients = rowTotalUniqueClients;
+
+        return (result);
+    }
+
+    private EncounterTypeDataRow getEncounterTypeDataRow(Provider provider, EncounterUtil.EncounterType encounterType) {
+
+        EncounterTypeDataRow result = new EncounterTypeDataRow();
+
+        Map<Integer, Integer> counts = populationReportDao.getCaseManagementNoteCountGroupedByIssueGroup(program.getId(), provider, encounterType, startDate, endDate);
+
+        for (IssueGroup issueGroup : getIssueGroups()) {
+            Integer count = counts.get(issueGroup.getId());
+            result.put(issueGroup, (count != null ? count : 0));
+        }
+
+        result.rowTotalUniqueEncounters = populationReportDao.getCaseManagementNoteTotalUniqueEncounterCountInIssueGroups(program.getId(), provider, encounterType, startDate, endDate);
+        result.rowTotalUniqueClients = populationReportDao.getCaseManagementNoteTotalUniqueClientCountInIssueGroups(program.getId(), provider, encounterType, startDate, endDate);
+
+        return (result);
+    }
+
+    private Map<Integer, Integer> addNewCounts(Map<Integer, Integer> counts, Map<Integer, Integer> counts1) {
+        for (Map.Entry<Integer, Integer> entry : counts1.entrySet()) {
+            Integer value_old = counts.get(entry.getKey());
+            if (value_old == null)
+                counts.put(entry.getKey(), entry.getValue());
+            else {
+                Integer value_new = value_old + entry.getValue();
+                counts.remove(entry.getKey());
+                counts.put(entry.getKey(), value_new);
+            }
+        }
+        return counts;
+    }
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,7 +39,7 @@ import java.util.Objects;
 public final class EncryptionUtils extends PasswordHash {
     private static final QueueCacheValueCloner<byte[]> byteArrayCloner = new QueueCacheValueCloner<byte[]>() {
         public byte[] cloneBean(byte[] original) {
-            return (byte[])original.clone();
+            return (byte[]) original.clone();
         }
     };
     private static Logger logger = MiscUtils.getLogger();
@@ -69,7 +69,7 @@ public final class EncryptionUtils extends PasswordHash {
      */
     @Deprecated
     public static byte[] getSha1(String s) {
-        byte[] b = (byte[])sha1Cache.get(s);
+        byte[] b = (byte[]) sha1Cache.get(s);
         if (b == null) {
             b = getSha1NoCache(s);
             if (s.length() < 2048) {
@@ -91,7 +91,7 @@ public final class EncryptionUtils extends PasswordHash {
             return null;
         } else {
             try {
-                synchronized(Objects.requireNonNull(messageDigest)) {
+                synchronized (Objects.requireNonNull(messageDigest)) {
                     return messageDigest.digest(s.getBytes("UTF-8"));
                 }
             } catch (Exception var4) {

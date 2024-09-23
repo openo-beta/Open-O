@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,35 +34,35 @@ import org.apache.http.entity.mime.content.AbstractContentBody;
 
 public class ByteArrayBody extends AbstractContentBody {
 
-	private byte[] byteArray;
-	private String fileName;
+    private byte[] byteArray;
+    private String fileName;
 
-	public ByteArrayBody(byte[] byteArray, String fileName) {
-		super("application/octet-stream");
-		this.byteArray = byteArray;
-		this.fileName = fileName;
-	}
+    public ByteArrayBody(byte[] byteArray, String fileName) {
+        super("application/octet-stream");
+        this.byteArray = byteArray;
+        this.fileName = fileName;
+    }
 
-	@Override
-	public void writeTo(OutputStream outputStream) throws IOException {
-		outputStream.write(byteArray);
-		outputStream.flush();
-	}
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        outputStream.write(byteArray);
+        outputStream.flush();
+    }
 
-	public String getFilename() {
-		return(fileName);
-	}
+    public String getFilename() {
+        return (fileName);
+    }
 
-	public String getCharset() {
-		return null;
-	}
+    public String getCharset() {
+        return null;
+    }
 
-	public long getContentLength() {
-		return(byteArray.length);
-	}
+    public long getContentLength() {
+        return (byteArray.length);
+    }
 
-	public String getTransferEncoding() {
-		return (MIME.ENC_BINARY);
-	}
+    public String getTransferEncoding() {
+        return (MIME.ENC_BINARY);
+    }
 
 }

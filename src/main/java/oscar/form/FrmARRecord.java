@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,7 +42,7 @@ public class FrmARRecord extends FrmRecord {
         Properties props = new Properties();
 
         if (existingID <= 0) {
-            
+
             String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, sex, CONCAT(address, ', ', city, ', ', province, ' ', postal) AS address, phone, phone2, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = "
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
@@ -99,7 +99,7 @@ public class FrmARRecord extends FrmRecord {
         if ("yes".equalsIgnoreCase(OscarProperties.getInstance().getProperty("PHR", ""))) {
 
             String demographic_no = demoNo;
-            
+
             String sql = "select email from demographic where demographic_no=" + demographic_no;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {

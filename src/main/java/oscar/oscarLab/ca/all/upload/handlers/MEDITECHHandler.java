@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,136 +51,136 @@ import oscar.oscarLab.ca.all.upload.MessageUploader;
 
 public class MEDITECHHandler implements MessageHandler {
 
-	private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	private final String XML = "<(\\S+?)(.*?)>(.*?)</\\1>";
-	
-	@Override
-	public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
+    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private final String XML = "<(\\S+?)(.*?)>(.*?)</\\1>";
 
-		FileInputStream is = null;
-		List<String> hl7BodyList = null;
-		String success = "success";
+    @Override
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
 
-		try {
+        FileInputStream is = null;
+        List<String> hl7BodyList = null;
+        String success = "success";
 
-			is = new FileInputStream( fileName );	        
-			hl7BodyList = parse( is );	
-			int index = 0;
-			while ( "success".equals( success ) && index < hl7BodyList.size() ) {				
-				success = MessageUploader.routeReport(loggedInInfo, serviceName, "MEDITECH", hl7BodyList.get(index), fileId);				
-				index++;
-			}
-			
-			if( success != null && success.isEmpty() ) {
-				success = null;
-			}
+        try {
 
-		} catch (Exception e) {
-			success = null;
-			logger.error("Could not upload MEDITECH message " + fileName , e);
-		} finally {
-			if( is != null ) {
-				try {
-					is.close();
-					is = null;
-				} catch (IOException e) {
-					logger.error("Failed to close MEDITECH InputStream ", e);
-				}
-			}
-			if( success == null ) {
-				logger.error( "Cleaning up MessageUploader file." );
-				MessageUploader.clean(fileId);
-			}
-		}
+            is = new FileInputStream(fileName);
+            hl7BodyList = parse(is);
+            int index = 0;
+            while ("success".equals(success) && index < hl7BodyList.size()) {
+                success = MessageUploader.routeReport(loggedInInfo, serviceName, "MEDITECH", hl7BodyList.get(index), fileId);
+                index++;
+            }
 
-		return success;
+            if (success != null && success.isEmpty()) {
+                success = null;
+            }
 
-	}
+        } catch (Exception e) {
+            success = null;
+            logger.error("Could not upload MEDITECH message " + fileName, e);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                    is = null;
+                } catch (IOException e) {
+                    logger.error("Failed to close MEDITECH InputStream ", e);
+                }
+            }
+            if (success == null) {
+                logger.error("Cleaning up MessageUploader file.");
+                MessageUploader.clean(fileId);
+            }
+        }
 
-	public List<String> parse(InputStream is) throws ParserConfigurationException, SAXException, IOException {
-		return textOrXml(is);
-	}
+        return success;
 
-	private List<String> textOrXml(InputStream is) throws ParserConfigurationException, SAXException, IOException {
+    }
 
-		Pattern pattern;
-		Matcher matcher;
+    public List<String> parse(InputStream is) throws ParserConfigurationException, SAXException, IOException {
+        return textOrXml(is);
+    }
 
-		String hl7Body = getString(is).trim();
-		List<String> hl7BodyList = null;
+    private List<String> textOrXml(InputStream is) throws ParserConfigurationException, SAXException, IOException {
 
-		if( hl7Body != null && hl7Body.length() > 0 ) {
+        Pattern pattern;
+        Matcher matcher;
 
-			pattern = Pattern.compile( XML, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE );
-			matcher = pattern.matcher( hl7Body );
+        String hl7Body = getString(is).trim();
+        List<String> hl7BodyList = null;
 
-			if( matcher.matches() ) {
-				hl7BodyList = parseXml( hl7Body );
-			} else {
-				hl7BodyList = parseText( hl7Body );
-			}
+        if (hl7Body != null && hl7Body.length() > 0) {
 
-		}
+            pattern = Pattern.compile(XML, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+            matcher = pattern.matcher(hl7Body);
 
-		return hl7BodyList;
-	}
+            if (matcher.matches()) {
+                hl7BodyList = parseXml(hl7Body);
+            } else {
+                hl7BodyList = parseText(hl7Body);
+            }
 
-	private List<String> parseXml(String hl7Body) throws ParserConfigurationException, SAXException, IOException {
+        }
 
-		Node messageSpec = null;
-		NodeList messages = null;
+        return hl7BodyList;
+    }
 
-		List<String> hl7BodyList = null;
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+    private List<String> parseXml(String hl7Body) throws ParserConfigurationException, SAXException, IOException {
 
-		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-		Document doc = docBuilder.parse(hl7Body);
+        Node messageSpec = null;
+        NodeList messages = null;
 
-		if(doc != null) {
-			messageSpec = doc.getFirstChild();
-		}
+        List<String> hl7BodyList = null;
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 
-		if(messageSpec != null) {
-			messages = messageSpec.getChildNodes();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(hl7Body);
 
-			for( int i = 0; i < messages.getLength(); i++ ) {
-				if( hl7BodyList == null ) {
-					hl7BodyList = new ArrayList<String>();
-				}
-				hl7BodyList.add( messages.item(i).getFirstChild().getTextContent() );
-			}		
-		}
+        if (doc != null) {
+            messageSpec = doc.getFirstChild();
+        }
 
-		return hl7BodyList;
-	}
+        if (messageSpec != null) {
+            messages = messageSpec.getChildNodes();
 
-	private List<String> parseText( String hl7Body ) {
+            for (int i = 0; i < messages.getLength(); i++) {
+                if (hl7BodyList == null) {
+                    hl7BodyList = new ArrayList<String>();
+                }
+                hl7BodyList.add(messages.item(i).getFirstChild().getTextContent());
+            }
+        }
 
-		// anymore division and pre-parsing should be done here. 
-		// so far, only one body per string is expected.		
-		String[] hl7BodyList = new String[]{ hl7Body };
-		return Arrays.asList( hl7BodyList );
-	}
+        return hl7BodyList;
+    }
 
-	private String getString(InputStream is) {
+    private List<String> parseText(String hl7Body) {
 
-		StringWriter writer = new StringWriter();
+        // anymore division and pre-parsing should be done here.
+        // so far, only one body per string is expected.
+        String[] hl7BodyList = new String[]{hl7Body};
+        return Arrays.asList(hl7BodyList);
+    }
 
-		try {
-			IOUtils.copy(is, writer, "UTF-8");
-		} catch (IOException e) {
-			logger.fatal("InputStream failure", e );
-		} finally {
-			if( is != null ) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					logger.fatal("Failed to close InputStream ", e );
-				}
-			}
-		}
+    private String getString(InputStream is) {
 
-		return writer.toString();
-	}
+        StringWriter writer = new StringWriter();
+
+        try {
+            IOUtils.copy(is, writer, "UTF-8");
+        } catch (IOException e) {
+            logger.fatal("InputStream failure", e);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    logger.fatal("Failed to close InputStream ", e);
+                }
+            }
+        }
+
+        return writer.toString();
+    }
 
 }

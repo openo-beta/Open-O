@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,21 +36,21 @@ import oscar.oscarDB.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 public class EctMMSERecord {
-    public Properties getMMSERecord(int demographicNo, int existingID)  throws SQLException  {
+    public Properties getMMSERecord(int demographicNo, int existingID) throws SQLException {
         Properties props = new Properties();
 
-        
+
         ResultSet rs;
         String sql;
 
-        if(existingID <= 0) {
+        if (existingID <= 0) {
             sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
-                + "sex, year_of_birth, month_of_birth, date_of_birth "
-                + "FROM demographic WHERE demographic_no = " + demographicNo;
+                    + "sex, year_of_birth, month_of_birth, date_of_birth "
+                    + "FROM demographic WHERE demographic_no = " + demographicNo;
 
             rs = DBHandler.GetSQL(sql);
 
-            if(rs.next()) {
+            if (rs.next()) {
                 java.util.Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
 
                 props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
@@ -68,41 +68,29 @@ public class EctMMSERecord {
 
             rs = DBHandler.GetSQL(sql);
 
-            if(rs.next())
-            {
+            if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
 
-                for(int i=1; i<=md.getColumnCount(); i++)
-                {
+                for (int i = 1; i <= md.getColumnCount(); i++) {
                     String name = md.getColumnName(i);
 
                     String value;
 
-                    if(md.getColumnTypeName(i).equalsIgnoreCase("TINY"))
-                    {
-                        if(rs.getInt(i)==1)
-                        {
+                    if (md.getColumnTypeName(i).equalsIgnoreCase("TINY")) {
+                        if (rs.getInt(i) == 1) {
                             value = "checked='checked'";
-                        }
-                        else
-                        {
+                        } else {
                             value = "";
                         }
-                    }
-                    else
-                    {
-                        if(md.getColumnTypeName(i).equalsIgnoreCase("date"))
-                        {
+                    } else {
+                        if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
                             value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
-                        }
-                        else
-                        {
+                        } else {
                             value = oscar.Misc.getString(rs, i);
                         }
                     }
 
-                    if(value!=null)
-                    {
+                    if (value != null) {
                         props.setProperty(name, value);
                     }
                 }
@@ -113,79 +101,54 @@ public class EctMMSERecord {
         return props;
     }
 
-    public int saveMMSERecord(Properties props)  throws SQLException  {
+    public int saveMMSERecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
 
-        
-        String sql="SELECT * FROM formMMSE WHERE demographic_no=" + demographic_no + " AND ID=0";
+
+        String sql = "SELECT * FROM formMMSE WHERE demographic_no=" + demographic_no + " AND ID=0";
         ResultSet rs = DBHandler.GetSQL(sql, true);
 
         rs.moveToInsertRow();
 
         ResultSetMetaData md = rs.getMetaData();
 
-        for(int i=1; i<=md.getColumnCount(); i++)
-        {
+        for (int i = 1; i <= md.getColumnCount(); i++) {
             String name = md.getColumnName(i);
 
-            if(name.equalsIgnoreCase("ID"))
-            {
+            if (name.equalsIgnoreCase("ID")) {
                 rs.updateNull(name);
-            }
-            else
-            {
+            } else {
                 String value = props.getProperty(name, null);
 
-                if(md.getColumnTypeName(i).equalsIgnoreCase("TINY"))
-                {
-                    if(value!=null)
-                    {
-                        if(value.equalsIgnoreCase("on"))
-                        {
+                if (md.getColumnTypeName(i).equalsIgnoreCase("TINY")) {
+                    if (value != null) {
+                        if (value.equalsIgnoreCase("on")) {
                             rs.updateInt(name, 1);
-                        }
-                        else
-                        {
+                        } else {
                             rs.updateInt(name, 0);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         rs.updateInt(name, 0);
                     }
-                }
-                else
-                {
-                    if(md.getColumnTypeName(i).equalsIgnoreCase("date"))
-                    {
+                } else {
+                    if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
                         java.util.Date d;
 
-                        if(md.getColumnName(i).equalsIgnoreCase("formEdited"))
-                        {
+                        if (md.getColumnName(i).equalsIgnoreCase("formEdited")) {
                             d = new Date();
-                        }
-                        else
-                        {
+                        } else {
                             d = UtilDateUtilities.StringToDate(value, "yyyy/MM/dd");
                         }
 
-                        if(d==null)
-                        {
+                        if (d == null) {
                             rs.updateNull(name);
-                        }
-                        else
-                        {
+                        } else {
                             rs.updateDate(name, new java.sql.Date(d.getTime()));
                         }
-                    }
-                    else
-                    {
-                        if(value==null)
-                        {
+                    } else {
+                        if (value == null) {
                             rs.updateNull(name);
-                        }
-                        else
-                        {
+                        } else {
                             rs.updateString(name, value);
                         }
                     }
@@ -201,8 +164,7 @@ public class EctMMSERecord {
 
         sql = "SELECT LAST_INSERT_ID()";
         rs = DBHandler.GetSQL(sql);
-        if(rs.next())
-        {
+        if (rs.next()) {
             ret = rs.getInt(1);
         }
         rs.close();

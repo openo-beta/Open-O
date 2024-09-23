@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -32,55 +32,54 @@ import oscar.oscarLab.ca.all.util.Utilities;
 
 public class HRMUploadKeyAction extends Action {
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-    
+
     @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         LabUploadForm frm = (LabUploadForm) form;
         FormFile importFile = frm.getImportFile();
         String filename = importFile.getFileName();
         String proNo = (String) request.getSession().getAttribute("user");
         String outcome = "failure";
-        
-        try{
+
+        try {
             InputStream is = importFile.getInputStream();
-            
+
             String type = request.getParameter("type");
-           
-            
+
+
             String filePath = Utilities.saveFile(is, filename);
             is.close();
             File file = new File(filePath);
-            
+
             is = new FileInputStream(filePath);
-            int checkFileUploadedSuccessfully = FileUploadCheck.addFile(file.getName(),is,proNo);            
+            int checkFileUploadedSuccessfully = FileUploadCheck.addFile(file.getName(), is, proNo);
             is.close();
-          
-            if (checkFileUploadedSuccessfully != FileUploadCheck.UNSUCCESSFUL_SAVE){
-                logger.debug("filePath"+filePath);
-                logger.debug("Type :"+type);
-                
-                DefaultHandler defaultHandler =  HandlerClassFactory.getDefaultHandler();
-                if(defaultHandler != null) {
-                	logger.debug("MESSAGE HANDLER "+defaultHandler.getClass().getName());
+
+            if (checkFileUploadedSuccessfully != FileUploadCheck.UNSUCCESSFUL_SAVE) {
+                logger.debug("filePath" + filePath);
+                logger.debug("Type :" + type);
+
+                DefaultHandler defaultHandler = HandlerClassFactory.getDefaultHandler();
+                if (defaultHandler != null) {
+                    logger.debug("MESSAGE HANDLER " + defaultHandler.getClass().getName());
                 }
-                if((defaultHandler.readTextFile(filePath))!= null) {
-                	outcome = "success";
+                if ((defaultHandler.readTextFile(filePath)) != null) {
+                    outcome = "success";
+                } else {
+                    outcome = "uploaded previously";
                 }
-                else{
-	                outcome = "uploaded previously";
-	            } 
-            } 
+            }
             request.setAttribute("filePath", filePath);
             request.setAttribute("type", type);
-        }catch(Exception e){
-            logger.error("Error: "+e);
+        } catch (Exception e) {
+            logger.error("Error: " + e);
             outcome = "exception";
         }
-        
+
         request.setAttribute("outcome", outcome);
-       
+
         return mapping.findForward("success");
     }
-    
-    
+
+
 }

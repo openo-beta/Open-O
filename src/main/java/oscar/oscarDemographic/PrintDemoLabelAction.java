@@ -28,25 +28,26 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 public class PrintDemoLabelAction extends OscarAction {
-    
+
     private static Logger logger = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
+
     public PrintDemoLabelAction() {
     }
 
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) {
-    	
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
-			throw new SecurityException("missing required security object (_demographic)");
-		}
-    	
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
+            throw new SecurityException("missing required security object (_demographic)");
+        }
+
         //patient
-        String classpath = (String)request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
-        if (classpath==null) classpath = (String)request.getSession().getServletContext().getAttribute("com.ibm.websphere.servlet.application.classpath");
-        
+        String classpath = (String) request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
+        if (classpath == null)
+            classpath = (String) request.getSession().getServletContext().getAttribute("com.ibm.websphere.servlet.application.classpath");
+
         System.setProperty("jasper.reports.compile.class.path", classpath);
-        LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String curUser_no = loggedInInfo.getLoggedInProviderNo();
         UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
         UserProperty prop;
@@ -64,7 +65,7 @@ public class PrintDemoLabelAction extends OscarAction {
         }
         String exportPdfJavascript = null;
 
-        if (defaultPrinterName!= null && !defaultPrinterName.isEmpty()) {
+        if (defaultPrinterName != null && !defaultPrinterName.isEmpty()) {
             exportPdfJavascript = "var params = this.getPrintParams();"
                     + "params.pageHandling=params.constants.handling.none;"
                     + "params.printerName='" + defaultPrinterName + "';";
@@ -73,17 +74,18 @@ public class PrintDemoLabelAction extends OscarAction {
             }
             exportPdfJavascript += "this.print(params);";
         }
-        HashMap<String,String> parameters = new HashMap<String,String>();
+        HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("demo", request.getParameter("demographic_no"));
 
         Integer apptNo = null;
         try {
             apptNo = Integer.parseInt(request.getParameter("appointment_no"));
-        }catch(NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
 
-        String defaultLabelPath = System.getProperty("user.home") + "/label.xml";       
-        String labelPath = OscarProperties.getInstance().getProperty("pdfLabelMRP",defaultLabelPath);
-        String apptProviderLabelPath = OscarProperties.getInstance().getProperty("pdfLabelApptProvider","");
+        String defaultLabelPath = System.getProperty("user.home") + "/label.xml";
+        String labelPath = OscarProperties.getInstance().getProperty("pdfLabelMRP", defaultLabelPath);
+        String apptProviderLabelPath = OscarProperties.getInstance().getProperty("pdfLabelApptProvider", "");
 
         if (apptNo != null && !apptProviderLabelPath.isEmpty()) {
             parameters.put("appt", String.valueOf(apptNo));
@@ -92,38 +94,36 @@ public class PrintDemoLabelAction extends OscarAction {
 
         ServletOutputStream sos = null;
         InputStream ins = null;
-        
-        
+
+
         logger.debug("user home: " + System.getProperty("user.home"));
         try {
             ins = new FileInputStream(labelPath);
             logger.debug("loading from :" + labelPath + " " + ins);
-        }
-        catch (FileNotFoundException ex1) {
+        } catch (FileNotFoundException ex1) {
             logger.warn("label xml file not found at " + labelPath + " using default instead");
         }
-        if (ins == null){
+        if (ins == null) {
             try {
 //                ServletContext context = getServlet().getServletContext();
                 ins = getClass().getResourceAsStream("/oscar/oscarDemographic/label.xml");
                 logger.debug("loading from : /oscar/oscarDemographic/label.xml " + ins);
-            }
-            catch (Exception ex1) {MiscUtils.getLogger().error("Error", ex1);
+            } catch (Exception ex1) {
+                MiscUtils.getLogger().error("Error", ex1);
             }
         }
 
         try {
             sos = response.getOutputStream();
-        }
-        catch (IOException ex) {MiscUtils.getLogger().error("Error", ex);
+        } catch (IOException ex) {
+            MiscUtils.getLogger().error("Error", ex);
         }
 
         response.setHeader("Content-disposition", getHeader(response).toString());
         OscarDocumentCreator osc = new OscarDocumentCreator();
         try {
-            osc.fillDocumentStream(parameters, sos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection(),exportPdfJavascript);
-        }
-        catch (SQLException e) {
+            osc.fillDocumentStream(parameters, sos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection(), exportPdfJavascript);
+        } catch (SQLException e) {
             MiscUtils.getLogger().error("Error", e);
         }
 

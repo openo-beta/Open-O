@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -26,6 +26,7 @@ package org.oscarehr.integration.questimed;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import org.oscarehr.util.MiscUtils;
 
 import net.sf.json.JSONObject;
@@ -62,7 +63,7 @@ public class QuestimedSSO {
 
             if (errorCode == TOKEN_EXPIRED) {
                 login(false);
-                responseBody = launchURL(userName,  demographicNo, providerNo);
+                responseBody = launchURL(userName, demographicNo, providerNo);
                 responseJson = JSONObject.fromObject(responseBody);
             }
 
@@ -74,7 +75,7 @@ public class QuestimedSSO {
         return url;
     }
 
-     public static String createAccount(String serviceUserName, String servicePassword, String serviceLocation, String userName, String patientHIN, String demographicNo, String providerNo, String patientFirstName, String patientLastName, String patientDOB, String patientSex, String patientEmail) {
+    public static String createAccount(String serviceUserName, String servicePassword, String serviceLocation, String userName, String patientHIN, String demographicNo, String providerNo, String patientFirstName, String patientLastName, String patientDOB, String patientSex, String patientEmail) {
         String errorMsg = null;
         String responseBody;
         Date now = new Date();
@@ -101,7 +102,7 @@ public class QuestimedSSO {
 
         return errorMsg;
     }
-     
+
     public static String getSurveysBody(String serviceUserName, String servicePassword, String serviceLocation, String questimedProviderUserName, String demographicNo, String providerNo) {
         String responseBody = null;
         Date now = new Date();
@@ -115,7 +116,7 @@ public class QuestimedSSO {
             if (errorCode == TOKEN_EXPIRED) {
 
                 login(false);
-                responseBody = getSurveys(questimedProviderUserName,  demographicNo, providerNo);
+                responseBody = getSurveys(questimedProviderUserName, demographicNo, providerNo);
             }
         } catch (Exception e) {
             MiscUtils.getLogger().error("getSurveysBody Error!", e);
@@ -173,7 +174,7 @@ public class QuestimedSSO {
         return succesFlag;
     }
 
-    private static String getSurveys(String questimedProviderUserName,String demographicNo, String providerNo) {
+    private static String getSurveys(String questimedProviderUserName, String demographicNo, String providerNo) {
         RestTemplate restTemplate = new RestTemplate();
         String responseBody = "";
         String serviceURL = serviceLocation;
@@ -234,7 +235,7 @@ public class QuestimedSSO {
         return responseBody;
     }
 
-      private static String createAccountREST(String userName, String patientHIN, String demographicNo, String providerNo, String patientFirstName, String patientLastName, String patientDOB, String patientSex, String patientEmail) {
+    private static String createAccountREST(String userName, String patientHIN, String demographicNo, String providerNo, String patientFirstName, String patientLastName, String patientDOB, String patientSex, String patientEmail) {
         RestTemplate restTemplate = new RestTemplate();
         String responseBody = "";
         String serviceURL = serviceLocation;
@@ -269,7 +270,7 @@ public class QuestimedSSO {
         }
         return responseBody;
     }
-      
+
     private static boolean isCredentialsChangedUpdateIfNecessary(String srvUserName, String srvPassword, String srvLocation) {
         boolean changed = false;
         if (!srvUserName.equals(serviceUserName)) {

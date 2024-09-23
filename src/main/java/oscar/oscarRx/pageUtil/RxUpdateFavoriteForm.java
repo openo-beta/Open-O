@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,7 +34,7 @@ import org.apache.struts.action.ActionMapping;
 
 
 public final class RxUpdateFavoriteForm extends ActionForm {
-    
+
     private String favoriteId = null;
     private String favoriteName = null;
     private String customName = null;
@@ -49,119 +49,119 @@ public final class RxUpdateFavoriteForm extends ActionForm {
     private boolean prn = false;
     private boolean customInstr = false;
     private String special = null;
-    
+
     public boolean getCustomInstr() {
         return this.customInstr;
     }
-    
+
     public void setCustomInstr(boolean customInstr) {
         this.customInstr = customInstr;
     }
-    
+
     public String getFavoriteId() {
         return (this.favoriteId);
     }
-    
+
     public void setFavoriteId(String favoriteId) {
         this.favoriteId = favoriteId;
     }
-    
+
     public String getFavoriteName() {
         return (this.favoriteName);
     }
-    
+
     public void setFavoriteName(String RHS) {
         this.favoriteName = RHS;
     }
-    
+
     public String getCustomName() {
         return this.customName;
     }
-    
+
     public void setCustomName(String RHS) {
         this.customName = RHS;
     }
-    
+
     public String getTakeMin() {
         return (this.takeMin);
     }
-    
+
     public void setTakeMin(String RHS) {
         this.takeMin = RHS;
     }
-    
+
     public String getTakeMax() {
         return (this.takeMax);
     }
-    
+
     public void setTakeMax(String RHS) {
         this.takeMax = RHS;
     }
-    
+
     public String getFrequencyCode() {
         return (this.frequencyCode);
     }
-    
+
     public void setFrequencyCode(String RHS) {
         this.frequencyCode = RHS;
     }
-    
+
     public String getDuration() {
         return (this.duration);
     }
-    
+
     public void setDuration(String RHS) {
         this.duration = RHS;
     }
-    
+
     public String getDurationUnit() {
         return (this.durationUnit);
     }
-    
+
     public void setDurationUnit(String RHS) {
         this.durationUnit = RHS;
     }
-    
+
     public String getQuantity() {
         return (this.quantity);
     }
-    
+
     public void setQuantity(String RHS) {
         this.quantity = RHS;
     }
-    
+
     public String getRepeat() {
         return (this.repeat);
     }
-    
+
     public void setRepeat(String RHS) {
         this.repeat = RHS;
     }
-    
+
     public boolean getNosubs() {
         return (this.nosubs);
     }
-    
+
     public void setNosubs(boolean RHS) {
         this.nosubs = RHS;
     }
-    
+
     public boolean getPrn() {
         return (this.prn);
     }
-    
+
     public void setPrn(boolean RHS) {
         this.prn = RHS;
     }
-    
+
     public String getSpecial() {
         return (this.special);
     }
-    
+
     public void setSpecial(String RHS) {
         this.special = RHS;
     }
-    
+
     /**
      * Reset all properties to their default values.
      *
@@ -184,7 +184,7 @@ public final class RxUpdateFavoriteForm extends ActionForm {
         this.customInstr = false;
         this.special = null;
     }
-    
+
     /**
      * Validate the properties that have been set from this HTTP request,
      * and return an <code>ActionErrors</code> object that encapsulates any
@@ -196,11 +196,11 @@ public final class RxUpdateFavoriteForm extends ActionForm {
      * @param request The servlet request we are processing
      */
     public ActionErrors validate(ActionMapping mapping,
-    HttpServletRequest request) {
-        
+                                 HttpServletRequest request) {
+
         ActionErrors errors = new ActionErrors();
-        
+
         return errors;
-        
+
     }
 }

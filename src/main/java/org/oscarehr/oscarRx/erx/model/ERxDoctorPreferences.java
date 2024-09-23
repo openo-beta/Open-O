@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- * 
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,7 +38,7 @@ import oscar.OscarProperties;
 /**
  * Provides an abstract way to reference the the External Prescriber preferences specific to a
  * single provider (doctor).
- * 
+ *
  * FUTURE: org.oscarehr.oscarRx.erx should, in the future, support more than one
  * external prescription service, which may not necessarily need the same doctor
  * preference objects as the External Prescriber. When this support is added, this class should
@@ -53,7 +53,7 @@ import oscar.OscarProperties;
 public class ERxDoctorPreferences {
     /**
      * Create an instance of an ERxDoctorPreferences object.
-     * 
+     *
      * @param providerId
      *            The ID of the doctor whose preferences should be loaded.
      */
@@ -76,7 +76,7 @@ public class ERxDoctorPreferences {
         String eRxPassword = OscarProperties.getInstance().getProperty("util.erx.clinic_password");
         String eRxFacility = OscarProperties.getInstance().getProperty("util.erx.clinic_facility_id");
         boolean eRxTrainingMode = Boolean.valueOf(OscarProperties.getInstance().getProperty("util.erx.clinic_training_mode"));
-        
+
         // Construct a new ERxDoctorPreference object
         answer = new ERxDoctorPreferences(providerPreference.getId(), new URL(
                 eRx_SSO_URL),
@@ -128,7 +128,7 @@ public class ERxDoctorPreferences {
 
     /**
      * Create an instance of an ERxDoctorPreferences object.
-     * 
+     *
      * @param providerId
      *            A unique doctor number, provided by the External Prescriber.
      * @param connectionURL
@@ -146,8 +146,8 @@ public class ERxDoctorPreferences {
      *            Whether or not the doctor has turned on training mode.
      */
     public ERxDoctorPreferences(String providerId, URL connectionURL,
-            String username, String password, String clientNumber,
-            boolean isInTrainingMode) {
+                                String username, String password, String clientNumber,
+                                boolean isInTrainingMode) {
         super();
         this.providerId = providerId;
         this.connectionURL = connectionURL;
@@ -160,7 +160,7 @@ public class ERxDoctorPreferences {
     /**
      * Returns the unique clinic number that the doctor is associated with,
      * provided by the External Prescriber.
-     * 
+     *
      * @return The current value of clientNumber.
      */
     public String getClientNumber() {
@@ -169,7 +169,7 @@ public class ERxDoctorPreferences {
 
     /**
      * Returns the URL of the web service to connect to.
-     * 
+     *
      * @return The current value of connectionURL.
      */
     public URL getConnectionURL() {
@@ -179,7 +179,7 @@ public class ERxDoctorPreferences {
     /**
      * Returns the doctor's password, which will be used to connect to the web
      * service.
-     * 
+     *
      * @return The current value of password.
      */
     public String getPassword() {
@@ -189,7 +189,7 @@ public class ERxDoctorPreferences {
     /**
      * Returns the unique doctor number, associated with the doctor, provided by
      * the External Prescriber.
-     * 
+     *
      * @return The current value of providerId.
      */
     public String getProviderId() {
@@ -199,7 +199,7 @@ public class ERxDoctorPreferences {
     /**
      * Returns the doctor's username, which will be used to connect to the web
      * service.
-     * 
+     *
      * @return The current value of username.
      */
     public String getUsername() {
@@ -208,7 +208,7 @@ public class ERxDoctorPreferences {
 
     /**
      * Returns whether or not the doctor has turned on training mode.
-     * 
+     *
      * @return TRUE if training mode is enabled; FALSE otherwise.
      */
     public boolean isInTrainingMode() {
@@ -218,7 +218,7 @@ public class ERxDoctorPreferences {
     /**
      * Changes the value of the unique clinic number that the doctor is
      * associated with.
-     * 
+     *
      * @param clientNumber
      *            The new clientNumber.
      */
@@ -228,7 +228,7 @@ public class ERxDoctorPreferences {
 
     /**
      * Changes the value of the URL of the web service to connect to.
-     * 
+     *
      * @param connectionURL
      *            The new connectionURL.
      */
@@ -238,7 +238,7 @@ public class ERxDoctorPreferences {
 
     /**
      * Changes whether or not the doctor has turned on training mode.
-     * 
+     *
      * @param isInTrainingMode
      *            The new isInTrainingMode.
      */
@@ -249,7 +249,7 @@ public class ERxDoctorPreferences {
     /**
      * Changes the value of the doctor's password, which will be used to connect
      * to the web service.
-     * 
+     *
      * @param password
      *            The new password.
      */
@@ -260,7 +260,7 @@ public class ERxDoctorPreferences {
     /**
      * Changes the value of the unique doctor number, associated with the
      * doctor, provided by the External Prescriber.
-     * 
+     *
      * @param providerID
      *            The new providerId.
      */
@@ -271,7 +271,7 @@ public class ERxDoctorPreferences {
     /**
      * Changes the value of the doctor's username, which will be used to connect
      * to the web service.
-     * 
+     *
      * @param username
      *            The new username.
      */

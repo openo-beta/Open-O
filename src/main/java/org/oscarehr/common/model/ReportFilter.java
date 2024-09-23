@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,105 +32,103 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="reportFilter")
+@Table(name = "reportFilter")
 public class ReportFilter extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name="report_id")
-	private int reportId;
-	
-	private String description;
-	
-	private String value;
-	
-	private String position;
-	
-	private int status;
-	
-	@Column(name="order_no")
-	private int orderNo;
-	
-	private String javascript;
-	
-	@Column(name="date_format")
-	private String dateFormat;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "report_id")
+    private int reportId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String description;
 
-	public int getReportId() {
-		return reportId;
-	}
+    private String value;
 
-	public void setReportId(int reportId) {
-		this.reportId = reportId;
-	}
+    private String position;
 
-	public String getDescription() {
-		return description;
-	}
+    private int status;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Column(name = "order_no")
+    private int orderNo;
 
-	public String getValue() {
-		return value;
-	}
+    private String javascript;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    @Column(name = "date_format")
+    private String dateFormat;
 
-	public String getPosition() {
-		return position;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public int getStatus() {
-		return status;
-	}
+    public int getReportId() {
+        return reportId;
+    }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public void setReportId(int reportId) {
+        this.reportId = reportId;
+    }
 
-	public int getOrderNo() {
-		return orderNo;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getJavascript() {
-		return javascript;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setJavascript(String javascript) {
-		this.javascript = javascript;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public String getDateFormat() {
-		return dateFormat;
-	}
+    public String getPosition() {
+        return position;
+    }
 
-	public void setDateFormat(String dateFormat) {
-		this.dateFormat = dateFormat;
-	}
-	
-	
-	
-	
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public String getJavascript() {
+        return javascript;
+    }
+
+    public void setJavascript(String javascript) {
+        this.javascript = javascript;
+    }
+
+    public String getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+
 }

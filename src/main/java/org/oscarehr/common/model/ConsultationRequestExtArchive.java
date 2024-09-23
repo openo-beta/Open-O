@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,84 +42,84 @@ import javax.persistence.TemporalType;
 public class ConsultationRequestExtArchive extends AbstractModel<Integer> implements Serializable {
 
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)		
-	private Integer id;
-	
-	private Integer consultationRequestArchiveId;
-	
-	private Integer originalId;
-	
-	@Column(name = "requestId")
-	private int requestId;
-	
-	@Column(name= "name")
-	private String key;
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private Integer consultationRequestArchiveId;
+
+    private Integer originalId;
+
+    @Column(name = "requestId")
+    private int requestId;
+
+    @Column(name = "name")
+    private String key;
+
     private String value;
-    
+
     @Temporal(TemporalType.DATE)
     private java.util.Date dateCreated;
-    
-    
-	@Override
+
+
+    @Override
     public Integer getId() {
-	    return(id);
+        return (id);
     }
-	
-	public int getRequestId() {
-		return requestId;
-	}
-	
-	public void setRequestId(int requestId) {
-		this.requestId = requestId;
-	}
 
-	public String getKey() {
-		return key;
-	}
+    public int getRequestId() {
+        return requestId;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getKey() {
+        return key;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	public java.util.Date getDateCreated() {
-		return dateCreated;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setDateCreated(java.util.Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public Integer getOriginalId() {
-		return originalId;
-	}
+    public java.util.Date getDateCreated() {
+        return dateCreated;
+    }
 
-	public void setOriginalId(Integer originalId) {
-		this.originalId = originalId;
-	}
+    public void setDateCreated(java.util.Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getOriginalId() {
+        return originalId;
+    }
 
-	public Integer getConsultationRequestArchiveId() {
-		return consultationRequestArchiveId;
-	}
+    public void setOriginalId(Integer originalId) {
+        this.originalId = originalId;
+    }
 
-	public void setConsultationRequestArchiveId(Integer consultationRequestArchiveId) {
-		this.consultationRequestArchiveId = consultationRequestArchiveId;
-	}
-		
-		
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getConsultationRequestArchiveId() {
+        return consultationRequestArchiveId;
+    }
+
+    public void setConsultationRequestArchiveId(Integer consultationRequestArchiveId) {
+        this.consultationRequestArchiveId = consultationRequestArchiveId;
+    }
+
+
 }

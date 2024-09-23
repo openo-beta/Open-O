@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,75 +32,74 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="caisi_form")
-public class CaisiForm extends AbstractModel<Integer>{
+@Table(name = "caisi_form")
+public class CaisiForm extends AbstractModel<Integer> {
 
-    public static final int STATUS_ACTIVE         = 1;
-    public static final int STATUS_INACTIVE       = 2;
+    public static final int STATUS_ACTIVE = 1;
+    public static final int STATUS_INACTIVE = 2;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="form_id")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "form_id")
+    private Integer id;
 
-	private Integer facilityId;
+    private Integer facilityId;
 
-	private String description;
-	
-	private String surveyData;
-	
-	private Integer status;
-	
-	private Integer version;
+    private String description;
 
-	public Integer getId() {
-		return id;
-	}
+    private String surveyData;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private Integer status;
 
-	public Integer getFacilityId() {
-		return facilityId;
-	}
+    private Integer version;
 
-	public void setFacilityId(Integer facilityId) {
-		this.facilityId = facilityId;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Integer getFacilityId() {
+        return facilityId;
+    }
 
-	public String getSurveyData() {
-		return surveyData;
-	}
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
+    }
 
-	public void setSurveyData(String surveyData) {
-		this.surveyData = surveyData;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public String getSurveyData() {
+        return surveyData;
+    }
 
-	public Integer getVersion() {
-		return version;
-	}
+    public void setSurveyData(String surveyData) {
+        this.surveyData = surveyData;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-	
-	
-	
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+
 }

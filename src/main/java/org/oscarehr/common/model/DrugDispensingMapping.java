@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,110 +34,110 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class DrugDispensingMapping extends AbstractModel<Integer>{
+public class DrugDispensingMapping extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id = null;
 
-	private String din;
-	
-	private String duration;
-	
-	private String durUnit;
-	
-	private String freqCode;
-	
-	private String quantity;
-	
-	private Float takeMin;
-	
-	private Float takeMax;
-	
-	private String productCode;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
+    private String din;
 
-	public Integer getId() {
-		return id;
-	}
+    private String duration;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String durUnit;
 
-	public String getDin() {
-		return din;
-	}
+    private String freqCode;
 
-	public void setDin(String din) {
-		this.din = din;
-	}
+    private String quantity;
 
-	public String getDuration() {
-		return duration;
-	}
+    private Float takeMin;
 
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
+    private Float takeMax;
 
-	public String getDurUnit() {
-		return durUnit;
-	}
+    private String productCode;
 
-	public void setDurUnit(String durUnit) {
-		this.durUnit = durUnit;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
 
-	public String getFreqCode() {
-		return freqCode;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setFreqCode(String freqCode) {
-		this.freqCode = freqCode;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getQuantity() {
-		return quantity;
-	}
+    public String getDin() {
+        return din;
+    }
 
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
+    public void setDin(String din) {
+        this.din = din;
+    }
 
-	public Float getTakeMin() {
-		return takeMin;
-	}
+    public String getDuration() {
+        return duration;
+    }
 
-	public void setTakeMin(Float takeMin) {
-		this.takeMin = takeMin;
-	}
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
-	public Float getTakeMax() {
-		return takeMax;
-	}
+    public String getDurUnit() {
+        return durUnit;
+    }
 
-	public void setTakeMax(Float takeMax) {
-		this.takeMax = takeMax;
-	}
+    public void setDurUnit(String durUnit) {
+        this.durUnit = durUnit;
+    }
 
-	public String getProductCode() {
-		return productCode;
-	}
+    public String getFreqCode() {
+        return freqCode;
+    }
 
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
-	}
+    public void setFreqCode(String freqCode) {
+        this.freqCode = freqCode;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public String getQuantity() {
+        return quantity;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	
-	
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public Float getTakeMin() {
+        return takeMin;
+    }
+
+    public void setTakeMin(Float takeMin) {
+        this.takeMin = takeMin;
+    }
+
+    public Float getTakeMax() {
+        return takeMax;
+    }
+
+    public void setTakeMax(Float takeMax) {
+        this.takeMax = takeMax;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+
 }

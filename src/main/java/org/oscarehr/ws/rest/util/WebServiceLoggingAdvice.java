@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,55 +51,55 @@ import oscar.log.LogAction;
 @Component
 public class WebServiceLoggingAdvice {
 
-	private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	
-	@Pointcut("execution(public * org.oscarehr.ws.rest.*.*(..))")
-	public void pointcut() {
-		logger.info("called pointcut");
-	}
-	
-	private String getServiceCallDescription(ProceedingJoinPoint joinpoint) {
-		Signature signature = joinpoint.getSignature();
-		String type = signature.getDeclaringType().getSimpleName();
-		String methodName = signature.getName();
-		return type + "." + methodName;
-	}
-	
-	@Around("execution(public * org.oscarehr.ws.rest.*.*(..))")
-	public Object logAccess(ProceedingJoinPoint joinpoint) throws Throwable {
-		if (logger.isInfoEnabled()) {
-			logger.info("Logging access for " + joinpoint);
-		}
+    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-		try {
-			long duration = System.currentTimeMillis();
-			Object result = joinpoint.proceed();
-			duration = System.currentTimeMillis() - duration;
+    @Pointcut("execution(public * org.oscarehr.ws.rest.*.*(..))")
+    public void pointcut() {
+        logger.info("called pointcut");
+    }
 
-			logAccess("REST WS: " + getServiceCallDescription(joinpoint));
-			return result;
-		} catch (Throwable t) {
-			logger.debug("WS Failure", t);
+    private String getServiceCallDescription(ProceedingJoinPoint joinpoint) {
+        Signature signature = joinpoint.getSignature();
+        String type = signature.getDeclaringType().getSimpleName();
+        String methodName = signature.getName();
+        return type + "." + methodName;
+    }
 
-			logAccess("REST WS: FAILURE: " + getServiceCallDescription(joinpoint));
-			throw t;
-		}
-	}
+    @Around("execution(public * org.oscarehr.ws.rest.*.*(..))")
+    public Object logAccess(ProceedingJoinPoint joinpoint) throws Throwable {
+        if (logger.isInfoEnabled()) {
+            logger.info("Logging access for " + joinpoint);
+        }
 
-	private void logAccess(String action) {
-		OscarLog log = new OscarLog();
-		log.setAction(action);
-		log.setProviderNo("N/A");
-		
-		Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
-		
-		HttpServletRequest request = (HttpServletRequest) currentMessage.get("HTTP.REQUEST");
+        try {
+            long duration = System.currentTimeMillis();
+            Object result = joinpoint.proceed();
+            duration = System.currentTimeMillis() - duration;
 
-		log.setIp(request.getRemoteAddr());
-		log.setContent(request.getRequestURL().toString());
-		log.setData(request.getParameterMap().toString());
+            logAccess("REST WS: " + getServiceCallDescription(joinpoint));
+            return result;
+        } catch (Throwable t) {
+            logger.debug("WS Failure", t);
 
-		LogAction.addLogSynchronous(log);
-	}
+            logAccess("REST WS: FAILURE: " + getServiceCallDescription(joinpoint));
+            throw t;
+        }
+    }
+
+    private void logAccess(String action) {
+        OscarLog log = new OscarLog();
+        log.setAction(action);
+        log.setProviderNo("N/A");
+
+        Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
+
+        HttpServletRequest request = (HttpServletRequest) currentMessage.get("HTTP.REQUEST");
+
+        log.setIp(request.getRemoteAddr());
+        log.setContent(request.getRequestURL().toString());
+        log.setData(request.getParameterMap().toString());
+
+        LogAction.addLogSynchronous(log);
+    }
 
 }

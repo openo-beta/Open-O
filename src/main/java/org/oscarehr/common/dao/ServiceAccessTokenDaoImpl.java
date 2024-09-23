@@ -7,27 +7,28 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
 
 import java.util.List;
+
 import org.oscarehr.common.dao.ServiceAccessTokenDao;
 
 import javax.persistence.Query;
@@ -36,39 +37,40 @@ import org.oscarehr.common.model.ServiceAccessToken;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ServiceAccessTokenDaoImpl extends AbstractDaoImpl<ServiceAccessToken> implements ServiceAccessTokenDao{
+public class ServiceAccessTokenDaoImpl extends AbstractDaoImpl<ServiceAccessToken> implements ServiceAccessTokenDao {
 
 
-	public ServiceAccessTokenDaoImpl() {
-		super(ServiceAccessToken.class);
-	}
+    public ServiceAccessTokenDaoImpl() {
+        super(ServiceAccessToken.class);
+    }
 
-	@Override
-public void persist(ServiceAccessToken token) {
-    this.entityManager.persist(token);
-}
- 
-@Override
-public void remove(ServiceAccessToken token) {
-    this.entityManager.remove(token);
-}
- 
-// @Override
+    @Override
+    public void persist(ServiceAccessToken token) {
+        this.entityManager.persist(token);
+    }
+
+    @Override
+    public void remove(ServiceAccessToken token) {
+        this.entityManager.remove(token);
+    }
+
+    // @Override
 // public ServiceRequestToken merge(ServiceAccessTokenDao token) {
 //     return this.entityManager.merge(token);
 // }
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<ServiceAccessToken> findAll() {
-		Query query = createQuery("x", null);
-		return query.getResultList();
-	}
-	@Override
-	public ServiceAccessToken findByTokenId(String token) {
-		Query query = entityManager.createQuery("SELECT x FROM ServiceAccessToken x WHERE x.tokenId=?");
-		query.setParameter(0,token);
-		
-		return this.getSingleResultOrNull(query);
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<ServiceAccessToken> findAll() {
+        Query query = createQuery("x", null);
+        return query.getResultList();
+    }
+
+    @Override
+    public ServiceAccessToken findByTokenId(String token) {
+        Query query = entityManager.createQuery("SELECT x FROM ServiceAccessToken x WHERE x.tokenId=?");
+        query.setParameter(0, token);
+
+        return this.getSingleResultOrNull(query);
+    }
 
 }

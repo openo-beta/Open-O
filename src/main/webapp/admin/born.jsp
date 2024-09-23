@@ -25,191 +25,201 @@
 --%>
 <!DOCTYPE html>
 <%-- This JSP is the first page you see when you enter 'report by template' --%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-	boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>"
-	objectName="_admin" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_admin");%>
+                   objectName="_admin" rights="r" reverse="<%=true%>">
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_admin");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 
 <html:html lang="en">
-<head>
-<script src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>BORN Mappings</title>
-<link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/library/jquery/jquery-ui.structure-1.12.1.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/library/jquery/jquery-ui.theme-1.12.1.min.css">
+    <head>
+        <script src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title>BORN Mappings</title>
+        <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="<%=request.getContextPath() %>/library/jquery/jquery-ui.structure-1.12.1.min.css">
+        <link rel="stylesheet" href="<%=request.getContextPath() %>/library/jquery/jquery-ui.theme-1.12.1.min.css">
 
-<script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
-<script src="<%=request.getContextPath() %>/js/bootstrap.js"></script>
-<script src="<%=request.getContextPath() %>/js/jquery.validate.js"></script>
-<script src="<%=request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
+        <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
+        <script src="<%=request.getContextPath() %>/js/bootstrap.js"></script>
+        <script src="<%=request.getContextPath() %>/js/jquery.validate.js"></script>
+        <script src="<%=request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
 
-<script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
-
-
-<script>
-function addNewMapping() {
-
-	jQuery.getJSON("bornManage.json",{method: "listServices"},
-            function(data,textStatus){
-				console.log('ok');
-				$("#oscarService").empty();
-				for(var x=0;x<data.length;x++) {
-					var id = data[x].serviceId;
-					var name = data[x].serviceDesc;
-
-					$("#oscarService").append("<option value=\""+ id + "\">"+name+"</option>");
-
-					$('#new-form').dialog('open');
-				}
-   			 }
-	);
-}
-
-function deleteMapping(id) {
-    jQuery.getJSON("bornManage.json", {
-        method: "delete",
-        id: id
-    },
-    function(xml) {
-    	if(xml.success)
-    		listMappings();
-    	else
-    		alert(xml.error);
-    });
-}
-
-function listMappings() {
-	 $("#mappingTable tbody").find("tr").remove();
-
-	jQuery.getJSON("bornManage.json",{method: "list"},
-           function(data,textStatus){
-				for(var x=0;x<data.length;x++) {
-					var id = data[x].id;
-					var bornPathway = data[x].bornPathway;
-					var serviceId = data[x].serviceName;
-
-					$('#mappingTable > tbody:last').append('<tr><td>'+bornPathway+'</td><td>'+serviceId+'</td><td><a href="javascript:void(0);" onclick="deleteMapping('+id+');"><img border="0" title="delete" src="../images/Delete16.gif"/></a></td></tr>');
-				}
-   });
-}
-
-$(document).ready(function(){
-	listMappings();
-
-	$( "#new-form" ).dialog({
-		autoOpen: false,
-		height: 275,
-		width: 450,
-		modal: true,
-		buttons: {
-			"Add Mapping": function() {
-				var bm = $("#bornPathway").val();
-				var os = $("#oscarService").val();
-				 jQuery.getJSON("bornManage.json",
-			                {
-			                        method: "add",
-			                        bornPathway: bm,
-			                        oscarService:os,
-			                },
-			                function(xml){
-			                	if(xml.success)
-			                		listMappings();
-			                	else
-			                		alert(xml.error);
-			                });
-
-				$( this ).dialog( "close" );
-			},
-			Cancel: function() {
-				$( this ).dialog( "close" );
-			}
-		},
-		close: function() {
-
-		}
-	});
-
-});
-
-</script>
-
-</head>
-
-<body class="BodyStyle">
-<h4>BORN/OSCAR Consultation Service Mapping</h4>
-<table id="mappingTable" class="table table-bordered table-striped table-hover table-condensed">
-	<thead>
-		<tr>
-			<th>Early Child Development and Parenting Resource System - Ontario</th>
-			<th>OSCAR Consultation Service</th>
-			<th>&nbsp;</th>
-		</tr>
-	</thead>
-	<tbody></tbody>
-</table>
-<input type="button" class="btn btn-primary" value="Add New" onClick="addNewMapping()"/>
+        <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
 
 
-<div id="new-form" title="Create Mapping">
-	<p class="validateTips"></p>
-	<form>
-		<fieldset>
-			<div class="control-group">
-				<label class="control-label" for="bornPathway">BORN Pathway:</label>
-				<div class="controls">
-					<select name="bornPathway" id="bornPathway">
-						<option value="Autism Intervention Services" >Autism Intervention Services</option>
-						<option value="Blind Low Vision Program">Blind Low Vision Program</option>
-						<option value="Child Care">Child Care</option>
-						<option value="Child Protection Services">Child Protection Services</option>
-						<option value="Children's Mental Health Services">Children's Mental Health Services</option>
-						<option value="Children's Treatment Centre">Children's Treatment Centre</option>
-						<option value="Community Care Access Centre">Community Care Access Centre</option>
-						<option value="Community Parks and Recreation Programs">Community Parks and Recreation Programs</option>
-						<option value="Dental Services">Dental Services</option>
-						<option value="Family Resource Programs">Family Resource Programs</option>
-						<option value="Healthy Babies Healthy Children">Healthy Babies Healthy Children</option>
-						<option value="Infant Development Program">Infant Development Program</option>
-						<option value="Infant Hearing Program">Infant Hearing Program</option>
-						<option value="Ontario Early Years Centre">Ontario Early Years Centre</option>
-						<option value="Paediatrician/Developmental Paediatrician">Paediatrician/Developmental Paediatrician</option>
-						<option value="Preschool Speech and Language Program">Preschool Speech and Language Program</option>
-						<option value="Public Health">Public Health</option>
-						<option value="Schools">Schools</option>
-						<option value="Services for Physical and Developmental Disabilities">Services for Physical and Developmental Disabilities</option>
-						<option value="Services for the Hearing Impaired">Services for the Hearing Impaired</option>
-						<option value="Services for the Visually Impaired">Services for the Visually Impaired</option>
-						<option value="Specialized Child Care Programming">Specialized Child Care Programming</option>
-						<option value="Specialized Medical Services">Specialized Medical Services</option>
-					</select>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="oscarService">OSCAR Consultation Service:</label>
-				<div class="controls">
-					<select name="oscarService" id="oscarService">
+        <script>
+            function addNewMapping() {
 
-					</select>
-				</div>
-			</div>
-		</fieldset>
-	</form>
-</div>
+                jQuery.getJSON("bornManage.json", {method: "listServices"},
+                    function (data, textStatus) {
+                        console.log('ok');
+                        $("#oscarService").empty();
+                        for (var x = 0; x < data.length; x++) {
+                            var id = data[x].serviceId;
+                            var name = data[x].serviceDesc;
 
-</body>
+                            $("#oscarService").append("<option value=\"" + id + "\">" + name + "</option>");
+
+                            $('#new-form').dialog('open');
+                        }
+                    }
+                );
+            }
+
+            function deleteMapping(id) {
+                jQuery.getJSON("bornManage.json", {
+                        method: "delete",
+                        id: id
+                    },
+                    function (xml) {
+                        if (xml.success)
+                            listMappings();
+                        else
+                            alert(xml.error);
+                    });
+            }
+
+            function listMappings() {
+                $("#mappingTable tbody").find("tr").remove();
+
+                jQuery.getJSON("bornManage.json", {method: "list"},
+                    function (data, textStatus) {
+                        for (var x = 0; x < data.length; x++) {
+                            var id = data[x].id;
+                            var bornPathway = data[x].bornPathway;
+                            var serviceId = data[x].serviceName;
+
+                            $('#mappingTable > tbody:last').append('<tr><td>' + bornPathway + '</td><td>' + serviceId + '</td><td><a href="javascript:void(0);" onclick="deleteMapping(' + id + ');"><img border="0" title="delete" src="../images/Delete16.gif"/></a></td></tr>');
+                        }
+                    });
+            }
+
+            $(document).ready(function () {
+                listMappings();
+
+                $("#new-form").dialog({
+                    autoOpen: false,
+                    height: 275,
+                    width: 450,
+                    modal: true,
+                    buttons: {
+                        "Add Mapping": function () {
+                            var bm = $("#bornPathway").val();
+                            var os = $("#oscarService").val();
+                            jQuery.getJSON("bornManage.json",
+                                {
+                                    method: "add",
+                                    bornPathway: bm,
+                                    oscarService: os,
+                                },
+                                function (xml) {
+                                    if (xml.success)
+                                        listMappings();
+                                    else
+                                        alert(xml.error);
+                                });
+
+                            $(this).dialog("close");
+                        },
+                        Cancel: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function () {
+
+                    }
+                });
+
+            });
+
+        </script>
+
+    </head>
+
+    <body class="BodyStyle">
+    <h4>BORN/OSCAR Consultation Service Mapping</h4>
+    <table id="mappingTable" class="table table-bordered table-striped table-hover table-condensed">
+        <thead>
+        <tr>
+            <th>Early Child Development and Parenting Resource System - Ontario</th>
+            <th>OSCAR Consultation Service</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <input type="button" class="btn btn-primary" value="Add New" onClick="addNewMapping()"/>
+
+
+    <div id="new-form" title="Create Mapping">
+        <p class="validateTips"></p>
+        <form>
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="bornPathway">BORN Pathway:</label>
+                    <div class="controls">
+                        <select name="bornPathway" id="bornPathway">
+                            <option value="Autism Intervention Services">Autism Intervention Services</option>
+                            <option value="Blind Low Vision Program">Blind Low Vision Program</option>
+                            <option value="Child Care">Child Care</option>
+                            <option value="Child Protection Services">Child Protection Services</option>
+                            <option value="Children's Mental Health Services">Children's Mental Health Services</option>
+                            <option value="Children's Treatment Centre">Children's Treatment Centre</option>
+                            <option value="Community Care Access Centre">Community Care Access Centre</option>
+                            <option value="Community Parks and Recreation Programs">Community Parks and Recreation
+                                Programs
+                            </option>
+                            <option value="Dental Services">Dental Services</option>
+                            <option value="Family Resource Programs">Family Resource Programs</option>
+                            <option value="Healthy Babies Healthy Children">Healthy Babies Healthy Children</option>
+                            <option value="Infant Development Program">Infant Development Program</option>
+                            <option value="Infant Hearing Program">Infant Hearing Program</option>
+                            <option value="Ontario Early Years Centre">Ontario Early Years Centre</option>
+                            <option value="Paediatrician/Developmental Paediatrician">Paediatrician/Developmental
+                                Paediatrician
+                            </option>
+                            <option value="Preschool Speech and Language Program">Preschool Speech and Language
+                                Program
+                            </option>
+                            <option value="Public Health">Public Health</option>
+                            <option value="Schools">Schools</option>
+                            <option value="Services for Physical and Developmental Disabilities">Services for Physical
+                                and Developmental Disabilities
+                            </option>
+                            <option value="Services for the Hearing Impaired">Services for the Hearing Impaired</option>
+                            <option value="Services for the Visually Impaired">Services for the Visually Impaired
+                            </option>
+                            <option value="Specialized Child Care Programming">Specialized Child Care Programming
+                            </option>
+                            <option value="Specialized Medical Services">Specialized Medical Services</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="oscarService">OSCAR Consultation Service:</label>
+                    <div class="controls">
+                        <select name="oscarService" id="oscarService">
+
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    </body>
 </html:html>

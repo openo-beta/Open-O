@@ -24,26 +24,26 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%
     Integer latestFrmId = (Integer) session.getAttribute("latestFrmId");
     session.removeAttribute("latestFrmId");
 %>
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<script language=javascript>
-          self.close();
-<%  if (latestFrmId==null) { %>
-          self.opener.location.reload();
-<%  } else { %>
-	  self.opener.location = "EditIntake.jsp?id=<%=latestFrmId%>";
-<%  } %>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <script language=javascript>
+            self.close();
+            <%  if (latestFrmId==null) { %>
+            self.opener.location.reload();
+            <%  } else { %>
+            self.opener.location = "EditIntake.jsp?id=<%=latestFrmId%>";
+            <%  } %>
         </script>
-</head>
-<body>
-<a href="javascript:window.close();"><bean:message
-	key="oscarEncounter.close.btnHere" /></a>
-</body>
+    </head>
+    <body>
+    <a href="javascript:window.close();"><bean:message
+            key="oscarEncounter.close.btnHere"/></a>
+    </body>
 </html:html>

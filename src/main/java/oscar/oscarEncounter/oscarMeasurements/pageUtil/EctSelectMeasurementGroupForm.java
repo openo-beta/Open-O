@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,9 +31,9 @@ import java.util.Map;
 
 import org.apache.struts.action.ActionForm;
 
-public final class EctSelectMeasurementGroupForm extends ActionForm{
+public final class EctSelectMeasurementGroupForm extends ActionForm {
 
-    
+
     private final Map values = new HashMap();
 
     public void setValue(String key, Object value) {
@@ -43,20 +43,24 @@ public final class EctSelectMeasurementGroupForm extends ActionForm{
     public Object getValue(String key) {
         return values.get(key);
     }
-    
+
     private String forward;
-    public String getForward(){
+
+    public String getForward() {
         return forward;
     }
-    public void setForward(String forward){
+
+    public void setForward(String forward) {
         this.forward = forward;
     }
-    
+
     private String selectedGroupName;
-    public String getSelectedGroupName(){
+
+    public String getSelectedGroupName() {
         return selectedGroupName;
     }
-    public void setSelectedGroupName(String selectedGroupName){
+
+    public void setSelectedGroupName(String selectedGroupName) {
         this.selectedGroupName = selectedGroupName;
     }
 /*    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request)
@@ -79,5 +83,5 @@ public final class EctSelectMeasurementGroupForm extends ActionForm{
         return errors;
     }
     */
-    
+
 }

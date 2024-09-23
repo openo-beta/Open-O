@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -37,51 +37,51 @@ import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CriteriaTypeDaoImpl extends AbstractDaoImpl<CriteriaType> implements CriteriaTypeDao{
+public class CriteriaTypeDaoImpl extends AbstractDaoImpl<CriteriaType> implements CriteriaTypeDao {
 
-	public CriteriaTypeDaoImpl() {
-		super(CriteriaType.class);
-	}
-	
-	public List<CriteriaType> findAll() {
-		Query query = entityManager.createQuery("select x from CriteriaType x");
-		
-		@SuppressWarnings("unchecked")
-	    List<CriteriaType> results = query.getResultList();
-		
-		return results;
-	}
+    public CriteriaTypeDaoImpl() {
+        super(CriteriaType.class);
+    }
 
-	public CriteriaType findByName(String fieldName) {		
-		Query query = entityManager.createQuery("select x from CriteriaType x where x.fieldName=?");
-		query.setParameter(0, fieldName);
-		
-		@SuppressWarnings("unchecked")
-	    List<CriteriaType> results = query.getResultList();
-		
-		if(results.size()>0)
-			return results.get(0);
-		
-		return null;
-	}
-	
-	public List<CriteriaType> getAllCriteriaTypes() {
-		Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=? order by x.fieldType DESC");
-		query.setParameter(0, 1);
-		
-		@SuppressWarnings("unchecked")
-	    List<CriteriaType> results = query.getResultList();
-		
-		return results;
-	}
-	
-	public List<CriteriaType> getAllCriteriaTypesByWlProgramId(Integer wlProgramId) {
-		Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=? order by x.fieldType DESC");
-		query.setParameter(0, wlProgramId);
-		
-		@SuppressWarnings("unchecked")
-	    List<CriteriaType> results = query.getResultList();
-		
-		return results;
-	}
+    public List<CriteriaType> findAll() {
+        Query query = entityManager.createQuery("select x from CriteriaType x");
+
+        @SuppressWarnings("unchecked")
+        List<CriteriaType> results = query.getResultList();
+
+        return results;
+    }
+
+    public CriteriaType findByName(String fieldName) {
+        Query query = entityManager.createQuery("select x from CriteriaType x where x.fieldName=?");
+        query.setParameter(0, fieldName);
+
+        @SuppressWarnings("unchecked")
+        List<CriteriaType> results = query.getResultList();
+
+        if (results.size() > 0)
+            return results.get(0);
+
+        return null;
+    }
+
+    public List<CriteriaType> getAllCriteriaTypes() {
+        Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=? order by x.fieldType DESC");
+        query.setParameter(0, 1);
+
+        @SuppressWarnings("unchecked")
+        List<CriteriaType> results = query.getResultList();
+
+        return results;
+    }
+
+    public List<CriteriaType> getAllCriteriaTypesByWlProgramId(Integer wlProgramId) {
+        Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=? order by x.fieldType DESC");
+        query.setParameter(0, wlProgramId);
+
+        @SuppressWarnings("unchecked")
+        List<CriteriaType> results = query.getResultList();
+
+        return results;
+    }
 }

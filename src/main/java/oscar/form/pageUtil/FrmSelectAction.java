@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,160 +47,158 @@ import org.oscarehr.util.SpringUtils;
 
 public class FrmSelectAction extends Action {
 
-	private static Logger logger = MiscUtils.getLogger();
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	@Override
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		FrmSelectForm frm = (FrmSelectForm) form;
-		request.getSession().setAttribute("FrmSelectForm", frm);
+    private static Logger logger = MiscUtils.getLogger();
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "w", null)) {
-			throw new SecurityException("missing required security object (_form)");
-		}
-		
-		String fwd=frm.getForward();
-		if (fwd != null) {
-			if (fwd.compareTo("add") == 0) {
-				logger.debug("the add button is pressed");
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        FrmSelectForm frm = (FrmSelectForm) form;
+        request.getSession().setAttribute("FrmSelectForm", frm);
 
-				String[] selectedAddTypes = frm.getSelectedAddTypes();
-				if (selectedAddTypes != null) {
-					for (int i = 0; i < selectedAddTypes.length; i++) {
-						addForm(selectedAddTypes[i]);
-					}
-				}
-			} else if (fwd.compareTo("delete") == 0) {
-				logger.debug("the delete button is pressed");
-				String[] selectedDeleteTypes = frm.getSelectedDeleteTypes();
-				if (selectedDeleteTypes != null) {
-					for (int i = 0; i < selectedDeleteTypes.length; i++) {
-						deleteForm(selectedDeleteTypes[i]);
-					}
-				}
-			} else if (fwd.compareTo("up") == 0) {
-				logger.debug("The Move UP button is pressed!");
-				String[] selectedMoveUpTypes = frm.getSelectedDeleteTypes();
-				if (selectedMoveUpTypes != null) {
-					for (int i = 0; i < selectedMoveUpTypes.length; i++) {
-						moveUpOne(selectedMoveUpTypes[i]);
-					}
-				}
-			}
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "w", null)) {
+            throw new SecurityException("missing required security object (_form)");
+        }
 
-			else if (fwd.compareTo("down") == 0) {
-				logger.debug("The Move DOWN button is pressed!");
-				String[] selectedMoveDownTypes = frm.getSelectedDeleteTypes();
-				if (selectedMoveDownTypes != null) {
-					for (int i = selectedMoveDownTypes.length - 1; i >= 0; i--) {
-						moveDown(selectedMoveDownTypes[i]);
-					}
-				}
-			}
-		}
+        String fwd = frm.getForward();
+        if (fwd != null) {
+            if (fwd.compareTo("add") == 0) {
+                logger.debug("the add button is pressed");
 
-		return mapping.findForward("success");
-	}
+                String[] selectedAddTypes = frm.getSelectedAddTypes();
+                if (selectedAddTypes != null) {
+                    for (int i = 0; i < selectedAddTypes.length; i++) {
+                        addForm(selectedAddTypes[i]);
+                    }
+                }
+            } else if (fwd.compareTo("delete") == 0) {
+                logger.debug("the delete button is pressed");
+                String[] selectedDeleteTypes = frm.getSelectedDeleteTypes();
+                if (selectedDeleteTypes != null) {
+                    for (int i = 0; i < selectedDeleteTypes.length; i++) {
+                        deleteForm(selectedDeleteTypes[i]);
+                    }
+                }
+            } else if (fwd.compareTo("up") == 0) {
+                logger.debug("The Move UP button is pressed!");
+                String[] selectedMoveUpTypes = frm.getSelectedDeleteTypes();
+                if (selectedMoveUpTypes != null) {
+                    for (int i = 0; i < selectedMoveUpTypes.length; i++) {
+                        moveUpOne(selectedMoveUpTypes[i]);
+                    }
+                }
+            } else if (fwd.compareTo("down") == 0) {
+                logger.debug("The Move DOWN button is pressed!");
+                String[] selectedMoveDownTypes = frm.getSelectedDeleteTypes();
+                if (selectedMoveDownTypes != null) {
+                    for (int i = selectedMoveDownTypes.length - 1; i >= 0; i--) {
+                        moveDown(selectedMoveDownTypes[i]);
+                    }
+                }
+            }
+        }
 
-	private void addForm(String formName) {
-		EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
-		List<EncounterForm> encounterForms = encounterFormDao.findAll();
+        return mapping.findForward("success");
+    }
 
-		int maxCurrentDisplayCount = 0;
-		// find the largest current display number
-		for (EncounterForm encounterForm : encounterForms) {
-			maxCurrentDisplayCount = Math.max(maxCurrentDisplayCount, encounterForm.getDisplayOrder());
-		}
-		// ++ to get the next number
-		maxCurrentDisplayCount++;
+    private void addForm(String formName) {
+        EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
+        List<EncounterForm> encounterForms = encounterFormDao.findAll();
 
-		for (EncounterForm encounterForm : encounterForms) {
-			if (encounterForm.getFormName().equals(formName)) {
-				encounterForm.setDisplayOrder(maxCurrentDisplayCount);
-				encounterFormDao.merge(encounterForm);
-				return;
-			}
-		}
-	}
+        int maxCurrentDisplayCount = 0;
+        // find the largest current display number
+        for (EncounterForm encounterForm : encounterForms) {
+            maxCurrentDisplayCount = Math.max(maxCurrentDisplayCount, encounterForm.getDisplayOrder());
+        }
+        // ++ to get the next number
+        maxCurrentDisplayCount++;
 
-	private void deleteForm(String formName) {
-		EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
-		List<EncounterForm> encounterForms = encounterFormDao.findAll();
+        for (EncounterForm encounterForm : encounterForms) {
+            if (encounterForm.getFormName().equals(formName)) {
+                encounterForm.setDisplayOrder(maxCurrentDisplayCount);
+                encounterFormDao.merge(encounterForm);
+                return;
+            }
+        }
+    }
 
-		// go through the forms list and set this form display to 0
-		// and any other form with a greater number should be decremented by 1
-		List<EncounterForm> tempForms = encounterFormDao.findByFormName(formName);
-		for (EncounterForm tempForm : tempForms) {
-			int oldDisplayOrder = tempForm.getDisplayOrder();
-			for (EncounterForm encounterForm : encounterForms) {
-				if (encounterForm.getDisplayOrder() > oldDisplayOrder) {
-					encounterForm.setDisplayOrder(encounterForm.getDisplayOrder() - 1);
-					encounterFormDao.merge(encounterForm);
-				} else if (encounterForm.getDisplayOrder() == oldDisplayOrder) {
-					encounterForm.setDisplayOrder(0);
-					encounterFormDao.merge(encounterForm);
-				}
-			}
-		}
-	}
+    private void deleteForm(String formName) {
+        EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
+        List<EncounterForm> encounterForms = encounterFormDao.findAll();
 
-	private void moveUpOne(String formName) {
-		EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
-		List<EncounterForm> encounterForms = encounterFormDao.findAll();
+        // go through the forms list and set this form display to 0
+        // and any other form with a greater number should be decremented by 1
+        List<EncounterForm> tempForms = encounterFormDao.findByFormName(formName);
+        for (EncounterForm tempForm : tempForms) {
+            int oldDisplayOrder = tempForm.getDisplayOrder();
+            for (EncounterForm encounterForm : encounterForms) {
+                if (encounterForm.getDisplayOrder() > oldDisplayOrder) {
+                    encounterForm.setDisplayOrder(encounterForm.getDisplayOrder() - 1);
+                    encounterFormDao.merge(encounterForm);
+                } else if (encounterForm.getDisplayOrder() == oldDisplayOrder) {
+                    encounterForm.setDisplayOrder(0);
+                    encounterFormDao.merge(encounterForm);
+                }
+            }
+        }
+    }
 
-		int oldPosition = -1;
-		for (EncounterForm encounterForm : encounterForms) {
-			if (encounterForm.getFormName().equals(formName)) {
-				oldPosition = encounterForm.getDisplayOrder();
-			}
-		}
+    private void moveUpOne(String formName) {
+        EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
+        List<EncounterForm> encounterForms = encounterFormDao.findAll();
 
-		// ignore if can't find (-1), ignore if hidden (0), and ignore if already at top (1)
-		if (oldPosition > 1) {
-			for (EncounterForm encounterForm : encounterForms) {
-				if (encounterForm.getDisplayOrder() == oldPosition - 1) {
-					encounterForm.setDisplayOrder(oldPosition);
-					encounterFormDao.merge(encounterForm);
-				} else if (encounterForm.getDisplayOrder() == oldPosition) {
-					encounterForm.setDisplayOrder(oldPosition - 1);
-					encounterFormDao.merge(encounterForm);
-				}
-			}
-		}
-	}
+        int oldPosition = -1;
+        for (EncounterForm encounterForm : encounterForms) {
+            if (encounterForm.getFormName().equals(formName)) {
+                oldPosition = encounterForm.getDisplayOrder();
+            }
+        }
 
-	private void moveDown(String formName) {
-		EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
-		List<EncounterForm> encounterForms = encounterFormDao.findAll();
+        // ignore if can't find (-1), ignore if hidden (0), and ignore if already at top (1)
+        if (oldPosition > 1) {
+            for (EncounterForm encounterForm : encounterForms) {
+                if (encounterForm.getDisplayOrder() == oldPosition - 1) {
+                    encounterForm.setDisplayOrder(oldPosition);
+                    encounterFormDao.merge(encounterForm);
+                } else if (encounterForm.getDisplayOrder() == oldPosition) {
+                    encounterForm.setDisplayOrder(oldPosition - 1);
+                    encounterFormDao.merge(encounterForm);
+                }
+            }
+        }
+    }
 
-		int oldPosition = -1;
-		for (EncounterForm encounterForm : encounterForms) {
-			if (encounterForm.getFormName().equals(formName)) {
-				oldPosition = encounterForm.getDisplayOrder();
-			}
-		}
+    private void moveDown(String formName) {
+        EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
+        List<EncounterForm> encounterForms = encounterFormDao.findAll();
 
-		// ignore if can't find (-1), ignore if hidden (0)
-		if (oldPosition > 0) {
-			boolean isLast = true;
-			for (EncounterForm encounterForm : encounterForms) {
-				if (encounterForm.getDisplayOrder() > oldPosition) {
-					isLast = false;
-				}
-			}
+        int oldPosition = -1;
+        for (EncounterForm encounterForm : encounterForms) {
+            if (encounterForm.getFormName().equals(formName)) {
+                oldPosition = encounterForm.getDisplayOrder();
+            }
+        }
 
-			// if already last item ignore
-			if (!isLast) {
-				for (EncounterForm encounterForm : encounterForms) {
-					if (encounterForm.getDisplayOrder() == oldPosition + 1) {
-						encounterForm.setDisplayOrder(oldPosition);
-						encounterFormDao.merge(encounterForm);
-					} else if (encounterForm.getDisplayOrder() == oldPosition) {
-						encounterForm.setDisplayOrder(oldPosition + 1);
-						encounterFormDao.merge(encounterForm);
-					}
-				}
-			}
-		}
-	}
+        // ignore if can't find (-1), ignore if hidden (0)
+        if (oldPosition > 0) {
+            boolean isLast = true;
+            for (EncounterForm encounterForm : encounterForms) {
+                if (encounterForm.getDisplayOrder() > oldPosition) {
+                    isLast = false;
+                }
+            }
+
+            // if already last item ignore
+            if (!isLast) {
+                for (EncounterForm encounterForm : encounterForms) {
+                    if (encounterForm.getDisplayOrder() == oldPosition + 1) {
+                        encounterForm.setDisplayOrder(oldPosition);
+                        encounterFormDao.merge(encounterForm);
+                    } else if (encounterForm.getDisplayOrder() == oldPosition) {
+                        encounterForm.setDisplayOrder(oldPosition + 1);
+                        encounterFormDao.merge(encounterForm);
+                    }
+                }
+            }
+        }
+    }
 }

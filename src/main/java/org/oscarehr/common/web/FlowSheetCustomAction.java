@@ -1,4 +1,3 @@
-//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -6,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -63,37 +62,37 @@ import oscar.oscarEncounter.oscarMeasurements.util.TargetCondition;
 public class FlowSheetCustomAction extends DispatchAction {
     private static final Logger logger = MiscUtils.getLogger();
 
-    private FlowSheetCustomizationDao flowSheetCustomizationDao =  (FlowSheetCustomizationDao) SpringUtils.getBean(FlowSheetCustomizationDao.class);
+    private FlowSheetCustomizationDao flowSheetCustomizationDao = (FlowSheetCustomizationDao) SpringUtils.getBean(FlowSheetCustomizationDao.class);
     private FlowSheetUserCreatedDao flowSheetUserCreatedDao = (FlowSheetUserCreatedDao) SpringUtils.getBean(FlowSheetUserCreatedDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
+
     public void setFlowSheetCustomizationDao(FlowSheetCustomizationDao flowSheetCustomizationDao) {
         this.flowSheetCustomizationDao = flowSheetCustomizationDao;
     }
 
     @Override
     protected ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-       return null;
+        return null;
     }
 
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String flowsheet = request.getParameter("flowsheet");
         String demographicNo = "0";
-        if (request.getParameter("demographic")!=null){
-        	demographicNo = request.getParameter("demographic");
+        if (request.getParameter("demographic") != null) {
+            demographicNo = request.getParameter("demographic");
         }
         String scope = request.getParameter("scope");
 
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
-        
+
         MeasurementTemplateFlowSheetConfig templateConfig = MeasurementTemplateFlowSheetConfig.getInstance();
         MeasurementFlowSheet mFlowsheet = templateConfig.getFlowSheet(flowsheet);
 
         if (request.getParameter("measurement") != null) {
 
-            Hashtable<String,String> h = new Hashtable<String,String>();
+            Hashtable<String, String> h = new Hashtable<String, String>();
 
             h.put("measurement_type", request.getParameter("measurement"));
             h.put("display_name", request.getParameter("display_name"));
@@ -110,22 +109,22 @@ public class FlowSheetCustomAction extends DispatchAction {
 
             @SuppressWarnings("unchecked")
             Enumeration<String> en = request.getParameterNames();
-                        
+
             List<Recommendation> ds = new ArrayList<Recommendation>();
             while (en.hasMoreElements()) {
                 String s = en.nextElement();
                 if (s.startsWith("monthrange")) {
                     String extrachar = s.replaceAll("monthrange", "").trim();
                     logger.debug("EXTRA CAH " + extrachar);
-                    
-                    if(request.getParameter("monthrange" + extrachar) != null){
-                    String mRange = request.getParameter("monthrange" + extrachar);
-                    String strn = request.getParameter("strength" + extrachar);
-                    String dsText = request.getParameter("text" + extrachar);
-                                        
-                    if (!mRange.trim().equals("")){
-                       ds.add(new Recommendation("" + h.get("measurement_type"), mRange, strn, dsText));
-                    }
+
+                    if (request.getParameter("monthrange" + extrachar) != null) {
+                        String mRange = request.getParameter("monthrange" + extrachar);
+                        String strn = request.getParameter("strength" + extrachar);
+                        String dsText = request.getParameter("text" + extrachar);
+
+                        if (!mRange.trim().equals("")) {
+                            ds.add(new Recommendation("" + h.get("measurement_type"), mRange, strn, dsText));
+                        }
                     }
                 }
             }
@@ -147,35 +146,35 @@ public class FlowSheetCustomAction extends DispatchAction {
                 cust.setDemographicNo(demographicNo);
                 cust.setCreateDate(new Date());
 
-                logger.debug("SAVE "+cust);
+                logger.debug("SAVE " + cust);
 
                 flowSheetCustomizationDao.persist(cust);
 
             }
         }
-        request.setAttribute("demographic",demographicNo);
+        request.setAttribute("demographic", demographicNo);
         request.setAttribute("flowsheet", flowsheet);
         return mapping.findForward("success");
     }
 
-    public ActionForward update(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
+    public ActionForward update(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         MeasurementTemplateFlowSheetConfig templateConfig = MeasurementTemplateFlowSheetConfig.getInstance();
 
         String flowsheet = request.getParameter("flowsheet");
         String demographicNo = "0";
-        if (request.getParameter("demographic")!=null){
-        	demographicNo = request.getParameter("demographic");
+        if (request.getParameter("demographic") != null) {
+            demographicNo = request.getParameter("demographic");
         }
         String scope = request.getParameter("scope");
-        
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
 
-        logger.debug("UPDATING FOR demographic "+demographicNo);
+        logger.debug("UPDATING FOR demographic " + demographicNo);
 
         if (request.getParameter("updater") != null) {
-            Hashtable<String,String> h = new Hashtable<String,String>();
+            Hashtable<String, String> h = new Hashtable<String, String>();
             h.put("measurement_type", request.getParameter("measurement_type"));
             h.put("display_name", request.getParameter("display_name"));
             h.put("guideline", request.getParameter("guideline"));
@@ -199,28 +198,28 @@ public class FlowSheetCustomAction extends DispatchAction {
                     Recommendation rec = new Recommendation();
                     rec.setStrength(request.getParameter(s));
                     int targetCount = 1;
-                    rec.setText(request.getParameter("text"+extrachar));
+                    rec.setText(request.getParameter("text" + extrachar));
                     List<RecommendationCondition> conds = new ArrayList<RecommendationCondition>();
-                    while(go){
-                        String type = request.getParameter("type"+extrachar+"c"+targetCount);
-                        if (type != null){
-                            if (!type.equals("-1")){
-                                String param = request.getParameter("param"+extrachar+"c"+targetCount);
-                                String value = request.getParameter("value"+extrachar+"c"+targetCount);
+                    while (go) {
+                        String type = request.getParameter("type" + extrachar + "c" + targetCount);
+                        if (type != null) {
+                            if (!type.equals("-1")) {
+                                String param = request.getParameter("param" + extrachar + "c" + targetCount);
+                                String value = request.getParameter("value" + extrachar + "c" + targetCount);
                                 RecommendationCondition cond = new RecommendationCondition();
                                 cond.setType(type);
                                 cond.setParam(param);
                                 cond.setValue(value);
-                                if (value != null && !value.trim().equals("")){
-                                   conds.add(cond);
+                                if (value != null && !value.trim().equals("")) {
+                                    conds.add(cond);
                                 }
                             }
-                        }else{
+                        } else {
                             go = false;
                         }
                         targetCount++;
                     }
-                    if (conds.size() > 0){
+                    if (conds.size() > 0) {
                         rec.setRecommendationCondition(conds);
                         recommendations.add(rec);
                     }
@@ -233,43 +232,41 @@ public class FlowSheetCustomAction extends DispatchAction {
                     */
                     //////
 
-                    
-                    
-                    
+
 //                    String mRange = request.getParameter("monthrange" + extrachar);
 //                    String strn = request.getParameter("strength" + extrachar);
 //                    String dsText = request.getParameter("text" + extrachar);
 //                    if (!mRange.trim().equals("")){
 //                       ds.add(new Recommendation("" + h.get("measurement_type"), mRange, strn, dsText));
 //                    }
-                }else if(s.startsWith("col")){
+                } else if (s.startsWith("col")) {
                     String extrachar = s.replaceAll("col", "").trim();
-                    logger.debug("EXTRA CHA "+extrachar);
+                    logger.debug("EXTRA CHA " + extrachar);
                     boolean go = true;
                     int targetCount = 1;
                     TargetColour tcolour = new TargetColour();
                     tcolour.setIndicationColor(request.getParameter(s));
                     List<TargetCondition> conds = new ArrayList<TargetCondition>();
-                    while(go){
-                        String type = request.getParameter("targettype"+extrachar+"c"+targetCount);
-                        if (type != null){
-                            if (!type.equals("-1")){
-                                String param = request.getParameter("targetparam"+extrachar+"c"+targetCount);
-                                String value = request.getParameter("targetvalue"+extrachar+"c"+targetCount);
+                    while (go) {
+                        String type = request.getParameter("targettype" + extrachar + "c" + targetCount);
+                        if (type != null) {
+                            if (!type.equals("-1")) {
+                                String param = request.getParameter("targetparam" + extrachar + "c" + targetCount);
+                                String value = request.getParameter("targetvalue" + extrachar + "c" + targetCount);
                                 TargetCondition cond = new TargetCondition();
                                 cond.setType(type);
                                 cond.setParam(param);
                                 cond.setValue(value);
-                                if(value !=null && !value.trim().equals("")){
-                                   conds.add(cond);
+                                if (value != null && !value.trim().equals("")) {
+                                    conds.add(cond);
                                 }
                             }
-                        }else{
+                        } else {
                             go = false;
                         }
                         targetCount++;
                     }
-                    if (conds.size() > 0){
+                    if (conds.size() > 0) {
                         tcolour.setTargetConditions(conds);
                         targets.add(tcolour);
                     }
@@ -277,9 +274,6 @@ public class FlowSheetCustomAction extends DispatchAction {
             }
             item.setTargetColour(targets);
             item.setRecommendations(recommendations);
-
-
-
 
 
             //DEALING WITH TARGET DATA//////////
@@ -303,7 +297,6 @@ public class FlowSheetCustomAction extends DispatchAction {
             ////////////
 
 
-
             Element va = templateConfig.getItemFromObject(item);
 
             XMLOutputter outp = new XMLOutputter();
@@ -313,18 +306,18 @@ public class FlowSheetCustomAction extends DispatchAction {
             cust.setAction(FlowSheetCustomization.UPDATE);
             cust.setPayload(outp.outputString(va));
             cust.setFlowsheet(flowsheet);
-            if(demographicNo != null ){
-               cust.setDemographicNo(demographicNo);
+            if (demographicNo != null) {
+                cust.setDemographicNo(demographicNo);
             }
             cust.setMeasurement(item.getItemName());//THIS THE MEASUREMENT TO SET THIS AFTER!
             cust.setProviderNo("clinic".equals(scope) ? "" : (String) request.getSession().getAttribute("user"));
-            
-            logger.debug("UPDATE "+cust);
+
+            logger.debug("UPDATE " + cust);
 
             flowSheetCustomizationDao.persist(cust);
 
         }
-        request.setAttribute("demographic",demographicNo);
+        request.setAttribute("demographic", demographicNo);
         request.setAttribute("flowsheet", flowsheet);
         return mapping.findForward("success");
     }
@@ -334,13 +327,13 @@ public class FlowSheetCustomAction extends DispatchAction {
         String flowsheet = request.getParameter("flowsheet");
         String measurement = request.getParameter("measurement");
         String demographicNo = "0";
-        if (request.getParameter("demographic")!=null){
-        	demographicNo = request.getParameter("demographic");
+        if (request.getParameter("demographic") != null) {
+            demographicNo = request.getParameter("demographic");
         }
         String scope = request.getParameter("scope");
-        
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
 
         FlowSheetCustomization cust = new FlowSheetCustomization();
@@ -351,9 +344,9 @@ public class FlowSheetCustomAction extends DispatchAction {
         cust.setDemographicNo(demographicNo);
 
         flowSheetCustomizationDao.persist(cust);
-        logger.debug("DELETE "+cust);
+        logger.debug("DELETE " + cust);
 
-        request.setAttribute("demographic",demographicNo);
+        request.setAttribute("demographic", demographicNo);
         request.setAttribute("flowsheet", flowsheet);
         return mapping.findForward("success");
     }
@@ -363,85 +356,85 @@ public class FlowSheetCustomAction extends DispatchAction {
         String flowsheet = request.getParameter("flowsheet");
         String measurement = request.getParameter("measurement");
         String demographicNo = "0";
-        if (request.getParameter("demographic")!=null){
-        	demographicNo = request.getParameter("demographic");
+        if (request.getParameter("demographic") != null) {
+            demographicNo = request.getParameter("demographic");
         }
         String scope = request.getParameter("scope");
-        
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
 
-        if("clinic".equals(scope)) {
-        	//clinic level
-        	for(FlowSheetCustomization cust : flowSheetCustomizationDao.getFlowSheetCustomizations(flowsheet)) {
-        		if("delete".equals(cust.getAction()) && cust.getMeasurement().equals(measurement)) {
-        			flowSheetCustomizationDao.remove(cust.getId());
-        		}
-        	}
-        	
+        if ("clinic".equals(scope)) {
+            //clinic level
+            for (FlowSheetCustomization cust : flowSheetCustomizationDao.getFlowSheetCustomizations(flowsheet)) {
+                if ("delete".equals(cust.getAction()) && cust.getMeasurement().equals(measurement)) {
+                    flowSheetCustomizationDao.remove(cust.getId());
+                }
+            }
+
         } else {
-        	if(demographicNo == null) {
-        		//provider level
-        		for(FlowSheetCustomization cust : flowSheetCustomizationDao.getFlowSheetCustomizations(flowsheet,LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo())) {
-            		if("delete".equals(cust.getAction()) && cust.getMeasurement().equals(measurement)) {
-            			flowSheetCustomizationDao.remove(cust.getId());
-            		}
-            	}
-        	} else {
-        		//patient level
-        		for(FlowSheetCustomization cust : flowSheetCustomizationDao.getFlowSheetCustomizationsForPatient(flowsheet,demographicNo)) {
-            		if("delete".equals(cust.getAction()) && cust.getMeasurement().equals(measurement)) {
-            			flowSheetCustomizationDao.remove(cust.getId());
-            		}
-            	}
-        	}
+            if (demographicNo == null) {
+                //provider level
+                for (FlowSheetCustomization cust : flowSheetCustomizationDao.getFlowSheetCustomizations(flowsheet, LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo())) {
+                    if ("delete".equals(cust.getAction()) && cust.getMeasurement().equals(measurement)) {
+                        flowSheetCustomizationDao.remove(cust.getId());
+                    }
+                }
+            } else {
+                //patient level
+                for (FlowSheetCustomization cust : flowSheetCustomizationDao.getFlowSheetCustomizationsForPatient(flowsheet, demographicNo)) {
+                    if ("delete".equals(cust.getAction()) && cust.getMeasurement().equals(measurement)) {
+                        flowSheetCustomizationDao.remove(cust.getId());
+                    }
+                }
+            }
         }
 
-        request.setAttribute("demographic",demographicNo);
+        request.setAttribute("demographic", demographicNo);
         request.setAttribute("flowsheet", flowsheet);
         return mapping.findForward("success");
     }
 
-    
+
     public ActionForward archiveMod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         logger.debug("IN MOD");
         String id = request.getParameter("id");
 
         String flowsheet = request.getParameter("flowsheet");
         String demographicNo = request.getParameter("demographic");
-        
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
 
         FlowSheetCustomization cust = flowSheetCustomizationDao.getFlowSheetCustomization(Integer.parseInt(id));
-        if(cust != null) {
-        	cust.setArchived(true);
-        	cust.setArchivedDate(new Date());
-        	flowSheetCustomizationDao.merge(cust);
+        if (cust != null) {
+            cust.setArchived(true);
+            cust.setArchivedDate(new Date());
+            flowSheetCustomizationDao.merge(cust);
         }
-        logger.debug("archiveMod "+cust);
+        logger.debug("archiveMod " + cust);
 
-        request.setAttribute("demographic",demographicNo);
+        request.setAttribute("demographic", demographicNo);
         request.setAttribute("flowsheet", flowsheet);
         return mapping.findForward("success");
     }
 
 
     /*first add it as a flowsheet into the current system.  The save it to the database so that it will be there on reboot */
-    public ActionForward createNewFlowSheet(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
+    public ActionForward createNewFlowSheet(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         logger.debug("IN create new flowsheet");
         //String name let oscar create the name
-    	String dxcodeTriggers 		= request.getParameter("dxcodeTriggers");
-    	String displayName 			= request.getParameter("displayName");
-    	String warningColour 		= request.getParameter("warningColour");
-    	String recommendationColour = request.getParameter("recommendationColour");
-    	//String topHTML 				= request.getParameter("topHTML");  // Not supported yet
+        String dxcodeTriggers = request.getParameter("dxcodeTriggers");
+        String displayName = request.getParameter("displayName");
+        String warningColour = request.getParameter("warningColour");
+        String recommendationColour = request.getParameter("recommendationColour");
+        //String topHTML 				= request.getParameter("topHTML");  // Not supported yet
 
 
-    	/// NEW FLOWSHEET CODE
-    	MeasurementFlowSheet m = new MeasurementFlowSheet();
+        /// NEW FLOWSHEET CODE
+        MeasurementFlowSheet m = new MeasurementFlowSheet();
         m.parseDxTriggers(dxcodeTriggers);
         m.setDisplayName(displayName);
         m.setWarningColour(warningColour);
@@ -458,10 +451,9 @@ public class FlowSheetCustomAction extends DispatchAction {
         m.addListItem(fsi);
 */
         MeasurementTemplateFlowSheetConfig templateConfig = MeasurementTemplateFlowSheetConfig.getInstance();
-        templateConfig.addIndicatorsInCustomFlowsheet(m);
-        String name =  templateConfig.addFlowsheet( m );
+        String name = templateConfig.addFlowsheet(m);
         m.loadRuleBase();
-    	/// END FLOWSHEET CODE
+        /// END FLOWSHEET CODE
 
         FlowSheetUserCreated fsuc = new FlowSheetUserCreated();
         fsuc.setName(name);
@@ -475,9 +467,6 @@ public class FlowSheetCustomAction extends DispatchAction {
 
         return mapping.findForward("newflowsheet");
     }
-
-
-
 
 
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,38 +31,37 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="scheduletemplate")
+@Table(name = "scheduletemplate")
 public class ScheduleTemplate extends AbstractModel<ScheduleTemplatePrimaryKey> {
 
-	@EmbeddedId
-	private ScheduleTemplatePrimaryKey id;
-	private String summary;
-	private String timecode;
+    @EmbeddedId
+    private ScheduleTemplatePrimaryKey id;
+    private String summary;
+    private String timecode;
 
-	public ScheduleTemplatePrimaryKey getId() {
-		return id;
-	}
-
-	public String getSummary() {
-    	return summary;
+    public ScheduleTemplatePrimaryKey getId() {
+        return id;
     }
 
-	public void setSummary(String summary) {
-    	this.summary = summary;
+    public String getSummary() {
+        return summary;
     }
 
-	public String getTimecode() {
-    	return timecode;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
-	public void setTimecode(String timecode) {
-    	this.timecode = timecode;
+    public String getTimecode() {
+        return timecode;
     }
 
-	public void setId(ScheduleTemplatePrimaryKey id) {
-    	this.id = id;
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
     }
 
+    public void setId(ScheduleTemplatePrimaryKey id) {
+        this.id = id;
+    }
 
 
 }

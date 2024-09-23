@@ -24,25 +24,25 @@
 
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
 <%@page import="java.util.Locale" %>
 <%@ page import="org.oscarehr.ws.rest.util.QuestimedUtil" %>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_demographic" rights="r" reverse="<%=true%>">
-    <%authed=false; %>
+    <%authed = false; %>
     <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_demographic");%>
 </security:oscarSec>
 <%
-        if(!authed) {
-                return;
-        }
+    if (!authed) {
+        return;
+    }
 %>
 <html:html lang="en">
     <head>
@@ -72,25 +72,23 @@
         }
     </script>
     <%
-            Locale locale = request.getLocale(); 
-            LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-            String demographicNo= request.getParameter("demographic_no");
-            String errorMsg="";
-            String url;
-            url=QuestimedUtil.getLaunchURL(loggedInInfo,demographicNo);
-            if(url==null) {
-                errorMsg = LocaleUtils.getMessage(locale, "questimed.connectionerror");
-            }
-            else if(url.isEmpty()) {
-                response.sendRedirect(request.getContextPath() + "/questimed/createaccount.jsp?demographic_no="+demographicNo);
-            }
-            else {
+        Locale locale = request.getLocale();
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String demographicNo = request.getParameter("demographic_no");
+        String errorMsg = "";
+        String url;
+        url = QuestimedUtil.getLaunchURL(loggedInInfo, demographicNo);
+        if (url == null) {
+            errorMsg = LocaleUtils.getMessage(locale, "questimed.connectionerror");
+        } else if (url.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/questimed/createaccount.jsp?demographic_no=" + demographicNo);
+        } else {
     %>
     <script>
         popupPagePost("<%=url%>");
     </script>
-    <%}%>    
-     <body>
-        <%=errorMsg%>
+    <%}%>
+    <body>
+    <%=errorMsg%>
     </body>
 </html:html>

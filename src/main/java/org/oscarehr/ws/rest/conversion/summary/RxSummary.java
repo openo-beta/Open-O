@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,65 +37,63 @@ import org.springframework.stereotype.Component;
 import oscar.util.StringUtils;
 
 
-
-
 @Component
-public class RxSummary implements Summary{
+public class RxSummary implements Summary {
 
-	@Autowired
-	PrescriptionManager rxManager;
-	
-	protected static final String ELLIPSES = "...";
-	protected static final int MAX_LEN_TITLE = 48;
-	protected static final int CROP_LEN_TITLE = 45;
-	protected static final int MAX_LEN_KEY = 12;
-	protected static final int CROP_LEN_KEY = 9;
-	
-	public SummaryTo1 getSummary(LoggedInInfo loggedInInfo,Integer demographicNo,String summaryCode){
-		
-		SummaryTo1 summary = new SummaryTo1("Meds",0,SummaryTo1.MEDICATIONS_CODE);
-		
-		List<SummaryItemTo1> list = summary.getSummaryItem();
-		int count = 0;
-	   
-	    fillRx( loggedInInfo, list,demographicNo,count);
-	   
-		return summary;
-	}
-	
-	private void fillRx(LoggedInInfo loggedInInfo,List<SummaryItemTo1> list,Integer demographicNo,int count){
+    @Autowired
+    PrescriptionManager rxManager;
 
-		List<Drug> drugList = rxManager.getUniqueDrugsByPatient( loggedInInfo,  demographicNo);
-		
-		long now = System.currentTimeMillis();
+    protected static final String ELLIPSES = "...";
+    protected static final int MAX_LEN_TITLE = 48;
+    protected static final int CROP_LEN_TITLE = 45;
+    protected static final int MAX_LEN_KEY = 12;
+    protected static final int CROP_LEN_KEY = 9;
+
+    public SummaryTo1 getSummary(LoggedInInfo loggedInInfo, Integer demographicNo, String summaryCode) {
+
+        SummaryTo1 summary = new SummaryTo1("Meds", 0, SummaryTo1.MEDICATIONS_CODE);
+
+        List<SummaryItemTo1> list = summary.getSummaryItem();
+        int count = 0;
+
+        fillRx(loggedInInfo, list, demographicNo, count);
+
+        return summary;
+    }
+
+    private void fillRx(LoggedInInfo loggedInInfo, List<SummaryItemTo1> list, Integer demographicNo, int count) {
+
+        List<Drug> drugList = rxManager.getUniqueDrugsByPatient(loggedInInfo, demographicNo);
+
+        long now = System.currentTimeMillis();
         long month = 1000L * 60L * 60L * 24L * 30L;
-        for( Drug drug :drugList ) {
-            if( drug.isArchived() )
+        for (Drug drug : drugList) {
+            if (drug.isArchived())
                 continue;
-            if(drug.isHideFromDrugProfile()) {
-            	continue;
+            if (drug.isHideFromDrugProfile()) {
+                continue;
             }
 
             String styleColor = "";
             if (drug.isCurrent() && (drug.getEndDate().getTime() - now <= month)) {
-                styleColor="style=\"color:orange;font-weight:bold;\"";
-            }else if (drug.isCurrent() )  {
-                styleColor="style=\"color:blue;\"";
-            }else if (drug.isLongTerm() )  {
-                styleColor="style=\"color:grey;\"";
-            }else
+                styleColor = "style=\"color:orange;font-weight:bold;\"";
+            } else if (drug.isCurrent()) {
+                styleColor = "style=\"color:blue;\"";
+            } else if (drug.isLongTerm()) {
+                styleColor = "style=\"color:grey;\"";
+            } else
                 continue;
-            
+
             String tmp = "";
-            if (drug.getFullOutLine()!=null) tmp=drug.getFullOutLine().replaceAll(";", " ");
+            if (drug.getFullOutLine() != null) tmp = drug.getFullOutLine().replaceAll(";", " ");
             String strTitle = StringUtils.maxLenString(tmp, MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES);
-            
-            SummaryItemTo1 summaryItem = new SummaryItemTo1(drug.getId(),strTitle,"action","rx");
+
+            SummaryItemTo1 summaryItem = new SummaryItemTo1(drug.getId(), strTitle, "action", "rx");
             summaryItem.setDate(drug.getRxDate());
-            summaryItem.setAction("../oscarRx/choosePatient.do?demographicNo="+demographicNo);  // for now, open the Rx module if the user clicks on any meds.
-             
+            summaryItem.setAction("../oscarRx/choosePatient.do?demographicNo=" + demographicNo);  // for now, open the Rx module if the user clicks on any meds.
+
             list.add(summaryItem);
             count++;
-        }	
-	}
+        }
+    }
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -28,69 +28,67 @@ import java.io.Serializable;
 
 public class ScheduleTemplateCodeTo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private Integer id;
-	private Character code;
-	private String description;
-	private String duration;
-	private String color;
-	private String confirm;
-	private int bookinglimit;
-	
-	public Integer getId() {
-		return id;
-	}
+    private static final long serialVersionUID = 1L;
 
-	public String getDescription() {
-    	return description;
+    private Integer id;
+    private Character code;
+    private String description;
+    private String duration;
+    private String color;
+    private String confirm;
+    private int bookinglimit;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setDescription(String description) {
-    	this.description = description;
+    public String getDescription() {
+        return description;
     }
 
-	public String getDuration() {
-    	return duration;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-	public void setDuration(String duration) {
-    	this.duration = duration;
+    public String getDuration() {
+        return duration;
     }
 
-	public String getColor() {
-    	return color;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
-	public void setColor(String color) {
-    	this.color = color;
+    public String getColor() {
+        return color;
     }
 
-	public String getConfirm() {
-    	return confirm;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-	public void setConfirm(String confirm) {
-    	this.confirm = confirm;
+    public String getConfirm() {
+        return confirm;
     }
 
-	public int getBookinglimit() {
-    	return bookinglimit;
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
     }
 
-	public void setBookinglimit(int bookinglimit) {
-    	this.bookinglimit = bookinglimit;
+    public int getBookinglimit() {
+        return bookinglimit;
     }
 
-	public Character getCode() {
-    	return code;
+    public void setBookinglimit(int bookinglimit) {
+        this.bookinglimit = bookinglimit;
     }
 
-	public void setCode(Character code) {
-    	this.code = code;
+    public Character getCode() {
+        return code;
     }
 
-	
-	
+    public void setCode(Character code) {
+        this.code = code;
+    }
+
 
 }

@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -38,63 +37,63 @@ import javax.persistence.TemporalType;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="default_issue")
+@Table(name = "default_issue")
 public class DefaultIssue extends AbstractModel<Integer> {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = 0;
-	
-	@Column(name="provider_no", nullable=false, length=6)
-	private String providerNo = "";
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="assigned_time", nullable=true)
-	private Date assignedtime;
-	
-	@Column(name="issue_ids", nullable=true)
-	private String issueIds = "";
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="update_time", nullable=true)
-	private Date updatetime;
+    private Integer id = 0;
 
-	public Date getUpdatetime() {
-		return updatetime;
-	}
+    @Column(name = "provider_no", nullable = false, length = 6)
+    private String providerNo = "";
 
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "assigned_time", nullable = true)
+    private Date assignedtime;
 
-	@Override
-	public Integer getId(){
-		return id;
-	}
-	
-	public DefaultIssue(){
-	}
-	
-	public Date getAssignedtime() {
-		return assignedtime;
-	}
-	
-	public String getProviderNo() {
-		return providerNo;
-	}
+    @Column(name = "issue_ids", nullable = true)
+    private String issueIds = "";
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_time", nullable = true)
+    private Date updatetime;
 
-	public void setAssignedtime(Date assignedtime) {
-		this.assignedtime = assignedtime;
-	}
+    public Date getUpdatetime() {
+        return updatetime;
+    }
 
-	public String getIssueIds() {
-		return issueIds;
-	}
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
+    }
 
-	public void setIssueIds(String issueIds) {
-		this.issueIds = issueIds;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    public DefaultIssue() {
+    }
+
+    public Date getAssignedtime() {
+        return assignedtime;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public void setAssignedtime(Date assignedtime) {
+        this.assignedtime = assignedtime;
+    }
+
+    public String getIssueIds() {
+        return issueIds;
+    }
+
+    public void setIssueIds(String issueIds) {
+        this.issueIds = issueIds;
+    }
 }

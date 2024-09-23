@@ -22,53 +22,53 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<html:base />
-<title>Bed Check Report</title>
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
-</head>
-<body>
-<table width="100%">
-	<tr>
-		<td width="50%"><input type="button" value="Print"
-			onclick="window.print()"></td>
-		<td width="50%" align="right"><input type="button" value="Close"
-			onclick="self.close()" /></td>
-	</tr>
-</table>
-<br />
-<display:table class="simple" name="reservedBeds" uid="reservedBed">
-	<display:column property="roomName" title="Room"
-		style="text-align: center" />
-	<display:column property="name" title="Bed" style="text-align: center" />
-	<display:column property="demographicName" title="Client"
-		style="text-align: center" />
-	<display:column property="familyId" title="Family Id" />
-	<display:column property="statusName" title="Status"
-		style="text-align: center" />
-	<display:column title="Late Pass" style="text-align: center">
-		<c:choose>
-			<c:when test="${reservedBed.latePass}">
-				<input type="checkbox" checked="checked" />
-			</c:when>
-			<c:otherwise>
-				<input type="checkbox" />
-			</c:otherwise>
-		</c:choose>
-	</display:column>
-	<display:column property="reservationStart" title="Since"
-		format="{0, date, yyyy-MM-dd}" style="text-align: center" />
-	<display:column property="reservationEnd" title="Until"
-		format="{0, date, yyyy-MM-dd}" style="text-align: center" />
-	<display:column title="Not Present" style="text-align: center">
-		<input type="checkbox" />
-	</display:column>
-	<display:column title="Notes" style="width: 30%;text-align: center" />
-</display:table>
-</body>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <html:base/>
+        <title>Bed Check Report</title>
+        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+    </head>
+    <body>
+    <table width="100%">
+        <tr>
+            <td width="50%"><input type="button" value="Print"
+                                   onclick="window.print()"></td>
+            <td width="50%" align="right"><input type="button" value="Close"
+                                                 onclick="self.close()"/></td>
+        </tr>
+    </table>
+    <br/>
+    <display:table class="simple" name="reservedBeds" uid="reservedBed">
+        <display:column property="roomName" title="Room"
+                        style="text-align: center"/>
+        <display:column property="name" title="Bed" style="text-align: center"/>
+        <display:column property="demographicName" title="Client"
+                        style="text-align: center"/>
+        <display:column property="familyId" title="Family Id"/>
+        <display:column property="statusName" title="Status"
+                        style="text-align: center"/>
+        <display:column title="Late Pass" style="text-align: center">
+            <c:choose>
+                <c:when test="${reservedBed.latePass}">
+                    <input type="checkbox" checked="checked"/>
+                </c:when>
+                <c:otherwise>
+                    <input type="checkbox"/>
+                </c:otherwise>
+            </c:choose>
+        </display:column>
+        <display:column property="reservationStart" title="Since"
+                        format="{0, date, yyyy-MM-dd}" style="text-align: center"/>
+        <display:column property="reservationEnd" title="Until"
+                        format="{0, date, yyyy-MM-dd}" style="text-align: center"/>
+        <display:column title="Not Present" style="text-align: center">
+            <input type="checkbox"/>
+        </display:column>
+        <display:column title="Notes" style="width: 30%;text-align: center"/>
+    </display:table>
+    </body>
 </html:html>

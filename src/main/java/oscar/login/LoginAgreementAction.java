@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -53,17 +53,17 @@ public class LoginAgreementAction extends DispatchAction {
     private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
 
     private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-    
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         String userAgreement = request.getParameter("submit");
-        String user = (String)request.getSession().getAttribute("user");
-        if( userAgreement.equalsIgnoreCase("refuse") ) {
+        String user = (String) request.getSession().getAttribute("user");
+        if (userAgreement.equalsIgnoreCase("refuse")) {
             _logger.debug(user + " refused agreement");
-            LogAction.addLog(user, LogConst.REFUSED, LogConst.CON_LOGIN_AGREEMENT, userAgreement, request.getRemoteAddr(),null,AcceptableUseAgreementManager.getAUAText());
+            LogAction.addLog(user, LogConst.REFUSED, LogConst.CON_LOGIN_AGREEMENT, userAgreement, request.getRemoteAddr(), null, AcceptableUseAgreementManager.getAUAText());
             return mapping.findForward("Logout");
-            
-        }else if( userAgreement.equalsIgnoreCase("accept") ) {
+
+        } else if (userAgreement.equalsIgnoreCase("accept")) {
             _logger.debug(user + " accepted agreement");
             Provider provider = providerDao.getProvider(user);
             Date now = new Date();
@@ -71,9 +71,9 @@ public class LoginAgreementAction extends DispatchAction {
             providerDao.updateProvider(provider);
         }
 
-        LogAction.addLog(user, LogConst.ACK, LogConst.CON_LOGIN_AGREEMENT, userAgreement, request.getRemoteAddr(),null,AcceptableUseAgreementManager.getAUAText());
+        LogAction.addLog(user, LogConst.ACK, LogConst.CON_LOGIN_AGREEMENT, userAgreement, request.getRemoteAddr(), null, AcceptableUseAgreementManager.getAUAText());
 
-        String proceedURL = (String)request.getSession().getAttribute("proceedURL");
+        String proceedURL = (String) request.getSession().getAttribute("proceedURL");
         request.getSession().setAttribute("proceedURL", null);
         ActionForward fwd = new ActionForward();
         fwd.setPath(proceedURL);

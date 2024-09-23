@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -53,77 +53,77 @@ import org.oscarehr.util.SpringUtils;
 
 public class ConReportListAction extends DispatchAction {
 
-	Logger logger = MiscUtils.getLogger();
-	
-	ProviderDao providerDao = (ProviderDao)SpringUtils.getBean(ProviderDao.class);
-	DemographicDao demographicDao= (DemographicDao)SpringUtils.getBean(DemographicDao.class);
-	EyeformConsultationReportDao crDao = SpringUtils.getBean(EyeformConsultationReportDao.class);
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	@Override
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		log.debug("unspecified");
-		return list(mapping, form, request, response);
-	}
-	
-	public ActionForward list(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		
-		DynaValidatorForm testForm = (DynaValidatorForm) form;
-		ConsultationReportFormBean crBean = (ConsultationReportFormBean)testForm.get("cr");
-		
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
-        	throw new SecurityException("missing required security object (_billing)");
-        }
-		
-		EyeformConsultationReport cr = new EyeformConsultationReport();
-		if(crBean.getStatus() != null && crBean.getStatus().length()>0) {
-			cr.setStatus(crBean.getStatus());
-		}
-		if(crBean.getProviderNo() != null && crBean.getProviderNo().length()>0) {
-			cr.setProviderNo(crBean.getProviderNo());
-		}
-		
-		if(crBean.getDemographicNo() != null && crBean.getDemographicNo().length()>0) {
-			cr.setDemographicNo(Integer.parseInt(crBean.getDemographicNo()));
-		}
-		
-		Date startDate = null;
-		Date endDate = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		if(crBean.getStartDate() != null && crBean.getStartDate().length()>0) {
-			try {
-				startDate = formatter.parse(crBean.getStartDate());
-			}catch(ParseException e) {
-				logger.error("Error",e);
-			}
-		}
-		if(crBean.getEndDate() != null && crBean.getEndDate().length()>0) {
-			try {
-				endDate = formatter.parse(crBean.getEndDate());
-			}catch(ParseException e) {
-				logger.error("Error",e);
-			}
-		}
-		if(startDate == null && endDate == null) {
-			endDate=new Date();
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.YEAR,-1);
-			startDate = cal.getTime();
-		}
-		
-		
-		List<Provider> pl = providerDao.getActiveProviders();
-		crBean.setProviderList(pl);
+    Logger logger = MiscUtils.getLogger();
 
-		List<EyeformConsultationReport> results = crDao.search(cr,startDate,endDate);
-		for(EyeformConsultationReport crtmp:results) {
-			crtmp.setDemographic(demographicDao.getClientByDemographicNo(crtmp.getDemographicNo()));
-			crtmp.setProvider(providerDao.getProvider(crtmp.getProviderNo()));
-		}
-		request.setAttribute("conReportList",results);
-				
-		request.setAttribute("dmname", crBean.getDemographicName());
-		
-		return mapping.findForward("list");
-	}
+    ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+    DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+    EyeformConsultationReportDao crDao = SpringUtils.getBean(EyeformConsultationReportDao.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
+    @Override
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        log.debug("unspecified");
+        return list(mapping, form, request, response);
+    }
+
+    public ActionForward list(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+
+        DynaValidatorForm testForm = (DynaValidatorForm) form;
+        ConsultationReportFormBean crBean = (ConsultationReportFormBean) testForm.get("cr");
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
+            throw new SecurityException("missing required security object (_billing)");
+        }
+
+        EyeformConsultationReport cr = new EyeformConsultationReport();
+        if (crBean.getStatus() != null && crBean.getStatus().length() > 0) {
+            cr.setStatus(crBean.getStatus());
+        }
+        if (crBean.getProviderNo() != null && crBean.getProviderNo().length() > 0) {
+            cr.setProviderNo(crBean.getProviderNo());
+        }
+
+        if (crBean.getDemographicNo() != null && crBean.getDemographicNo().length() > 0) {
+            cr.setDemographicNo(Integer.parseInt(crBean.getDemographicNo()));
+        }
+
+        Date startDate = null;
+        Date endDate = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        if (crBean.getStartDate() != null && crBean.getStartDate().length() > 0) {
+            try {
+                startDate = formatter.parse(crBean.getStartDate());
+            } catch (ParseException e) {
+                logger.error("Error", e);
+            }
+        }
+        if (crBean.getEndDate() != null && crBean.getEndDate().length() > 0) {
+            try {
+                endDate = formatter.parse(crBean.getEndDate());
+            } catch (ParseException e) {
+                logger.error("Error", e);
+            }
+        }
+        if (startDate == null && endDate == null) {
+            endDate = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.YEAR, -1);
+            startDate = cal.getTime();
+        }
+
+
+        List<Provider> pl = providerDao.getActiveProviders();
+        crBean.setProviderList(pl);
+
+        List<EyeformConsultationReport> results = crDao.search(cr, startDate, endDate);
+        for (EyeformConsultationReport crtmp : results) {
+            crtmp.setDemographic(demographicDao.getClientByDemographicNo(crtmp.getDemographicNo()));
+            crtmp.setProvider(providerDao.getProvider(crtmp.getProviderNo()));
+        }
+        request.setAttribute("conReportList", results);
+
+        request.setAttribute("dmname", crBean.getDemographicName());
+
+        return mapping.findForward("list");
+    }
 }

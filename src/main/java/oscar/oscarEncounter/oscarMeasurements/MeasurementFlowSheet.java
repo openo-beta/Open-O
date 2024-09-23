@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -72,7 +72,7 @@ public class MeasurementFlowSheet {
     private String warningColour = null;
     private String recommendationColour = null;
 
-    Hashtable<String,String> indicatorHash = new Hashtable<String,String>();   //color map for severity
+    Hashtable<String, String> indicatorHash = new Hashtable<String, String>();   //color map for severity
     private String topHTMLFileName = null;
     private boolean universal;
     private boolean isMedical = true;
@@ -92,26 +92,26 @@ public class MeasurementFlowSheet {
     String[] programTriggers = null;
 
 
-
     private ListOrderedMap itemList = new ListOrderedMap();
 
-    public FlowSheetItem addListItem(FlowSheetItem item){
-        log.debug("ITEM "+ item.getItemName());
+    public FlowSheetItem addListItem(FlowSheetItem item) {
+        log.debug("ITEM " + item.getItemName());
         String dsRules = item.getAllFields().get("ds_rules");  //ds_rules=
-        log.debug("DS RULES "+dsRules);
-        if (dsRules != null   && !dsRules.equals("")){
-           RuleBase rb = loadMeasurementRuleBase(dsRules);
-           item.setRuleBase(rb);
-        }else if(item.getTargetColour() != null && item.getTargetColour().size() > 0){
-           RuleBase rb = loadMeasuremntRuleBase(item.getTargetColour());
-           item.setRuleBase(rb);
+        log.debug("DS RULES " + dsRules);
+        if (dsRules != null && !dsRules.equals("")) {
+            RuleBase rb = loadMeasurementRuleBase(dsRules);
+            item.setRuleBase(rb);
+        } else if (item.getTargetColour() != null && item.getTargetColour().size() > 0) {
+            RuleBase rb = loadMeasuremntRuleBase(item.getTargetColour());
+            item.setRuleBase(rb);
         }
         itemList.put(item.getItemName(), item);
-        log.debug("ADDED "+item);
+        log.debug("ADDED " + item);
         return item;
     }
 
     private List<MeasurementTemplateFlowSheetConfig.Node> itemHeirarchy = new ArrayList<MeasurementTemplateFlowSheetConfig.Node>();
+
     public void setItemHeirarchy(List<MeasurementTemplateFlowSheetConfig.Node> itemHeirarchy) {
         this.itemHeirarchy = itemHeirarchy;
     }
@@ -136,85 +136,85 @@ public class MeasurementFlowSheet {
         return programTriggers;
     }
 
-    public String getDxTriggersString(){
-       StringBuilder sb = new StringBuilder();
-       boolean firstElement = true;
-       if (dxTriggers != null){
-           for(String s:dxTriggers){
-                if (!firstElement){
+    public String getDxTriggersString() {
+        StringBuilder sb = new StringBuilder();
+        boolean firstElement = true;
+        if (dxTriggers != null) {
+            for (String s : dxTriggers) {
+                if (!firstElement) {
                     sb.append(",");
                 }
                 sb.append(s);
-                firstElement=false;
-           }
-       }
-       return sb.toString();
-    }
-
-    public String getDxTriggersQueryBuilder(String demo, String provider){
-        StringBuilder sb = new StringBuilder();
-        String query="";
-        String desc="";
-        
-        DxDao dao = SpringUtils.getBean(DxDao.class);
-        
-        if (dxTriggers != null){
-            for(String s:dxTriggers){
-                 if (!s.equals("OscarCode:CKDSCREEN")){
-                	 String[] type = s.split(":");
-                 desc=dao.getCodeDescription(type[0], type[1]);
-                 sb.append("<li><a href='javascript:void(0);' id='dxlink"+type[1]+"' rel='selectedCodingSystem="+type[0]+"&forward="+type[1]+"&demographicNo="+demo+"&providerNo="+provider+"'>"+s+ " " + desc +"</a></li>");
-                 }
-            }
-            
-            query=sb.toString();
-            query="<ul>"+query+"</ul>";
-        }
-        return query;
-     }
-    
-    public String getProgramTriggersString(){
-    	StringBuilder sb = new StringBuilder();
-        boolean firstElement = true;
-        if (programTriggers != null){
-            for(String s:programTriggers){
-                 if (!firstElement){
-                     sb.append(",");
-                 }
-                 sb.append(s);
+                firstElement = false;
             }
         }
         return sb.toString();
-     }
+    }
+
+    public String getDxTriggersQueryBuilder(String demo, String provider) {
+        StringBuilder sb = new StringBuilder();
+        String query = "";
+        String desc = "";
+
+        DxDao dao = SpringUtils.getBean(DxDao.class);
+
+        if (dxTriggers != null) {
+            for (String s : dxTriggers) {
+                if (!s.equals("OscarCode:CKDSCREEN")) {
+                    String[] type = s.split(":");
+                    desc = dao.getCodeDescription(type[0], type[1]);
+                    sb.append("<li><a href='javascript:void(0);' id='dxlink" + type[1] + "' rel='selectedCodingSystem=" + type[0] + "&forward=" + type[1] + "&demographicNo=" + demo + "&providerNo=" + provider + "'>" + s + " " + desc + "</a></li>");
+                }
+            }
+
+            query = sb.toString();
+            query = "<ul>" + query + "</ul>";
+        }
+        return query;
+    }
+
+    public String getProgramTriggersString() {
+        StringBuilder sb = new StringBuilder();
+        boolean firstElement = true;
+        if (programTriggers != null) {
+            for (String s : programTriggers) {
+                if (!firstElement) {
+                    sb.append(",");
+                }
+                sb.append(s);
+            }
+        }
+        return sb.toString();
+    }
 
     /** Creates a new instance of MeasurementFlowSheet */
     public MeasurementFlowSheet() {
     }
 
-    public List<Recommendation> getDSElements(String measurement){
-          FlowSheetItem fsi = (FlowSheetItem) itemList.get(measurement);
-          return fsi.getRecommendations();
+    public List<Recommendation> getDSElements(String measurement) {
+        FlowSheetItem fsi = (FlowSheetItem) itemList.get(measurement);
+        return fsi.getRecommendations();
     }
 
-    public void addFlowSheetItem(int i,FlowSheetItem item){
+    public void addFlowSheetItem(int i, FlowSheetItem item) {
         itemList.put(i, item.getItemName(), item);
     }
 
     public FlowSheetItem getFlowSheetItem(String measurement) {
-        MiscUtils.getLogger().debug("GETTING "+measurement+ " ITEMS IN THE LIST "+itemList.size());
+        MiscUtils.getLogger().debug("GETTING " + measurement + " ITEMS IN THE LIST " + itemList.size());
         FlowSheetItem item = (FlowSheetItem) itemList.get(measurement);
 
         return item;
     }
 
 
-    public Map<String,String> getMeasurementFlowSheetInfo(String measurement) {
+    public Map<String, String> getMeasurementFlowSheetInfo(String measurement) {
         Map<String, String> allFields = Collections.emptyMap();
         if (itemList == null) {
-         //DO something
-        	itemList = new ListOrderedMap();
+            //DO something
+            itemList = new ListOrderedMap();
         }
-        log.debug("GETTING "+measurement+ " ITEMS IN THE LIST "+itemList.size());
+        log.debug("GETTING " + measurement + " ITEMS IN THE LIST " + itemList.size());
         FlowSheetItem item = (FlowSheetItem) itemList.get(measurement);
         if (item != null && item.getAllFields() != null) {
             allFields = item.getAllFields();
@@ -223,22 +223,21 @@ public class MeasurementFlowSheet {
     }
 
     //If measurement is null. Add item to the end of the flowsheet.
-    public void addAfter(String measurement , FlowSheetItem item){
-    	int placement = itemList.size();
-    	if (measurement != null){
-    		placement = itemList.indexOf(measurement);
-    	}
+    public void addAfter(String measurement, FlowSheetItem item) {
+        int placement = itemList.size();
+        if (measurement != null) {
+            placement = itemList.indexOf(measurement);
+        }
         itemList.put(placement, item.getItemName(), item);
     }
 
-    public void setToHidden(String measurement){
-         FlowSheetItem item = (FlowSheetItem) itemList.get(measurement);
-         item.setHide(true);
+    public void setToHidden(String measurement) {
+        FlowSheetItem item = (FlowSheetItem) itemList.get(measurement);
+        item.setHide(true);
     }
 
 
-
-    public void updateMeasurementFlowSheetInfo(String measurement, Hashtable<String,String> h) {
+    public void updateMeasurementFlowSheetInfo(String measurement, Hashtable<String, String> h) {
         FlowSheetItem item = new FlowSheetItem(h);
         itemList.put(measurement, item);
     }
@@ -259,6 +258,7 @@ public class MeasurementFlowSheet {
     public void setName(String s) {
         name = s;
     }
+
     /////
     public String getTopHTMLStream() {
         StringBuilder sb = new StringBuilder();
@@ -276,11 +276,11 @@ public class MeasurementFlowSheet {
                 }
 
                 if (is == null) {
-                   is = MeasurementFlowSheet.class.getResourceAsStream("/oscar/oscarEncounter/oscarMeasurements/flowsheets/html/" + topHTMLFileName);
-                   log.debug("loading from stream " );
+                    is = MeasurementFlowSheet.class.getResourceAsStream("/oscar/oscarEncounter/oscarMeasurements/flowsheets/html/" + topHTMLFileName);
+                    log.debug("loading from stream ");
                 }
 
-                if (is != null){
+                if (is != null) {
                     BufferedReader bReader = new BufferedReader(new InputStreamReader(is));
                     String str;
                     while ((str = bReader.readLine()) != null) {
@@ -294,88 +294,87 @@ public class MeasurementFlowSheet {
         }
         return sb.toString();
     }
-    
+
     public static String getDSHTMLStream(String dsHTML) {
         StringBuilder sb = new StringBuilder();
         InputStream is = null;
         BufferedReader bReader = null;
-            try {
-                String measurementDirPath = OscarProperties.getInstance().getProperty("MEASUREMENT_DS_HTML_DIRECTORY");
-                
-                if (measurementDirPath != null) {
-                    File file = new File(OscarProperties.getInstance().getProperty("MEASUREMENT_DS_HTML_DIRECTORY") + dsHTML);
-                    if (file.isFile() || file.canRead()) {
-                        log.debug("Loading from file " + file.getName());
-                        is = new FileInputStream(file);
-                    }
-                }
+        try {
+            String measurementDirPath = OscarProperties.getInstance().getProperty("MEASUREMENT_DS_HTML_DIRECTORY");
 
-                if (is == null) {
-                   is = MeasurementFlowSheet.class.getResourceAsStream("/oscar/oscarEncounter/oscarMeasurements/flowsheets/html/" + dsHTML);
-                   log.debug("loading from stream " );
+            if (measurementDirPath != null) {
+                File file = new File(OscarProperties.getInstance().getProperty("MEASUREMENT_DS_HTML_DIRECTORY") + dsHTML);
+                if (file.isFile() || file.canRead()) {
+                    log.debug("Loading from file " + file.getName());
+                    is = new FileInputStream(file);
                 }
+            }
 
-                if (is != null){
-                    bReader = new BufferedReader(new InputStreamReader(is));
-                    String str;
-                    while ((str = bReader.readLine()) != null) {
-                        sb.append(str);
-                    }
-                    bReader.close();
+            if (is == null) {
+                is = MeasurementFlowSheet.class.getResourceAsStream("/oscar/oscarEncounter/oscarMeasurements/flowsheets/html/" + dsHTML);
+                log.debug("loading from stream ");
+            }
+
+            if (is != null) {
+                bReader = new BufferedReader(new InputStreamReader(is));
+                String str;
+                while ((str = bReader.readLine()) != null) {
+                    sb.append(str);
                 }
-                
-            } catch (Exception e) {
-                MiscUtils.getLogger().error("Error", e);
+                bReader.close();
             }
-            finally {
-                IOUtils.closeQuietly(is);
-                IOUtils.closeQuietly(bReader);
-            }
-      
+
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+        } finally {
+            IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(bReader);
+        }
+
         return sb.toString();
     }
 
 
-    public void loadRuleBase(){
-        log.debug("LOADRULEBASE == "+name);
+    public void loadRuleBase() {
+        log.debug("LOADRULEBASE == " + name);
         ArrayList<Element> dsElements = new ArrayList<Element>();
 
-        if (itemList  != null){
-           OrderedMapIterator iter = itemList.orderedMapIterator();
-           while (iter.hasNext()) {
-        	  String key = (String) iter.next();  //returns the key not the value.  Needed to advance the iterator
-              FlowSheetItem fsi = (FlowSheetItem) iter.getValue();
-              List<Recommendation> rules = fsi.getRecommendations();
-              if (rules !=null){
-                  log.debug("# OF RULES FOR "+fsi.getItemName()+" "+rules.size()+" key "+key);
-                  for (Object obj: rules){
-                     Recommendation rec = (Recommendation) obj;
-                     dsElements.add(rec.getRuleBaseElement());
-                  }
-              }else{
-                  log.debug("NO RULES FOR "+fsi.getItemName());
-              }
+        if (itemList != null) {
+            OrderedMapIterator iter = itemList.orderedMapIterator();
+            while (iter.hasNext()) {
+                String key = (String) iter.next();  //returns the key not the value.  Needed to advance the iterator
+                FlowSheetItem fsi = (FlowSheetItem) iter.getValue();
+                List<Recommendation> rules = fsi.getRecommendations();
+                if (rules != null) {
+                    log.debug("# OF RULES FOR " + fsi.getItemName() + " " + rules.size() + " key " + key);
+                    for (Object obj : rules) {
+                        Recommendation rec = (Recommendation) obj;
+                        dsElements.add(rec.getRuleBaseElement());
+                    }
+                } else {
+                    log.debug("NO RULES FOR " + fsi.getItemName());
+                }
 
-           }
+            }
         }
-        log.debug("LOADING RULES2"+name+" size + "+dsElements.size()+" rulebase "+ruleBase);
-        if (dsElements != null && dsElements.size() > 0){
+        log.debug("LOADING RULES2" + name + " size + " + dsElements.size() + " rulebase " + ruleBase);
+        if (dsElements != null && dsElements.size() > 0) {
 
-            log.debug("LOADING RULES21"+dsElements.size());
+            log.debug("LOADING RULES21" + dsElements.size());
             RuleBaseCreator rcb = new RuleBaseCreator();
-            try{
+            try {
 
                 log.debug("LOADING RULES22");
                 ruleBase = rcb.getRuleBase("rulesetName", dsElements);
                 log.debug("LOADING RULES23");
                 rulesLoaded = true;
-            }catch(Exception e){
+            } catch (Exception e) {
                 log.debug("LOADING EXEPTION");
 
                 MiscUtils.getLogger().error("Error", e);
             }
-        }else{
-        	//empty
+        } else {
+            //empty
         }
     }
 
@@ -413,31 +412,30 @@ public class MeasurementFlowSheet {
         }
     }
 
-    public RuleBase loadMeasuremntRuleBase(List<TargetColour> targetColours){
+    public RuleBase loadMeasuremntRuleBase(List<TargetColour> targetColours) {
         RuleBase measurementRuleBase = null;
         List<Element> dsElements = new ArrayList<Element>();
-         RuleBaseCreator rcb = new RuleBaseCreator();
-            try{
-                int count = 0;
-                for (TargetColour obj: targetColours){
-                     TargetColour rec = obj;
-                     dsElements.add(rec.getRuleBaseElement("DD"+count));
-                     count++;
-                  }
-
-                log.debug("loadMeasuremntRuleBase 1");
-                measurementRuleBase = rcb.getRuleBase("rulesetName", dsElements);
-                log.debug("loadMeasuremntRuleBase 2");
-                rulesLoaded = true;
-            }catch(Exception e){
-                log.debug("loadMeasuremntRuleBase EXEPTION");
-
-                MiscUtils.getLogger().error("Error", e);
+        RuleBaseCreator rcb = new RuleBaseCreator();
+        try {
+            int count = 0;
+            for (TargetColour obj : targetColours) {
+                TargetColour rec = obj;
+                dsElements.add(rec.getRuleBaseElement("DD" + count));
+                count++;
             }
-         return measurementRuleBase;
+
+            log.debug("loadMeasuremntRuleBase 1");
+            measurementRuleBase = rcb.getRuleBase("rulesetName", dsElements);
+            log.debug("loadMeasuremntRuleBase 2");
+            rulesLoaded = true;
+        } catch (Exception e) {
+            log.debug("loadMeasuremntRuleBase EXEPTION");
+
+            MiscUtils.getLogger().error("Error", e);
+        }
+        return measurementRuleBase;
 
     }
-
 
 
     public RuleBase loadMeasurementRuleBase(String string) {
@@ -472,10 +470,10 @@ public class MeasurementFlowSheet {
     public void runRulesForMeasurement(LoggedInInfo loggedInInfo, EctMeasurementsDataBean mdb) {
 
         String type = mdb.getType();
-        log.debug("GETTING RULES FOR TYPE "+type);
+        log.debug("GETTING RULES FOR TYPE " + type);
         FlowSheetItem fs = (FlowSheetItem) itemList.get(type);
         RuleBase rb = fs.getRuleBase();
-        log.debug("RULEBASE FOR "+fs);
+        log.debug("RULEBASE FOR " + fs);
         //Is there a rule base for this
         if (rb != null) {
 
@@ -485,15 +483,16 @@ public class MeasurementFlowSheet {
                 workingMemory.fireAllRules();
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
-            //throw new Exception("ERROR: Drools ",e);
+                //throw new Exception("ERROR: Drools ",e);
             }
         }
     }
+
     /////
     public MeasurementInfo getMessages(MeasurementInfo mi) throws Exception {
         if (!rulesLoaded) {
-            throw new Exception("No Drools file loaded"+ruleBase);
-        //loadRuleBase();
+            throw new Exception("No Drools file loaded" + ruleBase);
+            //loadRuleBase();
         }
 
         try {
@@ -502,7 +501,7 @@ public class MeasurementFlowSheet {
             workingMemory.fireAllRules();
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
-        //throw new Exception("ERROR: Drools ",e);
+            //throw new Exception("ERROR: Drools ",e);
         }
         return mi;
     }
@@ -545,8 +544,8 @@ public class MeasurementFlowSheet {
         return ret;
     }
 
-    public Hashtable<String,String> getIndicatorHashtable(){
-        return new Hashtable<String,String>(indicatorHash);
+    public Hashtable<String, String> getIndicatorHashtable() {
+        return new Hashtable<String, String>(indicatorHash);
     }
 
     public ArrayList sortToCurrentOrder(ArrayList nonOrderedList) {
@@ -578,17 +577,17 @@ public class MeasurementFlowSheet {
         this.topHTMLFileName = topHTMLFileName;
     }
 
-    
+
     public boolean isCustom() {
-		return custom;
-	}
+        return custom;
+    }
 
-	public void setCustom(boolean custom) {
-		this.custom = custom;
-	}
+    public void setCustom(boolean custom) {
+        this.custom = custom;
+    }
 
 
-	class FlowSheetSort implements Comparator {
+    class FlowSheetSort implements Comparator {
 
         List list = null;
 
@@ -596,12 +595,12 @@ public class MeasurementFlowSheet {
         }
 
         public FlowSheetSort(List sortedList) {
-            log.debug("SortedList "+sortedList);
+            log.debug("SortedList " + sortedList);
             list = sortedList;
         }
 
         public int compare(Object o1, Object o2) {
-            log.debug(" o1 "+o1+" o2 "+o2);
+            log.debug(" o1 " + o1 + " o2 " + o2);
             int n1 = list.indexOf(o1);
             int n2 = list.indexOf(o2);
             // If this < o, return a negative

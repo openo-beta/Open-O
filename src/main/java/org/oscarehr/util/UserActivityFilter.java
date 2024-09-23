@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,11 +49,14 @@ public final class UserActivityFilter implements Filter {
 
     private static final Logger logger = MiscUtils.getLogger();
     private static final String LAST_USER_ACTIVITY = "LAST_USER_ACTIVITY";
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
-    public void destroy() {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void destroy() {
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -73,7 +76,7 @@ public final class UserActivityFilter implements Filter {
                     lastActivity = now; // set new last activity
                 }
                 if (now - lastActivity > session.getMaxInactiveInterval() * 1000L) {
-                    LogAction.addLog((String)session.getAttribute("user"), LogConst.LOGOUT, LogConst.CON_LOGIN, "logged out due to inactivity", request.getRemoteAddr());
+                    LogAction.addLog((String) session.getAttribute("user"), LogConst.LOGOUT, LogConst.CON_LOGIN, "logged out due to inactivity", request.getRemoteAddr());
                     logger.warn("User providerNo=" + loggedInInfo.getLoggedInProviderNo() + " logged out due to inactivity");
                     redirectToLogout = true;
                 } else if (isUserRequest(httpRequest)) {

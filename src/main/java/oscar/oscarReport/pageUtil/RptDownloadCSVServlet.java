@@ -6,12 +6,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -56,7 +56,7 @@ public class RptDownloadCSVServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null)
             return;
-        String in="";
+        String in = "";
         try {
             in = request.getParameter("demoReport") != null ? demoReport(request) : formReport(request);
         } catch (ServletException e1) {
@@ -138,7 +138,6 @@ public class RptDownloadCSVServlet extends HttpServlet {
             in = swr.toString();
 
 
-
         } catch (Exception e1) {
             _logger.error("service() - form report");
         }
@@ -148,14 +147,14 @@ public class RptDownloadCSVServlet extends HttpServlet {
     private String demoReport(HttpServletRequest request) throws Exception {
         reportName = "clientDatabaseReport";
         String in = "";
-        
+
 
         String ARTYPE = "formBCAR";
-        if (request.getParameter("bcartype") != null && request.getParameter("bcartype").equals("BCAR2007")){
+        if (request.getParameter("bcartype") != null && request.getParameter("bcartype").equals("BCAR2007")) {
             ARTYPE = "formBCAR2007";
         }
 
-        MiscUtils.getLogger().debug("AR TYPE "+ARTYPE);
+        MiscUtils.getLogger().debug("AR TYPE " + ARTYPE);
 
 
         Properties propDemoSelect = new Properties();
@@ -188,9 +187,9 @@ public class RptDownloadCSVServlet extends HttpServlet {
         Vector vecSeqSpecSelect = new Vector();
         propSpecSelect.setProperty("prefer_language", "Preferred Language");
         OscarProperties oscarProps = OscarProperties.getInstance();
-        if(oscarProps.getProperty("demographicExt") != null) {
-            String [] propDemoExt = oscarProps.getProperty("demographicExt","").split("\\|");
-            for(int i=0; i<propDemoExt.length; i++) {
+        if (oscarProps.getProperty("demographicExt") != null) {
+            String[] propDemoExt = oscarProps.getProperty("demographicExt", "").split("\\|");
+            for (int i = 0; i < propDemoExt.length; i++) {
                 propSpecSelect.setProperty(propDemoExt[i].replace(' ', '_'), propDemoExt[i]);
                 vecSeqSpecSelect.add(propDemoExt[i].replace(' ', '_'));
             }
@@ -230,21 +229,20 @@ public class RptDownloadCSVServlet extends HttpServlet {
         Enumeration varEnum = request.getParameterNames();
         while (varEnum.hasMoreElements()) {
             String name = (String) varEnum.nextElement();
-            if(propDemoSelect.containsKey(name)) {
+            if (propDemoSelect.containsKey(name)) {
                 bDemoSelect = true;
                 propTempDemoSelect.setProperty(name, "");
             }
-            if(propARSelect.containsKey(name)) {
+            if (propARSelect.containsKey(name)) {
                 bARSelect = true;
 
 
-
-                if(!name.equals("ga") && !name.equals("b_primiparous"))
-                    sARSelect += (sARSelect.length()<1?"":",") + ARTYPE+"."+name;
+                if (!name.equals("ga") && !name.equals("b_primiparous"))
+                    sARSelect += (sARSelect.length() < 1 ? "" : ",") + ARTYPE + "." + name;
             }
-            if(propSpecSelect.containsKey(name)) {
+            if (propSpecSelect.containsKey(name)) {
                 bSpecSelect = true;
-                sSpecSelect += (sSpecSelect.length()<1?"":",") + "demographicExt."+name;
+                sSpecSelect += (sSpecSelect.length() < 1 ? "" : ",") + "demographicExt." + name;
             }
 
             if (name.startsWith(VALUE)) {
@@ -258,19 +256,19 @@ public class RptDownloadCSVServlet extends HttpServlet {
             }
         }
 //         get seq. select string
-        for(int i=0; i<vecSeqDemoSelect.size(); i++) {
-            if(propTempDemoSelect.getProperty((String)vecSeqDemoSelect.get(i)) != null) {
-                sDemoSelect += (sDemoSelect.length()<1?"":",") + "demographic." + vecSeqDemoSelect.get(i);
+        for (int i = 0; i < vecSeqDemoSelect.size(); i++) {
+            if (propTempDemoSelect.getProperty((String) vecSeqDemoSelect.get(i)) != null) {
+                sDemoSelect += (sDemoSelect.length() < 1 ? "" : ",") + "demographic." + vecSeqDemoSelect.get(i);
             }
         }
-        for(int i=0; i<vecSeqARSelect.size(); i++) {
-            if(propTempARSelect.getProperty((String)vecSeqARSelect.get(i)) != null) {
-                sARSelect += (sARSelect.length()<1?"":",") + ARTYPE+"." + vecSeqARSelect.get(i);
+        for (int i = 0; i < vecSeqARSelect.size(); i++) {
+            if (propTempARSelect.getProperty((String) vecSeqARSelect.get(i)) != null) {
+                sARSelect += (sARSelect.length() < 1 ? "" : ",") + ARTYPE + "." + vecSeqARSelect.get(i);
             }
         }
-        for(int i=0; i<vecSeqSpecSelect.size(); i++) {
-            if(propTempSpecSelect.getProperty((String)vecSeqSpecSelect.get(i)) != null) {
-                sSpecSelect += (sSpecSelect.length()<1?"":",") + "demographicExt." + vecSeqSpecSelect.get(i);
+        for (int i = 0; i < vecSeqSpecSelect.size(); i++) {
+            if (propTempSpecSelect.getProperty((String) vecSeqSpecSelect.get(i)) != null) {
+                sSpecSelect += (sSpecSelect.length() < 1 ? "" : ",") + "demographicExt." + vecSeqSpecSelect.get(i);
             }
         }
 
@@ -294,34 +292,34 @@ public class RptDownloadCSVServlet extends HttpServlet {
                 // conver date format if needed
                 if (((String) vecVar.get(j)).matches(VARNAME_FORMAT) && ((String) vecDateFormat.get(i)).length() > 1) {
                     vecVarValue.add(RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
-                        (String) vecDateFormat.get(i), "yyyy-MM-dd"));
+                            (String) vecDateFormat.get(i), "yyyy-MM-dd"));
                 } else {
                     vecVarValue.add(request.getParameter((String) vecVar.get(j)));
                 }
             }
             String strFilter = RptReportCreator.getWhereValueClause(tempVal, vecVarValue);
-            if(strFilter.indexOf("demographic.")>=0) {
+            if (strFilter.indexOf("demographic.") >= 0) {
                 bDemoFilter = true;
-                sDemoFilter += (sDemoFilter.length()<1?"":" and ") + strFilter;
+                sDemoFilter += (sDemoFilter.length() < 1 ? "" : " and ") + strFilter;
             }
-            if(strFilter.indexOf("demographicExt.")>=0) {
+            if (strFilter.indexOf("demographicExt.") >= 0) {
                 bSpecFilter = true;
-                sSpecFilter += (sSpecFilter.length()<1?"":" and ") + strFilter;
+                sSpecFilter += (sSpecFilter.length() < 1 ? "" : " and ") + strFilter;
             }
-            if(strFilter.indexOf(ARTYPE+".")>=0) {
+            if (strFilter.indexOf(ARTYPE + ".") >= 0) {
                 bARFilter = true;
                 //"formBCAR.demographic_no in (select distinct demographic_no from formBCBirthSumMo)"
-                if(strFilter.indexOf("formBCBirthSumMo") > 0) {
+                if (strFilter.indexOf("formBCBirthSumMo") > 0) {
                     ResultSet rs = DBHelp.searchDBRecord("select distinct demographic_no from formBCBirthSumMo");
                     String sBirthSumNo = "";
                     while (rs.next()) {
-                        sBirthSumNo += (sBirthSumNo.length()>0? ",":"") + rs.getInt("demographic_no") ;
+                        sBirthSumNo += (sBirthSumNo.length() > 0 ? "," : "") + rs.getInt("demographic_no");
                     }
-                    sBirthSumNo = sBirthSumNo.length()>0 ? sBirthSumNo : "0";
-                    strFilter = " "+ARTYPE+".demographic_no in (" + sBirthSumNo + ")";
+                    sBirthSumNo = sBirthSumNo.length() > 0 ? sBirthSumNo : "0";
+                    strFilter = " " + ARTYPE + ".demographic_no in (" + sBirthSumNo + ")";
                 }
 
-                sARFilter += (sARFilter.length()<1?"":" and ") + strFilter;
+                sARFilter += (sARFilter.length() < 1 ? "" : " and ") + strFilter;
             }
             MiscUtils.getLogger().debug(i + tempVal + " tempVal: " + vecVarValue);
             MiscUtils.getLogger().debug(i + strFilter);
@@ -335,11 +333,11 @@ public class RptDownloadCSVServlet extends HttpServlet {
         Vector vecFieldName = new Vector();
         Vector vecFieldValue = new Vector();
         String ORDER_BY = " order by demographic.last_name, demographic.first_name";
-        if(bDemoSelect && !bARSelect && !bSpecSelect && bDemoFilter && !bARFilter && !bSpecFilter) {
+        if (bDemoSelect && !bARSelect && !bSpecSelect && bDemoFilter && !bARFilter && !bSpecFilter) {
             String sql = "select " + sDemoSelect + " from demographic where " + sDemoFilter + ORDER_BY;
             MiscUtils.getLogger().debug(" one table: demographic: " + sql);
-            String [] temp = sDemoSelect.replaceAll("demographic.","").split(",");
-            for(int i=0; i<temp.length; i++) {
+            String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
+            for (int i = 0; i < temp.length; i++) {
                 vecFieldCaption.add(propDemoSelect.getProperty(temp[i].trim()));
                 vecFieldName.add(temp[i].trim());
                 MiscUtils.getLogger().debug(" vecFieldCaption: " + propDemoSelect.getProperty(temp[i].trim()));
@@ -350,13 +348,13 @@ public class RptDownloadCSVServlet extends HttpServlet {
 //         table: demographic and demographicExt
         Vector vecSpecCaption = new Vector();
         Properties propSpecValue = new Properties();
-        if( (bDemoSelect && !bARSelect && bSpecSelect && !bARFilter) || (!bARFilter && bSpecFilter) ) {
-            if(bDemoSelect && !bARSelect && bSpecSelect && !bSpecFilter) {
+        if ((bDemoSelect && !bARSelect && bSpecSelect && !bARFilter) || (!bARFilter && bSpecFilter)) {
+            if (bDemoSelect && !bARSelect && bSpecSelect && !bSpecFilter) {
                 vecFieldName.add("demographic_no");
                 String sql = "select demographic_no," + sDemoSelect + " from demographic where " + sDemoFilter + ORDER_BY;
                 MiscUtils.getLogger().debug(" demographic and demographicExt: " + sql);
-                String [] temp = sDemoSelect.replaceAll("demographic.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecFieldCaption.add(propDemoSelect.getProperty(temp[i].trim()));
                     vecFieldName.add(temp[i].trim());
                     MiscUtils.getLogger().debug(" vecFieldCaption: " + propDemoSelect.getProperty(temp[i].trim()));
@@ -366,47 +364,47 @@ public class RptDownloadCSVServlet extends HttpServlet {
 
                 //get demographic_no
                 String strDemoNo = "";
-                for(int j=0; j<vecFieldValue.size(); j++) {
+                for (int j = 0; j < vecFieldValue.size(); j++) {
                     Properties prop = (Properties) vecFieldValue.get(j);
-                    strDemoNo += (strDemoNo.length()<1? "" : ",") + prop.getProperty("demographic_no");
+                    strDemoNo += (strDemoNo.length() < 1 ? "" : ",") + prop.getProperty("demographic_no");
                 }
-                temp = sSpecSelect.replaceAll("demographicExt.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                     sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
                     sql += strDemoNo + ") order by date_time desc limit 1";
                     ResultSet rs = DBHelp.searchDBRecord(sql);
                     while (rs.next()) {
-                        propSpecValue.setProperty(rs.getString("demographic_no")+temp[i], rs.getString("value"));
+                        propSpecValue.setProperty(rs.getString("demographic_no") + temp[i], rs.getString("value"));
                     }
                 }
                 MiscUtils.getLogger().debug(" demographic and demographicExt: " + sql);
             }
-            if(bSpecFilter) {
+            if (bSpecFilter) {
                 vecFieldName.add("demographic_no");
                 // get demoNo
                 String sql = null;
                 ResultSet rs = null;
-                String sTempEle = sSpecFilter.length()>0? (" and "+sSpecFilter) : "";
+                String sTempEle = sSpecFilter.length() > 0 ? (" and " + sSpecFilter) : "";
                 String subQuery = "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no ";
                 subQuery += " and " + sDemoFilter + sTempEle + "  ";
                 MiscUtils.getLogger().debug(" demographic and demographicExt subQuery: " + subQuery);
                 String subFormDemoNo = "";
                 rs = DBHelp.searchDBRecord(subQuery);
                 while (rs.next()) {
-                    subFormDemoNo += (subFormDemoNo.length()>0? ",":"") +rs.getInt("demographic.demographic_no");
+                    subFormDemoNo += (subFormDemoNo.length() > 0 ? "," : "") + rs.getInt("demographic.demographic_no");
                 }
-                subFormDemoNo = subFormDemoNo.length()>0? subFormDemoNo : "0";
+                subFormDemoNo = subFormDemoNo.length() > 0 ? subFormDemoNo : "0";
                 // get value for spec
-                String [] temp = sSpecSelect.replaceAll("demographicExt.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                String[] temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                     sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
                     sql += subFormDemoNo + ") order by date_time desc limit 1";
                     MiscUtils.getLogger().debug(" demographic and demographicExt: " + sql);
                     rs = DBHelp.searchDBRecord(sql);
                     while (rs.next()) {
-                        propSpecValue.setProperty(rs.getString("demographic_no")+temp[i], rs.getString("value"));
+                        propSpecValue.setProperty(rs.getString("demographic_no") + temp[i], rs.getString("value"));
                     }
                 }
 
@@ -415,8 +413,8 @@ public class RptDownloadCSVServlet extends HttpServlet {
                 sql += " demographic.demographic_no in (" + subFormDemoNo + ") " + ORDER_BY;
                 MiscUtils.getLogger().debug(" demographic and demographicExt: " + sql);
 
-                temp = sDemoSelect.replaceAll("demographic.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                temp = sDemoSelect.replaceAll("demographic.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecFieldCaption.add(propDemoSelect.getProperty(temp[i].trim()));
                     vecFieldName.add(temp[i].trim());
                     MiscUtils.getLogger().debug(" vecFieldCaption: " + propDemoSelect.getProperty(temp[i].trim()));
@@ -439,32 +437,32 @@ public class RptDownloadCSVServlet extends HttpServlet {
 //         table: demographic and formBCAR
 
 
-        if( (bDemoSelect && bARSelect && !bSpecSelect && !bSpecFilter) || (!bSpecSelect && bARFilter && !bSpecFilter) ) {
-            String sTempEle = sARFilter.length()>0? (" and "+sARFilter) : "";
-            String subQuery = "select max(ID) from "+ARTYPE+", demographic where demographic.demographic_no="+ARTYPE+".demographic_no ";
-            subQuery += " and " + sDemoFilter + sTempEle + " group by "+ARTYPE+".demographic_no,"+ARTYPE+".formCreated ";
-            MiscUtils.getLogger().debug(" demographic and "+ARTYPE+" subQuery: " + subQuery);
+        if ((bDemoSelect && bARSelect && !bSpecSelect && !bSpecFilter) || (!bSpecSelect && bARFilter && !bSpecFilter)) {
+            String sTempEle = sARFilter.length() > 0 ? (" and " + sARFilter) : "";
+            String subQuery = "select max(ID) from " + ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no ";
+            subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
+            MiscUtils.getLogger().debug(" demographic and " + ARTYPE + " subQuery: " + subQuery);
             String subFormId = "";
             ResultSet rs = DBHelp.searchDBRecord(subQuery);
             while (rs.next()) {
-                subFormId += (subFormId.length()>0? ",":"") +rs.getInt("max(ID)");
+                subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
             }
 
-            sTempEle = sARSelect.length()>0? (","+sARSelect) : "";
-            subFormId = subFormId.length()>0? subFormId : "0";
-            String sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic,"+ ARTYPE+" where ";
-            sql += " "+ARTYPE+".ID in (" + subFormId + ") and demographic.demographic_no="+ARTYPE+".demographic_no " + ORDER_BY;
-            MiscUtils.getLogger().debug(" demographic and "+ARTYPE+": " + sql);
+            sTempEle = sARSelect.length() > 0 ? ("," + sARSelect) : "";
+            subFormId = subFormId.length() > 0 ? subFormId : "0";
+            String sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic," + ARTYPE + " where ";
+            sql += " " + ARTYPE + ".ID in (" + subFormId + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
+            MiscUtils.getLogger().debug(" demographic and " + ARTYPE + ": " + sql);
 
-            String [] temp = sDemoSelect.replaceAll("demographic.","").split(",");
-            for(int i=0; i<temp.length; i++) {
+            String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
+            for (int i = 0; i < temp.length; i++) {
                 vecFieldCaption.add(propDemoSelect.getProperty(temp[i].trim()));
                 vecFieldName.add(temp[i].trim());
                 MiscUtils.getLogger().debug(" vecFieldCaption: " + propDemoSelect.getProperty(temp[i].trim()));
             }
-            if(bARSelect) {
-                temp = sARSelect.replaceAll(ARTYPE+".","").split(",");
-                for(int i=0; i<temp.length; i++) {
+            if (bARSelect) {
+                temp = sARSelect.replaceAll(ARTYPE + ".", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecFieldCaption.add(propARSelect.getProperty(temp[i].trim()));
                     vecFieldName.add(temp[i].trim());
                     MiscUtils.getLogger().debug(" vecFieldCaption: " + propARSelect.getProperty(temp[i].trim()));
@@ -476,34 +474,34 @@ public class RptDownloadCSVServlet extends HttpServlet {
         }
 
 //         table: all
-        if( (bDemoSelect && bARSelect && bSpecSelect) || (bARFilter && bSpecFilter) ) {
-            if(bDemoSelect && bARSelect && bSpecSelect && !bSpecFilter) {
+        if ((bDemoSelect && bARSelect && bSpecSelect) || (bARFilter && bSpecFilter)) {
+            if (bDemoSelect && bARSelect && bSpecSelect && !bSpecFilter) {
                 vecFieldName.add("demographic_no");
-                String sTempEle = sARFilter.length()>0? (" and "+sARFilter) : "";
-                String subQuery = "select max(ID) from "+ ARTYPE+", demographic where demographic.demographic_no="+ARTYPE+".demographic_no ";
-                subQuery += " and " + sDemoFilter + sTempEle + " group by "+ARTYPE+".demographic_no,"+ARTYPE+".formCreated ";
-                MiscUtils.getLogger().debug(" demographic and "+ ARTYPE+" subQuery: " + subQuery);
+                String sTempEle = sARFilter.length() > 0 ? (" and " + sARFilter) : "";
+                String subQuery = "select max(ID) from " + ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no ";
+                subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
+                MiscUtils.getLogger().debug(" demographic and " + ARTYPE + " subQuery: " + subQuery);
                 String subFormId = "";
                 ResultSet rs = DBHelp.searchDBRecord(subQuery);
                 while (rs.next()) {
-                    subFormId += (subFormId.length()>0? ",":"") +rs.getInt("max(ID)");
+                    subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
                 }
 
-                sTempEle = sARSelect.length()>0? (","+sARSelect) : "";
-                subFormId = subFormId.length()>0? subFormId : "0";
-                String sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic,"+ARTYPE+" where ";
-                sql += " "+ARTYPE+".ID in (" + subFormId + ") and demographic.demographic_no="+ARTYPE+".demographic_no " + ORDER_BY;
-                MiscUtils.getLogger().debug(" demographic and "+ARTYPE+": " + sql);
+                sTempEle = sARSelect.length() > 0 ? ("," + sARSelect) : "";
+                subFormId = subFormId.length() > 0 ? subFormId : "0";
+                String sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic," + ARTYPE + " where ";
+                sql += " " + ARTYPE + ".ID in (" + subFormId + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
+                MiscUtils.getLogger().debug(" demographic and " + ARTYPE + ": " + sql);
 
-                String [] temp = sDemoSelect.replaceAll("demographic.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecFieldCaption.add(propDemoSelect.getProperty(temp[i].trim()));
                     vecFieldName.add(temp[i].trim());
                     MiscUtils.getLogger().debug(" vecFieldCaption: " + propDemoSelect.getProperty(temp[i].trim()));
                 }
-                if(bARSelect) {
-                    temp = sARSelect.replaceAll(ARTYPE+".","").split(",");
-                    for(int i=0; i<temp.length; i++) {
+                if (bARSelect) {
+                    temp = sARSelect.replaceAll(ARTYPE + ".", "").split(",");
+                    for (int i = 0; i < temp.length; i++) {
                         vecFieldCaption.add(propARSelect.getProperty(temp[i].trim()));
                         vecFieldName.add(temp[i].trim());
                         MiscUtils.getLogger().debug(" vecFieldCaption: " + propARSelect.getProperty(temp[i].trim()));
@@ -514,78 +512,78 @@ public class RptDownloadCSVServlet extends HttpServlet {
 
                 //get demographic_no
                 String strDemoNo = "";
-                for(int j=0; j<vecFieldValue.size(); j++) {
+                for (int j = 0; j < vecFieldValue.size(); j++) {
                     Properties prop = (Properties) vecFieldValue.get(j);
-                    strDemoNo += (strDemoNo.length()<1? "" : ",") + prop.getProperty("demographic_no");
+                    strDemoNo += (strDemoNo.length() < 1 ? "" : ",") + prop.getProperty("demographic_no");
                 }
-                temp = sSpecSelect.replaceAll("demographicExt.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                     sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
-               		sql += strDemoNo + ") order by date_time ";
-               		rs = DBHelp.searchDBRecord(sql);
+                    sql += strDemoNo + ") order by date_time ";
+                    rs = DBHelp.searchDBRecord(sql);
                     while (rs.next()) {
-                        propSpecValue.setProperty(rs.getString("demographic_no")+temp[i], rs.getString("value"));
+                        propSpecValue.setProperty(rs.getString("demographic_no") + temp[i], rs.getString("value"));
                     }
                 }
             }
-            MiscUtils.getLogger().debug(" table: all: " );
+            MiscUtils.getLogger().debug(" table: all: ");
 
-            if(bARFilter && bSpecFilter) {
+            if (bARFilter && bSpecFilter) {
                 // spec first
                 vecFieldName.add("demographic_no");
                 // get demoNo
                 String sql = null;
                 ResultSet rs = null;
-                String sTempEle = sSpecFilter.length()>0? (" and "+sSpecFilter) : "";
+                String sTempEle = sSpecFilter.length() > 0 ? (" and " + sSpecFilter) : "";
                 String subQuery = "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no ";
                 subQuery += " and " + sDemoFilter + sTempEle + "  ";
                 MiscUtils.getLogger().debug(" demographic and demographicExt subQuery: " + subQuery);
                 String subFormDemoNo = "";
                 rs = DBHelp.searchDBRecord(subQuery);
                 while (rs.next()) {
-                    subFormDemoNo += (subFormDemoNo.length()>0? ",":"") +rs.getInt("demographic.demographic_no");
+                    subFormDemoNo += (subFormDemoNo.length() > 0 ? "," : "") + rs.getInt("demographic.demographic_no");
                 }
                 // get value for spec
-                String [] temp = sSpecSelect.replaceAll("demographicExt.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                String[] temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                     sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
                     sql += subFormDemoNo + ") order by date_time desc limit 1";
                     rs = DBHelp.searchDBRecord(sql);
                     while (rs.next()) {
-                        propSpecValue.setProperty(rs.getString("demographic_no")+temp[i], rs.getString("value"));
+                        propSpecValue.setProperty(rs.getString("demographic_no") + temp[i], rs.getString("value"));
                     }
                 }
 
                 // formAR second
-                sTempEle = sARFilter.length()>0? (" and "+sARFilter) : "";
-                subQuery = "select max(ID) from "+ ARTYPE+ ", demographic where demographic.demographic_no="+ARTYPE+".demographic_no ";
-                subQuery += " and " + sDemoFilter + sTempEle + " group by "+ARTYPE+".demographic_no,"+ARTYPE+".formCreated ";
-                MiscUtils.getLogger().debug(" demographic and "+ARTYPE+" subQuery: " + subQuery);
+                sTempEle = sARFilter.length() > 0 ? (" and " + sARFilter) : "";
+                subQuery = "select max(ID) from " + ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no ";
+                subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
+                MiscUtils.getLogger().debug(" demographic and " + ARTYPE + " subQuery: " + subQuery);
                 String subFormId = "";
                 rs = DBHelp.searchDBRecord(subQuery);
                 while (rs.next()) {
-                    subFormId += (subFormId.length()>0? ",":"") +rs.getInt("max(ID)");
+                    subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
                 }
 
                 // total
-                sTempEle = sARSelect.length()>0? (","+sARSelect) : "";
-                subFormId = subFormId.length()>0? subFormId : "0";
-                sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic,"+ARTYPE+" where ";
-                sql += " demographic.demographic_no in (" +  subFormDemoNo + ") and ";
-                sql += " "+ARTYPE+".ID in (" + subFormId + ") and demographic.demographic_no="+ARTYPE+".demographic_no " + ORDER_BY;
+                sTempEle = sARSelect.length() > 0 ? ("," + sARSelect) : "";
+                subFormId = subFormId.length() > 0 ? subFormId : "0";
+                sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic," + ARTYPE + " where ";
+                sql += " demographic.demographic_no in (" + subFormDemoNo + ") and ";
+                sql += " " + ARTYPE + ".ID in (" + subFormId + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
                 MiscUtils.getLogger().debug(" total: " + sql);
 
-                temp = sDemoSelect.replaceAll("demographic.","").split(",");
-                for(int i=0; i<temp.length; i++) {
+                temp = sDemoSelect.replaceAll("demographic.", "").split(",");
+                for (int i = 0; i < temp.length; i++) {
                     vecFieldCaption.add(propDemoSelect.getProperty(temp[i].trim()));
                     vecFieldName.add(temp[i].trim());
                     MiscUtils.getLogger().debug(" vecFieldCaption: " + propDemoSelect.getProperty(temp[i].trim()));
                 }
-                if(bARSelect) {
-                    temp = sARSelect.replaceAll(ARTYPE+".","").split(",");
-                    for(int i=0; i<temp.length; i++) {
+                if (bARSelect) {
+                    temp = sARSelect.replaceAll(ARTYPE + ".", "").split(",");
+                    for (int i = 0; i < temp.length; i++) {
                         vecFieldCaption.add(propARSelect.getProperty(temp[i].trim()));
                         vecFieldName.add(temp[i].trim());
                         MiscUtils.getLogger().debug(" vecFieldCaption: " + propARSelect.getProperty(temp[i].trim()));
@@ -602,27 +600,27 @@ public class RptDownloadCSVServlet extends HttpServlet {
         csvp.changeDelimiter('\t');
 
         csvp.write("id");
-        for(int i=0; i<vecFieldCaption.size(); i++) {
-            csvp.write( (String) vecFieldCaption.get(i));
+        for (int i = 0; i < vecFieldCaption.size(); i++) {
+            csvp.write((String) vecFieldCaption.get(i));
         }
-        if(bSpecSelect) {
-            for(int i=0; i<vecSpecCaption.size(); i++) {
+        if (bSpecSelect) {
+            for (int i = 0; i < vecSpecCaption.size(); i++) {
                 csvp.write((String) vecSpecCaption.get(i));
             }
         }
 
-        for(int i=0; i<vecFieldValue.size(); i++) {
+        for (int i = 0; i < vecFieldValue.size(); i++) {
             Properties prop = (Properties) vecFieldValue.get(i);
             csvp.writeln();
-            csvp.write(""+(i+1));
+            csvp.write("" + (i + 1));
 
-            for(int j=0; j<vecFieldName.size(); j++) {
+            for (int j = 0; j < vecFieldName.size(); j++) {
                 csvp.write(prop.getProperty((String) vecFieldName.get(j), ""));
             }
-            if(bSpecSelect) {
+            if (bSpecSelect) {
                 String demoNo = prop.getProperty("demographic_no");
-                for(int j=0; j<vecSpecCaption.size(); j++) {
-                    csvp.write(propSpecValue.getProperty(demoNo+((String) vecSpecCaption.get(j)).replaceAll(" ","_"), ""));
+                for (int j = 0; j < vecSpecCaption.size(); j++) {
+                    csvp.write(propSpecValue.getProperty(demoNo + ((String) vecSpecCaption.get(j)).replaceAll(" ", "_"), ""));
                 }
             }
         }

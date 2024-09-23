@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 package org.oscarehr.util;
 
-public class PDFGenerationException extends Exception{
+public class PDFGenerationException extends Exception {
     public PDFGenerationException() {
         super();
     }
@@ -16,5 +16,5 @@ public class PDFGenerationException extends Exception{
 
     public PDFGenerationException(String message, Throwable cause) {
         super(message, cause);
-    }    
+    }
 }

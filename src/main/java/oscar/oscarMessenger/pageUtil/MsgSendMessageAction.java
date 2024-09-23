@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,63 +50,63 @@ import org.oscarehr.util.SpringUtils;
 
 public class MsgSendMessageAction extends Action {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		// Extract attributes we will need
-		// Setup variables
-		ActionMessages errors = new ActionMessages();
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "w", null)) {
-			throw new SecurityException("missing required security object (_msg)");
-		}
-		
-		String message = ((MsgCreateMessageForm) form).getMessage();
-		String[] providers = ((MsgCreateMessageForm) form).getProvider();
-		String subject = ((MsgCreateMessageForm) form).getSubject();
-		subject.trim();
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // Extract attributes we will need
+        // Setup variables
+        ActionMessages errors = new ActionMessages();
 
-		saveErrors(request, errors);
-		ActionForward actionForward = new ActionForward(mapping.getInput());
-		actionForward.setName(mapping.getInput());
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "w", null)) {
+            throw new SecurityException("missing required security object (_msg)");
+        }
 
-		if (subject.length() == 0) {
-			subject = "none";
-		}
+        String message = ((MsgCreateMessageForm) form).getMessage();
+        String[] providers = ((MsgCreateMessageForm) form).getProvider();
+        String subject = ((MsgCreateMessageForm) form).getSubject();
+        subject.trim();
 
-		//By this far it should be safe that its a valid message
-		//create a string with all the providers it will be sent too
-		ProviderDao pDao = SpringUtils.getBean(ProviderDao.class);
-		List<Provider> ps = pDao.getProviders(providers);
-		StringBuilder sentToWho = new StringBuilder("Sent to : ");
-		for (Provider p : ps) {
-			sentToWho.append(" " + p.getFirstName() + " " + p.getLastName() + ". ");
-		}
+        saveErrors(request, errors);
+        ActionForward actionForward = new ActionForward(mapping.getInput());
+        actionForward.setName(mapping.getInput());
 
-		MsgSentMessageForm trial = new MsgSentMessageForm();
-		trial.setSample(sentToWho.toString());
+        if (subject.length() == 0) {
+            subject = "none";
+        }
 
-		MessageTbl mt = new MessageTbl();
-		mt.setDate(new Date());
-		mt.setTime(new Date());
-		mt.setMessage(message);
-		mt.setSubject(subject);
-		mt.setSentBy("jay");
-		mt.setSentTo(sentToWho.toString());
+        //By this far it should be safe that its a valid message
+        //create a string with all the providers it will be sent too
+        ProviderDao pDao = SpringUtils.getBean(ProviderDao.class);
+        List<Provider> ps = pDao.getProviders(providers);
+        StringBuilder sentToWho = new StringBuilder("Sent to : ");
+        for (Provider p : ps) {
+            sentToWho.append(" " + p.getFirstName() + " " + p.getLastName() + ". ");
+        }
 
-		MessageTblDao dao = SpringUtils.getBean(MessageTblDao.class);
-		dao.persist(mt);
+        MsgSentMessageForm trial = new MsgSentMessageForm();
+        trial.setSample(sentToWho.toString());
 
-		MessageListDao mld = SpringUtils.getBean(MessageListDao.class);
+        MessageTbl mt = new MessageTbl();
+        mt.setDate(new Date());
+        mt.setTime(new Date());
+        mt.setMessage(message);
+        mt.setSubject(subject);
+        mt.setSentBy("jay");
+        mt.setSentTo(sentToWho.toString());
 
-		for (int i = 0; i < providers.length; i++) {
-			MessageList ml = new MessageList();
-			ml.setMessage(mt.getId());
-			ml.setProviderNo(providers[i]);
-			ml.setStatus("new");
-			mld.persist(ml);
-		}
-		request.setAttribute("SentMessageProvs", sentToWho.toString());
-		return (mapping.findForward("success"));
-	}
+        MessageTblDao dao = SpringUtils.getBean(MessageTblDao.class);
+        dao.persist(mt);
+
+        MessageListDao mld = SpringUtils.getBean(MessageListDao.class);
+
+        for (int i = 0; i < providers.length; i++) {
+            MessageList ml = new MessageList();
+            ml.setMessage(mt.getId());
+            ml.setProviderNo(providers[i]);
+            ml.setStatus("new");
+            mld.persist(ml);
+        }
+        request.setAttribute("SentMessageProvs", sentToWho.toString());
+        return (mapping.findForward("success"));
+    }
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -67,204 +67,201 @@ import org.oscarehr.util.QueueCache;
 /**
  * Port Caching : ports are partially thread safe (see the CXF documentation), they are not when the configuration is altered.
  * We change the configuration on a per user bases (WSS configuration), therefore it's thread safe on a per-credential basis.
- * 
+ *
  * For the key we can use MyOscarLoggedInInfo, we won't mandate equals() & hashCode because it's more efficient to do a pointer compare.
  * If some one on the off chance has 2 credentials that are equivalent, it'll just make 2 entries in the cache, and everything works fine.
- * 
+ *
  * This class uses ConfigXmlUtils to controls some configuration parameters, they are all defaulted if not specified.
  * category=myoscar_client, property=ws_client_port_cache_size
  * category=myoscar_client, property=ws_client_port_cache_time_ms
  */
 public class MyOscarServerWebServicesManager {
-	private static Logger logger = MiscUtils.getLogger();
-	private static int portCacheSize = ConfigXmlUtils.getPropertyInt("misc", "ws_client_port_cache_size");
-	private static int portCacheTimeMs = ConfigXmlUtils.getPropertyInt("misc", "ws_client_port_cache_time_ms");
+    private static Logger logger = MiscUtils.getLogger();
+    private static int portCacheSize = ConfigXmlUtils.getPropertyInt("misc", "ws_client_port_cache_size");
+    private static int portCacheTimeMs = ConfigXmlUtils.getPropertyInt("misc", "ws_client_port_cache_time_ms");
 
-	private static QueueCache<MyOscarLoggedInInfo, AccountWs> accountWsCache = new QueueCache<MyOscarLoggedInInfo, AccountWs>(4, portCacheSize, portCacheTimeMs, null);
-	private static QueueCache<MyOscarLoggedInInfo, RoleRelationshipWs> roleRelationshipWsCache = new QueueCache<MyOscarLoggedInInfo, RoleRelationshipWs>(4, portCacheSize, portCacheTimeMs, null);
-	private static QueueCache<MyOscarLoggedInInfo, MessageWs> messageWsCache = new QueueCache<MyOscarLoggedInInfo, MessageWs>(4, portCacheSize, portCacheTimeMs, null);
-	private static QueueCache<MyOscarLoggedInInfo, MedicalDataWs> medicalDataWsCache = new QueueCache<MyOscarLoggedInInfo, MedicalDataWs>(4, portCacheSize, portCacheTimeMs, null);
+    private static QueueCache<MyOscarLoggedInInfo, AccountWs> accountWsCache = new QueueCache<MyOscarLoggedInInfo, AccountWs>(4, portCacheSize, portCacheTimeMs, null);
+    private static QueueCache<MyOscarLoggedInInfo, RoleRelationshipWs> roleRelationshipWsCache = new QueueCache<MyOscarLoggedInInfo, RoleRelationshipWs>(4, portCacheSize, portCacheTimeMs, null);
+    private static QueueCache<MyOscarLoggedInInfo, MessageWs> messageWsCache = new QueueCache<MyOscarLoggedInInfo, MessageWs>(4, portCacheSize, portCacheTimeMs, null);
+    private static QueueCache<MyOscarLoggedInInfo, MedicalDataWs> medicalDataWsCache = new QueueCache<MyOscarLoggedInInfo, MedicalDataWs>(4, portCacheSize, portCacheTimeMs, null);
 
-	static {
-		CxfClientUtils.initSslFromConfig();
-	}
+    static {
+        CxfClientUtils.initSslFromConfig();
+    }
 
-	public static void configureClientConnection(Object wsPort)
-	{
-		Client cxfClient = ClientProxy.getClient(wsPort);
-		HTTPConduit httpConduit = (HTTPConduit) cxfClient.getConduit();
+    public static void configureClientConnection(Object wsPort) {
+        Client cxfClient = ClientProxy.getClient(wsPort);
+        HTTPConduit httpConduit = (HTTPConduit) cxfClient.getConduit();
 
-		configureSsl(httpConduit);
-		CxfClientUtils.configureTimeout(httpConduit);
+        configureSsl(httpConduit);
+        CxfClientUtils.configureTimeout(httpConduit);
 
-		configureGzip(cxfClient);
-	}
+        configureGzip(cxfClient);
+    }
 
-	public static void configureGzip(Client cxfClient)
-	{
-		cxfClient.getInInterceptors().add(new GZIPInInterceptor());
-		cxfClient.getOutInterceptors().add(new GZIPOutInterceptor(0));
-	}
-	
-	public static void configureSsl(HTTPConduit httpConduit)
-	{
-		TLSClientParameters tslClientParameters = httpConduit.getTlsClientParameters();
-		if (tslClientParameters == null) tslClientParameters = new TLSClientParameters();
-		tslClientParameters.setDisableCNCheck(true);
-		TrustAllManager[] tam = { new TrustAllManager() };
-		tslClientParameters.setTrustManagers(tam);
-		tslClientParameters.setSecureSocketProtocol("TLS");
-		httpConduit.setTlsClientParameters(tslClientParameters);
-	}
-	
-	private static URL buildURL(String serverBaseUrl, String servicePoint) {
-		String urlString = serverBaseUrl + "/ws/" + servicePoint + "?wsdl";
+    public static void configureGzip(Client cxfClient) {
+        cxfClient.getInInterceptors().add(new GZIPInInterceptor());
+        cxfClient.getOutInterceptors().add(new GZIPOutInterceptor(0));
+    }
 
-		logger.debug(urlString);
+    public static void configureSsl(HTTPConduit httpConduit) {
+        TLSClientParameters tslClientParameters = httpConduit.getTlsClientParameters();
+        if (tslClientParameters == null) tslClientParameters = new TLSClientParameters();
+        tslClientParameters.setDisableCNCheck(true);
+        TrustAllManager[] tam = {new TrustAllManager()};
+        tslClientParameters.setTrustManagers(tam);
+        tslClientParameters.setSecureSocketProtocol("TLS");
+        httpConduit.setTlsClientParameters(tslClientParameters);
+    }
 
-		try {
-			return (new URL(urlString));
-		} catch (MalformedURLException e) {
-			logger.error("Invalid Url : " + urlString, e);
-			return (null);
-		}
-	}
+    private static URL buildURL(String serverBaseUrl, String servicePoint) {
+        String urlString = serverBaseUrl + "/ws/" + servicePoint + "?wsdl";
 
-	public static SystemInfoWs getSystemInfoWs(String serverBaseUrl) {
-		SystemInfoWsService service = new SystemInfoWsService(buildURL(serverBaseUrl, "SystemInfoService"));
-		SystemInfoWs port = service.getSystemInfoWsPort();
+        logger.debug(urlString);
 
-		configureClientConnection(port);
+        try {
+            return (new URL(urlString));
+        } catch (MalformedURLException e) {
+            logger.error("Invalid Url : " + urlString, e);
+            return (null);
+        }
+    }
 
-		return (port);
-	}
+    public static SystemInfoWs getSystemInfoWs(String serverBaseUrl) {
+        SystemInfoWsService service = new SystemInfoWsService(buildURL(serverBaseUrl, "SystemInfoService"));
+        SystemInfoWs port = service.getSystemInfoWsPort();
 
-	public static LoginWs getLoginWs(String serverBaseUrl) {
-		LoginWsService service = new LoginWsService(buildURL(serverBaseUrl, "LoginService"));
-		LoginWs port = service.getLoginWsPort();
+        configureClientConnection(port);
 
-		configureClientConnection(port);
+        return (port);
+    }
 
-		return (port);
-	}
+    public static LoginWs getLoginWs(String serverBaseUrl) {
+        LoginWsService service = new LoginWsService(buildURL(serverBaseUrl, "LoginService"));
+        LoginWs port = service.getLoginWsPort();
 
-	public static AccountWs getAccountWs(MyOscarLoggedInInfo credentials) {
-		AccountWs port = accountWsCache.get(credentials);
+        configureClientConnection(port);
 
-		if (port == null) {
-			AccountWsService service = new AccountWsService(buildURL(credentials.getServerBaseUrl(), "AccountService"));
-			port = service.getAccountWsPort();
+        return (port);
+    }
 
-			configureClientConnection(port);
-			CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
-			accountWsCache.put(credentials, port);
-		}
+    public static AccountWs getAccountWs(MyOscarLoggedInInfo credentials) {
+        AccountWs port = accountWsCache.get(credentials);
 
-		return (port);
-	}
+        if (port == null) {
+            AccountWsService service = new AccountWsService(buildURL(credentials.getServerBaseUrl(), "AccountService"));
+            port = service.getAccountWsPort();
 
-	public static RoleRelationshipWs getRoleRelationshipWs(MyOscarLoggedInInfo credentials) {
-		RoleRelationshipWs port = roleRelationshipWsCache.get(credentials);
+            configureClientConnection(port);
+            CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+            accountWsCache.put(credentials, port);
+        }
 
-		if (port == null) {
-			RoleRelationshipWsService service = new RoleRelationshipWsService(buildURL(credentials.getServerBaseUrl(), "RoleRelationshipService"));
-			port = service.getRoleRelationshipWsPort();
+        return (port);
+    }
 
-			configureClientConnection(port);
-			CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
-			roleRelationshipWsCache.put(credentials, port);
-		}
+    public static RoleRelationshipWs getRoleRelationshipWs(MyOscarLoggedInInfo credentials) {
+        RoleRelationshipWs port = roleRelationshipWsCache.get(credentials);
 
-		return (port);
-	}
+        if (port == null) {
+            RoleRelationshipWsService service = new RoleRelationshipWsService(buildURL(credentials.getServerBaseUrl(), "RoleRelationshipService"));
+            port = service.getRoleRelationshipWsPort();
 
-	public static MessageWs getMessageWs(MyOscarLoggedInInfo credentials) {
-		MessageWs port = messageWsCache.get(credentials);
+            configureClientConnection(port);
+            CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+            roleRelationshipWsCache.put(credentials, port);
+        }
 
-		if (port == null) {
-			MessageWsService service = new MessageWsService(buildURL(credentials.getServerBaseUrl(), "MessageService"));
-			port = service.getMessageWsPort();
+        return (port);
+    }
 
-			configureClientConnection(port);
-			CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
-			messageWsCache.put(credentials, port);
-		}
+    public static MessageWs getMessageWs(MyOscarLoggedInInfo credentials) {
+        MessageWs port = messageWsCache.get(credentials);
 
-		return (port);
-	}
+        if (port == null) {
+            MessageWsService service = new MessageWsService(buildURL(credentials.getServerBaseUrl(), "MessageService"));
+            port = service.getMessageWsPort();
 
-	public static MedicalDataWs getMedicalDataWs(MyOscarLoggedInInfo credentials) {
-		MedicalDataWs port = medicalDataWsCache.get(credentials);
+            configureClientConnection(port);
+            CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+            messageWsCache.put(credentials, port);
+        }
 
-		if (port == null) {
-			MedicalDataWsService service = new MedicalDataWsService(buildURL(credentials.getServerBaseUrl(), "MedicalDataService"));
-			port = service.getMedicalDataWsPort();
+        return (port);
+    }
 
-			configureClientConnection(port);
-			CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
-			medicalDataWsCache.put(credentials, port);
-		}
+    public static MedicalDataWs getMedicalDataWs(MyOscarLoggedInInfo credentials) {
+        MedicalDataWs port = medicalDataWsCache.get(credentials);
 
-		return (port);
-	}
+        if (port == null) {
+            MedicalDataWsService service = new MedicalDataWsService(buildURL(credentials.getServerBaseUrl(), "MedicalDataService"));
+            port = service.getMedicalDataWsPort();
 
-	public static CalendarWs getCalendarWs(MyOscarLoggedInInfo credentials) {
-		CalendarWsService service = new CalendarWsService(buildURL(credentials.getServerBaseUrl(), "CalendarService"));
-		CalendarWs port = service.getCalendarWsPort();
+            configureClientConnection(port);
+            CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+            medicalDataWsCache.put(credentials, port);
+        }
 
-		configureClientConnection(port);
-		CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+        return (port);
+    }
 
-		return (port);
-	}
+    public static CalendarWs getCalendarWs(MyOscarLoggedInInfo credentials) {
+        CalendarWsService service = new CalendarWsService(buildURL(credentials.getServerBaseUrl(), "CalendarService"));
+        CalendarWs port = service.getCalendarWsPort();
 
-	public static JournalWs getJournalWs(MyOscarLoggedInInfo credentials) {
-		JournalWsService service = new JournalWsService(buildURL(credentials.getServerBaseUrl(), "JournalService"));
-		JournalWs port = service.getJournalWsPort();
+        configureClientConnection(port);
+        CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
 
-		configureClientConnection(port);
-		CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+        return (port);
+    }
 
-		return (port);
-	}
+    public static JournalWs getJournalWs(MyOscarLoggedInInfo credentials) {
+        JournalWsService service = new JournalWsService(buildURL(credentials.getServerBaseUrl(), "JournalService"));
+        JournalWs port = service.getJournalWsPort();
 
-	public static SurveyWs getSurveyWs(MyOscarLoggedInInfo credentials) {
-		SurveyWsService service = new SurveyWsService(buildURL(credentials.getServerBaseUrl(), "SurveyService"));
-		SurveyWs port = service.getSurveyWsPort();
+        configureClientConnection(port);
+        CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
 
-		configureClientConnection(port);
-		CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+        return (port);
+    }
 
-		return (port);
-	}
+    public static SurveyWs getSurveyWs(MyOscarLoggedInInfo credentials) {
+        SurveyWsService service = new SurveyWsService(buildURL(credentials.getServerBaseUrl(), "SurveyService"));
+        SurveyWs port = service.getSurveyWsPort();
 
-	public static GroupWs getGroupWs(MyOscarLoggedInInfo credentials) {
-		GroupWsService service = new GroupWsService(buildURL(credentials.getServerBaseUrl(), "GroupService"));
-		GroupWs port = service.getGroupWsPort();
+        configureClientConnection(port);
+        CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
 
-		configureClientConnection(port);
-		CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+        return (port);
+    }
 
-		return (port);
-	}
+    public static GroupWs getGroupWs(MyOscarLoggedInInfo credentials) {
+        GroupWsService service = new GroupWsService(buildURL(credentials.getServerBaseUrl(), "GroupService"));
+        GroupWs port = service.getGroupWsPort();
 
-	public static ReportsWs getReportsWs(MyOscarLoggedInInfo credentials) {
-		ReportsWsService service = new ReportsWsService(buildURL(credentials.getServerBaseUrl(), "ReportsService"));
-		ReportsWs port = service.getReportsWsPort();
+        configureClientConnection(port);
+        CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
 
-		configureClientConnection(port);
-		CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+        return (port);
+    }
 
-		return (port);
-	}
+    public static ReportsWs getReportsWs(MyOscarLoggedInInfo credentials) {
+        ReportsWsService service = new ReportsWsService(buildURL(credentials.getServerBaseUrl(), "ReportsService"));
+        ReportsWs port = service.getReportsWsPort();
 
-	public static PersonToPersonPermissionsWs getPersonToPersonPermissionWs(MyOscarLoggedInInfo credentials) {
-		PersonToPersonPermissionsWsService service = new PersonToPersonPermissionsWsService(buildURL(credentials.getServerBaseUrl(), "PersonToPersonPermissionsService"));
-		PersonToPersonPermissionsWs port = service.getPersonToPersonPermissionsWsPort();
+        configureClientConnection(port);
+        CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
 
-		configureClientConnection(port);
-		CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+        return (port);
+    }
 
-		return (port);
-	}
+    public static PersonToPersonPermissionsWs getPersonToPersonPermissionWs(MyOscarLoggedInInfo credentials) {
+        PersonToPersonPermissionsWsService service = new PersonToPersonPermissionsWsService(buildURL(credentials.getServerBaseUrl(), "PersonToPersonPermissionsService"));
+        PersonToPersonPermissionsWs port = service.getPersonToPersonPermissionsWsPort();
+
+        configureClientConnection(port);
+        CxfClientUtils.addWSS4JAuthentication(credentials.getLoggedInPersonId(), credentials.getLoggedInPersonSecurityToken(), port);
+
+        return (port);
+    }
 }

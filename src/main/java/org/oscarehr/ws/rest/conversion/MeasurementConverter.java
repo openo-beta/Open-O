@@ -22,7 +22,7 @@ public class MeasurementConverter extends AbstractConverter<Measurement, Measure
         d.setCreateDate(t.getCreateDate());
         return d;
     }
-    
+
     @Override
     public MeasurementTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Measurement d) throws ConversionException {
         MeasurementTo1 t = new MeasurementTo1();

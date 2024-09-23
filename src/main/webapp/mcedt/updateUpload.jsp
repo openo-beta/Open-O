@@ -24,78 +24,78 @@
 
 --%>
 
-<%@ page errorPage="error.jsp"%>
+<%@ page errorPage="error.jsp" %>
 
 <!DOCTYPE html>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <html:html>
-<head>
-<jsp:include page="head-includes.jsp" />
-<script language="javascript">
-	function cancel(control) {
-		if (control) {
-			control.disabled = true;
-		}
-		window.location.href = "update.do";
-		return false;
-	}
+    <head>
+        <jsp:include page="head-includes.jsp"/>
+        <script language="javascript">
+            function cancel(control) {
+                if (control) {
+                    control.disabled = true;
+                }
+                window.location.href = "update.do";
+                return false;
+            }
 
-	function update(control) {
-		if (control) {
-			control.disabled = true;
-		}
-		var form = $("form");
-		form.submit();
-		return true;
-	}
-</script>
+            function update(control) {
+                if (control) {
+                    control.disabled = true;
+                }
+                var form = $("form");
+                form.submit();
+                return true;
+            }
+        </script>
 
 
-<title>MCEDT: Update Upload</title>
+        <title>MCEDT: Update Upload</title>
 
-<html:base />
-</head>
+        <html:base/>
+    </head>
 
-<body>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<h2>Update Upload</h2>
+    <body>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <h2>Update Upload</h2>
 
-			<html:form action="/mcedt/update" method="post" styleId="form"
-				enctype="multipart/form-data">
+            <html:form action="/mcedt/update" method="post" styleId="form"
+                       enctype="multipart/form-data">
 
-				<html:errors />
+                <html:errors/>
 
-				<html:messages id="message" bundle="mcedt" message="true">
-					<c:out value="${message}" />
-				</html:messages>
+            <html:messages id="message" bundle="mcedt" message="true">
+                <c:out value="${message}"/>
+            </html:messages>
 
-				<input id="method" name="method" type="hidden"
-					value="addUpdateRequest" />
+            <input id="method" name="method" type="hidden"
+                   value="addUpdateRequest"/>
 
-				<div class="form-group">
-					<label>Upload ID</label>
-					<html:text property="resourceId" readonly="true" />
-				</div>
+            <div class="form-group">
+                <label>Upload ID</label>
+                <html:text property="resourceId" readonly="true"/>
+            </div>
 
-				<div class="form-group">
-					<label>File Upload</label>
-					<html:file property="content" />
-				</div>
+            <div class="form-group">
+                <label>File Upload</label>
+                <html:file property="content"/>
+            </div>
 
-				<div class="control-group" style="margin-top: 1em;">
-					<div class="controls">
-						<button class="btn btn-primary" onclick="return update(this);">Update</button>
-						<button class="btn" onclick="return cancel(this);">Cancel</button>
-					</div>
-				</div>
-			</html:form>
-</body>
+            <div class="control-group" style="margin-top: 1em;">
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="return update(this);">Update</button>
+                    <button class="btn" onclick="return cancel(this);">Cancel</button>
+                </div>
+            </div>
+            </html:form>
+    </body>
 </html:html>

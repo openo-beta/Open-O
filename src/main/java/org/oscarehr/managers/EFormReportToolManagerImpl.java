@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -46,174 +46,174 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * 
+ *
  * @author Marc Dumontier
  *
  */
 @Service
 //@Transactional
-public class EFormReportToolManagerImpl implements EFormReportToolManager{
+public class EFormReportToolManagerImpl implements EFormReportToolManager {
 
-	private Logger logger = MiscUtils.getLogger();
-	
-	@Autowired
-	private EFormReportToolDao eformReportToolDao;
-	@Autowired
-	private EFormDao eformDao;
-	@Autowired
-	private EFormValueDao eformValueDao;
-	@Autowired
-	private EFormDataDao eformDataDao;
-	@Autowired
-	private SecurityInfoManager securityInfoManager;
-	
-	//@PersistenceContext
-	//protected EntityManager entityManager = null;
+    private Logger logger = MiscUtils.getLogger();
 
-	
-	public List<EFormReportTool> findAll(LoggedInInfo loggedInInfo, Integer offset, Integer limit) {
-		
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "r", null)) {
-			throw new RuntimeException("Access Denied [_admin.eformreporttool]");
-		}
-		
-		List<EFormReportTool> results = eformReportToolDao.findAll(offset, limit);
+    @Autowired
+    private EFormReportToolDao eformReportToolDao;
+    @Autowired
+    private EFormDao eformDao;
+    @Autowired
+    private EFormValueDao eformValueDao;
+    @Autowired
+    private EFormDataDao eformDataDao;
+    @Autowired
+    private SecurityInfoManager securityInfoManager;
 
-		return results;
-	}
+    //@PersistenceContext
+    //protected EntityManager entityManager = null;
 
-	/*
-	 * Updates the eft_latest column to 1 for the latest form from each demographic. This is calculated by latest form date/form time, and in the 
-	 * case that there's 2 results, the highest fdid will be marked. 
-	 */
-	public void markLatest(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
-		
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
-			throw new RuntimeException("Access Denied [_admin.eformreporttool]");
-		}
-		
-		eformReportToolDao.markLatest(eformReportToolId);
-	}
-	
-	public void addNew(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool) {
 
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
-			throw new RuntimeException("Access Denied [_admin.eformreporttool]");
-		}
-		EForm eform = eformDao.findById(eformReportTool.getEformId());
-		
-		if (eform != null) {
-			//get list of possible var_name
-			List<String> fields = eformValueDao.findAllVarNamesForEForm(eform.getId());
-			eformReportToolDao.addNew(eformReportTool,eform, fields,loggedInInfo.getLoggedInProviderNo());
-		} else {
-			logger.info("the eform id passed did not match an existing eform");
-		}	
-		
-	}
+    public List<EFormReportTool> findAll(LoggedInInfo loggedInInfo, Integer offset, Integer limit) {
 
-	public void populateReportTable(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
-		
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "r", null)) {
-			throw new RuntimeException("Access Denied [_admin.eformreporttool]");
-		}
-		
-		EFormReportTool eft = eformReportToolDao.find(eformReportToolId);
-		if (eft != null) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "r", null)) {
+            throw new RuntimeException("Access Denied [_admin.eformreporttool]");
+        }
 
-			deleteAllData(eft);
-			
-			//get all fdid for this fid
-			List<Object[]> fdidList = eformDataDao.findMetaFieldsByFormId(eft.getEformId());
+        List<EFormReportTool> results = eformReportToolDao.findAll(offset, limit);
 
-			Date dateStarted = new Date();
+        return results;
+    }
 
-			
-			for (Object[] data : fdidList) {
-				Integer fdid = (Integer) data[0];
-				Integer demographicNo = (Integer) data[1];
-				Date dateFormCreated = createDateFromDateAndTime((Date) data[2], (Date) data[3]);
-				String providerNo = (String)data[4];
-				List<EFormValue> values = eformValueDao.findByFormDataId(fdid);
+    /*
+     * Updates the eft_latest column to 1 for the latest form from each demographic. This is calculated by latest form date/form time, and in the
+     * case that there's 2 results, the highest fdid will be marked.
+     */
+    public void markLatest(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
 
-				if (values.isEmpty()) {
-					continue;
-				}
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
+            throw new RuntimeException("Access Denied [_admin.eformreporttool]");
+        }
 
-				eformReportToolDao.populateReportTableItem(eft,values, fdid, demographicNo, dateFormCreated, providerNo);
+        eformReportToolDao.markLatest(eformReportToolId);
+    }
 
-				logger.debug("Added fdid " + fdid + " to table " + eft.getTableName());
-			}
+    public void addNew(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool) {
 
-			eft.setDateLastPopulated(dateStarted);
-			eft.setLatestMarked(false);
-			eformReportToolDao.merge(eft);
-		}
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
+            throw new RuntimeException("Access Denied [_admin.eformreporttool]");
+        }
+        EForm eform = eformDao.findById(eformReportTool.getEformId());
 
-	}
+        if (eform != null) {
+            //get list of possible var_name
+            List<String> fields = eformValueDao.findAllVarNamesForEForm(eform.getId());
+            eformReportToolDao.addNew(eformReportTool, eform, fields, loggedInInfo.getLoggedInProviderNo());
+        } else {
+            logger.info("the eform id passed did not match an existing eform");
+        }
 
-	public void deleteAllData(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
-		
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
-			throw new RuntimeException("Access Denied [_admin.eformreporttool]");
-		}
-		
-		EFormReportTool eft = eformReportToolDao.find(eformReportToolId);
-		if(eft != null) {
-			deleteAllData(eft);
-			eft.setDateLastPopulated(null);
-			eft.setLatestMarked(false);
-			eformReportToolDao.merge(eft);
-		}
+    }
 
-	}
-	
-	private void deleteAllData(EFormReportTool eft) {
-		eformReportToolDao.deleteAllData(eft);
-	}
+    public void populateReportTable(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
 
-	public void remove(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
-		
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
-			throw new RuntimeException("Access Denied [_admin.eformreporttool]");
-		}
-		
-		EFormReportTool eft = eformReportToolDao.find(eformReportToolId);
-		remove(eft);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "r", null)) {
+            throw new RuntimeException("Access Denied [_admin.eformreporttool]");
+        }
 
-	}
-	
-	private void remove(EFormReportTool eft) {
-		eformReportToolDao.drop(eft);
-		eformReportToolDao.remove(eft.getId());
-	}
+        EFormReportTool eft = eformReportToolDao.find(eformReportToolId);
+        if (eft != null) {
 
-	
-	private Date createDateFromDateAndTime(Date date, Date time) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
+            deleteAllData(eft);
 
-		Calendar tCal = Calendar.getInstance();
-		tCal.setTime(time);
+            //get all fdid for this fid
+            List<Object[]> fdidList = eformDataDao.findMetaFieldsByFormId(eft.getEformId());
 
-		cal.add(Calendar.HOUR_OF_DAY, tCal.get(Calendar.HOUR_OF_DAY));
-		cal.add(Calendar.MINUTE, tCal.get(Calendar.MINUTE));
-		cal.set(Calendar.SECOND, 0);
+            Date dateStarted = new Date();
 
-		return cal.getTime();
-	}
-	
-	public int getNumRecords(LoggedInInfo loggedInInfo,Integer eformReportToolId) {
-		return getNumRecords(loggedInInfo, eformReportToolDao.find(eformReportToolId));
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Integer getNumRecords(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool) {
-		
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "r", null)) {
-			throw new RuntimeException("Access Denied [_admin.eformreporttool]");
-		}
-		
-		return eformReportToolDao.getNumRecords(eformReportTool);
-	}
+
+            for (Object[] data : fdidList) {
+                Integer fdid = (Integer) data[0];
+                Integer demographicNo = (Integer) data[1];
+                Date dateFormCreated = createDateFromDateAndTime((Date) data[2], (Date) data[3]);
+                String providerNo = (String) data[4];
+                List<EFormValue> values = eformValueDao.findByFormDataId(fdid);
+
+                if (values.isEmpty()) {
+                    continue;
+                }
+
+                eformReportToolDao.populateReportTableItem(eft, values, fdid, demographicNo, dateFormCreated, providerNo);
+
+                logger.debug("Added fdid " + fdid + " to table " + eft.getTableName());
+            }
+
+            eft.setDateLastPopulated(dateStarted);
+            eft.setLatestMarked(false);
+            eformReportToolDao.merge(eft);
+        }
+
+    }
+
+    public void deleteAllData(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
+            throw new RuntimeException("Access Denied [_admin.eformreporttool]");
+        }
+
+        EFormReportTool eft = eformReportToolDao.find(eformReportToolId);
+        if (eft != null) {
+            deleteAllData(eft);
+            eft.setDateLastPopulated(null);
+            eft.setLatestMarked(false);
+            eformReportToolDao.merge(eft);
+        }
+
+    }
+
+    private void deleteAllData(EFormReportTool eft) {
+        eformReportToolDao.deleteAllData(eft);
+    }
+
+    public void remove(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "w", null)) {
+            throw new RuntimeException("Access Denied [_admin.eformreporttool]");
+        }
+
+        EFormReportTool eft = eformReportToolDao.find(eformReportToolId);
+        remove(eft);
+
+    }
+
+    private void remove(EFormReportTool eft) {
+        eformReportToolDao.drop(eft);
+        eformReportToolDao.remove(eft.getId());
+    }
+
+
+    private Date createDateFromDateAndTime(Date date, Date time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        Calendar tCal = Calendar.getInstance();
+        tCal.setTime(time);
+
+        cal.add(Calendar.HOUR_OF_DAY, tCal.get(Calendar.HOUR_OF_DAY));
+        cal.add(Calendar.MINUTE, tCal.get(Calendar.MINUTE));
+        cal.set(Calendar.SECOND, 0);
+
+        return cal.getTime();
+    }
+
+    public int getNumRecords(LoggedInInfo loggedInInfo, Integer eformReportToolId) {
+        return getNumRecords(loggedInInfo, eformReportToolDao.find(eformReportToolId));
+    }
+
+    @SuppressWarnings("unchecked")
+    public Integer getNumRecords(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.eformreporttool", "r", null)) {
+            throw new RuntimeException("Access Denied [_admin.eformreporttool]");
+        }
+
+        return eformReportToolDao.getNumRecords(eformReportTool);
+    }
 }

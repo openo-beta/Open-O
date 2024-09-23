@@ -25,15 +25,15 @@
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@ include file="/taglibs.jsp"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="java.text.SimpleDateFormat" %>
+<%@ include file="/taglibs.jsp" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@page import="java.util.*"%>
+<%@page import="java.util.*" %>
 <%@page import="org.oscarehr.common.model.Episode" %>
 <%@page import="org.oscarehr.common.dao.EpisodeDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -42,53 +42,52 @@
 
 %>
 <html:html lang="en">
-<head>
-<script src="<%=request.getContextPath() %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <head>
+        <script src="<%=request.getContextPath() %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
 
-<title>Addition of Pregnancy</title>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/share/css/OscarStandardLayout.css">
+        <title>Addition of Pregnancy</title>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/share/css/OscarStandardLayout.css">
 
-<style>
-body
-{
-	text-align: center;
-}
+        <style>
+            body {
+                text-align: center;
+            }
 
-div#demo
-{
-	margin-left: auto;
-	margin-right: auto;
-	width: 90%;
-	text-align: left;
-}
-</style>
-<script>
-<%
-	if(request.getAttribute("error") == null) {
-		%>
-			$(document).ready(function(){
-				window.opener.reloadNav('pregnancy');
-				window.opener.reloadNav('forms');
-				window.close();
-			});
-		<%
-	}
-%>
-</script>
-</head>
+            div#demo {
+                margin-left: auto;
+                margin-right: auto;
+                width: 90%;
+                text-align: left;
+            }
+        </style>
+        <script>
+            <%
+                if(request.getAttribute("error") == null) {
+                    %>
+            $(document).ready(function () {
+                window.opener.reloadNav('pregnancy');
+                window.opener.reloadNav('forms');
+                window.close();
+            });
+            <%
+        }
+    %>
+        </script>
+    </head>
 
-<body>
+    <body>
 
-<Br/>
-<h2 style="text-align:center">Pregnancy Management</h2>
-<br/>
-<%
-	if(request.getAttribute("error") != null) {
-%>
-	<h2 style="color:red"><%=request.getAttribute("error") %></h2>
-<% 
-	return;
-	} %>
-success
+    <Br/>
+    <h2 style="text-align:center">Pregnancy Management</h2>
+    <br/>
+    <%
+        if (request.getAttribute("error") != null) {
+    %>
+    <h2 style="color:red"><%=request.getAttribute("error") %>
+    </h2>
+    <%
+            return;
+        } %>
+    success
 
 </html:html>

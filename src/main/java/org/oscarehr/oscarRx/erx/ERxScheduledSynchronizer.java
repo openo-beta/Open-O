@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- * 
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -65,7 +65,7 @@ public class ERxScheduledSynchronizer {
         /*
          * The credentials of the facility who administers the medical records
          * of the patient
-         * 
+         *
          * FUTURE: this should get credential objects from a factory class that
          * knows the provider's preferred external prescription provider; where
          * the credential objects returned conform to the signature of
@@ -75,7 +75,7 @@ public class ERxScheduledSynchronizer {
 
         /*
          * The object which will facilitate communications
-         * 
+         *
          * FUTURE: this should get communicator objects from a factory class
          * that knows the provider's preferred external prescription provider;
          * where the communicator objects returned conform to the signature of
@@ -120,28 +120,28 @@ public class ERxScheduledSynchronizer {
 
                 DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
                 ProviderDataDao providerDataDao = (ProviderDataDao) SpringUtils.getBean(ProviderDataDao.class);
-                
+
                 // Construct a request and send it
                 untranslatedPrescriptions = communicator
                         .requestPrescriptionData(Integer
-                                .toString(facilityCredentials.getFacilityId()),
-	                                "", dateToSync);
-                if (untranslatedPrescriptions != null){
-                	logger.debug("untranslatedPrescriptions size :"+untranslatedPrescriptions.size());
-                }else{
-                	logger.debug("untranslatedPrescriptions was null");
+                                        .toString(facilityCredentials.getFacilityId()),
+                                "", dateToSync);
+                if (untranslatedPrescriptions != null) {
+                    logger.debug("untranslatedPrescriptions size :" + untranslatedPrescriptions.size());
+                } else {
+                    logger.debug("untranslatedPrescriptions was null");
                 }
                 // Translate each prescription returned
                 untranslatedPrescriptionIterator = untranslatedPrescriptions
                         .iterator();
-                
+
                 while (untranslatedPrescriptionIterator.hasNext()) {
                     try {
                         toTranslate = untranslatedPrescriptionIterator.next();
-                        
+
                         // Retrieve the doctor's information
                         issuingProvider = providerDataDao.findByOhipNumber(toTranslate
-                                        .getDoctorLicenseNo());
+                                .getDoctorLicenseNo());
                         if (issuingProvider == null) {
                             throw new IllegalArgumentException(
                                     "Prescription to parse contains an invalid doctor license number "
@@ -158,7 +158,7 @@ public class ERxScheduledSynchronizer {
 
                         // Retrieve drug information
                         drugATCCode = (String) drugLookup.atcFromDIN(Long.toString(toTranslate.getDrugCode())).firstElement();
-                        
+
                         if (drugATCCode == null) {
                             throw new IllegalArgumentException(
                                     "Prescription to parse contains an unknown product DIN number "
@@ -171,10 +171,10 @@ public class ERxScheduledSynchronizer {
                                         drugATCCode));
                     } catch (IllegalArgumentException e) {
                         logger.error("Failed to translate a prescription because: "
-                                        + e.getMessage());
+                                + e.getMessage());
                     } catch (Exception e) {
                         logger.error("Failed to translate a prescription because the drug could not be found: "
-                                        + e.getMessage());
+                                + e.getMessage());
                     }
                 }
 
@@ -188,17 +188,17 @@ public class ERxScheduledSynchronizer {
                                         .next());
                     } catch (IllegalArgumentException e) {
                         logger.error("Failed to update a patient's chart with a prescription because the following error occurred: "
-                                        + e.getMessage());
+                                + e.getMessage());
                     }
                 }
             } catch (SecurityException e) {
                 logger.error("Failed to request prescriptions from an external prescription provider because the remote web service denied us access: "
-                                + e.getMessage()
-                                + " This is likely due to incorrectly-configured provider or facility credentials.");
+                        + e.getMessage()
+                        + " This is likely due to incorrectly-configured provider or facility credentials.");
             }
         } catch (MalformedURLException e) {
             logger.error("Failed to request prescriptions from an external provider because the URL stored in the facility preferences did not validate. The URL given was: "
-                            + e.getMessage());
+                    + e.getMessage());
         } finally {
             logger.info("Completed attempt to request a list of prescriptions that have changed from external prescription provider(s).");
         }

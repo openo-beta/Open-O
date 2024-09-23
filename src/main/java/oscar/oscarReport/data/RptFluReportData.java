@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,104 +42,104 @@ import oscar.util.ConversionUtils;
 
 public class RptFluReportData {
 
-	public ArrayList<DemoFluDataStruct> demoList;
-	public String years;
+    public ArrayList<DemoFluDataStruct> demoList;
+    public String years;
 
-	public RptFluReportData() {
-		demoList = null;
-		years = null;
-	}
+    public RptFluReportData() {
+        demoList = null;
+        years = null;
+    }
 
-	@SuppressWarnings("unchecked")
-	public List<Provider> providerList() {
-		ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
-		List<Provider> pList = dao.getActiveProviders();
-		
-		return pList;
-	}
+    @SuppressWarnings("unchecked")
+    public List<Provider> providerList() {
+        ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
+        List<Provider> pList = dao.getActiveProviders();
 
-	public void fluReportGenerate(String s, String s1) {
-		years = s1;
-		
-		DemographicDao dao = SpringUtils.getBean(DemographicDao.class);
-		
-		demoList = new ArrayList<DemoFluDataStruct>();
-		DemoFluDataStruct demofludatastruct;
-		for(Object[] o : dao.findDemographicsForFluReport(s)) {
-			String demographic_no = String.valueOf(o[0]);
-			String demoname = String.valueOf(o[0]);
-			String phone = String.valueOf(o[0]);
-			String roster_status = String.valueOf(o[0]);
-			String patient_status = String.valueOf(o[0]);
-			String dob = String.valueOf(o[0]);
-			String age = String.valueOf(o[0]);
-			
-			demofludatastruct = new DemoFluDataStruct();
-			demofludatastruct.demoNo = demographic_no;
-			demofludatastruct.demoName = demoname;
-			demofludatastruct.demoPhone = phone;
-			demofludatastruct.demoRosterStatus = roster_status;
-			demofludatastruct.demoPatientStatus = patient_status;
-			demofludatastruct.demoDOB = dob;
-			demofludatastruct.demoAge = age;
-			
-			demoList.add(demofludatastruct);
-		}
-	}
+        return pList;
+    }
 
-	public class DemoFluDataStruct {
+    public void fluReportGenerate(String s, String s1) {
+        years = s1;
 
-		public String demoNo;
-		public String demoName;
-		public String demoPhone;
-		public String demoRosterStatus;
-		public String demoAge;
-		public String demoDOB;
-		public String demoPatientStatus;
+        DemographicDao dao = SpringUtils.getBean(DemographicDao.class);
 
-		public String getDemoNo() {
-			return demoNo;
-		}
+        demoList = new ArrayList<DemoFluDataStruct>();
+        DemoFluDataStruct demofludatastruct;
+        for (Object[] o : dao.findDemographicsForFluReport(s)) {
+            String demographic_no = String.valueOf(o[0]);
+            String demoname = String.valueOf(o[0]);
+            String phone = String.valueOf(o[0]);
+            String roster_status = String.valueOf(o[0]);
+            String patient_status = String.valueOf(o[0]);
+            String dob = String.valueOf(o[0]);
+            String age = String.valueOf(o[0]);
 
-		public String getDemoName() {
-			return demoName;
-		}
+            demofludatastruct = new DemoFluDataStruct();
+            demofludatastruct.demoNo = demographic_no;
+            demofludatastruct.demoName = demoname;
+            demofludatastruct.demoPhone = phone;
+            demofludatastruct.demoRosterStatus = roster_status;
+            demofludatastruct.demoPatientStatus = patient_status;
+            demofludatastruct.demoDOB = dob;
+            demofludatastruct.demoAge = age;
 
-		public String getDemoPhone() {
-			return demoPhone;
-		}
+            demoList.add(demofludatastruct);
+        }
+    }
 
-		public String getDemoAge() {
-			return demoAge;
-		}
+    public class DemoFluDataStruct {
 
-		public String getDemoDOB() {
-			return demoDOB;
-		}
+        public String demoNo;
+        public String demoName;
+        public String demoPhone;
+        public String demoRosterStatus;
+        public String demoAge;
+        public String demoDOB;
+        public String demoPatientStatus;
 
-		public String getBillingDate() {
-			String s = "&nbsp;";
+        public String getDemoNo() {
+            return demoNo;
+        }
 
-			BillingDao dao = SpringUtils.getBean(BillingDao.class);
-			for (Billing b : dao.findBillingsByDemoNoServiceCodeAndDate(ConversionUtils.fromIntString(demoNo), ConversionUtils.fromDateString("2003-04-01"), Arrays.asList(new String[] { "G590A", "G591A" }))) {
-				s = ConversionUtils.toDateString(b.getBillingDate());
-			}
-			return s;
-		}
+        public String getDemoName() {
+            return demoName;
+        }
 
-		public String getBillingDate(String reportYear) {
-			String s = "&nbsp;";
+        public String getDemoPhone() {
+            return demoPhone;
+        }
 
-			String sDate = reportYear + "-01-01";
-			String eDate = reportYear + "-12-31";
+        public String getDemoAge() {
+            return demoAge;
+        }
 
-			BillingONCHeader1Dao dao = SpringUtils.getBean(BillingONCHeader1Dao.class);
-			for (BillingONCHeader1 b : dao.findBillingsByDemoNoCh1HeaderServiceCodeAndDate(ConversionUtils.fromIntString(demoNo), Arrays.asList(new String[] { "G590A", "G591A" }), ConversionUtils.fromDateString(sDate), ConversionUtils.fromDateString(eDate))) {
-				s = ConversionUtils.toDateString(b.getBillingDate());
-				break;
-			}
+        public String getDemoDOB() {
+            return demoDOB;
+        }
 
-			return s;
-		}
-	}
+        public String getBillingDate() {
+            String s = "&nbsp;";
+
+            BillingDao dao = SpringUtils.getBean(BillingDao.class);
+            for (Billing b : dao.findBillingsByDemoNoServiceCodeAndDate(ConversionUtils.fromIntString(demoNo), ConversionUtils.fromDateString("2003-04-01"), Arrays.asList(new String[]{"G590A", "G591A"}))) {
+                s = ConversionUtils.toDateString(b.getBillingDate());
+            }
+            return s;
+        }
+
+        public String getBillingDate(String reportYear) {
+            String s = "&nbsp;";
+
+            String sDate = reportYear + "-01-01";
+            String eDate = reportYear + "-12-31";
+
+            BillingONCHeader1Dao dao = SpringUtils.getBean(BillingONCHeader1Dao.class);
+            for (BillingONCHeader1 b : dao.findBillingsByDemoNoCh1HeaderServiceCodeAndDate(ConversionUtils.fromIntString(demoNo), Arrays.asList(new String[]{"G590A", "G591A"}), ConversionUtils.fromDateString(sDate), ConversionUtils.fromDateString(eDate))) {
+                s = ConversionUtils.toDateString(b.getBillingDate());
+                break;
+            }
+
+            return s;
+        }
+    }
 }

@@ -24,26 +24,26 @@
 
 --%>
 
-<%@page 
-	import="oscar.OscarProperties"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@page
+        import="oscar.OscarProperties" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <%
     String errormsg = request.getParameter("errormsg");
 %>
 
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<html:base />
-<title>Login Failure</title>
-</head>
-<body>
-<!--h2>OSCAR has encountered the following fatal error:</h2>
-  <hr-->
-<p><%=errormsg%>
-<p>Please correct and try again.
-</body>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <html:base/>
+        <title>Login Failure</title>
+    </head>
+    <body>
+    <!--h2>OSCAR has encountered the following fatal error:</h2>
+      <hr-->
+    <p><%=errormsg%>
+    <p>Please correct and try again.
+    </body>
 </html:html>

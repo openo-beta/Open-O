@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -53,50 +53,50 @@ import oscar.util.UtilDateUtilities;
  * @author mweston4
  */
 public class BillingInvoiceAction extends DispatchAction {
-    
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	   
-	
-    public ActionForward getPrintPDF(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  throws IOException {
-        String invoiceNo = request.getParameter("invoiceNo");                
+
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
+
+    public ActionForward getPrintPDF(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String invoiceNo = request.getParameter("invoiceNo");
         String actionResult = "failure";
-        
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "r", null)) {
-        	throw new SecurityException("missing required security object (_billing)");
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "r", null)) {
+            throw new SecurityException("missing required security object (_billing)");
         }
 
-        
+
         if (invoiceNo != null) {
             response.setContentType("application/pdf"); // octet-stream
             response.setHeader("Content-Disposition", "attachment; filename=\"BillingInvoice" + invoiceNo + "_" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf\"");
-            boolean bResult = processPrintPDF(Integer.parseInt(invoiceNo),request.getLocale(), response.getOutputStream());
+            boolean bResult = processPrintPDF(Integer.parseInt(invoiceNo), request.getLocale(), response.getOutputStream());
             if (bResult) {
                 actionResult = "success";
             }
         }
         return mapping.findForward(actionResult);
     }
-    
-    public ActionForward getListPrintPDF(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  throws IOException {
-       
-    	 if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "r", null)) {
-         	throw new SecurityException("missing required security object (_billing)");
-         }
-    	 
-        String actionResult = "failure";       
+
+    public ActionForward getListPrintPDF(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "r", null)) {
+            throw new SecurityException("missing required security object (_billing)");
+        }
+
+        String actionResult = "failure";
         String[] invoiceNos = request.getParameterValues("invoiceAction");
-        
+
         ArrayList<Object> fileList = new ArrayList<Object>();
         OutputStream fos = null;
         if (invoiceNos != null) {
             for (String invoiceNoStr : invoiceNos) {
-                try {               
-                        Integer invoiceNo = Integer.parseInt(invoiceNoStr);
-                        String filename = "BillingInvoice" + invoiceNo + "_" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf";
-                        String savePath = oscar.OscarProperties.getInstance().getProperty("INVOICE_DIR") + "/" + filename;
-                        fos = new FileOutputStream(savePath);                
-                        processPrintPDF(invoiceNo, request.getLocale(), fos);
-                        fileList.add(savePath);                
+                try {
+                    Integer invoiceNo = Integer.parseInt(invoiceNoStr);
+                    String filename = "BillingInvoice" + invoiceNo + "_" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf";
+                    String savePath = oscar.OscarProperties.getInstance().getProperty("INVOICE_DIR") + "/" + filename;
+                    fos = new FileOutputStream(savePath);
+                    processPrintPDF(invoiceNo, request.getLocale(), fos);
+                    fileList.add(savePath);
                 } catch (Exception e) {
                     MiscUtils.getLogger().error("Error", e);
                 } finally {
@@ -110,26 +110,26 @@ public class BillingInvoiceAction extends DispatchAction {
             ConcatPDF.concat(fileList, response.getOutputStream());
             actionResult = "listSuccess";
         }
-        
-       return mapping.findForward(actionResult);
+
+        return mapping.findForward(actionResult);
     }
-    
+
     /*
-    * The sendInvoiceEmailNotification method in BillingManager is no longer supported.
-    * For more details, please refer to the sendInvoiceEmailNotification method.
-    */
+     * The sendInvoiceEmailNotification method in BillingManager is no longer supported.
+     * For more details, please refer to the sendInvoiceEmailNotification method.
+     */
     @Deprecated
-    public ActionForward sendEmail(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
+    public ActionForward sendEmail(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("This method is no longer supported.");
-    	//  if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
+        //  if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
         //  	throw new SecurityException("missing required security object (_billing)");
         //  }
-    	 
+
         // String invoiceNoStr = request.getParameter("invoiceNo");
         // Integer invoiceNo = Integer.parseInt(invoiceNoStr);
         // Locale locale = request.getLocale();
         // String actionResult = "failure";
-        
+
         // if (invoiceNo != null) {
         //     BillingONManager billingManager = (BillingONManager) SpringUtils.getBean(BillingONManager.class);
         //     billingManager.sendInvoiceEmailNotification(invoiceNo, locale);
@@ -141,22 +141,22 @@ public class BillingInvoiceAction extends DispatchAction {
         // redirect.addParameter("billing_no", invoiceNo);
         // return redirect;
     }
-    
+
     /*
-    * The sendInvoiceEmailNotification method in BillingManager is no longer supported.
-    * For more details, please refer to the sendInvoiceEmailNotification method.
-    */
+     * The sendInvoiceEmailNotification method in BillingManager is no longer supported.
+     * For more details, please refer to the sendInvoiceEmailNotification method.
+     */
     @Deprecated
-    public ActionForward sendListEmail(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
+    public ActionForward sendListEmail(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("This method is no longer supported.");
-    	//  if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
+        //  if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
         //  	throw new SecurityException("missing required security object (_billing)");
         //  }
-    	 
+
         // String actionResult = "failure";       
         // String[] invoiceNos = request.getParameterValues("invoiceAction");
         // Locale locale = request.getLocale();
-        
+
         // if (invoiceNos != null) {
         //     for (String invoiceNoStr : invoiceNos) {
         //         Integer invoiceNo = Integer.parseInt(invoiceNoStr);
@@ -169,22 +169,22 @@ public class BillingInvoiceAction extends DispatchAction {
 
         // return mapping.findForward(actionResult);
     }
-    
+
     private boolean processPrintPDF(Integer invoiceNo, Locale locale, OutputStream os) {
-        
+
         boolean bResult = false;
-        
-        if (invoiceNo != null){                                    
+
+        if (invoiceNo != null) {
             //Create PDF of the invoice
-            PdfRecordPrinter printer = new PdfRecordPrinter(os);                           
+            PdfRecordPrinter printer = new PdfRecordPrinter(os);
             printer.printBillingInvoice(invoiceNo, locale);
 
             BillingONManager billingManager = (BillingONManager) SpringUtils.getBean(BillingONManager.class);
             billingManager.addPrintedBillingComment(invoiceNo, locale);
-            bResult = true;          
+            bResult = true;
         }
-        
-        return bResult;        
-    }                
+
+        return bResult;
+    }
 
 }

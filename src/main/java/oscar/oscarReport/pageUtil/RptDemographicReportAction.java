@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -25,6 +25,7 @@
 
 
 package oscar.oscarReport.pageUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,16 +46,16 @@ import oscar.oscarReport.data.RptDemographicQueryBuilder;
 import oscar.oscarReport.data.RptDemographicQueryLoader;
 import oscar.oscarReport.data.RptDemographicQuerySaver;
 
-public  class RptDemographicReportAction extends Action {
+public class RptDemographicReportAction extends Action {
 
 
     public ActionForward execute(ActionMapping mapping,
-				 ActionForm form,
-				 HttpServletRequest request,
-				 HttpServletResponse response)
-	throws IOException, ServletException {
-    	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    	
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+            throws IOException, ServletException {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
         MiscUtils.getLogger().debug("RptDemographicReportAction Jackson");
         RptDemographicReportForm frm = (RptDemographicReportForm) form;
         String[] select = frm.getSelect();
@@ -71,61 +72,59 @@ public  class RptDemographicReportAction extends Action {
 //        String lastName         = frm.getLastName();
 //        String sex              = frm.getSex();
 //        String queryName        = frm.getQueryName();
-          String query            = frm.getQuery();
-          
-          MiscUtils.getLogger().debug("query "+query);
+        String query = frm.getQuery();
 
-        if (query.equals("Run Query")){
+        MiscUtils.getLogger().debug("query " + query);
+
+        if (query.equals("Run Query")) {
             MiscUtils.getLogger().debug("run query");
             RptDemographicQueryBuilder demoQ = new RptDemographicQueryBuilder();
             java.util.ArrayList searchedArray = demoQ.buildQuery(loggedInInfo, frm);
-            MiscUtils.getLogger().debug("searchArray size "+searchedArray.size());
-            request.setAttribute("searchedArray",searchedArray);
-            request.setAttribute("selectArray",select);
+            MiscUtils.getLogger().debug("searchArray size " + searchedArray.size());
+            request.setAttribute("searchedArray", searchedArray);
+            request.setAttribute("selectArray", select);
             request.setAttribute("studyId", studyId);
-        }else if( query.equals("Save Query")){
+        } else if (query.equals("Save Query")) {
             RptDemographicQuerySaver demoS = new RptDemographicQuerySaver();
             demoS.saveQuery(frm);
-        }else if (query.equals("Load Query")){
+        } else if (query.equals("Load Query")) {
             RptDemographicQueryLoader demoL = new RptDemographicQueryLoader();
             RptDemographicReportForm dRF = demoL.queryLoader(frm);
-            request.setAttribute("formBean",dRF);
-        }else if( query.equals("Add to Study")) {
-        	RptDemographicQueryBuilder demoQ = new RptDemographicQueryBuilder();
+            request.setAttribute("formBean", dRF);
+        } else if (query.equals("Add to Study")) {
+            RptDemographicQueryBuilder demoQ = new RptDemographicQueryBuilder();
             java.util.ArrayList searchedArray = demoQ.buildQuery(loggedInInfo, frm);
-            request.setAttribute("searchedArray",searchedArray);
+            request.setAttribute("searchedArray", searchedArray);
             MiscUtils.getLogger().info("SELECT ARRAY IS NULL " + String.valueOf(select == null));
             MiscUtils.getLogger().info("STUDY ID IS " + studyId);
-            request.setAttribute("selectArray",select);
+            request.setAttribute("selectArray", select);
             request.setAttribute("studyId", studyId);
             return (mapping.findForward("addToStudy"));
-        } else if (query.equals("Run Query And Save to Patient Set")){
+        } else if (query.equals("Run Query And Save to Patient Set")) {
             MiscUtils.getLogger().debug("run query and save to patient set");
             RptDemographicQueryBuilder demoQ = new RptDemographicQueryBuilder();
             java.util.ArrayList searchedArray = demoQ.buildQuery(loggedInInfo, frm);
-            
-            if(select != null && select.length>0 && select[0].equals("demographic_no")) {
-            	 DemographicSets demoSet = new DemographicSets();
-            	 
 
-            	 List<String> theDemos = new ArrayList<String>();
-            	 for(int x=0;x<searchedArray.size();x++) {
-            		 ArrayList<String> row = (ArrayList<String>)searchedArray.get(x);
-            		 theDemos.add(row.get(0));
-            	 }
-            	demoSet.addDemographicSet(frm.getSetName(),theDemos);
+            if (select != null && select.length > 0 && select[0].equals("demographic_no")) {
+                DemographicSets demoSet = new DemographicSets();
+
+
+                List<String> theDemos = new ArrayList<String>();
+                for (int x = 0; x < searchedArray.size(); x++) {
+                    ArrayList<String> row = (ArrayList<String>) searchedArray.get(x);
+                    theDemos.add(row.get(0));
+                }
+                demoSet.addDemographicSet(frm.getSetName(), theDemos);
             }
-            
-            MiscUtils.getLogger().debug("searchArray size "+searchedArray.size());
-            request.setAttribute("searchedArray",searchedArray);
-            request.setAttribute("selectArray",select);
+
+            MiscUtils.getLogger().debug("searchArray size " + searchedArray.size());
+            request.setAttribute("searchedArray", searchedArray);
+            request.setAttribute("selectArray", select);
             request.setAttribute("studyId", studyId);
         }
 
         return (mapping.findForward("success"));
-  }
-
-
+    }
 
 
 }

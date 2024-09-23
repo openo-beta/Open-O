@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -43,9 +42,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -64,19 +63,19 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "c1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated",
-    "c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi",
-    "c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt",
-    "c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen",
-    "cComments",
-    "cActions",
-    "cByWhom",
-    "cReviewDate"
+        "c1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated",
+        "c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi",
+        "c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt",
+        "c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen",
+        "cComments",
+        "cActions",
+        "cByWhom",
+        "cReviewDate"
 })
 @XmlRootElement(name = "C24__Benefits__Are_you_sure_that_you_are_getting_all_the_money_that_you_are_entitled_to_")
 public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo {
@@ -100,11 +99,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the c1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated() {
         return c1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated;
@@ -112,11 +111,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the c1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated(BigInteger value) {
         this.c1IsThePersonDefinitelyReceivingAllTheBenefitsThatHeOrSheIsEntitledToIfRated = value;
@@ -124,11 +123,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi() {
         return c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi;
@@ -136,11 +135,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi(BigInteger value) {
         this.c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesInObtainingTheFullBenefi = value;
@@ -148,11 +147,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt() {
         return c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt;
@@ -160,11 +159,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt(BigInteger value) {
         this.c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInObtainingTheFullBenefitEnt = value;
@@ -172,11 +171,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen() {
         return c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen;
@@ -184,11 +183,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen(BigInteger value) {
         this.c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInObtainingFullBenefitEntitlemen = value;
@@ -196,11 +195,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the cComments property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link CComments }
-     *     
+     *
      */
     public CComments getCComments() {
         return cComments;
@@ -208,11 +207,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the cComments property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link CComments }
-     *     
+     *
      */
     public void setCComments(CComments value) {
         this.cComments = value;
@@ -220,11 +219,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the cActions property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCActions() {
         return cActions;
@@ -232,11 +231,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the cActions property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCActions(String value) {
         this.cActions = value;
@@ -244,11 +243,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the cByWhom property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCByWhom() {
         return cByWhom;
@@ -256,11 +255,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the cByWhom property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCByWhom(String value) {
         this.cByWhom = value;
@@ -268,11 +267,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Gets the value of the cReviewDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCReviewDate() {
         return cReviewDate;
@@ -280,11 +279,11 @@ public class C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitled
 
     /**
      * Sets the value of the cReviewDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCReviewDate(String value) {
         this.cReviewDate = value;

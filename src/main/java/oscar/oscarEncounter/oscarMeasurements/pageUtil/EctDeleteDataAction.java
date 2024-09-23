@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,40 +49,40 @@ import oscar.util.ParameterActionForward;
 
 public class EctDeleteDataAction extends Action {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_measurement", "d", null)) {
-			throw new SecurityException("missing required security object (_measurement)");
-		}
-		
-		EctDeleteDataForm frm = (EctDeleteDataForm) form;
-		request.getSession().setAttribute("EctDeleteDataForm", frm);
-		String[] deleteCheckbox = frm.getDeleteCheckbox();
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		MeasurementsDeletedDao measurementsDeletedDao = (MeasurementsDeletedDao) SpringUtils.getBean(MeasurementsDeletedDao.class);
-		MeasurementDao measurementDao = SpringUtils.getBean(MeasurementDao.class);
-		if (deleteCheckbox != null) {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_measurement", "d", null)) {
+            throw new SecurityException("missing required security object (_measurement)");
+        }
 
-			MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
-			for (int i = 0; i < deleteCheckbox.length; i++) {
-				MiscUtils.getLogger().debug(deleteCheckbox[i]);
+        EctDeleteDataForm frm = (EctDeleteDataForm) form;
+        request.getSession().setAttribute("EctDeleteDataForm", frm);
+        String[] deleteCheckbox = frm.getDeleteCheckbox();
 
-				Measurement m = dao.find(ConversionUtils.fromIntString(deleteCheckbox[i]));
-				if (m != null) {
-					measurementsDeletedDao.persist(new MeasurementsDeleted(m));
-					measurementDao.remove(Integer.parseInt(deleteCheckbox[i]));
-				}
-			}
-		}
+        MeasurementsDeletedDao measurementsDeletedDao = (MeasurementsDeletedDao) SpringUtils.getBean(MeasurementsDeletedDao.class);
+        MeasurementDao measurementDao = SpringUtils.getBean(MeasurementDao.class);
+        if (deleteCheckbox != null) {
 
-		if (frm.getType() != null) {
-			ParameterActionForward forward = new ParameterActionForward(mapping.findForward("success"));
-			forward.addParameter("type", frm.getType());
-			return forward;
-		}
-		return mapping.findForward("success");
-	}
+            MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
+            for (int i = 0; i < deleteCheckbox.length; i++) {
+                MiscUtils.getLogger().debug(deleteCheckbox[i]);
+
+                Measurement m = dao.find(ConversionUtils.fromIntString(deleteCheckbox[i]));
+                if (m != null) {
+                    measurementsDeletedDao.persist(new MeasurementsDeleted(m));
+                    measurementDao.remove(Integer.parseInt(deleteCheckbox[i]));
+                }
+            }
+        }
+
+        if (frm.getType() != null) {
+            ParameterActionForward forward = new ParameterActionForward(mapping.findForward("success"));
+            forward.addParameter("type", frm.getType());
+            return forward;
+        }
+        return mapping.findForward("success");
+    }
 
 }

@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -30,75 +30,75 @@ import oscar.oscarTickler.TicklerCreator;
 
 public class EyeformSendTicklerAction extends DispatchAction {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
-		
-		String followUp = request.getParameter("followUp");
-		String procedure = request.getParameter("procedure");
-		String diagnostics = request.getParameter("diagnostics");
-		String demographicNo = request.getParameter("demographic_no");
 
-		String customMessage = request.getParameter("message");
-		String toProviderNo = request.getParameter("toProvider");
+        String followUp = request.getParameter("followUp");
+        String procedure = request.getParameter("procedure");
+        String diagnostics = request.getParameter("diagnostics");
+        String demographicNo = request.getParameter("demographic_no");
 
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
-		hashMap.put("demographicNo", demographicNo);
-		hashMap.put("toProviderNo", toProviderNo);
+        String customMessage = request.getParameter("message");
+        String toProviderNo = request.getParameter("toProvider");
 
-		TicklerCreator tc = new TicklerCreator();
-		String message = "";
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("demographicNo", demographicNo);
+        hashMap.put("toProviderNo", toProviderNo);
 
-		if (followUp != null && followUp.trim().length() > 0) {
-			message = "";
-			message += "Book " + request.getParameter("followUp_type");
-			message += " with " + request.getParameter("followUp_doc");
-			message += " in " + request.getParameter("followUp_time") + " " + request.getParameter("followUp_timeType") + ". ";
-			message += "Urgency: " + request.getParameter("followUp_urgency") + "; ";
-			message += "Comment: " + (request.getParameter("followUp_comment") != null && request.getParameter("followUp_comment").trim().length() > 0 ? request.getParameter("followUp_comment") : "(none)");
+        TicklerCreator tc = new TicklerCreator();
+        String message = "";
 
-			hashMap.put("followUp", message);
-			tc.createTickler(loggedInInfo, demographicNo, toProviderNo, message);
-		}
+        if (followUp != null && followUp.trim().length() > 0) {
+            message = "";
+            message += "Book " + request.getParameter("followUp_type");
+            message += " with " + request.getParameter("followUp_doc");
+            message += " in " + request.getParameter("followUp_time") + " " + request.getParameter("followUp_timeType") + ". ";
+            message += "Urgency: " + request.getParameter("followUp_urgency") + "; ";
+            message += "Comment: " + (request.getParameter("followUp_comment") != null && request.getParameter("followUp_comment").trim().length() > 0 ? request.getParameter("followUp_comment") : "(none)");
 
-		if (procedure != null && procedure.trim().length() > 0) {
-			message = "";
-			message += "Book procedure " + request.getParameter("procedure_procedure");
-			message += " for eye " + request.getParameter("procedure_eye");
-			message += " at location: " + request.getParameter("procedure_location") + ". ";
-			message += "Urgency: " + request.getParameter("procedure_urgency") + "; ";
-			message += "Comment: " + (request.getParameter("procedure_comment") != null && request.getParameter("procedure_comment").trim().length() > 0 ? request.getParameter("procedure_comment") : "(none)");
+            hashMap.put("followUp", message);
+            tc.createTickler(loggedInInfo, demographicNo, toProviderNo, message);
+        }
 
-			hashMap.put("procedure", message);
-			tc.createTickler(loggedInInfo, demographicNo, toProviderNo, message);
-		}
+        if (procedure != null && procedure.trim().length() > 0) {
+            message = "";
+            message += "Book procedure " + request.getParameter("procedure_procedure");
+            message += " for eye " + request.getParameter("procedure_eye");
+            message += " at location: " + request.getParameter("procedure_location") + ". ";
+            message += "Urgency: " + request.getParameter("procedure_urgency") + "; ";
+            message += "Comment: " + (request.getParameter("procedure_comment") != null && request.getParameter("procedure_comment").trim().length() > 0 ? request.getParameter("procedure_comment") : "(none)");
 
-		if (diagnostics != null && diagnostics.trim().length() > 0) {
-			message = "";
-			message += "Book diagnostics " + request.getParameter("diagnostics_name");
-			message += " for eye " + request.getParameter("diagnostics_eye") + ". ";
-			message += "Urgency: " + request.getParameter("diagnostics_urgency") + "; ";
-			message += "Comment: " + (request.getParameter("diagnostics_comment") != null && request.getParameter("diagnostics_comment").trim().length() > 0 ? request.getParameter("diagnostics_comment") : "(none)");
+            hashMap.put("procedure", message);
+            tc.createTickler(loggedInInfo, demographicNo, toProviderNo, message);
+        }
 
-			hashMap.put("diagnostics", message);
-			tc.createTickler(loggedInInfo, demographicNo, toProviderNo, message);
-		}
+        if (diagnostics != null && diagnostics.trim().length() > 0) {
+            message = "";
+            message += "Book diagnostics " + request.getParameter("diagnostics_name");
+            message += " for eye " + request.getParameter("diagnostics_eye") + ". ";
+            message += "Urgency: " + request.getParameter("diagnostics_urgency") + "; ";
+            message += "Comment: " + (request.getParameter("diagnostics_comment") != null && request.getParameter("diagnostics_comment").trim().length() > 0 ? request.getParameter("diagnostics_comment") : "(none)");
 
-		if (toProviderNo != null && customMessage != null && customMessage.trim().length() > 0) {
-			tc.createTickler(loggedInInfo, demographicNo, toProviderNo, customMessage);
+            hashMap.put("diagnostics", message);
+            tc.createTickler(loggedInInfo, demographicNo, toProviderNo, message);
+        }
 
-			hashMap.put("custom", customMessage);
-		}
+        if (toProviderNo != null && customMessage != null && customMessage.trim().length() > 0) {
+            tc.createTickler(loggedInInfo, demographicNo, toProviderNo, customMessage);
 
-		JSONObject json = JSONObject.fromObject(hashMap);
-		response.getOutputStream().write(json.toString().getBytes());
+            hashMap.put("custom", customMessage);
+        }
 
-		return null;
-	}
+        JSONObject json = JSONObject.fromObject(hashMap);
+        response.getOutputStream().write(json.toString().getBytes());
+
+        return null;
+    }
 
 }

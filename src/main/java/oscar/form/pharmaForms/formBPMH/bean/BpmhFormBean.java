@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * The Pharmacists Clinic
  * Faculty of Pharmaceutical Sciences
@@ -47,38 +47,38 @@ import org.oscarehr.common.model.DemographicCust;
 import org.oscarehr.common.model.Provider;
 
 /*
- * Author: Dennis Warren 
+ * Author: Dennis Warren
  * Company: Colcamex Resources
  * Date: November 2014
  * For: UBC Pharmacy Clinic and McMaster Department of Family Medicine
  */
 
-@XmlRootElement(name="xml")
+@XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BpmhFormBean extends ActionForm implements Serializable {
-	
-	private final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-	
-	private Date formDate;
-	private Date editDate;
-	private String formId;
-	private boolean confirm;
-	private String note;
-	private String demographicNo;
-	private String familyDrContactId;
-	private String familyDrName;
-	private String familyDrPhone;
-	private String familyDrFax;
-	private String allergiesString;
-	
-	// nested beans
-	private Demographic demographic;
-	private DemographicCust demographicCust;
-	private Provider provider;
-	
-	// lazy collections
-	private List<Allergy> allergies;
-	private List<BpmhDrug> drugs;
+
+    private final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+
+    private Date formDate;
+    private Date editDate;
+    private String formId;
+    private boolean confirm;
+    private String note;
+    private String demographicNo;
+    private String familyDrContactId;
+    private String familyDrName;
+    private String familyDrPhone;
+    private String familyDrFax;
+    private String allergiesString;
+
+    // nested beans
+    private Demographic demographic;
+    private DemographicCust demographicCust;
+    private Provider provider;
+
+    // lazy collections
+    private List<Allergy> allergies;
+    private List<BpmhDrug> drugs;
 
 
 //	@Override
@@ -94,206 +94,206 @@ public class BpmhFormBean extends ActionForm implements Serializable {
 //		return errors;
 //	}
 //	
-	@Override
-	@SuppressWarnings("unchecked")
-	public void reset(ActionMapping mapping, HttpServletRequest request) {
-		super.reset(mapping, request);
-		
-		this.drugs = ListUtils.lazyList(new ArrayList<BpmhDrug>(), new Factory() {
-			public BpmhDrug create() {
-				return new BpmhDrug();
-			}
-		});
-		
-		setConfirm(false);
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        super.reset(mapping, request);
 
-	public String getFormDateFormatted() {
-		String date = "";
-		
-		if(formDate != null) {
-			date = formatter.format(formDate);
-		}
-		
-		return date;
-	}
-	
-	public Date getFormDate() {
-		return this.formDate;
-	}
+        this.drugs = ListUtils.lazyList(new ArrayList<BpmhDrug>(), new Factory() {
+            public BpmhDrug create() {
+                return new BpmhDrug();
+            }
+        });
 
-	public void setFormDate(Date formDate) {
-		this.formDate = formDate;
-	}
-	
-	public String getEditDateFormatted() {
-		String date = "";
-		
-		if(editDate != null) {
-			date = formatter.format(editDate);
-		}
-		
-		return date;
-	}
+        setConfirm(false);
+    }
 
-	public Date getEditDate() {
-		return editDate;
-	}
+    public String getFormDateFormatted() {
+        String date = "";
 
-	public void setEditDate(Date editDate) {
-		this.editDate = editDate;
-	}
+        if (formDate != null) {
+            date = formatter.format(formDate);
+        }
 
-	public String getFormId() {
-		return formId;
-	}
+        return date;
+    }
 
-	public void setFormId(String formId) {
-		this.formId = formId;
-	}
+    public Date getFormDate() {
+        return this.formDate;
+    }
 
-	public boolean isConfirm() {
-		return confirm;
-	}
+    public void setFormDate(Date formDate) {
+        this.formDate = formDate;
+    }
 
-	public void setConfirm(boolean confirm) {
-		this.confirm = confirm;
-	}
+    public String getEditDateFormatted() {
+        String date = "";
 
-	public String getNote() {
-		if(note == null) {
-			return "";
-		}
-		return note;
-	}
+        if (editDate != null) {
+            date = formatter.format(editDate);
+        }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
+        return date;
+    }
 
-	public String getDemographicNo() {
-		if(demographicNo == null) {
-			return "";
-		}
-		return demographicNo;
-	}
+    public Date getEditDate() {
+        return editDate;
+    }
 
-	public void setDemographicNo(String demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public void setEditDate(Date editDate) {
+        this.editDate = editDate;
+    }
 
-	/*
-	 * Contact ID is the row ID found in the DemographicContacts table.
-	 */
-	public String getFamilyDrContactId() {
-		return familyDrContactId;
-	}
+    public String getFormId() {
+        return formId;
+    }
 
-	/*
-	 * Contact ID is the row ID found in the DemographicContacts table.
-	 */
-	public void setFamilyDrContactId(String familyDrContactId) {
-		this.familyDrContactId = familyDrContactId;
-	}
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
 
-	public String getFamilyDrName() {
-		return familyDrName;
-	}
+    public boolean isConfirm() {
+        return confirm;
+    }
 
-	public void setFamilyDrName(String familyDrName) {
-		this.familyDrName = familyDrName;
-	}
+    public void setConfirm(boolean confirm) {
+        this.confirm = confirm;
+    }
 
-	public String getFamilyDrPhone() {
-		return familyDrPhone;
-	}
+    public String getNote() {
+        if (note == null) {
+            return "";
+        }
+        return note;
+    }
 
-	public void setFamilyDrPhone(String familyDrPhone) {
-		this.familyDrPhone = familyDrPhone;
-	}
+    public void setNote(String note) {
+        this.note = note;
+    }
 
-	public String getFamilyDrFax() {
-		return familyDrFax;
-	}
+    public String getDemographicNo() {
+        if (demographicNo == null) {
+            return "";
+        }
+        return demographicNo;
+    }
 
-	public void setFamilyDrFax(String familyDrFax) {
-		this.familyDrFax = familyDrFax;
-	}
+    public void setDemographicNo(String demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public Demographic getDemographic() {
-		return demographic;
-	}
+    /*
+     * Contact ID is the row ID found in the DemographicContacts table.
+     */
+    public String getFamilyDrContactId() {
+        return familyDrContactId;
+    }
 
-	public void setDemographic(Demographic demographic) {
-		this.demographic = demographic;
-	}
+    /*
+     * Contact ID is the row ID found in the DemographicContacts table.
+     */
+    public void setFamilyDrContactId(String familyDrContactId) {
+        this.familyDrContactId = familyDrContactId;
+    }
 
-	public DemographicCust getDemographicCust() {
-		return demographicCust;
-	}
+    public String getFamilyDrName() {
+        return familyDrName;
+    }
 
-	public void setDemographicCust(DemographicCust demographicCust) {
-		this.demographicCust = demographicCust;
-	}
+    public void setFamilyDrName(String familyDrName) {
+        this.familyDrName = familyDrName;
+    }
 
-	public Provider getProvider() {
-		return provider;
-	}
+    public String getFamilyDrPhone() {
+        return familyDrPhone;
+    }
 
-	public void setProvider(Provider provider) {
-		this.provider = provider;
-	}
+    public void setFamilyDrPhone(String familyDrPhone) {
+        this.familyDrPhone = familyDrPhone;
+    }
 
-	public String getAllergiesString() {
-		return allergiesString;
-	}
+    public String getFamilyDrFax() {
+        return familyDrFax;
+    }
 
-	public void setAllergiesString(String allergiesString) {
-		this.allergiesString = allergiesString;
-	}
+    public void setFamilyDrFax(String familyDrFax) {
+        this.familyDrFax = familyDrFax;
+    }
 
-	public List<Allergy> getAllergies() {
-		return allergies;
-	}
+    public Demographic getDemographic() {
+        return demographic;
+    }
 
-	public void setAllergies(List<Allergy> allergies) {
-		this.allergies = allergies;
-		
-		if( this.allergies != null ) {
-			
-			StringBuilder stringBuilder = new StringBuilder("");
-			Allergy allergy;
-			String reaction;
-			// concat description and reaction only.
-			for(int i = 0; i < this.allergies.size(); i++) {
-				allergy = this.allergies.get(i);
-				reaction = allergy.getReaction();
-				
-				stringBuilder.append( (i+1) + ". ");
-				stringBuilder.append( allergy.getDescription() + " ");
-				if(reaction != null) {
-					stringBuilder.append(", RX: " + reaction + " ");
-				}
-			}
-			
-			setAllergiesString( stringBuilder.toString() );
-		}
-	}
-	
-	public BpmhDrug getDrug(int index) {
-		return getDrugs().get(index);
-	}
+    public void setDemographic(Demographic demographic) {
+        this.demographic = demographic;
+    }
 
-	public List<BpmhDrug> getDrugs() {
-		return drugs;
-	}
+    public DemographicCust getDemographicCust() {
+        return demographicCust;
+    }
 
-	public void setDrugs(final List<BpmhDrug> drugs) {
-		this.drugs = drugs;
-	}
+    public void setDemographicCust(DemographicCust demographicCust) {
+        this.demographicCust = demographicCust;
+    }
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public String getAllergiesString() {
+        return allergiesString;
+    }
+
+    public void setAllergiesString(String allergiesString) {
+        this.allergiesString = allergiesString;
+    }
+
+    public List<Allergy> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(List<Allergy> allergies) {
+        this.allergies = allergies;
+
+        if (this.allergies != null) {
+
+            StringBuilder stringBuilder = new StringBuilder("");
+            Allergy allergy;
+            String reaction;
+            // concat description and reaction only.
+            for (int i = 0; i < this.allergies.size(); i++) {
+                allergy = this.allergies.get(i);
+                reaction = allergy.getReaction();
+
+                stringBuilder.append((i + 1) + ". ");
+                stringBuilder.append(allergy.getDescription() + " ");
+                if (reaction != null) {
+                    stringBuilder.append(", RX: " + reaction + " ");
+                }
+            }
+
+            setAllergiesString(stringBuilder.toString());
+        }
+    }
+
+    public BpmhDrug getDrug(int index) {
+        return getDrugs().get(index);
+    }
+
+    public List<BpmhDrug> getDrugs() {
+        return drugs;
+    }
+
+    public void setDrugs(final List<BpmhDrug> drugs) {
+        this.drugs = drugs;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

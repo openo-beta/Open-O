@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -52,293 +51,293 @@ import oscar.OscarProperties;
 
 @Service
 public class WaitListManager {
-	private static final Logger logger = MiscUtils.getLogger();
+    private static final Logger logger = MiscUtils.getLogger();
 
-	private static final String WAIT_LIST_EMAIL_PROPERTIES_FILE = "/wait_list_email.properties";
-	private static final String WAIT_LIST_URGENT_ADMISSION_EMAIL_TEMPLATE_FILE = "/wait_list_immediate_admission_email_template.txt";
-	private static final String WAIT_LIST_A_NEW_APP_TEMPLATE_FILE = "/wait_list_received_a_new_app_template.txt";
-	private static final String WAIT_LIST_DAILY_ADMISSION_EMAIL_TEMPLATE_FILE = "/wait_list_daily_admission_email_notification_template.txt";
-	private static final String WAIT_LIST_VACANCY_EMAIL_TEMPLATE_FILE = "/wait_list_immediate_vacancy_email_template.txt";
+    private static final String WAIT_LIST_EMAIL_PROPERTIES_FILE = "/wait_list_email.properties";
+    private static final String WAIT_LIST_URGENT_ADMISSION_EMAIL_TEMPLATE_FILE = "/wait_list_immediate_admission_email_template.txt";
+    private static final String WAIT_LIST_A_NEW_APP_TEMPLATE_FILE = "/wait_list_received_a_new_app_template.txt";
+    private static final String WAIT_LIST_DAILY_ADMISSION_EMAIL_TEMPLATE_FILE = "/wait_list_daily_admission_email_notification_template.txt";
+    private static final String WAIT_LIST_VACANCY_EMAIL_TEMPLATE_FILE = "/wait_list_immediate_vacancy_email_template.txt";
 
-	protected static Properties waitListProperties = getWaitListProperties();
-	private static boolean enableEmailNotifications=Boolean.parseBoolean(OscarProperties.getInstance().getProperty("enable_wait_list_email_notifications"));
-	private static long waitListNotificationPeriod=Long.parseLong(OscarProperties.getInstance().getProperty("wait_list_email_notification_period"));
+    protected static Properties waitListProperties = getWaitListProperties();
+    private static boolean enableEmailNotifications = Boolean.parseBoolean(OscarProperties.getInstance().getProperty("enable_wait_list_email_notifications"));
+    private static long waitListNotificationPeriod = Long.parseLong(OscarProperties.getInstance().getProperty("wait_list_email_notification_period"));
 
-	@Autowired
-	private ProgramDao programDao;
+    @Autowired
+    private ProgramDao programDao;
 
-	@Autowired
-	private AdmissionDao admissionDao;
+    @Autowired
+    private AdmissionDao admissionDao;
 
-	@Autowired
-	private DemographicDao demographicDao;
+    @Autowired
+    private DemographicDao demographicDao;
 
-	
-	public static class AdmissionDemographicPair {
-		private Admission admission;
-		private Demographic demographic;
 
-		public Admission getAdmission() {
-			return admission;
-		}
+    public static class AdmissionDemographicPair {
+        private Admission admission;
+        private Demographic demographic;
 
-		public void setAdmission(Admission admission) {
-			this.admission = admission;
-		}
+        public Admission getAdmission() {
+            return admission;
+        }
 
-		public Demographic getDemographic() {
-			return demographic;
-		}
+        public void setAdmission(Admission admission) {
+            this.admission = admission;
+        }
 
-		public void setDemographic(Demographic demographic) {
-			this.demographic = demographic;
-		}
-	}
+        public Demographic getDemographic() {
+            return demographic;
+        }
 
-	private static Properties getWaitListProperties() {
-		Properties p = new Properties();
+        public void setDemographic(Demographic demographic) {
+            this.demographic = demographic;
+        }
+    }
 
-		try {
-			InputStream is = null;
-			try {
-				is = WaitListManager.class.getResourceAsStream(WAIT_LIST_EMAIL_PROPERTIES_FILE);
-				p.load(is);
-			} finally {
-				if (is != null) is.close();
-			}
-		} catch (Exception e) {
-			logger.error("Error reading properties file : " + WAIT_LIST_EMAIL_PROPERTIES_FILE, e);
-		}
-		return (p);
-	}
+    private static Properties getWaitListProperties() {
+        Properties p = new Properties();
 
-	/*
-	 * This method is deprecated as it relies on WaitListManager's sendAdmissionNotification method.
-	 * For more details, please refer to the sendAdmissionNotification method.
-	 * 
-	 * This method will send an email immediately. The expectation is that 
-	 * when an urgent admission / referral is made, that code should call
-	 * this method immediately.
-	 */
-	@Deprecated
-	public void sendImmediateAdmissionNotification(Program program, Demographic demographic, Admission admission, String notes) throws IOException {
-		throw new UnsupportedOperationException("This method is no longer supported.");
-		// if (!enableEmailNotifications) return;
-		
-		// InputStream is = null;
-		// String emailTemplate = null;
-		// try {
-		// 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_URGENT_ADMISSION_EMAIL_TEMPLATE_FILE);
-		// 	emailTemplate = IOUtils.toString(is);
-		// } finally {
-		// 	if (is != null) is.close();
-		// }
+        try {
+            InputStream is = null;
+            try {
+                is = WaitListManager.class.getResourceAsStream(WAIT_LIST_EMAIL_PROPERTIES_FILE);
+                p.load(is);
+            } finally {
+                if (is != null) is.close();
+            }
+        } catch (Exception e) {
+            logger.error("Error reading properties file : " + WAIT_LIST_EMAIL_PROPERTIES_FILE, e);
+        }
+        return (p);
+    }
 
-		// String emailSubject = waitListProperties.getProperty("immediate_admission_subject");
+    /*
+     * This method is deprecated as it relies on WaitListManager's sendAdmissionNotification method.
+     * For more details, please refer to the sendAdmissionNotification method.
+     *
+     * This method will send an email immediately. The expectation is that
+     * when an urgent admission / referral is made, that code should call
+     * this method immediately.
+     */
+    @Deprecated
+    public void sendImmediateAdmissionNotification(Program program, Demographic demographic, Admission admission, String notes) throws IOException {
+        throw new UnsupportedOperationException("This method is no longer supported.");
+        // if (!enableEmailNotifications) return;
 
-		// ArrayList<AdmissionDemographicPair> admissionDemographicPairs = new ArrayList<AdmissionDemographicPair>();
-		// AdmissionDemographicPair admissionDemographicPair = new AdmissionDemographicPair();
-		// admissionDemographicPair.setAdmission(admission);
-		// admissionDemographicPair.setDemographic(demographic);
-		// admissionDemographicPairs.add(admissionDemographicPair);
+        // InputStream is = null;
+        // String emailTemplate = null;
+        // try {
+        // 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_URGENT_ADMISSION_EMAIL_TEMPLATE_FILE);
+        // 	emailTemplate = IOUtils.toString(is);
+        // } finally {
+        // 	if (is != null) is.close();
+        // }
 
-		// sendAdmissionNotification(emailSubject, emailTemplate, program, notes, null, null, admissionDemographicPairs);
-	}
-	
-	/*
-    * This method is deprecated because EmailUtilOld.java has been removed.
-    * Currently, a new email feature (EmailManager.java) is in production.
-    * 
-    * TODO: Once the new emailing feature is fully implemented, refactor and update this method to make it compatible with the latest email handling in EmailManager.java.
-    */
-	@Deprecated
-	public void sendProxyEformNotification(Program program, String app_ctx_path, String fid) throws IOException {
-		throw new UnsupportedOperationException("This method is no longer supported.");
-		// if (!enableEmailNotifications) return;
-		
-		// InputStream is = null;
-		// String emailTemplate = null;
-		// try {
-		// 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_A_NEW_APP_TEMPLATE_FILE);
-		// 	emailTemplate = IOUtils.toString(is);
-		// } finally {
-		// 	if (is != null) is.close();
-		// }
+        // String emailSubject = waitListProperties.getProperty("immediate_admission_subject");
 
-		// String emailSubject = waitListProperties.getProperty("proxy_eform_notification_subject");
+        // ArrayList<AdmissionDemographicPair> admissionDemographicPairs = new ArrayList<AdmissionDemographicPair>();
+        // AdmissionDemographicPair admissionDemographicPair = new AdmissionDemographicPair();
+        // admissionDemographicPair.setAdmission(admission);
+        // admissionDemographicPair.setDemographic(demographic);
+        // admissionDemographicPairs.add(admissionDemographicPair);
 
-		// String temp = StringUtils.trimToNull(program.getEmailNotificationAddressesCsv());
-		// if (temp != null) {
-		// 	String fromAddress = waitListProperties.getProperty("from_address");
-		// 	VelocityContext velocityContext = VelocityUtils.createVelocityContextWithTools();
-		// 	if (null != app_ctx_path) velocityContext.put("app_ctx_path", app_ctx_path);
-		// 	if (null != fid) velocityContext.put("fid", fid);
+        // sendAdmissionNotification(emailSubject, emailTemplate, program, notes, null, null, admissionDemographicPairs);
+    }
 
-		// 	String mergedSubject = VelocityUtils.velocityEvaluate(velocityContext, emailSubject);
-		// 	String mergedBody = VelocityUtils.velocityEvaluate(velocityContext, emailTemplate);
+    /*
+     * This method is deprecated because EmailUtilOld.java has been removed.
+     * Currently, a new email feature (EmailManager.java) is in production.
+     *
+     * TODO: Once the new emailing feature is fully implemented, refactor and update this method to make it compatible with the latest email handling in EmailManager.java.
+     */
+    @Deprecated
+    public void sendProxyEformNotification(Program program, String app_ctx_path, String fid) throws IOException {
+        throw new UnsupportedOperationException("This method is no longer supported.");
+        // if (!enableEmailNotifications) return;
 
-		// 	String[] splitEmailAddresses = temp.split(",");
-		// 	for (String emailAddress : splitEmailAddresses) {
-		// 		try {
-		// 			EmailUtilsOld.sendEmail(emailAddress, emailAddress, fromAddress, fromAddress, mergedSubject, mergedBody, null);
-		// 		} catch (EmailException e) {
-		// 			logger.error("Unexpected error.", e);
-		// 			throw new EmailException(e.toString());
-		// 		}
-		// 	}
-		// }
-	}
+        // InputStream is = null;
+        // String emailTemplate = null;
+        // try {
+        // 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_A_NEW_APP_TEMPLATE_FILE);
+        // 	emailTemplate = IOUtils.toString(is);
+        // } finally {
+        // 	if (is != null) is.close();
+        // }
 
-	/*
-	 * This method is deprecated as it relies on WaitListManager's sendAdmissionNotification method.
-	 * For more details, please refer to the sendAdmissionNotification method.
-	 * 
-	 * This method will check the given program for admissions/referrals 
-	 * in the last "day". It will then send an email if any admission/referrals 
-	 * have been made in that timeframe.
-	 * 
-	 * The expectation is that a background thread will call this method, not
-	 * end-user-actions.
-	 */
-	@Deprecated
-	public void checkAndSendAdmissionIntervalNotification(Program program) throws IOException {
-		throw new UnsupportedOperationException("This method is no longer supported.");
-		// if (!enableEmailNotifications) return;
+        // String emailSubject = waitListProperties.getProperty("proxy_eform_notification_subject");
 
-		// InputStream is = null;
-		// String emailTemplate = null;
-		// try {
-		// 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_DAILY_ADMISSION_EMAIL_TEMPLATE_FILE);
-		// 	emailTemplate = IOUtils.toString(is);
-		// } finally {
-		// 	if (is != null) is.close();
-		// }
-		
-		// String emailSubject = waitListProperties.getProperty("daily_admission_subject");
+        // String temp = StringUtils.trimToNull(program.getEmailNotificationAddressesCsv());
+        // if (temp != null) {
+        // 	String fromAddress = waitListProperties.getProperty("from_address");
+        // 	VelocityContext velocityContext = VelocityUtils.createVelocityContextWithTools();
+        // 	if (null != app_ctx_path) velocityContext.put("app_ctx_path", app_ctx_path);
+        // 	if (null != fid) velocityContext.put("fid", fid);
 
-		// // check if we need to run, might already have been run
-		// Date lastNotificationDate = program.getLastReferralNotification();
-		// // if first run, set default to a few days ago and let it sort itself out.
-		// if (lastNotificationDate == null) lastNotificationDate = new Date(System.currentTimeMillis() - (DateUtils.MILLIS_PER_DAY * 4));
-		// Date today = new Date();
-		// if (DateUtils.isSameDay(lastNotificationDate, today) || lastNotificationDate.after(today)) return;
+        // 	String mergedSubject = VelocityUtils.velocityEvaluate(velocityContext, emailSubject);
+        // 	String mergedBody = VelocityUtils.velocityEvaluate(velocityContext, emailTemplate);
 
-		// // get a list of the admissions between since last notification date.
-		// // send a notification for those admissions
-		// // update last notification date
-		// Date endDate = new Date(lastNotificationDate.getTime() + waitListNotificationPeriod);
-		// List<Admission> admissions = admissionDao.getAdmissionsByProgramAndAdmittedDate(program.getId(), lastNotificationDate, endDate);
-		// logger.debug("For programId=" + program.getId() + ", " + lastNotificationDate + " to " + endDate + ", admission count=" + admissions.size());
+        // 	String[] splitEmailAddresses = temp.split(",");
+        // 	for (String emailAddress : splitEmailAddresses) {
+        // 		try {
+        // 			EmailUtilsOld.sendEmail(emailAddress, emailAddress, fromAddress, fromAddress, mergedSubject, mergedBody, null);
+        // 		} catch (EmailException e) {
+        // 			logger.error("Unexpected error.", e);
+        // 			throw new EmailException(e.toString());
+        // 		}
+        // 	}
+        // }
+    }
 
-		// ArrayList<AdmissionDemographicPair> admissionDemographicPairs = new ArrayList<AdmissionDemographicPair>();
-		// for (Admission admission : admissions) {
-		// 	AdmissionDemographicPair admissionDemographicPair = new AdmissionDemographicPair();
-		// 	admissionDemographicPair.setAdmission(admission);
-		// 	admissionDemographicPair.setDemographic(demographicDao.getDemographicById(admission.getClientId()));
-		// 	admissionDemographicPairs.add(admissionDemographicPair);
-		// }
+    /*
+     * This method is deprecated as it relies on WaitListManager's sendAdmissionNotification method.
+     * For more details, please refer to the sendAdmissionNotification method.
+     *
+     * This method will check the given program for admissions/referrals
+     * in the last "day". It will then send an email if any admission/referrals
+     * have been made in that timeframe.
+     *
+     * The expectation is that a background thread will call this method, not
+     * end-user-actions.
+     */
+    @Deprecated
+    public void checkAndSendAdmissionIntervalNotification(Program program) throws IOException {
+        throw new UnsupportedOperationException("This method is no longer supported.");
+        // if (!enableEmailNotifications) return;
 
-		// sendAdmissionNotification(emailSubject, emailTemplate, program, null, lastNotificationDate, endDate, admissionDemographicPairs);
-		// program.setLastReferralNotification(endDate);
-		// programDao.saveProgram(program);
-	}
+        // InputStream is = null;
+        // String emailTemplate = null;
+        // try {
+        // 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_DAILY_ADMISSION_EMAIL_TEMPLATE_FILE);
+        // 	emailTemplate = IOUtils.toString(is);
+        // } finally {
+        // 	if (is != null) is.close();
+        // }
 
-	/*
-    * This method is deprecated because EmailUtilOld.java has been removed.
-    * Currently, a new email feature (EmailManager.java) is in production.
-    * 
-    * TODO: Once the new emailing feature is fully implemented, refactor and update this method to make it compatible with the latest email handling in EmailManager.java.
-    */
-	@Deprecated
-	private void sendAdmissionNotification(String emailSubject, String emailTemplate, Program program, String notes, Date startDate, Date endDate, ArrayList<AdmissionDemographicPair> admissionDemographicPairs) {
-		throw new UnsupportedOperationException("This method is no longer supported.");
-		// String temp = StringUtils.trimToNull(program.getEmailNotificationAddressesCsv());
-		// if (temp != null) {
-		// 	String fromAddress = waitListProperties.getProperty("from_address");
+        // String emailSubject = waitListProperties.getProperty("daily_admission_subject");
 
-		// 	VelocityContext velocityContext = getAdmissionVelocityContext(program, notes, startDate, endDate, admissionDemographicPairs);
+        // // check if we need to run, might already have been run
+        // Date lastNotificationDate = program.getLastReferralNotification();
+        // // if first run, set default to a few days ago and let it sort itself out.
+        // if (lastNotificationDate == null) lastNotificationDate = new Date(System.currentTimeMillis() - (DateUtils.MILLIS_PER_DAY * 4));
+        // Date today = new Date();
+        // if (DateUtils.isSameDay(lastNotificationDate, today) || lastNotificationDate.after(today)) return;
 
-		// 	String mergedSubject = VelocityUtils.velocityEvaluate(velocityContext, emailSubject);
-		// 	String mergedBody = VelocityUtils.velocityEvaluate(velocityContext, emailTemplate);
+        // // get a list of the admissions between since last notification date.
+        // // send a notification for those admissions
+        // // update last notification date
+        // Date endDate = new Date(lastNotificationDate.getTime() + waitListNotificationPeriod);
+        // List<Admission> admissions = admissionDao.getAdmissionsByProgramAndAdmittedDate(program.getId(), lastNotificationDate, endDate);
+        // logger.debug("For programId=" + program.getId() + ", " + lastNotificationDate + " to " + endDate + ", admission count=" + admissions.size());
 
-		// 	String[] splitEmailAddresses = temp.split(",");
-		// 	for (String emailAddress : splitEmailAddresses) {
-		// 		try {
-		// 			EmailUtilsOld.sendEmail(emailAddress, emailAddress, fromAddress, fromAddress, mergedSubject, mergedBody, null);
-		// 		} catch (EmailException e) {
-		// 			logger.error("Unexpected error.", e);
-		// 		}
-		// 	}
-		// }
-	}
+        // ArrayList<AdmissionDemographicPair> admissionDemographicPairs = new ArrayList<AdmissionDemographicPair>();
+        // for (Admission admission : admissions) {
+        // 	AdmissionDemographicPair admissionDemographicPair = new AdmissionDemographicPair();
+        // 	admissionDemographicPair.setAdmission(admission);
+        // 	admissionDemographicPair.setDemographic(demographicDao.getDemographicById(admission.getClientId()));
+        // 	admissionDemographicPairs.add(admissionDemographicPair);
+        // }
 
-	protected static VelocityContext getAdmissionVelocityContext(Program program, String notes, Date startDate, Date endDate, ArrayList<AdmissionDemographicPair> admissionDemographicPairs) {
-		VelocityContext velocityContext = VelocityUtils.createVelocityContextWithTools();
-		velocityContext.put("program", program);
-		velocityContext.put("admissionDemographicPairs", admissionDemographicPairs);
-		if (notes != null) velocityContext.put("notes", notes);
-		if (startDate != null) velocityContext.put("startDate", startDate);
-		if (endDate != null) velocityContext.put("endDate", endDate);
-		return velocityContext;
-	}
+        // sendAdmissionNotification(emailSubject, emailTemplate, program, null, lastNotificationDate, endDate, admissionDemographicPairs);
+        // program.setLastReferralNotification(endDate);
+        // programDao.saveProgram(program);
+    }
 
-	protected static VelocityContext getVacancyVelocityContext(Vacancy vacancy,  String notes, Date date) {
-		VelocityContext velocityContext = VelocityUtils.createVelocityContextWithTools();
-		velocityContext.put("vacancy", vacancy);
-		if (notes != null) velocityContext.put("notes", notes);
-		if (date != null) velocityContext.put("date", date);
-		return velocityContext;
-	}
+    /*
+     * This method is deprecated because EmailUtilOld.java has been removed.
+     * Currently, a new email feature (EmailManager.java) is in production.
+     *
+     * TODO: Once the new emailing feature is fully implemented, refactor and update this method to make it compatible with the latest email handling in EmailManager.java.
+     */
+    @Deprecated
+    private void sendAdmissionNotification(String emailSubject, String emailTemplate, Program program, String notes, Date startDate, Date endDate, ArrayList<AdmissionDemographicPair> admissionDemographicPairs) {
+        throw new UnsupportedOperationException("This method is no longer supported.");
+        // String temp = StringUtils.trimToNull(program.getEmailNotificationAddressesCsv());
+        // if (temp != null) {
+        // 	String fromAddress = waitListProperties.getProperty("from_address");
 
-	/*
-	* This method is deprecated as it relies on WaitListManager's sendVacancyNotification method.
-	* For more details, please refer to the sendVacancyNotification method.
-	*/
-	@Deprecated
-	public void sendImmediateVacancyNotification(Vacancy vacancy, String notes) throws IOException {
-		throw new UnsupportedOperationException("This method is no longer supported.");
-		// if (!enableEmailNotifications) return;
-		
-		// InputStream is = null;
-		// String emailTemplate = null;
-		// try {
-		// 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_VACANCY_EMAIL_TEMPLATE_FILE);
-		// 	emailTemplate = IOUtils.toString(is);
-		// } finally {
-		// 	if (is != null) is.close();
-		// }
+        // 	VelocityContext velocityContext = getAdmissionVelocityContext(program, notes, startDate, endDate, admissionDemographicPairs);
 
-		// String emailSubject = waitListProperties.getProperty("vacancy_change_subject");
+        // 	String mergedSubject = VelocityUtils.velocityEvaluate(velocityContext, emailSubject);
+        // 	String mergedBody = VelocityUtils.velocityEvaluate(velocityContext, emailTemplate);
 
-		// sendVacancyNotification(emailSubject, emailTemplate, vacancy, notes, new Date());
-	}
+        // 	String[] splitEmailAddresses = temp.split(",");
+        // 	for (String emailAddress : splitEmailAddresses) {
+        // 		try {
+        // 			EmailUtilsOld.sendEmail(emailAddress, emailAddress, fromAddress, fromAddress, mergedSubject, mergedBody, null);
+        // 		} catch (EmailException e) {
+        // 			logger.error("Unexpected error.", e);
+        // 		}
+        // 	}
+        // }
+    }
 
-	/*
-    * This method is deprecated because EmailUtilOld.java has been removed.
-    * Currently, a new email feature (EmailManager.java) is in production.
-    * 
-    * TODO: Once the new emailing feature is fully implemented, refactor and update this method to make it compatible with the latest email handling in EmailManager.java.
-    */
-	@Deprecated
-	private void sendVacancyNotification(String emailSubject, String emailTemplate, Vacancy vacancy, String notes, Date date) {
-		throw new UnsupportedOperationException("This method is no longer supported.");
-		// String temp = StringUtils.trimToNull(vacancy.getEmailNotificationAddressesCsv());
-		// if (temp != null) {
-		// 	String fromAddress = waitListProperties.getProperty("from_address");
+    protected static VelocityContext getAdmissionVelocityContext(Program program, String notes, Date startDate, Date endDate, ArrayList<AdmissionDemographicPair> admissionDemographicPairs) {
+        VelocityContext velocityContext = VelocityUtils.createVelocityContextWithTools();
+        velocityContext.put("program", program);
+        velocityContext.put("admissionDemographicPairs", admissionDemographicPairs);
+        if (notes != null) velocityContext.put("notes", notes);
+        if (startDate != null) velocityContext.put("startDate", startDate);
+        if (endDate != null) velocityContext.put("endDate", endDate);
+        return velocityContext;
+    }
 
-		// 	VelocityContext velocityContext = getVacancyVelocityContext(vacancy, notes, date);
+    protected static VelocityContext getVacancyVelocityContext(Vacancy vacancy, String notes, Date date) {
+        VelocityContext velocityContext = VelocityUtils.createVelocityContextWithTools();
+        velocityContext.put("vacancy", vacancy);
+        if (notes != null) velocityContext.put("notes", notes);
+        if (date != null) velocityContext.put("date", date);
+        return velocityContext;
+    }
 
-		// 	String mergedSubject = VelocityUtils.velocityEvaluate(velocityContext, emailSubject);
-		// 	String mergedBody = VelocityUtils.velocityEvaluate(velocityContext, emailTemplate);
+    /*
+     * This method is deprecated as it relies on WaitListManager's sendVacancyNotification method.
+     * For more details, please refer to the sendVacancyNotification method.
+     */
+    @Deprecated
+    public void sendImmediateVacancyNotification(Vacancy vacancy, String notes) throws IOException {
+        throw new UnsupportedOperationException("This method is no longer supported.");
+        // if (!enableEmailNotifications) return;
 
-		// 	String[] splitEmailAddresses = temp.split(",");
-		// 	for (String emailAddress : splitEmailAddresses) {
-		// 		try {
-		// 			EmailUtilsOld.sendEmail(emailAddress, emailAddress, fromAddress, fromAddress, mergedSubject, mergedBody, null);
-		// 		} catch (EmailException e) {
-		// 			logger.error("Unexpected error.", e);
-		// 		}
-		// 	}
-		// }
-	}
+        // InputStream is = null;
+        // String emailTemplate = null;
+        // try {
+        // 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_VACANCY_EMAIL_TEMPLATE_FILE);
+        // 	emailTemplate = IOUtils.toString(is);
+        // } finally {
+        // 	if (is != null) is.close();
+        // }
+
+        // String emailSubject = waitListProperties.getProperty("vacancy_change_subject");
+
+        // sendVacancyNotification(emailSubject, emailTemplate, vacancy, notes, new Date());
+    }
+
+    /*
+     * This method is deprecated because EmailUtilOld.java has been removed.
+     * Currently, a new email feature (EmailManager.java) is in production.
+     *
+     * TODO: Once the new emailing feature is fully implemented, refactor and update this method to make it compatible with the latest email handling in EmailManager.java.
+     */
+    @Deprecated
+    private void sendVacancyNotification(String emailSubject, String emailTemplate, Vacancy vacancy, String notes, Date date) {
+        throw new UnsupportedOperationException("This method is no longer supported.");
+        // String temp = StringUtils.trimToNull(vacancy.getEmailNotificationAddressesCsv());
+        // if (temp != null) {
+        // 	String fromAddress = waitListProperties.getProperty("from_address");
+
+        // 	VelocityContext velocityContext = getVacancyVelocityContext(vacancy, notes, date);
+
+        // 	String mergedSubject = VelocityUtils.velocityEvaluate(velocityContext, emailSubject);
+        // 	String mergedBody = VelocityUtils.velocityEvaluate(velocityContext, emailTemplate);
+
+        // 	String[] splitEmailAddresses = temp.split(",");
+        // 	for (String emailAddress : splitEmailAddresses) {
+        // 		try {
+        // 			EmailUtilsOld.sendEmail(emailAddress, emailAddress, fromAddress, fromAddress, mergedSubject, mergedBody, null);
+        // 		} catch (EmailException e) {
+        // 			logger.error("Unexpected error.", e);
+        // 		}
+        // 	}
+        // }
+    }
 }

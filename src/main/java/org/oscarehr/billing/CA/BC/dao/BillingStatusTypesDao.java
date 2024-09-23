@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,26 +36,26 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BillingStatusTypesDao extends AbstractDaoImpl<BillingStatusTypes> {
 
-	protected BillingStatusTypesDao() {
-	    super(BillingStatusTypes.class);
+    protected BillingStatusTypesDao() {
+        super(BillingStatusTypes.class);
     }
 
     @SuppressWarnings("unchecked")
-	public List<BillingStatusTypes> findAll() {
-		Query query = entityManager.createQuery("SELECT x FROM " + modelClass.getSimpleName() + " x");
-		List<BillingStatusTypes> results = query.getResultList();
-		return results;
-	}
-    
-	@SuppressWarnings("unchecked")
+    public List<BillingStatusTypes> findAll() {
+        Query query = entityManager.createQuery("SELECT x FROM " + modelClass.getSimpleName() + " x");
+        List<BillingStatusTypes> results = query.getResultList();
+        return results;
+    }
+
+    @SuppressWarnings("unchecked")
     public List<BillingStatusTypes> findByCodes(List<String> codes) {
-	    Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " bst WHERE bst.id IN (:typeCodes)");
-		List<Character> characterCodes = new ArrayList<>();
-		for (String code : codes) {
-			characterCodes.add(code.charAt(0));
-		}
-	    query.setParameter("typeCodes", characterCodes);
-	    return query.getResultList(); 
+        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " bst WHERE bst.id IN (:typeCodes)");
+        List<Character> characterCodes = new ArrayList<>();
+        for (String code : codes) {
+            characterCodes.add(code.charAt(0));
+        }
+        query.setParameter("typeCodes", characterCodes);
+        return query.getResultList();
     }
 
 }

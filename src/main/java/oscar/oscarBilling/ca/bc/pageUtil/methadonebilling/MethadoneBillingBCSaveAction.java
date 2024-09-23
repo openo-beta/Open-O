@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,13 +47,14 @@ import org.apache.struts.action.ActionMessages;
  * @Filename MethadoneBillingBCSaveAction.java
  * @Comment Copy Right OSCARprn by Treatment
  */
-public class MethadoneBillingBCSaveAction extends Action{
+public class MethadoneBillingBCSaveAction extends Action {
 
-	public MethadoneBillingBCSaveAction(){}
+    public MethadoneBillingBCSaveAction() {
+    }
 
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws ServletException, IOException {
 
         if (request.getSession().getAttribute("user") == null) {
             return (mapping.findForward("Logout"));
@@ -64,28 +65,28 @@ public class MethadoneBillingBCSaveAction extends Action{
         MethadoneBillingBCFormBean methadoneBillingBCFormBean = (MethadoneBillingBCFormBean) form;
         MethadoneBillingBCHandler methadoneBillingHandler = new MethadoneBillingBCHandler(methadoneBillingBCFormBean);
 
-    	ActionMessages messages = new ActionMessages();
+        ActionMessages messages = new ActionMessages();
 
 
-    	if (methadoneBillingBCFormBean.getServiceDate() == null || methadoneBillingBCFormBean.getServiceDate().length() == 0) {
-    		messages.add("serviceDate", new ActionMessage("quickBillingBC.blankServiceDate"));
-    		this.addErrors(request, messages);
+        if (methadoneBillingBCFormBean.getServiceDate() == null || methadoneBillingBCFormBean.getServiceDate().length() == 0) {
+            messages.add("serviceDate", new ActionMessage("quickBillingBC.blankServiceDate"));
+            this.addErrors(request, messages);
 
-    		return mapping.findForward("error");
-    	}
+            return mapping.findForward("error");
+        }
 
-        if(methadoneBillingHandler.saveBills(billAccountStatus)) {
+        if (methadoneBillingHandler.saveBills(billAccountStatus)) {
 
-        	methadoneBillingHandler.reset();
-        	request.setAttribute("saved", methadoneBillingHandler.getNumberSaved());
-			return mapping.findForward("saved");
+            methadoneBillingHandler.reset();
+            request.setAttribute("saved", methadoneBillingHandler.getNumberSaved());
+            return mapping.findForward("saved");
 
         } else {
-        	messages.add("bills", new ActionMessage("Can't save bills"));
-        	this.addErrors(request, messages);
+            messages.add("bills", new ActionMessage("Can't save bills"));
+            this.addErrors(request, messages);
 
-        	request.setAttribute("saved", new Boolean(false));
-        	return mapping.findForward("error");
+            request.setAttribute("saved", new Boolean(false));
+            return mapping.findForward("error");
 
         }
 

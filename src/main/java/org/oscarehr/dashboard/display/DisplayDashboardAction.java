@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -45,58 +45,58 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayDashboardAction extends DispatchAction {
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	private static DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
-	private ProviderManager2 providerManager = SpringUtils.getBean( ProviderManager2.class );
-	private static Logger logger = MiscUtils.getLogger();
-	
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) {
-		return null;
-	}
-	
-	@SuppressWarnings("unused")
-	public ActionForward getDashboard(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) {
-		
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		
-		if( ! securityInfoManager.hasPrivilege(loggedInInfo, "_dashboardDisplay", SecurityInfoManager.READ, null ) ) {	
-			return mapping.findForward("unauthorized");
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private static DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
+    private ProviderManager2 providerManager = SpringUtils.getBean(ProviderManager2.class);
+    private static Logger logger = MiscUtils.getLogger();
+
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form,
+                                     HttpServletRequest request, HttpServletResponse response) {
+        return null;
+    }
+
+    @SuppressWarnings("unused")
+    public ActionForward getDashboard(ActionMapping mapping, ActionForm form,
+                                      HttpServletRequest request, HttpServletResponse response) {
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_dashboardDisplay", SecurityInfoManager.READ, null)) {
+            return mapping.findForward("unauthorized");
         }
         Boolean canChgDashboardUser = false;
-		if( securityInfoManager.hasPrivilege(loggedInInfo, "_dashboardChgUser", SecurityInfoManager.READ, null ) ) {
-			canChgDashboardUser = true;
-		}
+        if (securityInfoManager.hasPrivilege(loggedInInfo, "_dashboardChgUser", SecurityInfoManager.READ, null)) {
+            canChgDashboardUser = true;
+        }
 
-		String dashboardId = request.getParameter("dashboardId");
-		int id = 0;
-		if( dashboardId != null && ! dashboardId.isEmpty() ) {
-			id = Integer.parseInt( dashboardId );
-		}
-		
-		Provider preferredProvider = loggedInInfo.getLoggedInProvider();
-		List<Provider> providers = new ArrayList<Provider>();
+        String dashboardId = request.getParameter("dashboardId");
+        int id = 0;
+        if (dashboardId != null && !dashboardId.isEmpty()) {
+            id = Integer.parseInt(dashboardId);
+        }
 
-		if (canChgDashboardUser) {
-			String requestedProviderNo = request.getParameter("providerNo");
-			if (requestedProviderNo != null && !requestedProviderNo.isEmpty()) {
-				logger.info("DashboardDisplay of provider_no " + requestedProviderNo + " requested by provider_no " + loggedInInfo.getLoggedInProviderNo());
-				preferredProvider = providerManager.getProvider(loggedInInfo, requestedProviderNo);
-				dashboardManager.setRequestedProviderNo(loggedInInfo, requestedProviderNo);
-			} else if (dashboardManager.getRequestedProviderNo(loggedInInfo) != null) {
-				preferredProvider = providerManager.getProvider(loggedInInfo, dashboardManager.getRequestedProviderNo(loggedInInfo));
-			}
-			providers = providerManager.getProviders(loggedInInfo, Boolean.TRUE);
-		}
+        Provider preferredProvider = loggedInInfo.getLoggedInProvider();
+        List<Provider> providers = new ArrayList<Provider>();
 
-		request.setAttribute("preferredProvider", preferredProvider);
-		request.setAttribute("providers", providers);
+        if (canChgDashboardUser) {
+            String requestedProviderNo = request.getParameter("providerNo");
+            if (requestedProviderNo != null && !requestedProviderNo.isEmpty()) {
+                logger.info("DashboardDisplay of provider_no " + requestedProviderNo + " requested by provider_no " + loggedInInfo.getLoggedInProviderNo());
+                preferredProvider = providerManager.getProvider(loggedInInfo, requestedProviderNo);
+                dashboardManager.setRequestedProviderNo(loggedInInfo, requestedProviderNo);
+            } else if (dashboardManager.getRequestedProviderNo(loggedInInfo) != null) {
+                preferredProvider = providerManager.getProvider(loggedInInfo, dashboardManager.getRequestedProviderNo(loggedInInfo));
+            }
+            providers = providerManager.getProviders(loggedInInfo, Boolean.TRUE);
+        }
 
-		DashboardBean dashboard = dashboardManager.getDashboard(loggedInInfo, id);
+        request.setAttribute("preferredProvider", preferredProvider);
+        request.setAttribute("providers", providers);
 
-		request.setAttribute("dashboard", dashboard);
+        DashboardBean dashboard = dashboardManager.getDashboard(loggedInInfo, id);
 
-		return mapping.findForward("success");
-	}
+        request.setAttribute("dashboard", dashboard);
+
+        return mapping.findForward("success");
+    }
 }

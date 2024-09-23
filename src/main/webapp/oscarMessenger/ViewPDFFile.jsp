@@ -25,38 +25,38 @@
 --%>
 
 <%@ page
-	import="oscar.oscarMessenger.docxfer.send.*, oscar.oscarMessenger.docxfer.util.*, oscar.util.*"%>
-<%@ page import="java.util.*, org.w3c.dom.*"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+        import="oscar.oscarMessenger.docxfer.send.*, oscar.oscarMessenger.docxfer.util.*, oscar.util.*" %>
+<%@ page import="java.util.*, org.w3c.dom.*" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-	  boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_msg");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
 <logic:notPresent name="msgSessionBean" scope="session">
-	<logic:redirect href="index.jsp" />
+    <logic:redirect href="index.jsp"/>
 </logic:notPresent>
 <logic:present name="msgSessionBean" scope="session">
-	<bean:define id="bean"
-		type="oscar.oscarMessenger.pageUtil.MsgSessionBean"
-		name="msgSessionBean" scope="session" />
-	<logic:equal name="bean" property="valid" value="false">
-		<logic:redirect href="index.jsp" />
-	</logic:equal>
+    <bean:define id="bean"
+                 type="oscar.oscarMessenger.pageUtil.MsgSessionBean"
+                 name="msgSessionBean" scope="session"/>
+    <logic:equal name="bean" property="valid" value="false">
+        <logic:redirect href="index.jsp"/>
+    </logic:equal>
 </logic:present>
 <%
     String pdfAttch = (String) request.getAttribute("PDFAttachment");
-    String id  = request.getParameter("id");    
+    String id = request.getParameter("id");
 %>

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -28,10 +28,10 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.context.ApplicationEvent;
 
-public class AppointmentCreatedEvent extends ApplicationEvent{
-	Logger logger = MiscUtils.getLogger();
-	
-	/**
+public class AppointmentCreatedEvent extends ApplicationEvent {
+    Logger logger = MiscUtils.getLogger();
+
+    /**
      * The ID of the appointment whose status has changed.
      */
     private final String appointment_no;
@@ -39,16 +39,16 @@ public class AppointmentCreatedEvent extends ApplicationEvent{
      * The ID of the provider who has the appointment.
      */
     private final String provider_no;
-	
-	public AppointmentCreatedEvent(Object source,String appointment_no, String provider_no) {
-		super(source);
-		this.appointment_no = appointment_no;
+
+    public AppointmentCreatedEvent(Object source, String appointment_no, String provider_no) {
+        super(source);
+        this.appointment_no = appointment_no;
         this.provider_no = provider_no;
     }
-   
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -77,13 +77,13 @@ public class AppointmentCreatedEvent extends ApplicationEvent{
         } else if (!this.provider_no.equals(other.provider_no)) {
             return false;
         }
-        
+
         return true;
     }
 
     /**
      * Returns the ID of the appointment whose status has changed.
-     * 
+     *
      * @return The current ID of the appointment whose status has changed.
      */
     public final String getAppointment_no() {
@@ -92,17 +92,17 @@ public class AppointmentCreatedEvent extends ApplicationEvent{
 
     /**
      * Returns the ID of the provider who has the appointment.
-     * 
+     *
      * @return The current ID of the provider who has the appointment.
      */
     public final String getProvider_no() {
         return this.provider_no;
     }
 
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -111,7 +111,7 @@ public class AppointmentCreatedEvent extends ApplicationEvent{
         int result = 1;
         result = (prime * result)
                 + ((this.appointment_no == null) ? 0 : this.appointment_no
-                        .hashCode());
+                .hashCode());
         result = (prime * result)
                 + ((this.provider_no == null) ? 0 : this.provider_no.hashCode());
         return result;
@@ -119,7 +119,7 @@ public class AppointmentCreatedEvent extends ApplicationEvent{
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -127,10 +127,6 @@ public class AppointmentCreatedEvent extends ApplicationEvent{
         return "AppointmentChangeEvent [appointment_no=" + this.appointment_no
                 + ", provider_no=" + this.provider_no + "]";
     }
-	
-	
-	
-	
-	
-	
+
+
 }

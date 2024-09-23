@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -11,7 +11,7 @@
 /*
  * HL7Handler
  * Upload handler
- * 
+ *
  */
 package oscar.oscarLab.ca.all.upload.handlers;
 
@@ -32,65 +32,66 @@ import oscar.oscarLab.ca.all.upload.RouteReportResults;
 import oscar.oscarLab.ca.all.util.Utilities;
 
 /**
- * 
+ *
  */
 public class OLISHL7Handler implements MessageHandler {
 
-	Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao)SpringUtils.getBean(Hl7TextInfoDao.class);
-	
-	private int lastSegmentId = 0;
-	
-	public OLISHL7Handler() {
-		logger.info("NEW OLISHL7Handler UPLOAD HANDLER instance just instantiated. ");
-	}
+    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
-	public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
-		return parse(loggedInInfo, serviceName,fileName,fileId, false);
-	}
-	public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, boolean routeToCurrentProvider) {		
-		int i = 0;
-		String lastTimeStampAccessed = null;
-		RouteReportResults results = new RouteReportResults();
-		
-				try {
-			ArrayList<String> messages = Utilities.separateMessages(fileName);
-			
-			for (i = 0; i < messages.size(); i++) {
-				String msg = messages.get(i);
-				logger.info(msg);
-				
-				lastTimeStampAccessed = getLastUpdateInOLIS(msg) ;
-				
-				if(OLISUtils.isDuplicate(loggedInInfo, msg)) {
-					LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), "OLIS","DUPLICATE", fileName , null);
-					continue; 
-				}
-				MessageUploader.routeReport(loggedInInfo, serviceName,"OLIS_HL7", msg.replace("\\E\\", "\\SLASHHACK\\").replace("µ", "\\MUHACK\\").replace("\\H\\", "\\.H\\").replace("\\N\\", "\\.N\\"), fileId, results);
-				if (routeToCurrentProvider) {
-					ProviderLabRouting routing = new ProviderLabRouting();
-					routing.route(results.segmentId, loggedInInfo.getLoggedInProviderNo(), DbConnectionFilter.getThreadLocalDbConnection(), "HL7");
-					
-				}
-				this.lastSegmentId = results.segmentId;
-			}
-			logger.info("Parsed OK");
-		} catch (Exception e) {
-			MessageUploader.clean(fileId);
-			logger.error("Could not upload message", e);
-			return null;
-		}
-		return lastTimeStampAccessed;
-	}
-	
-	public int getLastSegmentId() {
-		return this.lastSegmentId;
-	}
-	//TODO: check HIN
-	//TODO: check # of results
-	
-	private String getLastUpdateInOLIS(String msg) {
-		oscar.oscarLab.ca.all.parsers.OLISHL7Handler h = (oscar.oscarLab.ca.all.parsers.OLISHL7Handler) Factory.getHandler("OLIS_HL7", msg);
-		return h.getLastUpdateInOLISUnformated();	
-	}
+    private int lastSegmentId = 0;
+
+    public OLISHL7Handler() {
+        logger.info("NEW OLISHL7Handler UPLOAD HANDLER instance just instantiated. ");
+    }
+
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
+        return parse(loggedInInfo, serviceName, fileName, fileId, false);
+    }
+
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, boolean routeToCurrentProvider) {
+        int i = 0;
+        String lastTimeStampAccessed = null;
+        RouteReportResults results = new RouteReportResults();
+
+        try {
+            ArrayList<String> messages = Utilities.separateMessages(fileName);
+
+            for (i = 0; i < messages.size(); i++) {
+                String msg = messages.get(i);
+                logger.info(msg);
+
+                lastTimeStampAccessed = getLastUpdateInOLIS(msg);
+
+                if (OLISUtils.isDuplicate(loggedInInfo, msg)) {
+                    LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), "OLIS", "DUPLICATE", fileName, null);
+                    continue;
+                }
+                MessageUploader.routeReport(loggedInInfo, serviceName, "OLIS_HL7", msg.replace("\\E\\", "\\SLASHHACK\\").replace("µ", "\\MUHACK\\").replace("\\H\\", "\\.H\\").replace("\\N\\", "\\.N\\"), fileId, results);
+                if (routeToCurrentProvider) {
+                    ProviderLabRouting routing = new ProviderLabRouting();
+                    routing.route(results.segmentId, loggedInInfo.getLoggedInProviderNo(), DbConnectionFilter.getThreadLocalDbConnection(), "HL7");
+
+                }
+                this.lastSegmentId = results.segmentId;
+            }
+            logger.info("Parsed OK");
+        } catch (Exception e) {
+            MessageUploader.clean(fileId);
+            logger.error("Could not upload message", e);
+            return null;
+        }
+        return lastTimeStampAccessed;
+    }
+
+    public int getLastSegmentId() {
+        return this.lastSegmentId;
+    }
+    //TODO: check HIN
+    //TODO: check # of results
+
+    private String getLastUpdateInOLIS(String msg) {
+        oscar.oscarLab.ca.all.parsers.OLISHL7Handler h = (oscar.oscarLab.ca.all.parsers.OLISHL7Handler) Factory.getHandler("OLIS_HL7", msg);
+        return h.getLastUpdateInOLISUnformated();
+    }
 }

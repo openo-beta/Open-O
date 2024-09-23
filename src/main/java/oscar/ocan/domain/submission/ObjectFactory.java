@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -53,7 +52,7 @@ import javax.xml.namespace.QName;
  * type definitions, element declarations and model 
  * groups.  Factory methods for each of these are 
  * provided in this class.
- * 
+ *
  */
 @XmlRegistry
 public class ObjectFactory {
@@ -112,14 +111,14 @@ public class ObjectFactory {
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: oscar.ocan.domain.submission
-     * 
+     *
      */
     public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link OrganizationRecord }
-     * 
+     *
      */
     public OrganizationRecord createOrganizationRecord() {
         return new OrganizationRecord();
@@ -127,7 +126,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DrinkAlcohol }
-     * 
+     *
      */
     public DrinkAlcohol createDrinkAlcohol() {
         return new DrinkAlcohol();
@@ -135,7 +134,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link MISFunction }
-     * 
+     *
      */
     public MISFunction createMISFunction() {
         return new MISFunction();
@@ -143,7 +142,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link OtherPractitionerContact }
-     * 
+     *
      */
     public OtherPractitionerContact createOtherPractitionerContact() {
         return new OtherPractitionerContact();
@@ -151,7 +150,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DrugUse }
-     * 
+     *
      */
     public DrugUse createDrugUse() {
         return new DrugUse();
@@ -159,7 +158,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link OtherAgencyContact }
-     * 
+     *
      */
     public OtherAgencyContact createOtherAgencyContact() {
         return new OtherAgencyContact();
@@ -167,7 +166,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientName }
-     * 
+     *
      */
     public ClientName createClientName() {
         return new ClientName();
@@ -175,7 +174,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ReasonForAssessment }
-     * 
+     *
      */
     public ReasonForAssessment createReasonForAssessment() {
         return new ReasonForAssessment();
@@ -183,7 +182,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientCapacity }
-     * 
+     *
      */
     public ClientCapacity createClientCapacity() {
         return new ClientCapacity();
@@ -191,7 +190,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link InformalHelpRecvd }
-     * 
+     *
      */
     public InformalHelpRecvd createInformalHelpRecvd() {
         return new InformalHelpRecvd();
@@ -199,7 +198,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link AdditionalElements }
-     * 
+     *
      */
     public AdditionalElements createAdditionalElements() {
         return new AdditionalElements();
@@ -207,7 +206,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link NeedRating }
-     * 
+     *
      */
     public NeedRating createNeedRating() {
         return new NeedRating();
@@ -215,7 +214,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link OCANDomains }
-     * 
+     *
      */
     public OCANDomains createOCANDomains() {
         return new OCANDomains();
@@ -223,7 +222,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RiskUnemploymentList }
-     * 
+     *
      */
     public RiskUnemploymentList createRiskUnemploymentList() {
         return new RiskUnemploymentList();
@@ -231,7 +230,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DiagnosticList }
-     * 
+     *
      */
     public DiagnosticList createDiagnosticList() {
         return new DiagnosticList();
@@ -239,7 +238,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PsychiatristContact }
-     * 
+     *
      */
     public PsychiatristContact createPsychiatristContact() {
         return new PsychiatristContact();
@@ -247,7 +246,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link FormalHelpRecvd }
-     * 
+     *
      */
     public FormalHelpRecvd createFormalHelpRecvd() {
         return new FormalHelpRecvd();
@@ -255,7 +254,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientOHIP }
-     * 
+     *
      */
     public ClientOHIP createClientOHIP() {
         return new ClientOHIP();
@@ -263,7 +262,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ReferralList }
-     * 
+     *
      */
     public ReferralList createReferralList() {
         return new ReferralList();
@@ -271,7 +270,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link LegalStatusList }
-     * 
+     *
      */
     public LegalStatusList createLegalStatusList() {
         return new LegalStatusList();
@@ -279,7 +278,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link MedicationList }
-     * 
+     *
      */
     public MedicationList createMedicationList() {
         return new MedicationList();
@@ -287,7 +286,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ServiceOrg }
-     * 
+     *
      */
     public ServiceOrg createServiceOrg() {
         return new ServiceOrg();
@@ -295,7 +294,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DiscrimExpList }
-     * 
+     *
      */
     public DiscrimExpList createDiscrimExpList() {
         return new DiscrimExpList();
@@ -303,7 +302,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link OCANSubmissionFile }
-     * 
+     *
      */
     public OCANSubmissionFile createOCANSubmissionFile() {
         return new OCANSubmissionFile();
@@ -311,7 +310,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link FormalHelpNeed }
-     * 
+     *
      */
     public FormalHelpNeed createFormalHelpNeed() {
         return new FormalHelpNeed();
@@ -319,7 +318,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PresentingIssueList }
-     * 
+     *
      */
     public PresentingIssueList createPresentingIssueList() {
         return new PresentingIssueList();
@@ -327,7 +326,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SafetyToSelfRiskList }
-     * 
+     *
      */
     public SafetyToSelfRiskList createSafetyToSelfRiskList() {
         return new SafetyToSelfRiskList();
@@ -335,7 +334,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DoctorContact }
-     * 
+     *
      */
     public DoctorContact createDoctorContact() {
         return new DoctorContact();
@@ -343,7 +342,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Referral }
-     * 
+     *
      */
     public Referral createReferral() {
         return new Referral();
@@ -351,7 +350,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DrugUseList }
-     * 
+     *
      */
     public DrugUseList createDrugUseList() {
         return new DrugUseList();
@@ -359,7 +358,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ActionList }
-     * 
+     *
      */
     public ActionList createActionList() {
         return new ActionList();
@@ -367,7 +366,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Action }
-     * 
+     *
      */
     public Action createAction() {
         return new Action();
@@ -375,7 +374,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientID }
-     * 
+     *
      */
     public ClientID createClientID() {
         return new ClientID();
@@ -383,7 +382,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Domain }
-     * 
+     *
      */
     public Domain createDomain() {
         return new Domain();
@@ -391,7 +390,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ConcernAreaList }
-     * 
+     *
      */
     public ConcernAreaList createConcernAreaList() {
         return new ConcernAreaList();
@@ -399,7 +398,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ImmigExpList }
-     * 
+     *
      */
     public ImmigExpList createImmigExpList() {
         return new ImmigExpList();
@@ -407,7 +406,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientRecord }
-     * 
+     *
      */
     public ClientRecord createClientRecord() {
         return new ClientRecord();
@@ -415,7 +414,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PresentingIssue }
-     * 
+     *
      */
     public PresentingIssue createPresentingIssue() {
         return new PresentingIssue();
@@ -423,7 +422,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link MedicalConditionList }
-     * 
+     *
      */
     public MedicalConditionList createMedicalConditionList() {
         return new MedicalConditionList();
@@ -431,7 +430,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Program }
-     * 
+     *
      */
     public Program createProgram() {
         return new Program();
@@ -439,7 +438,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link OCANSubmissionRecord }
-     * 
+     *
      */
     public OCANSubmissionRecord createOCANSubmissionRecord() {
         return new OCANSubmissionRecord();
@@ -447,7 +446,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SideEffectsDetailList }
-     * 
+     *
      */
     public SideEffectsDetailList createSideEffectsDetailList() {
         return new SideEffectsDetailList();
@@ -455,7 +454,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link AddictionTypeList }
-     * 
+     *
      */
     public AddictionTypeList createAddictionTypeList() {
         return new AddictionTypeList();
@@ -463,7 +462,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SymptomList }
-     * 
+     *
      */
     public SymptomList createSymptomList() {
         return new SymptomList();
@@ -471,7 +470,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link TimeLivedInCanada }
-     * 
+     *
      */
     public TimeLivedInCanada createTimeLivedInCanada() {
         return new TimeLivedInCanada();
@@ -479,7 +478,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link MedicationDetail }
-     * 
+     *
      */
     public MedicationDetail createMedicationDetail() {
         return new MedicationDetail();
@@ -487,7 +486,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientContact }
-     * 
+     *
      */
     public ClientContact createClientContact() {
         return new ClientContact();
@@ -495,7 +494,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientAddress }
-     * 
+     *
      */
     public ClientAddress createClientAddress() {
         return new ClientAddress();
@@ -503,7 +502,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link OtherIllnessList }
-     * 
+     *
      */
     public OtherIllnessList createOtherIllnessList() {
         return new OtherIllnessList();
@@ -511,7 +510,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "serviceDeliveryLHIN")
     public JAXBElement<Integer> createServiceDeliveryLHIN(Integer value) {
@@ -520,7 +519,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "otherIllness")
     public JAXBElement<String> createOtherIllness(String value) {
@@ -529,7 +528,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "concernArea")
     public JAXBElement<String> createConcernArea(String value) {
@@ -538,7 +537,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "stageOfChangeAlcohol")
     public JAXBElement<String> createStageOfChangeAlcohol(String value) {
@@ -547,7 +546,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "employStatus")
     public JAXBElement<String> createEmployStatus(String value) {
@@ -556,7 +555,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "safetyToSelfRisk")
     public JAXBElement<String> createSafetyToSelfRisk(String value) {
@@ -565,7 +564,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "suicideThoughts")
     public JAXBElement<String> createSuicideThoughts(String value) {
@@ -574,7 +573,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "sourceOfIncome")
     public JAXBElement<String> createSourceOfIncome(String value) {
@@ -583,7 +582,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "serviceRecipientLHIN")
     public JAXBElement<Integer> createServiceRecipientLHIN(Integer value) {
@@ -592,7 +591,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "livingArrangementType")
     public JAXBElement<String> createLivingArrangementType(String value) {
@@ -601,7 +600,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientHopesForFuture")
     public JAXBElement<String> createClientHopesForFuture(String value) {
@@ -610,7 +609,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "legalStatus")
     public JAXBElement<String> createLegalStatus(String value) {
@@ -619,7 +618,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "gender")
     public JAXBElement<String> createGender(String value) {
@@ -628,7 +627,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "addictionType")
     public JAXBElement<String> createAddictionType(String value) {
@@ -637,7 +636,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "residenceType")
     public JAXBElement<String> createResidenceType(String value) {
@@ -646,7 +645,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "diagnostic")
     public JAXBElement<String> createDiagnostic(String value) {
@@ -655,7 +654,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "changedSocialPatterns")
     public JAXBElement<String> createChangedSocialPatterns(String value) {
@@ -664,7 +663,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "residenceSupport")
     public JAXBElement<String> createResidenceSupport(String value) {
@@ -673,7 +672,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "legalIssues")
     public JAXBElement<String> createLegalIssues(String value) {
@@ -682,7 +681,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "aboriginalOrigin")
     public JAXBElement<String> createAboriginalOrigin(String value) {
@@ -691,7 +690,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link BigInteger }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "totalHospitalDays")
     public JAXBElement<BigInteger> createTotalHospitalDays(BigInteger value) {
@@ -700,7 +699,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientNeedToGetThere")
     public JAXBElement<String> createClientNeedToGetThere(String value) {
@@ -709,7 +708,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "exitDisposition")
     public JAXBElement<String> createExitDisposition(String value) {
@@ -718,7 +717,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "communityTreatOrder")
     public JAXBElement<String> createCommunityTreatOrder(String value) {
@@ -727,7 +726,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "serviceRecipientLocation")
     public JAXBElement<String> createServiceRecipientLocation(String value) {
@@ -736,7 +735,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "symptom")
     public JAXBElement<String> createSymptom(String value) {
@@ -745,7 +744,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "stageOfChangeDrugs")
     public JAXBElement<String> createStageOfChangeDrugs(String value) {
@@ -754,7 +753,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientViewMentalHealth")
     public JAXBElement<String> createClientViewMentalHealth(String value) {
@@ -763,7 +762,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "sideEffectsDetail")
     public JAXBElement<String> createSideEffectsDetail(String value) {
@@ -772,7 +771,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientPhone")
     public JAXBElement<String> createClientPhone(String value) {
@@ -781,7 +780,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "maritalStatus")
     public JAXBElement<String> createMaritalStatus(String value) {
@@ -790,7 +789,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "medicalCondition")
     public JAXBElement<String> createMedicalCondition(String value) {
@@ -799,7 +798,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "dailyLivingAffected")
     public JAXBElement<String> createDailyLivingAffected(String value) {
@@ -808,7 +807,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientSpiritualityImportance")
     public JAXBElement<String> createClientSpiritualityImportance(String value) {
@@ -817,7 +816,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "referralSource")
     public JAXBElement<String> createReferralSource(String value) {
@@ -826,7 +825,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link BigInteger }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "totalAdmissions")
     public JAXBElement<BigInteger> createTotalAdmissions(BigInteger value) {
@@ -835,7 +834,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "citizenshipStatus")
     public JAXBElement<String> createCitizenshipStatus(String value) {
@@ -844,7 +843,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "physicalHealthConcern")
     public JAXBElement<String> createPhysicalHealthConcern(String value) {
@@ -853,7 +852,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "sideEffects")
     public JAXBElement<String> createSideEffects(String value) {
@@ -862,7 +861,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "suicideAttempt")
     public JAXBElement<String> createSuicideAttempt(String value) {
@@ -871,7 +870,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "highestEducationLevel")
     public JAXBElement<String> createHighestEducationLevel(String value) {
@@ -880,7 +879,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "serviceLang")
     public JAXBElement<String> createServiceLang(String value) {
@@ -889,7 +888,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "stageOfChangeAddictions")
     public JAXBElement<String> createStageOfChangeAddictions(String value) {
@@ -898,7 +897,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "educationProgramStatus")
     public JAXBElement<String> createEducationProgramStatus(String value) {
@@ -907,7 +906,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientCulture")
     public JAXBElement<String> createClientCulture(String value) {
@@ -916,7 +915,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientDOB")
     public JAXBElement<XMLGregorianCalendar> createClientDOB(XMLGregorianCalendar value) {
@@ -925,7 +924,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "hospitalizedPastTwoYears")
     public JAXBElement<String> createHospitalizedPastTwoYears(String value) {
@@ -934,7 +933,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "clientCultureHeritageImportance")
     public JAXBElement<String> createClientCultureHeritageImportance(String value) {
@@ -943,7 +942,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "riskUnemployment")
     public JAXBElement<String> createRiskUnemployment(String value) {
@@ -952,7 +951,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "prefLang")
     public JAXBElement<String> createPrefLang(String value) {
@@ -961,7 +960,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "", name = "safetyConcernSelf")
     public JAXBElement<String> createSafetyConcernSelf(String value) {

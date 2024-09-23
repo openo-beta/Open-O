@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,137 +41,136 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table(name="Consent")
+@Table(name = "Consent")
 public class Consent extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
-	
-	@Column(name = "demographic_no")
-	private Integer demographicNo;
-	
-	@Column(name = "consent_type_id")
-	private Integer consentTypeId;
-	
-	private boolean explicit;
-	
-	// NOTE: primitive types (ie: boolean) are often used for a very good reason. 
-	// Please avoid changing any types to non-primitive (ie: Boolean). 
-	private boolean optout;
-	
-	@Column(name = "last_entered_by")
-	private String lastEnteredBy;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "consent_date")
-	private Date consentDate;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "optout_date")
-	private Date optoutDate;
-	
-	@Temporal( TemporalType.TIMESTAMP )
-	@Column(name = "edit_date")
-	private Date editDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
-	private boolean deleted;
-	
-	@OneToOne(optional=true)
-    @JoinColumn(name = "consent_type_id", referencedColumnName="id", insertable=false, updatable=false) 
+    @Column(name = "demographic_no")
+    private Integer demographicNo;
+
+    @Column(name = "consent_type_id")
+    private Integer consentTypeId;
+
+    private boolean explicit;
+
+    // NOTE: primitive types (ie: boolean) are often used for a very good reason.
+    // Please avoid changing any types to non-primitive (ie: Boolean).
+    private boolean optout;
+
+    @Column(name = "last_entered_by")
+    private String lastEnteredBy;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "consent_date")
+    private Date consentDate;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "optout_date")
+    private Date optoutDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "edit_date")
+    private Date editDate;
+
+    private boolean deleted;
+
+    @OneToOne(optional = true)
+    @JoinColumn(name = "consent_type_id", referencedColumnName = "id", insertable = false, updatable = false)
     private ConsentType consentType;
-	
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    @Override
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	public Integer getConsentTypeId() {
-		return consentTypeId;
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public void setConsentTypeId(Integer consentTypeId) {
-		this.consentTypeId = consentTypeId;
-	}
+    public Integer getConsentTypeId() {
+        return consentTypeId;
+    }
 
-	public boolean isExplicit() {
-		return explicit;
-	}
+    public void setConsentTypeId(Integer consentTypeId) {
+        this.consentTypeId = consentTypeId;
+    }
 
-	public void setExplicit(boolean explicit) {
-		this.explicit = explicit;
-	}
+    public boolean isExplicit() {
+        return explicit;
+    }
 
-	public boolean isOptout()
-	{
-		return optout;
-	}
+    public void setExplicit(boolean explicit) {
+        this.explicit = explicit;
+    }
 
-	public String getLastEnteredBy() {
-		return lastEnteredBy;
-	}
+    public boolean isOptout() {
+        return optout;
+    }
 
-	public void setLastEnteredBy(String lastEnteredBy) {
-		this.lastEnteredBy = lastEnteredBy;
-	}
+    public String getLastEnteredBy() {
+        return lastEnteredBy;
+    }
 
-	public void setOptout(boolean optout) {
-		this.optout = optout;
-	}
+    public void setLastEnteredBy(String lastEnteredBy) {
+        this.lastEnteredBy = lastEnteredBy;
+    }
 
-	public Date getConsentDate() {
-		return consentDate;
-	}
+    public void setOptout(boolean optout) {
+        this.optout = optout;
+    }
 
-	public void setConsentDate(Date consentDate) {
-		this.consentDate = consentDate;
-	}
+    public Date getConsentDate() {
+        return consentDate;
+    }
 
-	public Date getOptoutDate() {
-		return optoutDate;
-	}
+    public void setConsentDate(Date consentDate) {
+        this.consentDate = consentDate;
+    }
 
-	public void setOptoutDate(Date optoutDate) {
-		this.optoutDate = optoutDate;
-	}
+    public Date getOptoutDate() {
+        return optoutDate;
+    }
 
-	public ConsentType getConsentType() {		
-		return consentType;
-	}
+    public void setOptoutDate(Date optoutDate) {
+        this.optoutDate = optoutDate;
+    }
 
-	public void setConsentType(ConsentType consentType) {
-		setConsentTypeId( consentType.getId() );
-		this.consentType = consentType;
-	}
+    public ConsentType getConsentType() {
+        return consentType;
+    }
 
-	public Date getEditDate() {
-		return editDate;
-	}
+    public void setConsentType(ConsentType consentType) {
+        setConsentTypeId(consentType.getId());
+        this.consentType = consentType;
+    }
 
-	public void setEditDate(Date editDate) {
-		this.editDate = editDate;
-	}
+    public Date getEditDate() {
+        return editDate;
+    }
 
-	public boolean isDeleted() {
-		return deleted;
-	}
+    public void setEditDate(Date editDate) {
+        this.editDate = editDate;
+    }
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-	@Transient
-	public boolean getPatientConsented() {
-		return ( ! isDeleted() && ! isOptout() );
-	}
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @Transient
+    public boolean getPatientConsented() {
+        return (!isDeleted() && !isOptout());
+    }
 
 }

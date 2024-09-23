@@ -24,68 +24,67 @@
 
 --%>
 
-<%@ page language="java"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ page import="oscar.oscarProvider.data.*"%>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO"%>
-<%@ page import="org.oscarehr.common.model.UserProperty"%>
-<%@ page import="org.oscarehr.util.SpringUtils"%>
+<%@ page language="java" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ page import="oscar.oscarProvider.data.*" %>
+<%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
+<%@ page import="org.oscarehr.common.model.UserProperty" %>
+<%@ page import="org.oscarehr.util.SpringUtils" %>
 
 <%
-  if(session.getValue("user") == null) response.sendRedirect("../logout.htm");
-  String curUser_no = (String) session.getAttribute("user");
+    if (session.getValue("user") == null) response.sendRedirect("../logout.htm");
+    String curUser_no = (String) session.getAttribute("user");
 %>
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-<html:base />
-<link rel="stylesheet" type="text/css"
-	href="../oscarEncounter/encounterStyles.css">
+        <html:base/>
+        <link rel="stylesheet" type="text/css"
+              href="../oscarEncounter/encounterStyles.css">
 
-<title><bean:message key="provider.editRxPhone.title" /></title>
+        <title><bean:message key="provider.editRxPhone.title"/></title>
 
-<script type="text/javascript">
-    function validate() {       
-        var msg = "<bean:message key="provider.editRxFax.msgPhoneFormat" />";
-        var strnum = document.forms[0].elements[0].value;
-		if(strnum.length > 0) {        
-	        if( !strnum.match(/^\d{3}-\d{3}-\d{4}$/) ) {
-	            alert(msg);
-	            return false;
-	        }
-		}
-                    
-        return true;        
-    }
-</script>
+        <script type="text/javascript">
+            function validate() {
+                var msg = "<bean:message key="provider.editRxFax.msgPhoneFormat" />";
+                var strnum = document.forms[0].elements[0].value;
+                if (strnum.length > 0) {
+                    if (!strnum.match(/^\d{3}-\d{3}-\d{4}$/)) {
+                        alert(msg);
+                        return false;
+                    }
+                }
 
-</head>
-
-<body class="BodyStyle" vlink="#0000FF">
-
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn"><bean:message
-			key="provider.editRxFax.msgPrefs" /></td>
-		<td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-			key="provider.editRxPhone.msgProviderPhoneNumber" /></td>
-	</tr>
-	<tr>
-		<td class="MainTableLeftColumn">&nbsp;</td>
-		<td class="MainTableRightColumn">
-		<%
-			UserPropertyDAO propertyDao = (UserPropertyDAO)SpringUtils.getBean(UserPropertyDAO.class);
-			UserProperty prop = propertyDao.getProp(curUser_no,"rxPhone");			
-			String phoneNum = "";
-            if(prop!=null) {
-            	phoneNum = prop.getValue();
+                return true;
             }
-               if( request.getAttribute("status") == null )
-               {
-      
-            %> <html:form action="/EditPhoneNum.do">
+        </script>
+
+    </head>
+
+    <body class="BodyStyle" vlink="#0000FF">
+
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn"><bean:message
+                    key="provider.editRxFax.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
+                    key="provider.editRxPhone.msgProviderPhoneNumber"/></td>
+        </tr>
+        <tr>
+            <td class="MainTableLeftColumn">&nbsp;</td>
+            <td class="MainTableRightColumn">
+                <%
+                    UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
+                    UserProperty prop = propertyDao.getProp(curUser_no, "rxPhone");
+                    String phoneNum = "";
+                    if (prop != null) {
+                        phoneNum = prop.getValue();
+                    }
+                    if (request.getAttribute("status") == null) {
+
+                %> <html:form action="/EditPhoneNum.do">
 
 			
 			<span style="color:blue">By entering in a value, you will 
@@ -95,27 +94,26 @@
 			</li>
 			</ul>
 			</span>
-            <br/>
-            
-            
-			<html:text property="faxNumber" value="<%=phoneNum%>" size="40" />
-			<br>
+                <br/>
 
-			<input type="submit" onclick="return validate();"
-				value="<bean:message key="provider.editRxFax.btnSubmit"/>" />
-		</html:form> <%
-               }
-               else if( ((String)request.getAttribute("status")).equals("complete") ) {
-            %> <bean:message key="provider.editRxPhone.msgSuccess" /> <br>
-		<%=phoneNum%> <%
-               }
+
+                <html:text property="faxNumber" value="<%=phoneNum%>" size="40"/>
+                <br>
+
+                <input type="submit" onclick="return validate();"
+                       value="<bean:message key="provider.editRxFax.btnSubmit"/>"/>
+            </html:form> <%
+            } else if (((String) request.getAttribute("status")).equals("complete")) {
+            %> <bean:message key="provider.editRxPhone.msgSuccess"/> <br>
+                <%=phoneNum%> <%
+                }
             %>
-		</td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</body>
+            </td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
+    </body>
 </html:html>

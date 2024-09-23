@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -53,282 +53,281 @@ import oscar.util.StringUtils;
 
 public class EyeformUtilAction extends DispatchAction {
 
-	private TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	
-	public ActionForward getProviders(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
-		List<Provider> activeProviders = providerDao.getActiveProviders();
-
-		HashMap<String, List<Provider>> hashMap = new HashMap<String, List<Provider>>();
-		hashMap.put("providers", activeProviders);
-
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
-
-		return null;
-	}
+    private TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
 
-	public ActionForward getTickler(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_tickler", "r", null)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+    public ActionForward getProviders(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+        List<Provider> activeProviders = providerDao.getActiveProviders();
+
+        HashMap<String, List<Provider>> hashMap = new HashMap<String, List<Provider>>();
+        hashMap.put("providers", activeProviders);
+
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
+
+        return null;
+    }
+
+
+    public ActionForward getTickler(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_tickler", "r", null)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
-		
-		Tickler t = ticklerManager.getTickler(loggedInInfo,Integer.parseInt(request.getParameter("tickler_no")));
 
-		HashMap<String, HashMap<String, Object>> hashMap = new HashMap<String, HashMap<String, Object>>();
-		HashMap<String, Object> ticklerMap = new HashMap<String, Object>();
+        Tickler t = ticklerManager.getTickler(loggedInInfo, Integer.parseInt(request.getParameter("tickler_no")));
 
-		ticklerMap.put("message", t.getMessage());
-		ticklerMap.put("updateDate", t.getUpdateDate());
-		ticklerMap.put("provider", t.getProvider().getFormattedName());
-		ticklerMap.put("providerNo", t.getProvider().getProviderNo());
-		ticklerMap.put("toProvider", t.getAssignee().getFormattedName());
-		ticklerMap.put("toProviderNo", t.getAssignee().getProviderNo());
+        HashMap<String, HashMap<String, Object>> hashMap = new HashMap<String, HashMap<String, Object>>();
+        HashMap<String, Object> ticklerMap = new HashMap<String, Object>();
 
-		hashMap.put("tickler", ticklerMap);
+        ticklerMap.put("message", t.getMessage());
+        ticklerMap.put("updateDate", t.getUpdateDate());
+        ticklerMap.put("provider", t.getProvider().getFormattedName());
+        ticklerMap.put("providerNo", t.getProvider().getProviderNo());
+        ticklerMap.put("toProvider", t.getAssignee().getFormattedName());
+        ticklerMap.put("toProviderNo", t.getAssignee().getProviderNo());
 
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        hashMap.put("tickler", ticklerMap);
 
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
-		return null;
-	}
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
 
-	public ActionForward getBillingAutocompleteList(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class);
+        return null;
+    }
 
-		String query = request.getParameter("query");
+    public ActionForward getBillingAutocompleteList(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class);
 
-		List<BillingService> queryResults = billingServiceDao.findBillingCodesByCode("%" + query + "%", "ON", new Date(), 1);
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        String query = request.getParameter("query");
 
-		hashMap.put("billing", queryResults);
+        List<BillingService> queryResults = billingServiceDao.findBillingCodesByCode("%" + query + "%", "ON", new Date(), 1);
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
 
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        hashMap.put("billing", queryResults);
 
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
 
-		return null;
-	}
 
-	public ActionForward getBillingDxAutocompleteList(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		DiagnosticCodeDao diagnosticCodeDao = (DiagnosticCodeDao) SpringUtils.getBean(DiagnosticCodeDao.class);
+        return null;
+    }
 
-		String query = request.getParameter("query");
+    public ActionForward getBillingDxAutocompleteList(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        DiagnosticCodeDao diagnosticCodeDao = (DiagnosticCodeDao) SpringUtils.getBean(DiagnosticCodeDao.class);
 
-		List<DiagnosticCode> queryResults = diagnosticCodeDao.findByDiagnosticCodeAndRegion(query, "ON");
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        String query = request.getParameter("query");
 
-		hashMap.put("dxCode", queryResults);
+        List<DiagnosticCode> queryResults = diagnosticCodeDao.findByDiagnosticCodeAndRegion(query, "ON");
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
 
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        hashMap.put("dxCode", queryResults);
 
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
 
-		return null;
-	}
 
+        return null;
+    }
 
-	public ActionForward getMacroList(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		EyeformMacroDao eyeformMacroDao = (EyeformMacroDao) SpringUtils.getBean(EyeformMacroDao.class);
 
-		List<EyeformMacro> macroList = eyeformMacroDao.getMacros();
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
-		hashMap.put("macros", macroList);
+    public ActionForward getMacroList(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        EyeformMacroDao eyeformMacroDao = (EyeformMacroDao) SpringUtils.getBean(EyeformMacroDao.class);
 
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        List<EyeformMacro> macroList = eyeformMacroDao.getMacros();
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("macros", macroList);
 
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
-		return null;
-	}
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
 
-	public ActionForward saveMacro(ActionMapping maping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		EyeformMacroDao eyeformMacroDao = (EyeformMacroDao) SpringUtils.getBean(EyeformMacroDao.class);
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        return null;
+    }
 
-		try {
-			EyeformMacro macro = new EyeformMacro();
-			if (request.getParameter("macroIdField") != null && request.getParameter("macroIdField").length() > 0) {
-				macro = eyeformMacroDao.find(Integer.parseInt(request.getParameter("macroIdField")));
-				macro = (macro == null ? new EyeformMacro() : macro);
-			}
+    public ActionForward saveMacro(ActionMapping maping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        EyeformMacroDao eyeformMacroDao = (EyeformMacroDao) SpringUtils.getBean(EyeformMacroDao.class);
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
 
-			macro.setMacroName(request.getParameter("macroNameBox"));
-			macro.setImpressionText(request.getParameter("macroImpressionBox"));
-			macro.setPlanText(request.getParameter("macroPlanBox"));
-			macro.setCopyFromLastImpression(Boolean.parseBoolean(request.getParameter("macroCopyFromLastImpression")));
+        try {
+            EyeformMacro macro = new EyeformMacro();
+            if (request.getParameter("macroIdField") != null && request.getParameter("macroIdField").length() > 0) {
+                macro = eyeformMacroDao.find(Integer.parseInt(request.getParameter("macroIdField")));
+                macro = (macro == null ? new EyeformMacro() : macro);
+            }
 
-			if (request.getParameter("billingData") != null && request.getParameter("billingData").length() > 0) {
-				String[] billingItems = request.getParameterValues("billingData");
+            macro.setMacroName(request.getParameter("macroNameBox"));
+            macro.setImpressionText(request.getParameter("macroImpressionBox"));
+            macro.setPlanText(request.getParameter("macroPlanBox"));
+            macro.setCopyFromLastImpression(Boolean.parseBoolean(request.getParameter("macroCopyFromLastImpression")));
 
-				List<EyeformMacroBillingItem> billingItemList = new LinkedList<EyeformMacroBillingItem>();
-				for (String b : billingItems) {
-					EyeformMacroBillingItem billingItem = new EyeformMacroBillingItem();
-					String billingCode = b.substring(0, b.indexOf("|"));
-					String multiplier = b.substring(b.indexOf("|"));
-
-					billingItem.setBillingServiceCode(billingCode);
-					billingItem.setMultiplier(Double.parseDouble(multiplier));
+            if (request.getParameter("billingData") != null && request.getParameter("billingData").length() > 0) {
+                String[] billingItems = request.getParameterValues("billingData");
 
-					billingItemList.add(billingItem);
-				}
+                List<EyeformMacroBillingItem> billingItemList = new LinkedList<EyeformMacroBillingItem>();
+                for (String b : billingItems) {
+                    EyeformMacroBillingItem billingItem = new EyeformMacroBillingItem();
+                    String billingCode = b.substring(0, b.indexOf("|"));
+                    String multiplier = b.substring(b.indexOf("|"));
 
-				macro.setBillingItems(billingItemList);
-			}
+                    billingItem.setBillingServiceCode(billingCode);
+                    billingItem.setMultiplier(Double.parseDouble(multiplier));
 
-			eyeformMacroDao.merge(macro);
+                    billingItemList.add(billingItem);
+                }
 
-			hashMap.put("saved", macro.getId());
-		} catch (Exception e) {
-			hashMap.put("error", e.getMessage());
-		}
+                macro.setBillingItems(billingItemList);
+            }
 
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+            eyeformMacroDao.merge(macro);
 
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
+            hashMap.put("saved", macro.getId());
+        } catch (Exception e) {
+            hashMap.put("error", e.getMessage());
+        }
 
-		return null;
-	}
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
-	public ActionForward sendPlan(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
 
-		ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
-		SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
-		
-		List<Provider> activeReceptionists = new ArrayList<Provider>();
-		for(SecUserRole sur:secUserRoleDao.getSecUserRolesByRoleName("receptionist")) {
-			Provider p = providerDao.getProvider(sur.getProviderNo());
-			if(p != null && p.getStatus().equals("1")) {
-				activeReceptionists.add(p);
-			}
-		}
+        return null;
+    }
 
-		TicklerCreator tc = new TicklerCreator();
-		String demographicNo = request.getParameter("demographicNo");
+    public ActionForward sendPlan(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
 
-		String message = request.getParameter("value");
+        ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+        SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
 
-		if (demographicNo != null && message != null && message.trim().length() > 0 && activeReceptionists != null) {
-			for (Provider p : activeReceptionists) {
-				tc.createTickler(loggedInInfo, demographicNo, p.getProviderNo(), message);
-			}
+        List<Provider> activeReceptionists = new ArrayList<Provider>();
+        for (SecUserRole sur : secUserRoleDao.getSecUserRolesByRoleName("receptionist")) {
+            Provider p = providerDao.getProvider(sur.getProviderNo());
+            if (p != null && p.getStatus().equals("1")) {
+                activeReceptionists.add(p);
+            }
+        }
 
-			hashMap.put("sentToReceptionists", activeReceptionists.size());
-		}
+        TicklerCreator tc = new TicklerCreator();
+        String demographicNo = request.getParameter("demographicNo");
 
-		return null;
-	}
+        String message = request.getParameter("value");
 
-	public ActionForward getBillingArgs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        if (demographicNo != null && message != null && message.trim().length() > 0 && activeReceptionists != null) {
+            for (Provider p : activeReceptionists) {
+                tc.createTickler(loggedInInfo, demographicNo, p.getProviderNo(), message);
+            }
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+            hashMap.put("sentToReceptionists", activeReceptionists.size());
+        }
 
-		DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-		OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
+        return null;
+    }
 
-		Appointment appointment = null;
-		try {
-			appointment = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no")));
-		} catch (Exception e) {
-			// appointment_no is not a number, I guess
-			appointment = null;
-		}
+    public ActionForward getBillingArgs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
 
-		Demographic demographic = demographicDao.getDemographic(request.getParameter("demographic_no"));
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
+        DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+        OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
 
-		hashMap.put("ohip_version", "V03G");
+        Appointment appointment = null;
+        try {
+            appointment = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no")));
+        } catch (Exception e) {
+            // appointment_no is not a number, I guess
+            appointment = null;
+        }
 
-		if (demographic != null) {
-			Integer sex = null;
-			if (demographic.getSex().equalsIgnoreCase("M"))
-				sex = 1;
-			else if (demographic.getSex().equalsIgnoreCase("F"))
-				sex = 2;
+        Demographic demographic = demographicDao.getDemographic(request.getParameter("demographic_no"));
 
-			String dateOfBirth = StringUtils.join(new String[] { demographic.getYearOfBirth(), demographic.getMonthOfBirth(), demographic.getDateOfBirth() }, "");
 
-			hashMap.put("hin", demographic.getHin());
-			hashMap.put("ver", demographic.getVer());
-			hashMap.put("hc_type", demographic.getHcType());
-			hashMap.put("sex", sex);
-			hashMap.put("demographic_dob", dateOfBirth);
-			hashMap.put("demographic_name", demographic.getLastName() + "," + demographic.getFirstName());
-		}
+        hashMap.put("ohip_version", "V03G");
 
-		if (appointment != null) {
-			hashMap.put("apptProvider_no", appointment.getProviderNo());
-			hashMap.put("start_time", appointment.getStartTime().toString());
-			hashMap.put("appointment_date", appointment.getAppointmentDate().getTime());
-		}
+        if (demographic != null) {
+            Integer sex = null;
+            if (demographic.getSex().equalsIgnoreCase("M"))
+                sex = 1;
+            else if (demographic.getSex().equalsIgnoreCase("F"))
+                sex = 2;
 
-		hashMap.put("current_provider_no", loggedInInfo.getLoggedInProviderNo());
-		hashMap.put("demo_mrp_provider_no", demographic.getProviderNo());
+            String dateOfBirth = StringUtils.join(new String[]{demographic.getYearOfBirth(), demographic.getMonthOfBirth(), demographic.getDateOfBirth()}, "");
 
+            hashMap.put("hin", demographic.getHin());
+            hashMap.put("ver", demographic.getVer());
+            hashMap.put("hc_type", demographic.getHcType());
+            hashMap.put("sex", sex);
+            hashMap.put("demographic_dob", dateOfBirth);
+            hashMap.put("demographic_name", demographic.getLastName() + "," + demographic.getFirstName());
+        }
 
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        if (appointment != null) {
+            hashMap.put("apptProvider_no", appointment.getProviderNo());
+            hashMap.put("start_time", appointment.getStartTime().toString());
+            hashMap.put("appointment_date", appointment.getAppointmentDate().getTime());
+        }
 
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
+        hashMap.put("current_provider_no", loggedInInfo.getLoggedInProviderNo());
+        hashMap.put("demo_mrp_provider_no", demographic.getProviderNo());
 
 
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
-		return null;
-	}
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
 
-	public ActionForward sendTickler(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
+        return null;
+    }
 
-		return null;
-	}
+    public ActionForward sendTickler(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
-	public ActionForward updateAppointmentReason(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 
-		OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
+        return null;
+    }
 
-		Appointment appointment = appointmentDao.find(Integer.parseInt(request.getParameter("appointmentNo")));
+    public ActionForward updateAppointmentReason(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
 
+        OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
 
-		if (appointment != null) {
-			appointment.setReason(request.getParameter("reason"));
-			appointmentDao.merge(appointment);
+        Appointment appointment = appointmentDao.find(Integer.parseInt(request.getParameter("appointmentNo")));
 
-			hashMap.put("success", true);
-			hashMap.put("appointmentNo", appointment.getId());
-		}
 
-		JsonConfig config = new JsonConfig();
-		config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        if (appointment != null) {
+            appointment.setReason(request.getParameter("reason"));
+            appointmentDao.merge(appointment);
 
-		JSONObject json = JSONObject.fromObject(hashMap, config);
-		response.getOutputStream().write(json.toString().getBytes());
+            hashMap.put("success", true);
+            hashMap.put("appointmentNo", appointment.getId());
+        }
 
-		return null;
-	}
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+
+        JSONObject json = JSONObject.fromObject(hashMap, config);
+        response.getOutputStream().write(json.toString().getBytes());
+
+        return null;
+    }
 }

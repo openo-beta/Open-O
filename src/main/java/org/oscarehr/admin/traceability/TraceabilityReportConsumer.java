@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,31 +34,31 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Read compressed data from input stream,
  * Write it to servlet output stream for consuming(downloading) by client
- * 
+ *
  * @author oscar
  *
  */
 public class TraceabilityReportConsumer implements Callable<String> {
-	private InputStream inputStream;
-	private HttpServletResponse response;
+    private InputStream inputStream;
+    private HttpServletResponse response;
 
-	public TraceabilityReportConsumer(InputStream inputStream, HttpServletResponse response) {
-		this.inputStream = inputStream;
-		this.response = response;
-	}
+    public TraceabilityReportConsumer(InputStream inputStream, HttpServletResponse response) {
+        this.inputStream = inputStream;
+        this.response = response;
+    }
 
-	@Override
-	public String call() throws Exception {
-		//setting content type to 'binary'
-		response.setContentType("application/text/plain");
-		//the file is not created on server, users will see the file name after download
-		String fileName = "trace_report.txt";
-		response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-		ServletOutputStream servletOutputStream = response.getOutputStream();
-		int byte_;
-		while ((byte_ = inputStream.read()) != -1) {
-			servletOutputStream.write(byte_);
-		}
-		return getClass().getName();
-	}
+    @Override
+    public String call() throws Exception {
+        //setting content type to 'binary'
+        response.setContentType("application/text/plain");
+        //the file is not created on server, users will see the file name after download
+        String fileName = "trace_report.txt";
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        int byte_;
+        while ((byte_ = inputStream.read()) != -1) {
+            servletOutputStream.write(byte_);
+        }
+        return getClass().getName();
+    }
 }

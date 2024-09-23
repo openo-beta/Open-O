@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -52,7 +53,7 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 public final class XmlUtils {
-    private static Logger logger =  MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
     public XmlUtils() {
     }
@@ -63,7 +64,7 @@ public final class XmlUtils {
 
     public static void writeNode(Node node, OutputStream os, boolean formatted) throws ClassCastException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         DOMImplementationRegistry domImplementationRegistry = DOMImplementationRegistry.newInstance();
-        DOMImplementationLS domImplementationLS = (DOMImplementationLS)domImplementationRegistry.getDOMImplementation("LS");
+        DOMImplementationLS domImplementationLS = (DOMImplementationLS) domImplementationRegistry.getDOMImplementation("LS");
         LSOutput lsOutput = domImplementationLS.createLSOutput();
         lsOutput.setEncoding("UTF-8");
         lsOutput.setByteStream(os);
@@ -95,9 +96,9 @@ public final class XmlUtils {
 
         Document var2;
         try {
-            var2 = toDocument((InputStream)is);
+            var2 = toDocument((InputStream) is);
         } finally {
-            ((InputStream)is).close();
+            ((InputStream) is).close();
         }
 
         return var2;
@@ -109,7 +110,7 @@ public final class XmlUtils {
 
     public static Document toDocument(byte[] x) throws IOException, SAXException, ParserConfigurationException {
         ByteArrayInputStream is = new ByteArrayInputStream(x, 0, x.length);
-        return toDocument((InputStream)is);
+        return toDocument((InputStream) is);
     }
 
     public static Document toDocument(InputStream is) throws ParserConfigurationException, SAXException, IOException {
@@ -171,7 +172,7 @@ public final class XmlUtils {
     public static Node getChildNode(Node node, String name) {
         NodeList nodeList = node.getChildNodes();
 
-        for(int i = 0; i < nodeList.getLength(); ++i) {
+        for (int i = 0; i < nodeList.getLength(); ++i) {
             Node temp = nodeList.item(i);
             if (temp.getNodeType() == 1 && (name.equals(temp.getLocalName()) || name.equals(temp.getNodeName()))) {
                 return temp;
@@ -185,7 +186,7 @@ public final class XmlUtils {
         ArrayList<Node> results = new ArrayList();
         NodeList nodeList = node.getChildNodes();
 
-        for(int i = 0; i < nodeList.getLength(); ++i) {
+        for (int i = 0; i < nodeList.getLength(); ++i) {
             Node temp = nodeList.item(i);
             if (temp.getNodeType() == 1 && (name.equals(temp.getLocalName()) || name.equals(temp.getNodeName()))) {
                 results.add(temp);
@@ -219,7 +220,7 @@ public final class XmlUtils {
         ArrayList<String> results = new ArrayList();
         NodeList nodeList = node.getChildNodes();
 
-        for(int i = 0; i < nodeList.getLength(); ++i) {
+        for (int i = 0; i < nodeList.getLength(); ++i) {
             Node temp = nodeList.item(i);
             if (temp.getNodeType() == 1 && (name.equals(temp.getLocalName()) || name.equals(temp.getNodeName()))) {
                 results.add(temp.getTextContent());
@@ -233,8 +234,8 @@ public final class XmlUtils {
         ArrayList<Node> removeList = getChildNodes(node, name);
         Iterator i$ = removeList.iterator();
 
-        while(i$.hasNext()) {
-            Node temp = (Node)i$.next();
+        while (i$.hasNext()) {
+            Node temp = (Node) i$.next();
             node.removeChild(temp);
         }
 
@@ -255,12 +256,12 @@ public final class XmlUtils {
         Node rootNode = doc.getFirstChild();
         Iterator i$ = map.entrySet().iterator();
 
-        while(i$.hasNext()) {
-            Entry<String, V> mapEntry = (Entry)i$.next();
+        while (i$.hasNext()) {
+            Entry<String, V> mapEntry = (Entry) i$.next();
             Element xmlEntry = doc.createElement("entry");
             rootNode.appendChild(xmlEntry);
             Element xmlKey = doc.createElement("key");
-            xmlKey.setTextContent((String)mapEntry.getKey());
+            xmlKey.setTextContent((String) mapEntry.getKey());
             xmlEntry.appendChild(xmlKey);
             Element xmlValue = doc.createElement("value");
             xmlValue.setTextContent(mapEntry.getValue().toString());
@@ -286,8 +287,8 @@ public final class XmlUtils {
         ArrayList<Node> entries = getChildNodes(rootNode, "entry");
         Iterator i$ = entries.iterator();
 
-        while(i$.hasNext()) {
-            Node node = (Node)i$.next();
+        while (i$.hasNext()) {
+            Node node = (Node) i$.next();
             String key = getChildNodeTextContents(node, "key");
             String value = getChildNodeTextContents(node, "value");
             String valueType = getChildNodeTextContents(node, "valueType");

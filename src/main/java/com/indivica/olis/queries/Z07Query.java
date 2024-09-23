@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -21,40 +21,41 @@ import com.indivica.olis.parameters.ZPD1;
  */
 public class Z07Query extends Query {
 
-	private OBR22 startEndTimestamp = new OBR22(); // mandatory
-	private QRD7 quantityLimitedRequest = null;
-	
-	@Override
-	public String getQueryHL7String() {
-		String query = "";
+    private OBR22 startEndTimestamp = new OBR22(); // mandatory
+    private QRD7 quantityLimitedRequest = null;
 
-		if (startEndTimestamp != null)
-			query += startEndTimestamp.toOlisString() + "~";
+    @Override
+    public String getQueryHL7String() {
+        String query = "";
 
-		if (quantityLimitedRequest != null)
-			query += quantityLimitedRequest.toOlisString() + "~";
+        if (startEndTimestamp != null)
+            query += startEndTimestamp.toOlisString() + "~";
 
-		if(query.endsWith("~")) {
-			query = query.substring(0,query.length()-1);
-		}
-		
-		return query;
-	}
+        if (quantityLimitedRequest != null)
+            query += quantityLimitedRequest.toOlisString() + "~";
 
-	public void setStartEndTimestamp(OBR22 startEndTimestamp) {
-    	this.startEndTimestamp = startEndTimestamp;
+        if (query.endsWith("~")) {
+            query = query.substring(0, query.length() - 1);
+        }
+
+        return query;
     }
 
-	public void setQuantityLimitedRequest(QRD7 quantityLimitedRequest) {
-    	this.quantityLimitedRequest = quantityLimitedRequest;
+    public void setStartEndTimestamp(OBR22 startEndTimestamp) {
+        this.startEndTimestamp = startEndTimestamp;
     }
 
-	@Override
-	public QueryType getQueryType() {
-		return QueryType.Z07;
-	}
-	@Override
+    public void setQuantityLimitedRequest(QRD7 quantityLimitedRequest) {
+        this.quantityLimitedRequest = quantityLimitedRequest;
+    }
+
+    @Override
+    public QueryType getQueryType() {
+        return QueryType.Z07;
+    }
+
+    @Override
     public void setConsentToViewBlockedInformation(ZPD1 consentToViewBlockedInformation) {
-		throw new RuntimeException("Not valid for this type of query.");
+        throw new RuntimeException("Not valid for this type of query.");
     }
 }

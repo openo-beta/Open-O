@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,50 +37,48 @@ import javax.persistence.TemporalType;
 @Entity
 public class DocumentExtraReviewer extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private Integer documentNo;
-	
-	private String reviewerProviderNo;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date reviewDateTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer documentNo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String reviewerProviderNo;
 
-	public Integer getDocumentNo() {
-		return documentNo;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date reviewDateTime;
 
-	public void setDocumentNo(Integer documentNo) {
-		this.documentNo = documentNo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getReviewerProviderNo() {
-		return reviewerProviderNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setReviewerProviderNo(String reviewerProviderNo) {
-		this.reviewerProviderNo = reviewerProviderNo;
-	}
+    public Integer getDocumentNo() {
+        return documentNo;
+    }
 
-	public Date getReviewDateTime() {
-		return reviewDateTime;
-	}
+    public void setDocumentNo(Integer documentNo) {
+        this.documentNo = documentNo;
+    }
 
-	public void setReviewDateTime(Date reviewDateTime) {
-		this.reviewDateTime = reviewDateTime;
-	}
-	
-	
-	
-	
+    public String getReviewerProviderNo() {
+        return reviewerProviderNo;
+    }
+
+    public void setReviewerProviderNo(String reviewerProviderNo) {
+        this.reviewerProviderNo = reviewerProviderNo;
+    }
+
+    public Date getReviewDateTime() {
+        return reviewDateTime;
+    }
+
+    public void setReviewDateTime(Date reviewDateTime) {
+        this.reviewDateTime = reviewDateTime;
+    }
+
+
 }

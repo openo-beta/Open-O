@@ -18,19 +18,21 @@
 
 --%>
 <%@ page
-	import="oscar.util.*,oscar.oscarBilling.ca.on.pageUtil.*,oscar.oscarBilling.ca.on.data.*"%>
+        import="oscar.util.*,oscar.oscarBilling.ca.on.pageUtil.*,oscar.oscarBilling.ca.on.data.*" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>Invoice</title>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <title>Invoice</title>
 </head>
 <body>
 <table>
-	<tr>
-		<td>INVOICE - <%=DateUtils.sumDate("yyyy-MM-dd HH:mm","0") %></td>
-		<td align="right"><%=DateUtils.sumDate("yyyy-MM-dd HH:mm","0") %></td>
-	</tr>
+    <tr>
+        <td>INVOICE - <%=DateUtils.sumDate("yyyy-MM-dd HH:mm", "0") %>
+        </td>
+        <td align="right"><%=DateUtils.sumDate("yyyy-MM-dd HH:mm", "0") %>
+        </td>
+    </tr>
 </table>
 </body>
 </html>

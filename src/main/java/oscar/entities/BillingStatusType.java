@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,56 +35,56 @@ package oscar.entities;
  */
 public class BillingStatusType {
 
-  /**
-   * Single char MSP status code
-   */
-  private String billingstatus;
+    /**
+     * Single char MSP status code
+     */
+    private String billingstatus;
 
-  /**
-   * The textual description to be displayed in the view
-   */
-  private String displayName;
+    /**
+     * The textual description to be displayed in the view
+     */
+    private String displayName;
 
-  /**
-   * The rank number indicating the correct location of this instance in a sorted list
-   */
-  private Integer sortOrder;
-  private String displayNameExt;
+    /**
+     * The rank number indicating the correct location of this instance in a sorted list
+     */
+    private Integer sortOrder;
+    private String displayNameExt;
 
-  public BillingStatusType() {
-  }
+    public BillingStatusType() {
+    }
 
-  public void setBillingstatus(String billingstatus) {
+    public void setBillingstatus(String billingstatus) {
 
-    this.billingstatus = billingstatus;
-  }
+        this.billingstatus = billingstatus;
+    }
 
-  public void setDisplayName(String displayName) {
-    this.displayName = displayName;
-  }
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
-  public void setSortOrder(Integer sortOrder) {
-    this.sortOrder = sortOrder;
-  }
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
-  public void setDisplayNameExt(String displayNameExt) {
-    this.displayNameExt = displayNameExt;
-  }
+    public void setDisplayNameExt(String displayNameExt) {
+        this.displayNameExt = displayNameExt;
+    }
 
-  public String getBillingstatus() {
+    public String getBillingstatus() {
 
-    return billingstatus;
-  }
+        return billingstatus;
+    }
 
-  public String getDisplayName() {
-    return displayName;
-  }
+    public String getDisplayName() {
+        return displayName;
+    }
 
-  public Integer getSortOrder() {
-    return sortOrder;
-  }
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
 
-  public String getDisplayNameExt() {
-    return displayNameExt;
-  }
+    public String getDisplayNameExt() {
+        return displayNameExt;
+    }
 }

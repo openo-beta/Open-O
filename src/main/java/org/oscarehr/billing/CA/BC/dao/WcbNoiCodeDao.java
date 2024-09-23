@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,13 +36,13 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unchecked")
 public class WcbNoiCodeDao extends AbstractDaoImpl<WcbNoiCode> {
 
-	public WcbNoiCodeDao() {
-		super(WcbNoiCode.class);
-	}
-	
+    public WcbNoiCodeDao() {
+        super(WcbNoiCode.class);
+    }
+
     public List<WcbNoiCode> findByCodeOrLevel(String search) {
-		Query q = createQuery("w", "w.code like :s OR w.level1 like :s OR w.level2 like :s OR w.level3 like :s ORDER BY w.level1, w.level2, w.level3");
-		q.setParameter("s", search);
-		return q.getResultList();
-	}
+        Query q = createQuery("w", "w.code like :s OR w.level1 like :s OR w.level2 like :s OR w.level3 like :s ORDER BY w.level1, w.level2, w.level3");
+        q.setParameter("s", search);
+        return q.getResultList();
+    }
 }

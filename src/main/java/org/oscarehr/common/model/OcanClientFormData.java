@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -44,76 +43,74 @@ import javax.persistence.PreUpdate;
 @Entity
 public class OcanClientFormData extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private Integer ocanClientFormId = null;
-	private String question = null;
-	private String answer = null;
+    private Integer ocanClientFormId = null;
+    private String question = null;
+    private String answer = null;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getOcanClientFormId() {
-		return ocanClientFormId;
-	}
+    public Integer getOcanClientFormId() {
+        return ocanClientFormId;
+    }
 
-	public void setOcanClientFormId(Integer ocanClientFormId) {
-		this.ocanClientFormId = ocanClientFormId;
-	}
+    public void setOcanClientFormId(Integer ocanClientFormId) {
+        this.ocanClientFormId = ocanClientFormId;
+    }
 
-	public String getQuestion() {
-		return question;
-	}
+    public String getQuestion() {
+        return question;
+    }
 
-	public void setQuestion(String question) {
-		this.question = question;
-	}
+    public void setQuestion(String question) {
+        this.question = question;
+    }
 
-	public String getAnswer() {
-		return answer;
-	}
+    public String getAnswer() {
+        return answer;
+    }
 
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 
-	public boolean equals(OcanClientFormData o) {
-		try {
-			return (id != null && id.intValue() == o.id.intValue());
-		} catch (Exception e) {
-			return (false);
-		}
-	}
+    public boolean equals(OcanClientFormData o) {
+        try {
+            return (id != null && id.intValue() == o.id.intValue());
+        } catch (Exception e) {
+            return (false);
+        }
+    }
 
-	public int hashCode() {
-		return (id != null ? id.hashCode() : 0);
-	}
+    public int hashCode() {
+        return (id != null ? id.hashCode() : 0);
+    }
 
-	@PreRemove
-	protected void jpaPreventDelete() {
-		throw (new UnsupportedOperationException("Remove is not allowed for this type of item."));
-	}
+    @PreRemove
+    protected void jpaPreventDelete() {
+        throw (new UnsupportedOperationException("Remove is not allowed for this type of item."));
+    }
 
-	@PreUpdate
-	protected void jpaPreventUpdate() {
-		throw (new UnsupportedOperationException("Update is not allowed for this type of item."));
-	}
+    @PreUpdate
+    protected void jpaPreventUpdate() {
+        throw (new UnsupportedOperationException("Update is not allowed for this type of item."));
+    }
 
-	/**
-	 * @return true if the list of cdsClientFormData contains the answer specified. 
-	 */
-	public static boolean containsAnswer(List<OcanClientFormData> answers, String answer)
-	{
-		if (answer==null) return(false);
-		
-		for (OcanClientFormData data : answers)
-		{
-			if (answer.equals(data.getAnswer())) return(true);
-		}
-		
-		return(false);
-	}
+    /**
+     * @return true if the list of cdsClientFormData contains the answer specified.
+     */
+    public static boolean containsAnswer(List<OcanClientFormData> answers, String answer) {
+        if (answer == null) return (false);
+
+        for (OcanClientFormData data : answers) {
+            if (answer.equals(data.getAnswer())) return (true);
+        }
+
+        return (false);
+    }
 }

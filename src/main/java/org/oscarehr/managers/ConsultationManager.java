@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -114,59 +114,77 @@ import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 import oscar.oscarLab.ca.on.LabResultData;
 
-public interface ConsultationManager {	
+public interface ConsultationManager {
 
-	public final String CON_REQUEST_ENABLED = "consultRequestEnabled";
-	public final String CON_RESPONSE_ENABLED = "consultResponseEnabled";
-	public final String ENABLED_YES = "Y";
-	
-	public List<ConsultationRequestSearchResult> search(LoggedInInfo loggedInInfo, ConsultationRequestSearchFilter filter);
-	
-	public List<ConsultationResponseSearchResult> search(LoggedInInfo loggedInInfo, ConsultationResponseSearchFilter filter);
-	
-	public int getConsultationCount(ConsultationRequestSearchFilter filter);
-	
-	public int getConsultationCount(ConsultationResponseSearchFilter filter);
-	public boolean hasOutstandingConsultations(LoggedInInfo loggedInInfo, Integer demographicNo);
-	
-	public ConsultationRequest getRequest(LoggedInInfo loggedInInfo, Integer id);
-	
-	public ConsultationResponse getResponse(LoggedInInfo loggedInInfo, Integer id);
-	public List<ConsultationServices> getConsultationServices();
-	public List<ProfessionalSpecialist> getReferringDoctorList();
-	public ProfessionalSpecialist getProfessionalSpecialist(Integer id);
-	
-	public void saveConsultationRequest(LoggedInInfo loggedInInfo, ConsultationRequest request);
-	
-	public void saveConsultationResponse(LoggedInInfo loggedInInfo, ConsultationResponse response);
-	
-	public List<ConsultDocs> getConsultRequestDocs(LoggedInInfo loggedInInfo, Integer requestId);
-	public List<ConsultResponseDoc> getConsultResponseDocs(LoggedInInfo loggedInInfo, Integer responseId);
-	public void saveConsultRequestDoc(LoggedInInfo loggedInInfo, ConsultDocs doc);
-	
-	public void saveConsultResponseDoc(LoggedInInfo loggedInInfo, ConsultResponseDoc doc);
-	public void enableConsultRequestResponse(boolean conRequest, boolean conResponse);
-	
-	public boolean isConsultRequestEnabled();
-	public boolean isConsultResponseEnabled();
-	public void doHl7Send(LoggedInInfo loggedInInfo, Integer consultationRequestId) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException, HL7Exception, ServletException, com.lowagie.text.DocumentException;
-	public void importEconsult(LoggedInInfo loggedInInfo, OtnEconsult otnEconsult) throws Exception;
-	public List<Document> getEconsultDocuments(LoggedInInfo loggedInInfo, int demographicNo);
-	public List<ConsultationAttachment> getEReferAttachments(LoggedInInfo loggedInInfo, HttpServletRequest request, HttpServletResponse response, Integer demographicNo) throws PDFGenerationException;
-	
-	public List<ProfessionalSpecialist> findByService(LoggedInInfo loggedInInfo, String serviceName);
-	public List<ProfessionalSpecialist> findByServiceId(LoggedInInfo loggedInInfo, Integer serviceId);
-	public List<ConsultDocs> getAttachedDocumentsByType(LoggedInInfo loggedInInfo, Integer consultRequestId, String docType);
-	public Path renderConsultationForm(HttpServletRequest request) throws PDFGenerationException;
+    public final String CON_REQUEST_ENABLED = "consultRequestEnabled";
+    public final String CON_RESPONSE_ENABLED = "consultResponseEnabled";
+    public final String ENABLED_YES = "Y";
 
-	public List<EctFormData.PatientForm> getAttachedForms(LoggedInInfo loggedInInfo, int consultRequestId, int demographicNo);
+    public List<ConsultationRequestSearchResult> search(LoggedInInfo loggedInInfo, ConsultationRequestSearchFilter filter);
 
-	public List<EFormData> getAttachedEForms(String requestId);
+    public List<ConsultationResponseSearchResult> search(LoggedInInfo loggedInInfo, ConsultationResponseSearchFilter filter);
 
-	public ArrayList<HashMap<String, ? extends Object>> getAttachedHRMDocuments(LoggedInInfo loggedInInfo, String demographicNo, String requestId);
+    public int getConsultationCount(ConsultationRequestSearchFilter filter);
 
-	public void archiveConsultationRequest(Integer requestId);
-	public void saveOrUpdateExts(int requestId, List<ConsultationRequestExt> extras);
-	public Map<String, ConsultationRequestExt> getExtsAsMap(List<ConsultationRequestExt> extras);
-	public Map<String, String> getExtValuesAsMap(List<ConsultationRequestExt> extras);
+    public int getConsultationCount(ConsultationResponseSearchFilter filter);
+
+    public boolean hasOutstandingConsultations(LoggedInInfo loggedInInfo, Integer demographicNo);
+
+    public ConsultationRequest getRequest(LoggedInInfo loggedInInfo, Integer id);
+
+    public ConsultationResponse getResponse(LoggedInInfo loggedInInfo, Integer id);
+
+    public List<ConsultationServices> getConsultationServices();
+
+    public List<ProfessionalSpecialist> getReferringDoctorList();
+
+    public ProfessionalSpecialist getProfessionalSpecialist(Integer id);
+
+    public void saveConsultationRequest(LoggedInInfo loggedInInfo, ConsultationRequest request);
+
+    public void saveConsultationResponse(LoggedInInfo loggedInInfo, ConsultationResponse response);
+
+    public List<ConsultDocs> getConsultRequestDocs(LoggedInInfo loggedInInfo, Integer requestId);
+
+    public List<ConsultResponseDoc> getConsultResponseDocs(LoggedInInfo loggedInInfo, Integer responseId);
+
+    public void saveConsultRequestDoc(LoggedInInfo loggedInInfo, ConsultDocs doc);
+
+    public void saveConsultResponseDoc(LoggedInInfo loggedInInfo, ConsultResponseDoc doc);
+
+    public void enableConsultRequestResponse(boolean conRequest, boolean conResponse);
+
+    public boolean isConsultRequestEnabled();
+
+    public boolean isConsultResponseEnabled();
+
+    public void doHl7Send(LoggedInInfo loggedInInfo, Integer consultationRequestId) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException, HL7Exception, ServletException, com.lowagie.text.DocumentException;
+
+    public void importEconsult(LoggedInInfo loggedInInfo, OtnEconsult otnEconsult) throws Exception;
+
+    public List<Document> getEconsultDocuments(LoggedInInfo loggedInInfo, int demographicNo);
+
+    public List<ConsultationAttachment> getEReferAttachments(LoggedInInfo loggedInInfo, HttpServletRequest request, HttpServletResponse response, Integer demographicNo) throws PDFGenerationException;
+
+    public List<ProfessionalSpecialist> findByService(LoggedInInfo loggedInInfo, String serviceName);
+
+    public List<ProfessionalSpecialist> findByServiceId(LoggedInInfo loggedInInfo, Integer serviceId);
+
+    public List<ConsultDocs> getAttachedDocumentsByType(LoggedInInfo loggedInInfo, Integer consultRequestId, String docType);
+
+    public Path renderConsultationForm(HttpServletRequest request) throws PDFGenerationException;
+
+    public List<EctFormData.PatientForm> getAttachedForms(LoggedInInfo loggedInInfo, int consultRequestId, int demographicNo);
+
+    public List<EFormData> getAttachedEForms(String requestId);
+
+    public ArrayList<HashMap<String, ? extends Object>> getAttachedHRMDocuments(LoggedInInfo loggedInInfo, String demographicNo, String requestId);
+
+    public void archiveConsultationRequest(Integer requestId);
+
+    public void saveOrUpdateExts(int requestId, List<ConsultationRequestExt> extras);
+
+    public Map<String, ConsultationRequestExt> getExtsAsMap(List<ConsultationRequestExt> extras);
+
+    public Map<String, String> getExtValuesAsMap(List<ConsultationRequestExt> extras);
 }

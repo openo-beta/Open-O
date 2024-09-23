@@ -24,34 +24,33 @@
 
 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <html>
 <head>
-<title><bean:message key="global.btnClose"/></title>
+    <title><bean:message key="global.btnClose"/></title>
 
-<link href="../library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
+    <link href="../library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
 <br>
-	<div class="container">
-		<div class="row">
-		  	<div class="col-md-12">
-		  	
-		  		<div class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title"><bean:message key="global.resources"/></h3>
-				  </div>
-				  <div class="panel-body">
-					<%=session.getAttribute("oauthMessage") %>
-					<%session.removeAttribute("oauthMessage"); %>
-					<a class="pull-right" onclick="window.close()"><bean:message key="global.btnClose"/></a>
-				  </div>
-				</div>
-		  	
-		
-		
-			</div>
-		</div>
-	</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><bean:message key="global.resources"/></h3>
+                </div>
+                <div class="panel-body">
+                    <%=session.getAttribute("oauthMessage") %>
+                    <%session.removeAttribute("oauthMessage"); %>
+                    <a class="pull-right" onclick="window.close()"><bean:message key="global.btnClose"/></a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

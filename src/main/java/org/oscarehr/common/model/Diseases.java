@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,54 +38,54 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="diseases")
-public class Diseases extends AbstractModel<Integer>{
+@Table(name = "diseases")
+public class Diseases extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="diseaseid")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "diseaseid")
+    private Integer id;
 
-	@Column(name="demographic_no")
-	private int demographicNo;
+    @Column(name = "demographic_no")
+    private int demographicNo;
 
-	@Column(name="ICD9_E")
-	private String icd9Entry;
+    @Column(name = "ICD9_E")
+    private String icd9Entry;
 
-	@Column(name="entry_date")
-	@Temporal(TemporalType.DATE)
-	private Date entryDate;
+    @Column(name = "entry_date")
+    @Temporal(TemporalType.DATE)
+    private Date entryDate;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public int getDemographicNo() {
-    	return demographicNo;
+    public int getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setDemographicNo(int demographicNo) {
-    	this.demographicNo = demographicNo;
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public String getIcd9Entry() {
-    	return icd9Entry;
+    public String getIcd9Entry() {
+        return icd9Entry;
     }
 
-	public void setIcd9Entry(String icd9Entry) {
-    	this.icd9Entry = icd9Entry;
+    public void setIcd9Entry(String icd9Entry) {
+        this.icd9Entry = icd9Entry;
     }
 
-	public Date getEntryDate() {
-    	return entryDate;
+    public Date getEntryDate() {
+        return entryDate;
     }
 
-	public void setEntryDate(Date entryDate) {
-    	this.entryDate = entryDate;
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
     }
 
 

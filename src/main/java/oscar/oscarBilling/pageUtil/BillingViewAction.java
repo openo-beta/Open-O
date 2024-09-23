@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -25,6 +25,7 @@
 
 
 package oscar.oscarBilling.pageUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -48,13 +49,13 @@ import oscar.oscarBilling.pageUtil.BillingBillingManager.BillingItem;
 public final class BillingViewAction extends Action {
 
     public ActionForward execute(ActionMapping mapping,
-    ActionForm form,
-    HttpServletRequest request,
-    HttpServletResponse response)
-    throws IOException, ServletException {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+            throws IOException, ServletException {
 
 
-        if(request.getSession().getAttribute("user") == null  ){
+        if (request.getSession().getAttribute("user") == null) {
             return (mapping.findForward("Logout"));
         }
         // Extract attributes we will need
@@ -64,11 +65,11 @@ public final class BillingViewAction extends Action {
         // Setup variables
         Properties oscarVars = OscarProperties.getInstance();
 
-        if (oscarVars.getProperty("billregion").equals("ON")){
+        if (oscarVars.getProperty("billregion").equals("ON")) {
             String newURL = mapping.findForward("ON").getPath();
-            newURL = newURL + "?"+request.getQueryString();
+            newURL = newURL + "?" + request.getQueryString();
             return (new ActionForward(newURL));
-        }else{
+        } else {
             oscar.oscarBilling.pageUtil.BillingViewBean bean = new oscar.oscarBilling.pageUtil.BillingViewBean();
             bean.loadBilling(request.getParameter("billing_no"));
             oscar.oscarBilling.pageUtil.BillingBillingManager bmanager;
@@ -77,7 +78,7 @@ public final class BillingViewAction extends Action {
             MiscUtils.getLogger().debug("Calling getGrandTotal");
             bean.setBillItem(billItem);
             bean.setGrandtotal(bmanager.getGrandTotal(billItem));
-            MiscUtils.getLogger().debug("GrandTotal" +bmanager.getGrandTotal(billItem));
+            MiscUtils.getLogger().debug("GrandTotal" + bmanager.getGrandTotal(billItem));
             oscar.oscarDemographic.data.DemographicData demoData = new oscar.oscarDemographic.data.DemographicData();
             MiscUtils.getLogger().debug("Calling Demo");
 
@@ -89,7 +90,7 @@ public final class BillingViewAction extends Action {
             bean.setPatientAddress2(demo.getCity());
             bean.setPatientPostal(demo.getPostal());
             bean.setPatientSex(demo.getSex());
-            bean.setPatientPHN(demo.getHin()+demo.getVer());
+            bean.setPatientPHN(demo.getHin() + demo.getVer());
             bean.setPatientHCType(demo.getHcType());
             bean.setPatientAge(demo.getAge());
             MiscUtils.getLogger().debug("End Demo Call");
@@ -116,7 +117,6 @@ public final class BillingViewAction extends Action {
             //{
             //    bean = (oscar.oscarBilling.pageUtil.BillingSessionBean)request.getSession().getAttribute("billingSessionBean");
             //}
-
 
 
             return (mapping.findForward("success"));

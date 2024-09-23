@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -36,31 +35,31 @@ import java.util.Date;
  */
 public class Provider extends AbstractModel<String> implements Comparable<Provider> {
 
-	public static final String SYSTEM_PROVIDER_NO = "-1";
-	private int hashCode = Integer.MIN_VALUE;// primary key
-	private String providerNo;
-	private String comments;
-	private String phone;
-	private String billingNo;
-	private String workPhone;
-	private String address;
-	private String team;
+    public static final String SYSTEM_PROVIDER_NO = "-1";
+    private int hashCode = Integer.MIN_VALUE;// primary key
+    private String providerNo;
+    private String comments;
+    private String phone;
+    private String billingNo;
+    private String workPhone;
+    private String address;
+    private String team;
 
-	/**
-	 * "1"=active "0"=inactive
-	 */
-	private String status;
+    /**
+     * "1"=active "0"=inactive
+     */
+    private String status;
 
-	private String lastName;
-	private String providerType;
-	private String sex;
-	private String ohipNo;
-	private String specialty;
-	private Date dob;
-	private String hsoNo;
-	private String providerActivity;
-	private String firstName;
-	private String rmaNo;
+    private String lastName;
+    private String providerType;
+    private String sex;
+    private String ohipNo;
+    private String specialty;
+    private Date dob;
+    private String hsoNo;
+    private String providerActivity;
+    private String firstName;
+    private String rmaNo;
     private Date SignedConfidentiality;
     private String practitionerNo;
     private String practitionerNoType;
@@ -70,343 +69,345 @@ public class Provider extends AbstractModel<String> implements Comparable<Provid
     private Date lastUpdateDate = new Date();
     private String supervisor;
 
-	public String getPractitionerNo() {
-		return practitionerNo;
-	}
+    public String getPractitionerNo() {
+        return practitionerNo;
+    }
 
-	public void setPractitionerNo(String practitionerNo) {
-		this.practitionerNo = practitionerNo;
-	}
+    public void setPractitionerNo(String practitionerNo) {
+        this.practitionerNo = practitionerNo;
+    }
 
-	
-	public String getPractitionerNoType() {
-		return practitionerNoType;
-	}
 
-	public void setPractitionerNoType(String practitionerNoType) {
-		this.practitionerNoType = practitionerNoType;
-	}
+    public String getPractitionerNoType() {
+        return practitionerNoType;
+    }
 
-	// constructors
-	public Provider() {
-	}
+    public void setPractitionerNoType(String practitionerNoType) {
+        this.practitionerNoType = practitionerNoType;
+    }
 
-	/**
-	 * Constructor for primary key
-	 */
-	public Provider(String providerNo) {
-		this.setProviderNo(providerNo);
-	}
+    // constructors
+    public Provider() {
+    }
 
-	/**
-	 * Constructor for required fields
-	 */
-	public Provider(String providerNo, String lastName, String providerType, String sex, String specialty, String firstName) {
+    /**
+     * Constructor for primary key
+     */
+    public Provider(String providerNo) {
+        this.setProviderNo(providerNo);
+    }
 
-		this.setProviderNo(providerNo);
-		this.setLastName(lastName);
-		this.setProviderType(providerType);
-		this.setSex(sex);
-		this.setSpecialty(specialty);
-		this.setFirstName(firstName);
-	}
-	
-	public Provider(Provider provider) {
-		providerNo = provider.providerNo;
-		comments = provider.comments;
-		phone = provider.phone;
-		billingNo = provider.billingNo;
-		workPhone = provider.workPhone;
-		address = provider.address;
-		team = provider.team;
-		status = provider.status;
-		lastName = provider.lastName;
-		providerType = provider.providerType;
-		sex = provider.sex;
-		ohipNo = provider.ohipNo;
-		specialty = provider.specialty;
-		dob = provider.dob;
-		hsoNo = provider.hsoNo;
-		providerActivity = provider.providerActivity;
-		firstName = provider.firstName;
-		rmaNo = provider.rmaNo;
-		SignedConfidentiality = provider.SignedConfidentiality;
-		practitionerNo = provider.practitionerNo;
-		practitionerNoType = provider.practitionerNoType;
-		email = provider.email;
-		title = provider.title;
-		lastUpdateUser = provider.lastUpdateUser;
-		lastUpdateDate = provider.lastUpdateDate;
-                supervisor = provider.supervisor;
+    /**
+     * Constructor for required fields
+     */
+    public Provider(String providerNo, String lastName, String providerType, String sex, String specialty, String firstName) {
 
-	}
+        this.setProviderNo(providerNo);
+        this.setLastName(lastName);
+        this.setProviderType(providerType);
+        this.setSex(sex);
+        this.setSpecialty(specialty);
+        this.setFirstName(firstName);
+    }
 
-	public String getFormattedName() {
-		return getLastName() + ", " + getFirstName();
-	}
+    public Provider(Provider provider) {
+        providerNo = provider.providerNo;
+        comments = provider.comments;
+        phone = provider.phone;
+        billingNo = provider.billingNo;
+        workPhone = provider.workPhone;
+        address = provider.address;
+        team = provider.team;
+        status = provider.status;
+        lastName = provider.lastName;
+        providerType = provider.providerType;
+        sex = provider.sex;
+        ohipNo = provider.ohipNo;
+        specialty = provider.specialty;
+        dob = provider.dob;
+        hsoNo = provider.hsoNo;
+        providerActivity = provider.providerActivity;
+        firstName = provider.firstName;
+        rmaNo = provider.rmaNo;
+        SignedConfidentiality = provider.SignedConfidentiality;
+        practitionerNo = provider.practitionerNo;
+        practitionerNoType = provider.practitionerNoType;
+        email = provider.email;
+        title = provider.title;
+        lastUpdateUser = provider.lastUpdateUser;
+        lastUpdateDate = provider.lastUpdateDate;
+        supervisor = provider.supervisor;
 
-	public String getFullName() {
-		return getFirstName() + " " + getLastName();
-	}
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public String getFormattedName() {
+        return getLastName() + ", " + getFirstName();
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-		this.hashCode = Integer.MIN_VALUE;
-	}
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
 
-	public String getComments() {
-		return comments;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+        this.hashCode = Integer.MIN_VALUE;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getComments() {
+        return comments;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
-	public String getBillingNo() {
-		return billingNo;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setBillingNo(String billingNo) {
-		this.billingNo = billingNo;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public String getWorkPhone() {
-		return workPhone;
-	}
+    public String getBillingNo() {
+        return billingNo;
+    }
 
-	public void setWorkPhone(String workPhone) {
-		this.workPhone = workPhone;
-	}
+    public void setBillingNo(String billingNo) {
+        this.billingNo = billingNo;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getWorkPhone() {
+        return workPhone;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
+    }
 
-	public String getTeam() {
-		return team;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setTeam(String team) {
-		this.team = team;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getTeam() {
+        return team;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setTeam(String team) {
+        this.team = team;
+    }
 
-	public String getLastName() {
-		// sanitize extra white space.  There are lots of areas in the
-		// code that concat and delimit full names by a single space.
-		if(lastName != null) {
-			lastName = lastName.trim();
-		}
-		return lastName;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	/**
-    * @deprecated no longer is use 2010-04-23, marked for future removal
-	 */
-	public String getProviderType() {
-		return providerType;
-	}
+    public String getLastName() {
+        // sanitize extra white space.  There are lots of areas in the
+        // code that concat and delimit full names by a single space.
+        if (lastName != null) {
+            lastName = lastName.trim();
+        }
+        return lastName;
+    }
 
-	public void setProviderType(String providerType) {
-		this.providerType = providerType;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getSex() {
-		return sex;
-	}
+    /**
+     * @deprecated no longer is use 2010-04-23, marked for future removal
+     */
+    public String getProviderType() {
+        return providerType;
+    }
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public void setProviderType(String providerType) {
+        this.providerType = providerType;
+    }
 
-	public String getOhipNo() {
-		return ohipNo;
-	}
+    public String getSex() {
+        return sex;
+    }
 
-	public void setOhipNo(String ohipNo) {
-		this.ohipNo = ohipNo;
-	}
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-	public String getSpecialty() {
-		return specialty;
-	}
+    public String getOhipNo() {
+        return ohipNo;
+    }
 
-	public void setSpecialty(String specialty) {
-		this.specialty = specialty;
-	}
+    public void setOhipNo(String ohipNo) {
+        this.ohipNo = ohipNo;
+    }
 
-	public java.util.Date getDob() {
-		return dob;
-	}
+    public String getSpecialty() {
+        return specialty;
+    }
 
-	public void setDob(java.util.Date dob) {
-		this.dob = dob;
-	}
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
 
-	public String getHsoNo() {
-		return hsoNo;
-	}
+    public java.util.Date getDob() {
+        return dob;
+    }
 
-	public void setHsoNo(String hsoNo) {
-		this.hsoNo = hsoNo;
-	}
+    public void setDob(java.util.Date dob) {
+        this.dob = dob;
+    }
 
-	public String getProviderActivity() {
-		return providerActivity;
-	}
+    public String getHsoNo() {
+        return hsoNo;
+    }
 
-	public void setProviderActivity(String providerActivity) {
-		this.providerActivity = providerActivity;
-	}
+    public void setHsoNo(String hsoNo) {
+        this.hsoNo = hsoNo;
+    }
 
-	public String getFirstName() {
-		// sanitize extra white space.  There are lots of areas in the
-		// code that concat and delimit full names by a single space.
-		if(firstName != null) {
-			firstName = firstName.trim();
-		}
-		return firstName;
-	}
+    public String getProviderActivity() {
+        return providerActivity;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setProviderActivity(String providerActivity) {
+        this.providerActivity = providerActivity;
+    }
 
-	public String getRmaNo() {
-		return rmaNo;
-	}
+    public String getFirstName() {
+        // sanitize extra white space.  There are lots of areas in the
+        // code that concat and delimit full names by a single space.
+        if (firstName != null) {
+            firstName = firstName.trim();
+        }
+        return firstName;
+    }
 
-	public void setRmaNo(String rmaNo) {
-		this.rmaNo = rmaNo;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getRmaNo() {
+        return rmaNo;
+    }
+
+    public void setRmaNo(String rmaNo) {
+        this.rmaNo = rmaNo;
+    }
 
     public String getEmail() {
-    	return email;
+        return email;
     }
 
-	public void setEmail(String email) {
-    	this.email = email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-	public Date getSignedConfidentiality() {
+    public Date getSignedConfidentiality() {
         return this.SignedConfidentiality;
     }
 
-    public void setSignedConfidentiality( Date SignedConfidentiality ) {
+    public void setSignedConfidentiality(Date SignedConfidentiality) {
         this.SignedConfidentiality = SignedConfidentiality;
     }
 
-	public String getTitle() {
-    	return title;
+    public String getTitle() {
+        return title;
     }
 
-	public void setTitle(String title) {
-    	this.title = title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
-	public String getLastUpdateUser() {
-    	return lastUpdateUser;
+    public String getLastUpdateUser() {
+        return lastUpdateUser;
     }
 
-	public void setLastUpdateUser(String lastUpdateUser) {
-    	this.lastUpdateUser = lastUpdateUser;
+    public void setLastUpdateUser(String lastUpdateUser) {
+        this.lastUpdateUser = lastUpdateUser;
     }
 
-	public Date getLastUpdateDate() {
-    	return lastUpdateDate;
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
     }
-        public String getSupervisor() {
-            return this.supervisor;
+
+    public String getSupervisor() {
+        return this.supervisor;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public ComparatorName ComparatorName() {
+        return new ComparatorName();
+    }
+
+    @Override
+    public boolean equals(Object provider) {
+
+        if (this.getProviderNo() == null) {
+            // do nothing, warn everyone.
+            MiscUtils.getLogger().warn(OBJECT_NOT_YET_PERISTED, new Exception());
         }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-    	this.lastUpdateDate = lastUpdateDate;
+        return (provider != null
+                && provider instanceof Provider
+                && this.getProviderNo() != null
+                && this.getProviderNo().equals(((Provider) provider).providerNo));
+
     }
-        public void setSupervisor( String supervisor ) {
-            this.supervisor = supervisor;
+
+    @Override
+    public int hashCode() {
+        if (Integer.MIN_VALUE == this.hashCode) {
+            if (null == this.getProviderNo()) {
+                // do nothing, warn everyone.
+                MiscUtils.getLogger().warn(OBJECT_NOT_YET_PERISTED, new Exception());
+            } else {
+                String hashStr = this.getClass().getName() + ":" + this.getProviderNo().hashCode();
+                this.hashCode = hashStr.hashCode();
+            }
         }
-
-	public ComparatorName ComparatorName() {
-		return new ComparatorName();
-	}
-
-	@Override
-	public boolean equals( Object provider ) {
-		
-		if( this.getProviderNo() == null ) {
-			// do nothing, warn everyone.
-			MiscUtils.getLogger().warn( OBJECT_NOT_YET_PERISTED, new Exception() );
-		}
-		
-		return ( provider != null
-				&& provider instanceof Provider
-				&& this.getProviderNo() != null 
-				&& this.getProviderNo().equals( ( (Provider) provider ).providerNo ) ); 
-
-	}
-	
-	@Override
-	public int hashCode() {
-		if ( Integer.MIN_VALUE == this.hashCode ) {			
-			if ( null == this.getProviderNo() ) {
-				// do nothing, warn everyone.
-				MiscUtils.getLogger().warn(OBJECT_NOT_YET_PERISTED, new Exception());
-			} else {
-				String hashStr = this.getClass().getName() + ":" + this.getProviderNo().hashCode();
-				this.hashCode = hashStr.hashCode();
-			}			
-		}
-		return this.hashCode;
-	}
-
-	public class ComparatorName implements Comparator<Provider>, Serializable {
-
-		public int compare(Provider o1, Provider o2) {
-			Provider bp1 = o1;
-			Provider bp2 = o2;
-			String lhs = bp1.getLastName() + bp1.getFirstName();
-			String rhs = bp2.getLastName() + bp2.getFirstName();
-
-			return lhs.compareTo(rhs);
-		}
-	}
-
-	public int compareTo(Provider o) {
-		if (providerNo==null) return(0);
-	    return(providerNo.compareTo(o.providerNo));
+        return this.hashCode;
     }
 
-	@Override
-	public String getId() {
-		return providerNo;
-	}
+    public class ComparatorName implements Comparator<Provider>, Serializable {
+
+        public int compare(Provider o1, Provider o2) {
+            Provider bp1 = o1;
+            Provider bp2 = o2;
+            String lhs = bp1.getLastName() + bp1.getFirstName();
+            String rhs = bp2.getLastName() + bp2.getFirstName();
+
+            return lhs.compareTo(rhs);
+        }
+    }
+
+    public int compareTo(Provider o) {
+        if (providerNo == null) return (0);
+        return (providerNo.compareTo(o.providerNo));
+    }
+
+    @Override
+    public String getId() {
+        return providerNo;
+    }
 
 }

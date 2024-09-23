@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,28 +24,27 @@
 --%>
 
 
-
-<%@ include file="/survey/taglibs.jsp"%>
+<%@ include file="/survey/taglibs.jsp" %>
 <html:html>
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>Survey Manager</title>
-</head>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title>Survey Manager</title>
+    </head>
 
-<body>
-<html:form action="/SurveyManager">
-	<input type="hidden" name="method" value="save" />
-	<html:hidden property="survey.surveyId" />
-	<h3>Please enter details</h3>
-	<br />
-	<table>
-		<tr>
-			<td>Description:</td>
-			<td><html:text property="survey.description" /></td>
-		</tr>
-	</table>
-	<html:submit value="save" />
-	<html:cancel />
-</html:form>
-</body>
+    <body>
+    <html:form action="/SurveyManager">
+        <input type="hidden" name="method" value="save"/>
+        <html:hidden property="survey.surveyId"/>
+        <h3>Please enter details</h3>
+        <br/>
+        <table>
+            <tr>
+                <td>Description:</td>
+                <td><html:text property="survey.description"/></td>
+            </tr>
+        </table>
+        <html:submit value="save"/>
+        <html:cancel/>
+    </html:form>
+    </body>
 </html:html>

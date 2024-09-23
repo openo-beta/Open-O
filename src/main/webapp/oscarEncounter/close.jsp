@@ -24,23 +24,23 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <html:html lang="en">
-<head>
+    <head>
 
-<script type="text/javascript">
-    if (window.opener != null && !window.opener.closed && window.opener.location.href.includes("formlist.jsp")) {
-        window.opener.location.reload();
-    }
-    
-       window.close();
-</script>
-</head>
-<body>
-<bean:message key="oscarEncounter.close.msgClick1" />
-<a href="javascript:window.close();"><bean:message
-	key="oscarEncounter.close.btnHere" /></a>
-</body>
+        <script type="text/javascript">
+            if (window.opener != null && !window.opener.closed && window.opener.location.href.includes("formlist.jsp")) {
+                window.opener.location.reload();
+            }
+
+            window.close();
+        </script>
+    </head>
+    <body>
+    <bean:message key="oscarEncounter.close.msgClick1"/>
+    <a href="javascript:window.close();"><bean:message
+            key="oscarEncounter.close.btnHere"/></a>
+    </body>
 </html:html>

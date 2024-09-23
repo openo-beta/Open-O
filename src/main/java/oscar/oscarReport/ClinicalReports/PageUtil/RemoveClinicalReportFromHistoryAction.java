@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,24 +46,25 @@ public class RemoveClinicalReportFromHistoryAction extends Action {
     public RemoveClinicalReportFromHistoryAction() {
     }
 
-    public ActionForward execute(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
         String id = request.getParameter("id");
         int nid = -1;
-        try{
+        try {
             nid = Integer.parseInt(id);
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
 
         //Could be a concurrency issue here if they opened up more than one report screen
-        ArrayList<Integer> arrList =  (ArrayList<Integer>)  request.getSession().getAttribute("ClinicalReports");
-        if (arrList != null && nid != -1){
-           arrList.remove(Integer.parseInt(id));
+        ArrayList<Integer> arrList = (ArrayList<Integer>) request.getSession().getAttribute("ClinicalReports");
+        if (arrList != null && nid != -1) {
+            arrList.remove(Integer.parseInt(id));
         }
-        if (arrList != null && arrList.size() == 0){
+        if (arrList != null && arrList.size() == 0) {
             request.getSession().removeAttribute("ClinicalReports");
         }
         //request.getSession().setAttribute("ClinicalReports",arrList);
 
         return mapping.findForward("success");
-     }
+    }
 }

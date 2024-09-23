@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NoteManager {
-    
+
     private static Logger logger = MiscUtils.getLogger();
 
     @Autowired
@@ -35,36 +35,36 @@ public class NoteManager {
     @Autowired
     private IssueDAO issueDAO;
 
-    public List<NoteTo1> getCppNotes(LoggedInInfo loggedInInfo, Integer demographicNo){
+    public List<NoteTo1> getCppNotes(LoggedInInfo loggedInInfo, Integer demographicNo) {
         List<CaseManagementNote> notes = new ArrayList<>(caseManagementNoteDAO.findNotesByDemographicAndIssueCode(demographicNo, CppCode.toArray()));
         List<NoteTo1> noteTo1s = new ArrayList<>();
-        for(CaseManagementNote note : notes){
+        for (CaseManagementNote note : notes) {
             noteTo1s.add(convertNote(loggedInInfo, note));
         }
         return noteTo1s;
     }
 
-    public List<NoteTo1> getActiveCppNotes(LoggedInInfo loggedInInfo, Integer demographicNo){
+    public List<NoteTo1> getActiveCppNotes(LoggedInInfo loggedInInfo, Integer demographicNo) {
         String[] issueIds = getIssueIds(null);
         List<CaseManagementNote> notes = new ArrayList<>(caseManagementNoteDAO.getActiveNotesByDemographic(String.valueOf(demographicNo), issueIds));
         List<NoteTo1> noteTo1s = new ArrayList<>();
-        for(CaseManagementNote note : notes){
+        for (CaseManagementNote note : notes) {
             noteTo1s.add(convertNote(loggedInInfo, note));
         }
         return noteTo1s;
     }
 
-    public List<NoteTo1> getActiveCppNotes(LoggedInInfo loggedInInfo, Integer demographicNo, String[] newCppCodes){
+    public List<NoteTo1> getActiveCppNotes(LoggedInInfo loggedInInfo, Integer demographicNo, String[] newCppCodes) {
         String[] issueIds = getIssueIds(newCppCodes);
         List<CaseManagementNote> notes = new ArrayList<>(caseManagementNoteDAO.getActiveNotesByDemographic(String.valueOf(demographicNo), issueIds));
         List<NoteTo1> noteTo1s = new ArrayList<>();
-        for(CaseManagementNote note : notes){
+        for (CaseManagementNote note : notes) {
             noteTo1s.add(convertNote(loggedInInfo, note));
         }
         return noteTo1s;
     }
 
-    public NoteTo1 convertNote(LoggedInInfo loggedInInfo, CaseManagementNote caseManagementNote){
+    public NoteTo1 convertNote(LoggedInInfo loggedInInfo, CaseManagementNote caseManagementNote) {
         NoteTo1 note = new NoteTo1();
         note.setNoteId(caseManagementNote.getId().intValue());
         note.setIsSigned(caseManagementNote.isSigned());
@@ -85,57 +85,57 @@ public class NoteManager {
         note.setPosition(caseManagementNote.getPosition());
         note.setAppointmentNo(caseManagementNote.getAppointmentNo());
         note.setCpp(false);
-        
+
         //get all note extra values	
         List<CaseManagementNoteExt> lcme = new ArrayList<CaseManagementNoteExt>();
-        lcme.addAll(caseManagementManager.getExtByNote( caseManagementNote.getId() ));
+        lcme.addAll(caseManagementManager.getExtByNote(caseManagementNote.getId()));
 
         NoteExtTo1 noteExt = new NoteExtTo1();
-        noteExt.setNoteId( caseManagementNote.getId() );
+        noteExt.setNoteId(caseManagementNote.getId());
 
-        for(CaseManagementNoteExt l : lcme){
-            logger.debug("NOTE EXT KEY:" +l.getKeyVal() + l.getValue());
+        for (CaseManagementNoteExt l : lcme) {
+            logger.debug("NOTE EXT KEY:" + l.getKeyVal() + l.getValue());
 
-            if(l.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)){
+            if (l.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
                 noteExt.setStartDate(l.getDateValueStr());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
                 noteExt.setResolutionDate(l.getDateValueStr());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.PROCEDUREDATE)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.PROCEDUREDATE)) {
                 noteExt.setProcedureDate(l.getDateValueStr());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.AGEATONSET)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.AGEATONSET)) {
                 noteExt.setAgeAtOnset(l.getValue());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.TREATMENT)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.TREATMENT)) {
                 noteExt.setTreatment(l.getValue());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.PROBLEMSTATUS)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.PROBLEMSTATUS)) {
                 noteExt.setProblemStatus(l.getValue());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.EXPOSUREDETAIL)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.EXPOSUREDETAIL)) {
                 noteExt.setExposureDetail(l.getValue());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.RELATIONSHIP)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.RELATIONSHIP)) {
                 noteExt.setRelationship(l.getValue());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.LIFESTAGE)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.LIFESTAGE)) {
                 noteExt.setLifeStage(l.getValue());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.HIDECPP)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.HIDECPP)) {
                 noteExt.setHideCpp(l.getValue());
-            }else if(l.getKeyVal().equals(CaseManagementNoteExt.PROBLEMDESC)){
+            } else if (l.getKeyVal().equals(CaseManagementNoteExt.PROBLEMDESC)) {
                 noteExt.setProblemDesc(l.getValue());
             }
 
         }
-        
+
         List<CaseManagementIssue> cmIssues = new ArrayList<CaseManagementIssue>(caseManagementNote.getIssues());
-        
+
         StringBuilder summaryCodes = new StringBuilder();
-        for(CaseManagementIssue issue : cmIssues) {
-            if(isCppCode(issue)) {
+        for (CaseManagementIssue issue : cmIssues) {
+            if (isCppCode(issue)) {
                 note.setCpp(true);
             }
-            summaryCodes.append((summaryCodes.toString().isEmpty()? "" : ", ") + issue.getIssue().getCode());
+            summaryCodes.append((summaryCodes.toString().isEmpty() ? "" : ", ") + issue.getIssue().getCode());
         }
-        
+
         note.setSummaryCode(summaryCodes.toString());
         note.setNoteExt(noteExt);
         note.setAssignedIssues(new CaseManagementIssueConverter().getAllAsTransferObjects(loggedInInfo, cmIssues));
-        
+
         return note;
     }
 
@@ -145,7 +145,7 @@ public class NoteManager {
 
     public String[] getIssueIds(String[] newCppCodes) {
         List<Issue> issues = new ArrayList<>();
-        if (newCppCodes != null && newCppCodes.length > 0) { 
+        if (newCppCodes != null && newCppCodes.length > 0) {
             issues = issueDAO.findIssueByCode(newCppCodes);
         } else {
             issues = issueDAO.findIssueByCode(CppCode.toArray());
@@ -157,6 +157,6 @@ public class NoteManager {
         }
 
         return issueIdList.toArray(new String[issueIdList.size()]);
-    } 
-    
+    }
+
 }

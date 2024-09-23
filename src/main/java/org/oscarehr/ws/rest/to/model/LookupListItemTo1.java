@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,91 +31,90 @@ import java.util.Date;
 public class LookupListItemTo1 implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Integer id;
 
-	private Integer lookupListId;
-	
-	private String value;
-	
-	private String label;
-	
-	private boolean active;
-	
-	private int displayOrder ;
-	
-	private String createdBy;
-	
-	private Date dateCreated ;
+    private Integer lookupListId;
 
-	public Integer getId() {
-		return id;
-	}
+    private String value;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String label;
 
-	public Integer getLookupListId() {
-		return lookupListId;
-	}
+    private boolean active;
 
-	public void setLookupListId(Integer lookupListId) {
-		this.lookupListId = lookupListId;
-	}
+    private int displayOrder;
 
-	public String getValue() {
-		return value;
-	}
+    private String createdBy;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    private Date dateCreated;
 
-	public String getLabel() {
-		return label;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public Integer getLookupListId() {
+        return lookupListId;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setLookupListId(Integer lookupListId) {
+        this.lookupListId = lookupListId;
+    }
 
-	public int getDisplayOrder() {
-		return displayOrder;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setDisplayOrder(int displayOrder) {
-		this.displayOrder = displayOrder;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
-	
+    public int getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(int displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
 
 }

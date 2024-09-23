@@ -26,15 +26,19 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 
 <script>
-function newWindow(url) {
-    newwindow=window.open(url,'administration','height=700,width=1000,scrollbars=1');
-    if (window.focus) {newwindow.focus()}
-    return false;
-}
+    function newWindow(url) {
+        newwindow = window.open(url, 'administration', 'height=700,width=1000,scrollbars=1');
+        if (window.focus) {
+            newwindow.focus()
+        }
+        return false;
+    }
 
-newWindow('<%=request.getContextPath()%>/administration/');
+    newWindow('<%=request.getContextPath()%>/administration/');
 </script>
-<p class="info"><a href="javascript:void()" onClick="newWindow('<%=request.getContextPath()%>/administration/');return false"><bean:message key="admin.panel" bundle="ui"/></a> <bean:message key="admin.popupMessage" bundle="ui"/></p>
+<p class="info"><a href="javascript:void()"
+                   onClick="newWindow('<%=request.getContextPath()%>/administration/');return false"><bean:message
+        key="admin.panel" bundle="ui"/></a> <bean:message key="admin.popupMessage" bundle="ui"/></p>
 
 <p><a href="#/dashboard"><bean:message key="global.goToDashboard" bundle="ui"/></a></p>
 

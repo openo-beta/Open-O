@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,75 +51,75 @@ import oscar.oscarLab.ca.all.util.Utilities;
 
 public class MDSHandler implements MessageHandler {
 
-	Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao)SpringUtils.getBean(Hl7TextInfoDao.class);
+    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
-	private Integer labNo = null;
-	
-	public Integer getLastLabNo() {
-		return labNo;
-	}
+    private Integer labNo = null;
 
-	public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
+    public Integer getLastLabNo() {
+        return labNo;
+    }
 
-		int i = 0;
-		RouteReportResults routeResults;
-		try {
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
 
-			StringBuilder audit = new StringBuilder();
-			ArrayList<String> messages = Utilities.separateMessages(fileName);
-			for (i = 0; i < messages.size(); i++) {
-				String msg = messages.get(i);
+        int i = 0;
+        RouteReportResults routeResults;
+        try {
+
+            StringBuilder audit = new StringBuilder();
+            ArrayList<String> messages = Utilities.separateMessages(fileName);
+            for (i = 0; i < messages.size(); i++) {
+                String msg = messages.get(i);
 				/*if(isDuplicate(loggedInInfo,msg)) {
 					continue;
 				}*/
-				routeResults = new RouteReportResults();
-				String auditLine = MessageUploader.routeReport(loggedInInfo, serviceName, "MDS", msg, fileId, routeResults) + "\n";
-				
-				oscar.oscarLab.ca.all.parsers.MessageHandler msgHandler = Factory.getHandler(String.valueOf(routeResults.segmentId));
-				if( msgHandler == null ) {
-					MessageUploader.clean(fileId);
-					logger.error("Saved lab but could not parse base64 value");
-					return null;
-				}
-				
-				labNo = routeResults.segmentId;
-				
-				audit.append(auditLine);
+                routeResults = new RouteReportResults();
+                String auditLine = MessageUploader.routeReport(loggedInInfo, serviceName, "MDS", msg, fileId, routeResults) + "\n";
 
-			}
-			logger.info("Parsed OK");
+                oscar.oscarLab.ca.all.parsers.MessageHandler msgHandler = Factory.getHandler(String.valueOf(routeResults.segmentId));
+                if (msgHandler == null) {
+                    MessageUploader.clean(fileId);
+                    logger.error("Saved lab but could not parse base64 value");
+                    return null;
+                }
 
-			if( audit.length() == 0 ) {
-				return ("success");
-			}
-			return (audit.toString());
+                labNo = routeResults.segmentId;
 
-		} catch (Exception e) {
-			MessageUploader.clean(fileId);
-			logger.error("Could not parse message", e);
-			return null;
-		}
+                audit.append(auditLine);
 
-	}
+            }
+            logger.info("Parsed OK");
 
-	private boolean isDuplicate(LoggedInInfo loggedInInfo,String msg) {
-		//OLIS requirements - need to see if this is a duplicate
-		oscar.oscarLab.ca.all.parsers.MessageHandler h = Factory.getHandler("MDS", msg);
-		//if final		
-		if(h.getOrderStatus().equals("F")) {
-			String fullAcc = h.getAccessionNum();
-			
-			//do we have this?
-			List<Hl7TextInfo> dupResults = hl7TextInfoDao.searchByAccessionNumber(fullAcc);
-			
-			if(!dupResults.isEmpty()) {
-					//if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
-					OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + fullAcc + "\n" + msg);
-							return true;
-					//}
-			}
-		}
-		return false;	
-	}
+            if (audit.length() == 0) {
+                return ("success");
+            }
+            return (audit.toString());
+
+        } catch (Exception e) {
+            MessageUploader.clean(fileId);
+            logger.error("Could not parse message", e);
+            return null;
+        }
+
+    }
+
+    private boolean isDuplicate(LoggedInInfo loggedInInfo, String msg) {
+        //OLIS requirements - need to see if this is a duplicate
+        oscar.oscarLab.ca.all.parsers.MessageHandler h = Factory.getHandler("MDS", msg);
+        //if final
+        if (h.getOrderStatus().equals("F")) {
+            String fullAcc = h.getAccessionNum();
+
+            //do we have this?
+            List<Hl7TextInfo> dupResults = hl7TextInfoDao.searchByAccessionNumber(fullAcc);
+
+            if (!dupResults.isEmpty()) {
+                //if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
+                OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + fullAcc + "\n" + msg);
+                return true;
+                //}
+            }
+        }
+        return false;
+    }
 }

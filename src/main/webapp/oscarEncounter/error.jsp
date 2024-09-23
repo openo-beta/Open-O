@@ -24,19 +24,19 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title><bean:message key="oscarEncounter.error.title" /></title>
-</head>
-<body style="width: 600px">
-<h2><bean:message key="oscarEncounter.error.msgExpired" /></h2>
-<p><bean:message key="oscarEncounter.error.msgSessionFailed" />
-<p><input type="button"
-	value="<bean:message key="global.btnClose"/>" onclick="window.close();">
-</body>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title><bean:message key="oscarEncounter.error.title"/></title>
+    </head>
+    <body style="width: 600px">
+    <h2><bean:message key="oscarEncounter.error.msgExpired"/></h2>
+    <p><bean:message key="oscarEncounter.error.msgSessionFailed"/>
+    <p><input type="button"
+              value="<bean:message key="global.btnClose"/>" onclick="window.close();">
+    </body>
 </html:html>

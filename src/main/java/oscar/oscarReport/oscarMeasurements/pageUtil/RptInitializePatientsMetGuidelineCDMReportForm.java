@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,76 +42,94 @@ public final class RptInitializePatientsMetGuidelineCDMReportForm extends Action
     public Object getValue(String key) {
         return values.get(key);
     }
-    
+
     private String[] patientSeenCheckbox;
-    public String[] getPatientSeenCheckbox(){
+
+    public String[] getPatientSeenCheckbox() {
         return patientSeenCheckbox;
     }
-    public void setPatientSeenCheckbox(String[] patientSeenCheckbox){
-        this.patientSeenCheckbox=patientSeenCheckbox;
+
+    public void setPatientSeenCheckbox(String[] patientSeenCheckbox) {
+        this.patientSeenCheckbox = patientSeenCheckbox;
     }
-    
+
     private String startDateA;
-    public String getStartDateA(){
+
+    public String getStartDateA() {
         return startDateA;
     }
-    public void setStartDateA(String startDateA){
+
+    public void setStartDateA(String startDateA) {
         this.startDateA = startDateA;
     }
-    
+
     private String endDateA;
-    public String getEndDateA(){
+
+    public String getEndDateA() {
         return endDateA;
     }
-    public void setEndDateA(String endDateA){
+
+    public void setEndDateA(String endDateA) {
         this.endDateA = endDateA;
-    }    
-    
+    }
+
     private String[] guidelineCheckbox;
-    public String[] getGuidelineCheckbox(){
+
+    public String[] getGuidelineCheckbox() {
         return guidelineCheckbox;
     }
-    public void setGuidelineCheckbox(String[] guidelineCheckbox){
+
+    public void setGuidelineCheckbox(String[] guidelineCheckbox) {
         this.guidelineCheckbox = guidelineCheckbox;
     }
-    
+
     private String[] startDateB;
-    public String[] getStartDateB(){
+
+    public String[] getStartDateB() {
         return startDateB;
     }
-    public void setStartDateB(String[] startDateB){
+
+    public void setStartDateB(String[] startDateB) {
         this.startDateB = startDateB;
     }
-    
+
     private String[] endDateB;
-        public String[] getEndDateB(){
+
+    public String[] getEndDateB() {
         return endDateB;
     }
-    public void setEndDateB(String[] endDateB){
+
+    public void setEndDateB(String[] endDateB) {
         this.endDateB = endDateB;
     }
-    
+
     private String[] idB;
-        public String[] getIdB(){
+
+    public String[] getIdB() {
         return idB;
     }
-    public void setIdB(String[] idB){
+
+    public void setIdB(String[] idB) {
         this.idB = idB;
     }
-    
+
     private String[] guildlineB;
-        public String[] getGuidelineB(){
+
+    public String[] getGuidelineB() {
         return guildlineB;
     }
-    public void setGuidelineB(String[] guildlineB){
+
+    public void setGuidelineB(String[] guildlineB) {
         this.guildlineB = guildlineB;
     }
-    
+
     private String aboveBelow;
-        public String getAboveBelow(){
+
+    public String getAboveBelow() {
         return aboveBelow;
     }
-    public void setAboveBelow(String aboveBelow){
+
+    public void setAboveBelow(String aboveBelow) {
         this.aboveBelow = aboveBelow;
     }
 
@@ -136,5 +154,5 @@ public final class RptInitializePatientsMetGuidelineCDMReportForm extends Action
         return errors;
     }
     */
-    
+
 }

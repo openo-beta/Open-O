@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -25,49 +25,49 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 
-public class CreateLabelTDISAction extends Action{
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	
-	public ActionForward execute (ActionMapping mapping,ActionForm form, HttpServletRequest request, HttpServletResponse response){
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
-			throw new SecurityException("missing required security object (_lab)");
-		}
-		
-		CreateLabelTDISForm frm = (CreateLabelTDISForm) form;
-		String label = frm.getLabel();//request.getParameter("label");
-		logger.info("Label before db insert ="+label);
-		String lab_no = frm.getLab_no();//request.getParameter("lab_no");
-		
-		String ajaxcall=request.getParameter("ajaxcall");
-		
-		if (label==null || label.equals("")) {
-			request.setAttribute("error", "Please enter a label");
-			
-		}
-		//response.setContentType("application/json");
-		Hl7TextInfoDao hl7dao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
+public class CreateLabelTDISAction extends Action {
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-		try {
-			
-			int labNum = Integer.parseInt(lab_no);
-			hl7dao.createUpdateLabelByLabNumber(label, labNum);
-			
-			logger.info("Label created successfully.");
-			
-			
-		} catch (Exception e){
-			logger.error("Error inserting label into hl7TextInfo" + e);
-			request.setAttribute("error", "There was an error creating a label.");
-			
-		}
-		
-		logger.info("Label ="+label);
-		label = StringEscapeUtils.escapeJavaScript(label);
-		if( ajaxcall != null && !"null".equalsIgnoreCase(ajaxcall)) {
-			return null;
-		}
-		return mapping.findForward("complete");
-	}
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
+            throw new SecurityException("missing required security object (_lab)");
+        }
+
+        CreateLabelTDISForm frm = (CreateLabelTDISForm) form;
+        String label = frm.getLabel();//request.getParameter("label");
+        logger.info("Label before db insert =" + label);
+        String lab_no = frm.getLab_no();//request.getParameter("lab_no");
+
+        String ajaxcall = request.getParameter("ajaxcall");
+
+        if (label == null || label.equals("")) {
+            request.setAttribute("error", "Please enter a label");
+
+        }
+        //response.setContentType("application/json");
+        Hl7TextInfoDao hl7dao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
+
+        try {
+
+            int labNum = Integer.parseInt(lab_no);
+            hl7dao.createUpdateLabelByLabNumber(label, labNum);
+
+            logger.info("Label created successfully.");
+
+
+        } catch (Exception e) {
+            logger.error("Error inserting label into hl7TextInfo" + e);
+            request.setAttribute("error", "There was an error creating a label.");
+
+        }
+
+        logger.info("Label =" + label);
+        label = StringEscapeUtils.escapeJavaScript(label);
+        if (ajaxcall != null && !"null".equalsIgnoreCase(ajaxcall)) {
+            return null;
+        }
+        return mapping.findForward("complete");
+    }
 
 }

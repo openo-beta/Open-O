@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,105 +33,105 @@ import org.oscarehr.caisi_integrator.util.MiscUtils;
 
 public class EChartNoteEntry {
 
-	private Object id;
-	private Date date;
-	private String providerNo;
-	private int programId;
-	private String role;
-	private String type;
-	
+    private Object id;
+    private Date date;
+    private String providerNo;
+    private int programId;
+    private String role;
+    private String type;
 
-	private List<Integer> issueIds = new ArrayList<Integer>();
 
-	public Object getId() {
-    	return id;
+    private List<Integer> issueIds = new ArrayList<Integer>();
+
+    public Object getId() {
+        return id;
     }
 
-	public void setId(Object id) {
-    	this.id = id;
+    public void setId(Object id) {
+        this.id = id;
     }
 
-	public Date getDate() {
-    	return date;
+    public Date getDate() {
+        return date;
     }
 
-	public void setDate(Date date) {
-    	this.date = date;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public String getRole() {
-    	return role;
+    public String getRole() {
+        return role;
     }
 
-	public void setRole(String role) {
-    	this.role = role;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-	public List<Integer> getIssueIds() {
-    	return issueIds;
+    public List<Integer> getIssueIds() {
+        return issueIds;
     }
 
-	public void setIssueIds(List<Integer> issueIds) {
-    	this.issueIds = issueIds;
+    public void setIssueIds(List<Integer> issueIds) {
+        this.issueIds = issueIds;
     }
 
-	public int getProgramId() {
-    	return programId;
+    public int getProgramId() {
+        return programId;
     }
 
-	public void setProgramId(int programId) {
-    	this.programId = programId;
-    }
-	
-
-	public String getType() {
-    	return type;
+    public void setProgramId(int programId) {
+        this.programId = programId;
     }
 
-	public void setType(String type) {
-    	this.type = type;
+
+    public String getType() {
+        return type;
     }
 
-	public static Comparator<EChartNoteEntry> getDateComparator() {
-		return new Comparator<EChartNoteEntry>() {
-			public int compare(EChartNoteEntry note1, EChartNoteEntry note2) {
-				if (note1 == null || note2 == null) {
-					return 0;
-				}
-				
-				if (note1.getDate() == null || note2.getDate() == null) {
-					MiscUtils.getLogger().warn("note date is null during compare" + note1.getId() + ":" + note2.getId());
-					return 0;
-				}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-				return note1.getDate().compareTo(note2.getDate());
-			}
-		};
+    public static Comparator<EChartNoteEntry> getDateComparator() {
+        return new Comparator<EChartNoteEntry>() {
+            public int compare(EChartNoteEntry note1, EChartNoteEntry note2) {
+                if (note1 == null || note2 == null) {
+                    return 0;
+                }
 
-	}
-	
-	public static Comparator<EChartNoteEntry> getDateComparatorDesc() {
-		return new Comparator<EChartNoteEntry>() {
-			public int compare(EChartNoteEntry note1, EChartNoteEntry note2) {
-				if (note1 == null || note2 == null) {
-					return 0;
-				}
+                if (note1.getDate() == null || note2.getDate() == null) {
+                    MiscUtils.getLogger().warn("note date is null during compare" + note1.getId() + ":" + note2.getId());
+                    return 0;
+                }
 
-				return note2.getDate().compareTo(note1.getDate());
-			}
-		};
+                return note1.getDate().compareTo(note2.getDate());
+            }
+        };
 
-	}
-	
-	public String toString() {
-		return "NoteEntry:" + getType() + ":" + getId() + ":" + getDate();
-	}
+    }
+
+    public static Comparator<EChartNoteEntry> getDateComparatorDesc() {
+        return new Comparator<EChartNoteEntry>() {
+            public int compare(EChartNoteEntry note1, EChartNoteEntry note2) {
+                if (note1 == null || note2 == null) {
+                    return 0;
+                }
+
+                return note2.getDate().compareTo(note1.getDate());
+            }
+        };
+
+    }
+
+    public String toString() {
+        return "NoteEntry:" + getType() + ":" + getId() + ":" + getDate();
+    }
 }

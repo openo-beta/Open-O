@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,7 +37,7 @@ import org.apache.struts.action.ActionMapping;
 public final class RxAddAllergyForm extends ActionForm {
 
     String reactionDescription = null;
-    String name =null;
+    String name = null;
     String type = null;
     String startDate = null;
     String ageOfOnset = null;
@@ -45,39 +45,45 @@ public final class RxAddAllergyForm extends ActionForm {
     String severityOfReaction = null;
     String onSetOfReaction = null;
     String allergyToArchive = null;
-	String ID = null; //drugref_id
-	String nonDrug = null;
-	    
+    String ID = null; //drugref_id
+    String nonDrug = null;
+
     public String getLifeStage() {
-    	return lifeStage;
-    }
-	public void setLifeStage(String lifeStage) {
-    	this.lifeStage = lifeStage;
+        return lifeStage;
     }
 
-	
+    public void setLifeStage(String lifeStage) {
+        this.lifeStage = lifeStage;
+    }
+
+
     ///
-    public String getReactionDescription(){
+    public String getReactionDescription() {
         return (this.reactionDescription);
     }
-    public void setReactionDescription(String reactionDescription){
+
+    public void setReactionDescription(String reactionDescription) {
         this.reactionDescription = reactionDescription;
     }
+
     ///
-    public String getName(){
+    public String getName() {
         return (this.name);
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
+
     ///
-    public String getType(){
+    public String getType() {
         return (this.type);
     }
-    public void setType(String type){
+
+    public void setType(String type) {
         this.type = type;
     }
-   
+
 
     /**
      * Reset all properties to their default values.
@@ -85,9 +91,8 @@ public final class RxAddAllergyForm extends ActionForm {
      * @param mapping The mapping used to select this instance
      * @param request The servlet request we are processing
      */
-    public void reset(ActionMapping mapping, HttpServletRequest request)
-    {
-      
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+
     }
 
 
@@ -109,84 +114,86 @@ public final class RxAddAllergyForm extends ActionForm {
         return errors;
 
     }
-    
+
     public String getStartDate() {
-	return startDate;
+        return startDate;
     }
-    
+
     public void setStartDate(String startDate) {
-	this.startDate = startDate;
+        this.startDate = startDate;
     }
-    
-        /**
+
+    /**
      * Getter for property ageOfOnset.
      * @return Value of property ageOfOnset.
      */
     public java.lang.String getAgeOfOnset() {
-       return ageOfOnset;
+        return ageOfOnset;
     }
-    
+
     /**
      * Setter for property ageOfOnset.
      * @param ageOfOnset New value of property ageOfOnset.
      */
     public void setAgeOfOnset(java.lang.String ageOfOnset) {
-       this.ageOfOnset = ageOfOnset;
+        this.ageOfOnset = ageOfOnset;
     }
-    
+
     /**
      * Getter for property severityOfReaction.
      * @return Value of property severityOfReaction.
      */
     public java.lang.String getSeverityOfReaction() {
-       return severityOfReaction;
+        return severityOfReaction;
     }
-    
+
     /**
      * Setter for property severityOfReaction.
      * @param severityOfReaction New value of property severityOfReaction.
      */
     public void setSeverityOfReaction(java.lang.String severityOfReaction) {
-       this.severityOfReaction = severityOfReaction;
+        this.severityOfReaction = severityOfReaction;
     }
-    
+
     /**
      * Getter for property onSetOfReaction.
      * @return Value of property onSetOfReaction.
      */
     public java.lang.String getOnSetOfReaction() {
-       return onSetOfReaction;
+        return onSetOfReaction;
     }
-    
+
     /**
      * Setter for property onSetOfReaction.
      * @param onSetOfReaction New value of property onSetOfReaction.
      */
     public void setOnSetOfReaction(java.lang.String onSetOfReaction) {
-       this.onSetOfReaction = onSetOfReaction;
+        this.onSetOfReaction = onSetOfReaction;
     }
-    
+
     public String getAllergyToArchive() {
-    	return allergyToArchive;
+        return allergyToArchive;
     }
-    
+
     public void setAllergyToArchive(String allergyToArchive) {
-    	this.allergyToArchive = allergyToArchive;
+        this.allergyToArchive = allergyToArchive;
     }
-    
+
     public String getID() {
-    	return ID;
+        return ID;
     }
-    
+
     public void setID(String ID) {
-    	this.ID = ID;
+        this.ID = ID;
     }
-	public String getNonDrug() {
-		return nonDrug;
-	}
-	public void setNonDrug(String nonDrug) {
-		this.nonDrug = nonDrug;
-	}
-    
-    
+
+    public String getNonDrug() {
+        return nonDrug;
+    }
+
+    public void setNonDrug(String nonDrug) {
+        this.nonDrug = nonDrug;
+    }
+
+
 }

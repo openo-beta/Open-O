@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -54,280 +54,279 @@ import oscar.log.LogAction;
 @Service
 public class AppointmentManagerImpl implements AppointmentManager {
 
-	protected Logger logger = MiscUtils.getLogger();
+    protected Logger logger = MiscUtils.getLogger();
 
-	@Autowired
-	private OscarAppointmentDao appointmentDao;
-	@Autowired
-	private AppointmentStatusDao appointmentStatusDao;
-	@Autowired
-	private LookupListDao lookupListDao;
-	@Autowired
-	private SecurityInfoManager securityInfoManager;
-	@Autowired
-	private AppointmentArchiveDao appointmentArchiveDao;
-	
+    @Autowired
+    private OscarAppointmentDao appointmentDao;
+    @Autowired
+    private AppointmentStatusDao appointmentStatusDao;
+    @Autowired
+    private LookupListDao lookupListDao;
+    @Autowired
+    private SecurityInfoManager securityInfoManager;
+    @Autowired
+    private AppointmentArchiveDao appointmentArchiveDao;
 
-	public List<Appointment> getAppointmentHistoryWithoutDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "r", null)) {
-			throw new RuntimeException("Access Denied");
-		}
-		
-		List<Appointment> result = new ArrayList<Appointment>();
-		StringBuilder ids = new StringBuilder();
 
-		List<Appointment> nonDeleted = appointmentDao.getAppointmentHistory(demographicNo, offset, limit);
-		for (Appointment tmp : nonDeleted) {
-			ids.append(tmp.getId() + ",");
-		}
-		result.addAll(nonDeleted);
+    public List<Appointment> getAppointmentHistoryWithoutDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "r", null)) {
+            throw new RuntimeException("Access Denied");
+        }
 
-		//--- log action ---
-		if (result.size() > 0) {
+        List<Appointment> result = new ArrayList<Appointment>();
+        StringBuilder ids = new StringBuilder();
 
-			LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.getAppointmentHistoryWithDeleted", "ids returned=" + ids);
-		}
-		return result;
-	}
+        List<Appointment> nonDeleted = appointmentDao.getAppointmentHistory(demographicNo, offset, limit);
+        for (Appointment tmp : nonDeleted) {
+            ids.append(tmp.getId() + ",");
+        }
+        result.addAll(nonDeleted);
 
-	public List<Object> getAppointmentHistoryWithDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "r", null)) {
-			throw new RuntimeException("Access Denied");
-		}
-		
-		List<Object> result = new ArrayList<Object>();
-		StringBuilder ids = new StringBuilder();
+        //--- log action ---
+        if (result.size() > 0) {
 
-		List<Appointment> nonDeleted = appointmentDao.getAppointmentHistory(demographicNo, offset, limit);
-		for (Appointment tmp : nonDeleted) {
-			ids.append(tmp.getId() + ",");
-		}
-		result.addAll(nonDeleted);
+            LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.getAppointmentHistoryWithDeleted", "ids returned=" + ids);
+        }
+        return result;
+    }
 
-		List<AppointmentArchive> deleted = appointmentDao.getDeletedAppointmentHistory(demographicNo, offset, limit);
+    public List<Object> getAppointmentHistoryWithDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "r", null)) {
+            throw new RuntimeException("Access Denied");
+        }
 
-		for (AppointmentArchive aa : deleted) {
-			if (!hasAppointmentNo(result, aa.getAppointmentNo()) && !aaIsAlreadyInList(result, aa)) {
-				result.add(aa);
-				ids.append(aa.getId() + ",");
-			}
-		}
+        List<Object> result = new ArrayList<Object>();
+        StringBuilder ids = new StringBuilder();
 
-		//--- log action ---
-		if (result.size() > 0) {
+        List<Appointment> nonDeleted = appointmentDao.getAppointmentHistory(demographicNo, offset, limit);
+        for (Appointment tmp : nonDeleted) {
+            ids.append(tmp.getId() + ",");
+        }
+        result.addAll(nonDeleted);
 
-			LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.getAppointmentHistoryWithDeleted", "ids returned=" + ids);
-		}
-		return result;
-	}
+        List<AppointmentArchive> deleted = appointmentDao.getDeletedAppointmentHistory(demographicNo, offset, limit);
 
-	private boolean hasAppointmentNo(List<Object> appts, Integer appointmentNo) {
-		for (Object o : appts) {
-			if (o instanceof Appointment) {
-				Appointment appt = (Appointment) o;
-				if (appt.getId().equals(appointmentNo)) return true;
-			}
-		}
-		return false;
-	}
+        for (AppointmentArchive aa : deleted) {
+            if (!hasAppointmentNo(result, aa.getAppointmentNo()) && !aaIsAlreadyInList(result, aa)) {
+                result.add(aa);
+                ids.append(aa.getId() + ",");
+            }
+        }
 
-	private boolean aaIsAlreadyInList(List<Object> appts, AppointmentArchive aa) {
-		for (Object o : appts) {
-			if (o instanceof AppointmentArchive) {
-				AppointmentArchive appt = (AppointmentArchive) o;
-				if (appt.getAppointmentNo().equals(aa.getAppointmentNo())) return true;
-			}
-		}
-		return false;
-	}
+        //--- log action ---
+        if (result.size() > 0) {
 
-	/**
-	 * Returns appointment for display.
-	 * 
-	
-	 * @param appointment				appointment data
-	 * @param loggedInInfo
-	 * @return							appointment data
-	 * 
-	 */
-	public void addAppointment(LoggedInInfo loggedInInfo, Appointment appointment) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "w", null)) {
-			throw new RuntimeException("Access Denied");
-		}
-		
-		appointmentDao.persist(appointment);
+            LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.getAppointmentHistoryWithDeleted", "ids returned=" + ids);
+        }
+        return result;
+    }
 
-		LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.saveAppointment", "id=" + appointment.getId());
-	}
+    private boolean hasAppointmentNo(List<Object> appts, Integer appointmentNo) {
+        for (Object o : appts) {
+            if (o instanceof Appointment) {
+                Appointment appt = (Appointment) o;
+                if (appt.getId().equals(appointmentNo)) return true;
+            }
+        }
+        return false;
+    }
 
-	public void updateAppointment(LoggedInInfo loggedInInfo, Appointment appointment) {
-		
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "w", null)) {
-			throw new RuntimeException("Access Denied");
-		}
+    private boolean aaIsAlreadyInList(List<Object> appts, AppointmentArchive aa) {
+        for (Object o : appts) {
+            if (o instanceof AppointmentArchive) {
+                AppointmentArchive appt = (AppointmentArchive) o;
+                if (appt.getAppointmentNo().equals(aa.getAppointmentNo())) return true;
+            }
+        }
+        return false;
+    }
 
-		Appointment existing = appointmentDao.find(appointment.getId());
-		if(existing != null) {
-			appointmentArchiveDao.archiveAppointment(existing);	
-		}
-		appointmentDao.merge(appointment);
+    /**
+     * Returns appointment for display.
+     *
+     * @param appointment                appointment data
+     * @param loggedInInfo
+     * @return appointment data
+     *
+     */
+    public void addAppointment(LoggedInInfo loggedInInfo, Appointment appointment) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "w", null)) {
+            throw new RuntimeException("Access Denied");
+        }
 
-		LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointment", "id=" + appointment.getId());
+        appointmentDao.persist(appointment);
 
-	}
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.saveAppointment", "id=" + appointment.getId());
+    }
 
-	public void deleteAppointment(LoggedInInfo loggedInInfo, int apptNo) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "d", null)) {
-			throw new RuntimeException("Access Denied");
-		}
-		Appointment existing = appointmentDao.find(apptNo);
-		if(existing != null) {
-			appointmentArchiveDao.archiveAppointment(existing);	
-		}
-		
-		appointmentDao.remove(apptNo);
+    public void updateAppointment(LoggedInInfo loggedInInfo, Appointment appointment) {
 
-		LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.deleteAppointment", "id=" + apptNo);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "w", null)) {
+            throw new RuntimeException("Access Denied");
+        }
 
-	}
+        Appointment existing = appointmentDao.find(appointment.getId());
+        if (existing != null) {
+            appointmentArchiveDao.archiveAppointment(existing);
+        }
+        appointmentDao.merge(appointment);
 
-	public Appointment getAppointment(LoggedInInfo loggedInInfo, int apptNo) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "r", null)) {
-			throw new RuntimeException("Access Denied");
-		}
-		
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointment", "id=" + appointment.getId());
 
-		Appointment appt = appointmentDao.find(apptNo);
+    }
 
-		LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.getAppointment", "id=" + apptNo);
+    public void deleteAppointment(LoggedInInfo loggedInInfo, int apptNo) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "d", null)) {
+            throw new RuntimeException("Access Denied");
+        }
+        Appointment existing = appointmentDao.find(apptNo);
+        if (existing != null) {
+            appointmentArchiveDao.archiveAppointment(existing);
+        }
 
-		return appt;
-	}
+        appointmentDao.remove(apptNo);
 
-	public Appointment updateAppointmentStatus(LoggedInInfo loggedInInfo, int apptNo, String status) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "w", null)) {
-			throw new RuntimeException("Access Denied");
-		}
-		
-		Appointment appt = appointmentDao.find(apptNo);
-		if (appt != null) {
-			appointmentArchiveDao.archiveAppointment(appt);	
-		
-			appt.setStatus(status);
-		}
-		appointmentDao.merge(appt);
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.deleteAppointment", "id=" + apptNo);
 
-		LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointmentStatus", "id=" + appt.getId());
+    }
 
-		return appt;
+    public Appointment getAppointment(LoggedInInfo loggedInInfo, int apptNo) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "r", null)) {
+            throw new RuntimeException("Access Denied");
+        }
 
-	}
 
-	
-	public Appointment updateAppointmentType(LoggedInInfo loggedInInfo, int apptNo, String type) {
+        Appointment appt = appointmentDao.find(apptNo);
 
-		Appointment appt = appointmentDao.find(apptNo);
-		if (appt != null) {
-			appointmentArchiveDao.archiveAppointment(appt);	
-			
-			appt.setType(type);
-		}
-		appointmentDao.merge(appt);
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.getAppointment", "id=" + apptNo);
 
-		LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointmentType", "id=" + appt.getId());
+        return appt;
+    }
 
-		return appt;
+    public Appointment updateAppointmentStatus(LoggedInInfo loggedInInfo, int apptNo, String status) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_appointment", "w", null)) {
+            throw new RuntimeException("Access Denied");
+        }
 
-	}
+        Appointment appt = appointmentDao.find(apptNo);
+        if (appt != null) {
+            appointmentArchiveDao.archiveAppointment(appt);
 
-	public Appointment updateAppointmentUrgency(LoggedInInfo loggedInInfo, int apptNo, String urgency) {
+            appt.setStatus(status);
+        }
+        appointmentDao.merge(appt);
 
-		Appointment appt = appointmentDao.find(apptNo);
-		if (appt != null) {
-			appointmentArchiveDao.archiveAppointment(appt);	
-			
-			appt.setUrgency(urgency);
-		}
-		appointmentDao.merge(appt);
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointmentStatus", "id=" + appt.getId());
 
-		LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointmentUrgency", "id=" + appt.getId());
+        return appt;
 
-		return appt;
+    }
 
-	}
 
-	
-	
-	public List<AppointmentStatus> getAppointmentStatuses() {
+    public Appointment updateAppointmentType(LoggedInInfo loggedInInfo, int apptNo, String type) {
 
-		List<AppointmentStatus> apptStatus = appointmentStatusDao.findAll();
+        Appointment appt = appointmentDao.find(apptNo);
+        if (appt != null) {
+            appointmentArchiveDao.archiveAppointment(appt);
 
-		return apptStatus;
-	}
+            appt.setType(type);
+        }
+        appointmentDao.merge(appt);
 
-	public List<LookupListItem> getReasons() {
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointmentType", "id=" + appt.getId());
 
-		List<LookupListItem> itemsList = new ArrayList<LookupListItem>();
+        return appt;
 
-		LookupList list = lookupListDao.findByName("reasonCode");
-		if(list != null) {
-			itemsList = list.getItems();
-		}
+    }
 
-		return itemsList;
-	}
+    public Appointment updateAppointmentUrgency(LoggedInInfo loggedInInfo, int apptNo, String urgency) {
 
-	public List<Appointment> findMonthlyAppointments(LoggedInInfo loggedInInfo, String providerNo, int year, int month) {
-		
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, year);
-		cal.set(Calendar.MONTH, month);
-		cal.set(Calendar.DAY_OF_MONTH, 1);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND,0);
-		Date startDate = cal.getTime();
-		
-		cal.set(Calendar.DAY_OF_MONTH,cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-		//cal.add(Calendar.MINUTE,-1);  //this won't get the last day of the month
-		
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		
-		cal.add(Calendar.SECOND, -1);
-		Date endDate = cal.getTime();
-		
-		
-		logger.info("monthly - checking from " + startDate + " to " + endDate);
-		
-		
-		List<Appointment> results = appointmentDao.findByDateRangeAndProvider(startDate, endDate, providerNo);
-		
-		if (results.size() > 0) {
-			LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.findMonthlyAppointments", "");
-		}
-		
-		return results;
-	}
-	public String getNextAppointmentDate(Integer demographicNo) {
-		Date nextApptDate = null;
-		String appointmentString = "";
+        Appointment appt = appointmentDao.find(apptNo);
+        if (appt != null) {
+            appointmentArchiveDao.archiveAppointment(appt);
 
-		Appointment appointment = appointmentDao.findNextAppointment(demographicNo);
-		if(appointment != null) {
-			nextApptDate = appointment.getAppointmentDate();
-		}
+            appt.setUrgency(urgency);
+        }
+        appointmentDao.merge(appt);
 
-		if (nextApptDate != null) {
-			try {
-				Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-				appointmentString = formatter.format(nextApptDate);
-			} catch (Exception e) {
-				MiscUtils.getLogger().error("Could not parse appointment date " + nextApptDate, e);
-			}
-		}
-		return appointmentString;
-	}
-	
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.updateAppointmentUrgency", "id=" + appt.getId());
+
+        return appt;
+
+    }
+
+
+    public List<AppointmentStatus> getAppointmentStatuses() {
+
+        List<AppointmentStatus> apptStatus = appointmentStatusDao.findAll();
+
+        return apptStatus;
+    }
+
+    public List<LookupListItem> getReasons() {
+
+        List<LookupListItem> itemsList = new ArrayList<LookupListItem>();
+
+        LookupList list = lookupListDao.findByName("reasonCode");
+        if (list != null) {
+            itemsList = list.getItems();
+        }
+
+        return itemsList;
+    }
+
+    public List<Appointment> findMonthlyAppointments(LoggedInInfo loggedInInfo, String providerNo, int year, int month) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        Date startDate = cal.getTime();
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        //cal.add(Calendar.MINUTE,-1);  //this won't get the last day of the month
+
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+
+        cal.add(Calendar.SECOND, -1);
+        Date endDate = cal.getTime();
+
+
+        logger.info("monthly - checking from " + startDate + " to " + endDate);
+
+
+        List<Appointment> results = appointmentDao.findByDateRangeAndProvider(startDate, endDate, providerNo);
+
+        if (results.size() > 0) {
+            LogAction.addLogSynchronous(loggedInInfo, "AppointmentManager.findMonthlyAppointments", "");
+        }
+
+        return results;
+    }
+
+    public String getNextAppointmentDate(Integer demographicNo) {
+        Date nextApptDate = null;
+        String appointmentString = "";
+
+        Appointment appointment = appointmentDao.findNextAppointment(demographicNo);
+        if (appointment != null) {
+            nextApptDate = appointment.getAppointmentDate();
+        }
+
+        if (nextApptDate != null) {
+            try {
+                Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+                appointmentString = formatter.format(nextApptDate);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Could not parse appointment date " + nextApptDate, e);
+            }
+        }
+        return appointmentString;
+    }
+
 }

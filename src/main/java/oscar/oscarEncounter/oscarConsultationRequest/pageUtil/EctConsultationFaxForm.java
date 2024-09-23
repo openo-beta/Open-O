@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,7 +38,7 @@ import java.util.Set;
 public final class EctConsultationFaxForm extends ActionForm {
 
     private String method;
-	private String recipient;
+    private String recipient;
     private String from;
     private String recipientFaxNumber;
     private String sendersPhone;
@@ -149,31 +149,32 @@ public final class EctConsultationFaxForm extends ActionForm {
 			allFaxRecipients.addAll(getCopiedTo());
 		}
 
-		return allFaxRecipients;
-	}
+        return allFaxRecipients;
+    }
 
-	public Set<FaxRecipient> getCopiedTo() {
-		if(copiedTo == null) {
-			copiedTo = new HashSet<FaxRecipient>();
-			for(String faxRecipient : getFaxRecipients()) {
-				JSONObject jsonObject = JSONObject.fromObject("{" + faxRecipient + "}");
-				copiedTo.add(new FaxRecipient(jsonObject));
-			}
-		}
-		return copiedTo;
-	}
+    public Set<FaxRecipient> getCopiedTo() {
+        if (copiedTo == null) {
+            copiedTo = new HashSet<FaxRecipient>();
+            for (String faxRecipient : getFaxRecipients()) {
+                JSONObject jsonObject = JSONObject.fromObject("{" + faxRecipient + "}");
+                copiedTo.add(new FaxRecipient(jsonObject));
+            }
+        }
+        return copiedTo;
+    }
 
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
+    public HttpServletRequest getRequest() {
+        return request;
+    }
 
-	public FaxAccount getSender() {
-		if(sender == null) {
-			sender = new FaxAccount();
-		}
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
+    }
+
+    public FaxAccount getSender() {
+        if (sender == null) {
+            sender = new FaxAccount();
+        }
 
 		sender.setFax(getSenderFaxNumber());
 		sender.setLetterheadName(getFrom());

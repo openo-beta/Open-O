@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -81,6 +81,7 @@ public class DocumentReview extends AbstractModel<Integer> implements Serializab
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -88,6 +89,7 @@ public class DocumentReview extends AbstractModel<Integer> implements Serializab
     public Integer getDocumentNo() {
         return documentNo;
     }
+
     public void setDocumentNo(Integer documentNo) {
         this.documentNo = documentNo;
     }
@@ -95,6 +97,7 @@ public class DocumentReview extends AbstractModel<Integer> implements Serializab
     public String getProviderNo() {
         return providerNo;
     }
+
     public void setProviderNo(String providerNo) {
         this.providerNo = providerNo;
     }
@@ -102,6 +105,7 @@ public class DocumentReview extends AbstractModel<Integer> implements Serializab
     public Provider getReviewer() {
         return reviewer;
     }
+
     public void setReviewer(Provider reviewer) {
         this.reviewer = reviewer;
     }
@@ -109,20 +113,21 @@ public class DocumentReview extends AbstractModel<Integer> implements Serializab
     public Date getDateTimeReviewed() {
         return dateTimeReviewed;
     }
+
     public void setDateTimeReviewed(Date dateTimeReviewed) {
         this.dateTimeReviewed = dateTimeReviewed;
     }
 
     public String getDateTimeReviewedString() {
         String dateTimeReviewedString;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         try {
             dateTimeReviewedString = formatter.format(dateTimeReviewed);
         } catch (Exception e) {
             dateTimeReviewedString = "";
         }
-        
+
         return dateTimeReviewedString;
     }
 
@@ -133,5 +138,5 @@ public class DocumentReview extends AbstractModel<Integer> implements Serializab
             this.dateTimeReviewed = new Date();
         }
     }
-    
+
 }

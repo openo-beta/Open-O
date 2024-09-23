@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,200 +39,192 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 public class AcceptableUseAgreementManager {
-	private static Logger logger = MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
-	private static boolean loadAttempted = false;
-	
-	private static String auaText;
-	private boolean auaAvailable;
-	private boolean alwaysShow;
-	private static Date agreementCutoffDate;
-	private Property latestProperty;
-	
-	private static PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
-		
-	private static void loadAUA(){
-		String path = oscar.OscarProperties.getInstance().getProperty("BASE_DOCUMENT_DIR") + File.separator + "login" + File.separator + "AcceptableUseAgreement.txt";
-		try{
-			File auaFile = new File(path);
-		    if(!auaFile.exists()){
-		    	loadAttempted = true;
-		    	logger.debug("No AcceptableUseAgreement File present. disabling AcceptableUseAgreement prompt" );
-		    	auaText = null;
-		    	return; // nothing more to do
-		    }
-    
-		    auaText = FileUtils.readFileToString(auaFile);
+    private static boolean loadAttempted = false;
 
-		}catch(Exception e){
-			logger.error("ERROR LOADING AcceptableUseAgreement text from path "+path,e);
-			auaText = null;
-		}finally{
-			loadAttempted = true;
-		}
+    private static String auaText;
+    private boolean auaAvailable;
+    private boolean alwaysShow;
+    private static Date agreementCutoffDate;
+    private Property latestProperty;
 
-	 }
-	 
-	public static boolean hasAUA(){
-		String auaProp = oscar.OscarProperties.getInstance().getProperty("show_aua");
-		
-		if(auaProp == null)
-		{
-			auaProp =  "";
-		}
-		
-		if (!(auaProp.equals("always") || auaProp.equals("true"))) 
-		{ 
-			return false; 
-		} 
-		
-		logger.debug("loadAttempted "+loadAttempted+" auaText "+auaText);
-		
-		if(!loadAttempted)
-		{
-			AcceptableUseAgreementManager.loadAUA();
-		}
-		
-		if (auaText == null)
-		{
-			return false;
-		}
-		return true;
-	}
-	
-	public boolean auaAlwaysShow(){
-		String auaProp = oscar.OscarProperties.getInstance().getProperty("show_aua");
-		
-		if(auaProp == null)
-		{
-			auaProp =  "";
-		}
-		
-		if (auaProp.equals("always")) 
-		{ 
-			return true; 		
-		} 
-		
-		return false;
-	}
-	
-	public static String getAUAText() {
-		 if(!loadAttempted){
-			 AcceptableUseAgreementManager.loadAUA();
-		 }
-		 return auaText;
-	}
-	
-	 public String getText() {
-		 if(!loadAttempted){
-			 AcceptableUseAgreementManager.loadAUA();
-		 }
-		 return auaText;
-	 }
-	 
-	 public static Date getAgreementCutoffDate(){
-		 
-		 if(agreementCutoffDate != null)
-		 {
-			 return agreementCutoffDate;
-		 }
-		 
-		 Calendar cal = GregorianCalendar.getInstance();
-         
-         Property latestProperty = AcceptableUseAgreementManager.findLatestProperty();
-         if(latestProperty == null){  //Default to one year
-        	 cal.add(Calendar.YEAR,-1);
-        	 return cal.getTime();
-         }
-         
-         if("aua_valid_from".equals(latestProperty.getName())){
-         	//2012-09-20 01.08.30
-         	SimpleDateFormat dateTimeFormatter=new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         	try{
-         		Date validFromTime = dateTimeFormatter.parse(latestProperty.getValue());
-         		cal.setTimeInMillis(validFromTime.getTime());
-         	}catch(Exception e){
-         		logger.error("Error: parsing aua_valid_from date "+latestProperty.getName(),e);
-         	}
-         }else{
-         	String val = latestProperty.getValue();
-         	String[] splitVal = val.split(" ");
-         	int duration = Integer.parseInt(splitVal[0]);
-         	duration = duration * -1;
-         	int period = Calendar.YEAR;
-         	if("month".equals(splitVal[1])){
-         		period = Calendar.MONTH;
-         	}else if("weeks".equals(splitVal[1])){
-         		period = Calendar.WEEK_OF_YEAR;
-         	}else if("days".equals(splitVal[1])){
-         		period = Calendar.DAY_OF_YEAR;
-         	}
-         	cal.add(period, duration);
-             	
-         }
-         agreementCutoffDate = cal.getTime();
-         return agreementCutoffDate;
-	 }
-	 
-	 public static Property findLatestProperty(){
-		
-         List<Property> auaValidFrom  = propertyDao.findByName("aua_valid_from");
-         List<Property> auaValiDuration  = propertyDao.findByName("aua_valid_duration");
-         
-         Property latestProperty = AcceptableUseAgreementManager.findLatestProperty(auaValidFrom,auaValiDuration);
-         return latestProperty;
-	 }
-	 
-	
-	 
-	 @SafeVarargs
-	public static Property findLatestProperty(List<Property> ... propArray){
-			Property returnProperty = null;
-			for(List<Property> propList: propArray ){
-			
-				if(propList != null){
-					for(Property p: propList){
-						if(returnProperty == null){
-							returnProperty = p;
-						}else if(p !=null && returnProperty.getId() < p.getId()){
-							returnProperty = p;
-						}
-					}
-				}
-			}
-		return returnProperty;
-	}
+    private static PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
 
-	public boolean isLoadAttempted() {
-		return loadAttempted;
-	}
+    private static void loadAUA() {
+        String path = oscar.OscarProperties.getInstance().getProperty("BASE_DOCUMENT_DIR") + File.separator + "login" + File.separator + "AcceptableUseAgreement.txt";
+        try {
+            File auaFile = new File(path);
+            if (!auaFile.exists()) {
+                loadAttempted = true;
+                logger.debug("No AcceptableUseAgreement File present. disabling AcceptableUseAgreement prompt");
+                auaText = null;
+                return; // nothing more to do
+            }
 
-	public boolean isAuaAvailable() {
-		this.auaAvailable = AcceptableUseAgreementManager.hasAUA();
-		return auaAvailable;
-	}
+            auaText = FileUtils.readFileToString(auaFile);
 
-	public void setAuaAvailable(boolean auaAvailable) {
-		this.auaAvailable = auaAvailable;
-	}
+        } catch (Exception e) {
+            logger.error("ERROR LOADING AcceptableUseAgreement text from path " + path, e);
+            auaText = null;
+        } finally {
+            loadAttempted = true;
+        }
 
-	public boolean isAlwaysShow() {
-		this.alwaysShow = auaAlwaysShow();
-		return alwaysShow;
-	}
+    }
 
-	public void setAlwaysShow(boolean alwaysShow) {
-		this.alwaysShow = alwaysShow;
-	}
+    public static boolean hasAUA() {
+        String auaProp = oscar.OscarProperties.getInstance().getProperty("show_aua");
 
-	public Property getLatestProperty() {
-		this.latestProperty = AcceptableUseAgreementManager.findLatestProperty();
-		return latestProperty;
-	}
+        if (auaProp == null) {
+            auaProp = "";
+        }
 
-	public void setLatestProperty(Property latestProperty) {
-		this.latestProperty = latestProperty;
-	}
+        if (!(auaProp.equals("always") || auaProp.equals("true"))) {
+            return false;
+        }
 
- 
+        logger.debug("loadAttempted " + loadAttempted + " auaText " + auaText);
+
+        if (!loadAttempted) {
+            AcceptableUseAgreementManager.loadAUA();
+        }
+
+        if (auaText == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean auaAlwaysShow() {
+        String auaProp = oscar.OscarProperties.getInstance().getProperty("show_aua");
+
+        if (auaProp == null) {
+            auaProp = "";
+        }
+
+        if (auaProp.equals("always")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static String getAUAText() {
+        if (!loadAttempted) {
+            AcceptableUseAgreementManager.loadAUA();
+        }
+        return auaText;
+    }
+
+    public String getText() {
+        if (!loadAttempted) {
+            AcceptableUseAgreementManager.loadAUA();
+        }
+        return auaText;
+    }
+
+    public static Date getAgreementCutoffDate() {
+
+        if (agreementCutoffDate != null) {
+            return agreementCutoffDate;
+        }
+
+        Calendar cal = GregorianCalendar.getInstance();
+
+        Property latestProperty = AcceptableUseAgreementManager.findLatestProperty();
+        if (latestProperty == null) {  //Default to one year
+            cal.add(Calendar.YEAR, -1);
+            return cal.getTime();
+        }
+
+        if ("aua_valid_from".equals(latestProperty.getName())) {
+            //2012-09-20 01.08.30
+            SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date validFromTime = dateTimeFormatter.parse(latestProperty.getValue());
+                cal.setTimeInMillis(validFromTime.getTime());
+            } catch (Exception e) {
+                logger.error("Error: parsing aua_valid_from date " + latestProperty.getName(), e);
+            }
+        } else {
+            String val = latestProperty.getValue();
+            String[] splitVal = val.split(" ");
+            int duration = Integer.parseInt(splitVal[0]);
+            duration = duration * -1;
+            int period = Calendar.YEAR;
+            if ("month".equals(splitVal[1])) {
+                period = Calendar.MONTH;
+            } else if ("weeks".equals(splitVal[1])) {
+                period = Calendar.WEEK_OF_YEAR;
+            } else if ("days".equals(splitVal[1])) {
+                period = Calendar.DAY_OF_YEAR;
+            }
+            cal.add(period, duration);
+
+        }
+        agreementCutoffDate = cal.getTime();
+        return agreementCutoffDate;
+    }
+
+    public static Property findLatestProperty() {
+
+        List<Property> auaValidFrom = propertyDao.findByName("aua_valid_from");
+        List<Property> auaValiDuration = propertyDao.findByName("aua_valid_duration");
+
+        Property latestProperty = AcceptableUseAgreementManager.findLatestProperty(auaValidFrom, auaValiDuration);
+        return latestProperty;
+    }
+
+
+    @SafeVarargs
+    public static Property findLatestProperty(List<Property>... propArray) {
+        Property returnProperty = null;
+        for (List<Property> propList : propArray) {
+
+            if (propList != null) {
+                for (Property p : propList) {
+                    if (returnProperty == null) {
+                        returnProperty = p;
+                    } else if (p != null && returnProperty.getId() < p.getId()) {
+                        returnProperty = p;
+                    }
+                }
+            }
+        }
+        return returnProperty;
+    }
+
+    public boolean isLoadAttempted() {
+        return loadAttempted;
+    }
+
+    public boolean isAuaAvailable() {
+        this.auaAvailable = AcceptableUseAgreementManager.hasAUA();
+        return auaAvailable;
+    }
+
+    public void setAuaAvailable(boolean auaAvailable) {
+        this.auaAvailable = auaAvailable;
+    }
+
+    public boolean isAlwaysShow() {
+        this.alwaysShow = auaAlwaysShow();
+        return alwaysShow;
+    }
+
+    public void setAlwaysShow(boolean alwaysShow) {
+        this.alwaysShow = alwaysShow;
+    }
+
+    public Property getLatestProperty() {
+        this.latestProperty = AcceptableUseAgreementManager.findLatestProperty();
+        return latestProperty;
+    }
+
+    public void setLatestProperty(Property latestProperty) {
+        this.latestProperty = latestProperty;
+    }
+
+
 }

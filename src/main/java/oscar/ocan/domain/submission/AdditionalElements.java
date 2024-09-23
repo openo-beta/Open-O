@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -62,19 +61,19 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "clientHopesForFuture",
-    "clientNeedToGetThere",
-    "clientViewMentalHealth",
-    "clientSpiritualityImportance",
-    "clientCultureHeritageImportance",
-    "presentingIssueList",
-    "actionList",
-    "referralList"
+        "clientHopesForFuture",
+        "clientNeedToGetThere",
+        "clientViewMentalHealth",
+        "clientSpiritualityImportance",
+        "clientCultureHeritageImportance",
+        "presentingIssueList",
+        "actionList",
+        "referralList"
 })
 @XmlRootElement(name = "additionalElements")
 public class AdditionalElements {
@@ -96,11 +95,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the clientHopesForFuture property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getClientHopesForFuture() {
         return clientHopesForFuture;
@@ -108,11 +107,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the clientHopesForFuture property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setClientHopesForFuture(String value) {
         this.clientHopesForFuture = value;
@@ -120,11 +119,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the clientNeedToGetThere property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getClientNeedToGetThere() {
         return clientNeedToGetThere;
@@ -132,11 +131,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the clientNeedToGetThere property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setClientNeedToGetThere(String value) {
         this.clientNeedToGetThere = value;
@@ -144,11 +143,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the clientViewMentalHealth property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getClientViewMentalHealth() {
         return clientViewMentalHealth;
@@ -156,11 +155,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the clientViewMentalHealth property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setClientViewMentalHealth(String value) {
         this.clientViewMentalHealth = value;
@@ -168,11 +167,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the clientSpiritualityImportance property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getClientSpiritualityImportance() {
         return clientSpiritualityImportance;
@@ -180,11 +179,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the clientSpiritualityImportance property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setClientSpiritualityImportance(String value) {
         this.clientSpiritualityImportance = value;
@@ -192,11 +191,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the clientCultureHeritageImportance property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getClientCultureHeritageImportance() {
         return clientCultureHeritageImportance;
@@ -204,11 +203,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the clientCultureHeritageImportance property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setClientCultureHeritageImportance(String value) {
         this.clientCultureHeritageImportance = value;
@@ -216,11 +215,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the presentingIssueList property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link PresentingIssueList }
-     *     
+     *
      */
     public PresentingIssueList getPresentingIssueList() {
         return presentingIssueList;
@@ -228,11 +227,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the presentingIssueList property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link PresentingIssueList }
-     *     
+     *
      */
     public void setPresentingIssueList(PresentingIssueList value) {
         this.presentingIssueList = value;
@@ -240,11 +239,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the actionList property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ActionList }
-     *     
+     *
      */
     public ActionList getActionList() {
         return actionList;
@@ -252,11 +251,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the actionList property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ActionList }
-     *     
+     *
      */
     public void setActionList(ActionList value) {
         this.actionList = value;
@@ -264,11 +263,11 @@ public class AdditionalElements {
 
     /**
      * Gets the value of the referralList property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ReferralList }
-     *     
+     *
      */
     public ReferralList getReferralList() {
         return referralList;
@@ -276,11 +275,11 @@ public class AdditionalElements {
 
     /**
      * Sets the value of the referralList property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ReferralList }
-     *     
+     *
      */
     public void setReferralList(ReferralList value) {
         this.referralList = value;

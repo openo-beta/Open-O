@@ -6,12 +6,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -22,167 +22,167 @@ package oscar.oscarBilling.ca.on.data;
 import java.util.Vector;
 
 public class BillingDiskNameData {
-	String id;
-	String monthCode;
-	String batchcount;
-	String ohipfilename;
-	String groupno;
-	String creator;
-	String claimrecord;
-	String createdatetime;
-	String status;
-	String total;
-	String updatedatetime;
-	Vector vecFilenameId;
-	Vector htmlfilename;
-	Vector providerohipno;
-	Vector providerno;
-	Vector vecClaimrecord;
-	Vector vecStatus;
-	Vector vecTotal;
-	
-	public String getBatchcount() {
-		return batchcount;
-	}
+    String id;
+    String monthCode;
+    String batchcount;
+    String ohipfilename;
+    String groupno;
+    String creator;
+    String claimrecord;
+    String createdatetime;
+    String status;
+    String total;
+    String updatedatetime;
+    Vector vecFilenameId;
+    Vector htmlfilename;
+    Vector providerohipno;
+    Vector providerno;
+    Vector vecClaimrecord;
+    Vector vecStatus;
+    Vector vecTotal;
 
-	public void setBatchcount(String batchcount) {
-		this.batchcount = batchcount;
-	}
+    public String getBatchcount() {
+        return batchcount;
+    }
 
-	public String getClaimrecord() {
-		return claimrecord;
-	}
+    public void setBatchcount(String batchcount) {
+        this.batchcount = batchcount;
+    }
 
-	public void setClaimrecord(String claimrecord) {
-		this.claimrecord = claimrecord;
-	}
+    public String getClaimrecord() {
+        return claimrecord;
+    }
 
-	public String getCreatedatetime() {
-		return createdatetime;
-	}
+    public void setClaimrecord(String claimrecord) {
+        this.claimrecord = claimrecord;
+    }
 
-	public void setCreatedatetime(String createdatetime) {
-		this.createdatetime = createdatetime;
-	}
+    public String getCreatedatetime() {
+        return createdatetime;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public void setCreatedatetime(String createdatetime) {
+        this.createdatetime = createdatetime;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public String getGroupno() {
-		return groupno;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	public void setGroupno(String groupno) {
-		this.groupno = groupno;
-	}
+    public String getGroupno() {
+        return groupno;
+    }
 
-	public Vector getHtmlfilename() {
-		return htmlfilename;
-	}
+    public void setGroupno(String groupno) {
+        this.groupno = groupno;
+    }
 
-	public void setHtmlfilename(Vector htmlfilename) {
-		this.htmlfilename = htmlfilename;
-	}
+    public Vector getHtmlfilename() {
+        return htmlfilename;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public void setHtmlfilename(Vector htmlfilename) {
+        this.htmlfilename = htmlfilename;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getMonthCode() {
-		return monthCode;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setMonthCode(String monthCode) {
-		this.monthCode = monthCode;
-	}
+    public String getMonthCode() {
+        return monthCode;
+    }
 
-	public String getOhipfilename() {
-		return ohipfilename;
-	}
+    public void setMonthCode(String monthCode) {
+        this.monthCode = monthCode;
+    }
 
-	public void setOhipfilename(String ohipfilename) {
-		this.ohipfilename = ohipfilename;
-	}
+    public String getOhipfilename() {
+        return ohipfilename;
+    }
 
-	public Vector getProviderohipno() {
-		return providerohipno;
-	}
+    public void setOhipfilename(String ohipfilename) {
+        this.ohipfilename = ohipfilename;
+    }
 
-	public void setProviderohipno(Vector providerohipno) {
-		this.providerohipno = providerohipno;
-	}
+    public Vector getProviderohipno() {
+        return providerohipno;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setProviderohipno(Vector providerohipno) {
+        this.providerohipno = providerohipno;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getTotal() {
-		return total;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setTotal(String total) {
-		this.total = total;
-	}
+    public String getTotal() {
+        return total;
+    }
 
-	public Vector getVecClaimrecord() {
-		return vecClaimrecord;
-	}
+    public void setTotal(String total) {
+        this.total = total;
+    }
 
-	public void setVecClaimrecord(Vector vecClaimrecord) {
-		this.vecClaimrecord = vecClaimrecord;
-	}
+    public Vector getVecClaimrecord() {
+        return vecClaimrecord;
+    }
 
-	public Vector getVecStatus() {
-		return vecStatus;
-	}
+    public void setVecClaimrecord(Vector vecClaimrecord) {
+        this.vecClaimrecord = vecClaimrecord;
+    }
 
-	public void setVecStatus(Vector vecStatus) {
-		this.vecStatus = vecStatus;
-	}
+    public Vector getVecStatus() {
+        return vecStatus;
+    }
 
-	public Vector getVecTotal() {
-		return vecTotal;
-	}
+    public void setVecStatus(Vector vecStatus) {
+        this.vecStatus = vecStatus;
+    }
 
-	public void setVecTotal(Vector vecTotal) {
-		this.vecTotal = vecTotal;
-	}
+    public Vector getVecTotal() {
+        return vecTotal;
+    }
 
-	public Vector getProviderno() {
-		return providerno;
-	}
+    public void setVecTotal(Vector vecTotal) {
+        this.vecTotal = vecTotal;
+    }
 
-	public void setProviderno(Vector providerno) {
-		this.providerno = providerno;
-	}
+    public Vector getProviderno() {
+        return providerno;
+    }
 
-	public String getUpdatedatetime() {
-		return updatedatetime;
-	}
+    public void setProviderno(Vector providerno) {
+        this.providerno = providerno;
+    }
 
-	public void setUpdatedatetime(String updatedatetime) {
-		this.updatedatetime = updatedatetime;
-	}
+    public String getUpdatedatetime() {
+        return updatedatetime;
+    }
 
-	public Vector getVecFilenameId() {
-		return vecFilenameId;
-	}
+    public void setUpdatedatetime(String updatedatetime) {
+        this.updatedatetime = updatedatetime;
+    }
 
-	public void setVecFilenameId(Vector vecFilenameId) {
-		this.vecFilenameId = vecFilenameId;
-	}
+    public Vector getVecFilenameId() {
+        return vecFilenameId;
+    }
+
+    public void setVecFilenameId(Vector vecFilenameId) {
+        this.vecFilenameId = vecFilenameId;
+    }
 
 }

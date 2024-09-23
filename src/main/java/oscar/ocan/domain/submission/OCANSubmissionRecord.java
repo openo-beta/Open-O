@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -43,9 +42,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -92,15 +91,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "organizationRecord",
-    "clientRecord",
-    "ocanDomains",
-    "additionalElements"
+        "organizationRecord",
+        "clientRecord",
+        "ocanDomains",
+        "additionalElements"
 })
 @XmlRootElement(name = "OCANSubmissionRecord")
 public class OCANSubmissionRecord {
@@ -124,11 +123,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the organizationRecord property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link OrganizationRecord }
-     *     
+     *
      */
     public OrganizationRecord getOrganizationRecord() {
         return organizationRecord;
@@ -136,11 +135,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the organizationRecord property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link OrganizationRecord }
-     *     
+     *
      */
     public void setOrganizationRecord(OrganizationRecord value) {
         this.organizationRecord = value;
@@ -148,11 +147,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the clientRecord property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ClientRecord }
-     *     
+     *
      */
     public ClientRecord getClientRecord() {
         return clientRecord;
@@ -160,11 +159,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the clientRecord property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ClientRecord }
-     *     
+     *
      */
     public void setClientRecord(ClientRecord value) {
         this.clientRecord = value;
@@ -172,11 +171,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the ocanDomains property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link OCANDomains }
-     *     
+     *
      */
     public OCANDomains getOCANDomains() {
         return ocanDomains;
@@ -184,11 +183,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the ocanDomains property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link OCANDomains }
-     *     
+     *
      */
     public void setOCANDomains(OCANDomains value) {
         this.ocanDomains = value;
@@ -196,11 +195,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the additionalElements property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link AdditionalElements }
-     *     
+     *
      */
     public AdditionalElements getAdditionalElements() {
         return additionalElements;
@@ -208,11 +207,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the additionalElements property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link AdditionalElements }
-     *     
+     *
      */
     public void setAdditionalElements(AdditionalElements value) {
         this.additionalElements = value;
@@ -220,11 +219,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the startDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getStartDate() {
         return startDate;
@@ -232,11 +231,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the startDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setStartDate(XMLGregorianCalendar value) {
         this.startDate = value;
@@ -244,11 +243,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the completionDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getCompletionDate() {
         return completionDate;
@@ -256,11 +255,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the completionDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setCompletionDate(XMLGregorianCalendar value) {
         this.completionDate = value;
@@ -268,11 +267,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the assessmentID property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAssessmentID() {
         return assessmentID;
@@ -280,11 +279,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the assessmentID property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAssessmentID(String value) {
         this.assessmentID = value;
@@ -292,11 +291,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Gets the value of the assessmentStatus property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAssessmentStatus() {
         return assessmentStatus;
@@ -304,11 +303,11 @@ public class OCANSubmissionRecord {
 
     /**
      * Sets the value of the assessmentStatus property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAssessmentStatus(String value) {
         this.assessmentStatus = value;

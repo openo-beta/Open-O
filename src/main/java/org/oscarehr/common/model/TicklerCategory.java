@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,48 +31,48 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tickler_category")
-public class TicklerCategory extends AbstractModel<Integer>  {
+@Table(name = "tickler_category")
+public class TicklerCategory extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String category;
-	private String description;
-	private boolean active;
-	
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public String getCategory() {
-		return category;
-	}
+    private String category;
+    private String description;
+    private boolean active;
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,103 +51,103 @@ import oscar.OscarDocumentCreator;
 import oscar.util.ConcatPDF;
 
 /**
-* Originally developed by Prylynx for SJHCG
-*/
+ * Originally developed by Prylynx for SJHCG
+ */
 public class PrintReferralLabelAction extends OscarAction {
 
-	public PrintReferralLabelAction() {
-	}
+    public PrintReferralLabelAction() {
+    }
 
-	@SuppressWarnings("resource")
-    private InputStream getInputStream()  {
-		InputStream ins = null;
-		try {
-			ins = new FileInputStream(System.getProperty("user.home") + "/reflabel.xml");
-		} catch (IOException e) {
-			MiscUtils.getLogger().warn("no reflabel.xml found in user's home directory, going to backup");
-		} 
-		if (ins == null) {
-			ins = getClass().getResourceAsStream("/org/oscarehr/common/web/reflabel.xml");
-		}
-		return ins;
-	}
-	
-	public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) {
-		//patient
-		String classpath = (String) request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
-		System.setProperty("jasper.reports.compile.class.path", classpath);
+    @SuppressWarnings("resource")
+    private InputStream getInputStream() {
+        InputStream ins = null;
+        try {
+            ins = new FileInputStream(System.getProperty("user.home") + "/reflabel.xml");
+        } catch (IOException e) {
+            MiscUtils.getLogger().warn("no reflabel.xml found in user's home directory, going to backup");
+        }
+        if (ins == null) {
+            ins = getClass().getResourceAsStream("/org/oscarehr/common/web/reflabel.xml");
+        }
+        return ins;
+    }
 
-		HashMap<String, String> parameters = new HashMap<String, String>();
-		parameters.put("billingreferral_no", request.getParameter("billingreferralNo"));
-		ServletOutputStream sos = null;
-		InputStream ins = null;
+    public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) {
+        //patient
+        String classpath = (String) request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
+        System.setProperty("jasper.reports.compile.class.path", classpath);
 
-		try {
-			sos = response.getOutputStream();
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("billingreferral_no", request.getParameter("billingreferralNo"));
+        ServletOutputStream sos = null;
+        InputStream ins = null;
 
-			response.setHeader("Content-disposition", getHeader(response).toString());
+        try {
+            sos = response.getOutputStream();
 
-			String idList = request.getParameter("ids");
-			
-			if("true".equals(request.getParameter("useCheckList"))) {
-				idList = "";
-				List<ProfessionalSpecialist> checkedSpecs = (List<ProfessionalSpecialist>) request.getSession().getAttribute("billingReferralAdminCheckList");
-		    	if(checkedSpecs != null && checkedSpecs.size()>0) {
-		    		for(ProfessionalSpecialist ps:checkedSpecs) {
-		    			idList  += ("," +ps.getId()); 
-		    		}
-		    		idList = idList.substring(1);
-		    	}
-			}
-			if (!StringUtils.isEmpty(idList)) {
-				String[] ids = idList.split(",");
-				ArrayList<Object> printList = new ArrayList<Object>();
-				OscarDocumentCreator osc = new OscarDocumentCreator();
-				
-				for (int x = 0; x < ids.length; x++) {
-					FileOutputStream fos = null;
-					try {
-						File f = File.createTempFile("physlabel", ".pdf");
-						fos = new FileOutputStream(f);
-						ins = getInputStream();
-						parameters.put("billingreferral_no", ids[x]);
-						osc.fillDocumentStream(parameters, fos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection());
-						printList.add(f.getAbsolutePath());
-					}finally {
-						IOUtils.closeQuietly(fos);
-						IOUtils.closeQuietly(ins);
-					}
-				}
-				ConcatPDF.concat(printList, sos);
-			} else {
-				ins = getInputStream();
-				OscarDocumentCreator osc = new OscarDocumentCreator();
-				osc.fillDocumentStream(parameters, sos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection());
-			}
+            response.setHeader("Content-disposition", getHeader(response).toString());
 
-		} catch (Exception e) {
-			MiscUtils.getLogger().error("Error", e);
-		} finally {
-			IOUtils.closeQuietly(ins);
-		}
+            String idList = request.getParameter("ids");
 
-		if("true".equals(request.getParameter("useCheckList"))) {
-			request.getSession().setAttribute("billingReferralAdminCheckList",new ArrayList<ProfessionalSpecialist>());
-		}
-		return actionMapping.findForward(this.target);
-	}
+            if ("true".equals(request.getParameter("useCheckList"))) {
+                idList = "";
+                List<ProfessionalSpecialist> checkedSpecs = (List<ProfessionalSpecialist>) request.getSession().getAttribute("billingReferralAdminCheckList");
+                if (checkedSpecs != null && checkedSpecs.size() > 0) {
+                    for (ProfessionalSpecialist ps : checkedSpecs) {
+                        idList += ("," + ps.getId());
+                    }
+                    idList = idList.substring(1);
+                }
+            }
+            if (!StringUtils.isEmpty(idList)) {
+                String[] ids = idList.split(",");
+                ArrayList<Object> printList = new ArrayList<Object>();
+                OscarDocumentCreator osc = new OscarDocumentCreator();
 
-	private StringBuilder getHeader(HttpServletResponse response) {
-		StringBuilder strHeader = new StringBuilder();
-		strHeader.append("label_");
-		strHeader.append(".pdf");
-		response.setHeader("Cache-Control", "max-age=0");
-		response.setDateHeader("Expires", 0);
-		response.setContentType("application/pdf");
-		StringBuilder sbContentDispValue = new StringBuilder();
-		sbContentDispValue.append("inline; filename="); //inline - display
-		sbContentDispValue.append(strHeader);
-		return sbContentDispValue;
-	}
+                for (int x = 0; x < ids.length; x++) {
+                    FileOutputStream fos = null;
+                    try {
+                        File f = File.createTempFile("physlabel", ".pdf");
+                        fos = new FileOutputStream(f);
+                        ins = getInputStream();
+                        parameters.put("billingreferral_no", ids[x]);
+                        osc.fillDocumentStream(parameters, fos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection());
+                        printList.add(f.getAbsolutePath());
+                    } finally {
+                        IOUtils.closeQuietly(fos);
+                        IOUtils.closeQuietly(ins);
+                    }
+                }
+                ConcatPDF.concat(printList, sos);
+            } else {
+                ins = getInputStream();
+                OscarDocumentCreator osc = new OscarDocumentCreator();
+                osc.fillDocumentStream(parameters, sos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection());
+            }
+
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+        } finally {
+            IOUtils.closeQuietly(ins);
+        }
+
+        if ("true".equals(request.getParameter("useCheckList"))) {
+            request.getSession().setAttribute("billingReferralAdminCheckList", new ArrayList<ProfessionalSpecialist>());
+        }
+        return actionMapping.findForward(this.target);
+    }
+
+    private StringBuilder getHeader(HttpServletResponse response) {
+        StringBuilder strHeader = new StringBuilder();
+        strHeader.append("label_");
+        strHeader.append(".pdf");
+        response.setHeader("Cache-Control", "max-age=0");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("application/pdf");
+        StringBuilder sbContentDispValue = new StringBuilder();
+        sbContentDispValue.append("inline; filename="); //inline - display
+        sbContentDispValue.append(strHeader);
+        return sbContentDispValue;
+    }
 
 }

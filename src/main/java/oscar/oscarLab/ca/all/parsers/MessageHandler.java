@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -55,7 +55,6 @@ public interface MessageHandler {
      *       Parser p = new PipeParser();
      *       p.setValidationContext(new NoValidation());
      *       msg = (ORU_R01) p.parse(hl7Body.replaceAll( "\n", "\r\n" ));
-
      *	- If you wish to validate the message please see the hapi documentation at
      *		'http://hl7api.sourceforge.net/'
      *  - The replaceAll statement is necessary to ensure that the parser
@@ -96,13 +95,13 @@ public interface MessageHandler {
     /**
      *  Return the number of OBX Segments within the OBR group specified by i.
      */
-    public int getOBXCount( int i);
+    public int getOBXCount(int i);
 
     /**
      *  Return the name of the ith OBR Segment, usually stored in the
      *  UniversalServiceIdentifier
      */
-    public String getOBRName( int i);
+    public String getOBRName(int i);
 
     /**
      * Return the cell identifier of the ith OBR Segment
@@ -114,20 +113,20 @@ public interface MessageHandler {
      *  segment of the ith obr group. If the date and time is not specified
      *  within the obx segment it should be specified within the obr segment.
      */
-    public String getTimeStamp( int i, int j);
+    public String getTimeStamp(int i, int j);
 
     /**
      *  Return true if an abnormal flag other than 'N' is returned by
      *  getOBXAbnormalFlag( i, j ) for the OBX segment specified by j, in the
      *  ith OBR group. Return false otherwise.
      */
-    public boolean isOBXAbnormal( int i, int j);
+    public boolean isOBXAbnormal(int i, int j);
 
     /**
      *  Retrieve the abnormal flag if any from the OBX segment specified by j in
      *  the ith OBR group.
      */
-    public String getOBXAbnormalFlag( int i, int j);
+    public String getOBXAbnormalFlag(int i, int j);
 
     /**
      *  Return true if a text result is BLOCKED. Return false otherwise.
@@ -141,14 +140,14 @@ public interface MessageHandler {
      *  OBR or OBX segment. It is used to separate the observations into groups.
      *  ie/ 'CHEMISTRY' 'HEMATOLOGY' '
      */
-    public String getObservationHeader( int i, int j);
+    public String getObservationHeader(int i, int j);
 
     /**
      *  Return the identifier from jth OBX segment of the ith OBR group. It is
      *  usually stored in the first component of the third field of the OBX
      *  segment.
      */
-    public String getOBXIdentifier( int i, int j);
+    public String getOBXIdentifier(int i, int j);
 
     /**
      * Return the obx value type
@@ -164,29 +163,29 @@ public interface MessageHandler {
      *  usually stored in the second component of the third field of the OBX
      *  segment.
      */
-    public String getOBXName( int i, int j);
+    public String getOBXName(int i, int j);
 
-    public String getOBXNameLong( int i, int j);
+    public String getOBXNameLong(int i, int j);
 
     /**
      *  Return the result from the jth OBX segment of the ith OBR group
      */
-    public String getOBXResult( int i, int j);
+    public String getOBXResult(int i, int j);
 
     /**
      *  Return the reference range from the jth OBX segment of the ith OBR group
      */
-    public String getOBXReferenceRange( int i, int j);
+    public String getOBXReferenceRange(int i, int j);
 
     /**
      *  Return the units from the jth OBX segment of the ith OBR group
      */
-    public String getOBXUnits( int i, int j);
+    public String getOBXUnits(int i, int j);
 
     /**
      *  Return the result status from the jth OBX segment of the ith OBR group
      */
-    public String getOBXResultStatus( int i, int j);
+    public String getOBXResultStatus(int i, int j);
 
     /**
      *  Return a list of all possible headers retrieved from getObservationHeader
@@ -198,23 +197,23 @@ public interface MessageHandler {
      *  Return the number of comments (usually NTE segments) that follow ith
      *  OBR segment, this should usually be either 0 or 1.
      */
-    public int getOBRCommentCount( int i);
+    public int getOBRCommentCount(int i);
 
     /**
      *  Return the jth comment of the ith OBR segment.
      */
-    public String getOBRComment( int i, int j);
+    public String getOBRComment(int i, int j);
 
     /**
      *  Return the number of comments (usually NTE segments) following the jth
      *  OBX segment of the ith OBR group.
      */
-    public int getOBXCommentCount( int i, int j);
+    public int getOBXCommentCount(int i, int j);
 
     /**
      *  Return the kth comment of the jth OBX segment of the ith OBR group
      */
-    public String getOBXComment( int i, int j, int k);
+    public String getOBXComment(int i, int j, int k);
 
 
     /**
@@ -352,7 +351,7 @@ public interface MessageHandler {
 
     public String getRadiologistInfo();
 
-    public String getNteForOBX(int i,int j);
-    
+    public String getNteForOBX(int i, int j);
+
     public String getNteForPID();
 }

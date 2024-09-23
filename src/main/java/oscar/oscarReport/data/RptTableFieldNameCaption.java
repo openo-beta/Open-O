@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,7 +52,7 @@ import oscar.login.DBHelp;
  */
 public class RptTableFieldNameCaption {
     private static final Logger logger = MiscUtils.getLogger();
-    private static EncounterFormDao encounterFormDao=(EncounterFormDao)SpringUtils.getBean(EncounterFormDao.class);
+    private static EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
     private ReportTableFieldCaptionDao dao = SpringUtils.getBean(ReportTableFieldCaptionDao.class);
 
     String table_name;
@@ -78,26 +78,26 @@ public class RptTableFieldNameCaption {
         return false;
     }
 
-    
+
     public boolean insertRecord() {
-    	ReportTableFieldCaption r = new ReportTableFieldCaption();
-    	r.setTableName(table_name);
-    	r.setName(name);
-    	r.setCaption(caption);
-    	dao.persist(r);
-    	return true;
+        ReportTableFieldCaption r = new ReportTableFieldCaption();
+        r.setTableName(table_name);
+        r.setName(name);
+        r.setCaption(caption);
+        dao.persist(r);
+        return true;
     }
 
     public boolean updateRecord() {
-    	for(ReportTableFieldCaption r:dao.findByTableNameAndName(table_name, name)) {
-    		r.setCaption(caption);
-    		dao.merge(r);
-    	}
-       return true;
+        for (ReportTableFieldCaption r : dao.findByTableNameAndName(table_name, name)) {
+            r.setCaption(caption);
+            dao.merge(r);
+        }
+        return true;
     }
 
     // combine a table meta list and caption from table reportTableFieldCaption
-    public Vector getTableNameCaption(String tableName)  {
+    public Vector getTableNameCaption(String tableName) {
         Vector ret = new Vector();
         Vector vec = getMetaNameList(tableName);
         Properties prop = getNameCaptionProp(tableName);
@@ -123,7 +123,7 @@ public class RptTableFieldNameCaption {
         try {
             ResultSet rs = DBHelp.searchDBRecord(sql);
             while (rs.next()) {
-                ret.setProperty(DBHelp.getString(rs,"name"), DBHelp.getString(rs,"caption"));
+                ret.setProperty(DBHelp.getString(rs, "name"), DBHelp.getString(rs, "caption"));
             }
             rs.close();
         } catch (SQLException e) {
@@ -150,7 +150,7 @@ public class RptTableFieldNameCaption {
 
     public Vector getFormTableNameList() {
 
-    	List<EncounterForm> forms=encounterFormDao.findAll();
+        List<EncounterForm> forms = encounterFormDao.findAll();
 
         Vector ret = new Vector();
         for (EncounterForm encounterForm : forms) {

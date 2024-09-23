@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -48,24 +48,24 @@ public class ReportObjectGeneric implements ReportObject {
     private int active;
     private ArrayList parameters = new ArrayList(0);
     private String uuid;
-    
+
     private boolean sequence;
-     
-    
+
+
     public ReportObjectGeneric() {
     }
-    
+
     public ReportObjectGeneric(String templateId, String title) {
         this.setTemplateId(templateId);
         this.setTitle(title);
     }
-    
+
     public ReportObjectGeneric(String templateId, String title, String description) {
         this.setTemplateId(templateId);
         this.setTitle(title);
         this.setDescription(description);
     }
-    
+
     public ReportObjectGeneric(String templateId, String title, String description, String type, ArrayList parameters) {
         this.setTemplateId(templateId);
         this.setTitle(title);
@@ -97,11 +97,11 @@ public class ReportObjectGeneric implements ReportObject {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public String getType() {
         return type;
     }
-    
+
     public void setType(String type) {
         this.type = type;
     }
@@ -113,13 +113,13 @@ public class ReportObjectGeneric implements ReportObject {
     public void setParameters(ArrayList parameters) {
         this.parameters = parameters;
     }
-    
+
     public String getPreparedSQL(Map parameters) {
         String sql = (new ReportManager()).getSQL(this.templateId);
         int cursor1 = 0;
         while ((cursor1 = sql.indexOf("{")) != -1) {
             int cursor2 = sql.indexOf("}", cursor1);
-            String paramId = sql.substring(cursor1+1, cursor2);
+            String paramId = sql.substring(cursor1 + 1, cursor2);
 
             String[] substValues = (String[]) parameters.get(paramId);
             if (substValues == null) { //if type textlist or this param isn't in the request
@@ -132,36 +132,36 @@ public class ReportObjectGeneric implements ReportObject {
                 } else return "";
             }
             if (substValues.length == 1) //if one valuemnmmnm
-                sql = sql.substring(0, cursor1) + substValues[0] + sql.substring(cursor2+1);
+                sql = sql.substring(0, cursor1) + substValues[0] + sql.substring(cursor2 + 1);
             else { //if multiple values
                 //DynamicElement curelement = getDynamicElement(dynamicElementId);
-                if (cursor1 != 0 && (sql.charAt(cursor1-1) == '\'' || sql.charAt(cursor1-1) == '\"')) {
-                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, sql.charAt(cursor1-1) + "," + sql.charAt(cursor1-1)) + sql.substring(cursor2+1);
+                if (cursor1 != 0 && (sql.charAt(cursor1 - 1) == '\'' || sql.charAt(cursor1 - 1) == '\"')) {
+                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, sql.charAt(cursor1 - 1) + "," + sql.charAt(cursor1 - 1)) + sql.substring(cursor2 + 1);
                 } else {
-                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, ",") + sql.substring(cursor2+1);
+                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, ",") + sql.substring(cursor2 + 1);
                 }
-                
+
             }
         }
         MiscUtils.getLogger().debug("<REPORT BY TEMPLATE> SQL: " + sql);
         return sql;
     }
-    
+
     public String getPreparedSQL(int sequenceNo, Map parameters) {
         String sql = (new ReportManager()).getSQL(this.templateId);
-        
+
         String parts[] = sql.split(";");
-        
-        if(parts.length <= sequenceNo) {
-        	return null;
+
+        if (parts.length <= sequenceNo) {
+            return null;
         }
         sql = parts[sequenceNo];
-        
-        
+
+
         int cursor1 = 0;
         while ((cursor1 = sql.indexOf("{")) != -1) {
             int cursor2 = sql.indexOf("}", cursor1);
-            String paramId = sql.substring(cursor1+1, cursor2);
+            String paramId = sql.substring(cursor1 + 1, cursor2);
 
             String[] substValues = (String[]) parameters.get(paramId);
             if (substValues == null) { //if type textlist or this param isn't in the request
@@ -174,21 +174,21 @@ public class ReportObjectGeneric implements ReportObject {
                 } else return "";
             }
             if (substValues.length == 1) //if one valuemnmmnm
-                sql = sql.substring(0, cursor1) + substValues[0] + sql.substring(cursor2+1);
+                sql = sql.substring(0, cursor1) + substValues[0] + sql.substring(cursor2 + 1);
             else { //if multiple values
                 //DynamicElement curelement = getDynamicElement(dynamicElementId);
-                if (cursor1 != 0 && (sql.charAt(cursor1-1) == '\'' || sql.charAt(cursor1-1) == '\"')) {
-                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, sql.charAt(cursor1-1) + "," + sql.charAt(cursor1-1)) + sql.substring(cursor2+1);
+                if (cursor1 != 0 && (sql.charAt(cursor1 - 1) == '\'' || sql.charAt(cursor1 - 1) == '\"')) {
+                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, sql.charAt(cursor1 - 1) + "," + sql.charAt(cursor1 - 1)) + sql.substring(cursor2 + 1);
                 } else {
-                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, ",") + sql.substring(cursor2+1);
+                    sql = sql.substring(0, cursor1) + StringUtils.join(substValues, ",") + sql.substring(cursor2 + 1);
                 }
-                
+
             }
         }
         MiscUtils.getLogger().debug("<REPORT BY TEMPLATE> SQL: " + sql);
         return sql;
     }
-    
+
     public int getActive() {
         return active;
     }
@@ -197,23 +197,23 @@ public class ReportObjectGeneric implements ReportObject {
         this.active = active;
     }
 
-	public boolean isSequence() {
-		return sequence;
-	}
+    public boolean isSequence() {
+        return sequence;
+    }
 
-	public void setSequence(boolean sequence) {
-		this.sequence = sequence;
-	}
+    public void setSequence(boolean sequence) {
+        this.sequence = sequence;
+    }
 
-	@Override
-	public String getUuid() {
-		return uuid;
-	}
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 
-	@Override
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-		
-	}
+    @Override
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+
+    }
 
 }

@@ -6,12 +6,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -59,12 +59,12 @@ import oscar.oscarResearch.oscarDxResearch.util.dxResearchCodingSystem;
  *
  * @author toby
  */
-@Transactional(propagation=Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class DxresearchReportAction extends DispatchAction {
     private final static String SUCCESS = "success";
     private final static String EDIT_DESC = "editdesc";
-    private DxresearchDAO dxresearchdao ;
-    private MyGroupDao mygroupdao = (MyGroupDao)SpringUtils.getBean(MyGroupDao.class);
+    private DxresearchDAO dxresearchdao;
+    private MyGroupDao mygroupdao = (MyGroupDao) SpringUtils.getBean(MyGroupDao.class);
     private static final String REPORTS_PATH = "org/oscarehr/common/web/DxResearchReport.jrxml";
 
     public void setDxresearchdao(DxresearchDAO dxresearchdao) {
@@ -83,88 +83,83 @@ public class DxresearchReportAction extends DispatchAction {
         return mapping.findForward(SUCCESS);
     }
 
-    public ActionForward patientRegistedAll(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response)
-             {
+    public ActionForward patientRegistedAll(ActionMapping mapping, ActionForm form,
+                                            HttpServletRequest request, HttpServletResponse response) {
 
         List<String> providerNoList = new ArrayList<String>();
         String providerNo = request.getParameter("provider_no");
-        if (providerNo.startsWith("_grp_")){
-            providerNo=providerNo.replaceFirst("_grp_", "");
+        if (providerNo.startsWith("_grp_")) {
+            providerNo = providerNo.replaceFirst("_grp_", "");
             providerNoList = mygroupdao.getGroupDoctors(providerNo);
-        }else
+        } else
             providerNoList.add(providerNo);
 
 
-        List codeSearch = (List)request.getSession().getAttribute("codeSearch");
-        List patientInfo = dxresearchdao.patientRegistedAll(codeSearch,providerNoList);
+        List codeSearch = (List) request.getSession().getAttribute("codeSearch");
+        List patientInfo = dxresearchdao.patientRegistedAll(codeSearch, providerNoList);
         request.getSession().setAttribute("listview", patientInfo);
-        if (patientInfo == null || patientInfo.size()==0)
-        {
+        if (patientInfo == null || patientInfo.size() == 0) {
             request.getSession().setAttribute("Counter", 0);
-        }else
+        } else
             request.getSession().setAttribute("Counter", patientInfo.size());
         request.getSession().setAttribute("radiovaluestatus", "patientRegistedAll");
         return mapping.findForward(SUCCESS);
     }
 
-    public ActionForward patientExcelReport(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response)
-             {
+    public ActionForward patientExcelReport(ActionMapping mapping, ActionForm form,
+                                            HttpServletRequest request, HttpServletResponse response) {
         ServletOutputStream outputStream = getServletOstream(response);
 
         List<DxRegistedPTInfo> patients = null;
 
-        if(request.getSession().getAttribute("listview").getClass().getCanonicalName().contains("ArrayList")) {
+        if (request.getSession().getAttribute("listview").getClass().getCanonicalName().contains("ArrayList")) {
             patients = (List<DxRegistedPTInfo>) request.getSession().getAttribute("listview");
-        } else if(request.getSession().getAttribute("listview").getClass().getCanonicalName().contains("DxRegistedPTInfo")) {
-        	patients = new ArrayList<DxRegistedPTInfo>();
-        	DxRegistedPTInfo info = (DxRegistedPTInfo) request.getSession().getAttribute("listview");
-        	patients.add(info);
+        } else if (request.getSession().getAttribute("listview").getClass().getCanonicalName().contains("DxRegistedPTInfo")) {
+            patients = new ArrayList<DxRegistedPTInfo>();
+            DxRegistedPTInfo info = (DxRegistedPTInfo) request.getSession().getAttribute("listview");
+            patients.add(info);
         }
 
         String providerNo = request.getParameter("provider_no");
 
-        if (providerNo.startsWith("_grp_")){
-            providerNo=providerNo.replaceFirst("_grp_", "");
+        if (providerNo.startsWith("_grp_")) {
+            providerNo = providerNo.replaceFirst("_grp_", "");
         }
 
         String mode = (String) request.getSession().getAttribute("radiovaluestatus");
 
-    	OscarDocumentCreator osc = new OscarDocumentCreator();
-        HashMap<String,String> reportParams = new HashMap<String,String>();
+        OscarDocumentCreator osc = new OscarDocumentCreator();
+        HashMap<String, String> reportParams = new HashMap<String, String>();
         reportParams.put("provider", providerNo);
         reportParams.put("mode", mode);
 
         InputStream reportInstream = this.getClass().getClassLoader().getResourceAsStream(REPORTS_PATH);
 
-    	response.setContentType("application/excel");
-    	response.setHeader( "Content-disposition", "inline; filename=dxResearchReport.xls");
+        response.setContentType("application/excel");
+        response.setHeader("Content-disposition", "inline; filename=dxResearchReport.xls");
 
-    	osc.fillDocumentStream(reportParams, outputStream, OscarDocumentCreator.EXCEL, reportInstream, patients);
+        osc.fillDocumentStream(reportParams, outputStream, OscarDocumentCreator.EXCEL, reportInstream, patients);
 
         return null;
     }
 
-    public ActionForward patientRegistedDistincted(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response)
-             {
+    public ActionForward patientRegistedDistincted(ActionMapping mapping, ActionForm form,
+                                                   HttpServletRequest request, HttpServletResponse response) {
 
         List<String> providerNoList = new ArrayList<String>();
         String providerNo = request.getParameter("provider_no");
-        if (providerNo.startsWith("_grp_")){
-            providerNo=providerNo.replaceFirst("_grp_", "");
+        if (providerNo.startsWith("_grp_")) {
+            providerNo = providerNo.replaceFirst("_grp_", "");
             providerNoList = mygroupdao.getGroupDoctors(providerNo);
-        }else
+        } else
             providerNoList.add(providerNo);
 
-        List codeSearch = (List)request.getSession().getAttribute("codeSearch");
-        List patientInfo = dxresearchdao.patientRegistedDistincted(codeSearch,providerNoList);
+        List codeSearch = (List) request.getSession().getAttribute("codeSearch");
+        List patientInfo = dxresearchdao.patientRegistedDistincted(codeSearch, providerNoList);
         request.getSession().setAttribute("listview", patientInfo);
-        if (patientInfo == null || patientInfo.size()==0)
-        {
+        if (patientInfo == null || patientInfo.size() == 0) {
             request.getSession().setAttribute("Counter", 0);
-        }else
+        } else
             request.getSession().setAttribute("Counter", patientInfo.size());
         request.getSession().setAttribute("radiovaluestatus", "patientRegistedDistincted");
         return mapping.findForward(SUCCESS);
@@ -173,153 +168,139 @@ public class DxresearchReportAction extends DispatchAction {
     protected ServletOutputStream getServletOstream(HttpServletResponse response) {
         ServletOutputStream outputStream = null;
         try {
-          outputStream = response.getOutputStream();
+            outputStream = response.getOutputStream();
         } catch (IOException ex) {
-		MiscUtils.getLogger().warn("Warning",ex);
+            MiscUtils.getLogger().warn("Warning", ex);
         }
         return outputStream;
     }
 
-    public ActionForward patientRegistedDeleted(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response)
-            {
+    public ActionForward patientRegistedDeleted(ActionMapping mapping, ActionForm form,
+                                                HttpServletRequest request, HttpServletResponse response) {
 
         List<String> providerNoList = new ArrayList<String>();
         String providerNo = request.getParameter("provider_no");
-        if (providerNo.startsWith("_grp_")){
-            providerNo=providerNo.replaceFirst("_grp_", "");
+        if (providerNo.startsWith("_grp_")) {
+            providerNo = providerNo.replaceFirst("_grp_", "");
             providerNoList = mygroupdao.getGroupDoctors(providerNo);
-        }else
+        } else
             providerNoList.add(providerNo);
 
-        List codeSearch = (List)request.getSession().getAttribute("codeSearch");
-        List patientInfo = dxresearchdao.patientRegistedDeleted(codeSearch,providerNoList);
+        List codeSearch = (List) request.getSession().getAttribute("codeSearch");
+        List patientInfo = dxresearchdao.patientRegistedDeleted(codeSearch, providerNoList);
         request.getSession().setAttribute("listview", patientInfo);
-        if (patientInfo == null || patientInfo.size()==0)
-        {
+        if (patientInfo == null || patientInfo.size() == 0) {
             request.getSession().setAttribute("Counter", 0);
-        }else
+        } else
             request.getSession().setAttribute("Counter", patientInfo.size());
         request.getSession().setAttribute("radiovaluestatus", "patientRegistedDeleted");
         return mapping.findForward(SUCCESS);
     }
 
-    public ActionForward patientRegistedActive(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response)
-             {
+    public ActionForward patientRegistedActive(ActionMapping mapping, ActionForm form,
+                                               HttpServletRequest request, HttpServletResponse response) {
 
         List<String> providerNoList = new ArrayList<String>();
         String providerNo = request.getParameter("provider_no");
-        if (providerNo.startsWith("_grp_")){
-            providerNo=providerNo.replaceFirst("_grp_", "");
+        if (providerNo.startsWith("_grp_")) {
+            providerNo = providerNo.replaceFirst("_grp_", "");
             providerNoList = mygroupdao.getGroupDoctors(providerNo);
-        }else
+        } else
             providerNoList.add(providerNo);
 
-        List codeSearch = (List)request.getSession().getAttribute("codeSearch");
-        List patientInfo = dxresearchdao.patientRegistedActive(codeSearch,providerNoList);
+        List codeSearch = (List) request.getSession().getAttribute("codeSearch");
+        List patientInfo = dxresearchdao.patientRegistedActive(codeSearch, providerNoList);
         request.getSession().setAttribute("listview", patientInfo);
-        if (patientInfo == null || patientInfo.size()==0)
-        {
+        if (patientInfo == null || patientInfo.size() == 0) {
             request.getSession().setAttribute("Counter", 0);
-        }else
+        } else
             request.getSession().setAttribute("Counter", patientInfo.size());
         request.getSession().setAttribute("radiovaluestatus", "patientRegistedActive");
         return mapping.findForward(SUCCESS);
     }
 
-    public ActionForward patientRegistedResolve(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response)
-             {
+    public ActionForward patientRegistedResolve(ActionMapping mapping, ActionForm form,
+                                                HttpServletRequest request, HttpServletResponse response) {
 
         List<String> providerNoList = new ArrayList<String>();
         String providerNo = request.getParameter("provider_no");
-        if (providerNo.startsWith("_grp_")){
-            providerNo=providerNo.replaceFirst("_grp_", "");
+        if (providerNo.startsWith("_grp_")) {
+            providerNo = providerNo.replaceFirst("_grp_", "");
             providerNoList = mygroupdao.getGroupDoctors(providerNo);
-        }else
+        } else
             providerNoList.add(providerNo);
 
-        List codeSearch = (List)request.getSession().getAttribute("codeSearch");
-        List patientInfo = dxresearchdao.patientRegistedResolve(codeSearch,providerNoList);
+        List codeSearch = (List) request.getSession().getAttribute("codeSearch");
+        List patientInfo = dxresearchdao.patientRegistedResolve(codeSearch, providerNoList);
         request.getSession().setAttribute("listview", patientInfo);
-        if (patientInfo == null || patientInfo.size()==0)
-        {
+        if (patientInfo == null || patientInfo.size() == 0) {
             request.getSession().setAttribute("Counter", 0);
-        }else
+        } else
             request.getSession().setAttribute("Counter", patientInfo.size());
         request.getSession().setAttribute("radiovaluestatus", "patientRegistedResolve");
         return mapping.findForward(SUCCESS);
     }
 
-    public ActionForward editDesc( ActionMapping mapping, ActionForm  form,
-                                HttpServletRequest request, HttpServletResponse response)
+    public ActionForward editDesc(ActionMapping mapping, ActionForm form,
+                                  HttpServletRequest request, HttpServletResponse response) {
+        String editingCodeType = request.getParameter("editingCodeType");
+        String editingCodeCode = request.getParameter("editingCodeCode");
+        String editingCodeDesc = request.getParameter("editingCodeDesc");
 
-    {
-      String editingCodeType = request.getParameter( "editingCodeType" );
-      String editingCodeCode = request.getParameter( "editingCodeCode" );
-      String editingCodeDesc = request.getParameter( "editingCodeDesc" );
+        dxQuickListItemsHandler.updatePatientCodeDesc(editingCodeType, editingCodeCode, editingCodeDesc);
 
-      dxQuickListItemsHandler.updatePatientCodeDesc( editingCodeType, editingCodeCode, editingCodeDesc );
+        editingCodeDesc = String.format("\"%s\"", editingCodeDesc);
+        request.getSession().setAttribute("editingCodeDesc", editingCodeDesc);
 
-      editingCodeDesc = String.format( "\"%s\"", editingCodeDesc );
-      request.getSession().setAttribute( "editingCodeDesc", editingCodeDesc );
-
-      return mapping.findForward(SUCCESS);
+        return mapping.findForward(SUCCESS);
     }
 
     @SuppressWarnings("unchecked")
-	public ActionForward addSearchCode(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ActionForward addSearchCode(ActionMapping mapping, ActionForm form,
+                                       HttpServletRequest request, HttpServletResponse response) {
 
         DynaBean lazyForm = (DynaBean) form;
-        String quickListName = (String)lazyForm.get("quicklistname");
+        String quickListName = (String) lazyForm.get("quicklistname");
         List<dxCodeSearchBean> codeSearch = dxresearchdao.getQuickListItems(quickListName);
         String codeSingle = request.getParameter("codesearch");
         String codeSystem = request.getParameter("codesystem");
-        String action = request.getParameter( "action" );       
+        String action = request.getParameter("action");
         dxCodeSearchBean newAddition = null;
-        
+
         // check the code
         CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);
         String codeDescription = null;
-        
-        if(codeSystem != null && ! codeSystem.isEmpty())
-        {
-        	codeDescription = codingSystemManager.getCodeDescription(codeSystem.toLowerCase().trim(), codeSingle);
-        }
-        
-        if(codeDescription != null && ! codeDescription.isEmpty()) 
-        {
-            newAddition = new dxCodeSearchBean();
-            newAddition.setType(codeSystem); 
-        	newAddition.setDxSearchCode(codeSingle);
-        	newAddition.setDescription(codeDescription);
+
+        if (codeSystem != null && !codeSystem.isEmpty()) {
+            codeDescription = codingSystemManager.getCodeDescription(codeSystem.toLowerCase().trim(), codeSingle);
         }
 
-        if (request.getSession().getAttribute("codeSearch") != null)
-        {
-        	List<dxCodeSearchBean> existcodeSearch = (List<dxCodeSearchBean>) request.getSession().getAttribute("codeSearch");
+        if (codeDescription != null && !codeDescription.isEmpty()) {
+            newAddition = new dxCodeSearchBean();
+            newAddition.setType(codeSystem);
+            newAddition.setDxSearchCode(codeSingle);
+            newAddition.setDescription(codeDescription);
+        }
+
+        if (request.getSession().getAttribute("codeSearch") != null) {
+            List<dxCodeSearchBean> existcodeSearch = (List<dxCodeSearchBean>) request.getSession().getAttribute("codeSearch");
             codeSearch.addAll(existcodeSearch);
         }
-        if(newAddition != null)
-        {
-        	codeSearch.add(newAddition);
+        if (newAddition != null) {
+            codeSearch.add(newAddition);
         }
-        
+
         request.getSession().setAttribute("codeSearch", codeSearch);
         return mapping.findForward(SUCCESS);
     }
 
-    public ActionForward clearSearchCode(ActionMapping mapping, ActionForm  form,
-            HttpServletRequest request, HttpServletResponse response)
-             {
+    public ActionForward clearSearchCode(ActionMapping mapping, ActionForm form,
+                                         HttpServletRequest request, HttpServletResponse response) {
 
-        List existcodeSearch =null;
+        List existcodeSearch = null;
 
-        if (request.getSession().getAttribute("codeSearch")!=null && ((List)(request.getSession().getAttribute("codeSearch"))).size()>0)
-        {
-            existcodeSearch = (List)(request.getSession().getAttribute("codeSearch"));
+        if (request.getSession().getAttribute("codeSearch") != null && ((List) (request.getSession().getAttribute("codeSearch"))).size() > 0) {
+            existcodeSearch = (List) (request.getSession().getAttribute("codeSearch"));
             existcodeSearch.clear();
         }
 

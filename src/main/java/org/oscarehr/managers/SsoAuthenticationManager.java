@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -78,7 +78,7 @@ public class SsoAuthenticationManager implements Serializable {
     public Saml2Settings buildAuthenticationRequestSettings(String user_email, String context) throws IOException, URISyntaxException {
 
         Properties samlData = new Properties();
-        try(InputStream inputStream = getClass().getResourceAsStream(samlPropertiesFile)) {
+        try (InputStream inputStream = getClass().getResourceAsStream(samlPropertiesFile)) {
             samlData.load(inputStream);
 
             /*
@@ -113,7 +113,7 @@ public class SsoAuthenticationManager implements Serializable {
      *
      * @return Map of attributes for use in new login session
      */
-    public Map<String,Object> checkSSOLogin(Auth auth) {
+    public Map<String, Object> checkSSOLogin(Auth auth) {
         Map<String, List<String>> attributes = auth.getAttributes();
         String nameId = auth.getNameId();
         String nameIdFormat = auth.getNameIdFormat();
@@ -136,7 +136,7 @@ public class SsoAuthenticationManager implements Serializable {
         }
 
         Map<String, Object> sessionData = checkLogin(new HashMap<>(), nameId);
-        if(sessionData != null && ! sessionData.isEmpty()) {
+        if (sessionData != null && !sessionData.isEmpty()) {
             sessionData.put("attributes", attributes);
             sessionData.put("nameId", nameId);
             sessionData.put("nameIdFormat", nameIdFormat);
@@ -155,12 +155,12 @@ public class SsoAuthenticationManager implements Serializable {
         return sessionData;
     }
 
-    public Map<String,Object> checkLogin(Map<String,Object> sessionData, String[] authenticationParams) {
+    public Map<String, Object> checkLogin(Map<String, Object> sessionData, String[] authenticationParams) {
         String[] providerInformation = checkPlainTextLogin(authenticationParams);
         return createSession(sessionData, providerInformation);
     }
 
-    private Map<String,Object> checkLogin(Map<String,Object> sessionData, String nameId) {
+    private Map<String, Object> checkLogin(Map<String, Object> sessionData, String nameId) {
         String[] providerInformation = checkSSOLogin(nameId);
         return createSession(sessionData, providerInformation);
     }
@@ -173,9 +173,9 @@ public class SsoAuthenticationManager implements Serializable {
      * @param providerInformation data of the provider profile
      * @return session data or NULL
      */
-    private Map<String,Object> createSession(Map<String,Object> sessionData, String[] providerInformation) {
+    private Map<String, Object> createSession(Map<String, Object> sessionData, String[] providerInformation) {
 
-        if(providerInformation != null && providerInformation.length > 0) {
+        if (providerInformation != null && providerInformation.length > 0) {
 
             logger.debug("SSO login confirmed with provider info: " + Arrays.toString(providerInformation));
             String providerNo = providerInformation[0];
@@ -184,7 +184,7 @@ public class SsoAuthenticationManager implements Serializable {
             sessionData.put("userlastname", providerInformation[2]);
             sessionData.put("userrole", providerInformation[4]);
             sessionData.put("expired_days", providerInformation[5]);
-            sessionData.put("fullSite","true");
+            sessionData.put("fullSite", "true");
 
             // only the provider class info here.  Nothing more.
             sessionData.put(SessionConstants.LOGGED_IN_PROVIDER, getProvider(providerInformation[0]));
@@ -206,7 +206,6 @@ public class SsoAuthenticationManager implements Serializable {
     }
 
 
-
     /**
      * Check authentication by plain text credentials
      * @param authenticationParams [username, password, pin, ip]
@@ -217,7 +216,7 @@ public class SsoAuthenticationManager implements Serializable {
         /* short circuit any null or empty values saves processing power
          * at least the username and password is required: length < 2
          */
-        if(authenticationParams == null || authenticationParams.length < 2) {
+        if (authenticationParams == null || authenticationParams.length < 2) {
             loginCheck = null;
             return null;
         }
@@ -238,7 +237,7 @@ public class SsoAuthenticationManager implements Serializable {
 
         /* short circuit any null or empty values saves processing power
          */
-        if(nameId == null || nameId.isEmpty()) {
+        if (nameId == null || nameId.isEmpty()) {
             loginCheck = null;
             return null;
         }
@@ -253,10 +252,10 @@ public class SsoAuthenticationManager implements Serializable {
     /**
      * @Deprecated trying to avoid putting this data into the session.
      */
-    private Map<String,Object> setUserPreferences(Map<String,Object> sessionData, String providerNo) {
+    private Map<String, Object> setUserPreferences(Map<String, Object> sessionData, String providerNo) {
         ProviderPreference providerPreferences = providerPreferenceDao.find(providerNo);
 
-        if (providerPreferences==null) {
+        if (providerPreferences == null) {
             providerPreferences = new ProviderPreference();
         }
 
@@ -269,9 +268,9 @@ public class SsoAuthenticationManager implements Serializable {
         return sessionData;
     }
 
-    private Map<String, Object> setFacilityInformation(Map<String,Object> sessionData, String providerNo) {
+    private Map<String, Object> setFacilityInformation(Map<String, Object> sessionData, String providerNo) {
         List<Integer> facilityIds = providerDao.getFacilityIds(providerNo);
-        if(facilityIds != null && facilityIds.size() == 1) {
+        if (facilityIds != null && facilityIds.size() == 1) {
             // only one facility can be used with SSO auth.
             Facility facility = facilityDao.find(facilityIds.get(0));
             sessionData.put("currentFacility", facility);

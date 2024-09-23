@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -56,308 +56,308 @@ import oscar.util.ConversionUtils;
 
 public class RptInitializePatientsMetGuidelineCDMReportAction extends Action {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-	  		  throw new SecurityException("missing required security object (_report)");
-	  	  	}
-		
-		RptInitializePatientsMetGuidelineCDMReportForm frm = (RptInitializePatientsMetGuidelineCDMReportForm) form;
-		request.getSession().setAttribute("RptInitializePatientsMetGuidelineCDMReportForm", frm);
-		MessageResources mr = getResources(request);
-		RptMeasurementsData mData = new RptMeasurementsData();
-		String[] patientSeenCheckbox = frm.getPatientSeenCheckbox();
-		String startDateA = frm.getStartDateA();
-		String endDateA = frm.getEndDateA();
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		ArrayList reportMsg = new ArrayList();
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
+            throw new SecurityException("missing required security object (_report)");
+        }
 
-		if (!validate(frm, request)) {
-			MiscUtils.getLogger().debug("the form is invalid");
-			return (new ActionForward(mapping.getInput()));
-		}
+        RptInitializePatientsMetGuidelineCDMReportForm frm = (RptInitializePatientsMetGuidelineCDMReportForm) form;
+        request.getSession().setAttribute("RptInitializePatientsMetGuidelineCDMReportForm", frm);
+        MessageResources mr = getResources(request);
+        RptMeasurementsData mData = new RptMeasurementsData();
+        String[] patientSeenCheckbox = frm.getPatientSeenCheckbox();
+        String startDateA = frm.getStartDateA();
+        String endDateA = frm.getEndDateA();
 
-		if (patientSeenCheckbox != null) {
-			int nbPatient = mData.getNbPatientSeen(startDateA, endDateA);
-			String msg = mr.getMessage("oscarReport.CDMReport.msgPatientSeen", Integer.toString(nbPatient), startDateA, endDateA);
-			MiscUtils.getLogger().debug(msg);
-			reportMsg.add(msg);
-			reportMsg.add("");
-		}
+        ArrayList reportMsg = new ArrayList();
 
-		getMetGuidelinePercentage(frm, reportMsg, request);
-		//getPatientsMetAllSelectedGuideline(db, frm, reportMsg, request);
+        if (!validate(frm, request)) {
+            MiscUtils.getLogger().debug("the form is invalid");
+            return (new ActionForward(mapping.getInput()));
+        }
 
-		String title = mr.getMessage("oscarReport.CDMReport.msgPercentageOfPatientWhoMetGuideline");
-		request.setAttribute("title", title);
-		request.setAttribute("messages", reportMsg);
+        if (patientSeenCheckbox != null) {
+            int nbPatient = mData.getNbPatientSeen(startDateA, endDateA);
+            String msg = mr.getMessage("oscarReport.CDMReport.msgPatientSeen", Integer.toString(nbPatient), startDateA, endDateA);
+            MiscUtils.getLogger().debug(msg);
+            reportMsg.add(msg);
+            reportMsg.add("");
+        }
 
-		return mapping.findForward("success");
-	}
+        getMetGuidelinePercentage(frm, reportMsg, request);
+        //getPatientsMetAllSelectedGuideline(db, frm, reportMsg, request);
 
-	/*****************************************************************************************
-	 * validate the input value
-	 *
-	 * @return boolean
-	 ******************************************************************************************/
-	private boolean validate(RptInitializePatientsMetGuidelineCDMReportForm frm, HttpServletRequest request) {
-		EctValidation ectValidation = new EctValidation();
-		ActionMessages errors = new ActionMessages();
-		String[] startDateB = frm.getStartDateB();
-		String[] endDateB = frm.getEndDateB();
-		String[] idB = frm.getIdB();
-		String[] guidelineB = frm.getGuidelineB();
-		String[] guidelineCheckbox = frm.getGuidelineCheckbox();
+        String title = mr.getMessage("oscarReport.CDMReport.msgPercentageOfPatientWhoMetGuideline");
+        request.setAttribute("title", title);
+        request.setAttribute("messages", reportMsg);
 
-		boolean valid = true;
+        return mapping.findForward("success");
+    }
 
-		if (guidelineCheckbox != null) {
-			for (int i = 0; i < guidelineCheckbox.length; i++) {
-				int ctr = Integer.parseInt(guidelineCheckbox[i]);
-				String startDate = startDateB[ctr];
-				String endDate = endDateB[ctr];
-				String guideline = guidelineB[ctr];
-				String measurementType = (String) frm.getValue("measurementType" + ctr);
-				String sNumMInstrc = (String) frm.getValue("mNbInstrcs" + ctr);
-				int iNumMInstrc = Integer.parseInt(sNumMInstrc);
+    /*****************************************************************************************
+     * validate the input value
+     *
+     * @return boolean
+     ******************************************************************************************/
+    private boolean validate(RptInitializePatientsMetGuidelineCDMReportForm frm, HttpServletRequest request) {
+        EctValidation ectValidation = new EctValidation();
+        ActionMessages errors = new ActionMessages();
+        String[] startDateB = frm.getStartDateB();
+        String[] endDateB = frm.getEndDateB();
+        String[] idB = frm.getIdB();
+        String[] guidelineB = frm.getGuidelineB();
+        String[] guidelineCheckbox = frm.getGuidelineCheckbox();
 
-				if (!ectValidation.isDate(startDate)) {
-					errors.add(startDate, new ActionMessage("errors.invalidDate", measurementType));
-					saveErrors(request, errors);
-					valid = false;
-				}
-				if (!ectValidation.isDate(endDate)) {
-					errors.add(endDate, new ActionMessage("errors.invalidDate", measurementType));
-					saveErrors(request, errors);
-					valid = false;
-				}
-				for (int j = 0; j < iNumMInstrc; j++) {
+        boolean valid = true;
 
-					String mInstrc = (String) frm.getValue("mInstrcsCheckbox" + ctr + j);
-					if (mInstrc != null) {
-						List<Validations> vs = ectValidation.getValidationType(measurementType, mInstrc);
-						String regExp = null;
-						double dMax = 0;
-						double dMin = 0;
+        if (guidelineCheckbox != null) {
+            for (int i = 0; i < guidelineCheckbox.length; i++) {
+                int ctr = Integer.parseInt(guidelineCheckbox[i]);
+                String startDate = startDateB[ctr];
+                String endDate = endDateB[ctr];
+                String guideline = guidelineB[ctr];
+                String measurementType = (String) frm.getValue("measurementType" + ctr);
+                String sNumMInstrc = (String) frm.getValue("mNbInstrcs" + ctr);
+                int iNumMInstrc = Integer.parseInt(sNumMInstrc);
 
-						if (!vs.isEmpty()) {
-							Validations v = vs.iterator().next();
-							dMax = v.getMaxValue();
-							dMin = v.getMinValue();
-							regExp = v.getRegularExp();
-						}
+                if (!ectValidation.isDate(startDate)) {
+                    errors.add(startDate, new ActionMessage("errors.invalidDate", measurementType));
+                    saveErrors(request, errors);
+                    valid = false;
+                }
+                if (!ectValidation.isDate(endDate)) {
+                    errors.add(endDate, new ActionMessage("errors.invalidDate", measurementType));
+                    saveErrors(request, errors);
+                    valid = false;
+                }
+                for (int j = 0; j < iNumMInstrc; j++) {
 
-						if (!ectValidation.isInRange(dMax, dMin, guideline)) {
-							errors.add(guideline, new ActionMessage("errors.range", measurementType, Double.toString(dMin), Double.toString(dMax)));
-							saveErrors(request, errors);
-							valid = false;
-						} else if (!ectValidation.matchRegExp(regExp, guideline)) {
-							errors.add(guideline, new ActionMessage("errors.invalid", measurementType));
-							saveErrors(request, errors);
-							valid = false;
-						} else if (!ectValidation.isValidBloodPressure(regExp, guideline)) {
-							errors.add(guideline, new ActionMessage("error.bloodPressure"));
-							saveErrors(request, errors);
-							valid = false;
-						}
-					}
-				}
-			}
-		}
-		return valid;
-	}
+                    String mInstrc = (String) frm.getValue("mInstrcsCheckbox" + ctr + j);
+                    if (mInstrc != null) {
+                        List<Validations> vs = ectValidation.getValidationType(measurementType, mInstrc);
+                        String regExp = null;
+                        double dMax = 0;
+                        double dMin = 0;
 
-	/*****************************************************************************************
-	* get the number of Patient met the specific guideline during aspecific time period
-	*
-	* @return ArrayList which contain the result in String format
-	******************************************************************************************/
-	private ArrayList getMetGuidelinePercentage(RptInitializePatientsMetGuidelineCDMReportForm frm, ArrayList metGLPercentageMsg, HttpServletRequest request) {
-		String[] startDateB = frm.getStartDateB();
-		String[] endDateB = frm.getEndDateB();
-		String[] idB = frm.getIdB();
-		String[] guidelineB = frm.getGuidelineB();
-		String[] guidelineCheckbox = frm.getGuidelineCheckbox();
-		RptCheckGuideline checkGuideline = new RptCheckGuideline();
-		MessageResources mr = getResources(request);
+                        if (!vs.isEmpty()) {
+                            Validations v = vs.iterator().next();
+                            dMax = v.getMaxValue();
+                            dMin = v.getMinValue();
+                            regExp = v.getRegularExp();
+                        }
 
-		if (guidelineCheckbox == null) {
-			return metGLPercentageMsg;
-		}
+                        if (!ectValidation.isInRange(dMax, dMin, guideline)) {
+                            errors.add(guideline, new ActionMessage("errors.range", measurementType, Double.toString(dMin), Double.toString(dMax)));
+                            saveErrors(request, errors);
+                            valid = false;
+                        } else if (!ectValidation.matchRegExp(regExp, guideline)) {
+                            errors.add(guideline, new ActionMessage("errors.invalid", measurementType));
+                            saveErrors(request, errors);
+                            valid = false;
+                        } else if (!ectValidation.isValidBloodPressure(regExp, guideline)) {
+                            errors.add(guideline, new ActionMessage("error.bloodPressure"));
+                            saveErrors(request, errors);
+                            valid = false;
+                        }
+                    }
+                }
+            }
+        }
+        return valid;
+    }
 
-		MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
-		FormsDao fDao = SpringUtils.getBean(FormsDao.class);
-		MiscUtils.getLogger().debug("the length of guideline checkbox is " + guidelineCheckbox.length);
-		for (int i = 0; i < guidelineCheckbox.length; i++) {
-			int ctr = Integer.parseInt(guidelineCheckbox[i]);
-			MiscUtils.getLogger().debug("the value of guildline Checkbox is: " + guidelineCheckbox[i]);
-			String startDate = startDateB[ctr];
-			String endDate = endDateB[ctr];
-			String guideline = guidelineB[ctr];
-			String measurementType = (String) frm.getValue("measurementType" + ctr);
-			String aboveBelow = (String) frm.getValue("aboveBelow" + ctr);
-			String sNumMInstrc = (String) frm.getValue("mNbInstrcs" + ctr);
-			int iNumMInstrc = Integer.parseInt(sNumMInstrc);
-			double metGLPercentage = 0;
-			double nbMetGL = 0;
+    /*****************************************************************************************
+     * get the number of Patient met the specific guideline during aspecific time period
+     *
+     * @return ArrayList which contain the result in String format
+     ******************************************************************************************/
+    private ArrayList getMetGuidelinePercentage(RptInitializePatientsMetGuidelineCDMReportForm frm, ArrayList metGLPercentageMsg, HttpServletRequest request) {
+        String[] startDateB = frm.getStartDateB();
+        String[] endDateB = frm.getEndDateB();
+        String[] idB = frm.getIdB();
+        String[] guidelineB = frm.getGuidelineB();
+        String[] guidelineCheckbox = frm.getGuidelineCheckbox();
+        RptCheckGuideline checkGuideline = new RptCheckGuideline();
+        MessageResources mr = getResources(request);
 
-			for (int j = 0; j < iNumMInstrc; j++) {
-				metGLPercentage = 0;
-				nbMetGL = 0;
-				String mInstrc = (String) frm.getValue("mInstrcsCheckbox" + ctr + j);
+        if (guidelineCheckbox == null) {
+            return metGLPercentageMsg;
+        }
 
-				if (mInstrc != null) {
-					double nbGeneral = 0;
+        MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
+        FormsDao fDao = SpringUtils.getBean(FormsDao.class);
+        MiscUtils.getLogger().debug("the length of guideline checkbox is " + guidelineCheckbox.length);
+        for (int i = 0; i < guidelineCheckbox.length; i++) {
+            int ctr = Integer.parseInt(guidelineCheckbox[i]);
+            MiscUtils.getLogger().debug("the value of guildline Checkbox is: " + guidelineCheckbox[i]);
+            String startDate = startDateB[ctr];
+            String endDate = endDateB[ctr];
+            String guideline = guidelineB[ctr];
+            String measurementType = (String) frm.getValue("measurementType" + ctr);
+            String aboveBelow = (String) frm.getValue("aboveBelow" + ctr);
+            String sNumMInstrc = (String) frm.getValue("mNbInstrcs" + ctr);
+            int iNumMInstrc = Integer.parseInt(sNumMInstrc);
+            double metGLPercentage = 0;
+            double nbMetGL = 0;
 
-					List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate), measurementType, mInstrc);
-					if (measurementType.compareTo("BP") == 0) {
+            for (int j = 0; j < iNumMInstrc; j++) {
+                metGLPercentage = 0;
+                nbMetGL = 0;
+                String mInstrc = (String) frm.getValue("mInstrcsCheckbox" + ctr + j);
 
-						for (Object[] o : os) {
-							Integer demographicNo = (Integer) o[0];
-							Date maxDateEntered = (Date) o[1];
-							for (Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
-								if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), guideline, aboveBelow)) {
-									nbMetGL++;
-								}
-							}
-							nbGeneral++;
-						}
-						if (nbGeneral != 0) {
-							metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
-						}
-						String[] param = { startDate, endDate, measurementType, mInstrc, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline };
-						String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
-						MiscUtils.getLogger().debug(msg);
-						metGLPercentageMsg.add(msg);
-					} else if (checkGuideline.getValidation(measurementType) == 1) {
-						for (Object[] o : os) {
-							Integer demographicNo = (Integer) o[0];
-							Date maxDateEntered = (Date) o[1];
+                if (mInstrc != null) {
+                    double nbGeneral = 0;
 
-							String sql = "SELECT dataField FROM measurements WHERE dateEntered = '" + ConversionUtils.toDateString(maxDateEntered) + "' AND demographicNo = '" + demographicNo + "' AND type='" + measurementType + "' AND measuringInstruction='" + mInstrc + "' AND dataField" + aboveBelow + "'" + guideline + "'";
-							List<Object[]> rs = fDao.runNativeQuery(sql);
+                    List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate), measurementType, mInstrc);
+                    if (measurementType.compareTo("BP") == 0) {
 
-							if (!rs.isEmpty()) {
-								nbMetGL++;
-							}
-							nbGeneral++;
-						}
+                        for (Object[] o : os) {
+                            Integer demographicNo = (Integer) o[0];
+                            Date maxDateEntered = (Date) o[1];
+                            for (Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
+                                if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), guideline, aboveBelow)) {
+                                    nbMetGL++;
+                                }
+                            }
+                            nbGeneral++;
+                        }
+                        if (nbGeneral != 0) {
+                            metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
+                        }
+                        String[] param = {startDate, endDate, measurementType, mInstrc, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline};
+                        String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
+                        MiscUtils.getLogger().debug(msg);
+                        metGLPercentageMsg.add(msg);
+                    } else if (checkGuideline.getValidation(measurementType) == 1) {
+                        for (Object[] o : os) {
+                            Integer demographicNo = (Integer) o[0];
+                            Date maxDateEntered = (Date) o[1];
 
-						if (nbGeneral != 0) {
-							metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
-						}
-						String[] param = { startDate, endDate, measurementType, mInstrc, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline };
+                            String sql = "SELECT dataField FROM measurements WHERE dateEntered = '" + ConversionUtils.toDateString(maxDateEntered) + "' AND demographicNo = '" + demographicNo + "' AND type='" + measurementType + "' AND measuringInstruction='" + mInstrc + "' AND dataField" + aboveBelow + "'" + guideline + "'";
+                            List<Object[]> rs = fDao.runNativeQuery(sql);
 
-						String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
-						MiscUtils.getLogger().debug(msg);
-						metGLPercentageMsg.add(msg);
-					} else {
-						for (Object[] o : os) {
-							Integer demographicNo = (Integer) o[0];
-							Date maxDateEntered = (Date) o[1];
+                            if (!rs.isEmpty()) {
+                                nbMetGL++;
+                            }
+                            nbGeneral++;
+                        }
 
-							for (Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
-								if (checkGuideline.isYesNoMetGuideline(m.getDataField(), guideline)) {
-									nbMetGL++;
-								}
-								break;
-							}
-							nbGeneral++;
-						}
-						if (nbGeneral != 0) {
-							metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
-						}
-						String[] param = { startDate, endDate, measurementType, mInstrc, guideline, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage) };
-						String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
-						MiscUtils.getLogger().debug(msg);
-						metGLPercentageMsg.add(msg);
-					}
-				}
-			}
+                        if (nbGeneral != 0) {
+                            metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
+                        }
+                        String[] param = {startDate, endDate, measurementType, mInstrc, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline};
 
-			//percentage of patients who meet guideline for the same test with all measuring instruction
+                        String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
+                        MiscUtils.getLogger().debug(msg);
+                        metGLPercentageMsg.add(msg);
+                    } else {
+                        for (Object[] o : os) {
+                            Integer demographicNo = (Integer) o[0];
+                            Date maxDateEntered = (Date) o[1];
 
-			metGLPercentage = 0;
-			nbMetGL = 0;
-			
-			List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate), measurementType);
-			double nbGeneral = 0;
+                            for (Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
+                                if (checkGuideline.isYesNoMetGuideline(m.getDataField(), guideline)) {
+                                    nbMetGL++;
+                                }
+                                break;
+                            }
+                            nbGeneral++;
+                        }
+                        if (nbGeneral != 0) {
+                            metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
+                        }
+                        String[] param = {startDate, endDate, measurementType, mInstrc, guideline, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage)};
+                        String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
+                        MiscUtils.getLogger().debug(msg);
+                        metGLPercentageMsg.add(msg);
+                    }
+                }
+            }
 
-			if (measurementType.compareTo("BP") == 0) {
-				for (Object[] o : os) {
-					Integer demographicNo = (Integer) o[0];
-					Date maxDateEntered = (Date) o[1];
-					
-					for(Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
-						if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), guideline, aboveBelow)) {
-							nbMetGL++;
-						}
-						break;
-					}
-					nbGeneral++;
-				}
-				if (nbGeneral != 0) {
-					metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
-				}
-				
-				String[] param = { startDate, endDate, measurementType, "", "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline };
-				String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
-				MiscUtils.getLogger().debug(msg);
-				metGLPercentageMsg.add(msg);
-			} else if (checkGuideline.getValidation(measurementType) == 1) {
-				for (Object[] o : os) {
-					Integer demographicNo = (Integer) o[0];
-					Date maxDateEntered = (Date) o[1];
-					
-					String sql = "SELECT dataField FROM measurements WHERE dateEntered = '" + ConversionUtils.toDateString(maxDateEntered) + "' AND demographicNo = '"
-							+ demographicNo + "' AND type='" + measurementType + "' AND dataField" + aboveBelow + "'" + guideline + "'";
-					List<Object[]> rs = fDao.runNativeQuery(sql);
-					if (!rs.isEmpty()) {
-						nbMetGL++;
-					}
-					nbGeneral++;
-				}
+            //percentage of patients who meet guideline for the same test with all measuring instruction
 
-				if (nbGeneral != 0) {
-					metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
-				}
-				String[] param = { startDate, endDate, measurementType, "", "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline };
-				String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
-				MiscUtils.getLogger().debug(msg);
-				metGLPercentageMsg.add(msg);
-			} else {
-				for (Object[] o : os) {
-					Integer demographicNo = (Integer) o[0];
-					Date maxDateEntered = (Date) o[1];
-					
-					for(Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
-						if (checkGuideline.isYesNoMetGuideline(m.getDataField(), guideline)) {
-							nbMetGL++;
-						}
-						break;
-					}
-					nbGeneral++;
-				}
-				if (nbGeneral != 0) {
-					metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
-				}
-				String[] param = { startDate, endDate, measurementType, "", guideline, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage) };
-				String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
-				MiscUtils.getLogger().debug(msg);
-				metGLPercentageMsg.add(msg);
-			}
-		}
+            metGLPercentage = 0;
+            nbMetGL = 0;
 
-		return metGLPercentageMsg;
-	}
+            List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate), measurementType);
+            double nbGeneral = 0;
 
-	/*****************************************************************************************
-	 * get the number of Patient met all the selected guideline during aspecific time period
-	 *
-	 * @return ArrayList which contain the result in String format
-	 ******************************************************************************************/
+            if (measurementType.compareTo("BP") == 0) {
+                for (Object[] o : os) {
+                    Integer demographicNo = (Integer) o[0];
+                    Date maxDateEntered = (Date) o[1];
+
+                    for (Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
+                        if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), guideline, aboveBelow)) {
+                            nbMetGL++;
+                        }
+                        break;
+                    }
+                    nbGeneral++;
+                }
+                if (nbGeneral != 0) {
+                    metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
+                }
+
+                String[] param = {startDate, endDate, measurementType, "", "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline};
+                String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
+                MiscUtils.getLogger().debug(msg);
+                metGLPercentageMsg.add(msg);
+            } else if (checkGuideline.getValidation(measurementType) == 1) {
+                for (Object[] o : os) {
+                    Integer demographicNo = (Integer) o[0];
+                    Date maxDateEntered = (Date) o[1];
+
+                    String sql = "SELECT dataField FROM measurements WHERE dateEntered = '" + ConversionUtils.toDateString(maxDateEntered) + "' AND demographicNo = '"
+                            + demographicNo + "' AND type='" + measurementType + "' AND dataField" + aboveBelow + "'" + guideline + "'";
+                    List<Object[]> rs = fDao.runNativeQuery(sql);
+                    if (!rs.isEmpty()) {
+                        nbMetGL++;
+                    }
+                    nbGeneral++;
+                }
+
+                if (nbGeneral != 0) {
+                    metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
+                }
+                String[] param = {startDate, endDate, measurementType, "", "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage), aboveBelow, guideline};
+                String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsMetGuideline", param);
+                MiscUtils.getLogger().debug(msg);
+                metGLPercentageMsg.add(msg);
+            } else {
+                for (Object[] o : os) {
+                    Integer demographicNo = (Integer) o[0];
+                    Date maxDateEntered = (Date) o[1];
+
+                    for (Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
+                        if (checkGuideline.isYesNoMetGuideline(m.getDataField(), guideline)) {
+                            nbMetGL++;
+                        }
+                        break;
+                    }
+                    nbGeneral++;
+                }
+                if (nbGeneral != 0) {
+                    metGLPercentage = Math.round((nbMetGL / nbGeneral) * 100);
+                }
+                String[] param = {startDate, endDate, measurementType, "", guideline, "(" + nbMetGL + "/" + nbGeneral + ") " + Double.toString(metGLPercentage)};
+                String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
+                MiscUtils.getLogger().debug(msg);
+                metGLPercentageMsg.add(msg);
+            }
+        }
+
+        return metGLPercentageMsg;
+    }
+
+    /*****************************************************************************************
+     * get the number of Patient met all the selected guideline during aspecific time period
+     *
+     * @return ArrayList which contain the result in String format
+     ******************************************************************************************/
 	/*
 	private ArrayList getPatientsMetAllSelectedGuideline(RptInitializePatientsMetGuidelineCDMReportForm frm, ArrayList reportMsg, HttpServletRequest request) {
 		String[] guidelineCheckbox = frm.getGuidelineCheckbox();

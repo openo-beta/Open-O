@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,73 +38,73 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 @Entity
 public class OscarJobType extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String name;
-	
-	private String description;
-	
-	private String className;
-	
-	private boolean enabled = false;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updated;
-	
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    private String description;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String className;
 
-	public String getDescription() {
-		return description;
-	}
+    private boolean enabled = false;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
 
-	public String getClassName() {
-		return className;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    public String getName() {
+        return name;
+    }
 
-	
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
-	}
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 
 }

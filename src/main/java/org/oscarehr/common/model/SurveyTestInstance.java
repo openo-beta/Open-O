@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,79 +42,79 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="survey_test_instance")
+@Table(name = "survey_test_instance")
 public class SurveyTestInstance extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="survey_id")
-	private int surveyId;
-	
-	@Column(name="date_created")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
-	
-	@Column(name="user_id")
-	private int userId;
-	
-	@Column(name="client_id")
-	private int clientId;
+    @Column(name = "survey_id")
+    private int surveyId;
 
-	
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name="instance_id", referencedColumnName="id")
-	private Set<SurveyTestData> data = new HashSet<SurveyTestData>();
-	
-	
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "user_id")
+    private int userId;
 
-	public int getSurveyId() {
-		return surveyId;
-	}
+    @Column(name = "client_id")
+    private int clientId;
 
-	public void setSurveyId(int surveyId) {
-		this.surveyId = surveyId;
-	}
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "instance_id", referencedColumnName = "id")
+    private Set<SurveyTestData> data = new HashSet<SurveyTestData>();
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
 
-	public int getUserId() {
-		return userId;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public int getClientId() {
-		return clientId;
-	}
+    public int getSurveyId() {
+        return surveyId;
+    }
 
-	public void setClientId(int clientId) {
-		this.clientId = clientId;
-	}
+    public void setSurveyId(int surveyId) {
+        this.surveyId = surveyId;
+    }
 
-	public Set<SurveyTestData> getData() {
-		return data;
-	}
+    public Date getDateCreated() {
+        return dateCreated;
+    }
 
-	public void setData(Set<SurveyTestData> data) {
-		this.data = data;
-	}
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
+    }
+
+    public Set<SurveyTestData> getData() {
+        return data;
+    }
+
+    public void setData(Set<SurveyTestData> data) {
+        this.data = data;
+    }
+
+
 }

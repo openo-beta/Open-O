@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,129 +42,129 @@ import org.oscarehr.util.SpringUtils;
 
 public class MeasurementGroupStyleDaoTest extends DaoTestFixtures {
 
-	protected MeasurementGroupStyleDao dao = SpringUtils.getBean(MeasurementGroupStyleDao.class);
+    protected MeasurementGroupStyleDao dao = SpringUtils.getBean(MeasurementGroupStyleDao.class);
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("measurementGroupStyle");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("measurementGroupStyle");
+    }
 
-	@Ignore //Skipping until issue is resolved
-	public void testFindAll() throws Exception {
+    @Ignore //Skipping until issue is resolved
+    public void testFindAll() throws Exception {
 
-		MeasurementGroupStyle measurementGrpStyle1 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle1);
-		dao.persist(measurementGrpStyle1);
+        MeasurementGroupStyle measurementGrpStyle1 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle1);
+        dao.persist(measurementGrpStyle1);
 
-		MeasurementGroupStyle measurementGrpStyle2 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle2);
-		dao.persist(measurementGrpStyle2);
+        MeasurementGroupStyle measurementGrpStyle2 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle2);
+        dao.persist(measurementGrpStyle2);
 
-		MeasurementGroupStyle measurementGrpStyle3 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle3);
-		dao.persist(measurementGrpStyle3);
+        MeasurementGroupStyle measurementGrpStyle3 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle3);
+        dao.persist(measurementGrpStyle3);
 
-		List<MeasurementGroupStyle> expectedResult = new ArrayList<MeasurementGroupStyle>(Arrays.asList(measurementGrpStyle1, measurementGrpStyle2, measurementGrpStyle3));
-		List<MeasurementGroupStyle> result = dao.findAll();
+        List<MeasurementGroupStyle> expectedResult = new ArrayList<MeasurementGroupStyle>(Arrays.asList(measurementGrpStyle1, measurementGrpStyle2, measurementGrpStyle3));
+        List<MeasurementGroupStyle> result = dao.findAll();
 
-		Logger logger = MiscUtils.getLogger();
+        Logger logger = MiscUtils.getLogger();
 
-		if (result.size() != expectedResult.size()) {
-			logger.warn("Array sizes do not match.");
-			fail("Array sizes do not match.");
-		}
-		for (int i = 0; i < expectedResult.size(); i++) {
-			if (!expectedResult.get(i).equals(result.get(i))) {
-				logger.warn("Items  do not match.");
-				fail("Items  do not match.");
-			}
-		}
-		assertTrue(true);
-	}
-	
-	@Test
-	public void testFindByGroupName() throws Exception {
-		
-		String groupName1 = "alpha", groupName2 = "bravo";
-		
-		MeasurementGroupStyle measurementGrpStyle1 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle1);
-		measurementGrpStyle1.setGroupName(groupName1);
-		dao.persist(measurementGrpStyle1);
+        if (result.size() != expectedResult.size()) {
+            logger.warn("Array sizes do not match.");
+            fail("Array sizes do not match.");
+        }
+        for (int i = 0; i < expectedResult.size(); i++) {
+            if (!expectedResult.get(i).equals(result.get(i))) {
+                logger.warn("Items  do not match.");
+                fail("Items  do not match.");
+            }
+        }
+        assertTrue(true);
+    }
 
-		MeasurementGroupStyle measurementGrpStyle2 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle2);
-		measurementGrpStyle2.setGroupName(groupName1);
-		dao.persist(measurementGrpStyle2);
+    @Test
+    public void testFindByGroupName() throws Exception {
 
-		MeasurementGroupStyle measurementGrpStyle3 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle3);
-		measurementGrpStyle3.setGroupName(groupName2);
-		dao.persist(measurementGrpStyle3);
-		
-		MeasurementGroupStyle measurementGrpStyle4 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle4);
-		measurementGrpStyle4.setGroupName(groupName1);
-		dao.persist(measurementGrpStyle4);
+        String groupName1 = "alpha", groupName2 = "bravo";
 
-		List<MeasurementGroupStyle> expectedResult = new ArrayList<MeasurementGroupStyle>(Arrays.asList(measurementGrpStyle1, measurementGrpStyle2, measurementGrpStyle4));
-		List<MeasurementGroupStyle> result = dao.findByGroupName(groupName1);
+        MeasurementGroupStyle measurementGrpStyle1 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle1);
+        measurementGrpStyle1.setGroupName(groupName1);
+        dao.persist(measurementGrpStyle1);
 
-		Logger logger = MiscUtils.getLogger();
+        MeasurementGroupStyle measurementGrpStyle2 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle2);
+        measurementGrpStyle2.setGroupName(groupName1);
+        dao.persist(measurementGrpStyle2);
 
-		if (result.size() != expectedResult.size()) {
-			logger.warn("Array sizes do not match.");
-			fail("Array sizes do not match.");
-		}
-		for (int i = 0; i < expectedResult.size(); i++) {
-			if (!expectedResult.get(i).equals(result.get(i))) {
-				logger.warn("Items  do not match.");
-				fail("Items  do not match.");
-			}
-		}
-		assertTrue(true);
-	}
+        MeasurementGroupStyle measurementGrpStyle3 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle3);
+        measurementGrpStyle3.setGroupName(groupName2);
+        dao.persist(measurementGrpStyle3);
 
-	@Test
-	public void testFindByCssId() throws Exception {
-		
-		int cssId1 = 101, cssId2 = 202;
-		
-		MeasurementGroupStyle measurementGrpStyle1 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle1);
-		measurementGrpStyle1.setCssId(cssId1);
-		dao.persist(measurementGrpStyle1);
+        MeasurementGroupStyle measurementGrpStyle4 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle4);
+        measurementGrpStyle4.setGroupName(groupName1);
+        dao.persist(measurementGrpStyle4);
 
-		MeasurementGroupStyle measurementGrpStyle2 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle2);
-		measurementGrpStyle2.setCssId(cssId1);
-		dao.persist(measurementGrpStyle2);
+        List<MeasurementGroupStyle> expectedResult = new ArrayList<MeasurementGroupStyle>(Arrays.asList(measurementGrpStyle1, measurementGrpStyle2, measurementGrpStyle4));
+        List<MeasurementGroupStyle> result = dao.findByGroupName(groupName1);
 
-		MeasurementGroupStyle measurementGrpStyle3 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle3);
-		measurementGrpStyle3.setCssId(cssId2);
-		dao.persist(measurementGrpStyle3);
-		
-		MeasurementGroupStyle measurementGrpStyle4 = new MeasurementGroupStyle();
-		EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle4);
-		measurementGrpStyle4.setCssId(cssId1);
-		dao.persist(measurementGrpStyle4);
+        Logger logger = MiscUtils.getLogger();
 
-		List<MeasurementGroupStyle> expectedResult = new ArrayList<MeasurementGroupStyle>(Arrays.asList(measurementGrpStyle1, measurementGrpStyle2, measurementGrpStyle4));
-		List<MeasurementGroupStyle> result = dao.findByCssId(cssId1);
+        if (result.size() != expectedResult.size()) {
+            logger.warn("Array sizes do not match.");
+            fail("Array sizes do not match.");
+        }
+        for (int i = 0; i < expectedResult.size(); i++) {
+            if (!expectedResult.get(i).equals(result.get(i))) {
+                logger.warn("Items  do not match.");
+                fail("Items  do not match.");
+            }
+        }
+        assertTrue(true);
+    }
 
-		Logger logger = MiscUtils.getLogger();
+    @Test
+    public void testFindByCssId() throws Exception {
 
-		if (result.size() != expectedResult.size()) {
-			logger.warn("Array sizes do not match.");
-			fail("Array sizes do not match.");
-		}
-		for (int i = 0; i < expectedResult.size(); i++) {
-			if (!expectedResult.get(i).equals(result.get(i))) {
-				logger.warn("Items  do not match.");
-				fail("Items  do not match.");
-			}
-		}
-		assertTrue(true);
-	}
+        int cssId1 = 101, cssId2 = 202;
+
+        MeasurementGroupStyle measurementGrpStyle1 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle1);
+        measurementGrpStyle1.setCssId(cssId1);
+        dao.persist(measurementGrpStyle1);
+
+        MeasurementGroupStyle measurementGrpStyle2 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle2);
+        measurementGrpStyle2.setCssId(cssId1);
+        dao.persist(measurementGrpStyle2);
+
+        MeasurementGroupStyle measurementGrpStyle3 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle3);
+        measurementGrpStyle3.setCssId(cssId2);
+        dao.persist(measurementGrpStyle3);
+
+        MeasurementGroupStyle measurementGrpStyle4 = new MeasurementGroupStyle();
+        EntityDataGenerator.generateTestDataForModelClass(measurementGrpStyle4);
+        measurementGrpStyle4.setCssId(cssId1);
+        dao.persist(measurementGrpStyle4);
+
+        List<MeasurementGroupStyle> expectedResult = new ArrayList<MeasurementGroupStyle>(Arrays.asList(measurementGrpStyle1, measurementGrpStyle2, measurementGrpStyle4));
+        List<MeasurementGroupStyle> result = dao.findByCssId(cssId1);
+
+        Logger logger = MiscUtils.getLogger();
+
+        if (result.size() != expectedResult.size()) {
+            logger.warn("Array sizes do not match.");
+            fail("Array sizes do not match.");
+        }
+        for (int i = 0; i < expectedResult.size(); i++) {
+            if (!expectedResult.get(i).equals(result.get(i))) {
+                logger.warn("Items  do not match.");
+                fail("Items  do not match.");
+            }
+        }
+        assertTrue(true);
+    }
 }

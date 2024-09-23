@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,7 +47,7 @@ import java.util.Date;
 @Table(name = "consultationResponse")
 public class ConsultationResponse extends AbstractModel<Integer> implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "responseId")
@@ -57,18 +57,18 @@ public class ConsultationResponse extends AbstractModel<Integer> implements Seri
     @Temporal(TemporalType.DATE)
     private Date referralDate;
     private Integer referringDocId; //reference professionalSpecialist, service="Referring Doctor"
-	@Temporal(TemporalType.DATE)
-	private Date appointmentDate;	
-	@Temporal(TemporalType.TIME)
-	private Date appointmentTime;
-	private Date followUpDate;
-	private String appointmentNote;
-    private String referralReason; 
+    @Temporal(TemporalType.DATE)
+    private Date appointmentDate;
+    @Temporal(TemporalType.TIME)
+    private Date appointmentTime;
+    private Date followUpDate;
+    private String appointmentNote;
+    private String referralReason;
     private String examination;
     private String impression;
     private String plan;
-    private String clinicalInfo; 
-	private String currentMeds;
+    private String clinicalInfo;
+    private String currentMeds;
     private String concurrentProblems;
     private String allergies;
     private String providerNo;
@@ -81,209 +81,209 @@ public class ConsultationResponse extends AbstractModel<Integer> implements Seri
     private String letterheadAddress;
     private String letterheadPhone;
     private String letterheadFax;
-    
+
     @Override
     public Integer getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public Date getResponseDate() {
-		return responseDate;
-	}
+    public Date getResponseDate() {
+        return responseDate;
+    }
 
-	public void setResponseDate(Date responseDate) {
-		this.responseDate = responseDate;
-	}
+    public void setResponseDate(Date responseDate) {
+        this.responseDate = responseDate;
+    }
 
-	public Date getReferralDate() {
-		return referralDate;
-	}
+    public Date getReferralDate() {
+        return referralDate;
+    }
 
-	public void setReferralDate(Date referralDate) {
-		this.referralDate = referralDate;
-	}
+    public void setReferralDate(Date referralDate) {
+        this.referralDate = referralDate;
+    }
 
-	public Integer getReferringDocId() {
-		return referringDocId;
-	}
+    public Integer getReferringDocId() {
+        return referringDocId;
+    }
 
-	public void setReferringDocId(Integer referringDocId) {
-		this.referringDocId = referringDocId;
-	}
+    public void setReferringDocId(Integer referringDocId) {
+        this.referringDocId = referringDocId;
+    }
 
-	public Date getAppointmentDate() {
-		return appointmentDate;
-	}
+    public Date getAppointmentDate() {
+        return appointmentDate;
+    }
 
-	public void setAppointmentDate(Date appointmentDate) {
-		this.appointmentDate = appointmentDate;
-	}
+    public void setAppointmentDate(Date appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
 
-	public Date getAppointmentTime() {
-		return appointmentTime;
-	}
+    public Date getAppointmentTime() {
+        return appointmentTime;
+    }
 
-	public void setAppointmentTime(Date appointmentTime) {
-		this.appointmentTime = appointmentTime;
-	}
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
 
-	public Date getFollowUpDate() {
-		return followUpDate;
-	}
+    public Date getFollowUpDate() {
+        return followUpDate;
+    }
 
-	public void setFollowUpDate(Date followUpDate) {
-		this.followUpDate = followUpDate;
-	}
-	
-	public String getAppointmentNote() {
-		return appointmentNote;
-	}
-	
-	public void setAppointmentNote(String appointmentNote) {
-		this.appointmentNote = appointmentNote;
-	}
+    public void setFollowUpDate(Date followUpDate) {
+        this.followUpDate = followUpDate;
+    }
 
-	public String getReferralReason() {
-		return referralReason;
-	}
+    public String getAppointmentNote() {
+        return appointmentNote;
+    }
 
-	public void setReferralReason(String referralReason) {
-		this.referralReason = referralReason;
-	}
+    public void setAppointmentNote(String appointmentNote) {
+        this.appointmentNote = appointmentNote;
+    }
 
-	public String getExamination() {
-		return examination;
-	}
+    public String getReferralReason() {
+        return referralReason;
+    }
 
-	public void setExamination(String examination) {
-		this.examination = examination;
-	}
+    public void setReferralReason(String referralReason) {
+        this.referralReason = referralReason;
+    }
 
-	public String getImpression() {
-		return impression;
-	}
+    public String getExamination() {
+        return examination;
+    }
 
-	public void setImpression(String impression) {
-		this.impression = impression;
-	}
+    public void setExamination(String examination) {
+        this.examination = examination;
+    }
 
-	public String getPlan() {
-		return plan;
-	}
+    public String getImpression() {
+        return impression;
+    }
 
-	public void setPlan(String plan) {
-		this.plan = plan;
-	}
+    public void setImpression(String impression) {
+        this.impression = impression;
+    }
 
-	public String getClinicalInfo() {
-		return clinicalInfo;
-	}
+    public String getPlan() {
+        return plan;
+    }
 
-	public void setClinicalInfo(String clinicalInfo) {
-		this.clinicalInfo = clinicalInfo;
-	}
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
 
-	public String getCurrentMeds() {
-		return currentMeds;
-	}
+    public String getClinicalInfo() {
+        return clinicalInfo;
+    }
 
-	public void setCurrentMeds(String currentMeds) {
-		this.currentMeds = currentMeds;
-	}
+    public void setClinicalInfo(String clinicalInfo) {
+        this.clinicalInfo = clinicalInfo;
+    }
 
-	public String getConcurrentProblems() {
-		return concurrentProblems;
-	}
+    public String getCurrentMeds() {
+        return currentMeds;
+    }
 
-	public void setConcurrentProblems(String concurrentProblems) {
-		this.concurrentProblems = concurrentProblems;
-	}
+    public void setCurrentMeds(String currentMeds) {
+        this.currentMeds = currentMeds;
+    }
 
-	public String getAllergies() {
-		return allergies;
-	}
+    public String getConcurrentProblems() {
+        return concurrentProblems;
+    }
 
-	public void setAllergies(String allergies) {
-		this.allergies = allergies;
-	}
+    public void setConcurrentProblems(String concurrentProblems) {
+        this.concurrentProblems = concurrentProblems;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public String getAllergies() {
+        return allergies;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public String getSendTo() {
-		return sendTo;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setSendTo(String sendTo) {
-		this.sendTo = sendTo;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public String getUrgency() {
-		return urgency;
-	}
+    public String getSendTo() {
+        return sendTo;
+    }
 
-	public void setUrgency(String urgency) {
-		this.urgency = urgency;
-	}
+    public void setSendTo(String sendTo) {
+        this.sendTo = sendTo;
+    }
 
-	public String getSignatureImg() {
-		return signatureImg;
-	}
+    public String getUrgency() {
+        return urgency;
+    }
 
-	public void setSignatureImg(String signatureImg) {
-		this.signatureImg = signatureImg;
-	}
+    public void setUrgency(String urgency) {
+        this.urgency = urgency;
+    }
 
-	public String getLetterheadName() {
-		return letterheadName;
-	}
+    public String getSignatureImg() {
+        return signatureImg;
+    }
 
-	public void setLetterheadName(String letterheadName) {
-		this.letterheadName = letterheadName;
-	}
+    public void setSignatureImg(String signatureImg) {
+        this.signatureImg = signatureImg;
+    }
 
-	public String getLetterheadAddress() {
-		return letterheadAddress;
-	}
+    public String getLetterheadName() {
+        return letterheadName;
+    }
 
-	public void setLetterheadAddress(String letterheadAddress) {
-		this.letterheadAddress = letterheadAddress;
-	}
+    public void setLetterheadName(String letterheadName) {
+        this.letterheadName = letterheadName;
+    }
 
-	public String getLetterheadPhone() {
-		return letterheadPhone;
-	}
+    public String getLetterheadAddress() {
+        return letterheadAddress;
+    }
 
-	public void setLetterheadPhone(String letterheadPhone) {
-		this.letterheadPhone = letterheadPhone;
-	}
+    public void setLetterheadAddress(String letterheadAddress) {
+        this.letterheadAddress = letterheadAddress;
+    }
 
-	public String getLetterheadFax() {
-		return letterheadFax;
-	}
+    public String getLetterheadPhone() {
+        return letterheadPhone;
+    }
 
-	public void setLetterheadFax(String letterheadFax) {
-		this.letterheadFax = letterheadFax;
-	}
+    public void setLetterheadPhone(String letterheadPhone) {
+        this.letterheadPhone = letterheadPhone;
+    }
+
+    public String getLetterheadFax() {
+        return letterheadFax;
+    }
+
+    public void setLetterheadFax(String letterheadFax) {
+        this.letterheadFax = letterheadFax;
+    }
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,33 +42,32 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 public class xml {
-    
+
     public static Document newDocument() {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             return document;
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             Document document1 = null;
             return document1;
         }
     }
-    
+
     public static Element addNode(Node parentNode, String name) {
         return addNode(parentNode, name, null);
     }
-    
+
     public static Element addNode(Node parentNode, String name, String value) {
         Element node = null;
-        if(parentNode.getNodeType() == 9)
-            node = ((Document)parentNode).createElement(name);
+        if (parentNode.getNodeType() == 9)
+            node = ((Document) parentNode).createElement(name);
         else
             node = parentNode.getOwnerDocument().createElement(name);
-        if(value != null)
+        if (value != null)
             node.appendChild(node.getOwnerDocument().createTextNode(value));
-        return (Element)parentNode.appendChild(node);
+        return (Element) parentNode.appendChild(node);
     }
-    
+
     public static String toXML(Document xmlDoc) {
         StringWriter ret = new StringWriter();
         DOMSource src = new DOMSource(xmlDoc);
@@ -76,13 +75,12 @@ public class xml {
         try {
             Transformer trans = TransformerFactory.newInstance().newTransformer();
             trans.transform(src, rslt);
-        }
-        catch(Exception e) {
-           MiscUtils.getLogger().error("Error", e);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
         }
         return ret.toString();
     }
-    
+
     public static Document parseXML(String xmlInput) {
         Document document;
         try {
@@ -90,22 +88,21 @@ public class xml {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
             Document document1 = doc;
             return document1;
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             document = null;
         }
         return document;
     }
-    
+
     public static String getText(Node node) {
         String ret = "";
-        if(node.hasChildNodes()) {
-            for(int i = 0; i < node.getChildNodes().getLength(); i++) {
+        if (node.hasChildNodes()) {
+            for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 Node sub = node.getChildNodes().item(i);
-                if(sub.getNodeType() == 3)
+                if (sub.getNodeType() == 3)
                     ret = String.valueOf(ret) + String.valueOf(sub.getNodeValue());
             }
-            
+
         }
         return ret;
     }

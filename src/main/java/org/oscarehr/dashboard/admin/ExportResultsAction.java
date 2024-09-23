@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,64 +41,64 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-public class ExportResultsAction extends Action  {
+public class ExportResultsAction extends Action {
 
-	private static Logger logger = MiscUtils.getLogger();
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	private static DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-		
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		
-		if( ! securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.WRITE, null ) ) {	
-			return mapping.findForward("unauthorized");
-		}
-		
-		String indicatorId = request.getParameter("indicatorId");
-		String indicatorName = request.getParameter("indicatorName");		
-		OutputStream outputStream = null;
+    private static Logger logger = MiscUtils.getLogger();
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private static DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
 
-		String providerNo = dashboardManager.getRequestedProviderNo(loggedInInfo);
-		String csvFile;
-		if (providerNo != null) {
-			csvFile = dashboardManager.exportDrilldownQueryResultsToCSV(loggedInInfo, providerNo, Integer.parseInt(indicatorId));
-		} else {
-			csvFile = dashboardManager.exportDrilldownQueryResultsToCSV(loggedInInfo, Integer.parseInt(indicatorId));
-		}
-		
-		if( indicatorName == null || indicatorName.isEmpty() ) {
-			indicatorName = "indicator_data-" + System.currentTimeMillis() + ".csv";
-		} else {
-			indicatorName = indicatorName + System.currentTimeMillis() + ".csv";
-		}
-		
-		if( csvFile != null ) {
-			
-			response.setContentType("text/csv");
-			response.setHeader("Content-Disposition","attachment; filename=\"" + indicatorName + "\"");
-			response.setContentLength(csvFile.length());
-	
-			try {
-				outputStream = response.getOutputStream();
-				outputStream.write( csvFile.getBytes() );
-				response.setStatus(HttpServletResponse.SC_OK);
-			} catch (IOException e) {
-				logger.error("Failed to export CSV file: " + indicatorName, e );
-			} finally {
-				if( outputStream != null ) {
-					try {
-						outputStream.flush();
-						outputStream.close();
-					} catch (IOException e) {
-						logger.error("Failed to close output stream", e );
-					}
-				}
-			}
-		}
-		
-		return null;
-	}
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+                                 HttpServletRequest request, HttpServletResponse response) {
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.WRITE, null)) {
+            return mapping.findForward("unauthorized");
+        }
+
+        String indicatorId = request.getParameter("indicatorId");
+        String indicatorName = request.getParameter("indicatorName");
+        OutputStream outputStream = null;
+
+        String providerNo = dashboardManager.getRequestedProviderNo(loggedInInfo);
+        String csvFile;
+        if (providerNo != null) {
+            csvFile = dashboardManager.exportDrilldownQueryResultsToCSV(loggedInInfo, providerNo, Integer.parseInt(indicatorId));
+        } else {
+            csvFile = dashboardManager.exportDrilldownQueryResultsToCSV(loggedInInfo, Integer.parseInt(indicatorId));
+        }
+
+        if (indicatorName == null || indicatorName.isEmpty()) {
+            indicatorName = "indicator_data-" + System.currentTimeMillis() + ".csv";
+        } else {
+            indicatorName = indicatorName + System.currentTimeMillis() + ".csv";
+        }
+
+        if (csvFile != null) {
+
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + indicatorName + "\"");
+            response.setContentLength(csvFile.length());
+
+            try {
+                outputStream = response.getOutputStream();
+                outputStream.write(csvFile.getBytes());
+                response.setStatus(HttpServletResponse.SC_OK);
+            } catch (IOException e) {
+                logger.error("Failed to export CSV file: " + indicatorName, e);
+            } finally {
+                if (outputStream != null) {
+                    try {
+                        outputStream.flush();
+                        outputStream.close();
+                    } catch (IOException e) {
+                        logger.error("Failed to close output stream", e);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
 }

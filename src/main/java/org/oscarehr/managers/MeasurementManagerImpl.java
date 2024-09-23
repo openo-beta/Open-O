@@ -6,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -48,6 +48,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Collections;
 
 import oscar.OscarProperties;
@@ -67,7 +68,7 @@ public class MeasurementManagerImpl implements MeasurementManager {
 
     @Override
     public List<Measurement> getCreatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive,
-            int itemsToReturn) {
+                                                 int itemsToReturn) {
         List<Measurement> results = measurementDao.findByCreateDate(updatedAfterThisDateExclusive, itemsToReturn);
 
         LogAction.addLogSynchronous(loggedInInfo, "MeasurementManager.getCreatedAfterDate",
@@ -99,7 +100,7 @@ public class MeasurementManagerImpl implements MeasurementManager {
 
     @Override
     public List<Measurement> getMeasurementByDemographicIdAfter(LoggedInInfo loggedInInfo, Integer demographicId,
-            Date updateAfter) {
+                                                                Date updateAfter) {
         List<Measurement> results = new ArrayList<Measurement>();
         ConsentType consentType = patientConsentManager.getProviderSpecificConsent(loggedInInfo);
         if (patientConsentManager.hasPatientConsented(demographicId, consentType)) {
@@ -111,18 +112,22 @@ public class MeasurementManagerImpl implements MeasurementManager {
         }
         return results;
     }
-	@Override
-	public List<Measurement> getLatestMeasurementsByDemographicIdObservedAfter(LoggedInInfo loggedInInfo, Integer demographicId, Date observedDate) {
-		//If the consent type does not exist in the table assume this consent type is not being managed by the clinic, otherwise ensure patient has consented
-		boolean hasConsent = patientConsentManager.hasProviderSpecificConsent(loggedInInfo) || patientConsentManager.getConsentType(ConsentType.PROVIDER_CONSENT_FILTER) == null;
-		if (!hasConsent) { return Collections.emptyList(); }
-		
-		List<Measurement> results = measurementDao.findLatestByDemographicObservedAfterDate(demographicId, observedDate);
-		if (results.size() > 0) {
-			LogAction.addLogSynchronous(loggedInInfo, "MeasurementManager.getMeasurementByDemographicIdAfter", "demographicId="+demographicId+" updateAfter="+ observedDate);
-		}
-		return results;
-	}
+
+    @Override
+    public List<Measurement> getLatestMeasurementsByDemographicIdObservedAfter(LoggedInInfo loggedInInfo, Integer demographicId, Date observedDate) {
+        //If the consent type does not exist in the table assume this consent type is not being managed by the clinic, otherwise ensure patient has consented
+        boolean hasConsent = patientConsentManager.hasProviderSpecificConsent(loggedInInfo) || patientConsentManager.getConsentType(ConsentType.PROVIDER_CONSENT_FILTER) == null;
+        if (!hasConsent) {
+            return Collections.emptyList();
+        }
+
+        List<Measurement> results = measurementDao.findLatestByDemographicObservedAfterDate(demographicId, observedDate);
+        if (results.size() > 0) {
+            LogAction.addLogSynchronous(loggedInInfo, "MeasurementManager.getMeasurementByDemographicIdAfter", "demographicId=" + demographicId + " updateAfter=" + observedDate);
+        }
+        return results;
+    }
+
     @Override
     public List<MeasurementMap> getMeasurementMaps() {
         // should be safe to get all as they're a defined set of loinic codes or human
@@ -147,8 +152,8 @@ public class MeasurementManagerImpl implements MeasurementManager {
      */
     @Override
     public List<Measurement> getMeasurementsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo,
-            Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive,
-            int itemsToReturn) {
+                                                                             Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive,
+                                                                             int itemsToReturn) {
         List<Measurement> results = measurementDao.findByProviderDemographicLastUpdateDate(providerNo, demographicId,
                 updatedAfterThisDateExclusive.getTime(), itemsToReturn);
 

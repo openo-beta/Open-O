@@ -23,8 +23,8 @@
     Ontario, Canada
 
 --%>
-<%@taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
- 
+<%@taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+
 <html>
 <head>
 </head>
@@ -35,16 +35,17 @@
 You tried to access a resource with insufficient privileges.
 
 <%
-	String[] vals = request.getParameterValues("type");
-	if(vals != null) {
-		for(String val:vals) {
-			%>
-				<h5>Object:<%=val %></h5>
-			<%
-		}
-	}
+    String[] vals = request.getParameterValues("type");
+    if (vals != null) {
+        for (String val : vals) {
 %>
-<html:errors />
- 
+<h5>Object:<%=val %>
+</h5>
+<%
+        }
+    }
+%>
+<html:errors/>
+
 </body>
 </html>

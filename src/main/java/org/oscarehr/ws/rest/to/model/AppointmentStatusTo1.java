@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,97 +31,97 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AppointmentStatusTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
-	
-	private String status;
-	
-	private String description;
-	
-	private String color;
-	
-	private String icon;
-	
-	private int active;
-	
-	private int editable;
-	
-	private String shortLetters;
+    private Integer id;
 
-	private String shortLetterColour;
+    private String status;
 
-	public Integer getId() {
-		return id;
-	}
+    private String description;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String color;
 
-	public String getStatus() {
-		return status;
-	}
+    private String icon;
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    private int active;
 
-	public String getDescription() {
-		return description;
-	}
+    private int editable;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private String shortLetters;
 
-	public String getColor() {
-		return color;
-	}
+    private String shortLetterColour;
 
-	public void setColor(String color) {
-		this.color = color;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public int getActive() {
-		return active;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setActive(int active) {
-		this.active = active;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public int getEditable() {
-		return editable;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setEditable(int editable) {
-		this.editable = editable;
-	}
+    public String getColor() {
+        return color;
+    }
 
-	public String getShortLetters() {
-		return shortLetters;
-	}
+    public void setColor(String color) {
+        this.color = color;
+    }
 
-	public void setShortLetters(String shortLetters) {
-		this.shortLetters = shortLetters;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public String getShortLetterColour() {
-		return shortLetterColour;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
-	public void setShortLetterColour(String shortLetterColour) {
-		this.shortLetterColour = shortLetterColour;
-	}
+    public int getActive() {
+        return active;
+    }
 
-	
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public int getEditable() {
+        return editable;
+    }
+
+    public void setEditable(int editable) {
+        this.editable = editable;
+    }
+
+    public String getShortLetters() {
+        return shortLetters;
+    }
+
+    public void setShortLetters(String shortLetters) {
+        this.shortLetters = shortLetters;
+    }
+
+    public String getShortLetterColour() {
+        return shortLetterColour;
+    }
+
+    public void setShortLetterColour(String shortLetterColour) {
+        this.shortLetterColour = shortLetterColour;
+    }
+
+
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -58,7 +58,7 @@ public class PrintHRMReportAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        if(!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
             throw new SecurityException("missing required security object (_hrm)");
         }
 
@@ -78,8 +78,7 @@ public class PrintHRMReportAction extends Action {
                 for (int i = 0; i < hrmReportIds.length; i++) {
                     try {
                         hrmIds.add(Integer.valueOf(hrmReportIds[i]));
-                    }
-                    catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         logger.error("Could not parse " + hrmReportIds[i] + " to an integer.");
                     }
                 }
@@ -90,20 +89,20 @@ public class PrintHRMReportAction extends Action {
 
             for (Integer hrmId : hrmIds) {
                 List<HRMDocumentToDemographic> demographicHrms = hrmDocumentToDemographicDao.findByHrmDocumentId(hrmId);
-                if (demographicHrms!=null && !demographicHrms.isEmpty() && demographicHrms.get(0).getDemographicNo() != null){
+                if (demographicHrms != null && !demographicHrms.isEmpty() && demographicHrms.get(0).getDemographicNo() != null) {
                     demographicNo = demographicHrms.get(0).getDemographicNo();
                     demographic = demographicDao.getDemographicById(demographicNo);
                 }
 
                 String fileTempName = "";
-                if (demographic!=null){
+                if (demographic != null) {
                     fileTempName = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//" + demographic.getLastName() + "_" + demographic.getFirstName() + "_" + hrmId + "_HRMReport.pdf";
-                    fileName = demographic.getLastName() + "_" + demographic.getFirstName() +  "_HRMReport" + "_" + (new Date().getTime()) + ".pdf";
+                    fileName = demographic.getLastName() + "_" + demographic.getFirstName() + "_HRMReport" + "_" + (new Date().getTime()) + ".pdf";
                 } else {
                     fileTempName = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//HRMReport.pdf";
                     fileName = "_HRMReport" + "_" + (new Date().getTime()) + ".pdf";
                 }
-                response.setHeader("Content-Disposition", "attachment; filename=\""+fileName+"\"");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
                 // Create temporary file
                 pdfDocs.add(fileTempName);
@@ -115,17 +114,16 @@ public class PrintHRMReportAction extends Action {
             }
             ConcatPDF.concat(pdfDocs, response.getOutputStream());
 
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             logger.error("Could not retrieve the Output Stream from the response", e);
             request.setAttribute("printError", true);
             return mapping.findForward("error");
         } finally {
-            if (osTemp!=null){
+            if (osTemp != null) {
                 osTemp.flush();
                 osTemp.close();
             }
-            if (fileTemp!=null){
+            if (fileTemp != null) {
                 fileTemp.delete();
             }
         }

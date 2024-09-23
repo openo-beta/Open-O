@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,107 +40,113 @@ import javax.persistence.Transient;
 import org.oscarehr.PMmodule.model.ProgramTeam;
 
 @Entity
-@Table(name="bed")
-public class Bed  extends AbstractModel<Integer> {
+@Table(name = "bed")
+public class Bed extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="bed_id")
-	private Integer id;
-	
-	@Column(name="bed_type_id")
-	private Integer bedTypeId = 1;
-	
-	@Column(name="room_id")
-	private Integer roomId;
-	
-	@Column(name="facility_id")
-	private Integer facilityId;
-	
-	@Column(name="room_start")
-	@Temporal(TemporalType.DATE)
-	private Date roomStart;
-	
-	@Column(name="team_id")
-	private Integer teamId;
-	
-	@Column(length=45)
-	private String name;
-	
-	private boolean active = true;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "bed_id")
+    private Integer id;
 
-	//ported from old classes
-	@Transient private BedType bedType;
-	@Transient private Room room;
-	@Transient private ProgramTeam team;
-	@Transient private BedDemographic bedDemographic;
-	@Transient private Integer communityProgramId;
-	@Transient private Integer familyId;
-    
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "bed_type_id")
+    private Integer bedTypeId = 1;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "room_id")
+    private Integer roomId;
 
-	public Integer getBedTypeId() {
-		return bedTypeId;
-	}
+    @Column(name = "facility_id")
+    private Integer facilityId;
 
-	public void setBedTypeId(Integer bedTypeId) {
-		this.bedTypeId = bedTypeId;
-	}
+    @Column(name = "room_start")
+    @Temporal(TemporalType.DATE)
+    private Date roomStart;
 
-	public Integer getRoomId() {
-		return roomId;
-	}
+    @Column(name = "team_id")
+    private Integer teamId;
 
-	public void setRoomId(Integer roomId) {
-		this.roomId = roomId;
-	}
+    @Column(length = 45)
+    private String name;
 
-	public Integer getFacilityId() {
-		return facilityId;
-	}
+    private boolean active = true;
 
-	public void setFacilityId(Integer facilityId) {
-		this.facilityId = facilityId;
-	}
+    //ported from old classes
+    @Transient
+    private BedType bedType;
+    @Transient
+    private Room room;
+    @Transient
+    private ProgramTeam team;
+    @Transient
+    private BedDemographic bedDemographic;
+    @Transient
+    private Integer communityProgramId;
+    @Transient
+    private Integer familyId;
 
-	public Date getRoomStart() {
-		return roomStart;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setRoomStart(Date roomStart) {
-		this.roomStart = roomStart;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getTeamId() {
-		return teamId;
-	}
+    public Integer getBedTypeId() {
+        return bedTypeId;
+    }
 
-	public void setTeamId(Integer teamId) {
-		this.teamId = teamId;
-	}
+    public void setBedTypeId(Integer bedTypeId) {
+        this.bedTypeId = bedTypeId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Integer getRoomId() {
+        return roomId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public Integer getFacilityId() {
+        return facilityId;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
+    }
+
+    public Date getRoomStart() {
+        return roomStart;
+    }
+
+    public void setRoomStart(Date roomStart) {
+        this.roomStart = roomStart;
+    }
+
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public static Bed create(Integer facilityId, Integer roomId, BedType bedType) {
         Bed bed = new Bed();
         bed.setBedTypeId(bedType.getId());
@@ -152,40 +158,40 @@ public class Bed  extends AbstractModel<Integer> {
         return bed;
     }
 
-	public BedType getBedType() {
-		return bedType;
-	}
+    public BedType getBedType() {
+        return bedType;
+    }
 
-	public void setBedType(BedType bedType) {
-		this.bedType = bedType;
-	}
+    public void setBedType(BedType bedType) {
+        this.bedType = bedType;
+    }
 
-	public Room getRoom() {
-		return room;
-	}
+    public Room getRoom() {
+        return room;
+    }
 
-	public void setRoom(Room room) {
-		this.room = room;
-	}
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
-	public ProgramTeam getTeam() {
-		return team;
-	}
-	
-	public void setTeam(ProgramTeam team) {
-		this.team = team;
-	}
-	
+    public ProgramTeam getTeam() {
+        return team;
+    }
+
+    public void setTeam(ProgramTeam team) {
+        this.team = team;
+    }
+
 
     public BedDemographic getBedDemographic() {
-		return bedDemographic;
-	}
+        return bedDemographic;
+    }
 
-	public void setBedDemographic(BedDemographic bedDemographic) {
-		this.bedDemographic = bedDemographic;
-	}
+    public void setBedDemographic(BedDemographic bedDemographic) {
+        this.bedDemographic = bedDemographic;
+    }
 
-	public boolean isReserved() {
+    public boolean isReserved() {
         return getReservationStart() != null && getReservationEnd() != null;
     }
 
@@ -213,9 +219,9 @@ public class Bed  extends AbstractModel<Integer> {
         return bedDemographic != null ? bedDemographic.getDemographicName() : null;
     }
 
-	public Integer getFamilyId() {
-		return familyId;
-	}
+    public Integer getFamilyId() {
+        return familyId;
+    }
 
     public Integer getStatusId() {
         return bedDemographic != null ? bedDemographic.getBedDemographicStatusId() : null;
@@ -241,10 +247,10 @@ public class Bed  extends AbstractModel<Integer> {
         return communityProgramId;
     }
 
-	public void setFamilyId(Integer familyId) {
-		this.familyId = familyId;
-	}
-    
+    public void setFamilyId(Integer familyId) {
+        this.familyId = familyId;
+    }
+
 
     public void setStatusId(Integer statusId) {
         if (bedDemographic != null) {
@@ -269,6 +275,4 @@ public class Bed  extends AbstractModel<Integer> {
     }
 
 
-	
-	
 }

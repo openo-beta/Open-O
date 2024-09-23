@@ -12,53 +12,54 @@ import javax.persistence.Table;
 @Entity
 @IdClass(EReferAttachmentDataCompositeKey.class)
 @Table(name = "erefer_attachment_data")
-public class EReferAttachmentData extends AbstractModel<EReferAttachmentDataCompositeKey>{
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "erefer_attachment_id", referencedColumnName = "id")
-	private EReferAttachment eReferAttachment;
-	
-	@Id
-	@Column(name = "lab_id")
-	private Integer labId;
-	
-	@Id
-	@Column(name = "lab_type")
-	private String labType;
+public class EReferAttachmentData extends AbstractModel<EReferAttachmentDataCompositeKey> {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "erefer_attachment_id", referencedColumnName = "id")
+    private EReferAttachment eReferAttachment;
 
-	public EReferAttachmentData() { }
+    @Id
+    @Column(name = "lab_id")
+    private Integer labId;
 
-	public EReferAttachmentData(EReferAttachment eReferAttachment, Integer labId, String labType) {
-		this.eReferAttachment = eReferAttachment;
-		this.labId = labId;
-		this.labType = labType;
-	}
+    @Id
+    @Column(name = "lab_type")
+    private String labType;
 
-	public EReferAttachmentDataCompositeKey getId() {
-		return new EReferAttachmentDataCompositeKey(eReferAttachment, labId, labType);
-	}
-	
-	public EReferAttachment geteReferAttachment() {
-		return eReferAttachment;
-	}
+    public EReferAttachmentData() {
+    }
 
-	public void seteReferAttachment(EReferAttachment eReferAttachment) {
-		this.eReferAttachment = eReferAttachment;
-	}
+    public EReferAttachmentData(EReferAttachment eReferAttachment, Integer labId, String labType) {
+        this.eReferAttachment = eReferAttachment;
+        this.labId = labId;
+        this.labType = labType;
+    }
 
-	public Integer getLabId() {
-		return labId;
-	}
+    public EReferAttachmentDataCompositeKey getId() {
+        return new EReferAttachmentDataCompositeKey(eReferAttachment, labId, labType);
+    }
 
-	public void setLabId(Integer labId) {
-		this.labId = labId;
-	}
+    public EReferAttachment geteReferAttachment() {
+        return eReferAttachment;
+    }
 
-	public String getLabType() {
-		return labType;
-	}
+    public void seteReferAttachment(EReferAttachment eReferAttachment) {
+        this.eReferAttachment = eReferAttachment;
+    }
 
-	public void setLabType(String labType) {
-		this.labType = labType;
-	}
+    public Integer getLabId() {
+        return labId;
+    }
+
+    public void setLabId(Integer labId) {
+        this.labId = labId;
+    }
+
+    public String getLabType() {
+        return labType;
+    }
+
+    public void setLabType(String labType) {
+        this.labType = labType;
+    }
 }

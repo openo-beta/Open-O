@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,59 +46,57 @@ import oscar.oscarReport.reportByTemplate.ReportObjectGeneric;
 
 public class RBTGetTemplatesInGroupAction extends Action {
 
-	private RBTGroupManager rbtGroupManager = SpringUtils.getBean(RBTGroupManager.class);
-	
-	private ReportManager reportManager = new ReportManager();
-	
+    private RBTGroupManager rbtGroupManager = SpringUtils.getBean(RBTGroupManager.class);
+
+    private ReportManager reportManager = new ReportManager();
+
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
-    	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    	String groupName = request.getParameter("groupName");   	
-    	List<ReportObjectGeneric> templates = reportManager.getReportTemplatesNoParam();   	
-    	Map<Integer, ReportObjectGeneric> templatesMap = new HashMap<Integer, ReportObjectGeneric>();
-    	List<RBTGroup> templatesInGroup = rbtGroupManager.getGroup(loggedInInfo, groupName);	
- 	
-      	/*
-      	 * Create a new master map of all templates.
-      	 */
-    	for (ReportObjectGeneric template : templates)
-    	{ 	   		
-    		templatesMap.put(Integer.parseInt(template.getTemplateId()), template);
-    	}
-    	
-    	/*
-    	 * Copy the main template map for sorting. 
-    	 */
-    	Map<Integer, ReportObjectGeneric> templatesNotInGroupMap = new HashMap<Integer, ReportObjectGeneric>(templatesMap);
-    	
-    	/*
-    	 * Remove templates that are already included in this group (groupName)
-    	 * This map will display a select list of available templates to be 
-    	 * added to this group (groupName)
-    	 */
-    	for(RBTGroup rbtGroup : templatesInGroup)
-    	{
-    		templatesNotInGroupMap.remove(rbtGroup.getTemplateId());	
-    	}
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String groupName = request.getParameter("groupName");
+        List<ReportObjectGeneric> templates = reportManager.getReportTemplatesNoParam();
+        Map<Integer, ReportObjectGeneric> templatesMap = new HashMap<Integer, ReportObjectGeneric>();
+        List<RBTGroup> templatesInGroup = rbtGroupManager.getGroup(loggedInInfo, groupName);
 
-    	/*
-    	 * Templates that are not contained in the given group (groupName)
-    	 */
-    	request.setAttribute("templatesNotInGroup", templatesNotInGroupMap.values());
-    	
-    	/*
-    	 * All templates in database.
-    	 */
-    	request.setAttribute("templates", templatesMap);
-    	
-    	/*
-    	 * Template id's that are contained in the given group (groupName)
-    	 */
-    	request.setAttribute("templatesInGroup", templatesInGroup);
-    	
-    	return mapping.findForward("success");
-         
+        /*
+         * Create a new master map of all templates.
+         */
+        for (ReportObjectGeneric template : templates) {
+            templatesMap.put(Integer.parseInt(template.getTemplateId()), template);
+        }
+
+        /*
+         * Copy the main template map for sorting.
+         */
+        Map<Integer, ReportObjectGeneric> templatesNotInGroupMap = new HashMap<Integer, ReportObjectGeneric>(templatesMap);
+
+        /*
+         * Remove templates that are already included in this group (groupName)
+         * This map will display a select list of available templates to be
+         * added to this group (groupName)
+         */
+        for (RBTGroup rbtGroup : templatesInGroup) {
+            templatesNotInGroupMap.remove(rbtGroup.getTemplateId());
+        }
+
+        /*
+         * Templates that are not contained in the given group (groupName)
+         */
+        request.setAttribute("templatesNotInGroup", templatesNotInGroupMap.values());
+
+        /*
+         * All templates in database.
+         */
+        request.setAttribute("templates", templatesMap);
+
+        /*
+         * Template id's that are contained in the given group (groupName)
+         */
+        request.setAttribute("templatesInGroup", templatesInGroup);
+
+        return mapping.findForward("success");
+
     }
 
 }

@@ -24,30 +24,30 @@
 
 --%>
 
-<%@page import="org.oscarehr.common.model.StudyLogin"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="org.oscarehr.common.dao.StudyLoginDao"%>
-<%@ page import="java.sql.*, oscar.oscarDB.*"%>
+<%@page import="org.oscarehr.common.model.StudyLogin" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.common.dao.StudyLoginDao" %>
+<%@ page import="java.sql.*, oscar.oscarDB.*" %>
 
 <%
-//http://192.168.2.4/PDSsecurity/logindd.asp?DI=PEPPER&UN=yilee18&PW=515750564848564853485353544852485248484851575150
+    //http://192.168.2.4/PDSsecurity/logindd.asp?DI=PEPPER&UN=yilee18&PW=515750564848564853485353544852485248484851575150
 
-	String providerNo = (String) session.getAttribute("user");
+    String providerNo = (String) session.getAttribute("user");
     String studyId = request.getParameter("study_no");
 
-	oscar.OscarProperties op = oscar.OscarProperties.getInstance();
+    oscar.OscarProperties op = oscar.OscarProperties.getInstance();
 
-	String baseURL = op.getProperty("redirectstudysite_default_baseURL");
-	String username = op.getProperty("redirectstudysite_default_username");
-	String password = op.getProperty("redirectstudysite_default_password");
+    String baseURL = op.getProperty("redirectstudysite_default_baseURL");
+    String username = op.getProperty("redirectstudysite_default_username");
+    String password = op.getProperty("redirectstudysite_default_password");
 
-	StudyLoginDao dao = SpringUtils.getBean(StudyLoginDao.class);
-	for(StudyLogin login : dao.find(providerNo, studyId)){
-		baseURL = login.getRemoteLoginUrl();
-		username = login.getUsername();
-		password = login.getPassword();
-	}
-	
-	String studyURL = baseURL + "?DI=PEPPER&DIPatID=&UN=" + username + "&PW=" + password ;
-	response.sendRedirect(studyURL);
+    StudyLoginDao dao = SpringUtils.getBean(StudyLoginDao.class);
+    for (StudyLogin login : dao.find(providerNo, studyId)) {
+        baseURL = login.getRemoteLoginUrl();
+        username = login.getUsername();
+        password = login.getPassword();
+    }
+
+    String studyURL = baseURL + "?DI=PEPPER&DIPatID=&UN=" + username + "&PW=" + password;
+    response.sendRedirect(studyURL);
 %>

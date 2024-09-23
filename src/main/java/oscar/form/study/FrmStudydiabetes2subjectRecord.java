@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,14 +38,13 @@ import oscar.oscarDB.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 public class FrmStudydiabetes2subjectRecord extends FrmStudyRecord {
-    public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException    {
+    public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException {
         Properties props = new Properties();
-        
-        if(existingID <= 0) {
-            String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = " +demographicNo;
+
+        if (existingID <= 0) {
+            String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = " + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
-            if(rs.next())
-            {
+            if (rs.next()) {
                 Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
                 props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
@@ -55,23 +54,23 @@ public class FrmStudydiabetes2subjectRecord extends FrmStudyRecord {
             }
             rs.close();
         } else {
-            String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no = " +demographicNo +" AND ID = " +existingID;
+            String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
             ResultSet rs = DBHandler.GetSQL(sql);
-            if(rs.next()) {
+            if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
-                for(int i = 1; i <= md.getColumnCount(); i++) {
+                for (int i = 1; i <= md.getColumnCount(); i++) {
                     String name = md.getColumnName(i);
                     String value;
-                    if(md.getColumnTypeName(i).equalsIgnoreCase("TINY") && md.getScale(i) == 1) {
-                        if(rs.getInt(i) == 1)
+                    if (md.getColumnTypeName(i).equalsIgnoreCase("TINY") && md.getScale(i) == 1) {
+                        if (rs.getInt(i) == 1)
                             value = "checked='checked'";
                         else
                             value = "";
-                    } else if(md.getColumnTypeName(i).equalsIgnoreCase("date"))
+                    } else if (md.getColumnTypeName(i).equalsIgnoreCase("date"))
                         value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
                     else
                         value = oscar.Misc.getString(rs, i);
-                    if(value != null)
+                    if (value != null)
                         props.setProperty(name, value);
                 }
 
@@ -83,21 +82,21 @@ public class FrmStudydiabetes2subjectRecord extends FrmStudyRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
-        
-        String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no="+demographic_no+" AND ID=0";
+
+        String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no=" + demographic_no + " AND ID=0";
         ResultSet rs = DBHandler.GetSQL(sql, true);
         rs.moveToInsertRow();
         ResultSetMetaData md = rs.getMetaData();
-        for(int i = 1; i <= md.getColumnCount(); i++) {
+        for (int i = 1; i <= md.getColumnCount(); i++) {
             String name = md.getColumnName(i);
-            if(name.equalsIgnoreCase("ID")) {
+            if (name.equalsIgnoreCase("ID")) {
                 rs.updateNull(name);
                 continue;
             }
             String value = props.getProperty(name, null);
-            if(md.getColumnTypeName(i).equalsIgnoreCase("TINY") && md.getScale(i) == 1) {
-                if(value != null) {
-                    if(value.equalsIgnoreCase("on"))
+            if (md.getColumnTypeName(i).equalsIgnoreCase("TINY") && md.getScale(i) == 1) {
+                if (value != null) {
+                    if (value.equalsIgnoreCase("on"))
                         rs.updateInt(name, 1);
                     else
                         rs.updateInt(name, 0);
@@ -106,20 +105,20 @@ public class FrmStudydiabetes2subjectRecord extends FrmStudyRecord {
                 }
                 continue;
             }
-            if(md.getColumnTypeName(i).equalsIgnoreCase("date")) {
+            if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
                 Date d;
-                if(md.getColumnName(i).equalsIgnoreCase("formEdited"))  {
+                if (md.getColumnName(i).equalsIgnoreCase("formEdited")) {
                     d = new Date();
                 } else {
                     d = UtilDateUtilities.StringToDate(value, "yyyy/MM/dd");
                 }
-                if(d == null)
+                if (d == null)
                     rs.updateNull(name);
                 else
                     rs.updateDate(name, new java.sql.Date(d.getTime()));
                 continue;
             }
-            if(value == null)
+            if (value == null)
                 rs.updateNull(name);
             else
                 rs.updateString(name, value);
@@ -130,7 +129,7 @@ public class FrmStudydiabetes2subjectRecord extends FrmStudyRecord {
         int ret = 0;
         sql = "SELECT LAST_INSERT_ID()";
         rs = DBHandler.GetSQL(sql);
-        if(rs.next())
+        if (rs.next())
             ret = rs.getInt(1);
         rs.close();
         return ret;
@@ -151,16 +150,16 @@ public class FrmStudydiabetes2subjectRecord extends FrmStudyRecord {
     public String createActionURL(String where, String action, String demoId, String formId, String studyId, String studyLink) throws SQLException {
         String temp = null;
 
-        if(action.equalsIgnoreCase("print")) {
+        if (action.equalsIgnoreCase("print")) {
             temp = where + "?demoNo=" + demoId + "&formId=" + formId + "&study_no=" + studyId + "&study_link" + studyLink;
         } else if (action.equalsIgnoreCase("save")) {
-            temp = where + "?demographic_no=" + demoId +  "&study_no=" + studyId + "&study_link" + studyLink;  //"&formId=" + formId +
+            temp = where + "?demographic_no=" + demoId + "&study_no=" + studyId + "&study_link" + studyLink;  //"&formId=" + formId +
         } else if (action.equalsIgnoreCase("exit")) {
             temp = where;
         } else {
             temp = where;
         }
-        
+
         return temp;
     }
 

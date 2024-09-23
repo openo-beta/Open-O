@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,114 +32,113 @@ import javax.persistence.Id;
 @Entity
 public class HrmLogEntry extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	
-	private int hrmLogId;
-	
-	private String encryptedFileName;
-	
-	private boolean decrypted;
-	
-	private String decryptedFileName;
-	
-	private String filename;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String error;
-	
-	private boolean parsed;
-	
-	private String recipientId;
-	
-	private String recipientName;
-	
-	private boolean distributed;
+    private int hrmLogId;
 
-	public int getHrmLogId() {
-		return hrmLogId;
-	}
+    private String encryptedFileName;
 
-	public void setHrmLogId(int hrmLogId) {
-		this.hrmLogId = hrmLogId;
-	}
+    private boolean decrypted;
 
-	public String getFilename() {
-		return filename;
-	}
+    private String decryptedFileName;
 
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
+    private String filename;
 
-	public boolean isDecrypted() {
-		return decrypted;
-	}
+    private String error;
 
-	public void setDecrypted(boolean decrypted) {
-		this.decrypted = decrypted;
-	}
+    private boolean parsed;
 
-	public String getError() {
-		return error;
-	}
+    private String recipientId;
 
-	public void setError(String error) {
-		this.error = error;
-	}
+    private String recipientName;
 
-	public Integer getId() {
-		return id;
-	}
+    private boolean distributed;
 
-	public String getDecryptedFileName() {
-		return decryptedFileName;
-	}
+    public int getHrmLogId() {
+        return hrmLogId;
+    }
 
-	public void setDecryptedFileName(String decryptedFileName) {
-		this.decryptedFileName = decryptedFileName;
-	}
+    public void setHrmLogId(int hrmLogId) {
+        this.hrmLogId = hrmLogId;
+    }
 
-	public String getEncryptedFileName() {
-		return encryptedFileName;
-	}
+    public String getFilename() {
+        return filename;
+    }
 
-	public void setEncryptedFileName(String encryptedFileName) {
-		this.encryptedFileName = encryptedFileName;
-	}
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
-	public boolean isParsed() {
-		return parsed;
-	}
+    public boolean isDecrypted() {
+        return decrypted;
+    }
 
-	public void setParsed(boolean parsed) {
-		this.parsed = parsed;
-	}
+    public void setDecrypted(boolean decrypted) {
+        this.decrypted = decrypted;
+    }
 
-	public String getRecipientId() {
-		return recipientId;
-	}
+    public String getError() {
+        return error;
+    }
 
-	public void setRecipientId(String recipientId) {
-		this.recipientId = recipientId;
-	}
+    public void setError(String error) {
+        this.error = error;
+    }
 
-	public String getRecipientName() {
-		return recipientName;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setRecipientName(String recipientName) {
-		this.recipientName = recipientName;
-	}
+    public String getDecryptedFileName() {
+        return decryptedFileName;
+    }
 
-	public boolean isDistributed() {
-		return distributed;
-	}
+    public void setDecryptedFileName(String decryptedFileName) {
+        this.decryptedFileName = decryptedFileName;
+    }
 
-	public void setDistributed(boolean distributed) {
-		this.distributed = distributed;
-	}
-	
-	
-	
+    public String getEncryptedFileName() {
+        return encryptedFileName;
+    }
+
+    public void setEncryptedFileName(String encryptedFileName) {
+        this.encryptedFileName = encryptedFileName;
+    }
+
+    public boolean isParsed() {
+        return parsed;
+    }
+
+    public void setParsed(boolean parsed) {
+        this.parsed = parsed;
+    }
+
+    public String getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public boolean isDistributed() {
+        return distributed;
+    }
+
+    public void setDistributed(boolean distributed) {
+        this.distributed = distributed;
+    }
+
+
 }

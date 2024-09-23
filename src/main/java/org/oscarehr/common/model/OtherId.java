@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,38 +51,38 @@ import javax.persistence.Table;
  * @author Ronnie Cheng
  */
 @Entity
-@Table(name="other_id")
-public class OtherId extends AbstractModel<Integer>{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer	id;
-	@Column(name="table_name")
-    private Integer	tableName=0;
-	@Column(name="table_id")
-    private String	tableId=null;
-	@Column(name="other_key")
-    private String	otherKey=null;
-	@Column(name="other_id")
-    private String	otherId=null;
-    private Boolean	deleted=false;
+@Table(name = "other_id")
+public class OtherId extends AbstractModel<Integer> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "table_name")
+    private Integer tableName = 0;
+    @Column(name = "table_id")
+    private String tableId = null;
+    @Column(name = "other_key")
+    private String otherKey = null;
+    @Column(name = "other_id")
+    private String otherId = null;
+    private Boolean deleted = false;
 
-	public OtherId() {
-		//default constructor
-	}
+    public OtherId() {
+        //default constructor
+    }
 
-	public OtherId(Integer tableName, Integer tableId, String otherKey, String otherId) {
-		this.tableName = tableName;
-		this.tableId = String.valueOf(tableId);
-		this.otherKey = otherKey;
-		this.otherId = otherId!=null ? otherId : "";
-	}
+    public OtherId(Integer tableName, Integer tableId, String otherKey, String otherId) {
+        this.tableName = tableName;
+        this.tableId = String.valueOf(tableId);
+        this.otherKey = otherKey;
+        this.otherId = otherId != null ? otherId : "";
+    }
 
-	public OtherId(Integer tableName, String tableId, String otherKey, String otherId) {
-		this.tableName = tableName;
-		this.tableId = tableId;
-		this.otherKey = otherKey;
-		this.otherId = otherId!=null ? otherId : "";
-	}
+    public OtherId(Integer tableName, String tableId, String otherKey, String otherId) {
+        this.tableName = tableName;
+        this.tableId = tableId;
+        this.otherKey = otherKey;
+        this.otherId = otherId != null ? otherId : "";
+    }
 
     public Integer getId() {
         return id;
@@ -121,7 +121,7 @@ public class OtherId extends AbstractModel<Integer>{
     }
 
     public void setOtherId(String otherId) {
-        this.otherId = otherId!=null ? otherId : "";
+        this.otherId = otherId != null ? otherId : "";
     }
 
     public Boolean isDeleted() {

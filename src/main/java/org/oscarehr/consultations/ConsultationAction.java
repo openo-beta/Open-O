@@ -1,4 +1,3 @@
-//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -6,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -61,113 +60,113 @@ import org.oscarehr.util.SpringUtils;
 @Deprecated
 public class ConsultationAction extends Action {
 
-	private ConsultationService consultationRequestService = SpringUtils.getBean(ConsultationService.class);
-	private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-	private DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
-	private ConsultationServiceDao consultationServiceDao = SpringUtils.getBean(ConsultationServiceDao.class);
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	private PaginationUtils paginationUtils = new PaginationUtils();
+    private ConsultationService consultationRequestService = SpringUtils.getBean(ConsultationService.class);
+    private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+    private DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
+    private ConsultationServiceDao consultationServiceDao = SpringUtils.getBean(ConsultationServiceDao.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private PaginationUtils paginationUtils = new PaginationUtils();
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
-        	throw new SecurityException("missing required security object (_con)");
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
+            throw new SecurityException("missing required security object (_con)");
         }
-		
-		//grab and execute query
-		ConsultationQuery query = new ConsultationQuery();
-		paginationUtils.loadPaginationQuery(request, query);
-		query.setDateType(request.getParameter("dateType"));
-		query.setComplete(request.getParameter("complete"));
-		query.setDateType(request.getParameter("dateType"));
-		query.setWithOption(request.getParameter("withOption"));
-		query.setTeam(request.getParameter("team"));
-		query.setStatus(request.getParameter("status"));
-		
-		//sort out the totals
-		Map<String, Object> map = new HashMap<String, Object>();
-		int total = consultationRequestService.getConsultationCount(query);
-		map.put("iTotalRecords", total);
-		map.put("iTotalDisplayRecords", total);
-		
-		//these are our display objects
-		List<ConsultationData> list = new ArrayList<ConsultationData>();
-		for (ConsultationRequest consult : consultationRequestService.listConsultationRequests(loggedInInfo, query)) {
-			ConsultationData data = convertToConsultationDataObject(consult);
-			list.add(data);
-		}
-		map.put("aaData", JSONArray.fromObject(list));
 
-		//return as JSON
-		JSONObject jsonObject = JSONObject.fromObject(map);
-		PrintWriter out = null;
-		try {
-			if (null != jsonObject) {
-				out = response.getWriter();
-				response.getWriter().print(jsonObject.toString());
-			}
-		} catch (IOException e1) {
+        //grab and execute query
+        ConsultationQuery query = new ConsultationQuery();
+        paginationUtils.loadPaginationQuery(request, query);
+        query.setDateType(request.getParameter("dateType"));
+        query.setComplete(request.getParameter("complete"));
+        query.setDateType(request.getParameter("dateType"));
+        query.setWithOption(request.getParameter("withOption"));
+        query.setTeam(request.getParameter("team"));
+        query.setStatus(request.getParameter("status"));
 
-		} finally {
-			if (null != out) {
-				out.close();
-			}
-		}
-		
-		return null;
-	}
-	
-	private ConsultationData convertToConsultationDataObject(ConsultationRequest consult) {
-		//get the data i need to support
-		ConsultationData data = new ConsultationData();
-		Demographic demo = this.demographicDao.getDemographicById(consult.getDemographicId());
-		ConsultationServices services = this.consultationServiceDao.find(consult.getServiceId());
-		
-		data.setStatus(consult.getStatus());
-		data.setUrgency(paginationUtils.parseInt(consult.getUrgency()));
-		
-		if ("-1".equals(consult.getSendTo())) {
-			data.setSendTo(null);
-		} else {
-			data.setSendTo(consult.getSendTo());
-		}
-		data.setPatient(demo.getFormattedName());
-			
-		String providerId = demo.getProviderNo();
-		if (providerId != null && !providerId.equals("")) {
-			Provider provider = providerDao.getProvider(providerId);
-			data.setProviderName(provider.getFormattedName());
-			data.setProviderNo(provider.getProviderNo());
-		} else {
-			data.setProviderName(null);
-		}
-		data.setServiceId(consult.getServiceId().toString());
-		data.setServiceDesc(services.getServiceDesc());
-		if (consult.getProfessionalSpecialist() == null) {
-			data.setSpecialistName(null);
-		} else {
-			ProfessionalSpecialist specialist = consult.getProfessionalSpecialist();
-			String specialistName = specialist.getLastName() + ", " + specialist.getFirstName();
-			data.setSpecialistName(specialistName);
-		}
-		data.setDemographicNo(consult.getDemographicId().toString());
-		if (consult.getReferralDate() != null) {
-			data.setReferralDate(DateFormatUtils.format(consult.getReferralDate(),"yyyy-MM-dd"));
-		}
-		data.setId(consult.getId().toString());
-		
-		Date apptDate = consult.getAppointmentDate();
-		Date apptTime = consult.getAppointmentTime();
-		if(apptDate != null && apptTime != null) {
-			data.setAppointmentDate(DateFormatUtils.format(apptDate,"yyyy-MM-dd") + " " + DateFormatUtils.format(apptTime,"HH:mm"));
-		}
-		data.setPatientWillBook(consult.isPatientWillBook());
+        //sort out the totals
+        Map<String, Object> map = new HashMap<String, Object>();
+        int total = consultationRequestService.getConsultationCount(query);
+        map.put("iTotalRecords", total);
+        map.put("iTotalDisplayRecords", total);
 
-		apptDate = consult.getFollowUpDate();
-		if (apptDate != null) {
-			data.setFollowUpDate(DateFormatUtils.format(apptDate,"yyyy-MM-dd"));
-		}
-		return data;
-	}
+        //these are our display objects
+        List<ConsultationData> list = new ArrayList<ConsultationData>();
+        for (ConsultationRequest consult : consultationRequestService.listConsultationRequests(loggedInInfo, query)) {
+            ConsultationData data = convertToConsultationDataObject(consult);
+            list.add(data);
+        }
+        map.put("aaData", JSONArray.fromObject(list));
+
+        //return as JSON
+        JSONObject jsonObject = JSONObject.fromObject(map);
+        PrintWriter out = null;
+        try {
+            if (null != jsonObject) {
+                out = response.getWriter();
+                response.getWriter().print(jsonObject.toString());
+            }
+        } catch (IOException e1) {
+
+        } finally {
+            if (null != out) {
+                out.close();
+            }
+        }
+
+        return null;
+    }
+
+    private ConsultationData convertToConsultationDataObject(ConsultationRequest consult) {
+        //get the data i need to support
+        ConsultationData data = new ConsultationData();
+        Demographic demo = this.demographicDao.getDemographicById(consult.getDemographicId());
+        ConsultationServices services = this.consultationServiceDao.find(consult.getServiceId());
+
+        data.setStatus(consult.getStatus());
+        data.setUrgency(paginationUtils.parseInt(consult.getUrgency()));
+
+        if ("-1".equals(consult.getSendTo())) {
+            data.setSendTo(null);
+        } else {
+            data.setSendTo(consult.getSendTo());
+        }
+        data.setPatient(demo.getFormattedName());
+
+        String providerId = demo.getProviderNo();
+        if (providerId != null && !providerId.equals("")) {
+            Provider provider = providerDao.getProvider(providerId);
+            data.setProviderName(provider.getFormattedName());
+            data.setProviderNo(provider.getProviderNo());
+        } else {
+            data.setProviderName(null);
+        }
+        data.setServiceId(consult.getServiceId().toString());
+        data.setServiceDesc(services.getServiceDesc());
+        if (consult.getProfessionalSpecialist() == null) {
+            data.setSpecialistName(null);
+        } else {
+            ProfessionalSpecialist specialist = consult.getProfessionalSpecialist();
+            String specialistName = specialist.getLastName() + ", " + specialist.getFirstName();
+            data.setSpecialistName(specialistName);
+        }
+        data.setDemographicNo(consult.getDemographicId().toString());
+        if (consult.getReferralDate() != null) {
+            data.setReferralDate(DateFormatUtils.format(consult.getReferralDate(), "yyyy-MM-dd"));
+        }
+        data.setId(consult.getId().toString());
+
+        Date apptDate = consult.getAppointmentDate();
+        Date apptTime = consult.getAppointmentTime();
+        if (apptDate != null && apptTime != null) {
+            data.setAppointmentDate(DateFormatUtils.format(apptDate, "yyyy-MM-dd") + " " + DateFormatUtils.format(apptTime, "HH:mm"));
+        }
+        data.setPatientWillBook(consult.isPatientWillBook());
+
+        apptDate = consult.getFollowUpDate();
+        if (apptDate != null) {
+            data.setFollowUpDate(DateFormatUtils.format(apptDate, "yyyy-MM-dd"));
+        }
+        return data;
+    }
 }

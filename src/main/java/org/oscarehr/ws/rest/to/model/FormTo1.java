@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,106 +32,106 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class FormTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
+    private Integer id;
 
-	private Integer demographicNo;
-	
-	private int formId;
-	
-	private String type;
-	private String name;
-	private String subject;
-	private String status;
-	private Date date;
+    private Integer demographicNo;
+
+    private int formId;
+
+    private String type;
+    private String name;
+    private String subject;
+    private String status;
+    private Date date;
     private Boolean showLatestFormOnly;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public int getDemographicNo() {
-		return demographicNo;
-	}
-
-	public void setDemographicNo(int demographicNo) {
-		this.demographicNo = demographicNo;
-	}
-
-	public int getFormId() {
-	    return formId;
+    public Integer getId() {
+        return id;
     }
 
-	public void setFormId(int formId) {
-	    this.formId = formId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getType() {
-	    return type;
+    public int getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setType(String type) {
-	    this.type = type;
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public String getName() {
-	    return name;
+    public int getFormId() {
+        return formId;
     }
 
-	public void setName(String name) {
-	    this.name = name;
+    public void setFormId(int formId) {
+        this.formId = formId;
     }
 
-	public String getSubject() {
-	    return subject;
+    public String getType() {
+        return type;
     }
 
-	public void setSubject(String subject) {
-	    this.subject = subject;
+    public void setType(String type) {
+        this.type = type;
     }
 
-	public String getStatus() {
-	    return status;
+    public String getName() {
+        return name;
     }
 
-	public void setStatus(String status) {
-	    this.status = status;
+    public void setName(String name) {
+        this.name = name;
     }
 
-	public Date getDate() {
-	    return date;
+    public String getSubject() {
+        return subject;
     }
 
-	public void setDate(Date date) {
-	    this.date = date;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-	public Boolean getShowLatestFormOnly() {
-	    return showLatestFormOnly;
+    public String getStatus() {
+        return status;
     }
 
-	public void setShowLatestFormOnly(Boolean showLatestFormOnly) {
-	    this.showLatestFormOnly = showLatestFormOnly;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-	public static FormTo1 create( Integer id,int demographicNo,int formId,String type,String name,String subject,String status,Date date,Boolean showLatestFormOnly){
-		FormTo1 formTo1 = new FormTo1();
-		formTo1.id = id;
-		formTo1.demographicNo = demographicNo;
-		formTo1.formId = formId;
-		formTo1.type = type;
-		formTo1.name = name;
-		formTo1.subject = subject;
-		formTo1.status = status;
-		formTo1.date = date;
-		formTo1.showLatestFormOnly = showLatestFormOnly;
-		return formTo1;
-	}
-	
-	
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Boolean getShowLatestFormOnly() {
+        return showLatestFormOnly;
+    }
+
+    public void setShowLatestFormOnly(Boolean showLatestFormOnly) {
+        this.showLatestFormOnly = showLatestFormOnly;
+    }
+
+    public static FormTo1 create(Integer id, int demographicNo, int formId, String type, String name, String subject, String status, Date date, Boolean showLatestFormOnly) {
+        FormTo1 formTo1 = new FormTo1();
+        formTo1.id = id;
+        formTo1.demographicNo = demographicNo;
+        formTo1.formId = formId;
+        formTo1.type = type;
+        formTo1.name = name;
+        formTo1.subject = subject;
+        formTo1.status = status;
+        formTo1.date = date;
+        formTo1.showLatestFormOnly = showLatestFormOnly;
+        return formTo1;
+    }
+
+
 }

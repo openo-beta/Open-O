@@ -118,7 +118,7 @@
 
     Collection<ProviderPreference.QuickLink> quickLinkCollection = providerPreference.getAppointmentScreenQuickLinks();
     Collection<String> formNameCollection = providerPreference.getAppointmentScreenForms();
-    List<String>formNamesList = new ArrayList<>(formNameCollection);
+    List<String> formNamesList = new ArrayList<>(formNameCollection);
     Collections.sort(formNamesList);
     Collection<ProviderPreference.EformLink> eFormIdCollection = providerPreference.getAppointmentScreenEForms();
 
@@ -325,17 +325,19 @@
         <script>
             jQuery.noConflict();
         </script>
-<%--        <oscar:customInterface section="monthview"/>--%>
+            <%--        <oscar:customInterface section="monthview"/>--%>
 
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/library/bootstrap/3.0.0/css/bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/library/bootstrap/3.0.0/css/bootstrap.min.css"
+              type="text/css">
         <link rel="stylesheet" href="../css/receptionistapptstyle.css" type="text/css">
 
         <link rel="stylesheet" href="../css/helpdetails.css" type="text/css">
         <style type="text/css">
 
             table {
-                width:100%
+                width: 100%
             }
+
             #navlist li {
                 padding-top: 0.5px;
                 padding-bottom: 0.5px;
@@ -357,85 +359,85 @@
 
         </style>
 
-    <script type="text/javascript" src="../share/javascript/prototype.js"></script>
-    <script language="javascript" type="text/javascript" src="../share/javascript/Oscar.js"></script>
-    <script language="JavaScript">
-        //<!--
-        function setfocus() {
-            document.jumptodate.year.focus();
-            document.jumptodate.year.select();
-        }
+        <script type="text/javascript" src="../share/javascript/prototype.js"></script>
+        <script language="javascript" type="text/javascript" src="../share/javascript/Oscar.js"></script>
+        <script language="JavaScript">
+            //<!--
+            function setfocus() {
+                document.jumptodate.year.focus();
+                document.jumptodate.year.select();
+            }
 
 
-        //<!--oscarMessenger code block-->
-        function popupOscarRx(vheight, vwidth, varpage) { //open a new popup window
-            var page = varpage;
-            windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "oscar_appt", windowprops);
-            if (popup != null) {
-                if (popup.opener == null) {
-                    popup.opener = self;
+            //<!--oscarMessenger code block-->
+            function popupOscarRx(vheight, vwidth, varpage) { //open a new popup window
+                var page = varpage;
+                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                var popup = window.open(varpage, "oscar_appt", windowprops);
+                if (popup != null) {
+                    if (popup.opener == null) {
+                        popup.opener = self;
+                    }
                 }
             }
-        }
 
-        //<!--/oscarMessenger code block -->
+            //<!--/oscarMessenger code block -->
 
 
-        function selectprovider(s) {
-            if (s.options[s.selectedIndex].value.indexOf("_grp_") != -1) {
-                var newGroupNo = s.options[s.selectedIndex].value.substring(5);
-                <%if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()){%>
-                {
-                    popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&new_tickler_warning_window=<%=n_t_w_w%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo) + "<%=eformIds.toString()%><%=ectFormNames.toString()%>";
+            function selectprovider(s) {
+                if (s.options[s.selectedIndex].value.indexOf("_grp_") != -1) {
+                    var newGroupNo = s.options[s.selectedIndex].value.substring(5);
+                    <%if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()){%>
+                    {
+                        popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&new_tickler_warning_window=<%=n_t_w_w%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo) + "<%=eformIds.toString()%><%=ectFormNames.toString()%>";
+                    }
+                    <%}else {%>
+                    popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "<%=eformIds.toString()%><%=ectFormNames.toString()%>");
+                    <%}%>
+                } else {
+                    if (self.location.href.lastIndexOf("&providerview=") > 0)
+                        a = self.location.href.substring(0, self.location.href.lastIndexOf("&providerview="));
+                    else
+                        a = self.location.href;
+                    self.location.href = a + "&providerview=" + s.options[s.selectedIndex].value;
                 }
-                <%}else {%>
-                popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "<%=eformIds.toString()%><%=ectFormNames.toString()%>");
-                <%}%>
-            } else {
-                if (self.location.href.lastIndexOf("&providerview=") > 0)
-                    a = self.location.href.substring(0, self.location.href.lastIndexOf("&providerview="));
-                else
-                    a = self.location.href;
-                self.location.href = a + "&providerview=" + s.options[s.selectedIndex].value;
             }
-        }
 
 
-        function refresh1() {
-            var u = self.location.href;
-            if (u.lastIndexOf("&providerview=") > 0) {
-                self.location.href = u.substring(0, u.lastIndexOf("&providerview="));
+            function refresh1() {
+                var u = self.location.href;
+                if (u.lastIndexOf("&providerview=") > 0) {
+                    self.location.href = u.substring(0, u.lastIndexOf("&providerview="));
+                }
+                if (u.lastIndexOf("&mygroup_no=") > 0) { // group switch should be treated same as provider switch
+                    self.location.href = u.substring(0, u.lastIndexOf("&mygroup_no="));
+                } else {
+                    history.go(0);
+                }
             }
-            if (u.lastIndexOf("&mygroup_no=") > 0) { // group switch should be treated same as provider switch
-                self.location.href = u.substring(0, u.lastIndexOf("&mygroup_no="));
-            } else {
-                history.go(0);
+
+            <%-- Refresh tab alerts --%>
+
+            function refreshAllTabAlerts() {
+                refreshTabAlerts("oscar_new_lab");
+                refreshTabAlerts("oscar_new_msg");
+                refreshTabAlerts("oscar_new_tickler");
+                refreshTabAlerts("oscar_scratch");
             }
-        }
 
-        <%-- Refresh tab alerts --%>
+            function callRefreshTabAlerts(id) {
+                setTimeout("refreshTabAlerts('" + id + "')", 10);
+            }
 
-        function refreshAllTabAlerts() {
-            refreshTabAlerts("oscar_new_lab");
-            refreshTabAlerts("oscar_new_msg");
-            refreshTabAlerts("oscar_new_tickler");
-            refreshTabAlerts("oscar_scratch");
-        }
+            function refreshTabAlerts(id) {
+                var url = "../provider/tabAlertsRefresh.jsp";
+                var pars = "id=" + id;
 
-        function callRefreshTabAlerts(id) {
-            setTimeout("refreshTabAlerts('" + id + "')", 10);
-        }
+                var myAjax = new Ajax.Updater(id, url, {method: 'get', parameters: pars});
+            }
 
-        function refreshTabAlerts(id) {
-            var url = "../provider/tabAlertsRefresh.jsp";
-            var pars = "id=" + id;
-
-            var myAjax = new Ajax.Updater(id, url, {method: 'get', parameters: pars});
-        }
-
-        //-->
-    </SCRIPT>
+            //-->
+        </SCRIPT>
     </head>
     <!-- menu goes here -->
     <jsp:include page="mainMenu.jsp"/>
@@ -474,7 +476,8 @@
         <tr BGCOLOR="whitesmoke">
             <td width="33%">
                 <a href="providercontrol.jsp?year=<%=year%>&month=<%=(month-1)%>&day=<%=(day)%>&displaymode=month&dboperation=searchappointmentmonth&providerview=<%=providerview%>">
-                <span class="glyphicon glyphicon-step-backward" title="<%=arrayMonthOfYear[((month+10)%12)]%>"></span>&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-step-backward"
+                          title="<%=arrayMonthOfYear[((month+10)%12)]%>"></span>&nbsp;&nbsp;
                 </a>
                 <b><span CLASS=title><%=strYear%>-<%=strMonth%></span></b>
                 <a href="providercontrol.jsp?year=<%=year%>&month=<%=(month+1)%>&day=<%=day%>&displaymode=month&dboperation=searchappointmentmonth&providerview=<%=providerview%>">
@@ -484,10 +487,12 @@
                       title="<bean:message key="provider.appointmentProviderAdminDay.viewAllProv"/>"><bean:message
                         key="provider.appointmentProviderAdminDay.viewAll"/></a></u>
 
-                | <a href="providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=<%=view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") )%>&displaymode=day&dboperation=searchappointmentday"
-                        TITLE='<bean:message key="provider.appointmentProviderAdminDay.viewDaySched"/>'
-                        OnMouseOver="window.status='<bean:message key="provider.appointmentProviderAdminDay.viewDaySched"/>' ; return true"><bean:message
-                        key="global.today"/></a>
+                | <a
+                    href="providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=<%=view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") )%>&displaymode=day&dboperation=searchappointmentday"
+                    TITLE='<bean:message key="provider.appointmentProviderAdminDay.viewDaySched"/>'
+                    OnMouseOver="window.status='<bean:message
+                            key="provider.appointmentProviderAdminDay.viewDaySched"/>' ; return true"><bean:message
+                    key="global.today"/></a>
 
                 | <span style="color:#333">Month</span>
 
@@ -696,8 +701,8 @@
                                 %>
                                 <td nowrap bgcolor="<%=bgcolor.toString()%>" valign="top">
                                     <a href='providercontrol.jsp?<%=caisi%>year=<%=year%>&month=<%=MyDateFormat.getDigitalXX(month)%>&day=<%=MyDateFormat.getDigitalXX(dateGrid[i][j])%>&view=<%=view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName"))%>&displaymode=day&dboperation=searchappointmentday'>
-                                    <span class='date'>&nbsp;<%=dateGrid[i][j] %> </span>
-                                    <span size="-2" color="blue"><%=strHolidayName.toString()%>
+                                        <span class='date'>&nbsp;<%=dateGrid[i][j] %> </span>
+                                        <span size="-2" color="blue"><%=strHolidayName.toString()%>
                                 <%
                                     while (bFistEntry ? it.hasNext() : true) {
                                         date = bFistEntry ? it.next() : date;
@@ -712,23 +717,24 @@
                                         if (isTeamOnly || !providerview.startsWith("_grp_", 0) || myGrpBean.containsKey(date.getProviderNo())) {
                                 %>
                                     </span>
-                                    <br><span class='datepname'>&nbsp;<%=providerNameBean.getShortDef(date.getProviderNo(), "", NameMaxLen)%></span><span
-                                        class='datephour'><%=date.getHour() %></span>
-                                    <%
-                                        if (bMultisites && CurrentSiteMap.get(date.getReason()) != null && (selectedSite == null || "NONE".equals(date.getReason()) || selectedSite.equals(date.getReason()))) {
-                                    %>
-                                    <% if (bMultisites) {
-                                        out.print(getSiteHTML(date.getReason(), sites));
-                                    } %>
+                                        <br><span
+                                            class='datepname'>&nbsp;<%=providerNameBean.getShortDef(date.getProviderNo(), "", NameMaxLen)%></span><span
+                                            class='datephour'><%=date.getHour() %></span>
+                                        <%
+                                            if (bMultisites && CurrentSiteMap.get(date.getReason()) != null && (selectedSite == null || "NONE".equals(date.getReason()) || selectedSite.equals(date.getReason()))) {
+                                        %>
+                                        <% if (bMultisites) {
+                                            out.print(getSiteHTML(date.getReason(), sites));
+                                        } %>
 
-                                    <% if (!bMultisites) { %>
+                                        <% if (!bMultisites) { %>
 
-                                    <span class='datepreason'><%=date.getReason() %></span>
-                                    <% } %>
-                                    <% }
-                                    }
-                                    } %>
-                                </a>
+                                        <span class='datepreason'><%=date.getReason() %></span>
+                                        <% } %>
+                                        <% }
+                                        }
+                                        } %>
+                                    </a>
                                 </td>
                                 <%
                                             }
@@ -750,14 +756,17 @@
                                         dateGrid = aDate.getMonthDateGrid();
                                     %>
                                     <td>
-                                        <b> <a href="providercontrol.jsp?year=<%=year%>&month=<%=(month)%>&day=<%=(day)%>&displaymode=month&dboperation=searchappointmentmonth"
-                                            title="Last Month: <%=arrayMonthOfYear[((month+10)%12)]%>">
-                                        &nbsp;&nbsp;<span class="glyphicon glyphicon-step-backward" title="Last Month: <%=arrayMonthOfYear[((month+10)%12)]%>"></span>
-                                            <bean:message key="provider.appointmentprovideradminmonth.btnLastMonth"/>
-                                    </a>&nbsp;
-                                        &nbsp; &nbsp;<%=year%>-<%=month%> &nbsp; &nbsp; &nbsp; &nbsp;
-                                        &nbsp; &nbsp; &nbsp;<%=arrayMonthOfYear[((month + 11) % 12)]%>
-                                    </b>
+                                        <b>
+                                            <a href="providercontrol.jsp?year=<%=year%>&month=<%=(month)%>&day=<%=(day)%>&displaymode=month&dboperation=searchappointmentmonth"
+                                               title="Last Month: <%=arrayMonthOfYear[((month+10)%12)]%>">
+                                                &nbsp;&nbsp;<span class="glyphicon glyphicon-step-backward"
+                                                                  title="Last Month: <%=arrayMonthOfYear[((month+10)%12)]%>"></span>
+                                                <bean:message
+                                                        key="provider.appointmentprovideradminmonth.btnLastMonth"/>
+                                            </a>&nbsp;
+                                            &nbsp; &nbsp;<%=year%>-<%=month%> &nbsp; &nbsp; &nbsp; &nbsp;
+                                            &nbsp; &nbsp; &nbsp;<%=arrayMonthOfYear[((month + 11) % 12)]%>
+                                        </b>
                                         <table width="98%" border="1" cellspacing="1" cellpadding="6"
                                                bgcolor="#EEE9BF">
                                             <tr bgcolor="#FOFOFO">
@@ -821,7 +830,7 @@
                                             <td align='center' bgcolor='#FOFOFO'><font
                                                     FACE='VERDANA,ARIAL,HELVETICA' SIZE='2'> <a
                                                     href='providercontrol.jsp?<%=caisi%>year=<%=year%>&month=<%=MyDateFormat.getDigitalXX(month)%>&day=<%=dateGrid[i][j+1]==0?1:dateGrid[i][j+1]%>&view=<%=view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") )%>&displaymode=week&dboperation=searchapptweek'>
-                                                <%=(i + 1)%>
+                                                        <%=(i + 1)%>
                                             </font></td>
                                             <%
                                                     continue;
@@ -867,8 +876,9 @@
                                             title="Next Month: <%=arrayMonthOfYear[month%12]%>"> &nbsp;
                                         &nbsp; &nbsp; <bean:message
                                                 key="provider.appointmentprovideradminmonth.btnNextMonth"/>
-                                        <span class="glyphicon glyphicon-step-forward" title="Next Month: <%=arrayMonthOfYear[(month)%12]%>"></span>
-                                        </a><br>
+                                        <span class="glyphicon glyphicon-step-forward"
+                                              title="Next Month: <%=arrayMonthOfYear[(month)%12]%>"></span>
+                                    </a><br>
 
                                         <table width="98%" border="1" cellspacing="1" cellpadding="6"
                                                bgcolor="#EEE9BF">
@@ -933,7 +943,7 @@
                                             <td align='center' bgcolor='#FOFOFO'><font
                                                     FACE='VERDANA,ARIAL,HELVETICA' SIZE='2'> <a
                                                     href='providercontrol.jsp?<%=caisi%>year=<%=year%>&month=<%=MyDateFormat.getDigitalXX(month)%>&day=<%=dateGrid[i][j+1]==0?1:dateGrid[i][j+1]%>&view=<%=view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") )%>&displaymode=week&dboperation=searchapptweek'>
-                                                <%=(i + 1)%>
+                                                        <%=(i + 1)%>
                                             </font></td>
                                             <%
                                                     continue;

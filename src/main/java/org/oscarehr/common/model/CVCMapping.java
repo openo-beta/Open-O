@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,46 +31,46 @@ import javax.persistence.Id;
 
 @Entity
 public class CVCMapping extends AbstractModel<Integer> {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String oscarName;
-	private String cvcSnomedId;
-	private Boolean preferCVC = false;
-	
-	
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String oscarName;
+    private String cvcSnomedId;
+    private Boolean preferCVC = false;
 
-	public String getOscarName() {
-		return oscarName;
-	}
 
-	public void setOscarName(String oscarName) {
-		this.oscarName = oscarName;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getCvcSnomedId() {
-		return cvcSnomedId;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setCvcSnomedId(String cvcSnomedId) {
-		this.cvcSnomedId = cvcSnomedId;
-	}
+    public String getOscarName() {
+        return oscarName;
+    }
 
-	public Boolean getPreferCVC() {
-		return preferCVC;
-	}
+    public void setOscarName(String oscarName) {
+        this.oscarName = oscarName;
+    }
 
-	public void setPreferCVC(Boolean preferCVC) {
-		this.preferCVC = preferCVC;
-	}
+    public String getCvcSnomedId() {
+        return cvcSnomedId;
+    }
 
-	
+    public void setCvcSnomedId(String cvcSnomedId) {
+        this.cvcSnomedId = cvcSnomedId;
+    }
+
+    public Boolean getPreferCVC() {
+        return preferCVC;
+    }
+
+    public void setPreferCVC(Boolean preferCVC) {
+        this.preferCVC = preferCVC;
+    }
+
+
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,64 +50,65 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  *
- * @author  Jay Gallagher
+ * @author Jay Gallagher
  */
 public class SurveillanceAnswerAction extends Action {
-   private static Logger log = MiscUtils.getLogger();
-   /** Creates a new instance of SurveillanceAnswerAction */
-   public SurveillanceAnswerAction() {
-   }
-   
-   public ActionForward execute(ActionMapping mapping,
-				ActionForm form,
-				HttpServletRequest request,
-				HttpServletResponse response) throws IOException, ServletException {
-                                   
-      SurveillanceAnswerForm frm = (SurveillanceAnswerForm) form;                                   
-                                 
-      String answer      = frm.getAnswer();
-      String surveyId    = frm.getSurveyId();
-      String demographic = frm.getDemographicNo();
-      String provider    = (String) request.getSession().getAttribute("user");
-      String currentSurveyNum = frm.getCurrentSurveyNum();
-      
-      SurveillanceMaster sir = SurveillanceMaster.getInstance();
-      
-      Survey survey = sir.getSurveyById(surveyId);
-        
-      
-      survey.processAnswer(provider, demographic,answer);
-      
-      log.debug("Survey: "+surveyId+" answer "+answer);
-      
-      String proceed = frm.getProceed();
-      String proceedURL = URLDecoder.decode(proceed, "UTF-8");      
-      
-      ActionForward forward = new ActionForward();
-                    forward.setPath(proceedURL);
+    private static Logger log = MiscUtils.getLogger();
+
+    /** Creates a new instance of SurveillanceAnswerAction */
+    public SurveillanceAnswerAction() {
+    }
+
+    public ActionForward execute(ActionMapping mapping,
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws IOException, ServletException {
+
+        SurveillanceAnswerForm frm = (SurveillanceAnswerForm) form;
+
+        String answer = frm.getAnswer();
+        String surveyId = frm.getSurveyId();
+        String demographic = frm.getDemographicNo();
+        String provider = (String) request.getSession().getAttribute("user");
+        String currentSurveyNum = frm.getCurrentSurveyNum();
+
+        SurveillanceMaster sir = SurveillanceMaster.getInstance();
+
+        Survey survey = sir.getSurveyById(surveyId);
+
+
+        survey.processAnswer(provider, demographic, answer);
+
+        log.debug("Survey: " + surveyId + " answer " + answer);
+
+        String proceed = frm.getProceed();
+        String proceedURL = URLDecoder.decode(proceed, "UTF-8");
+
+        ActionForward forward = new ActionForward();
+        forward.setPath(proceedURL);
+        forward.setRedirect(true);
+
+        if (currentSurveyNum != null) {
+            try {
+                int num = Integer.parseInt(currentSurveyNum);
+                if (num < SurveillanceMaster.numSurveys()) {
+                    request.setAttribute("currentSurveyNum", currentSurveyNum);
+                    forward = mapping.findForward("survey");
+                    String newURL = forward.getPath() + "?demographicNo=" + demographic + "&proceed=" + URLEncoder.encode(proceed, "UTF-8");
+                    log.debug("sending to: " + newURL);
+                    forward.setPath(newURL);
                     forward.setRedirect(true);
-      
-      if (currentSurveyNum != null){
-         try{
-            int num = Integer.parseInt(currentSurveyNum);            
-            if (num < SurveillanceMaster.numSurveys() ){
-               request.setAttribute("currentSurveyNum",  currentSurveyNum);
-               forward = mapping.findForward("survey");
-               String newURL = forward.getPath()+"?demographicNo="+demographic+"&proceed="+URLEncoder.encode(proceed, "UTF-8");  
-               log.debug("sending to: "+newURL);
-               forward.setPath(newURL);                                 
-               forward.setRedirect(true);
+                }
+            } catch (Exception e) {
             }
-         }catch (Exception e){ }
-      }
-      
-	if(StringUtils.isBlank(forward.getPath())) {
-		forward.setPath("close.jsp");
-	}      
-                    
-      return forward;
-   }
-   
-   
-   
+        }
+
+        if (StringUtils.isBlank(forward.getPath())) {
+            forward.setPath("close.jsp");
+        }
+
+        return forward;
+    }
+
+
 }

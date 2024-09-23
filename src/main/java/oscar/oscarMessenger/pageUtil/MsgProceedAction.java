@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,42 +47,42 @@ import oscar.util.ConversionUtils;
 
 public class MsgProceedAction extends Action {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "w", null)) {
-			throw new SecurityException("missing required security object (_msg)");
-		}
-		
-		MsgProceedForm frm = (MsgProceedForm) form;
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-		String id;
-		String demoId;
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "w", null)) {
+            throw new SecurityException("missing required security object (_msg)");
+        }
 
-		oscar.oscarMessenger.pageUtil.MsgSessionBean bean;
-		bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
+        MsgProceedForm frm = (MsgProceedForm) form;
 
-		demoId = frm.getDemoId();
-		id = frm.getId();
+        String id;
+        String demoId;
 
-		RemoteAttachmentsDao dao = SpringUtils.getBean(RemoteAttachmentsDao.class);
-		List<RemoteAttachments> rs = dao.findByDemoNoAndMessageId(ConversionUtils.fromIntString(demoId), ConversionUtils.fromIntString(id));
-		if (rs.size() > 0) {
-			request.setAttribute("confMessage", "1");
-		} else {
-			RemoteAttachments ra = new RemoteAttachments();
-			ra.setDemographicNo(Integer.parseInt(demoId));
-			ra.setMessageId(Integer.parseInt(id));
-			ra.setSavedBy(bean.getUserName());
-			ra.setDate(new Date());
-			ra.setTime(new Date());
-			dao.persist(ra);
-			request.setAttribute("confMessage", "2");
-		}
+        oscar.oscarMessenger.pageUtil.MsgSessionBean bean;
+        bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
 
-		bean.nullAttachment();
+        demoId = frm.getDemoId();
+        id = frm.getId();
 
-		return (mapping.findForward("success"));
-	}
+        RemoteAttachmentsDao dao = SpringUtils.getBean(RemoteAttachmentsDao.class);
+        List<RemoteAttachments> rs = dao.findByDemoNoAndMessageId(ConversionUtils.fromIntString(demoId), ConversionUtils.fromIntString(id));
+        if (rs.size() > 0) {
+            request.setAttribute("confMessage", "1");
+        } else {
+            RemoteAttachments ra = new RemoteAttachments();
+            ra.setDemographicNo(Integer.parseInt(demoId));
+            ra.setMessageId(Integer.parseInt(id));
+            ra.setSavedBy(bean.getUserName());
+            ra.setDate(new Date());
+            ra.setTime(new Date());
+            dao.persist(ra);
+            request.setAttribute("confMessage", "2");
+        }
+
+        bean.nullAttachment();
+
+        return (mapping.findForward("success"));
+    }
 }

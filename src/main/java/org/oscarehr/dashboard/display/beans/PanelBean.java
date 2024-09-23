@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,50 +29,50 @@ import java.util.List;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 public class PanelBean {
-	
-	private String name;
-	private String description;
-	private String category;
-	
-	// each panel contains one or more IndicatorPanels
-	// sorted by Indicator category.
-	private List<IndicatorPanelBean> indicatorPanelBeans;
 
-	public String getName() {
-		return name;
-	}
+    private String name;
+    private String description;
+    private String category;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    // each panel contains one or more IndicatorPanels
+    // sorted by Indicator category.
+    private List<IndicatorPanelBean> indicatorPanelBeans;
 
-	public String getDescription() {
-		return description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getCategory() {
-		return category;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public List<IndicatorPanelBean> getIndicatorPanelBeans() {
-		return indicatorPanelBeans;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	public void setIndicatorPanelBeans(List<IndicatorPanelBean> indicatorPanelBeans) {
-		this.indicatorPanelBeans = indicatorPanelBeans;
-	}
-	
-	@Override
-	public String toString() {
-	   return ReflectionToStringBuilder.toString(this);
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<IndicatorPanelBean> getIndicatorPanelBeans() {
+        return indicatorPanelBeans;
+    }
+
+    public void setIndicatorPanelBeans(List<IndicatorPanelBean> indicatorPanelBeans) {
+        this.indicatorPanelBeans = indicatorPanelBeans;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 
 }

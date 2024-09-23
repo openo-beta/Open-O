@@ -7,19 +7,19 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
- *
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -32,9 +32,9 @@ import org.oscarehr.PMmodule.model.HealthSafety;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-public class HealthSafetyDaoImpl extends HibernateDaoSupport implements HealthSafetyDao{
+public class HealthSafetyDaoImpl extends HibernateDaoSupport implements HealthSafetyDao {
 
-    private Logger log=MiscUtils.getLogger();
+    private Logger log = MiscUtils.getLogger();
 
     public HealthSafety getHealthSafetyByDemographic(Long demographicNo) {
         if (demographicNo == null || demographicNo.intValue() <= 0) {
@@ -44,7 +44,7 @@ public class HealthSafetyDaoImpl extends HibernateDaoSupport implements HealthSa
         HealthSafety result = null;
 
         List list = this.getHibernateTemplate().find("from HealthSafety c where c.demographicNo=? order by c.updateDate desc", demographicNo);
-        if (!list.isEmpty()) result = (HealthSafety)list.get(0);
+        if (!list.isEmpty()) result = (HealthSafety) list.get(0);
 
         if (log.isDebugEnabled()) {
             log.debug("getHealthSafetyByDemographic:id=" + demographicNo + ",found=" + (result != null));

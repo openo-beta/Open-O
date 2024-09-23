@@ -24,20 +24,25 @@
 
 --%>
 
-<div class="col-lg-3">		
-	<ul class="nav nav-tabs nav-justified">
-		<li ng-repeat="list in page.formlists" ng-class="getListClass(list.id)" ><a ng-click="changeTo(list.id)">{{list.label}}</a></li>
-	</ul> 	
-	<div class="panel panel-success"> 
-	  	<!-- Default panel contents -->
-	  	   <input type="search" class="form-control" placeholder="Filter" ng-model="filterFormsQ">
-	  	   <ul class="list-group" tabindex="0" ng-keypress="keypress($event)">
-   				<li class="list-group-item" ng-repeat="item in page.currentFormList[page.currentlistId] | filter:filterFormsQ" ng-class="getActiveFormClass(item)">
-   					<a class="list-group-item-text" ng-click="viewFormState(item)" ><span  ng-show="item.date" class="pull-right">{{item.date | date : 'd-MMM-y'}}</span>{{item.name}}  </a>
-   				</li>
-   			</ul>
-	</div>
+<div class="col-lg-3">
+    <ul class="nav nav-tabs nav-justified">
+        <li ng-repeat="list in page.formlists" ng-class="getListClass(list.id)"><a
+                ng-click="changeTo(list.id)">{{list.label}}</a></li>
+    </ul>
+    <div class="panel panel-success">
+        <!-- Default panel contents -->
+        <input type="search" class="form-control" placeholder="Filter" ng-model="filterFormsQ">
+        <ul class="list-group" tabindex="0" ng-keypress="keypress($event)">
+            <li class="list-group-item"
+                ng-repeat="item in page.currentFormList[page.currentlistId] | filter:filterFormsQ"
+                ng-class="getActiveFormClass(item)">
+                <a class="list-group-item-text" ng-click="viewFormState(item)"><span ng-show="item.date"
+                                                                                     class="pull-right">{{item.date | date: 'd-MMM-y'}}</span>{{item.name}}
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
 <div class="col-lg-9">
-	<div id="formInViewFrame"></div>
+    <div id="formInViewFrame"></div>
 </div>

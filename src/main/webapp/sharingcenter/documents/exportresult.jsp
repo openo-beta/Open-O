@@ -24,32 +24,32 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_demographic" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_demographic");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_demographic");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="org.oscarehr.common.dao.DemographicDao"%>
-<%@page import="org.oscarehr.common.model.Demographic"%>
-<%@page import="org.oscarehr.sharingcenter.dao.AffinityDomainDao"%>
-<%@page import="org.oscarehr.sharingcenter.model.AffinityDomainDataObject"%>
+<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.common.dao.DemographicDao" %>
+<%@page import="org.oscarehr.common.model.Demographic" %>
+<%@page import="org.oscarehr.sharingcenter.dao.AffinityDomainDao" %>
+<%@page import="org.oscarehr.sharingcenter.model.AffinityDomainDataObject" %>
 
 <%
 
-// Patient information
+    // Patient information
     Demographic demographic = null;
     if (request.getParameter("demographic_no") != null) {
         int demographicId = Integer.parseInt(request.getParameter("demographic_no"));
@@ -79,75 +79,82 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="shortcut icon" href="${ctx}/assets/ico/favicon.png">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="${ctx}/assets/ico/favicon.png">
 
-        <title>Document Export</title>
+    <title>Document Export</title>
 
-        <link rel="stylesheet" href="${ctx}/library/bootstrap/3.0.0/css/bootstrap.min.css">
-        <script src="${ctx}/js/jquery-1.9.1.min.js"></script>
-        <script src="${ctx}/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="${ctx}/library/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="${ctx}/js/jquery-1.9.1.min.js"></script>
+    <script src="${ctx}/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
-        <script>
+    <script>
 
-            $(document).ready(function() {
+        $(document).ready(function () {
 
-            });
+        });
 
-        </script>
+    </script>
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-          <script src="../../assets/js/html5shiv.js"></script>
-          <script src="../../assets/js/respond.min.js"></script>
-        <![endif]-->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/html5shiv.js"></script>
+    <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
 
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <!-- Begin page content -->
-        <div class="container">
+<!-- Begin page content -->
+<div class="container">
 
-            <div class="page-header">
-                <h3>Document Export Result</h3>
-            </div>
+    <div class="page-header">
+        <h3>Document Export Result</h3>
+    </div>
 
-            <div class="well">
-                <table class="table">
-                    <tr>
-                        <th>Patient #</th>
-                        <th>Name</th>
-                        <th>Date of Birth</th>
-                    </tr>
-                    <tr>
-                        <td><%= demographic.getDemographicNo()%></td>
-                        <td><%= demographic.getDisplayName()%></td>
-                        <td><%= String.format("%s / %s / %s", demographic.getYearOfBirth(), demographic.getMonthOfBirth(), demographic.getDateOfBirth())%></td>
-                    </tr>
-                </table>
-            </div>
-            <% if (bppcStatus != null) {%>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h4><span class="label label-<%= (bppcStatus.equals("1")) ? "success" : "danger"%>"><span class="glyphicon glyphicon-eye-close"></span> <%= (bppcStatus.equals("1")) ? "Consent Policy Acknowledgement was successfully sent." : "An error occured while sending Consent Policy Acknowledgement"%></span></h4>
-                </div>
-            </div>
-            <% } %>
-
-            <% if (submissionStatus != null) {%>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h4><span class="label label-<%= (submissionStatus.equals("1")) ? "success" : "danger"%>"><span class="glyphicon glyphicon-file"></span> <%= (submissionStatus.equals("1")) ? "Document(s) were successfully exported." : "An error occurred while exporting document(s)."%></span></h4>
-                </div>
-            </div>
-            <% }%>
-
+    <div class="well">
+        <table class="table">
+            <tr>
+                <th>Patient #</th>
+                <th>Name</th>
+                <th>Date of Birth</th>
+            </tr>
+            <tr>
+                <td><%= demographic.getDemographicNo()%>
+                </td>
+                <td><%= demographic.getDisplayName()%>
+                </td>
+                <td><%= String.format("%s / %s / %s", demographic.getYearOfBirth(), demographic.getMonthOfBirth(), demographic.getDateOfBirth())%>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <% if (bppcStatus != null) {%>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4><span class="label label-<%= (bppcStatus.equals("1")) ? "success" : "danger"%>"><span
+                    class="glyphicon glyphicon-eye-close"></span> <%= (bppcStatus.equals("1")) ? "Consent Policy Acknowledgement was successfully sent." : "An error occured while sending Consent Policy Acknowledgement"%></span>
+            </h4>
         </div>
+    </div>
+    <% } %>
 
-    </body>
+    <% if (submissionStatus != null) {%>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4><span class="label label-<%= (submissionStatus.equals("1")) ? "success" : "danger"%>"><span
+                    class="glyphicon glyphicon-file"></span> <%= (submissionStatus.equals("1")) ? "Document(s) were successfully exported." : "An error occurred while exporting document(s)."%></span>
+            </h4>
+        </div>
+    </div>
+    <% }%>
+
+</div>
+
+</body>
 </html>

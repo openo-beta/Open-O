@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,26 +52,26 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 
 public class ReportReassignAction extends Action {
-    
+
     private final Logger logger = MiscUtils.getLogger();
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
+
     public ReportReassignAction() {
     }
-    
+
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response)
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
             throws ServletException, IOException {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    	if(!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "w", null)) {
-			throw new SecurityException("missing required security object (_lab)");
-		}
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "w", null)) {
+            throw new SecurityException("missing required security object (_lab)");
+        }
 
-    	String status = request.getParameter("status");
-        String ajax=request.getParameter("ajax");
+        String status = request.getParameter("status");
+        String ajax = request.getParameter("ajax");
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         String searchProviderNo = request.getParameter("searchProviderNo");
         JSONArray jsonArray = null;
@@ -84,13 +84,12 @@ public class ReportReassignAction extends Action {
          * set during the forward process.
          */
         String newFavorites = request.getParameter("selectedFavorites");
-        if(newFavorites != null && ! newFavorites.isEmpty())
-        {
+        if (newFavorites != null && !newFavorites.isEmpty()) {
             JSONObject jsonObject = JSONObject.fromObject(newFavorites);
             jsonArray = (JSONArray) jsonObject.get("favorites");
         }
 
-        if(jsonArray != null) {
+        if (jsonArray != null) {
             arrNewFavs = (String[]) jsonArray.toArray(new String[jsonArray.size()]);
         }
 
@@ -101,13 +100,12 @@ public class ReportReassignAction extends Action {
         String selectedProviders = request.getParameter("selectedProviders");
         logger.info("selected providers to forward labs to " + selectedProviders);
 
-        if(selectedProviders != null && ! selectedProviders.isEmpty()) {
+        if (selectedProviders != null && !selectedProviders.isEmpty()) {
             JSONObject jsonObject = JSONObject.fromObject(selectedProviders);
             jsonArray = jsonObject.getJSONArray("providers");
         }
 
-        if(jsonArray != null)
-        {
+        if (jsonArray != null) {
             selectedProvidersArray = (String[]) jsonArray.toArray(new String[jsonArray.size()]);
         }
 
@@ -116,17 +114,14 @@ public class ReportReassignAction extends Action {
          * forwarding process.
          */
         String flaggedLabs = request.getParameter("flaggedLabs");
-        if(flaggedLabs != null && ! flaggedLabs.isEmpty())
-        {
+        if (flaggedLabs != null && !flaggedLabs.isEmpty()) {
             JSONObject jsonObject = JSONObject.fromObject(flaggedLabs);
             jsonArray = (JSONArray) jsonObject.get("files");
         }
 
-        if(jsonArray != null)
-        {
+        if (jsonArray != null) {
             String[] labid;
-            for(int i = 0; i < jsonArray.size(); i++ )
-            {
+            for (int i = 0; i < jsonArray.size(); i++) {
                 labid = jsonArray.getString(i).split(":");
                 flaggedLabsList.add(labid);
             }
@@ -134,10 +129,10 @@ public class ReportReassignAction extends Action {
 
         String newURL = "";
         try {
-        	//Only route if there are selected providers
-        	if(selectedProvidersArray.length > 0) {
-        		success = CommonLabResultData.updateLabRouting(flaggedLabsList, selectedProvidersArray);
-        	}
+            //Only route if there are selected providers
+            if (selectedProvidersArray.length > 0) {
+                success = CommonLabResultData.updateLabRouting(flaggedLabsList, selectedProvidersArray);
+            }
 
             //update favorites
             ProviderLabRoutingFavoritesDao favDao = (ProviderLabRoutingFavoritesDao) SpringUtils.getBean(ProviderLabRoutingFavoritesDao.class);
@@ -184,22 +179,28 @@ public class ReportReassignAction extends Action {
             }
 
             newURL = mapping.findForward("success").getPath();
-            if(newURL.contains("labDisplay.jsp")) {
+            if (newURL.contains("labDisplay.jsp")) {
                 newURL = newURL + "?providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status + "&segmentID=" + flaggedLabsList.get(0);
 
                 // the segmentID is needed when being called from a lab display
             } else {
                 newURL = newURL + "&providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status + "&segmentID=" + flaggedLabsList.get(0);
             }
-            if (request.getParameter("lname") != null) { newURL = newURL + "&lname="+request.getParameter("lname"); }
-            if (request.getParameter("fname") != null) { newURL = newURL + "&fname="+request.getParameter("fname"); }
-            if (request.getParameter("hnum") != null) { newURL = newURL + "&hnum="+request.getParameter("hnum"); }
+            if (request.getParameter("lname") != null) {
+                newURL = newURL + "&lname=" + request.getParameter("lname");
+            }
+            if (request.getParameter("fname") != null) {
+                newURL = newURL + "&fname=" + request.getParameter("fname");
+            }
+            if (request.getParameter("hnum") != null) {
+                newURL = newURL + "&hnum=" + request.getParameter("hnum");
+            }
         } catch (Exception e) {
             logger.error("exception in ReportReassignAction", e);
             newURL = mapping.findForward("failure").getPath();
         }
 
-        if(ajax!=null && ajax.equals("yes")){
+        if (ajax != null && ajax.equals("yes")) {
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("success", success);
             jsonResponse.put("files", jsonArray);
@@ -213,8 +214,7 @@ public class ReportReassignAction extends Action {
                 MiscUtils.getLogger().error("Error with JSON response ", e);
             }
             return null;
-        }
-        else{
+        } else {
             return (new ActionForward(newURL));
         }
     }

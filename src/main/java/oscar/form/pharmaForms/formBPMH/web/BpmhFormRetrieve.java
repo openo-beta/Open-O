@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * The Pharmacists Clinic
  * Faculty of Pharmaceutical Sciences
@@ -46,117 +46,118 @@ import oscar.form.pharmaForms.formBPMH.business.BpmhFormHandler;
 import oscar.form.pharmaForms.formBPMH.pdf.PDFController;
 
 /*
- * Author: Dennis Warren 
+ * Author: Dennis Warren
  * Company: Colcamex Resources
  * Date: November 2014
  * For: UBC Pharmacy Clinic and McMaster Department of Family Medicine
  */
 public class BpmhFormRetrieve extends DispatchAction {
-	
-	private static final String BPMH_PDF_TEMPLATE = "/WEB-INF/classes/oscar/form/prop/bpmh_template_marked.pdf";
-	private BpmhFormHandler bpmhFormHandler;
-			
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) {
-		return fetch(mapping,form,request,response);
-	}
-	public ActionForward fetch(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) {
-		
-		BpmhFormBean bpmh = (BpmhFormBean) form;
-		bpmhFormHandler = new BpmhFormHandler( bpmh );
-		
-		Integer demographicNo = Integer.parseInt( request.getParameter("demographic_no") );
-		Integer formHistoryNumber = Integer.parseInt( request.getParameter("formId") );
-		
-		if( formHistoryNumber != null && formHistoryNumber > 0 ) {
-			bpmhFormHandler.setFormHistory(formHistoryNumber);
-		}else if( demographicNo != null ) {	
-			bpmhFormHandler.setDemographicNo(demographicNo);						
-		}
 
-		bpmhFormHandler.populateFormBean();
-		
-		return mapping.findForward("success");
-	}
-	
-	public ActionForward save(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) {
-		
-		BpmhFormBean bpmh = (BpmhFormBean) form;
-		Integer demographicNo = Integer.parseInt( bpmh.getDemographicNo() ); 
-		ActionMessages actionMessage = new ActionMessages();
-		Integer formId = null;
-		
-		bpmhFormHandler = new BpmhFormHandler(bpmh);
-		bpmhFormHandler.setDemographicNo( demographicNo ); 
-		bpmhFormHandler.populateFormBean();
-		bpmh.setEditDate( new Date() );
-		
-		formId = bpmhFormHandler.saveFormHistory();
+    private static final String BPMH_PDF_TEMPLATE = "/WEB-INF/classes/oscar/form/prop/bpmh_template_marked.pdf";
+    private BpmhFormHandler bpmhFormHandler;
 
-		actionMessage.add("saved", new ActionMessage("Form Saved"));
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form,
+                                     HttpServletRequest request, HttpServletResponse response) {
+        return fetch(mapping, form, request, response);
+    }
 
-		ActionRedirect actionRedirect = new ActionRedirect( mapping.findForward("saved") );
-		actionRedirect.addParameter("demographic_no", demographicNo);
-		actionRedirect.addParameter("formId", formId);
-		actionRedirect.addParameter("provNo", null);
-		
-		return actionRedirect;
+    public ActionForward fetch(ActionMapping mapping, ActionForm form,
+                               HttpServletRequest request, HttpServletResponse response) {
 
-	}
-	
-	public ActionForward print(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
-		BpmhFormBean bpmh = (BpmhFormBean) form;
+        BpmhFormBean bpmh = (BpmhFormBean) form;
+        bpmhFormHandler = new BpmhFormHandler(bpmh);
 
-		FileInputStream input = null;
-		OutputStream output = null;
-		byte[] pdfContent = null;
-		Integer demographicNo = Integer.parseInt( bpmh.getDemographicNo() );
-		Integer formId = Integer.parseInt( bpmh.getFormId() );
+        Integer demographicNo = Integer.parseInt(request.getParameter("demographic_no"));
+        Integer formHistoryNumber = Integer.parseInt(request.getParameter("formId"));
 
-		bpmhFormHandler = new BpmhFormHandler(bpmh); 
-		
-		// form Id greater than zero means that this is a saved instance.
-		if( formId > 0 ) {
-			bpmhFormHandler.setFormHistory( formId );
-		} else if( demographicNo != null ) {	
-			bpmhFormHandler.setDemographicNo(demographicNo);						
-		}
-			
-		bpmhFormHandler.populateFormBean();
+        if (formHistoryNumber != null && formHistoryNumber > 0) {
+            bpmhFormHandler.setFormHistory(formHistoryNumber);
+        } else if (demographicNo != null) {
+            bpmhFormHandler.setDemographicNo(demographicNo);
+        }
 
-		PDFController pdfController = new PDFController(getServlet().getServletContext().getRealPath(BPMH_PDF_TEMPLATE));
-		pdfController.setOutputPath(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
-		pdfController.writeDataToPDF(bpmh, new String[]{"1"}, demographicNo + "");
-		
-		bpmh.setEditDate( new Date() );
-		
-		if( formId == 0 ) {
-			bpmhFormHandler.saveFormHistory();
-		}
-		
-		input = new FileInputStream( pdfController.getOutputPath() );
-        pdfContent = new byte[ input.available() ];
+        bpmhFormHandler.populateFormBean();
+
+        return mapping.findForward("success");
+    }
+
+    public ActionForward save(ActionMapping mapping, ActionForm form,
+                              HttpServletRequest request, HttpServletResponse response) {
+
+        BpmhFormBean bpmh = (BpmhFormBean) form;
+        Integer demographicNo = Integer.parseInt(bpmh.getDemographicNo());
+        ActionMessages actionMessage = new ActionMessages();
+        Integer formId = null;
+
+        bpmhFormHandler = new BpmhFormHandler(bpmh);
+        bpmhFormHandler.setDemographicNo(demographicNo);
+        bpmhFormHandler.populateFormBean();
+        bpmh.setEditDate(new Date());
+
+        formId = bpmhFormHandler.saveFormHistory();
+
+        actionMessage.add("saved", new ActionMessage("Form Saved"));
+
+        ActionRedirect actionRedirect = new ActionRedirect(mapping.findForward("saved"));
+        actionRedirect.addParameter("demographic_no", demographicNo);
+        actionRedirect.addParameter("formId", formId);
+        actionRedirect.addParameter("provNo", null);
+
+        return actionRedirect;
+
+    }
+
+    public ActionForward print(ActionMapping mapping, ActionForm form,
+                               HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        BpmhFormBean bpmh = (BpmhFormBean) form;
+
+        FileInputStream input = null;
+        OutputStream output = null;
+        byte[] pdfContent = null;
+        Integer demographicNo = Integer.parseInt(bpmh.getDemographicNo());
+        Integer formId = Integer.parseInt(bpmh.getFormId());
+
+        bpmhFormHandler = new BpmhFormHandler(bpmh);
+
+        // form Id greater than zero means that this is a saved instance.
+        if (formId > 0) {
+            bpmhFormHandler.setFormHistory(formId);
+        } else if (demographicNo != null) {
+            bpmhFormHandler.setDemographicNo(demographicNo);
+        }
+
+        bpmhFormHandler.populateFormBean();
+
+        PDFController pdfController = new PDFController(getServlet().getServletContext().getRealPath(BPMH_PDF_TEMPLATE));
+        pdfController.setOutputPath(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        pdfController.writeDataToPDF(bpmh, new String[]{"1"}, demographicNo + "");
+
+        bpmh.setEditDate(new Date());
+
+        if (formId == 0) {
+            bpmhFormHandler.saveFormHistory();
+        }
+
+        input = new FileInputStream(pdfController.getOutputPath());
+        pdfContent = new byte[input.available()];
         input.read(pdfContent, 0, input.available());
 
         response.reset();
-		response.setContentType("application/pdf");
-		response.setHeader("Content-Disposition", "inline; filename=" + pdfController.getFileName());
-		output = response.getOutputStream();
-		
-		if(output != null) {
-			output.write(pdfContent);		
-			output.close();
-		}
-		
-		if(input != null) {
-			input.close();
-		}
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + pdfController.getFileName());
+        output = response.getOutputStream();
 
-		return null;
-	}
-		
+        if (output != null) {
+            output.write(pdfContent);
+            output.close();
+        }
+
+        if (input != null) {
+            input.close();
+        }
+
+        return null;
+    }
+
 }

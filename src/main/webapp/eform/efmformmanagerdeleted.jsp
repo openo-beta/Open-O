@@ -23,92 +23,102 @@
     Ontario, Canada
 
 --%>
-<%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%
-String orderByRequest = request.getParameter("orderby");
-String orderBy = "";
-if (orderByRequest == null) orderBy = EFormUtil.DATE;
-else if (orderByRequest.equals("form_subject")) orderBy = EFormUtil.SUBJECT;
-else if (orderByRequest.equals("form_name")) orderBy = EFormUtil.NAME;
-else if (orderByRequest.equals("file_name")) orderBy = EFormUtil.FILE_NAME;
+    String orderByRequest = request.getParameter("orderby");
+    String orderBy = "";
+    if (orderByRequest == null) orderBy = EFormUtil.DATE;
+    else if (orderByRequest.equals("form_subject")) orderBy = EFormUtil.SUBJECT;
+    else if (orderByRequest.equals("form_name")) orderBy = EFormUtil.NAME;
+    else if (orderByRequest.equals("file_name")) orderBy = EFormUtil.FILE_NAME;
 %>
 <!DOCTYPE html>
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title><bean:message key="eform.uploadhtml.title" /></title>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title><bean:message key="eform.uploadhtml.title"/></title>
 
-</head>
-<script language="javascript">
-  function checkFormAndDisable(){
-    if(document.forms[0].formHtml.value==""){ 
-      alert("<bean:message key="eform.uploadhtml.msgFileMissing"/>");
-    } else {
-      document.forms[0].subm.value = "<bean:message key="eform.uploadimages.processing"/>";
-      document.forms[0].subm.disabled = true;
-      document.forms[0].submit();
-    } 
-  }
+    </head>
+    <script language="javascript">
+        function checkFormAndDisable() {
+            if (document.forms[0].formHtml.value == "") {
+                alert("<bean:message key="eform.uploadhtml.msgFileMissing"/>");
+            } else {
+                document.forms[0].subm.value = "<bean:message key="eform.uploadimages.processing"/>";
+                document.forms[0].subm.disabled = true;
+                document.forms[0].submit();
+            }
+        }
 
-  function newWindow(url, id) {
-        Popup = window.open(url,id,'toolbar=no,location=no,status=yes,menubar=no, scrollbars=yes,resizable=yes,width=700,height=600,left=200,top=0');
-  }
-  
-  function confirmNRestore(url) {
-    if (confirm("<bean:message key="eform.calldeletedformdata.confirmRestore"/>")) {
-        document.location = url;
-    }
-  }
-</script>
-<body>
+        function newWindow(url, id) {
+            Popup = window.open(url, id, 'toolbar=no,location=no,status=yes,menubar=no, scrollbars=yes,resizable=yes,width=700,height=600,left=200,top=0');
+        }
 
-
-<%@ include file="efmTopNav.jspf"%>
-
-<h3><bean:message key="eform.calldeletedformdata.title" /></h3>
+        function confirmNRestore(url) {
+            if (confirm("<bean:message key="eform.calldeletedformdata.confirmRestore"/>")) {
+                document.location = url;
+            }
+        }
+    </script>
+    <body>
 
 
-<table class="table table-condensed table-striped table-hover" id="tblDeletedEforms">
-	<tr>
-		<th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?orderby=form_name" class="contentLink"><bean:message	key="eform.uploadhtml.btnFormName" /></a></th>
-		<th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?orderby=form_subject" class="contentLink"><bean:message key="eform.uploadhtml.btnSubject" /></a></th>
-		<th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?orderby=file_name" class="contentLink"><bean:message key="eform.uploadhtml.btnFile" /></a></th>
-		<th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?" class="contentLink"><bean:message key="eform.uploadhtml.btnDate" /></a></th>
-		<th><bean:message key="eform.uploadhtml.btnTime" /></th>
-		<th><bean:message key="eform.uploadhtml.msgAction" /></th>
-	</tr>
-	<%
-	ArrayList<HashMap<String, ? extends Object>> eForms = EFormUtil.listEForms(orderBy, EFormUtil.DELETED);
-  for (int i=0; i<eForms.size(); i++) {
-	  HashMap<String, ? extends Object> curForm =  eForms.get(i);
-%>
-	<tr>
-		<td><a href="#" class="viewEform" onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=curForm.get("fid")%>', '<%="FormD"+i%>'); return false;"><%=curForm.get("formName")%></a></td>
-		<td><%=curForm.get("formSubject")%>&nbsp;</td>
-		<td><%=curForm.get("formFileName")%></td>
-		<td ><%=curForm.get("formDate")%></td>
-		<td><%=curForm.get("formTime")%></td>
-		<td><a href='<%= request.getContextPath() %>/eform/restoreEForm.do?fid=<%=curForm.get("fid")%>' class="contentLink">
-			<bean:message key="eform.calldeletedformdata.btnRestore" />
-	           </a>
-		</td>
-	</tr>
-	<% } %>
-</table>
+    <%@ include file="efmTopNav.jspf" %>
 
-<%@ include file="efmFooter.jspf"%>
+    <h3><bean:message key="eform.calldeletedformdata.title"/></h3>
 
-<script>
-$('#tblDeletedEforms').dataTable({
-	"aaSorting" : [ [ 0, "asc" ] ],
-	"fnDrawCallback": bindLinks
-});
 
-function bindLinks(oSettings){
-	registerHref('click', 'a.viewEform', '#dynamic-content');
-}
-</script>
-</body>
+    <table class="table table-condensed table-striped table-hover" id="tblDeletedEforms">
+        <tr>
+            <th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?orderby=form_name"
+                   class="contentLink"><bean:message key="eform.uploadhtml.btnFormName"/></a></th>
+            <th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?orderby=form_subject"
+                   class="contentLink"><bean:message key="eform.uploadhtml.btnSubject"/></a></th>
+            <th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?orderby=file_name"
+                   class="contentLink"><bean:message key="eform.uploadhtml.btnFile"/></a></th>
+            <th><a href="<%= request.getContextPath() %>/eform/efmformmanagerdeleted.jsp?"
+                   class="contentLink"><bean:message key="eform.uploadhtml.btnDate"/></a></th>
+            <th><bean:message key="eform.uploadhtml.btnTime"/></th>
+            <th><bean:message key="eform.uploadhtml.msgAction"/></th>
+        </tr>
+        <%
+            ArrayList<HashMap<String, ? extends Object>> eForms = EFormUtil.listEForms(orderBy, EFormUtil.DELETED);
+            for (int i = 0; i < eForms.size(); i++) {
+                HashMap<String, ? extends Object> curForm = eForms.get(i);
+        %>
+        <tr>
+            <td><a href="#" class="viewEform"
+                   onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=curForm.get("fid")%>', '<%="FormD"+i%>'); return false;"><%=curForm.get("formName")%>
+            </a></td>
+            <td><%=curForm.get("formSubject")%>&nbsp;</td>
+            <td><%=curForm.get("formFileName")%>
+            </td>
+            <td><%=curForm.get("formDate")%>
+            </td>
+            <td><%=curForm.get("formTime")%>
+            </td>
+            <td><a href='<%= request.getContextPath() %>/eform/restoreEForm.do?fid=<%=curForm.get("fid")%>'
+                   class="contentLink">
+                <bean:message key="eform.calldeletedformdata.btnRestore"/>
+            </a>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+
+    <%@ include file="efmFooter.jspf" %>
+
+    <script>
+        $('#tblDeletedEforms').dataTable({
+            "aaSorting": [[0, "asc"]],
+            "fnDrawCallback": bindLinks
+        });
+
+        function bindLinks(oSettings) {
+            registerHref('click', 'a.viewEform', '#dynamic-content');
+        }
+    </script>
+    </body>
 </html:html>

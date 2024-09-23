@@ -6,29 +6,30 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
 
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.common.model.AbstractCodeSystemModel;
 import org.oscarehr.common.model.Ichppccode;
 import org.springframework.stereotype.Repository;
@@ -47,7 +48,7 @@ public class IchppccodeDaoImpl extends AbstractDaoImpl<Ichppccode> implements Ic
     }
 
     @Override
-    public List<Ichppccode> getIchppccodeCode(String term){
+    public List<Ichppccode> getIchppccodeCode(String term) {
         Query query = entityManager.createQuery("select i from Ichppccode i where i.id=?");
         query.setParameter(0, term);
 
@@ -60,8 +61,8 @@ public class IchppccodeDaoImpl extends AbstractDaoImpl<Ichppccode> implements Ic
     @Override
     public List<Ichppccode> getIchppccode(String query) {
         Query q = entityManager.createQuery("select i from Ichppccode i where i.id like ? or i.description like ? order by i.description");
-        q.setParameter(0, "%"+query+"%");
-        q.setParameter(1, "%"+query+"%");
+        q.setParameter(0, "%" + query + "%");
+        q.setParameter(1, "%" + query + "%");
 
         @SuppressWarnings("unchecked")
         List<Ichppccode> results = q.getResultList();
@@ -77,7 +78,7 @@ public class IchppccodeDaoImpl extends AbstractDaoImpl<Ichppccode> implements Ic
     @Override
     public Ichppccode findByCode(String code) {
         List<Ichppccode> results = getIchppccodeCode(code);
-        if(results.isEmpty())
+        if (results.isEmpty())
             return null;
         return results.get(0);
     }

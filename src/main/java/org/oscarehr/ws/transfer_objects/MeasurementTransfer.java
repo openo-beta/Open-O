@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,132 +35,131 @@ import org.springframework.beans.BeanUtils;
 
 public final class MeasurementTransfer {
 
-	private Integer id;
-	private String type;
-	private Integer demographicId;
-	private String providerNo;
-	private String dataField;
-	private String measuringInstruction;
-	private String comments;
-	private Date dateObserved;
-	private Integer appointmentNo;
-	private Date createDate;
+    private Integer id;
+    private String type;
+    private Integer demographicId;
+    private String providerNo;
+    private String dataField;
+    private String measuringInstruction;
+    private String comments;
+    private Date dateObserved;
+    private Integer appointmentNo;
+    private Date createDate;
 
-	public static MeasurementTransfer toTransfer(Measurement measurement) {
-		if (measurement == null) return (null);
+    public static MeasurementTransfer toTransfer(Measurement measurement) {
+        if (measurement == null) return (null);
 
-		MeasurementTransfer measurementTransfer = new MeasurementTransfer();
-		BeanUtils.copyProperties(measurement, measurementTransfer);
+        MeasurementTransfer measurementTransfer = new MeasurementTransfer();
+        BeanUtils.copyProperties(measurement, measurementTransfer);
 
-		return (measurementTransfer);
-	}
+        return (measurementTransfer);
+    }
 
-	public static MeasurementTransfer[] toTransfers(List<Measurement> measurements) {
-		ArrayList<MeasurementTransfer> results = new ArrayList<MeasurementTransfer>();
+    public static MeasurementTransfer[] toTransfers(List<Measurement> measurements) {
+        ArrayList<MeasurementTransfer> results = new ArrayList<MeasurementTransfer>();
 
-		for (Measurement measurement : measurements) {
-			results.add(toTransfer(measurement));
-		}
+        for (Measurement measurement : measurements) {
+            results.add(toTransfer(measurement));
+        }
 
-		return (results.toArray(new MeasurementTransfer[0]));
-	}
+        return (results.toArray(new MeasurementTransfer[0]));
+    }
 
-	public void copyTo(Measurement measurement)
-	{
-		// ID should not be copied, nor createDate
-		
-		measurement.setAppointmentNo(appointmentNo);
-		measurement.setComments(comments);
-		measurement.setDataField(dataField);
-		measurement.setDateObserved(dateObserved);
-		measurement.setDemographicId(demographicId);
-		measurement.setMeasuringInstruction(measuringInstruction);
-		measurement.setProviderNo(providerNo);
-		measurement.setType(type);
-	}
+    public void copyTo(Measurement measurement) {
+        // ID should not be copied, nor createDate
 
-	public Integer getId() {
-		return (id);
-	}
+        measurement.setAppointmentNo(appointmentNo);
+        measurement.setComments(comments);
+        measurement.setDataField(dataField);
+        measurement.setDateObserved(dateObserved);
+        measurement.setDemographicId(demographicId);
+        measurement.setMeasuringInstruction(measuringInstruction);
+        measurement.setProviderNo(providerNo);
+        measurement.setType(type);
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return (id);
+    }
 
-	public String getType() {
-		return (type);
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return (type);
+    }
 
-	public Integer getDemographicId() {
-		return (demographicId);
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setDemographicId(Integer demographicId) {
-		this.demographicId = demographicId;
-	}
+    public Integer getDemographicId() {
+        return (demographicId);
+    }
 
-	public String getProviderNo() {
-		return (providerNo);
-	}
+    public void setDemographicId(Integer demographicId) {
+        this.demographicId = demographicId;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getProviderNo() {
+        return (providerNo);
+    }
 
-	public String getDataField() {
-		return (dataField);
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setDataField(String dataField) {
-		this.dataField = dataField;
-	}
+    public String getDataField() {
+        return (dataField);
+    }
 
-	public String getMeasuringInstruction() {
-		return (measuringInstruction);
-	}
+    public void setDataField(String dataField) {
+        this.dataField = dataField;
+    }
 
-	public void setMeasuringInstruction(String measuringInstruction) {
-		this.measuringInstruction = measuringInstruction;
-	}
+    public String getMeasuringInstruction() {
+        return (measuringInstruction);
+    }
 
-	public String getComments() {
-		return (comments);
-	}
+    public void setMeasuringInstruction(String measuringInstruction) {
+        this.measuringInstruction = measuringInstruction;
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public String getComments() {
+        return (comments);
+    }
 
-	public Date getDateObserved() {
-		return (dateObserved);
-	}
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
-	public void setDateObserved(Date dateObserved) {
-		this.dateObserved = dateObserved;
-	}
+    public Date getDateObserved() {
+        return (dateObserved);
+    }
 
-	public Integer getAppointmentNo() {
-		return (appointmentNo);
-	}
+    public void setDateObserved(Date dateObserved) {
+        this.dateObserved = dateObserved;
+    }
 
-	public void setAppointmentNo(Integer appointmentNo) {
-		this.appointmentNo = appointmentNo;
-	}
+    public Integer getAppointmentNo() {
+        return (appointmentNo);
+    }
 
-	public Date getCreateDate() {
-		return (createDate);
-	}
+    public void setAppointmentNo(Integer appointmentNo) {
+        this.appointmentNo = appointmentNo;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public Date getCreateDate() {
+        return (createDate);
+    }
 
-	@Override
-	public String toString() {
-		return (ReflectionToStringBuilder.toString(this));
-	}
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    @Override
+    public String toString() {
+        return (ReflectionToStringBuilder.toString(this));
+    }
 }

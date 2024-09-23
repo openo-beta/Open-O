@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,6 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
 import java.util.Date;
 
 /**
@@ -41,14 +42,16 @@ import java.util.Date;
 public class HinValidatorTest {
 
     private static HCValidator validator;
-    
+
     @Before
     public void init() {
         validator = HCValidationFactory.getHCValidator();
     }
 
     @After
-    public void tearDown() {validator = null;}
+    public void tearDown() {
+        validator = null;
+    }
 
     @Test
     @Ignore("Valid only for online validation")
@@ -82,7 +85,7 @@ public class HinValidatorTest {
         assertEquals("15", rcode);
         assertEquals(ResponseID.IS_IN_DISTRIBUTED_STATUS.name(), responseID.value());
     }
-    
+
     @Test
     @Ignore("Valid only for online validation")
     public void testIS_NOT_ELIGIBLE() {
@@ -97,7 +100,7 @@ public class HinValidatorTest {
         assertEquals("20", rcode);
         assertEquals(ResponseID.IS_NOT_ELIGIBLE.name(), responseID.value());
     }
-    
+
     @Test
     @Ignore("Valid only for online validation")
     public void testNOT_ON_ACTIVE_ROSTER() {
@@ -115,8 +118,8 @@ public class HinValidatorTest {
         assertEquals(true, isValid);
         assertEquals("50", rcode);
         assertEquals(ResponseID.NOT_ON_ACTIVE_ROSTER.name(), responseID.value());
-    }    
-    
+    }
+
     @Test
     @Ignore("Valid only for online validation")
     public void testNOT_ON_ACTIVE_ROSTER_TWO() {
@@ -130,8 +133,8 @@ public class HinValidatorTest {
         assertEquals(true, isValid);
         assertEquals("50", rcode);
         assertEquals(ResponseID.NOT_ON_ACTIVE_ROSTER.name(), responseID.value());
-    }    
-    
+    }
+
     @Test
     @Ignore("Valid only for online validation")
     public void testIS_ON_ACTIVE_ROSTER() {
@@ -146,7 +149,7 @@ public class HinValidatorTest {
         assertEquals("51", rcode);
         assertEquals(ResponseID.IS_ON_ACTIVE_ROSTER.name(), responseID.value());
     }
-    
+
     @Test
     @Ignore("Valid only for online validation")
     public void testHAS_NOTICE() {
@@ -160,7 +163,7 @@ public class HinValidatorTest {
         assertEquals(true, isValid);
         assertEquals("52", rcode);
         assertEquals(ResponseID.HAS_NOTICE.name(), responseID.value());
-    }      
+    }
 
     @Test
     @Ignore("Valid only for online validation")
@@ -269,7 +272,7 @@ public class HinValidatorTest {
         assertEquals(ResponseID.LOST_STATE.name(), responseID.value());
     }
 
-     @Test
+    @Test
     @Ignore("Valid only for online validation")
     public void testMultipleHIN() {
 
@@ -299,7 +302,7 @@ public class HinValidatorTest {
         }
         System.out.println("----- testMultipleHIN ------");
 
-        for(int i = 0; i < validationResult.getResults().size(); i++) {
+        for (int i = 0; i < validationResult.getResults().size(); i++) {
             System.out.println(printOutput("", HCValidator.createSingleResult(validationResult, i)));
         }
     }

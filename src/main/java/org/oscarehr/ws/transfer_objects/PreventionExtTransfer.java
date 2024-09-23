@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,66 +30,66 @@ import java.util.List;
 import org.oscarehr.common.model.PreventionExt;
 
 public class PreventionExtTransfer {
-	
-	private Integer id;
-	private Integer preventionId;
-	private String key;
-	private String value;
 
-	public Integer getId() {
-		return (id);
-	}
+    private Integer id;
+    private Integer preventionId;
+    private String key;
+    private String value;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return (id);
+    }
 
-	public Integer getPreventionId() {
-		return (preventionId);
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setPreventionId(Integer preventionId) {
-		this.preventionId = preventionId;
-	}
+    public Integer getPreventionId() {
+        return (preventionId);
+    }
 
-	public String getKey() {
-		return (key);
-	}
+    public void setPreventionId(Integer preventionId) {
+        this.preventionId = preventionId;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public String getKey() {
+        return (key);
+    }
 
-	public String getValue() {
-		return (value);
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	/**
-	 * We will not support null key entries
-	 */
-	public static PreventionExtTransfer toTransfer(PreventionExt preventionExt) {
-		if (preventionExt==null) return(null);
-		
-		PreventionExtTransfer transfer = new PreventionExtTransfer();
-		transfer.setId(preventionExt.getId());
-		transfer.setPreventionId(preventionExt.getPreventionId());
-		transfer.setKey(preventionExt.getkeyval());
-		transfer.setValue(preventionExt.getVal());
+    public String getValue() {
+        return (value);
+    }
 
-		return (transfer);
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static PreventionExtTransfer[] toTransfers(List<PreventionExt> preventionExts) {
-		ArrayList<PreventionExtTransfer> results = new ArrayList<PreventionExtTransfer>();
+    /**
+     * We will not support null key entries
+     */
+    public static PreventionExtTransfer toTransfer(PreventionExt preventionExt) {
+        if (preventionExt == null) return (null);
 
-		for (PreventionExt preventionExt : preventionExts) {
-			results.add(toTransfer(preventionExt));
-		}
+        PreventionExtTransfer transfer = new PreventionExtTransfer();
+        transfer.setId(preventionExt.getId());
+        transfer.setPreventionId(preventionExt.getPreventionId());
+        transfer.setKey(preventionExt.getkeyval());
+        transfer.setValue(preventionExt.getVal());
 
-		return (results.toArray(new PreventionExtTransfer[0]));
-	}
+        return (transfer);
+    }
+
+    public static PreventionExtTransfer[] toTransfers(List<PreventionExt> preventionExts) {
+        ArrayList<PreventionExtTransfer> results = new ArrayList<PreventionExtTransfer>();
+
+        for (PreventionExt preventionExt : preventionExts) {
+            results.add(toTransfer(preventionExt));
+        }
+
+        return (results.toArray(new PreventionExtTransfer[0]));
+    }
 }

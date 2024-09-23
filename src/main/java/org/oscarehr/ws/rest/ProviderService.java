@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -70,31 +70,31 @@ import org.springframework.stereotype.Component;
 @Produces("application/xml")
 public class ProviderService extends AbstractServiceImpl {
 
-	@Autowired
-	ProviderDao providerDao;
-	
-	@Autowired
-	ProviderManager2 providerManager; 
-	
-	@Autowired
-	OscarLogManager oscarLogManager;
-	
-	@Autowired
-	DemographicManager demographicManager;
-	
-	
-	protected SecurityContext getSecurityContext() {
-		Message m = PhaseInterceptorChain.getCurrentMessage();
-    	org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
-    	return sc;
-	}
-	
-	protected OAuthContext getOAuthContext() {
-		Message m = PhaseInterceptorChain.getCurrentMessage();
-		OAuthContext sc = m.getContent(OAuthContext.class);
-    	return sc;
-	}
-	
+    @Autowired
+    ProviderDao providerDao;
+
+    @Autowired
+    ProviderManager2 providerManager;
+
+    @Autowired
+    OscarLogManager oscarLogManager;
+
+    @Autowired
+    DemographicManager demographicManager;
+
+
+    protected SecurityContext getSecurityContext() {
+        Message m = PhaseInterceptorChain.getCurrentMessage();
+        org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
+        return sc;
+    }
+
+    protected OAuthContext getOAuthContext() {
+        Message m = PhaseInterceptorChain.getCurrentMessage();
+        OAuthContext sc = m.getContent(OAuthContext.class);
+        return sc;
+    }
+
     public ProviderService() {
     }
 
@@ -102,63 +102,63 @@ public class ProviderService extends AbstractServiceImpl {
     @Path("/providers")
     @Deprecated
     public org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> getProviders() {
-    	org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> lst = new 
-    			org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer>();
-    	   	
-    	for(Provider p: providerDao.getActiveProviders()) {
-    		lst.getContent().add(ProviderTransfer.toTransfer(p));
-    	} 
-    	lst.setTimestamp(new Date());
-    	lst.setTotal(lst.getContent().size());
-     
+        org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> lst = new
+                org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer>();
+
+        for (Provider p : providerDao.getActiveProviders()) {
+            lst.getContent().add(ProviderTransfer.toTransfer(p));
+        }
+        lst.setTimestamp(new Date());
+        lst.setTotal(lst.getContent().size());
+
         return lst;
     }
- 
+
     @GET
     @Path("/providers_json")
     @Produces("application/json")
     public AbstractSearchResponse<ProviderTo1> getProvidersAsJSON() {
-    	JsonConfig config = new JsonConfig();
-    	config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-    	
-    	List<ProviderTo1> providers = new ProviderConverter().getAllAsTransferObjects(getLoggedInInfo(), providerDao.getActiveProviders());
-    	
-    	AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
-    	response.setContent(providers);
-    	response.setTimestamp(new Date());
-    	response.setTotal(response.getContent().size());
-     
-  
-    	return response;
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+
+        List<ProviderTo1> providers = new ProviderConverter().getAllAsTransferObjects(getLoggedInInfo(), providerDao.getActiveProviders());
+
+        AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
+        response.setContent(providers);
+        response.setTimestamp(new Date());
+        response.setTotal(response.getContent().size());
+
+
+        return response;
     }
 
     @GET
     @Path("/provider/{id}")
-    @Produces({"application/xml","application/json"})
+    @Produces({"application/xml", "application/json"})
     public ProviderTransfer getProvider(@PathParam("id") String id) {
         return ProviderTransfer.toTransfer(providerDao.getProvider(id));
     }
-    
+
     @GET
     @Path("/provider/me")
     @Produces("application/json")
     public String getLoggedInProvider() {
-       Provider provider = getLoggedInInfo().getLoggedInProvider();
+        Provider provider = getLoggedInInfo().getLoggedInProvider();
 
-    	if(provider != null) {
-    		JsonConfig config = new JsonConfig();
-        	config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-            return JSONObject.fromObject(provider,config).toString();
-    	}
-    	return null;
+        if (provider != null) {
+            JsonConfig config = new JsonConfig();
+            config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+            return JSONObject.fromObject(provider, config).toString();
+        }
+        return null;
     }
-    
+
     @GET
     @Path("/providerjson/{id}")
     public String getProviderAsJSON(@PathParam("id") String id) {
-    	JsonConfig config = new JsonConfig();
-    	config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-        return JSONObject.fromObject(providerDao.getProvider(id),config).toString();
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        return JSONObject.fromObject(providerDao.getProvider(id), config).toString();
     }
 
     @GET
@@ -166,133 +166,134 @@ public class ProviderService extends AbstractServiceImpl {
     public Response getBadRequest() {
         return Response.status(Status.BAD_REQUEST).build();
     }
-	
-	@POST
-	@Path("/providers/search")
-	@Produces("application/json")
-	@Consumes("application/json")
-	public AbstractSearchResponse<ProviderTo1> search(JSONObject json,@QueryParam("startIndex") Integer startIndex,@QueryParam("itemsToReturn") Integer itemsToReturn ) {
-		AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
-		
-		int startIndexVal = startIndex==null?0:startIndex.intValue();
-		int itemsToReturnVal = itemsToReturn==null?5000:itemsToReturn.intValue();
-		boolean active = Boolean.valueOf(json.getString("active"));
-		
-		String term = null;
-		if(json.containsKey("searchTerm")) {
-			term = json.getString("searchTerm");
-		}
-		
-		List<Provider> results = providerManager.search(getLoggedInInfo(),term, active,startIndexVal, itemsToReturnVal);
-		
-		
-		ProviderConverter converter = new ProviderConverter();
-		response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(),results));
-		response.setTotal(response.getContent().size());
-		
-		return response;
-	}
-	
-	@GET
-	@Path("/getRecentDemographicsViewed")
-	@Produces("application/json")
-	public PatientListApptBean getRecentDemographicsViewed(@QueryParam("startIndex") Integer startIndex,@QueryParam("itemsToReturn") Integer itemsToReturn ) {	
-		List<Object[]> results = oscarLogManager.getRecentDemographicsViewedByProvider(getLoggedInInfo(), getLoggedInInfo().getLoggedInProviderNo(), startIndex, itemsToReturn);
-		
-		return convertRecentViewedDemographicsResults(results);
-	}
 
-	@GET
-	@Path("/getRecentDemographicsViewedAfterDateIncluded")
-	@Produces("application/json")
-	public PatientListApptBean getRecentDemographicsViewed(@QueryParam("startIndex") Integer startIndex,@QueryParam("itemsToReturn") Integer itemsToReturn, @QueryParam("date") String dateStr ) {
-		Date date = new Date(Long.parseLong(dateStr));
-		List<Object[]> results = oscarLogManager.getRecentDemographicsViewedByProviderAfterDateIncluded(getLoggedInInfo(), getLoggedInInfo().getLoggedInProviderNo(), date, startIndex, itemsToReturn);
+    @POST
+    @Path("/providers/search")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public AbstractSearchResponse<ProviderTo1> search(JSONObject json, @QueryParam("startIndex") Integer startIndex, @QueryParam("itemsToReturn") Integer itemsToReturn) {
+        AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
 
-		return convertRecentViewedDemographicsResults(results);
-	}
+        int startIndexVal = startIndex == null ? 0 : startIndex.intValue();
+        int itemsToReturnVal = itemsToReturn == null ? 5000 : itemsToReturn.intValue();
+        boolean active = Boolean.valueOf(json.getString("active"));
 
-	private PatientListApptBean convertRecentViewedDemographicsResults(List<Object[]> results) {
-		PatientListApptBean response = new PatientListApptBean();
+        String term = null;
+        if (json.containsKey("searchTerm")) {
+            term = json.getString("searchTerm");
+        }
 
-		for(Object[] r:results) {
-			Demographic d = demographicManager.getDemographic(getLoggedInInfo(), (Integer)r[0]);
-			if(d != null) {
-				PatientListApptItemBean item = new PatientListApptItemBean();
-				item.setDemographicNo((Integer)r[0]);
-				item.setDate((Date)r[1]);
-				item.setName(d.getFormattedName());
-				response.getPatients().add(item);
-			}
-		}
+        List<Provider> results = providerManager.search(getLoggedInInfo(), term, active, startIndexVal, itemsToReturnVal);
 
-		return response;
-	}
-	
-	@GET
-	@Path("/getActiveTeams")
-	@Produces("application/json")
-	public AbstractSearchResponse<String> getActiveTeams() {	
-		List<String> teams = providerManager.getActiveTeams(getLoggedInInfo());
-		
-		AbstractSearchResponse<String> response = new AbstractSearchResponse<String>();
-		
-		response.setContent(teams);
-		response.setTotal(response.getContent().size());
-		return response;
-	}
-	
-	@GET
-	@Path("/settings/get")
-	@Produces("application/json")
-	public AbstractSearchResponse<ProviderSettings> getProviderSettings() {	
-		AbstractSearchResponse<ProviderSettings> response = new AbstractSearchResponse<ProviderSettings>();
-		
-		ProviderSettings settings = providerManager.getProviderSettings(getLoggedInInfo(), getLoggedInInfo().getLoggedInProviderNo());
-		List<ProviderSettings> content = new ArrayList<ProviderSettings>();
-		content.add(settings);
-		response.setContent(content);
-		response.setTotal(1);
-		return response;
-	}
-	
-	@POST
-	@Path("/settings/{providerNo}/save")
-	@Produces("application/json")
-	@Consumes("application/json")
-	public GenericRESTResponse saveProviderSettings(ProviderSettings json,@PathParam("providerNo")String providerNo){
-		GenericRESTResponse response = new GenericRESTResponse();
-		
-		MiscUtils.getLogger().warn(json.toString());
-		
-		providerManager.updateProviderSettings(getLoggedInInfo(),providerNo,json);
-		return response;
-	}
-	
-	@GET
-	@Path("/suggestProviderNo")
-	@Produces("application/json")
-	public GenericRESTResponse suggestProviderNo() {	
-		
-		List<Provider> providers = providerManager.getProviders(getLoggedInInfo(), null);
-		List<Integer> providerList = new ArrayList<Integer>();
-		for (Provider h : providers) {
-			try{
-		      String pn = h.getProviderNo();
-		      providerList.add(Integer.valueOf(pn));
-			}catch(Exception e){/*empty*/} /*No need to do anything. Just want to avoid a NumberFormatException from provider numbers with alphanumeric Characters*/
-		}
 
-		String suggestProviderNo = "";
-		for (Integer i=1; i<1000000; i++) {
-			if (!providerList.contains(i)) {
-		          suggestProviderNo = i.toString();
-		          break;
-		    }
-		}
-		
-		
-		return new GenericRESTResponse(true,suggestProviderNo);
-	}
-	
+        ProviderConverter converter = new ProviderConverter();
+        response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(), results));
+        response.setTotal(response.getContent().size());
+
+        return response;
+    }
+
+    @GET
+    @Path("/getRecentDemographicsViewed")
+    @Produces("application/json")
+    public PatientListApptBean getRecentDemographicsViewed(@QueryParam("startIndex") Integer startIndex, @QueryParam("itemsToReturn") Integer itemsToReturn) {
+        List<Object[]> results = oscarLogManager.getRecentDemographicsViewedByProvider(getLoggedInInfo(), getLoggedInInfo().getLoggedInProviderNo(), startIndex, itemsToReturn);
+
+        return convertRecentViewedDemographicsResults(results);
+    }
+
+    @GET
+    @Path("/getRecentDemographicsViewedAfterDateIncluded")
+    @Produces("application/json")
+    public PatientListApptBean getRecentDemographicsViewed(@QueryParam("startIndex") Integer startIndex, @QueryParam("itemsToReturn") Integer itemsToReturn, @QueryParam("date") String dateStr) {
+        Date date = new Date(Long.parseLong(dateStr));
+        List<Object[]> results = oscarLogManager.getRecentDemographicsViewedByProviderAfterDateIncluded(getLoggedInInfo(), getLoggedInInfo().getLoggedInProviderNo(), date, startIndex, itemsToReturn);
+
+        return convertRecentViewedDemographicsResults(results);
+    }
+
+    private PatientListApptBean convertRecentViewedDemographicsResults(List<Object[]> results) {
+        PatientListApptBean response = new PatientListApptBean();
+
+        for (Object[] r : results) {
+            Demographic d = demographicManager.getDemographic(getLoggedInInfo(), (Integer) r[0]);
+            if (d != null) {
+                PatientListApptItemBean item = new PatientListApptItemBean();
+                item.setDemographicNo((Integer) r[0]);
+                item.setDate((Date) r[1]);
+                item.setName(d.getFormattedName());
+                response.getPatients().add(item);
+            }
+        }
+
+        return response;
+    }
+
+    @GET
+    @Path("/getActiveTeams")
+    @Produces("application/json")
+    public AbstractSearchResponse<String> getActiveTeams() {
+        List<String> teams = providerManager.getActiveTeams(getLoggedInInfo());
+
+        AbstractSearchResponse<String> response = new AbstractSearchResponse<String>();
+
+        response.setContent(teams);
+        response.setTotal(response.getContent().size());
+        return response;
+    }
+
+    @GET
+    @Path("/settings/get")
+    @Produces("application/json")
+    public AbstractSearchResponse<ProviderSettings> getProviderSettings() {
+        AbstractSearchResponse<ProviderSettings> response = new AbstractSearchResponse<ProviderSettings>();
+
+        ProviderSettings settings = providerManager.getProviderSettings(getLoggedInInfo(), getLoggedInInfo().getLoggedInProviderNo());
+        List<ProviderSettings> content = new ArrayList<ProviderSettings>();
+        content.add(settings);
+        response.setContent(content);
+        response.setTotal(1);
+        return response;
+    }
+
+    @POST
+    @Path("/settings/{providerNo}/save")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public GenericRESTResponse saveProviderSettings(ProviderSettings json, @PathParam("providerNo") String providerNo) {
+        GenericRESTResponse response = new GenericRESTResponse();
+
+        MiscUtils.getLogger().warn(json.toString());
+
+        providerManager.updateProviderSettings(getLoggedInInfo(), providerNo, json);
+        return response;
+    }
+
+    @GET
+    @Path("/suggestProviderNo")
+    @Produces("application/json")
+    public GenericRESTResponse suggestProviderNo() {
+
+        List<Provider> providers = providerManager.getProviders(getLoggedInInfo(), null);
+        List<Integer> providerList = new ArrayList<Integer>();
+        for (Provider h : providers) {
+            try {
+                String pn = h.getProviderNo();
+                providerList.add(Integer.valueOf(pn));
+            } catch (
+                    Exception e) {/*empty*/} /*No need to do anything. Just want to avoid a NumberFormatException from provider numbers with alphanumeric Characters*/
+        }
+
+        String suggestProviderNo = "";
+        for (Integer i = 1; i < 1000000; i++) {
+            if (!providerList.contains(i)) {
+                suggestProviderNo = i.toString();
+                break;
+            }
+        }
+
+
+        return new GenericRESTResponse(true, suggestProviderNo);
+    }
+
 }

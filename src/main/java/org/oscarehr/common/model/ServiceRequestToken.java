@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,104 +34,102 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class ServiceRequestToken extends AbstractModel<Integer>{
+public class ServiceRequestToken extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private Integer clientId;
-	
-	private String tokenId;
-	
-	private String tokenSecret;
-	
-	//private String scopes;
-	
-	private String callback;
-	
-	private String verifier;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
-	
-	private String providerNo;
-	
-	private String scopes;
-	
-	public Integer getId() {
-		return id;
-	}
+    private Integer clientId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String tokenId;
 
-	public Integer getClientId() {
-		return clientId;
-	}
+    private String tokenSecret;
 
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
-	}
+    //private String scopes;
 
-	public String getTokenId() {
-		return tokenId;
-	}
+    private String callback;
 
-	public void setTokenId(String tokenId) {
-		this.tokenId = tokenId;
-	}
+    private String verifier;
 
-	public String getTokenSecret() {
-		return tokenSecret;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
 
-	public void setTokenSecret(String tokenSecret) {
-		this.tokenSecret = tokenSecret;
-	}
+    private String providerNo;
 
-	public String getCallback() {
-		return callback;
-	}
+    private String scopes;
 
-	public void setCallback(String callback) {
-		this.callback = callback;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public Integer getClientId() {
+        return clientId;
+    }
 
-	public String getVerifier() {
-		return verifier;
-	}
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
 
-	public void setVerifier(String verifier) {
-		this.verifier = verifier;
-	}
+    public String getTokenId() {
+        return tokenId;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getTokenSecret() {
+        return tokenSecret;
+    }
 
-	public String getScopes() {
-		return scopes;
-	}
+    public void setTokenSecret(String tokenSecret) {
+        this.tokenSecret = tokenSecret;
+    }
 
-	public void setScopes(String scopes) {
-		this.scopes = scopes;
-	}
-	
-	
-	
+    public String getCallback() {
+        return callback;
+    }
+
+    public void setCallback(String callback) {
+        this.callback = callback;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getVerifier() {
+        return verifier;
+    }
+
+    public void setVerifier(String verifier) {
+        this.verifier = verifier;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public String getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String scopes) {
+        this.scopes = scopes;
+    }
+
 
 }

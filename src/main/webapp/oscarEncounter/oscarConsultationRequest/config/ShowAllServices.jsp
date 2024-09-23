@@ -24,120 +24,120 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.consult" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../../securityError.jsp?type=_admin&type=_admin.consult");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../../securityError.jsp?type=_admin&type=_admin.consult");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ page import="java.util.ResourceBundle"%>
+<%@ page import="java.util.ResourceBundle" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <!DOCTYPE html>
 <html:html lang="en">
 
-<jsp:useBean id="showAllServicesUtil" scope="session"
-	class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConShowAllServicesUtil" />
+    <jsp:useBean id="showAllServicesUtil" scope="session"
+                 class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConShowAllServicesUtil"/>
 
 
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title><bean:message
-	key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title" />
-</title>
-<html:base />
-	<script>
-		function BackToOscar()
-		{
-			window.close();
-		}
-	</script>
-	<link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
-</head>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title><bean:message
+                key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
+        </title>
+        <html:base/>
+        <script>
+            function BackToOscar() {
+                window.close();
+            }
+        </script>
+        <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
+    </head>
 
-<body class="BodyStyle" vlink="#0000FF">
-<html:errors />
-<div id="service-providers-wrapper" style="margin:auto 10px;">
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn">Consultation</td>
-		<td class="MainTableTopRowRightColumn">
-		<table class="TopStatusBar">
-			<tr>
-				<td class="Header"><bean:message
-					key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title" />
-				</td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr style="vertical-align: top">
-		<td class="MainTableLeftColumn">
-		<%oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar(request);
-                 out.print(titlebar.estBar(request));
-              %>
-		</td>
-		<td class="MainTableRightColumn">
-		<table cellpadding="0" cellspacing="2"
-			style="border-collapse: collapse" bordercolor="#111111" width="100%">
+    <body class="BodyStyle" vlink="#0000FF">
+    <html:errors/>
+    <div id="service-providers-wrapper" style="margin:auto 10px;">
+        <table class="MainTable" id="scrollNumber1" name="encounterTable">
+            <tr class="MainTableTopRow">
+                <td class="MainTableTopRowLeftColumn">Consultation</td>
+                <td class="MainTableTopRowRightColumn">
+                    <table class="TopStatusBar">
+                        <tr>
+                            <td class="Header"><bean:message
+                                    key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr style="vertical-align: top">
+                <td class="MainTableLeftColumn">
+                    <%
+                        oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar(request);
+                        out.print(titlebar.estBar(request));
+                    %>
+                </td>
+                <td class="MainTableRightColumn">
+                    <table cellpadding="0" cellspacing="2"
+                           style="border-collapse: collapse" bordercolor="#111111" width="100%">
 
-			<!----Start new rows here-->
-			<tr>
-				<td>
+                        <!----Start new rows here-->
+                        <tr>
+                            <td>
 
-				<table>
-					<html:form action="/oscarEncounter/AddService">
-						<tr>
-							<td><bean:message
-								key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.services" />
-							</td>
-						</tr>
-						<tr>
-							<td>
+                                <table>
+                                    <html:form action="/oscarEncounter/AddService">
+                                        <tr>
+                                            <td><bean:message
+                                                    key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.services"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
 
-							<table>
-								<%
-                                 //out.print("<a href=\"/ShowAllServices.do?serviceId="+id+"\">"+desc+"</a>");
-                                 showAllServicesUtil.estServicesVectors();
-                                 for (int i= 0; i < showAllServicesUtil.serviceIdVec.size();i++){
-                                    String id = (String) showAllServicesUtil.serviceIdVec.elementAt(i);
-                                    String desc = (String) showAllServicesUtil.serviceDescVec.elementAt(i);
-                              %>
-								<tr>
-									<td>
-									<%
-                                          out.print("<a href=\"../../../oscarEncounter/ShowAllServices.do?serviceId="+id+"&serviceDesc="+desc+"\">"+desc+"</a>");
-                                       %>
-									</td>
-								</tr>
-								<%}%>
-							</table>
-							</td>
-						</tr>
-					</html:form>
-				</table>
-				</td>
-			</tr>
+                                                <table>
+                                                    <%
+                                                        //out.print("<a href=\"/ShowAllServices.do?serviceId="+id+"\">"+desc+"</a>");
+                                                        showAllServicesUtil.estServicesVectors();
+                                                        for (int i = 0; i < showAllServicesUtil.serviceIdVec.size(); i++) {
+                                                            String id = (String) showAllServicesUtil.serviceIdVec.elementAt(i);
+                                                            String desc = (String) showAllServicesUtil.serviceDescVec.elementAt(i);
+                                                    %>
+                                                    <tr>
+                                                        <td>
+                                                            <%
+                                                                out.print("<a href=\"../../../oscarEncounter/ShowAllServices.do?serviceId=" + id + "&serviceDesc=" + desc + "\">" + desc + "</a>");
+                                                            %>
+                                                        </td>
+                                                    </tr>
+                                                    <%}%>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </html:form>
+                                </table>
+                            </td>
+                        </tr>
 
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</div>
-</body>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="MainTableBottomRowLeftColumn"></td>
+                <td class="MainTableBottomRowRightColumn"></td>
+            </tr>
+        </table>
+    </div>
+    </body>
 </html:html>

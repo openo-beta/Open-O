@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,108 +42,108 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="caisi_form_instance")
-public class CaisiFormInstance extends AbstractModel<Integer>{
+@Table(name = "caisi_form_instance")
+public class CaisiFormInstance extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="form_id")
-	private Integer formId;
-	
-	private String description;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_created")
-	private Date dateCreated;
-	
-	@Column(name="user_id")
-	private Integer userId;
-	
-	private String username;
-	
-	@Column(name="client_id")
-	private Integer clientId;
-	
-	@Column(name="program_id")
-	private Integer programId;
+    @Column(name = "form_id")
+    private Integer formId;
 
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name="instance_id", referencedColumnName="id")
-	private Set<CaisiFormData> data = new HashSet<CaisiFormData>();
-	
-	public Integer getId() {
-		return id;
-	}
+    private String description;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_created")
+    private Date dateCreated;
 
-	public Integer getFormId() {
-		return formId;
-	}
+    @Column(name = "user_id")
+    private Integer userId;
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    private String username;
 
-	public String getDescription() {
-		return description;
-	}
+    @Column(name = "client_id")
+    private Integer clientId;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Column(name = "program_id")
+    private Integer programId;
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "instance_id", referencedColumnName = "id")
+    private Set<CaisiFormData> data = new HashSet<CaisiFormData>();
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public Integer getFormId() {
+        return formId;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setFormId(Integer formId) {
+        this.formId = formId;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Integer getClientId() {
-		return clientId;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
-	}
+    public Date getDateCreated() {
+        return dateCreated;
+    }
 
-	public Integer getProgramId() {
-		return programId;
-	}
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	public void setProgramId(Integer programId) {
-		this.programId = programId;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public Set<CaisiFormData> getData() {
-		return data;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public void setData(Set<CaisiFormData> data) {
-		this.data = data;
-	}
-	
-	
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
+    public Integer getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(Integer programId) {
+        this.programId = programId;
+    }
+
+    public Set<CaisiFormData> getData() {
+        return data;
+    }
+
+    public void setData(Set<CaisiFormData> data) {
+        this.data = data;
+    }
+
+
 }

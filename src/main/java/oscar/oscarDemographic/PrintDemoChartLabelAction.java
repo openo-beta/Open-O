@@ -43,13 +43,13 @@ public class PrintDemoChartLabelAction extends OscarAction {
     }
 
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
-			throw new SecurityException("missing required security object (_demographic)");
-		}
-		
-		Provider provider = loggedInInfo.getLoggedInProvider();
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
+            throw new SecurityException("missing required security object (_demographic)");
+        }
+
+        Provider provider = loggedInInfo.getLoggedInProvider();
         String curUser_no = loggedInInfo.getLoggedInProviderNo();
         UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
         UserProperty prop;
@@ -75,86 +75,84 @@ public class PrintDemoChartLabelAction extends OscarAction {
                 exportPdfJavascript += "params.interactive=params.constants.interactionLevel.silent;";
             }
             exportPdfJavascript += "this.print(params);";
-        }     	
-    	Map<String,String> nameToFileMap = new HashMap<String,String>();
-    	nameToFileMap.put("ChartLabel", "Chartlabel.xml");
-    	nameToFileMap.put("SexualHealthClinicLabel", "SexualHealthClinicLabel.xml");
-    	
-    	String labelFile = nameToFileMap.get("ChartLabel");
-    	
-    	if(request.getParameter("labelName") != null) {
-    		labelFile = nameToFileMap.get(request.getParameter("labelName"));
-    	}
-    	
-    	if(labelFile == null) {
-    		logger.warn("requested invalid label : " + request.getParameter("labelName"));
-    		return actionMapping.findForward(this.target);
-    	}
-    	
+        }
+        Map<String, String> nameToFileMap = new HashMap<String, String>();
+        nameToFileMap.put("ChartLabel", "Chartlabel.xml");
+        nameToFileMap.put("SexualHealthClinicLabel", "SexualHealthClinicLabel.xml");
+
+        String labelFile = nameToFileMap.get("ChartLabel");
+
+        if (request.getParameter("labelName") != null) {
+            labelFile = nameToFileMap.get(request.getParameter("labelName"));
+        }
+
+        if (labelFile == null) {
+            logger.warn("requested invalid label : " + request.getParameter("labelName"));
+            return actionMapping.findForward(this.target);
+        }
+
         //patient
-        String classpath = (String)request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
-        if (classpath==null) classpath = (String)request.getSession().getServletContext().getAttribute("com.ibm.websphere.servlet.application.classpath");
+        String classpath = (String) request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
+        if (classpath == null)
+            classpath = (String) request.getSession().getServletContext().getAttribute("com.ibm.websphere.servlet.application.classpath");
         System.setProperty("jasper.reports.compile.class.path", classpath);
 
-        HashMap<String,String> parameters = new HashMap<String,String>();
+        HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("demo", request.getParameter("demographic_no"));
-        
+
         ProgramManager2 programManager2 = SpringUtils.getBean(ProgramManager2.class);
-  
+
         parameters.put("program", "N/A");
         ProgramProvider pp = programManager2.getCurrentProgramInDomain(loggedInInfo, provider.getProviderNo());
-		if(pp != null) {
-			Program program = programManager2.getProgram(loggedInInfo, pp.getProgramId().intValue());
-			if(program != null) {
-				 parameters.put("program", program.getName());
-			}
-		}
-        
-        ServletOutputStream sos = null;
-        InputStream ins = null;
-      
-        try {
-	        try {
-	        	ins = new FileInputStream(System.getProperty("user.home") + File.separator + labelFile);
-	        }
-	        catch (FileNotFoundException ex1) {
-	        	logger.warn(labelFile + " not found in user's home directory. Using default instead (classpath)",ex1);
-	        }
-	
-			if (ins == null) {
-				try { 
-					ins = getClass().getResourceAsStream("/oscar/oscarDemographic/" + labelFile);
-					logger.debug("loading from : /oscar/oscarDemographic/" + labelFile);
-				}
-				catch (Exception ex1) {
-					MiscUtils.getLogger().error("Error", ex1);	
-				}
-			}
-	
-	        try {
-	            sos = response.getOutputStream();
-	        } catch (IOException ex) {
-	        	MiscUtils.getLogger().error("Error", ex);
-	        }
-	
-	        response.setHeader("Content-disposition", getHeader(response).toString());
-	        OscarDocumentCreator osc = new OscarDocumentCreator();
-        
-            osc.fillDocumentStream(parameters, sos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection(),exportPdfJavascript);
-        }
-        catch (SQLException e) {
-            MiscUtils.getLogger().error("Error", e);
-        } finally {
-        	if(ins != null) {
-            	try {
-            		ins.close();
-            	} catch(IOException e) {
-            		MiscUtils.getLogger().error("Error", e);
-            	}
-            }   
+        if (pp != null) {
+            Program program = programManager2.getProgram(loggedInInfo, pp.getProgramId().intValue());
+            if (program != null) {
+                parameters.put("program", program.getName());
+            }
         }
 
-        
+        ServletOutputStream sos = null;
+        InputStream ins = null;
+
+        try {
+            try {
+                ins = new FileInputStream(System.getProperty("user.home") + File.separator + labelFile);
+            } catch (FileNotFoundException ex1) {
+                logger.warn(labelFile + " not found in user's home directory. Using default instead (classpath)", ex1);
+            }
+
+            if (ins == null) {
+                try {
+                    ins = getClass().getResourceAsStream("/oscar/oscarDemographic/" + labelFile);
+                    logger.debug("loading from : /oscar/oscarDemographic/" + labelFile);
+                } catch (Exception ex1) {
+                    MiscUtils.getLogger().error("Error", ex1);
+                }
+            }
+
+            try {
+                sos = response.getOutputStream();
+            } catch (IOException ex) {
+                MiscUtils.getLogger().error("Error", ex);
+            }
+
+            response.setHeader("Content-disposition", getHeader(response).toString());
+            OscarDocumentCreator osc = new OscarDocumentCreator();
+
+            osc.fillDocumentStream(parameters, sos, "pdf", ins, DbConnectionFilter.getThreadLocalDbConnection(), exportPdfJavascript);
+        } catch (SQLException e) {
+            MiscUtils.getLogger().error("Error", e);
+        } finally {
+            if (ins != null) {
+                try {
+                    ins.close();
+                } catch (IOException e) {
+                    MiscUtils.getLogger().error("Error", e);
+                }
+            }
+        }
+
+
         return actionMapping.findForward(this.target);
     }
 

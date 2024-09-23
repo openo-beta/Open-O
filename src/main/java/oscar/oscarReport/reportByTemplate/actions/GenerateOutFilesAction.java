@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -23,7 +23,6 @@
  * Ontario, Canada
  */
 //This action generates the CSV and XLS files on request
-
 
 
 package oscar.oscarReport.reportByTemplate.actions;
@@ -51,13 +50,13 @@ public class GenerateOutFilesAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
                                  HttpServletRequest request, HttpServletResponse response) {
 
-    	String roleName$ = (String)request.getSession().getAttribute("userrole") + "," + (String) request.getSession().getAttribute("user");
-    	if(!com.quatro.service.security.SecurityManager.hasPrivilege("_admin", roleName$)  && !com.quatro.service.security.SecurityManager.hasPrivilege("_report", roleName$)) {
-    		throw new SecurityException("Insufficient Privileges");
-    	}
-    	
+        String roleName$ = (String) request.getSession().getAttribute("userrole") + "," + (String) request.getSession().getAttribute("user");
+        if (!com.quatro.service.security.SecurityManager.hasPrivilege("_admin", roleName$) && !com.quatro.service.security.SecurityManager.hasPrivilege("_report", roleName$)) {
+            throw new SecurityException("Insufficient Privileges");
+        }
+
         String csv = (String) request.getSession().getAttribute("csv");
-        if (csv ==null){
+        if (csv == null) {
             csv = request.getParameter("csv");
         }
         String action = request.getParameter("getCSV");
@@ -79,25 +78,25 @@ public class GenerateOutFilesAction extends Action {
             String[][] data = CSVParser.parse(csv);
             HSSFWorkbook wb = new HSSFWorkbook();
             HSSFSheet sheet = wb.createSheet("OSCAR_Report");
-            for (int x=0; x<data.length; x++) {
-                HSSFRow row = sheet.createRow((short)x);
-                for (int y=0; y<data[x].length; y++) {
-                    try{
-                       double d = Double.parseDouble(data[x][y]);
-                        row.createCell((short)y).setCellValue(d);
-                    }catch(Exception e){
-                       row.createCell((short)y).setCellValue(data[x][y]);
+            for (int x = 0; x < data.length; x++) {
+                HSSFRow row = sheet.createRow((short) x);
+                for (int y = 0; y < data[x].length; y++) {
+                    try {
+                        double d = Double.parseDouble(data[x][y]);
+                        row.createCell((short) y).setCellValue(d);
+                    } catch (Exception e) {
+                        row.createCell((short) y).setCellValue(data[x][y]);
                     }
                 }
             }
-            try {    
+            try {
                 wb.write(response.getOutputStream());
-            } catch(Exception e) {
-                MiscUtils.getLogger().error("Error", e);   
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
             }
             return null;
         }
         return mapping.findForward("success");
     }
-    
+
 }

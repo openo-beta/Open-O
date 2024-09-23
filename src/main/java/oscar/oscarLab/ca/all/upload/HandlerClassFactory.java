@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,13 +46,13 @@ import java.io.InputStream;
 import java.util.List;
 
 public final class HandlerClassFactory {
-    
+
     private static final Logger logger = MiscUtils.getLogger();
-    
-    private HandlerClassFactory(){
-    	// don't instantiate
+
+    private HandlerClassFactory() {
+        // don't instantiate
     }
-    
+
     /*
      *  Create and return the message handler corresponding to the message type
      */
@@ -60,12 +60,12 @@ public final class HandlerClassFactory {
         Document doc = null;
         String msgType;
         String msgHandler = "";
-        
+
         if (type == null || type.equals("")) {
             logger.debug("Type not specified using Default Handler");
-            return( new DefaultHandler());
+            return (new DefaultHandler());
         }
-        try(InputStream is = HandlerClassFactory.class.getClassLoader().getResourceAsStream("oscar/oscarLab/ca/all/upload/message_config.xml")){
+        try (InputStream is = HandlerClassFactory.class.getClassLoader().getResourceAsStream("oscar/oscarLab/ca/all/upload/message_config.xml")) {
 
             SAXBuilder parser = new SAXBuilder();
             doc = parser.build(is);
@@ -73,39 +73,39 @@ public final class HandlerClassFactory {
 
             @SuppressWarnings("unchecked")
             List items = root.getChildren();
-            for (int i = 0; i < items.size(); i++){
+            for (int i = 0; i < items.size(); i++) {
                 Element e = (Element) items.get(i);
                 msgType = e.getAttributeValue("name");
                 String className = e.getAttributeValue("className");
-                if (msgType.equals(type) && (className.indexOf(".")==-1) )
-                    msgHandler = "oscar.oscarLab.ca.all.upload.handlers."+e.getAttributeValue("className");
-                if (msgType.equals(type) && (className.indexOf(".")!=-1) )
-                	msgHandler = className;
+                if (msgType.equals(type) && (className.indexOf(".") == -1))
+                    msgHandler = "oscar.oscarLab.ca.all.upload.handlers." + e.getAttributeValue("className");
+                if (msgType.equals(type) && (className.indexOf(".") != -1))
+                    msgHandler = className;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Could not parse config file", e);
         }
         // create and return the message handler
-        if (msgHandler.equals("")){
-            return( new DefaultHandler() );
-        }else{
+        if (msgHandler.equals("")) {
+            return (new DefaultHandler());
+        } else {
             try {
                 @SuppressWarnings("unchecked")
                 Class classRef = Class.forName(msgHandler);
                 MessageHandler mh = (MessageHandler) classRef.newInstance();
-                logger.debug("Message handler '"+msgHandler+"' created successfully");
-                return(mh);
-            } catch (Exception e){
-                logger.error("Could not create message handler: "+msgHandler+", Using default message handler instead", e);
-                return(new DefaultHandler());
+                logger.debug("Message handler '" + msgHandler + "' created successfully");
+                return (mh);
+            } catch (Exception e) {
+                logger.error("Could not create message handler: " + msgHandler + ", Using default message handler instead", e);
+                return (new DefaultHandler());
             }
         }
     }
-    
+
     // this method is added to get the DefaultHandler during Private/Decryption Key upload in HRM
-    public static DefaultHandler getDefaultHandler(){
+    public static DefaultHandler getDefaultHandler() {
         logger.debug("Type not specified using Default Handler");
-        return( new DefaultHandler());
+        return (new DefaultHandler());
     }
 
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -44,8 +44,8 @@ public class indivoCheck extends TagSupport {
 
     protected String providerNo = null;
     protected String demoNo = null;
-    
-    
+
+
     public String getProvider() {
         return (this.providerNo);
     }
@@ -64,30 +64,28 @@ public class indivoCheck extends TagSupport {
 
     public int doStartTag() throws JspException {
 
-        boolean conditionMet = false ;
-       
-          try {     
-            if( ProviderMyOscarIdData.idIsSet(providerNo) ) {
-                if( demoNo != null ) {
-                   org.oscarehr.common.model.Demographic demo = new DemographicData().getDemographic(LoggedInInfo.getLoggedInInfoFromSession(this.pageContext.getSession()), demoNo); 
-                   String myOscarUserName = demo.getMyOscarUserName();
-                   if( myOscarUserName != null ) 
+        boolean conditionMet = false;
+
+        try {
+            if (ProviderMyOscarIdData.idIsSet(providerNo)) {
+                if (demoNo != null) {
+                    org.oscarehr.common.model.Demographic demo = new DemographicData().getDemographic(LoggedInInfo.getLoggedInInfoFromSession(this.pageContext.getSession()), demoNo);
+                    String myOscarUserName = demo.getMyOscarUserName();
+                    if (myOscarUserName != null)
                         conditionMet = true;
-                }
-                else
-                    conditionMet = true;                                       
-            }                         
-             
-          }
-        catch(NullPointerException e) {
+                } else
+                    conditionMet = true;
+            }
+
+        } catch (NullPointerException e) {
             MiscUtils.getLogger().debug("INVALID provider or demographic no");
             MiscUtils.getLogger().error("Error", e);
         }
-        
-        if (conditionMet)         
+
+        if (conditionMet)
             return (EVAL_BODY_INCLUDE);
         else
-            return (SKIP_BODY);        
+            return (SKIP_BODY);
 
     }
 
@@ -96,12 +94,12 @@ public class indivoCheck extends TagSupport {
         return (EVAL_PAGE);
 
     }
-   
+
     public void release() {
 
-        super.release();                
-        demoNo = null;        
-        providerNo = null;        
+        super.release();
+        demoNo = null;
+        providerNo = null;
     }
 
 }

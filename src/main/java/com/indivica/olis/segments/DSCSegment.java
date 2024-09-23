@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -18,15 +18,15 @@ package com.indivica.olis.segments;
  */
 public class DSCSegment implements Segment {
 
-	private String continuationPointer;
-	
-	public DSCSegment(String continuationPointer) {
-		this.continuationPointer = continuationPointer;
-	}
-	
-	@Override
-	public String getSegmentHL7String() {
-		return "DSC|" + continuationPointer;
-	}
+    private String continuationPointer;
+
+    public DSCSegment(String continuationPointer) {
+        this.continuationPointer = continuationPointer;
+    }
+
+    @Override
+    public String getSegmentHL7String() {
+        return "DSC|" + continuationPointer;
+    }
 
 }

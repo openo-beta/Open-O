@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -28,132 +28,131 @@ import java.util.Date;
 
 public class PreventionTo1 {
 
-	private Integer id;
-	private Integer demographicId;
+    private Integer id;
+    private Integer demographicId;
 
-	private Date creationDate = new Date();
-	private Date preventionDate;
+    private Date creationDate = new Date();
+    private Date preventionDate;
 
-	private String providerNo;
-	private String preventionType;
+    private String providerNo;
+    private String preventionType;
 
-	private char deleted;
-	private char refused;
-	private char never;
+    private char deleted;
+    private char refused;
+    private char never;
 
-	private Date nextDate;
+    private Date nextDate;
 
-	private String creatorProviderNo;
-	
-	private Date lastUpdateDate;
+    private String creatorProviderNo;
 
-	public Integer getDemographicId() {
-		return demographicId;
-	}
+    private Date lastUpdateDate;
 
-	public void setDemographicId(Integer demographicId) {
-		this.demographicId = demographicId;
-	}
+    public Integer getDemographicId() {
+        return demographicId;
+    }
 
-	public Date getPreventionDate() {
-		return preventionDate;
-	}
+    public void setDemographicId(Integer demographicId) {
+        this.demographicId = demographicId;
+    }
 
-	public void setPreventionDate(Date preventionDate) {
-		this.preventionDate = preventionDate;
-	}
+    public Date getPreventionDate() {
+        return preventionDate;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setPreventionDate(Date preventionDate) {
+        this.preventionDate = preventionDate;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public String getPreventionType() {
-		return preventionType;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setPreventionType(String preventionType) {
-		this.preventionType = preventionType;
-	}
+    public String getPreventionType() {
+        return preventionType;
+    }
 
-	public boolean isDeleted() {
-		return deleted=='1';
-	}
+    public void setPreventionType(String preventionType) {
+        this.preventionType = preventionType;
+    }
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted ? '1' : '0';
-	}
+    public boolean isDeleted() {
+        return deleted == '1';
+    }
 
-	public boolean isRefused() {
-		return refused=='1';
-	}
-	
-	public boolean isIneligible(){
-		return refused == '2';
-	}
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted ? '1' : '0';
+    }
 
-	public void setRefused(boolean refused) {
-		this.refused = refused ? '1' : '0';
-	}
-	
-	public void setIneligible(boolean ineligible){
-		this.refused = ineligible ? '2' : '0';
-	}
+    public boolean isRefused() {
+        return refused == '1';
+    }
 
-	public Date getNextDate() {
-		return nextDate;
-	}
+    public boolean isIneligible() {
+        return refused == '2';
+    }
 
-	public void setNextDate(Date nextDate) {
-		this.nextDate = nextDate;
-	}
+    public void setRefused(boolean refused) {
+        this.refused = refused ? '1' : '0';
+    }
 
-	public boolean isNever() {
-		return never=='1';
-	}
+    public void setIneligible(boolean ineligible) {
+        this.refused = ineligible ? '2' : '0';
+    }
 
-	public void setNever(boolean never) {
-		this.never = never ? '1' : '0';
-	}
+    public Date getNextDate() {
+        return nextDate;
+    }
 
-	public String getCreatorProviderNo() {
-		return creatorProviderNo;
-	}
+    public void setNextDate(Date nextDate) {
+        this.nextDate = nextDate;
+    }
 
-	public void setCreatorProviderNo(String creatorProviderNo) {
-		this.creatorProviderNo = creatorProviderNo;
-	}
-	
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
-	
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public boolean isNever() {
+        return never == '1';
+    }
 
-   	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setNever(boolean never) {
+        this.never = never ? '1' : '0';
+    }
 
-   	public Integer getId() {
-		return id;
-	}
+    public String getCreatorProviderNo() {
+        return creatorProviderNo;
+    }
 
-	public Date getCreationDate() {
-		return creationDate;
-	}
+    public void setCreatorProviderNo(String creatorProviderNo) {
+        this.creatorProviderNo = creatorProviderNo;
+    }
 
-	protected void autoSetUpdateTime()
-	{
-		lastUpdateDate=new Date();
-	}
-	
-	public String getDeletedRawValue() {
-		return String.valueOf(deleted);
-	}
-	
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    protected void autoSetUpdateTime() {
+        lastUpdateDate = new Date();
+    }
+
+    public String getDeletedRawValue() {
+        return String.valueOf(deleted);
+    }
+
 }

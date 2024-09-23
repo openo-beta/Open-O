@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,160 +47,144 @@ import ca.uhn.hl7v2.model.v26.segment.PID;
 import ca.uhn.hl7v2.parser.EncodingNotSupportedException;
 
 public final class ViewOruR01UIBean {
-	private String segmentId;
-	private ORU_R01 oruR01;
-	private Demographic demographic;
-	private ObservationData observationData;
-	
-	public ViewOruR01UIBean(String segmentId) throws EncodingNotSupportedException, HL7Exception, UnsupportedEncodingException
-	{
-		this.segmentId=segmentId;
-		
-		String hl7Message=Factory.getHL7Body(segmentId);
-		oruR01=(ORU_R01) OscarToOscarUtils.pipeParserParse(hl7Message);
-		
-		PID pid=oruR01.getPATIENT_RESULT(0).getPATIENT().getPID();
-		demographic=DataTypeUtils.parsePid(pid);
-		
-		observationData=OruR01.getObservationData(oruR01);
-	}
-	
-	public String getFromProviderDisplayString() throws HL7Exception
-	{
-		return(getProviderDisplayString(DataTypeUtils.ACTION_ROLE_SENDER));
-	}
-	
-	public String getToProviderDisplayString() throws HL7Exception
-	{
-		return(getProviderDisplayString(DataTypeUtils.ACTION_ROLE_RECEIVER));
-	}
-	
-	private String getProviderDisplayString(String actionRole) throws HL7Exception
-	{
-		Provider provider=OruR01.getProviderByActionRole(oruR01, actionRole);
-		
-		StringBuilder sb = new StringBuilder();
+    private String segmentId;
+    private ORU_R01 oruR01;
+    private Demographic demographic;
+    private ObservationData observationData;
 
-		sb.append(provider.getLastName());
-		sb.append(", ");
-		sb.append(provider.getFirstName());
+    public ViewOruR01UIBean(String segmentId) throws EncodingNotSupportedException, HL7Exception, UnsupportedEncodingException {
+        this.segmentId = segmentId;
 
-		if (provider.getProviderNo() != null) {
-			sb.append(" (");
-			sb.append(provider.getProviderNo());
-			sb.append(')');
-		}
+        String hl7Message = Factory.getHL7Body(segmentId);
+        oruR01 = (ORU_R01) OscarToOscarUtils.pipeParserParse(hl7Message);
 
-		if (provider.getPhone() != null) {
-			sb.append(", ");
-			sb.append(provider.getPhone());
-		}
+        PID pid = oruR01.getPATIENT_RESULT(0).getPATIENT().getPID();
+        demographic = DataTypeUtils.parsePid(pid);
 
-		if (provider.getEmail() != null) {
-			sb.append(", ");
-			sb.append(provider.getEmail());
-		}
+        observationData = OruR01.getObservationData(oruR01);
+    }
 
-		if (provider.getAddress() != null) {
-			sb.append(", ");
-			sb.append(provider.getAddress());
-		}
+    public String getFromProviderDisplayString() throws HL7Exception {
+        return (getProviderDisplayString(DataTypeUtils.ACTION_ROLE_SENDER));
+    }
 
-		return (StringEscapeUtils.escapeHtml(sb.toString()));
-	}
-	
-	public String getClientDisplayName()
-	{
-		StringBuilder sb=new StringBuilder();
-		
-		sb.append(demographic.getLastName());
-		sb.append(", ");
-		sb.append(demographic.getFirstName());
-		
-		if (demographic.getSex()!=null){
-			sb.append(" (");
-			sb.append(demographic.getSex());
-			sb.append(')');
-		}
-		
-		return(StringEscapeUtils.escapeHtml(sb.toString()));
-	}
-	
-	public String getHinForDisplay()
-	{
-		if (demographic.getHin()==null) return("");
-		return(StringEscapeUtils.escapeHtml(demographic.getHin()));
-	}
-	
-	public String getBirthDayForDisplay()
-	{
-		if (demographic.getBirthDay()==null) return("");
-		return(DateFormatUtils.ISO_DATE_FORMAT.format(demographic.getBirthDay()));
-	}
-	
-	public String getSubjectForDisplay()
-	{
-		return(StringEscapeUtils.escapeHtml(observationData.subject));
-	}
-	
-	public String getTextMessageForDisplay()
-	{
-		if (observationData.textMessage==null) return("");
-		return(StringEscapeUtils.escapeHtml(observationData.textMessage));
-	}
+    public String getToProviderDisplayString() throws HL7Exception {
+        return (getProviderDisplayString(DataTypeUtils.ACTION_ROLE_RECEIVER));
+    }
 
-	public boolean hasBinaryFile()
-	{
-		return(observationData.binaryDataFileName!=null);
-	}
+    private String getProviderDisplayString(String actionRole) throws HL7Exception {
+        Provider provider = OruR01.getProviderByActionRole(oruR01, actionRole);
 
-	public String getBinaryFilenameForDisplay()
-	{
-		if (observationData.binaryDataFileName==null) return("");
-		return(StringEscapeUtils.escapeHtml(observationData.binaryDataFileName));
-	}
+        StringBuilder sb = new StringBuilder();
 
-	public String getFilename()
-	{
-		return(observationData.binaryDataFileName);
-	}
-	
-	public byte[] getFileContents()
-	{
-		return(observationData.binaryData);
-	}
-	
-	/**
-	 * The context path is prepended in this url
-	 */
-	public String getContentRenderingUrl(HttpServletRequest request, boolean download)
-	{
-		// http://127.0.0.1:8080/oscar/contentRenderingServlet/asdf.jpg?source=oruR01&segmentId=67&download=t
-		
-		StringBuilder sb=new StringBuilder();
+        sb.append(provider.getLastName());
+        sb.append(", ");
+        sb.append(provider.getFirstName());
 
-		sb.append(request.getContextPath());
-		sb.append("/contentRenderingServlet/");
-		sb.append(getBinaryFilenameForDisplay());
-		sb.append("?source=");
-		sb.append(ContentRenderingServlet.Source.oruR01.name());
-		sb.append("&segmentId=");
-		sb.append(segmentId);
+        if (provider.getProviderNo() != null) {
+            sb.append(" (");
+            sb.append(provider.getProviderNo());
+            sb.append(')');
+        }
 
-		if (download) sb.append("&download=true");
-		
-		return(sb.toString());
-	}
-	
-	public String getPreviewFileHtml(HttpServletRequest request)
-	{
-		String filename=observationData.binaryDataFileName;
-		
-		if (filename.endsWith(".jpg") || filename.endsWith(".png") || filename.endsWith(".gif"))
-		{
-			return("<img style=\"max-width:800px;max-height:600px\" src=\""+getContentRenderingUrl(request, false)+"\" alt=\""+getBinaryFilenameForDisplay()+"\" />");
-		}
-		
-		return("Preview not supported for this type of content.");
-	}
+        if (provider.getPhone() != null) {
+            sb.append(", ");
+            sb.append(provider.getPhone());
+        }
+
+        if (provider.getEmail() != null) {
+            sb.append(", ");
+            sb.append(provider.getEmail());
+        }
+
+        if (provider.getAddress() != null) {
+            sb.append(", ");
+            sb.append(provider.getAddress());
+        }
+
+        return (StringEscapeUtils.escapeHtml(sb.toString()));
+    }
+
+    public String getClientDisplayName() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(demographic.getLastName());
+        sb.append(", ");
+        sb.append(demographic.getFirstName());
+
+        if (demographic.getSex() != null) {
+            sb.append(" (");
+            sb.append(demographic.getSex());
+            sb.append(')');
+        }
+
+        return (StringEscapeUtils.escapeHtml(sb.toString()));
+    }
+
+    public String getHinForDisplay() {
+        if (demographic.getHin() == null) return ("");
+        return (StringEscapeUtils.escapeHtml(demographic.getHin()));
+    }
+
+    public String getBirthDayForDisplay() {
+        if (demographic.getBirthDay() == null) return ("");
+        return (DateFormatUtils.ISO_DATE_FORMAT.format(demographic.getBirthDay()));
+    }
+
+    public String getSubjectForDisplay() {
+        return (StringEscapeUtils.escapeHtml(observationData.subject));
+    }
+
+    public String getTextMessageForDisplay() {
+        if (observationData.textMessage == null) return ("");
+        return (StringEscapeUtils.escapeHtml(observationData.textMessage));
+    }
+
+    public boolean hasBinaryFile() {
+        return (observationData.binaryDataFileName != null);
+    }
+
+    public String getBinaryFilenameForDisplay() {
+        if (observationData.binaryDataFileName == null) return ("");
+        return (StringEscapeUtils.escapeHtml(observationData.binaryDataFileName));
+    }
+
+    public String getFilename() {
+        return (observationData.binaryDataFileName);
+    }
+
+    public byte[] getFileContents() {
+        return (observationData.binaryData);
+    }
+
+    /**
+     * The context path is prepended in this url
+     */
+    public String getContentRenderingUrl(HttpServletRequest request, boolean download) {
+        // http://127.0.0.1:8080/oscar/contentRenderingServlet/asdf.jpg?source=oruR01&segmentId=67&download=t
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(request.getContextPath());
+        sb.append("/contentRenderingServlet/");
+        sb.append(getBinaryFilenameForDisplay());
+        sb.append("?source=");
+        sb.append(ContentRenderingServlet.Source.oruR01.name());
+        sb.append("&segmentId=");
+        sb.append(segmentId);
+
+        if (download) sb.append("&download=true");
+
+        return (sb.toString());
+    }
+
+    public String getPreviewFileHtml(HttpServletRequest request) {
+        String filename = observationData.binaryDataFileName;
+
+        if (filename.endsWith(".jpg") || filename.endsWith(".png") || filename.endsWith(".gif")) {
+            return ("<img style=\"max-width:800px;max-height:600px\" src=\"" + getContentRenderingUrl(request, false) + "\" alt=\"" + getBinaryFilenameForDisplay() + "\" />");
+        }
+
+        return ("Preview not supported for this type of content.");
+    }
 }

@@ -24,24 +24,24 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_measurement" rights="w" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_measurement");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_measurement");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.Measurement" %>
@@ -50,20 +50,20 @@
 
 
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-	String providerNo=loggedInInfo.getLoggedInProviderNo();
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-	Measurement m = new Measurement();
-	m.setComments("");
-	m.setDataField("Yes");
-	m.setCreateDate(new java.util.Date());
-	m.setDateObserved(new java.util.Date());
-	m.setDemographicId(Integer.parseInt(request.getParameter("demographicNo")));
-	m.setMeasuringInstruction("");
-	m.setProviderNo(providerNo);
-	m.setType("medr");
-	m.setAppointmentNo(0);
-	
-	MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
-	dao.persist(m);
+    Measurement m = new Measurement();
+    m.setComments("");
+    m.setDataField("Yes");
+    m.setCreateDate(new java.util.Date());
+    m.setDateObserved(new java.util.Date());
+    m.setDemographicId(Integer.parseInt(request.getParameter("demographicNo")));
+    m.setMeasuringInstruction("");
+    m.setProviderNo(providerNo);
+    m.setType("medr");
+    m.setAppointmentNo(0);
+
+    MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
+    dao.persist(m);
 %>

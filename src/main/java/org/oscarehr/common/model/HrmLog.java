@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,104 +36,104 @@ import javax.persistence.TemporalType;
 @Entity
 public class HrmLog extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date started;
-	
-	private String initiatingProviderNo;
-	
-	private String transactionType;
-	
-	private String externalSystem = "HRM";
-	
-	private String error;
-	
-	private Boolean connected;
-	
-	private Boolean downloadedFiles;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private Integer numFilesDownloaded;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date started;
 
-	private Boolean deleted;
-	
-	public Date getStarted() {
-		return started;
-	}
+    private String initiatingProviderNo;
 
-	public void setStarted(Date started) {
-		this.started = started;
-	}
+    private String transactionType;
 
-	public String getInitiatingProviderNo() {
-		return initiatingProviderNo;
-	}
+    private String externalSystem = "HRM";
 
-	public void setInitiatingProviderNo(String initiatingProviderNo) {
-		this.initiatingProviderNo = initiatingProviderNo;
-	}
+    private String error;
 
-	public String getTransactionType() {
-		return transactionType;
-	}
+    private Boolean connected;
 
-	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
-	}
+    private Boolean downloadedFiles;
 
-	public String getExternalSystem() {
-		return externalSystem;
-	}
+    private Integer numFilesDownloaded;
 
-	public void setExternalSystem(String externalSystem) {
-		this.externalSystem = externalSystem;
-	}
+    private Boolean deleted;
 
-	public String getError() {
-		return error;
-	}
+    public Date getStarted() {
+        return started;
+    }
 
-	public void setError(String error) {
-		this.error = error;
-	}
+    public void setStarted(Date started) {
+        this.started = started;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public String getInitiatingProviderNo() {
+        return initiatingProviderNo;
+    }
 
-	public Boolean getConnected() {
-		return connected;
-	}
+    public void setInitiatingProviderNo(String initiatingProviderNo) {
+        this.initiatingProviderNo = initiatingProviderNo;
+    }
 
-	public void setConnected(Boolean connected) {
-		this.connected = connected;
-	}
+    public String getTransactionType() {
+        return transactionType;
+    }
 
-	public Boolean getDownloadedFiles() {
-		return downloadedFiles;
-	}
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
 
-	public void setDownloadedFiles(Boolean downloadedFiles) {
-		this.downloadedFiles = downloadedFiles;
-	}
+    public String getExternalSystem() {
+        return externalSystem;
+    }
 
-	public Integer getNumFilesDownloaded() {
-		return numFilesDownloaded;
-	}
+    public void setExternalSystem(String externalSystem) {
+        this.externalSystem = externalSystem;
+    }
 
-	public void setNumFilesDownloaded(Integer numFilesDownloaded) {
-		this.numFilesDownloaded = numFilesDownloaded;
-	}
+    public String getError() {
+        return error;
+    }
 
-	public Boolean getDeleted() {
-		return deleted;
-	}
+    public void setError(String error) {
+        this.error = error;
+    }
 
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-	
-	
+    public Integer getId() {
+        return id;
+    }
+
+    public Boolean getConnected() {
+        return connected;
+    }
+
+    public void setConnected(Boolean connected) {
+        this.connected = connected;
+    }
+
+    public Boolean getDownloadedFiles() {
+        return downloadedFiles;
+    }
+
+    public void setDownloadedFiles(Boolean downloadedFiles) {
+        this.downloadedFiles = downloadedFiles;
+    }
+
+    public Integer getNumFilesDownloaded() {
+        return numFilesDownloaded;
+    }
+
+    public void setNumFilesDownloaded(Integer numFilesDownloaded) {
+        this.numFilesDownloaded = numFilesDownloaded;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,91 +42,91 @@ import org.oscarehr.common.model.AbstractModel;
 @Table(name = "billingnote")
 public class BillingNotes extends AbstractModel<Integer> {
 
-	/**
-	 * Default note type for BC billing
-	 */
-	public static final Integer DEFAULT_NOTE_TYPE = 2;
-	
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "billingnote_no", unique = true, nullable = false)
-	private Integer id;
-	@Column(name = "billingmaster_no", nullable = false)
-	private int billingmasterNo;
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "createdate", length = 19)
-	private Date createdate;
-	@Column(name = "provider_no", nullable = false, length = 6)
-	private String providerNo;
-	@Column(name = "note", length = 65535)
-	private String note = "";
-	@Column(name = "note_type")
-	private Integer noteType;
+    /**
+     * Default note type for BC billing
+     */
+    public static final Integer DEFAULT_NOTE_TYPE = 2;
 
-	public BillingNotes() {
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "billingnote_no", unique = true, nullable = false)
+    private Integer id;
+    @Column(name = "billingmaster_no", nullable = false)
+    private int billingmasterNo;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "createdate", length = 19)
+    private Date createdate;
+    @Column(name = "provider_no", nullable = false, length = 6)
+    private String providerNo;
+    @Column(name = "note", length = 65535)
+    private String note = "";
+    @Column(name = "note_type")
+    private Integer noteType;
 
-	public BillingNotes(int billingmasterNo, String providerNo) {
-		this.billingmasterNo = billingmasterNo;
-		this.providerNo = providerNo;
-	}
-
-	public BillingNotes(int billingmasterNo, Date createdate, String providerNo,
-			String note, Integer noteType) {
-		this.billingmasterNo = billingmasterNo;
-		this.createdate = createdate;
-		this.providerNo = providerNo;
-		this.note = note;
-		this.noteType = noteType;
-	}
-	
-	
-	public Integer getId() {
-    	return id;
+    public BillingNotes() {
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public BillingNotes(int billingmasterNo, String providerNo) {
+        this.billingmasterNo = billingmasterNo;
+        this.providerNo = providerNo;
     }
 
-	public int getBillingmasterNo() {
-		return this.billingmasterNo;
-	}
+    public BillingNotes(int billingmasterNo, Date createdate, String providerNo,
+                        String note, Integer noteType) {
+        this.billingmasterNo = billingmasterNo;
+        this.createdate = createdate;
+        this.providerNo = providerNo;
+        this.note = note;
+        this.noteType = noteType;
+    }
 
-	public void setBillingmasterNo(int billingmasterNo) {
-		this.billingmasterNo = billingmasterNo;
-	}
 
-	public Date getCreatedate() {
-		return this.createdate;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getProviderNo() {
-		return this.providerNo;
-	}
+    public int getBillingmasterNo() {
+        return this.billingmasterNo;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public void setBillingmasterNo(int billingmasterNo) {
+        this.billingmasterNo = billingmasterNo;
+    }
 
-	public String getNote() {
-		return this.note;
-	}
+    public Date getCreatedate() {
+        return this.createdate;
+    }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
+    }
 
-	public Integer getNoteType() {
-		return this.noteType;
-	}
+    public String getProviderNo() {
+        return this.providerNo;
+    }
 
-	public void setNoteType(Integer noteType) {
-		this.noteType = noteType;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public String getNote() {
+        return this.note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Integer getNoteType() {
+        return this.noteType;
+    }
+
+    public void setNoteType(Integer noteType) {
+        this.noteType = noteType;
+    }
 
 }

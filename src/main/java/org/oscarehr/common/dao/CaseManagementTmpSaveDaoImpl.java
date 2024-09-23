@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -30,6 +30,7 @@ package org.oscarehr.common.dao;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.common.model.CaseManagementTmpSave;
 import org.springframework.stereotype.Repository;
 
@@ -45,14 +46,14 @@ public class CaseManagementTmpSaveDaoImpl extends AbstractDaoImpl<CaseManagement
     @Override
     public void remove(String providerNo, Integer demographicNo, Integer programId) {
         Query query = entityManager.createQuery("SELECT x FROM CaseManagementTmpSave x WHERE x.providerNo = ? and x.demographicNo=? and x.programId = ?");
-        query.setParameter(0,providerNo);
-        query.setParameter(1,demographicNo);
-        query.setParameter(2,programId);
+        query.setParameter(0, providerNo);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, programId);
 
         @SuppressWarnings("unchecked")
         List<CaseManagementTmpSave> results = query.getResultList();
 
-        for(CaseManagementTmpSave result : results) {
+        for (CaseManagementTmpSave result : results) {
             remove(result);
         }
     }
@@ -60,9 +61,9 @@ public class CaseManagementTmpSaveDaoImpl extends AbstractDaoImpl<CaseManagement
     @Override
     public CaseManagementTmpSave find(String providerNo, Integer demographicNo, Integer programId) {
         Query query = entityManager.createQuery("SELECT x FROM CaseManagementTmpSave x WHERE x.providerNo = ? and x.demographicNo=? and x.programId = ? order by x.updateDate DESC");
-        query.setParameter(0,providerNo);
-        query.setParameter(1,demographicNo);
-        query.setParameter(2,programId);
+        query.setParameter(0, providerNo);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, programId);
 
         return this.getSingleResultOrNull(query);
     }
@@ -70,9 +71,9 @@ public class CaseManagementTmpSaveDaoImpl extends AbstractDaoImpl<CaseManagement
     @Override
     public CaseManagementTmpSave find(String providerNo, Integer demographicNo, Integer programId, Date date) {
         Query query = entityManager.createQuery("SELECT x FROM CaseManagementTmpSave x WHERE x.providerNo = ? and x.demographicNo=? and x.programId = ? and x.updateDate >= ? order by x.updateDate DESC");
-        query.setParameter(0,providerNo);
-        query.setParameter(1,demographicNo);
-        query.setParameter(2,programId);
+        query.setParameter(0, providerNo);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, programId);
         query.setParameter(3, date);
 
         return this.getSingleResultOrNull(query);

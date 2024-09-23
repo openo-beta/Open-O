@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,128 +46,128 @@ import org.apache.commons.lang.StringUtils;
 @Table(name = "measurements")
 public class Measurement extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name = "type")
-	private String type;
+    @Column(name = "type")
+    private String type;
 
-	@Column(name = "demographicNo")
-	private Integer demographicId;
-	
-	@Column(name = "providerNo")	
-	private String providerNo;
-	
-	@Column(name = "dataField", nullable=false, length=255)
-	private String dataField = "";
-	
-	@Column(name = "measuringInstruction", length=255)
-	private String measuringInstruction = "";
-	
-	@Column(name = "comments", length=255)
-	private String comments = "";
+    @Column(name = "demographicNo")
+    private Integer demographicId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dateObserved")
-	private Date dateObserved;
+    @Column(name = "providerNo")
+    private String providerNo;
 
-	@Column(name = "appointmentNo")
-	private Integer appointmentNo;
+    @Column(name = "dataField", nullable = false, length = 255)
+    private String dataField = "";
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dateEntered")
-	private Date createDate = new Date();
+    @Column(name = "measuringInstruction", length = 255)
+    private String measuringInstruction = "";
 
-	@PreUpdate
-	protected void jpaPreventChange() {
-		throw (new UnsupportedOperationException("This action is not allowed for this type of item."));
-	}
+    @Column(name = "comments", length = 255)
+    private String comments = "";
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dateObserved")
+    private Date dateObserved;
 
-	public String getType() {
-		return (type);
-	}
+    @Column(name = "appointmentNo")
+    private Integer appointmentNo;
 
-	public void setType(String type) {
-		this.type = StringUtils.trimToEmpty(type);
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dateEntered")
+    private Date createDate = new Date();
 
-	public Integer getDemographicId() {
-		return (demographicId);
-	}
+    @PreUpdate
+    protected void jpaPreventChange() {
+        throw (new UnsupportedOperationException("This action is not allowed for this type of item."));
+    }
 
-	public void setDemographicId(Integer demographicId) {
-		this.demographicId = demographicId;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public String getProviderNo() {
-		return (providerNo);
-	}
+    public String getType() {
+        return (type);
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = StringUtils.trimToNull(providerNo);
-	}
+    public void setType(String type) {
+        this.type = StringUtils.trimToEmpty(type);
+    }
 
-	public String getDataField() {
-		return (dataField);
-	}
+    public Integer getDemographicId() {
+        return (demographicId);
+    }
 
-	public void setDataField(String dataField) {
-		this.dataField = dataField;
-	}
+    public void setDemographicId(Integer demographicId) {
+        this.demographicId = demographicId;
+    }
 
-	public String getMeasuringInstruction() {
-		return (measuringInstruction);
-	}
+    public String getProviderNo() {
+        return (providerNo);
+    }
 
-	public void setMeasuringInstruction(String measuringInstruction) {
-		this.measuringInstruction = measuringInstruction;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = StringUtils.trimToNull(providerNo);
+    }
 
-	public String getComments() {
-		return (comments);
-	}
+    public String getDataField() {
+        return (dataField);
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public void setDataField(String dataField) {
+        this.dataField = dataField;
+    }
 
-	public Date getDateObserved() {
-		return (dateObserved);
-	}
+    public String getMeasuringInstruction() {
+        return (measuringInstruction);
+    }
 
-	public void setDateObserved(Date dateObserved) {
-		this.dateObserved = dateObserved;
-	}
+    public void setMeasuringInstruction(String measuringInstruction) {
+        this.measuringInstruction = measuringInstruction;
+    }
 
-	public Integer getAppointmentNo() {
-		return (appointmentNo);
-	}
+    public String getComments() {
+        return (comments);
+    }
 
-	public void setAppointmentNo(Integer appointmentNo) {
-		this.appointmentNo = appointmentNo;
-	}
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
-	public Date getCreateDate() {
-		return (createDate);
-	}
-	
-	
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	
-	   public static final Comparator<Measurement> DateObservedComparator = new Comparator<Measurement>() {
-	        public int compare(Measurement o1, Measurement o2) {
-	        	if(o1.getId()!=null && o2.getId() != null) {
-	        		return o1.getDateObserved().compareTo(o2.getDateObserved());
-	        	}
-	        	return 0;
-	        }
-	    };
+    public Date getDateObserved() {
+        return (dateObserved);
+    }
+
+    public void setDateObserved(Date dateObserved) {
+        this.dateObserved = dateObserved;
+    }
+
+    public Integer getAppointmentNo() {
+        return (appointmentNo);
+    }
+
+    public void setAppointmentNo(Integer appointmentNo) {
+        this.appointmentNo = appointmentNo;
+    }
+
+    public Date getCreateDate() {
+        return (createDate);
+    }
+
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public static final Comparator<Measurement> DateObservedComparator = new Comparator<Measurement>() {
+        public int compare(Measurement o1, Measurement o2) {
+            if (o1.getId() != null && o2.getId() != null) {
+                return o1.getDateObserved().compareTo(o2.getDateObserved());
+            }
+            return 0;
+        }
+    };
 }

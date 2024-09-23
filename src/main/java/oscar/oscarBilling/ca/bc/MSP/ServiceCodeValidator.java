@@ -3,35 +3,36 @@
 package oscar.oscarBilling.ca.bc.MSP;
 
 public class ServiceCodeValidator {
-  protected boolean valid = true;
-  protected String serviceCode = "";
-  protected String description = "";
-  public ServiceCodeValidator() {
-  }
+    protected boolean valid = true;
+    protected String serviceCode = "";
+    protected String description = "";
 
-  public void setValid(boolean valid) {
+    public ServiceCodeValidator() {
+    }
 
-    this.valid = valid;
-  }
+    public void setValid(boolean valid) {
 
-  public void setServiceCode(String serviceCode) {
-    this.serviceCode = serviceCode;
-  }
+        this.valid = valid;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
+    }
 
-  public boolean isValid() {
-    return valid;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  public String getServiceCode() {
-    return serviceCode;
-  }
+    public boolean isValid() {
+        return valid;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
 }

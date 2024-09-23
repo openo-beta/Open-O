@@ -25,125 +25,132 @@
 --%>
 <!DOCTYPE HTML>
 
-<%@ include file="/casemgmt/taglibs.jsp"%> <!-- almost all taglibs -->
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ include file="/casemgmt/taglibs.jsp" %>
+<!-- almost all taglibs -->
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.userAdmin" rights="w" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.userAdmin");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.userAdmin");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ page import="oscar.oscarProvider.data.ProviderData"%>
-<%@ page import="java.util.ArrayList"%>
-<%@ page import="java.util.Map"%>
-<%@ page import="java.util.List"%>
-<%@ page import="org.oscarehr.util.SpringUtils"%>
-<%@ page import="org.oscarehr.common.dao.ProviderLabRoutingFavoritesDao"%>
+<%@ page import="oscar.oscarProvider.data.ProviderData" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.common.dao.ProviderLabRoutingFavoritesDao" %>
 <%@ page import="org.oscarehr.common.model.ProviderLabRoutingFavorite" %>
-<%@ page import="org.oscarehr.PMmodule.dao.ProviderDao"%>
+<%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <html>
 <head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title><bean:message key="oscarMDS.selectProvider.title" /></title>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <title><bean:message key="oscarMDS.selectProvider.title"/></title>
 
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css"> <!-- Bootstrap 2.3.1 -->
-<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/library/jquery/jquery-ui.structure-1.12.1.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <!-- Bootstrap 2.3.1 -->
+    <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/library/jquery/jquery-ui.structure-1.12.1.min.css" rel="stylesheet">
 
-<script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
 
-<script>
-    function preSubmit() {
+    <script>
+        function preSubmit() {
 
-	    if( $('#fwdProviders').children('option').length == 0 ) {
-		    alert("Please select a provider first.")
-		    return false;
-	    }
+            if ($('#fwdProviders').children('option').length == 0) {
+                alert("Please select a provider first.")
+                return false;
+            }
 
-        $('select option').prop('selected', true);
-	    return true;
-    }
-
-	$(document).ready(function() {
-		$( document ).tooltip();
-
-		var url = "${pageContext.request.contextPath}/provider/SearchProvider.do";
-        // as the standard autocomplete will do a ?term
-        // we need to provide a call back that replaces it with ?query
-        // as the standard autocomplete expects first level items
-        // the callback will return data.results and not data to expose the nested key value pairs
-		$("#keyword").autocomplete( {
-			source: function(request, response) {
-                $.get( url, { query: request.term }, function(data) {
-                        response(data.results);
-                });
-            },
-			minLength: 2,
-			focus: function( event, ui ) {
-				$("#keyword").val( ui.item.lastName + ", " +  ui.item.firstName );
-				return false;
-			},
-			select: function( event, ui ) {
-            	var option = document.createElement("option");
-            	option.text = ui.item.lastName + ", " +  ui.item.firstName;
-            	option.value = ui.item.providerNo;
-            	option.id = ui.item.providerNo;
-                $('#fwdProviders').append(option);
-				return false;
-			}
-		})
-        .autocomplete( "instance" )._renderItem = function( ul, item ) {
-          return $( "<li>" )
-            .append( "<div><b>" + item.lastName + ", " +  item.firstName + "</b>" +
-                "<br>" + "<bean:message key="admin.provider.formProviderNo" />" + ": " + item.providerNo +
-                "<br>" + "<bean:message key="admin.provider.formBillingNo" />" + ": "  + item.ohipNo +"</div>" )
-            .appendTo( ul );
-        };
-
-
-    });
-        function removeProvider(selectObj) {
-	        selectObj.remove(selectObj.selectedIndex);
+            $('select option').prop('selected', true);
+            return true;
         }
 
-</script>
+        $(document).ready(function () {
+            $(document).tooltip();
+
+            var url = "${pageContext.request.contextPath}/provider/SearchProvider.do";
+            // as the standard autocomplete will do a ?term
+            // we need to provide a call back that replaces it with ?query
+            // as the standard autocomplete expects first level items
+            // the callback will return data.results and not data to expose the nested key value pairs
+            $("#keyword").autocomplete({
+                source: function (request, response) {
+                    $.get(url, {query: request.term}, function (data) {
+                        response(data.results);
+                    });
+                },
+                minLength: 2,
+                focus: function (event, ui) {
+                    $("#keyword").val(ui.item.lastName + ", " + ui.item.firstName);
+                    return false;
+                },
+                select: function (event, ui) {
+                    var option = document.createElement("option");
+                    option.text = ui.item.lastName + ", " + ui.item.firstName;
+                    option.value = ui.item.providerNo;
+                    option.id = ui.item.providerNo;
+                    $('#fwdProviders').append(option);
+                    return false;
+                }
+            })
+                .autocomplete("instance")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<div><b>" + item.lastName + ", " + item.firstName + "</b>" +
+                        "<br>" + "<bean:message key="admin.provider.formProviderNo" />" + ": " + item.providerNo +
+                        "<br>" + "<bean:message key="admin.provider.formBillingNo" />" + ": " + item.ohipNo + "</div>")
+                    .appendTo(ul);
+            };
+
+
+        });
+
+        function removeProvider(selectObj) {
+            selectObj.remove(selectObj.selectedIndex);
+        }
+
+    </script>
 </head>
 <body>
 <form name="providerSelectForm" method="post" action="${pageContext.request.contextPath}/study/ManageStudy.do">
-    <input type="hidden" name="method" value="AddProvider" />
-    <input type="hidden" name="studyId" value="<%=request.getParameter("studyId")%>" />
-    <h3>&nbsp;&nbsp;<bean:message key="admin.admin.btnStudy" /></h3>
+    <input type="hidden" name="method" value="AddProvider"/>
+    <input type="hidden" name="studyId" value="<%=request.getParameter("studyId")%>"/>
+    <h3>&nbsp;&nbsp;<bean:message key="admin.admin.btnStudy"/></h3>
 
     <div class="well">
         <div class="row">
             <div class="span4">
-              <fieldset>
-                <legend><bean:message key="billing.batchbilling.msgProviderTitle" /></legend>
-                <label><bean:message key="billing.batchbilling.msgProvider" /></label>
-                <input type="text" id="keyword" class="input-block-level" placeholder="<bean:message key="billing.batchbilling.msgProvider" />" title="Type in a provider's name and select it.">
-              </fieldset>
+                <fieldset>
+                    <legend><bean:message key="billing.batchbilling.msgProviderTitle"/></legend>
+                    <label><bean:message key="billing.batchbilling.msgProvider"/></label>
+                    <input type="text" id="keyword" class="input-block-level"
+                           placeholder="<bean:message key="billing.batchbilling.msgProvider" />"
+                           title="Type in a provider's name and select it.">
+                </fieldset>
             </div class="span4">
             <div class="span6">
-              <fieldset>
-                <legend><bean:message key="demographic.demographicexport.providers" /></legend>
-                <label><bean:message key="demographic.demographicexport.providers" /></label>
-                <select id="fwdProviders" name="providerNo" class="input-block-level" multiple="multiple" ondblclick="removeProvider(this);"></select>
-                <span class="help-block"><bean:message key="oscarMDS.forward.msgInstruction2" /></span>
-                <input type="submit" class="btn btn-primary" value="<bean:message key="global.btnSubmit" />" onclick="return preSubmit();">
-              </fieldset>
+                <fieldset>
+                    <legend><bean:message key="demographic.demographicexport.providers"/></legend>
+                    <label><bean:message key="demographic.demographicexport.providers"/></label>
+                    <select id="fwdProviders" name="providerNo" class="input-block-level" multiple="multiple"
+                            ondblclick="removeProvider(this);"></select>
+                    <span class="help-block"><bean:message key="oscarMDS.forward.msgInstruction2"/></span>
+                    <input type="submit" class="btn btn-primary" value="<bean:message key="global.btnSubmit" />"
+                           onclick="return preSubmit();">
+                </fieldset>
             </div class="span6">
         </div class="row">
     </div class="well">

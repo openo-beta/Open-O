@@ -5,16 +5,18 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Collection;
+
 import org.apache.cxf.message.Attachment;
 import org.apache.log4j.Logger;
 import org.oscarehr.integration.ebs.client.ng.AttachmentCachingInterceptor;
 
 /**
- * Resource resolver class that detects if a uriToResolve starts with "cid:", as in 
+ * Resource resolver class that detects if a uriToResolve starts with "cid:", as in
  * the case of MCEDT responses. It locates the attached resources using the uriToResolve
  * with "cid:" removed, allowing access of resource despite uri prefix
  */

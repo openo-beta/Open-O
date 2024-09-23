@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,103 +38,102 @@ import javax.persistence.TemporalType;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="bill_recipients")
+@Table(name = "bill_recipients")
 public class BillRecipients extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	private Integer id;
-	
-	private String name;
-	
-	private String address;
-	
-	private String city;
-	
-	private String province;
-	
-	private String postal;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date creationTime;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateTime;
-	
-	private int billingNo;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String address;
 
-	public String getName() {
-		return name;
-	}
+    private String city;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String province;
 
-	public String getAddress() {
-		return address;
-	}
+    private String postal;
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationTime;
 
-	public String getCity() {
-		return city;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateTime;
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    private int billingNo;
 
-	public String getProvince() {
-		return province;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setProvince(String province) {
-		this.province = province;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getPostal() {
-		return postal;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPostal(String postal) {
-		this.postal = postal;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Date getCreationTime() {
-		return creationTime;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setCreationTime(Date creationTime) {
-		this.creationTime = creationTime;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public Date getUpdateTime() {
-		return updateTime;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public int getBillingNo() {
-		return billingNo;
-	}
+    public String getProvince() {
+        return province;
+    }
 
-	public void setBillingNo(int billingNo) {
-		this.billingNo = billingNo;
-	}
-	
-	
-	
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostal() {
+        return postal;
+    }
+
+    public void setPostal(String postal) {
+        this.postal = postal;
+    }
+
+    public Date getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public int getBillingNo() {
+        return billingNo;
+    }
+
+    public void setBillingNo(int billingNo) {
+        this.billingNo = billingNo;
+    }
+
+
 }

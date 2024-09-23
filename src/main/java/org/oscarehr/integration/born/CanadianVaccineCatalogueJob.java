@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,39 +35,38 @@ import org.oscarehr.util.SpringUtils;
 
 public class CanadianVaccineCatalogueJob implements OscarRunnable {
 
-	private Logger logger = MiscUtils.getLogger();
+    private Logger logger = MiscUtils.getLogger();
 
-	private Provider provider;
-	private Security security;
-	
-	CanadianVaccineCatalogueManager cvcManager = SpringUtils.getBean(CanadianVaccineCatalogueManager.class);
-	
-	@Override
-	public void run() {
-		LoggedInInfo x = new LoggedInInfo();
-		x.setLoggedInProvider(provider);
-		x.setLoggedInSecurity(security);
+    private Provider provider;
+    private Security security;
 
-		logger.info("Canadian Vaccine Catalogue Job started and running as " + x.getLoggedInProvider().getFormattedName());
-		
-		cvcManager.update(x);
-		
-		logger.info("Canadian Vaccine Catalogue Job done");
-		
-	}
-	
-	
+    CanadianVaccineCatalogueManager cvcManager = SpringUtils.getBean(CanadianVaccineCatalogueManager.class);
 
-	public void setLoggedInProvider(Provider provider) {
-		this.provider = provider;
-	}
+    @Override
+    public void run() {
+        LoggedInInfo x = new LoggedInInfo();
+        x.setLoggedInProvider(provider);
+        x.setLoggedInSecurity(security);
 
-	public void setLoggedInSecurity(Security security) {
-		this.security = security;
-	}
+        logger.info("Canadian Vaccine Catalogue Job started and running as " + x.getLoggedInProvider().getFormattedName());
 
-	
-	@Override
-	public void setConfig(String string) {
-	}
+        cvcManager.update(x);
+
+        logger.info("Canadian Vaccine Catalogue Job done");
+
+    }
+
+
+    public void setLoggedInProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public void setLoggedInSecurity(Security security) {
+        this.security = security;
+    }
+
+
+    @Override
+    public void setConfig(String string) {
+    }
 }

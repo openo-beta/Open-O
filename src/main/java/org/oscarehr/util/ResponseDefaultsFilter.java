@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -24,6 +23,7 @@
 package org.oscarehr.util;
 
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -86,21 +86,21 @@ public final class ResponseDefaultsFilter implements Filter {
     }
 
     public void doFilter(ServletRequest originalRequest, ServletResponse originalResponse, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest)originalRequest;
-        HttpServletResponse response = (HttpServletResponse)originalResponse;
+        HttpServletRequest request = (HttpServletRequest) originalRequest;
+        HttpServletResponse response = (HttpServletResponse) originalResponse;
         if (this.setEncoding) {
-            this.setEncoding(request, (HttpServletResponse)response);
+            this.setEncoding(request, (HttpServletResponse) response);
         }
 
         if (this.setNoCache) {
-            this.setCaching(request, (HttpServletResponse)response);
+            this.setCaching(request, (HttpServletResponse) response);
         }
 
         if (this.forceStrongETag || this.warnCharsetCacheChange) {
-            response = new ResponseDefaultsFilterResponseWrapper((HttpServletResponse)response, this.forceStrongETag, this.warnCharsetCacheChange);
+            response = new ResponseDefaultsFilterResponseWrapper((HttpServletResponse) response, this.forceStrongETag, this.warnCharsetCacheChange);
         }
 
-        chain.doFilter(request, (ServletResponse)response);
+        chain.doFilter(request, (ServletResponse) response);
     }
 
     private void setCaching(HttpServletRequest request, HttpServletResponse response) {
@@ -108,7 +108,7 @@ public final class ResponseDefaultsFilter implements Filter {
         String[] arr$ = this.noCacheEndings;
         int len$ = arr$.length;
 
-        for(int i$ = 0; i$ < len$; ++i$) {
+        for (int i$ = 0; i$ < len$; ++i$) {
             String noCacheEnding = arr$[i$];
             if (requestUri.endsWith(noCacheEnding)) {
                 response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");

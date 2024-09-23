@@ -18,21 +18,27 @@ public class OceanEReferralAttachmentUtil {
     public static void detachOceanEReferralConsult(String docId, String type) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR_OF_DAY, -1);
-        EReferAttachmentData eReferAttachmentData = eReferAttachmentDataDao.getRecentByDocumentId(Integer.parseInt(docId), type, calendar.getTime());        
-        if (eReferAttachmentData == null) { return; }
+        EReferAttachmentData eReferAttachmentData = eReferAttachmentDataDao.getRecentByDocumentId(Integer.parseInt(docId), type, calendar.getTime());
+        if (eReferAttachmentData == null) {
+            return;
+        }
 
         List<EReferAttachmentData> eReferAttachmentDataList = eReferAttachmentData.geteReferAttachment().getAttachments();
         boolean deleteEReferAttachment = eReferAttachmentDataList.size() == 1;
 
         eReferAttachmentDataDao.remove(eReferAttachmentData.getId());
-        if (deleteEReferAttachment) { eReferAttachmentDao.remove(eReferAttachmentData.getId().getEReferAttachment().getId()); }
+        if (deleteEReferAttachment) {
+            eReferAttachmentDao.remove(eReferAttachmentData.getId().getEReferAttachment().getId());
+        }
     }
 
     public static void attachOceanEReferralConsult(String documentId, Integer demographicNo, String type) {
         Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.HOUR_OF_DAY, -1);
+        calendar.add(Calendar.HOUR_OF_DAY, -1);
         EReferAttachment eReferAttachment = eReferAttachmentDao.getRecentByDemographic(demographicNo, calendar.getTime());
-        if (eReferAttachment == null) { eReferAttachment = new EReferAttachment(demographicNo); }
+        if (eReferAttachment == null) {
+            eReferAttachment = new EReferAttachment(demographicNo);
+        }
         EReferAttachmentData attachmentData = new EReferAttachmentData(eReferAttachment, Integer.parseInt(documentId), type);
 
         if (eReferAttachment.getId() != null) {

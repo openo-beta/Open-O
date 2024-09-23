@@ -24,19 +24,19 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_form" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_form");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_form");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
 <%@page import="org.oscarehr.integration.born.ONAREnhancedFormToXML" %>
@@ -44,18 +44,18 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 
 <%
-	String demographicNo = request.getParameter("demographic_no");
-	String formId = request.getParameter("formId");
+    String demographicNo = request.getParameter("demographic_no");
+    String formId = request.getParameter("formId");
     String episodeId = request.getParameter("episodeId");
 
-    LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-	String providerNo=loggedInInfo.getLoggedInProviderNo();
-		
-	response.setContentType ("text/xml");
-	response.setHeader ("Content-Disposition", "attachment; filename=\"ar.xml\"");
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-	ONAREnhancedFormToXML gen = new ONAREnhancedFormToXML();
-	gen.generateXMLAndValidate(loggedInInfo, response.getOutputStream(),providerNo,demographicNo, Integer.parseInt(formId),Integer.parseInt(episodeId));
-	response.getOutputStream().flush();
-	response.getOutputStream().close();
-	%>
+    response.setContentType("text/xml");
+    response.setHeader("Content-Disposition", "attachment; filename=\"ar.xml\"");
+
+    ONAREnhancedFormToXML gen = new ONAREnhancedFormToXML();
+    gen.generateXMLAndValidate(loggedInInfo, response.getOutputStream(), providerNo, demographicNo, Integer.parseInt(formId), Integer.parseInt(episodeId));
+    response.getOutputStream().flush();
+    response.getOutputStream().close();
+%>

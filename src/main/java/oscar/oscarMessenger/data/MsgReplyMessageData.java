@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,21 +37,21 @@ public class MsgReplyMessageData {
     String localId;
 
 
-    public void estLists(){
+    public void estLists() {
         localList = new java.util.ArrayList<MsgProviderData>();
         remoList = new java.util.ArrayList<MsgProviderData>();
 
         oscar.oscarMessenger.data.MsgMessageData messageData = new oscar.oscarMessenger.data.MsgMessageData();
-        localId = messageData.getCurrentLocationId()+"";
+        localId = messageData.getCurrentLocationId() + "";
     }
 
-    public void add(String proId, String locoId){
-        if (locoId.equals(localId)){
+    public void add(String proId, String locoId) {
+        if (locoId.equals(localId)) {
             MsgProviderData providerData = new MsgProviderData();
             providerData.getId().setContactId(proId);
             providerData.getId().setContactId(locoId);
             localList.add(providerData);
-        }else{
+        } else {
             MsgProviderData providerData = new MsgProviderData();
             providerData.getId().setContactId(proId);
             providerData.getId().setContactId(locoId);
@@ -59,12 +59,12 @@ public class MsgReplyMessageData {
         }
     }
 
-    public boolean remoContains(String proId,String locoId){
+    public boolean remoContains(String proId, String locoId) {
         boolean retval = false;
-        if (remoList != null){
-            for (int i = 0; i < remoList.size(); i++){
+        if (remoList != null) {
+            for (int i = 0; i < remoList.size(); i++) {
                 MsgProviderData pD = remoList.get(i);
-                if ( ( proId.equals(pD.getId().getContactId()) ) && ( locoId.equals(pD.getId().getClinicLocationNo()+"") ) ){
+                if ((proId.equals(pD.getId().getContactId())) && (locoId.equals(pD.getId().getClinicLocationNo() + ""))) {
                     retval = true;
                     i = remoList.size();
                 }
@@ -72,9 +72,6 @@ public class MsgReplyMessageData {
         }
         return retval;
     }
-
-
-
 
 
 }

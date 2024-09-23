@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,70 +37,70 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="indivoDocs")
-public class IndivoDocs extends AbstractModel<Integer>{
+@Table(name = "indivoDocs")
+public class IndivoDocs extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private int oscarDocNo;
+    private int oscarDocNo;
 
-	private String indivoDocIdx;
+    private String indivoDocIdx;
 
-	private String docType;
+    private String docType;
 
-	@Temporal(TemporalType.DATE)
-	private Date dateSent;
+    @Temporal(TemporalType.DATE)
+    private Date dateSent;
 
-	private String update;
+    private String update;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public int getOscarDocNo() {
-    	return oscarDocNo;
+    public int getOscarDocNo() {
+        return oscarDocNo;
     }
 
-	public void setOscarDocNo(int oscarDocNo) {
-    	this.oscarDocNo = oscarDocNo;
+    public void setOscarDocNo(int oscarDocNo) {
+        this.oscarDocNo = oscarDocNo;
     }
 
-	public String getIndivoDocIdx() {
-    	return indivoDocIdx;
+    public String getIndivoDocIdx() {
+        return indivoDocIdx;
     }
 
-	public void setIndivoDocIdx(String indivoDocIdx) {
-    	this.indivoDocIdx = indivoDocIdx;
+    public void setIndivoDocIdx(String indivoDocIdx) {
+        this.indivoDocIdx = indivoDocIdx;
     }
 
-	public String getDocType() {
-    	return docType;
+    public String getDocType() {
+        return docType;
     }
 
-	public void setDocType(String docType) {
-    	this.docType = docType;
+    public void setDocType(String docType) {
+        this.docType = docType;
     }
 
-	public Date getDateSent() {
-    	return dateSent;
+    public Date getDateSent() {
+        return dateSent;
     }
 
-	public void setDateSent(Date dateSent) {
-    	this.dateSent = dateSent;
+    public void setDateSent(Date dateSent) {
+        this.dateSent = dateSent;
     }
 
-	public String getUpdate() {
-    	return update;
+    public String getUpdate() {
+        return update;
     }
 
-	public void setUpdate(String update) {
-    	this.update = update;
+    public void setUpdate(String update) {
+        this.update = update;
     }
 
 

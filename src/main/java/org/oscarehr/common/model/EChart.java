@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,129 +36,128 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="eChart")
-@Deprecated 
+@Table(name = "eChart")
+@Deprecated
 /**
  * @deprecated
  * Requires too much redundant dataspace
  */
-public class EChart extends AbstractModel<Integer>{
+public class EChart extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="eChartId")
-	private Integer id;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="timeStamp")
-	private Date timestamp;
-	
-	private int demographicNo;
-	
-	private String providerNo;
-	
-	private String subject;
-	
-	private String socialHistory;
-	
-	private String familyHistory;
-	
-	private String medicalHistory;
-	
-	private String ongoingConcerns;
-	
-	private String reminders;
-	
-	private String encounter;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "eChartId")
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "timeStamp")
+    private Date timestamp;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private int demographicNo;
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    private String providerNo;
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
+    private String subject;
 
-	public int getDemographicNo() {
-		return demographicNo;
-	}
+    private String socialHistory;
 
-	public void setDemographicNo(int demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    private String familyHistory;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    private String medicalHistory;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    private String ongoingConcerns;
 
-	public String getSubject() {
-		return subject;
-	}
+    private String reminders;
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    private String encounter;
 
-	public String getSocialHistory() {
-		return socialHistory;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setSocialHistory(String socialHistory) {
-		this.socialHistory = socialHistory;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getFamilyHistory() {
-		return familyHistory;
-	}
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-	public void setFamilyHistory(String familyHistory) {
-		this.familyHistory = familyHistory;
-	}
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public String getMedicalHistory() {
-		return medicalHistory;
-	}
+    public int getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setMedicalHistory(String medicalHistory) {
-		this.medicalHistory = medicalHistory;
-	}
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public String getOngoingConcerns() {
-		return ongoingConcerns;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setOngoingConcerns(String ongoingConcerns) {
-		this.ongoingConcerns = ongoingConcerns;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public String getReminders() {
-		return reminders;
-	}
+    public String getSubject() {
+        return subject;
+    }
 
-	public void setReminders(String reminders) {
-		this.reminders = reminders;
-	}
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-	public String getEncounter() {
-		return encounter;
-	}
+    public String getSocialHistory() {
+        return socialHistory;
+    }
 
-	public void setEncounter(String encounter) {
-		this.encounter = encounter;
-	}
-	
-	
-	
+    public void setSocialHistory(String socialHistory) {
+        this.socialHistory = socialHistory;
+    }
+
+    public String getFamilyHistory() {
+        return familyHistory;
+    }
+
+    public void setFamilyHistory(String familyHistory) {
+        this.familyHistory = familyHistory;
+    }
+
+    public String getMedicalHistory() {
+        return medicalHistory;
+    }
+
+    public void setMedicalHistory(String medicalHistory) {
+        this.medicalHistory = medicalHistory;
+    }
+
+    public String getOngoingConcerns() {
+        return ongoingConcerns;
+    }
+
+    public void setOngoingConcerns(String ongoingConcerns) {
+        this.ongoingConcerns = ongoingConcerns;
+    }
+
+    public String getReminders() {
+        return reminders;
+    }
+
+    public void setReminders(String reminders) {
+        this.reminders = reminders;
+    }
+
+    public String getEncounter() {
+        return encounter;
+    }
+
+    public void setEncounter(String encounter) {
+        this.encounter = encounter;
+    }
+
+
 }

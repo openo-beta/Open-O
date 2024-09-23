@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -28,138 +28,115 @@ package oscar.oscarEncounter.search.pageUtil;
 
 import org.apache.struts.action.ActionForm;
 
-public final class EctDemographicSearchForm extends ActionForm
-{
+public final class EctDemographicSearchForm extends ActionForm {
 
-    public String getFirstName()
-    {
-        if(firstName == null)
+    public String getFirstName() {
+        if (firstName == null)
             firstName = new String();
         return firstName;
     }
 
-    public void setFirstName(String str)
-    {
+    public void setFirstName(String str) {
         firstName = str;
     }
 
-    public String getLastName()
-    {
-        if(lastName == null)
+    public String getLastName() {
+        if (lastName == null)
             lastName = new String();
         return lastName;
     }
 
-    public void setLastName(String str)
-    {
+    public void setLastName(String str) {
         lastName = str;
     }
 
-    public String getPhone()
-    {
-        if(phone == null)
+    public String getPhone() {
+        if (phone == null)
             phone = new String();
         return phone;
     }
 
-    public void setPhone(String str)
-    {
+    public void setPhone(String str) {
         phone = str;
     }
 
-    public String getHin()
-    {
-        if(hin == null)
+    public String getHin() {
+        if (hin == null)
             hin = new String();
         return hin;
     }
 
-    public void setHin(String str)
-    {
+    public void setHin(String str) {
         hin = str;
     }
 
-    public String getSex()
-    {
-        if(sex == null)
+    public String getSex() {
+        if (sex == null)
             sex = new String();
         return sex;
     }
 
-    public void setSex(String str)
-    {
+    public void setSex(String str) {
         sex = str;
     }
 
-    public String getYearOfBirth()
-    {
-        if(yearOfBirth == null)
+    public String getYearOfBirth() {
+        if (yearOfBirth == null)
             yearOfBirth = new String();
         return yearOfBirth;
     }
 
-    public void setYearOfBirth(String str)
-    {
+    public void setYearOfBirth(String str) {
         yearOfBirth = str;
     }
 
-    public String getAddress()
-    {
-        if(address == null)
+    public String getAddress() {
+        if (address == null)
             address = new String();
         return address;
     }
 
-    public void setAddress(String str)
-    {
+    public void setAddress(String str) {
         address = str;
     }
 
-    public String getChartNumber()
-    {
-        if(chartNumber == null)
+    public String getChartNumber() {
+        if (chartNumber == null)
             chartNumber = new String();
         return chartNumber;
     }
 
-    public void setChartNumber(String str)
-    {
+    public void setChartNumber(String str) {
         chartNumber = str;
     }
 
-    public String getMonthOfBirth()
-    {
-        if(monthOfBirth == null)
+    public String getMonthOfBirth() {
+        if (monthOfBirth == null)
             monthOfBirth = new String();
         return monthOfBirth;
     }
 
-    public void setMonthOfBirth(String str)
-    {
+    public void setMonthOfBirth(String str) {
         monthOfBirth = str;
     }
 
-    public String getDayOfBirth()
-    {
-        if(dayOfBirth == null)
+    public String getDayOfBirth() {
+        if (dayOfBirth == null)
             dayOfBirth = new String();
         return dayOfBirth;
     }
 
-    public void setDayOfBirth(String str)
-    {
+    public void setDayOfBirth(String str) {
         dayOfBirth = str;
     }
 
-    public String getCity()
-    {
-        if(city == null)
+    public String getCity() {
+        if (city == null)
             city = new String();
         return city;
     }
 
-    public void setCity(String str)
-    {
+    public void setCity(String str) {
         city = str;
     }
 

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,21 +51,28 @@ public class DSValueStatement extends DSValue {
 
         String symbol;
 
-        private Operator(String symbol) {this.symbol = symbol; }
+        private Operator(String symbol) {
+            this.symbol = symbol;
+        }
+
         private static Operator getOperator(String symbol) throws IllegalArgumentException {
-            for (Operator currentOperator: Operator.values()) {
+            for (Operator currentOperator : Operator.values()) {
                 if (currentOperator.getSymbol().equals(symbol)) return currentOperator;
             }
             throw new IllegalArgumentException("Cannot get enum Operator from '" + symbol + "'");
         }
+
         private static String[] getOperatorSymbols() {
             ArrayList<String> operatorSymbols = new ArrayList<String>();
-            for (Operator currentOperator: Operator.values()) {
+            for (Operator currentOperator : Operator.values()) {
                 operatorSymbols.add(currentOperator.getSymbol());
             }
             return (String[]) operatorSymbols.toArray();
         }
-        private String getSymbol() { return symbol; }
+
+        private String getSymbol() {
+            return symbol;
+        }
     }
 
     private Operator operator;
@@ -75,16 +82,21 @@ public class DSValueStatement extends DSValue {
             int testValueInt = Integer.parseInt(testValue);
             int valueInt = Integer.parseInt(this.getValue());
             switch (operator) {
-                case lessThan: return testValueInt < valueInt;
-                case lessThanEqualTo: return testValueInt <= valueInt;
-                case greaterThan: return testValueInt > valueInt;
-                case greaterThanEqualTo: return testValueInt >= valueInt;
-                case equal: return testValueInt == valueInt;
+                case lessThan:
+                    return testValueInt < valueInt;
+                case lessThanEqualTo:
+                    return testValueInt <= valueInt;
+                case greaterThan:
+                    return testValueInt > valueInt;
+                case greaterThanEqualTo:
+                    return testValueInt >= valueInt;
+                case equal:
+                    return testValueInt == valueInt;
             }
 
-         //   if (this.operator == Operator.lessThan) {
-         //       return testValueInt < valueInt;
-         //   } else
+            //   if (this.operator == Operator.lessThan) {
+            //       return testValueInt < valueInt;
+            //   } else
         } catch (NumberFormatException nfe) {
             throw new DecisionSupportException("cannot parse value '" + testValue + "' or '" + this.getValue() + "' to int to evaluate a compare statement)", nfe);
         }

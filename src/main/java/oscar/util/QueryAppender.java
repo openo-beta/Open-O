@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,202 +29,202 @@ package oscar.util;
  * structure of JPQL queries.
  */
 public class QueryAppender {
-	
-	private Appender whereBuffer = new Appender();
 
-	private boolean isWhereAppended = false;
+    private Appender whereBuffer = new Appender();
 
-	private String baseQuery;
-	
-	private Appender orderBuffer = new Appender(",");
+    private boolean isWhereAppended = false;
 
-	/**
-	 * Creates a new instance and sets the empty base query
-	 */
-	public QueryAppender() {
-		this("");
-	}
+    private String baseQuery;
 
-	/**
-	 * Creates a new instance and sets the specified base query
-	 * 
-	 * @param baseQuery
-	 *            Base query to set
-	 */
-	public QueryAppender(String baseQuery) {
-		setBaseQuery(baseQuery);
-	}
+    private Appender orderBuffer = new Appender(",");
 
-	/**
-	 * Gets base query for this appender
-	 * 
-	 * @return Returns the base query
-	 */
-	public String getBaseQuery() {
-		return baseQuery;
-	}
+    /**
+     * Creates a new instance and sets the empty base query
+     */
+    public QueryAppender() {
+        this("");
+    }
 
-	/**
-	 * Sets base query for this appender
-	 * 
-	 * @param baseQuery
-	 *            Base query to set
-	 */
-	public void setBaseQuery(String baseQuery) {
-		this.baseQuery = baseQuery;
-	}
+    /**
+     * Creates a new instance and sets the specified base query
+     *
+     * @param baseQuery
+     *            Base query to set
+     */
+    public QueryAppender(String baseQuery) {
+        setBaseQuery(baseQuery);
+    }
 
-	/**
-	 * Combines current where clause with the specified sub-clause using the
-	 * logical OR operator
-	 * 
-	 * @param clause
-	 *            Clause to combine
-	 */
-	public void or(String clause) {
-		addWhere("OR", clause);
-	}
+    /**
+     * Gets base query for this appender
+     *
+     * @return Returns the base query
+     */
+    public String getBaseQuery() {
+        return baseQuery;
+    }
 
-	/**
-	 * Combines current where clause with the specified sub-clause using the
-	 * logical AND operator
-	 * 
-	 * @param clause
-	 *            Clause to combine
-	 */
-	public void and(String clause) {
-		addWhere("AND", clause);
-	}
-	
-	/**
-	 * Combines current where clause with the specified sub-clause using the
-	 * logical AND operator
-	 * 
-	 * @param appender
-	 * 		Appender to combine
-	 */
-	public void and(QueryAppender appender) {
-		String clause = appender.getWhereClause();
-		if (clause.isEmpty()) {
-			return;
-		}
-		and("(" + clause + ")");
-	}
-	
-	/**
-	 * Combines current where clause with the specified sub-clause using the
-	 * logical OR operator
-	 * 
-	 * @param appender
-	 * 		Appender to combine
-	 */
-	public void or(QueryAppender appender) {
-		String clause = appender.getWhereClause();
-		if (clause.isEmpty()) {
-			return;
-		}
-		or("(" + clause + ")");
-	}
-	
-	/**
-	 * Adds the specified sub-clause to the current where clause. This method
-	 * doesn't insert the proper operator. Use this method only when it's
-	 * necessary to add a single where sub-clause.
-	 * 
-	 * @param clause
-	 *            Clause to be added to where clause
-	 */
-	public void addWhere(String clause) {
-		getWhereBuffer().append(clause);
-		setWhereAppended(true);
-	}
+    /**
+     * Sets base query for this appender
+     *
+     * @param baseQuery
+     *            Base query to set
+     */
+    public void setBaseQuery(String baseQuery) {
+        this.baseQuery = baseQuery;
+    }
 
-	/**
-	 * Adds where clause to the current sub-clause using the operator provided
-	 * 
-	 * @param operator
-	 *            Operator to use for joining the sub-clause with the current
-	 *            where clause. It should be either "or" or "and"
-	 * @param clause
-	 *            Clause to be added to the current where clause
-	 */
-	public void addWhere(String operator, String clause) {
-		if (isWhereAppended()) {
-			getWhereBuffer().append(operator);
-		}
-		getWhereBuffer().append(clause);
-		setWhereAppended(true);
-	}
+    /**
+     * Combines current where clause with the specified sub-clause using the
+     * logical OR operator
+     *
+     * @param clause
+     *            Clause to combine
+     */
+    public void or(String clause) {
+        addWhere("OR", clause);
+    }
 
-	/**
-	 * Gets the content of this appended as an JPQL string.
-	 * 
-	 * @return Returns the JPQL string.
-	 */
-	public String getQuery() {
-		Appender appender = new Appender();
-		if (getBaseQuery() != null) {
-			appender.append(getBaseQuery());
-		}
-		
-		if (getWhereBuffer().getBuffer().length() != 0) {
-			appender.append("WHERE");
-			appender.append(getWhereClause());
-		}
-		
-		if (getOrderBuffer().getBuffer().length() != 0) {
-			appender.append("ORDER BY");
-			appender.append(getOrderBuffer());
-		}
-		
-		return appender.toString();
-	}
+    /**
+     * Combines current where clause with the specified sub-clause using the
+     * logical AND operator
+     *
+     * @param clause
+     *            Clause to combine
+     */
+    public void and(String clause) {
+        addWhere("AND", clause);
+    }
 
-	private boolean isWhereAppended() {
-		return isWhereAppended;
-	}
+    /**
+     * Combines current where clause with the specified sub-clause using the
+     * logical AND operator
+     *
+     * @param appender
+     * 		Appender to combine
+     */
+    public void and(QueryAppender appender) {
+        String clause = appender.getWhereClause();
+        if (clause.isEmpty()) {
+            return;
+        }
+        and("(" + clause + ")");
+    }
 
-	private void setWhereAppended(boolean isWhereAppended) {
-		this.isWhereAppended = isWhereAppended;
-	}
+    /**
+     * Combines current where clause with the specified sub-clause using the
+     * logical OR operator
+     *
+     * @param appender
+     * 		Appender to combine
+     */
+    public void or(QueryAppender appender) {
+        String clause = appender.getWhereClause();
+        if (clause.isEmpty()) {
+            return;
+        }
+        or("(" + clause + ")");
+    }
 
-	/**
-	 * Gets the current where clause
-	 * 
-	 * @return Returns the where clause
-	 */
-	public String getWhereClause() {
-		return getWhereBuffer().toString();
-	}
+    /**
+     * Adds the specified sub-clause to the current where clause. This method
+     * doesn't insert the proper operator. Use this method only when it's
+     * necessary to add a single where sub-clause.
+     *
+     * @param clause
+     *            Clause to be added to where clause
+     */
+    public void addWhere(String clause) {
+        getWhereBuffer().append(clause);
+        setWhereAppended(true);
+    }
 
-	private Appender getWhereBuffer() {
-		return whereBuffer;
-	}
+    /**
+     * Adds where clause to the current sub-clause using the operator provided
+     *
+     * @param operator
+     *            Operator to use for joining the sub-clause with the current
+     *            where clause. It should be either "or" or "and"
+     * @param clause
+     *            Clause to be added to the current where clause
+     */
+    public void addWhere(String operator, String clause) {
+        if (isWhereAppended()) {
+            getWhereBuffer().append(operator);
+        }
+        getWhereBuffer().append(clause);
+        setWhereAppended(true);
+    }
 
-	/**
-	 * Checks if this appender contains a where clause appended.
-	 * 
-	 * @return Returns true if there is a where clause appended and false
-	 *         otherwise
-	 */
-	public boolean isAppended() {
-		return getWhereBuffer().length() != 0;
-	}
+    /**
+     * Gets the content of this appended as an JPQL string.
+     *
+     * @return Returns the JPQL string.
+     */
+    public String getQuery() {
+        Appender appender = new Appender();
+        if (getBaseQuery() != null) {
+            appender.append(getBaseQuery());
+        }
 
-	@Override
-	public String toString() {
-		return getQuery();
-	}
+        if (getWhereBuffer().getBuffer().length() != 0) {
+            appender.append("WHERE");
+            appender.append(getWhereClause());
+        }
 
-	public void addOrder(String order) {
-		getOrderBuffer().append(order);
-	}
+        if (getOrderBuffer().getBuffer().length() != 0) {
+            appender.append("ORDER BY");
+            appender.append(getOrderBuffer());
+        }
 
-	protected Appender getOrderBuffer() {
-		return orderBuffer;
-	}
+        return appender.toString();
+    }
 
-	protected void setOrderBuffer(Appender orderBuffer) {
-		this.orderBuffer = orderBuffer;
-	}
+    private boolean isWhereAppended() {
+        return isWhereAppended;
+    }
+
+    private void setWhereAppended(boolean isWhereAppended) {
+        this.isWhereAppended = isWhereAppended;
+    }
+
+    /**
+     * Gets the current where clause
+     *
+     * @return Returns the where clause
+     */
+    public String getWhereClause() {
+        return getWhereBuffer().toString();
+    }
+
+    private Appender getWhereBuffer() {
+        return whereBuffer;
+    }
+
+    /**
+     * Checks if this appender contains a where clause appended.
+     *
+     * @return Returns true if there is a where clause appended and false
+     *         otherwise
+     */
+    public boolean isAppended() {
+        return getWhereBuffer().length() != 0;
+    }
+
+    @Override
+    public String toString() {
+        return getQuery();
+    }
+
+    public void addOrder(String order) {
+        getOrderBuffer().append(order);
+    }
+
+    protected Appender getOrderBuffer() {
+        return orderBuffer;
+    }
+
+    protected void setOrderBuffer(Appender orderBuffer) {
+        this.orderBuffer = orderBuffer;
+    }
 }

@@ -33,66 +33,70 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 --%>
 
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo"%>
-<%@page import="org.oscarehr.phr.util.MyOscarUtils"%>
+<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
+<%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <%
-String errorMsg = (String) request.getAttribute("error_msg");
-boolean errors = false;
-String cssPrefix = "objectGreen";
-if (errorMsg != null) errors = true;
-if (errors) {
-    cssPrefix = "objectRed";
-}
+    String errorMsg = (String) request.getAttribute("error_msg");
+    boolean errors = false;
+    String cssPrefix = "objectGreen";
+    if (errorMsg != null) errors = true;
+    if (errors) {
+        cssPrefix = "objectRed";
+    }
 %>
 
 <%
-String providerName = request.getSession().getAttribute("userfirstname") + " " +
-        request.getSession().getAttribute("userlastname");
-pageContext.setAttribute("forwardToOnSuccess",request.getAttribute("forwardToOnSuccess"));
+    String providerName = request.getSession().getAttribute("userfirstname") + " " +
+            request.getSession().getAttribute("userlastname");
+    pageContext.setAttribute("forwardToOnSuccess", request.getAttribute("forwardToOnSuccess"));
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/phr/phr.css"/>
-        <title>PHR Call</title>
-        <script type="text/javascript" language="JavaScript" src="<%=request.getContextPath()%>/share/javascript/prototype.js"></script>
-        <script type="text/javascript" language="JavaScript" src="<%=request.getContextPath()%>/phr/phr.js"></script>
-        <script type="text/javascript" language="JavaScript">
-            function startCloseWindowTimeout() {
-                var sec=1500;
-                setTimeout("closeWindow()",sec);
-            }
+<head>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/phr/phr.css"/>
+    <title>PHR Call</title>
+    <script type="text/javascript" language="JavaScript"
+            src="<%=request.getContextPath()%>/share/javascript/prototype.js"></script>
+    <script type="text/javascript" language="JavaScript" src="<%=request.getContextPath()%>/phr/phr.js"></script>
+    <script type="text/javascript" language="JavaScript">
+        function startCloseWindowTimeout() {
+            var sec = 1500;
+            setTimeout("closeWindow()", sec);
+        }
 
-            function closeWindow() {
-                window.opener=self;
-                window.close();
-            }
-            function startRedirectTimeout(url) {
-                var sec=800;
-                setTimeout("redirect('" + url + "')",sec);
-            }
-            function redirect(url) {
-                window.location.href = url;
-            }
-            function onloadd() {
-                document.getElementById("phrPassword").focus();
-            }
-        </script>
-        <style type="text/css">
+        function closeWindow() {
+            window.opener = self;
+            window.close();
+        }
+
+        function startRedirectTimeout(url) {
+            var sec = 800;
+            setTimeout("redirect('" + url + "')", sec);
+        }
+
+        function redirect(url) {
+            window.location.href = url;
+        }
+
+        function onloadd() {
+            document.getElementById("phrPassword").focus();
+        }
+    </script>
+    <style type="text/css">
         .myoscarLoginElementNoAuth {
             border: 0;
             padding-left: 3px;
-            color:black;
+            color: black;
             padding-right: 3px;
             background-color: #f3e9e9;
             text-align: left;
@@ -108,7 +112,8 @@ pageContext.setAttribute("forwardToOnSuccess",request.getAttribute("forwardToOnS
             text-align: left;
             font-weight: normal;
         }
-        .moreInfoBoxoverBody{
+
+        .moreInfoBoxoverBody {
             border: 1px solid #9fbbe8;
             padding: 1px;
             padding-left: 3px;
@@ -117,7 +122,8 @@ pageContext.setAttribute("forwardToOnSuccess",request.getAttribute("forwardToOnS
             font-size: 10px;
             background-color: white;
         }
-        .moreInfoBoxoverHeader{
+
+        .moreInfoBoxoverHeader {
             border: 1px solid #9fbbe8;
             background-color: #e8ecf3;
             padding: 2px;
@@ -128,72 +134,79 @@ pageContext.setAttribute("forwardToOnSuccess",request.getAttribute("forwardToOnS
             color: red;
         }
     </style>
-    </head>
-    <body onload="onloadd()">
-        <div class="<%=cssPrefix%>">
-            <div class="<%=cssPrefix%>Header">Personal Health Record Action</div>
-            <%if (errors) {%>
-                <font class="announcementRed"><%=errorMsg%></font>
-            <%} else {%>
-                <center><font class="announcementGreen">You must log into the personal health record to continue.</font></center>
-                <center><font style="font-size: 10px;"><sup>(Use your personal health record provider password)</sup></font></center>
-               <br/>
-              		<%
-              			if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user")))
-              			{
-              				MyOscarLoggedInInfo myOscarLoggedInInfo=MyOscarLoggedInInfo.getLoggedInInfo(session);
-              				%>
-	                       <div class="myoscarLoginElementAuth">
-	                           Status: <b>Logged in as <%=myOscarLoggedInInfo.getLoggedInPerson().getFirstName()+' '+myOscarLoggedInInfo.getLoggedInPerson().getLastName()%></b> (<%=myOscarLoggedInInfo.getLoggedInPerson().getUserName()%>)<br/>
-	                           <logic:notPresent name="forwardToOnSuccess">
-	                               <center>Closing Window... <a href="javascript:;" onclick="closeWindow()">close</a></center>
-	                               <%-- if no errors and logged in, close window--%>
-	                               <%if (!errors) {%>
-	                                    <script type="text/javascript" language="JavaScript">startCloseWindowTimeout()</script>
-	                               <%}%>
-	                           </logic:notPresent>
-	                           <logic:present name="forwardToOnSuccess">
-	                               <center>Redirecting ... <a href="javascript:;" onclick="redirect('<bean:write name="forwardToOnSuccess"/>');">redirect now</a></center>
-	                               <%-- if no errors and logged in, close window--%>
-	                               <%if (!errors) {%>
-	                                    <script type="text/javascript" language="JavaScript">
-	                                    if(window.opener.popColumn){
-	                                    	window.opener.popColumn('<c:out value="${ctx}"/>/oscarEncounter/displayMyOscar.do?hC=','myoscar','myoscar','','');
-	                                    }
-	                                    startRedirectTimeout('<%=request.getAttribute("forwardToOnSuccess")%>');
-	                                    </script>
-	                               <%}%>
-	                           </logic:present>
-	
-	                       </div>
-	                       <%
-	                    }
-             			else
-             			{
-             				%>
-	                        <div class="myoscarLoginElementNoAuth">
-	                            <form action="<%=request.getContextPath()%>/phr/Login.do" name="phrLogin" method="POST" style="margin-bottom: 0px;">
-	                                <logic:present name="phrUserLoginErrorMsg">
-	                                    <div class="phrLoginErrorMsg"><font color="red"><bean:write name="phrUserLoginErrorMsg"/></font>
-	                                    <logic:present name="phrTechLoginErrorMsg">
-	                                        <a href="javascript:;" title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More Info</a></div>
-	                                    </logic:present>
-	                                </logic:present>
-	                                Status: <b>Not logged in</b><br/>
-	                                <%=providerName%> password: <input type="password" id="phrPassword" name="phrPassword" style="font-size: 8px; width: 40px;"><br/>
-	                                <center>
-	                                    <a href="javascript: document.forms['phrLogin'].submit()">Login & Send Now</a> &nbsp;&nbsp;
-	                                    <a href="javascript:;" onclick="closeWindow()">Send Later</a>
-	                                </center>
-	                                <input type="hidden" name="forwardto" value="<%=request.getServletPath()%>">
-	                                <input type="hidden" name="forwardToOnSuccess" value="<bean:write name="forwardToOnSuccess"/>">
-	                            </form>
-	                        </div>
-             				<%
-             			}
-            	}
-            	%>
-        </div>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/share/javascript/boxover.js"></script>
-    </body>
+</head>
+<body onload="onloadd()">
+<div class="<%=cssPrefix%>">
+    <div class="<%=cssPrefix%>Header">Personal Health Record Action</div>
+    <%if (errors) {%>
+    <font class="announcementRed"><%=errorMsg%>
+    </font>
+    <%} else {%>
+    <center><font class="announcementGreen">You must log into the personal health record to continue.</font></center>
+    <center><font style="font-size: 10px;"><sup>(Use your personal health record provider password)</sup></font>
+    </center>
+    <br/>
+    <%
+        if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {
+            MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
+    %>
+    <div class="myoscarLoginElementAuth">
+        Status: <b>Logged in
+        as <%=myOscarLoggedInInfo.getLoggedInPerson().getFirstName() + ' ' + myOscarLoggedInInfo.getLoggedInPerson().getLastName()%>
+    </b> (<%=myOscarLoggedInInfo.getLoggedInPerson().getUserName()%>)<br/>
+        <logic:notPresent name="forwardToOnSuccess">
+            <center>Closing Window... <a href="javascript:;" onclick="closeWindow()">close</a></center>
+            <%-- if no errors and logged in, close window--%>
+            <%if (!errors) {%>
+            <script type="text/javascript" language="JavaScript">startCloseWindowTimeout()</script>
+            <%}%>
+        </logic:notPresent>
+        <logic:present name="forwardToOnSuccess">
+            <center>Redirecting ... <a href="javascript:;"
+                                       onclick="redirect('<bean:write name="forwardToOnSuccess"/>');">redirect now</a>
+            </center>
+            <%-- if no errors and logged in, close window--%>
+            <%if (!errors) {%>
+            <script type="text/javascript" language="JavaScript">
+                if (window.opener.popColumn) {
+                    window.opener.popColumn('<c:out value="${ctx}"/>/oscarEncounter/displayMyOscar.do?hC=', 'myoscar', 'myoscar', '', '');
+                }
+                startRedirectTimeout('<%=request.getAttribute("forwardToOnSuccess")%>');
+            </script>
+            <%}%>
+        </logic:present>
+
+    </div>
+    <%
+    } else {
+    %>
+    <div class="myoscarLoginElementNoAuth">
+        <form action="<%=request.getContextPath()%>/phr/Login.do" name="phrLogin" method="POST"
+              style="margin-bottom: 0px;">
+            <logic:present name="phrUserLoginErrorMsg">
+                <div class="phrLoginErrorMsg"><font color="red"><bean:write name="phrUserLoginErrorMsg"/></font>
+                <logic:present name="phrTechLoginErrorMsg">
+                    <a href="javascript:;"
+                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More
+                        Info</a></div>
+                </logic:present>
+            </logic:present>
+            Status: <b>Not logged in</b><br/>
+            <%=providerName%> password: <input type="password" id="phrPassword" name="phrPassword"
+                                               style="font-size: 8px; width: 40px;"><br/>
+            <center>
+                <a href="javascript: document.forms['phrLogin'].submit()">Login & Send Now</a> &nbsp;&nbsp;
+                <a href="javascript:;" onclick="closeWindow()">Send Later</a>
+            </center>
+            <input type="hidden" name="forwardto" value="<%=request.getServletPath()%>">
+            <input type="hidden" name="forwardToOnSuccess" value="<bean:write name="forwardToOnSuccess"/>">
+        </form>
+    </div>
+    <%
+            }
+        }
+    %>
+</div>
+<script type="text/javascript" src="<%=request.getContextPath()%>/share/javascript/boxover.js"></script>
+</body>
 </html>

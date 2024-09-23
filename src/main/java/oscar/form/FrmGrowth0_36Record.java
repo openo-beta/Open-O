@@ -21,7 +21,7 @@ public class FrmGrowth0_36Record extends FrmRecord {
         Properties props = new Properties();
 
         if (existingID <= 0) {
-            
+
             String sql = "SELECT demographic_no, last_name, first_name, sex, address, city, province, postal, phone, phone2, year_of_birth, month_of_birth, date_of_birth, hin FROM demographic WHERE demographic_no = "
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
@@ -44,7 +44,7 @@ public class FrmGrowth0_36Record extends FrmRecord {
             FrmRecordHelp frh = new FrmRecordHelp();
             frh.setDateFormat(_dateFormat);
             props = (frh).getFormRecord(sql);
-            
+
             sql = "SELECT sex, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = "
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);

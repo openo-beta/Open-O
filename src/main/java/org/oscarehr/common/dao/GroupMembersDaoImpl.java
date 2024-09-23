@@ -6,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -31,6 +31,7 @@ package org.oscarehr.common.dao;
 import org.springframework.stereotype.Repository;
 import org.oscarehr.common.model.GroupMembers;
 import oscar.oscarMessenger.data.ContactIdentifier;
+
 import javax.persistence.Query;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +46,7 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
     /**
      * Only group members with an integrated facility ID that is remote - greater
      * than zero.
-     * 
+     *
      * @param groupId
      * @return
      */
@@ -62,7 +63,7 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
 
     /**
      * Only group members that have a facility id of 0 - for local.
-     * 
+     *
      * @param groupId
      * @return
      */
@@ -124,7 +125,7 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
         query.setParameter(2, groupId);
         @SuppressWarnings("unchecked")
         List<GroupMembers> results = query.getResultList();
-        if(results == null) {
+        if (results == null) {
             results = Collections.emptyList();
         }
         return results;

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,104 +34,104 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="reportTemplates")
+@Table(name = "reportTemplates")
 public class ReportTemplates extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="templateid")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "templateid")
+    private Integer id;
 
-	@Column(name="templatetitle")
-	private String templateTitle;
+    @Column(name = "templatetitle")
+    private String templateTitle;
 
-	@Column(name="templatedescription")
-	private String templateDescription;
+    @Column(name = "templatedescription")
+    private String templateDescription;
 
-	@Column(name="templatesql")
-	private String templateSql;
+    @Column(name = "templatesql")
+    private String templateSql;
 
-	@Column(name="templatexml")
-	private String templateXml;
+    @Column(name = "templatexml")
+    private String templateXml;
 
-	private int active;
+    private int active;
 
-	private String type;
-	
-	private Boolean sequence;
-	
-	private String uuid;
+    private String type;
 
-	public Integer getId() {
-    	return id;
+    private Boolean sequence;
+
+    private String uuid;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getTemplateTitle() {
-    	return templateTitle;
+    public String getTemplateTitle() {
+        return templateTitle;
     }
 
-	public void setTemplateTitle(String templateTitle) {
-    	this.templateTitle = templateTitle;
+    public void setTemplateTitle(String templateTitle) {
+        this.templateTitle = templateTitle;
     }
 
-	public String getTemplateDescription() {
-    	return templateDescription;
+    public String getTemplateDescription() {
+        return templateDescription;
     }
 
-	public void setTemplateDescription(String templateDescription) {
-    	this.templateDescription = templateDescription;
+    public void setTemplateDescription(String templateDescription) {
+        this.templateDescription = templateDescription;
     }
 
-	public String getTemplateSql() {
-    	return templateSql;
+    public String getTemplateSql() {
+        return templateSql;
     }
 
-	public void setTemplateSql(String templateSql) {
-    	this.templateSql = templateSql;
+    public void setTemplateSql(String templateSql) {
+        this.templateSql = templateSql;
     }
 
-	public String getTemplateXml() {
-    	return templateXml;
+    public String getTemplateXml() {
+        return templateXml;
     }
 
-	public void setTemplateXml(String templateXml) {
-    	this.templateXml = templateXml;
+    public void setTemplateXml(String templateXml) {
+        this.templateXml = templateXml;
     }
 
-	public int getActive() {
-    	return active;
+    public int getActive() {
+        return active;
     }
 
-	public void setActive(int active) {
-    	this.active = active;
+    public void setActive(int active) {
+        this.active = active;
     }
 
-	public String getType() {
-    	return type;
+    public String getType() {
+        return type;
     }
 
-	public void setType(String type) {
-    	this.type = type;
+    public void setType(String type) {
+        this.type = type;
     }
 
-	public Boolean isSequence() {
-		return (sequence!=null)?sequence:false;
-	}
-
-	public void setSequence(Boolean sequence) {
-		this.sequence = sequence;
-	}
-
-	public String getUuid() {
-    	return uuid;
+    public Boolean isSequence() {
+        return (sequence != null) ? sequence : false;
     }
 
-	public void setUuid(String uuid) {
-    	this.uuid = uuid;
+    public void setSequence(Boolean sequence) {
+        this.sequence = sequence;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
 }

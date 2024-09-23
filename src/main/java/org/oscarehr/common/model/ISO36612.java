@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,49 +32,48 @@ import javax.persistence.Id;
 @Entity
 public class ISO36612 extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	
-	
-	private String code;
-	
-	private String province;
-	
-	private String country;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String code;
 
-	public String getCode() {
-		return code;
-	}
+    private String province;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    private String country;
 
-	public String getProvince() {
-		return province;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setProvince(String province) {
-		this.province = province;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	
-	
-	
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+
 }

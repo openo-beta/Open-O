@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,137 +37,136 @@ import org.apache.commons.lang.time.DateFormatUtils;
 
 @Entity
 public class DrugDispensing extends AbstractModel<Integer> {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
 
-	private int drugId;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
-	
-	private int productId;
-	
-	private int quantity;
-	
-	private String unit;
-	
-	private String dispensingProviderNo;
-	
-	private String providerNo;
-	
-	private boolean paidFor;
-	
-	private String notes;
-	
-	private int programNo;
-	
-	private boolean archived = false;
-	
-	
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id = null;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private int drugId;
 
-	public int getDrugId() {
-		return drugId;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
 
-	public void setDrugId(int drugId) {
-		this.drugId = drugId;
-	}
+    private int productId;
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    private int quantity;
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    private String unit;
 
-	public int getProductId() {
-		return productId;
-	}
+    private String dispensingProviderNo;
 
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
+    private String providerNo;
 
-	public int getQuantity() {
-		return quantity;
-	}
+    private boolean paidFor;
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    private String notes;
 
-	public String getUnit() {
-		return unit;
-	}
+    private int programNo;
 
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+    private boolean archived = false;
 
-	public String getDispensingProviderNo() {
-		return dispensingProviderNo;
-	}
 
-	public void setDispensingProviderNo(String dispensingProviderNo) {
-		this.dispensingProviderNo = dispensingProviderNo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public int getDrugId() {
+        return drugId;
+    }
 
-	public boolean isPaidFor() {
-		return paidFor;
-	}
+    public void setDrugId(int drugId) {
+        this.drugId = drugId;
+    }
 
-	public void setPaidFor(boolean paidFor) {
-		this.paidFor = paidFor;
-	}
+    public Date getDateCreated() {
+        return dateCreated;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-	
-	public String getDateCreatedAsString() {
-		if(getDateCreated() != null)
-			return DateFormatUtils.ISO_DATE_FORMAT.format(getDateCreated());
-		return null;	
-	}
+    public int getProductId() {
+        return productId;
+    }
 
-	public int getProgramNo() {
-		return programNo;
-	}
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
-	public void setProgramNo(int programNo) {
-		this.programNo = programNo;
-	}
+    public int getQuantity() {
+        return quantity;
+    }
 
-	public boolean isArchived() {
-		return archived;
-	}
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-	public void setArchived(boolean archived) {
-		this.archived = archived;
-	}
-	
-	
-	
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getDispensingProviderNo() {
+        return dispensingProviderNo;
+    }
+
+    public void setDispensingProviderNo(String dispensingProviderNo) {
+        this.dispensingProviderNo = dispensingProviderNo;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public boolean isPaidFor() {
+        return paidFor;
+    }
+
+    public void setPaidFor(boolean paidFor) {
+        this.paidFor = paidFor;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getDateCreatedAsString() {
+        if (getDateCreated() != null)
+            return DateFormatUtils.ISO_DATE_FORMAT.format(getDateCreated());
+        return null;
+    }
+
+    public int getProgramNo() {
+        return programNo;
+    }
+
+    public void setProgramNo(int programNo) {
+        this.programNo = programNo;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+
 }

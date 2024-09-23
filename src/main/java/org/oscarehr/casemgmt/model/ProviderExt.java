@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,36 +32,36 @@ import javax.persistence.Table;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="providerExt")
+@Table(name = "providerExt")
 public class ProviderExt extends AbstractModel<String> {
 
-	@Id
-	@Column(name="provider_no")
-	private String providerNo;
-	
-	private String signature;
+    @Id
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    private String signature;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public String getSignature() {
-		return signature;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setSignature(String signature) {
-		this.signature = signature;
-	}
-	
-	public String getId() {
-		return getProviderNo();
-	}
-	
-	public void setId(String id) {
-		setProviderNo(id);
-	}
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getId() {
+        return getProviderNo();
+    }
+
+    public void setId(String id) {
+        setProviderNo(id);
+    }
 }

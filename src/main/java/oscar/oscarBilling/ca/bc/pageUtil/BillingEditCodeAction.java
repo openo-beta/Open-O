@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,13 +49,13 @@ import oscar.oscarBilling.ca.bc.data.BillingCodeData;
 import oscar.util.UtilDateUtilities;
 
 public final class BillingEditCodeAction extends DispatchAction {
-     private static BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class);
+    private static BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class);
 
-    public ActionForward ajaxCodeUpdate(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws IOException  {
-        String id  =  request.getParameter("id");
-        String val =       request.getParameter("val");
-        String billingServiceDate =       request.getParameter("billService");
-        String termDate =        request.getParameter("termDate");
+    public ActionForward ajaxCodeUpdate(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
+        String val = request.getParameter("val");
+        String billingServiceDate = request.getParameter("billService");
+        String termDate = request.getParameter("termDate");
         String codeId = request.getParameter("codeId");
 
         BillingService itemCode = billingServiceDao.find(Integer.parseInt(codeId));
@@ -66,62 +66,61 @@ public final class BillingEditCodeAction extends DispatchAction {
         billingServiceDao.merge(itemCode);
 
         Map map = new HashMap();
-        map.put("id",id);
-        map.put("val",val);
-        map.put("billService",billingServiceDate);
-        map.put("termDate",termDate);
-        JSONObject jsonObject =   JSONObject.fromObject( itemCode );  //(JSONObject) JSONSerializer.toJSON(itemCode);//
+        map.put("id", id);
+        map.put("val", val);
+        map.put("billService", billingServiceDate);
+        map.put("termDate", termDate);
+        JSONObject jsonObject = JSONObject.fromObject(itemCode);  //(JSONObject) JSONSerializer.toJSON(itemCode);//
         jsonObject = jsonObject.accumulate("id", id);
         MiscUtils.getLogger().debug(jsonObject.toString());
         response.getOutputStream().write(jsonObject.toString().getBytes());
         return null;
     }
 
-    public ActionForward returnToSearch(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+    public ActionForward returnToSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         String whereTo = request.getParameter("whereTo");
         ActionForward retval;
-        if(whereTo == null || whereTo.equals("") || whereTo.equals("null")){
-           retval = mapping.findForward("success");
-        }else{
-           retval = mapping.findForward("private");
+        if (whereTo == null || whereTo.equals("") || whereTo.equals("null")) {
+            retval = mapping.findForward("success");
+        } else {
+            retval = mapping.findForward("private");
         }
         return retval;
     }
 
 
     public ActionForward unspecified(ActionMapping mapping,
-    ActionForm form,
-    HttpServletRequest request,
-    HttpServletResponse response)
-    throws IOException, ServletException {
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response)
+            throws IOException, ServletException {
 
 
-
-        if(request.getSession().getAttribute("user") == null  ){
+        if (request.getSession().getAttribute("user") == null) {
             return (mapping.findForward("Logout"));
         }
 
         BillingEditCodeForm frm = (BillingEditCodeForm) form;
 
-        String codeId  =frm.getCodeId();
-        String code    =frm.getCode();
-        String desc    =frm.getDesc();
-        String value   =frm.getValue();
-        String whereTo =frm.getWhereTo();
+        String codeId = frm.getCodeId();
+        String code = frm.getCode();
+        String desc = frm.getDesc();
+        String value = frm.getValue();
+        String whereTo = frm.getWhereTo();
         String submitButton = frm.getSubmitButton();
 
         MiscUtils.getLogger().debug(submitButton);
-        if (submitButton.equals("Edit")){
-           MiscUtils.getLogger().debug("here with codeid "+codeId);
-          BillingCodeData bcd = new BillingCodeData();
-          bcd.editBillingCode(code,desc, value,codeId);
+        if (submitButton.equals("Edit")) {
+            MiscUtils.getLogger().debug("here with codeid " + codeId);
+            BillingCodeData bcd = new BillingCodeData();
+            bcd.editBillingCode(code, desc, value, codeId);
         }
 
         ActionForward retval;
-        if(whereTo == null || whereTo.equals("")){
-           retval = mapping.findForward("success");
-        }else{
-           retval = mapping.findForward("private");
+        if (whereTo == null || whereTo.equals("")) {
+            retval = mapping.findForward("success");
+        } else {
+            retval = mapping.findForward("private");
         }
 
         return retval;

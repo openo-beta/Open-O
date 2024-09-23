@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,8 +52,8 @@ import oscar.util.UtilDateUtilities;
 @Entity
 @Table(name = "billingmaster")
 @SqlResultSetMapping(name = "select_user_bill_report_wcb_mapping",
-	entities={
-		@EntityResult(entityClass=Billingmaster.class)
+        entities = {
+                @EntityResult(entityClass = Billingmaster.class)
 		/*
 		@EntityResult(entityClass=Demographic.class)
 	,fields={
@@ -64,7 +64,7 @@ import oscar.util.UtilDateUtilities;
 		,
 		@EntityResult(entityClass=TeleplanC12.class),
 */
-}
+        }
 )
 
 public class Billingmaster {
@@ -263,31 +263,31 @@ public class Billingmaster {
      * @param oinPostalcode String
      */
     public Billingmaster(int billingmasterNo, int billingNo,
-            Date createdate, String billingstatus,
-            int demographicNo, int appointmentNo, String claimcode,
-            String datacenter, String payeeNo, String practitionerNo,
-            String phn, String nameVerify, String dependentNum,
-            String billingUnit, String clarificationCode,
-            String anatomicalArea, String afterHour,
-            String newProgram, String billingCode, String billAmount,
-            String paymentMode, String serviceDate,
-            String serviceToDay, String submissionCode,
-            String extendedSubmissionCode, String dxCode1,
-            String dxCode2, String dxCode3, String dxExpansion,
-            String serviceLocation, String referralFlag1,
-            String referralNo1, String referralFlag2,
-            String referralNo2, String timeCall,
-            String serviceStartTime, String serviceEndTime,
-            String birthDate, String officeNumber,
-            String correspondenceCode, String claimComment,
-            String mvaClaimCode, String icbcClaimNo,
-            String originalClaim, String facilityNo,
-            String facilitySubNo, String fillerClaim,
-            String oinInsurerCode, String oinRegistrationNo, String oinBirthdate, String oinFirstName,
-            String oinSecondName, String oinSurname,
-            String oinSexCode, String oinAddress, String oinAddress2,
-            String oinAddress3, String oinAddress4,
-            String oinPostalcode) {
+                         Date createdate, String billingstatus,
+                         int demographicNo, int appointmentNo, String claimcode,
+                         String datacenter, String payeeNo, String practitionerNo,
+                         String phn, String nameVerify, String dependentNum,
+                         String billingUnit, String clarificationCode,
+                         String anatomicalArea, String afterHour,
+                         String newProgram, String billingCode, String billAmount,
+                         String paymentMode, String serviceDate,
+                         String serviceToDay, String submissionCode,
+                         String extendedSubmissionCode, String dxCode1,
+                         String dxCode2, String dxCode3, String dxExpansion,
+                         String serviceLocation, String referralFlag1,
+                         String referralNo1, String referralFlag2,
+                         String referralNo2, String timeCall,
+                         String serviceStartTime, String serviceEndTime,
+                         String birthDate, String officeNumber,
+                         String correspondenceCode, String claimComment,
+                         String mvaClaimCode, String icbcClaimNo,
+                         String originalClaim, String facilityNo,
+                         String facilitySubNo, String fillerClaim,
+                         String oinInsurerCode, String oinRegistrationNo, String oinBirthdate, String oinFirstName,
+                         String oinSecondName, String oinSurname,
+                         String oinSexCode, String oinAddress, String oinAddress2,
+                         String oinAddress3, String oinAddress4,
+                         String oinPostalcode) {
         this.billingmasterNo = billingmasterNo;
         this.billingNo = billingNo;
         this.createdate = createdate;
@@ -437,12 +437,12 @@ public class Billingmaster {
         return (phn != null ? phn : "");
     }
 
-    public void setNameVerify(String firstName, String lastName){
-        if (lastName.length() < 2){
-           lastName += "   ";
+    public void setNameVerify(String firstName, String lastName) {
+        if (lastName.length() < 2) {
+            lastName += "   ";
         }
-        if (firstName.length() < 1){
-           firstName += "   ";
+        if (firstName.length() < 1) {
+            firstName += "   ";
         }
         nameVerify = oscar.util.UtilMisc.mysqlEscape(firstName.substring(0, 1) + " " + lastName.substring(0, 2));
     }
@@ -519,7 +519,7 @@ public class Billingmaster {
         return (billAmount != null ? billAmount : "");
     }
 
-    public double getBillAmountAsDouble(){
+    public double getBillAmountAsDouble() {
         return Double.parseDouble(getBillAmount());
     }
 
@@ -539,11 +539,11 @@ public class Billingmaster {
         return (serviceDate != null ? serviceDate : "");
     }
 
-    public Date getServiceDateAsDate(){
+    public Date getServiceDateAsDate() {
         Date d = null;
-        try{
-           d = UtilDateUtilities.getDateFromString(serviceDate, "yyyyMMdd");
-        }catch(Exception e){
+        try {
+            d = UtilDateUtilities.getDateFromString(serviceDate, "yyyyMMdd");
+        } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
         return d;
@@ -1356,13 +1356,13 @@ public class Billingmaster {
         return retval;
     }
 
-    
-    public Integer getWcbId() {
-		return wcbId;
-	}
 
-	public void setWcbId(Integer wcbId) {
-		this.wcbId = wcbId;
-	}
+    public Integer getWcbId() {
+        return wcbId;
+    }
+
+    public void setWcbId(Integer wcbId) {
+        this.wcbId = wcbId;
+    }
 
 }

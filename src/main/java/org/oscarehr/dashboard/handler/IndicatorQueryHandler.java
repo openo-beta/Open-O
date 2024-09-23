@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,292 +39,291 @@ import org.oscarehr.util.MiscUtils;
 
 /**
  * Depends on a proper convention of place-holders in the query text.
- * 
+ *
  * RegEx is:  "(\\$){1}(\\{){1}( )*(.)*( )*(\\}){1}"
  * ie: ${ parameter_id }
  *
  */
 public class IndicatorQueryHandler extends AbstractQueryHandler {
 
-	private static Logger logger = MiscUtils.getLogger();
-	private List< GraphPlot[] > graphPlots;
-	private static Double DEFAULT_DENOMINATOR = 100.0;
+    private static Logger logger = MiscUtils.getLogger();
+    private List<GraphPlot[]> graphPlots;
+    private static Double DEFAULT_DENOMINATOR = 100.0;
     private static final boolean showNumbers = oscar.OscarProperties.getInstance().getBooleanProperty("SHOW_INDICATOR_DASHBOARD_NUMBERS", "true");
 
-	public IndicatorQueryHandler() {	
-		if (showNumbers) {
-			DEFAULT_DENOMINATOR = 1.0;
-		}
-	}
+    public IndicatorQueryHandler() {
+        if (showNumbers) {
+            DEFAULT_DENOMINATOR = 1.0;
+        }
+    }
 
-	@Override
-	public List<?> execute( String query ) {
+    @Override
+    public List<?> execute(String query) {
 
-		logger.info("Executing Indicator Query Thread " + Thread.currentThread().getName() 
-				+  "[" + Thread.currentThread().getId() + "]" );
-		
-		List<?> results = null;
-		
-		if( DashboardManagerImpl.MULTI_THREAD_ON ) {
-			results = super.execute( query );
-		} else {
-			this.setQuery( query );	
-			results = super.execute();
-			graphPlots( results );
-		}
-		
-		return results;
-	}
+        logger.info("Executing Indicator Query Thread " + Thread.currentThread().getName()
+                + "[" + Thread.currentThread().getId() + "]");
 
-	@Override
-	public void setQuery( String query ) {
-		String finalQuery = super.buildQuery( query );
-		super.setQuery( finalQuery );
-	}
+        List<?> results = null;
 
-	public List<GraphPlot[]> getGraphPlots() {
-		return graphPlots;
-	}
-	
-	@Override
-	public final String filterQueryString( String queryString ) {
-		return super.filterQueryString( queryString );
-	}
-	
-	/**
-	 * Build graph data with GraphPlot objects and set them into the Indicator Bean for display.
-	 * Each row of graph plots is a new graph
-	 * Each GraphPlot column is a plot on the graph.
-	 * 
-	 * Not Thread Safe 
-	 */
-	private void graphPlots( List<?> results ) {
-		setGraphPlots( createGraphPlots( results ) );
-	}
-	
-	public void setGraphPlots( List< GraphPlot[] > graphPlots ) {
-		this.graphPlots = graphPlots;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static List< GraphPlot[] > createGraphPlots( List<?> results ) {
-		
-		List< GraphPlot[] > graphPlotList = null;
+        if (DashboardManagerImpl.MULTI_THREAD_ON) {
+            results = super.execute(query);
+        } else {
+            this.setQuery(query);
+            results = super.execute();
+            graphPlots(results);
+        }
 
-		if (! showNumbers ) {
-			//[{% Not Recorded=33.3, % Status Recorded=66.7}] ArrayList with a HashMap
+        return results;
+    }
 
-			//figure out the denominator
-			int denominator = 0;
+    @Override
+    public void setQuery(String query) {
+        String finalQuery = super.buildQuery(query);
+        super.setQuery(finalQuery);
+    }
 
-			for(Object row : results) {
-				Map<String, ?> theRow = (Map<String, ?>)row;
-				for(String key:theRow.keySet()) {
-					Integer numerator = 0;
+    public List<GraphPlot[]> getGraphPlots() {
+        return graphPlots;
+    }
 
-					if(theRow.get(key) instanceof String) {
-						numerator = Integer.parseInt((String)theRow.get(key));
-					}
-					if(theRow.get(key) instanceof BigDecimal) {
-						numerator = ((BigDecimal)theRow.get(key)).intValue();
-					}
-					if(theRow.get(key) instanceof Double) {
-						numerator = ((Double)theRow.get(key)).intValue();
+    @Override
+    public final String filterQueryString(String queryString) {
+        return super.filterQueryString(queryString);
+    }
 
-					}
-					//	BigDecimal numerator = (BigDecimal)theRow.get(key);
-					denominator += numerator.intValue();
-				}
-			}
+    /**
+     * Build graph data with GraphPlot objects and set them into the Indicator Bean for display.
+     * Each row of graph plots is a new graph
+     * Each GraphPlot column is a plot on the graph.
+     *
+     * Not Thread Safe
+     */
+    private void graphPlots(List<?> results) {
+        setGraphPlots(createGraphPlots(results));
+    }
 
-			if(denominator > 0) {
+    public void setGraphPlots(List<GraphPlot[]> graphPlots) {
+        this.graphPlots = graphPlots;
+    }
 
-				//now update the numerators to be percentages
-				for(Object row : results) {
-					Map<String, BigDecimal> theRow = (Map<String, BigDecimal>)row;
-					for(String key:theRow.keySet()) {
-						BigDecimal numerator = theRow.get(key);
-						BigDecimal bd = BigDecimal.valueOf((numerator.doubleValue() * 100 )/ denominator);
-						bd.setScale(2, BigDecimal.ROUND_CEILING);
-						theRow.put(key,bd);
-					}
-				}
-			}
-		}
- 		 
-		for(Object row : results) {
-			if( graphPlotList == null ) {
-				graphPlotList = new ArrayList< GraphPlot[] >();
-			}
+    @SuppressWarnings("unchecked")
+    public static List<GraphPlot[]> createGraphPlots(List<?> results) {
 
-			GraphPlot[] graphPlots = createGraphPlots( ( Map<String, ?> ) row ); 
+        List<GraphPlot[]> graphPlotList = null;
 
-			graphPlotList.add( graphPlots );
-		}
-		
-		return graphPlotList;
-	}
+        if (!showNumbers) {
+            //[{% Not Recorded=33.3, % Status Recorded=66.7}] ArrayList with a HashMap
 
-	/**
-	 * Value is the query result and key is the column (or result) alias
-	 */
-	private static GraphPlot[] createGraphPlots( Map<String, ?> row ) {
+            //figure out the denominator
+            int denominator = 0;
 
-		List<GraphPlot> graphPlots = null; 
-		Iterator<?> it = row.keySet().iterator();
-		
-		while( it.hasNext() ) {
-			
-			if( graphPlots == null ) {
-				graphPlots = new ArrayList<GraphPlot>(); 
-			}
-			
-			GraphPlot graphPlot = new GraphPlot();
-			String key = it.next() + "";
-			Object value = null;
+            for (Object row : results) {
+                Map<String, ?> theRow = (Map<String, ?>) row;
+                for (String key : theRow.keySet()) {
+                    Integer numerator = 0;
 
-			if( key.equalsIgnoreCase("null") ) {
-				key = "";
-			}
-			
-			key = key.trim();
-			
-			if( ! key.isEmpty() ) {
-				value = row.get( key );
-			} else {
-				logger.warn( "Null or Empty Key found for the label parameter of this graph plot." );
-			}
-			
-			// Only pie charts for now - so the denom is out of 100 percent
-			// unless boolean property SHOW_INDICATOR_DASHBOARD_NUMBERS=yes
-			// in which case it is 1.
-			graphPlot.setDenominator( DEFAULT_DENOMINATOR );
+                    if (theRow.get(key) instanceof String) {
+                        numerator = Integer.parseInt((String) theRow.get(key));
+                    }
+                    if (theRow.get(key) instanceof BigDecimal) {
+                        numerator = ((BigDecimal) theRow.get(key)).intValue();
+                    }
+                    if (theRow.get(key) instanceof Double) {
+                        numerator = ((Double) theRow.get(key)).intValue();
 
-			if( value instanceof Number ) {
-				Number plot = (Number) value;
-				graphPlot.setNumerator( plot.doubleValue() );
-			}
+                    }
+                    //	BigDecimal numerator = (BigDecimal)theRow.get(key);
+                    denominator += numerator.intValue();
+                }
+            }
 
-			graphPlot.setKey( key );
-			graphPlot.setLabel( key );			
-			graphPlots.add( graphPlot );
-		}
-		
-		GraphPlot[] graphPlotArray = new GraphPlot[ graphPlots.size() ];
-		graphPlots.toArray( graphPlotArray );
-		
-		return graphPlotArray;
-	}
-	
-	// helper utilities.
-	
-	public static String plotsToStringArray( List<GraphPlot[]> graphPlots ) {
-		StringBuilder json = new StringBuilder("");
-		for(GraphPlot[] graphPlotArray : graphPlots) {
-			json.append("[");
-			for(GraphPlot graphPlot : graphPlotArray ) {
-				json.append("['");
-				json.append( graphPlot.getLabel() );
-				json.append("',");
-				json.append( graphPlot.getNumerator() );
-				json.append("],");
-			}
-			json.deleteCharAt( json.length() - 1 );
-			
-			json.append("],");
-		}
-		json.deleteCharAt( json.length() - 1 );
-		
-		return json.toString();
-	}
-	
-	public static String createOriginalGraphPlots(List<?> queryResultList) {
-		
-		
-		
-		StringBuilder json = new StringBuilder("");
-		json.append("{ 'results':[");
-		
-		for(Object row : queryResultList) {
-			Map<String, ?> theRow = (Map<String, ?>)row;
-			for(String key:theRow.keySet()) {
-				//BigDecimal numerator = (BigDecimal)theRow.get(key);
-				json.append("{'");
-				json.append( key );
-				json.append("':");
-				json.append( theRow.get(key) );
-				json.append("},");
-				
-			}
-			json.deleteCharAt( json.length() - 1 );
-		}
-		
-		json.append("]}");
-		
-		
-		return json.toString();
-		
-		
-	}
-	
-	public static String plotsToJson( List<GraphPlot[]> graphPlots ) {
-		StringBuilder json = new StringBuilder("");
-		int index = 0;
-		for(GraphPlot[] graphPlotArray : graphPlots) {
-			json.append("{ 'results_" + index + "':[");
-			for(GraphPlot graphPlot : graphPlotArray ) {
-				json.append("{'");
-				json.append( graphPlot.getLabel() );
-				json.append("':");
-				json.append( graphPlot.getNumerator() );
-				json.append("},");
-			}
-			json.deleteCharAt( json.length() - 1 );
-			
-			json.append("]},");
-			index++;
-		}
-		json.deleteCharAt( json.length() - 1 );
-		
-		return json.toString();
-	}
-	
-	public static String plotsToTooltipsStringArray( List<GraphPlot[]> graphPlots ) {
-		StringBuilder json = new StringBuilder("");
-		for(GraphPlot[] graphPlotArray : graphPlots) {
-			json.append("[");
-			for(GraphPlot graphPlot : graphPlotArray ) {
-				json.append( "'" );
-				json.append( graphPlot.getKey() );
-				json.append( "'" );
-				json.append(",");
-			}
-			json.deleteCharAt( json.length() - 1 );
-			
-			json.append("],");
-		}
-		json.deleteCharAt( json.length() - 1 );		
-		return json.toString();
-	}
-	
-	public static String plotsToJsonTooltips( List<GraphPlot[]> graphPlots ) {
-		StringBuilder json = new StringBuilder("");
-		int index = 0;
-		for(GraphPlot[] graphPlotArray : graphPlots) {
-			json.append("{ 'toolTips_" + index + "':[");
-			for(GraphPlot graphPlot : graphPlotArray ) {
-				json.append( "'" );
-				json.append( graphPlot.getKey() );
-				json.append( "'" );
-				json.append(",");
-			}
-			json.deleteCharAt( json.length() - 1 );
-			
-			json.append("]},");
-			index++;
-		}
-		json.deleteCharAt( json.length() - 1 );		
-		return json.toString();
-	}
+            if (denominator > 0) {
+
+                //now update the numerators to be percentages
+                for (Object row : results) {
+                    Map<String, BigDecimal> theRow = (Map<String, BigDecimal>) row;
+                    for (String key : theRow.keySet()) {
+                        BigDecimal numerator = theRow.get(key);
+                        BigDecimal bd = BigDecimal.valueOf((numerator.doubleValue() * 100) / denominator);
+                        bd.setScale(2, BigDecimal.ROUND_CEILING);
+                        theRow.put(key, bd);
+                    }
+                }
+            }
+        }
+
+        for (Object row : results) {
+            if (graphPlotList == null) {
+                graphPlotList = new ArrayList<GraphPlot[]>();
+            }
+
+            GraphPlot[] graphPlots = createGraphPlots((Map<String, ?>) row);
+
+            graphPlotList.add(graphPlots);
+        }
+
+        return graphPlotList;
+    }
+
+    /**
+     * Value is the query result and key is the column (or result) alias
+     */
+    private static GraphPlot[] createGraphPlots(Map<String, ?> row) {
+
+        List<GraphPlot> graphPlots = null;
+        Iterator<?> it = row.keySet().iterator();
+
+        while (it.hasNext()) {
+
+            if (graphPlots == null) {
+                graphPlots = new ArrayList<GraphPlot>();
+            }
+
+            GraphPlot graphPlot = new GraphPlot();
+            String key = it.next() + "";
+            Object value = null;
+
+            if (key.equalsIgnoreCase("null")) {
+                key = "";
+            }
+
+            key = key.trim();
+
+            if (!key.isEmpty()) {
+                value = row.get(key);
+            } else {
+                logger.warn("Null or Empty Key found for the label parameter of this graph plot.");
+            }
+
+            // Only pie charts for now - so the denom is out of 100 percent
+            // unless boolean property SHOW_INDICATOR_DASHBOARD_NUMBERS=yes
+            // in which case it is 1.
+            graphPlot.setDenominator(DEFAULT_DENOMINATOR);
+
+            if (value instanceof Number) {
+                Number plot = (Number) value;
+                graphPlot.setNumerator(plot.doubleValue());
+            }
+
+            graphPlot.setKey(key);
+            graphPlot.setLabel(key);
+            graphPlots.add(graphPlot);
+        }
+
+        GraphPlot[] graphPlotArray = new GraphPlot[graphPlots.size()];
+        graphPlots.toArray(graphPlotArray);
+
+        return graphPlotArray;
+    }
+
+    // helper utilities.
+
+    public static String plotsToStringArray(List<GraphPlot[]> graphPlots) {
+        StringBuilder json = new StringBuilder("");
+        for (GraphPlot[] graphPlotArray : graphPlots) {
+            json.append("[");
+            for (GraphPlot graphPlot : graphPlotArray) {
+                json.append("['");
+                json.append(graphPlot.getLabel());
+                json.append("',");
+                json.append(graphPlot.getNumerator());
+                json.append("],");
+            }
+            json.deleteCharAt(json.length() - 1);
+
+            json.append("],");
+        }
+        json.deleteCharAt(json.length() - 1);
+
+        return json.toString();
+    }
+
+    public static String createOriginalGraphPlots(List<?> queryResultList) {
+
+
+        StringBuilder json = new StringBuilder("");
+        json.append("{ 'results':[");
+
+        for (Object row : queryResultList) {
+            Map<String, ?> theRow = (Map<String, ?>) row;
+            for (String key : theRow.keySet()) {
+                //BigDecimal numerator = (BigDecimal)theRow.get(key);
+                json.append("{'");
+                json.append(key);
+                json.append("':");
+                json.append(theRow.get(key));
+                json.append("},");
+
+            }
+            json.deleteCharAt(json.length() - 1);
+        }
+
+        json.append("]}");
+
+
+        return json.toString();
+
+
+    }
+
+    public static String plotsToJson(List<GraphPlot[]> graphPlots) {
+        StringBuilder json = new StringBuilder("");
+        int index = 0;
+        for (GraphPlot[] graphPlotArray : graphPlots) {
+            json.append("{ 'results_" + index + "':[");
+            for (GraphPlot graphPlot : graphPlotArray) {
+                json.append("{'");
+                json.append(graphPlot.getLabel());
+                json.append("':");
+                json.append(graphPlot.getNumerator());
+                json.append("},");
+            }
+            json.deleteCharAt(json.length() - 1);
+
+            json.append("]},");
+            index++;
+        }
+        json.deleteCharAt(json.length() - 1);
+
+        return json.toString();
+    }
+
+    public static String plotsToTooltipsStringArray(List<GraphPlot[]> graphPlots) {
+        StringBuilder json = new StringBuilder("");
+        for (GraphPlot[] graphPlotArray : graphPlots) {
+            json.append("[");
+            for (GraphPlot graphPlot : graphPlotArray) {
+                json.append("'");
+                json.append(graphPlot.getKey());
+                json.append("'");
+                json.append(",");
+            }
+            json.deleteCharAt(json.length() - 1);
+
+            json.append("],");
+        }
+        json.deleteCharAt(json.length() - 1);
+        return json.toString();
+    }
+
+    public static String plotsToJsonTooltips(List<GraphPlot[]> graphPlots) {
+        StringBuilder json = new StringBuilder("");
+        int index = 0;
+        for (GraphPlot[] graphPlotArray : graphPlots) {
+            json.append("{ 'toolTips_" + index + "':[");
+            for (GraphPlot graphPlot : graphPlotArray) {
+                json.append("'");
+                json.append(graphPlot.getKey());
+                json.append("'");
+                json.append(",");
+            }
+            json.deleteCharAt(json.length() - 1);
+
+            json.append("]},");
+            index++;
+        }
+        json.deleteCharAt(json.length() - 1);
+        return json.toString();
+    }
 
 }

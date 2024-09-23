@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,39 +40,32 @@ import javax.servlet.http.HttpSession;
  * the oscar permissions system sets credentials into the session space upon authentication. 
  */
 // @WebFilter(urlPatterns={"/ws/*"})
-public class WebServiceSessionInvalidatingFilter implements javax.servlet.Filter
-{
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException
-	{
-		// nothing
-	}
+public class WebServiceSessionInvalidatingFilter implements javax.servlet.Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // nothing
+    }
 
-	@Override
-	public void doFilter(ServletRequest tmpRequest, ServletResponse tmpResponse, FilterChain chain) throws IOException, ServletException
-	{
-		HttpServletRequest request = (HttpServletRequest) tmpRequest;
+    @Override
+    public void doFilter(ServletRequest tmpRequest, ServletResponse tmpResponse, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) tmpRequest;
 
-		try
-		{
-			chain.doFilter(tmpRequest, tmpResponse);
-		}
-		finally
-		{
-			String requestURL = request.getRequestURL().toString();
+        try {
+            chain.doFilter(tmpRequest, tmpResponse);
+        } finally {
+            String requestURL = request.getRequestURL().toString();
 
-			//don't apply to REST calls, we want those to be available to the web interface without losing session
-			if(requestURL.indexOf("/ws/rs/")==-1 && requestURL.indexOf("/ws/oauth/")==-1 && requestURL.indexOf("/ws/services/")==-1) {
-				HttpSession session = request.getSession(false);
-				if (session != null) session.invalidate();
-			}
-			//I still need to figure out how to invalidate REST sessions that are stateless.
-		}
-	}
+            //don't apply to REST calls, we want those to be available to the web interface without losing session
+            if (requestURL.indexOf("/ws/rs/") == -1 && requestURL.indexOf("/ws/oauth/") == -1 && requestURL.indexOf("/ws/services/") == -1) {
+                HttpSession session = request.getSession(false);
+                if (session != null) session.invalidate();
+            }
+            //I still need to figure out how to invalidate REST sessions that are stateless.
+        }
+    }
 
-	@Override
-	public void destroy()
-	{
-		// can't think of anything to do right now.
-	}
+    @Override
+    public void destroy() {
+        // can't think of anything to do right now.
+    }
 }

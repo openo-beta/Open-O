@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -23,32 +23,32 @@ import org.oscarehr.util.SpringUtils;
 
 public class HRMStatementModifyAction extends DispatchAction {
 
-	HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
+    HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String providerNo=loggedInInfo.getLoggedInProviderNo();
-		String statement = request.getParameter("statement");
- 
-		HRMProviderConfidentialityStatement confStatement;
-		try {
-			confStatement = hrmProviderConfidentialityStatementDao.find(providerNo); 
-			if (confStatement == null) confStatement = new HRMProviderConfidentialityStatement();
-		} catch (Exception e) {
-			// Not found
-			confStatement = new HRMProviderConfidentialityStatement();
-		}
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        String statement = request.getParameter("statement");
 
-		confStatement.setStatement(statement);
-		confStatement.setId(providerNo);
-		try {
-			hrmProviderConfidentialityStatementDao.merge(confStatement);
-			request.setAttribute("statementSuccess", true);
-		} catch (Exception e) {
-			// Not merged
-			request.setAttribute("statementSuccess", false);
-		}
-		
-		return mapping.findForward("success");
-	}
+        HRMProviderConfidentialityStatement confStatement;
+        try {
+            confStatement = hrmProviderConfidentialityStatementDao.find(providerNo);
+            if (confStatement == null) confStatement = new HRMProviderConfidentialityStatement();
+        } catch (Exception e) {
+            // Not found
+            confStatement = new HRMProviderConfidentialityStatement();
+        }
+
+        confStatement.setStatement(statement);
+        confStatement.setId(providerNo);
+        try {
+            hrmProviderConfidentialityStatementDao.merge(confStatement);
+            request.setAttribute("statementSuccess", true);
+        } catch (Exception e) {
+            // Not merged
+            request.setAttribute("statementSuccess", false);
+        }
+
+        return mapping.findForward("success");
+    }
 }

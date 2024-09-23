@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,65 +32,65 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DemographicMergedTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
+    private Integer id;
 
-	private int demographicNo;
+    private int demographicNo;
 
-	private int mergedTo;
+    private int mergedTo;
 
-	private int deleted;
+    private int deleted;
 
-	private String lastUpdateUser;
+    private String lastUpdateUser;
 
-	private Date lastUpdateDate;
+    private Date lastUpdateDate;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public int getDemographicNo() {
-		return demographicNo;
-	}
+    public int getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setDemographicNo(int demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public int getMergedTo() {
-		return mergedTo;
-	}
+    public int getMergedTo() {
+        return mergedTo;
+    }
 
-	public void setMergedTo(int mergedTo) {
-		this.mergedTo = mergedTo;
-	}
+    public void setMergedTo(int mergedTo) {
+        this.mergedTo = mergedTo;
+    }
 
-	public int getDeleted() {
-		return deleted;
-	}
+    public int getDeleted() {
+        return deleted;
+    }
 
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
+    }
 
-	public String getLastUpdateUser() {
-		return lastUpdateUser;
-	}
+    public String getLastUpdateUser() {
+        return lastUpdateUser;
+    }
 
-	public void setLastUpdateUser(String lastUpdateUser) {
-		this.lastUpdateUser = lastUpdateUser;
-	}
+    public void setLastUpdateUser(String lastUpdateUser) {
+        this.lastUpdateUser = lastUpdateUser;
+    }
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 }

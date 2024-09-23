@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -28,6 +28,7 @@ package oscar.oscarBilling.ca.bc.quickbilling;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.struts.action.ActionForm;
 import org.oscarehr.common.model.ProviderData;
 
@@ -37,157 +38,145 @@ import oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean;
 
 public class QuickBillingBCFormBean extends ActionForm {
 
-	/**
-	 * @author Dennis Warren
-	 * Company Colcamex Resources
-	 * Date Jun 4, 2012
-	 */
-	private static final long serialVersionUID = 1L;
-	private ArrayList<BillingSessionBean> billingData;
-	private String billingProvider;
-	private String billingProviderNo;
-	private String serviceDate;
-	private String visitLocation;
-	private List<BillingVisit> billingVisitTypes;
-	private List<ProviderData> providerList;
-	private Boolean isHeaderSet;
-	private String creator;
-	private String halfBilling;
+    /**
+     * @author Dennis Warren
+     * Company Colcamex Resources
+     * Date Jun 4, 2012
+     */
+    private static final long serialVersionUID = 1L;
+    private ArrayList<BillingSessionBean> billingData;
+    private String billingProvider;
+    private String billingProviderNo;
+    private String serviceDate;
+    private String visitLocation;
+    private List<BillingVisit> billingVisitTypes;
+    private List<ProviderData> providerList;
+    private Boolean isHeaderSet;
+    private String creator;
+    private String halfBilling;
 
 
-	public QuickBillingBCFormBean(){
-		
-		this.billingProvider = "";
-		this.billingProviderNo = "";
-		this.serviceDate = "";
-		this.visitLocation = "";
-		this.creator = "";
-		this.isHeaderSet = false;
-		this.halfBilling = "";
-	
-	}
-	
-	
-	public String getHalfBilling() {
-		return halfBilling;
-	}
+    public QuickBillingBCFormBean() {
+
+        this.billingProvider = "";
+        this.billingProviderNo = "";
+        this.serviceDate = "";
+        this.visitLocation = "";
+        this.creator = "";
+        this.isHeaderSet = false;
+        this.halfBilling = "";
+
+    }
 
 
-	public void setHalfBilling(String halfBilling) {
-		this.halfBilling = halfBilling;
-	}
+    public String getHalfBilling() {
+        return halfBilling;
+    }
 
 
-	public String getCreator() {
-		return creator;
-	}
+    public void setHalfBilling(String halfBilling) {
+        this.halfBilling = halfBilling;
+    }
 
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
 
-
-	public void setIsHeaderSet(Boolean set) {
-		this.isHeaderSet = set;
-	}
-	
-	public Boolean getIsHeaderSet() {
-		return isHeaderSet;
-	}
-		
-	public List<ProviderData> getProviderList() {
-		return providerList;
-	}
-
-	public void setProviderList(List<ProviderData> providerList) {
-		this.providerList = providerList;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
 
-	public String getBillingProviderNo() {
-		return billingProviderNo;
-	}
+    public void setIsHeaderSet(Boolean set) {
+        this.isHeaderSet = set;
+    }
+
+    public Boolean getIsHeaderSet() {
+        return isHeaderSet;
+    }
+
+    public List<ProviderData> getProviderList() {
+        return providerList;
+    }
+
+    public void setProviderList(List<ProviderData> providerList) {
+        this.providerList = providerList;
+    }
 
 
-
-	public void setBillingProviderNo(String billingProviderNo) {
-		this.billingProviderNo = billingProviderNo;
-	}
-
+    public String getBillingProviderNo() {
+        return billingProviderNo;
+    }
 
 
-	public List<BillingVisit> getBillingVisitTypes() {
-		return billingVisitTypes;
-	}
+    public void setBillingProviderNo(String billingProviderNo) {
+        this.billingProviderNo = billingProviderNo;
+    }
 
 
-
-	public void setBillingVisitTypes(List<BillingVisit> billingVisitTypes) {
-		this.billingVisitTypes = billingVisitTypes;
-	}
-
+    public List<BillingVisit> getBillingVisitTypes() {
+        return billingVisitTypes;
+    }
 
 
-	public String getBillingProvider() {
-		return billingProvider;
-	}
+    public void setBillingVisitTypes(List<BillingVisit> billingVisitTypes) {
+        this.billingVisitTypes = billingVisitTypes;
+    }
 
 
-
-	public void setBillingProvider(String billingProvider) {
-		this.billingProvider = billingProvider;
-	}
-
+    public String getBillingProvider() {
+        return billingProvider;
+    }
 
 
-	public String getServiceDate() {
-		return serviceDate;
-	}
+    public void setBillingProvider(String billingProvider) {
+        this.billingProvider = billingProvider;
+    }
 
 
-
-	public void setServiceDate(String serviceDate) {
-		this.serviceDate = serviceDate;
-	}
-
+    public String getServiceDate() {
+        return serviceDate;
+    }
 
 
-	public String getVisitLocation() {
-		return visitLocation;
-	}
+    public void setServiceDate(String serviceDate) {
+        this.serviceDate = serviceDate;
+    }
 
 
-
-	public void setVisitLocation(String visitLocation) {
-		this.visitLocation = visitLocation;
-	}
-
+    public String getVisitLocation() {
+        return visitLocation;
+    }
 
 
-	public ArrayList<BillingSessionBean> getBillingData() {
-		return billingData;
-	}
+    public void setVisitLocation(String visitLocation) {
+        this.visitLocation = visitLocation;
+    }
 
-	public void setBillingData(ArrayList<BillingSessionBean> billingData) {		
-		
-		this.billingData = billingData;
-	}
-	
-	@Override
-	public String toString() {
-		return (
-				" PROVIDER="+billingProvider+
-				" PROVIDER NUMBER="+billingProviderNo+
-				" SERVICE DATE="+serviceDate+
-				" VISIT LOCATION="+visitLocation+ 
-				" IS HEADER SET="+isHeaderSet+
-				" CREATOR="+creator+
-				" BILL DATA="+billingData.size()+" ENTRY(S)"
-		);
-	}
 
-	
+    public ArrayList<BillingSessionBean> getBillingData() {
+        return billingData;
+    }
+
+    public void setBillingData(ArrayList<BillingSessionBean> billingData) {
+
+        this.billingData = billingData;
+    }
+
+    @Override
+    public String toString() {
+        return (
+                " PROVIDER=" + billingProvider +
+                        " PROVIDER NUMBER=" + billingProviderNo +
+                        " SERVICE DATE=" + serviceDate +
+                        " VISIT LOCATION=" + visitLocation +
+                        " IS HEADER SET=" + isHeaderSet +
+                        " CREATOR=" + creator +
+                        " BILL DATA=" + billingData.size() + " ENTRY(S)"
+        );
+    }
+
 
 }

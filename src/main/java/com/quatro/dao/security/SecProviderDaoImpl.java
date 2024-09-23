@@ -6,20 +6,20 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
- *
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -38,7 +38,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.quatro.model.security.SecProvider;
 
 /**
- * 
+ *
  * @author JZhang
  *
  */
@@ -101,7 +101,7 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         logger.debug("getting Provider instance with id: " + id);
         try {
             String sql = "from SecProvider where id=? and status=?";
-            List lst = this.getHibernateTemplate().find(sql, new Object[] { id, status });
+            List lst = this.getHibernateTemplate().find(sql, new Object[]{id, status});
             if (lst.size() == 0)
                 return null;
             else
@@ -119,7 +119,7 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         Session session = getSession();
         try {
             List results = session.createCriteria(
-                    "com.quatro.model.security.SecProvider").add(
+                            "com.quatro.model.security.SecProvider").add(
                             Example.create(instance))
                     .list();
             logger.debug("find by example successful, result size: "

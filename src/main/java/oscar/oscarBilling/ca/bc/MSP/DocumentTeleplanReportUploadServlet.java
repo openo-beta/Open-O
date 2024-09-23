@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,42 +47,42 @@ import org.oscarehr.util.MiscUtils;
 import oscar.DocumentBean;
 import oscar.OscarProperties;
 
-public class DocumentTeleplanReportUploadServlet extends HttpServlet{
+public class DocumentTeleplanReportUploadServlet extends HttpServlet {
     final static int BUFFER = 2048;
-    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException  {
-        
-        
+
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+
         byte data[] = new byte[BUFFER];
-        byte data1[] = new byte[BUFFER/2];
-        byte data2[] = new byte[BUFFER/2];
+        byte data1[] = new byte[BUFFER / 2];
+        byte data2[] = new byte[BUFFER / 2];
         byte enddata[] = new byte[2];
-        
-        
+
+
         HttpSession session = request.getSession(true);
-        String backupfilepath = ((String) session.getAttribute("homepath"))!=null?((String) session.getAttribute("homepath")):"null" ;
-        
-        
-        
-        String foldername="", fileheader="", forwardTo="";
-        
+        String backupfilepath = ((String) session.getAttribute("homepath")) != null ? ((String) session.getAttribute("homepath")) : "null";
+
+
+        String foldername = "", fileheader = "", forwardTo = "";
+
         String userHomePath = System.getProperty("user.home", "user.dir");
         MiscUtils.getLogger().debug(userHomePath);
-        
-        Properties ap = OscarProperties.getInstance();
-        
-        forwardTo  = ap.getProperty("TA_FORWARD");
-        foldername = ap.getProperty("DOCUMENT_DIR");        
-        
-        //
-         if (forwardTo == null || forwardTo.length() < 1) return;
 
-        
+        Properties ap = OscarProperties.getInstance();
+
+        forwardTo = ap.getProperty("TA_FORWARD");
+        foldername = ap.getProperty("DOCUMENT_DIR");
+
+        //
+        if (forwardTo == null || forwardTo.length() < 1) return;
+
+
         //		 Create a new file upload handler
         DiskFileUpload upload = new DiskFileUpload();
 
         try {
             //		 Parse the request
-            List  items = upload.parseRequest(request);
+            List items = upload.parseRequest(request);
 //          Process the uploaded items
             Iterator iter = items.iterator();
             while (iter.hasNext()) {
@@ -93,13 +93,13 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet{
                     //String value = item.getString(); 
 
                 } else {
-                    String pathName = item.getName();  
-                    String [] fullFile = pathName.split("[/|\\\\]");
-            		File savedFile = new File(foldername, fullFile[fullFile.length-1]);
+                    String pathName = item.getName();
+                    String[] fullFile = pathName.split("[/|\\\\]");
+                    File savedFile = new File(foldername, fullFile[fullFile.length - 1]);
 
-                    fileheader = fullFile[fullFile.length-1];
-            		
-            		item.write(savedFile);
+                    fileheader = fullFile[fullFile.length - 1];
+
+                    item.write(savedFile);
                 }
             }
         } catch (FileUploadException e) {
@@ -110,8 +110,8 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet{
             MiscUtils.getLogger().error("Error", e);
         }
         //
-        
-        
+
+
         // function = request.getParameter("function");
         // function_id = request.getParameter("functionid");
         // filedesc = request.getParameter("filedesc");
@@ -178,36 +178,32 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet{
         //dest.flush();
         dest.close();
         sis.close();
-    */    
-        
+    */
+
         DocumentBean documentBean = new DocumentBean();
-        
+
         request.setAttribute("documentBean", documentBean);
-        
-        
-        
+
+
         documentBean.setFilename(fileheader);
-        
+
         //  documentBean.setFileDesc(filedesc);
-        
+
         //  documentBean.setFoldername(foldername);
-        
+
         //  documentBean.setFunction(function);
-        
+
         //  documentBean.setFunctionID(function_id);
-        
+
         //  documentBean.setCreateDate(fileheader);
-        
+
         //  documentBean.setDocCreator(creator);
-        
-        
-        
-        
-        
+
+
         // Call the output page.
-        
+
         RequestDispatcher dispatch = getServletContext().getRequestDispatcher(forwardTo);
         dispatch.forward(request, response);
     }
-    
+
 }

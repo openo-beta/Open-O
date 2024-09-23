@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -44,83 +44,83 @@ import oscar.entities.PrivateBillTransaction;
 @Table(name = "billing_private_transactions")
 public class BillingPrivateTransactions extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    private Integer id;
 
-	@Column(name = "billingmaster_no", nullable = false)
-	private int billingmasterNo;
+    @Column(name = "billingmaster_no", nullable = false)
+    private int billingmasterNo;
 
-	@Column(name = "amount_received", nullable = false, precision = 22, scale = 0)
-	private double amountReceived;
+    @Column(name = "amount_received", nullable = false, precision = 22, scale = 0)
+    private double amountReceived;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_date", nullable = false, length = 19)
-	private Date creationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_date", nullable = false, length = 19)
+    private Date creationDate;
 
-	@Column(name = "payment_type_id", nullable = false)
-	private int paymentTypeId;
+    @Column(name = "payment_type_id", nullable = false)
+    private int paymentTypeId;
 
-	public BillingPrivateTransactions() {
-	}
+    public BillingPrivateTransactions() {
+    }
 
-	public BillingPrivateTransactions(int billingmasterNo, double amountReceived, Date creationDate, int paymentTypeId) {
-		this.billingmasterNo = billingmasterNo;
-		this.amountReceived = amountReceived;
-		this.creationDate = creationDate;
-		this.paymentTypeId = paymentTypeId;
-	}
+    public BillingPrivateTransactions(int billingmasterNo, double amountReceived, Date creationDate, int paymentTypeId) {
+        this.billingmasterNo = billingmasterNo;
+        this.amountReceived = amountReceived;
+        this.creationDate = creationDate;
+        this.paymentTypeId = paymentTypeId;
+    }
 
-	public Integer getId() {
-		return this.id;
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public int getBillingmasterNo() {
-		return this.billingmasterNo;
-	}
+    public int getBillingmasterNo() {
+        return this.billingmasterNo;
+    }
 
-	public void setBillingmasterNo(int billingmasterNo) {
-		this.billingmasterNo = billingmasterNo;
-	}
+    public void setBillingmasterNo(int billingmasterNo) {
+        this.billingmasterNo = billingmasterNo;
+    }
 
-	public double getAmountReceived() {
-		return this.amountReceived;
-	}
+    public double getAmountReceived() {
+        return this.amountReceived;
+    }
 
-	public void setAmountReceived(double amountReceived) {
-		this.amountReceived = amountReceived;
-	}
+    public void setAmountReceived(double amountReceived) {
+        this.amountReceived = amountReceived;
+    }
 
-	public Date getCreationDate() {
-		return this.creationDate;
-	}
+    public Date getCreationDate() {
+        return this.creationDate;
+    }
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	public int getPaymentTypeId() {
-		return this.paymentTypeId;
-	}
+    public int getPaymentTypeId() {
+        return this.paymentTypeId;
+    }
 
-	public void setPaymentTypeId(int paymentTypeId) {
-		this.paymentTypeId = paymentTypeId;
-	}
+    public void setPaymentTypeId(int paymentTypeId) {
+        this.paymentTypeId = paymentTypeId;
+    }
 
-	public PrivateBillTransaction toTx(PrivateBillTransaction target) {
-		if (target == null)
-			target = new PrivateBillTransaction();
-		target.setAmount_received(getAmountReceived());
-		target.setBillingmaster_no(getBillingmasterNo());
-		target.setCreation_date(getCreationDate());
-		target.setId(getId());
-		target.setPayment_type(getPaymentTypeId());
-		
-		return target;
-	}
+    public PrivateBillTransaction toTx(PrivateBillTransaction target) {
+        if (target == null)
+            target = new PrivateBillTransaction();
+        target.setAmount_received(getAmountReceived());
+        target.setBillingmaster_no(getBillingmasterNo());
+        target.setCreation_date(getCreationDate());
+        target.setId(getId());
+        target.setPayment_type(getPaymentTypeId());
+
+        return target;
+    }
 }

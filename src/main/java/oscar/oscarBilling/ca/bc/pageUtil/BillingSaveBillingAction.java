@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -57,43 +57,43 @@ import java.util.Date;
 public class BillingSaveBillingAction extends Action {
 
     private static Logger log = MiscUtils.getLogger();
-    private AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao)SpringUtils.getBean(AppointmentArchiveDao.class);
-    private OscarAppointmentDao appointmentDao = (OscarAppointmentDao)SpringUtils.getBean(OscarAppointmentDao.class);
+    private AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
+    private OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
 
     private BillingmasterDAO billingmasterDAO = SpringUtils.getBean(BillingmasterDAO.class);
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        
-		if (request.getSession().getAttribute("user") == null) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (request.getSession().getAttribute("user") == null) {
             return (mapping.findForward("Logout"));
         }
 
         BillingSaveBillingForm frm = (BillingSaveBillingForm) form;
 
         oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean bean = (BillingSessionBean) request.getSession().getAttribute("billingSessionBean");
-        
+
         bean.setCreator(loggedInInfo.getLoggedInProviderNo());
 
         MiscUtils.getLogger().debug("appointment_no---: " + bean.getApptNo());
         oscar.appt.ApptStatusData as = new oscar.appt.ApptStatusData();
-        
+
         Date curDate = new Date();
         String billingid = "";
         ArrayList<String> billingIds = new ArrayList<String>();
         String dataCenterId = OscarProperties.getInstance().getProperty("dataCenterId");
         String billingMasterId = "";
 
-        if (bean.getApptNo() == null || bean.getApptNo().equalsIgnoreCase("null")){
+        if (bean.getApptNo() == null || bean.getApptNo().equalsIgnoreCase("null")) {
             bean.setApptNo("0");
         }
 
         ////////////
-        if (bean.getApptNo() != null && !bean.getApptNo().trim().equals("0") &&  !bean.getApptNo().trim().equals("")){
+        if (bean.getApptNo() != null && !bean.getApptNo().trim().equals("0") && !bean.getApptNo().trim().equals("")) {
             String apptStatus = "";
             Appointment result = appointmentDao.find(Integer.parseInt(bean.getApptNo()));
-           if (result == null) {
-                log.error("LLLOOK: APPT ERROR - APPT ("+bean.getApptNo()+") NOT FOUND - FOR demo:" + bean.getPatientName() +" date " + curDate);
+            if (result == null) {
+                log.error("LLLOOK: APPT ERROR - APPT (" + bean.getApptNo() + ") NOT FOUND - FOR demo:" + bean.getPatientName() + " date " + curDate);
             } else {
                 apptStatus = result.getStatus();
             }
@@ -104,46 +104,46 @@ public class BillingSaveBillingAction extends Action {
             Appointment appt = appointmentDao.find(Integer.parseInt(bean.getApptNo()));
             appointmentArchiveDao.archiveAppointment(appt);
 
-            if(appt != null) {
-            	appt.setStatus(billStatus);
-            	appt.setLastUpdateUser(bean.getCreator());
-            	appointmentDao.merge(appt);
+            if (appt != null) {
+                appt.setStatus(billStatus);
+                appt.setLastUpdateUser(bean.getCreator());
+                appointmentDao.merge(appt);
             }
-            
+
         }
 
-        char billingAccountStatus = getBillingAccountStatus( bean);
+        char billingAccountStatus = getBillingAccountStatus(bean);
 
         ArrayList<oscar.oscarBilling.ca.bc.pageUtil.BillingBillingManager.BillingItem> billItem = bean.getBillItem();
 
         char paymentMode = (bean.getEncounter().equals("E") && !bean.getBillingType().equals("ICBC") && !bean.getBillingType().equals("Pri") && !bean.getBillingType().equals("WCB")) ? 'E' : '0';
 
         String billedAmount;
-      
-        for (oscar.oscarBilling.ca.bc.pageUtil.BillingBillingManager.BillingItem bItem: billItem){
+
+        for (oscar.oscarBilling.ca.bc.pageUtil.BillingBillingManager.BillingItem bItem : billItem) {
 
             Billing billing = getBillingObj(bean, curDate, billingAccountStatus);
-            if(request.getParameter("dispPrice+"+bItem.getServiceCode())!= null){
-                String updatedPrice = request.getParameter("dispPrice+"+bItem.getServiceCode());
-                log.debug(bItem.getServiceCode()+"Original "+bItem.price+ " updated price "+Double.parseDouble(updatedPrice));
+            if (request.getParameter("dispPrice+" + bItem.getServiceCode()) != null) {
+                String updatedPrice = request.getParameter("dispPrice+" + bItem.getServiceCode());
+                log.debug(bItem.getServiceCode() + "Original " + bItem.price + " updated price " + Double.parseDouble(updatedPrice));
                 bItem.price = Double.parseDouble(updatedPrice);
                 bItem.getLineTotal();
             }
 
             billingmasterDAO.save(billing);
-            billingid = ""+billing.getId(); 
-           
+            billingid = "" + billing.getId();
+
             billingIds.add(billingid);
             if (paymentMode == 'E') {
                 billedAmount = "0.00";
             } else {
-                billedAmount =  bItem.getDispLineTotal();
+                billedAmount = bItem.getDispLineTotal();
             }
 
             Billingmaster billingmaster = saveBill(billingid, "" + billingAccountStatus, dataCenterId, billedAmount, "" + paymentMode, bean, bItem);//billItem.get(i));
 
             String WCBid = request.getParameter("WCBid");
-            MiscUtils.getLogger().debug("WCB:"+WCBid);
+            MiscUtils.getLogger().debug("WCB:" + WCBid);
             if (bean.getBillingType().equals("WCB")) {
                 billingmaster.setWcbId(Integer.parseInt(bean.getWcbId()));
             }
@@ -153,12 +153,12 @@ public class BillingSaveBillingAction extends Action {
 
             //Changed March 8th to be included side this loop,  before only one billing would get this information.
             if (bean.getCorrespondenceCode().equals("N") || bean.getCorrespondenceCode().equals("B")) {
-               
+
                 MSPBillingNote n = new MSPBillingNote();
                 n.addNote(billingMasterId, bean.getCreator(), bean.getNotes());
-                
+
             }
-            if (bean.getMessageNotes() != null && ! bean.getMessageNotes().trim().equals("")) {
+            if (bean.getMessageNotes() != null && !bean.getMessageNotes().trim().equals("")) {
                 BillingNote n = new BillingNote();
                 n.addNote(billingMasterId, bean.getCreator(), bean.getMessageNotes());
             }
@@ -204,12 +204,14 @@ public class BillingSaveBillingAction extends Action {
     }
 
 
-    private Billing getBillingObj(final oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean bean, final Date curDate, final char billingAccountStatus){
+    private Billing getBillingObj(final oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean bean, final Date curDate, final char billingAccountStatus) {
 
         int apptNo = 0;
-        try{
+        try {
             apptNo = Integer.parseInt(bean.getApptNo());
-        }catch(Exception e){apptNo=0;}
+        } catch (Exception e) {
+            apptNo = 0;
+        }
 
 
         Billing bill = new Billing();
@@ -221,7 +223,7 @@ public class BillingSaveBillingAction extends Action {
         bill.setUpdateDate(curDate);
         bill.setBillingDate(MyDateFormat.getSysDate(bean.getServiceDate()));
         bill.setTotal(bean.getGrandtotal());
-        bill.setStatus(""+billingAccountStatus);
+        bill.setStatus("" + billingAccountStatus);
         bill.setDob(bean.getPatientDoB());
         bill.setVisitDate(MyDateFormat.getSysDate(bean.getAdmissionDate()));
         bill.setVisitType(bean.getVisitType());
@@ -232,7 +234,7 @@ public class BillingSaveBillingAction extends Action {
         return bill;
     }
 
-    private char getBillingAccountStatus(oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean bean){
+    private char getBillingAccountStatus(oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean bean) {
         char billingAccountStatus = 'O';
         if ("DONOTBILL".equals(bean.getBillingType())) {
             //bean.setBillingType("MSP"); //RESET this to MSP to get processed
@@ -246,7 +248,7 @@ public class BillingSaveBillingAction extends Action {
     }
 
     public String convertDate8Char(String s) {
-         String  sdate = "00000000", syear = "", smonth = "", sday = "";
+        String sdate = "00000000", syear = "", smonth = "", sday = "";
         log.debug("s=" + s);
         if (s != null) {
 
@@ -284,7 +286,7 @@ public class BillingSaveBillingAction extends Action {
         try {
             moneyStr = new java.math.BigDecimal(str).movePointLeft(2).toString();
         } catch (Exception moneyException) {
-        	MiscUtils.getLogger().warn("warning",moneyException);
+            MiscUtils.getLogger().warn("warning", moneyException);
         }
         return moneyStr;
     }
@@ -298,29 +300,30 @@ public class BillingSaveBillingAction extends Action {
     }
 
     private Billingmaster saveBill(String billingid, String billingAccountStatus, String dataCenterId, String billedAmount, String paymentMode, BillingSessionBean bean, oscar.oscarBilling.ca.bc.pageUtil.BillingBillingManager.BillingItem billItem) {
-        return saveBill(billingid, billingAccountStatus, dataCenterId,billedAmount , paymentMode, bean,  "" + billItem.getUnit()  ,"" + billItem.getServiceCode());
+        return saveBill(billingid, billingAccountStatus, dataCenterId, billedAmount, paymentMode, bean, "" + billItem.getUnit(), "" + billItem.getServiceCode());
     }
-    private Billingmaster saveBill(String billingid, String billingAccountStatus, String dataCenterId, String billedAmount, String paymentMode, BillingSessionBean bean, String billingUnit,String serviceCode) {
+
+    private Billingmaster saveBill(String billingid, String billingAccountStatus, String dataCenterId, String billedAmount, String paymentMode, BillingSessionBean bean, String billingUnit, String serviceCode) {
         Billingmaster bill = new Billingmaster();
-        
+
         String timeCall = bean.getTimeCall();
         String startTime = bean.getStartTime();
         String endTime = bean.getEndTime();
-        
-        if( timeCall != null && timeCall.contains(":") ) {
-        	timeCall = timeCall.replace(":", "");
-        }
-        
-        if( startTime != null && startTime.contains(":") ) {
-        	startTime = startTime.replace(":", "");
-        }
-        
-        if( endTime != null && endTime.contains(":") ) {
-        	endTime = endTime.replace(":", "");
+
+        if (timeCall != null && timeCall.contains(":")) {
+            timeCall = timeCall.replace(":", "");
         }
 
-        log.debug("Time Call: " + timeCall + " Start Time: " + startTime + " End Time: " + endTime );
-        
+        if (startTime != null && startTime.contains(":")) {
+            startTime = startTime.replace(":", "");
+        }
+
+        if (endTime != null && endTime.contains(":")) {
+            endTime = endTime.replace(":", "");
+        }
+
+        log.debug("Time Call: " + timeCall + " Start Time: " + startTime + " End Time: " + endTime);
+
         bill.setBillingNo(Integer.parseInt(billingid));
         bill.setCreatedate(new Date());
         bill.setBillingstatus(billingAccountStatus);
@@ -333,8 +336,7 @@ public class BillingSaveBillingAction extends Action {
         bill.setPhn(bean.getPatientPHN());
 
 
-
-        bill.setNameVerify(bean.getPatientFirstName(),bean.getPatientLastName());
+        bill.setNameVerify(bean.getPatientFirstName(), bean.getPatientLastName());
         bill.setDependentNum(bean.getDependent());
         bill.setBillingUnit(billingUnit); //"" + billItem.getUnit());
         bill.setClarificationCode(bean.getVisitLocation().substring(0, 2));
@@ -361,11 +363,11 @@ public class BillingSaveBillingAction extends Action {
         bill.setReferralNo1(bean.getReferral1());
         bill.setReferralFlag2(bean.getReferType2());
         bill.setReferralNo2(bean.getReferral2());
-        
-        bill.setTimeCall( timeCall );
-        bill.setServiceStartTime( startTime );
-        bill.setServiceEndTime( endTime );
-        
+
+        bill.setTimeCall(timeCall);
+        bill.setServiceStartTime(startTime);
+        bill.setServiceEndTime(endTime);
+
         bill.setBirthDate(convertDate8Char(bean.getPatientDoB()));
         bill.setOfficeNumber("");
         bill.setCorrespondenceCode(bean.getCorrespondenceCode());
@@ -376,7 +378,7 @@ public class BillingSaveBillingAction extends Action {
         bill.setFacilitySubNo(bean.getFacilitySubNum());
         bill.setPaymentMethod(Integer.parseInt(bean.getPaymentType()));
 
-        if (bean.getPatientHCType() != null && ! bean.getPatientHCType().isEmpty() && ! bean.getBillRegion().trim().equals(bean.getPatientHCType().trim())) {
+        if (bean.getPatientHCType() != null && !bean.getPatientHCType().isEmpty() && !bean.getBillRegion().trim().equals(bean.getPatientHCType().trim())) {
 
             bill.setOinInsurerCode(bean.getPatientHCType());
             bill.setOinRegistrationNo(bean.getPatientPHN());
@@ -397,7 +399,7 @@ public class BillingSaveBillingAction extends Action {
             bill.setBirthDate("00000000");
 
         }
-        log.debug("Bill "+bill.getBillingCode()+" "+bill.getBillAmount());
+        log.debug("Bill " + bill.getBillingCode() + " " + bill.getBillAmount());
         return bill;
     }
 }

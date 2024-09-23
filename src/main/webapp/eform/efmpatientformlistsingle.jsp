@@ -28,8 +28,8 @@
 <%@page import="org.oscarehr.web.eform.EfmPatientFormList"%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-	String demographic_no = request.getParameter("demographic_no");
-	String deepColor = "#CCCCFF", weakColor = "#EEEEFF";
+    String demographic_no = request.getParameter("demographic_no");
+    String deepColor = "#CCCCFF", weakColor = "#EEEEFF";
 
 	if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
 	String roleName$ = (String)session.getAttribute("userrole") + "," + (String)session.getAttribute("user");
@@ -42,13 +42,13 @@
 	else if (orderByRequest.equals("form_subject")) orderBy = EFormUtil.SUBJECT;
 	else if (orderByRequest.equals("form_name")) orderBy = EFormUtil.NAME;
 
-	String appointment = request.getParameter("appointment");
-	String parentAjaxId = request.getParameter("parentAjaxId");
+    String appointment = request.getParameter("appointment");
+    String parentAjaxId = request.getParameter("parentAjaxId");
 
 	boolean isMyOscarAvailable = EfmPatientFormList.isMyOscarAvailable(Integer.parseInt(demographic_no));
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <html>
 

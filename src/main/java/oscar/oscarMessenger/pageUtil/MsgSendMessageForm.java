@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,52 +35,50 @@ import org.apache.struts.action.ActionMessage;
 
 public final class MsgSendMessageForm extends ActionForm {
 
-  private String[] provider;
-  private String message,subject;
+    private String[] provider;
+    private String message, subject;
 
-  public String getSubject(){
-    return subject != null ? subject : "" ;
-  }
+    public String getSubject() {
+        return subject != null ? subject : "";
+    }
 
-  public void setSubject(String subject){
-  this.subject = subject;
-  }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-  public String getMessage(){
+    public String getMessage() {
 
-  return message != null ? message : "" ;
-
-  }
-
-  public void setMessage(String msg){
-
-  this.message = msg;
-  }
-
-
-
-  public String[] getProvider(){
-
-  if (provider == null){
-          provider = new String[]{};//{"174","176","0"};
-
-  }
-
-      return provider;
-  }
-
-  public void setProvider(String[] prov){
-
-    this.provider = prov;
-
-    for (int i =0 ; i < prov.length ; i++)
-    {
+        return message != null ? message : "";
 
     }
-  }
+
+    public void setMessage(String msg) {
+
+        this.message = msg;
+    }
 
 
-  /**
+    public String[] getProvider() {
+
+        if (provider == null) {
+            provider = new String[]{};//{"174","176","0"};
+
+        }
+
+        return provider;
+    }
+
+    public void setProvider(String[] prov) {
+
+        this.provider = prov;
+
+        for (int i = 0; i < prov.length; i++) {
+
+        }
+    }
+
+
+    /**
      * Validate the properties that have been set from this HTTP request,
      * and return an <code>ActionErrors</code> object that encapsulates any
      * validation errors that have been found.  If no errors are found, return
@@ -96,13 +94,13 @@ public final class MsgSendMessageForm extends ActionForm {
 
         ActionErrors errors = new ActionErrors();
 
-        if (message == null || message.length() == 0){   //index.heading
+        if (message == null || message.length() == 0) {   //index.heading
 
- //             errors.add("message32",new ActionError("error.message.missing"));
-              //errors.add("message32",new ActionError("index.heading"));
-             
+            //             errors.add("message32",new ActionError("error.message.missing"));
+            //errors.add("message32",new ActionError("index.heading"));
 
-              errors.add("message", new ActionMessage("index.heading"));
+
+            errors.add("message", new ActionMessage("index.heading"));
 
         }
 

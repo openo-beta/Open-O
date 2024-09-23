@@ -4,6 +4,7 @@ package org.oscarehr.common.model;
 import javax.persistence.*;
 
 import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.codec.binary.Base64;
 
 import java.util.Date;
@@ -29,7 +30,9 @@ public class EmailLog extends AbstractModel<Integer> implements Comparable<Email
             this.value = value;
         }
 
-        public String getValue() { return value; }
+        public String getValue() {
+            return value;
+        }
     }
 
     public enum TransactionType {
@@ -96,7 +99,8 @@ public class EmailLog extends AbstractModel<Integer> implements Comparable<Email
     @OneToMany(mappedBy = "emailLog", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<EmailAttachment> emailAttachments;
 
-    public EmailLog() {}
+    public EmailLog() {
+    }
 
     public EmailLog(EmailConfig emailConfig, String fromEmail, String[] toEmail, String subject, String body, EmailStatus status) {
         this.emailConfig = emailConfig;

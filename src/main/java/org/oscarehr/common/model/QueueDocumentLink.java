@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,42 +38,47 @@ import javax.persistence.Table;
  * @author jackson bi
  */
 @Entity
-@Table(name="queue_document_link")
-public class QueueDocumentLink extends AbstractModel<Integer>{
+@Table(name = "queue_document_link")
+public class QueueDocumentLink extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-	@Column(name="document_id")
+    @Column(name = "document_id")
     private int docId;
-	@Column(name="queue_id")
+    @Column(name = "queue_id")
     private int queueId;
     private String status;
 
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getDocId(){
+    public int getDocId() {
         return docId;
     }
-    public void setDocId(int dId){
-        this.docId=dId;
+
+    public void setDocId(int dId) {
+        this.docId = dId;
     }
 
-    public int getQueueId(){
+    public int getQueueId() {
         return queueId;
     }
-    public void setQueueId(int qId){
-        this.queueId=qId;
+
+    public void setQueueId(int qId) {
+        this.queueId = qId;
     }
-    public void setStatus(String s){
-        this.status=s;
+
+    public void setStatus(String s) {
+        this.status = s;
     }
-    public String getStatus(){
+
+    public String getStatus() {
         return this.status;
     }
 }

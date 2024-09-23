@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,73 +42,88 @@ public final class RptInitializePatientsInAbnormalRangeCDMReportForm extends Act
     public Object getValue(String key) {
         return values.get(key);
     }
-    
+
     private String[] patientSeenCheckbox;
-    public String[] getPatientSeenCheckbox(){
+
+    public String[] getPatientSeenCheckbox() {
         return patientSeenCheckbox;
     }
-    public void setPatientSeenCheckbox(String[] patientSeenCheckbox){
-        this.patientSeenCheckbox=patientSeenCheckbox;
+
+    public void setPatientSeenCheckbox(String[] patientSeenCheckbox) {
+        this.patientSeenCheckbox = patientSeenCheckbox;
     }
-    
+
     private String startDateA;
-    public String getStartDateA(){
+
+    public String getStartDateA() {
         return startDateA;
     }
-    public void setStartDateA(String startDateA){
+
+    public void setStartDateA(String startDateA) {
         this.startDateA = startDateA;
     }
-    
+
     private String endDateA;
-    public String getEndDateA(){
+
+    public String getEndDateA() {
         return endDateA;
     }
-    public void setEndDateA(String endDateA){
+
+    public void setEndDateA(String endDateA) {
         this.endDateA = endDateA;
-    }    
-    
+    }
 
 
     /***************************************************************
      *Getter and Setter for Percentage of Patient in Abnormal range
      **************************************************************/
     private String[] abnormalCheckbox;
-    public String[] getAbnormalCheckbox(){
+
+    public String[] getAbnormalCheckbox() {
         return abnormalCheckbox;
     }
-    public void setAbnormalCheckbox(String[] abnormalCheckbox){
+
+    public void setAbnormalCheckbox(String[] abnormalCheckbox) {
         this.abnormalCheckbox = abnormalCheckbox;
     }
-    
+
     private String[] startDateC;
-    public String[] getStartDateC(){
+
+    public String[] getStartDateC() {
         return startDateC;
     }
-    public void setStartDateC(String[] startDateC){
+
+    public void setStartDateC(String[] startDateC) {
         this.startDateC = startDateC;
     }
-    
+
     private String[] endDateC;
-        public String[] getEndDateC(){
+
+    public String[] getEndDateC() {
         return endDateC;
     }
-    public void setEndDateC(String[] endDateC){
+
+    public void setEndDateC(String[] endDateC) {
         this.endDateC = endDateC;
     }
-    
+
     private String[] upperBound;
-        public String[] getUpperBound(){
+
+    public String[] getUpperBound() {
         return upperBound;
     }
-    public void setUpperBound(String[] upperBound){
+
+    public void setUpperBound(String[] upperBound) {
         this.upperBound = upperBound;
     }
-    
+
     private String[] lowerBound;
-        public String[] getLowerBound(){
+
+    public String[] getLowerBound() {
         return lowerBound;
     }
-    public void setLowerBound(String[] lowerBound){
+
+    public void setLowerBound(String[] lowerBound) {
         this.lowerBound = lowerBound;
     }    
 
@@ -133,5 +148,5 @@ public final class RptInitializePatientsInAbnormalRangeCDMReportForm extends Act
         return errors;
     }
     */
-    
+
 }

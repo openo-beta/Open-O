@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,48 +40,48 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 public class DisplayIndicatorAction extends DispatchAction {
-	
-	private static Logger logger = MiscUtils.getLogger();
-	
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	private static DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
-	
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) {
-		return null;
-	}
-	
-	@SuppressWarnings("unused")
-	public ActionForward getIndicator(ActionMapping mapping, ActionForm form, 
-			HttpServletRequest request, HttpServletResponse response) {
-		
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		
-		if( ! securityInfoManager.hasPrivilege(loggedInInfo, "_dashboardDisplay", SecurityInfoManager.READ, null ) ) {	
-			return mapping.findForward("unauthorized");
-        }
-		
-		String indicatorId = request.getParameter("indicatorId");
-		int id = 0;
-		if( indicatorId != null && ! indicatorId.isEmpty() ) {
-			id = Integer.parseInt( indicatorId );
-		}
 
-		String providerNo = null;
-		if (dashboardManager.getRequestedProviderNo(loggedInInfo) != null) {
-		    providerNo = dashboardManager.getRequestedProviderNo(loggedInInfo);
+    private static Logger logger = MiscUtils.getLogger();
+
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private static DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
+
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form,
+                                     HttpServletRequest request, HttpServletResponse response) {
+        return null;
+    }
+
+    @SuppressWarnings("unused")
+    public ActionForward getIndicator(ActionMapping mapping, ActionForm form,
+                                      HttpServletRequest request, HttpServletResponse response) {
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_dashboardDisplay", SecurityInfoManager.READ, null)) {
+            return mapping.findForward("unauthorized");
         }
 
-		IndicatorBean indicatorPanelBean;
-		if (providerNo == null) {
-			indicatorPanelBean = dashboardManager.getIndicatorPanel(loggedInInfo, id);
-		} else {
-			indicatorPanelBean = dashboardManager.getIndicatorPanelForProvider(loggedInInfo, providerNo, id);
-		}
+        String indicatorId = request.getParameter("indicatorId");
+        int id = 0;
+        if (indicatorId != null && !indicatorId.isEmpty()) {
+            id = Integer.parseInt(indicatorId);
+        }
 
-		request.setAttribute("indicatorPanel", indicatorPanelBean);
-		
-		return mapping.findForward("success");
-	}
+        String providerNo = null;
+        if (dashboardManager.getRequestedProviderNo(loggedInInfo) != null) {
+            providerNo = dashboardManager.getRequestedProviderNo(loggedInInfo);
+        }
+
+        IndicatorBean indicatorPanelBean;
+        if (providerNo == null) {
+            indicatorPanelBean = dashboardManager.getIndicatorPanel(loggedInInfo, id);
+        } else {
+            indicatorPanelBean = dashboardManager.getIndicatorPanelForProvider(loggedInInfo, providerNo, id);
+        }
+
+        request.setAttribute("indicatorPanel", indicatorPanelBean);
+
+        return mapping.findForward("success");
+    }
 
 }

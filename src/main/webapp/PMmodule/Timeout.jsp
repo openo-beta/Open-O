@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,7 +24,6 @@
 --%>
 
 
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-
-<logic:redirect forward="timeout" />
+<logic:redirect forward="timeout"/>

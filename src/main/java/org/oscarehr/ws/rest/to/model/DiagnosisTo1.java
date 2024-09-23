@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,29 +31,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DiagnosisTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	
-	private String codingSystem;
-	private String code;
-	private String description;
-	
-	public String getCodingSystem() {
-	    return codingSystem;
+
+    private String codingSystem;
+    private String code;
+    private String description;
+
+    public String getCodingSystem() {
+        return codingSystem;
     }
-	public void setCodingSystem(String codingSystem) {
-	    this.codingSystem = codingSystem;
+
+    public void setCodingSystem(String codingSystem) {
+        this.codingSystem = codingSystem;
     }
-	public String getCode() {
-	    return code;
+
+    public String getCode() {
+        return code;
     }
-	public void setCode(String code) {
-	    this.code = code;
+
+    public void setCode(String code) {
+        this.code = code;
     }
-	public String getDescription() {
-	    return description;
+
+    public String getDescription() {
+        return description;
     }
-	public void setDescription(String description) {
-	    this.description = description;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

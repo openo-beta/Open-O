@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -46,9 +45,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -80,44 +79,44 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "content"
+        "content"
 })
 @XmlRootElement(name = "CDescription_of_side_effects__check_all_that_apply_")
 public class CDescriptionOfSideEffectsCheckAllThatApply {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "COther", type = COther.class),
-        @XmlElementRef(name = "CNone", type = JAXBElement.class),
-        @XmlElementRef(name = "CMilky_discharge_from_breasts", type = JAXBElement.class),
-        @XmlElementRef(name = "CChanges_in_appetite", type = JAXBElement.class),
-        @XmlElementRef(name = "CMuscle_spasms", type = JAXBElement.class),
-        @XmlElementRef(name = "CSexual_disturbance", type = JAXBElement.class),
-        @XmlElementRef(name = "CTremors_rigidity_balance_problems", type = JAXBElement.class),
-        @XmlElementRef(name = "CInsomnia", type = JAXBElement.class),
-        @XmlElementRef(name = "CDry_mouth", type = JAXBElement.class),
-        @XmlElementRef(name = "CDizziness_spinning", type = JAXBElement.class),
-        @XmlElementRef(name = "CWeight_gain", type = JAXBElement.class),
-        @XmlElementRef(name = "CNumbness_tingling", type = JAXBElement.class),
-        @XmlElementRef(name = "CFatigue_weakness", type = JAXBElement.class),
-        @XmlElementRef(name = "CRestlessness", type = JAXBElement.class),
-        @XmlElementRef(name = "Cblurred_dimmed_vision", type = JAXBElement.class),
-        @XmlElementRef(name = "CDrowsiness_sedation", type = JAXBElement.class),
-        @XmlElementRef(name = "COther_", type = JAXBElement.class),
-        @XmlElementRef(name = "CMenstrual_changes", type = JAXBElement.class),
-        @XmlElementRef(name = "CFast_heart_beat", type = JAXBElement.class),
-        @XmlElementRef(name = "CGastrointestinal_distress", type = JAXBElement.class),
-        @XmlElementRef(name = "CHeadache", type = JAXBElement.class)
+            @XmlElementRef(name = "COther", type = COther.class),
+            @XmlElementRef(name = "CNone", type = JAXBElement.class),
+            @XmlElementRef(name = "CMilky_discharge_from_breasts", type = JAXBElement.class),
+            @XmlElementRef(name = "CChanges_in_appetite", type = JAXBElement.class),
+            @XmlElementRef(name = "CMuscle_spasms", type = JAXBElement.class),
+            @XmlElementRef(name = "CSexual_disturbance", type = JAXBElement.class),
+            @XmlElementRef(name = "CTremors_rigidity_balance_problems", type = JAXBElement.class),
+            @XmlElementRef(name = "CInsomnia", type = JAXBElement.class),
+            @XmlElementRef(name = "CDry_mouth", type = JAXBElement.class),
+            @XmlElementRef(name = "CDizziness_spinning", type = JAXBElement.class),
+            @XmlElementRef(name = "CWeight_gain", type = JAXBElement.class),
+            @XmlElementRef(name = "CNumbness_tingling", type = JAXBElement.class),
+            @XmlElementRef(name = "CFatigue_weakness", type = JAXBElement.class),
+            @XmlElementRef(name = "CRestlessness", type = JAXBElement.class),
+            @XmlElementRef(name = "Cblurred_dimmed_vision", type = JAXBElement.class),
+            @XmlElementRef(name = "CDrowsiness_sedation", type = JAXBElement.class),
+            @XmlElementRef(name = "COther_", type = JAXBElement.class),
+            @XmlElementRef(name = "CMenstrual_changes", type = JAXBElement.class),
+            @XmlElementRef(name = "CFast_heart_beat", type = JAXBElement.class),
+            @XmlElementRef(name = "CGastrointestinal_distress", type = JAXBElement.class),
+            @XmlElementRef(name = "CHeadache", type = JAXBElement.class)
     })
     protected List<Object> content;
 
     /**
      * Gets the rest of the content model. 
-     * 
+     *
      * <p>
      * You are getting this "catch-all" property because of the following reason: 
      * The field name "COther" is used by two different parts of a schema. See: 
@@ -127,20 +126,20 @@ public class CDescriptionOfSideEffectsCheckAllThatApply {
      * To get rid of this property, apply a property customization to one 
      * of both of the following declarations to change their names: 
      * Gets the value of the content property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the content property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getContent().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link COther }
@@ -164,8 +163,8 @@ public class CDescriptionOfSideEffectsCheckAllThatApply {
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * 
-     * 
+     *
+     *
      */
     public List<Object> getContent() {
         if (content == null) {

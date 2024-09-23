@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,49 +35,49 @@ import org.apache.struts.action.ActionMessage;
 import oscar.util.StringUtils;
 
 public class BillingReceivePaymentActionForm
-    extends ActionForm {
-  private String amountReceived="";
-  private String billingNo ="";
-  public String getAmountReceived() {
-    return amountReceived;
-  }
+        extends ActionForm {
+    private String amountReceived = "";
+    private String billingNo = "";
 
-  public void setAmountReceived(String amountReceived) {
-    this.amountReceived = amountReceived;
-  }
-
-  public void setBillingNo(String billingNo) {
-
-    this.billingNo = billingNo;
-  }
-
-  public String getBillingNo() {
-
-    return billingNo;
-  }
-
-  public ActionErrors validate(ActionMapping actionMapping,
-                               HttpServletRequest httpServletRequest) {
-    ActionErrors errors = new ActionErrors();
-    if (!StringUtils.isNumeric(amountReceived)) {
-      errors.add("",
-                 new ActionMessage(
-                     "oscar.billing.CA.BC.billingBC.error.nonNumericAmount",
-                     ""));
-    }
-    else {
-      double dblAmount = new Double(amountReceived).doubleValue();
-      if (dblAmount == 0) {
-        errors.add("",
-                 new ActionMessage(
-                     "oscar.billing.CA.BC.billingBC.error.zeroAmount",
-                     ""));
-
-      }
+    public String getAmountReceived() {
+        return amountReceived;
     }
 
-    return errors;
-  }
+    public void setAmountReceived(String amountReceived) {
+        this.amountReceived = amountReceived;
+    }
+
+    public void setBillingNo(String billingNo) {
+
+        this.billingNo = billingNo;
+    }
+
+    public String getBillingNo() {
+
+        return billingNo;
+    }
+
+    public ActionErrors validate(ActionMapping actionMapping,
+                                 HttpServletRequest httpServletRequest) {
+        ActionErrors errors = new ActionErrors();
+        if (!StringUtils.isNumeric(amountReceived)) {
+            errors.add("",
+                    new ActionMessage(
+                            "oscar.billing.CA.BC.billingBC.error.nonNumericAmount",
+                            ""));
+        } else {
+            double dblAmount = new Double(amountReceived).doubleValue();
+            if (dblAmount == 0) {
+                errors.add("",
+                        new ActionMessage(
+                                "oscar.billing.CA.BC.billingBC.error.zeroAmount",
+                                ""));
+
+            }
+        }
+
+        return errors;
+    }
 
 
 }

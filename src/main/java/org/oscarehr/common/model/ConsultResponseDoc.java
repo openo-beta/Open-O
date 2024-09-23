@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,85 +37,86 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="consultResponseDoc")
-public class ConsultResponseDoc extends AbstractModel<Integer>{
-	public static final String DOCTYPE_DOC = "D";
-	public static final String DOCTYPE_EFORM = "E";
-	public static final String DOCTYPE_LAB = "L";
-	public static final String DELETED = "Y";
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+@Table(name = "consultResponseDoc")
+public class ConsultResponseDoc extends AbstractModel<Integer> {
+    public static final String DOCTYPE_DOC = "D";
+    public static final String DOCTYPE_EFORM = "E";
+    public static final String DOCTYPE_LAB = "L";
+    public static final String DELETED = "Y";
 
-	private int responseId;
-	private int documentNo;
-	private String docType;
-	private String deleted;
-	@Temporal(TemporalType.DATE)
-	private Date attachDate;
-	private String providerNo;
-	
-	public ConsultResponseDoc() {}
-	
-	public ConsultResponseDoc(int responseId, int documentNo, String docType, String providerNo) {
-		setResponseId(responseId);
-		setDocumentNo(documentNo);
-		setDocType(docType);
-		setProviderNo(providerNo);
-		setAttachDate(new Date());
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Override
-	public Integer getId() {
-    	return id;
+    private int responseId;
+    private int documentNo;
+    private String docType;
+    private String deleted;
+    @Temporal(TemporalType.DATE)
+    private Date attachDate;
+    private String providerNo;
+
+    public ConsultResponseDoc() {
     }
 
-	public int getResponseId() {
-    	return responseId;
+    public ConsultResponseDoc(int responseId, int documentNo, String docType, String providerNo) {
+        setResponseId(responseId);
+        setDocumentNo(documentNo);
+        setDocType(docType);
+        setProviderNo(providerNo);
+        setAttachDate(new Date());
     }
 
-	public void setResponseId(int responseId) {
-    	this.responseId = responseId;
+    @Override
+    public Integer getId() {
+        return id;
     }
 
-	public int getDocumentNo() {
-    	return documentNo;
+    public int getResponseId() {
+        return responseId;
     }
 
-	public void setDocumentNo(int documentNo) {
-    	this.documentNo = documentNo;
+    public void setResponseId(int responseId) {
+        this.responseId = responseId;
     }
 
-	public String getDocType() {
-    	return docType;
+    public int getDocumentNo() {
+        return documentNo;
     }
 
-	public void setDocType(String docType) {
-    	this.docType = docType;
+    public void setDocumentNo(int documentNo) {
+        this.documentNo = documentNo;
     }
 
-	public String getDeleted() {
-    	return deleted;
+    public String getDocType() {
+        return docType;
     }
 
-	public void setDeleted(String deleted) {
-    	this.deleted = deleted;
+    public void setDocType(String docType) {
+        this.docType = docType;
     }
 
-	public Date getAttachDate() {
-    	return attachDate;
+    public String getDeleted() {
+        return deleted;
     }
 
-	public void setAttachDate(Date attachDate) {
-    	this.attachDate = attachDate;
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public Date getAttachDate() {
+        return attachDate;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setAttachDate(Date attachDate) {
+        this.attachDate = attachDate;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 }

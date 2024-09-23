@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -121,7 +121,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
      */
     @Override
     public List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current, int startIndex,
-            int numToReturn) {
+                                                      int numToReturn) {
         return findByDemographicIdCurrent(demographicId, current, startIndex, numToReturn, null);
     }
 
@@ -153,7 +153,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
 
     @Override
     public List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current, int startIndex,
-            int numToReturn, String sortBy) {
+                                                      int numToReturn, String sortBy) {
         StringBuilder sb = new StringBuilder();
         sb.append("select x from ");
         sb.append(modelClass.getSimpleName());
@@ -358,7 +358,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
 
     /**
      * Finds form data for the specified demographic record and form name
-     * 
+     *
      * @param demographicNo
      *                      Demographic number to find the form data for
      * @param formName
@@ -498,7 +498,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
 
     @Override
     public List<EFormData> findInGroups(Boolean status, int demographicNo, String groupName, String sortBy, int offset,
-            int numToReturn, List<String> eformPerms) {
+                                        int numToReturn, List<String> eformPerms) {
         StringBuilder sb = new StringBuilder(
                 "SELECT e FROM EFormData e, EFormGroup g WHERE e.demographicId = :demographicNo AND e.patientIndependent = false AND e.formId = g.formId AND g.groupName = :groupName");
 
@@ -562,7 +562,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     /**
      * This method war written for BORN Kid eConnect job to figure out which eforms
      * don't have an eform_value present
-     * 
+     *
      * @param fid
      * @param varName
      * @return

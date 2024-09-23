@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -72,20 +72,20 @@ import oscar.oscarPrevention.pageUtil.PreventionPrintPdf;
  * @author apavel
  */
 public class PHRGenericSendToPhrAction extends DispatchAction {
-    private static final Logger logger= MiscUtils.getLogger();
+    private static final Logger logger = MiscUtils.getLogger();
     private PHRService phrService;
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-       if (request.getParameter("SendToPhrPreview") == null) return mapping.findForward("inputJsp");
-       return super.execute(mapping, form, request, response);
+        if (request.getParameter("SendToPhrPreview") == null) return mapping.findForward("inputJsp");
+        return super.execute(mapping, form, request, response);
     }
 
     @Override
-    public ActionForward unspecified(ActionMapping mapping, ActionForm  form,
-           HttpServletRequest request, HttpServletResponse response)
-           throws Exception {
-        return send(mapping,form,request,response);
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form,
+                                     HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        return send(mapping, form, request, response);
     }
 
     public ActionForward documentPreview(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -109,29 +109,29 @@ public class PHRGenericSendToPhrAction extends DispatchAction {
             preventionPrintPdf.printPdf(headerIds, request, response.getOutputStream());
         }
         if (module != null && module.equals("echart")) {
-        	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        	String demono = request.getParameter("demographicNo");
-        	if (demono == null)  demono = request.getParameter("demographic_no");
-    		if (demono == null || "".equals(demono)) {
-    			demono = (String) request.getAttribute("casemgmt_DemoNo");
-    		}
-			Integer demographicNo = Integer.parseInt(demono);
-			String ids = request.getParameter("notes2print");
-			boolean printAllNotes = "ALL_NOTES".equals(ids);
-			String[] noteIds;
-			if (ids.length() > 0) {
-				noteIds = ids.split(",");
-			} else {
-				noteIds = new String[] {};
-			}
-			boolean printCPP  = request.getParameter("printCPP") != null && request.getParameter("printCPP").equalsIgnoreCase("true");
-			boolean printRx   = request.getParameter("printRx") != null && request.getParameter("printRx").equalsIgnoreCase("true");
-			boolean printLabs = request.getParameter("printLabs") != null && request.getParameter("printLabs").equalsIgnoreCase("true");		
-			boolean printPreventions = request.getParameter("printPreventions") != null && request.getParameter("printPreventions").equalsIgnoreCase("true");		
-			
-			CaseManagementPrint cmp = new CaseManagementPrint();
-			cmp.doPrint(loggedInInfo,demographicNo, printAllNotes,noteIds,printCPP,printRx,printLabs,printPreventions,false,null,null,request, response.getOutputStream());
-        	
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            String demono = request.getParameter("demographicNo");
+            if (demono == null) demono = request.getParameter("demographic_no");
+            if (demono == null || "".equals(demono)) {
+                demono = (String) request.getAttribute("casemgmt_DemoNo");
+            }
+            Integer demographicNo = Integer.parseInt(demono);
+            String ids = request.getParameter("notes2print");
+            boolean printAllNotes = "ALL_NOTES".equals(ids);
+            String[] noteIds;
+            if (ids.length() > 0) {
+                noteIds = ids.split(",");
+            } else {
+                noteIds = new String[]{};
+            }
+            boolean printCPP = request.getParameter("printCPP") != null && request.getParameter("printCPP").equalsIgnoreCase("true");
+            boolean printRx = request.getParameter("printRx") != null && request.getParameter("printRx").equalsIgnoreCase("true");
+            boolean printLabs = request.getParameter("printLabs") != null && request.getParameter("printLabs").equalsIgnoreCase("true");
+            boolean printPreventions = request.getParameter("printPreventions") != null && request.getParameter("printPreventions").equalsIgnoreCase("true");
+
+            CaseManagementPrint cmp = new CaseManagementPrint();
+            cmp.doPrint(loggedInInfo, demographicNo, printAllNotes, noteIds, printCPP, printRx, printLabs, printPreventions, false, null, null, request, response.getOutputStream());
+
         }
         return null;
     }
@@ -139,19 +139,19 @@ public class PHRGenericSendToPhrAction extends DispatchAction {
 
     public ActionForward send(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
-    	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-    	String providerNo=loggedInInfo.getLoggedInProviderNo();
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-    	Integer demographicNo = Integer.parseInt(request.getParameter("demographic_no"));
+        Integer demographicNo = Integer.parseInt(request.getParameter("demographic_no"));
         String module = request.getParameter("module");
 
         String labId = request.getParameter("labId");
         String subject = request.getParameter("subject");
         String message = request.getParameter("message");
-        
-        MyOscarLoggedInInfo myOscarLoggedInInfo=MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
-        Long patientMyOscarUserId=MyOscarUtils.getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demographicNo);
-        
+
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
+        Long patientMyOscarUserId = MyOscarUtils.getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demographicNo);
+
         EDocFactory eDocFactory = new EDocFactory();
         String description = "";
         String type = "document";
@@ -164,7 +164,7 @@ public class PHRGenericSendToPhrAction extends DispatchAction {
         EDocFactory.Status status = EDocFactory.Status.SENT;
         Date observationDate = new Date();
         String reviewerId = null;
-       
+
         EDocFactory.Module docModule = EDocFactory.Module.demographic;
         String docModuleId = demographicNo.toString();
 
@@ -175,18 +175,17 @@ public class PHRGenericSendToPhrAction extends DispatchAction {
                 request.setAttribute("segmentID", labId);
 
                 type = "lab";
-                fileName =  "labtophr";
+                fileName = "labtophr";
                 description = subject;
                 newEDoc = eDocFactory.createEDoc(description, type, fileName, contentType, html, creatorId, responsibleId, source, status, observationDate, reviewerId, observationDate, docModule, docModuleId);
                 OutputStream os = newEDoc.getFileOutputStream();
                 LabPDFCreator labPDFCreator = new LabPDFCreator(request, os);
                 labPDFCreator.printPdf();
-            }
-            else if (module != null && module.equals("prevention")) {
+            } else if (module != null && module.equals("prevention")) {
                 String[] headerIds = request.getParameterValues("printHP");
 
                 type = "others";
-                fileName =  "immunizationtophr";
+                fileName = "immunizationtophr";
                 description = subject;
                 newEDoc = eDocFactory.createEDoc(description, type, fileName, contentType, html, creatorId, responsibleId, source, status, observationDate, reviewerId, observationDate, docModule, docModuleId);
 
@@ -195,102 +194,102 @@ public class PHRGenericSendToPhrAction extends DispatchAction {
                 preventionPrintPdf.printPdf(headerIds, request, os);
             } else if (module != null && module.equals("echart")) {
                 type = "others";
-                fileName =  "echarttophr";
+                fileName = "echarttophr";
                 description = subject;
                 newEDoc = eDocFactory.createEDoc(description, type, fileName, contentType, html, creatorId, responsibleId, source, status, observationDate, reviewerId, observationDate, docModule, docModuleId);
 
                 OutputStream os = newEDoc.getFileOutputStream();
 
-    			String ids = request.getParameter("notes2print");
-    			boolean printAllNotes = "ALL_NOTES".equals(ids);
-    			String[] noteIds;
-    			if (ids.length() > 0) {
-    				noteIds = ids.split(",");
-    			} else {
-    				noteIds = new String[] {};
-    			}
-    			boolean printCPP  = request.getParameter("printCPP") != null && request.getParameter("printCPP").equalsIgnoreCase("true");
-    			boolean printRx   = request.getParameter("printRx") != null && request.getParameter("printRx").equalsIgnoreCase("true");
-    			boolean printLabs = request.getParameter("printLabs") != null && request.getParameter("printLabs").equalsIgnoreCase("true");
-    			boolean printPreventions = request.getParameter("printPreventions") != null && request.getParameter("printPreventions").equalsIgnoreCase("true");
+                String ids = request.getParameter("notes2print");
+                boolean printAllNotes = "ALL_NOTES".equals(ids);
+                String[] noteIds;
+                if (ids.length() > 0) {
+                    noteIds = ids.split(",");
+                } else {
+                    noteIds = new String[]{};
+                }
+                boolean printCPP = request.getParameter("printCPP") != null && request.getParameter("printCPP").equalsIgnoreCase("true");
+                boolean printRx = request.getParameter("printRx") != null && request.getParameter("printRx").equalsIgnoreCase("true");
+                boolean printLabs = request.getParameter("printLabs") != null && request.getParameter("printLabs").equalsIgnoreCase("true");
+                boolean printPreventions = request.getParameter("printPreventions") != null && request.getParameter("printPreventions").equalsIgnoreCase("true");
 
-    			Calendar startDate = null;
-    			try{
-    				startDate = Calendar.getInstance();
-    				startDate.setTimeInMillis(Long.parseLong(request.getParameter("startDate")));
-    			}catch(Exception e){
-    				startDate = null;
-    			}
-    			
-    			Calendar endDate = null;
-    			try{
-    				endDate = Calendar.getInstance();
-    				endDate.setTimeInMillis(Long.parseLong(request.getParameter("endDate")));
-    			}catch(Exception e){
-    				endDate = null;
-    			}
-    		
-    			CaseManagementPrint cmp = new CaseManagementPrint();
-    			cmp.doPrint(loggedInInfo,demographicNo, printAllNotes,noteIds,printCPP,printRx,printLabs,printPreventions,false,startDate,endDate,request, os);
-            	
+                Calendar startDate = null;
+                try {
+                    startDate = Calendar.getInstance();
+                    startDate.setTimeInMillis(Long.parseLong(request.getParameter("startDate")));
+                } catch (Exception e) {
+                    startDate = null;
+                }
+
+                Calendar endDate = null;
+                try {
+                    endDate = Calendar.getInstance();
+                    endDate.setTimeInMillis(Long.parseLong(request.getParameter("endDate")));
+                } catch (Exception e) {
+                    endDate = null;
+                }
+
+                CaseManagementPrint cmp = new CaseManagementPrint();
+                cmp.doPrint(loggedInInfo, demographicNo, printAllNotes, noteIds, printCPP, printRx, printLabs, printPreventions, false, startDate, endDate, request, os);
+
             } else if (module != null && module.equals("document")) {
-            	documentNo =  request.getParameter("documentNo");
+                documentNo = request.getParameter("documentNo");
             } else {
                 response.getWriter().append("object ID is unrecognized or is not set");
                 return null;
             }
             request.setAttribute("providerNo", providerNo);
-            
-            if(newEDoc != null){ // This should be null except for when it's a document
-            	documentNo = EDocUtil.addDocumentSQL(newEDoc);
+
+            if (newEDoc != null) { // This should be null except for when it's a document
+                documentNo = EDocUtil.addDocumentSQL(newEDoc);
             }
             EDoc eDoc = EDocUtil.getDoc(documentNo);
-            
+
             if (module != null && module.equals("document")) {
-            	eDoc.setDescription(subject);
+                eDoc.setDescription(subject);
             }
 
             //--- send to myoscar ---
-			Document doc=XmlUtils.newDocument("BinaryDocument");
-			XmlUtils.appendChildToRoot(doc, "Filename", eDoc.getFileName());
-			XmlUtils.appendChildToRoot(doc, "FileDescription", eDoc.getDescription());
-			XmlUtils.appendChildToRoot(doc, "MimeType", eDoc.getContentType());
-			XmlUtils.appendChildToRoot(doc, "Data", eDoc.getFileBytes());
-			String docAsString=XmlUtils.toString(doc, false);
-			
-			GregorianCalendar dateOfData=new GregorianCalendar();
-			if (eDoc.getDateTimeStampAsDate()!=null) dateOfData.setTime(eDoc.getDateTimeStampAsDate());
-			
-			MedicalDataTransfer4 medicalDataTransfer=new MedicalDataTransfer4();
-			medicalDataTransfer.setData(docAsString);
-			medicalDataTransfer.setDateOfData(dateOfData);
-			medicalDataTransfer.setMedicalDataType(MedicalDataType.BINARY_DOCUMENT.name());
-			medicalDataTransfer.setObserverOfDataPersonId(myOscarLoggedInInfo.getLoggedInPersonId());
+            Document doc = XmlUtils.newDocument("BinaryDocument");
+            XmlUtils.appendChildToRoot(doc, "Filename", eDoc.getFileName());
+            XmlUtils.appendChildToRoot(doc, "FileDescription", eDoc.getDescription());
+            XmlUtils.appendChildToRoot(doc, "MimeType", eDoc.getContentType());
+            XmlUtils.appendChildToRoot(doc, "Data", eDoc.getFileBytes());
+            String docAsString = XmlUtils.toString(doc, false);
 
-			medicalDataTransfer.setObserverOfDataPersonName(loggedInInfo.getLoggedInProvider().getFormattedName());
-			medicalDataTransfer.setOriginalSourceId(loggedInInfo.getCurrentFacility().getName()+":eDoc:"+eDoc.getDocId());
-			medicalDataTransfer.setOwningPersonId(patientMyOscarUserId);
-						
-			Long medicalDataId=MyOscarMedicalDataManagerUtils.addMedicalData(providerNo, myOscarLoggedInInfo, medicalDataTransfer, "eDoc", eDoc.getDocId(), true, true);
-			
-			// log the send
-			RemoteDataLogDao remoteDataLogDao=(RemoteDataLogDao) SpringUtils.getBean(RemoteDataLogDao.class);
-			RemoteDataLog remoteDataLog=new RemoteDataLog();
-			remoteDataLog.setProviderNo(providerNo);
-			remoteDataLog.setDocumentId(MyOscarLoggedInInfo.getMyOscarServerBaseUrl(), "eDoc", eDoc.getDocId());
-			remoteDataLog.setAction(RemoteDataLog.Action.SEND);
-			remoteDataLog.setDocumentContents("id="+eDoc.getDocId()+", fileName="+eDoc.getFileName());
-			remoteDataLogDao.persist(remoteDataLog);
+            GregorianCalendar dateOfData = new GregorianCalendar();
+            if (eDoc.getDateTimeStampAsDate() != null) dateOfData.setTime(eDoc.getDateTimeStampAsDate());
+
+            MedicalDataTransfer4 medicalDataTransfer = new MedicalDataTransfer4();
+            medicalDataTransfer.setData(docAsString);
+            medicalDataTransfer.setDateOfData(dateOfData);
+            medicalDataTransfer.setMedicalDataType(MedicalDataType.BINARY_DOCUMENT.name());
+            medicalDataTransfer.setObserverOfDataPersonId(myOscarLoggedInInfo.getLoggedInPersonId());
+
+            medicalDataTransfer.setObserverOfDataPersonName(loggedInInfo.getLoggedInProvider().getFormattedName());
+            medicalDataTransfer.setOriginalSourceId(loggedInInfo.getCurrentFacility().getName() + ":eDoc:" + eDoc.getDocId());
+            medicalDataTransfer.setOwningPersonId(patientMyOscarUserId);
+
+            Long medicalDataId = MyOscarMedicalDataManagerUtils.addMedicalData(providerNo, myOscarLoggedInInfo, medicalDataTransfer, "eDoc", eDoc.getDocId(), true, true);
+
+            // log the send
+            RemoteDataLogDao remoteDataLogDao = (RemoteDataLogDao) SpringUtils.getBean(RemoteDataLogDao.class);
+            RemoteDataLog remoteDataLog = new RemoteDataLog();
+            remoteDataLog.setProviderNo(providerNo);
+            remoteDataLog.setDocumentId(MyOscarLoggedInInfo.getMyOscarServerBaseUrl(), "eDoc", eDoc.getDocId());
+            remoteDataLog.setAction(RemoteDataLog.Action.SEND);
+            remoteDataLog.setDocumentContents("id=" + eDoc.getDocId() + ", fileName=" + eDoc.getFileName());
+            remoteDataLogDao.persist(remoteDataLog);
 
 
-			//--- send message ---
-			MessageManager.sendMessage(myOscarLoggedInInfo, patientMyOscarUserId, subject, message);
+            //--- send message ---
+            MessageManager.sendMessage(myOscarLoggedInInfo, patientMyOscarUserId, subject, message);
 
-			//--- send annotations ---
-			MedicalDataManager.addMedicalDataAnnotation(myOscarLoggedInInfo, patientMyOscarUserId, medicalDataId, message);
-			
-			return mapping.findForward("loginPage");
-            
+            //--- send annotations ---
+            MedicalDataManager.addMedicalDataAnnotation(myOscarLoggedInInfo, patientMyOscarUserId, medicalDataId, message);
+
+            return mapping.findForward("loginPage");
+
         } catch (Exception e) {
             logger.error("Could not send document to PHR", e);
             request.setAttribute("error_msg", "Error: " + e.getMessage());

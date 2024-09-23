@@ -24,34 +24,34 @@
 
 --%>
 <%
-  if(session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-<%@ page import="java.lang.*,oscar.oscarEncounter.oscarMeasurements.pageUtil.*"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ page import="java.lang.*,oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
 
 <html:html lang="en">
-<head>
-<title><bean:message key="oscarEncounter.Measurements.msgProcessMeasurementsSubmission" /></title>
-<html:base />
-</head>
+    <head>
+        <title><bean:message key="oscarEncounter.Measurements.msgProcessMeasurementsSubmission"/></title>
+        <html:base/>
+    </head>
 
-<script language="javascript"> 
-function closeWin() {
-   //  self.opener.location.reload(); 
-     self.close();     
-}
-</script>
+    <script language="javascript">
+        function closeWin() {
+            //  self.opener.location.reload();
+            self.close();
+        }
+    </script>
 
-<body onload="closeWin();">
-<html:errors />
-Processing...
+    <body onload="closeWin();">
+    <html:errors/>
+    Processing...
 
-<%
-//clear so values don't repeat after added to note
-session.setAttribute("textOnEncounter", null);
-%>
+    <%
+        //clear so values don't repeat after added to note
+        session.setAttribute("textOnEncounter", null);
+    %>
 
-</body>
+    </body>
 </html:html>

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -55,318 +55,318 @@ import oscar.util.ConversionUtils;
 
 public class RptInitializePatientsInAbnormalRangeCDMReportAction extends Action {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-		if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-	  		  throw new SecurityException("missing required security object (_report)");
-	  	  	}
-		
-		RptInitializePatientsInAbnormalRangeCDMReportForm frm = (RptInitializePatientsInAbnormalRangeCDMReportForm) form;
-		request.getSession().setAttribute("RptInitializePatientsInAbnormalRangeCDMReportForm", frm);
-		MessageResources mr = getResources(request);
-		RptMeasurementsData mData = new RptMeasurementsData();
-		String[] patientSeenCheckbox = frm.getPatientSeenCheckbox();
-		String startDateA = frm.getStartDateA();
-		String endDateA = frm.getEndDateA();
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		ArrayList<String> reportMsg = new ArrayList<String>();
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
+            throw new SecurityException("missing required security object (_report)");
+        }
 
-		if (!validate(frm, request)) {
-			MiscUtils.getLogger().debug("the form is invalid");
-			return (new ActionForward(mapping.getInput()));
-		}
+        RptInitializePatientsInAbnormalRangeCDMReportForm frm = (RptInitializePatientsInAbnormalRangeCDMReportForm) form;
+        request.getSession().setAttribute("RptInitializePatientsInAbnormalRangeCDMReportForm", frm);
+        MessageResources mr = getResources(request);
+        RptMeasurementsData mData = new RptMeasurementsData();
+        String[] patientSeenCheckbox = frm.getPatientSeenCheckbox();
+        String startDateA = frm.getStartDateA();
+        String endDateA = frm.getEndDateA();
 
-		if (patientSeenCheckbox != null) {
-			int nbPatient = mData.getNbPatientSeen(startDateA, endDateA);
-			String msg = mr.getMessage("oscarReport.CDMReport.msgPatientSeen", Integer.toString(nbPatient), startDateA, endDateA);
-			MiscUtils.getLogger().debug(msg);
-			reportMsg.add(msg);
-			reportMsg.add("");
-		}
+        ArrayList<String> reportMsg = new ArrayList<String>();
 
-		getInAbnormalRangePercentage(frm, reportMsg, request);
-		String title = mr.getMessage("oscarReport.CDMReport.msgPercentageOfPatientInAbnormalRange");
-		request.setAttribute("title", title);
-		request.setAttribute("messages", reportMsg);
+        if (!validate(frm, request)) {
+            MiscUtils.getLogger().debug("the form is invalid");
+            return (new ActionForward(mapping.getInput()));
+        }
 
-		return mapping.findForward("success");
-	}
+        if (patientSeenCheckbox != null) {
+            int nbPatient = mData.getNbPatientSeen(startDateA, endDateA);
+            String msg = mr.getMessage("oscarReport.CDMReport.msgPatientSeen", Integer.toString(nbPatient), startDateA, endDateA);
+            MiscUtils.getLogger().debug(msg);
+            reportMsg.add(msg);
+            reportMsg.add("");
+        }
 
-	/*****************************************************************************************
-	* validate the input value
-	*
-	* @return boolean
-	******************************************************************************************/
-	private boolean validate(RptInitializePatientsInAbnormalRangeCDMReportForm frm, HttpServletRequest request) {
-		EctValidation ectValidation = new EctValidation();
-		ActionMessages errors = new ActionMessages();
-		String[] startDateC = frm.getStartDateC();
-		String[] endDateC = frm.getEndDateC();
-		String[] upperBound = frm.getUpperBound();
-		String[] lowerBound = frm.getLowerBound();
-		String[] abnormalCheckbox = frm.getAbnormalCheckbox();
-		boolean valid = true;
+        getInAbnormalRangePercentage(frm, reportMsg, request);
+        String title = mr.getMessage("oscarReport.CDMReport.msgPercentageOfPatientInAbnormalRange");
+        request.setAttribute("title", title);
+        request.setAttribute("messages", reportMsg);
 
-		if (abnormalCheckbox != null) {
+        return mapping.findForward("success");
+    }
 
-			for (int i = 0; i < abnormalCheckbox.length; i++) {
-				int ctr = Integer.parseInt(abnormalCheckbox[i]);
-				String startDate = startDateC[ctr];
-				String endDate = endDateC[ctr];
-				String upper = upperBound[ctr];
-				String lower = lowerBound[ctr];
-				String measurementType = (String) frm.getValue("measurementTypeC" + ctr);
-				String sNumMInstrc = (String) frm.getValue("mNbInstrcsC" + ctr);
-				int iNumMInstrc = Integer.parseInt(sNumMInstrc);
-				String upperMsg = "The upper bound value of " + measurementType;
-				String lowerMsg = "The lower bound value of " + measurementType;
+    /*****************************************************************************************
+     * validate the input value
+     *
+     * @return boolean
+     ******************************************************************************************/
+    private boolean validate(RptInitializePatientsInAbnormalRangeCDMReportForm frm, HttpServletRequest request) {
+        EctValidation ectValidation = new EctValidation();
+        ActionMessages errors = new ActionMessages();
+        String[] startDateC = frm.getStartDateC();
+        String[] endDateC = frm.getEndDateC();
+        String[] upperBound = frm.getUpperBound();
+        String[] lowerBound = frm.getLowerBound();
+        String[] abnormalCheckbox = frm.getAbnormalCheckbox();
+        boolean valid = true;
 
-				if (!ectValidation.isDate(startDate)) {
-					errors.add(startDate, new ActionMessage("errors.invalidDate", measurementType));
-					saveErrors(request, errors);
-					valid = false;
-				}
-				if (!ectValidation.isDate(endDate)) {
-					errors.add(endDate, new ActionMessage("errors.invalidDate", measurementType));
-					saveErrors(request, errors);
-					valid = false;
-				}
-				for (int j = 0; j < iNumMInstrc; j++) {
+        if (abnormalCheckbox != null) {
 
-					String mInstrc = (String) frm.getValue("mInstrcsCheckboxC" + ctr + j);
-					if (mInstrc != null) {
-						List<Validations> vs = ectValidation.getValidationType(measurementType, mInstrc);
-						String regExp = null;
-						double dMax = 0;
-						double dMin = 0;
+            for (int i = 0; i < abnormalCheckbox.length; i++) {
+                int ctr = Integer.parseInt(abnormalCheckbox[i]);
+                String startDate = startDateC[ctr];
+                String endDate = endDateC[ctr];
+                String upper = upperBound[ctr];
+                String lower = lowerBound[ctr];
+                String measurementType = (String) frm.getValue("measurementTypeC" + ctr);
+                String sNumMInstrc = (String) frm.getValue("mNbInstrcsC" + ctr);
+                int iNumMInstrc = Integer.parseInt(sNumMInstrc);
+                String upperMsg = "The upper bound value of " + measurementType;
+                String lowerMsg = "The lower bound value of " + measurementType;
 
-						if (!vs.isEmpty()) {
-							Validations v = vs.iterator().next();
-							dMax = v.getMaxValue();
-							dMin = v.getMinValue();
-							regExp = v.getRegularExp();
-						}
+                if (!ectValidation.isDate(startDate)) {
+                    errors.add(startDate, new ActionMessage("errors.invalidDate", measurementType));
+                    saveErrors(request, errors);
+                    valid = false;
+                }
+                if (!ectValidation.isDate(endDate)) {
+                    errors.add(endDate, new ActionMessage("errors.invalidDate", measurementType));
+                    saveErrors(request, errors);
+                    valid = false;
+                }
+                for (int j = 0; j < iNumMInstrc; j++) {
 
-						if (!ectValidation.isInRange(dMax, dMin, upper)) {
-							errors.add(upper, new ActionMessage("errors.range", upperMsg, Double.toString(dMin), Double.toString(dMax)));
-							saveErrors(request, errors);
-							valid = false;
-						} else if (!ectValidation.isInRange(dMax, dMin, lower)) {
-							errors.add(lower, new ActionMessage("errors.range", lowerMsg, Double.toString(dMin), Double.toString(dMax)));
-							saveErrors(request, errors);
-							valid = false;
-						} else if (!ectValidation.matchRegExp(regExp, upper)) {
-							errors.add(upper, new ActionMessage("errors.invalid", upperMsg));
-							saveErrors(request, errors);
-							valid = false;
-						} else if (!ectValidation.matchRegExp(regExp, lower)) {
-							errors.add(lower, new ActionMessage("errors.invalid", lowerMsg));
-							saveErrors(request, errors);
-							valid = false;
-						} else if (!ectValidation.isValidBloodPressure(regExp, upper)) {
-							errors.add(upper, new ActionMessage("error.bloodPressure"));
-							saveErrors(request, errors);
-							valid = false;
-						} else if (!ectValidation.isValidBloodPressure(regExp, lower)) {
-							errors.add(lower, new ActionMessage("error.bloodPressure"));
-							saveErrors(request, errors);
-							valid = false;
-						}
+                    String mInstrc = (String) frm.getValue("mInstrcsCheckboxC" + ctr + j);
+                    if (mInstrc != null) {
+                        List<Validations> vs = ectValidation.getValidationType(measurementType, mInstrc);
+                        String regExp = null;
+                        double dMax = 0;
+                        double dMin = 0;
 
-					}
-				}
-			}
-		}
-		return valid;
-	}
+                        if (!vs.isEmpty()) {
+                            Validations v = vs.iterator().next();
+                            dMax = v.getMaxValue();
+                            dMin = v.getMinValue();
+                            regExp = v.getRegularExp();
+                        }
 
-	/**
-	 * Gets the number of Patient in the abnormal range during a time period
-	 *
- 	 * @return 
- 	 * 		ArrayList which contain the result in String format
-	 */
-	private ArrayList<String> getInAbnormalRangePercentage(RptInitializePatientsInAbnormalRangeCDMReportForm frm, ArrayList<String> metGLPercentageMsg, HttpServletRequest request) {
-		String[] startDateC = frm.getStartDateC();
-		String[] endDateC = frm.getEndDateC();
-		String[] upperBound = frm.getUpperBound();
-		String[] lowerBound = frm.getLowerBound();
-		String[] abnormalCheckbox = frm.getAbnormalCheckbox();
-		RptCheckGuideline checkGuideline = new RptCheckGuideline();
-		MessageResources mr = getResources(request);
-		MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
-		
-		if (abnormalCheckbox != null) {
-			try {
-				MiscUtils.getLogger().debug("the length of abnormal range checkbox is " + abnormalCheckbox.length);
+                        if (!ectValidation.isInRange(dMax, dMin, upper)) {
+                            errors.add(upper, new ActionMessage("errors.range", upperMsg, Double.toString(dMin), Double.toString(dMax)));
+                            saveErrors(request, errors);
+                            valid = false;
+                        } else if (!ectValidation.isInRange(dMax, dMin, lower)) {
+                            errors.add(lower, new ActionMessage("errors.range", lowerMsg, Double.toString(dMin), Double.toString(dMax)));
+                            saveErrors(request, errors);
+                            valid = false;
+                        } else if (!ectValidation.matchRegExp(regExp, upper)) {
+                            errors.add(upper, new ActionMessage("errors.invalid", upperMsg));
+                            saveErrors(request, errors);
+                            valid = false;
+                        } else if (!ectValidation.matchRegExp(regExp, lower)) {
+                            errors.add(lower, new ActionMessage("errors.invalid", lowerMsg));
+                            saveErrors(request, errors);
+                            valid = false;
+                        } else if (!ectValidation.isValidBloodPressure(regExp, upper)) {
+                            errors.add(upper, new ActionMessage("error.bloodPressure"));
+                            saveErrors(request, errors);
+                            valid = false;
+                        } else if (!ectValidation.isValidBloodPressure(regExp, lower)) {
+                            errors.add(lower, new ActionMessage("error.bloodPressure"));
+                            saveErrors(request, errors);
+                            valid = false;
+                        }
 
-				for (int i = 0; i < abnormalCheckbox.length; i++) {
-					int ctr = Integer.parseInt(abnormalCheckbox[i]);
-					MiscUtils.getLogger().debug("the value of abnormal range Checkbox is: " + abnormalCheckbox[i]);
-					String startDate = startDateC[ctr];
-					String endDate = endDateC[ctr];
-					String upper = upperBound[ctr];
-					String lower = lowerBound[ctr];
-					String measurementType = (String) frm.getValue("measurementTypeC" + ctr);
-					String sNumMInstrc = (String) frm.getValue("mNbInstrcsC" + ctr);
-					int iNumMInstrc = Integer.parseInt(sNumMInstrc);
-					double nbMetGL = 0;
-					double metGLPercentage = 0;
-					
-					for (int j = 0; j < iNumMInstrc; j++) {
-						metGLPercentage = 0;
-						nbMetGL = 0;
+                    }
+                }
+            }
+        }
+        return valid;
+    }
 
-						String mInstrc = (String) frm.getValue("mInstrcsCheckboxC" + ctr + j);
-						if (mInstrc != null) {
-							List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate), 
-									ConversionUtils.fromDateString(endDate), measurementType, mInstrc);
-							double nbGeneral = 0;
-							if (measurementType.compareTo("BP") == 0) {
-								for(Object[] o : os) {
-									Integer demographicNo = (Integer) o[0]; 
-									Date maxDateEntered = (Date) o[1];
-									
-									for(Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
-										if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), upper, "<") 
-												&& checkGuideline.isBloodPressureMetGuideline(m.getDataField(), lower, ">")) {
-											nbMetGL++;
-										}
-									}
-									nbGeneral++;
-								}
-								if (nbGeneral != 0) {
-									MiscUtils.getLogger().debug("the total number of patients seen: " 
-											+ nbGeneral + " nb of them pass the test: " + nbMetGL);
-									metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
-								}
-								
-								String[] param = { startDate, endDate, measurementType, mInstrc, lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage) };
-								String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
-								MiscUtils.getLogger().debug(msg);
-								metGLPercentageMsg.add(msg);
-							} else if (checkGuideline.getValidation(measurementType) == 1) {
-								for(Object[] o : os) {
-									Integer demographicNo = (Integer) o[0]; 
-									Date maxDateEntered = (Date) o[1];
-									
-									List<Object[]> dfs = dao.findByDemoNoDateTypeMeasuringInstrAndDataField(demographicNo, 
-											maxDateEntered, measurementType, mInstrc, upper, lower);
+    /**
+     * Gets the number of Patient in the abnormal range during a time period
+     *
+     * @return
+     *        ArrayList which contain the result in String format
+     */
+    private ArrayList<String> getInAbnormalRangePercentage(RptInitializePatientsInAbnormalRangeCDMReportForm frm, ArrayList<String> metGLPercentageMsg, HttpServletRequest request) {
+        String[] startDateC = frm.getStartDateC();
+        String[] endDateC = frm.getEndDateC();
+        String[] upperBound = frm.getUpperBound();
+        String[] lowerBound = frm.getLowerBound();
+        String[] abnormalCheckbox = frm.getAbnormalCheckbox();
+        RptCheckGuideline checkGuideline = new RptCheckGuideline();
+        MessageResources mr = getResources(request);
+        MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
 
-									if (!dfs.isEmpty()) {
-										nbMetGL++;
-									}
-									nbGeneral++;
-								}
+        if (abnormalCheckbox != null) {
+            try {
+                MiscUtils.getLogger().debug("the length of abnormal range checkbox is " + abnormalCheckbox.length);
 
-								if (nbGeneral != 0) {
-									metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
-								}
-								
-								String[] param = { startDate, endDate, measurementType, mInstrc, lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage) };
-								String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
-								MiscUtils.getLogger().debug(msg);
-								metGLPercentageMsg.add(msg);
-							} else {
-								for(Object[] o : os) {
-									Integer demographicNo = (Integer) o[0]; 
-									Date maxDateEntered = (Date) o[1];
-									
-									for(Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
-										if (checkGuideline.isYesNoMetGuideline(m.getDataField(), upper)) {
-											nbMetGL++;
-										}
-										break;
-									}
-									nbGeneral++;
-								}
-								if (nbGeneral != 0) {
-									metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
-								}
-								String[] param = { startDate, endDate, measurementType, mInstrc, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage) };
-								String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
-								MiscUtils.getLogger().debug(msg);
-								metGLPercentageMsg.add(msg);
-							}
-						}
-					}
+                for (int i = 0; i < abnormalCheckbox.length; i++) {
+                    int ctr = Integer.parseInt(abnormalCheckbox[i]);
+                    MiscUtils.getLogger().debug("the value of abnormal range Checkbox is: " + abnormalCheckbox[i]);
+                    String startDate = startDateC[ctr];
+                    String endDate = endDateC[ctr];
+                    String upper = upperBound[ctr];
+                    String lower = lowerBound[ctr];
+                    String measurementType = (String) frm.getValue("measurementTypeC" + ctr);
+                    String sNumMInstrc = (String) frm.getValue("mNbInstrcsC" + ctr);
+                    int iNumMInstrc = Integer.parseInt(sNumMInstrc);
+                    double nbMetGL = 0;
+                    double metGLPercentage = 0;
 
-					// percentage of patients who are in abnormal range for the same test with all measuring instruction
-					metGLPercentage = 0;
-					nbMetGL = 0;
+                    for (int j = 0; j < iNumMInstrc; j++) {
+                        metGLPercentage = 0;
+                        nbMetGL = 0;
 
-					List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate), measurementType);
-					double nbGeneral = 0;
+                        String mInstrc = (String) frm.getValue("mInstrcsCheckboxC" + ctr + j);
+                        if (mInstrc != null) {
+                            List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate),
+                                    ConversionUtils.fromDateString(endDate), measurementType, mInstrc);
+                            double nbGeneral = 0;
+                            if (measurementType.compareTo("BP") == 0) {
+                                for (Object[] o : os) {
+                                    Integer demographicNo = (Integer) o[0];
+                                    Date maxDateEntered = (Date) o[1];
 
-					if (measurementType.compareTo("BP") == 0) {
-						for(Object[] o : os) {
-							Integer demographicNo = (Integer) o[0]; 
-							Date maxDateEntered = (Date) o[1];
-							
-							for(Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
-								if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), upper, "<") 
-										&& checkGuideline.isBloodPressureMetGuideline(m.getDataField(), lower, ">")) {
-									nbMetGL++;
-								}
-							}
-							nbGeneral++;
-						}
-						if (nbGeneral != 0) {
-							MiscUtils.getLogger().debug("the total number of patients seen: " + nbGeneral + " nb of them pass the test: " + nbMetGL);
-							metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
-						}
-						String[] param = { startDate, endDate, measurementType, "", lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage) };
-						String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
-						MiscUtils.getLogger().debug(msg);
-						metGLPercentageMsg.add(msg);
-					} else if (checkGuideline.getValidation(measurementType) == 1) {
-						for(Object[] o : os) {
-							Integer demographicNo = (Integer) o[0]; 
-							Date maxDateEntered = (Date) o[1];
-							List<Object[]> data = dao.findByDemoNoDateTypeAndDataField(demographicNo, maxDateEntered, measurementType, upper, lower); 
-							if (!data.isEmpty()) {
-								nbMetGL++;
-							}
-							nbGeneral++;
-						}
+                                    for (Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
+                                        if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), upper, "<")
+                                                && checkGuideline.isBloodPressureMetGuideline(m.getDataField(), lower, ">")) {
+                                            nbMetGL++;
+                                        }
+                                    }
+                                    nbGeneral++;
+                                }
+                                if (nbGeneral != 0) {
+                                    MiscUtils.getLogger().debug("the total number of patients seen: "
+                                            + nbGeneral + " nb of them pass the test: " + nbMetGL);
+                                    metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
+                                }
 
-						if (nbGeneral != 0) {
-							metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
-						}
-						String[] param = { startDate, endDate, measurementType, "", lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage) };
-						String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
-						MiscUtils.getLogger().debug(msg);
-						metGLPercentageMsg.add(msg);
-					} else {
-						for(Object[] o : os) {
-							Integer demographicNo = (Integer) o[0]; 
-							Date maxDateEntered = (Date) o[1];
-							
-							for(Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
-								if (checkGuideline.isYesNoMetGuideline(m.getDataField(), upper)) {
-									nbMetGL++;
-								}
-							}
-							nbGeneral++;
-						}
-						if (nbGeneral != 0) {
-							metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
-						}
-						String[] param = { startDate, endDate, measurementType, "", upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage) };
-						String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
-						MiscUtils.getLogger().debug(msg);
-						metGLPercentageMsg.add(msg);
-					}
-				}
-			} catch (Exception e) {
-				MiscUtils.getLogger().error("Error", e);
-			}
-		} else {
-			MiscUtils.getLogger().debug("guideline checkbox is null");
-		}
-		return metGLPercentageMsg;
-	}
+                                String[] param = {startDate, endDate, measurementType, mInstrc, lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage)};
+                                String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
+                                MiscUtils.getLogger().debug(msg);
+                                metGLPercentageMsg.add(msg);
+                            } else if (checkGuideline.getValidation(measurementType) == 1) {
+                                for (Object[] o : os) {
+                                    Integer demographicNo = (Integer) o[0];
+                                    Date maxDateEntered = (Date) o[1];
+
+                                    List<Object[]> dfs = dao.findByDemoNoDateTypeMeasuringInstrAndDataField(demographicNo,
+                                            maxDateEntered, measurementType, mInstrc, upper, lower);
+
+                                    if (!dfs.isEmpty()) {
+                                        nbMetGL++;
+                                    }
+                                    nbGeneral++;
+                                }
+
+                                if (nbGeneral != 0) {
+                                    metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
+                                }
+
+                                String[] param = {startDate, endDate, measurementType, mInstrc, lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage)};
+                                String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
+                                MiscUtils.getLogger().debug(msg);
+                                metGLPercentageMsg.add(msg);
+                            } else {
+                                for (Object[] o : os) {
+                                    Integer demographicNo = (Integer) o[0];
+                                    Date maxDateEntered = (Date) o[1];
+
+                                    for (Measurement m : dao.findByDemographicNoTypeAndDate(demographicNo, maxDateEntered, measurementType, mInstrc)) {
+                                        if (checkGuideline.isYesNoMetGuideline(m.getDataField(), upper)) {
+                                            nbMetGL++;
+                                        }
+                                        break;
+                                    }
+                                    nbGeneral++;
+                                }
+                                if (nbGeneral != 0) {
+                                    metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
+                                }
+                                String[] param = {startDate, endDate, measurementType, mInstrc, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage)};
+                                String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
+                                MiscUtils.getLogger().debug(msg);
+                                metGLPercentageMsg.add(msg);
+                            }
+                        }
+                    }
+
+                    // percentage of patients who are in abnormal range for the same test with all measuring instruction
+                    metGLPercentage = 0;
+                    nbMetGL = 0;
+
+                    List<Object[]> os = dao.findLastEntered(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate), measurementType);
+                    double nbGeneral = 0;
+
+                    if (measurementType.compareTo("BP") == 0) {
+                        for (Object[] o : os) {
+                            Integer demographicNo = (Integer) o[0];
+                            Date maxDateEntered = (Date) o[1];
+
+                            for (Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
+                                if (checkGuideline.isBloodPressureMetGuideline(m.getDataField(), upper, "<")
+                                        && checkGuideline.isBloodPressureMetGuideline(m.getDataField(), lower, ">")) {
+                                    nbMetGL++;
+                                }
+                            }
+                            nbGeneral++;
+                        }
+                        if (nbGeneral != 0) {
+                            MiscUtils.getLogger().debug("the total number of patients seen: " + nbGeneral + " nb of them pass the test: " + nbMetGL);
+                            metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
+                        }
+                        String[] param = {startDate, endDate, measurementType, "", lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage)};
+                        String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
+                        MiscUtils.getLogger().debug(msg);
+                        metGLPercentageMsg.add(msg);
+                    } else if (checkGuideline.getValidation(measurementType) == 1) {
+                        for (Object[] o : os) {
+                            Integer demographicNo = (Integer) o[0];
+                            Date maxDateEntered = (Date) o[1];
+                            List<Object[]> data = dao.findByDemoNoDateTypeAndDataField(demographicNo, maxDateEntered, measurementType, upper, lower);
+                            if (!data.isEmpty()) {
+                                nbMetGL++;
+                            }
+                            nbGeneral++;
+                        }
+
+                        if (nbGeneral != 0) {
+                            metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
+                        }
+                        String[] param = {startDate, endDate, measurementType, "", lower, upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage)};
+                        String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsInAbnormalRange", param);
+                        MiscUtils.getLogger().debug(msg);
+                        metGLPercentageMsg.add(msg);
+                    } else {
+                        for (Object[] o : os) {
+                            Integer demographicNo = (Integer) o[0];
+                            Date maxDateEntered = (Date) o[1];
+
+                            for (Measurement m : dao.findByDemoNoDateAndType(demographicNo, maxDateEntered, measurementType)) {
+                                if (checkGuideline.isYesNoMetGuideline(m.getDataField(), upper)) {
+                                    nbMetGL++;
+                                }
+                            }
+                            nbGeneral++;
+                        }
+                        if (nbGeneral != 0) {
+                            metGLPercentage = Math.round(nbMetGL / nbGeneral * 100);
+                        }
+                        String[] param = {startDate, endDate, measurementType, "", upper, "(" + nbMetGL + "/" + nbGeneral + ")" + Double.toString(metGLPercentage)};
+                        String msg = mr.getMessage("oscarReport.CDMReport.msgNbOfPatientsIs", param);
+                        MiscUtils.getLogger().debug(msg);
+                        metGLPercentageMsg.add(msg);
+                    }
+                }
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
+            }
+        } else {
+            MiscUtils.getLogger().debug("guideline checkbox is null");
+        }
+        return metGLPercentageMsg;
+    }
 
 }

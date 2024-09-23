@@ -24,26 +24,26 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.consult" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../../securityError.jsp?type=_admin&type=_admin.consult");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../../securityError.jsp?type=_admin&type=_admin.consult");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ page import="java.util.ResourceBundle"%>
+<%@ page import="java.util.ResourceBundle" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Institution" %>
@@ -54,104 +54,107 @@ if(!authed) {
 <%@page import="org.oscarehr.common.model.InstitutionDepartmentPK" %>
 <%@page import="org.oscarehr.common.dao.InstitutitionDepartmentDao" %>
 <%
-	InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
+    InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
     DepartmentDao departmentDao = SpringUtils.getBean(DepartmentDao.class);
     InstitutitionDepartmentDao institutionDepartmentDao = SpringUtils.getBean(InstitutitionDepartmentDao.class);
 %>
 <html:html lang="en">
 
-<%
-String id = (String) request.getAttribute("id");
-String name = (String) request.getAttribute("name");
-%>
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>Display Institution</title>
-<html:base />
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
-</head>
+    <%
+        String id = (String) request.getAttribute("id");
+        String name = (String) request.getAttribute("name");
+    %>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title>Display Institution</title>
+        <html:base/>
+        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+    </head>
 
-<link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
-<body class="BodyStyle" vlink="#0000FF">
-<html:errors />
-<!--  -->
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn">Consultation</td>
-		<td class="MainTableTopRowRightColumn">
-		<table class="TopStatusBar">
-			<tr>
-				<td class="Header">Adjust Institutions 
-				</td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr style="vertical-align: top">
-		<td class="MainTableLeftColumn">
-		<%oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar();
+    <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
+    <body class="BodyStyle" vlink="#0000FF">
+    <html:errors/>
+    <!--  -->
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn">Consultation</td>
+            <td class="MainTableTopRowRightColumn">
+                <table class="TopStatusBar">
+                    <tr>
+                        <td class="Header">Adjust Institutions
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr style="vertical-align: top">
+            <td class="MainTableLeftColumn">
+                <%
+                    oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar();
                     out.print(titlebar.estBar(request));
-                 %>
-		</td>
-		<td class="MainTableRightColumn">
-		<table cellpadding="0" cellspacing="2"
-			style="border-collapse: collapse" bordercolor="#111111" width="100%"
-			height="100%">
+                %>
+            </td>
+            <td class="MainTableRightColumn">
+                <table cellpadding="0" cellspacing="2"
+                       style="border-collapse: collapse" bordercolor="#111111" width="100%"
+                       height="100%">
 
-			<!----Start new rows here-->
-			<tr>
-				<td>Please check off all the departments offered by <%=name%>.</td>
-			</tr>
-			<tr>
-				<td><html:form
-					action="/oscarEncounter/UpdateInstitutionDepartment">
-					<input type="hidden" name="id" value="<%=id %>">
-					<input type="submit"
-						value="Update Institution Department">
-					<div class="ChooseRecipientsBox1">
-					<table>
-						<tr>
-							<th>&nbsp;</th>
-							<th>Department</th>
-							
-						</tr>
-						<tr>
-							<td><!--<div class="ChooseRecipientsBox1">--> <%
+                    <!----Start new rows here-->
+                    <tr>
+                        <td>Please check off all the departments offered by <%=name%>.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <html:form
+                                    action="/oscarEncounter/UpdateInstitutionDepartment">
+                            <input type="hidden" name="id" value="<%=id %>">
+                            <input type="submit"
+                                   value="Update Institution Department">
+                            <div class="ChooseRecipientsBox1">
+                                <table>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Department</th>
+
+                                    </tr>
+                                    <tr>
+                                        <td><!--<div class="ChooseRecipientsBox1">--> <%
 								for(Department i:departmentDao.findAll()) {
 									InstitutionDepartment assoc = institutionDepartmentDao.find(new InstitutionDepartmentPK(Integer.parseInt(id),i.getId()));
                               %>
-							
-						<tr>
-							<td>
-							
-							<input type=checkbox name="specialists" value=<%=i.getId()%> <%=assoc!=null?"checked=\"checked\"":"" %>>
-							
-							</td>
-							<td>
-							<% out.print(i.getName()); %>
-							</td>
-							
-						</tr>
-						<% }%>
-						<!--</div>-->
-						</td>
-						</tr>
-					</table>
-					</div>
-				</html:form></td>
-			</tr>
-			<!----End new rows here-->
 
-			<tr height="100%">
-				<td></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</body>
+                                    <tr>
+                                        <td>
+
+                                            <input type=checkbox name="specialists"
+                                                   value=<%=i.getId()%> <%=assoc!=null?"checked=\"checked\"":"" %>>
+
+                                        </td>
+                                        <td>
+                                            <% out.print(i.getName()); %>
+                                        </td>
+
+                                    </tr>
+                                            <% }%>
+                                    <!--</div>-->
+                        </td>
+                    </tr>
+                </table>
+                </div>
+                </html:form></td>
+        </tr>
+        <!----End new rows here-->
+
+        <tr height="100%">
+            <td></td>
+        </tr>
+    </table>
+    </td>
+    </tr>
+    <tr>
+        <td class="MainTableBottomRowLeftColumn"></td>
+        <td class="MainTableBottomRowRightColumn"></td>
+    </tr>
+    </table>
+    </body>
 </html:html>

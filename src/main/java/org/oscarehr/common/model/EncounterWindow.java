@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,67 +30,67 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="encounterWindow")
-public class EncounterWindow extends AbstractModel<String>{
+@Table(name = "encounterWindow")
+public class EncounterWindow extends AbstractModel<String> {
 
-	@Id
-	@Column(name="provider_no")
-	private String providerNo;
-	
-	private int rowOneSize;
-	
-	private int rowTwoSize;
-	
-	private int presBoxSize;
-	
-	private int rowThreeSize;
+    @Id
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    private int rowOneSize;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    private int rowTwoSize;
 
-	public int getRowOneSize() {
-		return rowOneSize;
-	}
+    private int presBoxSize;
 
-	public void setRowOneSize(int rowOneSize) {
-		this.rowOneSize = rowOneSize;
-	}
+    private int rowThreeSize;
 
-	public int getRowTwoSize() {
-		return rowTwoSize;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setRowTwoSize(int rowTwoSize) {
-		this.rowTwoSize = rowTwoSize;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public int getPresBoxSize() {
-		return presBoxSize;
-	}
+    public int getRowOneSize() {
+        return rowOneSize;
+    }
 
-	public void setPresBoxSize(int presBoxSize) {
-		this.presBoxSize = presBoxSize;
-	}
+    public void setRowOneSize(int rowOneSize) {
+        this.rowOneSize = rowOneSize;
+    }
 
-	public int getRowThreeSize() {
-		return rowThreeSize;
-	}
+    public int getRowTwoSize() {
+        return rowTwoSize;
+    }
 
-	public void setRowThreeSize(int rowThreeSize) {
-		this.rowThreeSize = rowThreeSize;
-	}
-	
-	public String getId() {
-		return getProviderNo();
-	}
-	
-	public void setId(String id) {
-		setProviderNo(id);
-	}
-	
+    public void setRowTwoSize(int rowTwoSize) {
+        this.rowTwoSize = rowTwoSize;
+    }
+
+    public int getPresBoxSize() {
+        return presBoxSize;
+    }
+
+    public void setPresBoxSize(int presBoxSize) {
+        this.presBoxSize = presBoxSize;
+    }
+
+    public int getRowThreeSize() {
+        return rowThreeSize;
+    }
+
+    public void setRowThreeSize(int rowThreeSize) {
+        this.rowThreeSize = rowThreeSize;
+    }
+
+    public String getId() {
+        return getProviderNo();
+    }
+
+    public void setId(String id) {
+        setProviderNo(id);
+    }
+
 }

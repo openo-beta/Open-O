@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,54 +34,54 @@ import java.util.Map;
  *
  */
 public class ClientData {
-	private int clientId;
-	private int formId;
-	private Map<String, String> clientData = new HashMap<String, String>();
+    private int clientId;
+    private int formId;
+    private Map<String, String> clientData = new HashMap<String, String>();
 
-	public int getClientId() {
-		return clientId;
-	}
+    public int getClientId() {
+        return clientId;
+    }
 
-	public void setClientId(int clientId) {
-		this.clientId = clientId;
-	}
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
+    }
 
-	public int getFormId() {
-		return formId;
-	}
+    public int getFormId() {
+        return formId;
+    }
 
-	public void setFormId(int formId) {
-		this.formId = formId;
-	}
+    public void setFormId(int formId) {
+        this.formId = formId;
+    }
 
-	public Map<String, String> getClientData() {
-		return clientData;
-	}
+    public Map<String, String> getClientData() {
+        return clientData;
+    }
 
-	@Override
-	public String toString() {
-		final int maxLen = 20;
-		return "ClientData [clientId="
-				+ clientId
-				+ ", formId="
-				+ formId
-				+ ", clientData="
-				+ (clientData != null ? toString(clientData.entrySet(), maxLen)
-						: null) + "]";
-	}
+    @Override
+    public String toString() {
+        final int maxLen = 20;
+        return "ClientData [clientId="
+                + clientId
+                + ", formId="
+                + formId
+                + ", clientData="
+                + (clientData != null ? toString(clientData.entrySet(), maxLen)
+                : null) + "]";
+    }
 
-	private String toString(Collection<?> collection, int maxLen) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("[");
-		int i = 0;
-		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext()
-				&& i < maxLen; i++) {
-			if (i > 0)
-				builder.append(", ");
-			builder.append(iterator.next());
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+    private String toString(Collection<?> collection, int maxLen) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        int i = 0;
+        for (Iterator<?> iterator = collection.iterator(); iterator.hasNext()
+                && i < maxLen; i++) {
+            if (i > 0)
+                builder.append(", ");
+            builder.append(iterator.next());
+        }
+        builder.append("]");
+        return builder.toString();
+    }
 
 }

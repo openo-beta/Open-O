@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -60,449 +60,451 @@ import ca.uhn.hl7v2.HL7Exception;
  */
 public class HRMXMLHandler implements MessageHandler {
 
-	private static Logger logger = MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
-	private ArrayList<String> headers = null;
+    private ArrayList<String> headers = null;
 
-	private OmdCds root = null;
-	private PatientRecord pr = null;
+    private OmdCds root = null;
+    private PatientRecord pr = null;
 
-	public void init(String hl7Body) throws HL7Exception {
+    public void init(String hl7Body) throws HL7Exception {
 
-		// this.version = p.getVersion(hl7Body);
-		logger.info("A NEW HRM XML PARSER OBJECT INSTANTIATED TO PARSE HL7 FILE " + hl7Body);
+        // this.version = p.getVersion(hl7Body);
+        logger.info("A NEW HRM XML PARSER OBJECT INSTANTIATED TO PARSE HL7 FILE " + hl7Body);
 
-		try {
-			ByteArrayInputStream byeArrayInputStream = new ByteArrayInputStream(hl7Body.getBytes());
+        try {
+            ByteArrayInputStream byeArrayInputStream = new ByteArrayInputStream(hl7Body.getBytes());
 
-			// Create a SchemaFactory capable of understanding WXS schemas.
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // Create a SchemaFactory capable of understanding WXS schemas.
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-			// Load a WXS schema, represented by a Schema instance.
-			Source schemaFile = new StreamSource(new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
-			Schema schema = factory.newSchema(schemaFile); //new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
+            // Load a WXS schema, represented by a Schema instance.
+            Source schemaFile = new StreamSource(new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
+            Schema schema = factory.newSchema(schemaFile); //new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
 
-			JAXBContext jc = JAXBContext.newInstance("org.oscarehr.hospitalReportManager.xsd");
-			Unmarshaller u = jc.createUnmarshaller();
-			root = (OmdCds) u.unmarshal(byeArrayInputStream);
-			pr = root.getPatientRecord();
+            JAXBContext jc = JAXBContext.newInstance("org.oscarehr.hospitalReportManager.xsd");
+            Unmarshaller u = jc.createUnmarshaller();
+            root = (OmdCds) u.unmarshal(byeArrayInputStream);
+            pr = root.getPatientRecord();
 
-		} catch (Exception e) {
-			logger.error("error", e);
-		}
+        } catch (Exception e) {
+            logger.error("error", e);
+        }
 
-		headers = new ArrayList<String>();
+        headers = new ArrayList<String>();
 
-	}
-
-	private ArrayList<String> getMatchingHL7Labs(String hl7Body) {
-		Base64 base64 = new Base64(0);
-		ArrayList<String> ret = new ArrayList<String>();
-		int monthsBetween = 0;
-		Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
-
-		try {
-			List<Hl7TextMessageInfo> matchingLabs = hl7TextInfoDao.getMatchingLabs(hl7Body);
-			for ( Hl7TextMessageInfo l: matchingLabs ) {
-				Date dateA = UtilDateUtilities.StringToDate(l.labDate_A,"yyyy-MM-dd hh:mm:ss");
-				Date dateB = UtilDateUtilities.StringToDate(l.labDate_B,"yyyy-MM-dd hh:mm:ss");
-				if (dateA.before(dateB)) {
-					monthsBetween = UtilDateUtilities.getNumMonths(dateA, dateB);
-				} else {
-					monthsBetween = UtilDateUtilities.getNumMonths(dateB, dateA);
-				}
-				if (monthsBetween < 4) {
-					ret.add(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"));
-				}
-				if (l.lab_no_A==l.lab_no_B)
-					break;
-			}
-
-
-		} catch (Exception e) {
-			logger.error("Exception in HL7 getMatchingLabs: ", e);
-		}
-
-		// if there have been no labs added to the database yet just return this
-		// lab
-		if (ret.size() == 0)
-			ret.add(hl7Body);
-		return ret;
-	}
-
-	public String getMsgType() {
-		return ("HRMXML");
-	}
-
-	public String getMsgDate() {
-		Iterator<ReportsReceived> rr = pr.getReportsReceived().iterator();
-		if (rr.hasNext()) {
-			ReportsReceived r = rr.next();
-			DateFullOrPartial datetime = r.getEventDateTime();
-			if (datetime == null) {
-				return "";
-			}
-
-			return getFormattedDate(datetime.getFullDate(), false);
-
-		}
-		return "";
-	}
-
-	public String getMsgPriority() {
-
-		// if (getString(obrSegKeySet.get(i).getPriorityOBR().getValue()).equals("S"))
-		// return "S";
-
-		return "R";
-	}
-
-	/**
-	 * Methods to get information about the Observation Request
-	 */
-	public int getOBRCount() {
-		return 0;
-	}
-
-	public int getOBXCount(int i) {
-		return 0;
-	}
-
-	public String getOBRName(int i) {
-		String val = "";
-		return val;
-		// return (val = obrSegKeySet.get(i).getUniversalServiceIdentifier().getText().getValue()) == null ? " " : val;
-	}
-
-	public String getOBRIdentifier (int i) {
-	    return "";
     }
 
-	public String getTimeStamp(int i, int j) {
-		return "";
-	}
+    private ArrayList<String> getMatchingHL7Labs(String hl7Body) {
+        Base64 base64 = new Base64(0);
+        ArrayList<String> ret = new ArrayList<String>();
+        int monthsBetween = 0;
+        Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
+
+        try {
+            List<Hl7TextMessageInfo> matchingLabs = hl7TextInfoDao.getMatchingLabs(hl7Body);
+            for (Hl7TextMessageInfo l : matchingLabs) {
+                Date dateA = UtilDateUtilities.StringToDate(l.labDate_A, "yyyy-MM-dd hh:mm:ss");
+                Date dateB = UtilDateUtilities.StringToDate(l.labDate_B, "yyyy-MM-dd hh:mm:ss");
+                if (dateA.before(dateB)) {
+                    monthsBetween = UtilDateUtilities.getNumMonths(dateA, dateB);
+                } else {
+                    monthsBetween = UtilDateUtilities.getNumMonths(dateB, dateA);
+                }
+                if (monthsBetween < 4) {
+                    ret.add(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"));
+                }
+                if (l.lab_no_A == l.lab_no_B)
+                    break;
+            }
+
+
+        } catch (Exception e) {
+            logger.error("Exception in HL7 getMatchingLabs: ", e);
+        }
+
+        // if there have been no labs added to the database yet just return this
+        // lab
+        if (ret.size() == 0)
+            ret.add(hl7Body);
+        return ret;
+    }
+
+    public String getMsgType() {
+        return ("HRMXML");
+    }
+
+    public String getMsgDate() {
+        Iterator<ReportsReceived> rr = pr.getReportsReceived().iterator();
+        if (rr.hasNext()) {
+            ReportsReceived r = rr.next();
+            DateFullOrPartial datetime = r.getEventDateTime();
+            if (datetime == null) {
+                return "";
+            }
+
+            return getFormattedDate(datetime.getFullDate(), false);
+
+        }
+        return "";
+    }
+
+    public String getMsgPriority() {
+
+        // if (getString(obrSegKeySet.get(i).getPriorityOBR().getValue()).equals("S"))
+        // return "S";
+
+        return "R";
+    }
+
+    /**
+     * Methods to get information about the Observation Request
+     */
+    public int getOBRCount() {
+        return 0;
+    }
+
+    public int getOBXCount(int i) {
+        return 0;
+    }
+
+    public String getOBRName(int i) {
+        String val = "";
+        return val;
+        // return (val = obrSegKeySet.get(i).getUniversalServiceIdentifier().getText().getValue()) == null ? " " : val;
+    }
+
+    public String getOBRIdentifier(int i) {
+        return "";
+    }
+
+    public String getTimeStamp(int i, int j) {
+        return "";
+    }
+
+    public boolean isOBXAbnormal(int i, int j) {
+        String abnormalFlag = getOBXAbnormalFlag(i, j);
+        if (abnormalFlag.equals("") || abnormalFlag.equals("N")) return (false);
+        else return (true);
+    }
+
+    public String getOBXAbnormalFlag(int i, int j) {
+
+        return "";
+    }
+
+    /**
+     * In order to match ITS Report OBXs with the OBR holding them, and to keep the output style cleaner, for ITS Reports we need to "trick" the style output. If an OBR contains an OBX segment with ITS or DPT report, then all OBXs for that OBR are
+     * considered to be report types. Because an ITS or DPT is not a test, there is no need to write the test name "ITS/DPT REPORT" when viewing the results. So we put "ITS/DPT REPORT" near the OBR name to classify this OBR and following OBX's as one full
+     * ITS/DPT report. A refresher of what this method computes: Return the observation header which represents the observation stored in the jth OBX segment of the ith OBR group. May be stored in either the OBR or OBX segment. It is used to separate the
+     * observations into groups. ie/ 'CHEMISTRY' 'HEMATOLOGY' '
+     */
+    public String getObservationHeader(int i, int j) {
 
-	public boolean isOBXAbnormal(int i, int j) {
-		String abnormalFlag = getOBXAbnormalFlag(i, j);
-		if (abnormalFlag.equals("") || abnormalFlag.equals("N")) return (false);
-		else return (true);
-	}
+        return "";
+    }
 
-	public String getOBXAbnormalFlag(int i, int j) {
+    public String getOBXIdentifier(int i, int j) {
 
-		return "";
-	}
+        return "";
+    }
 
-	/**
-	 * In order to match ITS Report OBXs with the OBR holding them, and to keep the output style cleaner, for ITS Reports we need to "trick" the style output. If an OBR contains an OBX segment with ITS or DPT report, then all OBXs for that OBR are
-	 * considered to be report types. Because an ITS or DPT is not a test, there is no need to write the test name "ITS/DPT REPORT" when viewing the results. So we put "ITS/DPT REPORT" near the OBR name to classify this OBR and following OBX's as one full
-	 * ITS/DPT report. A refresher of what this method computes: Return the observation header which represents the observation stored in the jth OBX segment of the ith OBR group. May be stored in either the OBR or OBX segment. It is used to separate the
-	 * observations into groups. ie/ 'CHEMISTRY' 'HEMATOLOGY' '
-	 */
-	public String getObservationHeader(int i, int j) {
+    public String getOBXValueType(int i, int j) {
+        String ret = "";
 
-		return "";
-	}
+        return ret;
+    }
 
-	public String getOBXIdentifier(int i, int j) {
+    public String getOBXName(int i, int j) {
+        return getOBXName(i, j, false);
+    }
 
-		return "";
-	}
+    @Override
+    public String getOBXNameLong(int i, int j) {
+        return "";
+    }
 
-	public String getOBXValueType(int i, int j) {
-		String ret = "";
+    /**
+     * return the OBX name for the specified OBR index 'i' and OBX index 'j' If the OBX is an ITS or DPT then return a single space to trick the full report style. See above for default call to getOBXName()
+     */
+    public String getOBXName(int i, int j, boolean its) {
+        String ret = "";
 
-		return ret;
-	}
+        return ret;
+    }
 
-	public String getOBXName(int i, int j) {
-		return getOBXName(i, j, false);
-	}
+    private boolean isReport(int i, int j) {
+        String obxName = getOBXName(i, j, true);
+        return obxName.indexOf("REPORT") != -1;
+    }
 
-	@Override
-	public String getOBXNameLong(int i, int j) {
-		return "";
-	}
+    public String getOBXResult(int i, int j) {
 
-	/**
-	 * return the OBX name for the specified OBR index 'i' and OBX index 'j' If the OBX is an ITS or DPT then return a single space to trick the full report style. See above for default call to getOBXName()
-	 */
-	public String getOBXName(int i, int j, boolean its) {
-		String ret = "";
+        return getOBXResult(i, j, false);
+    }
 
-		return ret;
-	}
+    /**
+     * Return the result of the jth OBX at ith OBR. If it's an ITS^REPORT, the show nothing as this result will be fetched in the previous column.
+     *
+     * @param i
+     * @param j
+     * @param its
+     * @return String
+     */
+    public String getOBXResult(int i, int j, boolean its) {
 
-	private boolean isReport(int i, int j) {
-		String obxName = getOBXName(i, j, true);
-		return obxName.indexOf("REPORT") != -1;
-	}
+        String result = "";
 
-	public String getOBXResult(int i, int j) {
+        return result;
+    }
 
-		return getOBXResult(i, j, false);
-	}
+    public String getOBXReferenceRange(int i, int j) {
+        String ret = "";
 
-	/**
-	 * Return the result of the jth OBX at ith OBR. If it's an ITS^REPORT, the show nothing as this result will be fetched in the previous column.
-	 *
-	 * @param i
-	 * @param j
-	 * @param its
-	 * @return String
-	 */
-	public String getOBXResult(int i, int j, boolean its) {
+        return ret;
+    }
 
-		String result = "";
+    public String getOBXUnits(int i, int j) {
+        String ret = "";
 
-		return result;
-	}
+        return ret;
+    }
 
-	public String getOBXReferenceRange(int i, int j) {
-		String ret = "";
+    public String getOBXResultStatus(int i, int j) {
 
-		return ret;
-	}
+        return "";
+    }
 
-	public String getOBXUnits(int i, int j) {
-		String ret = "";
+    public int getOBXFinalResultCount() {
+        return 0;
+    }
 
-		return ret;
-	}
+    /**
+     * Retrieve the possible segment headers from the OBX fields
+     */
+    public ArrayList<String> getHeaders() {
+        return headers;
+    }
 
-	public String getOBXResultStatus(int i, int j) {
-
-		return "";
-	}
+    /**
+     * Methods to get information from observation notes
+     */
+    public int getOBRCommentCount(int i) {
+        int count = 0;
 
-	public int getOBXFinalResultCount() {
-		return 0;
-	}
+        return count;
 
-	/**
-	 * Retrieve the possible segment headers from the OBX fields
-	 */
-	public ArrayList<String> getHeaders() {
-		return headers;
-	}
+    }
 
-	/**
-	 * Methods to get information from observation notes
-	 */
-	public int getOBRCommentCount(int i) {
-		int count = 0;
+    public String getOBRComment(int i, int j) {
+        String comment = "";
 
-		return count;
+        return comment;
+    }
 
-	}
-
-	public String getOBRComment(int i, int j) {
-		String comment = "";
+    /**
+     * Methods to get information from observation notes
+     */
+    public int getOBXCommentCount(int i, int j) {
+        int count = 0;
 
-		return comment;
-	}
+        return count;
+    }
 
-	/**
-	 * Methods to get information from observation notes
-	 */
-	public int getOBXCommentCount(int i, int j) {
-		int count = 0;
+    public String getOBXComment(int i, int j, int k) {
+        String comment = "";
 
-		return count;
-	}
+        return comment;
+    }
 
-	public String getOBXComment(int i, int j, int k) {
-		String comment = "";
+    /**
+     * Methods to get information about the patient
+     */
+    public String getPatientName() {
+        return (getFirstName() + " " + getLastName());
+    }
 
-		return comment;
-	}
+    public String getFirstName() {
+        return pr.getDemographics().getNames().getLegalName().getFirstName().getPart();
 
-	/**
-	 * Methods to get information about the patient
-	 */
-	public String getPatientName() {
-		return (getFirstName() + " " + getLastName());
-	}
+    }
 
-	public String getFirstName() {
-		return pr.getDemographics().getNames().getLegalName().getFirstName().getPart();
+    public String getLastName() {
+        return pr.getDemographics().getNames().getLegalName().getLastName().getPart();
+    }
 
-	}
+    public String getDOB() {
+        return getFormattedDate(pr.getDemographics().getDateOfBirth().getFullDate(), true);
 
-	public String getLastName() {
-		return pr.getDemographics().getNames().getLegalName().getLastName().getPart();
-	}
+    }
 
-	public String getDOB() {
-		return getFormattedDate(pr.getDemographics().getDateOfBirth().getFullDate(), true);
+    public String getAge() {
+        String age = "N/A";
+        try {
+            // Some examples
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = formatter.parse(getDOB());
+            age = UtilDateUtilities.calcAge(date);
+        } catch (ParseException e) {
+            logger.error("Could not get age", e);
 
-	}
+        }
+        return age;
+    }
 
-	public String getAge() {
-		String age = "N/A";
-		try {
-			// Some examples
-			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			java.util.Date date = formatter.parse(getDOB());
-			age = UtilDateUtilities.calcAge(date);
-		} catch (ParseException e) {
-			logger.error("Could not get age", e);
-
-		}
-		return age;
-	}
-
-	public String getSex() {
-		return pr.getDemographics().getGender().value();
+    public String getSex() {
+        return pr.getDemographics().getGender().value();
 
-	}
+    }
 
-	public String getHealthNum() {
-		HealthCard hc;
-		return (hc = pr.getDemographics().getHealthCard()).getNumber() + hc.getVersion() + " " + hc.getProvinceCode();
-	}
+    public String getHealthNum() {
+        HealthCard hc;
+        return (hc = pr.getDemographics().getHealthCard()).getNumber() + hc.getVersion() + " " + hc.getProvinceCode();
+    }
 
-	public String getHomePhone() {
-		List<PhoneNumber> pnums = pr.getDemographics().getPhoneNumber();
-		for (PhoneNumber pnum : pnums) {
-			if (pnum.getPhoneNumberType().equals("R")) { // R for residential
-				return pnum.getContent().get(0).toString(); // return first instance of number
-			}
-		}
-		return "";
-	}
-
-	public String getWorkPhone() {
-
-		return "";
-	}
-
-	public String getPatientLocation() {
-		return "";
-	}
-
-	public String getServiceDate() {
-		return "";
-	}
-
-	public String getRequestDate(int i) {
-		return "";
-	}
-
-	public String getOrderStatus() {
-
-		// if (res != null && res.equals("0"))
-		// return "P";
-		return "F";
-	}
-
-	public String getClientRef() {
-
-		return "00000000";
-	}
-
-	public String getAccessionNum() {
-
-		return new Random().nextInt() + "";
-	}
-
-	public String getDocName() {
-		return "";
-	}
-
-	public String getCCDocs() {
-		return "";
-	}
-
-	public ArrayList<String> getDocNums() {
-		return null;
-	}
-
-	public String audit() {
-		return "";
-	}
-
-	private String getFullDocName(ca.uhn.hl7v2.model.v25.datatype.XCN xcn) {
-		String docName = "";
-
-		if (xcn.getPrefixEgDR().getValue() != null) docName = xcn.getPrefixEgDR().getValue();
-
-		if (xcn.getGivenName().getValue() != null) {
-			if (docName.equals("")) docName = xcn.getGivenName().getValue();
-			else docName = docName + " " + xcn.getGivenName().getValue();
-
-		}
-		if (xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue() != null) {
-			if (docName.equals("")) docName = xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue();
-			else docName = docName + " " + xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue();
-		}
-		if (xcn.getFamilyName().getSurname().getValue() != null) {
-			if (docName.equals("")) docName = xcn.getFamilyName().getSurname().getValue();
-			else docName = docName + " " + xcn.getFamilyName().getSurname().getValue();
-
-		}
-		if (xcn.getSuffixEgJRorIII().getValue() != null) {
-			if (docName.equals("")) docName = xcn.getSuffixEgJRorIII().getValue();
-			else docName = docName + " " + xcn.getSuffixEgJRorIII().getValue();
-		}
-		if (xcn.getDegreeEgMD().getValue() != null) {
-			if (docName.equals("")) docName = xcn.getDegreeEgMD().getValue();
-			else docName = docName + " " + xcn.getDegreeEgMD().getValue();
-		}
-
-		return docName;
-	}
-
-	private String formatDateTime(String plain) {
-		if (plain==null || plain.trim().equals("")) return "";
-
-		String dateFormat = "yyyyMMddHHmmss";
-		dateFormat = dateFormat.substring(0, plain.length());
-		String stringFormat = "yyyy-MM-dd HH:mm:ss";
-		stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
-
-		Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
-		return UtilDateUtilities.DateToString(date, stringFormat);
-	}
-
-	private String getString(String retrieve) {
-		if (retrieve != null) {
-			return (retrieve.trim());
-		} else {
-			return "";
-		}
-	}
-
-	private String getFormattedDate(XMLGregorianCalendar date, boolean omitTime) {
-		if (date == null) {
-			return "";
-		}
-		return date.getYear() + "-" + date.getMonth() + "-" + date.getDay() + (!omitTime ? date.getHour() + ":" + date.getMinute() : "");
-	}
-
-	 public String getFillerOrderNumber(){
-
-
-			return "";
-		}
-
-	    public String getEncounterId(){
-	    	return "";
-	    }
-	    public String getRadiologistInfo(){
-			return "";
-		}
-
-	    public String getNteForOBX(int i, int j){
-
-	    	return "";
-	    }
-	    public String getNteForPID() {
-	    	return "";
-	    }
-	    
-	    //for OMD validation
-	    public boolean isTestResultBlocked(int i, int j) {
-	    	return false;
-	    }
+    public String getHomePhone() {
+        List<PhoneNumber> pnums = pr.getDemographics().getPhoneNumber();
+        for (PhoneNumber pnum : pnums) {
+            if (pnum.getPhoneNumberType().equals("R")) { // R for residential
+                return pnum.getContent().get(0).toString(); // return first instance of number
+            }
+        }
+        return "";
+    }
+
+    public String getWorkPhone() {
+
+        return "";
+    }
+
+    public String getPatientLocation() {
+        return "";
+    }
+
+    public String getServiceDate() {
+        return "";
+    }
+
+    public String getRequestDate(int i) {
+        return "";
+    }
+
+    public String getOrderStatus() {
+
+        // if (res != null && res.equals("0"))
+        // return "P";
+        return "F";
+    }
+
+    public String getClientRef() {
+
+        return "00000000";
+    }
+
+    public String getAccessionNum() {
+
+        return new Random().nextInt() + "";
+    }
+
+    public String getDocName() {
+        return "";
+    }
+
+    public String getCCDocs() {
+        return "";
+    }
+
+    public ArrayList<String> getDocNums() {
+        return null;
+    }
+
+    public String audit() {
+        return "";
+    }
+
+    private String getFullDocName(ca.uhn.hl7v2.model.v25.datatype.XCN xcn) {
+        String docName = "";
+
+        if (xcn.getPrefixEgDR().getValue() != null) docName = xcn.getPrefixEgDR().getValue();
+
+        if (xcn.getGivenName().getValue() != null) {
+            if (docName.equals("")) docName = xcn.getGivenName().getValue();
+            else docName = docName + " " + xcn.getGivenName().getValue();
+
+        }
+        if (xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue() != null) {
+            if (docName.equals("")) docName = xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue();
+            else docName = docName + " " + xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue();
+        }
+        if (xcn.getFamilyName().getSurname().getValue() != null) {
+            if (docName.equals("")) docName = xcn.getFamilyName().getSurname().getValue();
+            else docName = docName + " " + xcn.getFamilyName().getSurname().getValue();
+
+        }
+        if (xcn.getSuffixEgJRorIII().getValue() != null) {
+            if (docName.equals("")) docName = xcn.getSuffixEgJRorIII().getValue();
+            else docName = docName + " " + xcn.getSuffixEgJRorIII().getValue();
+        }
+        if (xcn.getDegreeEgMD().getValue() != null) {
+            if (docName.equals("")) docName = xcn.getDegreeEgMD().getValue();
+            else docName = docName + " " + xcn.getDegreeEgMD().getValue();
+        }
+
+        return docName;
+    }
+
+    private String formatDateTime(String plain) {
+        if (plain == null || plain.trim().equals("")) return "";
+
+        String dateFormat = "yyyyMMddHHmmss";
+        dateFormat = dateFormat.substring(0, plain.length());
+        String stringFormat = "yyyy-MM-dd HH:mm:ss";
+        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
+
+        Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
+        return UtilDateUtilities.DateToString(date, stringFormat);
+    }
+
+    private String getString(String retrieve) {
+        if (retrieve != null) {
+            return (retrieve.trim());
+        } else {
+            return "";
+        }
+    }
+
+    private String getFormattedDate(XMLGregorianCalendar date, boolean omitTime) {
+        if (date == null) {
+            return "";
+        }
+        return date.getYear() + "-" + date.getMonth() + "-" + date.getDay() + (!omitTime ? date.getHour() + ":" + date.getMinute() : "");
+    }
+
+    public String getFillerOrderNumber() {
+
+
+        return "";
+    }
+
+    public String getEncounterId() {
+        return "";
+    }
+
+    public String getRadiologistInfo() {
+        return "";
+    }
+
+    public String getNteForOBX(int i, int j) {
+
+        return "";
+    }
+
+    public String getNteForPID() {
+        return "";
+    }
+
+    //for OMD validation
+    public boolean isTestResultBlocked(int i, int j) {
+        return false;
+    }
 }

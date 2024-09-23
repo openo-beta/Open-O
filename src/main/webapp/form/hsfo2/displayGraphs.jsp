@@ -24,53 +24,61 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 
 <html:html>
-<head>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/HSFO2.js"></script>
-  
-  <title>HSFO2 Graphs</title>
- 
-  <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css" />
-  <link rel="stylesheet" href="../form/hsfo2/hsfo2.css">
-</head>
+    <head>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/HSFO2.js"></script>
 
-<body onLoad="initialize()">
+        <title>HSFO2 Graphs</title>
 
-<!-- graph table -->
-<table style="width: 766px; border: medium solid;">
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.Systolic Blood Pressure")%>" alt="<%=request.getAttribute("graphFile.Systolic Blood Pressure")%>"/></td>
-  </tr>
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.Diastolic Blood Pressure")%>" alt="<%=request.getAttribute("graphFile.Diastolic Blood Pressure")%>"/> </td>
-  </tr>
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.BMI")%>" alt="<%=request.getAttribute("graphFile.BMI")%>"/> </td>
-  </tr>  
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.Waist")%>" alt="<%=request.getAttribute("graphFile.Waist")%>"/></td>
-  </tr>
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.LDL")%>" alt="<%=request.getAttribute("graphFile.LDL")%>"/></td>
-  </tr>  
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.TC_HDL")%>" alt="<%=request.getAttribute("graphFile.TC_HDL")%>"/></td>
-  </tr>
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.Importance")%>" alt="<%=request.getAttribute("graphFile.Importance")%>"/></td>
-  </tr>
-  <tr>
-    <td><img src="<%=request.getAttribute("graphFile.Confidence")%>" alt="<%=request.getAttribute("graphFile.Confidence")%>"/> </td>
-  </tr>
-</table>
-<!-- end of graph table -->
+        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" href="../form/hsfo2/hsfo2.css">
+    </head>
 
-</body>
+    <body onLoad="initialize()">
+
+    <!-- graph table -->
+    <table style="width: 766px; border: medium solid;">
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.Systolic Blood Pressure")%>"
+                     alt="<%=request.getAttribute("graphFile.Systolic Blood Pressure")%>"/></td>
+        </tr>
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.Diastolic Blood Pressure")%>"
+                     alt="<%=request.getAttribute("graphFile.Diastolic Blood Pressure")%>"/></td>
+        </tr>
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.BMI")%>" alt="<%=request.getAttribute("graphFile.BMI")%>"/>
+            </td>
+        </tr>
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.Waist")%>"
+                     alt="<%=request.getAttribute("graphFile.Waist")%>"/></td>
+        </tr>
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.LDL")%>" alt="<%=request.getAttribute("graphFile.LDL")%>"/>
+            </td>
+        </tr>
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.TC_HDL")%>"
+                     alt="<%=request.getAttribute("graphFile.TC_HDL")%>"/></td>
+        </tr>
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.Importance")%>"
+                     alt="<%=request.getAttribute("graphFile.Importance")%>"/></td>
+        </tr>
+        <tr>
+            <td><img src="<%=request.getAttribute("graphFile.Confidence")%>"
+                     alt="<%=request.getAttribute("graphFile.Confidence")%>"/></td>
+        </tr>
+    </table>
+    <!-- end of graph table -->
+
+    </body>
 </html:html>

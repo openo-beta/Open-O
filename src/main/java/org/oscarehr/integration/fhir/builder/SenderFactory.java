@@ -7,16 +7,16 @@ package org.oscarehr.integration.fhir.builder;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,35 +35,35 @@ import oscar.OscarProperties;
 
 public final class SenderFactory {
 
-	private static String buildName = OscarProperties.getInstance().getProperty("buildtag", "UNKNOWN");
-	private static String senderEndpoint = OscarProperties.getInstance().getProperty("ws_endpoint_url_base", "UNKNOWN");
-	private static ClinicDAO clinicDao = SpringUtils.getBean( ClinicDAO.class );
-	private static String vendorName = "Oscar EMR";
-	private static String softwareName = "Oscar";
+    private static String buildName = OscarProperties.getInstance().getProperty("buildtag", "UNKNOWN");
+    private static String senderEndpoint = OscarProperties.getInstance().getProperty("ws_endpoint_url_base", "UNKNOWN");
+    private static ClinicDAO clinicDao = SpringUtils.getBean(ClinicDAO.class);
+    private static String vendorName = "Oscar EMR";
+    private static String softwareName = "Oscar";
 
-	
-	public static final Sender getSender() {
-		return init(null);
-	}
-	
-	public static final Sender getSender( Settings settings ) {
-		return init(settings);
-	}
-	
-	private static Sender init( Settings settings ) {
-		Sender sender = null; 
-		
-		if( settings != null && ! settings.isIncludeSenderEndpoint() ) {
-			sender = new Sender( vendorName, softwareName, buildName );			
-		} else {
-			sender = new Sender( vendorName, softwareName, buildName, senderEndpoint );
-		}
-		
-		if( clinicDao != null ) {
-			org.oscarehr.common.model.Clinic clinic = clinicDao.getClinic();
-			sender.setClinic( clinic );
-		}
-		
-		return sender;
-	}
+
+    public static final Sender getSender() {
+        return init(null);
+    }
+
+    public static final Sender getSender(Settings settings) {
+        return init(settings);
+    }
+
+    private static Sender init(Settings settings) {
+        Sender sender = null;
+
+        if (settings != null && !settings.isIncludeSenderEndpoint()) {
+            sender = new Sender(vendorName, softwareName, buildName);
+        } else {
+            sender = new Sender(vendorName, softwareName, buildName, senderEndpoint);
+        }
+
+        if (clinicDao != null) {
+            org.oscarehr.common.model.Clinic clinic = clinicDao.getClinic();
+            sender.setClinic(clinic);
+        }
+
+        return sender;
+    }
 }

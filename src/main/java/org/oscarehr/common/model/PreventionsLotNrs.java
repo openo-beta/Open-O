@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,96 +41,95 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class PreventionsLotNrs extends AbstractModel<Integer> implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date creationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
 
-	private String lotNr;
+    private String lotNr;
 
-	private String preventionType;
+    private String preventionType;
 
-	private String providerNo;
-	
-	private Boolean	deleted = false;
-	private Date lastUpdateDate = null;
+    private String providerNo;
 
-	public PreventionsLotNrs() {
-	}
+    private Boolean deleted = false;
+    private Date lastUpdateDate = null;
 
-	public Integer getId() {
-		return this.id;
-	}
+    public PreventionsLotNrs() {
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public Date getCreationDate() {
-		return this.creationDate;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setCreationDate(Date creationDte) {
-		this.creationDate = creationDte;
-	}
+    public Date getCreationDate() {
+        return this.creationDate;
+    }
 
-	public String getLotNr() {
-		return this.lotNr;
-	}
+    public void setCreationDate(Date creationDte) {
+        this.creationDate = creationDte;
+    }
 
-	public void setLotNr(String lotNr) {
-		this.lotNr = lotNr;
-	}
+    public String getLotNr() {
+        return this.lotNr;
+    }
 
-	public String getPreventionType() {
-		return this.preventionType;
-	}
+    public void setLotNr(String lotNr) {
+        this.lotNr = lotNr;
+    }
 
-	public void setPreventionType(String preventionType) {
-		this.preventionType = preventionType;
-	}
+    public String getPreventionType() {
+        return this.preventionType;
+    }
 
-	public String getProviderNo() {
-		return this.providerNo;
-	}
+    public void setPreventionType(String preventionType) {
+        this.preventionType = preventionType;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
-	
-	public Boolean isDeleted() {
-		return deleted;
-	}
+    public String getProviderNo() {
+        return this.providerNo;
+    }
 
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-	
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
-	
-	public void setLastUpdateDate(Date lastUpdateDte) {
-		this.lastUpdateDate = lastUpdateDte;
-	}
-	
-	@PreUpdate
-	@PrePersist
-	protected void autoSetUpdateTime()
-	{
-		lastUpdateDate = new Date();
-	}
-	
-	@PreRemove
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	protected void jpaPreventDelete() {
+    public Boolean isDeleted() {
+        return deleted;
+    }
 
-	throw (new UnsupportedOperationException("Remove is not allowed for this type of item."));
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 
-	}
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDte) {
+        this.lastUpdateDate = lastUpdateDte;
+    }
+
+    @PreUpdate
+    @PrePersist
+    protected void autoSetUpdateTime() {
+        lastUpdateDate = new Date();
+    }
+
+    @PreRemove
+
+    protected void jpaPreventDelete() {
+
+        throw (new UnsupportedOperationException("Remove is not allowed for this type of item."));
+
+    }
 
 }

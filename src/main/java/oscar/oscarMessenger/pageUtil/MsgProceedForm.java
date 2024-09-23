@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,19 +30,19 @@ import org.apache.struts.action.ActionForm;
 
 public final class MsgProceedForm extends ActionForm {
 
-    String demoId   = null;
-    String id       = null;
+    String demoId = null;
+    String id = null;
 
 
     ///////demoId///////////////////////////////////////////////////////////////
-    public String getDemoId (){
-        if ( this.demoId == null){
+    public String getDemoId() {
+        if (this.demoId == null) {
             this.demoId = new String();
         }
-        return this.demoId ;
+        return this.demoId;
     }
 
-    public void setDemoId (String str){
+    public void setDemoId(String str) {
         this.demoId = str;
     }
 
@@ -50,14 +50,14 @@ public final class MsgProceedForm extends ActionForm {
 
 
     //////id////////////////////////////////////////////////////////////////////
-    public String getId (){
-        if ( this.id == null){
+    public String getId() {
+        if (this.id == null) {
             this.id = new String();
         }
-        return this.id ;
+        return this.id;
     }
 
-    public void setId (String str){
+    public void setId(String str) {
         this.id = str;
     }
     //=-------------------------------------------------------------------------

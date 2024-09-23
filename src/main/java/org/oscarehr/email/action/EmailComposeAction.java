@@ -35,16 +35,16 @@ public class EmailComposeAction extends DispatchAction {
         String emailPDFPassword = (String) request.getAttribute("emailPDFPassword");
         String emailPDFPasswordClue = (String) request.getAttribute("emailPDFPasswordClue");
         String[] attachedDocuments = (String[]) request.getAttribute("attachedDocuments");
-		String[] attachedLabs = (String[]) request.getAttribute("attachedLabs");
-		String[] attachedForms = (String[]) request.getAttribute("attachedForms");
-		String[] attachedEForms = (String[]) request.getAttribute("attachedEForms");
-		String[] attachedHRMDocuments = (String[]) request.getAttribute("attachedHRMDocuments");
+        String[] attachedLabs = (String[]) request.getAttribute("attachedLabs");
+        String[] attachedForms = (String[]) request.getAttribute("attachedForms");
+        String[] attachedEForms = (String[]) request.getAttribute("attachedEForms");
+        String[] attachedHRMDocuments = (String[]) request.getAttribute("attachedHRMDocuments");
 
-        String[] emailConsent = emailComposeManager.getEmailConsentStatus(loggedInInfo, Integer.parseInt(demographicId)); 
-        
+        String[] emailConsent = emailComposeManager.getEmailConsentStatus(loggedInInfo, Integer.parseInt(demographicId));
+
         String receiverName = demographicManager.getDemographicFormattedName(loggedInInfo, Integer.parseInt(demographicId));
         List<?>[] receiverEmailList = emailComposeManager.getRecipients(loggedInInfo, Integer.parseInt(demographicId));
-        
+
         List<EmailConfig> senderAccounts = emailComposeManager.getAllSenderAccounts();
 
         if (emailPDFPassword == null) {

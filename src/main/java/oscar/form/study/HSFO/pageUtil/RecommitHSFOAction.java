@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -63,8 +63,8 @@ public class RecommitHSFOAction extends DispatchActionSupport {
 
     protected static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-    public ActionForward showSchedule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
-        LazyValidatorForm sform = (LazyValidatorForm)form;
+    public ActionForward showSchedule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        LazyValidatorForm sform = (LazyValidatorForm) form;
         boolean sflag = false;// whether have current schedule
         boolean cflag = true;// whether copy the demographic info to
         // hsfo_patient
@@ -82,9 +82,9 @@ public class RecommitHSFOAction extends DispatchActionSupport {
             lastlog_time = sf1.format(rsd.getSchedule_time());
             lastlog = rsd.getMemo();
         }
-        sform.set("lastlog_flag", lastlog_flag?"true":"false");
+        sform.set("lastlog_flag", lastlog_flag ? "true" : "false");
         sform.set("lastlog_time", lastlog_time);
-        sform.set("lastlog", lastlog != null?lastlog:"");
+        sform.set("lastlog", lastlog != null ? lastlog : "");
 
         Integer sid = new Integer(0);
         if (rd.isLastActivExpire()) rd.deActiveLast();
@@ -101,11 +101,11 @@ public class RecommitHSFOAction extends DispatchActionSupport {
             cflag = rs.isCheck_flag();
             sid = rs.getId();
         }
-        sform.set("schedule_flag", sflag?"true":"false");// already have
+        sform.set("schedule_flag", sflag ? "true" : "false");// already have
         // a current
         // schedule
-        sform.set("check_flag", cflag?"true":"false");
-        sform.set("isCheck", cflag?"true":"false");
+        sform.set("check_flag", cflag ? "true" : "false");
+        sform.set("isCheck", cflag ? "true" : "false");
         sform.set("schedule_date", sdate);
         sform.set("schedule_shour", shour);
         sform.set("schedule_min", smin);
@@ -117,12 +117,12 @@ public class RecommitHSFOAction extends DispatchActionSupport {
     public ActionForward saveSchedule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RecommitDAO rd = new RecommitDAO();
         RecommitSchedule rs = new RecommitSchedule();
-        LazyValidatorForm sform = (LazyValidatorForm)form;
-        String user = (String)request.getSession().getAttribute("user");
-        String sid = (String)sform.get("schedule_id");
-        String sdate = (String)sform.get("schedule_date");
-        String shour = (String)sform.get("schedule_shour");
-        String smin = (String)sform.get("schedule_min");
+        LazyValidatorForm sform = (LazyValidatorForm) form;
+        String user = (String) request.getSession().getAttribute("user");
+        String sid = (String) sform.get("schedule_id");
+        String sdate = (String) sform.get("schedule_date");
+        String shour = (String) sform.get("schedule_shour");
+        String smin = (String) sform.get("schedule_min");
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date stime = sf.parse(sdate + " " + shour + ":" + smin);
 
@@ -132,7 +132,7 @@ public class RecommitHSFOAction extends DispatchActionSupport {
         }
         rs.setStatus("A");
         rs.setUser_no(user);
-        String copyflag = (String)sform.get("isCheck");
+        String copyflag = (String) sform.get("isCheck");
         if (copyflag != null && "false".equalsIgnoreCase(copyflag)) rs.setCheck_flag(false);
         else rs.setCheck_flag(true);
 
@@ -142,8 +142,7 @@ public class RecommitHSFOAction extends DispatchActionSupport {
         if (id.intValue() != 0) {
             rs.setId(id);
             rd.updateLastSchedule(rs);
-        }
-        else rd.insertchedule(rs);
+        } else rd.insertchedule(rs);
         request.setAttribute("schedule_message", "successfully update!");
 
         HsfoQuartzServlet.schedule();
@@ -155,32 +154,32 @@ public class RecommitHSFOAction extends DispatchActionSupport {
 
         public void execute(JobExecutionContext ctx) throws JobExecutionException {
 
-        	
-        	String providerNo = OscarProperties.getInstance().getProperty("hsfo_job_run_as_provider");
-			if(providerNo == null) {
-				return;
-			}
-			
-			ProviderDAO providerDao = SpringUtils.getBean(ProviderDao.class);
-			Provider provider = providerDao.getProvider(providerNo);
-			
-			if(provider == null) {
-				return;
-			}
-			
-			SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
-			List<Security> securityList = securityDao.findByProviderNo(providerNo);
-			
-			if(securityList.isEmpty()) {
-				return;
-			}
-			
-			LoggedInInfo x = new LoggedInInfo();
-			x.setLoggedInProvider(provider);
-			x.setLoggedInSecurity(securityList.get(0));
-			
-			
-    		try {
+
+            String providerNo = OscarProperties.getInstance().getProperty("hsfo_job_run_as_provider");
+            if (providerNo == null) {
+                return;
+            }
+
+            ProviderDAO providerDao = SpringUtils.getBean(ProviderDao.class);
+            Provider provider = providerDao.getProvider(providerNo);
+
+            if (provider == null) {
+                return;
+            }
+
+            SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
+            List<Security> securityList = securityDao.findByProviderNo(providerNo);
+
+            if (securityList.isEmpty()) {
+                return;
+            }
+
+            LoggedInInfo x = new LoggedInInfo();
+            x.setLoggedInProvider(provider);
+            x.setLoggedInSecurity(securityList.get(0));
+
+
+            try {
                 XMLTransferUtil tfutil = new XMLTransferUtil();
                 RecommitDAO rDao = new RecommitDAO();
                 RecommitSchedule rs = rDao.getLastSchedule(false);
@@ -214,8 +213,7 @@ public class RecommitHSFOAction extends DispatchActionSupport {
 
                     try {
                         message = tfutil.soapHttpCall(tfutil.getSiteID().intValue(), tfutil.getUserId(), tfutil.getLoginPasswd(), rstr);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         logger.error("Error", e);
                         throw e;
                     }
@@ -223,18 +221,16 @@ public class RecommitHSFOAction extends DispatchActionSupport {
                     rs.setMemo(msg);
                     rDao.updateLastSchedule(rs);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
-            }
-            finally {
+            } finally {
                 DbConnectionFilter.releaseAllThreadDbResources();
             }
         }
 
     }
 
-    public ActionForward test(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
+    public ActionForward test(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
         return null;
     }

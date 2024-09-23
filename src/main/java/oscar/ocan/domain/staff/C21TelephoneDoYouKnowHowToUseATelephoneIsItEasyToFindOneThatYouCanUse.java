@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -43,9 +42,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -64,19 +63,19 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "c1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9",
-    "c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls",
-    "c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls",
-    "c3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls",
-    "cComments",
-    "cActions",
-    "cByWhom",
-    "cReviewDate"
+        "c1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9",
+        "c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls",
+        "c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls",
+        "c3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls",
+        "cComments",
+        "cActions",
+        "cByWhom",
+        "cReviewDate"
 })
 @XmlRootElement(name = "C21__Telephone__Do_you_know_how_to_use_a_telephone__Is_it_easy_to_find_one_that_you_can_use_")
 public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse {
@@ -100,11 +99,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the c1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9 property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9() {
         return c1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9;
@@ -112,11 +111,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the c1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9 property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9(BigInteger value) {
         this.c1DoesThePersonHaveDifficultyInGettingAccessToOrUsingATelephoneIfRated0Or9 = value;
@@ -124,11 +123,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls() {
         return c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls;
@@ -136,11 +135,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls(BigInteger value) {
         this.c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesToMakeTelephoneCalls = value;
@@ -148,11 +147,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls() {
         return c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls;
@@ -160,11 +159,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls(BigInteger value) {
         this.c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesToMakeTelephoneCalls = value;
@@ -172,11 +171,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls() {
         return c3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls;
@@ -184,11 +183,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls(BigInteger value) {
         this.c3BHowMuchHelpDoesThePersonNeedFromLocalServicesToMakeTelephoneCalls = value;
@@ -196,11 +195,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the cComments property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link CComments }
-     *     
+     *
      */
     public CComments getCComments() {
         return cComments;
@@ -208,11 +207,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the cComments property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link CComments }
-     *     
+     *
      */
     public void setCComments(CComments value) {
         this.cComments = value;
@@ -220,11 +219,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the cActions property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCActions() {
         return cActions;
@@ -232,11 +231,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the cActions property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCActions(String value) {
         this.cActions = value;
@@ -244,11 +243,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the cByWhom property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCByWhom() {
         return cByWhom;
@@ -256,11 +255,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the cByWhom property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCByWhom(String value) {
         this.cByWhom = value;
@@ -268,11 +267,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Gets the value of the cReviewDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCReviewDate() {
         return cReviewDate;
@@ -280,11 +279,11 @@ public class C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanU
 
     /**
      * Sets the value of the cReviewDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCReviewDate(String value) {
         this.cReviewDate = value;

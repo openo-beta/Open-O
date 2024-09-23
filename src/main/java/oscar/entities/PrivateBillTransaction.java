@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,66 +29,67 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class PrivateBillTransaction {
-  private int id;
-  private int billingmaster_no;
-  private double amount_received;
-  private Date creation_date;
-  private int payment_type;
-  private String payment_type_desc;
-  public PrivateBillTransaction() {
-  }
+    private int id;
+    private int billingmaster_no;
+    private double amount_received;
+    private Date creation_date;
+    private int payment_type;
+    private String payment_type_desc;
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public PrivateBillTransaction() {
+    }
 
-  public void setBillingmaster_no(int billingmaster_no) {
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    this.billingmaster_no = billingmaster_no;
-  }
+    public void setBillingmaster_no(int billingmaster_no) {
 
-  public void setAmount_received(double amount_received) {
-    BigDecimal bdFee = new BigDecimal(amount_received).setScale(2,
-        BigDecimal.ROUND_HALF_UP);
-    this.amount_received = bdFee.doubleValue();
-  }
+        this.billingmaster_no = billingmaster_no;
+    }
 
-  public void setCreation_date(Date creation_date) {
-    this.creation_date = creation_date;
-  }
+    public void setAmount_received(double amount_received) {
+        BigDecimal bdFee = new BigDecimal(amount_received).setScale(2,
+                BigDecimal.ROUND_HALF_UP);
+        this.amount_received = bdFee.doubleValue();
+    }
 
-  public void setPayment_type(int payment_type) {
-    this.payment_type = payment_type;
-  }
+    public void setCreation_date(Date creation_date) {
+        this.creation_date = creation_date;
+    }
 
-  public void setPayment_type_desc(String payment_type_desc) {
+    public void setPayment_type(int payment_type) {
+        this.payment_type = payment_type;
+    }
 
-    this.payment_type_desc = payment_type_desc;
-  }
+    public void setPayment_type_desc(String payment_type_desc) {
 
-  public int getId() {
-    return id;
-  }
+        this.payment_type_desc = payment_type_desc;
+    }
 
-  public int getBillingmaster_no() {
+    public int getId() {
+        return id;
+    }
 
-    return billingmaster_no;
-  }
+    public int getBillingmaster_no() {
 
-  public double getAmount_received() {
-    return amount_received;
-  }
+        return billingmaster_no;
+    }
 
-  public Date getCreation_date() {
-    return creation_date;
-  }
+    public double getAmount_received() {
+        return amount_received;
+    }
 
-  public int getPayment_type() {
-    return payment_type;
-  }
+    public Date getCreation_date() {
+        return creation_date;
+    }
 
-  public String getPayment_type_desc() {
+    public int getPayment_type() {
+        return payment_type;
+    }
 
-    return payment_type_desc;
-  }
+    public String getPayment_type_desc() {
+
+        return payment_type_desc;
+    }
 }

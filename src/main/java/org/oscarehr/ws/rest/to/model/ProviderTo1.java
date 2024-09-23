@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,240 +30,240 @@ import java.util.Date;
 public class ProviderTo1 implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-	private String providerNo;
-	private String lastName;
-	private String firstName;
-	private String name;
-	private String comments;
-	private String phone;
-	private String billingNo;
-	private String workPhone;
-	private AddressTo1 address = new AddressTo1();
-	private String team;
-	private boolean enabled;
-	private String providerType;
-	private Sex1 sex;
-	private String ohipNo;
-	private String specialty;
-	private Date dob;
-	private String hsoNo;
-	private String providerActivity;
-	private String rmaNo;
-	private Date signedConfidentiality;
-	private String practitionerNo;
-	private String practitionerNoType;
-	private String email;
-	private String title;
-	private String lastUpdateUser;
-	private Date lastUpdateDate;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    private String providerNo;
+    private String lastName;
+    private String firstName;
+    private String name;
+    private String comments;
+    private String phone;
+    private String billingNo;
+    private String workPhone;
+    private AddressTo1 address = new AddressTo1();
+    private String team;
+    private boolean enabled;
+    private String providerType;
+    private Sex1 sex;
+    private String ohipNo;
+    private String specialty;
+    private Date dob;
+    private String hsoNo;
+    private String providerActivity;
+    private String rmaNo;
+    private Date signedConfidentiality;
+    private String practitionerNo;
+    private String practitionerNoType;
+    private String email;
+    private String title;
+    private String lastUpdateUser;
+    private Date lastUpdateDate;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getComments() {
-		return comments;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public String getComments() {
+        return comments;
+    }
 
-	public String getBillingNo() {
-		return billingNo;
-	}
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
-	public void setBillingNo(String billingNo) {
-		this.billingNo = billingNo;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public String getWorkPhone() {
-		return workPhone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public void setWorkPhone(String workPhone) {
-		this.workPhone = workPhone;
-	}
+    public String getBillingNo() {
+        return billingNo;
+    }
 
-	public AddressTo1 getAddress() {
-		return address;
-	}
+    public void setBillingNo(String billingNo) {
+        this.billingNo = billingNo;
+    }
 
-	public void setAddress(AddressTo1 address) {
-		this.address = address;
-	}
+    public String getWorkPhone() {
+        return workPhone;
+    }
 
-	public String getTeam() {
-		return team;
-	}
+    public void setWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
+    }
 
-	public void setTeam(String team) {
-		this.team = team;
-	}
+    public AddressTo1 getAddress() {
+        return address;
+    }
 
-	public String getProviderType() {
-		return providerType;
-	}
+    public void setAddress(AddressTo1 address) {
+        this.address = address;
+    }
 
-	public void setProviderType(String providerType) {
-		this.providerType = providerType;
-	}
+    public String getTeam() {
+        return team;
+    }
 
-	public Sex1 getSex() {
-		return sex;
-	}
+    public void setTeam(String team) {
+        this.team = team;
+    }
 
-	public void setSex(Sex1 sex) {
-		this.sex = sex;
-	}
+    public String getProviderType() {
+        return providerType;
+    }
 
-	public String getOhipNo() {
-		return ohipNo;
-	}
+    public void setProviderType(String providerType) {
+        this.providerType = providerType;
+    }
 
-	public void setOhipNo(String ohipNo) {
-		this.ohipNo = ohipNo;
-	}
+    public Sex1 getSex() {
+        return sex;
+    }
 
-	public String getSpecialty() {
-		return specialty;
-	}
+    public void setSex(Sex1 sex) {
+        this.sex = sex;
+    }
 
-	public void setSpecialty(String specialty) {
-		this.specialty = specialty;
-	}
+    public String getOhipNo() {
+        return ohipNo;
+    }
 
-	public Date getDob() {
-		return dob;
-	}
+    public void setOhipNo(String ohipNo) {
+        this.ohipNo = ohipNo;
+    }
 
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+    public String getSpecialty() {
+        return specialty;
+    }
 
-	public String getHsoNo() {
-		return hsoNo;
-	}
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
 
-	public void setHsoNo(String hsoNo) {
-		this.hsoNo = hsoNo;
-	}
+    public Date getDob() {
+        return dob;
+    }
 
-	public String getProviderActivity() {
-		return providerActivity;
-	}
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
 
-	public void setProviderActivity(String providerActivity) {
-		this.providerActivity = providerActivity;
-	}
+    public String getHsoNo() {
+        return hsoNo;
+    }
 
-	public String getRmaNo() {
-		return rmaNo;
-	}
+    public void setHsoNo(String hsoNo) {
+        this.hsoNo = hsoNo;
+    }
 
-	public void setRmaNo(String rmaNo) {
-		this.rmaNo = rmaNo;
-	}
+    public String getProviderActivity() {
+        return providerActivity;
+    }
 
-	public Date getSignedConfidentiality() {
-		return signedConfidentiality;
-	}
+    public void setProviderActivity(String providerActivity) {
+        this.providerActivity = providerActivity;
+    }
 
-	public void setSignedConfidentiality(Date signedConfidentiality) {
-		this.signedConfidentiality = signedConfidentiality;
-	}
+    public String getRmaNo() {
+        return rmaNo;
+    }
 
-	public String getPractitionerNo() {
-		return practitionerNo;
-	}
+    public void setRmaNo(String rmaNo) {
+        this.rmaNo = rmaNo;
+    }
 
-	public void setPractitionerNo(String practitionerNo) {
-		this.practitionerNo = practitionerNo;
-	}
+    public Date getSignedConfidentiality() {
+        return signedConfidentiality;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setSignedConfidentiality(Date signedConfidentiality) {
+        this.signedConfidentiality = signedConfidentiality;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getPractitionerNo() {
+        return practitionerNo;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setPractitionerNo(String practitionerNo) {
+        this.practitionerNo = practitionerNo;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getLastUpdateUser() {
-		return lastUpdateUser;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setLastUpdateUser(String lastUpdateUser) {
-		this.lastUpdateUser = lastUpdateUser;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public String getLastUpdateUser() {
+        return lastUpdateUser;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public void setLastUpdateUser(String lastUpdateUser) {
+        this.lastUpdateUser = lastUpdateUser;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
-	public String getPractitionerNoType() {
-		return practitionerNoType;
-	}
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-	public void setPractitionerNoType(String practitionerNoType) {
-		this.practitionerNoType = practitionerNoType;
-	}
-	
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getPractitionerNoType() {
+        return practitionerNoType;
+    }
+
+    public void setPractitionerNoType(String practitionerNoType) {
+        this.practitionerNoType = practitionerNoType;
+    }
+
 }

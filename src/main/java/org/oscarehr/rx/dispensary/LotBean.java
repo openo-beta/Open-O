@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,68 +31,68 @@ import org.apache.commons.lang.time.DateFormatUtils;
 
 public class LotBean {
 
-	private String name;		//name of lot
-	private Integer amount;  	//the amount of doses
-	private Date expiryDate;	//expires
+    private String name;        //name of lot
+    private Integer amount;    //the amount of doses
+    private Date expiryDate;    //expires
 
-	private int numberAvailable = 0;
-	
-	public LotBean() {
-		
-	}
-	
-	public LotBean(String name, Date expiryDate, Integer amount) {
-		this.name = name;
-		this.expiryDate = expiryDate;
-		this.amount= amount;
-	}
-	
-	public LotBean(String name, Date expiryDate, Integer amount, int numberAvailable) {
-		this(name,expiryDate,amount);
-		this.numberAvailable = numberAvailable;
-	}
+    private int numberAvailable = 0;
 
-	public String getName() {
-		return name;
-	}
+    public LotBean() {
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    }
 
-	public Integer getAmount() {
-		return amount;
-	}
+    public LotBean(String name, Date expiryDate, Integer amount) {
+        this.name = name;
+        this.expiryDate = expiryDate;
+        this.amount = amount;
+    }
 
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
+    public LotBean(String name, Date expiryDate, Integer amount, int numberAvailable) {
+        this(name, expiryDate, amount);
+        this.numberAvailable = numberAvailable;
+    }
 
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public int getNumberAvailable() {
-		return numberAvailable;
-	}
+    public Integer getAmount() {
+        return amount;
+    }
 
-	public void setNumberAvailable(int numberAvailable) {
-		this.numberAvailable = numberAvailable;
-	}
-	
-	
-	public String getExpiryDateAsString() {
-		return DateFormatUtils.ISO_DATE_FORMAT.format(expiryDate);
-	}
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 
-	
-	public String getHash() {
-		return  DigestUtils.md5Hex(getName()+getExpiryDate()+getAmount());
-	}
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
 
-	
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public int getNumberAvailable() {
+        return numberAvailable;
+    }
+
+    public void setNumberAvailable(int numberAvailable) {
+        this.numberAvailable = numberAvailable;
+    }
+
+
+    public String getExpiryDateAsString() {
+        return DateFormatUtils.ISO_DATE_FORMAT.format(expiryDate);
+    }
+
+
+    public String getHash() {
+        return DigestUtils.md5Hex(getName() + getExpiryDate() + getAmount());
+    }
+
+
 }

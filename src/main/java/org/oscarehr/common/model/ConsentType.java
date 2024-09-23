@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,86 +35,85 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="consentType")
+@Table(name = "consentType")
 public class ConsentType extends AbstractModel<Integer> {
-	
-	public static final String PROVIDER_CONSENT_FILTER = "provider_consent_filter";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
-	
-	private String name;
-	
-	//@Enumerated(EnumType.STRING)
-	private String type;
-	
-	private String description;
+    public static final String PROVIDER_CONSENT_FILTER = "provider_consent_filter";
 
-	private String providerNo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
-	private Boolean remoteEnabled = Boolean.FALSE;
+    private String name;
 
-	private Boolean active;
+    //@Enumerated(EnumType.STRING)
+    private String type;
+
+    private String description;
+
+    private String providerNo;
+
+    private Boolean remoteEnabled = Boolean.FALSE;
+
+    private Boolean active;
 
 
+    @Override
+    public Integer getId() {
+        return this.id;
+    }
 
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public Boolean isRemoteEnabled() {
-		return remoteEnabled;
-	}
+    public Boolean isRemoteEnabled() {
+        return remoteEnabled;
+    }
 
-	public void setRemoteEnabled(Boolean remoteEnabled) {
-		this.remoteEnabled = remoteEnabled;
-	}
+    public void setRemoteEnabled(Boolean remoteEnabled) {
+        this.remoteEnabled = remoteEnabled;
+    }
 
 }

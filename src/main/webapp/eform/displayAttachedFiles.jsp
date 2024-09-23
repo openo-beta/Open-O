@@ -24,27 +24,27 @@
 
 --%>
 
-<%@page import="org.oscarehr.common.dao.EFormDataDao"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@page import="org.oscarehr.common.dao.EFormDataDao" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_eform" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_eform");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_eform");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page
-	import="java.util.ArrayList, oscar.oscarLab.ca.on.*, oscar.util.StringUtils"%>
-<%@page import="org.oscarehr.util.SessionConstants"%>
-<%@page	import="java.util.List"%>
+        import="java.util.ArrayList, oscar.oscarLab.ca.on.*, oscar.util.StringUtils" %>
+<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="java.util.List" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="oscar.util.DateUtils" %>
 <%@ page import="org.oscarehr.hospitalReportManager.dao.HRMDocumentDao" %>
@@ -56,92 +56,93 @@ if(!authed) {
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-  String demo = request.getParameter("demo") ;
-  String requestId = request.getParameter("requestId");
-  String val = "";
-  
-  if(!StringUtils.isNullOrEmpty(requestId) && demo == null) {
-	  EFormDataDao eformDataDao = SpringUtils.getBean(EFormDataDao.class);
-	  EFormData efmData =  eformDataDao.find(Integer.parseInt(requestId));
-	  demo = String.valueOf(efmData.getDemographicId());
-  }
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    String demo = request.getParameter("demo");
+    String requestId = request.getParameter("requestId");
+    String val = "";
+
+    if (!StringUtils.isNullOrEmpty(requestId) && demo == null) {
+        EFormDataDao eformDataDao = SpringUtils.getBean(EFormDataDao.class);
+        EFormData efmData = eformDataDao.find(Integer.parseInt(requestId));
+        demo = String.valueOf(efmData.getDemographicId());
+    }
 %>
 <ul id="attachedList"
-	style="background-color: white; padding-left: 20px; list-style-position: outside; list-style-type: lower-roman;">
-	<%
-            ArrayList<EDoc> privatedocs = new ArrayList<EDoc>();
-            privatedocs = EDocUtil.listDocsAttachedToEForm(loggedInInfo, demo, requestId, EDocUtil.ATTACHED);
-            EDoc curDoc;                                        
-            for(int idx = 0; idx < privatedocs.size(); ++idx)
-            {                    
-                curDoc = privatedocs.get(idx);       
-                val +=  "D" + curDoc.getDocId() + "|";
-        %>
-	<li class="doc"><%=StringUtils.maxLenString(curDoc.getDescription(),19,16,"...")%></li>
-	<%                                           
+    style="background-color: white; padding-left: 20px; list-style-position: outside; list-style-type: lower-roman;">
+    <%
+        ArrayList<EDoc> privatedocs = new ArrayList<EDoc>();
+        privatedocs = EDocUtil.listDocsAttachedToEForm(loggedInInfo, demo, requestId, EDocUtil.ATTACHED);
+        EDoc curDoc;
+        for (int idx = 0; idx < privatedocs.size(); ++idx) {
+            curDoc = privatedocs.get(idx);
+            val += "D" + curDoc.getDocId() + "|";
+    %>
+    <li class="doc"><%=StringUtils.maxLenString(curDoc.getDescription(), 19, 16, "...")%>
+    </li>
+    <%
+        }
+
+        CommonLabResultData labData = new CommonLabResultData();
+        ArrayList labs = labData.populateLabResultsDataEForm(loggedInInfo, demo, requestId, CommonLabResultData.ATTACHED);
+        LabResultData resData;
+        for (int idx = 0; idx < labs.size(); ++idx) {
+            resData = (LabResultData) labs.get(idx);
+            val += "L" + resData.segmentID + "|";
+    %>
+    <li class="lab"><%=resData.getDiscipline() + " " + resData.getDateTime()%>
+    </li>
+    <%
+        }
+        //Gets the DAOs for HRMDocumentToDemographic and HRMDocument
+        HRMDocumentToDemographicDao hrmDocumentToDemographicDao = (HRMDocumentToDemographicDao) SpringUtils.getBean(HRMDocumentToDemographicDao.class);
+        HRMDocumentDao hrmDocumentDao = (HRMDocumentDao) SpringUtils.getBean(HRMDocumentDao.class);
+        //Gets the list of attached HRM Documents with the eform
+        List<HRMDocumentToDemographic> hrmDocumentToDemographicList = hrmDocumentToDemographicDao.findHRMDocumentsAttachedToEForm(requestId);
+        //Declares an hrmDocument, a truncatedDisplayName, and a date for each attached HRM document
+        HRMDocument hrmDocument;
+        String truncatedDisplayName;
+        String date;
+        //For each HRMDocumentToDemographic in the list
+        for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographicList) {
+            //Gets the corresponding HRMDocument
+            hrmDocument = hrmDocumentDao.find(hrmDocumentToDemographic.getHrmDocumentId());
+            //Checks if the hrmDescription has data, if it does then it becomes the displayName, if it doesn't then the reportType becomes the display name
+            if (!hrmDocument.getDescription().equals("")) {
+                truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getDescription(), 14, 11, "");
+            } else {
+                truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getReportType(), 14, 11, "");
             }
 
-                CommonLabResultData labData = new CommonLabResultData();
-                ArrayList labs = labData.populateLabResultsDataEForm(loggedInInfo, demo, requestId, CommonLabResultData.ATTACHED);
-                LabResultData resData;
-                for(int idx = 0; idx < labs.size(); ++idx) 
-                {
-                    resData = (LabResultData)labs.get(idx);
-                    val += "L" + resData.segmentID + "|";
-        %>
-	<li class="lab"><%=resData.getDiscipline()+" "+resData.getDateTime()%></li>
-	<%
-                }
-                //Gets the DAOs for HRMDocumentToDemographic and HRMDocument
-                HRMDocumentToDemographicDao hrmDocumentToDemographicDao = (HRMDocumentToDemographicDao) SpringUtils.getBean(HRMDocumentToDemographicDao.class);
-                HRMDocumentDao hrmDocumentDao = (HRMDocumentDao) SpringUtils.getBean(HRMDocumentDao.class);
-				//Gets the list of attached HRM Documents with the eform
-                List<HRMDocumentToDemographic> hrmDocumentToDemographicList = hrmDocumentToDemographicDao.findHRMDocumentsAttachedToEForm(requestId);
-				//Declares an hrmDocument, a truncatedDisplayName, and a date for each attached HRM document
-                HRMDocument hrmDocument;
-                String truncatedDisplayName;
-                String date;
-                //For each HRMDocumentToDemographic in the list
-                for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographicList) {
-                	//Gets the corresponding HRMDocument
-                	hrmDocument = hrmDocumentDao.find(hrmDocumentToDemographic.getHrmDocumentId());
-                	//Checks if the hrmDescription has data, if it does then it becomes the displayName, if it doesn't then the reportType becomes the display name
-                	if (!hrmDocument.getDescription().equals("")) {
-                		truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getDescription(),14,11,"");	
-                	}
-                	else {
-                		truncatedDisplayName = StringUtils.maxLenString(hrmDocument.getReportType(),14,11,"");
-                	}
-                	
-                	val +=  "H" + hrmDocumentToDemographic.getHrmDocumentId() + "|";
-                	//Outputs the list item
-                %>	
-					<li class="hrm"><%=truncatedDisplayName%></li>
-                <%
-                }
+            val += "H" + hrmDocumentToDemographic.getHrmDocumentId() + "|";
+            //Outputs the list item
+    %>
+    <li class="hrm"><%=truncatedDisplayName%>
+    </li>
+    <%
+        }
 
-				//Get attached eForms
-				List<EFormData> eForms = EFormUtil.listPatientEformsCurrentAttachedToEForm(requestId);
-				for (EFormData eForm : eForms) {
-					val +=  "E" + eForm.getId() + "|";
-                	
-				%>
-					<li class="eForm"><%=(eForm.getFormName().length()>14)?eForm.getFormName().substring(0, 11)+"...":eForm.getFormName()%></li>
-				<%
-				}
-        %>
+        //Get attached eForms
+        List<EFormData> eForms = EFormUtil.listPatientEformsCurrentAttachedToEForm(requestId);
+        for (EFormData eForm : eForms) {
+            val += "E" + eForm.getId() + "|";
+
+    %>
+    <li class="eForm"><%=(eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()%>
+    </li>
+    <%
+        }
+    %>
 </ul>
- <input type="text" name="selectDocs" value="<%=val %>" style="display:none">
+<input type="text" name="selectDocs" value="<%=val %>" style="display:none">
 <%
-           if( privatedocs.size() == 0 && labs.size() == 0 && hrmDocumentToDemographicList.size() == 0 && eForms.isEmpty()) {
-        %>
+    if (privatedocs.size() == 0 && labs.size() == 0 && hrmDocumentToDemographicList.size() == 0 && eForms.isEmpty()) {
+%>
 <p id="attachDefault"
-	style="background-color: white; text-align: center;"><bean:message
-	key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty" /></p>
+   style="background-color: white; text-align: center;"><bean:message
+        key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/></p>
 <%
-           }
-         %>
+    }
+%>

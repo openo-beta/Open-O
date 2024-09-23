@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -38,73 +38,73 @@ import oscar.oscarLab.ca.on.CommonLabResultData;
 
 public class OLISAddToInboxAction extends DispatchAction {
 
-	static Logger logger = MiscUtils.getLogger();
+    static Logger logger = MiscUtils.getLogger();
 
-	@Override
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String providerNo=loggedInInfo.getLoggedInProviderNo();
-		
-		String uuidToAdd = request.getParameter("uuid");
-		String pFile = request.getParameter("file");
-		String pAck = request.getParameter("ack");
-		boolean doFile = false, doAck = false;
-		if (pFile != null && pFile.equals("true")) {
-			doFile = true;
-		}
-		if (pAck != null && pAck.equals("true")) {
-			doAck = true;
-		}
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-		String fileLocation = System.getProperty("java.io.tmpdir") + "/olis_" + uuidToAdd + ".response";
-		File file = new File(fileLocation);
-		OLISHL7Handler msgHandler = (OLISHL7Handler) HandlerClassFactory.getHandler("OLIS_HL7");
+        String uuidToAdd = request.getParameter("uuid");
+        String pFile = request.getParameter("file");
+        String pAck = request.getParameter("ack");
+        boolean doFile = false, doAck = false;
+        if (pFile != null && pFile.equals("true")) {
+            doFile = true;
+        }
+        if (pAck != null && pAck.equals("true")) {
+            doAck = true;
+        }
 
-		InputStream is = null;
-		try {
-			is = new FileInputStream(fileLocation);
-			int check = FileUploadCheck.addFile(file.getName(), is, providerNo);
+        String fileLocation = System.getProperty("java.io.tmpdir") + "/olis_" + uuidToAdd + ".response";
+        File file = new File(fileLocation);
+        OLISHL7Handler msgHandler = (OLISHL7Handler) HandlerClassFactory.getHandler("OLIS_HL7");
 
-			if (check != FileUploadCheck.UNSUCCESSFUL_SAVE) {
-				if (msgHandler.parse(loggedInInfo, "OLIS_HL7", fileLocation, check, true) != null) {
-					request.setAttribute("result", "Success");
-					if (doFile) {
-						ArrayList<String[]> labsToFile = new ArrayList<String[]>();
-						String item[] = new String[] { String.valueOf(msgHandler.getLastSegmentId()), "HL7" };
-						labsToFile.add(item);
-						CommonLabResultData.fileLabs(labsToFile, providerNo);
-					}
-					if (doAck) {
-						String demographicID = getDemographicIdFromLab("HL7", msgHandler.getLastSegmentId());
-						LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ACK, LogConst.CON_HL7_LAB, "" + msgHandler.getLastSegmentId(), request.getRemoteAddr(), demographicID);
-						CommonLabResultData.updateReportStatus(msgHandler.getLastSegmentId(), providerNo, 'A', "comment", "HL7");
+        InputStream is = null;
+        try {
+            is = new FileInputStream(fileLocation);
+            int check = FileUploadCheck.addFile(file.getName(), is, providerNo);
 
-					}
-				} else {
-					request.setAttribute("result", "Error");
-				}
-			} else {
-				request.setAttribute("result", "Already Added");
-			}
+            if (check != FileUploadCheck.UNSUCCESSFUL_SAVE) {
+                if (msgHandler.parse(loggedInInfo, "OLIS_HL7", fileLocation, check, true) != null) {
+                    request.setAttribute("result", "Success");
+                    if (doFile) {
+                        ArrayList<String[]> labsToFile = new ArrayList<String[]>();
+                        String item[] = new String[]{String.valueOf(msgHandler.getLastSegmentId()), "HL7"};
+                        labsToFile.add(item);
+                        CommonLabResultData.fileLabs(labsToFile, providerNo);
+                    }
+                    if (doAck) {
+                        String demographicID = getDemographicIdFromLab("HL7", msgHandler.getLastSegmentId());
+                        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ACK, LogConst.CON_HL7_LAB, "" + msgHandler.getLastSegmentId(), request.getRemoteAddr(), demographicID);
+                        CommonLabResultData.updateReportStatus(msgHandler.getLastSegmentId(), providerNo, 'A', "comment", "HL7");
 
-		} catch (Exception e) {
-			MiscUtils.getLogger().error("Couldn't add requested OLIS lab to Inbox.", e);
-			request.setAttribute("result", "Error");
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				//ignore
-			}
-		}
+                    }
+                } else {
+                    request.setAttribute("result", "Error");
+                }
+            } else {
+                request.setAttribute("result", "Already Added");
+            }
 
-		return mapping.findForward("ajax");
-	}
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Couldn't add requested OLIS lab to Inbox.", e);
+            request.setAttribute("result", "Error");
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                //ignore
+            }
+        }
 
-	private static String getDemographicIdFromLab(String labType, int labNo) {
-		PatientLabRoutingDao dao = SpringUtils.getBean(PatientLabRoutingDao.class);
-		PatientLabRouting routing = dao.findDemographics(labType, labNo);
-		return routing == null ? "" : String.valueOf(routing.getDemographicNo());
-	}
+        return mapping.findForward("ajax");
+    }
+
+    private static String getDemographicIdFromLab(String labType, int labNo) {
+        PatientLabRoutingDao dao = SpringUtils.getBean(PatientLabRoutingDao.class);
+        PatientLabRouting routing = dao.findDemographics(labType, labNo);
+        return routing == null ? "" : String.valueOf(routing.getDemographicNo());
+    }
 }

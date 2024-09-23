@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,63 +51,68 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarReport.data.ManageLetters;
 
 /**
- 
  * @author jay
  */
 public class ManagePatientLettersAction extends Action {
-    
+
     private static Logger log = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
+
     /** Creates a new instance of GeneratePatientLetters */
     public ManagePatientLettersAction() {
-        
+
     }
-    
-     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
-    	 if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-     		  throw new SecurityException("missing required security object (_report)");
-     	  	}
-    	 
-        if (log.isTraceEnabled()) { log.trace("Start of ManagePatientLetters Action");}
-   
-        String classpath = (String) request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
-        System.setProperty("jasper.reports.compile.class.path", classpath); 
-         
-        if (log.isTraceEnabled()) { 
+
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
+            throw new SecurityException("missing required security object (_report)");
         }
-         
+
+        if (log.isTraceEnabled()) {
+            log.trace("Start of ManagePatientLetters Action");
+        }
+
+        String classpath = (String) request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
+        System.setProperty("jasper.reports.compile.class.path", classpath);
+
+        if (log.isTraceEnabled()) {
+        }
+
         ManagePatientLettersForm frm = (ManagePatientLettersForm) form;
         FormFile fFile = frm.getReportFile();
-        
+
         byte[] fileData = null;
-        
+
         try {
-            
+
             fileData = fFile.getFileData();
             String reportName = request.getParameter("reportName");
-            
+
             //Getter Stream for letter
             //Validate that it is a valid jasper report file
             //Save to database
-            
+
             JasperReport jasperReport = JasperCompileManager.compileReport(new ByteArrayInputStream(fileData));
-        
+
             ManageLetters manageLetters = new ManageLetters();
-            manageLetters.saveReport( (String) request.getSession().getAttribute("user"), reportName,fFile.getFileName(), fileData);
-        } catch (FileNotFoundException ex) {MiscUtils.getLogger().error("Error", ex);
-        } catch (IOException ex) {MiscUtils.getLogger().error("Error", ex);
-        } catch (JRException ex) {MiscUtils.getLogger().error("Error", ex);
+            manageLetters.saveReport((String) request.getSession().getAttribute("user"), reportName, fFile.getFileName(), fileData);
+        } catch (FileNotFoundException ex) {
+            MiscUtils.getLogger().error("Error", ex);
+        } catch (IOException ex) {
+            MiscUtils.getLogger().error("Error", ex);
+        } catch (JRException ex) {
+            MiscUtils.getLogger().error("Error", ex);
         }
 
-        if (log.isTraceEnabled()) { log.trace("End of ManagePatientLetters Action");}
-        
-        if ("success_manage_from_prevention".equals(request.getParameter("goto")) ){
+        if (log.isTraceEnabled()) {
+            log.trace("End of ManagePatientLetters Action");
+        }
+
+        if ("success_manage_from_prevention".equals(request.getParameter("goto"))) {
             return mapping.findForward("success_manage_from_prevention");
         }
-        return mapping.findForward("success");   
-     }
-    
-    
-    
+        return mapping.findForward("success");
+    }
+
+
 }

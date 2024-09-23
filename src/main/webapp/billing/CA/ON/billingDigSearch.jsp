@@ -19,279 +19,286 @@
 --%>
 <!DOCTYPE html>
 <%
-  String user_no = (String) session.getAttribute("user");
+    String user_no = (String) session.getAttribute("user");
 %>
-<%@ page import="java.util.*, java.sql.*, oscar.*, java.net.*" errorPage="/errorpage.jsp"%>
+<%@ page import="java.util.*, java.sql.*, oscar.*, java.net.*" errorPage="/errorpage.jsp" %>
 
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>
 <%@ page import="org.oscarehr.common.dao.DiagnosticCodeDao" %>
 <%
-	DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
+    DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
-<% String search = "",search2 = "";
- search = request.getParameter("search");
- if (search.compareTo("") == 0){
- search = "search_diagnostic_code";
- }
+<% String search = "", search2 = "";
+    search = request.getParameter("search");
+    if (search.compareTo("") == 0) {
+        search = "search_diagnostic_code";
+    }
 
 
-   String codeName = request.getParameter("name");
+    String codeName = request.getParameter("name");
 
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <html:html lang="en">
-<head>
-<title><bean:message key="billing.billingDigSearch.title" /></title>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"> <!-- Bootstrap 2.3.1 -->
-<script>
-function CodeAttach(File2) {
-      if (self.opener.callChangeCodeDesc) self.opener.callChangeCodeDesc();
+    <head>
+        <title><bean:message key="billing.billingDigSearch.title"/></title>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
+        <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"> <!-- Bootstrap 2.3.1 -->
+        <script>
+            function CodeAttach(File2) {
+                if (self.opener.callChangeCodeDesc) self.opener.callChangeCodeDesc();
 
-      <%if(request.getParameter("name2")!=null) {%>
-      self.opener.<%=request.getParameter("name2")%> = File2.substring(0,3);
-      <%} else {%>
-      self.opener.document.forms[1].xml_diagnostic_detail.value = File2;
-      <%}%>
-      setTimeout("self.close();",100);
-}
-function setfocus() {
-  this.focus();
-  document.forms[0].codedesc.focus();
-  document.forms[0].codedesc.select();
-}
-</script>
+                <%if(request.getParameter("name2")!=null) {%>
+                self.opener.<%=request.getParameter("name2")%> = File2.substring(0, 3);
+                <%} else {%>
+                self.opener.document.forms[1].xml_diagnostic_detail.value = File2;
+                <%}%>
+                setTimeout("self.close();", 100);
+            }
 
-</head>
+            function setfocus() {
+                this.focus();
+                document.forms[0].codedesc.focus();
+                document.forms[0].codedesc.select();
+            }
+        </script>
 
-<body onLoad="setfocus()">
-<table style="width:100%">
-	<tr >
-		<th style="text-align:center; background-color:silver;" ><bean:message
-			key="billing.billingDigSearch.msgDiagnostic" /><bean:message
-			key="billing.billingDigSearch.msgMaxSelections" /></th>
-	</tr>
-</table>
-<% String coderange=request.getParameter("coderange");
-	String codedesc =request.getParameter("codedesc");
-        if (codedesc != null){
-        if (codedesc.compareTo("") == 0) {
+    </head>
 
-   		codeName = coderange;
-        } else {
-           codeName =  codedesc;
-   		}
-   }
-   %>
+    <body onLoad="setfocus()">
+    <table style="width:100%">
+        <tr>
+            <th style="text-align:center; background-color:silver;"><bean:message
+                    key="billing.billingDigSearch.msgDiagnostic"/><bean:message
+                    key="billing.billingDigSearch.msgMaxSelections"/></th>
+        </tr>
+    </table>
+    <% String coderange = request.getParameter("coderange");
+        String codedesc = request.getParameter("codedesc");
+        if (codedesc != null) {
+            if (codedesc.compareTo("") == 0) {
 
-<form name="codesearch" id="codesearch" method="post"
-	action="billingDigSearch.jsp">
-<%if(request.getParameter("name2")!=null) {%>
-<input type="hidden" name="name2"
-	value="<%=request.getParameter("name2")%>" />
-<%}%>
-<p><b><bean:message
-	key="billing.billingDigSearch.msgRefine" /></b><br>
-<bean:message key="billing.billingDigSearch.msgCodeRange" />: <select
-	name="coderange">
-	<option value="0" selected>000-099</option>
-	<option value="1">100-199</option>
-	<option value="2">200-299</option>
-	<option value="3">300-399</option>
-	<option value="4">400-499</option>
-	<option value="5">500-599</option>
-	<option value="6">600-699</option>
-	<option value="7">700-799</option>
-	<option value="8">800-899</option>
-	<option value="9">900-999</option>
-</select> <bean:message key="billing.billingDigSearch.msgOR" /> <br />
-<bean:message key="billing.billingDigSearch.msgDescription" />: <input
-	type="text" name="codedesc" value="" > <input type="submit" class="btn"
-	name="search1"
-	value="<bean:message key="billing.billingDigSearch.btnSearch"/>" /></p>
-<input type="hidden" name="search"
-	value="<bean:message key="billing.billingDigSearch.btnSearch"/>" />
-</form>
-
-<form name="diagcode" id="diagcode" method="post"
-	action="billingDigUpdate.jsp">
-<table style="width:800px; margin:auto" class="table-striped table-condensed">
-    <thead>
-	<tr>
-		<th style="width:12%"><b><bean:message key="billing.billingDigSearch.formCode" /></b></th>
-		<th style="width:88%"><b><bean:message
-			key="billing.billingDigSearch.formDescription" /></b></th>
-	</tr>
-    </thead>
-    <tbody>
-	<%  ResultSet rslocal = null;
-      ResultSet rslocal2 = null;
-        String Dcode="", DcodeDesc="", Dcode2="", DcodeDesc2="";
-        String codeName2="";
-
- int Count = 0;
- int intCount = 0;
- String numCode="";
-   String textCode="";
-   String searchType="";
-for(int i=0;i<codeName.length();i++)
- {
- String c = codeName.substring(i,i+1);
- if(c.hashCode()>=48 && c.hashCode()<=58)
- numCode += c;
- }
-for(int j=0;j<codeName.length();j++)
- {
- String d = codeName.substring(j,j+1);
- if(d.hashCode()<48 || d.hashCode()>58)
- textCode += d;
- }
-if (textCode.compareTo("") == -1 && textCode != null){
-StringBuffer sBuffer = new StringBuffer(textCode);
-int k = textCode.indexOf(' ');
-sBuffer.deleteCharAt(k);
-sBuffer.insert(k,"");
-textCode = sBuffer.toString();
- }
- if (numCode.compareTo("")==0){
-    if(textCode.compareTo("")==0){
-    // search all case
-        codeName = numCode;
-        search = "search_diagnostic_code";
-        searchType= "N";
+                codeName = coderange;
+            } else {
+                codeName = codedesc;
+            }
         }
-        else{
-    //search text only
-         codeName = "%" + textCode;
-         search = "search_diagnostic_text";
-         searchType="N";
-         }
-   }else{
+    %>
 
-    if(textCode.compareTo("")==0){
-    // search number only
-        codeName = numCode;
-        search = "search_diagnostic_code";
-        searchType= "N";
-        }
-        else{
-    //search both text and number only
-         codeName = "%" + textCode;
-         codeName2 = numCode;
-         search = "search_diagnostic_text";
-         search2 = "search_diagnostic_code";
-         searchType="BOTH";
-         }
-   }
+    <form name="codesearch" id="codesearch" method="post"
+          action="billingDigSearch.jsp">
+        <%if (request.getParameter("name2") != null) {%>
+        <input type="hidden" name="name2"
+               value="<%=request.getParameter("name2")%>"/>
+        <%}%>
+        <p><b><bean:message
+                key="billing.billingDigSearch.msgRefine"/></b><br>
+            <bean:message key="billing.billingDigSearch.msgCodeRange"/>: <select
+                    name="coderange">
+                <option value="0" selected>000-099</option>
+                <option value="1">100-199</option>
+                <option value="2">200-299</option>
+                <option value="3">300-399</option>
+                <option value="4">400-499</option>
+                <option value="5">500-599</option>
+                <option value="6">600-699</option>
+                <option value="7">700-799</option>
+                <option value="8">800-899</option>
+                <option value="9">900-999</option>
+            </select> <bean:message key="billing.billingDigSearch.msgOR"/> <br/>
+            <bean:message key="billing.billingDigSearch.msgDescription"/>: <input
+                    type="text" name="codedesc" value=""> <input type="submit" class="btn"
+                                                                 name="search1"
+                                                                 value="<bean:message key="billing.billingDigSearch.btnSearch"/>"/>
+        </p>
+        <input type="hidden" name="search"
+               value="<bean:message key="billing.billingDigSearch.btnSearch"/>"/>
+    </form>
 
- List<DiagnosticCode> results = null;
+    <form name="diagcode" id="diagcode" method="post"
+          action="billingDigUpdate.jsp">
+        <table style="width:800px; margin:auto" class="table-striped table-condensed">
+            <thead>
+            <tr>
+                <th style="width:12%"><b><bean:message key="billing.billingDigSearch.formCode"/></b></th>
+                <th style="width:88%"><b><bean:message
+                        key="billing.billingDigSearch.formDescription"/></b></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% ResultSet rslocal = null;
+                ResultSet rslocal2 = null;
+                String Dcode = "", DcodeDesc = "", Dcode2 = "", DcodeDesc2 = "";
+                String codeName2 = "";
 
-         if (searchType.length() == 1) {
+                int Count = 0;
+                int intCount = 0;
+                String numCode = "";
+                String textCode = "";
+                String searchType = "";
+                for (int i = 0; i < codeName.length(); i++) {
+                    String c = codeName.substring(i, i + 1);
+                    if (c.hashCode() >= 48 && c.hashCode() <= 58)
+                        numCode += c;
+                }
+                for (int j = 0; j < codeName.length(); j++) {
+                    String d = codeName.substring(j, j + 1);
+                    if (d.hashCode() < 48 || d.hashCode() > 58)
+                        textCode += d;
+                }
+                if (textCode.compareTo("") == -1 && textCode != null) {
+                    StringBuffer sBuffer = new StringBuffer(textCode);
+                    int k = textCode.indexOf(' ');
+                    sBuffer.deleteCharAt(k);
+                    sBuffer.insert(k, "");
+                    textCode = sBuffer.toString();
+                }
+                if (numCode.compareTo("") == 0) {
+                    if (textCode.compareTo("") == 0) {
+                        // search all case
+                        codeName = numCode;
+                        search = "search_diagnostic_code";
+                        searchType = "N";
+                    } else {
+                        //search text only
+                        codeName = "%" + textCode;
+                        search = "search_diagnostic_text";
+                        searchType = "N";
+                    }
+                } else {
+
+                    if (textCode.compareTo("") == 0) {
+                        // search number only
+                        codeName = numCode;
+                        search = "search_diagnostic_code";
+                        searchType = "N";
+                    } else {
+                        //search both text and number only
+                        codeName = "%" + textCode;
+                        codeName2 = numCode;
+                        search = "search_diagnostic_text";
+                        search2 = "search_diagnostic_code";
+                        searchType = "BOTH";
+                    }
+                }
+
+                List<DiagnosticCode> results = null;
+
+                if (searchType.length() == 1) {
 
 // Retrieving Provider
 
-	if("search_diagnostic_code".equals(search)) {
-		results=diagnosticCodeDao.searchCode(codeName+"%");
-	} else if("search_diagnostic_text".equals(search)) {
-		results=diagnosticCodeDao.searchText(codeName+"%");
-	}
-	for(DiagnosticCode result:results) {
-		intCount++;
-		Dcode = result.getDiagnosticCode();
-		DcodeDesc = result.getDescription().trim();
-		if (Count == 0){
-			Count = 1;
-		} else {
-			Count = 0;
-		}
- %>
+                    if ("search_diagnostic_code".equals(search)) {
+                        results = diagnosticCodeDao.searchCode(codeName + "%");
+                    } else if ("search_diagnostic_text".equals(search)) {
+                        results = diagnosticCodeDao.searchText(codeName + "%");
+                    }
+                    for (DiagnosticCode result : results) {
+                        intCount++;
+                        Dcode = result.getDiagnosticCode();
+                        DcodeDesc = result.getDescription().trim();
+                        if (Count == 0) {
+                            Count = 1;
+                        } else {
+                            Count = 0;
+                        }
+            %>
 
-	<tr>
-		<td style="width:12%"><a
-			href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%></a></td>
-		<td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;" name="<%=Dcode%>"
-			value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
-			name="update"
-			value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>"></td>
-	</tr>
-	<%
-  } //end of while looop
-  } else { //both
+            <tr>
+                <td style="width:12%"><a
+                        href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%>
+                </a></td>
+                <td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"
+                                             name="<%=Dcode%>"
+                                             value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
+                                                                                 name="update"
+                                                                                 value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
+                </td>
+            </tr>
+            <%
+                } //end of while looop
+            } else { //both
 
-	  results=diagnosticCodeDao.searchText(codeName+"%");
-  	  for(DiagnosticCode result:results) {
-  		  intCount++;
-  		  Dcode = result.getDiagnosticCode();
-  		  DcodeDesc = result.getDescription().trim();
-  		  if (Count == 0){
-  			 Count = 1;
-   		  } else {
-  			 Count = 0;
-  		  }
+                results = diagnosticCodeDao.searchText(codeName + "%");
+                for (DiagnosticCode result : results) {
+                    intCount++;
+                    Dcode = result.getDiagnosticCode();
+                    DcodeDesc = result.getDescription().trim();
+                    if (Count == 0) {
+                        Count = 1;
+                    } else {
+                        Count = 0;
+                    }
 
- %>
+            %>
 
-	<tr>
-		<td style="width:12%"><a
-			href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%></a></td>
-		<td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"  name="<%=Dcode%>"
-			value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
-			name="update"
-			value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>"></td>
-	</tr>
-	<%
-  }
+            <tr>
+                <td style="width:12%"><a
+                        href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%>
+                </a></td>
+                <td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"
+                                             name="<%=Dcode%>"
+                                             value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
+                                                                                 name="update"
+                                                                                 value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
+                </td>
+            </tr>
+            <%
+                }
 
 
-	  results=diagnosticCodeDao.searchCode(codeName2+"%");
-  	  for(DiagnosticCode result:results) {
-  		  intCount++;
-  		  Dcode2 = result.getDiagnosticCode();
-  		  DcodeDesc2 = result.getDescription().trim();
-  		  if (Count == 0){
-  			 Count = 1;
-  		  } else {
-  			 Count = 0;
-  		  }
- %>
+                results = diagnosticCodeDao.searchCode(codeName2 + "%");
+                for (DiagnosticCode result : results) {
+                    intCount++;
+                    Dcode2 = result.getDiagnosticCode();
+                    DcodeDesc2 = result.getDescription().trim();
+                    if (Count == 0) {
+                        Count = 1;
+                    } else {
+                        Count = 0;
+                    }
+            %>
 
-	<tr>
-		<td style="width:12%"><a
-			href="javascript:CodeAttach('<%=Dcode2%>|<%=DcodeDesc2%>')"><%=Dcode2%></a></td>
-		<td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"  name="<%=Dcode2%>"
-			value="<%=DcodeDesc2%>">&nbsp;<input type="submit" class="btn"
-			name="update"
-			value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode2%>"></td>
-	</tr>
-	<%
-  }
-  }
-  %>
+            <tr>
+                <td style="width:12%"><a
+                        href="javascript:CodeAttach('<%=Dcode2%>|<%=DcodeDesc2%>')"><%=Dcode2%>
+                </a></td>
+                <td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"
+                                             name="<%=Dcode2%>"
+                                             value="<%=DcodeDesc2%>">&nbsp;<input type="submit" class="btn"
+                                                                                  name="update"
+                                                                                  value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode2%>">
+                </td>
+            </tr>
+            <%
+                    }
+                }
+            %>
 
-	<%  if (intCount == 0 ) { %>
-	<tr>
-		<td colspan="2"><bean:message
-			key="billing.billingDigSearch.msgNoMatch" />. <%// =i%></td>
+            <% if (intCount == 0) { %>
+            <tr>
+                <td colspan="2"><bean:message
+                        key="billing.billingDigSearch.msgNoMatch"/>. <%// =i%></td>
 
-	</tr>
-	<%  }%>
+            </tr>
+            <% }%>
 
-	<% if (intCount == 1) { %>
-	<script LANGUAGE="JavaScript">
-<!--
- CodeAttach('<%=Dcode%>|<%=DcodeDesc%>');
--->
+            <% if (intCount == 1) { %>
+            <script LANGUAGE="JavaScript">
+                <!--
+                CodeAttach('<%=Dcode%>|<%=DcodeDesc%>');
+                -->
 
-</script>
-	<% } %>
-    </tbody>
-</table>
-</form>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h3>&nbsp;</h3>
-</body>
+            </script>
+            <% } %>
+            </tbody>
+        </table>
+    </form>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <h3>&nbsp;</h3>
+    </body>
 </html:html>

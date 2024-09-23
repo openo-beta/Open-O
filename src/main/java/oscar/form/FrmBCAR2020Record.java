@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,14 +51,15 @@ import java.util.Set;
 public class FrmBCAR2020Record extends FrmRecord {
 
     private static Logger logger = MiscUtils.getLogger();
+
     public FrmBCAR2020Record() {
         this.dateFormat = "yyyy/MM/dd";
     }
-    
+
     //List of global fields that eixst on all pages
-    private static List<String> globalFields = Arrays.asList("t_patientSurname","t_patientGivenName","t_patientAddress","t_patientCity","t_patientProvince","t_patientPostal","t_patientPhone","t_patientHIN",
-    "t_patientPhoneWork","t_patientPhoneCell","d_confirmedEDD");
-    
+    private static List<String> globalFields = Arrays.asList("t_patientSurname", "t_patientGivenName", "t_patientAddress", "t_patientCity", "t_patientProvince", "t_patientPostal", "t_patientPhone", "t_patientHIN",
+            "t_patientPhoneWork", "t_patientPhoneCell", "d_confirmedEDD");
+
     public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException {
         return getFormRecord(loggedInInfo, demographicNo, existingID, 1);
     }
@@ -76,7 +77,7 @@ public class FrmBCAR2020Record extends FrmRecord {
         if (existingID <= 0) {
             //Set default prop values
             this.setDemoProperties(loggedInInfo, demographicNo, props);
-            
+
             //Set custom prop values
             props.setProperty("t_patientSurname", StringUtils.trimToEmpty(demographic.getLastName()));
             props.setProperty("t_patientGivenName", StringUtils.trimToEmpty(demographic.getFirstName()));
@@ -101,7 +102,7 @@ public class FrmBCAR2020Record extends FrmRecord {
             props.setProperty("t_patientPhoneWork", demographic.getPhone2());
             String cell = demographicExtDao.getValueForDemoKey(demographicNo, "demo_cell");
             if (cell != null) {
-                props.setProperty("t_patientPhoneCell",cell);
+                props.setProperty("t_patientPhoneCell", cell);
             }
 
             //Currently Unused
@@ -125,7 +126,7 @@ public class FrmBCAR2020Record extends FrmRecord {
             // Reset certain fields every time, specifically the Patient Surname/GivenName/HIN and DOB 
             // PHSA did not want these to be "editable" and should stay in sync with the master demographic
             this.setDemoProperties(loggedInInfo, demographicNo, props);
-            
+
             props.setProperty("t_patientSurname", StringUtils.trimToEmpty(demographic.getLastName()));
             props.setProperty("t_patientGivenName", StringUtils.trimToEmpty(demographic.getFirstName()));
             props.setProperty("t_patientHIN", demographic.getHin());
@@ -178,14 +179,14 @@ public class FrmBCAR2020Record extends FrmRecord {
         }
         return properties;
     }
-    
-    public Boolean isGlobalField(String fieldName){
+
+    public Boolean isGlobalField(String fieldName) {
         return globalFields.contains(fieldName);
     }
-    
+
     public String createToggleOption(Properties props, String fieldName, String description) {
         return "<tr><td>\n" +
-                "<input type=\"checkbox\" name=\"c_" + fieldName + "No\" " + Encode.forHtmlAttribute(props.getProperty("c_" + fieldName + "No", "").equals("X") ? "checked" : "") +" />\n" +
+                "<input type=\"checkbox\" name=\"c_" + fieldName + "No\" " + Encode.forHtmlAttribute(props.getProperty("c_" + fieldName + "No", "").equals("X") ? "checked" : "") + " />\n" +
                 "</td><td>\n" +
                 "<input type=\"checkbox\" name=\"c_" + fieldName + "Yes\" " + Encode.forHtmlAttribute(props.getProperty("c_" + fieldName + "Yes", "").equals("X") ? "checked" : "") + " />\n" +
                 "</td><td>\n" +
@@ -194,7 +195,7 @@ public class FrmBCAR2020Record extends FrmRecord {
                 "<input type=\"text\" name=\"t_" + fieldName + "Details\" size=\"10\" maxlength=\"150\" value=\"" + UtilMisc.htmlEscape(props.getProperty("t_" + fieldName + "Details", "")) + "\" />\n" +
                 "</div></td></tr>";
     }
-    
+
     public String createPrenatalVisitRow(Properties props, String rowCount) {
         String row = "<tr>\n" +
                 "<td>\n" +

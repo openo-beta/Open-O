@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -89,22 +89,22 @@ public class WCBAction2 extends DispatchAction {
 
         if (request.getParameter("saveAndClose") != null) {
             MiscUtils.getLogger().debug("QUITINN");
-            request.setAttribute("WCBFormId",wcb.getId());
+            request.setAttribute("WCBFormId", wcb.getId());
             return mapping.findForward("saveAndClose");
         }
 
-        if (request.getParameter("saveandbill") != null){
-            request.setAttribute("WCBFormId",wcb.getId());
-            request.setAttribute("icd9",wcb.getW_icd9());
-            request.setAttribute("serviceDate",UtilDateUtilities.DateToString(wcb.getW_servicedate()));
+        if (request.getParameter("saveandbill") != null) {
+            request.setAttribute("WCBFormId", wcb.getId());
+            request.setAttribute("icd9", wcb.getW_icd9());
+            request.setAttribute("serviceDate", UtilDateUtilities.DateToString(wcb.getW_servicedate()));
             List list = new ArrayList();
             String feeitem = wcb.getW_feeitem();
             String xfeeitem = wcb.getW_extrafeeitem();
 
-            if (feeitem != null && !feeitem.trim().equals("")){
+            if (feeitem != null && !feeitem.trim().equals("")) {
                 list.add(feeitem);
             }
-            if (xfeeitem != null && !xfeeitem.trim().equals("")){
+            if (xfeeitem != null && !xfeeitem.trim().equals("")) {
                 list.add(xfeeitem);
             }
             request.setAttribute("billingcodes", list);

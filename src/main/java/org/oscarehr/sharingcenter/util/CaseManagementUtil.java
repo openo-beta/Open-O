@@ -5,25 +5,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
  */
-
-
 
 
 package org.oscarehr.sharingcenter.util;
@@ -50,256 +48,256 @@ import oscar.util.DateUtils;
 
 public class CaseManagementUtil {
 
-	private static final String DATEFORMAT = "MM/dd/yyyy";
-	private static final CaseManagementNoteDAO noteDao = SpringUtils.getBean(CaseManagementNoteDAO.class);
-	private static final CaseManagementNoteExtDAO noteExtensionDao = SpringUtils.getBean(CaseManagementNoteExtDAO.class);
-	private static final String[] ONGOING_CONCERNS_COLUMNS = { CaseManagementNoteExt.PROBLEMDESC, 
-															   CaseManagementNoteExt.STARTDATE, 
-															   CaseManagementNoteExt.RESOLUTIONDATE, 
-															   CaseManagementNoteExt.PROBLEMSTATUS };
-	
-	private static final String[] MEDICAL_HISTORY_COLUMNS = { CaseManagementNoteExt.PROBLEMDESC, 
-															  CaseManagementNoteExt.STARTDATE, 
-															  CaseManagementNoteExt.RESOLUTIONDATE, 
-															  CaseManagementNoteExt.AGEATONSET,
-															  CaseManagementNoteExt.LIFESTAGE,
-															  CaseManagementNoteExt.PROCEDUREDATE, 
-															  CaseManagementNoteExt.PROBLEMSTATUS };
-	
-	private static final String[] FAMILY_MEDICAL_HISTORY_COLUMNS = { CaseManagementNoteExt.PROBLEMDESC, 
-		   															 CaseManagementNoteExt.STARTDATE, 
-		   															 CaseManagementNoteExt.RESOLUTIONDATE,
-		   															 CaseManagementNoteExt.AGEATONSET,
-		   															 CaseManagementNoteExt.TREATMENT,
-		   															 CaseManagementNoteExt.RELATIONSHIP,
-		   															 CaseManagementNoteExt.LIFESTAGE,
-		   															 CaseManagementNoteExt.PROBLEMSTATUS };
-	
-	private static final String[] SOCIAL_HISTORY_COLUMNS = { CaseManagementNoteExt.PROBLEMDESC, 
-		   													 CaseManagementNoteExt.STARTDATE, 
-		   													 CaseManagementNoteExt.RESOLUTIONDATE, 
-		   													 CaseManagementNoteExt.PROBLEMSTATUS };
+    private static final String DATEFORMAT = "MM/dd/yyyy";
+    private static final CaseManagementNoteDAO noteDao = SpringUtils.getBean(CaseManagementNoteDAO.class);
+    private static final CaseManagementNoteExtDAO noteExtensionDao = SpringUtils.getBean(CaseManagementNoteExtDAO.class);
+    private static final String[] ONGOING_CONCERNS_COLUMNS = {CaseManagementNoteExt.PROBLEMDESC,
+            CaseManagementNoteExt.STARTDATE,
+            CaseManagementNoteExt.RESOLUTIONDATE,
+            CaseManagementNoteExt.PROBLEMSTATUS};
 
-	private CaseManagementUtil() {
-	}
-	
-	public static FamilyMedicalHistorySection createFamilyMedicalHistory(PhrExtractDocument document, int demographicNo) {
+    private static final String[] MEDICAL_HISTORY_COLUMNS = {CaseManagementNoteExt.PROBLEMDESC,
+            CaseManagementNoteExt.STARTDATE,
+            CaseManagementNoteExt.RESOLUTIONDATE,
+            CaseManagementNoteExt.AGEATONSET,
+            CaseManagementNoteExt.LIFESTAGE,
+            CaseManagementNoteExt.PROCEDUREDATE,
+            CaseManagementNoteExt.PROBLEMSTATUS};
 
-		FamilyMedicalHistorySection familyMedicalHistorySection = document.getFamilyMedicalHistorySection();
-		List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.FamilyMedicalHistory);
-		List<CaseManagementNoteExt> noteExtensions = null;
+    private static final String[] FAMILY_MEDICAL_HISTORY_COLUMNS = {CaseManagementNoteExt.PROBLEMDESC,
+            CaseManagementNoteExt.STARTDATE,
+            CaseManagementNoteExt.RESOLUTIONDATE,
+            CaseManagementNoteExt.AGEATONSET,
+            CaseManagementNoteExt.TREATMENT,
+            CaseManagementNoteExt.RELATIONSHIP,
+            CaseManagementNoteExt.LIFESTAGE,
+            CaseManagementNoteExt.PROBLEMSTATUS};
 
-		Calendar startDate = Calendar.getInstance();
-		Calendar resolutionDate = Calendar.getInstance();
-		String shortDescription = null;
-		String ageOfOnset = null;
-		String treatment = null;
-		String relationship = null;
-		String lifeStage = null;
-		
+    private static final String[] SOCIAL_HISTORY_COLUMNS = {CaseManagementNoteExt.PROBLEMDESC,
+            CaseManagementNoteExt.STARTDATE,
+            CaseManagementNoteExt.RESOLUTIONDATE,
+            CaseManagementNoteExt.PROBLEMSTATUS};
 
-		familyMedicalHistorySection.addTableColumns(FAMILY_MEDICAL_HISTORY_COLUMNS);
+    private CaseManagementUtil() {
+    }
 
-		for (CaseManagementNote note : notes) {
-			
-			shortDescription = note.getNote();
-			noteExtensions = noteExtensionDao.getExtByNote(note.getId());
-			ageOfOnset = null;
-			treatment = null;
-			relationship = null;
-			lifeStage = null;
+    public static FamilyMedicalHistorySection createFamilyMedicalHistory(PhrExtractDocument document, int demographicNo) {
 
-			for (CaseManagementNoteExt noteExtension : noteExtensions) {
+        FamilyMedicalHistorySection familyMedicalHistorySection = document.getFamilyMedicalHistorySection();
+        List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.FamilyMedicalHistory);
+        List<CaseManagementNoteExt> noteExtensions = null;
 
-				if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
-					startDate.setTime(noteExtension.getDateValue());
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
-					resolutionDate.setTime(noteExtension.getDateValue());
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.AGEATONSET)) {
-					ageOfOnset = noteExtension.getValue();
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.TREATMENT)) {
-					treatment = noteExtension.getValue();
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RELATIONSHIP)) {
-					relationship = noteExtension.getValue();
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.LIFESTAGE)) {
-					lifeStage = noteExtension.getValue();
-				} 
-			}
+        Calendar startDate = Calendar.getInstance();
+        Calendar resolutionDate = Calendar.getInstance();
+        String shortDescription = null;
+        String ageOfOnset = null;
+        String treatment = null;
+        String relationship = null;
+        String lifeStage = null;
 
-			familyMedicalHistorySection.addDisplayEntry(shortDescription,
-										 DateUtils.format(DATEFORMAT, startDate.getTime()), 
-										 DateUtils.format(DATEFORMAT, resolutionDate.getTime()),
-										 (ageOfOnset == null ? "" : ageOfOnset),
-										 (treatment == null ? "" : treatment),
-										 (relationship == null ? "" : relationship),
-										 (lifeStage == null ? "" : lifeStage),
-										 ActStatus.Completed.toString());
-		}
 
-		return familyMedicalHistorySection;
-	}
+        familyMedicalHistorySection.addTableColumns(FAMILY_MEDICAL_HISTORY_COLUMNS);
 
-	public static HistoryOfPastIllnessSection createMedicalHistory(PhrExtractDocument document, int demographicNo) {
-		
-		HistoryOfPastIllnessSection historyOfPastIllnessSection = document.getHistoryOfPastIllnessSection();
-		List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.MedicalHistory);
-		List<CaseManagementNoteExt> noteExtensions = null;		
-		
-		Calendar startDate = Calendar.getInstance();
-		Calendar resolutionDate = Calendar.getInstance();
-		String shortDescription = null;
-		String ageOfOnset = null;
-		String lifeStage = null;
-		Calendar procedureDate = Calendar.getInstance();
-		
-		historyOfPastIllnessSection.addTableColumns(MEDICAL_HISTORY_COLUMNS);
+        for (CaseManagementNote note : notes) {
 
-		for (CaseManagementNote note : notes) {
-			shortDescription = note.getNote();
-			ageOfOnset = null;
-			lifeStage = null;
+            shortDescription = note.getNote();
+            noteExtensions = noteExtensionDao.getExtByNote(note.getId());
+            ageOfOnset = null;
+            treatment = null;
+            relationship = null;
+            lifeStage = null;
 
-			noteExtensions = noteExtensionDao.getExtByNote(note.getId());
+            for (CaseManagementNoteExt noteExtension : noteExtensions) {
 
-			for (CaseManagementNoteExt noteExtension : noteExtensions) {
-				
-				if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
-					startDate = Calendar.getInstance();
-					startDate.setTime(noteExtension.getDateValue());
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
-					resolutionDate = Calendar.getInstance();
-					resolutionDate.setTime(noteExtension.getDateValue());
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.AGEATONSET)) {
-					ageOfOnset = noteExtension.getValue();
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.LIFESTAGE)) {
-					lifeStage = noteExtension.getValue();
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.PROCEDUREDATE)) {
-					procedureDate = Calendar.getInstance();
-					procedureDate.setTime(noteExtension.getDateValue());
-				}
-			}
-			
-			historyOfPastIllnessSection.addDisplayEntry(shortDescription, 
-										 DateUtils.format(DATEFORMAT, startDate.getTime()), 
-										 DateUtils.format(DATEFORMAT, resolutionDate.getTime()),
-										 (ageOfOnset == null ? "" : ageOfOnset),
-										 (lifeStage == null ? "" : lifeStage),
-										 DateUtils.format(DATEFORMAT, procedureDate.getTime()),
-										 ActStatus.Completed.toString());
-		}
-		
-		return historyOfPastIllnessSection;
-	}
+                if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
+                    startDate.setTime(noteExtension.getDateValue());
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
+                    resolutionDate.setTime(noteExtension.getDateValue());
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.AGEATONSET)) {
+                    ageOfOnset = noteExtension.getValue();
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.TREATMENT)) {
+                    treatment = noteExtension.getValue();
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RELATIONSHIP)) {
+                    relationship = noteExtension.getValue();
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.LIFESTAGE)) {
+                    lifeStage = noteExtension.getValue();
+                }
+            }
 
-	public static ActiveProblemsSection createOngoingConcerns(PhrExtractDocument document, int demographicNo) {
+            familyMedicalHistorySection.addDisplayEntry(shortDescription,
+                    DateUtils.format(DATEFORMAT, startDate.getTime()),
+                    DateUtils.format(DATEFORMAT, resolutionDate.getTime()),
+                    (ageOfOnset == null ? "" : ageOfOnset),
+                    (treatment == null ? "" : treatment),
+                    (relationship == null ? "" : relationship),
+                    (lifeStage == null ? "" : lifeStage),
+                    ActStatus.Completed.toString());
+        }
 
-		ActiveProblemsSection activeProblemsSection = document.getActiveProblemsSection();
-		List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.OngoingConcerns);
-		List<CaseManagementNoteExt> noteExtensions = null;
+        return familyMedicalHistorySection;
+    }
 
-		Calendar startDate = Calendar.getInstance();
-		Calendar resolutionDate = Calendar.getInstance();
-		String shortDescription = null;
+    public static HistoryOfPastIllnessSection createMedicalHistory(PhrExtractDocument document, int demographicNo) {
 
-		activeProblemsSection.addTableColumns(ONGOING_CONCERNS_COLUMNS);
+        HistoryOfPastIllnessSection historyOfPastIllnessSection = document.getHistoryOfPastIllnessSection();
+        List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.MedicalHistory);
+        List<CaseManagementNoteExt> noteExtensions = null;
 
-		for (CaseManagementNote note : notes) {
+        Calendar startDate = Calendar.getInstance();
+        Calendar resolutionDate = Calendar.getInstance();
+        String shortDescription = null;
+        String ageOfOnset = null;
+        String lifeStage = null;
+        Calendar procedureDate = Calendar.getInstance();
 
-			noteExtensions = noteExtensionDao.getExtByNote(note.getId());
+        historyOfPastIllnessSection.addTableColumns(MEDICAL_HISTORY_COLUMNS);
 
-			for (CaseManagementNoteExt noteExtension : noteExtensions) {
+        for (CaseManagementNote note : notes) {
+            shortDescription = note.getNote();
+            ageOfOnset = null;
+            lifeStage = null;
 
-				if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.PROBLEMDESC)) {
-					shortDescription = noteExtension.getValue();
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
-					startDate.setTime(noteExtension.getDateValue());
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
-					resolutionDate.setTime(noteExtension.getDateValue());
-				}
-			}
+            noteExtensions = noteExtensionDao.getExtByNote(note.getId());
 
-			activeProblemsSection.addDisplayEntry(shortDescription, 
-										 DateUtils.format(DATEFORMAT, startDate.getTime()), 
-										 DateUtils.format(DATEFORMAT, resolutionDate.getTime()), 
-										 ActStatus.Completed.toString());
-		}
+            for (CaseManagementNoteExt noteExtension : noteExtensions) {
 
-		return activeProblemsSection;
-	}
-	
-	public static SocialHistorySection createSocialHistory(PhrExtractDocument document, int demographicNo) {
+                if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
+                    startDate = Calendar.getInstance();
+                    startDate.setTime(noteExtension.getDateValue());
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
+                    resolutionDate = Calendar.getInstance();
+                    resolutionDate.setTime(noteExtension.getDateValue());
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.AGEATONSET)) {
+                    ageOfOnset = noteExtension.getValue();
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.LIFESTAGE)) {
+                    lifeStage = noteExtension.getValue();
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.PROCEDUREDATE)) {
+                    procedureDate = Calendar.getInstance();
+                    procedureDate.setTime(noteExtension.getDateValue());
+                }
+            }
 
-		SocialHistorySection socialHistorySection = document.getSocialHistorySection();
-		List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.SocialHistory);
-		List<CaseManagementNoteExt> noteExtensions = null;
+            historyOfPastIllnessSection.addDisplayEntry(shortDescription,
+                    DateUtils.format(DATEFORMAT, startDate.getTime()),
+                    DateUtils.format(DATEFORMAT, resolutionDate.getTime()),
+                    (ageOfOnset == null ? "" : ageOfOnset),
+                    (lifeStage == null ? "" : lifeStage),
+                    DateUtils.format(DATEFORMAT, procedureDate.getTime()),
+                    ActStatus.Completed.toString());
+        }
 
-		Calendar startDate = Calendar.getInstance();
-		Calendar resolutionDate = Calendar.getInstance();
-		String shortDescription = null;
+        return historyOfPastIllnessSection;
+    }
 
-		socialHistorySection.addTableColumns(SOCIAL_HISTORY_COLUMNS);
+    public static ActiveProblemsSection createOngoingConcerns(PhrExtractDocument document, int demographicNo) {
 
-		for (CaseManagementNote note : notes) {
-			
-			shortDescription = note.getNote();
-			noteExtensions = noteExtensionDao.getExtByNote(note.getId());
+        ActiveProblemsSection activeProblemsSection = document.getActiveProblemsSection();
+        List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.OngoingConcerns);
+        List<CaseManagementNoteExt> noteExtensions = null;
 
-			for (CaseManagementNoteExt noteExtension : noteExtensions) {
+        Calendar startDate = Calendar.getInstance();
+        Calendar resolutionDate = Calendar.getInstance();
+        String shortDescription = null;
 
-				if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
-					startDate.setTime(noteExtension.getDateValue());
-				} else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
-					resolutionDate.setTime(noteExtension.getDateValue());
-				}
-			}
+        activeProblemsSection.addTableColumns(ONGOING_CONCERNS_COLUMNS);
 
-			socialHistorySection.addDisplayEntry(shortDescription, 
-										 DateUtils.format(DATEFORMAT, startDate.getTime()), 
-										 DateUtils.format(DATEFORMAT, resolutionDate.getTime()), 
-										 ActStatus.Completed.toString());
-		}
+        for (CaseManagementNote note : notes) {
 
-		return socialHistorySection;
-	}
-	
-	public static List<Provider> getAllCaseManagementNoteProviders(int demographicNo) {
+            noteExtensions = noteExtensionDao.getExtByNote(note.getId());
 
-		List<Provider> providers = new ArrayList<Provider>();
+            for (CaseManagementNoteExt noteExtension : noteExtensions) {
 
-		LinkedHashMap<IssueEnum, List<CaseManagementNote>> map = getCaseManagementNoteMap(demographicNo);
+                if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.PROBLEMDESC)) {
+                    shortDescription = noteExtension.getValue();
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
+                    startDate.setTime(noteExtension.getDateValue());
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
+                    resolutionDate.setTime(noteExtension.getDateValue());
+                }
+            }
 
-		List<CaseManagementNote> ongoingConcerns = map.get(IssueEnum.OngoingConcerns);
-		List<CaseManagementNote> medicalHistory = map.get(IssueEnum.MedicalHistory);
-		List<CaseManagementNote> familyMedicalHistory = map.get(IssueEnum.FamilyMedicalHistory);
-		List<CaseManagementNote> socialHistory = map.get(IssueEnum.SocialHistory);
+            activeProblemsSection.addDisplayEntry(shortDescription,
+                    DateUtils.format(DATEFORMAT, startDate.getTime()),
+                    DateUtils.format(DATEFORMAT, resolutionDate.getTime()),
+                    ActStatus.Completed.toString());
+        }
 
-		for (CaseManagementNote note : ongoingConcerns) {
-			providers.add(note.getProvider());
-		}
+        return activeProblemsSection;
+    }
 
-		for (CaseManagementNote note : medicalHistory) {
-			providers.add(note.getProvider());
-		}
+    public static SocialHistorySection createSocialHistory(PhrExtractDocument document, int demographicNo) {
 
-		for (CaseManagementNote note : familyMedicalHistory) {
-			providers.add(note.getProvider());
-		}
+        SocialHistorySection socialHistorySection = document.getSocialHistorySection();
+        List<CaseManagementNote> notes = getCaseManagementNoteMap(demographicNo).get(IssueEnum.SocialHistory);
+        List<CaseManagementNoteExt> noteExtensions = null;
 
-		for (CaseManagementNote note : socialHistory) {
-			providers.add(note.getProvider());
-		}
+        Calendar startDate = Calendar.getInstance();
+        Calendar resolutionDate = Calendar.getInstance();
+        String shortDescription = null;
 
-		return providers;
-	}
+        socialHistorySection.addTableColumns(SOCIAL_HISTORY_COLUMNS);
 
-	public static LinkedHashMap<IssueEnum, List<CaseManagementNote>> getCaseManagementNoteMap(int demographicNo) {
+        for (CaseManagementNote note : notes) {
 
-		LinkedHashMap<IssueEnum, List<CaseManagementNote>> map = new LinkedHashMap<IssueEnum, List<CaseManagementNote>>();
+            shortDescription = note.getNote();
+            noteExtensions = noteExtensionDao.getExtByNote(note.getId());
 
-		for (IssueEnum issue : IssueEnum.getAllIssueValues()) {
-			map.put(issue, noteDao.getCPPNotes(String.valueOf(demographicNo), issue.getId(), null));
-		}
+            for (CaseManagementNoteExt noteExtension : noteExtensions) {
 
-		return map;
-	}	
+                if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.STARTDATE)) {
+                    startDate.setTime(noteExtension.getDateValue());
+                } else if (noteExtension.getKeyVal().equals(CaseManagementNoteExt.RESOLUTIONDATE)) {
+                    resolutionDate.setTime(noteExtension.getDateValue());
+                }
+            }
+
+            socialHistorySection.addDisplayEntry(shortDescription,
+                    DateUtils.format(DATEFORMAT, startDate.getTime()),
+                    DateUtils.format(DATEFORMAT, resolutionDate.getTime()),
+                    ActStatus.Completed.toString());
+        }
+
+        return socialHistorySection;
+    }
+
+    public static List<Provider> getAllCaseManagementNoteProviders(int demographicNo) {
+
+        List<Provider> providers = new ArrayList<Provider>();
+
+        LinkedHashMap<IssueEnum, List<CaseManagementNote>> map = getCaseManagementNoteMap(demographicNo);
+
+        List<CaseManagementNote> ongoingConcerns = map.get(IssueEnum.OngoingConcerns);
+        List<CaseManagementNote> medicalHistory = map.get(IssueEnum.MedicalHistory);
+        List<CaseManagementNote> familyMedicalHistory = map.get(IssueEnum.FamilyMedicalHistory);
+        List<CaseManagementNote> socialHistory = map.get(IssueEnum.SocialHistory);
+
+        for (CaseManagementNote note : ongoingConcerns) {
+            providers.add(note.getProvider());
+        }
+
+        for (CaseManagementNote note : medicalHistory) {
+            providers.add(note.getProvider());
+        }
+
+        for (CaseManagementNote note : familyMedicalHistory) {
+            providers.add(note.getProvider());
+        }
+
+        for (CaseManagementNote note : socialHistory) {
+            providers.add(note.getProvider());
+        }
+
+        return providers;
+    }
+
+    public static LinkedHashMap<IssueEnum, List<CaseManagementNote>> getCaseManagementNoteMap(int demographicNo) {
+
+        LinkedHashMap<IssueEnum, List<CaseManagementNote>> map = new LinkedHashMap<IssueEnum, List<CaseManagementNote>>();
+
+        for (IssueEnum issue : IssueEnum.getAllIssueValues()) {
+            map.put(issue, noteDao.getCPPNotes(String.valueOf(demographicNo), issue.getId(), null));
+        }
+
+        return map;
+    }
 }

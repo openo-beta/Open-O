@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,25 +37,25 @@ import org.oscarehr.util.SpringUtils;
 
 public class EctStyleSheetBeanHandler {
 
-	Vector<EctStyleSheetBean> styleSheetNameVector = new Vector<EctStyleSheetBean>();
+    Vector<EctStyleSheetBean> styleSheetNameVector = new Vector<EctStyleSheetBean>();
 
-	public EctStyleSheetBeanHandler() {
-		init();
-	}
+    public EctStyleSheetBeanHandler() {
+        init();
+    }
 
-	@SuppressWarnings("unchecked")
-	public boolean init() {
-		MeasurementCSSLocationDao dao = SpringUtils.getBean(MeasurementCSSLocationDao.class);
-		List<MeasurementCSSLocation> ms = dao.findAll();
-		Collections.sort(ms, new BeanComparator("id"));
-		for (MeasurementCSSLocation l : ms) {
-			EctStyleSheetBean location = new EctStyleSheetBean(l.getLocation(), l.getId());
-			styleSheetNameVector.add(location);
-		}
-		return true;
-	}
+    @SuppressWarnings("unchecked")
+    public boolean init() {
+        MeasurementCSSLocationDao dao = SpringUtils.getBean(MeasurementCSSLocationDao.class);
+        List<MeasurementCSSLocation> ms = dao.findAll();
+        Collections.sort(ms, new BeanComparator("id"));
+        for (MeasurementCSSLocation l : ms) {
+            EctStyleSheetBean location = new EctStyleSheetBean(l.getLocation(), l.getId());
+            styleSheetNameVector.add(location);
+        }
+        return true;
+    }
 
-	public Collection<EctStyleSheetBean> getStyleSheetNameVector() {
-		return styleSheetNameVector;
-	}
+    public Collection<EctStyleSheetBean> getStyleSheetNameVector() {
+        return styleSheetNameVector;
+    }
 }

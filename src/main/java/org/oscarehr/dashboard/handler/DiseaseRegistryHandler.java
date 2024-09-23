@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -36,65 +36,65 @@ import org.oscarehr.util.SpringUtils;
 
 public class DiseaseRegistryHandler {
 
-	private static Logger logger = MiscUtils.getLogger();
-	private LoggedInInfo loggedInInfo;
+    private static Logger logger = MiscUtils.getLogger();
+    private LoggedInInfo loggedInInfo;
 
-	// XXX is there an API for getting this reliably? (other than `new Icd9().getCodingSystem()`)
-	private static final String ICD9_CODING_SYSTEM = "icd9";
+    // XXX is there an API for getting this reliably? (other than `new Icd9().getCodingSystem()`)
+    private static final String ICD9_CODING_SYSTEM = "icd9";
 
-	private DxresearchDAO dao = (DxresearchDAO) SpringUtils.getBean(DxresearchDAO.class);
+    private DxresearchDAO dao = (DxresearchDAO) SpringUtils.getBean(DxresearchDAO.class);
 
-	public String getDescription(String icd9code) {
-		return dao.getDescription(ICD9_CODING_SYSTEM, icd9code);
-	}
-	
-	public void addToDiseaseRegistry(int demographicNo, String icd9code) {
-		addToDiseaseRegistry(demographicNo, icd9code, getProviderNo());
-	}
+    public String getDescription(String icd9code) {
+        return dao.getDescription(ICD9_CODING_SYSTEM, icd9code);
+    }
 
-	public Integer addToDiseaseRegistry(int demographicNo, String icd9code, String providerNo) {
-		boolean activeEntryExists = dao.activeEntryExists(demographicNo, ICD9_CODING_SYSTEM, icd9code);
-		if (activeEntryExists) {
-			logger.info(
-				"Patient (" + demographicNo +
-				") already has active entry for (" +
-				icd9code + ")"
-			);
-			return null;
-		}
+    public void addToDiseaseRegistry(int demographicNo, String icd9code) {
+        addToDiseaseRegistry(demographicNo, icd9code, getProviderNo());
+    }
 
-		Dxresearch dx = new Dxresearch();
-		dx.setStartDate(new Date());
-		dx.setCodingSystem(ICD9_CODING_SYSTEM);
-		dx.setDemographicNo(demographicNo);
-		dx.setDxresearchCode(icd9code);
-		dx.setStatus('A');
-		dx.setProviderNo(providerNo);
+    public Integer addToDiseaseRegistry(int demographicNo, String icd9code, String providerNo) {
+        boolean activeEntryExists = dao.activeEntryExists(demographicNo, ICD9_CODING_SYSTEM, icd9code);
+        if (activeEntryExists) {
+            logger.info(
+                    "Patient (" + demographicNo +
+                            ") already has active entry for (" +
+                            icd9code + ")"
+            );
+            return null;
+        }
 
-		dao.persist(dx);
+        Dxresearch dx = new Dxresearch();
+        dx.setStartDate(new Date());
+        dx.setCodingSystem(ICD9_CODING_SYSTEM);
+        dx.setDemographicNo(demographicNo);
+        dx.setDxresearchCode(icd9code);
+        dx.setStatus('A');
+        dx.setProviderNo(providerNo);
 
-		logger.info(
-			"Added code (" + icd9code +
-			") to disease registry for patient (" + demographicNo + ")" +
-			" with provider no (" + providerNo + ")"
-		);
-		return dx.getId();
-	}
-	
+        dao.persist(dx);
+
+        logger.info(
+                "Added code (" + icd9code +
+                        ") to disease registry for patient (" + demographicNo + ")" +
+                        " with provider no (" + providerNo + ")"
+        );
+        return dx.getId();
+    }
+
     protected LoggedInInfo getLoggedInInfo() {
         return loggedInInfo;
-}
+    }
 
-    public void setLoggedInInfo( LoggedInInfo loggedInInfo ) {
+    public void setLoggedInInfo(LoggedInInfo loggedInInfo) {
         this.loggedInInfo = loggedInInfo;
     }
-    
-	private String getProviderNo() {
-		String providerNo = null;
-		if (loggedInInfo != null) {
-			providerNo = getLoggedInInfo().getLoggedInProviderNo();
-		}
-		return providerNo;
-	}
+
+    private String getProviderNo() {
+        String providerNo = null;
+        if (loggedInInfo != null) {
+            providerNo = getLoggedInInfo().getLoggedInProviderNo();
+        }
+        return providerNo;
+    }
 
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -54,41 +54,42 @@ import oscar.util.UtilDateUtilities;
  */
 public class CombinePDFAction extends Action {
 
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-			throw new SecurityException("missing required security object (_doc)");
-		}
-    	
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
+            throw new SecurityException("missing required security object (_doc)");
+        }
+
         String[] files = request.getParameterValues("docNo");
-        String ContentDisposition=request.getParameter("ContentDisposition");
+        String ContentDisposition = request.getParameter("ContentDisposition");
         ArrayList<Object> alist = new ArrayList<Object>();
-        if (files != null){
-            MiscUtils.getLogger().debug("size = "+files.length);
+        if (files != null) {
+            MiscUtils.getLogger().debug("size = " + files.length);
             EDocUtil docData = new EDocUtil();
             String path = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
             Path filePath;
-            for (int i =0 ; i < files.length ; i++){
-                String filename =  docData.getDocumentName(files[i]);
-                filePath = Paths.get(path,filename);
+            for (int i = 0; i < files.length; i++) {
+                String filename = docData.getDocumentName(files[i]);
+                filePath = Paths.get(path, filename);
                 alist.add(filePath.toAbsolutePath().toString());
             }
-            if (alist.size() > 0 ){
+            if (alist.size() > 0) {
                 response.setContentType("application/pdf");  //octet-stream
-                if(ContentDisposition!=null && ContentDisposition.equals("inline")) {
-                    response.setHeader("Transfer-Encoding", "chunked"); 
+                if (ContentDisposition != null && ContentDisposition.equals("inline")) {
+                    response.setHeader("Transfer-Encoding", "chunked");
                     response.setHeader("Cache-Control", "cache, must-revalidate"); // IE workaround
                     response.setHeader("Pragma", "public"); // IE workaround
-                    response.setHeader("Content-Disposition", "inline; filename=\"combinedPDF-"+UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss")+".pdf\"");
+                    response.setHeader("Content-Disposition", "inline; filename=\"combinedPDF-" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf\"");
                 } else {
 
-                response.setHeader("Content-Disposition", "attachment; filename=\"combinedPDF-"+UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss")+".pdf\"");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"combinedPDF-" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf\"");
                 }
                 try {
-                    ConcatPDF.concat(alist,response.getOutputStream());
-                } catch (IOException ex) {MiscUtils.getLogger().error("Error", ex);
+                    ConcatPDF.concat(alist, response.getOutputStream());
+                } catch (IOException ex) {
+                    MiscUtils.getLogger().error("Error", ex);
                 }
                 return null;
             }

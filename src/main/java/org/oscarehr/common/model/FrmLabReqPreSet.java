@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,39 +40,59 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name="frm_labreq_preset")
+@Table(name = "frm_labreq_preset")
 public class FrmLabReqPreSet extends AbstractModel<Integer> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "preset_id", nullable = false)
     private Integer id;
-    
-    @Column(name = "lab_type", nullable = false)    
+
+    @Column(name = "lab_type", nullable = false)
     private String labType;
-    
-    @Column(name = "prop_name", nullable = false)    
+
+    @Column(name = "prop_name", nullable = false)
     private String propertyName;
-    
-    @Column(name = "prop_value", nullable = false)    
+
+    @Column(name = "prop_value", nullable = false)
     private String propertyValue;
-        
-    @Column(name = "status", nullable = false)    
+
+    @Column(name = "status", nullable = false)
     private Integer status;
-     
+
     @Override
     public Integer getId() {
-            return id;
+        return id;
     }
-    
-    public String getLabType() { return this.labType; }
-    protected void setLabType(String labType) { this.labType = labType; }
-    
-    public String getPropertyName() { return this.propertyName; }
-    protected void setPropertyName(String propertyName) { this.propertyName = propertyName; }
-    
-    public String getPropertyValue() { return this.propertyValue; }
-    protected void setPropertyValue(String propertyValue) { this.propertyValue = propertyValue; }
-    
-    public Integer getStatus() { return this.status; }
-    protected void setStatus(Integer status) { this.status = status; }
+
+    public String getLabType() {
+        return this.labType;
+    }
+
+    protected void setLabType(String labType) {
+        this.labType = labType;
+    }
+
+    public String getPropertyName() {
+        return this.propertyName;
+    }
+
+    protected void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
+
+    public String getPropertyValue() {
+        return this.propertyValue;
+    }
+
+    protected void setPropertyValue(String propertyValue) {
+        this.propertyValue = propertyValue;
+    }
+
+    public Integer getStatus() {
+        return this.status;
+    }
+
+    protected void setStatus(Integer status) {
+        this.status = status;
+    }
 }

@@ -25,53 +25,53 @@
 --%>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <html:html lang="en">
-<head>
-<title><bean:message key="oscarResearch.oscarDxResearch.dxCustomization.title" /></title>
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/global.js"></script>
-<html:base />
-<link rel="stylesheet" type="text/css" href="dxResearch.css" />
+    <head>
+        <title><bean:message key="oscarResearch.oscarDxResearch.dxCustomization.title"/></title>
+        <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/global.js"></script>
+        <html:base/>
+        <link rel="stylesheet" type="text/css" href="dxResearch.css"/>
 
-</head>
+    </head>
 
-<body topmargin="0" leftmargin="0" vlink="#0000FF" onload="setfocus();">
-<html:errors />
-<table width="100%" bgcolor="#EEEEFF">
-	<tr bgcolor="#000000">
-		<td class="subject" colspan="3">&nbsp;&nbsp;&nbsp;<bean:message
-			key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch" /></td>
-	</tr>
-	<tr>
-		<td class=heading colspan="3"><bean:message
-			key="oscarResearch.oscarDxResearch.dxCustomization.title" /></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td valign="center"><input type="button" class="mbttn"
-			style="width: 180px"
-			onClick="popupPage(230,600,'dxResearchNewQuickList.jsp')"
-			value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.addNewQuickList"/>" />
-		</td>
-		<td valign="center"><input type="button" class="mbttn"
-			style="width: 180px"
-			onClick="popupPage(230,600,'dxResearchLoadQuickList.do')"
-			value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.editQuickList"/>" />
-		</td>
-		<td valign="center"><input type="button" class="mbttn"
-			style="width: 180px"
-			onClick="popupPage(230,600,'dxResearchSelectAssociations.jsp')"
-			value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.editAssociations"/>" />
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-	</tr>
-</table>
-</body>
+    <body topmargin="0" leftmargin="0" vlink="#0000FF" onload="setfocus();">
+    <html:errors/>
+    <table width="100%" bgcolor="#EEEEFF">
+        <tr bgcolor="#000000">
+            <td class="subject" colspan="3">&nbsp;&nbsp;&nbsp;<bean:message
+                    key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
+        </tr>
+        <tr>
+            <td class=heading colspan="3"><bean:message
+                    key="oscarResearch.oscarDxResearch.dxCustomization.title"/></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td valign="center"><input type="button" class="mbttn"
+                                       style="width: 180px"
+                                       onClick="popupPage(230,600,'dxResearchNewQuickList.jsp')"
+                                       value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.addNewQuickList"/>"/>
+            </td>
+            <td valign="center"><input type="button" class="mbttn"
+                                       style="width: 180px"
+                                       onClick="popupPage(230,600,'dxResearchLoadQuickList.do')"
+                                       value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.editQuickList"/>"/>
+            </td>
+            <td valign="center"><input type="button" class="mbttn"
+                                       style="width: 180px"
+                                       onClick="popupPage(230,600,'dxResearchSelectAssociations.jsp')"
+                                       value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.editAssociations"/>"/>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+    </body>
 </html:html>

@@ -23,139 +23,150 @@
     Ontario, Canada
 
 --%>
-<%@page import="java.util.*,oscar.eform.*"%>
-<%@page import="org.oscarehr.web.eform.EfmPatientFormList"%>
+<%@page import="java.util.*,oscar.eform.*" %>
+<%@page import="org.oscarehr.web.eform.EfmPatientFormList" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-	if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
-	String country = request.getLocale().getCountry();
-	
-	ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-	
-	String orderByRequest = request.getParameter("orderby");
-	String orderBy = "";
-	if (orderByRequest == null) orderBy = EFormUtil.DATE;
-	else orderBy = orderByRequest;
+    if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
+    String country = request.getLocale().getCountry();
+
+    ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+
+    String orderByRequest = request.getParameter("orderby");
+    String orderBy = "";
+    if (orderByRequest == null) orderBy = EFormUtil.DATE;
+    else orderBy = orderByRequest;
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <html:html lang="en">
 
-<head>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
-<title><bean:message key="admin.admin.frmIndependent"/>s</title>
+    <head>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
+        <title><bean:message key="admin.admin.frmIndependent"/>s</title>
 
 
-<script type="text/javascript">
-function openEform(varpage, windowname) {
-	var page = "" + varpage;
-	
-    windowprops = "height=700,width=800,location=no,"
-    + "scrollbars=yes,menubars=no,status=yes,toolbars=no,resizable=yes,top=10,left=200";
-        
-    var popup = window.open(page, windowname, windowprops);
-    
-    if (popup != null) {
-       if (popup.opener == null) {
-          popup.opener = self;
-       }
-       popup.focus();
-    }
-}
+        <script type="text/javascript">
+            function openEform(varpage, windowname) {
+                var page = "" + varpage;
 
-function checkSelectBox() {
-    var selectVal = document.forms[0].group_view.value;
-    if (selectVal == "default") {
-        return false;
-    }
-}
-</script>
-</head>
+                windowprops = "height=700,width=800,location=no,"
+                    + "scrollbars=yes,menubars=no,status=yes,toolbars=no,resizable=yes,top=10,left=200";
 
-<body>
+                var popup = window.open(page, windowname, windowprops);
 
-<%@ include file="efmTopNav.jspf"%>
+                if (popup != null) {
+                    if (popup.opener == null) {
+                        popup.opener = self;
+                    }
+                    popup.focus();
+                }
+            }
 
-<div class="well">
-<h3 style="display:inline"><bean:message key="admin.admin.frmIndependent"/>s</h3> <i class="icon-question-sign"></i> <oscar:help keywords="patient independent" key="app.top1"/>
+            function checkSelectBox() {
+                var selectVal = document.forms[0].group_view.value;
+                if (selectVal == "default") {
+                    return false;
+                }
+            }
+        </script>
+    </head>
 
- 
-<p>View: <bean:message key="eform.independent.btnCurrent"/> | <a href="<%=request.getContextPath()%>/eform/efmmanageindependentdeleted.jsp" class="contentLink"><bean:message key="eform.independent.btnDeleted"/></a></p>
+    <body>
+
+    <%@ include file="efmTopNav.jspf" %>
+
+    <div class="well">
+        <h3 style="display:inline"><bean:message key="admin.admin.frmIndependent"/>s</h3> <i
+            class="icon-question-sign"></i> <oscar:help keywords="patient independent" key="app.top1"/>
 
 
-				<table class="table table-condensed table-striped">
-					<thead>
-					<tr>
-						<th>
-							<a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.NAME%>" class="contentLink">
-							<bean:message key="eform.showmyform.btnFormName" />
-							</a>
-						</th>
-						<th>	
-							<a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.SUBJECT%>" class="contentLink">
-							<bean:message key="eform.showmyform.btnSubject" />
-							</a>
-						</th>
-						<th>
-							<a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.PROVIDER%>" class="contentLink">
-							<bean:message key="eform.showmyform.btnFormProvider" />
-							</a>
-						</th>
-						<th>
-							<a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp" class="contentLink">
-							<bean:message key="eform.showmyform.formDate" />
-							</a>	
-						</th>
-						<th>
-							<bean:message key="eform.showmyform.msgAction" />
-						</th>
-					</tr>
-					</thead>
+        <p>View: <bean:message key="eform.independent.btnCurrent"/> | <a
+                href="<%=request.getContextPath()%>/eform/efmmanageindependentdeleted.jsp"
+                class="contentLink"><bean:message key="eform.independent.btnDeleted"/></a></p>
 
 
-					<tbody>
-					<%
-						ArrayList<HashMap<String,? extends Object>> eForms;
-						eForms = EFormUtil.listPatientIndependentEForms(orderBy, EFormUtil.CURRENT);
-						
-						for (int i = 0; i < eForms.size(); i++)
-						{
-							HashMap<String,? extends Object> curform = eForms.get(i);
-					%>
-					<tr>
-						<td><a href="#"
-							ONCLICK="openEform('../eform/efmshowform_data.jsp?fdid=<%=curform.get("fdid")%>', '<%="FormP" + i%>'); return false;"
-							TITLE="<bean:message key="eform.showmyform.msgViewFrm"/>"
-							onmouseover="window.status='<bean:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=curform.get("formName")%></a></td>
-						<td><%=curform.get("formSubject")%></td>
-						<td align='center'><%=providerDao.getProviderNameLastFirst((String)curform.get("providerNo"))%></td>
-						<td align='center'><%=curform.get("formDate")%></td>
-						<td align='center'><a
-							href="../eform/removeEForm.do?callpage=independent&fdid=<%=curform.get("fdid")%>" onClick="javascript: return confirm('Are you sure you want to delete this eform?');" class="contentLink"><bean:message
-							key="eform.uploadimages.btnDelete" /></a></td>
-					</tr>
-					<%
-						}
-							if (eForms.size() <= 0)
-							{
-					%>
-					<tr>
-						<td align='center' colspan='5'><bean:message
-							key="eform.showmyform.msgNoData" /></td>
-					</tr>
-					<%
-						}
-					%>
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>
+                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.NAME%>"
+                       class="contentLink">
+                        <bean:message key="eform.showmyform.btnFormName"/>
+                    </a>
+                </th>
+                <th>
+                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.SUBJECT%>"
+                       class="contentLink">
+                        <bean:message key="eform.showmyform.btnSubject"/>
+                    </a>
+                </th>
+                <th>
+                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.PROVIDER%>"
+                       class="contentLink">
+                        <bean:message key="eform.showmyform.btnFormProvider"/>
+                    </a>
+                </th>
+                <th>
+                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp" class="contentLink">
+                        <bean:message key="eform.showmyform.formDate"/>
+                    </a>
+                </th>
+                <th>
+                    <bean:message key="eform.showmyform.msgAction"/>
+                </th>
+            </tr>
+            </thead>
 
-					</tbody>
-				</table>
 
-<%@ include file="efmFooter.jspf"%>
-</div>
+            <tbody>
+            <%
+                ArrayList<HashMap<String, ? extends Object>> eForms;
+                eForms = EFormUtil.listPatientIndependentEForms(orderBy, EFormUtil.CURRENT);
 
-</body>
+                for (int i = 0; i < eForms.size(); i++) {
+                    HashMap<String, ? extends Object> curform = eForms.get(i);
+            %>
+            <tr>
+                <td><a href="#"
+                       ONCLICK="openEform('../eform/efmshowform_data.jsp?fdid=<%=curform.get("fdid")%>', '<%="FormP" + i%>'); return false;"
+                       TITLE="<bean:message key="eform.showmyform.msgViewFrm"/>"
+                       onmouseover="window.status='<bean:message
+                               key="eform.showmyform.msgViewFrm"/>'; return true"><%=curform.get("formName")%>
+                </a></td>
+                <td><%=curform.get("formSubject")%>
+                </td>
+                <td align='center'><%=providerDao.getProviderNameLastFirst((String) curform.get("providerNo"))%>
+                </td>
+                <td align='center'><%=curform.get("formDate")%>
+                </td>
+                <td align='center'><a
+                        href="../eform/removeEForm.do?callpage=independent&fdid=<%=curform.get("fdid")%>"
+                        onClick="javascript: return confirm('Are you sure you want to delete this eform?');"
+                        class="contentLink"><bean:message
+                        key="eform.uploadimages.btnDelete"/></a></td>
+            </tr>
+            <%
+                }
+                if (eForms.size() <= 0) {
+            %>
+            <tr>
+                <td align='center' colspan='5'><bean:message
+                        key="eform.showmyform.msgNoData"/></td>
+            </tr>
+            <%
+                }
+            %>
+
+            </tbody>
+        </table>
+
+        <%@ include file="efmFooter.jspf" %>
+    </div>
+
+    </body>
 </html:html>

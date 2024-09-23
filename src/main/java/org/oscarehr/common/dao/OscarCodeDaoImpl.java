@@ -7,22 +7,23 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
 
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.common.model.AbstractCodeSystemModel;
 import org.oscarehr.common.model.OscarCode;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,7 @@ public class OscarCodeDaoImpl extends AbstractDaoImpl<OscarCode> implements Osca
     }
 
     @Override
-    public List<OscarCode> getIcd9Code(String icdCode){
+    public List<OscarCode> getIcd9Code(String icdCode) {
         Query query = entityManager.createQuery("select i from OscarCode i where i.oscarCode=?");
         query.setParameter(0, icdCode);
 
@@ -48,8 +49,8 @@ public class OscarCodeDaoImpl extends AbstractDaoImpl<OscarCode> implements Osca
     @Override
     public List<OscarCode> getOscarCode(String query) {
         Query q = entityManager.createQuery("select i from OscarCode i where i.oscarCode like ? or i.description like ? order by i.description");
-        q.setParameter(0, "%"+query+"%");
-        q.setParameter(1, "%"+query+"%");
+        q.setParameter(0, "%" + query + "%");
+        q.setParameter(1, "%" + query + "%");
 
         @SuppressWarnings("unchecked")
         List<OscarCode> results = q.getResultList();
@@ -59,8 +60,8 @@ public class OscarCodeDaoImpl extends AbstractDaoImpl<OscarCode> implements Osca
 
     @Override
     public OscarCode findByCode(String code) {
-        List<OscarCode> results =  getOscarCode(code);
-        if(results.isEmpty())
+        List<OscarCode> results = getOscarCode(code);
+        if (results.isEmpty())
             return null;
         return results.get(0);
     }

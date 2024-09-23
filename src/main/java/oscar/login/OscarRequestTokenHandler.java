@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,42 +52,42 @@ import org.apache.cxf.rs.security.oauth.utils.OAuthUtils;
 public class OscarRequestTokenHandler {
 
     private static final Logger LOG = LogUtils.getL7dLogger(OscarRequestTokenHandler.class);
-    private static final String[] REQUIRED_PARAMETERS = 
-        new String[] {
-            OAuth.OAUTH_CONSUMER_KEY,
-            OAuth.OAUTH_SIGNATURE_METHOD,
-            OAuth.OAUTH_SIGNATURE,
-            OAuth.OAUTH_TIMESTAMP,
-            OAuth.OAUTH_NONCE,
-            OAuth.OAUTH_CALLBACK
-        };
-    
+    private static final String[] REQUIRED_PARAMETERS =
+            new String[]{
+                    OAuth.OAUTH_CONSUMER_KEY,
+                    OAuth.OAUTH_SIGNATURE_METHOD,
+                    OAuth.OAUTH_SIGNATURE,
+                    OAuth.OAUTH_TIMESTAMP,
+                    OAuth.OAUTH_NONCE,
+                    OAuth.OAUTH_CALLBACK
+            };
+
     private long tokenLifetime = 3600L;
     private String defaultScope;
-    
-    public Response handle(MessageContext mc, 
+
+    public Response handle(MessageContext mc,
                            OAuthDataProvider dataProvider,
                            OAuthValidator validator) {
         try {
-            OAuthMessage oAuthMessage = 
-                OAuthUtils.getOAuthMessage(mc, mc.getHttpServletRequest(), REQUIRED_PARAMETERS);
+            OAuthMessage oAuthMessage =
+                    OAuthUtils.getOAuthMessage(mc, mc.getHttpServletRequest(), REQUIRED_PARAMETERS);
 
             Client client = dataProvider
-                .getClient(oAuthMessage.getParameter(OAuth.OAUTH_CONSUMER_KEY));
+                    .getClient(oAuthMessage.getParameter(OAuth.OAUTH_CONSUMER_KEY));
             //client credentials not found
             if (client == null) {
                 throw new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN);
             }
 
-            OAuthUtils.validateMessage(oAuthMessage, client, null, 
-                                       dataProvider, validator);
+            OAuthUtils.validateMessage(oAuthMessage, client, null,
+                    dataProvider, validator);
 
             String callback = oAuthMessage.getParameter(OAuth.OAUTH_CALLBACK);
             validateCallbackURL(client, callback);
 
             List<String> scopes = OAuthUtils.parseParamValue(
-            		mc.getHttpServletRequest().getParameter(OAuthConstants.X_OAUTH_SCOPE), defaultScope);
-            
+                    mc.getHttpServletRequest().getParameter(OAuthConstants.X_OAUTH_SCOPE), defaultScope);
+
             RequestTokenRegistration reg = new RequestTokenRegistration();
             reg.setClient(client);
             reg.setCallback(callback);
@@ -95,7 +95,7 @@ public class OscarRequestTokenHandler {
             reg.setScopes(scopes);
             reg.setLifetime(tokenLifetime);
             reg.setIssuedAt(System.currentTimeMillis() / 1000);
-            
+
             RequestToken requestToken = dataProvider.createRequestToken(reg);
 
             if (LOG.isLoggable(Level.FINE)) {
@@ -111,18 +111,18 @@ public class OscarRequestTokenHandler {
 
             return Response.ok(responseBody).build();
         } catch (OAuthProblemException e) {
-            LOG.log(Level.WARNING, "An OAuth-related problem: {0}", new Object[] {e.fillInStackTrace()});
+            LOG.log(Level.WARNING, "An OAuth-related problem: {0}", new Object[]{e.fillInStackTrace()});
             int code = e.getHttpStatusCode();
             if (code == HttpServletResponse.SC_OK) {
                 code = e.getProblem() == OAuth.Problems.CONSUMER_KEY_UNKNOWN
-                    ? 401 : 400; 
+                        ? 401 : 400;
             }
             return OAuthUtils.handleException(mc, e, code);
         } catch (OAuthServiceException e) {
             return OAuthUtils.handleException(mc, e, HttpServletResponse.SC_BAD_REQUEST);
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "Unexpected internal server exception: {0}",
-                new Object[] {e.fillInStackTrace()});
+                    new Object[]{e.fillInStackTrace()});
             return OAuthUtils.handleException(mc, e, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
@@ -132,18 +132,18 @@ public class OscarRequestTokenHandler {
         // the callback must not be empty or null, and it should either match
         // the pre-registered callback URI or have the common root with the
         // the pre-registered application URI
-        if (!StringUtils.isEmpty(oauthCallback) 
-            && (!StringUtils.isEmpty(client.getCallbackURI())
+        if (!StringUtils.isEmpty(oauthCallback)
+                && (!StringUtils.isEmpty(client.getCallbackURI())
                 && oauthCallback.equals(client.getCallbackURI())
                 || !StringUtils.isEmpty(client.getApplicationURI())
                 && oauthCallback.startsWith(client.getApplicationURI()))) {
             return;
         }
         OAuthProblemException problemEx = new OAuthProblemException(
-            OAuth.Problems.PARAMETER_REJECTED + " - " + OAuth.OAUTH_CALLBACK);
+                OAuth.Problems.PARAMETER_REJECTED + " - " + OAuth.OAUTH_CALLBACK);
         problemEx
-            .setParameter(OAuthProblemException.HTTP_STATUS_CODE,
-                HttpServletResponse.SC_BAD_REQUEST);
+                .setParameter(OAuthProblemException.HTTP_STATUS_CODE,
+                        HttpServletResponse.SC_BAD_REQUEST);
         throw problemEx;
     }
 
@@ -154,5 +154,5 @@ public class OscarRequestTokenHandler {
     public void setDefaultScope(String defaultScope) {
         this.defaultScope = defaultScope;
     }
-            
+
 }

@@ -25,13 +25,12 @@
 --%>
 
 <%
-  if(session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ page import="java.sql.*, java.util.*, oscar.oscarWaitingList.util.*"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-
+<%@ page import="java.sql.*, java.util.*, oscar.oscarWaitingList.util.*" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 
 <%
@@ -41,28 +40,26 @@
 %>
 
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title></title>
-<html:base />
-</head>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title></title>
+        <html:base/>
+    </head>
 
 
-<link rel="stylesheet" type="text/css" href="../styles.css">
-<body topmargin="0" leftmargin="0" vlink="#0000FF">
-<html:errors />
-<table>
-	<tr>
-		<td>Update waiting list</td>
-		<script language="javascript">   
-            window.opener.location.reload();
-            self.close();
-        </script>
-	</tr>
-</table>
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <body topmargin="0" leftmargin="0" vlink="#0000FF">
+    <html:errors/>
+    <table>
+        <tr>
+            <td>Update waiting list</td>
+            <script language="javascript">
+                window.opener.location.reload();
+                self.close();
+            </script>
+        </tr>
+    </table>
 
 
-
-
-</body>
+    </body>
 </html:html>

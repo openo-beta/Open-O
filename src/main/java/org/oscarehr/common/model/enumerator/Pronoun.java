@@ -7,16 +7,16 @@ package org.oscarehr.common.model.enumerator;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,57 +30,57 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="lst_pronoun")
-@NamedQuery(name="Pronoun.findAll", query="SELECT p FROM Pronoun p")
+@Table(name = "lst_pronoun")
+@NamedQuery(name = "Pronoun.findAll", query = "SELECT p FROM Pronoun p")
 public class Pronoun extends AbstractModel<String> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	
-	//@Enumerated(EnumType.STRING)
-	@Id
-	private String code;
 
-	private String description;
+    //@Enumerated(EnumType.STRING)
+    @Id
+    private String code;
 
-	private int displayorder;
+    private String description;
 
-	private byte isactive;
+    private int displayorder;
 
-	public String getCode() {
-		return code;
-	}
+    private byte isactive;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public int getDisplayorder() {
-		return displayorder;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setDisplayorder(int displayorder) {
-		this.displayorder = displayorder;
-	}
+    public int getDisplayorder() {
+        return displayorder;
+    }
 
-	public byte getIsactive() {
-		return isactive;
-	}
+    public void setDisplayorder(int displayorder) {
+        this.displayorder = displayorder;
+    }
 
-	public void setIsactive(byte isactive) {
-		this.isactive = isactive;
-	}
+    public byte getIsactive() {
+        return isactive;
+    }
 
-	@Override
-	public String getId() {
-		return this.code;
-	}
+    public void setIsactive(byte isactive) {
+        this.isactive = isactive;
+    }
+
+    @Override
+    public String getId() {
+        return this.code;
+    }
 }

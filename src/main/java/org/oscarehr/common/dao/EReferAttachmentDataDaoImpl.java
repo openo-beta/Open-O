@@ -11,6 +11,7 @@ import java.util.Date;
 import org.hibernate.Hibernate;
 import org.oscarehr.common.model.EReferAttachmentData;
 import org.springframework.stereotype.Repository;
+
 import javax.persistence.Query;
 import java.util.List;
 

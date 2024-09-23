@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,33 +36,33 @@ import org.oscarehr.util.MiscUtils;
 import oscar.SxmlMisc;
 
 
-public class FrmBCAR2012Record extends FrmRecord{
-	
-	private final String _dateFormat = "dd/MM/yyyy";
+public class FrmBCAR2012Record extends FrmRecord {
 
-	private Properties props;
-	
+    private final String _dateFormat = "dd/MM/yyyy";
+
+    private Properties props;
+
     public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) {
-    	      
-    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(_dateFormat);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(_dateFormat);
         Date dateOfBirth;
         Date dateToday = new Date();
-    	
-        if(demographicNo > 0) {
-    		super.setDemographic(loggedInInfo, demographicNo);
+
+        if (demographicNo > 0) {
+            super.setDemographic(loggedInInfo, demographicNo);
         }
-    	
+
         if (existingID <= 0) {
-        	
-        	props = new Properties();
-        	
-        	dateOfBirth = demographic.getBirthDay().getTime();
-            
+
+            props = new Properties();
+
+            dateOfBirth = demographic.getBirthDay().getTime();
+
             this.setDemographicProperties();
-            
-            props.setProperty("demographic_no", demographic.getDemographicNo()+"");
-            props.setProperty("formCreated", simpleDateFormat.format(dateToday));        
-            props.setProperty("pg1_dateOfBirth", simpleDateFormat.format(dateOfBirth));           
+
+            props.setProperty("demographic_no", demographic.getDemographicNo() + "");
+            props.setProperty("formCreated", simpleDateFormat.format(dateToday));
+            props.setProperty("pg1_dateOfBirth", simpleDateFormat.format(dateOfBirth));
             props.setProperty("pg1_age", demographic.getAge());
             props.setProperty("pg1_formDate", simpleDateFormat.format(dateToday));
             props.setProperty("pg2_formDate", simpleDateFormat.format(dateToday));
@@ -71,51 +71,51 @@ public class FrmBCAR2012Record extends FrmRecord{
             rd = rd != null ? rd : "";
             props.setProperty("pg1_famPhy", rd);
 
-            
+
         } else {
-        	
-            String sql = "SELECT * FROM formBCAR2012 WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;     
-        	FrmRecordHelp frh = new FrmRecordHelp();
-            frh.setDateFormat(_dateFormat); 
-            
+
+            String sql = "SELECT * FROM formBCAR2012 WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+            FrmRecordHelp frh = new FrmRecordHelp();
+            frh.setDateFormat(_dateFormat);
+
             try {
-            	
-	            props = frh.getFormRecord(sql);
-	            this.setDemographicProperties();
- 
+
+                props = frh.getFormRecord(sql);
+                this.setDemographicProperties();
+
             } catch (SQLException e) {
-            	
-            	MiscUtils.getLogger().error("Error", e);
-            	
+
+                MiscUtils.getLogger().error("Error", e);
+
             }
 
         }
-        
+
         return props;
     }
 
     private void setDemographicProperties() {
-    	
+
         props.setProperty("c_surname", StringUtils.trimToEmpty(demographic.getLastName()));
         props.setProperty("c_givenName", StringUtils.trimToEmpty(demographic.getFirstName()));
         props.setProperty("c_address", StringUtils.trimToEmpty(demographic.getAddress()));
         props.setProperty("c_city", StringUtils.trimToEmpty(demographic.getCity()));
         props.setProperty("c_province", StringUtils.trimToEmpty(demographic.getProvince()));
         props.setProperty("c_postal", StringUtils.trimToEmpty(demographic.getPostal()));
-        props.setProperty("c_phn", StringUtils.trimToEmpty(demographic.getHin())); 
+        props.setProperty("c_phn", StringUtils.trimToEmpty(demographic.getHin()));
         props.setProperty("c_phone", StringUtils.trimToEmpty(demographic.getPhone()));
         props.setProperty("c_phoneAlt1", StringUtils.trimToEmpty(demographic.getPhone2()));
-        
-        String cell = null;  
- 
-        if(demographicExtMap.containsKey("demo_cell")) {
-        	cell = demographicExtMap.get("demo_cell");
+
+        String cell = null;
+
+        if (demographicExtMap.containsKey("demo_cell")) {
+            cell = demographicExtMap.get("demo_cell");
         }
-        		
-        if ( cell != null ){
-            props.setProperty("c_phoneAlt2",cell );
+
+        if (cell != null) {
+            props.setProperty("c_phoneAlt2", cell);
         }
-        
+
     }
 
     public int saveFormRecord(Properties props) throws SQLException {

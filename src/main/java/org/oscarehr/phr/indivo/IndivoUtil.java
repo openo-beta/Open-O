@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -54,27 +54,27 @@ import oscar.util.UtilDateUtilities;
  */
 public class IndivoUtil {
 
-public static ContactInformationType generateContactInformationType(
-                                        String iFirstName,
-                                        String iLastName,
-                                        String iAddress,
-                                        String iCity,
-                                        String iProvince,
-                                        String iPostal,
-                                        String iPhone,
-                                        String iPhone2,
-                                        String iEmail) {
-        
+    public static ContactInformationType generateContactInformationType(
+            String iFirstName,
+            String iLastName,
+            String iAddress,
+            String iCity,
+            String iProvince,
+            String iPostal,
+            String iPhone,
+            String iPhone2,
+            String iEmail) {
+
         org.indivo.xml.phr.contact.ObjectFactory cObjFactory = new org.indivo.xml.phr.contact.ObjectFactory();
         ContactInformationType indiContact = cObjFactory.createContactInformationType();
-    
+
         //Name
         List<NameType> names = indiContact.getPersonName();
         NameType name = cObjFactory.createNameType();
         name.setFirstName(iFirstName);
         name.setLastName(iLastName);
         names.add(name);
-        
+
         //Address
         List<AddressType> addresses = indiContact.getAddress();
         AddressType address = cObjFactory.createAddressType();
@@ -85,7 +85,7 @@ public static ContactInformationType generateContactInformationType(
         address.setState(iProvince);
         address.setPostalCode(iPostal);
         addresses.add(address);
-        
+
         //Contact - Email
         List<CommunicationType> comms = indiContact.getContactMethod();
         CommunicationType comm1 = cObjFactory.createCommunicationType();
@@ -94,7 +94,7 @@ public static ContactInformationType generateContactInformationType(
         comm1.setClazz("default");
         comm1.setValue(iEmail);
         comms.add(comm1);
-        
+
         //Contact - Home Phone
         CommunicationType comm2 = cObjFactory.createCommunicationType();
         comm2.setMedium("phone");
@@ -102,7 +102,7 @@ public static ContactInformationType generateContactInformationType(
         comm2.setClazz("home");
         comm2.setValue(iPhone);
         comms.add(comm2);
-        
+
         //Contact - Work Phone
         CommunicationType comm3 = cObjFactory.createCommunicationType();
         comm3.setMedium("phone");
@@ -110,22 +110,22 @@ public static ContactInformationType generateContactInformationType(
         comm3.setClazz("daytime");
         comm3.setValue(iPhone2);
         comms.add(comm3);
-        
+
         return indiContact;
     }
 
     public static DemographicsType generateDemographicType(String dob) throws DatatypeConfigurationException {
         org.indivo.xml.phr.demographics.ObjectFactory dObjFactory = new org.indivo.xml.phr.demographics.ObjectFactory();
         DemographicsType indiDemographic = dObjFactory.createDemographicsType();
-        
+
         DatatypeFactory dataTypeFactory = DatatypeFactory.newInstance();
         Date dobDate = UtilDateUtilities.StringToDate(dob, "yyyy/MM/dd");
         GregorianCalendar dobGregorian = new GregorianCalendar();
         dobGregorian.setTime(dobDate);
         XMLGregorianCalendar dobxml = dataTypeFactory.newXMLGregorianCalendar(dobGregorian);
         indiDemographic.setDateOfBirth(dobxml);
-        
+
         return indiDemographic;
     }
-    
+
 }

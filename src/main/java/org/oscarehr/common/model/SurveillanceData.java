@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,109 +33,107 @@ import javax.persistence.*;
 @Table(name = "SurveillanceData")
 public class SurveillanceData extends AbstractModel<Integer> {
 
-	/*create table SurveillanceData (
-			id int(10)  NOT NULL auto_increment primary key,
-			surveyId varchar(50),
-			data mediumblob,
-			createDate datetime,
-			lastUpdateDate datetime,
-			transmissionDate datetime,
-			sent boolean
-			);
-	*/
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String surveyId;
+    /*create table SurveillanceData (
+            id int(10)  NOT NULL auto_increment primary key,
+            surveyId varchar(50),
+            data mediumblob,
+            createDate datetime,
+            lastUpdateDate datetime,
+            transmissionDate datetime,
+            sent boolean
+            );
+    */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(columnDefinition = "mediumblob")
-	private byte[] data;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDate = new Date();
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date transmissionDate;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastUpdateDate;
-	
-	private boolean sent = false;
+    private String surveyId;
 
-	
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Column(columnDefinition = "mediumblob")
+    private byte[] data;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date transmissionDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdateDate;
+
+    private boolean sent = false;
 
 
-	public byte[] getData() {
-		return data;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
 
-	public void setData(byte[] data) {
-		this.data = data;
-	}
+    public byte[] getData() {
+        return data;
+    }
 
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public void setData(byte[] data) {
+        this.data = data;
+    }
 
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public Date getCreateDate() {
+        return createDate;
+    }
 
 
-	public Date getTransmissionDate() {
-		return transmissionDate;
-	}
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
 
-	public void setTransmissionDate(Date transmissionDate) {
-		this.transmissionDate = transmissionDate;
-	}
+    public Date getTransmissionDate() {
+        return transmissionDate;
+    }
 
 
-	
-	
-	@PrePersist
-	@PreUpdate
-	protected void jpa_updateCreated() {
-		lastUpdateDate = new Date();
-	}
+    public void setTransmissionDate(Date transmissionDate) {
+        this.transmissionDate = transmissionDate;
+    }
 
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    @PrePersist
+    @PreUpdate
+    protected void jpa_updateCreated() {
+        lastUpdateDate = new Date();
+    }
 
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
 
-	public String getSurveyId() {
-		return surveyId;
-	}
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
 
-	public void setSurveyId(String surveyId) {
-		this.surveyId = surveyId;
-	}
+    public String getSurveyId() {
+        return surveyId;
+    }
 
 
-	public boolean isSent() {
-		return sent;
-	}
+    public void setSurveyId(String surveyId) {
+        this.surveyId = surveyId;
+    }
 
 
-	public void setSent(boolean sent) {
-		this.sent = sent;
-	}
+    public boolean isSent() {
+        return sent;
+    }
+
+
+    public void setSent(boolean sent) {
+        this.sent = sent;
+    }
 
 }

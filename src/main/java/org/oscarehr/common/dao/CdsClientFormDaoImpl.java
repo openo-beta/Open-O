@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -29,6 +29,7 @@ package org.oscarehr.common.dao;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.common.model.CdsClientForm;
 import org.springframework.stereotype.Repository;
 
@@ -66,12 +67,12 @@ public class CdsClientFormDaoImpl extends AbstractDaoImpl<CdsClientForm> impleme
         query.setParameter(1, facilityId);
         query.setParameter(2, clientId);
         @SuppressWarnings("unchecked")
-        List<CdsClientForm> results=query.getResultList();
+        List<CdsClientForm> results = query.getResultList();
         return (results);
     }
 
     public List<CdsClientForm> findSignedCdsForms(Integer facilityId, String formVersion, Date startDate, Date endDate) {
-        String sqlCommand="select x from CdsClientForm x where x.facilityId=?1 and x.signed=?2 and x.cdsFormVersion=?3 and x.created>=?4 and x.created<?5";
+        String sqlCommand = "select x from CdsClientForm x where x.facilityId=?1 and x.signed=?2 and x.cdsFormVersion=?3 and x.created>=?4 and x.created<?5";
         Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, facilityId);
         query.setParameter(2, true);
@@ -79,7 +80,7 @@ public class CdsClientFormDaoImpl extends AbstractDaoImpl<CdsClientForm> impleme
         query.setParameter(4, startDate);
         query.setParameter(5, endDate);
         @SuppressWarnings("unchecked")
-        List<CdsClientForm> results=query.getResultList();
-        return(results);
+        List<CdsClientForm> results = query.getResultList();
+        return (results);
     }
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,109 +40,109 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="demographicPharmacy")
-public class DemographicPharmacy extends AbstractModel<Integer>{
-	
-	public static final String ACTIVE = "1";
-	
-	public static final String INACTIVE = "0";
-	
+@Table(name = "demographicPharmacy")
+public class DemographicPharmacy extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    public static final String ACTIVE = "1";
 
-	@Column(name="pharmacyID")
-	private int pharmacyId;
+    public static final String INACTIVE = "0";
 
-	@Column(name="demographic_no")
-	private int demographicNo;
 
-	private String status;
-	
-	private int preferredOrder;
-	
-	private Boolean consentToContact = Boolean.TRUE;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date addDate;
-	
-	@Transient
-	private PharmacyInfo details;
+    @Column(name = "pharmacyID")
+    private int pharmacyId;
 
-	public Integer getId() {
-    	return id;
+    @Column(name = "demographic_no")
+    private int demographicNo;
+
+    private String status;
+
+    private int preferredOrder;
+
+    private Boolean consentToContact = Boolean.TRUE;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date addDate;
+
+    @Transient
+    private PharmacyInfo details;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public int getPharmacyId() {
-    	return pharmacyId;
+    public int getPharmacyId() {
+        return pharmacyId;
     }
 
-	public void setPharmacyId(int pharmacyId) {
-    	this.pharmacyId = pharmacyId;
+    public void setPharmacyId(int pharmacyId) {
+        this.pharmacyId = pharmacyId;
     }
 
-	public int getDemographicNo() {
-    	return demographicNo;
+    public int getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setDemographicNo(int demographicNo) {
-    	this.demographicNo = demographicNo;
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public String getStatus() {
-    	return status;
+    public String getStatus() {
+        return status;
     }
 
-	public void setStatus(String status) {
-    	this.status = status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-	public Date getAddDate() {
-    	return addDate;
+    public Date getAddDate() {
+        return addDate;
     }
 
-	public void setAddDate(Date addDate) {
-    	this.addDate = addDate;
+    public void setAddDate(Date addDate) {
+        this.addDate = addDate;
     }
 
-	@PrePersist
-	public void beforePersist() {
-		addDate = new Date();
-	}
+    @PrePersist
+    public void beforePersist() {
+        addDate = new Date();
+    }
 
-	/**
-	 * @return the preferedOrder
-	 */
+    /**
+     * @return the preferedOrder
+     */
     public int getPreferredOrder() {
-	    return preferredOrder;
+        return preferredOrder;
     }
 
-	/**
-	 * @param preferedOrder the preferedOrder to set
-	 */
+    /**
+     * @param preferedOrder the preferedOrder to set
+     */
     public void setPreferredOrder(int preferedOrder) {
-	    this.preferredOrder = preferedOrder;
+        this.preferredOrder = preferedOrder;
     }
 
-	public PharmacyInfo getDetails() {
-		return details;
-	}
+    public PharmacyInfo getDetails() {
+        return details;
+    }
 
-	public void setDetails(PharmacyInfo details) {
-		this.details = details;
-	}
+    public void setDetails(PharmacyInfo details) {
+        this.details = details;
+    }
 
-	public Boolean getConsentToContact() {
-		return consentToContact;
-	}
+    public Boolean getConsentToContact() {
+        return consentToContact;
+    }
 
-	public void setConsentToContact(Boolean consentToContact) {
-		this.consentToContact = consentToContact;
-	}
+    public void setConsentToContact(Boolean consentToContact) {
+        this.consentToContact = consentToContact;
+    }
 
 }

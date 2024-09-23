@@ -2,12 +2,12 @@
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
  * and "gnu.org/licenses/gpl-2.0.html".
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -43,7 +43,7 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     }
 
     private List<ProviderLabRoutingModel> getProviderLabRoutings(Integer labNo, String labType, String providerNo,
-            String status) {
+                                                                 String status) {
         Query q = entityManager.createQuery("select x from " + modelClass.getName()
                 + " x where x.labNo LIKE ? and x.labType LIKE ? and x.providerNo LIKE ? and x.status LIKE ?");
         q.setParameter(0, labNo != null ? labNo : "%");
@@ -56,7 +56,7 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     @Override
     public List<ProviderLabRoutingModel> findByLabNoAndLabTypeAndProviderNo(int labNo, String labType,
-            String providerNo) {
+                                                                            String providerNo) {
         Query q = entityManager.createQuery(
                 "select x from " + modelClass.getName() + " x where x.labNo=? and x.labType=? and x.providerNo=?");
         q.setParameter(0, labNo);
@@ -73,7 +73,7 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     @Override
     public List<ProviderLabRoutingModel> getProviderLabRoutingForLabProviderType(Integer labNo, String providerNo,
-            String labType) {
+                                                                                 String labType) {
         return getProviderLabRoutings(labNo, labType, providerNo, null);
     }
 
@@ -127,7 +127,7 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     /**
      * Finds all providers and lab routing models for the specified lab
-     * 
+     *
      * @param labNo
      *                Lab number to find data for
      * @param labType
@@ -189,10 +189,10 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
         return query.getResultList();
     }
 
-    @NativeSql({ "providerLabRouting", "mdsMSH", "mdsPID", "mdsPV1", "mdsZFR", "mdsOBR", "mdsZRG" })
+    @NativeSql({"providerLabRouting", "mdsMSH", "mdsPID", "mdsPV1", "mdsZFR", "mdsOBR", "mdsZRG"})
     @Override
     public List<Object[]> findMdsResultResultDataByManyThings(String status, String providerNo, String patientLastName,
-            String patientFirstName, String patientHealthNumber) {
+                                                              String patientFirstName, String patientHealthNumber) {
         // note to self: lab reports not found in the providerLabRouting table will not
         // show up - need to ensure every lab is entered in providerLabRouting, with '0'
         // for the provider number if unable to find correct provider
@@ -221,7 +221,7 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     }
 
-    @NativeSql({ "providerLabRouting", "mdsMSH", "mdsPID", "mdsPV1", "mdsZFR", "mdsOBR", "mdsZRG" })
+    @NativeSql({"providerLabRouting", "mdsMSH", "mdsPID", "mdsPV1", "mdsZFR", "mdsOBR", "mdsZRG"})
     @Override
     public List<Object[]> findMdsResultResultDataByDemographicNoAndLabNo(Integer demographicNo, Integer labNo) {
 
@@ -249,7 +249,7 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     }
 
-    @NativeSql({ "providerLabRouting", "mdsMSH", "mdsPID", "mdsPV1", "mdsZFR", "mdsOBR", "mdsZRG" })
+    @NativeSql({"providerLabRouting", "mdsMSH", "mdsPID", "mdsPV1", "mdsZFR", "mdsOBR", "mdsZRG"})
     @Override
     public List<Object[]> findMdsResultResultDataByDemoId(String demographicNo) {
         String sql = "SELECT mdsMSH.segmentID, mdsMSH.messageConID AS accessionNum, mdsPID.patientName, mdsPID.healthNumber, "

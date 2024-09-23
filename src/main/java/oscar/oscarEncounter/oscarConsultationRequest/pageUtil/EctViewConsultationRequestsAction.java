@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -44,35 +44,35 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 public class EctViewConsultationRequestsAction extends Action {
-	private static SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    private static final Logger logger= MiscUtils.getLogger();
+    private static SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private static final Logger logger = MiscUtils.getLogger();
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    	
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
-			throw new SecurityException("missing required security object (_con)");
-		}
-    	
+            throws ServletException, IOException {
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
+            throw new SecurityException("missing required security object (_con)");
+        }
+
         EctViewConsultationRequestsForm frm = (EctViewConsultationRequestsForm) form;
-        
-        String defaultPattern = "yyyy-MM-dd";   
+
+        String defaultPattern = "yyyy-MM-dd";
         String sendTo = null;
-        String includeCompleted = null;                
+        String includeCompleted = null;
         String startDate = frm.getStartDate();
         String endDate = frm.getEndDate();
-        boolean includedComp = false;        
-                
+        boolean includedComp = false;
+
         sendTo = frm.getSendTo();
         includeCompleted = frm.getIncludeCompleted();
-                                
-        if(includeCompleted != null && includeCompleted.equals("include") ){
-           includedComp = true; 
+
+        if (includeCompleted != null && includeCompleted.equals("include")) {
+            includedComp = true;
         }
 
         SimpleDateFormat simpleDateFormat = null;
 
-        try{
+        try {
             if (startDate != null && !startDate.isEmpty()) {
                 simpleDateFormat = new SimpleDateFormat(defaultPattern);
                 request.setAttribute("startDate", simpleDateFormat.parse(startDate));
@@ -88,13 +88,13 @@ public class EctViewConsultationRequestsAction extends Action {
             logger.error("Cannot parse start date " + startDate + " and/or end date " + endDate + " for consultation request report. ", e);
         }
 
-        request.setAttribute("includeCompleted",new Boolean(includedComp));               
+        request.setAttribute("includeCompleted", new Boolean(includedComp));
         request.setAttribute("teamVar", sendTo);
-        request.setAttribute("orderby",frm.getOrderby());
-        request.setAttribute("desc",frm.getDesc());
-        request.setAttribute("searchDate",frm.getSearchDate());                
+        request.setAttribute("orderby", frm.getOrderby());
+        request.setAttribute("desc", frm.getDesc());
+        request.setAttribute("searchDate", frm.getSearchDate());
         return mapping.findForward("success");
     }
-    
-    
+
+
 }

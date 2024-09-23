@@ -24,50 +24,43 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo"%>
-<%@page import="org.oscarehr.common.service.myoscar.AllergiesManager"%>
-<%@page import="org.oscarehr.common.service.myoscar.ImmunizationsManager"%>
-<%@page import="org.oscarehr.common.service.myoscar.MeasurementsManager"%>
-<%@page import="org.oscarehr.common.service.myoscar.PrescriptionMedicationManager"%>
-<%@page import="org.oscarehr.util.WebUtils"%>
-<%@page import="org.oscarehr.util.LocaleUtils"%>
-<%@page import="org.oscarehr.util.MiscUtils"%>
-<%@page import="org.oscarehr.phr.util.MyOscarUtils"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
+<%@page import="org.oscarehr.common.service.myoscar.AllergiesManager" %>
+<%@page import="org.oscarehr.common.service.myoscar.ImmunizationsManager" %>
+<%@page import="org.oscarehr.common.service.myoscar.MeasurementsManager" %>
+<%@page import="org.oscarehr.common.service.myoscar.PrescriptionMedicationManager" %>
+<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.util.LocaleUtils" %>
+<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-	String parentPage = request.getParameter("parentPage");
+    String parentPage = request.getParameter("parentPage");
 
-	try
-	{
-		Integer demographicNo = Integer.parseInt(request.getParameter("demographicId"));
-		String medicalDataType = request.getParameter("medicalDataType");
-		MyOscarLoggedInInfo myOscarLoggedInInfo=MyOscarLoggedInInfo.getLoggedInInfo(session);
-		
-		if ("Allergies".equals(medicalDataType)) {
-			AllergiesManager.sendAllergiesToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
-		}
-		else if ("Immunizations".equals(medicalDataType)) {
-			ImmunizationsManager.sendImmunizationsToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
-		}
-		else if ("Measurements".equals(medicalDataType)) {
-			MeasurementsManager.sendMeasurementsToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
-		}
-		else if ("Prescriptions".equals(medicalDataType)) {
-			PrescriptionMedicationManager.sendPrescriptionsMedicationsToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
-		}
-		else {
-			response.sendRedirect(parentPage);
-		}
-		
-		WebUtils.addInfoMessage(session, LocaleUtils.getMessage(request,"ItemsHaveBeenSentToPHR"));
-	}
-	catch (Exception e)
-	{
-		MiscUtils.getLogger().error("error", e);
-		WebUtils.addErrorMessage(session, LocaleUtils.getMessage(request,"UnexpectedError"));
-	}
-	
-	response.sendRedirect(parentPage);
+    try {
+        Integer demographicNo = Integer.parseInt(request.getParameter("demographicId"));
+        String medicalDataType = request.getParameter("medicalDataType");
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
+
+        if ("Allergies".equals(medicalDataType)) {
+            AllergiesManager.sendAllergiesToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
+        } else if ("Immunizations".equals(medicalDataType)) {
+            ImmunizationsManager.sendImmunizationsToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
+        } else if ("Measurements".equals(medicalDataType)) {
+            MeasurementsManager.sendMeasurementsToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
+        } else if ("Prescriptions".equals(medicalDataType)) {
+            PrescriptionMedicationManager.sendPrescriptionsMedicationsToMyOscar(loggedInInfo, myOscarLoggedInInfo, demographicNo);
+        } else {
+            response.sendRedirect(parentPage);
+        }
+
+        WebUtils.addInfoMessage(session, LocaleUtils.getMessage(request, "ItemsHaveBeenSentToPHR"));
+    } catch (Exception e) {
+        MiscUtils.getLogger().error("error", e);
+        WebUtils.addErrorMessage(session, LocaleUtils.getMessage(request, "UnexpectedError"));
+    }
+
+    response.sendRedirect(parentPage);
 %>

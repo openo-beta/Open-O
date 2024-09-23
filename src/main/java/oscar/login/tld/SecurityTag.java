@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -69,23 +69,20 @@ public class SecurityTag implements Tag {
         Vector v = OscarRoleObjectPrivilege.getPrivilegeProp(objectName);
         // if (checkPrivilege(roleName, (Properties) getPrivilegeProp(objectName).get(0), (Vector) getPrivilegeProp(
         ///        objectName).get(1)))
-    	/*TODO: temporily allow current security work, the if statement should be removed */
-        if (roleName == null) 
-        {
-        	
-	            ret = SKIP_BODY;
-	       
-        }
-        else
-        {
-	        if (OscarRoleObjectPrivilege.checkPrivilege(roleName, (Properties)v.get(0), (List<String>)v.get(1), (List<String>)v.get(2), rights)){
-	            ret = EVAL_BODY_INCLUDE;
-	        }else{
-	            ret = SKIP_BODY;
-	        }
+        /*TODO: temporily allow current security work, the if statement should be removed */
+        if (roleName == null) {
+
+            ret = SKIP_BODY;
+
+        } else {
+            if (OscarRoleObjectPrivilege.checkPrivilege(roleName, (Properties) v.get(0), (List<String>) v.get(1), (List<String>) v.get(2), rights)) {
+                ret = EVAL_BODY_INCLUDE;
+            } else {
+                ret = SKIP_BODY;
+            }
         }
 
-        if (reverse) {           
+        if (reverse) {
             if (ret == EVAL_BODY_INCLUDE)
                 ret = SKIP_BODY;
             else
@@ -96,8 +93,8 @@ public class SecurityTag implements Tag {
 
     public int doEndTag() throws JspException {
         return EVAL_PAGE;
-    } 
-    
+    }
+
     public void release() {
     }
 
@@ -132,8 +129,9 @@ public class SecurityTag implements Tag {
     public void setReverse(boolean reverse) {
         this.reverse = reverse;
     }
-	public ApplicationContext getAppContext() {
-		return WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext());
-	}
+
+    public ApplicationContext getAppContext() {
+        return WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext());
+    }
 
 }

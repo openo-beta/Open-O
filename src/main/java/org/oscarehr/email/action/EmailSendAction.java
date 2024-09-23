@@ -35,7 +35,9 @@ public class EmailSendAction extends DispatchAction {
 
         boolean isEmailSuccessful = emailLog.getStatus() == EmailStatus.SUCCESS;
         request.setAttribute("isEmailSuccessful", isEmailSuccessful);
-        if (isEmailSuccessful && deleteEFormAfterEmail) { eformDataManager.removeEFormData(loggedInInfo, request.getParameter("fdid")); }
+        if (isEmailSuccessful && deleteEFormAfterEmail) {
+            eformDataManager.removeEFormData(loggedInInfo, request.getParameter("fdid"));
+        }
         request.setAttribute("isOpenEForm", request.getParameter("openEFormAfterEmail"));
         request.setAttribute("fdid", request.getParameter("fdid"));
         request.setAttribute("emailLog", emailLog);

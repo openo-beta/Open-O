@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -26,43 +26,44 @@
 package oscar.entities;
 
 public class Test {
-  private String id;
-  private String description;
-  private String value = "NO DATA";
-  private String frequency;
-  public Test() {
-  }
+    private String id;
+    private String description;
+    private String value = "NO DATA";
+    private String frequency;
 
-  public String getId() {
-    return id;
-  }
+    public Test() {
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public String getValue() {
-    return value;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  public void setValue(String value) {
-    this.value = value;
-  }
+    public String getValue() {
+        return value;
+    }
 
-  public String getFrequency() {
-    return frequency;
-  }
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-  public void setFrequency(String frequency) {
-    this.frequency = frequency;
-  }
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
 
 }

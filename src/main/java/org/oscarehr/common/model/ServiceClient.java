@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,82 +35,82 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class ServiceClient extends AbstractModel<Integer>{
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String name;
-	
-	@Column(name="clientKey")
-	private String key;
-	
-	@Column(name="clientSecret")
-	private String secret;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated = new Date();
-	
-	private String uri;
-	
-	private Integer lifetime;
+public class ServiceClient extends AbstractModel<Integer> {
 
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "clientKey")
+    private String key;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(name = "clientSecret")
+    private String secret;
 
-	public String getKey() {
-		return key;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated = new Date();
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    private String uri;
 
-	public String getSecret() {
-		return secret;
-	}
+    private Integer lifetime;
 
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getUri() {
-		return uri;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
+    public String getKey() {
+        return key;
+    }
 
-	public Integer getLifetime() {
-		return lifetime;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	public void setLifetime(Integer lifetime) {
-		this.lifetime = lifetime;
-	}
-	
-	
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public Integer getLifetime() {
+        return lifetime;
+    }
+
+    public void setLifetime(Integer lifetime) {
+        this.lifetime = lifetime;
+    }
+
+
 }

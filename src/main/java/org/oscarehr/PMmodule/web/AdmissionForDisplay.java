@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -44,137 +43,139 @@ import oscar.util.DateUtils;
  * This is a display object for the history tab of a clients admissions.
  */
 public class AdmissionForDisplay {
-	
-	public static final Comparator<AdmissionForDisplay> ADMISSION_DATE_COMPARATOR=new Comparator<AdmissionForDisplay>() {
-		public int compare(AdmissionForDisplay arg0, AdmissionForDisplay arg1) {
-			return(arg1.admissionDate.compareTo(arg0.admissionDate));
-		}
-	};
-	
-	private static final Logger logger = MiscUtils.getLogger();
-	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
-	private SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+    public static final Comparator<AdmissionForDisplay> ADMISSION_DATE_COMPARATOR = new Comparator<AdmissionForDisplay>() {
+        public int compare(AdmissionForDisplay arg0, AdmissionForDisplay arg1) {
+            return (arg1.admissionDate.compareTo(arg0.admissionDate));
+        }
+    };
 
-	private Integer admissionId;
-	private boolean isFromIntegrator;
-	private String programName;
-	private String programType;
-	private String facilityName;
-	private String admissionDate;
-	private String facilityAdmission;
-	private String dischargeDate;
-	private String facilityDischarge;
-	private int daysInProgram;
-	private String temporaryAdmission;
-	private Integer programId;
-	
-	public AdmissionForDisplay(Admission admission) {
-		admissionId = admission.getId().intValue();
-		isFromIntegrator = false;
-		programName = admission.getProgramName();
-		programType = admission.getProgramType();
-		facilityName = "local";
+    private static final Logger logger = MiscUtils.getLogger();
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
-		admissionDate = dateFormatter.format(admission.getAdmissionDate());
-		facilityAdmission = String.valueOf(!admission.isAdmissionFromTransfer());
-		programId = admission.getProgramId();
-		
-		if (admission.getDischargeDate() != null) {
-			dischargeDate = dateFormatter.format(admission.getDischargeDate());
-			daysInProgram = DateUtils.calculateDayDifference(admission.getAdmissionDate(), admission.getDischargeDate());
-		} else {
-			daysInProgram = DateUtils.calculateDayDifference(admission.getAdmissionDate(), new Date());
-		}
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
 
-		facilityDischarge = String.valueOf(!admission.isDischargeFromTransfer());
-		temporaryAdmission = String.valueOf(admission.isTemporaryAdmission());
-	}
+    private Integer admissionId;
+    private boolean isFromIntegrator;
+    private String programName;
+    private String programType;
+    private String facilityName;
+    private String admissionDate;
+    private String facilityAdmission;
+    private String dischargeDate;
+    private String facilityDischarge;
+    private int daysInProgram;
+    private String temporaryAdmission;
+    private Integer programId;
 
-	public AdmissionForDisplay(LoggedInInfo loggedInInfo, CachedAdmission cachedAdmission) {
-		isFromIntegrator = true;
+    public AdmissionForDisplay(Admission admission) {
+        admissionId = admission.getId().intValue();
+        isFromIntegrator = false;
+        programName = admission.getProgramName();
+        programType = admission.getProgramType();
+        facilityName = "local";
 
-		FacilityIdIntegerCompositePk remoteProgramPk = new FacilityIdIntegerCompositePk();
-		int remoteFacilityId = cachedAdmission.getFacilityIdIntegerCompositePk().getIntegratorFacilityId();
-		remoteProgramPk.setIntegratorFacilityId(remoteFacilityId);
-		remoteProgramPk.setCaisiItemId(cachedAdmission.getCaisiProgramId());
-		try {
-			CachedProgram cachedProgram = CaisiIntegratorManager.getRemoteProgram(loggedInInfo, loggedInInfo.getCurrentFacility(), remoteProgramPk);
-			programName = cachedProgram.getName();
-			programType = cachedProgram.getType();
-		} catch (Exception e) {
-			logger.error("Error retriving integrator program.", e);
-		}
+        admissionDate = dateFormatter.format(admission.getAdmissionDate());
+        facilityAdmission = String.valueOf(!admission.isAdmissionFromTransfer());
+        programId = admission.getProgramId();
 
-		try {
-			CachedFacility cachedFacility = CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), remoteFacilityId);
-			facilityName = cachedFacility.getName();
-		} catch (Exception e) {
-			logger.error("Error retrieving integrator Facility.", e);
-		}
+        if (admission.getDischargeDate() != null) {
+            dischargeDate = dateFormatter.format(admission.getDischargeDate());
+            daysInProgram = DateUtils.calculateDayDifference(admission.getAdmissionDate(), admission.getDischargeDate());
+        } else {
+            daysInProgram = DateUtils.calculateDayDifference(admission.getAdmissionDate(), new Date());
+        }
 
-		admissionDate = dateFormatter.format(cachedAdmission.getAdmissionDate().getTime());
-		facilityAdmission = "n/a";
+        facilityDischarge = String.valueOf(!admission.isDischargeFromTransfer());
+        temporaryAdmission = String.valueOf(admission.isTemporaryAdmission());
+    }
 
-		if (cachedAdmission.getDischargeDate() != null) {
-			dischargeDate = dateFormatter.format(cachedAdmission.getDischargeDate());
-			daysInProgram = DateUtils.calculateDayDifference(cachedAdmission.getAdmissionDate(), cachedAdmission.getDischargeDate());
-		} else {
-			daysInProgram = DateUtils.calculateDayDifference(cachedAdmission.getAdmissionDate(), new Date());
+    public AdmissionForDisplay(LoggedInInfo loggedInInfo, CachedAdmission cachedAdmission) {
+        isFromIntegrator = true;
 
-		}
+        FacilityIdIntegerCompositePk remoteProgramPk = new FacilityIdIntegerCompositePk();
+        int remoteFacilityId = cachedAdmission.getFacilityIdIntegerCompositePk().getIntegratorFacilityId();
+        remoteProgramPk.setIntegratorFacilityId(remoteFacilityId);
+        remoteProgramPk.setCaisiItemId(cachedAdmission.getCaisiProgramId());
+        try {
+            CachedProgram cachedProgram = CaisiIntegratorManager.getRemoteProgram(loggedInInfo, loggedInInfo.getCurrentFacility(), remoteProgramPk);
+            programName = cachedProgram.getName();
+            programType = cachedProgram.getType();
+        } catch (Exception e) {
+            logger.error("Error retriving integrator program.", e);
+        }
 
-		facilityDischarge = "n/a";
-		temporaryAdmission = "n/a";
-	}
+        try {
+            CachedFacility cachedFacility = CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), remoteFacilityId);
+            facilityName = cachedFacility.getName();
+        } catch (Exception e) {
+            logger.error("Error retrieving integrator Facility.", e);
+        }
 
-	public Integer getAdmissionId() {
-		return admissionId;
-	}
+        admissionDate = dateFormatter.format(cachedAdmission.getAdmissionDate().getTime());
+        facilityAdmission = "n/a";
 
-	public String getProgramName() {
-		return programName;
-	}
+        if (cachedAdmission.getDischargeDate() != null) {
+            dischargeDate = dateFormatter.format(cachedAdmission.getDischargeDate());
+            daysInProgram = DateUtils.calculateDayDifference(cachedAdmission.getAdmissionDate(), cachedAdmission.getDischargeDate());
+        } else {
+            daysInProgram = DateUtils.calculateDayDifference(cachedAdmission.getAdmissionDate(), new Date());
 
-	public String getProgramType() {
-		return programType;
-	}
+        }
 
-	public boolean isFromIntegrator() {
-		return isFromIntegrator;
-	}
+        facilityDischarge = "n/a";
+        temporaryAdmission = "n/a";
+    }
 
-	public String getFacilityName() {
-		return facilityName;
-	}
+    public Integer getAdmissionId() {
+        return admissionId;
+    }
 
-	public String getAdmissionDate() {
-		return admissionDate;
-	}
+    public String getProgramName() {
+        return programName;
+    }
 
-	public String getFacilityAdmission() {
-		return facilityAdmission;
-	}
+    public String getProgramType() {
+        return programType;
+    }
 
-	public String getDischargeDate() {
-		return dischargeDate;
-	}
+    public boolean isFromIntegrator() {
+        return isFromIntegrator;
+    }
 
-	public String getFacilityDischarge() {
-		return facilityDischarge;
-	}
+    public String getFacilityName() {
+        return facilityName;
+    }
 
-	public int getDaysInProgram() {
-		return daysInProgram;
-	}
+    public String getAdmissionDate() {
+        return admissionDate;
+    }
 
-	public String getTemporaryAdmission() {
-		return temporaryAdmission;
-	}
-	public Integer getProgramId() {
-		return programId;
-	}
-	public Integer getClientId() {
-		return admissionId;
-	}
+    public String getFacilityAdmission() {
+        return facilityAdmission;
+    }
+
+    public String getDischargeDate() {
+        return dischargeDate;
+    }
+
+    public String getFacilityDischarge() {
+        return facilityDischarge;
+    }
+
+    public int getDaysInProgram() {
+        return daysInProgram;
+    }
+
+    public String getTemporaryAdmission() {
+        return temporaryAdmission;
+    }
+
+    public Integer getProgramId() {
+        return programId;
+    }
+
+    public Integer getClientId() {
+        return admissionId;
+    }
 }

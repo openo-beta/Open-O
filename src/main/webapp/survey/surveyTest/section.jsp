@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,39 +24,43 @@
 --%>
 
 
-
-<%@ include file="/survey/taglibs.jsp"%>
+<%@ include file="/survey/taglibs.jsp" %>
 <td colspan="2">
-<table border="1" width="100%">
-	<tr>
-		<td colspan="2"><c:if test="${section.bold eq 'true'}">
-			<b>
-		</c:if> <c:if test="${section.underline eq 'true'}">
-			<u>
-		</c:if> <c:if test="${section.italics eq 'true'}">
-			<i>
-		</c:if> <c:choose>
-			<c:when test="${not empty section.color}">
-				<span style="color:<c:out value="${section.color}"/>"><c:out
-					value="${section.description}" /></span>
-			</c:when>
-			<c:otherwise>
-				<c:out value="${section.description}" />
-			</c:otherwise>
-		</c:choose> <c:if test="${section.bold eq 'true'}">
-			</b>
-		</c:if> <c:if test="${section.underline eq 'true'}">
-			</u>
-		</c:if> <c:if test="${section.italics eq 'true'}">
-			</i>
-		</c:if></td>
-	</tr>
-	<c:forEach var="question" items="${section.questionArray}">
-		<tr>
-			<c:set var="question" value="${question}" scope="request" />
-			<c:set var="sectionId" value="${section.id}" scope="request" />
-			<jsp:include page="question.jsp" />
-		</tr>
-	</c:forEach>
-</table>
+    <table border="1" width="100%">
+        <tr>
+            <td colspan="2">
+                <c:if test="${section.bold eq 'true'}">
+                <b>
+                    </c:if>
+                    <c:if test="${section.underline eq 'true'}">
+                    <u>
+                        </c:if>
+                        <c:if test="${section.italics eq 'true'}">
+                        <i>
+                            </c:if>
+                            <c:choose>
+                            <c:when test="${not empty section.color}">
+                            <span style="color:<c:out value="${section.color}"/>"><c:out
+                                    value="${section.description}"/></span>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${section.description}"/>
+                            </c:otherwise>
+                            </c:choose>
+                            <c:if test="${section.bold eq 'true'}">
+                </b>
+                </c:if> <c:if test="${section.underline eq 'true'}">
+                </u>
+            </c:if> <c:if test="${section.italics eq 'true'}">
+                </i>
+            </c:if></td>
+        </tr>
+        <c:forEach var="question" items="${section.questionArray}">
+            <tr>
+                <c:set var="question" value="${question}" scope="request"/>
+                <c:set var="sectionId" value="${section.id}" scope="request"/>
+                <jsp:include page="question.jsp"/>
+            </tr>
+        </c:forEach>
+    </table>
 </td>

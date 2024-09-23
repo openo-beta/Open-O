@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -37,37 +37,37 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SurveyTestInstanceDaoImpl extends AbstractDaoImpl<SurveyTestInstance> implements SurveyTestInstanceDao {
 
-	public SurveyTestInstanceDaoImpl() {
-		super(SurveyTestInstance.class);
-	}
-	
-	@Override
-	public SurveyTestInstance getSurveyInstance(Integer surveyId, Integer clientId) {
-		Query query = entityManager.createQuery("select s from SurveyTestInstance s where s.surveyId = ?1 and s.clientId = ?2 order by s.dateCreated DESC");
-		query.setParameter(1,surveyId);
-		query.setParameter(2, clientId);
-		
-		@SuppressWarnings("unchecked")
-        List<SurveyTestInstance> results = query.getResultList();
-		
-		if(results.size()>0) {
-			return results.get(0);
-		}
-		return null;
-	}
-	
-	@Override
-	public void clearTestData(Integer surveyId) {
-		Query query = entityManager.createQuery("select s from SurveyTestInstance s where s.surveyId = ?1");
-		query.setParameter(1,surveyId);
-		
-		@SuppressWarnings("unchecked")
-        List<SurveyTestInstance> results = query.getResultList();
-		
+    public SurveyTestInstanceDaoImpl() {
+        super(SurveyTestInstance.class);
+    }
 
-		for(SurveyTestInstance instance:results) {
-			remove(instance.getId());
-		}
-		
-	}
+    @Override
+    public SurveyTestInstance getSurveyInstance(Integer surveyId, Integer clientId) {
+        Query query = entityManager.createQuery("select s from SurveyTestInstance s where s.surveyId = ?1 and s.clientId = ?2 order by s.dateCreated DESC");
+        query.setParameter(1, surveyId);
+        query.setParameter(2, clientId);
+
+        @SuppressWarnings("unchecked")
+        List<SurveyTestInstance> results = query.getResultList();
+
+        if (results.size() > 0) {
+            return results.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public void clearTestData(Integer surveyId) {
+        Query query = entityManager.createQuery("select s from SurveyTestInstance s where s.surveyId = ?1");
+        query.setParameter(1, surveyId);
+
+        @SuppressWarnings("unchecked")
+        List<SurveyTestInstance> results = query.getResultList();
+
+
+        for (SurveyTestInstance instance : results) {
+            remove(instance.getId());
+        }
+
+    }
 }

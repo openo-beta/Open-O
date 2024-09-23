@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,120 +51,118 @@ import oscar.util.StringUtils;
  */
 public class EctDisplayAllergyAction extends EctDisplayAction {
 
-	private static Logger logger = MiscUtils.getLogger();
-	
-	
-	private String cmd = "allergies";
+    private static Logger logger = MiscUtils.getLogger();
 
-	public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_allergy", "r", null)) {
-			return true; // Allergies link won't show up on new CME screen.
-		} else {
+    private String cmd = "allergies";
 
-			// set lefthand module heading and link
-			String winName = "Allergy" + bean.demographicNo;
-			String url = "popupPage(580,900,'" + winName + "','" + request.getContextPath() + "/oscarRx/showAllergy.do?demographicNo=" + bean.demographicNo + "')";
-			Dao.setLeftHeading(messages.getMessage(request.getLocale(), "oscarEncounter.NavBar.Allergy"));
-			Dao.setLeftURL(url);
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
 
-			// set righthand link to same as left so we have visual consistency with other modules
-			url += "; return false;";
-			Dao.setRightURL(url);
-			Dao.setRightHeadingID(cmd); // no menu so set div id to unique id for this action
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-			// grab all of the diseases associated with patient and add a list item for each
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_allergy", "r", null)) {
+            return true; // Allergies link won't show up on new CME screen.
+        } else {
 
-			Allergy[] allergies;
+            // set lefthand module heading and link
+            String winName = "Allergy" + bean.demographicNo;
+            String url = "popupPage(580,900,'" + winName + "','" + request.getContextPath() + "/oscarRx/showAllergy.do?demographicNo=" + bean.demographicNo + "')";
+            Dao.setLeftHeading(messages.getMessage(request.getLocale(), "oscarEncounter.NavBar.Allergy"));
+            Dao.setLeftURL(url);
 
-			Integer demographicId = Integer.parseInt(bean.demographicNo);
-			Locale locale=request.getLocale();
+            // set righthand link to same as left so we have visual consistency with other modules
+            url += "; return false;";
+            Dao.setRightURL(url);
+            Dao.setRightHeadingID(cmd); // no menu so set div id to unique id for this action
 
-			allergies = RxPatientData.getPatient(loggedInInfo, demographicId).getActiveAllergies();
+            // grab all of the diseases associated with patient and add a list item for each
 
-			 CppPreferencesUIBean prefsBean = new CppPreferencesUIBean(loggedInInfo.getLoggedInProviderNo());
-             prefsBean.loadValues();
-             
-			// --- get local allergies ---
-			for (int idx = 0; idx < allergies.length; ++idx) {
-				Date date = allergies[idx].getEntryDate();
-				Date startDate = allergies[idx].getStartDate();
-				String severity = allergies[idx].getSeverityOfReactionDesc();
-				
-				NavBarDisplayDAO.Item item = makeItem(date, allergies[idx].getDescription(), allergies[idx].getSeverityOfReaction(), locale, prefsBean, startDate, severity);
-				Dao.addItem(item);
-			}
+            Allergy[] allergies;
 
-			// --- get integrator allergies ---
-			if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
-				try {
-					List<CachedDemographicAllergy> remoteAllergies  = null;
-					try {
-						if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-							remoteAllergies = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicAllergies(demographicId);
-							MiscUtils.getLogger().debug("remoteAllergies retrieved "+remoteAllergies.size());
-						}
-					} catch (Exception e) {
-						MiscUtils.getLogger().error("Unexpected error.", e);
-						CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(),e);
-					}
-					
-					if(CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-						remoteAllergies = IntegratorFallBackManager.getRemoteAllergies(loggedInInfo,demographicId);	
-						MiscUtils.getLogger().debug("fallBack Allergies retrieved "+remoteAllergies.size());
-					}
+            Integer demographicId = Integer.parseInt(bean.demographicNo);
+            Locale locale = request.getLocale();
 
-					
-					for (CachedDemographicAllergy remoteAllergy : remoteAllergies)
-					{
-						Date date=null;
-						if (remoteAllergy.getEntryDate()!=null) date=remoteAllergy.getEntryDate().getTime();
-						Date startDate = null;
-						if(remoteAllergy.getStartDate()!=null) startDate = remoteAllergy.getStartDate().getTime();
-						
-						NavBarDisplayDAO.Item item = makeItem(date, remoteAllergy.getDescription(), remoteAllergy.getSeverityCode(), locale, prefsBean,startDate, remoteAllergy.getSeverityCode());
-						Dao.addItem(item);
-					}
-				} catch (Exception e) {
-					logger.error("error getting remote allergies", e);
-				}
-			}
+            allergies = RxPatientData.getPatient(loggedInInfo, demographicId).getActiveAllergies();
 
-			// --- sort all results ---
-			Dao.sortItems(NavBarDisplayDAO.DATESORT_ASC);
+            CppPreferencesUIBean prefsBean = new CppPreferencesUIBean(loggedInInfo.getLoggedInProviderNo());
+            prefsBean.loadValues();
 
-			return true;
-		}
-	}
+            // --- get local allergies ---
+            for (int idx = 0; idx < allergies.length; ++idx) {
+                Date date = allergies[idx].getEntryDate();
+                Date startDate = allergies[idx].getStartDate();
+                String severity = allergies[idx].getSeverityOfReactionDesc();
 
-	private static NavBarDisplayDAO.Item makeItem(Date entryDate, String description, String severity, Locale locale, CppPreferencesUIBean prefsBean, Date startDate, String severityDescription)
-	{
-		NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
+                NavBarDisplayDAO.Item item = makeItem(date, allergies[idx].getDescription(), allergies[idx].getSeverityOfReaction(), locale, prefsBean, startDate, severity);
+                Dao.addItem(item);
+            }
 
-		item.setDate(entryDate);
-		if (severity != null && severity.equals("3")) {
-			item.setColour("red");
-		} else if (severity != null && severity.equals("2")) {
-			item.setColour("orange");
-		}
+            // --- get integrator allergies ---
+            if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
+                try {
+                    List<CachedDemographicAllergy> remoteAllergies = null;
+                    try {
+                        if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                            remoteAllergies = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicAllergies(demographicId);
+                            MiscUtils.getLogger().debug("remoteAllergies retrieved " + remoteAllergies.size());
+                        }
+                    } catch (Exception e) {
+                        MiscUtils.getLogger().error("Unexpected error.", e);
+                        CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(), e);
+                    }
 
-		String customDescription = description;
-		if(prefsBean != null && "on".equals(prefsBean.getAllergyStartDate())) {
-			customDescription = customDescription + " Start Date:" + DateUtils.formatDate(startDate, locale);
-		}
-		if(prefsBean != null && "on".equals(prefsBean.getAllergySeverity())) {
-			customDescription = customDescription + " Severity:" + severityDescription;
-		}
-		item.setTitle(StringUtils.maxLenString(customDescription, MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES));
-		item.setLinkTitle(customDescription + " Entry Date:" + DateUtils.formatDate(entryDate, locale));
-		item.setURL("return false;");
+                    if (CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                        remoteAllergies = IntegratorFallBackManager.getRemoteAllergies(loggedInInfo, demographicId);
+                        MiscUtils.getLogger().debug("fallBack Allergies retrieved " + remoteAllergies.size());
+                    }
 
-		return(item);
-	}
 
-	public String getCmd() {
-		return cmd;
-	}
+                    for (CachedDemographicAllergy remoteAllergy : remoteAllergies) {
+                        Date date = null;
+                        if (remoteAllergy.getEntryDate() != null) date = remoteAllergy.getEntryDate().getTime();
+                        Date startDate = null;
+                        if (remoteAllergy.getStartDate() != null) startDate = remoteAllergy.getStartDate().getTime();
+
+                        NavBarDisplayDAO.Item item = makeItem(date, remoteAllergy.getDescription(), remoteAllergy.getSeverityCode(), locale, prefsBean, startDate, remoteAllergy.getSeverityCode());
+                        Dao.addItem(item);
+                    }
+                } catch (Exception e) {
+                    logger.error("error getting remote allergies", e);
+                }
+            }
+
+            // --- sort all results ---
+            Dao.sortItems(NavBarDisplayDAO.DATESORT_ASC);
+
+            return true;
+        }
+    }
+
+    private static NavBarDisplayDAO.Item makeItem(Date entryDate, String description, String severity, Locale locale, CppPreferencesUIBean prefsBean, Date startDate, String severityDescription) {
+        NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
+
+        item.setDate(entryDate);
+        if (severity != null && severity.equals("3")) {
+            item.setColour("red");
+        } else if (severity != null && severity.equals("2")) {
+            item.setColour("orange");
+        }
+
+        String customDescription = description;
+        if (prefsBean != null && "on".equals(prefsBean.getAllergyStartDate())) {
+            customDescription = customDescription + " Start Date:" + DateUtils.formatDate(startDate, locale);
+        }
+        if (prefsBean != null && "on".equals(prefsBean.getAllergySeverity())) {
+            customDescription = customDescription + " Severity:" + severityDescription;
+        }
+        item.setTitle(StringUtils.maxLenString(customDescription, MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES));
+        item.setLinkTitle(customDescription + " Entry Date:" + DateUtils.formatDate(entryDate, locale));
+        item.setURL("return false;");
+
+        return (item);
+    }
+
+    public String getCmd() {
+        return cmd;
+    }
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,11 +33,9 @@ package oscar.oscarMDS.data;
 
 import java.util.ArrayList;
 
-public class Results
-{
+public class Results {
 
-    Results(String n, String rR, String u, String oV, String aF, String oI, String rS, ArrayList newnotes, String lID)
-    {
+    Results(String n, String rR, String u, String oV, String aF, String oI, String rS, ArrayList newnotes, String lID) {
         name = n;
         referenceRange = rR;
         units = u;
@@ -56,31 +54,41 @@ public class Results
     public String abnormalFlags;
     public String observationIden;
     public String resultStatus;
-    public ArrayList notes;    
+    public ArrayList notes;
     public String labID;
-    
-    private String resultInterpret(String rS)
-    {
+
+    private String resultInterpret(String rS) {
         switch (rS.toUpperCase().charAt(0)) {
-            case 'C' : return "Corrected";
-            case 'D' : return "Deleted";
-            case 'F' : return "Final";
-            case 'I' : return "Pending";
-            case 'P' : return "Preliminary";
-            case 'R' : return "Unverified";
-            case 'S' : return "Partial";
-            case 'X' : return "DNR";
-            case 'U' : return "Final";
-            case 'W' : return "Deleted";
-            default  : return "Invalid";
-        }        
+            case 'C':
+                return "Corrected";
+            case 'D':
+                return "Deleted";
+            case 'F':
+                return "Final";
+            case 'I':
+                return "Pending";
+            case 'P':
+                return "Preliminary";
+            case 'R':
+                return "Unverified";
+            case 'S':
+                return "Partial";
+            case 'X':
+                return "DNR";
+            case 'U':
+                return "Final";
+            case 'W':
+                return "Deleted";
+            default:
+                return "Invalid";
+        }
     }
-    
-    
+
+
     //notes ArrayList should only contain String objects.
-    public String getLabNotes(int i){
+    public String getLabNotes(int i) {
         String ret = "";
-        if (notes != null && notes.size() > i){
+        if (notes != null && notes.size() > i) {
             ret = (String) notes.get(i);
         }
         return ret;

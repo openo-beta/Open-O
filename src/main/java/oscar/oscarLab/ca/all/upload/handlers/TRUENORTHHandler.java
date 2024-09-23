@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,64 +50,64 @@ import oscar.oscarLab.ca.all.util.Utilities;
 
 public class TRUENORTHHandler implements MessageHandler {
 
-	Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao)SpringUtils.getBean(Hl7TextInfoDao.class);
-	
-	@Override
-	public String parse(LoggedInInfo loggedInInfo,String serviceName, String fileName, int fileId, String ipAddr) {
+    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
-		int i = 0;
-		try {
-			ArrayList<String> messages = Utilities.separateMessages(fileName);
-			for (i = 0; i < messages.size(); i++) {
+    @Override
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
 
-				String msg = messages.get(i);
-				if(isDuplicate(loggedInInfo,msg)) {
-					return ("success");
-				}
-				MessageUploader.routeReport(loggedInInfo, serviceName, "TRUENORTH", msg, fileId);
+        int i = 0;
+        try {
+            ArrayList<String> messages = Utilities.separateMessages(fileName);
+            for (i = 0; i < messages.size(); i++) {
 
-			}
+                String msg = messages.get(i);
+                if (isDuplicate(loggedInInfo, msg)) {
+                    return ("success");
+                }
+                MessageUploader.routeReport(loggedInInfo, serviceName, "TRUENORTH", msg, fileId);
+
+            }
 
 
-			logger.info("Parsed OK");
-		} catch (Exception e) {
-			MessageUploader.clean(fileId);
-			logger.error("Could not upload message", e);
-			return null;
-		}
-		return ("success");
+            logger.info("Parsed OK");
+        } catch (Exception e) {
+            MessageUploader.clean(fileId);
+            logger.error("Could not upload message", e);
+            return null;
+        }
+        return ("success");
 
-	}
+    }
 
-	private boolean isDuplicate(LoggedInInfo loggedInInfo,String msg) {
-		//OLIS requirements - need to see if this is a duplicate
-		oscar.oscarLab.ca.all.parsers.MessageHandler h = Factory.getHandler("TRUENORTH", msg);
-		//if final		
-		if(h.getOrderStatus().equals("F")) {
-			String fullAcc = h.getAccessionNum();
-			String acc = h.getAccessionNum();
-			if(acc.indexOf("-")!=-1) {
-				acc = acc.substring(acc.indexOf("-")+1);
-			}
-			//do we have this?
-			List<Hl7TextInfo> dupResults = hl7TextInfoDao.searchByAccessionNumber(acc);
-			for(Hl7TextInfo dupResult:dupResults) {
-				if(dupResult.equals(fullAcc)) {
-					//if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
-					OscarAuditLogger.getInstance().log(loggedInInfo,"Lab", "Skip", "Duplicate lab skipped - accession " + fullAcc + "\n" + msg);
-					return true;
-					//}
-				}
-				if(dupResult.getAccessionNumber().length()>4 && dupResult.getAccessionNumber().substring(4).equals(acc)) {
-					//if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
-					OscarAuditLogger.getInstance().log(loggedInInfo,"Lab", "Skip", "Duplicate lab skipped - accession " + fullAcc + "\n" + msg);
-					return true;
-					//}
-				}
-			}		
-		}
-		return false;	
-	}
+    private boolean isDuplicate(LoggedInInfo loggedInInfo, String msg) {
+        //OLIS requirements - need to see if this is a duplicate
+        oscar.oscarLab.ca.all.parsers.MessageHandler h = Factory.getHandler("TRUENORTH", msg);
+        //if final
+        if (h.getOrderStatus().equals("F")) {
+            String fullAcc = h.getAccessionNum();
+            String acc = h.getAccessionNum();
+            if (acc.indexOf("-") != -1) {
+                acc = acc.substring(acc.indexOf("-") + 1);
+            }
+            //do we have this?
+            List<Hl7TextInfo> dupResults = hl7TextInfoDao.searchByAccessionNumber(acc);
+            for (Hl7TextInfo dupResult : dupResults) {
+                if (dupResult.equals(fullAcc)) {
+                    //if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
+                    OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + fullAcc + "\n" + msg);
+                    return true;
+                    //}
+                }
+                if (dupResult.getAccessionNumber().length() > 4 && dupResult.getAccessionNumber().substring(4).equals(acc)) {
+                    //if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
+                    OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + fullAcc + "\n" + msg);
+                    return true;
+                    //}
+                }
+            }
+        }
+        return false;
+    }
 
 }

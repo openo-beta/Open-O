@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -56,9 +56,9 @@ public class HCValidationResult {
 
     public HCValidationResult() {
     }
-    
+
     public boolean isValid() {
-        
+
         if (responseCode == null) {
             return false;
         }
@@ -73,7 +73,7 @@ public class HCValidationResult {
     public String getResponseCode() {
         return responseCode;
     }
-    
+
     public void setResponseCode(String value) {
         responseCode = value;
     }
@@ -89,7 +89,7 @@ public class HCValidationResult {
     public void setResponseDescription(String value) {
         this.responseDescription = value;
     }
-    
+
     /**
      * The action required of the caller for the returned response code. 
      * Response action is optional field and can be returned for each validation request submitted. 
@@ -138,7 +138,7 @@ public class HCValidationResult {
 
     /**
      * The card holder’s date of birth. 
-     */ 
+     */
     public String getBirthDate() {
         return birthDate;
     }
@@ -218,21 +218,21 @@ public class HCValidationResult {
     }
 
     public String getEbsFaultCode() {
-        if(ebsFault == null) {
+        if (ebsFault == null) {
             return null;
         }
         return ebsFault.getCode();
     }
 
     public String getEbsFaultDescription() {
-        if(ebsFault == null) {
+        if (ebsFault == null) {
             return null;
         }
         return ebsFault.getMessage();
     }
 
     public List<FeeServiceDetails> getFeeServiceDetails() {
-        if(feeServiceDetails == null) {
+        if (feeServiceDetails == null) {
             return Collections.emptyList();
         }
         return feeServiceDetails;
@@ -252,7 +252,7 @@ public class HCValidationResult {
 
     public Date getFeeServiceDate(String feeServiceCode) {
         XMLGregorianCalendar date = getFeeServiceDetailsbyFeeServiceCode(feeServiceCode).getFeeServiceDate();
-        if(date != null) {
+        if (date != null) {
             return date.toGregorianCalendar().getTime();
         }
         return null;
@@ -261,8 +261,8 @@ public class HCValidationResult {
     private FeeServiceDetails getFeeServiceDetailsbyFeeServiceCode(String feeServiceCode) {
         FeeServiceDetails selectedFeeServiceDetails = new FeeServiceDetails();
         selectedFeeServiceDetails.setFeeServiceCode(feeServiceCode);
-        for(FeeServiceDetails feeServiceDetail : this.feeServiceDetails) {
-            if(feeServiceCode.equalsIgnoreCase(feeServiceDetail.getFeeServiceCode())) {
+        for (FeeServiceDetails feeServiceDetail : this.feeServiceDetails) {
+            if (feeServiceCode.equalsIgnoreCase(feeServiceDetail.getFeeServiceCode())) {
                 selectedFeeServiceDetails = feeServiceDetail;
                 try {
                     BeanUtils.copyProperties(selectedFeeServiceDetails, feeServiceDetail);
@@ -294,14 +294,14 @@ public class HCValidationResult {
                 .append("   Issue Date: " + issueDate + "\n")
                 .append("   Fault: " + getEbsFaultCode() + " : " + getEbsFaultDescription() + "\n");
 
-                for (FeeServiceDetails feeServiceDetails : getFeeServiceDetails()) {
+        for (FeeServiceDetails feeServiceDetails : getFeeServiceDetails()) {
 
-                    stringBuilder.append("   Fee Service Code: " + feeServiceDetails.getFeeServiceCode() + "\n")
-                            .append("   Fee Service Response Code: " + feeServiceDetails.getFeeServiceResponseCode() + "\n")
-                            .append("   Fee Service Response Description: " + feeServiceDetails.getFeeServiceResponseDescription() + "\n")
-                            .append("   Fee Service Date: " + feeServiceDetails.getFeeServiceDate() + "\n");
+            stringBuilder.append("   Fee Service Code: " + feeServiceDetails.getFeeServiceCode() + "\n")
+                    .append("   Fee Service Response Code: " + feeServiceDetails.getFeeServiceResponseCode() + "\n")
+                    .append("   Fee Service Response Description: " + feeServiceDetails.getFeeServiceResponseDescription() + "\n")
+                    .append("   Fee Service Date: " + feeServiceDetails.getFeeServiceDate() + "\n");
 
-                }
+        }
 
         return stringBuilder.toString();
     }

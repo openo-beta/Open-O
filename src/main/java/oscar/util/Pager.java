@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,14 +42,14 @@ public class Pager {
         try {
             HEADER = prop.getString("pager.header.title");
         } catch (Exception e) {
-        	MiscUtils.getLogger().error("can't be a good thing, too bad original author didn't document it", e);
+            MiscUtils.getLogger().error("can't be a good thing, too bad original author didn't document it", e);
         }
 
         try {
             MAX_PAGE_INDEX = Integer.parseInt(prop.getString(
-                        "pager.max.page.index"));
+                    "pager.max.page.index"));
         } catch (Exception e) {
-        	MiscUtils.getLogger().error("can't be a good thing, too bad original author didn't document it", e);
+            MiscUtils.getLogger().error("can't be a good thing, too bad original author didn't document it", e);
         }
     }
 
@@ -64,11 +64,11 @@ public class Pager {
             }
 
             String header = "<font face='Helvetica' size='-1'>" + HEADER +
-                ": ";
+                    ": ";
 
             if (offset > 0) {
                 header += ("&nbsp;<a href=\"" + url + pref + "pager.offset=" +
-                (offset - size) + "\">" + prop.getString("pager.prev.desc") + "</a>\n");
+                        (offset - size) + "\">" + prop.getString("pager.prev.desc") + "</a>\n");
             }
 
             int start;
@@ -83,19 +83,19 @@ public class Pager {
             }
 
             for (int i = start;
-                    (i < length) && (i < (start + (MAX_PAGE_INDEX * size)));
-                    i += size) {
+                 (i < length) && (i < (start + (MAX_PAGE_INDEX * size)));
+                 i += size) {
                 if (i == offset) {
                     header += ("<b>" + ((i / size) + 1) + "</b>\n");
                 } else {
                     header += ("&nbsp;<a href=\"" + url + pref +
-                    "pager.offset=" + i + "\">" + ((i / size) + 1) + "</a>\n");
+                            "pager.offset=" + i + "\">" + ((i / size) + 1) + "</a>\n");
                 }
             }
 
             if (offset < (length - size)) {
                 header += ("&nbsp;<a href=\"" + url + pref + "pager.offset=" +
-                (offset + size) + "\">" + prop.getString("pager.next.desc") + "</a>\n");
+                        (offset + size) + "\">" + prop.getString("pager.next.desc") + "</a>\n");
             }
 
             header += "</font>";

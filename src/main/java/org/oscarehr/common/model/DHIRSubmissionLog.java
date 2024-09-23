@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,157 +36,135 @@ import javax.persistence.TemporalType;
 @Entity
 public class DHIRSubmissionLog extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private Integer demographicNo;
-	
-	private Integer preventionId;
-	
-	private String submitterProviderNo;
-	
-	private String status;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
-	
-	private String transactionId;
-	
-	private String bundleId;
-	
-	private String response;
-	
-	private String clientRequestId;
-	
-	private String clientResponseId;
-	
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    private Integer demographicNo;
 
+    private Integer preventionId;
 
+    private String submitterProviderNo;
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    private String status;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+
+    private String transactionId;
+
+    private String bundleId;
+
+    private String response;
+
+    private String clientRequestId;
+
+    private String clientResponseId;
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
 
-
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
-
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
 
-	public Integer getPreventionId() {
-		return preventionId;
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
 
-
-	public void setPreventionId(Integer preventionId) {
-		this.preventionId = preventionId;
-	}
-
+    public Integer getPreventionId() {
+        return preventionId;
+    }
 
 
-	public String getSubmitterProviderNo() {
-		return submitterProviderNo;
-	}
+    public void setPreventionId(Integer preventionId) {
+        this.preventionId = preventionId;
+    }
 
 
-
-	public void setSubmitterProviderNo(String submitterProviderNo) {
-		this.submitterProviderNo = submitterProviderNo;
-	}
-
+    public String getSubmitterProviderNo() {
+        return submitterProviderNo;
+    }
 
 
-	public String getStatus() {
-		return status;
-	}
+    public void setSubmitterProviderNo(String submitterProviderNo) {
+        this.submitterProviderNo = submitterProviderNo;
+    }
 
 
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+    public String getStatus() {
+        return status;
+    }
 
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 
-
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-
+    public Date getDateCreated() {
+        return dateCreated;
+    }
 
 
-	public String getTransactionId() {
-		return transactionId;
-	}
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
 
-
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
-
+    public String getTransactionId() {
+        return transactionId;
+    }
 
 
-	public String getBundleId() {
-		return bundleId;
-	}
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
 
 
-
-	public void setBundleId(String bundleId) {
-		this.bundleId = bundleId;
-	}
-
+    public String getBundleId() {
+        return bundleId;
+    }
 
 
-	public String getResponse() {
-		return response;
-	}
+    public void setBundleId(String bundleId) {
+        this.bundleId = bundleId;
+    }
 
 
-
-	public void setResponse(String response) {
-		this.response = response;
-	}
-
+    public String getResponse() {
+        return response;
+    }
 
 
-	public String getClientRequestId() {
-		return clientRequestId;
-	}
+    public void setResponse(String response) {
+        this.response = response;
+    }
 
 
-
-	public void setClientRequestId(String clientRequestId) {
-		this.clientRequestId = clientRequestId;
-	}
-
+    public String getClientRequestId() {
+        return clientRequestId;
+    }
 
 
-	public String getClientResponseId() {
-		return clientResponseId;
-	}
+    public void setClientRequestId(String clientRequestId) {
+        this.clientRequestId = clientRequestId;
+    }
 
 
+    public String getClientResponseId() {
+        return clientResponseId;
+    }
 
-	public void setClientResponseId(String clientResponseId) {
-		this.clientResponseId = clientResponseId;
-	}
-	
-	
-	
-	
+
+    public void setClientResponseId(String clientResponseId) {
+        this.clientResponseId = clientResponseId;
+    }
+
+
 }

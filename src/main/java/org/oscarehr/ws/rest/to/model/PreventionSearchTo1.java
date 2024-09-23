@@ -8,16 +8,16 @@ package org.oscarehr.ws.rest.to.model;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,38 +32,37 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 public class PreventionSearchTo1 {
 
-	private Integer id;
-	private String reportName;
-	private String ageStyle;
-	private String age1;
-	private String age2;
-	
-	private String ageCalc;
-	private Date ageAsOf;
-	private String rosterStat;
-	private Date rosterAsOf;
-	private String measurementTrackingType;
-	
-	private boolean letter1 = false;
-	private boolean letter2 = false;
-	private boolean phone1 = false;
+    private Integer id;
+    private String reportName;
+    private String ageStyle;
+    private String age1;
+    private String age2;
 
-	
-		    
-	private String sex;
-	
-	private List<PreventionSearchConfigTo1> preventions;
-	private List<String> exclusionCodes;
-	private List<String> trackingCodes;
-	
-	private Date billingCodeStart;
-	private Date billingCodeEnd; 
-	
-	private Date billingTrackingCodeStart;
-	private Date billingTrackingCodeEnd;
-	
-	private String providerNo;
-	private String providerName;
+    private String ageCalc;
+    private Date ageAsOf;
+    private String rosterStat;
+    private Date rosterAsOf;
+    private String measurementTrackingType;
+
+    private boolean letter1 = false;
+    private boolean letter2 = false;
+    private boolean phone1 = false;
+
+
+    private String sex;
+
+    private List<PreventionSearchConfigTo1> preventions;
+    private List<String> exclusionCodes;
+    private List<String> trackingCodes;
+
+    private Date billingCodeStart;
+    private Date billingCodeEnd;
+
+    private Date billingTrackingCodeStart;
+    private Date billingTrackingCodeEnd;
+
+    private String providerNo;
+    private String providerName;
 	
 	/*
 	FLU
@@ -93,197 +92,197 @@ public class PreventionSearchTo1 {
      *  
      Are there any exclusion codes for this Search
      */
-	
 
-	public String getAgeStyle() {
-		return ageStyle;
-	}
 
-	public void setAgeStyle(String ageStyle) {
-		this.ageStyle = ageStyle;
-	}
+    public String getAgeStyle() {
+        return ageStyle;
+    }
 
-	public String getAge1() {
-		return age1;
-	}
+    public void setAgeStyle(String ageStyle) {
+        this.ageStyle = ageStyle;
+    }
 
-	public void setAge1(String age1) {
-		this.age1 = age1;
-	}
+    public String getAge1() {
+        return age1;
+    }
 
-	public String getAge2() {
-		return age2;
-	}
+    public void setAge1(String age1) {
+        this.age1 = age1;
+    }
 
-	public void setAge2(String age2) {
-		this.age2 = age2;
-	}
+    public String getAge2() {
+        return age2;
+    }
 
-	public String getAgeCalc() {
-		return ageCalc;
-	}
+    public void setAge2(String age2) {
+        this.age2 = age2;
+    }
 
-	public void setAgeCalc(String ageCalc) {
-		this.ageCalc = ageCalc;
-	}
+    public String getAgeCalc() {
+        return ageCalc;
+    }
 
-	public Date getAgeAsOf() {
-		return ageAsOf;
-	}
+    public void setAgeCalc(String ageCalc) {
+        this.ageCalc = ageCalc;
+    }
 
-	public void setAgeAsOf(Date ageAsOf) {
-		this.ageAsOf = ageAsOf;
-	}
+    public Date getAgeAsOf() {
+        return ageAsOf;
+    }
 
-	public String getRosterStat() {
-		return rosterStat;
-	}
+    public void setAgeAsOf(Date ageAsOf) {
+        this.ageAsOf = ageAsOf;
+    }
 
-	public void setRosterStat(String rosterStat) {
-		this.rosterStat = rosterStat;
-	}
+    public String getRosterStat() {
+        return rosterStat;
+    }
 
-	public Date getRosterAsOf() {
-		return rosterAsOf;
-	}
+    public void setRosterStat(String rosterStat) {
+        this.rosterStat = rosterStat;
+    }
 
-	public void setRosterAsOf(Date rosterAsOf) {
-		this.rosterAsOf = rosterAsOf;
-	}
+    public Date getRosterAsOf() {
+        return rosterAsOf;
+    }
 
-	public String getSex() {
-		return sex;
-	}
+    public void setRosterAsOf(Date rosterAsOf) {
+        this.rosterAsOf = rosterAsOf;
+    }
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public String getSex() {
+        return sex;
+    }
 
-	public String getReportName() {
-		return reportName;
-	}
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-	public void setReportName(String reportName) {
-		this.reportName = reportName;
-	}
+    public String getReportName() {
+        return reportName;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public List<PreventionSearchConfigTo1> getPreventions() {
-		return preventions;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setPreventions(List<PreventionSearchConfigTo1> preventions) {
-		this.preventions = preventions;
-	}
+    public List<PreventionSearchConfigTo1> getPreventions() {
+        return preventions;
+    }
 
-	public List<String> getTrackingCodes() {
-		return trackingCodes;
-	}
+    public void setPreventions(List<PreventionSearchConfigTo1> preventions) {
+        this.preventions = preventions;
+    }
 
-	public void setTrackingCodes(List<String> trackingCodes) {
-		this.trackingCodes = trackingCodes;
-	}
+    public List<String> getTrackingCodes() {
+        return trackingCodes;
+    }
 
-	public List<String> getExclusionCodes() {
-		return exclusionCodes;
-	}
+    public void setTrackingCodes(List<String> trackingCodes) {
+        this.trackingCodes = trackingCodes;
+    }
 
-	public void setExclusionCodes(List<String> exclusionCodes) {
-		this.exclusionCodes = exclusionCodes;
-	}
-    		 
-	
-	@Override
-	public String toString(){
-		return(ReflectionToStringBuilder.toString(this));
-	}
+    public List<String> getExclusionCodes() {
+        return exclusionCodes;
+    }
 
-	public String getMeasurementTrackingType() {
-		return measurementTrackingType;
-	}
+    public void setExclusionCodes(List<String> exclusionCodes) {
+        this.exclusionCodes = exclusionCodes;
+    }
 
-	public void setMeasurementTrackingType(String measurementTrackingType) {
-		this.measurementTrackingType = measurementTrackingType;
-	}
 
-	public Date getBillingCodeStart() {
-		return billingCodeStart;
-	}
+    @Override
+    public String toString() {
+        return (ReflectionToStringBuilder.toString(this));
+    }
 
-	public void setBillingCodeStart(Date billingCodeStart) {
-		this.billingCodeStart = billingCodeStart;
-	}
+    public String getMeasurementTrackingType() {
+        return measurementTrackingType;
+    }
 
-	public Date getBillingCodeEnd() {
-		return billingCodeEnd;
-	}
+    public void setMeasurementTrackingType(String measurementTrackingType) {
+        this.measurementTrackingType = measurementTrackingType;
+    }
 
-	public void setBillingCodeEnd(Date billingCodeEnd) {
-		this.billingCodeEnd = billingCodeEnd;
-	}
+    public Date getBillingCodeStart() {
+        return billingCodeStart;
+    }
 
-	public boolean isLetter1() {
-		return letter1;
-	}
+    public void setBillingCodeStart(Date billingCodeStart) {
+        this.billingCodeStart = billingCodeStart;
+    }
 
-	public void setLetter1(boolean letter1) {
-		this.letter1 = letter1;
-	}
+    public Date getBillingCodeEnd() {
+        return billingCodeEnd;
+    }
 
-	public boolean isLetter2() {
-		return letter2;
-	}
+    public void setBillingCodeEnd(Date billingCodeEnd) {
+        this.billingCodeEnd = billingCodeEnd;
+    }
 
-	public void setLetter2(boolean letter2) {
-		this.letter2 = letter2;
-	}
+    public boolean isLetter1() {
+        return letter1;
+    }
 
-	public boolean isPhone1() {
-		return phone1;
-	}
+    public void setLetter1(boolean letter1) {
+        this.letter1 = letter1;
+    }
 
-	public void setPhone1(boolean phone1) {
-		this.phone1 = phone1;
-	}
+    public boolean isLetter2() {
+        return letter2;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setLetter2(boolean letter2) {
+        this.letter2 = letter2;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public boolean isPhone1() {
+        return phone1;
+    }
 
-	public String getProviderName() {
-		return providerName;
-	}
+    public void setPhone1(boolean phone1) {
+        this.phone1 = phone1;
+    }
 
-	public void setProviderName(String providerName) {
-		this.providerName = providerName;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public Date getBillingTrackingCodeStart() {
-		return billingTrackingCodeStart;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setBillingTrackingCodeStart(Date billingTrackingCodeStart) {
-		this.billingTrackingCodeStart = billingTrackingCodeStart;
-	}
+    public String getProviderName() {
+        return providerName;
+    }
 
-	public Date getBillingTrackingCodeEnd() {
-		return billingTrackingCodeEnd;
-	}
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
 
-	public void setBillingTrackingCodeEnd(Date billingTrackingCodeEnd) {
-		this.billingTrackingCodeEnd = billingTrackingCodeEnd;
-	}
-	
-	
+    public Date getBillingTrackingCodeStart() {
+        return billingTrackingCodeStart;
+    }
+
+    public void setBillingTrackingCodeStart(Date billingTrackingCodeStart) {
+        this.billingTrackingCodeStart = billingTrackingCodeStart;
+    }
+
+    public Date getBillingTrackingCodeEnd() {
+        return billingTrackingCodeEnd;
+    }
+
+    public void setBillingTrackingCodeEnd(Date billingTrackingCodeEnd) {
+        this.billingTrackingCodeEnd = billingTrackingCodeEnd;
+    }
+
+
 }

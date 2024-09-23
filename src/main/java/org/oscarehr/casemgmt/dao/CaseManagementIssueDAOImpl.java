@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -41,6 +41,7 @@ import org.oscarehr.casemgmt.model.Issue;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
+
 @Transactional
 public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements CaseManagementIssueDAO {
 
@@ -51,7 +52,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     public List<CaseManagementIssue> getIssuesByDemographic(String demographic_no) {
         return (List<CaseManagementIssue>) this.getHibernateTemplate().find(
                 "from CaseManagementIssue cmi where cmi.demographic_no = ?",
-                new Object[] { Integer.valueOf(demographic_no) });
+                new Object[]{Integer.valueOf(demographic_no)});
     }
 
     @SuppressWarnings("unchecked")
@@ -60,7 +61,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
         return (List<CaseManagementIssue>) getHibernateTemplate().find(
                 "from CaseManagementIssue cmi where cmi.demographic_no = ? "
                         + (resolved != null ? " and cmi.resolved=" + resolved : "") + " order by cmi.resolved",
-                new Object[] { demographic_no });
+                new Object[]{demographic_no});
     }
 
     @SuppressWarnings("unchecked")
@@ -69,7 +70,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
         return (List<CaseManagementIssue>) getHibernateTemplate().find(
                 "from CaseManagementIssue cmi where cmi.notes.id = ? "
                         + (resolved != null ? " and cmi.resolved=" + resolved : "") + " order by cmi.resolved",
-                new Object[] { noteId });
+                new Object[]{noteId});
     }
 
     @SuppressWarnings("unchecked")
@@ -77,7 +78,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     public Issue getIssueByCmnId(Integer cmnIssueId) {
         List<Issue> result = (List<Issue>) getHibernateTemplate().find(
                 "select issue from CaseManagementIssue cmi where cmi.id = ?",
-                new Object[] { Long.valueOf(cmnIssueId) });
+                new Object[]{Long.valueOf(cmnIssueId)});
         if (result.size() > 0)
             return result.get(0);
         return null;
@@ -88,7 +89,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
         @SuppressWarnings("unchecked")
         List<CaseManagementIssue> list = (List<CaseManagementIssue>) this.getHibernateTemplate().find(
                 "from CaseManagementIssue cmi where cmi.issue_id = ? and demographic_no = ?",
-                new Object[] { Long.parseLong(id), Integer.valueOf(demo) });
+                new Object[]{Long.parseLong(id), Integer.valueOf(demo)});
         if (list != null && list.size() == 1)
             return list.get(0);
 
@@ -100,7 +101,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
         @SuppressWarnings("unchecked")
         List<CaseManagementIssue> list = (List<CaseManagementIssue>) this.getHibernateTemplate().find(
                 "select cmi from CaseManagementIssue cmi, Issue issue where cmi.issue_id=issue.id and issue.code = ? and cmi.demographic_no = ?",
-                new Object[] { issueCode, Integer.valueOf(demo) });
+                new Object[]{issueCode, Integer.valueOf(demo)});
 
         if (list.size() > 1) {
             log.error("Expected 1 result got more : " + list.size() + "(" + demo + "," + issueCode + ")");
@@ -160,7 +161,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
         List<Integer> results = (List<Integer>) this.getHibernateTemplate().find(
                 "select distinct cmi.demographic_no from CaseManagementIssue cmi where cmi.update_date > ? and program_id in ("
                         + sb.toString() + ")",
-                new Object[] { date });
+                new Object[]{date});
 
         return results;
     }
@@ -170,16 +171,16 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     public List<CaseManagementIssue> getIssuesByDemographicSince(String demographic_no, Date date) {
         return (List<CaseManagementIssue>) this.getHibernateTemplate().find(
                 "from CaseManagementIssue cmi where cmi.demographic_no = ? and cmi.update_date > ?",
-                new Object[] { Integer.valueOf(demographic_no), date });
+                new Object[]{Integer.valueOf(demographic_no), date});
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<FacilityIdDemographicIssueCompositePk> getIssueIdsForIntegrator(Integer facilityId,
-            Integer demographicNo) {
+                                                                                Integer demographicNo) {
         List<Object[]> rs = (List<Object[]>) this.getHibernateTemplate().find(
                 "select i.code,i.type from CaseManagementIssue cmi, Issue i where cmi.issue_id = i.id and cmi.demographic_no = ?",
-                new Object[] { demographicNo });
+                new Object[]{demographicNo});
         List<FacilityIdDemographicIssueCompositePk> results = new ArrayList<FacilityIdDemographicIssueCompositePk>();
         for (Object[] item : rs) {
             FacilityIdDemographicIssueCompositePk key = new FacilityIdDemographicIssueCompositePk();

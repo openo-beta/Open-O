@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -27,6 +27,7 @@ package org.oscarehr.sharingcenter.model;
 import java.io.Serializable;
 
 import javax.persistence.*;
+
 import org.marc.shic.core.CodeValue;
 import org.marc.shic.core.MappingCodeType;
 
@@ -154,17 +155,17 @@ public class MiscMapping extends AbstractModel<Integer> implements Serializable 
     public void setFolderCodeList(MappingCode folderCodeList) {
         this.folderCodeList = folderCodeList;
     }
-    
+
     public CodeValue getCode(MappingCodeType codeType) {
         CodeValue retVal = null;
-        
+
         if (codeType.equals(MappingCodeType.ClassCode) && classCode != null) {
             retVal = classCode.generateCodeValue();
         } else if (codeType.equals(MappingCodeType.ContentTypeCode) && contentTypeCode != null) {
             retVal = contentTypeCode.generateCodeValue();
         } else if (codeType.equals(MappingCodeType.EventCodeList) && eventCodeList != null) {
             retVal = eventCodeList.generateCodeValue();
-        } else if (codeType.equals(MappingCodeType.FolderCodeList) && folderCodeList != null ) {
+        } else if (codeType.equals(MappingCodeType.FolderCodeList) && folderCodeList != null) {
             retVal = folderCodeList.generateCodeValue();
         } else if (codeType.equals(MappingCodeType.FormatCode) && formatCode != null) {
             retVal = formatCode.generateCodeValue();
@@ -174,7 +175,7 @@ public class MiscMapping extends AbstractModel<Integer> implements Serializable 
             MiscUtils.getLogger().warn("Unsupported Code " + codeType.getCode());
             retVal = new CodeValue("Unknown Code " + codeType.getCode(), "Unknown CodeSystem", "Unknown");
         }
-        
+
         return retVal;
     }
 

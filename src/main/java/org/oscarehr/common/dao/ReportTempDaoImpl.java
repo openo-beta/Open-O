@@ -6,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -31,36 +31,37 @@ package org.oscarehr.common.dao;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.common.model.ReportTemp;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ReportTempDaoImpl extends AbstractDaoImpl<ReportTemp> implements ReportTempDao {
 
-	public ReportTempDaoImpl() {
-		super(ReportTemp.class);
-	}
+    public ReportTempDaoImpl() {
+        super(ReportTemp.class);
+    }
 
-	@Override
-	public List<ReportTemp> findAll() {
-		String sql = "select x from ReportTemp x";
-		Query query = entityManager.createQuery(sql);
+    @Override
+    public List<ReportTemp> findAll() {
+        String sql = "select x from ReportTemp x";
+        Query query = entityManager.createQuery(sql);
 
-		@SuppressWarnings("unchecked")
-		List<ReportTemp> results = query.getResultList();
-		return results;
-	}
+        @SuppressWarnings("unchecked")
+        List<ReportTemp> results = query.getResultList();
+        return results;
+    }
 
-	@Override
-	public List<ReportTemp> findGreateThanEdb(Date edb, int offset, int limit) {
-		String sql = "select x from ReportTemp x where x.id.edb >= ?";
-		Query query = entityManager.createQuery(sql);
-		query.setParameter(0, edb);
-		query.setMaxResults(limit);
-		query.setFirstResult(offset);
+    @Override
+    public List<ReportTemp> findGreateThanEdb(Date edb, int offset, int limit) {
+        String sql = "select x from ReportTemp x where x.id.edb >= ?";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter(0, edb);
+        query.setMaxResults(limit);
+        query.setFirstResult(offset);
 
-		@SuppressWarnings("unchecked")
-		List<ReportTemp> results = query.getResultList();
-		return results;
-	}
+        @SuppressWarnings("unchecked")
+        List<ReportTemp> results = query.getResultList();
+        return results;
+    }
 }

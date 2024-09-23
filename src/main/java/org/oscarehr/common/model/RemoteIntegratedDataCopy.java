@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,113 +41,111 @@ import javax.persistence.TemporalType;
 @Entity
 public class RemoteIntegratedDataCopy extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name = "demographic_no")
-	private Integer demographicNo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String dataType;
-	private String data;
-	private String signature;
-	
-	private Integer facilityId;
-	
-	@Column(name="provider_no")
-	private String providerNo;
-		
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastUpdateDate;
-	
-	private boolean archived;
+    @Column(name = "demographic_no")
+    private Integer demographicNo;
 
+    private String dataType;
+    private String data;
+    private String signature;
 
+    private Integer facilityId;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdateDate;
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
-
-	public void setDemographicNo(Integer demographic_no) {
-		this.demographicNo = demographic_no;
-	}
+    private boolean archived;
 
 
-	public Date getLastUpdateDate() {
-    	return (lastUpdateDate);
+    public Integer getId() {
+        return id;
     }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-    	this.lastUpdateDate = lastUpdateDate;
-    }
-	
-	public String getDataType() {
-    	return dataType;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public void setDataType(String datatype) {
-    	this.dataType = datatype;
+    public Integer getDemographicNo() {
+        return demographicNo;
     }
 
-	public String getData() {
-    	return data;
+    public void setDemographicNo(Integer demographic_no) {
+        this.demographicNo = demographic_no;
     }
 
-	public void setData(String data) {
-    	this.data = data;
-    }
-	
-	public String getSignature() {
-    	return signature;
+
+    public Date getLastUpdateDate() {
+        return (lastUpdateDate);
     }
 
-	public void setSignature(String signature) {
-    	this.signature = signature;
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 
-	public void setObject(Object obj){
-		
-		this.dataType = obj.getClass().getCanonicalName();
-		
-	}
-
-
-	public Integer getFacilityId() {
-    	return facilityId;
+    public String getDataType() {
+        return dataType;
     }
 
-	public void setFacilityId(Integer facilityId) {
-    	this.facilityId = facilityId;
+    public void setDataType(String datatype) {
+        this.dataType = datatype;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getData() {
+        return data;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setData(String data) {
+        this.data = data;
     }
 
-	public boolean isArchived() {
-    	return archived;
+    public String getSignature() {
+        return signature;
     }
 
-	public void setArchived(boolean archived) {
-    	this.archived = archived;
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
-	@PreUpdate
-	@PrePersist
-	protected void autoSetUpdateTime()
-	{
-		lastUpdateDate=new Date();
-	}
+    public void setObject(Object obj) {
+
+        this.dataType = obj.getClass().getCanonicalName();
+
+    }
+
+
+    public Integer getFacilityId() {
+        return facilityId;
+    }
+
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    @PreUpdate
+    @PrePersist
+    protected void autoSetUpdateTime() {
+        lastUpdateDate = new Date();
+    }
 }

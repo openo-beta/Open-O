@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -63,20 +62,20 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cSelf",
-    "cSpousePartner",
-    "cSpousePartnerAndOthers",
-    "cChildren",
-    "cParents",
-    "cRelatives",
-    "cNonRelatives",
-    "cUnknown",
-    "cClientDeclinedToAnswer"
+        "cSelf",
+        "cSpousePartner",
+        "cSpousePartnerAndOthers",
+        "cChildren",
+        "cParents",
+        "cRelatives",
+        "cNonRelatives",
+        "cUnknown",
+        "cClientDeclinedToAnswer"
 })
 @XmlRootElement(name = "CDo_you_live_with_anyone___select_one_")
 public class CDoYouLiveWithAnyoneSelectOne {
@@ -102,11 +101,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cSelf property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCSelf() {
         return cSelf;
@@ -114,11 +113,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cSelf property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCSelf(String value) {
         this.cSelf = value;
@@ -126,11 +125,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cSpousePartner property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCSpousePartner() {
         return cSpousePartner;
@@ -138,11 +137,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cSpousePartner property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCSpousePartner(String value) {
         this.cSpousePartner = value;
@@ -150,11 +149,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cSpousePartnerAndOthers property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCSpousePartnerAndOthers() {
         return cSpousePartnerAndOthers;
@@ -162,11 +161,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cSpousePartnerAndOthers property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCSpousePartnerAndOthers(String value) {
         this.cSpousePartnerAndOthers = value;
@@ -174,11 +173,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cChildren property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCChildren() {
         return cChildren;
@@ -186,11 +185,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cChildren property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCChildren(String value) {
         this.cChildren = value;
@@ -198,11 +197,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cParents property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCParents() {
         return cParents;
@@ -210,11 +209,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cParents property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCParents(String value) {
         this.cParents = value;
@@ -222,11 +221,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cRelatives property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCRelatives() {
         return cRelatives;
@@ -234,11 +233,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cRelatives property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCRelatives(String value) {
         this.cRelatives = value;
@@ -246,11 +245,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cNonRelatives property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCNonRelatives() {
         return cNonRelatives;
@@ -258,11 +257,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cNonRelatives property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCNonRelatives(String value) {
         this.cNonRelatives = value;
@@ -270,11 +269,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cUnknown property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCUnknown() {
         return cUnknown;
@@ -282,11 +281,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cUnknown property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -294,11 +293,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -306,11 +305,11 @@ public class CDoYouLiveWithAnyoneSelectOne {
 
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

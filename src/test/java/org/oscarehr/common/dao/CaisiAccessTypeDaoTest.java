@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,34 +38,34 @@ import org.oscarehr.util.SpringUtils;
 
 public class CaisiAccessTypeDaoTest extends DaoTestFixtures {
 
-	protected CaisiAccessTypeDao dao = (CaisiAccessTypeDao)SpringUtils.getBean(CaisiAccessTypeDao.class);
-	
-	@Before
-	public void setUp() throws Exception {
-		SchemaUtils.restoreTable("access_type");
-	}
-	
-	@Test
-	public void testFindAll() throws Exception {
-		CaisiAccessType caisiAccessType1 = new CaisiAccessType();
-		EntityDataGenerator.generateTestDataForModelClass(caisiAccessType1);
-		CaisiAccessType caisiAccessType2 = new CaisiAccessType();
-		EntityDataGenerator.generateTestDataForModelClass(caisiAccessType2);
-		CaisiAccessType caisiAccessType3 = new CaisiAccessType();
-		EntityDataGenerator.generateTestDataForModelClass(caisiAccessType3);
-		
-		dao.persist(caisiAccessType1);
-		dao.persist(caisiAccessType2);
-		dao.persist(caisiAccessType3);
-		
-		List<CaisiAccessType> result = dao.findAll();
-		List<CaisiAccessType> expectedResult = new ArrayList<CaisiAccessType>(Arrays.asList(
-				caisiAccessType1,
-				caisiAccessType2,
-				caisiAccessType3
-				));
+    protected CaisiAccessTypeDao dao = (CaisiAccessTypeDao) SpringUtils.getBean(CaisiAccessTypeDao.class);
 
-		assertTrue(result.containsAll(expectedResult));
-	}
+    @Before
+    public void setUp() throws Exception {
+        SchemaUtils.restoreTable("access_type");
+    }
+
+    @Test
+    public void testFindAll() throws Exception {
+        CaisiAccessType caisiAccessType1 = new CaisiAccessType();
+        EntityDataGenerator.generateTestDataForModelClass(caisiAccessType1);
+        CaisiAccessType caisiAccessType2 = new CaisiAccessType();
+        EntityDataGenerator.generateTestDataForModelClass(caisiAccessType2);
+        CaisiAccessType caisiAccessType3 = new CaisiAccessType();
+        EntityDataGenerator.generateTestDataForModelClass(caisiAccessType3);
+
+        dao.persist(caisiAccessType1);
+        dao.persist(caisiAccessType2);
+        dao.persist(caisiAccessType3);
+
+        List<CaisiAccessType> result = dao.findAll();
+        List<CaisiAccessType> expectedResult = new ArrayList<CaisiAccessType>(Arrays.asList(
+                caisiAccessType1,
+                caisiAccessType2,
+                caisiAccessType3
+        ));
+
+        assertTrue(result.containsAll(expectedResult));
+    }
 
 }

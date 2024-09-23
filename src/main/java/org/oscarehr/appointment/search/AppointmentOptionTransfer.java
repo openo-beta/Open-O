@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -27,65 +27,68 @@ package org.oscarehr.appointment.search;
 import java.util.Calendar;
 
 public class AppointmentOptionTransfer {
-	private Calendar availableTime = null;
-	private String encString = null;
-	private String providerName = null;
-	private String timeDisplay = null;
-	private boolean isCancelled;
-	
-	public AppointmentOptionTransfer(){}
-	
-	
-	public String getTimeDisplay() {
-		return timeDisplay;
-	}
+    private Calendar availableTime = null;
+    private String encString = null;
+    private String providerName = null;
+    private String timeDisplay = null;
+    private boolean isCancelled;
+
+    public AppointmentOptionTransfer() {
+    }
 
 
-	public AppointmentOptionTransfer(Calendar availableTime,String timeDisplay ,String providerName,String encString){
-		this.availableTime = availableTime;
-		this.encString = encString;
-		this.providerName = providerName;
-		this.timeDisplay =timeDisplay;
-	}
-	
-	
-	public Calendar getAvailableTime() {
-		return availableTime;
-	}
-	public String getEncString() {
-		return encString;
-	}
-	public String getProviderName() {
-		return providerName;
-	}
+    public String getTimeDisplay() {
+        return timeDisplay;
+    }
 
 
-	public void setAvailableTime(Calendar availableTime) {
-		this.availableTime = availableTime;
-	}
+    public AppointmentOptionTransfer(Calendar availableTime, String timeDisplay, String providerName, String encString) {
+        this.availableTime = availableTime;
+        this.encString = encString;
+        this.providerName = providerName;
+        this.timeDisplay = timeDisplay;
+    }
 
 
-	public void setEncString(String encString) {
-		this.encString = encString;
-	}
+    public Calendar getAvailableTime() {
+        return availableTime;
+    }
+
+    public String getEncString() {
+        return encString;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
 
 
-	public void setProviderName(String providerName) {
-		this.providerName = providerName;
-	}
+    public void setAvailableTime(Calendar availableTime) {
+        this.availableTime = availableTime;
+    }
 
 
-	public void setTimeDisplay(String timeDisplay) {
-		this.timeDisplay = timeDisplay;
-	}
+    public void setEncString(String encString) {
+        this.encString = encString;
+    }
 
 
-	public boolean isCancelled() {
-		return isCancelled;
-	}
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
 
 
-	public void setCancelled(boolean isCancelled) {
-		this.isCancelled = isCancelled;
-	}
+    public void setTimeDisplay(String timeDisplay) {
+        this.timeDisplay = timeDisplay;
+    }
+
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+
+    public void setCancelled(boolean isCancelled) {
+        this.isCancelled = isCancelled;
+    }
 }

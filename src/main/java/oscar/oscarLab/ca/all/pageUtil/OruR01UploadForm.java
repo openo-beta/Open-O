@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,91 +32,90 @@ import org.apache.struts.upload.FormFile;
 
 public class OruR01UploadForm extends ActionForm {
 
-	private Integer professionalSpecialistId=null;
-	private String clientFirstName=null;
-	private String clientLastName=null;
-	private String clientHealthNumber=null;
-	private String clientBirthDay=null;
-	private String clientGender=null;
-	private String subject=null;
-	private String textMessage=null;
-	private FormFile uploadFile = null;
-	
-	public FormFile getUploadFile() {
-		return uploadFile;
-	}
+    private Integer professionalSpecialistId = null;
+    private String clientFirstName = null;
+    private String clientLastName = null;
+    private String clientHealthNumber = null;
+    private String clientBirthDay = null;
+    private String clientGender = null;
+    private String subject = null;
+    private String textMessage = null;
+    private FormFile uploadFile = null;
 
-	public void setUploadFile(FormFile uploadFile) {
-		this.uploadFile = uploadFile;
-	}
-
-	public Integer getProfessionalSpecialistId() {
-    	return professionalSpecialistId;
+    public FormFile getUploadFile() {
+        return uploadFile;
     }
 
-	public void setProfessionalSpecialistId(Integer professionalSpecialistId) {
-    	this.professionalSpecialistId = professionalSpecialistId;
+    public void setUploadFile(FormFile uploadFile) {
+        this.uploadFile = uploadFile;
     }
 
-	public String getClientFirstName() {
-    	return clientFirstName;
+    public Integer getProfessionalSpecialistId() {
+        return professionalSpecialistId;
     }
 
-	public void setClientFirstName(String clientFirstName) {
-    	this.clientFirstName = clientFirstName;
+    public void setProfessionalSpecialistId(Integer professionalSpecialistId) {
+        this.professionalSpecialistId = professionalSpecialistId;
     }
 
-	public String getClientLastName() {
-    	return clientLastName;
+    public String getClientFirstName() {
+        return clientFirstName;
     }
 
-	public void setClientLastName(String clientLastName) {
-    	this.clientLastName = clientLastName;
+    public void setClientFirstName(String clientFirstName) {
+        this.clientFirstName = clientFirstName;
     }
 
-	public String getClientHealthNumber() {
-    	return clientHealthNumber;
+    public String getClientLastName() {
+        return clientLastName;
     }
 
-	public void setClientHealthNumber(String clientHealthNumber) {
-    	this.clientHealthNumber = clientHealthNumber;
+    public void setClientLastName(String clientLastName) {
+        this.clientLastName = clientLastName;
     }
 
-	public String getClientBirthDay() {
-    	return clientBirthDay;
+    public String getClientHealthNumber() {
+        return clientHealthNumber;
     }
 
-	public void setClientBirthDay(String clientBirthDay) {
-    	this.clientBirthDay = clientBirthDay;
+    public void setClientHealthNumber(String clientHealthNumber) {
+        this.clientHealthNumber = clientHealthNumber;
     }
 
-	public String getClientGender() {
-    	return clientGender;
+    public String getClientBirthDay() {
+        return clientBirthDay;
     }
 
-	public void setClientGender(String clientGender) {
-    	this.clientGender = clientGender;
+    public void setClientBirthDay(String clientBirthDay) {
+        this.clientBirthDay = clientBirthDay;
     }
 
-	public String getSubject() {
-    	return subject;
+    public String getClientGender() {
+        return clientGender;
     }
 
-	public void setSubject(String subject) {
-    	this.subject = subject;
+    public void setClientGender(String clientGender) {
+        this.clientGender = clientGender;
     }
 
-	public String getTextMessage() {
-    	return textMessage;
+    public String getSubject() {
+        return subject;
     }
 
-	public void setTextMessage(String textMessage) {
-    	this.textMessage = textMessage;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-	@Override
-    public String toString()
-	{
-		return(ToStringBuilder.reflectionToString(this));
-	}
+    public String getTextMessage() {
+        return textMessage;
+    }
+
+    public void setTextMessage(String textMessage) {
+        this.textMessage = textMessage;
+    }
+
+    @Override
+    public String toString() {
+        return (ToStringBuilder.reflectionToString(this));
+    }
 }

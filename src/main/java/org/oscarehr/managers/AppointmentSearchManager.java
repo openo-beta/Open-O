@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -60,23 +60,23 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
 public interface AppointmentSearchManager {
-	//Right now these two methods return the same but in the future this could be customized based on the demographic 
-	public List<AppointmentType> getAppointmentTypes(SearchConfig config,Integer demographicNo);
-	
-	public List<AppointmentType> getAppointmentTypes(SearchConfig config,String providerNo);
-	
-	public SearchConfig getProviderSearchConfig(String providerNo);
-	
-	public List<TimeSlot> findAppointment(LoggedInInfo loggedInInfo,SearchConfig config, Integer demographicNo,Long appointmentTypeId,Calendar startDate) throws java.lang.ClassNotFoundException,java.lang.InstantiationException,java.lang.IllegalAccessException;
+    //Right now these two methods return the same but in the future this could be customized based on the demographic
+    public List<AppointmentType> getAppointmentTypes(SearchConfig config, Integer demographicNo);
 
-	public static List<TimeSlot> getAllowedTimesByType(DayWorkSchedule dayWorkSchedule, Character[] codes, String providerNo){
-		ArrayList<TimeSlot> allowedTimesFilteredByType = new ArrayList<TimeSlot>();
-		for (CalendarScheduleCodePairTransfer entry : CalendarScheduleCodePairTransfer.toTransfer(dayWorkSchedule.getTimeSlots())  ){
-			char c = entry.getScheduleCode();
-			if (Arrays.binarySearch(codes, c) >= 0){
-				allowedTimesFilteredByType.add(new TimeSlot(providerNo, null, entry.getDate(), c));
-			}
-		}
-		return allowedTimesFilteredByType;
-	}
+    public List<AppointmentType> getAppointmentTypes(SearchConfig config, String providerNo);
+
+    public SearchConfig getProviderSearchConfig(String providerNo);
+
+    public List<TimeSlot> findAppointment(LoggedInInfo loggedInInfo, SearchConfig config, Integer demographicNo, Long appointmentTypeId, Calendar startDate) throws java.lang.ClassNotFoundException, java.lang.InstantiationException, java.lang.IllegalAccessException;
+
+    public static List<TimeSlot> getAllowedTimesByType(DayWorkSchedule dayWorkSchedule, Character[] codes, String providerNo) {
+        ArrayList<TimeSlot> allowedTimesFilteredByType = new ArrayList<TimeSlot>();
+        for (CalendarScheduleCodePairTransfer entry : CalendarScheduleCodePairTransfer.toTransfer(dayWorkSchedule.getTimeSlots())) {
+            char c = entry.getScheduleCode();
+            if (Arrays.binarySearch(codes, c) >= 0) {
+                allowedTimesFilteredByType.add(new TimeSlot(providerNo, null, entry.getDate(), c));
+            }
+        }
+        return allowedTimesFilteredByType;
+    }
 }

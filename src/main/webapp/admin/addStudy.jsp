@@ -29,106 +29,110 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.reporting" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.reporting");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.reporting");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Add Edit Study</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Add Edit Study</title>
 
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"><!-- Bootstrap 2.3.1 -->
-<script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
+    <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"><!-- Bootstrap 2.3.1 -->
+    <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
 
-<script type="text/javascript">
-function validateForm() {
-	var ret = true;
-	var msg = "";
-	var name = document.getElementById("studyName");
-	var desc = document.getElementById("studyDescription");
+    <script type="text/javascript">
+        function validateForm() {
+            var ret = true;
+            var msg = "";
+            var name = document.getElementById("studyName");
+            var desc = document.getElementById("studyDescription");
 
-	if( name.value == null || name.value == "" ) {
-		msg = "Please enter a name for the study\n";
-		ret = false;
-	}
+            if (name.value == null || name.value == "") {
+                msg = "Please enter a name for the study\n";
+                ret = false;
+            }
 
-	if( desc.value == null || desc.value == "" ) {
-		msg += "Please enter a description for the study";
-		ret = false;
-	}
+            if (desc.value == null || desc.value == "") {
+                msg += "Please enter a description for the study";
+                ret = false;
+            }
 
-	if( !ret ) {
-		alert(msg);
-	}
-	else {
-		window.opener.reload();
-		// window.close();
-	}
+            if (!ret) {
+                alert(msg);
+            } else {
+                window.opener.reload();
+                // window.close();
+            }
 
 
-	return ret;
-}
-</script>
+            return ret;
+        }
+    </script>
 
 </head>
 <body class="BODY" onload="document.forms[0].studyName.focus()">
 <%
-String studyId = request.getParameter("studyId");
-Study study = null;
+    String studyId = request.getParameter("studyId");
+    Study study = null;
 
-if( studyId == null ) {
-    studyId = "";
-}
-else {
-    StudyDao studyDao = (StudyDao)SpringUtils.getBean(StudyDao.class);
-    study = studyDao.find(Integer.parseInt(studyId));
-}
+    if (studyId == null) {
+        studyId = "";
+    } else {
+        StudyDao studyDao = (StudyDao) SpringUtils.getBean(StudyDao.class);
+        study = studyDao.find(Integer.parseInt(studyId));
+    }
 
 %>
 
 <form method="post" action="../study/ManageStudy.do">
-<input type="hidden" name="studyId" value="<%=studyId%>"/>
-<input type="hidden" name="method" value="saveUpdateStudy"/>
+    <input type="hidden" name="studyId" value="<%=studyId%>"/>
+    <input type="hidden" name="method" value="saveUpdateStudy"/>
 
-    <h3>&nbsp;&nbsp;<bean:message key="admin.admin.btnStudy" /></h3>
+    <h3>&nbsp;&nbsp;<bean:message key="admin.admin.btnStudy"/></h3>
 
     <div class="well">
         <div class="row">
             <div class="span4">
-              <fieldset>
-                <legend><bean:message key="admin.admin.btnStudy" /></legend>
-                <label><bean:message key="admin.providersearch.formName" /></label>
-                <input type="text" class="input-block-level" id="studyName" name="studyName" value="<%=study == null ? "" : Encode.forHtml(study.getStudyName())%>"/>
-                <label><bean:message key="issueAdmin.description" /></label>
-                <input type="text" class="input-block-level" id="studyDescription" name="studyDescription" value="<%=study == null || study.getDescription() == null ? "" : Encode.forHtml(study.getDescription())%>"/>
-                <label><bean:message key="oscarEncounter.formlist.formName" /></label>
-                <input type="text" class="input-block-level" name="studyForm" value="<%=study == null || study.getFormName() == null ? "" : Encode.forHtml(study.getFormName())%>"/>
-                <label><bean:message key="provider.eRx.labelURL" /></label>
-                <input type="text" class="input-block-level" name="studyRemoteURL" value="<%=study == null || study.getRemoteServerUrl() == null ? "" : Encode.forHtml(study.getRemoteServerUrl())%>"/>
-                <label>Study Link</label>
-                <input type="text" class="input-block-level" name="studyLink" value="<%=study == null || study.getStudyLink() == null ? "" : Encode.forHtml(study.getStudyLink())%>"/><br>
-                <input type="submit" class="btn btn-primary" value="<bean:message key="global.btnSave" />" onclick="return validateForm();">
-              </fieldset>
+                <fieldset>
+                    <legend><bean:message key="admin.admin.btnStudy"/></legend>
+                    <label><bean:message key="admin.providersearch.formName"/></label>
+                    <input type="text" class="input-block-level" id="studyName" name="studyName"
+                           value="<%=study == null ? "" : Encode.forHtml(study.getStudyName())%>"/>
+                    <label><bean:message key="issueAdmin.description"/></label>
+                    <input type="text" class="input-block-level" id="studyDescription" name="studyDescription"
+                           value="<%=study == null || study.getDescription() == null ? "" : Encode.forHtml(study.getDescription())%>"/>
+                    <label><bean:message key="oscarEncounter.formlist.formName"/></label>
+                    <input type="text" class="input-block-level" name="studyForm"
+                           value="<%=study == null || study.getFormName() == null ? "" : Encode.forHtml(study.getFormName())%>"/>
+                    <label><bean:message key="provider.eRx.labelURL"/></label>
+                    <input type="text" class="input-block-level" name="studyRemoteURL"
+                           value="<%=study == null || study.getRemoteServerUrl() == null ? "" : Encode.forHtml(study.getRemoteServerUrl())%>"/>
+                    <label>Study Link</label>
+                    <input type="text" class="input-block-level" name="studyLink"
+                           value="<%=study == null || study.getStudyLink() == null ? "" : Encode.forHtml(study.getStudyLink())%>"/><br>
+                    <input type="submit" class="btn btn-primary" value="<bean:message key="global.btnSave" />"
+                           onclick="return validateForm();">
+                </fieldset>
             </div> <!-- class="span4" -->
         </div> <!-- class="row" -->
     </div> <!-- class="well" -->
 
 
 </form>
-<%if( !studyId.equals("") ) {%>
-	<jsp:include page="listDemographics.jsp"></jsp:include>
+<%if (!studyId.equals("")) {%>
+<jsp:include page="listDemographics.jsp"></jsp:include>
 <%} %>
 </body>
 </html>

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -99,268 +99,268 @@ import com.lowagie.text.pdf.PdfWriter;
 
 public class PHRUserManagementAction extends DispatchAction {
 
-	private static Logger log = MiscUtils.getLogger();
+    private static Logger log = MiscUtils.getLogger();
 
-	PHRDocumentDAO phrDocumentDAO;
-	PHRActionDAO phrActionDAO;
-	PHRService phrService;
+    PHRDocumentDAO phrDocumentDAO;
+    PHRActionDAO phrActionDAO;
+    PHRService phrService;
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return super.execute(mapping, form, request, response);
-	}
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return super.execute(mapping, form, request, response);
+    }
 
-	public PHRUserManagementAction() {
-	}
+    public PHRUserManagementAction() {
+    }
 
-	public void setPhrDocumentDAO(PHRDocumentDAO phrDocumentDAO) {
-		this.phrDocumentDAO = phrDocumentDAO;
-	}
+    public void setPhrDocumentDAO(PHRDocumentDAO phrDocumentDAO) {
+        this.phrDocumentDAO = phrDocumentDAO;
+    }
 
-	public void setPhrActionDAO(PHRActionDAO phrActionDAO) {
-		this.phrActionDAO = phrActionDAO;
-	}
+    public void setPhrActionDAO(PHRActionDAO phrActionDAO) {
+        this.phrActionDAO = phrActionDAO;
+    }
 
-	public void setPhrService(PHRService phrService) {
-		this.phrService = phrService;
-	}
+    public void setPhrService(PHRService phrService) {
+        this.phrService = phrService;
+    }
 
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return null;
-	}
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return null;
+    }
 
-	protected Properties getCfgProp() {
-		Properties ret = new Properties();
+    protected Properties getCfgProp() {
+        Properties ret = new Properties();
 
-		int intialNameOffset = 180;
+        int intialNameOffset = 180;
 
-		PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
+        PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
 
-		try {
-			List<Property> propertyList = propertyDao.findByName("MYOSCAR_REGISTRATION_LETTER_NAME_OFFSET");
-			if (!propertyList.isEmpty()) {
-				log.debug("property size list " + propertyList.size());
-				Property property = propertyList.get(propertyList.size() - 1);
-				log.debug("property value " + property.getValue());
-				intialNameOffset = Integer.parseInt(property.getValue());
-			}
-		} catch (Exception e) {
-			log.error("OFFSET ERROR", e);
-		}
+        try {
+            List<Property> propertyList = propertyDao.findByName("MYOSCAR_REGISTRATION_LETTER_NAME_OFFSET");
+            if (!propertyList.isEmpty()) {
+                log.debug("property size list " + propertyList.size());
+                Property property = propertyList.get(propertyList.size() - 1);
+                log.debug("property value " + property.getValue());
+                intialNameOffset = Integer.parseInt(property.getValue());
+            }
+        } catch (Exception e) {
+            log.error("OFFSET ERROR", e);
+        }
 
-		ret.setProperty("name", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
-		intialNameOffset += 11;
-		ret.setProperty("address", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
-		intialNameOffset += 11;
-		ret.setProperty("city", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
-		intialNameOffset += 11;
-		ret.setProperty("postalCode", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
+        ret.setProperty("name", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
+        intialNameOffset += 11;
+        ret.setProperty("address", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
+        intialNameOffset += 11;
+        ret.setProperty("city", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
+        intialNameOffset += 11;
+        ret.setProperty("postalCode", "left, 70, " + intialNameOffset + ", 0, BaseFont.HELVETICA, 11");
 
-		ret.setProperty("letterDate", "left, 480, 180, 0, BaseFont.HELVETICA, 11");//370 430
-		ret.setProperty("intro", "left, 70, 340, 0, BaseFont.HELVETICA, 11, _, 550, 250, 13");
-		ret.setProperty("credHeading", "left, 80, 350, 0, BaseFont.HELVETICA, 11");
-		ret.setProperty("username", "left, 80, 378, 0, BaseFont.HELVETICA, 11");
-		ret.setProperty("password", "left, 80, 395, 0, BaseFont.HELVETICA, 11");
-		ret.setProperty("URL", "left, 80, 412, 0, BaseFont.HELVETICA, 11");
+        ret.setProperty("letterDate", "left, 480, 180, 0, BaseFont.HELVETICA, 11");//370 430
+        ret.setProperty("intro", "left, 70, 340, 0, BaseFont.HELVETICA, 11, _, 550, 250, 13");
+        ret.setProperty("credHeading", "left, 80, 350, 0, BaseFont.HELVETICA, 11");
+        ret.setProperty("username", "left, 80, 378, 0, BaseFont.HELVETICA, 11");
+        ret.setProperty("password", "left, 80, 395, 0, BaseFont.HELVETICA, 11");
+        ret.setProperty("URL", "left, 80, 412, 0, BaseFont.HELVETICA, 11");
 
-		return ret;
-	}
+        return ret;
+    }
 
-	/*
-	 Date	( generate date today )
-	 name address city province postal code
-	 username passed in username
-	 password passed in password
+    /*
+     Date	( generate date today )
+     name address city province postal code
+     username passed in username
+     password passed in password
 
-	 */
-	public ByteArrayOutputStream generateUserRegistrationLetter(String demographicNo, String username, String password) throws Exception {
-		log.debug("Demographic " + demographicNo + " username " + username + " password " + password);
-		DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-		Demographic demographic = demographicDao.getDemographic(demographicNo);
+     */
+    public ByteArrayOutputStream generateUserRegistrationLetter(String demographicNo, String username, String password) throws Exception {
+        log.debug("Demographic " + demographicNo + " username " + username + " password " + password);
+        DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+        Demographic demographic = demographicDao.getDemographic(demographicNo);
 
-		Document document = new Document();
+        Document document = new Document();
 
-		ByteArrayOutputStream baosPDF = new ByteArrayOutputStream();
-		PdfWriter writer = null;
+        ByteArrayOutputStream baosPDF = new ByteArrayOutputStream();
+        PdfWriter writer = null;
 
-		try {
-			writer = PdfWriterFactory.newInstance(document, baosPDF, FontSettings.HELVETICA_10PT);
-			// writer = PdfWriter.getInstance(document, baosPDF);
+        try {
+            writer = PdfWriterFactory.newInstance(document, baosPDF, FontSettings.HELVETICA_10PT);
+            // writer = PdfWriter.getInstance(document, baosPDF);
 
-			String title = "TITLE";
-			String template = "KindredPHRLetterHead.pdf";
+            String title = "TITLE";
+            String template = "KindredPHRLetterHead.pdf";
 
-			Properties printCfg = getCfgProp();
+            Properties printCfg = getCfgProp();
 
-			String[] cfgVal = null;
-			StringBuilder tempName = null;
+            String[] cfgVal = null;
+            StringBuilder tempName = null;
 
-			// get the print prop values
+            // get the print prop values
 
-			Properties props = new Properties();
-			props.setProperty("letterDate", UtilDateUtilities.getToday("yyyy-MM-dd"));
-			props.setProperty("name", demographic.getFirstName() + " " + demographic.getLastName());
-			props.setProperty("dearname", demographic.getFirstName() + " " + demographic.getLastName());
-			props.setProperty("address", demographic.getAddress());
-			props.setProperty("city", demographic.getCity() + ", " + demographic.getProvince());
-			props.setProperty("postalCode", demographic.getPostal());
-			props.setProperty("credHeading", "PHR User Account Details");
-			props.setProperty("username", "Username: " + username);
-			props.setProperty("password", "Password: " + password);
-			//Temporary - the intro will change to be dynamic
-			
-			props.setProperty("intro", "We are pleased to provide you with a log in and password for your new Personal Health Record. This account will allow you to connect electronically with our clinic. Please take a few minutes to review the accompanying literature for further information.We look forward to you benefiting from this service.");
-			
-			document.addTitle(title);
-			document.addSubject("");
-			document.addKeywords("pdf, itext");
-			document.addCreator("OSCAR");
-			document.addAuthor("");
-			document.addHeader("Expires", "0");
+            Properties props = new Properties();
+            props.setProperty("letterDate", UtilDateUtilities.getToday("yyyy-MM-dd"));
+            props.setProperty("name", demographic.getFirstName() + " " + demographic.getLastName());
+            props.setProperty("dearname", demographic.getFirstName() + " " + demographic.getLastName());
+            props.setProperty("address", demographic.getAddress());
+            props.setProperty("city", demographic.getCity() + ", " + demographic.getProvince());
+            props.setProperty("postalCode", demographic.getPostal());
+            props.setProperty("credHeading", "PHR User Account Details");
+            props.setProperty("username", "Username: " + username);
+            props.setProperty("password", "Password: " + password);
+            //Temporary - the intro will change to be dynamic
 
-			Rectangle pageSize = PageSize.LETTER;
+            props.setProperty("intro", "We are pleased to provide you with a log in and password for your new Personal Health Record. This account will allow you to connect electronically with our clinic. Please take a few minutes to review the accompanying literature for further information.We look forward to you benefiting from this service.");
 
-			document.setPageSize(pageSize);
-			document.open();
+            document.addTitle(title);
+            document.addSubject("");
+            document.addKeywords("pdf, itext");
+            document.addCreator("OSCAR");
+            document.addAuthor("");
+            document.addHeader("Expires", "0");
 
-			// create a reader for a certain document
-			String propFilename = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "") + "/" + template;
-			PdfReader reader = null;
-			try {
-				reader = new PdfReader(propFilename);
-				log.debug("Found template at " + propFilename);
-			} catch (Exception dex) {
-				log.debug("change path to inside oscar from :" + propFilename);
-				reader = new PdfReader("/oscar/form/prop/" + template);
-				log.debug("Found template at /oscar/form/prop/" + template);
-			}
+            Rectangle pageSize = PageSize.LETTER;
 
-			// retrieve the size of the first page
-			Rectangle pSize = reader.getPageSize(1);
-			float width = pSize.getWidth();
-			float height = pSize.getHeight();
-			log.debug("Width :" + width + " Height: " + height);
+            document.setPageSize(pageSize);
+            document.open();
 
-			PdfContentByte cb = writer.getDirectContent();
-			ColumnText ct = new ColumnText(cb);
-			int fontFlags = 0;
+            // create a reader for a certain document
+            String propFilename = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "") + "/" + template;
+            PdfReader reader = null;
+            try {
+                reader = new PdfReader(propFilename);
+                log.debug("Found template at " + propFilename);
+            } catch (Exception dex) {
+                log.debug("change path to inside oscar from :" + propFilename);
+                reader = new PdfReader("/oscar/form/prop/" + template);
+                log.debug("Found template at /oscar/form/prop/" + template);
+            }
 
-			document.newPage();
-			PdfImportedPage page1 = writer.getImportedPage(reader, 1);
-			cb.addTemplate(page1, 1, 0, 0, 1, 0, 0);
+            // retrieve the size of the first page
+            Rectangle pSize = reader.getPageSize(1);
+            float width = pSize.getWidth();
+            float height = pSize.getHeight();
+            log.debug("Width :" + width + " Height: " + height);
 
-			BaseFont bf; // = normFont;
-			String encoding;
+            PdfContentByte cb = writer.getDirectContent();
+            ColumnText ct = new ColumnText(cb);
+            int fontFlags = 0;
 
-			cb.setRGBColorStroke(0, 0, 255);
+            document.newPage();
+            PdfImportedPage page1 = writer.getImportedPage(reader, 1);
+            cb.addTemplate(page1, 1, 0, 0, 1, 0, 0);
 
-			String[] fontType;
-			for (Enumeration e = printCfg.propertyNames(); e.hasMoreElements();) {
-				tempName = new StringBuilder(e.nextElement().toString());
-				cfgVal = printCfg.getProperty(tempName.toString()).split(" *, *");
+            BaseFont bf; // = normFont;
+            String encoding;
 
-				if (cfgVal[4].indexOf(";") > -1) {
-					fontType = cfgVal[4].split(";");
-					if (fontType[1].trim().equals("italic")) fontFlags = Font.ITALIC;
-					else if (fontType[1].trim().equals("bold")) fontFlags = Font.BOLD;
-					else if (fontType[1].trim().equals("bolditalic")) fontFlags = Font.BOLDITALIC;
-					else fontFlags = Font.NORMAL;
-				} else {
-					fontFlags = Font.NORMAL;
-					fontType = new String[] { cfgVal[4].trim() };
-				}
+            cb.setRGBColorStroke(0, 0, 255);
 
-				if (fontType[0].trim().equals("BaseFont.HELVETICA")) {
-					fontType[0] = BaseFont.HELVETICA;
-					encoding = BaseFont.CP1252; //latin1 encoding
-				} else if (fontType[0].trim().equals("BaseFont.HELVETICA_OBLIQUE")) {
-					fontType[0] = BaseFont.HELVETICA_OBLIQUE;
-					encoding = BaseFont.CP1252;
-				} else if (fontType[0].trim().equals("BaseFont.ZAPFDINGBATS")) {
-					fontType[0] = BaseFont.ZAPFDINGBATS;
-					encoding = BaseFont.ZAPFDINGBATS;
-				} else {
-					fontType[0] = BaseFont.COURIER;
-					encoding = BaseFont.CP1252;
-				}
+            String[] fontType;
+            for (Enumeration e = printCfg.propertyNames(); e.hasMoreElements(); ) {
+                tempName = new StringBuilder(e.nextElement().toString());
+                cfgVal = printCfg.getProperty(tempName.toString()).split(" *, *");
 
-				bf = BaseFont.createFont(fontType[0], encoding, BaseFont.NOT_EMBEDDED);
+                if (cfgVal[4].indexOf(";") > -1) {
+                    fontType = cfgVal[4].split(";");
+                    if (fontType[1].trim().equals("italic")) fontFlags = Font.ITALIC;
+                    else if (fontType[1].trim().equals("bold")) fontFlags = Font.BOLD;
+                    else if (fontType[1].trim().equals("bolditalic")) fontFlags = Font.BOLDITALIC;
+                    else fontFlags = Font.NORMAL;
+                } else {
+                    fontFlags = Font.NORMAL;
+                    fontType = new String[]{cfgVal[4].trim()};
+                }
 
-				// write in a rectangle area
-				if (cfgVal.length >= 9) {
-					Font font = new Font(bf, Integer.parseInt(cfgVal[5].trim()), fontFlags);
-					ct.setSimpleColumn(Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), Integer.parseInt(cfgVal[7].trim()), (height - Integer.parseInt(cfgVal[8].trim())), Integer.parseInt(cfgVal[9].trim()), (cfgVal[0].trim().equals("left") ? Element.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? Element.ALIGN_RIGHT : Element.ALIGN_CENTER)));
+                if (fontType[0].trim().equals("BaseFont.HELVETICA")) {
+                    fontType[0] = BaseFont.HELVETICA;
+                    encoding = BaseFont.CP1252; //latin1 encoding
+                } else if (fontType[0].trim().equals("BaseFont.HELVETICA_OBLIQUE")) {
+                    fontType[0] = BaseFont.HELVETICA_OBLIQUE;
+                    encoding = BaseFont.CP1252;
+                } else if (fontType[0].trim().equals("BaseFont.ZAPFDINGBATS")) {
+                    fontType[0] = BaseFont.ZAPFDINGBATS;
+                    encoding = BaseFont.ZAPFDINGBATS;
+                } else {
+                    fontType[0] = BaseFont.COURIER;
+                    encoding = BaseFont.CP1252;
+                }
 
-					ct.setText(new Phrase(12, props.getProperty(tempName.toString(), ""), font));
-					ct.go();
-					continue;
-				}
+                bf = BaseFont.createFont(fontType[0], encoding, BaseFont.NOT_EMBEDDED);
 
-				// draw line directly
-				if (tempName.toString().startsWith("__$line")) {
-					cb.setRGBColorStrokeF(0f, 0f, 0f);
-					cb.setLineWidth(Float.parseFloat(cfgVal[4].trim()));
-					cb.moveTo(Float.parseFloat(cfgVal[0].trim()), Float.parseFloat(cfgVal[1].trim()));
-					cb.lineTo(Float.parseFloat(cfgVal[2].trim()), Float.parseFloat(cfgVal[3].trim()));
-					// stroke the lines
-					cb.stroke();
-					// write text directly
+                // write in a rectangle area
+                if (cfgVal.length >= 9) {
+                    Font font = new Font(bf, Integer.parseInt(cfgVal[5].trim()), fontFlags);
+                    ct.setSimpleColumn(Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), Integer.parseInt(cfgVal[7].trim()), (height - Integer.parseInt(cfgVal[8].trim())), Integer.parseInt(cfgVal[9].trim()), (cfgVal[0].trim().equals("left") ? Element.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? Element.ALIGN_RIGHT : Element.ALIGN_CENTER)));
 
-				} else if (tempName.toString().startsWith("__")) {
-					cb.beginText();
-					cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
-					cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? (cfgVal[6].trim()) : props.getProperty(tempName.toString(), "")), Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
+                    ct.setText(new Phrase(12, props.getProperty(tempName.toString(), ""), font));
+                    ct.go();
+                    continue;
+                }
 
-					cb.endText();
-				} else if (tempName.toString().equals("forms_promotext")) {
-					if (OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null) {
-						cb.beginText();
-						cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
-						cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT : PdfContentByte.ALIGN_CENTER)), OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT"), Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
+                // draw line directly
+                if (tempName.toString().startsWith("__$line")) {
+                    cb.setRGBColorStrokeF(0f, 0f, 0f);
+                    cb.setLineWidth(Float.parseFloat(cfgVal[4].trim()));
+                    cb.moveTo(Float.parseFloat(cfgVal[0].trim()), Float.parseFloat(cfgVal[1].trim()));
+                    cb.lineTo(Float.parseFloat(cfgVal[2].trim()), Float.parseFloat(cfgVal[3].trim()));
+                    // stroke the lines
+                    cb.stroke();
+                    // write text directly
 
-						cb.endText();
-					}
-				} else { // write prop text
+                } else if (tempName.toString().startsWith("__")) {
+                    cb.beginText();
+                    cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
+                    cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? (cfgVal[6].trim()) : props.getProperty(tempName.toString(), "")), Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
 
-					cb.beginText();
-					cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
-					cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? ((props.getProperty(tempName.toString(), "").equals("") ? "" : cfgVal[6].trim())) : props.getProperty(tempName.toString(), "")), Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
+                    cb.endText();
+                } else if (tempName.toString().equals("forms_promotext")) {
+                    if (OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null) {
+                        cb.beginText();
+                        cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
+                        cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT : PdfContentByte.ALIGN_CENTER)), OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT"), Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
 
-					cb.endText();
-				}
-			}
+                        cb.endText();
+                    }
+                } else { // write prop text
 
-		} catch (DocumentException dex) {
-			baosPDF.reset();
-			throw dex;
-		} finally {
-			if (document != null) document.close();
-			if (writer != null) writer.close();
-		}
-		return baosPDF;
-	}
+                    cb.beginText();
+                    cb.setFontAndSize(bf, Integer.parseInt(cfgVal[5].trim()));
+                    cb.showTextAligned((cfgVal[0].trim().equals("left") ? PdfContentByte.ALIGN_LEFT : (cfgVal[0].trim().equals("right") ? PdfContentByte.ALIGN_RIGHT : PdfContentByte.ALIGN_CENTER)), (cfgVal.length >= 7 ? ((props.getProperty(tempName.toString(), "").equals("") ? "" : cfgVal[6].trim())) : props.getProperty(tempName.toString(), "")), Integer.parseInt(cfgVal[1].trim()), (height - Integer.parseInt(cfgVal[2].trim())), 0);
 
-	public ActionForward setRegistrationLetterData(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		String nameOffset = request.getParameter("nameOffset");
+                    cb.endText();
+                }
+            }
 
-		PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
+        } catch (DocumentException dex) {
+            baosPDF.reset();
+            throw dex;
+        } finally {
+            if (document != null) document.close();
+            if (writer != null) writer.close();
+        }
+        return baosPDF;
+    }
 
-		try {
-			List<Property> propertyList = propertyDao.findByName("MYOSCAR_REGISTRATION_LETTER_NAME_OFFSET");
-			if (propertyList.size() > 0) {
-				Property property = propertyList.get(propertyList.size() - 1);
-				int currentValue = Integer.parseInt(property.getValue());
-				int proposedValue = Integer.parseInt(nameOffset);
-				if (currentValue != proposedValue) {
-					property = new Property();
-					property.setName("MYOSCAR_REGISTRATION_LETTER_NAME_OFFSET");
-					property.setValue(nameOffset);
-					property.setProviderNo((String) request.getSession().getAttribute("user"));
-					propertyDao.persist(property);
-				}
-			}
-		} catch (Exception e) {
-			log.error("OFFSET SAVING ERROR ", e);
-		}
+    public ActionForward setRegistrationLetterData(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        String nameOffset = request.getParameter("nameOffset");
+
+        PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
+
+        try {
+            List<Property> propertyList = propertyDao.findByName("MYOSCAR_REGISTRATION_LETTER_NAME_OFFSET");
+            if (propertyList.size() > 0) {
+                Property property = propertyList.get(propertyList.size() - 1);
+                int currentValue = Integer.parseInt(property.getValue());
+                int proposedValue = Integer.parseInt(nameOffset);
+                if (currentValue != proposedValue) {
+                    property = new Property();
+                    property.setName("MYOSCAR_REGISTRATION_LETTER_NAME_OFFSET");
+                    property.setValue(nameOffset);
+                    property.setProviderNo((String) request.getSession().getAttribute("user"));
+                    propertyDao.persist(property);
+                }
+            }
+        } catch (Exception e) {
+            log.error("OFFSET SAVING ERROR ", e);
+        }
 
 		/*
 		property = new Property();
@@ -374,290 +374,289 @@ public class PHRUserManagementAction extends DispatchAction {
 		propertyDao.persist(property);
 		 */
 
-		return mapping.findForward("registrationLetter");
-	}
+        return mapping.findForward("registrationLetter");
+    }
 
-	public ActionForward registerUser(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		String user = (String) request.getSession().getAttribute("user");
-		String email =  request.getParameter("email");
-		
-		String demographicNo = request.getParameter("demographicNo");
-		
-		ActionRedirect ar = new ActionRedirect(mapping.findForward("registrationResult").getPath());
-		ar.addParameter("demographicNo", demographicNo);
+    public ActionForward registerUser(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        String user = (String) request.getSession().getAttribute("user");
+        String email = request.getParameter("email");
 
-		MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
-		if (myOscarLoggedInInfo == null || !myOscarLoggedInInfo.isLoggedIn()) {
-			ar.addParameter("failmessage", "Permission Denied: You must be logged into PHR to register users");
-			return ar;
-		}
+        String demographicNo = request.getParameter("demographicNo");
 
-		HashMap<String, Object> ht = new HashMap<String, Object>();
-		Enumeration paramNames = request.getParameterNames();
-		while (paramNames.hasMoreElements()) {
-			String param = (String) paramNames.nextElement();
-			if (param.indexOf("list:") == -1) ht.put(param, request.getParameter(param));
-			else ht.put(param, request.getParameterValues(param));
-		}
-		ht.put("registeringProviderNo", request.getSession().getAttribute("user"));
-		
-		ar.addParameter("username", request.getParameter("username"));
-		ar.addParameter("password", request.getParameter("password"));
-		ar.addParameter("email", request.getParameter("email"));
-		
-		//initialize outside the try/catch block
-		PersonTransfer3 newAccount = null;
-		
-		//Step 1. Add Account
-		try {
-			newAccount = sendUserRegistration(myOscarLoggedInInfo, ht);
-		}
-		catch (InvalidRequestException_Exception e) {
-			log.debug("error", e);
-			ar.addParameter("failmessage", "You don't have permissions to perform this action."  + e.getClass().getName() + " - " + e.getMessage());
-			return ar;
-		} catch (ItemAlreadyExistsException_Exception e) {
-			log.debug("ItemAlreadyExistsException", e);
-			ar.addParameter("failmessage", "Failed creating user. User already exists.");
-			ar.addParameter("nonUnique", "true");
-			return ar;
-		} catch (SOAPFaultException se){
-			log.debug("error", se);
-			if (se.getMessage().contains("EntityExistsException")) {
-				ar.addParameter("failmessage", "Failed creating user. Possibly user already exists. "+se.getMessage());
-				ar.addParameter("nonUnique", "true");
-			}
-			else {
-				ar.addParameter("failmessage", "Failed creating user.");
-			}			
-			return ar;
-		} catch (Exception e){
-			log.debug("error", e);
-			ar.addParameter("failmessage", "Failed creating PHR user."  + e.getClass().getName() + " - " + e.getMessage());
-			return ar;
-		}
-		
-		ByteArrayOutputStream boas = null;
-		FileOutputStream fos = null;
-		
-		//Step 2. Persist acct changes to Oscar		
-		try {
-			
-			//if all is well, add the "pin" in the demographic screen			
-			DemographicData dd = new DemographicData();
-			dd.setDemographicPin(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo, newAccount.getUserName());
-			
-			//... and add the email address, if present
-			if(email != null && !"".equals(email)){
-				dd.setDemographicEmail(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo, email);
-				LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, LogConst.CON_DEMOGRAPHIC,   demographicNo , request.getRemoteAddr(),demographicNo);	
-			}
-			//Then create the record in the demographic file for record.
-			boas = generateUserRegistrationLetter(demographicNo, newAccount.getUserName(), request.getParameter("password"));
-			String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-			File docDirectory = new File(docDir);
-			Date registrationDate = new Date();
-			String filename = "PHRRegistrationLetter." + demographicNo + "." + registrationDate.getTime() + ".pdf";
-			File patientRegistrationDocument = new File(docDirectory, filename);
-			fos = new FileOutputStream(patientRegistrationDocument);
-			boas.writeTo(fos);
+        ActionRedirect ar = new ActionRedirect(mapping.findForward("registrationResult").getPath());
+        ar.addParameter("demographicNo", demographicNo);
+
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
+        if (myOscarLoggedInInfo == null || !myOscarLoggedInInfo.isLoggedIn()) {
+            ar.addParameter("failmessage", "Permission Denied: You must be logged into PHR to register users");
+            return ar;
+        }
+
+        HashMap<String, Object> ht = new HashMap<String, Object>();
+        Enumeration paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String param = (String) paramNames.nextElement();
+            if (param.indexOf("list:") == -1) ht.put(param, request.getParameter(param));
+            else ht.put(param, request.getParameterValues(param));
+        }
+        ht.put("registeringProviderNo", request.getSession().getAttribute("user"));
+
+        ar.addParameter("username", request.getParameter("username"));
+        ar.addParameter("password", request.getParameter("password"));
+        ar.addParameter("email", request.getParameter("email"));
+
+        //initialize outside the try/catch block
+        PersonTransfer3 newAccount = null;
+
+        //Step 1. Add Account
+        try {
+            newAccount = sendUserRegistration(myOscarLoggedInInfo, ht);
+        } catch (InvalidRequestException_Exception e) {
+            log.debug("error", e);
+            ar.addParameter("failmessage", "You don't have permissions to perform this action." + e.getClass().getName() + " - " + e.getMessage());
+            return ar;
+        } catch (ItemAlreadyExistsException_Exception e) {
+            log.debug("ItemAlreadyExistsException", e);
+            ar.addParameter("failmessage", "Failed creating user. User already exists.");
+            ar.addParameter("nonUnique", "true");
+            return ar;
+        } catch (SOAPFaultException se) {
+            log.debug("error", se);
+            if (se.getMessage().contains("EntityExistsException")) {
+                ar.addParameter("failmessage", "Failed creating user. Possibly user already exists. " + se.getMessage());
+                ar.addParameter("nonUnique", "true");
+            } else {
+                ar.addParameter("failmessage", "Failed creating user.");
+            }
+            return ar;
+        } catch (Exception e) {
+            log.debug("error", e);
+            ar.addParameter("failmessage", "Failed creating PHR user." + e.getClass().getName() + " - " + e.getMessage());
+            return ar;
+        }
+
+        ByteArrayOutputStream boas = null;
+        FileOutputStream fos = null;
+
+        //Step 2. Persist acct changes to Oscar
+        try {
+
+            //if all is well, add the "pin" in the demographic screen
+            DemographicData dd = new DemographicData();
+            dd.setDemographicPin(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo, newAccount.getUserName());
+
+            //... and add the email address, if present
+            if (email != null && !"".equals(email)) {
+                dd.setDemographicEmail(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo, email);
+                LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, LogConst.CON_DEMOGRAPHIC, demographicNo, request.getRemoteAddr(), demographicNo);
+            }
+            //Then create the record in the demographic file for record.
+            boas = generateUserRegistrationLetter(demographicNo, newAccount.getUserName(), request.getParameter("password"));
+            String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+            File docDirectory = new File(docDir);
+            Date registrationDate = new Date();
+            String filename = "PHRRegistrationLetter." + demographicNo + "." + registrationDate.getTime() + ".pdf";
+            File patientRegistrationDocument = new File(docDirectory, filename);
+            fos = new FileOutputStream(patientRegistrationDocument);
+            boas.writeTo(fos);
 
 
-			org.oscarehr.common.model.Document document = new org.oscarehr.common.model.Document();
-			document.setContenttype("application/pdf");
-			document.setDocdesc("PHR Registration");
-			document.setDocfilename(filename);
-			document.setDoccreator(user);
-			document.setPublic1(new Byte("0"));
-			document.setStatus('A');
-			document.setNumberofpages(1);
-			document.setResponsible("");
-			document.setObservationdate(registrationDate);
-			document.setUpdatedatetime(registrationDate);
+            org.oscarehr.common.model.Document document = new org.oscarehr.common.model.Document();
+            document.setContenttype("application/pdf");
+            document.setDocdesc("PHR Registration");
+            document.setDocfilename(filename);
+            document.setDoccreator(user);
+            document.setPublic1(new Byte("0"));
+            document.setStatus('A');
+            document.setNumberofpages(1);
+            document.setResponsible("");
+            document.setObservationdate(registrationDate);
+            document.setUpdatedatetime(registrationDate);
             document.setContentdatetime(registrationDate);
-			document.setDoctype("others");
+            document.setDoctype("others");
 
-			DocumentDao documentDAO = (DocumentDao) SpringUtils.getBean(DocumentDao.class);
-			documentDAO.persist(document);
+            DocumentDao documentDAO = (DocumentDao) SpringUtils.getBean(DocumentDao.class);
+            documentDAO.persist(document);
 
-			CtlDocumentPK ctlDocumentPK = new CtlDocumentPK(Integer.parseInt("" + document.getId()), "demographic");
+            CtlDocumentPK ctlDocumentPK = new CtlDocumentPK(Integer.parseInt("" + document.getId()), "demographic");
 
-			CtlDocument ctlDocument = new CtlDocument();
-			ctlDocument.setId(ctlDocumentPK);
-			ctlDocument.getId().setModuleId(Integer.parseInt(demographicNo));
-			ctlDocument.setStatus("A");
-			
-			CtlDocumentDao ctlDocumentDao = SpringUtils.getBean(CtlDocumentDao.class);
-			ctlDocumentDao.persist(ctlDocument);
+            CtlDocument ctlDocument = new CtlDocument();
+            ctlDocument.setId(ctlDocumentPK);
+            ctlDocument.getId().setModuleId(Integer.parseInt(demographicNo));
+            ctlDocument.setStatus("A");
 
-			ar.addParameter("DocId", "" + document.getId());
-		} catch (PersistenceException pe) {
-			log.error("Failed to persist registration letter", pe);
-			ar.addParameter("failmessage", "Failed saving registration letter:" + pe.getMessage());
-			return ar;
-		} catch (Exception e) {
-			log.error("Failed to register PHR user", e);
-			ar.addParameter("failmessage", "Failed persisting PHR user."  + e.getClass().getName() + " - " + e.getMessage());
-			return ar;
-		} finally {
-			try {
-				if (fos != null) fos.close();
-			} catch (IOException ex) {
-				log.error("failed closing file output stream");
-			}
-			
-			try {
-				if (boas != null) boas.close();
-			} catch(IOException ex) {
-				log.error("failed closing Byte Array Output Stream");
-			}
+            CtlDocumentDao ctlDocumentDao = SpringUtils.getBean(CtlDocumentDao.class);
+            ctlDocumentDao.persist(ctlDocument);
 
-		}
-		
-		
-		try{
-			addRelationships(request, newAccount);
-		} catch (Exception e) {
-			log.debug("error", e);
-			ar.addParameter("failmessage", "Error adding patient relationships." + e.getClass().getName() + " - " + e.getMessage());
-			return ar;
-		}
-		
-		ar.addParameter("success", "success");
+            ar.addParameter("DocId", "" + document.getId());
+        } catch (PersistenceException pe) {
+            log.error("Failed to persist registration letter", pe);
+            ar.addParameter("failmessage", "Failed saving registration letter:" + pe.getMessage());
+            return ar;
+        } catch (Exception e) {
+            log.error("Failed to register PHR user", e);
+            ar.addParameter("failmessage", "Failed persisting PHR user." + e.getClass().getName() + " - " + e.getMessage());
+            return ar;
+        } finally {
+            try {
+                if (fos != null) fos.close();
+            } catch (IOException ex) {
+                log.error("failed closing file output stream");
+            }
 
-		return ar;
-	}
+            try {
+                if (boas != null) boas.close();
+            } catch (IOException ex) {
+                log.error("failed closing Byte Array Output Stream");
+            }
 
-	/**
-	 * @return the myOscarUserId of the created user.
-	 * @throws Exception
-	 */
-	public PersonTransfer3 sendUserRegistration(MyOscarLoggedInInfo myOscarLoggedInInfo, HashMap<String, Object> phrRegistrationForm) throws Exception {
+        }
 
-		PersonTransfer3 newAccount = new PersonTransfer3();
-		newAccount.setUserName((String) phrRegistrationForm.get("username"));
-		newAccount.setRole(Role.PATIENT.name());
-		newAccount.setFirstName((String) phrRegistrationForm.get("firstName"));
-		newAccount.setLastName((String) phrRegistrationForm.get("lastName"));
-		newAccount.setStreetAddress1((String) phrRegistrationForm.get("address"));
-		newAccount.setCity((String) phrRegistrationForm.get("city"));
-		newAccount.setProvince((String) phrRegistrationForm.get("province"));
-		newAccount.setPostalCode((String) phrRegistrationForm.get("postal"));
-		newAccount.setPhone1((String) phrRegistrationForm.get("phone"));
-		newAccount.setPhone2((String) phrRegistrationForm.get("phone2"));
-		newAccount.setEmailAddress((String) phrRegistrationForm.get("email"));
 
-		String iDob = (String) phrRegistrationForm.get("dob");
-		if (iDob != null) {
-			String[] split = iDob.split("[/\\-\\.]");
-			if (split.length == 3) {
-				GregorianCalendar cal = new GregorianCalendar(Integer.parseInt(split[0]), Integer.parseInt(split[1]) - 1, Integer.parseInt(split[2]));
-				newAccount.setBirthDate(cal);
-			}
-		}
+        try {
+            addRelationships(request, newAccount);
+        } catch (Exception e) {
+            log.debug("error", e);
+            ar.addParameter("failmessage", "Error adding patient relationships." + e.getClass().getName() + " - " + e.getMessage());
+            return ar;
+        }
 
-		String newAccountPassword = (String) phrRegistrationForm.get("password");
+        ar.addParameter("success", "success");
 
-		// if no password is set, we'll make one up, the nano time is to ensure it's not guessable.
-		if (newAccountPassword == null || newAccountPassword.length() == 0) newAccountPassword = newAccount.getUserName() + System.nanoTime();
+        return ar;
+    }
 
-		newAccount = AccountManager.createPerson(myOscarLoggedInInfo, newAccount, newAccountPassword, true);
+    /**
+     * @return the myOscarUserId of the created user.
+     * @throws Exception
+     */
+    public PersonTransfer3 sendUserRegistration(MyOscarLoggedInInfo myOscarLoggedInInfo, HashMap<String, Object> phrRegistrationForm) throws Exception {
 
-		if (newAccount == null) throw (new Exception("Error creating new PHR Account."));
+        PersonTransfer3 newAccount = new PersonTransfer3();
+        newAccount.setUserName((String) phrRegistrationForm.get("username"));
+        newAccount.setRole(Role.PATIENT.name());
+        newAccount.setFirstName((String) phrRegistrationForm.get("firstName"));
+        newAccount.setLastName((String) phrRegistrationForm.get("lastName"));
+        newAccount.setStreetAddress1((String) phrRegistrationForm.get("address"));
+        newAccount.setCity((String) phrRegistrationForm.get("city"));
+        newAccount.setProvince((String) phrRegistrationForm.get("province"));
+        newAccount.setPostalCode((String) phrRegistrationForm.get("postal"));
+        newAccount.setPhone1((String) phrRegistrationForm.get("phone"));
+        newAccount.setPhone2((String) phrRegistrationForm.get("phone2"));
+        newAccount.setEmailAddress((String) phrRegistrationForm.get("email"));
 
-		return (newAccount);
-	}
+        String iDob = (String) phrRegistrationForm.get("dob");
+        if (iDob != null) {
+            String[] split = iDob.split("[/\\-\\.]");
+            if (split.length == 3) {
+                GregorianCalendar cal = new GregorianCalendar(Integer.parseInt(split[0]), Integer.parseInt(split[1]) - 1, Integer.parseInt(split[2]));
+                newAccount.setBirthDate(cal);
+            }
+        }
 
-	private void addRelationships(HttpServletRequest request, PersonTransfer3 newAccount) throws NotAuthorisedException_Exception, InvalidRequestException_Exception, InvalidRelationshipException_Exception {
+        String newAccountPassword = (String) phrRegistrationForm.get("password");
 
-		if (log.isDebugEnabled()) {
-			WebUtils.dumpParameters(request);
-		}
+        // if no password is set, we'll make one up, the nano time is to ensure it's not guessable.
+        if (newAccountPassword == null || newAccountPassword.length() == 0)
+            newAccountPassword = newAccount.getUserName() + System.nanoTime();
 
-		@SuppressWarnings("unchecked")
-		Enumeration<String> e = request.getParameterNames();
-		while (e.hasMoreElements()) {
-			String key = e.nextElement();
+        newAccount = AccountManager.createPerson(myOscarLoggedInInfo, newAccount, newAccountPassword, true);
 
-			if (key.startsWith("enable_primary_relation_")) handlePrimaryRelation(request, newAccount, key);
-			if (key.startsWith("enable_reverse_relation_")) handleReverseRelation(request, newAccount, key);
-		}
+        if (newAccount == null) throw (new Exception("Error creating new PHR Account."));
 
-		RegistrationHelper.storeSelectionDefaults(request);
-	}
+        return (newAccount);
+    }
 
-	private void handleReverseRelation(HttpServletRequest request, PersonTransfer3 newAccount, String key) throws NotAuthorisedException_Exception, InvalidRequestException_Exception, InvalidRelationshipException_Exception {
-		if (!WebUtils.isChecked(request, key)) return;
+    private void addRelationships(HttpServletRequest request, PersonTransfer3 newAccount) throws NotAuthorisedException_Exception, InvalidRequestException_Exception, InvalidRelationshipException_Exception {
 
-		Long otherMyOscarUserId = new Long(key.substring("enable_reverse_relation_".length()));
-		String relation = request.getParameter("reverse_relation_" + otherMyOscarUserId);
+        if (log.isDebugEnabled()) {
+            WebUtils.dumpParameters(request);
+        }
 
-		MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
+        @SuppressWarnings("unchecked")
+        Enumeration<String> e = request.getParameterNames();
+        while (e.hasMoreElements()) {
+            String key = e.nextElement();
 
-		if (Relation.RESEARCH_SUBJECT.name().equals(relation)) relation="ResearchSubjectResearchAdministrator";
-		if (Relation.PATIENT.name().equals(relation)) relation="PatientPrimaryCareProvider";
+            if (key.startsWith("enable_primary_relation_")) handlePrimaryRelation(request, newAccount, key);
+            if (key.startsWith("enable_reverse_relation_")) handleReverseRelation(request, newAccount, key);
+        }
 
-		AccountManager.createRelationship(myOscarLoggedInInfo, newAccount.getId(), otherMyOscarUserId, false, true, relation);
-	}
+        RegistrationHelper.storeSelectionDefaults(request);
+    }
 
-	private void handlePrimaryRelation(HttpServletRequest request, PersonTransfer3 newAccount, String key) throws NotAuthorisedException_Exception, InvalidRequestException_Exception, InvalidRelationshipException_Exception {
-		if (!WebUtils.isChecked(request, key)) return;
+    private void handleReverseRelation(HttpServletRequest request, PersonTransfer3 newAccount, String key) throws NotAuthorisedException_Exception, InvalidRequestException_Exception, InvalidRelationshipException_Exception {
+        if (!WebUtils.isChecked(request, key)) return;
 
-		Long otherMyOscarUserId = new Long(key.substring("enable_primary_relation_".length()));
-		String relation = request.getParameter("primary_relation_" + otherMyOscarUserId);
+        Long otherMyOscarUserId = new Long(key.substring("enable_reverse_relation_".length()));
+        String relation = request.getParameter("reverse_relation_" + otherMyOscarUserId);
 
-		MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
-		
-		if (Relation.RESEARCH_ADMINISTRATOR.name().equals(relation)) relation="ResearchSubjectResearchAdministrator";
-		if (Relation.PRIMARY_CARE_PROVIDER.name().equals(relation)) relation="PatientPrimaryCareProvider";
-		
-		AccountManager.createRelationship(myOscarLoggedInInfo, newAccount.getId(), otherMyOscarUserId, true, false, relation);
-	}
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
 
-	public ActionForward approveAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		IndivoAPService apService = new IndivoAPService(phrService);
-		String actionId = request.getParameter("actionId");
-		PHRAction action = phrActionDAO.getActionById(actionId);
-		apService.approveAccessPolicy(action);
-		return mapping.findForward("msgIndex");
-	}
+        if (Relation.RESEARCH_SUBJECT.name().equals(relation)) relation = "ResearchSubjectResearchAdministrator";
+        if (Relation.PATIENT.name().equals(relation)) relation = "PatientPrimaryCareProvider";
 
-	public ActionForward denyAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		IndivoAPService apService = new IndivoAPService(phrService);
-		String actionId = request.getParameter("actionId");
-		PHRAction action = phrActionDAO.getActionById(actionId);
-		apService.denyAccessPolicy(action);
-		return mapping.findForward("msgIndex");
-	}
+        AccountManager.createRelationship(myOscarLoggedInInfo, newAccount.getId(), otherMyOscarUserId, false, true, relation);
+    }
 
-	public ActionForward addPatientRelationship(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		if (log.isDebugEnabled()) {
-			WebUtils.dumpParameters(request);
-		}
+    private void handlePrimaryRelation(HttpServletRequest request, PersonTransfer3 newAccount, String key) throws NotAuthorisedException_Exception, InvalidRequestException_Exception, InvalidRelationshipException_Exception {
+        if (!WebUtils.isChecked(request, key)) return;
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String providerNo=loggedInInfo.getLoggedInProviderNo();
+        Long otherMyOscarUserId = new Long(key.substring("enable_primary_relation_".length()));
+        String relation = request.getParameter("primary_relation_" + otherMyOscarUserId);
 
-		String demoNo = request.getParameter("demoNo");
-		String myOscarUserName = request.getParameter("myOscarUserName");
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
 
-		MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
-		try {
-			DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-			Demographic demographic = demographicDao.getDemographic(demoNo);
-			Long patientMyOscarUserId = AccountManager.getUserId(myOscarLoggedInInfo, demographic.getMyOscarUserName());
+        if (Relation.RESEARCH_ADMINISTRATOR.name().equals(relation)) relation = "ResearchSubjectResearchAdministrator";
+        if (Relation.PRIMARY_CARE_PROVIDER.name().equals(relation)) relation = "PatientPrimaryCareProvider";
 
-			AccountManager.createRelationship(myOscarLoggedInInfo, patientMyOscarUserId, myOscarLoggedInInfo.getLoggedInPersonId(), false, true, "PatientPrimaryCareProvider");
+        AccountManager.createRelationship(myOscarLoggedInInfo, newAccount.getId(), otherMyOscarUserId, true, false, relation);
+    }
 
-			log.debug("Patient Provider relationship added or confirmed. providerNo=" + providerNo + ", patientDemoraphicNo=" + demoNo);
-			request.setAttribute("myOscarUserName", myOscarUserName);
-			request.setAttribute("demoNo", demoNo);
-		} catch (Exception e) {
-			log.error("Unexpected error", e);
-		}
+    public ActionForward approveAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        IndivoAPService apService = new IndivoAPService(phrService);
+        String actionId = request.getParameter("actionId");
+        PHRAction action = phrActionDAO.getActionById(actionId);
+        apService.approveAccessPolicy(action);
+        return mapping.findForward("msgIndex");
+    }
 
-		return mapping.findForward("relationfragment");
+    public ActionForward denyAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        IndivoAPService apService = new IndivoAPService(phrService);
+        String actionId = request.getParameter("actionId");
+        PHRAction action = phrActionDAO.getActionById(actionId);
+        apService.denyAccessPolicy(action);
+        return mapping.findForward("msgIndex");
+    }
 
-	}
+    public ActionForward addPatientRelationship(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        if (log.isDebugEnabled()) {
+            WebUtils.dumpParameters(request);
+        }
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        String demoNo = request.getParameter("demoNo");
+        String myOscarUserName = request.getParameter("myOscarUserName");
+
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
+        try {
+            DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+            Demographic demographic = demographicDao.getDemographic(demoNo);
+            Long patientMyOscarUserId = AccountManager.getUserId(myOscarLoggedInInfo, demographic.getMyOscarUserName());
+
+            AccountManager.createRelationship(myOscarLoggedInInfo, patientMyOscarUserId, myOscarLoggedInInfo.getLoggedInPersonId(), false, true, "PatientPrimaryCareProvider");
+
+            log.debug("Patient Provider relationship added or confirmed. providerNo=" + providerNo + ", patientDemoraphicNo=" + demoNo);
+            request.setAttribute("myOscarUserName", myOscarUserName);
+            request.setAttribute("demoNo", demoNo);
+        } catch (Exception e) {
+            log.error("Unexpected error", e);
+        }
+
+        return mapping.findForward("relationfragment");
+
+    }
 
 }

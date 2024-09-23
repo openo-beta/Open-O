@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,10 +46,10 @@ import java.util.List;
 
 /**
  * Action Simulates a MSP teleplan file but doesn't commit any of the data. 
- * 
+ *
  * @author jay
  */
-public class SimulateTeleplanFileAction extends Action{
+public class SimulateTeleplanFileAction extends Action {
 
     /**
      * Creates a new instance of GenerateTeleplanFileAction
@@ -58,27 +58,27 @@ public class SimulateTeleplanFileAction extends Action{
     }
 
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception{
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
 
-    	String dataCenterId = OscarProperties.getInstance().getProperty("dataCenterId");
+        String dataCenterId = OscarProperties.getInstance().getProperty("dataCenterId");
 
         String provider = request.getParameter("provider");
         String providerBillingNo = request.getParameter("provider");
-        if(provider != null && provider.equals("all")){
+        if (provider != null && provider.equals("all")) {
             providerBillingNo = "%";
         }
         @SuppressWarnings("deprecation")
         ProviderData pd = new ProviderData();
-     
+
         @SuppressWarnings("deprecation")
         List<String> list = pd.getProviderListWithInsuranceNo(providerBillingNo);
 
         @SuppressWarnings("deprecation")
         ProviderData[] pdArr = new ProviderData[list.size()];
 
-        for (int i=0;i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             String provNo = list.get(i);
             pdArr[i] = new ProviderData(provNo);
         }
@@ -88,15 +88,15 @@ public class SimulateTeleplanFileAction extends Action{
         synchronized (this) {
             try {
                 BillingmasterDAO billingmasterDAO = SpringUtils.getBean(BillingmasterDAO.class);
-                DemographicManager demographicManager =  SpringUtils.getBean(DemographicManager.class);
-             
+                DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
+
                 TeleplanFileWriter teleplanWr = new TeleplanFileWriter();
                 teleplanWr.setBillingmasterDAO(billingmasterDAO);
                 teleplanWr.setDemographicManager(demographicManager);
                 TeleplanSubmission submission = teleplanWr.getSubmission(LoggedInInfo.getLoggedInInfoFromSession(request), testRun, pdArr, dataCenterId);
                 request.setAttribute("TeleplanHtmlFile", submission.getHtmlFile());
-                
-            }catch(Exception e){
+
+            } catch (Exception e) {
                 MiscUtils.getLogger().debug("Error: Teleplan Html File", e);
             }
         }

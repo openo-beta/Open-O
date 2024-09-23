@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -82,133 +82,133 @@ create table drugReason(
 @Table(name = "drugReason")
 public class DrugReason extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
-	private Integer drugId = null;
-	private String codingSystem = null;    // (icd9,icd10,etc...) OR protocol	
-	private String code = null;   // (250 (for icd9) or could be the protocol identifier )
-	private String comments = null;
-	private Boolean primaryReasonFlag;
-	private Boolean archivedFlag;
-	private String archivedReason;
-	private String providerNo = null;
-	private Integer demographicNo = null;
-	
-	@Column(name = "dateCoded")
-	@Temporal(TemporalType.DATE)
-	private Date dateCoded = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id = null;
+    private Integer drugId = null;
+    private String codingSystem = null;    // (icd9,icd10,etc...) OR protocol
+    private String code = null;   // (250 (for icd9) or could be the protocol identifier )
+    private String comments = null;
+    private Boolean primaryReasonFlag;
+    private Boolean archivedFlag;
+    private String archivedReason;
+    private String providerNo = null;
+    private Integer demographicNo = null;
 
-	@Override
+    @Column(name = "dateCoded")
+    @Temporal(TemporalType.DATE)
+    private Date dateCoded = null;
+
+    @Override
     public Integer getId() {
-    	return id;
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public Integer getDrugId() {
-    	return drugId;
+    public Integer getDrugId() {
+        return drugId;
     }
 
-	public void setDrugId(Integer drugId) {
-    	this.drugId = drugId;
+    public void setDrugId(Integer drugId) {
+        this.drugId = drugId;
     }
 
-	public String getCodingSystem() {
-    	return codingSystem;
+    public String getCodingSystem() {
+        return codingSystem;
     }
 
-	public void setCodingSystem(String codingSystem) {
-    	this.codingSystem = codingSystem;
+    public void setCodingSystem(String codingSystem) {
+        this.codingSystem = codingSystem;
     }
 
-	public String getCode() {
-    	return code;
+    public String getCode() {
+        return code;
     }
 
-	public void setCode(String code) {
-    	this.code = code;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-	public String getComments() {
-    	return comments;
+    public String getComments() {
+        return comments;
     }
 
-	public void setComments(String comments) {
-    	this.comments = comments;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
-	public Boolean getPrimaryReasonFlag() {
-    	return primaryReasonFlag;
+    public Boolean getPrimaryReasonFlag() {
+        return primaryReasonFlag;
     }
 
-	public void setPrimaryReasonFlag(Boolean primaryReasonFlag) {
-    	this.primaryReasonFlag = primaryReasonFlag;
+    public void setPrimaryReasonFlag(Boolean primaryReasonFlag) {
+        this.primaryReasonFlag = primaryReasonFlag;
     }
 
-	public Boolean getArchivedFlag() {
-    	return archivedFlag;
+    public Boolean getArchivedFlag() {
+        return archivedFlag;
     }
 
-	public void setArchivedFlag(Boolean archivedFlag) {
-    	this.archivedFlag = archivedFlag;
+    public void setArchivedFlag(Boolean archivedFlag) {
+        this.archivedFlag = archivedFlag;
     }
 
-	public String getArchivedReason() {
-    	return archivedReason;
+    public String getArchivedReason() {
+        return archivedReason;
     }
 
-	public void setArchivedReason(String archivedReason) {
-    	this.archivedReason = archivedReason;
+    public void setArchivedReason(String archivedReason) {
+        this.archivedReason = archivedReason;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public Integer getDemographicNo() {
-    	return demographicNo;
+    public Integer getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setDemographicNo(Integer demographicNo) {
-    	this.demographicNo = demographicNo;
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public Date getDateCoded() {
-    	return dateCoded;
+    public Date getDateCoded() {
+        return dateCoded;
     }
 
-	public void setDateCoded(Date dateCoded) {
-    	this.dateCoded = dateCoded;
+    public void setDateCoded(Date dateCoded) {
+        this.dateCoded = dateCoded;
     }
-    
-	public String getAuditString() {
-		StringBuilder auditStr = new StringBuilder();
-		
-		auditStr.append("DrugId: "+drugId+ " Coding System: "+codingSystem+" Code: "+code); 
-		
-		if (comments!= null){
-		 auditStr.append(" Comments: "+comments);
-		}
-		
-		if(primaryReasonFlag != null){
-			auditStr.append(" Primary Reason: "+primaryReasonFlag);
-		}
-		
-		if(archivedFlag!= null){
-			auditStr.append(" Archived: "+archivedFlag);
-		}
-		
-		if(archivedReason!= null){
-			auditStr.append(" Archived Reason: "+archivedReason);
-		}
-		return auditStr.toString();
-	}
+
+    public String getAuditString() {
+        StringBuilder auditStr = new StringBuilder();
+
+        auditStr.append("DrugId: " + drugId + " Coding System: " + codingSystem + " Code: " + code);
+
+        if (comments != null) {
+            auditStr.append(" Comments: " + comments);
+        }
+
+        if (primaryReasonFlag != null) {
+            auditStr.append(" Primary Reason: " + primaryReasonFlag);
+        }
+
+        if (archivedFlag != null) {
+            auditStr.append(" Archived: " + archivedFlag);
+        }
+
+        if (archivedReason != null) {
+            auditStr.append(" Archived Reason: " + archivedReason);
+        }
+        return auditStr.toString();
+    }
 
 }

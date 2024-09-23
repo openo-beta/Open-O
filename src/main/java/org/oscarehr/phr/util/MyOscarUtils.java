@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -57,193 +57,182 @@ import org.oscarehr.util.WebUtils;
 
 
 public final class MyOscarUtils {
-	private static final Logger logger = MiscUtils.getLogger();
+    private static final Logger logger = MiscUtils.getLogger();
 
-	private static final String MANGLED_SECRET_KEY_SESSION_KEY=MyOscarUtils.class.getName()+".MANGLED_SECRET_KEY";
+    private static final String MANGLED_SECRET_KEY_SESSION_KEY = MyOscarUtils.class.getName() + ".MANGLED_SECRET_KEY";
 
-	private static ExecutorService asyncAutoLoginThreadPool=Executors.newFixedThreadPool(4, new DeamonThreadFactory("asyncAutoLoginThreadPool", Thread.MIN_PRIORITY));
-	
-	public static Demographic getDemographicByMyOscarUserName(String myOscarUserName) {
-		DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-		Demographic demographic = demographicDao.getDemographicByMyOscarUserName(myOscarUserName);
-		return (demographic);
-	}
+    private static ExecutorService asyncAutoLoginThreadPool = Executors.newFixedThreadPool(4, new DeamonThreadFactory("asyncAutoLoginThreadPool", Thread.MIN_PRIORITY));
 
-	public static boolean isMyOscarEnabled(String providerNo)
-	{
-		return isMyOscarUserNameSet(providerNo) && MyOscarLoggedInInfo.getMyOscarServerBaseUrl() != null;
-	}
-	
-	public static String getDisabledStringForMyOscarSendButton(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demographicId) {
-		boolean enabled = isMyOscarSendButtonEnabled(myOscarLoggedInInfo, demographicId);
+    public static Demographic getDemographicByMyOscarUserName(String myOscarUserName) {
+        DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+        Demographic demographic = demographicDao.getDemographicByMyOscarUserName(myOscarUserName);
+        return (demographic);
+    }
 
-		return (WebUtils.getDisabledString(enabled));
-	}
+    public static boolean isMyOscarEnabled(String providerNo) {
+        return isMyOscarUserNameSet(providerNo) && MyOscarLoggedInInfo.getMyOscarServerBaseUrl() != null;
+    }
 
-	public static String getDisabledStringForMyOscarSendButton(MyOscarLoggedInInfo myOscarLoggedInInfo, Demographic demographic) {
-		boolean enabled = isMyOscarSendButtonEnabled(myOscarLoggedInInfo, demographic);
+    public static String getDisabledStringForMyOscarSendButton(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demographicId) {
+        boolean enabled = isMyOscarSendButtonEnabled(myOscarLoggedInInfo, demographicId);
 
-		return (WebUtils.getDisabledString(enabled));
-	}
+        return (WebUtils.getDisabledString(enabled));
+    }
 
-	public static boolean isMyOscarSendButtonEnabled(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demographicId) {
-		DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-		Demographic demographic = demographicDao.getDemographicById(demographicId);
+    public static String getDisabledStringForMyOscarSendButton(MyOscarLoggedInInfo myOscarLoggedInInfo, Demographic demographic) {
+        boolean enabled = isMyOscarSendButtonEnabled(myOscarLoggedInInfo, demographic);
 
-		return (isMyOscarSendButtonEnabled(myOscarLoggedInInfo, demographic));
-	}
+        return (WebUtils.getDisabledString(enabled));
+    }
 
-	public static boolean isMyOscarSendButtonEnabled(MyOscarLoggedInInfo myOscarLoggedInInfo, Demographic demographic) {
-		return (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn() && demographic != null && demographic.getMyOscarUserName() != null);
-	}
+    public static boolean isMyOscarSendButtonEnabled(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demographicId) {
+        DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+        Demographic demographic = demographicDao.getDemographicById(demographicId);
 
-	public static void attemptMyOscarAutoLoginIfNotAlreadyLoggedInAsynchronously(final LoggedInInfo loggedInInfo, final boolean forceReLogin) {
-		if (!isMyOscarEnabled(loggedInInfo.getLoggedInProviderNo())) return;
+        return (isMyOscarSendButtonEnabled(myOscarLoggedInInfo, demographic));
+    }
 
-		HttpSession session = loggedInInfo.getSession();
-		MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-		if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn()) return;
+    public static boolean isMyOscarSendButtonEnabled(MyOscarLoggedInInfo myOscarLoggedInInfo, Demographic demographic) {
+        return (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn() && demographic != null && demographic.getMyOscarUserName() != null);
+    }
 
-		Runnable runnable = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					attemptMyOscarAutoLoginIfNotAlreadyLoggedIn(loggedInInfo, forceReLogin);
-				} finally {
-					DbConnectionFilter.releaseAllThreadDbResources();
-				}
-			}
-		};
+    public static void attemptMyOscarAutoLoginIfNotAlreadyLoggedInAsynchronously(final LoggedInInfo loggedInInfo, final boolean forceReLogin) {
+        if (!isMyOscarEnabled(loggedInInfo.getLoggedInProviderNo())) return;
 
-		asyncAutoLoginThreadPool.submit(runnable);
-	}
+        HttpSession session = loggedInInfo.getSession();
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
+        if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn()) return;
 
-	public static String getMyOscarUserNameFromOscar(String providerNo)
-	{
-		PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
-		List<org.oscarehr.common.model.Property> myOscarUserNameProperties=propertyDao.findByNameAndProvider("MyOscarId", providerNo); 
-		if (myOscarUserNameProperties.size()>0) return(myOscarUserNameProperties.get(0).getValue());
-		return(null);
-	}
-	
-	public static boolean isMyOscarUserNameSet(String providerNo){
-		if(getMyOscarUserNameFromOscar(providerNo) != null){
-			return true;
-		}
-		return false;
-	}
-	
-	
-	public static Long getMyOscarUserIdFromOscarProviderNo(MyOscarLoggedInInfo myOscarLoggedInInfo, String providerNo)
-	{
-		String userName =getMyOscarUserNameFromOscar(providerNo);
-		return(AccountManager.getUserId(myOscarLoggedInInfo, userName));
-	}
-	
-	public static Long getMyOscarUserIdFromOscarDemographicId(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demographicId)
-	{
-		DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-		Demographic demographic = demographicDao.getDemographicById(demographicId);
-		return(AccountManager.getUserId(myOscarLoggedInInfo, demographic.getMyOscarUserName()));
-	}
-	
-	public static void attemptMyOscarAutoLoginIfNotAlreadyLoggedIn(LoggedInInfo loggedInInfo, boolean forceReLogin) {
-		
-		if(!isMyOscarEnabled(loggedInInfo.getLoggedInProviderNo())) {
-			return;
-		}
-		HttpSession session = loggedInInfo.getSession();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    attemptMyOscarAutoLoginIfNotAlreadyLoggedIn(loggedInInfo, forceReLogin);
+                } finally {
+                    DbConnectionFilter.releaseAllThreadDbResources();
+                }
+            }
+        };
 
-		ProviderPreferenceDao providerPreferenceDao = (ProviderPreferenceDao) SpringUtils.getBean(ProviderPreferenceDao.class);
-		ProviderPreference providerPreference = providerPreferenceDao.find(loggedInInfo.getLoggedInProviderNo());
-		String myOscarUserName = null;
-		
-		MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-		if (!forceReLogin && myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn()) return;
+        asyncAutoLoginThreadPool.submit(runnable);
+    }
 
-		try {
-			myOscarUserName = getMyOscarUserNameFromOscar(loggedInInfo.getLoggedInProviderNo());
-			if (myOscarUserName == null) return;
+    public static String getMyOscarUserNameFromOscar(String providerNo) {
+        PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
+        List<org.oscarehr.common.model.Property> myOscarUserNameProperties = propertyDao.findByNameAndProvider("MyOscarId", providerNo);
+        if (myOscarUserNameProperties.size() > 0) return (myOscarUserNameProperties.get(0).getValue());
+        return (null);
+    }
 
-			byte[] encryptedMyOscarPassword = providerPreference.getEncryptedMyOscarPassword();
-			if (encryptedMyOscarPassword == null) return;
+    public static boolean isMyOscarUserNameSet(String providerNo) {
+        if (getMyOscarUserNameFromOscar(providerNo) != null) {
+            return true;
+        }
+        return false;
+    }
 
-			SecretKeySpec key = getDeterministicallyMangledPasswordSecretKeyFromSession(session);
-			byte[] decryptedMyOscarPasswordBytes = EncryptionUtils.decrypt(key, encryptedMyOscarPassword);
-			String decryptedMyOscarPasswordString = new String(decryptedMyOscarPasswordBytes, "UTF-8");
 
-			LoginResultTransfer3 loginResultTransfer = AccountManager.login(MyOscarLoggedInInfo.getMyOscarServerBaseUrl(), myOscarUserName, decryptedMyOscarPasswordString);
-			
-			if(loginResultTransfer.getPerson().getRole() != null && !loginResultTransfer.getPerson().getRole().equals("PATIENT")){
-				myOscarLoggedInInfo = new MyOscarLoggedInInfo(loginResultTransfer.getPerson().getId(), loginResultTransfer.getSecurityTokenKey(), session.getId(), loggedInInfo.getLocale());
-				MyOscarLoggedInInfo.setLoggedInInfo(session, myOscarLoggedInInfo);
-			}else{
-				logger.error("ERROR :"+loginResultTransfer.getPerson().getUserName()+" can not login with role "+loginResultTransfer.getPerson().getRole());
-			}
-		} catch (NotAuthorisedException_Exception e) {
-			logger.warn("Could not login to MyOscar, invalid credentials. chances are myoscar pw changed, myOscarUserName=" + myOscarUserName);
+    public static Long getMyOscarUserIdFromOscarProviderNo(MyOscarLoggedInInfo myOscarLoggedInInfo, String providerNo) {
+        String userName = getMyOscarUserNameFromOscar(providerNo);
+        return (AccountManager.getUserId(myOscarLoggedInInfo, userName));
+    }
 
-			// login failed, remove myoscar saved password
-			providerPreference.setEncryptedMyOscarPassword(null);
-			providerPreferenceDao.merge(providerPreference);
-		} catch (BadPaddingException e) {
-			logger.debug("stored password no longer valid due to change in encryption keys");
+    public static Long getMyOscarUserIdFromOscarDemographicId(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demographicId) {
+        DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+        Demographic demographic = demographicDao.getDemographicById(demographicId);
+        return (AccountManager.getUserId(myOscarLoggedInInfo, demographic.getMyOscarUserName()));
+    }
 
-			// remove myoscar saved password
-			providerPreference.setEncryptedMyOscarPassword(null);
-			providerPreferenceDao.merge(providerPreference);
-		} catch (Throwable t) {
-			logger.error("Error attempting auto-myoscar login", t);
-		}
-	}
-	
-	/**
-	 * deterministically mangle the byte input, doesn't have to be complex, just something different.
-	 * Reason being we don't want to just sha1 the oscar_password as the encryption key because
-	 * that's already stored in the db as the password record.
-	 */
-	public static String deterministicallyMangle(String s)
-	{
-		Random random=new Random(s.length());
+    public static void attemptMyOscarAutoLoginIfNotAlreadyLoggedIn(LoggedInInfo loggedInInfo, boolean forceReLogin) {
 
-		StringBuilder sb=new StringBuilder();
-		
-		for (int i=0; i< s.length(); i++)
-		{
-			sb.append(random.nextInt(s.charAt(i)));
-			
-		}
-				
-		return(sb.toString());
-	}
-	
-	public static SecretKeySpec getSecretKeyFromDeterministicallyMangledPassword(String unmangledPassword)
-	{
-		String mangledPassword=deterministicallyMangle(unmangledPassword);
-		SecretKeySpec secretKeySpec=EncryptionUtils.generateEncryptionKey(mangledPassword);
-		return(secretKeySpec);
-	}
-	
-	public static void setDeterministicallyMangledPasswordSecretKeyIntoSession(HttpSession session, String unmangledPassword)
-	{
-		SecretKeySpec secretKeySpec=getSecretKeyFromDeterministicallyMangledPassword(unmangledPassword);
-		session.setAttribute(MANGLED_SECRET_KEY_SESSION_KEY, secretKeySpec);
-	}
-	
-	public static SecretKeySpec getDeterministicallyMangledPasswordSecretKeyFromSession(HttpSession session)
-	{
-		return (SecretKeySpec) (session.getAttribute(MANGLED_SECRET_KEY_SESSION_KEY));
-	}
-	
-	public static String encodeBase64EscapeUrl(byte[] id) throws UnsupportedEncodingException
-	{
-		String s=Base64.encodeBase64String(id);
-		s=URLEncoder.encode(s, MiscUtils.DEFAULT_UTF8_ENCODING);
-		return(s);
-	}
-	
-	public static byte[] decodeBase64Id(String s)
-	{
-		return(Base64.decodeBase64(s));
-	}
+        if (!isMyOscarEnabled(loggedInInfo.getLoggedInProviderNo())) {
+            return;
+        }
+        HttpSession session = loggedInInfo.getSession();
+
+        ProviderPreferenceDao providerPreferenceDao = (ProviderPreferenceDao) SpringUtils.getBean(ProviderPreferenceDao.class);
+        ProviderPreference providerPreference = providerPreferenceDao.find(loggedInInfo.getLoggedInProviderNo());
+        String myOscarUserName = null;
+
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
+        if (!forceReLogin && myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn()) return;
+
+        try {
+            myOscarUserName = getMyOscarUserNameFromOscar(loggedInInfo.getLoggedInProviderNo());
+            if (myOscarUserName == null) return;
+
+            byte[] encryptedMyOscarPassword = providerPreference.getEncryptedMyOscarPassword();
+            if (encryptedMyOscarPassword == null) return;
+
+            SecretKeySpec key = getDeterministicallyMangledPasswordSecretKeyFromSession(session);
+            byte[] decryptedMyOscarPasswordBytes = EncryptionUtils.decrypt(key, encryptedMyOscarPassword);
+            String decryptedMyOscarPasswordString = new String(decryptedMyOscarPasswordBytes, "UTF-8");
+
+            LoginResultTransfer3 loginResultTransfer = AccountManager.login(MyOscarLoggedInInfo.getMyOscarServerBaseUrl(), myOscarUserName, decryptedMyOscarPasswordString);
+
+            if (loginResultTransfer.getPerson().getRole() != null && !loginResultTransfer.getPerson().getRole().equals("PATIENT")) {
+                myOscarLoggedInInfo = new MyOscarLoggedInInfo(loginResultTransfer.getPerson().getId(), loginResultTransfer.getSecurityTokenKey(), session.getId(), loggedInInfo.getLocale());
+                MyOscarLoggedInInfo.setLoggedInInfo(session, myOscarLoggedInInfo);
+            } else {
+                logger.error("ERROR :" + loginResultTransfer.getPerson().getUserName() + " can not login with role " + loginResultTransfer.getPerson().getRole());
+            }
+        } catch (NotAuthorisedException_Exception e) {
+            logger.warn("Could not login to MyOscar, invalid credentials. chances are myoscar pw changed, myOscarUserName=" + myOscarUserName);
+
+            // login failed, remove myoscar saved password
+            providerPreference.setEncryptedMyOscarPassword(null);
+            providerPreferenceDao.merge(providerPreference);
+        } catch (BadPaddingException e) {
+            logger.debug("stored password no longer valid due to change in encryption keys");
+
+            // remove myoscar saved password
+            providerPreference.setEncryptedMyOscarPassword(null);
+            providerPreferenceDao.merge(providerPreference);
+        } catch (Throwable t) {
+            logger.error("Error attempting auto-myoscar login", t);
+        }
+    }
+
+    /**
+     * deterministically mangle the byte input, doesn't have to be complex, just something different.
+     * Reason being we don't want to just sha1 the oscar_password as the encryption key because
+     * that's already stored in the db as the password record.
+     */
+    public static String deterministicallyMangle(String s) {
+        Random random = new Random(s.length());
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < s.length(); i++) {
+            sb.append(random.nextInt(s.charAt(i)));
+
+        }
+
+        return (sb.toString());
+    }
+
+    public static SecretKeySpec getSecretKeyFromDeterministicallyMangledPassword(String unmangledPassword) {
+        String mangledPassword = deterministicallyMangle(unmangledPassword);
+        SecretKeySpec secretKeySpec = EncryptionUtils.generateEncryptionKey(mangledPassword);
+        return (secretKeySpec);
+    }
+
+    public static void setDeterministicallyMangledPasswordSecretKeyIntoSession(HttpSession session, String unmangledPassword) {
+        SecretKeySpec secretKeySpec = getSecretKeyFromDeterministicallyMangledPassword(unmangledPassword);
+        session.setAttribute(MANGLED_SECRET_KEY_SESSION_KEY, secretKeySpec);
+    }
+
+    public static SecretKeySpec getDeterministicallyMangledPasswordSecretKeyFromSession(HttpSession session) {
+        return (SecretKeySpec) (session.getAttribute(MANGLED_SECRET_KEY_SESSION_KEY));
+    }
+
+    public static String encodeBase64EscapeUrl(byte[] id) throws UnsupportedEncodingException {
+        String s = Base64.encodeBase64String(id);
+        s = URLEncoder.encode(s, MiscUtils.DEFAULT_UTF8_ENCODING);
+        return (s);
+    }
+
+    public static byte[] decodeBase64Id(String s) {
+        return (Base64.decodeBase64(s));
+    }
 }

@@ -24,121 +24,120 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_eChart");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_eChart");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@page
-	import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*,java.util.List,org.oscarehr.eyeform.model.EyeformSpecsHistory"%>
+        import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*,java.util.List,org.oscarehr.eyeform.model.EyeformSpecsHistory" %>
 
 <%
-String demo = request.getParameter("demographicNo");
-String proNo = (String) session.getAttribute("user");
-oscar.oscarDemographic.data.DemographicData demoData=null;
-org.oscarehr.common.model.Demographic demographic=null;
+    String demo = request.getParameter("demographicNo");
+    String proNo = (String) session.getAttribute("user");
+    oscar.oscarDemographic.data.DemographicData demoData = null;
+    org.oscarehr.common.model.Demographic demographic = null;
 
-oscar.oscarProvider.data.ProviderData pdata = new oscar.oscarProvider.data.ProviderData(proNo);
-String team = pdata.getTeam();
+    oscar.oscarProvider.data.ProviderData pdata = new oscar.oscarProvider.data.ProviderData(proNo);
+    String team = pdata.getTeam();
 
-if (demo != null ){ 
-    demoData = new oscar.oscarDemographic.data.DemographicData();
-    demographic = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);    
-}
-else
-    response.sendRedirect("../error.jsp");
+    if (demo != null) {
+        demoData = new oscar.oscarDemographic.data.DemographicData();
+        demographic = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
+    } else
+        response.sendRedirect("../error.jsp");
 
 
-List<EyeformSpecsHistory> specs = (List<EyeformSpecsHistory>)request.getAttribute("specs");
+    List<EyeformSpecsHistory> specs = (List<EyeformSpecsHistory>) request.getAttribute("specs");
 %>
 
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>Specs History
-</title>
-<html:base />
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title>Specs History
+        </title>
+        <html:base/>
 
-<!--META HTTP-EQUIV="Refresh" CONTENT="20;"-->
+        <!--META HTTP-EQUIV="Refresh" CONTENT="20;"-->
 
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
-
-
+        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
 
+    </head>
+    <script language="javascript">
+        function BackToOscar() {
+            window.close();
+        }
 
-</head>
-<script language="javascript">
-function BackToOscar()
-{
-       window.close();
-}
+    </script>
 
-</script>
+    <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
+    <body class="BodyStyle" vlink="#0000FF" onload="window.focus()">
+    <!--  -->
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn">Specs History</td>
+            <td class="MainTableTopRowRightColumn">
+                <table class="TopStatusBar">
+                    <tr>
+                        <td class="Header" NOWRAP>Specs History&nbsp;&nbsp;
+                            <%=demographic.getLastName() %>, <%=demographic.getFirstName()%> <%=demographic.getSex()%>
+                            <%=demographic.getAge()%>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr style="vertical-align: top">
+            <td class="MainTableLeftColumn">
 
-<link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
-<body class="BodyStyle" vlink="#0000FF" onload="window.focus()">
-<!--  -->
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn">Specs History</td>
-		<td class="MainTableTopRowRightColumn">
-		<table class="TopStatusBar">
-			<tr>
-				<td class="Header" NOWRAP>Specs History&nbsp;&nbsp;
-				<%=demographic.getLastName() %>, <%=demographic.getFirstName()%> <%=demographic.getSex()%>
-				<%=demographic.getAge()%></td>
-				<td></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr style="vertical-align: top">
-		<td class="MainTableLeftColumn">
-			
-			
-		</td>
-		<td class="MainTableRightColumn">
-	
-				<table border="0" width="80%" cellspacing="1">
-					<tr>
-						<th align="left" class="VCRheads">Type</th>
-						<th align="left" class="VCRheads">Data</th>
-						<th align="left" class="VCRheads">Date</th>									
-					</tr>
-					<%  
-                                    for (int i = 0; i < specs.size(); i++){
-                                    String type      = (String) specs.get(i).getType();     
-                                    String date = specs.get(i).getDateStr();
-                                    String formula = specs.get(i).toString();
-                                %>
-					<tr>
-						<td ><%=type %></td>
-						<td ><%=formula %></td>
-						<td ><%=date%></td>											
-					</tr>
-					<%}%>
-				</table>			
-		</td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</body>
+
+            </td>
+            <td class="MainTableRightColumn">
+
+                <table border="0" width="80%" cellspacing="1">
+                    <tr>
+                        <th align="left" class="VCRheads">Type</th>
+                        <th align="left" class="VCRheads">Data</th>
+                        <th align="left" class="VCRheads">Date</th>
+                    </tr>
+                    <%
+                        for (int i = 0; i < specs.size(); i++) {
+                            String type = (String) specs.get(i).getType();
+                            String date = specs.get(i).getDateStr();
+                            String formula = specs.get(i).toString();
+                    %>
+                    <tr>
+                        <td><%=type %>
+                        </td>
+                        <td><%=formula %>
+                        </td>
+                        <td><%=date%>
+                        </td>
+                    </tr>
+                    <%}%>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
+    </body>
 </html:html>

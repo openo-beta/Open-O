@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -43,15 +43,15 @@ import oscar.eform.EFormUtil;
 import oscar.util.StringUtils;
 
 public class HtmlUploadAction extends Action {
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                HttpServletRequest request, HttpServletResponse response) {
-    	
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
-			throw new SecurityException("missing required security object (_eform)");
-		}
-    	
+                                 HttpServletRequest request, HttpServletResponse response) {
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
+            throw new SecurityException("missing required security object (_eform)");
+        }
+
         HtmlUploadForm fm = (HtmlUploadForm) form;
         FormFile formHtml = fm.getFormHtml();
         try {
@@ -65,11 +65,11 @@ public class HtmlUploadAction extends Action {
             String fileName = formHtml.getFileName();
             EFormUtil.saveEForm(formName, subject, fileName, formHtmlStr, showLatestFormOnly, patientIndependent, roleType);
             request.setAttribute("status", "success");
-            return(mapping.findForward("success"));
+            return (mapping.findForward("success"));
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
-            return(mapping.findForward("fail"));
+            return (mapping.findForward("fail"));
         }
-        
+
     }
 }

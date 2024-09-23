@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,93 +29,91 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="OscarJobType")
+@XmlRootElement(name = "OscarJobType")
 public class OscarJobTypeTo1 implements Serializable {
-   
-	private static final long serialVersionUID = 1L;
-	
-	private Integer id;
 
-	private String name;
-	
-	private String description;
-	
-	private String className;
-	
-	private boolean enabled;
-	
-	private Date updated;
-	
-	private boolean currentlyValid;
-	
-	private Date nextPlannedExecutionDate;
-	
-	
+    private static final long serialVersionUID = 1L;
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer id;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    private String description;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String className;
 
-	public String getDescription() {
-		return description;
-	}
+    private boolean enabled;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private Date updated;
 
-	public String getClassName() {
-		return className;
-	}
+    private boolean currentlyValid;
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    private Date nextPlannedExecutionDate;
 
-	public boolean isEnabled() {
-		return enabled;
-	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isCurrentlyValid() {
-		return currentlyValid;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCurrentlyValid(boolean currentlyValid) {
-		this.currentlyValid = currentlyValid;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Date getNextPlannedExecutionDate() {
-		return nextPlannedExecutionDate;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setNextPlannedExecutionDate(Date nextPlannedExecutionDate) {
-		this.nextPlannedExecutionDate = nextPlannedExecutionDate;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	
-	
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public boolean isCurrentlyValid() {
+        return currentlyValid;
+    }
+
+    public void setCurrentlyValid(boolean currentlyValid) {
+        this.currentlyValid = currentlyValid;
+    }
+
+    public Date getNextPlannedExecutionDate() {
+        return nextPlannedExecutionDate;
+    }
+
+    public void setNextPlannedExecutionDate(Date nextPlannedExecutionDate) {
+        this.nextPlannedExecutionDate = nextPlannedExecutionDate;
+    }
+
+
 }

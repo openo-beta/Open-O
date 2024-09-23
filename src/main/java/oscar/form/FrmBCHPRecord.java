@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -45,7 +45,7 @@ public class FrmBCHPRecord extends FrmRecord {
         Properties props = new Properties();
 
         if (existingID <= 0) {
-            
+
             String sql = "SELECT demographic_no, last_name, first_name, phone, phone2, hin,provider_no FROM demographic WHERE demographic_no = "
                     + demographicNo;
             String providerNo = null;
@@ -53,10 +53,10 @@ public class FrmBCHPRecord extends FrmRecord {
             if (rs.next()) {
                 props.setProperty("demographic_no", rs.getString("demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(),
-                                _dateFormat));
+                        _dateFormat));
                 // props.setProperty("formEdited",
                 // UtilDateUtilities.DateToString(new Date(),_dateFormat));
-                props.setProperty("pg1_patientName", rs.getString("last_name")+", "+rs.getString("first_name"));
+                props.setProperty("pg1_patientName", rs.getString("last_name") + ", " + rs.getString("first_name"));
                 props.setProperty("pg1_phn", rs.getString("hin"));
                 props.setProperty("pg1_phone", rs.getString("phone") + "  " + rs.getString("phone2"));
                 props.setProperty("pg1_formDate", UtilDateUtilities
@@ -64,14 +64,14 @@ public class FrmBCHPRecord extends FrmRecord {
                 providerNo = rs.getString("provider_no");
             }
             rs.close();
-            
-            if(providerNo != null && !providerNo.trim().equals("")){
+
+            if (providerNo != null && !providerNo.trim().equals("")) {
                 ProviderData proData = new ProviderData();
                 proData.getProvider(providerNo);
-                
-                props.setProperty("pg1_msp",proData.getOhip_no());
-                props.setProperty("pg1_md", "Dr. "+proData.getLast_name());
-                
+
+                props.setProperty("pg1_msp", proData.getOhip_no());
+                props.setProperty("pg1_md", "Dr. " + proData.getLast_name());
+
             }
         } else {
             String sql = "SELECT * FROM formBCHP WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
@@ -83,7 +83,7 @@ public class FrmBCHPRecord extends FrmRecord {
                     + demographicNo;
             ResultSet rs = DBHelp.searchDBRecord(sql);
             if (rs.next()) {
-                props.setProperty("pg1_patientName_cur", rs.getString("last_name")+", "+rs.getString("first_name"));
+                props.setProperty("pg1_patientName_cur", rs.getString("last_name") + ", " + rs.getString("first_name"));
                 props.setProperty("pg1_phn_cur", rs.getString("hin"));
                 props.setProperty("pg1_phone_cur", rs.getString("phone") + "  " + rs.getString("phone2"));
             }

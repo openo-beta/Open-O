@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * The Pharmacists Clinic
  * Faculty of Pharmaceutical Sciences
@@ -32,59 +32,58 @@ import org.oscarehr.common.model.FaxJob.STATUS;
 import net.sf.json.JSONObject;
 
 public class FaxRecipient {
-	
-	private String name;
-	private String fax;
-	private Date sent;
-	private STATUS status;
-	
-	public FaxRecipient() {
-		//default
-	}
-	
-	public FaxRecipient(JSONObject json) {
-		this.name = json.getString("name");
-		this.setFax(json.getString("fax"));
-	}
-	
-	public FaxRecipient(String name, String fax) {
-		this.name = name;
-		this.setFax(fax);
-	}
 
-	public String getName() {
-		return name;
-	}
+    private String name;
+    private String fax;
+    private Date sent;
+    private STATUS status;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public FaxRecipient() {
+        //default
+    }
 
-	public String getFax() {
-		return fax;
-	}
+    public FaxRecipient(JSONObject json) {
+        this.name = json.getString("name");
+        this.setFax(json.getString("fax"));
+    }
 
-	public void setFax(String fax) {
-		if(fax != null && ! fax.trim().isEmpty())
-		{
-			this.fax = fax.replaceAll("\\D", "").trim();
-		}
-	}
+    public FaxRecipient(String name, String fax) {
+        this.name = name;
+        this.setFax(fax);
+    }
 
-	public Date getSent() {
-		return sent;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setSent(Date sent) {
-		this.sent = sent;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public STATUS getStatus() {
-		return status;
-	}
+    public String getFax() {
+        return fax;
+    }
 
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
+    public void setFax(String fax) {
+        if (fax != null && !fax.trim().isEmpty()) {
+            this.fax = fax.replaceAll("\\D", "").trim();
+        }
+    }
+
+    public Date getSent() {
+        return sent;
+    }
+
+    public void setSent(Date sent) {
+        this.sent = sent;
+    }
+
+    public STATUS getStatus() {
+        return status;
+    }
+
+    public void setStatus(STATUS status) {
+        this.status = status;
+    }
 
 }

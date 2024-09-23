@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,168 +38,166 @@ import org.oscarehr.util.SpringUtils;
 
 public final class PreventionTransfer {
 
-	private Integer Id;
-	private Integer demographicId;
-	private Date creationDate;
-	private Date preventionDate;
-	private String providerNo;
-	private String preventionType;
-	private boolean deleted;
-	private boolean refused;
-	private boolean never;
-	private Date nextDate;
-	private String creatorProviderNo;
-	private Date lastUpdateDate;
-	
-	private PreventionExtTransfer[] preventionExts;
+    private Integer Id;
+    private Integer demographicId;
+    private Date creationDate;
+    private Date preventionDate;
+    private String providerNo;
+    private String preventionType;
+    private boolean deleted;
+    private boolean refused;
+    private boolean never;
+    private Date nextDate;
+    private String creatorProviderNo;
+    private Date lastUpdateDate;
 
-	public Integer getDemographicId() {
-		return (demographicId);
-	}
+    private PreventionExtTransfer[] preventionExts;
 
-	public void setDemographicId(Integer demographicId) {
-		this.demographicId = demographicId;
-	}
+    public Integer getDemographicId() {
+        return (demographicId);
+    }
 
-	public Date getCreationDate() {
-		return (creationDate);
-	}
+    public void setDemographicId(Integer demographicId) {
+        this.demographicId = demographicId;
+    }
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+    public Date getCreationDate() {
+        return (creationDate);
+    }
 
-	public Integer getId() {
-		return (Id);
-	}
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	public void setId(Integer id) {
-		Id = id;
-	}
+    public Integer getId() {
+        return (Id);
+    }
 
-	public String getProviderNo() {
-		return (providerNo);
-	}
+    public void setId(Integer id) {
+        Id = id;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getProviderNo() {
+        return (providerNo);
+    }
 
-	public Date getPreventionDate() {
-		return (preventionDate);
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setPreventionDate(Date preventionDate) {
-		this.preventionDate = preventionDate;
-	}
+    public Date getPreventionDate() {
+        return (preventionDate);
+    }
 
-	public String getPreventionType() {
-		return (preventionType);
-	}
+    public void setPreventionDate(Date preventionDate) {
+        this.preventionDate = preventionDate;
+    }
 
-	public void setPreventionType(String preventionType) {
-		this.preventionType = preventionType;
-	}
+    public String getPreventionType() {
+        return (preventionType);
+    }
 
-	public boolean isDeleted() {
-		return (deleted);
-	}
+    public void setPreventionType(String preventionType) {
+        this.preventionType = preventionType;
+    }
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
+    public boolean isDeleted() {
+        return (deleted);
+    }
 
-	public boolean isRefused() {
-		return (refused);
-	}
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
-	public void setRefused(boolean refused) {
-		this.refused = refused;
-	}
+    public boolean isRefused() {
+        return (refused);
+    }
 
-	public boolean isNever() {
-		return (never);
-	}
+    public void setRefused(boolean refused) {
+        this.refused = refused;
+    }
 
-	public void setNever(boolean never) {
-		this.never = never;
-	}
+    public boolean isNever() {
+        return (never);
+    }
 
-	public Date getNextDate() {
-		return (nextDate);
-	}
+    public void setNever(boolean never) {
+        this.never = never;
+    }
 
-	public void setNextDate(Date nextDate) {
-		this.nextDate = nextDate;
-	}
+    public Date getNextDate() {
+        return (nextDate);
+    }
 
-	public String getCreatorProviderNo() {
-		return (creatorProviderNo);
-	}
+    public void setNextDate(Date nextDate) {
+        this.nextDate = nextDate;
+    }
 
-	public void setCreatorProviderNo(String creatorProviderNo) {
-		this.creatorProviderNo = creatorProviderNo;
-	}
+    public String getCreatorProviderNo() {
+        return (creatorProviderNo);
+    }
 
-	public Date getLastUpdateDate() {
-		return (lastUpdateDate);
-	}
+    public void setCreatorProviderNo(String creatorProviderNo) {
+        this.creatorProviderNo = creatorProviderNo;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public Date getLastUpdateDate() {
+        return (lastUpdateDate);
+    }
 
-	public PreventionExtTransfer[] getPreventionExts() {
-		return (preventionExts);
-	}
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-	public void setPreventionExts(PreventionExtTransfer[] preventionExts) {
-		this.preventionExts = preventionExts;
-	}
+    public PreventionExtTransfer[] getPreventionExts() {
+        return (preventionExts);
+    }
 
-	/**
-	 * both preventionsExts are required, null is not allowed, pass in empty list for no ext's
-	 */
-	public static PreventionTransfer toTransfer(Prevention prevention, List<PreventionExt> preventionExts) {
-		if (prevention == null) return (null);
+    public void setPreventionExts(PreventionExtTransfer[] preventionExts) {
+        this.preventionExts = preventionExts;
+    }
 
-		PreventionTransfer preventionTransfer = new PreventionTransfer();
+    /**
+     * both preventionsExts are required, null is not allowed, pass in empty list for no ext's
+     */
+    public static PreventionTransfer toTransfer(Prevention prevention, List<PreventionExt> preventionExts) {
+        if (prevention == null) return (null);
 
-		preventionTransfer.setCreationDate(prevention.getCreationDate());
-		preventionTransfer.setCreatorProviderNo(prevention.getCreatorProviderNo());
-		preventionTransfer.setDeleted(prevention.isDeleted());
-		preventionTransfer.setDemographicId(prevention.getDemographicId());
-		preventionTransfer.setId(prevention.getId());
-		preventionTransfer.setLastUpdateDate(prevention.getLastUpdateDate());
-		preventionTransfer.setNever(prevention.isNever());
-		preventionTransfer.setNextDate(prevention.getNextDate());
-		preventionTransfer.setPreventionDate(prevention.getPreventionDate());
-		preventionTransfer.setPreventionType(prevention.getPreventionType());
-		preventionTransfer.setProviderNo(prevention.getProviderNo());
-		preventionTransfer.setRefused(prevention.isRefused());
-		
-		preventionTransfer.setPreventionExts(PreventionExtTransfer.toTransfers(preventionExts));
+        PreventionTransfer preventionTransfer = new PreventionTransfer();
 
-		return (preventionTransfer);
-	}
+        preventionTransfer.setCreationDate(prevention.getCreationDate());
+        preventionTransfer.setCreatorProviderNo(prevention.getCreatorProviderNo());
+        preventionTransfer.setDeleted(prevention.isDeleted());
+        preventionTransfer.setDemographicId(prevention.getDemographicId());
+        preventionTransfer.setId(prevention.getId());
+        preventionTransfer.setLastUpdateDate(prevention.getLastUpdateDate());
+        preventionTransfer.setNever(prevention.isNever());
+        preventionTransfer.setNextDate(prevention.getNextDate());
+        preventionTransfer.setPreventionDate(prevention.getPreventionDate());
+        preventionTransfer.setPreventionType(prevention.getPreventionType());
+        preventionTransfer.setProviderNo(prevention.getProviderNo());
+        preventionTransfer.setRefused(prevention.isRefused());
 
-	public static PreventionTransfer[] getTransfers(LoggedInInfo loggedInInfo, List<Prevention> preventions)
-	{
-		ArrayList<PreventionTransfer> results=new ArrayList<PreventionTransfer>();
-		PreventionManager preventionManager=SpringUtils.getBean(PreventionManager.class);
-		
-		for (Prevention prevention : preventions)
-		{
-			List<PreventionExt> preventionExts = preventionManager.getPreventionExtByPrevention(loggedInInfo,prevention.getId());
-			PreventionTransfer preventionTransfer=PreventionTransfer.toTransfer(prevention, preventionExts);
-			results.add(preventionTransfer);
-		}
-		
-		return(results.toArray(new PreventionTransfer[0]));
-	}
-	
-	@Override
-	public String toString() {
-		return (ReflectionToStringBuilder.toString(this));
-	}
+        preventionTransfer.setPreventionExts(PreventionExtTransfer.toTransfers(preventionExts));
+
+        return (preventionTransfer);
+    }
+
+    public static PreventionTransfer[] getTransfers(LoggedInInfo loggedInInfo, List<Prevention> preventions) {
+        ArrayList<PreventionTransfer> results = new ArrayList<PreventionTransfer>();
+        PreventionManager preventionManager = SpringUtils.getBean(PreventionManager.class);
+
+        for (Prevention prevention : preventions) {
+            List<PreventionExt> preventionExts = preventionManager.getPreventionExtByPrevention(loggedInInfo, prevention.getId());
+            PreventionTransfer preventionTransfer = PreventionTransfer.toTransfer(prevention, preventionExts);
+            results.add(preventionTransfer);
+        }
+
+        return (results.toArray(new PreventionTransfer[0]));
+    }
+
+    @Override
+    public String toString() {
+        return (ReflectionToStringBuilder.toString(this));
+    }
 }

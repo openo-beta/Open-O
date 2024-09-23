@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,121 +34,121 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="mdsZMN")
-public class MdsZMN extends AbstractModel<Integer>{
+@Table(name = "mdsZMN")
+public class MdsZMN extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="segmentID")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "segmentID")
+    private Integer id;
 
-	private String resultMnemonic;
+    private String resultMnemonic;
 
-	private String resultMnemonicVersion;
+    private String resultMnemonicVersion;
 
-	private String reportName;
+    private String reportName;
 
-	private String units;
+    private String units;
 
-	@Column(name="cumulativeSequence")
-	private String cummulativeSequence;
+    @Column(name = "cumulativeSequence")
+    private String cummulativeSequence;
 
-	private String referenceRange;
+    private String referenceRange;
 
-	private String resultCode;
+    private String resultCode;
 
-	private String reportForm;
+    private String reportForm;
 
-	private String reportGroup;
+    private String reportGroup;
 
-	private String reportGroupVersion;
+    private String reportGroupVersion;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getResultMnemonic() {
-    	return resultMnemonic;
+    public String getResultMnemonic() {
+        return resultMnemonic;
     }
 
-	public void setResultMnemonic(String resultMnemonic) {
-    	this.resultMnemonic = resultMnemonic;
+    public void setResultMnemonic(String resultMnemonic) {
+        this.resultMnemonic = resultMnemonic;
     }
 
-	public String getResultMnemonicVersion() {
-    	return resultMnemonicVersion;
+    public String getResultMnemonicVersion() {
+        return resultMnemonicVersion;
     }
 
-	public void setResultMnemonicVersion(String resultMnemonicVersion) {
-    	this.resultMnemonicVersion = resultMnemonicVersion;
+    public void setResultMnemonicVersion(String resultMnemonicVersion) {
+        this.resultMnemonicVersion = resultMnemonicVersion;
     }
 
-	public String getReportName() {
-    	return reportName;
+    public String getReportName() {
+        return reportName;
     }
 
-	public void setReportName(String reportName) {
-    	this.reportName = reportName;
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
     }
 
-	public String getUnits() {
-    	return units;
+    public String getUnits() {
+        return units;
     }
 
-	public void setUnits(String units) {
-    	this.units = units;
+    public void setUnits(String units) {
+        this.units = units;
     }
 
-	public String getCummulativeSequence() {
-    	return cummulativeSequence;
+    public String getCummulativeSequence() {
+        return cummulativeSequence;
     }
 
-	public void setCummulativeSequence(String cummulativeSequence) {
-    	this.cummulativeSequence = cummulativeSequence;
+    public void setCummulativeSequence(String cummulativeSequence) {
+        this.cummulativeSequence = cummulativeSequence;
     }
 
-	public String getReferenceRange() {
-    	return referenceRange;
+    public String getReferenceRange() {
+        return referenceRange;
     }
 
-	public void setReferenceRange(String referenceRange) {
-    	this.referenceRange = referenceRange;
+    public void setReferenceRange(String referenceRange) {
+        this.referenceRange = referenceRange;
     }
 
-	public String getResultCode() {
-    	return resultCode;
+    public String getResultCode() {
+        return resultCode;
     }
 
-	public void setResultCode(String resultCode) {
-    	this.resultCode = resultCode;
+    public void setResultCode(String resultCode) {
+        this.resultCode = resultCode;
     }
 
-	public String getReportForm() {
-    	return reportForm;
+    public String getReportForm() {
+        return reportForm;
     }
 
-	public void setReportForm(String reportForm) {
-    	this.reportForm = reportForm;
+    public void setReportForm(String reportForm) {
+        this.reportForm = reportForm;
     }
 
-	public String getReportGroup() {
-    	return reportGroup;
+    public String getReportGroup() {
+        return reportGroup;
     }
 
-	public void setReportGroup(String reportGroup) {
-    	this.reportGroup = reportGroup;
+    public void setReportGroup(String reportGroup) {
+        this.reportGroup = reportGroup;
     }
 
-	public String getReportGroupVersion() {
-    	return reportGroupVersion;
+    public String getReportGroupVersion() {
+        return reportGroupVersion;
     }
 
-	public void setReportGroupVersion(String reportGroupVersion) {
-    	this.reportGroupVersion = reportGroupVersion;
+    public void setReportGroupVersion(String reportGroupVersion) {
+        this.reportGroupVersion = reportGroupVersion;
     }
 
 

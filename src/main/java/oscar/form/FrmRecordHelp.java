@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,7 +50,7 @@ public class FrmRecordHelp {
     private String _dateFormat = "yyyy/MM/dd";
     private String _newDateFormat = "yyyy-MM-dd"; //handles both date formats, but yyyy/MM/dd is displayed to avoid deprecation
 
-    private static final HashSet VALID_ACTION_VALUES = new HashSet < String > () {
+    private static final HashSet VALID_ACTION_VALUES = new HashSet<String>() {
         {
             add("print");
             add("save");
@@ -130,7 +130,7 @@ public class FrmRecordHelp {
             String fileName = place + formClass + "_" + demographicNo + "_" + now + ".xml";
 
             try {
-            	// caution: this method closes the resultset.
+                // caution: this method closes the resultset.
                 Document doc = JDBCUtil.toDocument(rs);
                 JDBCUtil.saveAsXML(doc, fileName);
             } catch (Exception e) {
@@ -188,7 +188,7 @@ public class FrmRecordHelp {
             }
 
             if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
-            java.util.Date d;
+                java.util.Date d;
                 if (md.getColumnName(i).equalsIgnoreCase("formEdited")) {
                     d = new Date();
                 } else {
@@ -245,26 +245,25 @@ public class FrmRecordHelp {
 
         ResultSet rs = DBHandler.GetSQL(sql);
         if (rs.next()) {
-        	props=getResultsAsProperties(rs);
+            props = getResultsAsProperties(rs);
         }
         return props;
     }
 
     public List<Properties> getPrintRecords(String sql) throws SQLException {
-        ArrayList<Properties> results=new ArrayList<Properties>();
+        ArrayList<Properties> results = new ArrayList<Properties>();
 
         ResultSet rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-        	Properties p=getResultsAsProperties(rs);
+            Properties p = getResultsAsProperties(rs);
             results.add(p);
         }
 
         return results;
     }
 
-    private Properties getResultsAsProperties(ResultSet rs) throws SQLException
-    {
-    	Properties p=new Properties();
+    private Properties getResultsAsProperties(ResultSet rs) throws SQLException {
+        Properties p = new Properties();
         ResultSetMetaData md = rs.getMetaData();
         for (int i = 1; i <= md.getColumnCount(); i++) {
             String name = md.getColumnName(i);
@@ -284,25 +283,25 @@ public class FrmRecordHelp {
                 p.setProperty(name, value);
         }
 
-        return(p);
+        return (p);
     }
 
     public List<Integer> getDemographicIds(String sql) throws SQLException {
-        List<Integer> results=new ArrayList<Integer>();
+        List<Integer> results = new ArrayList<Integer>();
 
         ResultSet rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-        	results.add(rs.getInt("demographic_no"));
+            results.add(rs.getInt("demographic_no"));
         }
 
         return results;
     }
-    
-    public String findActionValue(String submit)  {
+
+    public String findActionValue(String submit) {
         return VALID_ACTION_VALUES.contains(submit) ? submit : "failure";
     }
 
-    public String createActionURL(String where, String action, String demoId, String formId)  {
+    public String createActionURL(String where, String action, String demoId, String formId) {
         String temp = null;
 
         if (action.equalsIgnoreCase("print")) {
@@ -317,10 +316,10 @@ public class FrmRecordHelp {
             temp = where;
         } else if (action.equals("printAll")) {
             temp = where + "?demographic_no=" + demoId + "&formId=" + formId;
-        }  else if (action.equalsIgnoreCase("printConsultLetter")) {
-        	temp = where +  "?formId=" + formId;
+        } else if (action.equalsIgnoreCase("printConsultLetter")) {
+            temp = where + "?formId=" + formId;
         } else if (action.equalsIgnoreCase("printMaleConsultLetter")) {
-        	temp = where +  "?formId=" + formId;
+            temp = where + "?formId=" + formId;
         } else if (isOpenHealthCustomForm(action)) {
             temp = where + "?demographic_no=" + demoId + "&formId=" + formId;
         } else {
@@ -334,31 +333,25 @@ public class FrmRecordHelp {
         return "formEpistaxisLetter".equalsIgnoreCase(action)
                 || "formOtologicLetter".equalsIgnoreCase(action)
                 || "followUpLetter".equalsIgnoreCase(action)
-                || "formSinusLetter".equalsIgnoreCase(action) ;
+                || "formSinusLetter".equalsIgnoreCase(action);
     }
 
-    public static void convertBooleanToChecked(Properties p)
-    {
-    	HashSet<Object> keySet=new HashSet<Object>();
-    	keySet.addAll(p.keySet());
+    public static void convertBooleanToChecked(Properties p) {
+        HashSet<Object> keySet = new HashSet<Object>();
+        keySet.addAll(p.keySet());
 
-    	for (Object key : keySet)
-    	{
-    		String keyName=(String) key;
-    		if (keyName.startsWith("b_"))
-    		{
-    			String value=StringUtils.trimToNull(p.getProperty(keyName));
+        for (Object key : keySet) {
+            String keyName = (String) key;
+            if (keyName.startsWith("b_")) {
+                String value = StringUtils.trimToNull(p.getProperty(keyName));
 
-    			if ("1".equals(value))
-    			{
-    				p.setProperty(keyName, "checked='checked'");
-    			}
-    			else
-    			{
-    				p.setProperty(keyName, "");
-    			}
-    		}
-    	}
+                if ("1".equals(value)) {
+                    p.setProperty(keyName, "checked='checked'");
+                } else {
+                    p.setProperty(keyName, "");
+                }
+            }
+        }
     }
 
     public Date getDateFieldOrNull(Properties props, String fieldName) {
@@ -375,6 +368,7 @@ public class FrmRecordHelp {
         }
         return result;
     }
+
     public String parseDateFieldOrNull(Date date) {
         String result = null;
         if (date != null) {

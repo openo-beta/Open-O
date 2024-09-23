@@ -23,102 +23,97 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_tickler" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_tickler");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_tickler");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 <%
-	int diff = 0;
-	if(request.getAttribute("difference") != null) {
-		diff = ((Integer)request.getAttribute("difference")).intValue();
-	}
+    int diff = 0;
+    if (request.getAttribute("difference") != null) {
+        diff = ((Integer) request.getAttribute("difference")).intValue();
+    }
 %>
 <html>
 <head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<script>
-	
-	
-	function doAll() {
-		popupDifference();
-		InitializeTimer();
-	}
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <script>
 
-	function popupDifference() {
-		var diff = <%=diff%>;
-		if(diff > 0) {
-			alert('You have ' + diff + ' new ticklers since the last check');
-		}
-	}
+
+        function doAll() {
+            popupDifference();
+            InitializeTimer();
+        }
+
+        function popupDifference() {
+            var diff = <%=diff%>;
+            if (diff > 0) {
+                alert('You have ' + diff + ' new ticklers since the last check');
+            }
+        }
 
 <!--
 var secs
-var timerID = null
-var timerRunning = false
-var delay = 1000
+        var timerID = null
+        var timerRunning = false
+        var delay = 1000
 
-function InitializeTimer()
-{
-    // Set the length of the timer, in seconds
-    secs = 10
-    StopTheClock()
-    StartTheTimer()
-}
+        function InitializeTimer() {
+            // Set the length of the timer, in seconds
+            secs = 10
+            StopTheClock()
+            StartTheTimer()
+        }
 
-function StopTheClock()
-{
-    if(timerRunning)
-        clearTimeout(timerID)
-    timerRunning = false
-}
+        function StopTheClock() {
+            if (timerRunning)
+                clearTimeout(timerID)
+            timerRunning = false
+        }
 
-function StartTheTimer()
-{
-	document.unreadTicklerForm.target='_self';
-    if (secs==0)
-    {
-        StopTheClock()
-        // Here's where you put something useful that's
-        // supposed to happen after the allotted time.
-        // For example, you could display a message:
-		document.unreadTicklerForm.submit();
-    }
-    else
-    {
-        self.status = secs
-        secs = secs - 1
-        timerRunning = true
-        timerID = self.setTimeout("StartTheTimer()", delay)
-    }
-}
-//-->
-</SCRIPT>
+        function StartTheTimer() {
+            document.unreadTicklerForm.target = '_self';
+            if (secs == 0) {
+                StopTheClock()
+                // Here's where you put something useful that's
+                // supposed to happen after the allotted time.
+                // For example, you could display a message:
+                document.unreadTicklerForm.submit();
+            } else {
+                self.status = secs
+                secs = secs - 1
+                timerRunning = true
+                timerID = self.setTimeout("StartTheTimer()", delay)
+            }
+        }
+
+        //-->
+    </SCRIPT>
 
 </head>
 <body onload="doAll()">
 <%
-	String ticklerProvName = (String)request.getAttribute("tklerProviderName");
-	if (ticklerProvName == null) {
-		ticklerProvName = "You";
-	}
+    String ticklerProvName = (String) request.getAttribute("tklerProviderName");
+    if (ticklerProvName == null) {
+        ticklerProvName = "You";
+    }
 %>
 <%=ticklerProvName %> have
-<c:out value="${sessionScope.num_ticklers}" />
+<c:out value="${sessionScope.num_ticklers}"/>
 ticklers.
 <html:form styleId="unreadTicklerForm" action="/UnreadTickler.do" target="_self">
-	<input type="hidden" name="method" value="refresh"/>
+    <input type="hidden" name="method" value="refresh"/>
 </html:form>
 
 <!-- 
@@ -132,8 +127,8 @@ ticklers.
 	</c:forEach>
 </table>
 -->
-<br />
+<br/>
 <input type="button" value="Logout"
-	onclick="document.unreadTicklerForm.method.value='logout';document.unreadTicklerForm.submit()" />
+       onclick="document.unreadTicklerForm.method.value='logout';document.unreadTicklerForm.submit()"/>
 </body>
 </html>

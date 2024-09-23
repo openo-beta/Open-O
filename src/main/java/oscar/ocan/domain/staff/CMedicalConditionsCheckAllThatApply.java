@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -47,9 +46,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -98,17 +97,17 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cAcquiredBrainInjuryABI",
-    "cArthritis",
-    "cAutism",
-    "cOtherOrCSpecifyOrCBreathingProblems",
-    "cUnknown",
-    "cClientDeclinedToAnswer"
+        "cAcquiredBrainInjuryABI",
+        "cArthritis",
+        "cAutism",
+        "cOtherOrCSpecifyOrCBreathingProblems",
+        "cUnknown",
+        "cClientDeclinedToAnswer"
 })
 @XmlRootElement(name = "CMedical_conditions__check_all_that_apply_")
 public class CMedicalConditionsCheckAllThatApply {
@@ -120,37 +119,37 @@ public class CMedicalConditionsCheckAllThatApply {
     @XmlElement(name = "CAutism", required = true)
     protected String cAutism;
     @XmlElementRefs({
-        @XmlElementRef(name = "COther", type = COther.class),
-        @XmlElementRef(name = "CObesity", type = JAXBElement.class),
-        @XmlElementRef(name = "CSexually_Transmitted_Disease__STD_", type = JAXBElement.class),
-        @XmlElementRef(name = "CCommunicable_health_disease", type = JAXBElement.class),
-        @XmlElementRef(name = "CDiabetes_Type_1", type = JAXBElement.class),
-        @XmlElementRef(name = "CHearing_Impairment", type = JAXBElement.class),
-        @XmlElementRef(name = "CThyroid", type = JAXBElement.class),
-        @XmlElementRef(name = "CHeart_Condition", type = JAXBElement.class),
-        @XmlElementRef(name = "CHepatitis_B", type = JAXBElement.class),
-        @XmlElementRef(name = "CCirrhosis", type = JAXBElement.class),
-        @XmlElementRef(name = "CEating_disorder", type = JAXBElement.class),
-        @XmlElementRef(name = "CStroke", type = JAXBElement.class),
-        @XmlElementRef(name = "CSpecify", type = JAXBElement.class),
-        @XmlElementRef(name = "CEpilepsy", type = JAXBElement.class),
-        @XmlElementRef(name = "CIntellectual_disability", type = JAXBElement.class),
-        @XmlElementRef(name = "CDiabetes_Type_2", type = JAXBElement.class),
-        @XmlElementRef(name = "CSkin_conditions", type = JAXBElement.class),
-        @XmlElementRef(name = "CBreathing_problems", type = JAXBElement.class),
-        @XmlElementRef(name = "COsteoporosis", type = JAXBElement.class),
-        @XmlElementRef(name = "CHigh_cholesterol", type = JAXBElement.class),
-        @XmlElementRef(name = "CHIV", type = JAXBElement.class),
-        @XmlElementRef(name = "CDiabetes_Type_3", type = JAXBElement.class),
-        @XmlElementRef(name = "CHigh_blood_pressure", type = JAXBElement.class),
-        @XmlElementRef(name = "CLow_blood_pressure", type = JAXBElement.class),
-        @XmlElementRef(name = "CVision_impairment", type = JAXBElement.class),
-        @XmlElementRef(name = "CPregnancy", type = JAXBElement.class),
-        @XmlElementRef(name = "CCancer", type = JAXBElement.class),
-        @XmlElementRef(name = "CHepatitis_C", type = JAXBElement.class),
-        @XmlElementRef(name = "CHepatitis_A", type = JAXBElement.class),
-        @XmlElementRef(name = "CMRSA__C_Difficile", type = JAXBElement.class),
-        @XmlElementRef(name = "CSeizure", type = JAXBElement.class)
+            @XmlElementRef(name = "COther", type = COther.class),
+            @XmlElementRef(name = "CObesity", type = JAXBElement.class),
+            @XmlElementRef(name = "CSexually_Transmitted_Disease__STD_", type = JAXBElement.class),
+            @XmlElementRef(name = "CCommunicable_health_disease", type = JAXBElement.class),
+            @XmlElementRef(name = "CDiabetes_Type_1", type = JAXBElement.class),
+            @XmlElementRef(name = "CHearing_Impairment", type = JAXBElement.class),
+            @XmlElementRef(name = "CThyroid", type = JAXBElement.class),
+            @XmlElementRef(name = "CHeart_Condition", type = JAXBElement.class),
+            @XmlElementRef(name = "CHepatitis_B", type = JAXBElement.class),
+            @XmlElementRef(name = "CCirrhosis", type = JAXBElement.class),
+            @XmlElementRef(name = "CEating_disorder", type = JAXBElement.class),
+            @XmlElementRef(name = "CStroke", type = JAXBElement.class),
+            @XmlElementRef(name = "CSpecify", type = JAXBElement.class),
+            @XmlElementRef(name = "CEpilepsy", type = JAXBElement.class),
+            @XmlElementRef(name = "CIntellectual_disability", type = JAXBElement.class),
+            @XmlElementRef(name = "CDiabetes_Type_2", type = JAXBElement.class),
+            @XmlElementRef(name = "CSkin_conditions", type = JAXBElement.class),
+            @XmlElementRef(name = "CBreathing_problems", type = JAXBElement.class),
+            @XmlElementRef(name = "COsteoporosis", type = JAXBElement.class),
+            @XmlElementRef(name = "CHigh_cholesterol", type = JAXBElement.class),
+            @XmlElementRef(name = "CHIV", type = JAXBElement.class),
+            @XmlElementRef(name = "CDiabetes_Type_3", type = JAXBElement.class),
+            @XmlElementRef(name = "CHigh_blood_pressure", type = JAXBElement.class),
+            @XmlElementRef(name = "CLow_blood_pressure", type = JAXBElement.class),
+            @XmlElementRef(name = "CVision_impairment", type = JAXBElement.class),
+            @XmlElementRef(name = "CPregnancy", type = JAXBElement.class),
+            @XmlElementRef(name = "CCancer", type = JAXBElement.class),
+            @XmlElementRef(name = "CHepatitis_C", type = JAXBElement.class),
+            @XmlElementRef(name = "CHepatitis_A", type = JAXBElement.class),
+            @XmlElementRef(name = "CMRSA__C_Difficile", type = JAXBElement.class),
+            @XmlElementRef(name = "CSeizure", type = JAXBElement.class)
     })
     protected List<Object> cOtherOrCSpecifyOrCBreathingProblems;
     @XmlElement(name = "CUnknown", required = true)
@@ -160,11 +159,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Gets the value of the cAcquiredBrainInjuryABI property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAcquiredBrainInjuryABI() {
         return cAcquiredBrainInjuryABI;
@@ -172,11 +171,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Sets the value of the cAcquiredBrainInjuryABI property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAcquiredBrainInjuryABI(String value) {
         this.cAcquiredBrainInjuryABI = value;
@@ -184,11 +183,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Gets the value of the cArthritis property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCArthritis() {
         return cArthritis;
@@ -196,11 +195,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Sets the value of the cArthritis property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCArthritis(String value) {
         this.cArthritis = value;
@@ -208,11 +207,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Gets the value of the cAutism property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAutism() {
         return cAutism;
@@ -220,11 +219,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Sets the value of the cAutism property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAutism(String value) {
         this.cAutism = value;
@@ -232,20 +231,20 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Gets the value of the cOtherOrCSpecifyOrCBreathingProblems property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the cOtherOrCSpecifyOrCBreathingProblems property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getCOtherOrCSpecifyOrCBreathingProblems().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link COther }
@@ -279,8 +278,8 @@ public class CMedicalConditionsCheckAllThatApply {
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * 
-     * 
+     *
+     *
      */
     public List<Object> getCOtherOrCSpecifyOrCBreathingProblems() {
         if (cOtherOrCSpecifyOrCBreathingProblems == null) {
@@ -291,11 +290,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Gets the value of the cUnknown property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCUnknown() {
         return cUnknown;
@@ -303,11 +302,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Sets the value of the cUnknown property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -315,11 +314,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -327,11 +326,11 @@ public class CMedicalConditionsCheckAllThatApply {
 
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

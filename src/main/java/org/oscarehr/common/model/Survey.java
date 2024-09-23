@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,131 +36,131 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="survey")
+@Table(name = "survey")
 public class Survey extends AbstractModel<Integer> {
 
-        public static final short STATUS_IN_REVIEW      = 0;
-	public static final short STATUS_TEST           = 1;
-	public static final short STATUS_LAUNCHED       = 2;
-	public static final short STATUS_CLOSED         = 3;
+    public static final short STATUS_IN_REVIEW = 0;
+    public static final short STATUS_TEST = 1;
+    public static final short STATUS_LAUNCHED = 2;
+    public static final short STATUS_CLOSED = 3;
 
-    
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="surveyid")
-	private Integer id;
-	
-	private String description;
-	
-	private String surveyData;
-	
-	private int version;
-	
-	private int status;
-	
-	private int userId;
-	
-	private int facilityId;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateLaunched;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateClosed;
-	
-	@Column(name="launched_instance_id")
-	private int launchedInstanceId;
 
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "surveyid")
+    private Integer id;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    private String surveyData;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private int version;
 
-	public String getSurveyData() {
-		return surveyData;
-	}
+    private int status;
 
-	public void setSurveyData(String surveyData) {
-		this.surveyData = surveyData;
-	}
+    private int userId;
 
-	public int getVersion() {
-		return version;
-	}
+    private int facilityId;
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
 
-	public int getStatus() {
-		return status;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateLaunched;
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateClosed;
 
-	public int getUserId() {
-		return userId;
-	}
+    @Column(name = "launched_instance_id")
+    private int launchedInstanceId;
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public int getFacilityId() {
-		return facilityId;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setFacilityId(int facilityId) {
-		this.facilityId = facilityId;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public String getSurveyData() {
+        return surveyData;
+    }
 
-	public Date getDateLaunched() {
-		return dateLaunched;
-	}
+    public void setSurveyData(String surveyData) {
+        this.surveyData = surveyData;
+    }
 
-	public void setDateLaunched(Date dateLaunched) {
-		this.dateLaunched = dateLaunched;
-	}
+    public int getVersion() {
+        return version;
+    }
 
-	public Date getDateClosed() {
-		return dateClosed;
-	}
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
-	public void setDateClosed(Date dateClosed) {
-		this.dateClosed = dateClosed;
-	}
+    public int getStatus() {
+        return status;
+    }
 
-	public int getLaunchedInstanceId() {
-		return launchedInstanceId;
-	}
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-	public void setLaunchedInstanceId(int launchedInstanceId) {
-		this.launchedInstanceId = launchedInstanceId;
-	}
-	
-	
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getFacilityId() {
+        return facilityId;
+    }
+
+    public void setFacilityId(int facilityId) {
+        this.facilityId = facilityId;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateLaunched() {
+        return dateLaunched;
+    }
+
+    public void setDateLaunched(Date dateLaunched) {
+        this.dateLaunched = dateLaunched;
+    }
+
+    public Date getDateClosed() {
+        return dateClosed;
+    }
+
+    public void setDateClosed(Date dateClosed) {
+        this.dateClosed = dateClosed;
+    }
+
+    public int getLaunchedInstanceId() {
+        return launchedInstanceId;
+    }
+
+    public void setLaunchedInstanceId(int launchedInstanceId) {
+        this.launchedInstanceId = launchedInstanceId;
+    }
+
+
 }

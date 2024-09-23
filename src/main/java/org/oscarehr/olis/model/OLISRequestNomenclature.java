@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -18,44 +18,44 @@ import org.oscarehr.common.model.AbstractModel;
 
 @Entity
 public class OLISRequestNomenclature extends AbstractModel<Integer> {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String nameId;
-	private String name;
-	private String category;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String nameId;
+    private String name;
+    private String category;
 
-	public OLISRequestNomenclature(){
-		super();
-	}	
+    public OLISRequestNomenclature() {
+        super();
+    }
 
-	@Override
+    @Override
     public Integer getId() {
-	    return id;
+        return id;
     }
 
-	public String getNameId() {
-    	return nameId;
+    public String getNameId() {
+        return nameId;
     }
 
-	public void setNameId(String nameId) {
-    	this.nameId = nameId;
-    }
-	
-	public String getName() {
-    	return name;
+    public void setNameId(String nameId) {
+        this.nameId = nameId;
     }
 
-	public void setName(String name) {
-    	this.name = name;
+    public String getName() {
+        return name;
     }
 
-	public String getCategory() {
-    	return category;
+    public void setName(String name) {
+        this.name = name;
     }
 
-	public void setCategory(String category) {
-    	this.category = category;
-	}
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
 }

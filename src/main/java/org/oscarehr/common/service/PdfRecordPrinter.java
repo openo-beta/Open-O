@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.casemgmt.model.CaseManagementNote;
@@ -126,28 +127,28 @@ public class PdfRecordPrinter {
     private String signingProvider;
 
     private PdfWriter writer;
-    
+
     private BillingONCHeader1Dao billingONCHeader1Dao = (BillingONCHeader1Dao) SpringUtils.getBean(BillingONCHeader1Dao.class);
     private BillingONExtDao billingONExtDao = (BillingONExtDao) SpringUtils.getBean(BillingONExtDao.class);
     private ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     private ClinicDAO clinicDao = (ClinicDAO) SpringUtils.getBean(ClinicDAO.class);
-    
+
     public PdfRecordPrinter(OutputStream os) {
         this.os = os;
         formatter = new SimpleDateFormat("dd-MMM-yyyy");
-        
+
         document = null;
         writer = null;
         bf = null;
         font = null;
         boldFont = null;
     }
-    
-    public void start() throws DocumentException,IOException {
+
+    public void start() throws DocumentException, IOException {
         //Create the font we are going to print to
         bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         font = new Font(bf, FONTSIZE, Font.NORMAL);
-        boldFont = new Font(bf,FONTSIZE,Font.BOLD);
+        boldFont = new Font(bf, FONTSIZE, Font.BOLD);
 
         //Create the document we are going to write to
         document = new Document();
@@ -159,61 +160,63 @@ public class PdfRecordPrinter {
         document.setPageSize(PageSize.LETTER);
         document.open();
     }
-    
+
     public OutputStream getOutputStream() {
-    	return os;
+        return os;
     }
 
     public void setDemographic(Demographic demographic) {
-    	this.demographic=demographic;
+        this.demographic = demographic;
     }
 
     public void setAppointment(Appointment appointment) {
-    	this.appointment=appointment;
+        this.appointment = appointment;
     }
 
     public Font getFont() {
-    	return font;
+        return font;
     }
+
     public SimpleDateFormat getFormatter() {
-    	return formatter;
+        return formatter;
     }
 
     public Document getDocument() {
-    	return document;
+        return document;
     }
 
     public boolean getNewPage() {
-    	return newPage;
+        return newPage;
     }
+
     public void setNewPage(boolean b) {
-    	this.newPage = b;
+        this.newPage = b;
     }
 
     public BaseFont getBaseFont() {
-    	return bf;
+        return bf;
     }
 
     private Paragraph getParagraph(String value) {
-        Paragraph p = new Paragraph(value,font);
+        Paragraph p = new Paragraph(value, font);
         return p;
     }
 
     public String getSigningProvider() {
-    	return signingProvider;
+        return signingProvider;
     }
 
-	public void setSigningProvider(String signingProvider) {
-    	this.signingProvider = signingProvider;
+    public void setSigningProvider(String signingProvider) {
+        this.signingProvider = signingProvider;
     }
 
-	public void footer() {
+    public void footer() {
         PdfContentByte cb = writer.getDirectContent();
         cb.saveState();
 
         Date now = new Date();
         String promoTxt = OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT");
-        if( promoTxt == null ) {
+        if (promoTxt == null) {
             promoTxt = new String();
         }
 
@@ -221,142 +224,138 @@ public class PdfRecordPrinter {
 
         float textBase = document.bottom();
         cb.beginText();
-        cb.setFontAndSize(font.getBaseFont(),FONTSIZE);
+        cb.setFontAndSize(font.getBaseFont(), FONTSIZE);
         Rectangle page = document.getPageSize();
         float width = page.getWidth();
 
-        cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width/2.0f), textBase - 20, 0);
+        cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width / 2.0f), textBase - 20, 0);
 
         strFooter = "-" + writer.getPageNumber() + "-";
-        cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width/2.0f), textBase-10, 0);
+        cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width / 2.0f), textBase - 10, 0);
 
         cb.endText();
         cb.restoreState();
-	}
-        
-	public void printDocHeaderFooter() throws DocumentException {
-
-            String headerTitle = demographic.getFormattedName() + " " + demographic.getAge() + " " + demographic.getSex() + " DOB:" + demographic.getFormattedDob();
-
-            if( newPage ) {
-                document.newPage();
-                newPage=false;
-            }
-
-            //Header will be printed at top of every page beginning with p2
-            Phrase headerPhrase = new Phrase(LEADING, headerTitle, boldFont);
-
-            getDocument().add(headerPhrase);
-            getDocument().add(new Phrase("\n"));
-
-            Paragraph p = new Paragraph("Tel:"+demographic.getPhone(),getFont());
-            p.setAlignment(Paragraph.ALIGN_LEFT);
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");                   
-            Paragraph p2 = new Paragraph("Date of Visit: " + sdf.format(appointment.getAppointmentDate()),getFont());
-            p2.setAlignment(Paragraph.ALIGN_RIGHT);
-
-            PdfPTable table = new PdfPTable(2);
-            table.setWidthPercentage(100f);
-            table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-            PdfPCell cell1 = new PdfPCell(p);
-            cell1.setBorder(PdfPCell.NO_BORDER);
-            cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            PdfPCell cell2 = new PdfPCell(p2);
-            cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            cell2.setBorder(PdfPCell.NO_BORDER);
-            table.addCell(cell1);
-            table.addCell(cell2);
-
-            getDocument().add(table);
-
-            table = new PdfPTable(3);
-            table.setWidthPercentage(100f);
-            table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-            cell1 = new PdfPCell(getParagraph("Signed Provider:" + ((signingProvider!=null)?signingProvider:"")));
-            cell1.setBorder(PdfPCell.BOTTOM);
-            cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell2 = new PdfPCell(getParagraph("RFR:" + this.appointment.getReason()));
-            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell2.setBorder(PdfPCell.BOTTOM);
-            PdfPCell cell3 = new PdfPCell(getParagraph("Ref:" + this.getRefName(this.demographic)));
-            cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            cell3.setBorder(PdfPCell.BOTTOM);
-            table.addCell(cell1);
-            table.addCell(cell2);
-            table.addCell(cell3);
-            getDocument().add(table);
     }
-    
-    public void printBillingInvoice(Integer invoiceNo, Locale locale){
-        OscarProperties props = OscarProperties.getInstance();      
+
+    public void printDocHeaderFooter() throws DocumentException {
+
+        String headerTitle = demographic.getFormattedName() + " " + demographic.getAge() + " " + demographic.getSex() + " DOB:" + demographic.getFormattedDob();
+
+        if (newPage) {
+            document.newPage();
+            newPage = false;
+        }
+
+        //Header will be printed at top of every page beginning with p2
+        Phrase headerPhrase = new Phrase(LEADING, headerTitle, boldFont);
+
+        getDocument().add(headerPhrase);
+        getDocument().add(new Phrase("\n"));
+
+        Paragraph p = new Paragraph("Tel:" + demographic.getPhone(), getFont());
+        p.setAlignment(Paragraph.ALIGN_LEFT);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Paragraph p2 = new Paragraph("Date of Visit: " + sdf.format(appointment.getAppointmentDate()), getFont());
+        p2.setAlignment(Paragraph.ALIGN_RIGHT);
+
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(100f);
+        table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+        PdfPCell cell1 = new PdfPCell(p);
+        cell1.setBorder(PdfPCell.NO_BORDER);
+        cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        PdfPCell cell2 = new PdfPCell(p2);
+        cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cell2.setBorder(PdfPCell.NO_BORDER);
+        table.addCell(cell1);
+        table.addCell(cell2);
+
+        getDocument().add(table);
+
+        table = new PdfPTable(3);
+        table.setWidthPercentage(100f);
+        table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+        cell1 = new PdfPCell(getParagraph("Signed Provider:" + ((signingProvider != null) ? signingProvider : "")));
+        cell1.setBorder(PdfPCell.BOTTOM);
+        cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell2 = new PdfPCell(getParagraph("RFR:" + this.appointment.getReason()));
+        cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell2.setBorder(PdfPCell.BOTTOM);
+        PdfPCell cell3 = new PdfPCell(getParagraph("Ref:" + this.getRefName(this.demographic)));
+        cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cell3.setBorder(PdfPCell.BOTTOM);
+        table.addCell(cell1);
+        table.addCell(cell2);
+        table.addCell(cell3);
+        getDocument().add(table);
+    }
+
+    public void printBillingInvoice(Integer invoiceNo, Locale locale) {
+        OscarProperties props = OscarProperties.getInstance();
         InputStream is = null;
         InputStream imageIS = null;
         try {
-            String templateFilepath = props.getProperty("billing_template_file","");
+            String templateFilepath = props.getProperty("billing_template_file", "");
             //look for custom billing template file, otherwise use default.
             if (templateFilepath.isEmpty())
                 is = this.getClass().getClassLoader().getResourceAsStream(BILLING_INVOICE_TEMPLATE_FILE);
-            else 
+            else
                 is = new FileInputStream(templateFilepath);
             //get Jasper Report
-            
+
             JasperReport jasperReport = JasperCompileManager.compileReport(is);
-            
+
             if (jasperReport != null) {
-                                
+
                 //populate data in Jasper Report
-                Map<String,Object> parameters = new HashMap<String,Object>();
+                Map<String, Object> parameters = new HashMap<String, Object>();
                 JRParameter[] jrParams = jasperReport.getParameters();
-                
+
                 if (jrParams != null) {
-                    
+
                     APExecute apExe = new APExecute();
-                    BillingONCHeader1 billingONCHeader1 = billingONCHeader1Dao.find(invoiceNo);                    
-                    
+                    BillingONCHeader1 billingONCHeader1 = billingONCHeader1Dao.find(invoiceNo);
+
                     for (JRParameter jrParam : jrParams) {
                         if (!jrParam.isSystemDefined()) {
                             String paramName = jrParam.getName();
-                            
+
                             if (paramName.equals("invoice_no")) {
                                 parameters.put(paramName, invoiceNo);
-                            }
-                            else if (paramName.equals("clinic_logo")) {                               
-                                String imagePath = props.getProperty("clinic_logo","");  
+                            } else if (paramName.equals("clinic_logo")) {
+                                String imagePath = props.getProperty("clinic_logo", "");
                                 if (imagePath.isEmpty()) {
                                     //DO NOTHING imageIS = this.getClass().getClassLoader().getResourceAsStream(OSCAR_LOGO_FILE);
-                                }
-                                else {
+                                } else {
                                     imageIS = new FileInputStream(imagePath);
                                 }
-                                parameters.put(paramName,imageIS);
-                            } 
-                            else if (paramName.equals("billing_print_date")) {
-                                parameters.put(paramName,DateUtils.formatDate(new Date(),locale));
-                            }                                
-                            else if (paramName.equals("billing_due_date")){
+                                parameters.put(paramName, imageIS);
+                            } else if (paramName.equals("billing_print_date")) {
+                                parameters.put(paramName, DateUtils.formatDate(new Date(), locale));
+                            } else if (paramName.equals("billing_due_date")) {
                                 String dueDateStr = "";
                                 if (props.hasProperty("invoice_due_date")) {
-                                  BillingONExt dueDateExt = billingONExtDao.getDueDate(billingONCHeader1);
-                                  if (dueDateExt != null) {
-                                      dueDateStr = dueDateExt.getValue();
-                                  } else {
-                                      Integer numDaysTilDue = Integer.parseInt(props.getProperty("invoice_due_date", "0"));
-                                      Date serviceDate = billingONCHeader1.getBillingDate();
-                                      dueDateStr = DateUtils.sumDate(serviceDate, numDaysTilDue, locale);                                
-                                  }                                                                    
+                                    BillingONExt dueDateExt = billingONExtDao.getDueDate(billingONCHeader1);
+                                    if (dueDateExt != null) {
+                                        dueDateStr = dueDateExt.getValue();
+                                    } else {
+                                        Integer numDaysTilDue = Integer.parseInt(props.getProperty("invoice_due_date", "0"));
+                                        Date serviceDate = billingONCHeader1.getBillingDate();
+                                        dueDateStr = DateUtils.sumDate(serviceDate, numDaysTilDue, locale);
+                                    }
                                 }
-                                 
+
                                 parameters.put(paramName, dueDateStr);
 
-                            } else if (paramName.equals("payee")){
+                            } else if (paramName.equals("payee")) {
                                 String payee = props.getProperty("PAYEE", "");
-                                if(payee.isEmpty()) {
+                                if (payee.isEmpty()) {
                                     payee = providerDao.getProviderName(billingONCHeader1.getProviderNo());
                                 }
                                 parameters.put(paramName, payee);
                             } else if (paramName.equals("remit_to_phone")) {
-                                String remitToPhone = props.getProperty("clinic_billing_phone","");
+                                String remitToPhone = props.getProperty("clinic_billing_phone", "");
                                 if (remitToPhone.isEmpty()) {
                                     remitToPhone = clinicDao.getClinic().getClinicPhone();
                                 }
@@ -365,24 +364,24 @@ public class PdfRecordPrinter {
                                 String useBillTo = "off";
                                 BillingONExt useBillToExt = billingONExtDao.getUseBillTo(billingONCHeader1);
                                 if (useBillToExt != null) {
-                                    useBillTo = useBillToExt.getValue();                                  
+                                    useBillTo = useBillToExt.getValue();
                                 }
-                                parameters.put(paramName, useBillTo);                                
+                                parameters.put(paramName, useBillTo);
                             } else if (paramName.equals("billext_billto")) {
-                                    String billTo = "";
-                                    BillingONExt billToExt = billingONExtDao.getBillTo(billingONCHeader1);
-                                    if (billToExt != null) {
-                                        billTo = billToExt.getValue();
-                                    }
-                                    parameters.put(paramName,billTo);
+                                String billTo = "";
+                                BillingONExt billToExt = billingONExtDao.getBillTo(billingONCHeader1);
+                                if (billToExt != null) {
+                                    billTo = billToExt.getValue();
+                                }
+                                parameters.put(paramName, billTo);
                             } else {
-                                parameters.put(paramName,apExe.execute(paramName,String.valueOf(billingONCHeader1.getDemographicNo()),invoiceNo));
-                            }                            
+                                parameters.put(paramName, apExe.execute(paramName, String.valueOf(billingONCHeader1.getDemographicNo()), invoiceNo));
+                            }
                         }
                     }
 
                     //print Jasper Report
-                    JasperPrint jasperPrint =  JasperFillManager.fillReport(jasperReport,parameters, new JREmptyDataSource());
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 
                     //Exports Jasper Report as PDF to output stream.
                     JRExporter exporter = new JRPdfExporter();
@@ -392,26 +391,27 @@ public class PdfRecordPrinter {
                     exporter.exportReport();
                 }
             }
-            
-        }catch (net.sf.jasperreports.engine.JRException e) {
-            MiscUtils.getLogger().error("An unexpected jasper exception occurred:", e);        
-        } catch ( java.io.FileNotFoundException e) {
-            MiscUtils.getLogger().error("Cannot file billing template file:",e);
+
+        } catch (net.sf.jasperreports.engine.JRException e) {
+            MiscUtils.getLogger().error("An unexpected jasper exception occurred:", e);
+        } catch (java.io.FileNotFoundException e) {
+            MiscUtils.getLogger().error("Cannot file billing template file:", e);
         } finally {
             try {
                 if (is != null) is.close();
                 if (imageIS != null) imageIS.close();
-            }catch (java.io.IOException e) {
+            } catch (java.io.IOException e) {
                 MiscUtils.getLogger().error("Cannot close InputStream:", e);
             }
-        }                       
+        }
     }
-    
+
     public void printRx(String demoNo) throws DocumentException {
-        printRx(demoNo,null);
+        printRx(demoNo, null);
     }
-    public void printRx(String demoNo,List<CaseManagementNote> cpp) throws DocumentException {
-        if( demoNo == null )
+
+    public void printRx(String demoNo, List<CaseManagementNote> cpp) throws DocumentException {
+        if (demoNo == null)
             return;
         /*
         if( newPage )
@@ -420,11 +420,11 @@ public class PdfRecordPrinter {
             newPage = true;
         */
         oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-        oscar.oscarRx.data.RxPrescriptionData.Prescription [] arr = {};
+        oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
         arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(demoNo));
 
-        if(arr.length==0) {
-        	return;
+        if (arr.length == 0) {
+            return;
         }
 
         Paragraph p = new Paragraph();
@@ -438,13 +438,12 @@ public class PdfRecordPrinter {
         Font normal = new Font(bf, FONTSIZE, Font.NORMAL);
 
 
-
         Font curFont;
-        for(int idx = 0; idx < arr.length; ++idx ) {
+        for (int idx = 0; idx < arr.length; ++idx) {
             oscar.oscarRx.data.RxPrescriptionData.Prescription drug = arr[idx];
             p = new Paragraph();
             p.setAlignment(Paragraph.ALIGN_LEFT);
-            if(drug.isCurrent() && !drug.isArchived() ){
+            if (drug.isCurrent() && !drug.isArchived()) {
                 curFont = normal;
                 phrase = new Phrase(LEADING, "", curFont);
                 phrase.add(formatter.format(drug.getRxDate()) + " - ");
@@ -454,9 +453,9 @@ public class PdfRecordPrinter {
             }
         }
 
-        if (cpp != null ){
-            List<CaseManagementNote>notes = cpp;
-            if (notes != null && notes.size() > 0){
+        if (cpp != null) {
+            List<CaseManagementNote> notes = cpp;
+            if (notes != null && notes.size() > 0) {
                 p = new Paragraph();
                 p.setAlignment(Paragraph.ALIGN_LEFT);
                 phrase = new Phrase(LEADING, "\nOther Meds\n", obsfont); //TODO:Needs to be i18n
@@ -470,10 +469,10 @@ public class PdfRecordPrinter {
     }
 
     public void printCPPItem(String heading, Collection<CaseManagementNote> notes) throws DocumentException {
-        if( newPage )
+        if (newPage)
             document.newPage();
-      //  else
-      //      newPage = true;
+        //  else
+        //      newPage = true;
 
         Font obsfont = new Font(bf, FONTSIZE, Font.UNDERLINE);
 
@@ -487,18 +486,18 @@ public class PdfRecordPrinter {
         p.add(phrase);
         document.add(p);
         newPage = false;
-        this.printNotes(notes,true);
+        this.printNotes(notes, true);
 
 
-       // cb.endText();
+        // cb.endText();
 
     }
 
     public void printCPPItem(String heading, Measurement measurement) throws DocumentException {
-        if( newPage )
+        if (newPage)
             document.newPage();
-      //  else
-      //      newPage = true;
+        //  else
+        //      newPage = true;
 
         Font obsfont = new Font(bf, FONTSIZE, Font.UNDERLINE);
 
@@ -520,26 +519,24 @@ public class PdfRecordPrinter {
         p.add(phrase);
         document.add(p);
 
-       // cb.endText();
+        // cb.endText();
 
     }
 
-    public void printBlankLine() throws  DocumentException {
-    	document.add(new Phrase("\n"));
+    public void printBlankLine() throws DocumentException {
+        document.add(new Phrase("\n"));
     }
 
-    public void printCPP(HashMap<String,List<CaseManagementNote> >cpp) throws DocumentException {
-        if( cpp == null )
+    public void printCPP(HashMap<String, List<CaseManagementNote>> cpp) throws DocumentException {
+        if (cpp == null)
             return;
 
-        if( newPage )
+        if (newPage)
             document.newPage();
         else
             newPage = true;
 
         Font obsfont = new Font(bf, FONTSIZE, Font.UNDERLINE);
-
-
 
 
         Paragraph p = new Paragraph();
@@ -552,8 +549,8 @@ public class PdfRecordPrinter {
         //upperYcoord -= p.leading() * 2f;
         //lworkingYcoord = rworkingYcoord = upperYcoord;
         //ColumnText ct = new ColumnText(cb);
-        String[] headings = {"Social History\n","Other Meds\n", "Medical History\n", "Ongoing Concerns\n", "Reminders\n", "Family History\n", "Risk Factors\n"};
-        String[] issueCodes = {"SocHistory","OMeds","MedHistory","Concerns","Reminders","FamHistory","RiskFactors"};
+        String[] headings = {"Social History\n", "Other Meds\n", "Medical History\n", "Ongoing Concerns\n", "Reminders\n", "Family History\n", "Risk Factors\n"};
+        String[] issueCodes = {"SocHistory", "OMeds", "MedHistory", "Concerns", "Reminders", "FamHistory", "RiskFactors"};
         //String[] content = {cpp.getSocialHistory(), cpp.getFamilyHistory(), cpp.getMedicalHistory(), cpp.getOngoingConcerns(), cpp.getReminders()};
 
         //init column to left side of page
@@ -568,7 +565,7 @@ public class PdfRecordPrinter {
         //String headerContd;
         //while there are cpp headings to process
 
-        for( int idx = 0; idx < headings.length; ++idx ) {
+        for (int idx = 0; idx < headings.length; ++idx) {
             p = new Paragraph();
             p.setAlignment(Paragraph.ALIGN_LEFT);
             phrase = new Phrase(LEADING, headings[idx], obsfont);
@@ -577,8 +574,8 @@ public class PdfRecordPrinter {
             newPage = false;
             this.printNotes(cpp.get(issueCodes[idx]));
         }
-            //phrase.add(content[idx]);
-            //ct.addText(phrase);
+        //phrase.add(content[idx]);
+        //ct.addText(phrase);
 
 //            //do we need a page break?  check if we're within a fudge factor of the bottom
 //            if( lworkingYcoord <= (bottom * 1.1) && rworkingYcoord <= (bottom*1.1) ) {
@@ -646,11 +643,11 @@ public class PdfRecordPrinter {
 //        cb.endText();
     }
 
-    public void printNotes(Collection<CaseManagementNote>notes) throws DocumentException{
-        printNotes(notes,false);
+    public void printNotes(Collection<CaseManagementNote> notes) throws DocumentException {
+        printNotes(notes, false);
     }
 
-    public void printNotes(Collection<CaseManagementNote>notes, boolean compact) throws DocumentException{
+    public void printNotes(Collection<CaseManagementNote> notes, boolean compact) throws DocumentException {
 
         CaseManagementNote note;
         Font obsfont = new Font(bf, FONTSIZE, Font.UNDERLINE);
@@ -659,28 +656,28 @@ public class PdfRecordPrinter {
         Chunk chunk;
 
         //if( newPage )
-       //     document.newPage();
-       // else
-       //     newPage = true;
+        //     document.newPage();
+        // else
+        //     newPage = true;
 
         //Print notes
         Iterator<CaseManagementNote> notesIter = notes.iterator();
-        while(notesIter.hasNext()) {
-        	note = notesIter.next();
+        while (notesIter.hasNext()) {
+            note = notesIter.next();
             p = new Paragraph();
             //p.setSpacingBefore(font.leading(LINESPACING)*2f);
             phrase = new Phrase(LEADING, "", font);
 
-            if(compact) {
-            	phrase.add(new Chunk(formatter.format(note.getObservation_date()) + ":"));
+            if (compact) {
+                phrase.add(new Chunk(formatter.format(note.getObservation_date()) + ":"));
             } else {
-            	chunk = new Chunk("Impression/Plan: (" + formatter.format(note.getObservation_date()) + ")\n", obsfont);
-            	phrase.add(chunk);
+                chunk = new Chunk("Impression/Plan: (" + formatter.format(note.getObservation_date()) + ")\n", obsfont);
+                phrase.add(chunk);
             }
-            if(compact) {
-            	phrase.add(note.getNote() + "\n");
+            if (compact) {
+                phrase.add(note.getNote() + "\n");
             } else {
-            	phrase.add(note.getNote() + "\n\n");
+                phrase.add(note.getNote() + "\n\n");
             }
             p.add(phrase);
             document.add(p);
@@ -701,12 +698,12 @@ public class PdfRecordPrinter {
         public EndPage() {
             now = new Date();
             promoTxt = OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT");
-            if( promoTxt == null ) {
+            if (promoTxt == null) {
                 promoTxt = new String();
             }
         }
 
-        public void onEndPage( PdfWriter writer, Document document ) {
+        public void onEndPage(PdfWriter writer, Document document) {
             //Footer contains page numbers and date printed on all pages
             PdfContentByte cb = writer.getDirectContent();
             cb.saveState();
@@ -715,13 +712,13 @@ public class PdfRecordPrinter {
 
             float textBase = document.bottom();
             cb.beginText();
-            cb.setFontAndSize(font.getBaseFont(),FONTSIZE);
+            cb.setFontAndSize(font.getBaseFont(), FONTSIZE);
             Rectangle page = document.getPageSize();
-            float width = page.getWidth();            
-            cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width/2.0f), textBase - 20, 0);
+            float width = page.getWidth();
+            cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width / 2.0f), textBase - 20, 0);
 
             strFooter = "-" + writer.getPageNumber() + "-";
-            cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width/2.0f), textBase-10, 0);
+            cb.showTextAligned(PdfContentByte.ALIGN_CENTER, strFooter, (width / 2.0f), textBase - 10, 0);
 
             cb.endText();
             cb.restoreState();
@@ -729,7 +726,7 @@ public class PdfRecordPrinter {
     }
 
     public void printOcularProcedures(List<EyeformOcularProcedure> ocularProcedures) throws DocumentException {
-    	ProviderDao providerDao = (ProviderDao)SpringUtils.getBean(ProviderDao.class);
+        ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
 
  /*
 		if( getNewPage() )
@@ -749,14 +746,14 @@ public class PdfRecordPrinter {
         p.add(phrase);
         getDocument().add(p);
 
-        for(EyeformOcularProcedure proc:ocularProcedures) {
-        	p = new Paragraph();
-    		phrase = new Phrase(LEADING, "", getFont());
-    		//Chunk chunk = new Chunk("Documentation Date: " + getFormatter().format(proc.getDate()) + "\n", obsfont);
-    		Chunk chunk = new Chunk(getFormatter().format(proc.getDate()) + " " + proc.getEye() + " " + proc.getProcedureName() + " at " + proc.getLocation() + " by " + providerDao.getProviderName(proc.getDoctor()) + " " + proc.getProcedureNote() + "\n",getFont());
-    		phrase.add(chunk);
-    		p.add(phrase);
-    		getDocument().add(p);
+        for (EyeformOcularProcedure proc : ocularProcedures) {
+            p = new Paragraph();
+            phrase = new Phrase(LEADING, "", getFont());
+            //Chunk chunk = new Chunk("Documentation Date: " + getFormatter().format(proc.getDate()) + "\n", obsfont);
+            Chunk chunk = new Chunk(getFormatter().format(proc.getDate()) + " " + proc.getEye() + " " + proc.getProcedureName() + " at " + proc.getLocation() + " by " + providerDao.getProviderName(proc.getDoctor()) + " " + proc.getProcedureNote() + "\n", getFont());
+            phrase.add(chunk);
+            p.add(phrase);
+            getDocument().add(p);
         }
     }
 
@@ -777,26 +774,26 @@ public class PdfRecordPrinter {
         table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
         table.setSpacingBefore(10f);
         table.setSpacingAfter(10f);
-    	table.setTotalWidth(new float[]{10f,60f});
+        table.setTotalWidth(new float[]{10f, 60f});
         table.setTotalWidth(5f);
-    	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
+        table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 
-        for(EyeformSpecsHistory specs:specsHistory) {
-    		PdfPCell cell1 = new PdfPCell(new Phrase(getFormatter().format(specs.getDate()),getFont()));
+        for (EyeformSpecsHistory specs : specsHistory) {
+            PdfPCell cell1 = new PdfPCell(new Phrase(getFormatter().format(specs.getDate()), getFont()));
             cell1.setBorder(PdfPCell.NO_BORDER);
             cell1.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-    		table.addCell(cell1);
+            table.addCell(cell1);
 
-    		PdfPCell cell2 = new PdfPCell(new Phrase(specs.toString2(),getFont()));
+            PdfPCell cell2 = new PdfPCell(new Phrase(specs.toString2(), getFont()));
             cell2.setBorder(PdfPCell.NO_BORDER);
             cell2.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-    		table.addCell(cell2);
+            table.addCell(cell2);
         }
 
         getDocument().add(table);
     }
 
-    public void printAllergies(List<Allergy> allergies) throws  DocumentException {
+    public void printAllergies(List<Allergy> allergies) throws DocumentException {
         Font obsfont = new Font(getBaseFont(), FONTSIZE, Font.UNDERLINE);
 
 
@@ -808,55 +805,55 @@ public class PdfRecordPrinter {
         p.add(phrase);
         getDocument().add(p);
 
-        for(Allergy allergy:allergies) {
-        	p = new Paragraph();
-    		phrase = new Phrase(LEADING, "", getFont());
-    		Chunk chunk = new Chunk(allergy.getDescription());
-    		phrase.add(chunk);
-    		p.add(phrase);
-    		getDocument().add(p);
+        for (Allergy allergy : allergies) {
+            p = new Paragraph();
+            phrase = new Phrase(LEADING, "", getFont());
+            Chunk chunk = new Chunk(allergy.getDescription());
+            phrase.add(chunk);
+            p.add(phrase);
+            getDocument().add(p);
         }
-        getDocument().add(new Phrase("\n",getFont()));
+        getDocument().add(new Phrase("\n", getFont()));
     }
 
-    public void printEyeformPlan(List<EyeformFollowUp>followUps, List<EyeformProcedureBook> procedureBooks, List<EyeformTestBook>testBooks,EyeForm eyeform) throws DocumentException {
+    public void printEyeformPlan(List<EyeformFollowUp> followUps, List<EyeformProcedureBook> procedureBooks, List<EyeformTestBook> testBooks, EyeForm eyeform) throws DocumentException {
 
-    	for(EyeformFollowUp followUp:followUps) {
-        	Paragraph p = new Paragraph();
-    		p.add(getFormatter().format(followUp.getDate()) + ":" + followUp.getType()+ " " + followUp.getTimespan() + " " + followUp.getTimeframe() + " " + followUp.getFollowupProvider() + " " + followUp.getUrgency() + "\n");
-    		getDocument().add(p);
+        for (EyeformFollowUp followUp : followUps) {
+            Paragraph p = new Paragraph();
+            p.add(getFormatter().format(followUp.getDate()) + ":" + followUp.getType() + " " + followUp.getTimespan() + " " + followUp.getTimeframe() + " " + followUp.getFollowupProvider() + " " + followUp.getUrgency() + "\n");
+            getDocument().add(p);
         }
 
-    	for(EyeformProcedureBook proc:procedureBooks) {
-        	Paragraph p = new Paragraph();
-    		p.add(getFormatter().format(proc.getDate()) + ":" + proc.getProcedureName() + "\n");
-    		getDocument().add(p);
+        for (EyeformProcedureBook proc : procedureBooks) {
+            Paragraph p = new Paragraph();
+            p.add(getFormatter().format(proc.getDate()) + ":" + proc.getProcedureName() + "\n");
+            getDocument().add(p);
         }
 
-    	for(EyeformTestBook test:testBooks) {
-        	Paragraph p = new Paragraph();
-    		p.add(getFormatter().format(test.getDate()) + ":" + test.getTestname() + "\n");
-    		getDocument().add(p);
+        for (EyeformTestBook test : testBooks) {
+            Paragraph p = new Paragraph();
+            p.add(getFormatter().format(test.getDate()) + ":" + test.getTestname() + "\n");
+            getDocument().add(p);
         }
 
-    	if(eyeform != null && eyeform.getDischarge()!=null && eyeform.getDischarge().equals("true")) {
-    		Paragraph p = new Paragraph();
-    		p.add("Patient is discharged from my active care.\n");
-    		getDocument().add(p);
-    	}
+        if (eyeform != null && eyeform.getDischarge() != null && eyeform.getDischarge().equals("true")) {
+            Paragraph p = new Paragraph();
+            p.add("Patient is discharged from my active care.\n");
+            getDocument().add(p);
+        }
 
-    	if(eyeform != null && eyeform.getOpt()!=null && eyeform.getOpt().equals("true")) {
-    		Paragraph p = new Paragraph();
-    		p.add("Routine eye care by an optometrist is recommended.\n");
-    		getDocument().add(p);
-    	}
+        if (eyeform != null && eyeform.getOpt() != null && eyeform.getOpt().equals("true")) {
+            Paragraph p = new Paragraph();
+            p.add("Routine eye care by an optometrist is recommended.\n");
+            getDocument().add(p);
+        }
 
-    	if(eyeform != null && eyeform.getStat()!=null && eyeform.getStat().equals("true")) {
-    		Paragraph p = new Paragraph();
-    		p.add("Follow up as needed with me STAT or PRN if symptoms are worse.\n");
-    		getDocument().add(p);
-    	}
-    	return;
+        if (eyeform != null && eyeform.getStat() != null && eyeform.getStat().equals("true")) {
+            Paragraph p = new Paragraph();
+            p.add("Follow up as needed with me STAT or PRN if symptoms are worse.\n");
+            getDocument().add(p);
+        }
+        return;
     }
 
     public void printEyeformMeasurements(MeasurementFormatter mf) throws DocumentException {
@@ -873,7 +870,7 @@ public class PdfRecordPrinter {
         Paragraph p = new Paragraph();
         p.setAlignment(Paragraph.ALIGN_LEFT);
         Phrase phrase = new Phrase(LEADING, "\n", getFont());
-       // p.add(phrase);
+        // p.add(phrase);
         phrase = new Phrase(LEADING, "Ocular Examination", obsfont);
         p.add(phrase);
         getDocument().add(p);
@@ -881,434 +878,434 @@ public class PdfRecordPrinter {
 
         p = new Paragraph();
         boolean addVisionAssessment = false;
-        p.add(new Phrase("VISION ASSESSMENT:  ",getFont()));
-        if(mf.getVisionAssessmentAutoRefraction().length()>0) {
-        	p.add(new Phrase("Auto-refraction ",boldFont));
-        	p.add(new Phrase(mf.getVisionAssessmentAutoRefraction(),getFont()));
-        	addVisionAssessment=true;
+        p.add(new Phrase("VISION ASSESSMENT:  ", getFont()));
+        if (mf.getVisionAssessmentAutoRefraction().length() > 0) {
+            p.add(new Phrase("Auto-refraction ", boldFont));
+            p.add(new Phrase(mf.getVisionAssessmentAutoRefraction(), getFont()));
+            addVisionAssessment = true;
         }
-        if(mf.getVisionAssessmentKeratometry().length()>0) {
-        	p.add(new Phrase(" Keratometry ",boldFont));
-        	p.add(new Phrase(mf.getVisionAssessmentKeratometry(),getFont()));
-        	addVisionAssessment=true;
+        if (mf.getVisionAssessmentKeratometry().length() > 0) {
+            p.add(new Phrase(" Keratometry ", boldFont));
+            p.add(new Phrase(mf.getVisionAssessmentKeratometry(), getFont()));
+            addVisionAssessment = true;
         }
-        if(mf.getVisionAssessmentVision("distance", "sc").length()>0) {
-        	p.add(new Phrase(" Distance vision (sc) ",boldFont));
-        	p.add(new Phrase(mf.getVisionAssessmentVision("distance", "sc"),getFont()));
-        	addVisionAssessment=true;
+        if (mf.getVisionAssessmentVision("distance", "sc").length() > 0) {
+            p.add(new Phrase(" Distance vision (sc) ", boldFont));
+            p.add(new Phrase(mf.getVisionAssessmentVision("distance", "sc"), getFont()));
+            addVisionAssessment = true;
         }
-        if(mf.getVisionAssessmentVision("distance", "cc").length()>0) {
-        	p.add(new Phrase(" Distance vision (cc) ",boldFont));
-        	p.add(new Phrase(mf.getVisionAssessmentVision("distance", "cc"),getFont()));
-        	addVisionAssessment=true;
+        if (mf.getVisionAssessmentVision("distance", "cc").length() > 0) {
+            p.add(new Phrase(" Distance vision (cc) ", boldFont));
+            p.add(new Phrase(mf.getVisionAssessmentVision("distance", "cc"), getFont()));
+            addVisionAssessment = true;
         }
-        if(mf.getVisionAssessmentVision("distance", "ph").length()>0) {
-        	p.add(new Phrase(" Distance vision (ph) ",boldFont));
-        	p.add(new Phrase(mf.getVisionAssessmentVision("distance", "ph"),getFont()));
-        	addVisionAssessment=true;
+        if (mf.getVisionAssessmentVision("distance", "ph").length() > 0) {
+            p.add(new Phrase(" Distance vision (ph) ", boldFont));
+            p.add(new Phrase(mf.getVisionAssessmentVision("distance", "ph"), getFont()));
+            addVisionAssessment = true;
         }
-        if(mf.getVisionAssessmentVision("near", "sc").length()>0) {
-        	p.add(new Phrase(" Near vision (sc) ",boldFont));
-        	p.add(new Phrase(mf.getVisionAssessmentVision("near", "sc"),getFont()));
-        	addVisionAssessment=true;
+        if (mf.getVisionAssessmentVision("near", "sc").length() > 0) {
+            p.add(new Phrase(" Near vision (sc) ", boldFont));
+            p.add(new Phrase(mf.getVisionAssessmentVision("near", "sc"), getFont()));
+            addVisionAssessment = true;
         }
-        if(mf.getVisionAssessmentVision("near", "cc").length()>0) {
-        	p.add(new Phrase(" Near vision (cc) ",boldFont));
-        	p.add(new Phrase(mf.getVisionAssessmentVision("near", "cc"),getFont()));
-        	addVisionAssessment=true;
+        if (mf.getVisionAssessmentVision("near", "cc").length() > 0) {
+            p.add(new Phrase(" Near vision (cc) ", boldFont));
+            p.add(new Phrase(mf.getVisionAssessmentVision("near", "cc"), getFont()));
+            addVisionAssessment = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addVisionAssessment) {
-        	getDocument().add(p);
+        if (addVisionAssessment) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addManifestVision=false;
-        p.add(new Phrase("MANIFEST VISION:  ",getFont()));
-        if(mf.getManifestDistance().length()>0) {
-        	p.add(new Phrase("Manifest distance ",boldFont));
-        	p.add(new Phrase(mf.getManifestDistance(),getFont()));
-        	addManifestVision=true;
+        boolean addManifestVision = false;
+        p.add(new Phrase("MANIFEST VISION:  ", getFont()));
+        if (mf.getManifestDistance().length() > 0) {
+            p.add(new Phrase("Manifest distance ", boldFont));
+            p.add(new Phrase(mf.getManifestDistance(), getFont()));
+            addManifestVision = true;
         }
-        if(mf.getManifestNear().length()>0) {
-        	p.add(new Phrase(" Manifest near ",boldFont));
-        	p.add(new Phrase(mf.getManifestNear(),getFont()));
-        	addManifestVision=true;
+        if (mf.getManifestNear().length() > 0) {
+            p.add(new Phrase(" Manifest near ", boldFont));
+            p.add(new Phrase(mf.getManifestNear(), getFont()));
+            addManifestVision = true;
         }
-        if(mf.getCycloplegicRefraction().length()>0) {
-        	p.add(new Phrase(" Cycloplegic refraction ",boldFont));
-        	p.add(new Phrase(mf.getCycloplegicRefraction(),getFont()));
-        	addManifestVision=true;
+        if (mf.getCycloplegicRefraction().length() > 0) {
+            p.add(new Phrase(" Cycloplegic refraction ", boldFont));
+            p.add(new Phrase(mf.getCycloplegicRefraction(), getFont()));
+            addManifestVision = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addManifestVision) {
-        	getDocument().add(p);
+        if (addManifestVision) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addIop=false;
-        p.add(new Phrase("INTRAOCULAR PRESSURE:  ",getFont()));
-        if(mf.getNCT().length()>0) {
-        	p.add(new Phrase("NCT ",boldFont));
-        	p.add(new Phrase(mf.getNCT(),getFont()));
-        	addIop=true;
+        boolean addIop = false;
+        p.add(new Phrase("INTRAOCULAR PRESSURE:  ", getFont()));
+        if (mf.getNCT().length() > 0) {
+            p.add(new Phrase("NCT ", boldFont));
+            p.add(new Phrase(mf.getNCT(), getFont()));
+            addIop = true;
         }
-        if(mf.getApplanation().length()>0) {
-        	p.add(new Phrase(" Applanation ",boldFont));
-        	p.add(new Phrase(mf.getApplanation(),getFont()));
-        	addIop=true;
+        if (mf.getApplanation().length() > 0) {
+            p.add(new Phrase(" Applanation ", boldFont));
+            p.add(new Phrase(mf.getApplanation(), getFont()));
+            addIop = true;
         }
-        if(mf.getCCT().length()>0) {
-        	p.add(new Phrase(" Central corneal thickness ",boldFont));
-        	p.add(new Phrase(mf.getCCT(),getFont()));
-        	addIop=true;
+        if (mf.getCCT().length() > 0) {
+            p.add(new Phrase(" Central corneal thickness ", boldFont));
+            p.add(new Phrase(mf.getCCT(), getFont()));
+            addIop = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addIop) {
-        	getDocument().add(p);
+        if (addIop) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addOtherExam=false;
-        p.add(new Phrase("OTHER EXAM:  ",getFont()));
-        if(mf.getColourVision().length()>0) {
-        	p.add(new Phrase("Colour vision ",boldFont));
-        	p.add(new Phrase(mf.getColourVision(),getFont()));
-        	addOtherExam=true;
+        boolean addOtherExam = false;
+        p.add(new Phrase("OTHER EXAM:  ", getFont()));
+        if (mf.getColourVision().length() > 0) {
+            p.add(new Phrase("Colour vision ", boldFont));
+            p.add(new Phrase(mf.getColourVision(), getFont()));
+            addOtherExam = true;
         }
-        if(mf.getPupil().length()>0) {
-        	p.add(new Phrase(" Pupil ",boldFont));
-        	p.add(new Phrase(mf.getPupil(),getFont()));
-        	addOtherExam=true;
+        if (mf.getPupil().length() > 0) {
+            p.add(new Phrase(" Pupil ", boldFont));
+            p.add(new Phrase(mf.getPupil(), getFont()));
+            addOtherExam = true;
         }
-        if(mf.getAmslerGrid().length()>0) {
-        	p.add(new Phrase(" Amsler grid ",boldFont));
-        	p.add(new Phrase(mf.getAmslerGrid(),getFont()));
-        	addOtherExam=true;
+        if (mf.getAmslerGrid().length() > 0) {
+            p.add(new Phrase(" Amsler grid ", boldFont));
+            p.add(new Phrase(mf.getAmslerGrid(), getFont()));
+            addOtherExam = true;
         }
-        if(mf.getPAM().length()>0) {
-        	p.add(new Phrase(" Potential acuity meter ",boldFont));
-        	p.add(new Phrase(mf.getPAM(),getFont()));
-        	addOtherExam=true;
+        if (mf.getPAM().length() > 0) {
+            p.add(new Phrase(" Potential acuity meter ", boldFont));
+            p.add(new Phrase(mf.getPAM(), getFont()));
+            addOtherExam = true;
         }
-        if(mf.getConfrontation().length()>0) {
-        	p.add(new Phrase(" Confrontation fields ",boldFont));
-        	p.add(new Phrase(mf.getConfrontation(),getFont()));
-        	addOtherExam=true;
+        if (mf.getConfrontation().length() > 0) {
+            p.add(new Phrase(" Confrontation fields ", boldFont));
+            p.add(new Phrase(mf.getConfrontation(), getFont()));
+            addOtherExam = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addOtherExam) {
-        	getDocument().add(p);
+        if (addOtherExam) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addEom=false;
-        p.add(new Phrase("EOM/STEREO:  ",getFont()));
-        if(mf.getEomStereo().length()>0) {
-        	p.add(new Phrase(mf.getEomStereo(),getFont()));
-        	addEom=true;
+        boolean addEom = false;
+        p.add(new Phrase("EOM/STEREO:  ", getFont()));
+        if (mf.getEomStereo().length() > 0) {
+            p.add(new Phrase(mf.getEomStereo(), getFont()));
+            addEom = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addEom) {
-        	getDocument().add(p);
+        if (addEom) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addAnteriorSegment=false;
-        p.add(new Phrase("ANTERIOR SEGMENT:  ",getFont()));
-        if(mf.getCornea().length()>0) {
-        	p.add(new Phrase("Cornea ",boldFont));
-        	p.add(new Phrase(mf.getCornea(),getFont()));
-        	addAnteriorSegment=true;
+        boolean addAnteriorSegment = false;
+        p.add(new Phrase("ANTERIOR SEGMENT:  ", getFont()));
+        if (mf.getCornea().length() > 0) {
+            p.add(new Phrase("Cornea ", boldFont));
+            p.add(new Phrase(mf.getCornea(), getFont()));
+            addAnteriorSegment = true;
         }
-        if(mf.getConjuctivaSclera().length()>0) {
-        	p.add(new Phrase(" Conjunctiva/Sclera ",boldFont));
-        	p.add(new Phrase(mf.getConjuctivaSclera(),getFont()));
-        	addAnteriorSegment=true;
+        if (mf.getConjuctivaSclera().length() > 0) {
+            p.add(new Phrase(" Conjunctiva/Sclera ", boldFont));
+            p.add(new Phrase(mf.getConjuctivaSclera(), getFont()));
+            addAnteriorSegment = true;
         }
-        if(mf.getAnteriorChamber().length()>0) {
-        	p.add(new Phrase(" Anterior chamber ",boldFont));
-        	p.add(new Phrase(mf.getAnteriorChamber(),getFont()));
-        	addAnteriorSegment=true;
+        if (mf.getAnteriorChamber().length() > 0) {
+            p.add(new Phrase(" Anterior chamber ", boldFont));
+            p.add(new Phrase(mf.getAnteriorChamber(), getFont()));
+            addAnteriorSegment = true;
         }
-        if(mf.getAngle().length()>0) {
-        	p.add(new Phrase(" Angle ",boldFont));
-        	p.add(new Phrase(mf.getAngle(),getFont()));
-        	addAnteriorSegment=true;
+        if (mf.getAngle().length() > 0) {
+            p.add(new Phrase(" Angle ", boldFont));
+            p.add(new Phrase(mf.getAngle(), getFont()));
+            addAnteriorSegment = true;
         }
-        if(mf.getIris().length()>0) {
-        	p.add(new Phrase(" Iris ",boldFont));
-        	p.add(new Phrase(mf.getIris(),getFont()));
-        	addAnteriorSegment=true;
+        if (mf.getIris().length() > 0) {
+            p.add(new Phrase(" Iris ", boldFont));
+            p.add(new Phrase(mf.getIris(), getFont()));
+            addAnteriorSegment = true;
         }
-        if(mf.getLens().length()>0) {
-        	p.add(new Phrase(" Lens ",boldFont));
-        	p.add(new Phrase(mf.getLens(),getFont()));
-        	addAnteriorSegment=true;
+        if (mf.getLens().length() > 0) {
+            p.add(new Phrase(" Lens ", boldFont));
+            p.add(new Phrase(mf.getLens(), getFont()));
+            addAnteriorSegment = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addAnteriorSegment) {
-        	getDocument().add(p);
+        if (addAnteriorSegment) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addPosteriorSegment=false;
-        p.add(new Phrase("POSTERIOR SEGMENT:  ",getFont()));
-        if(mf.getDisc().length()>0) {
-        	p.add(new Phrase("Optic disc ",boldFont));
-        	p.add(new Phrase(mf.getDisc(),getFont()));
-        	addPosteriorSegment=true;
+        boolean addPosteriorSegment = false;
+        p.add(new Phrase("POSTERIOR SEGMENT:  ", getFont()));
+        if (mf.getDisc().length() > 0) {
+            p.add(new Phrase("Optic disc ", boldFont));
+            p.add(new Phrase(mf.getDisc(), getFont()));
+            addPosteriorSegment = true;
         }
-        if(mf.getCdRatio().length()>0) {
-        	p.add(new Phrase(" C/D ratio ",boldFont));
-        	p.add(new Phrase(mf.getCdRatio(),getFont()));
-        	addPosteriorSegment=true;
+        if (mf.getCdRatio().length() > 0) {
+            p.add(new Phrase(" C/D ratio ", boldFont));
+            p.add(new Phrase(mf.getCdRatio(), getFont()));
+            addPosteriorSegment = true;
         }
-        if(mf.getMacula().length()>0) {
-        	p.add(new Phrase(" Macula ",boldFont));
-        	p.add(new Phrase(mf.getMacula(),getFont()));
-        	addPosteriorSegment=true;
+        if (mf.getMacula().length() > 0) {
+            p.add(new Phrase(" Macula ", boldFont));
+            p.add(new Phrase(mf.getMacula(), getFont()));
+            addPosteriorSegment = true;
         }
-        if(mf.getRetina().length()>0) {
-        	p.add(new Phrase(" Retina ",boldFont));
-        	p.add(new Phrase(mf.getRetina(),getFont()));
-        	addPosteriorSegment=true;
+        if (mf.getRetina().length() > 0) {
+            p.add(new Phrase(" Retina ", boldFont));
+            p.add(new Phrase(mf.getRetina(), getFont()));
+            addPosteriorSegment = true;
         }
-        if(mf.getVitreous().length()>0) {
-        	p.add(new Phrase(" Vitreous ",boldFont));
-        	p.add(new Phrase(mf.getVitreous(),getFont()));
-        	addPosteriorSegment=true;
+        if (mf.getVitreous().length() > 0) {
+            p.add(new Phrase(" Vitreous ", boldFont));
+            p.add(new Phrase(mf.getVitreous(), getFont()));
+            addPosteriorSegment = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addPosteriorSegment) {
-        	getDocument().add(p);
+        if (addPosteriorSegment) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addExternal=false;
-        p.add(new Phrase("EXTERNAL/ORBIT:  ",getFont()));
-        if(mf.getFace().length()>0) {
-        	p.add(new Phrase("Face ",boldFont));
-        	p.add(new Phrase(mf.getFace(),getFont()));
-        	addExternal=true;
+        boolean addExternal = false;
+        p.add(new Phrase("EXTERNAL/ORBIT:  ", getFont()));
+        if (mf.getFace().length() > 0) {
+            p.add(new Phrase("Face ", boldFont));
+            p.add(new Phrase(mf.getFace(), getFont()));
+            addExternal = true;
         }
-        if(mf.getUpperLid().length()>0) {
-        	p.add(new Phrase(" Upper lid ",boldFont));
-        	p.add(new Phrase(mf.getUpperLid(),getFont()));
-        	addExternal=true;
+        if (mf.getUpperLid().length() > 0) {
+            p.add(new Phrase(" Upper lid ", boldFont));
+            p.add(new Phrase(mf.getUpperLid(), getFont()));
+            addExternal = true;
         }
-        if(mf.getLowerLid().length()>0) {
-        	p.add(new Phrase(" Lower lid ",boldFont));
-        	p.add(new Phrase(mf.getLowerLid(),getFont()));
-        	addExternal=true;
+        if (mf.getLowerLid().length() > 0) {
+            p.add(new Phrase(" Lower lid ", boldFont));
+            p.add(new Phrase(mf.getLowerLid(), getFont()));
+            addExternal = true;
         }
-        if(mf.getPunctum().length()>0) {
-        	p.add(new Phrase(" Punctum ",boldFont));
-        	p.add(new Phrase(mf.getPunctum(),getFont()));
-        	addExternal=true;
+        if (mf.getPunctum().length() > 0) {
+            p.add(new Phrase(" Punctum ", boldFont));
+            p.add(new Phrase(mf.getPunctum(), getFont()));
+            addExternal = true;
         }
-        if(mf.getLacrimalLake().length()>0) {
-        	p.add(new Phrase(" Lacrimal lake ",boldFont));
-        	p.add(new Phrase(mf.getLacrimalLake(),getFont()));
-        	addExternal=true;
+        if (mf.getLacrimalLake().length() > 0) {
+            p.add(new Phrase(" Lacrimal lake ", boldFont));
+            p.add(new Phrase(mf.getLacrimalLake(), getFont()));
+            addExternal = true;
         }
-        if(mf.getRetropulsion().length()>0) {
-        	p.add(new Phrase(" Retropulsion ",boldFont));
-        	p.add(new Phrase(mf.getRetropulsion(),getFont()));
-        	addExternal=true;
+        if (mf.getRetropulsion().length() > 0) {
+            p.add(new Phrase(" Retropulsion ", boldFont));
+            p.add(new Phrase(mf.getRetropulsion(), getFont()));
+            addExternal = true;
         }
-        if(mf.getHertel().length()>0) {
-        	p.add(new Phrase(" Hertel ",boldFont));
-        	p.add(new Phrase(mf.getHertel(),getFont()));
-        	addExternal=true;
+        if (mf.getHertel().length() > 0) {
+            p.add(new Phrase(" Hertel ", boldFont));
+            p.add(new Phrase(mf.getHertel(), getFont()));
+            addExternal = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addExternal) {
-        	getDocument().add(p);
+        if (addExternal) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addNasolacrimal=false;
-        p.add(new Phrase("NASOLACRIMAL DUCT:  ",getFont()));
-        if(mf.getLacrimalIrrigation().length()>0) {
-        	p.add(new Phrase("Lacrimal irrigation ",boldFont));
-        	p.add(new Phrase(mf.getLacrimalIrrigation(),getFont()));
-        	addNasolacrimal=true;
+        boolean addNasolacrimal = false;
+        p.add(new Phrase("NASOLACRIMAL DUCT:  ", getFont()));
+        if (mf.getLacrimalIrrigation().length() > 0) {
+            p.add(new Phrase("Lacrimal irrigation ", boldFont));
+            p.add(new Phrase(mf.getLacrimalIrrigation(), getFont()));
+            addNasolacrimal = true;
         }
-        if(mf.getNLD().length()>0) {
-        	p.add(new Phrase(" Nasolacrimal duct ",boldFont));
-        	p.add(new Phrase(mf.getNLD(),getFont()));
-        	addNasolacrimal=true;
+        if (mf.getNLD().length() > 0) {
+            p.add(new Phrase(" Nasolacrimal duct ", boldFont));
+            p.add(new Phrase(mf.getNLD(), getFont()));
+            addNasolacrimal = true;
         }
-        if(mf.getDyeDisappearance().length()>0) {
-        	p.add(new Phrase(" Dye disappearance ",boldFont));
-        	p.add(new Phrase(mf.getDyeDisappearance(),getFont()));
-        	addNasolacrimal=true;
+        if (mf.getDyeDisappearance().length() > 0) {
+            p.add(new Phrase(" Dye disappearance ", boldFont));
+            p.add(new Phrase(mf.getDyeDisappearance(), getFont()));
+            addNasolacrimal = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addNasolacrimal) {
-        	getDocument().add(p);
+        if (addNasolacrimal) {
+            getDocument().add(p);
         }
 
         p = new Paragraph();
-        boolean addEyelidMeasurement=false;
-        p.add(new Phrase("EYELID MEASUREMENT:  ",getFont()));
-        if(mf.getMarginReflexDistance().length()>0) {
-        	p.add(new Phrase("Margin reflex distance ",boldFont));
-        	p.add(new Phrase(mf.getMarginReflexDistance(),getFont()));
-        	addEyelidMeasurement=true;
+        boolean addEyelidMeasurement = false;
+        p.add(new Phrase("EYELID MEASUREMENT:  ", getFont()));
+        if (mf.getMarginReflexDistance().length() > 0) {
+            p.add(new Phrase("Margin reflex distance ", boldFont));
+            p.add(new Phrase(mf.getMarginReflexDistance(), getFont()));
+            addEyelidMeasurement = true;
         }
-        if(mf.getLevatorFunction().length()>0) {
-        	p.add(new Phrase(" Levator function ",boldFont));
-        	p.add(new Phrase(mf.getLevatorFunction(),getFont()));
-        	addEyelidMeasurement=true;
+        if (mf.getLevatorFunction().length() > 0) {
+            p.add(new Phrase(" Levator function ", boldFont));
+            p.add(new Phrase(mf.getLevatorFunction(), getFont()));
+            addEyelidMeasurement = true;
         }
-        if(mf.getInferiorScleralShow().length()>0) {
-        	p.add(new Phrase(" Inferior scleral show ",boldFont));
-        	p.add(new Phrase(mf.getInferiorScleralShow(),getFont()));
-        	addEyelidMeasurement=true;
+        if (mf.getInferiorScleralShow().length() > 0) {
+            p.add(new Phrase(" Inferior scleral show ", boldFont));
+            p.add(new Phrase(mf.getInferiorScleralShow(), getFont()));
+            addEyelidMeasurement = true;
         }
-        if(mf.getLagophthalmos().length()>0) {
-        	p.add(new Phrase(" Lagophthalmos ",boldFont));
-        	p.add(new Phrase(mf.getLagophthalmos(),getFont()));
-        	addEyelidMeasurement=true;
+        if (mf.getLagophthalmos().length() > 0) {
+            p.add(new Phrase(" Lagophthalmos ", boldFont));
+            p.add(new Phrase(mf.getLagophthalmos(), getFont()));
+            addEyelidMeasurement = true;
         }
-        if(mf.getBlink().length()>0) {
-        	p.add(new Phrase(" Blink ",boldFont));
-        	p.add(new Phrase(mf.getBlink(),getFont()));
-        	addEyelidMeasurement=true;
+        if (mf.getBlink().length() > 0) {
+            p.add(new Phrase(" Blink ", boldFont));
+            p.add(new Phrase(mf.getBlink(), getFont()));
+            addEyelidMeasurement = true;
         }
-        if(mf.getCNVii().length()>0) {
-        	p.add(new Phrase(" Cranial Nerve VII function ",boldFont));
-        	p.add(new Phrase(mf.getCNVii(),getFont()));
-        	addEyelidMeasurement=true;
+        if (mf.getCNVii().length() > 0) {
+            p.add(new Phrase(" Cranial Nerve VII function ", boldFont));
+            p.add(new Phrase(mf.getCNVii(), getFont()));
+            addEyelidMeasurement = true;
         }
-        if(mf.getBells().length()>0) {
-        	p.add(new Phrase(" Bell's phenonmenon ",boldFont));
-        	p.add(new Phrase(mf.getBells(),getFont()));
-        	addEyelidMeasurement=true;
+        if (mf.getBells().length() > 0) {
+            p.add(new Phrase(" Bell's phenonmenon ", boldFont));
+            p.add(new Phrase(mf.getBells(), getFont()));
+            addEyelidMeasurement = true;
         }
         p.add(new Phrase("\n\n"));
-        if(addEyelidMeasurement) {
-        	getDocument().add(p);
+        if (addEyelidMeasurement) {
+            getDocument().add(p);
         }
 
     }
 
     public void printPhotos(String contextPath, List<org.oscarehr.common.model.Document> photos) throws DocumentException {
-    	writer.setStrictImageSequence(true);
+        writer.setStrictImageSequence(true);
 
-    	if(photos.size()>0) {
-	    	Font obsfont = new Font(getBaseFont(), FONTSIZE, Font.UNDERLINE);
-	        Paragraph p = new Paragraph();
-	        p.setAlignment(Paragraph.ALIGN_LEFT);
-	        Phrase phrase = new Phrase(LEADING, "\n\n", getFont());
-	        p.add(phrase);
-	        phrase = new Phrase(LEADING, "Photos:", obsfont);
-	        p.add(phrase);
-	        getDocument().add(p);
-    	}
+        if (photos.size() > 0) {
+            Font obsfont = new Font(getBaseFont(), FONTSIZE, Font.UNDERLINE);
+            Paragraph p = new Paragraph();
+            p.setAlignment(Paragraph.ALIGN_LEFT);
+            Phrase phrase = new Phrase(LEADING, "\n\n", getFont());
+            p.add(phrase);
+            phrase = new Phrase(LEADING, "Photos:", obsfont);
+            p.add(phrase);
+            getDocument().add(p);
+        }
 
-    	for(org.oscarehr.common.model.Document doc:photos) {
-    		Image img = null;
-    		try {
-    			String location = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR").trim() + doc.getDocfilename();
-    			logger.info("adding image " + location);
-    			img = Image.getInstance(location);
-    		} catch(IOException e) {
-    			MiscUtils.getLogger().error("error:",e);
-    			continue;
-    		}
-    		img.scaleToFit(getDocument().getPageSize().getWidth()-getDocument().leftMargin()-getDocument().rightMargin(), getDocument().getPageSize().getHeight());
-    		
-    		Chunk chunk = new Chunk(img,getDocument().getPageSize().getWidth()-getDocument().leftMargin()-getDocument().rightMargin(), getDocument().getPageSize().getHeight());
-    		
-    		Paragraph p = new Paragraph(); 
-    		p.add(img);    		
-    		p.add(new Phrase("Description:"+doc.getDocdesc(),getFont()));
-    		getDocument().add(p);
+        for (org.oscarehr.common.model.Document doc : photos) {
+            Image img = null;
+            try {
+                String location = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR").trim() + doc.getDocfilename();
+                logger.info("adding image " + location);
+                img = Image.getInstance(location);
+            } catch (IOException e) {
+                MiscUtils.getLogger().error("error:", e);
+                continue;
+            }
+            img.scaleToFit(getDocument().getPageSize().getWidth() - getDocument().leftMargin() - getDocument().rightMargin(), getDocument().getPageSize().getHeight());
+
+            Chunk chunk = new Chunk(img, getDocument().getPageSize().getWidth() - getDocument().leftMargin() - getDocument().rightMargin(), getDocument().getPageSize().getHeight());
+
+            Paragraph p = new Paragraph();
+            p.add(img);
+            p.add(new Phrase("Description:" + doc.getDocdesc(), getFont()));
+            getDocument().add(p);
 
 
         }
     }
 
     public void printDiagrams(List<EFormValue> diagrams) throws DocumentException {
-    	writer.setStrictImageSequence(true);
+        writer.setStrictImageSequence(true);
 
-    	EFormValueDao eFormValueDao = (EFormValueDao) SpringUtils.getBean(EFormValueDao.class);
+        EFormValueDao eFormValueDao = (EFormValueDao) SpringUtils.getBean(EFormValueDao.class);
 
-        if(diagrams.size()>0) {
-        	Font obsfont = new Font(getBaseFont(), FONTSIZE, Font.UNDERLINE);
-	        Paragraph p = new Paragraph();
-	        p.setAlignment(Paragraph.ALIGN_LEFT);
-	        Phrase phrase = new Phrase(LEADING, "\n\n", getFont());
-	        p.add(phrase);
-	        phrase = new Phrase(LEADING, "Diagrams:", obsfont);
-	        p.add(phrase);
-	        getDocument().add(p);
+        if (diagrams.size() > 0) {
+            Font obsfont = new Font(getBaseFont(), FONTSIZE, Font.UNDERLINE);
+            Paragraph p = new Paragraph();
+            p.setAlignment(Paragraph.ALIGN_LEFT);
+            Phrase phrase = new Phrase(LEADING, "\n\n", getFont());
+            p.add(phrase);
+            phrase = new Phrase(LEADING, "Diagrams:", obsfont);
+            p.add(phrase);
+            getDocument().add(p);
         }
 
-        for(EFormValue value:diagrams) {
-	    	//this is a form from our group, and our appt
-	    	String imgPath = OscarProperties.getInstance().getProperty("eform_image");
-	    	EFormValue imageName = eFormValueDao.findByFormDataIdAndKey(value.getFormDataId(),"image");
-	    	EFormValue drawData = eFormValueDao.findByFormDataIdAndKey(value.getFormDataId(),"DrawData");
-	    	EFormValue subject = eFormValueDao.findByFormDataIdAndKey(value.getFormDataId(),"subject");
+        for (EFormValue value : diagrams) {
+            //this is a form from our group, and our appt
+            String imgPath = OscarProperties.getInstance().getProperty("eform_image");
+            EFormValue imageName = eFormValueDao.findByFormDataIdAndKey(value.getFormDataId(), "image");
+            EFormValue drawData = eFormValueDao.findByFormDataIdAndKey(value.getFormDataId(), "DrawData");
+            EFormValue subject = eFormValueDao.findByFormDataIdAndKey(value.getFormDataId(), "subject");
 
-	    	String image = imgPath + File.separator + imageName.getVarValue();
-	    	logger.debug("image for eform is " + image);
-	    	GraphicalCanvasToImage convert = new GraphicalCanvasToImage();
-	    	File tempFile = null;
-	    	try {
-	    		tempFile = File.createTempFile("graphicImg", ".png");
-	    		FileOutputStream fos = new FileOutputStream(tempFile);
-	    		convert.convertToImage(image, drawData.getVarValue(), "PNG", fos);
-	    		logger.debug("converted image is " + tempFile.getName());
-	    		fos.close();
-	    	}catch(IOException e) {
-	    		logger.error("Error",e);
-	    		if(tempFile!=null) {
-	    			tempFile.delete();
-	    		}
-	    		continue;
-	    	}
+            String image = imgPath + File.separator + imageName.getVarValue();
+            logger.debug("image for eform is " + image);
+            GraphicalCanvasToImage convert = new GraphicalCanvasToImage();
+            File tempFile = null;
+            try {
+                tempFile = File.createTempFile("graphicImg", ".png");
+                FileOutputStream fos = new FileOutputStream(tempFile);
+                convert.convertToImage(image, drawData.getVarValue(), "PNG", fos);
+                logger.debug("converted image is " + tempFile.getName());
+                fos.close();
+            } catch (IOException e) {
+                logger.error("Error", e);
+                if (tempFile != null) {
+                    tempFile.delete();
+                }
+                continue;
+            }
 
-	   		Image img = null;
-    		try {
-    			logger.info("adding diagram " + tempFile.getAbsolutePath());
-    			img = Image.getInstance(tempFile.getAbsolutePath() );
-    		} catch(IOException e) {
-    			logger.error("error:",e);
-    			continue;
-    		}
-    		img.scaleToFit(getDocument().getPageSize().getWidth()-getDocument().leftMargin()-getDocument().rightMargin(), getDocument().getPageSize().getHeight()); 
-    		Paragraph p = new Paragraph(); 
-    		p.add(img);    		
-    		p.add(new Phrase("Subject:"+subject.getVarValue(),getFont()));
-    		getDocument().add(p);
+            Image img = null;
+            try {
+                logger.info("adding diagram " + tempFile.getAbsolutePath());
+                img = Image.getInstance(tempFile.getAbsolutePath());
+            } catch (IOException e) {
+                logger.error("error:", e);
+                continue;
+            }
+            img.scaleToFit(getDocument().getPageSize().getWidth() - getDocument().leftMargin() - getDocument().rightMargin(), getDocument().getPageSize().getHeight());
+            Paragraph p = new Paragraph();
+            p.add(img);
+            p.add(new Phrase("Subject:" + subject.getVarValue(), getFont()));
+            getDocument().add(p);
 
-	    	tempFile.deleteOnExit();
+            tempFile.deleteOnExit();
         }
 
     }
 
-	private String getRefName(Demographic d) {
-		String referral = d.getFamilyDoctor();
+    private String getRefName(Demographic d) {
+        String referral = d.getFamilyDoctor();
 
-		if (referral == null || referral.length()==0)
-			return new String();
+        if (referral == null || referral.length() == 0)
+            return new String();
 
-		int start = referral.indexOf("<rd>");
-		int end = referral.indexOf("</rd>");
-		String ref = new String();
+        int start = referral.indexOf("<rd>");
+        int end = referral.indexOf("</rd>");
+        String ref = new String();
 
-		if (start >= 0 && end >= 0) {
-			String subreferral = referral.substring(start + 4, end);
-			if (!"".equalsIgnoreCase(subreferral.trim())) {
-				ref = subreferral;
+        if (start >= 0 && end >= 0) {
+            String subreferral = referral.substring(start + 4, end);
+            if (!"".equalsIgnoreCase(subreferral.trim())) {
+                ref = subreferral;
 
-			}
-		}
-		return ref;
-	}
+            }
+        }
+        return ref;
+    }
 }

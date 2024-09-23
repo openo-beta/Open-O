@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,18 +37,18 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.UtilDateUtilities;
 
 public class FrmPositionHazardRecord extends FrmRecord {
-    
+
     private ClinicDAO clinicDao = (ClinicDAO) SpringUtils.getBean(ClinicDAO.class);
-                
+
     public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException {
         Properties props = new Properties();
 
         if (existingID <= 0) {
-        	Demographic demographic=demographicManager.getDemographic(loggedInInfo, demographicNo);
+            Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographicNo);
 
-            if (demographic!=null) {
+            if (demographic != null) {
                 props.setProperty("demographic_no", String.valueOf(demographic.getDemographicNo()));
-                props.setProperty("patientName", demographic.getLastName()+", "+ demographic.getFirstName());
+                props.setProperty("patientName", demographic.getLastName() + ", " + demographic.getFirstName());
                 props.setProperty("healthNumber", demographic.getHin());
                 props.setProperty("version", demographic.getVer());
                 props.setProperty("hcType", demographic.getHcType());
@@ -68,8 +68,8 @@ public class FrmPositionHazardRecord extends FrmRecord {
 
             //get local clinic information            
             Clinic clinic = clinicDao.getClinic();
-            props.setProperty("clinicName",clinic.getClinicName());
-            props.setProperty("clinicProvince",clinic.getClinicProvince());
+            props.setProperty("clinicName", clinic.getClinicName());
+            props.setProperty("clinicProvince", clinic.getClinicProvince());
             props.setProperty("clinicAddress", clinic.getClinicAddress());
             props.setProperty("clinicCity", clinic.getClinicCity());
             props.setProperty("clinicPC", clinic.getClinicPostal());
@@ -81,7 +81,7 @@ public class FrmPositionHazardRecord extends FrmRecord {
 
         return props;
     }
-        
+
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
         String sql = "SELECT * FROM formPositionHazard WHERE demographic_no=" + demographic_no + " AND ID=0";

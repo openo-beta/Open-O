@@ -30,60 +30,61 @@
     Author     : apavel
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-   <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-   <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-   <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+"http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%
-String dispDocNo = request.getParameter("DocId");
-String user = (String) session.getAttribute("user");
+    String dispDocNo = request.getParameter("DocId");
+    String user = (String) session.getAttribute("user");
 %>
 <html>
-    <head>
-        <title>Indivo Registration Result</title>
-        <link rel="stylesheet" type="text/css" href="../phr.css">
-        <style type="text/css">
-            div.messageDiv {
-                position: absolute; 
-                top: 30%;
-                width: 90%;
-                left: 5%;
-                text-align: center;
-                font-size: 12px;
-            }
-        </style>
-        <script type="text/javascript" language="javascript">
-        function closeWindow() {
-           window.close();
-           if (!window.opener.closed) {
-               window.opener.location.reload();
-               window.opener.focus();
-           }
+<head>
+    <title>Indivo Registration Result</title>
+    <link rel="stylesheet" type="text/css" href="../phr.css">
+    <style type="text/css">
+        div.messageDiv {
+            position: absolute;
+            top: 30%;
+            width: 90%;
+            left: 5%;
+            text-align: center;
+            font-size: 12px;
         }
-        </script>
-    </head>
-    <body>
-        <%if (request.getParameter("failmessage") != null) {%>
-            <div class="objectRed messageDiv">
-                <div class="objectRedHeader">
-                    Error: Failed to add user:
-                </div>
-                Failed to add a user:<br/>
-                <%=request.getParameter("failmessage")%>
-                <br/>
-                <input type="button" onclick="closeWindow()" name="closeButton" value="Close Window">
-            </div>
-        <%} else {%>
-            <div class="objectGreen messageDiv">
-                <div class="objectGreenHeader">
-                    User was successfully added.
-                </div>
-                	The user and corresponding permissions have been added. 
-                    <br/>
-                    <input type="button" onclick="closeWindow()" name="closeButton" value="Close Window">
-                    <a href="../../documentManager/ManageDocument.do?method=display&doc_no=<%=dispDocNo%>&providerNo=<%=user%>" >Registration Letter</a>
-            </div>
-        <%}%>
-    </body>
+    </style>
+    <script type="text/javascript" language="javascript">
+        function closeWindow() {
+            window.close();
+            if (!window.opener.closed) {
+                window.opener.location.reload();
+                window.opener.focus();
+            }
+        }
+    </script>
+</head>
+<body>
+<%if (request.getParameter("failmessage") != null) {%>
+<div class="objectRed messageDiv">
+    <div class="objectRedHeader">
+        Error: Failed to add user:
+    </div>
+    Failed to add a user:<br/>
+    <%=request.getParameter("failmessage")%>
+    <br/>
+    <input type="button" onclick="closeWindow()" name="closeButton" value="Close Window">
+</div>
+<%} else {%>
+<div class="objectGreen messageDiv">
+    <div class="objectGreenHeader">
+        User was successfully added.
+    </div>
+    The user and corresponding permissions have been added.
+    <br/>
+    <input type="button" onclick="closeWindow()" name="closeButton" value="Close Window">
+    <a href="../../documentManager/ManageDocument.do?method=display&doc_no=<%=dispDocNo%>&providerNo=<%=user%>">Registration
+        Letter</a>
+</div>
+<%}%>
+</body>
 </html>

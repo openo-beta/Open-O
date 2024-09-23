@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,238 +37,237 @@ public class AdmissionTo1 {
 	
 	private Demographic client;
 	*/
-	
-	private Integer id;
-	
-	private String teamName;
-	
-	private String programName;
-	
-	private String programType;
-	
- 	private Date admissionDate;
 
-	private boolean admissionFromTransfer;
+    private Integer id;
 
- 	private String admissionNotes;
+    private String teamName;
 
-	private String admissionStatus;
+    private String programName;
 
-	private boolean automaticDischarge;
+    private String programType;
 
-	private Integer clientId = null;
+    private Date admissionDate;
 
-	private Integer clientStatusId = null;
+    private boolean admissionFromTransfer;
 
-	private Date dischargeDate;
+    private String admissionNotes;
 
-	private boolean dischargeFromTransfer;
+    private String admissionStatus;
 
- 	private String dischargeNotes;
+    private boolean automaticDischarge;
 
-	private Integer programId;
+    private Integer clientId = null;
 
-	private String providerNo;
+    private Integer clientStatusId = null;
 
-	private String radioDischargeReason;
+    private Date dischargeDate;
 
-	private Integer teamId = null;
+    private boolean dischargeFromTransfer;
 
-	private String tempAdmission;
+    private String dischargeNotes;
 
-	private String tempAdmitDischarge;
+    private Integer programId;
 
-	private boolean temporaryAdmissionFlag;
+    private String providerNo;
 
-	private Date lastUpdateDate = null;
-	
-	private DemographicTo1 demographic = null;
-	
+    private String radioDischargeReason;
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer teamId = null;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String tempAdmission;
 
-	public String getTeamName() {
-		return teamName;
-	}
+    private String tempAdmitDischarge;
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
-	}
+    private boolean temporaryAdmissionFlag;
 
-	public String getProgramName() {
-		return programName;
-	}
+    private Date lastUpdateDate = null;
 
-	public void setProgramName(String programName) {
-		this.programName = programName;
-	}
+    private DemographicTo1 demographic = null;
 
-	public String getProgramType() {
-		return programType;
-	}
 
-	public void setProgramType(String programType) {
-		this.programType = programType;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getAdmissionDate() {
-		return admissionDate;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setAdmissionDate(Date admissionDate) {
-		this.admissionDate = admissionDate;
-	}
+    public String getTeamName() {
+        return teamName;
+    }
 
-	public boolean isAdmissionFromTransfer() {
-		return admissionFromTransfer;
-	}
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
 
-	public void setAdmissionFromTransfer(boolean admissionFromTransfer) {
-		this.admissionFromTransfer = admissionFromTransfer;
-	}
+    public String getProgramName() {
+        return programName;
+    }
 
-	public String getAdmissionNotes() {
-		return admissionNotes;
-	}
+    public void setProgramName(String programName) {
+        this.programName = programName;
+    }
 
-	public void setAdmissionNotes(String admissionNotes) {
-		this.admissionNotes = admissionNotes;
-	}
+    public String getProgramType() {
+        return programType;
+    }
 
-	public String getAdmissionStatus() {
-		return admissionStatus;
-	}
+    public void setProgramType(String programType) {
+        this.programType = programType;
+    }
 
-	public void setAdmissionStatus(String admissionStatus) {
-		this.admissionStatus = admissionStatus;
-	}
+    public Date getAdmissionDate() {
+        return admissionDate;
+    }
 
-	public boolean isAutomaticDischarge() {
-		return automaticDischarge;
-	}
+    public void setAdmissionDate(Date admissionDate) {
+        this.admissionDate = admissionDate;
+    }
 
-	public void setAutomaticDischarge(boolean automaticDischarge) {
-		this.automaticDischarge = automaticDischarge;
-	}
+    public boolean isAdmissionFromTransfer() {
+        return admissionFromTransfer;
+    }
 
-	public Integer getClientId() {
-		return clientId;
-	}
+    public void setAdmissionFromTransfer(boolean admissionFromTransfer) {
+        this.admissionFromTransfer = admissionFromTransfer;
+    }
 
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
-	}
+    public String getAdmissionNotes() {
+        return admissionNotes;
+    }
 
-	public Integer getClientStatusId() {
-		return clientStatusId;
-	}
+    public void setAdmissionNotes(String admissionNotes) {
+        this.admissionNotes = admissionNotes;
+    }
 
-	public void setClientStatusId(Integer clientStatusId) {
-		this.clientStatusId = clientStatusId;
-	}
+    public String getAdmissionStatus() {
+        return admissionStatus;
+    }
 
-	public Date getDischargeDate() {
-		return dischargeDate;
-	}
+    public void setAdmissionStatus(String admissionStatus) {
+        this.admissionStatus = admissionStatus;
+    }
 
-	public void setDischargeDate(Date dischargeDate) {
-		this.dischargeDate = dischargeDate;
-	}
+    public boolean isAutomaticDischarge() {
+        return automaticDischarge;
+    }
 
-	public boolean isDischargeFromTransfer() {
-		return dischargeFromTransfer;
-	}
+    public void setAutomaticDischarge(boolean automaticDischarge) {
+        this.automaticDischarge = automaticDischarge;
+    }
 
-	public void setDischargeFromTransfer(boolean dischargeFromTransfer) {
-		this.dischargeFromTransfer = dischargeFromTransfer;
-	}
+    public Integer getClientId() {
+        return clientId;
+    }
 
-	public String getDischargeNotes() {
-		return dischargeNotes;
-	}
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
 
-	public void setDischargeNotes(String dischargeNotes) {
-		this.dischargeNotes = dischargeNotes;
-	}
+    public Integer getClientStatusId() {
+        return clientStatusId;
+    }
 
-	public Integer getProgramId() {
-		return programId;
-	}
+    public void setClientStatusId(Integer clientStatusId) {
+        this.clientStatusId = clientStatusId;
+    }
 
-	public void setProgramId(Integer programId) {
-		this.programId = programId;
-	}
+    public Date getDischargeDate() {
+        return dischargeDate;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setDischargeDate(Date dischargeDate) {
+        this.dischargeDate = dischargeDate;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public boolean isDischargeFromTransfer() {
+        return dischargeFromTransfer;
+    }
 
-	public String getRadioDischargeReason() {
-		return radioDischargeReason;
-	}
+    public void setDischargeFromTransfer(boolean dischargeFromTransfer) {
+        this.dischargeFromTransfer = dischargeFromTransfer;
+    }
 
-	public void setRadioDischargeReason(String radioDischargeReason) {
-		this.radioDischargeReason = radioDischargeReason;
-	}
+    public String getDischargeNotes() {
+        return dischargeNotes;
+    }
 
-	public Integer getTeamId() {
-		return teamId;
-	}
+    public void setDischargeNotes(String dischargeNotes) {
+        this.dischargeNotes = dischargeNotes;
+    }
 
-	public void setTeamId(Integer teamId) {
-		this.teamId = teamId;
-	}
+    public Integer getProgramId() {
+        return programId;
+    }
 
-	public String getTempAdmission() {
-		return tempAdmission;
-	}
+    public void setProgramId(Integer programId) {
+        this.programId = programId;
+    }
 
-	public void setTempAdmission(String tempAdmission) {
-		this.tempAdmission = tempAdmission;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public String getTempAdmitDischarge() {
-		return tempAdmitDischarge;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setTempAdmitDischarge(String tempAdmitDischarge) {
-		this.tempAdmitDischarge = tempAdmitDischarge;
-	}
+    public String getRadioDischargeReason() {
+        return radioDischargeReason;
+    }
 
-	public boolean isTemporaryAdmissionFlag() {
-		return temporaryAdmissionFlag;
-	}
+    public void setRadioDischargeReason(String radioDischargeReason) {
+        this.radioDischargeReason = radioDischargeReason;
+    }
 
-	public void setTemporaryAdmissionFlag(boolean temporaryAdmissionFlag) {
-		this.temporaryAdmissionFlag = temporaryAdmissionFlag;
-	}
+    public Integer getTeamId() {
+        return teamId;
+    }
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public String getTempAdmission() {
+        return tempAdmission;
+    }
 
-	public DemographicTo1 getDemographic() {
-		return demographic;
-	}
+    public void setTempAdmission(String tempAdmission) {
+        this.tempAdmission = tempAdmission;
+    }
 
-	public void setDemographic(DemographicTo1 demographic) {
-		this.demographic = demographic;
-	}
-	
-	
-	
+    public String getTempAdmitDischarge() {
+        return tempAdmitDischarge;
+    }
+
+    public void setTempAdmitDischarge(String tempAdmitDischarge) {
+        this.tempAdmitDischarge = tempAdmitDischarge;
+    }
+
+    public boolean isTemporaryAdmissionFlag() {
+        return temporaryAdmissionFlag;
+    }
+
+    public void setTemporaryAdmissionFlag(boolean temporaryAdmissionFlag) {
+        this.temporaryAdmissionFlag = temporaryAdmissionFlag;
+    }
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public DemographicTo1 getDemographic() {
+        return demographic;
+    }
+
+    public void setDemographic(DemographicTo1 demographic) {
+        this.demographic = demographic;
+    }
+
+
 }

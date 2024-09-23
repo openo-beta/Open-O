@@ -14,19 +14,21 @@ import java.io.Serializable;
 
 @Embeddable
 public class FormBooleanValuePK implements Serializable {
-    
+
     // forms table name
-    @Column(name="form_name")
+    @Column(name = "form_name")
     private String formName;
-    
+
     // id of the form in the form table
-    @Column(name="form_id")
+    @Column(name = "form_id")
     private Integer formId;
-    
-    @Column(name="field_name")
+
+    @Column(name = "field_name")
     private String fieldName;
 
-    public FormBooleanValuePK() {}
+    public FormBooleanValuePK() {
+    }
+
     public FormBooleanValuePK(String formName, Integer formId, String fieldName) {
         this.formName = formName;
         this.formId = formId;
@@ -36,6 +38,7 @@ public class FormBooleanValuePK implements Serializable {
     public String getFormName() {
         return formName;
     }
+
     public void setFormName(String formName) {
         this.formName = formName;
     }
@@ -43,6 +46,7 @@ public class FormBooleanValuePK implements Serializable {
     public Integer getFormId() {
         return formId;
     }
+
     public void setFormId(Integer formId) {
         this.formId = formId;
     }
@@ -50,6 +54,7 @@ public class FormBooleanValuePK implements Serializable {
     public String getFieldName() {
         return fieldName;
     }
+
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
     }

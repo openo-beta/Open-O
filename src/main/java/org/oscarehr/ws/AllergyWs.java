@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -43,27 +43,26 @@ import org.springframework.stereotype.Component;
 @Component
 @GZIP(threshold = AbstractWs.GZIP_THRESHOLD)
 public class AllergyWs extends AbstractWs {
-	@Autowired
-	private AllergyManager allergyManager;
+    @Autowired
+    private AllergyManager allergyManager;
 
-	public AllergyTransfer getAllergy(Integer allergyId) {
-		Allergy allergy = allergyManager.getAllergy(getLoggedInInfo(), allergyId);
-		return (AllergyTransfer.toTransfer(allergy));
-	}
+    public AllergyTransfer getAllergy(Integer allergyId) {
+        Allergy allergy = allergyManager.getAllergy(getLoggedInInfo(), allergyId);
+        return (AllergyTransfer.toTransfer(allergy));
+    }
 
-	public AllergyTransfer[] getAllergiesUpdatedAfterDate(Date updatedAfterThisDateInclusive, int itemsToReturn) {
-		List<Allergy> allergies = allergyManager.getUpdatedAfterDate(getLoggedInInfo(), updatedAfterThisDateInclusive, itemsToReturn);
-		return (AllergyTransfer.toTransfers(allergies));
-	}
+    public AllergyTransfer[] getAllergiesUpdatedAfterDate(Date updatedAfterThisDateInclusive, int itemsToReturn) {
+        List<Allergy> allergies = allergyManager.getUpdatedAfterDate(getLoggedInInfo(), updatedAfterThisDateInclusive, itemsToReturn);
+        return (AllergyTransfer.toTransfers(allergies));
+    }
 
-	public AllergyTransfer[] getAllergiesByProgramProviderDemographicDate(Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateInclusive, int itemsToReturn) {
-		List<Allergy> allergies = allergyManager.getAllergiesByProgramProviderDemographicDate(getLoggedInInfo(), programId, providerNo, demographicId, updatedAfterThisDateInclusive, itemsToReturn);
-		return (AllergyTransfer.toTransfers(allergies));
-	}
+    public AllergyTransfer[] getAllergiesByProgramProviderDemographicDate(Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateInclusive, int itemsToReturn) {
+        List<Allergy> allergies = allergyManager.getAllergiesByProgramProviderDemographicDate(getLoggedInInfo(), programId, providerNo, demographicId, updatedAfterThisDateInclusive, itemsToReturn);
+        return (AllergyTransfer.toTransfers(allergies));
+    }
 
-	public AllergyTransfer[] getAllergiesByDemographicIdAfter(@WebParam(name="lastUpdate") Calendar lastUpdate, @WebParam(name="demographicId") Integer demographicId)
-	{
-		List<Allergy> allergies = allergyManager.getByDemographicIdUpdatedAfterDate(getLoggedInInfo(), demographicId, lastUpdate.getTime());
-		return (AllergyTransfer.toTransfers(allergies));
-	}
+    public AllergyTransfer[] getAllergiesByDemographicIdAfter(@WebParam(name = "lastUpdate") Calendar lastUpdate, @WebParam(name = "demographicId") Integer demographicId) {
+        List<Allergy> allergies = allergyManager.getByDemographicIdUpdatedAfterDate(getLoggedInInfo(), demographicId, lastUpdate.getTime());
+        return (AllergyTransfer.toTransfers(allergies));
+    }
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,55 +30,56 @@ package oscar.entities;
  *
  */
 public class LabRequest {
-  private int id;
-  private int hl7ObrId;
+    private int id;
+    private int hl7ObrId;
 
-  /**
-   * Class constructor with no arguments.
-   */
-  public LabRequest() {}
+    /**
+     * Class constructor with no arguments.
+     */
+    public LabRequest() {
+    }
 
-  /**
-   * Full constructor
-   *
-   * @param id int
-   * @param hl7ObrId int
-   */
-  public LabRequest(int id, int hl7ObrId) {
-    this.id = id;
-    this.hl7ObrId = hl7ObrId;
-  }
+    /**
+     * Full constructor
+     *
+     * @param id int
+     * @param hl7ObrId int
+     */
+    public LabRequest(int id, int hl7ObrId) {
+        this.id = id;
+        this.hl7ObrId = hl7ObrId;
+    }
 
-  /**
-   * Gets the id
-   * @return int id
-   */
-  public int getId() {
-    return id;
-  }
+    /**
+     * Gets the id
+     * @return int id
+     */
+    public int getId() {
+        return id;
+    }
 
-  /**
-   * Gets the hl7ObrId
-   * @return int hl7ObrId
-   */
-  public int getHl7ObrId() {
-    return hl7ObrId;
-  }
+    /**
+     * Gets the hl7ObrId
+     * @return int hl7ObrId
+     */
+    public int getHl7ObrId() {
+        return hl7ObrId;
+    }
 
-  /**
-   * Sets the id
-   * @param id int
-   */
-  public void setId(int id) {
-    this.id = id;
-  }
+    /**
+     * Sets the id
+     * @param id int
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  /**
-   * Sets the hl7ObrId
-   * @param hl7ObrId int
-   */
-  public void setHl7ObrId(int hl7ObrId) {
-    this.hl7ObrId = hl7ObrId;
-  }
+    /**
+     * Sets the hl7ObrId
+     * @param hl7ObrId int
+     */
+    public void setHl7ObrId(int hl7ObrId) {
+        this.hl7ObrId = hl7ObrId;
+    }
 
 }

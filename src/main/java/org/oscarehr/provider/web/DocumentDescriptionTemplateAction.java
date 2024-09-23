@@ -1,22 +1,21 @@
-//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2012- Centre de Medecine Integree
- *
+ * <p>
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre de Medecine Integree, Saint-Laurent, Quebec, Canada to be provided
  * as part of the OSCAR McMaster EMR System
@@ -28,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONObject;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -49,9 +49,8 @@ public class DocumentDescriptionTemplateAction extends DispatchAction {
     public ActionForward getDocumentDescriptionFromDocType(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         String docType = request.getParameter("doctype");
         String providerNo = null;
-        String useDocumentDescriptionTemplateType=request.getParameter("useDocumentDescriptionTemplateType");
-        if(useDocumentDescriptionTemplateType!=null && useDocumentDescriptionTemplateType.equals(UserProperty.USER))
-        {
+        String useDocumentDescriptionTemplateType = request.getParameter("useDocumentDescriptionTemplateType");
+        if (useDocumentDescriptionTemplateType != null && useDocumentDescriptionTemplateType.equals(UserProperty.USER)) {
             providerNo = request.getParameter("providerNo");
         }
         List<DocumentDescriptionTemplate> documentDescriptionTemplate = documentDescriptionTemplateDao.findByDocTypeAndProviderNo(docType, providerNo);
@@ -85,14 +84,14 @@ public class DocumentDescriptionTemplateAction extends DispatchAction {
         String docType = request.getParameter("doctype");
         String description = request.getParameter("description");
         String descriptionShortcut = request.getParameter("shortcut");
-        String providerNo = request.getParameter("providerNo").equals("null")?null:request.getParameter("providerNo");
+        String providerNo = request.getParameter("providerNo").equals("null") ? null : request.getParameter("providerNo");
         DocumentDescriptionTemplate documentDescriptionTemplate = new DocumentDescriptionTemplate();
         documentDescriptionTemplate.setDescription(description);
         documentDescriptionTemplate.setDescriptionShortcut(descriptionShortcut);
         documentDescriptionTemplate.setDocType(docType);
         documentDescriptionTemplate.setProviderNo(providerNo);
         this.documentDescriptionTemplateDao.persist(documentDescriptionTemplate);
-        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENTDESCRIPTIONTEMPLATE, providerNo, request.getRemoteAddr(),null,"["+docType+"] "+descriptionShortcut+" | " +description);
+        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENTDESCRIPTIONTEMPLATE, providerNo, request.getRemoteAddr(), null, "[" + docType + "] " + descriptionShortcut + " | " + description);
         return null;
     }
 
@@ -103,7 +102,7 @@ public class DocumentDescriptionTemplateAction extends DispatchAction {
         String docType = request.getParameter("doctype");
         String description = request.getParameter("description");
         String descriptionShortcut = request.getParameter("shortcut");
-        String providerNo = request.getParameter("providerNo").equals("null")?null:request.getParameter("providerNo");
+        String providerNo = request.getParameter("providerNo").equals("null") ? null : request.getParameter("providerNo");
         DocumentDescriptionTemplate documentDescriptionTemplate = new DocumentDescriptionTemplate();
         documentDescriptionTemplate.setDescription(description);
         documentDescriptionTemplate.setDescriptionShortcut(descriptionShortcut);
@@ -111,7 +110,7 @@ public class DocumentDescriptionTemplateAction extends DispatchAction {
         documentDescriptionTemplate.setId(id);
         documentDescriptionTemplate.setProviderNo(providerNo);
         this.documentDescriptionTemplateDao.merge(documentDescriptionTemplate);
-        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, LogConst.CON_DOCUMENTDESCRIPTIONTEMPLATE, providerNo, request.getRemoteAddr(),null,ids+ " ["+docType+"] "+descriptionShortcut+" | " +description);
+        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.UPDATE, LogConst.CON_DOCUMENTDESCRIPTIONTEMPLATE, providerNo, request.getRemoteAddr(), null, ids + " [" + docType + "] " + descriptionShortcut + " | " + description);
         return null;
     }
 
@@ -122,6 +121,7 @@ public class DocumentDescriptionTemplateAction extends DispatchAction {
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.DELETE, LogConst.CON_DOCUMENTDESCRIPTIONTEMPLATE, ids, request.getRemoteAddr());
         return null;
     }
+
     public ActionForward saveDocumentDescriptionTemplatePreference(ActionMapping actionmapping, ActionForm actionform, HttpServletRequest request, HttpServletResponse response) {
 
         UserPropertyDAO userPropertyDAO = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);

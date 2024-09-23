@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -26,57 +26,55 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 
+public class HRMPreferencesAction extends DispatchAction {
 
-public class HRMPreferencesAction extends DispatchAction  {
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-	 @Override
-	    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-	     	
-		 
-		 	String userName = request.getParameter("userName");
-	     	String location = request.getParameter("location");
-	     	String interval = request.getParameter("interval");
-	     	
-	     	
-	     	UserPropertyDAO userPropertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
-	     	
-	     	try{
-	     		UserProperty prop;
-	     		
-	     		if ((prop = userPropertyDao.getProp("hrm_username")) == null) {
-	     			prop = new UserProperty();
-	     		}
-	     		prop.setName("hrm_username");
-	     		prop.setValue(userName);
-	     		userPropertyDao.saveProp(prop);
-	     		
-	     		if ((prop = userPropertyDao.getProp("hrm_location")) == null) {
-	     			prop = new UserProperty();
-	     		}
-	     		prop.setName("hrm_location");
-	     		prop.setValue(location);
-	     		userPropertyDao.saveProp(prop);
-	     		
-	     		if ((prop = userPropertyDao.getProp("hrm_interval")) == null) {
-	     			prop = new UserProperty();
-	     		}
-	     		prop.setName("hrm_interval");
-	     		prop.setValue(interval);
-	     		userPropertyDao.saveProp(prop);
-	     		
-	     		//SFTPConnector.setDownloadsDirectory(location);
-	     		
-	     		
-	     		
-	     		request.setAttribute("success", true);
-	     	} catch (Exception e){
-	     		MiscUtils.getLogger().error("Changing Preferences failed", e); 
-				request.setAttribute("success", false);
-	     	}
-		 
-	     	return mapping.findForward("success");
-		 
-	    }
-	 
-	 
+
+        String userName = request.getParameter("userName");
+        String location = request.getParameter("location");
+        String interval = request.getParameter("interval");
+
+
+        UserPropertyDAO userPropertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
+
+        try {
+            UserProperty prop;
+
+            if ((prop = userPropertyDao.getProp("hrm_username")) == null) {
+                prop = new UserProperty();
+            }
+            prop.setName("hrm_username");
+            prop.setValue(userName);
+            userPropertyDao.saveProp(prop);
+
+            if ((prop = userPropertyDao.getProp("hrm_location")) == null) {
+                prop = new UserProperty();
+            }
+            prop.setName("hrm_location");
+            prop.setValue(location);
+            userPropertyDao.saveProp(prop);
+
+            if ((prop = userPropertyDao.getProp("hrm_interval")) == null) {
+                prop = new UserProperty();
+            }
+            prop.setName("hrm_interval");
+            prop.setValue(interval);
+            userPropertyDao.saveProp(prop);
+
+            //SFTPConnector.setDownloadsDirectory(location);
+
+
+            request.setAttribute("success", true);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Changing Preferences failed", e);
+            request.setAttribute("success", false);
+        }
+
+        return mapping.findForward("success");
+
+    }
+
+
 }

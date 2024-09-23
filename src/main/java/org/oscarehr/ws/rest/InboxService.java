@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,79 +50,79 @@ import oscar.oscarLab.ca.on.LabResultData;
 @Component("inboxService")
 public class InboxService extends AbstractServiceImpl {
 
-	@Autowired
-	private InboxManager inboxManager;
-	
-	@GET
-	@Path("/mine")
-	@Produces("application/json")
-	public InboxResponse getMyUnacknowlegedReports(@QueryParam("limit") int limit) {
-	
-		LoggedInInfo loggedInInfo=getLoggedInInfo();
-		String providerNo=loggedInInfo.getLoggedInProviderNo();
-	
-		InboxManagerQuery query = new InboxManagerQuery();
-		query.setProviderNo(providerNo);
-		query.setSearchProviderNo(providerNo);
-		query.setStatus("N");
-		query.setScannedDocStatus("I");
-		query.setPage(0);
-		query.setPageSize(20);
-		query.setView("all");
-		query.setPatientFirstName("");
-		query.setPatientLastName("");
-		query.setPatientHIN("");
-		
-		
-		InboxManagerResponse response = inboxManager.getInboxResults(loggedInInfo, query);
-		
-		List<LabResultData> labDocs = response.getLabdocs();
-		List<InboxTo1> responseItems = new ArrayList<InboxTo1>();
-	
-		for(LabResultData result:labDocs) {
-			InboxTo1 inboxItem = new InboxTo1();
-			String segmentID        =  result.getSegmentID();
-          
-            
+    @Autowired
+    private InboxManager inboxManager;
+
+    @GET
+    @Path("/mine")
+    @Produces("application/json")
+    public InboxResponse getMyUnacknowlegedReports(@QueryParam("limit") int limit) {
+
+        LoggedInInfo loggedInInfo = getLoggedInInfo();
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        InboxManagerQuery query = new InboxManagerQuery();
+        query.setProviderNo(providerNo);
+        query.setSearchProviderNo(providerNo);
+        query.setStatus("N");
+        query.setScannedDocStatus("I");
+        query.setPage(0);
+        query.setPageSize(20);
+        query.setView("all");
+        query.setPatientFirstName("");
+        query.setPatientLastName("");
+        query.setPatientHIN("");
+
+
+        InboxManagerResponse response = inboxManager.getInboxResults(loggedInInfo, query);
+
+        List<LabResultData> labDocs = response.getLabdocs();
+        List<InboxTo1> responseItems = new ArrayList<InboxTo1>();
+
+        for (LabResultData result : labDocs) {
+            InboxTo1 inboxItem = new InboxTo1();
+            String segmentID = result.getSegmentID();
+
+
             String discipline = result.isDocument() ? result.description == null ? "" : result.description : result.getDisciplineDisplayString();
-            String status = ((result.isReportCancelled())? "Cancelled" : result.isFinal() ? "Final" : "Partial");
-            
+            String status = ((result.isReportCancelled()) ? "Cancelled" : result.isFinal() ? "Final" : "Partial");
+
             inboxItem.setId(Integer.parseInt(segmentID));
             inboxItem.setDemographicName(result.getPatientName());
-            inboxItem.setDemographicNo(result.getLabPatientId()!=null?Integer.parseInt(result.getLabPatientId()):null);
+            inboxItem.setDemographicNo(result.getLabPatientId() != null ? Integer.parseInt(result.getLabPatientId()) : null);
             inboxItem.setDiscipline(discipline);
             inboxItem.setDateReceived(result.getDateTime() + (result.isDocument() ? " / " + result.lastUpdateDate : ""));
             inboxItem.setPriority(result.getPriority());
             inboxItem.setStatus(status);
             inboxItem.setHin(result.getHealthNumber());
-            
-            responseItems.add(inboxItem);
-            
-            if(responseItems.size() > limit) {
-            	continue;
-            }
-            
-		}
-		
-		InboxResponse resp = new InboxResponse();
-		resp.setContent(responseItems);
-		resp.setLimit(limit);
-		resp.setOffset(0);
-		resp.setTimestamp(new Date());
-		resp.setTotal(getMyUnacknowlegedReportsCount());
 
-		return resp;
-	}
-	
-	@GET
-	@Path("/mine/count")
-	public int getMyUnacknowlegedReportsCount() {
-		LoggedInInfo loggedInInfo=getLoggedInInfo();
-		String providerNo=loggedInInfo.getLoggedInProviderNo();
-		
-		ProviderLabRoutingDao dao = SpringUtils.getBean(ProviderLabRoutingDao.class);
-		int count = dao.findByProviderNo(providerNo, "N").size();
-		
-		return count;
-	}
+            responseItems.add(inboxItem);
+
+            if (responseItems.size() > limit) {
+                continue;
+            }
+
+        }
+
+        InboxResponse resp = new InboxResponse();
+        resp.setContent(responseItems);
+        resp.setLimit(limit);
+        resp.setOffset(0);
+        resp.setTimestamp(new Date());
+        resp.setTotal(getMyUnacknowlegedReportsCount());
+
+        return resp;
+    }
+
+    @GET
+    @Path("/mine/count")
+    public int getMyUnacknowlegedReportsCount() {
+        LoggedInInfo loggedInInfo = getLoggedInInfo();
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        ProviderLabRoutingDao dao = SpringUtils.getBean(ProviderLabRoutingDao.class);
+        int count = dao.findByProviderNo(providerNo, "N").size();
+
+        return count;
+    }
 }

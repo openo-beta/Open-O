@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,18 +38,18 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 
-public final class RxClearPendingAction extends Action{
+public final class RxClearPendingAction extends Action {
     public ActionForward execute(ActionMapping mapping,
-				 ActionForm form,
-				 HttpServletRequest request,
-				 HttpServletResponse response)
-	throws IOException, ServletException{
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+            throws IOException, ServletException {
 
 
         // Setup variables
-        
-        oscar.oscarRx.pageUtil.RxSessionBean bean = (RxSessionBean)request.getSession().getAttribute("RxSessionBean");
-        if(bean==null){
+
+        oscar.oscarRx.pageUtil.RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+        if (bean == null) {
             response.sendRedirect("error.html");
             return null;
         }
@@ -57,7 +57,7 @@ public final class RxClearPendingAction extends Action{
 
         bean.clearStash();
 
-        if(((RxClearPendingForm)form).getAction().equals("close")){
+        if (((RxClearPendingForm) form).getAction().equals("close")) {
             return mapping.findForward("close");
         }
 

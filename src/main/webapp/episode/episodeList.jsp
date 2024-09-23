@@ -24,16 +24,16 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@ include file="/taglibs.jsp"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="java.text.SimpleDateFormat" %>
+<%@ include file="/taglibs.jsp" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    if(session.getAttribute("userrole") == null )  response.sendRedirect("../logout.jsp");
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@page import="java.util.*"%>
+<%@page import="java.util.*" %>
 <%@page import="org.oscarehr.common.model.Episode" %>
 <%@page import="org.oscarehr.common.dao.EpisodeDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -42,94 +42,98 @@
 
 %>
 <html:html lang="en">
-<head>
-<script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
-<script src="<%=request.getContextPath() %>/library/DataTables/datatables.min.js"></script>
+    <head>
+        <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
+        <script src="<%=request.getContextPath() %>/library/DataTables/datatables.min.js"></script>
 
-<title>Episode List</title>
-<link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="<%=request.getContextPath() %>/css/DT_bootstrap.css" rel="stylesheet" type="text/css">
+        <title>Episode List</title>
+        <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="<%=request.getContextPath() %>/css/DT_bootstrap.css" rel="stylesheet" type="text/css">
 
-<style>
-body
-{
-	text-align: center;
-}
+        <style>
+            body {
+                text-align: center;
+            }
 
-div#demo
-{
-	margin-left: auto;
-	margin-right: auto;
-	width: 90%;
-	text-align: left;
-}
-</style>
-<script>
-	$(document).ready(function() {
-		$('#ocanTable').DataTable({
-            "language": {
+            div#demo {
+                margin-left: auto;
+                margin-right: auto;
+                width: 90%;
+                text-align: left;
+            }
+        </style>
+        <script>
+            $(document).ready(function () {
+                $('#ocanTable').DataTable({
+                    "language": {
                         "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
                     }
-	      //  "aaSorting": [[ 1, "desc" ]]
-	    });
-	} );
-</script>
+                    //  "aaSorting": [[ 1, "desc" ]]
+                });
+            });
+        </script>
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-<Br/>
-<h2 style="text-align:center">Episode Listing</h2>
-<br/>
+    <Br/>
+    <h2 style="text-align:center">Episode Listing</h2>
+    <br/>
 
-<div id="demo">
-			<table id="ocanTable" class="table table-striped table-condensed">
-				<thead>
-					<tr>
-						<th>Description</th>
-						<th>Start Date</th>
-						<th>End Date</th>
-						<th>Code</th>
-						<th>Coding System</th>
-						<th>Status</th>
-					</tr>
-				</thead>
-				<tbody>
-					<%
-						SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-						List<Episode> episodes = (List<Episode>)request.getAttribute("episodes");
+    <div id="demo">
+        <table id="ocanTable" class="table table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Code</th>
+                <th>Coding System</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+                List<Episode> episodes = (List<Episode>) request.getAttribute("episodes");
 
-						for(int x=0;x<episodes.size();x++) {
-							Episode episode = episodes.get(x);
+                for (int x = 0; x < episodes.size(); x++) {
+                    Episode episode = episodes.get(x);
 
-							String startDateStr = "";
-							if(episode.getStartDate() != null) {
-								startDateStr = dateFormatter.format(episode.getStartDate());
-							}
-							String endDateStr = "";
-							if(episode.getEndDate() != null) {
-								endDateStr = dateFormatter.format(episode.getEndDate());
-							}
+                    String startDateStr = "";
+                    if (episode.getStartDate() != null) {
+                        startDateStr = dateFormatter.format(episode.getStartDate());
+                    }
+                    String endDateStr = "";
+                    if (episode.getEndDate() != null) {
+                        endDateStr = dateFormatter.format(episode.getEndDate());
+                    }
 
-					%>
-					<tr class="gradeB">
-						<td>
-							<a href="<%=request.getContextPath()%>/Episode.do?method=edit&episode.id=<%=episode.getId()%>"><%=episode.getDescription() %></a>
-						</td>
-						<td style="text-align:center"><%=startDateStr %></td>
-						<td style="text-align:center"><%=endDateStr %></td>
-						<td style="text-align:center"><%=episode.getCode() %></td>
-						<td style="text-align:center"><%=episode.getCodingSystem() %></td>
-						<td style="text-align:center"><%=episode.getStatus() %></td>
-					</tr>
-					<%
-						}
-					%>
-				</tbody>
-			</table>
-</div>
+            %>
+            <tr class="gradeB">
+                <td>
+                    <a href="<%=request.getContextPath()%>/Episode.do?method=edit&episode.id=<%=episode.getId()%>"><%=episode.getDescription() %>
+                    </a>
+                </td>
+                <td style="text-align:center"><%=startDateStr %>
+                </td>
+                <td style="text-align:center"><%=endDateStr %>
+                </td>
+                <td style="text-align:center"><%=episode.getCode() %>
+                </td>
+                <td style="text-align:center"><%=episode.getCodingSystem() %>
+                </td>
+                <td style="text-align:center"><%=episode.getStatus() %>
+                </td>
+            </tr>
+            <%
+                }
+            %>
+            </tbody>
+        </table>
+    </div>
 
-<br/><br/>
+    <br/><br/>
 
 </html:html>

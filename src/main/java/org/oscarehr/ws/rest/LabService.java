@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,23 +42,23 @@ import org.springframework.stereotype.Component;
 @Component("labService")
 public class LabService extends AbstractServiceImpl {
 
-	@Autowired
-	LabManager labManager;
-	
-	@GET
-	@Path("/hl7LabsByDemographicNo")
-	@Produces("application/json")
-	public LabResponse getHl7LabsByDemographicNo(@QueryParam("demographicNo") int demographicNo, @QueryParam("offset") int offset, @QueryParam("limit") int limit) {
+    @Autowired
+    LabManager labManager;
+
+    @GET
+    @Path("/hl7LabsByDemographicNo")
+    @Produces("application/json")
+    public LabResponse getHl7LabsByDemographicNo(@QueryParam("demographicNo") int demographicNo, @QueryParam("offset") int offset, @QueryParam("limit") int limit) {
 //	public LabResponse getHl7LabsByDemographicNo() {
-		
-		LabResponse response = new LabResponse();
-		
-		List<Hl7TextMessage> hl7TextMessages = labManager.getHl7Messages(getLoggedInInfo(), demographicNo,offset,limit);
-	
-		Hl7TextMessageConverter converter = new Hl7TextMessageConverter();
-		response.setMessages(converter.getAllAsTransferObjects(getLoggedInInfo(), hl7TextMessages));
-		
-		return response;
-	}
-	
+
+        LabResponse response = new LabResponse();
+
+        List<Hl7TextMessage> hl7TextMessages = labManager.getHl7Messages(getLoggedInInfo(), demographicNo, offset, limit);
+
+        Hl7TextMessageConverter converter = new Hl7TextMessageConverter();
+        response.setMessages(converter.getAllAsTransferObjects(getLoggedInInfo(), hl7TextMessages));
+
+        return response;
+    }
+
 }

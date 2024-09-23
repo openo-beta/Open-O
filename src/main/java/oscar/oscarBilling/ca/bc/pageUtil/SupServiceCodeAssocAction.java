@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,34 +38,32 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarBilling.ca.bc.data.SupServiceCodeAssocDAO;
 
 public class SupServiceCodeAssocAction
-    extends Action {
-  public ActionForward execute(ActionMapping actionMapping,
-                               ActionForm actionForm,
-                               HttpServletRequest servletRequest,
-                               HttpServletResponse servletResponse) {
-    SupServiceCodeAssocActionForm frm = (
-        SupServiceCodeAssocActionForm) actionForm;
+        extends Action {
+    public ActionForward execute(ActionMapping actionMapping,
+                                 ActionForm actionForm,
+                                 HttpServletRequest servletRequest,
+                                 HttpServletResponse servletResponse) {
+        SupServiceCodeAssocActionForm frm = (
+                SupServiceCodeAssocActionForm) actionForm;
 
-    SupServiceCodeAssocDAO dao = SpringUtils.getBean(SupServiceCodeAssocDAO.class);
-    ActionForward fwd = actionMapping.findForward("success");
-    if (!SupServiceCodeAssocActionForm.MODE_VIEW.equals(frm.getActionMode())) {
-      ActionMessages errors = frm.validate(actionMapping, servletRequest);
-      if (!errors.isEmpty()) {
-        this.saveErrors(servletRequest,errors);
-        fwd = actionMapping.getInputForward();
-      }
-      else {
-        if (SupServiceCodeAssocActionForm.MODE_DELETE.equals(frm.getActionMode())) {
-          dao.deleteServiceCodeAssociation(frm.getId());
+        SupServiceCodeAssocDAO dao = SpringUtils.getBean(SupServiceCodeAssocDAO.class);
+        ActionForward fwd = actionMapping.findForward("success");
+        if (!SupServiceCodeAssocActionForm.MODE_VIEW.equals(frm.getActionMode())) {
+            ActionMessages errors = frm.validate(actionMapping, servletRequest);
+            if (!errors.isEmpty()) {
+                this.saveErrors(servletRequest, errors);
+                fwd = actionMapping.getInputForward();
+            } else {
+                if (SupServiceCodeAssocActionForm.MODE_DELETE.equals(frm.getActionMode())) {
+                    dao.deleteServiceCodeAssociation(frm.getId());
+                } else if (SupServiceCodeAssocActionForm.MODE_EDIT.equals(frm.getActionMode())) {
+                    dao.saveOrUpdateServiceCodeAssociation(frm.getPrimaryCode(),
+                            frm.getSecondaryCode());
+                }
+            }
         }
-        else if (SupServiceCodeAssocActionForm.MODE_EDIT.equals(frm.getActionMode())) {
-          dao.saveOrUpdateServiceCodeAssociation(frm.getPrimaryCode(),
-                                                 frm.getSecondaryCode());
-        }
-      }
+
+        servletRequest.setAttribute("list", dao.getServiceCodeAssociactions());
+        return fwd;
     }
-
-    servletRequest.setAttribute("list", dao.getServiceCodeAssociactions());
-    return fwd;
-  }
 }

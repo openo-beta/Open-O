@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,118 +41,117 @@ import javax.persistence.TemporalType;
 @Entity
 public class OscarJob extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String name;
-	
-	private String description;
-	
-	private int oscarJobTypeId;
-	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="oscarJobTypeId", referencedColumnName="id", insertable=false, updatable=false)
-	private OscarJobType oscarJobType;
-	
-	private String cronExpression;
-	
-	private boolean enabled = false;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String providerNo;
-	
-	private String config;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updated;
-	
-	public Integer getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String description;
 
-	public String getCronExpression() {
-		return cronExpression;
-	}
+    private int oscarJobTypeId;
 
-	public void setCronExpression(String cronExpression) {
-		this.cronExpression = cronExpression;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "oscarJobTypeId", referencedColumnName = "id", insertable = false, updatable = false)
+    private OscarJobType oscarJobType;
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    private String cronExpression;
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    private boolean enabled = false;
 
-	public String getName() {
-		return name;
-	}
+    private String providerNo;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String config;
 
-	public String getDescription() {
-		return description;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getCronExpression() {
+        return cronExpression;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-	
-	public int getOscarJobTypeId() {
-		return oscarJobTypeId;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setOscarJobTypeId(int oscarJobTypeId) {
-		this.oscarJobTypeId = oscarJobTypeId;
-	}
-	
-	
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public OscarJobType getOscarJobType() {
-		return oscarJobType;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setOscarJobType(OscarJobType oscarJobType) {
-		this.oscarJobType = oscarJobType;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@PrePersist
-	@PreUpdate
-	protected void jpa_updateCreated() {
-		updated = new Date();
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getConfig() {
-		return config;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setConfig(String config) {
-		this.config = config;
-	}
-	
-	
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public int getOscarJobTypeId() {
+        return oscarJobTypeId;
+    }
+
+    public void setOscarJobTypeId(int oscarJobTypeId) {
+        this.oscarJobTypeId = oscarJobTypeId;
+    }
+
+
+    public OscarJobType getOscarJobType() {
+        return oscarJobType;
+    }
+
+    public void setOscarJobType(OscarJobType oscarJobType) {
+        this.oscarJobType = oscarJobType;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void jpa_updateCreated() {
+        updated = new Date();
+    }
+
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
+    }
+
+
 }

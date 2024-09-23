@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,152 +36,152 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="messagetbl")
-public class MessageTbl extends AbstractModel<Integer>{
+@Table(name = "messagetbl")
+public class MessageTbl extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="messageid")
-	private Integer id;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="thedate")
-	private Date date;
-	
-	@Temporal(TemporalType.TIME)
-	@Column(name="theime")
-	private Date time;
-	
-	@Column(name="themessage")
-	private String message;
-	
-	@Column(name="thesubject")
-	private String subject;
-	
-	@Column(name="sentby")
-	private String sentBy;
-	
-	@Column(name="sentto")
-	private String sentTo;
-	
-	@Column(name="sentbyNo")
-	private String sentByNo;
-	
-	private int sentByLocation;
-	
-	private String attachment;
-	
-	
-	@Column(name="pdfattachment")
-	private byte[] pdfAttachment;
-	
-	
-	@Column(name="actionstatus")
-	private String actionStatus;
-        
-        @Column(name="type")
-        private Integer type;
-        
-        @Column(name="type_link")
-        private String type_link;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "messageid")
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Temporal(TemporalType.DATE)
+    @Column(name = "thedate")
+    private Date date;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Temporal(TemporalType.TIME)
+    @Column(name = "theime")
+    private Date time;
 
-	public Date getDate() {
-		return date;
-	}
+    @Column(name = "themessage")
+    private String message;
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    @Column(name = "thesubject")
+    private String subject;
 
-	public Date getTime() {
-		return time;
-	}
+    @Column(name = "sentby")
+    private String sentBy;
 
-	public void setTime(Date time) {
-		this.time = time;
-	}
+    @Column(name = "sentto")
+    private String sentTo;
 
-	public String getMessage() {
-		return message;
-	}
+    @Column(name = "sentbyNo")
+    private String sentByNo;
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    private int sentByLocation;
 
-	public String getSubject() {
-		return subject;
-	}
+    private String attachment;
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
 
-	public String getSentBy() {
-		return sentBy;
-	}
+    @Column(name = "pdfattachment")
+    private byte[] pdfAttachment;
 
-	public void setSentBy(String sentBy) {
-		this.sentBy = sentBy;
-	}
 
-	public String getSentTo() {
-		return sentTo;
-	}
+    @Column(name = "actionstatus")
+    private String actionStatus;
 
-	public void setSentTo(String sentTo) {
-		this.sentTo = sentTo;
-	}
+    @Column(name = "type")
+    private Integer type;
 
-	public String getSentByNo() {
-		return sentByNo;
-	}
+    @Column(name = "type_link")
+    private String type_link;
 
-	public void setSentByNo(String sentByNo) {
-		this.sentByNo = sentByNo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public int getSentByLocation() {
-		return sentByLocation;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setSentByLocation(int sentByLocation) {
-		this.sentByLocation = sentByLocation;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public String getAttachment() {
-		return attachment;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public void setAttachment(String attachment) {
-		this.attachment = attachment;
-	}
+    public Date getTime() {
+        return time;
+    }
 
-	
-	public byte[] getPdfAttachment() {
-		return pdfAttachment;
-	}
+    public void setTime(Date time) {
+        this.time = time;
+    }
 
-	public void setPdfAttachment(byte[] pdfAttachment) {
-		this.pdfAttachment = pdfAttachment;
-	}
-	
+    public String getMessage() {
+        return message;
+    }
 
-	public String getActionStatus() {
-		return actionStatus;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public void setActionStatus(String actionStatus) {
-		this.actionStatus = actionStatus;
-	}
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getSentBy() {
+        return sentBy;
+    }
+
+    public void setSentBy(String sentBy) {
+        this.sentBy = sentBy;
+    }
+
+    public String getSentTo() {
+        return sentTo;
+    }
+
+    public void setSentTo(String sentTo) {
+        this.sentTo = sentTo;
+    }
+
+    public String getSentByNo() {
+        return sentByNo;
+    }
+
+    public void setSentByNo(String sentByNo) {
+        this.sentByNo = sentByNo;
+    }
+
+    public int getSentByLocation() {
+        return sentByLocation;
+    }
+
+    public void setSentByLocation(int sentByLocation) {
+        this.sentByLocation = sentByLocation;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
+    }
+
+
+    public byte[] getPdfAttachment() {
+        return pdfAttachment;
+    }
+
+    public void setPdfAttachment(byte[] pdfAttachment) {
+        this.pdfAttachment = pdfAttachment;
+    }
+
+
+    public String getActionStatus() {
+        return actionStatus;
+    }
+
+    public void setActionStatus(String actionStatus) {
+        this.actionStatus = actionStatus;
+    }
 
     /**
      * @return the type
@@ -210,6 +210,6 @@ public class MessageTbl extends AbstractModel<Integer>{
     public void setType_link(String type_link) {
         this.type_link = type_link;
     }
-	
-	
+
+
 }

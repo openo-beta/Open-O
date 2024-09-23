@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -25,7 +25,6 @@
 
 
 package oscar.oscarMessenger.pageUtil;
-
 
 
 import org.apache.struts.action.ActionForm;
@@ -47,133 +46,131 @@ public final class MsgDemographicSearchForm extends ActionForm {
     String id;
 
 
-
-
-
     //////firstName/////////////////////////////////////////////////////////////
-    public String getFirstName (){
-        if ( this.firstName == null){
+    public String getFirstName() {
+        if (this.firstName == null) {
             this.firstName = new String();
         }
-        return this.firstName ;
+        return this.firstName;
     }
 
-    public void setFirstName (String str){
+    public void setFirstName(String str) {
         this.firstName = str;
     }
     //--------------------------------------------------------------------------
 
     ///////////////lastName/////////////////////////////////////////////////////
-    public String getLastName (){
-        if ( this.lastName == null){
+    public String getLastName() {
+        if (this.lastName == null) {
             this.lastName = new String();
         }
-        return this.lastName ;
+        return this.lastName;
     }
 
-    public void setLastName (String str){
+    public void setLastName(String str) {
         this.lastName = str;
     }
     //--------------------------------------------------------------------------
 
     /////////phone//////////////////////////////////////////////////////////////
-    public String getPhone (){
-        if ( this.phone == null){
+    public String getPhone() {
+        if (this.phone == null) {
             this.phone = new String();
         }
-        return this.phone ;
+        return this.phone;
     }
 
-    public void setPhone (String str){
+    public void setPhone(String str) {
         this.phone = str;
     }
     //--------------------------------------------------------------------------
 
     //////////hin///////////////////////////////////////////////////////////////
-    public String getHin (){
-        if ( this.hin == null){
+    public String getHin() {
+        if (this.hin == null) {
             this.hin = new String();
         }
-        return this.hin ;
+        return this.hin;
     }
 
-    public void setHin (String str){
+    public void setHin(String str) {
         this.hin = str;
     }
     //--------------------------------------------------------------------------
 
     ///////sex//////////////////////////////////////////////////////////////////
-    public String getSex (){
-        if ( this.sex == null){
+    public String getSex() {
+        if (this.sex == null) {
             this.sex = new String();
         }
-        return this.sex ;
+        return this.sex;
     }
 
-    public void setSex (String str){
+    public void setSex(String str) {
         this.sex = str;
     }
     //--------------------------------------------------------------------------
 
     //////////age///////////////////////////////////////////////////////////////
-    public String getYearOfBirth(){
-        if ( this.yearOfBirth == null){
+    public String getYearOfBirth() {
+        if (this.yearOfBirth == null) {
             this.yearOfBirth = new String();
         }
-        return this.yearOfBirth ;
+        return this.yearOfBirth;
     }
 
-    public void setYearOfBirth (String str){
+    public void setYearOfBirth(String str) {
         this.yearOfBirth = str;
     }
     //--------------------------------------------------------------------------
 
     /////////////address////////////////////////////////////////////////////////
-    public String getAddress (){
-        if ( this.address == null){
+    public String getAddress() {
+        if (this.address == null) {
             this.address = new String();
         }
-        return this.address ;
+        return this.address;
     }
 
-    public void setAddress (String str){
+    public void setAddress(String str) {
         this.address = str;
     }
     //--------------------------------------------------------------------------
 
     ////////chartNumber/////////////////////////////////////////////////////////
-    public String getChartNumber (){
-        if ( this.chartNumber == null){
+    public String getChartNumber() {
+        if (this.chartNumber == null) {
             this.chartNumber = new String();
         }
-        return this.chartNumber ;
+        return this.chartNumber;
     }
 
-    public void setChartNumber (String str){
+    public void setChartNumber(String str) {
         this.chartNumber = str;
     }
     //--------------------------------------------------------------------------
 
     ///////////monthOfBirth/////////////////////////////////////////////////////
-    public String getMonthOfBirth (){
-        if ( this.monthOfBirth == null){
+    public String getMonthOfBirth() {
+        if (this.monthOfBirth == null) {
             this.monthOfBirth = new String();
         }
-        return this.monthOfBirth ;
+        return this.monthOfBirth;
     }
 
-    public void setMonthOfBirth (String str){
+    public void setMonthOfBirth(String str) {
         this.monthOfBirth = str;
     }
     //--------------------------------------------------------------------------
 
     ////////////////dayOfBirth//////////////////////////////////////////////////
-    public String getDayOfBirth (){
-        if ( this.dayOfBirth == null){
+    public String getDayOfBirth() {
+        if (this.dayOfBirth == null) {
             this.dayOfBirth = new String();
         }
-        return this.dayOfBirth ;
+        return this.dayOfBirth;
     }
+
     /**
      * I did this because the data in the data base is stored like 01 02 03
      * im not sure why it is becuase month is stored like 1 2 3.
@@ -181,33 +178,33 @@ public final class MsgDemographicSearchForm extends ActionForm {
      * good a place as any
      * @param str string of the day of there birth
      */
-    public void setDayOfBirth (String str){
+    public void setDayOfBirth(String str) {
         this.dayOfBirth = str;
     }
     //--------------------------------------------------------------------------
 
     ////////city////////////////////////////////////////////////////////////////
-    public String getCity (){
-        if ( this.city == null){
+    public String getCity() {
+        if (this.city == null) {
             this.city = new String();
         }
-        return this.city ;
+        return this.city;
     }
 
-    public void setCity (String str){
+    public void setCity(String str) {
         this.city = str;
     }
     //--------------------------------------------------------------------------
 
     /////id/////////////////////////////////////////////////////////////////////
-    public String getId (){
-        if ( this.id == null){
+    public String getId() {
+        if (this.id == null) {
             this.id = new String();
         }
-        return this.id ;
+        return this.id;
     }
 
-    public void setId (String str){
+    public void setId(String str) {
         this.id = str;
     }
     //--------------------------------------------------------------------------

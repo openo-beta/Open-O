@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,259 +46,258 @@ import oscar.log.LogAction;
 import oscar.log.LogConst;
 
 public final class LoginCheckLoginBean {
-	private static final Logger logger = MiscUtils.getLogger();
-	private static final String LOG_PRE = "Login!@#$: ";
+    private static final Logger logger = MiscUtils.getLogger();
+    private static final String LOG_PRE = "Login!@#$: ";
 
-	private String username = "";
-	private String password = "";
-	private String pin;
-	private String ip = "";
-	private String ssoKey = "";
+    private String username = "";
+    private String password = "";
+    private String pin;
+    private String ip = "";
+    private String ssoKey = "";
 
-	private String userpassword; // your password in the table
+    private String userpassword; // your password in the table
 
-	private String firstname;
-	private String lastname;
-	private String profession;
-	private String rolename;
+    private String firstname;
+    private String lastname;
+    private String profession;
+    private String rolename;
 
-	private String email;
+    private String email;
 
-	private Security security = null;
+    private Security security = null;
 
-	public void ini(String user_name, String password, String pin1, String ip1) {
-		setUsername(user_name);
-		setPassword(password);
-		setPin(pin1);
-		setIp(ip1);
-	}
-	
-	public void ssoIni(String ssoKey) {
-		setSsoKey(ssoKey);
-	}
+    public void ini(String user_name, String password, String pin1, String ip1) {
+        setUsername(user_name);
+        setPassword(password);
+        setPin(pin1);
+        setIp(ip1);
+    }
 
-	public String[] authenticate() {
-		security = getUserID();
+    public void ssoIni(String ssoKey) {
+        setSsoKey(ssoKey);
+    }
 
-		// the user is not in security table
-		if (security == null) {
-			return cleanNullObj(LOG_PRE + "No Such User: " + username);
-		}
-		// check pin if needed
+    public String[] authenticate() {
+        security = getUserID();
 
-		String sPin = pin;
+        // the user is not in security table
+        if (security == null) {
+            return cleanNullObj(LOG_PRE + "No Such User: " + username);
+        }
+        // check pin if needed
 
-		if (sPin != null && oscar.OscarProperties.getInstance().isPINEncripted()) sPin = oscar.Misc.encryptPIN(sPin);
+        String sPin = pin;
 
-		/*
-		 * Override PIN requirement when SSO is enabled
-		 * The pin parameter is set to null in the LoginCheckLogin bean and
-		 * is changed back to default empty after the pin requirement is disabled.
-		 */
-		if(sPin == null && SSOUtility.isSSOEnabled()) {
-			security.setBRemotelockset(0);
-			security.setBLocallockset(0);
-			sPin = "";
-		}
+        if (sPin != null && oscar.OscarProperties.getInstance().isPINEncripted()) sPin = oscar.Misc.encryptPIN(sPin);
 
-		if (isWAN() && security.getBRemotelockset() != null && security.getBRemotelockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
-			return cleanNullObj(LOG_PRE + "Pin-remote needed: " + username);
-		} else if (!isWAN() && security.getBLocallockset() != null && security.getBLocallockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
-			return cleanNullObj(LOG_PRE + "Pin-local needed: " + username);
-		}
+        /*
+         * Override PIN requirement when SSO is enabled
+         * The pin parameter is set to null in the LoginCheckLogin bean and
+         * is changed back to default empty after the pin requirement is disabled.
+         */
+        if (sPin == null && SSOUtility.isSSOEnabled()) {
+            security.setBRemotelockset(0);
+            security.setBLocallockset(0);
+            sPin = "";
+        }
 
-		if (security.getBExpireset() != null && security.getBExpireset().intValue() == 1 && (security.getDateExpiredate() == null || security.getDateExpiredate().before(new Date()))) {
-			return cleanNullObjExpire(LOG_PRE + "Expired: " + username);
-		}
+        if (isWAN() && security.getBRemotelockset() != null && security.getBRemotelockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
+            return cleanNullObj(LOG_PRE + "Pin-remote needed: " + username);
+        } else if (!isWAN() && security.getBLocallockset() != null && security.getBLocallockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
+            return cleanNullObj(LOG_PRE + "Pin-local needed: " + username);
+        }
 
-		String expired_days = "";
-		if (security.getBExpireset() != null && security.getBExpireset().intValue() == 1) {
-			// Give warning if the password will be expired in 10 days.
+        if (security.getBExpireset() != null && security.getBExpireset().intValue() == 1 && (security.getDateExpiredate() == null || security.getDateExpiredate().before(new Date()))) {
+            return cleanNullObjExpire(LOG_PRE + "Expired: " + username);
+        }
 
-			long date_expireDate = security.getDateExpiredate().getTime();
-			long date_now = new Date().getTime();
-			long date_diff = (date_expireDate - date_now) / (24 * 3600 * 1000);
+        String expired_days = "";
+        if (security.getBExpireset() != null && security.getBExpireset().intValue() == 1) {
+            // Give warning if the password will be expired in 10 days.
 
-			if (security.getBExpireset().intValue() == 1 && date_diff < 11) {
-				expired_days = String.valueOf(date_diff);
-			}
-		}
+            long date_expireDate = security.getDateExpiredate().getTime();
+            long date_now = new Date().getTime();
+            long date_diff = (date_expireDate - date_now) / (24 * 3600 * 1000);
 
-		boolean auth = false;
+            if (security.getBExpireset().intValue() == 1 && date_diff < 11) {
+                expired_days = String.valueOf(date_diff);
+            }
+        }
 
-		userpassword = security.getPassword();
-		if (userpassword.length() < 20) {
-			auth = password.equals(userpassword);
-		} else {
-			auth = security.checkPassword(password);
-		}
+        boolean auth = false;
 
-		if (auth) { // login successfully
-			String[] strAuth = new String[7];
-			strAuth[0] = security.getProviderNo();
-			strAuth[1] = firstname;
-			strAuth[2] = lastname;
-			strAuth[3] = profession;
-			strAuth[4] = rolename;
-			strAuth[5] = expired_days;
-			strAuth[6] = email;
-			return strAuth;
-		} else { // login failed
-			return cleanNullObj(LOG_PRE + "password failed: " + username);
-		}
-	}
-	
-	public String[] ssoAuthenticate() {
-		security = getUserIDWithSSOKey();
-		String [] strAuth;
-		if (security != null) {
-			String expired_days = "";
-			strAuth = new String[7];
-			strAuth[0] = security.getProviderNo();
-			strAuth[1] = firstname;
-			strAuth[2] = lastname;
-			strAuth[3] = profession;
-			strAuth[4] = rolename;
-			strAuth[5] = expired_days;
-			strAuth[6] = email;
-			
-		}
-		else {
-			strAuth = cleanNullObj(LOG_PRE + "ssoKey does not match a record");
-		}
-		
-		return strAuth;
-	}
+        userpassword = security.getPassword();
+        if (userpassword.length() < 20) {
+            auth = password.equals(userpassword);
+        } else {
+            auth = security.checkPassword(password);
+        }
 
-	private String[] cleanNullObj(String errorMsg) {
-		logger.warn(errorMsg);
-		LogAction.addLogSynchronous("", "failed", LogConst.CON_LOGIN, Encode.forHtmlContent(username), ip);
-		userpassword = null;
-		password = null;
-		return null;
-	}
+        if (auth) { // login successfully
+            String[] strAuth = new String[7];
+            strAuth[0] = security.getProviderNo();
+            strAuth[1] = firstname;
+            strAuth[2] = lastname;
+            strAuth[3] = profession;
+            strAuth[4] = rolename;
+            strAuth[5] = expired_days;
+            strAuth[6] = email;
+            return strAuth;
+        } else { // login failed
+            return cleanNullObj(LOG_PRE + "password failed: " + username);
+        }
+    }
 
-	private String[] cleanNullObjExpire(String errorMsg) {
-		logger.warn(errorMsg);
-		LogAction.addLogSynchronous("", "expired", LogConst.CON_LOGIN, Encode.forHtmlContent(username), ip);
-		userpassword = null;
-		password = null;
-		return new String[] { "expired" };
-	}
+    public String[] ssoAuthenticate() {
+        security = getUserIDWithSSOKey();
+        String[] strAuth;
+        if (security != null) {
+            String expired_days = "";
+            strAuth = new String[7];
+            strAuth[0] = security.getProviderNo();
+            strAuth[1] = firstname;
+            strAuth[2] = lastname;
+            strAuth[3] = profession;
+            strAuth[4] = rolename;
+            strAuth[5] = expired_days;
+            strAuth[6] = email;
 
-	private Security getUserID() {
+        } else {
+            strAuth = cleanNullObj(LOG_PRE + "ssoKey does not match a record");
+        }
 
-		SecurityDao securityDao = (SecurityDao) SpringUtils.getBean(SecurityDao.class);
-		List<Security> results = securityDao.findByUserName(username);
-		Security security = null;
-		if (results.size() > 0) security = results.get(0);
+        return strAuth;
+    }
 
-		if (security == null) {
-			return null;
-		} else if (OscarProperties.isLdapAuthenticationEnabled()) {
-			security = new LdapSecurity(security);
-		}
+    private String[] cleanNullObj(String errorMsg) {
+        logger.warn(errorMsg);
+        LogAction.addLogSynchronous("", "failed", LogConst.CON_LOGIN, Encode.forHtmlContent(username), ip);
+        userpassword = null;
+        password = null;
+        return null;
+    }
 
-		// find the detail of the user
-		ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
-		Provider provider = providerDao.getProvider(security.getProviderNo());
+    private String[] cleanNullObjExpire(String errorMsg) {
+        logger.warn(errorMsg);
+        LogAction.addLogSynchronous("", "expired", LogConst.CON_LOGIN, Encode.forHtmlContent(username), ip);
+        userpassword = null;
+        password = null;
+        return new String[]{"expired"};
+    }
 
-		if (provider != null) {
-			firstname = provider.getFirstName();
-			lastname = provider.getLastName();
-			profession = provider.getProviderType();
-			email = provider.getEmail();
-		}
+    private Security getUserID() {
 
-		// retrieve the oscar roles for this Provider as a comma separated list
-		SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
-		List<SecUserRole> roles = secUserRoleDao.getUserRoles(security.getProviderNo());
-		for (SecUserRole role : roles) {
-			if (rolename == null) {
-				rolename = role.getRoleName();
-			} else {
-				rolename += "," + role.getRoleName();
-			}
-		}
+        SecurityDao securityDao = (SecurityDao) SpringUtils.getBean(SecurityDao.class);
+        List<Security> results = securityDao.findByUserName(username);
+        Security security = null;
+        if (results.size() > 0) security = results.get(0);
 
-		return security;
-	}
-	
-	private Security getUserIDWithSSOKey() {
-		SecurityDao securityDao = (SecurityDao) SpringUtils.getBean(SecurityDao.class);
-		List<Security> securityResults = securityDao.findByOneIdKey(ssoKey); 
-		Security securityRecord = null;
-		
-		if (securityResults != null && securityResults.size() > 0) {
-			securityRecord = securityResults.get(0);
-		}
-		
-		if (securityRecord != null) {
-			if (OscarProperties.isLdapAuthenticationEnabled()) {
-				securityRecord = new LdapSecurity(securityRecord);
-			}
-			
-			// Gets the provider record
-			ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
-			Provider provider = providerDao.getProvider(securityRecord.getProviderNo());
+        if (security == null) {
+            return null;
+        } else if (OscarProperties.isLdapAuthenticationEnabled()) {
+            security = new LdapSecurity(security);
+        }
 
-			if (provider == null || (provider.getStatus() != null && provider.getStatus().equals("0"))) {
-				String error = "Provider account is missing or inactive. Provider number: " + securityRecord.getProviderNo();
-				logger.error(error);
-				LogAction.addLog(securityRecord.getProviderNo(), "login", "failed", "inactive");
-				return null;
-			} else {
-				firstname = provider.getFirstName();
-				lastname = provider.getLastName();
-			}
+        // find the detail of the user
+        ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+        Provider provider = providerDao.getProvider(security.getProviderNo());
 
-			// retrieve the oscar roles for this Provider as a comma separated list
-			SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
-			List<SecUserRole> roles = secUserRoleDao.getUserRoles(securityRecord.getProviderNo());
-			for (SecUserRole role : roles) {
-				if (rolename == null) {
-					rolename = role.getRoleName();
-				} else {
-					rolename += "," + role.getRoleName();
-				}
-			}
-		}
-		
-		return securityRecord;
-	}
+        if (provider != null) {
+            firstname = provider.getFirstName();
+            lastname = provider.getLastName();
+            profession = provider.getProviderType();
+            email = provider.getEmail();
+        }
 
-	public boolean isWAN() {
-		boolean bWAN = true;
-		//Properties p = OscarProperties.getInstance();
-		//if (ip.startsWith(p.getProperty("login_local_ip"))) bWAN = false;
-		if(LoginCheckLogin.ipFound(ip)) bWAN = false;
-		return bWAN;
-	}
+        // retrieve the oscar roles for this Provider as a comma separated list
+        SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
+        List<SecUserRole> roles = secUserRoleDao.getUserRoles(security.getProviderNo());
+        for (SecUserRole role : roles) {
+            if (rolename == null) {
+                rolename = role.getRoleName();
+            } else {
+                rolename += "," + role.getRoleName();
+            }
+        }
 
-	public void setUsername(String user_name) {
-		this.username = user_name;
-	}
+        return security;
+    }
 
-	public void setPassword(String password) {
-		this.password = password.replace(' ', '\b'); // no white space to be allowed in the password
-	}
+    private Security getUserIDWithSSOKey() {
+        SecurityDao securityDao = (SecurityDao) SpringUtils.getBean(SecurityDao.class);
+        List<Security> securityResults = securityDao.findByOneIdKey(ssoKey);
+        Security securityRecord = null;
 
-	public void setPin(String pin1) {
-		if(pin1 != null) {
-			this.pin = pin1.replace(' ', '\b');
-		}
-	}
+        if (securityResults != null && securityResults.size() > 0) {
+            securityRecord = securityResults.get(0);
+        }
 
-	public void setIp(String ip1) {
-		this.ip = ip1;
-	}
-	
-	public void setSsoKey(String ssoKey) {
-		this.ssoKey = ssoKey;
-	}
+        if (securityRecord != null) {
+            if (OscarProperties.isLdapAuthenticationEnabled()) {
+                securityRecord = new LdapSecurity(securityRecord);
+            }
 
-	public Security getSecurity() {
-		return (security);
-	}
+            // Gets the provider record
+            ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+            Provider provider = providerDao.getProvider(securityRecord.getProviderNo());
+
+            if (provider == null || (provider.getStatus() != null && provider.getStatus().equals("0"))) {
+                String error = "Provider account is missing or inactive. Provider number: " + securityRecord.getProviderNo();
+                logger.error(error);
+                LogAction.addLog(securityRecord.getProviderNo(), "login", "failed", "inactive");
+                return null;
+            } else {
+                firstname = provider.getFirstName();
+                lastname = provider.getLastName();
+            }
+
+            // retrieve the oscar roles for this Provider as a comma separated list
+            SecUserRoleDao secUserRoleDao = (SecUserRoleDao) SpringUtils.getBean(SecUserRoleDao.class);
+            List<SecUserRole> roles = secUserRoleDao.getUserRoles(securityRecord.getProviderNo());
+            for (SecUserRole role : roles) {
+                if (rolename == null) {
+                    rolename = role.getRoleName();
+                } else {
+                    rolename += "," + role.getRoleName();
+                }
+            }
+        }
+
+        return securityRecord;
+    }
+
+    public boolean isWAN() {
+        boolean bWAN = true;
+        //Properties p = OscarProperties.getInstance();
+        //if (ip.startsWith(p.getProperty("login_local_ip"))) bWAN = false;
+        if (LoginCheckLogin.ipFound(ip)) bWAN = false;
+        return bWAN;
+    }
+
+    public void setUsername(String user_name) {
+        this.username = user_name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password.replace(' ', '\b'); // no white space to be allowed in the password
+    }
+
+    public void setPin(String pin1) {
+        if (pin1 != null) {
+            this.pin = pin1.replace(' ', '\b');
+        }
+    }
+
+    public void setIp(String ip1) {
+        this.ip = ip1;
+    }
+
+    public void setSsoKey(String ssoKey) {
+        this.ssoKey = ssoKey;
+    }
+
+    public Security getSecurity() {
+        return (security);
+    }
 
 }

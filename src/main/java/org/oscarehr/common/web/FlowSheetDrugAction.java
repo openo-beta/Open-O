@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,7 +52,7 @@ public class FlowSheetDrugAction extends DispatchAction {
 
     private FlowSheetDxDao flowSheetDxDao = SpringUtils.getBean(FlowSheetDxDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
+
     public void setFlowSheetDrugDao(FlowSheetDrugDao flowSheetDrugDao) {
         this.flowSheetDrugDao = flowSheetDrugDao;
     }
@@ -76,8 +76,8 @@ public class FlowSheetDrugAction extends DispatchAction {
         cust.setDemographicNo(Integer.parseInt(demographicNo));
         cust.setCreateDate(new Date());
 
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
         log2.debug("SAVE " + cust);
 
@@ -85,9 +85,7 @@ public class FlowSheetDrugAction extends DispatchAction {
 
         ActionForward ff = mapping.findForward("success");
         //ff.setRedirect(true);
-        ActionForward af = new ActionForward(ff.getPath()+"?demographic_no="+demographicNo+"&template="+flowsheet, true);
-
-
+        ActionForward af = new ActionForward(ff.getPath() + "?demographic_no=" + demographicNo + "&template=" + flowsheet, true);
 
 
         //request.setAttribute("demographic", demographicNo);
@@ -96,7 +94,7 @@ public class FlowSheetDrugAction extends DispatchAction {
     }
 
 
-     public ActionForward dxSave(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward dxSave(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String flowsheet = request.getParameter("flowsheet");
         String demographicNo = request.getParameter("demographic");
         String dxCode = request.getParameter("dxCode");
@@ -112,24 +110,21 @@ public class FlowSheetDrugAction extends DispatchAction {
 
         log2.debug("SAVE " + cust);
 
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
-        	throw new SecurityException("missing required security object (_demographic)");
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", demographicNo)) {
+            throw new SecurityException("missing required security object (_demographic)");
         }
-        
+
         flowSheetDxDao.persist(cust);
 
         ActionForward ff = mapping.findForward("success");
         //ff.setRedirect(true);
-        ActionForward af = new ActionForward(ff.getPath()+"?demographic_no="+demographicNo+"&template="+flowsheet, true);
-
-
+        ActionForward af = new ActionForward(ff.getPath() + "?demographic_no=" + demographicNo + "&template=" + flowsheet, true);
 
 
         //request.setAttribute("demographic", demographicNo);
         //request.setAttribute("flowsheet", flowsheet);
         return af;
     }
-
 
 
 }

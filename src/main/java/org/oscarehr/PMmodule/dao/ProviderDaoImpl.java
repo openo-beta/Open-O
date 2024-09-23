@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -316,7 +316,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
     /**
      * Add loggedininfo to excluded logged in provider.
      * Usefull when setting personal preferrences.
-     * 
+     *
      * @param loggedInInfo
      * @return
      */
@@ -496,7 +496,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
 
     @Override
     public void removeProviderFromFacility(String provider_no,
-            int facilityId) {
+                                           int facilityId) {
         ProviderFacilityDao dao = SpringUtils.getBean(ProviderFacilityDao.class);
         for (ProviderFacility p : dao.findByProviderNoAndFacilityId(provider_no, facilityId)) {
             dao.remove(p.getId());
@@ -552,7 +552,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         }
 
         List<Provider> providerList = (List<Provider>) getHibernateTemplate()
-                .find("From Provider p where p.practitionerNo=?", new Object[] { practitionerNo });
+                .find("From Provider p where p.practitionerNo=?", new Object[]{practitionerNo});
 
         if (providerList.size() > 1) {
             logger.warn("Found more than 1 provider with practitionerNo=" + practitionerNo);
@@ -565,7 +565,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
 
     @Override
     public Provider getProviderByPractitionerNo(String practitionerNoType, String practitionerNo) {
-        return getProviderByPractitionerNo(new String[] { practitionerNoType }, practitionerNo);
+        return getProviderByPractitionerNo(new String[]{practitionerNoType}, practitionerNo);
     }
 
     @Override
@@ -579,7 +579,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
 
         List<Provider> providerList = (List<Provider>) getHibernateTemplate().findByNamedParam(
                 "From Provider p where p.practitionerNoType IN (:types) AND p.practitionerNo=:pId",
-                new String[] { "types", "pId" }, new Object[] { practitionerNoTypes, practitionerNo });
+                new String[]{"types", "pId"}, new Object[]{practitionerNoTypes, practitionerNo});
         // List<Provider> providerList = getHibernateTemplate().find("From Provider p
         // where p.practitionerNoType IN (:types) AND p.practitionerNo=?",new
         // Object[]{practitionerNo});
@@ -639,7 +639,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
 
     /**
      * Gets all providers with non-empty OHIP number ordered by last,then first name
-     * 
+     *
      * @return
      *         Returns the all found providers
      */
@@ -667,7 +667,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         return providerList;
     }
 
-    @NativeSql({ "provider", "providersite" })
+    @NativeSql({"provider", "providersite"})
     @Override
     public List<String> getActiveTeamsViaSites(String providerNo) {
         // Session session = getSession();
@@ -716,7 +716,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
     @Override
     public List<String> getProvidersInTeam(String teamName) {
         List<String> providerList = (List<String>) getHibernateTemplate()
-                .find("select distinct p.ProviderNo from Provider p  where p.Team = ?", new Object[] { teamName });
+                .find("select distinct p.ProviderNo from Provider p  where p.Team = ?", new Object[]{teamName});
         return providerList;
     }
 
@@ -801,7 +801,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         }
     }
 
-    @NativeSql({ "provider", "appointment" })
+    @NativeSql({"provider", "appointment"})
     @Override
     public List<String> getProviderNosWithAppointmentsOnDate(Date appointmentDate) {
         // Session session = getSession();
@@ -874,7 +874,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
     /**
      * Gets a list of provider numbers based on the provided list of provider
      * numbers
-     * 
+     *
      * @param providerNumbers The list of provider numbers to get the related
      *                        objects for
      * @return A list of providers
@@ -895,7 +895,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
     /**
      * Gets a map of provider names with the provider number as the map key based on
      * the provided list of provider numbers
-     * 
+     *
      * @param providerNumbers A list of provider numbers to get the name map for
      * @return A map of provider names with their related provider number as the key
      */

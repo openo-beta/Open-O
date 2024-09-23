@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -14,18 +14,18 @@ import org.oscarehr.common.model.Provider;
 
 public class ZSHSegment implements Segment {
 
-	private Provider provider;
+    private Provider provider;
 
-	public ZSHSegment(Provider provider) {
-		this.provider = provider;
-	}
+    public ZSHSegment(Provider provider) {
+        this.provider = provider;
+    }
 
-	@Override
-	public String getSegmentHL7String() {
-		try {
-			return "ZSH|" + provider.getProviderNo() + "|" + provider.getLastName() + " " + provider.getFirstName();
-		} catch (Exception e) {
-			return "ZSH|-1|system";
-		}
-	}
+    @Override
+    public String getSegmentHL7String() {
+        try {
+            return "ZSH|" + provider.getProviderNo() + "|" + provider.getLastName() + " " + provider.getFirstName();
+        } catch (Exception e) {
+            return "ZSH|-1|system";
+        }
+    }
 }

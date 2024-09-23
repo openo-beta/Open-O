@@ -25,66 +25,63 @@
 --%>
 
 <%@ page
-	import="oscar.oscarMessenger.docxfer.send.*,oscar.oscarMessenger.docxfer.util.*, oscar.oscarEncounter.data.*, oscar.oscarEncounter.pageUtil.EctSessionBean "%>
+        import="oscar.oscarMessenger.docxfer.send.*,oscar.oscarMessenger.docxfer.util.*, oscar.oscarEncounter.data.*, oscar.oscarEncounter.pageUtil.EctSessionBean " %>
 <%@  page
-	import=" java.util.*, org.w3c.dom.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
-	errorPage="../appointment/errorpage.jsp"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+        import=" java.util.*, org.w3c.dom.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
+        errorPage="../appointment/errorpage.jsp" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-	  boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_msg");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ page import="oscar.util.*"%>
+<%@ page import="oscar.util.*" %>
 
 
 <%
-String demographic_no = request.getParameter("demographic_no");
-String uri = request.getParameter("uri");
-String pdfTitle = request.getParameter("pdfTitle");
+    String demographic_no = request.getParameter("demographic_no");
+    String uri = request.getParameter("uri");
+    String pdfTitle = request.getParameter("pdfTitle");
 
 %>
-
-
 
 
 <html>
 <head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>Generate Preview Page</title>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <title>Generate Preview Page</title>
 </head>
-<script type="text/javascript">   
+<script type="text/javascript">
     function SetBottomURL(url) {
         f = parent.attFrame;
-        
-        if ( url != "") {
+
+        if (url != "") {
             loc = url;
-        }
-        else {
+        } else {
             loc = document.forms[0].url.value;
         }
-        f.location = loc;          
+        f.location = loc;
     }
+
     function GetBottomSRC() {
         f = parent.attFrame;
-        document.forms[0].srcText.value = f.document.body.innerHTML;       
+        document.forms[0].srcText.value = f.document.body.innerHTML;
     }
-    
 
 
-    </script>
+</script>
 <body>
 <%-- <jsp:useBean id="beanInstanceName" scope="session" class="beanPackage.BeanClassName" /> --%>
 <%-- <jsp:getProperty name="beanInstanceName"  property="propertyName" /> --%>
@@ -92,24 +89,24 @@ String pdfTitle = request.getParameter("pdfTitle");
 
 <html:form action="/oscarMessenger/ProcessDoc2PDF">
 
-        Attaching <%=demographic_no%>
-	<%=pdfTitle%>
+    Attaching <%=demographic_no%>
+    <%=pdfTitle%>
 
-	<textarea name="srcText" rows="5" cols="80"></textarea>
-	<html:hidden property="isPreview" value="false" />
-	<html:submit property="ok" />
-	<html:hidden property="pdfTitle" value="<%=pdfTitle%>" />
+    <textarea name="srcText" rows="5" cols="80"></textarea>
+    <html:hidden property="isPreview" value="false"/>
+    <html:submit property="ok"/>
+    <html:hidden property="pdfTitle" value="<%=pdfTitle%>"/>
 
 </html:form>
 
 <script>
-            SetBottomURL('<%=uri%>' + "&demographic_no=" + '<%=demographic_no%> ' );
-            setTimeout("GetBottomSRC()", 5000); 
-            setTimeout("document.forms[0].submit()", 5000);     
-            this.close();
-            parent.window.focus();
-            
-        </script>
+    SetBottomURL('<%=uri%>' + "&demographic_no=" + '<%=demographic_no%> ');
+    setTimeout("GetBottomSRC()", 5000);
+    setTimeout("document.forms[0].submit()", 5000);
+    this.close();
+    parent.window.focus();
+
+</script>
 
 </body>
 </html>

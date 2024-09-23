@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -45,78 +45,78 @@ import org.oscarehr.util.SpringUtils;
 
 public class BillingEDTOBECOutputSpecificationBeanHandler {
 
-	private BatchEligibilityDao batchEligibilityDao = (BatchEligibilityDao) SpringUtils.getBean(BatchEligibilityDao.class);
+    private BatchEligibilityDao batchEligibilityDao = (BatchEligibilityDao) SpringUtils.getBean(BatchEligibilityDao.class);
 
-	Vector<BillingEDTOBECOutputSpecificationBean> EDTOBECOutputSecifiationBeanVector = new Vector<BillingEDTOBECOutputSpecificationBean>();
-	public boolean verdict = true;
+    Vector<BillingEDTOBECOutputSpecificationBean> EDTOBECOutputSecifiationBeanVector = new Vector<BillingEDTOBECOutputSpecificationBean>();
+    public boolean verdict = true;
 
-	public BillingEDTOBECOutputSpecificationBeanHandler(LoggedInInfo loggedInInfo, FileInputStream file) {
-		init(loggedInInfo, file);
-	}
+    public BillingEDTOBECOutputSpecificationBeanHandler(LoggedInInfo loggedInInfo, FileInputStream file) {
+        init(loggedInInfo, file);
+    }
 
-	public boolean init(LoggedInInfo loggedInInfo, FileInputStream file) {
+    public boolean init(LoggedInInfo loggedInInfo, FileInputStream file) {
 
-		InputStreamReader reader = new InputStreamReader(file);
-		BufferedReader input = new BufferedReader(reader);
-		String nextline;
+        InputStreamReader reader = new InputStreamReader(file);
+        BufferedReader input = new BufferedReader(reader);
+        String nextline;
 
-		try {
+        try {
 
-			while ((nextline = input.readLine()) != null) {
+            while ((nextline = input.readLine()) != null) {
 
-				if (nextline.length() > 2) {
+                if (nextline.length() > 2) {
 
-					String obecHIN = nextline.substring(0, 10);
-					String obecVer = nextline.substring(10, 12);
-					String obecResponse = nextline.substring(12, 14);
-					BillingEDTOBECOutputSpecificationBean osBean = new BillingEDTOBECOutputSpecificationBean(obecHIN, obecVer, obecResponse);
+                    String obecHIN = nextline.substring(0, 10);
+                    String obecVer = nextline.substring(10, 12);
+                    String obecResponse = nextline.substring(12, 14);
+                    BillingEDTOBECOutputSpecificationBean osBean = new BillingEDTOBECOutputSpecificationBean(obecHIN, obecVer, obecResponse);
 
-					DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
-					List<Demographic> demos = demographicManager.searchByHealthCard(loggedInInfo, obecHIN);
-					if (!demos.isEmpty()) {
-						Demographic demo = demos.get(0);
-						osBean.setLastName(demo.getLastName());
-						osBean.setFirstName(demo.getFirstName());
-						osBean.setDOB(demo.getDateOfBirth());
-						osBean.setSex(demo.getSex());
+                    DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
+                    List<Demographic> demos = demographicManager.searchByHealthCard(loggedInInfo, obecHIN);
+                    if (!demos.isEmpty()) {
+                        Demographic demo = demos.get(0);
+                        osBean.setLastName(demo.getLastName());
+                        osBean.setFirstName(demo.getFirstName());
+                        osBean.setDOB(demo.getDateOfBirth());
+                        osBean.setSex(demo.getSex());
 
-						ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-						Provider provider = providerDao.getProvider(StringUtils.trimToNull(demo.getProviderNo()));
+                        ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+                        Provider provider = providerDao.getProvider(StringUtils.trimToNull(demo.getProviderNo()));
 
-						if (provider != null) {
-							osBean.setIdentifier(provider.getLastName());
-						}
-					}
-					BatchEligibility batchEligibility = batchEligibilityDao.find(Integer.parseInt(obecResponse));
+                        if (provider != null) {
+                            osBean.setIdentifier(provider.getLastName());
+                        }
+                    }
+                    BatchEligibility batchEligibility = batchEligibilityDao.find(Integer.parseInt(obecResponse));
 
-					if (batchEligibility != null) {
-						osBean.setMOH(batchEligibility.getMOHResponse());
-					}
+                    if (batchEligibility != null) {
+                        osBean.setMOH(batchEligibility.getMOHResponse());
+                    }
 
-					if (nextline.length() > 14) {
-						//osBean.setIdentifier(nextline.substring(14,18));
-						//osBean.setSex(nextline.substring(18,19));
-						//osBean.setDOB(nextline.substring(19,27));
-						osBean.setExpiry(nextline.substring(27, 35));
-						//osBean.setLastName(nextline.substring(35,65));
-						//osBean.setFirstName(nextline.substring(65,85));
-						osBean.setSecondName(nextline.substring(85, 105));
-						//osBean.setMOH(nextline.substring(105,207));
-					}
+                    if (nextline.length() > 14) {
+                        //osBean.setIdentifier(nextline.substring(14,18));
+                        //osBean.setSex(nextline.substring(18,19));
+                        //osBean.setDOB(nextline.substring(19,27));
+                        osBean.setExpiry(nextline.substring(27, 35));
+                        //osBean.setLastName(nextline.substring(35,65));
+                        //osBean.setFirstName(nextline.substring(65,85));
+                        osBean.setSecondName(nextline.substring(85, 105));
+                        //osBean.setMOH(nextline.substring(105,207));
+                    }
 
-					EDTOBECOutputSecifiationBeanVector.add(osBean);
-				}
-			}
-		} catch (IOException ioe) {
-			MiscUtils.getLogger().error("Error", ioe);
-		} catch (StringIndexOutOfBoundsException ioe) {
-			verdict = false;
-		}
-		return verdict;
-	}
+                    EDTOBECOutputSecifiationBeanVector.add(osBean);
+                }
+            }
+        } catch (IOException ioe) {
+            MiscUtils.getLogger().error("Error", ioe);
+        } catch (StringIndexOutOfBoundsException ioe) {
+            verdict = false;
+        }
+        return verdict;
+    }
 
-	public Vector<BillingEDTOBECOutputSpecificationBean> getEDTOBECOutputSecifiationBeanVector() {
-		return EDTOBECOutputSecifiationBeanVector;
-	}
+    public Vector<BillingEDTOBECOutputSpecificationBean> getEDTOBECOutputSecifiationBeanVector() {
+        return EDTOBECOutputSecifiationBeanVector;
+    }
 
 }

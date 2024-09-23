@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,33 +29,34 @@ package oscar.oscarEncounter.immunization.config.pageUtil;
 import org.apache.struts.action.ActionForm;
 
 public final class EctImmInitConfigDeleteImmuSetForm extends ActionForm {
-	String action;
-	String[] chkSetId;
-	/**
-	 * @return Returns the action.
-	 */
-	public String getAction() {
-		if (action == null) action="";
-		return action;
-	}
+    String action;
+    String[] chkSetId;
 
-	public String[] getChkSetId() {
-		if (chkSetId == null)
-			chkSetId = new String[] {
-		};
-		return chkSetId;
-	}
+    /**
+     * @return Returns the action.
+     */
+    public String getAction() {
+        if (action == null) action = "";
+        return action;
+    }
 
-	/**
-	 * @param action
-	 *            The action to set.
-	 */
-	public void setAction(String action) {
-		this.action = action;
-	}
+    public String[] getChkSetId() {
+        if (chkSetId == null)
+            chkSetId = new String[]{
+            };
+        return chkSetId;
+    }
 
-	public void setChkSetId(String[] str) {
-		chkSetId = str;
-	}
+    /**
+     * @param action
+     *            The action to set.
+     */
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public void setChkSetId(String[] str) {
+        chkSetId = str;
+    }
 
 }

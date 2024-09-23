@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,26 +24,25 @@
 --%>
 
 
+<%@ include file="/survey/taglibs.jsp" %>
 
-<%@ include file="/survey/taglibs.jsp"%>
-
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
+<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
 
 <html:form action="/SurveyManager" method="POST"
-	enctype="multipart/form-data" styleId="surveyForm">
-	<input type="hidden" name="method" value="import_survey" />
-	<table width=100%">
-		<tr>
-			<td class="leftfield">File Name:&nbsp;&nbsp; <html:file
-				property="web.importFile" /></td>
-		</tr>
-		<tr>
-			<td><html:submit value="Import" /> <input type="button"
-				value="Cancel"
-				onclick="location.href='<html:rewrite action="/SurveyManager"/>'" />
-			</td>
-		</tr>
-	</table>
+           enctype="multipart/form-data" styleId="surveyForm">
+    <input type="hidden" name="method" value="import_survey"/>
+    <table width=100%">
+        <tr>
+            <td class="leftfield">File Name:&nbsp;&nbsp; <html:file
+                    property="web.importFile"/></td>
+        </tr>
+        <tr>
+            <td><html:submit value="Import"/> <input type="button"
+                                                     value="Cancel"
+                                                     onclick="location.href='<html:rewrite action="/SurveyManager"/>'"/>
+            </td>
+        </tr>
+    </table>
 
 </html:form>

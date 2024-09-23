@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -220,7 +220,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     /**
      * Finds be
-     * 
+     *
      * @param criteria
      * @return list of measurements
      */
@@ -230,13 +230,13 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
         Map<String, Object> params = new HashMap<String, Object>();
         StringBuilder buf = new StringBuilder();
 
-        for (Object[] obj : new Object[][] {
-                { "m.demographicId = :demographicNo", "demographicNo", criteria.getDemographicNo() },
-                { "m.type= :type", "type", criteria.getType() },
-                { "m.dataField = :dataField", "dataField", criteria.getDataField() },
-                { "m.measuringInstruction = :measuringInstrc", "measuringInstrc", criteria.getMeasuringInstrc() },
-                { "m.comments = :comments", "comments", criteria.getComments() },
-                { "m.dateObserved = :dateObserved", "dateObserved", criteria.getDateObserved() } }) {
+        for (Object[] obj : new Object[][]{
+                {"m.demographicId = :demographicNo", "demographicNo", criteria.getDemographicNo()},
+                {"m.type= :type", "type", criteria.getType()},
+                {"m.dataField = :dataField", "dataField", criteria.getDataField()},
+                {"m.measuringInstruction = :measuringInstrc", "measuringInstrc", criteria.getMeasuringInstrc()},
+                {"m.comments = :comments", "comments", criteria.getComments()},
+                {"m.dateObserved = :dateObserved", "dateObserved", criteria.getDateObserved()}}) {
 
             String queryClause = (String) obj[0];
             String paramName = (String) obj[1];
@@ -284,7 +284,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
         }
 
         public SearchCriteria(Integer demographicNo, String type, String dataField, String measuringInstrc,
-                String comments, Date dateObserved) {
+                              String comments, Date dateObserved) {
             super();
             this.demographicNo = demographicNo;
             this.type = type;
@@ -350,7 +350,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     /**
      * Looks up measurement information based on the demographic id, type and
      * instructions.
-     * 
+     *
      * @param demographicId
      *                      ID of the demographic record
      * @param type
@@ -395,7 +395,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public Set<Integer> getAppointmentNosByDemographicNoAndType(int demographicNo, String type, Date startDate,
-            Date endDate) {
+                                                                Date endDate) {
         Map<Integer, Boolean> results = new HashMap<Integer, Boolean>();
 
         String queryStr = "select m from  Measurement m WHERE m.demographicId = ? and m.type=? and m.dateObserved>=? and m.dateObserved<=? ORDER BY m.dateObserved DESC";
@@ -452,7 +452,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     /**
      * Finds abnormal measurements for the specified patient
-     * 
+     *
      * @param demoNo
      *                  Patient ID
      * @param loincCode
@@ -478,7 +478,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Object[]> findMeasurementsWithIdentifiersByDemographicIdAndLocationCode(Integer demoNo,
-            String loincCode) {
+                                                                                        String loincCode) {
         String sql = "SELECT m.dataField, m.dateObserved, e1.val, e3.val, e4.val "
                 + "FROM Measurement m, MeasurementsExt e1, MeasurementsExt e2, MeasurementsExt e3, MeasurementsExt e4, MeasurementMap mm "
                 + "WHERE m.id = e1.measurementId " + "AND e1.keyVal = 'lab_no' " + "AND m.id = e2.measurementId "
@@ -579,7 +579,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Object> findObservationDatesByDemographicNoTypeAndMeasuringInstruction(Integer demo, String type,
-            String mInstrc) {
+                                                                                       String mInstrc) {
         String sql = "SELECT DISTINCT m.dateObserved FROM Measurement m " + "WHERE m.demographicId = :demo "
                 + "AND m.type = :type " + "AND m.measuringInstruction = :mInstrc " + "ORDER BY m.dateObserved";
         Query query = entityManager.createQuery(sql);
@@ -614,7 +614,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Measurement> findByDemoNoTypeDateAndMeasuringInstruction(Integer demoNo, Date from, Date to,
-            String type, String instruction) {
+                                                                         String type, String instruction) {
         Query query = createQuery("m", "m.dateObserved >= :from AND m.dateObserved <= :to AND m.type = :type "
                 + "AND m.measuringInstruction = :instruction AND m.demographicId = :demoNo");
         query.setParameter("demoNo", demoNo);
@@ -638,7 +638,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Measurement> findByDemographicNoTypeAndDate(Integer demographicNo, Date createDate,
-            String measurementType, String mInstrc) {
+                                                            String measurementType, String mInstrc) {
         String sql = "FROM Measurement m " + "WHERE m.createDate = :createDate "
                 + "AND m.demographicId = :demographicNo " + "AND m.type = :measurementType "
                 + "AND m.measuringInstruction = :mInstrc";
@@ -653,7 +653,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @NativeSql("measurements")
     @Override
     public List<Object[]> findByDemoNoDateTypeMeasuringInstrAndDataField(Integer demographicNo, Date dateEntered,
-            String measurementType, String mInstrc, String upper, String lower) {
+                                                                         String measurementType, String mInstrc, String upper, String lower) {
         String sql = "SELECT dataField FROM measurements " + "WHERE dateEntered = :dateEntered "
                 + "AND demographicNo = :demographicNo " + "AND type = :measurementType "
                 + "AND measuringInstruction = :mInstrc " + "AND dataField < :upper " + "AND dataField > :lower";
@@ -689,7 +689,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @NativeSql("measurements")
     @Override
     public List<Object[]> findByDemoNoDateTypeAndDataField(Integer demographicNo, Date dateEntered, String type,
-            String upper, String lower) {
+                                                           String upper, String lower) {
         String sql = "SELECT dataField FROM measurements WHERE dateEntered = :dateEntered "
                 + "AND demographicNo = :demographicNo " + "AND type = :type " + "AND dataField < :upper "
                 + "AND dataField > :lower";
@@ -832,7 +832,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Measurement> findByProviderDemographicLastUpdateDate(String providerNo, Integer demographicId,
-            Date updatedAfterThisDateExclusive, int itemsToReturn) {
+                                                                     Date updatedAfterThisDateExclusive, int itemsToReturn) {
         String sql = "select x from " + modelClass.getSimpleName()
                 + " x where x.providerNo=:providerNo and x.demographicId=:demographicId and x.createDate>:updatedAfterThisDateExclusive order by x.createDate";
 
@@ -850,7 +850,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Measurement> findByDemographicLastUpdateAfterDate(Integer demographicId,
-            Date updatedAfterThisDateExclusive) {
+                                                                  Date updatedAfterThisDateExclusive) {
         String sql = "select x from " + modelClass.getSimpleName()
                 + " x where x.demographicId=:demographicId and x.createDate>:updatedAfterThisDateExclusive order by x.createDate";
 
@@ -866,7 +866,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @NativeSql("measurements")
     @Override
     public List<Measurement> findLatestByDemographicObservedAfterDate(Integer demographicId,
-            Date observedAfterDateExclusive) {
+                                                                      Date observedAfterDateExclusive) {
         String sql = "SELECT x.* FROM measurements x LEFT JOIN measurements y ON x.dateObserved < y.dateObserved AND x.type = y.type AND x.demographicNo = y.demographicNo WHERE y.id IS NULL AND x.demographicNo = :demographicId AND x.dateObserved > :dateObserved GROUP BY x.type, x.dateObserved ORDER BY x.dateObserved DESC";
         Query query = entityManager.createNativeQuery(sql, Measurement.class);
         query.setParameter("demographicId", demographicId);

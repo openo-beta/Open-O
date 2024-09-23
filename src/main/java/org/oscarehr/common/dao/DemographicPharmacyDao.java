@@ -6,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -39,16 +39,16 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicPharmacyDao extends AbstractDao<DemographicPharmacy> {
 
-	public DemographicPharmacy addPharmacyToDemographic(Integer pharmacyId, Integer demographicNo,
-			Integer preferredOrder);
+    public DemographicPharmacy addPharmacyToDemographic(Integer pharmacyId, Integer demographicNo,
+                                                        Integer preferredOrder);
 
-	public void unlinkPharmacy(Integer pharmacyId, Integer demographicNo);
+    public void unlinkPharmacy(Integer pharmacyId, Integer demographicNo);
 
-	public List<DemographicPharmacy> findByDemographicId(Integer demographicNo);
+    public List<DemographicPharmacy> findByDemographicId(Integer demographicNo);
 
-	public List<DemographicPharmacy> findAllByDemographicId(Integer demographicNo);
+    public List<DemographicPharmacy> findAllByDemographicId(Integer demographicNo);
 
-	public List<DemographicPharmacy> findAllByPharmacyId(Integer pharmacyId);
+    public List<DemographicPharmacy> findAllByPharmacyId(Integer pharmacyId);
 
-	public Long getTotalDemographicsPreferedToPharmacyByPharmacyId(Integer pharmacyId);
+    public Long getTotalDemographicsPreferedToPharmacyByPharmacyId(Integer pharmacyId);
 }

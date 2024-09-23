@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,76 +42,76 @@ import org.oscarehr.util.MiscUtils;
 import oscar.util.Doc2PDF;
 
 public class MsgAttachPDFAction extends Action {
-    private static Logger logger=MiscUtils.getLogger(); 
+    private static Logger logger = MiscUtils.getLogger();
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		logger.info("Starting...");
-		
-		MsgAttachPDFForm frm = (MsgAttachPDFForm) form;
-		String attachmentCount = frm.getAttachmentCount();
-		oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        logger.info("Starting...");
 
-		// Multiple attachment
+        MsgAttachPDFForm frm = (MsgAttachPDFForm) form;
+        String attachmentCount = frm.getAttachmentCount();
+        oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
 
-		if (frm.getIsPreview()) {
+        // Multiple attachment
 
-			String srcText = frm.getSrcText();
-			
-			logger.info("Got source text: " + srcText);
-			
-			Doc2PDF.parseString2PDF(request, response, "<HTML>" + srcText + "</HTML>");
-			frm.setIsPreview(false);
-		} else {
+        if (frm.getIsPreview()) {
 
-			try {
-				String[] indexArray = frm.getIndexArray();
-				frm.setIndexArray(indexArray);
-				frm.setIsAttaching(frm.getIsAttaching());
-				frm.setAttachmentCount(frm.getAttachmentCount());
-				String srcText = frm.getSrcText();
-				String attachmentTitle = frm.getAttachmentTitle();
+            String srcText = frm.getSrcText();
 
-				if (bean != null) {
+            logger.info("Got source text: " + srcText);
 
-					if (frm.getIsNew()) {
-						MiscUtils.getLogger().debug("null attachment");
-						bean.nullAttachment();
-					}
+            Doc2PDF.parseString2PDF(request, response, "<HTML>" + srcText + "</HTML>");
+            frm.setIsPreview(false);
+        } else {
 
-					// check how many total attachment
-					bean.setTotalAttachmentCount(Integer.parseInt(attachmentCount));
+            try {
+                String[] indexArray = frm.getIndexArray();
+                frm.setIndexArray(indexArray);
+                frm.setIsAttaching(frm.getIsAttaching());
+                frm.setAttachmentCount(frm.getAttachmentCount());
+                String srcText = frm.getSrcText();
+                String attachmentTitle = frm.getAttachmentTitle();
 
-					// CHECK how many attachment to do
-					if (bean.getCurrentAttachmentCount() < bean.getTotalAttachmentCount()) {
+                if (bean != null) {
 
-						// Attach the document and increment the counter
-						String resultString = Doc2PDF.parseString2Bin(request, response, "<HTML>" + srcText + "</HTML>");
+                    if (frm.getIsNew()) {
+                        MiscUtils.getLogger().debug("null attachment");
+                        bean.nullAttachment();
+                    }
 
-						bean.setAppendPDFAttachment(resultString, attachmentTitle);
-						bean.setCurrentAttachmentCount(bean.getCurrentAttachmentCount() + 1);
-						logger.info("Going to sleep");
-						Thread.sleep(500);
-					}
+                    // check how many total attachment
+                    bean.setTotalAttachmentCount(Integer.parseInt(attachmentCount));
 
-					if (bean.getCurrentAttachmentCount() >= bean.getTotalAttachmentCount()) {
-						// reset the counter, and forward to success
-						bean.setTotalAttachmentCount(0);
-						bean.setCurrentAttachmentCount(0);
-						return (mapping.findForward("success"));
-					} else {
-						// keep attaching
-						return (mapping.findForward("attaching"));
-					}
+                    // CHECK how many attachment to do
+                    if (bean.getCurrentAttachmentCount() < bean.getTotalAttachmentCount()) {
 
-				} else {
-					logger.error("Bean is null");
-				}
-			} catch (Exception e) {
-				logger.error("Error: " + e.getMessage(), e);
-			}
+                        // Attach the document and increment the counter
+                        String resultString = Doc2PDF.parseString2Bin(request, response, "<HTML>" + srcText + "</HTML>");
 
-		}
-		return null;
-	}
+                        bean.setAppendPDFAttachment(resultString, attachmentTitle);
+                        bean.setCurrentAttachmentCount(bean.getCurrentAttachmentCount() + 1);
+                        logger.info("Going to sleep");
+                        Thread.sleep(500);
+                    }
+
+                    if (bean.getCurrentAttachmentCount() >= bean.getTotalAttachmentCount()) {
+                        // reset the counter, and forward to success
+                        bean.setTotalAttachmentCount(0);
+                        bean.setCurrentAttachmentCount(0);
+                        return (mapping.findForward("success"));
+                    } else {
+                        // keep attaching
+                        return (mapping.findForward("attaching"));
+                    }
+
+                } else {
+                    logger.error("Bean is null");
+                }
+            } catch (Exception e) {
+                logger.error("Error: " + e.getMessage(), e);
+            }
+
+        }
+        return null;
+    }
 
 }

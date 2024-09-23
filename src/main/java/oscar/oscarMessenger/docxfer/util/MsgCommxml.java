@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,8 +46,7 @@ public class MsgCommxml {
     public static Document newDocument() {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -60,9 +59,8 @@ public class MsgCommxml {
         Element node = null;
 
         if (parentNode.getNodeType() == Node.DOCUMENT_NODE) {
-            node = ((Document)parentNode).createElement(name);
-        }
-        else {
+            node = ((Document) parentNode).createElement(name);
+        } else {
             node = parentNode.getOwnerDocument().createElement(name);
         }
 
@@ -70,7 +68,7 @@ public class MsgCommxml {
             node.appendChild(node.getOwnerDocument().createTextNode(value));
         }
 
-        return (Element)parentNode.appendChild(node);
+        return (Element) parentNode.appendChild(node);
     }
 
     public static String toXML(Node xmlDoc) {
@@ -82,9 +80,8 @@ public class MsgCommxml {
         try {
             Transformer trans = TransformerFactory.newInstance().newTransformer();
             trans.transform(src, rslt);
-        }
-        catch (Exception e) {
-           MiscUtils.getLogger().error("Error", e);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
         }
 
         return ret.toString();
@@ -97,8 +94,7 @@ public class MsgCommxml {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
 
             return doc;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -131,10 +127,10 @@ public class MsgCommxml {
     }
 
     public static String encode64(String plainText) {
-        return(new String(Base64.encodeBase64(plainText.getBytes())));
+        return (new String(Base64.encodeBase64(plainText.getBytes())));
     }
 
     public static String decode64(String encodedText) {
-        return(new String(Base64.decodeBase64(encodedText.getBytes())));
+        return (new String(Base64.decodeBase64(encodedText.getBytes())));
     }
 }

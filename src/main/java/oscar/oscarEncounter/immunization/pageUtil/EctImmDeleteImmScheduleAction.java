@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,59 +51,57 @@ import oscar.util.UtilXML;
  * @author Jay Gallagher
  */
 public class EctImmDeleteImmScheduleAction extends Action {
-   
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
-   /**
-   
-    Creates a new instance of EctImmDeleteImmScheduleAction
-    */
-   public EctImmDeleteImmScheduleAction() {
-   }
-   
-   public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException{
-      
-	   if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
-			throw new SecurityException("missing required security object (_demographic)");
-		}
-	   
-      EctImmImmunizationData immData = new EctImmImmunizationData();
 
-      String demographicNo = request.getParameter("demoNo");
-      String providerNo = (String) request.getSession().getAttribute("user");
-      String method = request.getParameter("method");
-      String id = request.getParameter("tblSet");
-      int setnum = Integer.parseInt(id);
-      
-           
-      try {
-                  
-         String imm = immData.getImmunizations(demographicNo);           
-         ///String sDoc = UtilMisc.decode64(imm);
-         Document doc = UtilXML.parseXML(imm);
-         NodeList sets = doc.getElementsByTagName("immunizationSet");
-         Element set = (Element) sets.item(setnum);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-         if (method.equals("delete")){
-            set.setAttribute("status", "deleted");
-         }else{
-            set.removeAttribute("status");
-         }
-         
-         
-         
-         String sXML = UtilXML.toXML(doc);
+    /**
 
-         //EctImmImmunizationData imm = new EctImmImmunizationData();
-         immData.saveImmunizations(demographicNo, providerNo, sXML);
-      }
-      catch(Exception ex) {
-         throw new ServletException("Exception occurred in EctImmDeleteImmScheduleAction", ex);
-      }           
-           
-      return mapping.findForward("success");
-   }
-   
-   
+     Creates a new instance of EctImmDeleteImmScheduleAction
+     */
+    public EctImmDeleteImmScheduleAction() {
+    }
+
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
+            throw new SecurityException("missing required security object (_demographic)");
+        }
+
+        EctImmImmunizationData immData = new EctImmImmunizationData();
+
+        String demographicNo = request.getParameter("demoNo");
+        String providerNo = (String) request.getSession().getAttribute("user");
+        String method = request.getParameter("method");
+        String id = request.getParameter("tblSet");
+        int setnum = Integer.parseInt(id);
+
+
+        try {
+
+            String imm = immData.getImmunizations(demographicNo);
+            ///String sDoc = UtilMisc.decode64(imm);
+            Document doc = UtilXML.parseXML(imm);
+            NodeList sets = doc.getElementsByTagName("immunizationSet");
+            Element set = (Element) sets.item(setnum);
+
+            if (method.equals("delete")) {
+                set.setAttribute("status", "deleted");
+            } else {
+                set.removeAttribute("status");
+            }
+
+
+            String sXML = UtilXML.toXML(doc);
+
+            //EctImmImmunizationData imm = new EctImmImmunizationData();
+            immData.saveImmunizations(demographicNo, providerNo, sXML);
+        } catch (Exception ex) {
+            throw new ServletException("Exception occurred in EctImmDeleteImmScheduleAction", ex);
+        }
+
+        return mapping.findForward("success");
+    }
+
+
 }

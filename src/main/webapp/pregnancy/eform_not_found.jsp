@@ -24,42 +24,42 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@ include file="/taglibs.jsp"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="java.text.SimpleDateFormat" %>
+<%@ include file="/taglibs.jsp" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@page import="java.util.*"%>
+<%@page import="java.util.*" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 
 <%
 
 %>
 <html:html lang="en">
-<head>
-<title>Oops. Not Found</title>
+    <head>
+        <title>Oops. Not Found</title>
 
 
-<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css"> <!-- Bootstrap 2.3.1 -->
-<style>
-div#demo
-{
-	margin-left: auto;
-	margin-right: auto;
-	width: 90%;
-	text-align: left;
-}
-</style>
-</head>
+        <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <!-- Bootstrap 2.3.1 -->
+        <style>
+            div#demo {
+                margin-left: auto;
+                margin-right: auto;
+                width: 90%;
+                text-align: left;
+            }
+        </style>
+    </head>
 
-<body>
+    <body>
 
-	<br/>
-	<h2 style="text-align:center">E-Form Not Found</h2>
-	<br/>
+    <br/>
+    <h2 style="text-align:center">E-Form Not Found</h2>
+    <br/>
 
-	<span class="alert alert-warning">Please let your System Administrator know so that this functionality can be correctly configured.</span>
+    <span class="alert alert-warning">Please let your System Administrator know so that this functionality can be correctly configured.</span>
 </html:html>

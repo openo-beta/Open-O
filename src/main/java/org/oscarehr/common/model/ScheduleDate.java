@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,92 +38,92 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="scheduledate")
-public class ScheduleDate extends AbstractModel<Integer>{
+@Table(name = "scheduledate")
+public class ScheduleDate extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="sdate")
-	private Date date;
-	@Column(name="provider_no")
-	private String providerNo;
-	private char available;
-	private char priority;
-	private String reason;
-	private String hour;
-	private String creator;
-	private char status;
-	
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Date getDate() {
-    	return date;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "sdate")
+    private Date date;
+    @Column(name = "provider_no")
+    private String providerNo;
+    private char available;
+    private char priority;
+    private String reason;
+    private String hour;
+    private String creator;
+    private char status;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setDate(Date date) {
-    	this.date = date;
+    public Date getDate() {
+        return date;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public char getAvailable() {
-    	return available;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public void setAvailable(char available) {
-    	this.available = available;
+    public char getAvailable() {
+        return available;
     }
 
-	public char getPriority() {
-    	return priority;
+    public void setAvailable(char available) {
+        this.available = available;
     }
 
-	public void setPriority(char priority) {
-    	this.priority = priority;
+    public char getPriority() {
+        return priority;
     }
 
-	public String getReason() {
-    	return reason;
+    public void setPriority(char priority) {
+        this.priority = priority;
     }
 
-	public void setReason(String reason) {
-    	this.reason = reason;
+    public String getReason() {
+        return reason;
     }
 
-	public String getHour() {
-    	return hour;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
-	public void setHour(String hour) {
-    	this.hour = hour;
+    public String getHour() {
+        return hour;
     }
 
-	public String getCreator() {
-    	return creator;
+    public void setHour(String hour) {
+        this.hour = hour;
     }
 
-	public void setCreator(String creator) {
-    	this.creator = creator;
+    public String getCreator() {
+        return creator;
     }
 
-	public char getStatus() {
-    	return status;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-	public void setStatus(char status) {
-    	this.status = status;
+    public char getStatus() {
+        return status;
     }
-	
+
+    public void setStatus(char status) {
+        this.status = status;
+    }
+
 
 }

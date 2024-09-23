@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -56,7 +55,7 @@ public class BedManagerForm extends ActionForm {
     private Integer bedRoomFilterForBed;
     private Map roomStatusNames;
     private Map bedStatusNames;
-   
+
 
     public Integer getFacilityId() {
         return facilityId;
@@ -130,76 +129,76 @@ public class BedManagerForm extends ActionForm {
         this.programs = programs;
     }
 
-	public Room[] getAssignedBedRooms() {
-		return assignedBedRooms;
-	}
+    public Room[] getAssignedBedRooms() {
+        return assignedBedRooms;
+    }
 
-	public void setAssignedBedRooms(Room[] assignedBedRooms) {
-		this.assignedBedRooms = assignedBedRooms;
-	}
+    public void setAssignedBedRooms(Room[] assignedBedRooms) {
+        this.assignedBedRooms = assignedBedRooms;
+    }
 
-	public Integer getBedToDelete() {
-		return bedToDelete;
-	}
+    public Integer getBedToDelete() {
+        return bedToDelete;
+    }
 
-	public void setBedToDelete(Integer bedToDelete) {
-		this.bedToDelete = bedToDelete;
-	}
+    public void setBedToDelete(Integer bedToDelete) {
+        this.bedToDelete = bedToDelete;
+    }
 
-	public Integer getRoomToDelete() {
-		return roomToDelete;
-	}
+    public Integer getRoomToDelete() {
+        return roomToDelete;
+    }
 
-	public void setRoomToDelete(Integer roomToDelete) {
-		this.roomToDelete = roomToDelete;
-	}
+    public void setRoomToDelete(Integer roomToDelete) {
+        this.roomToDelete = roomToDelete;
+    }
 
-	public Integer getBedRoomFilterForBed() {
-		return bedRoomFilterForBed;
-	}
+    public Integer getBedRoomFilterForBed() {
+        return bedRoomFilterForBed;
+    }
 
-	public void setBedRoomFilterForBed(Integer bedRoomFilterForBed) {
-		this.bedRoomFilterForBed = bedRoomFilterForBed;
-	}
+    public void setBedRoomFilterForBed(Integer bedRoomFilterForBed) {
+        this.bedRoomFilterForBed = bedRoomFilterForBed;
+    }
 
-	public Integer getBedProgramFilterForRoom() {
-		return bedProgramFilterForRoom;
-	}
+    public Integer getBedProgramFilterForRoom() {
+        return bedProgramFilterForRoom;
+    }
 
-	public void setBedProgramFilterForRoom(Integer bedProgramFilterForRoom) {
-		this.bedProgramFilterForRoom = bedProgramFilterForRoom;
-	}
+    public void setBedProgramFilterForRoom(Integer bedProgramFilterForRoom) {
+        this.bedProgramFilterForRoom = bedProgramFilterForRoom;
+    }
 
-	public Integer getBedStatusFilter() {
-		return bedStatusFilter;
-	}
+    public Integer getBedStatusFilter() {
+        return bedStatusFilter;
+    }
 
-	public void setBedStatusFilter(Integer bedStatusFilter) {
-		this.bedStatusFilter = bedStatusFilter;
-	}
+    public void setBedStatusFilter(Integer bedStatusFilter) {
+        this.bedStatusFilter = bedStatusFilter;
+    }
 
-	public Integer getRoomStatusFilter() {
-		return roomStatusFilter;
-	}
+    public Integer getRoomStatusFilter() {
+        return roomStatusFilter;
+    }
 
-	public void setRoomStatusFilter(Integer roomStatusFilter) {
-		this.roomStatusFilter = roomStatusFilter;
-	}
+    public void setRoomStatusFilter(Integer roomStatusFilter) {
+        this.roomStatusFilter = roomStatusFilter;
+    }
 
-	public Map getBedStatusNames() {
-		return bedStatusNames;
-	}
+    public Map getBedStatusNames() {
+        return bedStatusNames;
+    }
 
-	public void setBedStatusNames(Map bedStatusNames) {
-		this.bedStatusNames = bedStatusNames;
-	}
+    public void setBedStatusNames(Map bedStatusNames) {
+        this.bedStatusNames = bedStatusNames;
+    }
 
-	public Map getRoomStatusNames() {
-		return roomStatusNames;
-	}
+    public Map getRoomStatusNames() {
+        return roomStatusNames;
+    }
 
-	public void setRoomStatusNames(Map roomStatusNames) {
-		this.roomStatusNames = roomStatusNames;
-	}
+    public void setRoomStatusNames(Map roomStatusNames) {
+        this.roomStatusNames = roomStatusNames;
+    }
 
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,212 +37,212 @@ import javax.persistence.TemporalType;
 @Entity
 public class SecurityArchive extends AbstractModel<Integer> {
 
-	public SecurityArchive() {
-	}
-	
-	public SecurityArchive(Security s) {
-		setSecurityNo(s.getId());
-		setUserName(s.getUserName());
-		setPassword(s.getPassword());
-		setProviderNo(s.getProviderNo());
-		setPin(s.getPin());
-		setBExpireset(s.getBExpireset());
-		setDateExpiredate(s.getDateExpiredate());
-		setBLocallockset(s.getBLocallockset());
-		setBRemotelockset(s.getBRemotelockset());
-		setForcePasswordReset(s.isForcePasswordReset());
-		setPasswordUpdateDate(s.getPasswordUpdateDate());
-		setPinUpdateDate(s.getPinUpdateDate());
-		setLastUpdateUser(s.getLastUpdateUser());
-		setLastUpdateDate(s.getLastUpdateDate());
-	}
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name = "security_no")
-	private Integer securityNo;
-	@Column(name = "user_name",nullable=false)
-	private String userName;
-	
-	@Column(name = "password",nullable=false)
-	private String password;
-	
-	@Column(name = "provider_no",nullable=false)
-	private String providerNo;
+    public SecurityArchive() {
+    }
 
-	@Column(name = "pin")
-	private String pin;
-	
-	@Column(name = "b_ExpireSet")
-	private Integer BExpireset;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "date_ExpireDate")
-	private Date dateExpiredate;
+    public SecurityArchive(Security s) {
+        setSecurityNo(s.getId());
+        setUserName(s.getUserName());
+        setPassword(s.getPassword());
+        setProviderNo(s.getProviderNo());
+        setPin(s.getPin());
+        setBExpireset(s.getBExpireset());
+        setDateExpiredate(s.getDateExpiredate());
+        setBLocallockset(s.getBLocallockset());
+        setBRemotelockset(s.getBRemotelockset());
+        setForcePasswordReset(s.isForcePasswordReset());
+        setPasswordUpdateDate(s.getPasswordUpdateDate());
+        setPinUpdateDate(s.getPinUpdateDate());
+        setLastUpdateUser(s.getLastUpdateUser());
+        setLastUpdateDate(s.getLastUpdateDate());
+    }
 
-	@Column(name = "b_LocalLockSet")
-	private Integer BLocallockset;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name = "b_RemoteLockSet")
-	private Integer BRemotelockset;
+    @Column(name = "security_no")
+    private Integer securityNo;
+    @Column(name = "user_name", nullable = false)
+    private String userName;
 
+    @Column(name = "password", nullable = false)
+    private String password;
 
-	@Column(name="forcePasswordReset")
-	private Boolean forcePasswordReset;
+    @Column(name = "provider_no", nullable = false)
+    private String providerNo;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date passwordUpdateDate;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date pinUpdateDate;
-	
-	private String lastUpdateUser;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastUpdateDate;
-	
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "pin")
+    private String pin;
+
+    @Column(name = "b_ExpireSet")
+    private Integer BExpireset;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date_ExpireDate")
+    private Date dateExpiredate;
+
+    @Column(name = "b_LocalLockSet")
+    private Integer BLocallockset;
+
+    @Column(name = "b_RemoteLockSet")
+    private Integer BRemotelockset;
 
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "forcePasswordReset")
+    private Boolean forcePasswordReset;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date passwordUpdateDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date pinUpdateDate;
+
+    private String lastUpdateUser;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdateDate;
+
+    public Integer getId() {
+        return id;
+    }
 
 
-	public Integer getSecurityNo() {
-		return securityNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 
-	public void setSecurityNo(Integer securityNo) {
-		this.securityNo = securityNo;
-	}
+    public Integer getSecurityNo() {
+        return securityNo;
+    }
 
 
-	public String getUserName() {
-		return userName;
-	}
+    public void setSecurityNo(Integer securityNo) {
+        this.securityNo = securityNo;
+    }
 
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
 
-	public String getPin() {
-		return pin;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
 
-	public void setPin(String pin) {
-		this.pin = pin;
-	}
+    public String getPin() {
+        return pin;
+    }
 
 
-	public Integer getBExpireset() {
-		return BExpireset;
-	}
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
 
 
-	public void setBExpireset(Integer bExpireset) {
-		BExpireset = bExpireset;
-	}
+    public Integer getBExpireset() {
+        return BExpireset;
+    }
 
 
-	public Date getDateExpiredate() {
-		return dateExpiredate;
-	}
+    public void setBExpireset(Integer bExpireset) {
+        BExpireset = bExpireset;
+    }
 
 
-	public void setDateExpiredate(Date dateExpiredate) {
-		this.dateExpiredate = dateExpiredate;
-	}
+    public Date getDateExpiredate() {
+        return dateExpiredate;
+    }
 
 
-	public Integer getBLocallockset() {
-		return BLocallockset;
-	}
+    public void setDateExpiredate(Date dateExpiredate) {
+        this.dateExpiredate = dateExpiredate;
+    }
 
 
-	public void setBLocallockset(Integer bLocallockset) {
-		BLocallockset = bLocallockset;
-	}
+    public Integer getBLocallockset() {
+        return BLocallockset;
+    }
 
 
-	public Integer getBRemotelockset() {
-		return BRemotelockset;
-	}
+    public void setBLocallockset(Integer bLocallockset) {
+        BLocallockset = bLocallockset;
+    }
 
 
-	public void setBRemotelockset(Integer bRemotelockset) {
-		BRemotelockset = bRemotelockset;
-	}
+    public Integer getBRemotelockset() {
+        return BRemotelockset;
+    }
 
 
-	public Boolean getForcePasswordReset() {
-		return forcePasswordReset;
-	}
+    public void setBRemotelockset(Integer bRemotelockset) {
+        BRemotelockset = bRemotelockset;
+    }
 
 
-	public void setForcePasswordReset(Boolean forcePasswordReset) {
-		this.forcePasswordReset = forcePasswordReset;
-	}
+    public Boolean getForcePasswordReset() {
+        return forcePasswordReset;
+    }
 
-	public Date getPasswordUpdateDate() {
-		return passwordUpdateDate;
-	}
 
-	public void setPasswordUpdateDate(Date passwordUpdateDate) {
-		this.passwordUpdateDate = passwordUpdateDate;
-	}
+    public void setForcePasswordReset(Boolean forcePasswordReset) {
+        this.forcePasswordReset = forcePasswordReset;
+    }
 
-	public Date getPinUpdateDate() {
-		return pinUpdateDate;
-	}
+    public Date getPasswordUpdateDate() {
+        return passwordUpdateDate;
+    }
 
-	public void setPinUpdateDate(Date pinUpdateDate) {
-		this.pinUpdateDate = pinUpdateDate;
-	}
+    public void setPasswordUpdateDate(Date passwordUpdateDate) {
+        this.passwordUpdateDate = passwordUpdateDate;
+    }
 
-	public String getLastUpdateUser() {
-		return lastUpdateUser;
-	}
+    public Date getPinUpdateDate() {
+        return pinUpdateDate;
+    }
 
-	public void setLastUpdateUser(String lastUpdateUser) {
-		this.lastUpdateUser = lastUpdateUser;
-	}
+    public void setPinUpdateDate(Date pinUpdateDate) {
+        this.pinUpdateDate = pinUpdateDate;
+    }
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public String getLastUpdateUser() {
+        return lastUpdateUser;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
-	
-	
+    public void setLastUpdateUser(String lastUpdateUser) {
+        this.lastUpdateUser = lastUpdateUser;
+    }
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+
 }

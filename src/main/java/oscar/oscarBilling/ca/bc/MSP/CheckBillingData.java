@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,9 +40,9 @@ public class CheckBillingData {
 
     // check batchHeader VS1
     public String checkVS1(String recordCode, String dataCentreNum,
-            String dataCentreSeq, String vendorMSPDCNum, String softName,
-            String softVer, String softInsDate, String vendorName,
-            String vendorContact, String vendorConName, String filler) {
+                           String dataCentreSeq, String vendorMSPDCNum, String softName,
+                           String softVer, String softInsDate, String vendorName,
+                           String vendorContact, String vendorConName, String filler) {
         String ret = checkVS1DataCenterNum(dataCentreNum);
         ret = printWarningMsg(ret);
         return ret;
@@ -97,7 +97,7 @@ public class CheckBillingData {
             }
         }
         if (m != null && m.equals("") && ins != null && !ins.equals(""))
-                ret = "";
+            ret = "";
         return ret;
     }
 
@@ -133,7 +133,7 @@ public class CheckBillingData {
     public boolean checkPHN(String m) {
         boolean ret = false;
         if (m.matches("\\d+") && m.startsWith("9")) {
-            int[] consWeight = { 0, 2, 4, 8, 5, 10, 9, 7, 3, 0};
+            int[] consWeight = {0, 2, 4, 8, 5, 10, 9, 7, 3, 0};
             int temp = 0;
 
             // calculate weight result
@@ -208,12 +208,12 @@ public class CheckBillingData {
         String ret = "C02:P40 Service Location CD Wrong! ";
         String pattern = "ROCHIEPDSZ";
         List rows = SqlUtils.getQueryResultsList("select visittype from billingvisit");
-        if(rows != null){
-          pattern = "";
-          for (Iterator iter = rows.iterator(); iter.hasNext(); ) {
-            String[] item = (String[]) iter.next();
-            pattern += item[0];
-          }
+        if (rows != null) {
+            pattern = "";
+            for (Iterator iter = rows.iterator(); iter.hasNext(); ) {
+                String[] item = (String[]) iter.next();
+                pattern += item[0];
+            }
         }
         if (m != null && m.matches("[" + pattern + "]")) {
             ret = "";
@@ -222,11 +222,10 @@ public class CheckBillingData {
     }
 
 
-
     public String checkReferral(String m1, String m2, String m3) {
         String ret = "C02:[P41P42|P44P46] " + m3 + " Wrong! ";
         if (m1 != null) {
-            if ( (m1.equals("") && m2.equals("")) || (m1.matches("0") && ( m2.matches("0{5}") || m2.equals("") ) ) || (m1.matches("[BT]") && m2.matches("\\w+"))) {
+            if ((m1.equals("") && m2.equals("")) || (m1.matches("0") && (m2.matches("0{5}") || m2.equals(""))) || (m1.matches("[BT]") && m2.matches("\\w+"))) {
                 ret = "";
             }
         }
@@ -237,7 +236,7 @@ public class CheckBillingData {
         String ret = "C02:P52 Birth Date Wrong! ";
         if (m != null
                 && (m.equals("") || m
-                        .matches("0{8}|[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
+                .matches("0{8}|[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
             ret = "";
         }
         return ret;
@@ -271,7 +270,7 @@ public class CheckBillingData {
         String ret = "C02:P100 OIN Insurer Code Wrong! ";
         if (m != null
                 && (m.equals("") || m
-                        .matches("AB|SK|MB|ON|NS|PE|NF|NL|NT|NB|YT|IN|PP|WC"))) {
+                .matches("AB|SK|MB|ON|NS|PE|NF|NL|NT|NB|YT|IN|PP|WC"))) {
             ret = "";
         }
         return ret;
@@ -281,7 +280,7 @@ public class CheckBillingData {
         String ret = "C02:P104 OIN Birth Date Wrong! ";
         if (m != null
                 && (m.equals("") || m
-                        .matches("[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
+                .matches("[12][90][0-9][0-9][01][0-9][0-3][0-9]"))) {
             ret = "";
         }
         return ret;
@@ -387,8 +386,7 @@ public class CheckBillingData {
     }
 
 
-
-    public String checkC02(String billingNo, Billingmaster bm){
+    public String checkC02(String billingNo, Billingmaster bm) {
         StringBuilder ret = new StringBuilder();
         ret.append(checkLength(bm.getClaimcode(), 3,
                 "C02:P00 Rec Code In Wrong! ")); //P00
@@ -403,7 +401,7 @@ public class CheckBillingData {
         ret.append(checkLength(bm.getPractitionerNo(), 5,
                 "C02:P08 Practitioner Num Wrong! ")); //P08
         // 5
-        ret.append(checkMSPPHN(bm.getPhn(),bm.getOinInsurerCode()));//P14
+        ret.append(checkMSPPHN(bm.getPhn(), bm.getOinInsurerCode()));//P14
 
         // 10
         //* + forwardSpace(rs2.getString("name_verify"),4) //P16 4 +
@@ -435,15 +433,15 @@ public class CheckBillingData {
          */
 
         ret.append(checkSrvLocation(bm.getServiceLocation())); //P40 1 +
-        ret.append(checkReferral(bm.getReferralFlag1(),bm.getReferralNo1(), "Referral 1")); //P41 1 + P42 5 +
-        ret.append(checkReferral(bm.getReferralFlag2(),bm.getReferralNo2(), "Referral 2")); //P44 1 + P46 5 +
+        ret.append(checkReferral(bm.getReferralFlag1(), bm.getReferralNo1(), "Referral 1")); //P41 1 + P42 5 +
+        ret.append(checkReferral(bm.getReferralFlag2(), bm.getReferralNo2(), "Referral 2")); //P44 1 + P46 5 +
         /*
          * forwardZero(rs2.getString("time_call"),4) //P47 4 + zero(4) //P48 4 // +
          * zero(4) //P50 4 +
          */
 
         ret.append(checkBirthDate(bm.getBirthDate())); //P52 8 +
-        ret.append(checkOfficeFolioNum(""+bm.getBillingmasterNo())); //P54 7
+        ret.append(checkOfficeFolioNum("" + bm.getBillingmasterNo())); //P54 7
         // +
         ret.append(checkCorrespondenceCode(bm.getCorrespondenceCode())); //P56
         // 1 +
@@ -475,7 +473,7 @@ public class CheckBillingData {
          * backwardSpace(rs2.getString("oin_address4"),25) //P120 25 +
          * backwardSpace(rs2.getString("oin_postalcode"),6); //P122 6
          */
-        
+
         return printErrorMsg(billingNo, ret.toString());
     }
 

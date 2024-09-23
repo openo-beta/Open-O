@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,57 +35,57 @@ import org.oscarehr.casemgmt.web.NoteDisplay;
  */
 public class NoteSelectionResult {
 
-	private boolean moreNotes;
-	private List<NoteDisplay> notes = new ArrayList<NoteDisplay>();
+    private boolean moreNotes;
+    private List<NoteDisplay> notes = new ArrayList<NoteDisplay>();
 
-	/**
-	 * Gets flag indicating that there are more notes that actually
-	 * being provided in the {@link #getNotes()} list. This is usually set when
-	 * notes are limited in the search criteria.
-	 * 
-	 * @return
-	 * 		Returns true if there are more notes available than returned and false otherwise
-	 */
-	public boolean isMoreNotes() {
-		return moreNotes;
-	}
+    /**
+     * Gets flag indicating that there are more notes that actually
+     * being provided in the {@link #getNotes()} list. This is usually set when
+     * notes are limited in the search criteria.
+     *
+     * @return
+     *        Returns true if there are more notes available than returned and false otherwise
+     */
+    public boolean isMoreNotes() {
+        return moreNotes;
+    }
 
-	/**
-	 * Sets flag indicating that there are more notes that actually
-	 * being provided in the {@link #getNotes()} list. This is usually set when
-	 * notes are limited in the search criteria.
-	 * 
-	 * @param moreNotes
-	 * 		Flag that should be set to true if there are more notes available 
-	 * than returned and false otherwise		
-	 */
-	public void setMoreNotes(boolean moreNotes) {
-		this.moreNotes = moreNotes;
-	}
+    /**
+     * Sets flag indicating that there are more notes that actually
+     * being provided in the {@link #getNotes()} list. This is usually set when
+     * notes are limited in the search criteria.
+     *
+     * @param moreNotes
+     * 		Flag that should be set to true if there are more notes available
+     * than returned and false otherwise
+     */
+    public void setMoreNotes(boolean moreNotes) {
+        this.moreNotes = moreNotes;
+    }
 
-	/**
-	 * Gets the display notes to be rendered to the user
-	 * 
-	 * @return
-	 * 		Returns the notes
-	 */
-	public List<NoteDisplay> getNotes() {
-		return notes;
-	}
+    /**
+     * Gets the display notes to be rendered to the user
+     *
+     * @return
+     *        Returns the notes
+     */
+    public List<NoteDisplay> getNotes() {
+        return notes;
+    }
 
-	/**
-	 * Sets the display notes to be rendered to the user
-	 * 
-	 * @param notes
-	 * 		Notes to be set
-	 */
-	public void setNotes(List<NoteDisplay> notes) {
-		this.notes = notes;
-	}
+    /**
+     * Sets the display notes to be rendered to the user
+     *
+     * @param notes
+     * 		Notes to be set
+     */
+    public void setNotes(List<NoteDisplay> notes) {
+        this.notes = notes;
+    }
 
-	@Override
+    @Override
     public String toString() {
-	    return "NoteSelectionResult [moreNotes=" + moreNotes + ", notes=" + notes + "]";
+        return "NoteSelectionResult [moreNotes=" + moreNotes + ", notes=" + notes + "]";
     }
 
 }

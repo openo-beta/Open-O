@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,118 +39,117 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
 public class RemoteDrugAllergyHelper {
-	private static Logger logger = MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
-	public static ArrayList<String> getAtcCodesFromRemoteDrugs(LoggedInInfo loggedInInfo,Integer localDemographicId) {
-		ArrayList<String> atcCodes = new ArrayList<String>();
+    public static ArrayList<String> getAtcCodesFromRemoteDrugs(LoggedInInfo loggedInInfo, Integer localDemographicId) {
+        ArrayList<String> atcCodes = new ArrayList<String>();
 
-		try {
-			List<CachedDemographicDrug> remoteDrugs  = null;
-			try {
-				if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-				   remoteDrugs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicDrugsByDemographicId(localDemographicId);
-				}
-			} catch (Exception e) {
-				MiscUtils.getLogger().error("Unexpected error.", e);
-				CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(),e);
-			}
-			
-			if(CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-			   remoteDrugs = IntegratorFallBackManager.getRemoteDrugs(loggedInInfo, localDemographicId);	
-			}
-			
-			for (CachedDemographicDrug remoteDrug : remoteDrugs) {
-				if (remoteDrug.getAtc() != null) atcCodes.add(remoteDrug.getAtc());
-			}
+        try {
+            List<CachedDemographicDrug> remoteDrugs = null;
+            try {
+                if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                    remoteDrugs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicDrugsByDemographicId(localDemographicId);
+                }
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Unexpected error.", e);
+                CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(), e);
+            }
 
-		} catch (Exception e) {
-			logger.error("Error ", e);
-		}
+            if (CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                remoteDrugs = IntegratorFallBackManager.getRemoteDrugs(loggedInInfo, localDemographicId);
+            }
 
-		return (atcCodes);
-	}
+            for (CachedDemographicDrug remoteDrug : remoteDrugs) {
+                if (remoteDrug.getAtc() != null) atcCodes.add(remoteDrug.getAtc());
+            }
 
-	public static ArrayList<String> getRegionalIdentiferCodesFromRemoteDrugs(LoggedInInfo loggedInInfo,Integer localDemographicId) {
-		ArrayList<String> regionalIdentifierCodes = new ArrayList<String>();
+        } catch (Exception e) {
+            logger.error("Error ", e);
+        }
 
-		try {
-			List<CachedDemographicDrug> remoteDrugs  = null;
-			try {
-				if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-				   remoteDrugs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicDrugsByDemographicId(localDemographicId);
-				}
-			} catch (Exception e) {
-				MiscUtils.getLogger().error("Unexpected error.", e);
-				CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(),e);
-			}
-			
-			if(CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-			   remoteDrugs = IntegratorFallBackManager.getRemoteDrugs(loggedInInfo, localDemographicId);	
-			}
-			
-			for (CachedDemographicDrug remoteDrug : remoteDrugs) {
-				if (remoteDrug.getAtc() != null) regionalIdentifierCodes.add(remoteDrug.getRegionalIdentifier());
-			}
+        return (atcCodes);
+    }
 
-		} catch (Exception e) {
-			logger.error("Error ", e);
-		}
+    public static ArrayList<String> getRegionalIdentiferCodesFromRemoteDrugs(LoggedInInfo loggedInInfo, Integer localDemographicId) {
+        ArrayList<String> regionalIdentifierCodes = new ArrayList<String>();
 
-		return (regionalIdentifierCodes);
-	}
-	
-	
-	public static ArrayList<Allergy> getRemoteAllergiesAsAllergyItems(LoggedInInfo loggedInInfo,Integer localDemographicId)
-	{
-		ArrayList<Allergy> results = new ArrayList<Allergy>();
+        try {
+            List<CachedDemographicDrug> remoteDrugs = null;
+            try {
+                if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                    remoteDrugs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicDrugsByDemographicId(localDemographicId);
+                }
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Unexpected error.", e);
+                CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(), e);
+            }
 
-		try {
-			
-			List<CachedDemographicAllergy> remoteAllergies  = null;
-			try {
-				if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-					DemographicWs demographicWs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility());
-					remoteAllergies = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicAllergies(localDemographicId);
-				}
-			} catch (Exception e) {
-				MiscUtils.getLogger().error("Unexpected error.", e);
-				CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(),e);
-			}
-				
-			if(CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())){
-			   remoteAllergies = IntegratorFallBackManager.getRemoteAllergies(loggedInInfo, localDemographicId);	
-			} 
-			
-			for (CachedDemographicAllergy remoteAllergy : remoteAllergies) {
-				results.add(convertRemoteAllergyToLocal(remoteAllergy));
-			}
+            if (CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                remoteDrugs = IntegratorFallBackManager.getRemoteDrugs(loggedInInfo, localDemographicId);
+            }
 
-		} catch (Exception e) {
-			logger.error("Error retriving remote drugs", e);
-		}
+            for (CachedDemographicDrug remoteDrug : remoteDrugs) {
+                if (remoteDrug.getAtc() != null) regionalIdentifierCodes.add(remoteDrug.getRegionalIdentifier());
+            }
 
-		return (results);
-	}
+        } catch (Exception e) {
+            logger.error("Error ", e);
+        }
 
-	/**
-	 * These returned allergies aren't real / local allergies, they shouldn't be used for anything other than sending to drug ref for allergy checking.
-	 */
-	private static Allergy convertRemoteAllergyToLocal(CachedDemographicAllergy remoteAllergy) {
-
-		Date entryDate=null;
-		if (remoteAllergy.getEntryDate()!=null) entryDate=remoteAllergy.getEntryDate().getTime();
+        return (regionalIdentifierCodes);
+    }
 
 
-		Allergy allergy = new Allergy();
-		allergy.setDemographicNo(-1);
-		allergy.setId(remoteAllergy.getFacilityIdIntegerCompositePk().getCaisiItemId());
-		allergy.setDescription( remoteAllergy.getDescription());
-		allergy.setHiclSeqno(remoteAllergy.getHiclSeqNo());
-		allergy.setHicSeqno(remoteAllergy.getHicSeqNo());
-		allergy.setAgcsp(remoteAllergy.getAgcsp());
-		allergy.setAgccs(remoteAllergy.getAgccs());
-		allergy.setTypeCode(remoteAllergy.getTypeCode());
+    public static ArrayList<Allergy> getRemoteAllergiesAsAllergyItems(LoggedInInfo loggedInInfo, Integer localDemographicId) {
+        ArrayList<Allergy> results = new ArrayList<Allergy>();
 
-		return(allergy);
+        try {
+
+            List<CachedDemographicAllergy> remoteAllergies = null;
+            try {
+                if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                    DemographicWs demographicWs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility());
+                    remoteAllergies = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility()).getLinkedCachedDemographicAllergies(localDemographicId);
+                }
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Unexpected error.", e);
+                CaisiIntegratorManager.checkForConnectionError(loggedInInfo.getSession(), e);
+            }
+
+            if (CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
+                remoteAllergies = IntegratorFallBackManager.getRemoteAllergies(loggedInInfo, localDemographicId);
+            }
+
+            for (CachedDemographicAllergy remoteAllergy : remoteAllergies) {
+                results.add(convertRemoteAllergyToLocal(remoteAllergy));
+            }
+
+        } catch (Exception e) {
+            logger.error("Error retriving remote drugs", e);
+        }
+
+        return (results);
+    }
+
+    /**
+     * These returned allergies aren't real / local allergies, they shouldn't be used for anything other than sending to drug ref for allergy checking.
+     */
+    private static Allergy convertRemoteAllergyToLocal(CachedDemographicAllergy remoteAllergy) {
+
+        Date entryDate = null;
+        if (remoteAllergy.getEntryDate() != null) entryDate = remoteAllergy.getEntryDate().getTime();
+
+
+        Allergy allergy = new Allergy();
+        allergy.setDemographicNo(-1);
+        allergy.setId(remoteAllergy.getFacilityIdIntegerCompositePk().getCaisiItemId());
+        allergy.setDescription(remoteAllergy.getDescription());
+        allergy.setHiclSeqno(remoteAllergy.getHiclSeqNo());
+        allergy.setHicSeqno(remoteAllergy.getHicSeqNo());
+        allergy.setAgcsp(remoteAllergy.getAgcsp());
+        allergy.setAgccs(remoteAllergy.getAgccs());
+        allergy.setTypeCode(remoteAllergy.getTypeCode());
+
+        return (allergy);
     }
 }

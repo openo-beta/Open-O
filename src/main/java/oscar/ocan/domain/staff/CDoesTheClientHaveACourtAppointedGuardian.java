@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -59,16 +58,16 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cYes",
-    "cNo",
-    "cUnknown",
-    "cClientDeclinedToAnswer",
-    "cContactInformation"
+        "cYes",
+        "cNo",
+        "cUnknown",
+        "cClientDeclinedToAnswer",
+        "cContactInformation"
 })
 @XmlRootElement(name = "CDoes_the_client_have_a_court_appointed_guardian_")
 public class CDoesTheClientHaveACourtAppointedGuardian {
@@ -86,11 +85,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Gets the value of the cYes property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCYes() {
         return cYes;
@@ -98,11 +97,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Sets the value of the cYes property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCYes(String value) {
         this.cYes = value;
@@ -110,11 +109,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Gets the value of the cNo property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCNo() {
         return cNo;
@@ -122,11 +121,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Sets the value of the cNo property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCNo(String value) {
         this.cNo = value;
@@ -134,11 +133,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Gets the value of the cUnknown property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCUnknown() {
         return cUnknown;
@@ -146,11 +145,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Sets the value of the cUnknown property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -158,11 +157,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -170,11 +169,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;
@@ -182,11 +181,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Gets the value of the cContactInformation property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCContactInformation() {
         return cContactInformation;
@@ -194,11 +193,11 @@ public class CDoesTheClientHaveACourtAppointedGuardian {
 
     /**
      * Sets the value of the cContactInformation property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCContactInformation(String value) {
         this.cContactInformation = value;

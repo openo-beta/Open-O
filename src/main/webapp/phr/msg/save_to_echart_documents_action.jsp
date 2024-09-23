@@ -23,55 +23,55 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.myoscar.client.ws_manager.MessageManager"%>
-<%@page import="org.apache.commons.codec.binary.Base64"%>
-<%@page import="java.util.Calendar"%>
-<%@page import="org.w3c.dom.Node"%>
-<%@page import="org.oscarehr.util.XmlUtils"%>
-<%@page import="org.w3c.dom.Document"%>
-<%@page import="org.oscarehr.myoscar_server.ws.MessageTransfer3"%>
-<%@page import="org.oscarehr.myoscar_server.ws.Message2DataTransfer"%>
-<%@page import="org.oscarehr.phr.web.MyOscarMessagesHelper"%>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="org.oscarehr.phr.web.PHRMessageAction"%>
+<%@page import="org.oscarehr.myoscar.client.ws_manager.MessageManager" %>
+<%@page import="org.apache.commons.codec.binary.Base64" %>
+<%@page import="java.util.Calendar" %>
+<%@page import="org.w3c.dom.Node" %>
+<%@page import="org.oscarehr.util.XmlUtils" %>
+<%@page import="org.w3c.dom.Document" %>
+<%@page import="org.oscarehr.myoscar_server.ws.MessageTransfer3" %>
+<%@page import="org.oscarehr.myoscar_server.ws.Message2DataTransfer" %>
+<%@page import="org.oscarehr.phr.web.MyOscarMessagesHelper" %>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.phr.web.PHRMessageAction" %>
 
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(session);
-   		 
-	Integer demographicNo=new Integer(request.getParameter("demographicNo"));
-	Long messageId=new Long(request.getParameter("messageId"));
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(session);
 
-	MessageTransfer3 messageTransfer=MyOscarMessagesHelper.readMessage(session, messageId);
+    Integer demographicNo = new Integer(request.getParameter("demographicNo"));
+    Long messageId = new Long(request.getParameter("messageId"));
 
-	Message2DataTransfer messageDataTransfer=MyOscarMessagesHelper.getFileAttachment(messageTransfer);
-	String filename=null;
-	String mimeType=null;
-	byte[] dataBytes=null;
-	if (messageDataTransfer!=null)
-	{
-		// filename / mimeType / bytes
-		
-		Document doc=XmlUtils.toDocument(messageDataTransfer.getContents());
-		Node rootNode=doc.getFirstChild();
-		filename=XmlUtils.getChildNodeTextContents(rootNode, "filename");
-		mimeType=XmlUtils.getChildNodeTextContents(rootNode, "mimeType");
-		String tempString=XmlUtils.getChildNodeTextContents(rootNode, "bytes");
-		dataBytes=Base64.decodeBase64(tempString);
-	}
+    MessageTransfer3 messageTransfer = MyOscarMessagesHelper.readMessage(session, messageId);
 
-	//--------------------------
-	
-	String subject=MessageManager.getSubject(messageTransfer);	
-	Calendar date=messageTransfer.getSentDate();
+    Message2DataTransfer messageDataTransfer = MyOscarMessagesHelper.getFileAttachment(messageTransfer);
+    String filename = null;
+    String mimeType = null;
+    byte[] dataBytes = null;
+    if (messageDataTransfer != null) {
+        // filename / mimeType / bytes
 
-	PHRMessageAction.saveAttachmentToEchartDocuments(loggedInInfo, demographicNo, subject, date, filename, mimeType, dataBytes);
+        Document doc = XmlUtils.toDocument(messageDataTransfer.getContents());
+        Node rootNode = doc.getFirstChild();
+        filename = XmlUtils.getChildNodeTextContents(rootNode, "filename");
+        mimeType = XmlUtils.getChildNodeTextContents(rootNode, "mimeType");
+        String tempString = XmlUtils.getChildNodeTextContents(rootNode, "bytes");
+        dataBytes = Base64.decodeBase64(tempString);
+    }
+
+    //--------------------------
+
+    String subject = MessageManager.getSubject(messageTransfer);
+    Calendar date = messageTransfer.getSentDate();
+
+    PHRMessageAction.saveAttachmentToEchartDocuments(loggedInInfo, demographicNo, subject, date, filename, mimeType, dataBytes);
 %>
 
 <html>
-	<head></head>
-	<body style="text-align:center">
-		<h2>Attachment saved to echart documents</h2>
-		<br />
-		<input type="button" value="ok" onclick="location.href='<%=request.getContextPath()%>/phr/PhrMessage.do?&method=read&comingfrom=viewMessages&messageId=<%=messageId%>&demographicNo=<%=demographicNo%>'" />
-	</body>
+<head></head>
+<body style="text-align:center">
+<h2>Attachment saved to echart documents</h2>
+<br/>
+<input type="button" value="ok"
+       onclick="location.href='<%=request.getContextPath()%>/phr/PhrMessage.do?&method=read&comingfrom=viewMessages&messageId=<%=messageId%>&demographicNo=<%=demographicNo%>'"/>
+</body>
 </html>

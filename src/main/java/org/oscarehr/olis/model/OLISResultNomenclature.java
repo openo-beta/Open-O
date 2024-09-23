@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -18,34 +18,34 @@ import org.oscarehr.common.model.AbstractModel;
 
 @Entity
 public class OLISResultNomenclature extends AbstractModel<String> {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String id;
-	private String name;
-	private String nameId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+    private String name;
+    private String nameId;
 
-	public String getNameId() {
-    	return nameId;
+    public String getNameId() {
+        return nameId;
     }
 
-	public void setNameId(String nameId) {
-    	this.nameId = nameId;
+    public void setNameId(String nameId) {
+        this.nameId = nameId;
     }
 
-	@Override
+    @Override
     public String getId() {
-	    return id;
+        return id;
     }
 
-	public String getName() {
-    	return name;
+    public String getName() {
+        return name;
     }
 
-	public void setName(String name) {
-    	this.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-	public OLISResultNomenclature(){
-		super();
-	}	
+    public OLISResultNomenclature() {
+        super();
+    }
 }

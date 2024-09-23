@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,74 +36,73 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="demographic_merged")
+@Table(name = "demographic_merged")
 public class DemographicMerged extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name="demographic_no")
-	private int demographicNo;
-	
-	@Column(name="merged_to")
-	private int mergedTo;
-	
-	private int deleted;
-	
-	private String lastUpdateUser;
-	
-	@Temporal(TemporalType.DATE)
-	private Date lastUpdateDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "demographic_no")
+    private int demographicNo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "merged_to")
+    private int mergedTo;
 
-	public int getDemographicNo() {
-		return demographicNo;
-	}
+    private int deleted;
 
-	public void setDemographicNo(int demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    private String lastUpdateUser;
 
-	public int getMergedTo() {
-		return mergedTo;
-	}
+    @Temporal(TemporalType.DATE)
+    private Date lastUpdateDate;
 
-	public void setMergedTo(int mergedTo) {
-		this.mergedTo = mergedTo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public int getDeleted() {
-		return deleted;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
+    public int getDemographicNo() {
+        return demographicNo;
+    }
 
-	public String getLastUpdateUser() {
-		return lastUpdateUser;
-	}
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public void setLastUpdateUser(String lastUpdateUser) {
-		this.lastUpdateUser = lastUpdateUser;
-	}
+    public int getMergedTo() {
+        return mergedTo;
+    }
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public void setMergedTo(int mergedTo) {
+        this.mergedTo = mergedTo;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
-	
-	
-	
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getLastUpdateUser() {
+        return lastUpdateUser;
+    }
+
+    public void setLastUpdateUser(String lastUpdateUser) {
+        this.lastUpdateUser = lastUpdateUser;
+    }
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+
 }

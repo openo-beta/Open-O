@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -20,44 +20,44 @@ import org.oscarehr.common.model.AbstractModel;
 
 @Entity
 public class OLISProviderPreferences extends AbstractModel<String> {
-	@Id
-	private String providerId;
+    @Id
+    private String providerId;
 
-	private String startTime;
+    private String startTime;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastRun;
-	
-	@Override
-	public String getId() {
-		return providerId;
-	}
-	
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastRun;
+
+    @Override
+    public String getId() {
+        return providerId;
+    }
+
     public String getProviderId() {
-	    return providerId;
-    }
-	
-	public void setProviderId(String providerNo) {
-		this.providerId = providerNo;
-    }	
-
-	public String getStartTime() {
-    	return startTime;
+        return providerId;
     }
 
-	public void setStartTime(String startTime) {
-    	this.startTime = startTime;
+    public void setProviderId(String providerNo) {
+        this.providerId = providerNo;
     }
 
-	public Date getLastRun() {
-		return lastRun;
-	}
+    public String getStartTime() {
+        return startTime;
+    }
 
-	public void setLastRun(Date lastRun) {
-		this.lastRun = lastRun;
-	}
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
-	public OLISProviderPreferences(){
-		super();
-	}
+    public Date getLastRun() {
+        return lastRun;
+    }
+
+    public void setLastRun(Date lastRun) {
+        this.lastRun = lastRun;
+    }
+
+    public OLISProviderPreferences() {
+        super();
+    }
 }

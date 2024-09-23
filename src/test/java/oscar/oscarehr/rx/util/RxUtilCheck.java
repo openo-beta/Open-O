@@ -4,17 +4,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,14 +33,14 @@ import org.junit.Test;
 import org.oscarehr.rx.util.RxUtil;
 
 public class RxUtilCheck {
-	
-	@Test
-	public void testWrite() throws IOException {
-		File outputfile = new File("image.png");
-		BufferedImage bufferedImage = RxUtil.getWaterMarkImage("COUMADIN TAB 3MG \n" + 
-				"take 1 OD for 7 days\n" + 
-				" Qty:7  Repeats:0\n" + 
-				"");
-		ImageIO.write(bufferedImage, "png", outputfile);
-	}
+
+    @Test
+    public void testWrite() throws IOException {
+        File outputfile = new File("image.png");
+        BufferedImage bufferedImage = RxUtil.getWaterMarkImage("COUMADIN TAB 3MG \n" +
+                "take 1 OD for 7 days\n" +
+                " Qty:7  Repeats:0\n" +
+                "");
+        ImageIO.write(bufferedImage, "png", outputfile);
+    }
 }

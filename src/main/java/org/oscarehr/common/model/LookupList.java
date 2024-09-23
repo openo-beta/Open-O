@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,103 +42,101 @@ import javax.persistence.TemporalType;
 @Entity
 public class LookupList extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String name;
-	
-	private String listTitle;
-	
-	private String description;
-	
-	private Integer categoryId;
-	
-	private boolean active = true;
-	
-	private String createdBy;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated = new Date();
-	
-	@OneToMany(fetch=FetchType.EAGER)
-    @JoinColumn(name="lookupListId", referencedColumnName="id")
-	@OrderBy("displayOrder")
-	private List<LookupListItem> items = new ArrayList<LookupListItem>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String listTitle;
 
-	public String getName() {
-		return name;
-	}
+    private String description;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private Integer categoryId;
 
-	public String getListTitle() {
-		return listTitle;
-	}
+    private boolean active = true;
 
-	public void setListTitle(String listTitle) {
-		this.listTitle = listTitle;
-	}
+    private String createdBy;
 
-	public String getDescription() {
-		return description;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated = new Date();
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "lookupListId", referencedColumnName = "id")
+    @OrderBy("displayOrder")
+    private List<LookupListItem> items = new ArrayList<LookupListItem>();
 
-	public Integer getCategoryId() {
-		return categoryId;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public String getListTitle() {
+        return listTitle;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setListTitle(String listTitle) {
+        this.listTitle = listTitle;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public List<LookupListItem> getItems() {
-		return items;
-	}
+    public Integer getCategoryId() {
+        return categoryId;
+    }
 
-	public void setItems(List<LookupListItem> items) {
-		this.items = items;
-	}
-	
-	
-	
-	
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public List<LookupListItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<LookupListItem> items) {
+        this.items = items;
+    }
+
+
 }

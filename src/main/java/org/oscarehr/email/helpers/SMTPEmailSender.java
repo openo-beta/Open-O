@@ -37,7 +37,8 @@ public class SMTPEmailSender {
     private String body;
     private List<EmailAttachment> attachments;
 
-    private SMTPEmailSender() { }
+    private SMTPEmailSender() {
+    }
 
     public SMTPEmailSender(LoggedInInfo loggedInInfo, EmailConfig emailConfig, String[] recipients, String subject, String body, List<EmailAttachment> attachments) {
         this.loggedInInfo = loggedInInfo;
@@ -50,8 +51,8 @@ public class SMTPEmailSender {
 
     public void send() throws EmailSendingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-			throw new RuntimeException("missing required security object (_email)");
-		}
+            throw new RuntimeException("missing required security object (_email)");
+        }
 
         javaMailSender = createTLSMailSender(emailConfig);
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -99,11 +100,13 @@ public class SMTPEmailSender {
     }
 
     private void addAttachments(MimeMessageHelper helper, List<EmailAttachment> attachments) throws MessagingException {
-        if (attachments == null) { return; }
+        if (attachments == null) {
+            return;
+        }
 
         for (EmailAttachment attachment : attachments) {
             helper.addAttachment(attachment.getFileName(), new File(attachment.getFilePath()));
         }
     }
-    
+
 }

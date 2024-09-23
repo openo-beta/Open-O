@@ -1,22 +1,22 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2012- Centre de Medecine Integree
- *
+ * <p>
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre de Medecine Integree, Saint-Laurent, Quebec, Canada to be provided
  * as part of the OSCAR McMaster EMR System
@@ -73,19 +73,19 @@ public class PrintAppointmentReceiptAction extends OscarAction {
         }
 
         System.setProperty("jasper.reports.compile.class.path", classpath);
-        LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String curUser_no = loggedInInfo.getLoggedInProviderNo();
         OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
         DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
         ProviderDataDao providerDao = SpringUtils.getBean(ProviderDataDao.class);
-        
+
         Appointment appt = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no")));
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
         SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String printedDateTime = dateTimeFormatter.format(new Date());
         Demographic demographic = demographicDao.getDemographic(Integer.toString(appt.getDemographicNo()));
         ProviderData provider = providerDao.findByProviderNo(appt.getProviderNo());
-        
+
         ResourceBundle oscarResources;
         String DOB = "";
         String lang = "";
@@ -98,7 +98,7 @@ public class PrintAppointmentReceiptAction extends OscarAction {
         } else {
             oscarResources = ResourceBundle.getBundle("oscarResources", request.getLocale());
         }
-        
+
         ClinicDAO clinicDao = SpringUtils.getBean(ClinicDAO.class);
         Clinic clinic = clinicDao.getClinic();
         UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
@@ -125,7 +125,7 @@ public class PrintAppointmentReceiptAction extends OscarAction {
             }
             exportPdfJavascript += "this.print(params);";
         }
-        
+
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("clinicName", clinic.getClinicName());
         parameters.put("clinicAddress", clinic.getClinicAddress());
@@ -182,9 +182,10 @@ public class PrintAppointmentReceiptAction extends OscarAction {
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         } finally {
-            try
-            {
-                if(ins!=null) { ins.close(); }
+            try {
+                if (ins != null) {
+                    ins.close();
+                }
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
             }

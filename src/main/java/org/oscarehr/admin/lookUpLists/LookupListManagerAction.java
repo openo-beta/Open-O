@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,125 +42,124 @@ import org.oscarehr.util.SpringUtils;
 
 public class LookupListManagerAction extends DispatchAction {
 
-	private static LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
+    private static LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
 
-	public LookupListManagerAction() {
-		super();
-	}
+    public LookupListManagerAction() {
+        super();
+    }
 
-	@SuppressWarnings("unused")
-	public ActionForward manageSingle(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) {
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String listName  = request.getParameter("listName"); 
-		if( listName != null && ! listName.isEmpty() ) {			
-			request.setAttribute( "lookupListSingle", lookupListManager.findLookupListByName( loggedInInfo, listName ) );
-		}
+    @SuppressWarnings("unused")
+    public ActionForward manageSingle(ActionMapping mapping,
+                                      ActionForm form,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String listName = request.getParameter("listName");
+        if (listName != null && !listName.isEmpty()) {
+            request.setAttribute("lookupListSingle", lookupListManager.findLookupListByName(loggedInInfo, listName));
+        }
 
-		return mapping.findForward("success");
-	}
+        return mapping.findForward("success");
+    }
 
-	@SuppressWarnings("unused")
-	public ActionForward manage(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) { 
+    @SuppressWarnings("unused")
+    public ActionForward manage(ActionMapping mapping,
+                                ActionForm form,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		request.setAttribute( "lookupLists", lookupListManager.findAllActiveLookupLists(loggedInInfo) );
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        request.setAttribute("lookupLists", lookupListManager.findAllActiveLookupLists(loggedInInfo));
 
-		return mapping.findForward("success");
-	}
+        return mapping.findForward("success");
+    }
 
-	@SuppressWarnings("unused")
-	public ActionForward order(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) {
+    @SuppressWarnings("unused")
+    public ActionForward order(ActionMapping mapping,
+                               ActionForm form,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String lookupListItemId = request.getParameter("lookupListItemId");
-		String lookupListItemDisplayOrder = request.getParameter("lookupListItemDisplayOrder");
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String lookupListItemId = request.getParameter("lookupListItemId");
+        String lookupListItemDisplayOrder = request.getParameter("lookupListItemDisplayOrder");
 
-		if( lookupListItemId != null && ! lookupListItemId.isEmpty() &&
-				lookupListItemDisplayOrder != null && ! lookupListItemDisplayOrder.isEmpty() ) {
+        if (lookupListItemId != null && !lookupListItemId.isEmpty() &&
+                lookupListItemDisplayOrder != null && !lookupListItemDisplayOrder.isEmpty()) {
 
-			lookupListManager.updateLookupListItemDisplayOrder(loggedInInfo, Integer.parseInt( lookupListItemId ), 
-					Integer.parseInt( lookupListItemDisplayOrder ) );
+            lookupListManager.updateLookupListItemDisplayOrder(loggedInInfo, Integer.parseInt(lookupListItemId),
+                    Integer.parseInt(lookupListItemDisplayOrder));
 
-		}
+        }
 
-		return mapping.findForward("success");
-	}
+        return mapping.findForward("success");
+    }
 
-	@SuppressWarnings("unused")
-	public ActionForward add(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) { 
+    @SuppressWarnings("unused")
+    public ActionForward add(ActionMapping mapping,
+                             ActionForm form,
+                             HttpServletRequest request,
+                             HttpServletResponse response) {
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String lookupListItemLabel = request.getParameter("lookupListItemLabel");
-		String lookupListId = request.getParameter("lookupListId");
-		String user = (String) request.getSession().getAttribute("user");
-		LookupListItem	lookupListItem;
-		int lookupListIdInteger;
-		List<LookupListItem> lookupListItems;
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String lookupListItemLabel = request.getParameter("lookupListItemLabel");
+        String lookupListId = request.getParameter("lookupListId");
+        String user = (String) request.getSession().getAttribute("user");
+        LookupListItem lookupListItem;
+        int lookupListIdInteger;
+        List<LookupListItem> lookupListItems;
 
-		if( user == null ) {
-			user = "";
-		}
+        if (user == null) {
+            user = "";
+        }
 
-		if( lookupListItemLabel != null && ! lookupListItemLabel.isEmpty() &&
-				lookupListId != null && ! lookupListId.isEmpty() ) {
+        if (lookupListItemLabel != null && !lookupListItemLabel.isEmpty() &&
+                lookupListId != null && !lookupListId.isEmpty()) {
 
-			lookupListIdInteger = Integer.parseInt( lookupListId );
-			lookupListItems = lookupListManager.findLookupListItemsByLookupListId( loggedInInfo, lookupListIdInteger );
-			lookupListItem = new LookupListItem();
-			lookupListItem.setActive( true );
-			lookupListItem.setCreatedBy( user );
-			
-			lookupListItem.setDisplayOrder(1);
-			
-			if(! lookupListItems.isEmpty())
-			{
-				lookupListItem.setDisplayOrder(  lookupListItems.get( lookupListItems.size() - 1 ).getDisplayOrder() + 1  );
-			}
+            lookupListIdInteger = Integer.parseInt(lookupListId);
+            lookupListItems = lookupListManager.findLookupListItemsByLookupListId(loggedInInfo, lookupListIdInteger);
+            lookupListItem = new LookupListItem();
+            lookupListItem.setActive(true);
+            lookupListItem.setCreatedBy(user);
 
-			lookupListItem.setLabel( lookupListItemLabel );
-			lookupListItem.setLookupListId( lookupListIdInteger );
-			lookupListItem.setValue( UUID.randomUUID().toString() );
+            lookupListItem.setDisplayOrder(1);
 
-			lookupListManager.addLookupListItem( loggedInInfo, lookupListItem );
-		}
+            if (!lookupListItems.isEmpty()) {
+                lookupListItem.setDisplayOrder(lookupListItems.get(lookupListItems.size() - 1).getDisplayOrder() + 1);
+            }
 
-		request.setAttribute( "lookupLists", lookupListManager.findAllActiveLookupLists( loggedInInfo ) );
+            lookupListItem.setLabel(lookupListItemLabel);
+            lookupListItem.setLookupListId(lookupListIdInteger);
+            lookupListItem.setValue(UUID.randomUUID().toString());
 
-		return mapping.findForward("success");
-	}
+            lookupListManager.addLookupListItem(loggedInInfo, lookupListItem);
+        }
 
-	@SuppressWarnings("unused")
-	public ActionForward remove(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) { 
+        request.setAttribute("lookupLists", lookupListManager.findAllActiveLookupLists(loggedInInfo));
 
-		LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-		String lookupListItemId = request.getParameter("lookupListItemId");
-		int id = 0;
+        return mapping.findForward("success");
+    }
 
-		if ( lookupListItemId != null && ! lookupListItemId.isEmpty() ) {
-			id = Integer.parseInt( lookupListItemId );
-		}
+    @SuppressWarnings("unused")
+    public ActionForward remove(ActionMapping mapping,
+                                ActionForm form,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
 
-		if( id > 0 ) {
-			lookupListManager.removeLookupListItem( loggedInInfo, id );
-		}
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String lookupListItemId = request.getParameter("lookupListItemId");
+        int id = 0;
 
-		request.setAttribute("lookupLists", lookupListManager.findAllActiveLookupLists( loggedInInfo ) );
+        if (lookupListItemId != null && !lookupListItemId.isEmpty()) {
+            id = Integer.parseInt(lookupListItemId);
+        }
 
-		return mapping.findForward("success");
-	}
+        if (id > 0) {
+            lookupListManager.removeLookupListItem(loggedInInfo, id);
+        }
+
+        request.setAttribute("lookupLists", lookupListManager.findAllActiveLookupLists(loggedInInfo));
+
+        return mapping.findForward("success");
+    }
 }

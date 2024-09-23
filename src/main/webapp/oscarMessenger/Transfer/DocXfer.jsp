@@ -23,25 +23,25 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-	  boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="w" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_msg");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
 <html>
 <head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title>DocXfer</title>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <title>DocXfer</title>
 </head>
 <body>
 <h1>Document Transfer</h1>
@@ -49,11 +49,13 @@ if(!authed) {
 <%= this.getServletContext().getRealPath(request.getServletPath()) %>
 
 <form method="post" action="SelectItems.jsp">Demographic No: <input
-	type="text" name="demographicNo"
-	value="<%= request.getParameter("demo")%>" /> <input type="submit"
-	name="submitXml" value="Submit to XML"> <input type="submit"
-	name="submit" value="Submit"
-	onclick="javascript:form.action='SelectItems.jsp';"> <input
-	type="reset" value="Reset"></form>
+        type="text" name="demographicNo"
+        value="<%= request.getParameter("demo")%>"/> <input type="submit"
+                                                            name="submitXml" value="Submit to XML"> <input type="submit"
+                                                                                                           name="submit"
+                                                                                                           value="Submit"
+                                                                                                           onclick="javascript:form.action='SelectItems.jsp';">
+    <input
+            type="reset" value="Reset"></form>
 </body>
 </html>

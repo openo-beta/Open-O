@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -57,131 +57,131 @@ import oscar.OscarProperties;
 
 public final class Factory {
 
-	private static Logger logger = MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
-	private Factory() {
-		// static methods no need for instance
-	}
+    private Factory() {
+        // static methods no need for instance
+    }
 
-	/**
-	 * Find the lab corresponding to segmentID and return the appropriate MessageHandler for it
-	 */
-	public static MessageHandler getHandler(String segmentID) {
-		try {
-			Hl7TextMessageDao hl7TextMessageDao = (Hl7TextMessageDao) SpringUtils.getBean(Hl7TextMessageDao.class);
-			Hl7TextMessage hl7TextMessage = hl7TextMessageDao.find(Integer.parseInt(segmentID));
+    /**
+     * Find the lab corresponding to segmentID and return the appropriate MessageHandler for it
+     */
+    public static MessageHandler getHandler(String segmentID) {
+        try {
+            Hl7TextMessageDao hl7TextMessageDao = (Hl7TextMessageDao) SpringUtils.getBean(Hl7TextMessageDao.class);
+            Hl7TextMessage hl7TextMessage = hl7TextMessageDao.find(Integer.parseInt(segmentID));
 
-			String type = hl7TextMessage.getType();
-			String hl7Body = new String(Base64.decodeBase64(hl7TextMessage.getBase64EncodedeMessage()), MiscUtils.DEFAULT_UTF8_ENCODING);
-			return getHandler(type, hl7Body);
-		} catch (Exception e) {
-			logger.error("Could not retrieve lab for segmentID(" + segmentID + ")", e);
-		}
+            String type = hl7TextMessage.getType();
+            String hl7Body = new String(Base64.decodeBase64(hl7TextMessage.getBase64EncodedeMessage()), MiscUtils.DEFAULT_UTF8_ENCODING);
+            return getHandler(type, hl7Body);
+        } catch (Exception e) {
+            logger.error("Could not retrieve lab for segmentID(" + segmentID + ")", e);
+        }
 
-		return getHandler("", "");
-	}
+        return getHandler("", "");
+    }
 
-	public static String getHL7Body(String segmentID) {
-		String ret = null;
-		try {
-			Hl7TextMessageDao hl7TextMessageDao = (Hl7TextMessageDao) SpringUtils.getBean(Hl7TextMessageDao.class);
-			Hl7TextMessage hl7TextMessage = hl7TextMessageDao.find(Integer.parseInt(segmentID));
+    public static String getHL7Body(String segmentID) {
+        String ret = null;
+        try {
+            Hl7TextMessageDao hl7TextMessageDao = (Hl7TextMessageDao) SpringUtils.getBean(Hl7TextMessageDao.class);
+            Hl7TextMessage hl7TextMessage = hl7TextMessageDao.find(Integer.parseInt(segmentID));
 
-			ret = new String(Base64.decodeBase64(hl7TextMessage.getBase64EncodedeMessage()), MiscUtils.DEFAULT_UTF8_ENCODING);
-		} catch (Exception e) {
-			logger.error("Could not retrieve lab for segmentID(" + segmentID + ")", e);
-		}
-		return ret;
-	}
+            ret = new String(Base64.decodeBase64(hl7TextMessage.getBase64EncodedeMessage()), MiscUtils.DEFAULT_UTF8_ENCODING);
+        } catch (Exception e) {
+            logger.error("Could not retrieve lab for segmentID(" + segmentID + ")", e);
+        }
+        return ret;
+    }
 
-	/*
-	 * Create and return the message handler corresponding to the message type
-	 */
-	public static MessageHandler getHandler(String type, String hl7Body) {
-		Document doc = null;
-		String msgType;
-		String msgHandler = "";
-		Path labTypesPath = null ;
-		
-		try {
-			labTypesPath = Paths.get( Factory.class.getClassLoader().getResource("oscar/oscarLab/ca/all/upload/message_config.xml").toURI() );
-		} catch (URISyntaxException e2) {
-			logger.error("Could not default Message configuration file ", e2);
-		}	
-		
-		String labTypesPathOverride = OscarProperties.getInstance().getProperty("LAB_TYPES");
-		
-		if (labTypesPathOverride != null && ! labTypesPathOverride.isEmpty()) {
-			labTypesPath = Paths.get(labTypesPathOverride);
-		} 
+    /*
+     * Create and return the message handler corresponding to the message type
+     */
+    public static MessageHandler getHandler(String type, String hl7Body) {
+        Document doc = null;
+        String msgType;
+        String msgHandler = "";
+        Path labTypesPath = null;
 
-		try(InputStream is = Files.newInputStream(labTypesPath)) {
+        try {
+            labTypesPath = Paths.get(Factory.class.getClassLoader().getResource("oscar/oscarLab/ca/all/upload/message_config.xml").toURI());
+        } catch (URISyntaxException e2) {
+            logger.error("Could not default Message configuration file ", e2);
+        }
 
-			// return default handler if the type is not specified
-			if (type == null) {
-				MessageHandler handler = new DefaultGenericHandler();
-				handler.init(hl7Body);
-				return (handler);
-			} else {
-				type = type.trim();
- 			}
+        String labTypesPathOverride = OscarProperties.getInstance().getProperty("LAB_TYPES");
 
-			SAXBuilder parser = new SAXBuilder();
-			doc = parser.build(is);
+        if (labTypesPathOverride != null && !labTypesPathOverride.isEmpty()) {
+            labTypesPath = Paths.get(labTypesPathOverride);
+        }
 
-			Element root = doc.getRootElement();
-			List<?> items = root.getChildren();
-			
-			for (int i = 0; i < items.size(); i++) {
+        try (InputStream is = Files.newInputStream(labTypesPath)) {
 
-				Element element = (Element) items.get(i);
-				msgType = element.getAttributeValue("name");
-				
-				if ( msgType.equalsIgnoreCase( type ) ) {
-					String className = element.getAttributeValue("className");
-					
-					// in case we have dots in the handler class name (i.e. package 
-					// is specified), don't assume default package
-					if (className.indexOf(".") != -1) {
-						msgHandler = className;
-					} else {
-						msgHandler = "oscar.oscarLab.ca.all.parsers." + className;
-					}
-				}
-			}
+            // return default handler if the type is not specified
+            if (type == null) {
+                MessageHandler handler = new DefaultGenericHandler();
+                handler.init(hl7Body);
+                return (handler);
+            } else {
+                type = type.trim();
+            }
 
-			// create and return the message handler
-			if (msgHandler.equals("")) {
-				logger.debug("No message handler specified for type: " + type + "\nUsing default message handler instead");
-				MessageHandler mh = new DefaultGenericHandler();
-				mh.init(hl7Body);
-				return (mh);
-			} else {
-				try {
-					Class<?> classRef = Class.forName(msgHandler);
-					MessageHandler mh = (MessageHandler) classRef.newInstance();
-					logger.debug("Message handler '" + msgHandler + "' created successfully");
-					logger.debug("Message: " + hl7Body);
-					mh.init(hl7Body);
-					return (mh);
-				} catch (ClassNotFoundException e) {
-					logger.debug("Could not find message handler: " + msgHandler + "\nUsing default message handler instead");
-					MessageHandler mh = new DefaultGenericHandler();
-					mh.init(hl7Body);
-					return (mh);
-				} catch (Exception e1) {
-					logger.debug("Could not create message handler: " + msgHandler + "\nUsing default message handler instead", e1);
-					MessageHandler mh = new DefaultGenericHandler();
-					mh.init(hl7Body);
-					return (mh);
-				}
-			}
-		} catch (NoSuchFileException e) {
-			logger.error("Could not default Message configuration file ", e);
-		} catch (Exception e) {
-			logger.error("Could not create message handler", e);
-		}
-		
-		return null;
-	}
+            SAXBuilder parser = new SAXBuilder();
+            doc = parser.build(is);
+
+            Element root = doc.getRootElement();
+            List<?> items = root.getChildren();
+
+            for (int i = 0; i < items.size(); i++) {
+
+                Element element = (Element) items.get(i);
+                msgType = element.getAttributeValue("name");
+
+                if (msgType.equalsIgnoreCase(type)) {
+                    String className = element.getAttributeValue("className");
+
+                    // in case we have dots in the handler class name (i.e. package
+                    // is specified), don't assume default package
+                    if (className.indexOf(".") != -1) {
+                        msgHandler = className;
+                    } else {
+                        msgHandler = "oscar.oscarLab.ca.all.parsers." + className;
+                    }
+                }
+            }
+
+            // create and return the message handler
+            if (msgHandler.equals("")) {
+                logger.debug("No message handler specified for type: " + type + "\nUsing default message handler instead");
+                MessageHandler mh = new DefaultGenericHandler();
+                mh.init(hl7Body);
+                return (mh);
+            } else {
+                try {
+                    Class<?> classRef = Class.forName(msgHandler);
+                    MessageHandler mh = (MessageHandler) classRef.newInstance();
+                    logger.debug("Message handler '" + msgHandler + "' created successfully");
+                    logger.debug("Message: " + hl7Body);
+                    mh.init(hl7Body);
+                    return (mh);
+                } catch (ClassNotFoundException e) {
+                    logger.debug("Could not find message handler: " + msgHandler + "\nUsing default message handler instead");
+                    MessageHandler mh = new DefaultGenericHandler();
+                    mh.init(hl7Body);
+                    return (mh);
+                } catch (Exception e1) {
+                    logger.debug("Could not create message handler: " + msgHandler + "\nUsing default message handler instead", e1);
+                    MessageHandler mh = new DefaultGenericHandler();
+                    mh.init(hl7Body);
+                    return (mh);
+                }
+            }
+        } catch (NoSuchFileException e) {
+            logger.error("Could not default Message configuration file ", e);
+        } catch (Exception e) {
+            logger.error("Could not create message handler", e);
+        }
+
+        return null;
+    }
 }

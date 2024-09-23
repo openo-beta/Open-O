@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,36 +30,35 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class PromoTextStamper extends FooterSupport {
 
-	private String text;
+    private String text;
 
-	public PromoTextStamper(String promoText, int offset) {
-		setBaseOffset(offset);
-		this.text = promoText;
-	}
+    public PromoTextStamper(String promoText, int offset) {
+        setBaseOffset(offset);
+        this.text = promoText;
+    }
 
-	/**
-	 * Adds promo text, date and current page number to each page
-	 * 
-	 * @param writer
-	 * @param document
-	 */
-	public void onEndPage(PdfWriter writer, Document document) {
-		PdfContentByte cb = writer.getDirectContent();
-		cb.saveState();
+    /**
+     * Adds promo text, date and current page number to each page
+     *
+     * @param writer
+     * @param document
+     */
+    public void onEndPage(PdfWriter writer, Document document) {
+        PdfContentByte cb = writer.getDirectContent();
+        cb.saveState();
 
-		float textBase = document.bottom() - getBaseOffset();
-		float width = document.getPageSize().getWidth();
-		float center = width / 2.0f;
+        float textBase = document.bottom() - getBaseOffset();
+        float width = document.getPageSize().getWidth();
+        float center = width / 2.0f;
 
-		cb.beginText();
-		cb.setFontAndSize(getFont(), getFontSize());
+        cb.beginText();
+        cb.setFontAndSize(getFont(), getFontSize());
 
-		cb.setTextMatrix(document.left(), textBase);
-		cb.showTextAligned(PdfContentByte.ALIGN_CENTER, text, center, textBase, 0);
-		cb.endText();
-		cb.restoreState();
-	}
-
+        cb.setTextMatrix(document.left(), textBase);
+        cb.showTextAligned(PdfContentByte.ALIGN_CENTER, text, center, textBase, 0);
+        cb.endText();
+        cb.restoreState();
+    }
 
 
 }

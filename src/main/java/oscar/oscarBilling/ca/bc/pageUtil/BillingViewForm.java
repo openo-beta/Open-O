@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,117 +32,118 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
 public final class BillingViewForm
-    extends ActionForm {
-  private String amountReceived;
-  private String messageNotes;
-  private String recipientAddress;
-  private String recipientCity;
-  private String recipientName;
-  private String recipientPostal;
-  private String recipientProvince;
-  String requestId;
-  private String billStatus;
-  private String billingNo;
-  private String paymentMethod;
-  private String billPatient;
-  public String getRequestId() {
-    return requestId;
-  }
+        extends ActionForm {
+    private String amountReceived;
+    private String messageNotes;
+    private String recipientAddress;
+    private String recipientCity;
+    private String recipientName;
+    private String recipientPostal;
+    private String recipientProvince;
+    String requestId;
+    private String billStatus;
+    private String billingNo;
+    private String paymentMethod;
+    private String billPatient;
 
-  public String getAmountReceived() {
-    return amountReceived;
-  }
+    public String getRequestId() {
+        return requestId;
+    }
 
-  public String getRecipientProvince() {
-    return recipientProvince;
-  }
+    public String getAmountReceived() {
+        return amountReceived;
+    }
 
-  public String getRecipientPostal() {
-    return recipientPostal;
-  }
+    public String getRecipientProvince() {
+        return recipientProvince;
+    }
 
-  public String getRecipientName() {
-    return recipientName;
-  }
+    public String getRecipientPostal() {
+        return recipientPostal;
+    }
 
-  public String getRecipientCity() {
-    return recipientCity;
-  }
+    public String getRecipientName() {
+        return recipientName;
+    }
 
-  public String getRecipientAddress() {
-    return recipientAddress;
-  }
+    public String getRecipientCity() {
+        return recipientCity;
+    }
 
-  public String getMessageNotes() {
-    return messageNotes;
-  }
+    public String getRecipientAddress() {
+        return recipientAddress;
+    }
 
-  public String getBillStatus() {
-    return billStatus;
-  }
+    public String getMessageNotes() {
+        return messageNotes;
+    }
 
-  public String getBillingNo() {
-    return billingNo;
-  }
+    public String getBillStatus() {
+        return billStatus;
+    }
 
-  public String getPaymentMethod() {
-    return paymentMethod;
-  }
+    public String getBillingNo() {
+        return billingNo;
+    }
 
-  public String getBillPatient() {
-    return billPatient;
-  }
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
 
-  public void setRequestId(String id) {
-    this.requestId = id;
-  }
+    public String getBillPatient() {
+        return billPatient;
+    }
 
-  public void setAmountReceived(String amountReceived) {
-    this.amountReceived = amountReceived;
-  }
+    public void setRequestId(String id) {
+        this.requestId = id;
+    }
 
-  public void setMessageNotes(String messageNotes) {
-    this.messageNotes = messageNotes;
-  }
+    public void setAmountReceived(String amountReceived) {
+        this.amountReceived = amountReceived;
+    }
 
-  public void setRecipientAddress(String recipientAddress) {
-    this.recipientAddress = recipientAddress;
-  }
+    public void setMessageNotes(String messageNotes) {
+        this.messageNotes = messageNotes;
+    }
 
-  public void setRecipientCity(String recipientCity) {
-    this.recipientCity = recipientCity;
-  }
+    public void setRecipientAddress(String recipientAddress) {
+        this.recipientAddress = recipientAddress;
+    }
 
-  public void setRecipientName(String recipientName) {
-    this.recipientName = recipientName;
-  }
+    public void setRecipientCity(String recipientCity) {
+        this.recipientCity = recipientCity;
+    }
 
-  public void setRecipientPostal(String recipientPostal) {
-    this.recipientPostal = recipientPostal;
-  }
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
 
-  public void setRecipientProvince(String recipientProvince) {
-    this.recipientProvince = recipientProvince;
-  }
+    public void setRecipientPostal(String recipientPostal) {
+        this.recipientPostal = recipientPostal;
+    }
 
-  public void setBillStatus(String billStatus) {
-    this.billStatus = billStatus;
-  }
+    public void setRecipientProvince(String recipientProvince) {
+        this.recipientProvince = recipientProvince;
+    }
 
-  public void setBillingNo(String billingNo) {
-    this.billingNo = billingNo;
-  }
+    public void setBillStatus(String billStatus) {
+        this.billStatus = billStatus;
+    }
 
-  public void setPaymentMethod(String paymentMethod) {
-    this.paymentMethod = paymentMethod;
-  }
+    public void setBillingNo(String billingNo) {
+        this.billingNo = billingNo;
+    }
 
-  public void setBillPatient(String billPatient) {
-    this.billPatient = billPatient;
-  }
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
-  public void reset(ActionMapping mapping, HttpServletRequest request) {
-     this.amountReceived = "";
-   }
+    public void setBillPatient(String billPatient) {
+        this.billPatient = billPatient;
+    }
+
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        this.amountReceived = "";
+    }
 
 }

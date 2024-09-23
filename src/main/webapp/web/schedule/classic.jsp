@@ -28,11 +28,12 @@
 </p>
 
 <button type="button" class="btn btn-default btn-lg" onClick="location.href='../provider/providercontrol.jsp'">
-  <span class="glyphicon glyphicon-calendar"></span> Go to classic view
+    <span class="glyphicon glyphicon-calendar"></span> Go to classic view
 </button>
 
 <br/>
 
-<h5><b>Note:</b> use the icon (<img src="../images/oscar_small.png" border="0"/> ) at the top to navigate back to the new user experience.</h5>
+<h5><b>Note:</b> use the icon (<img src="../images/oscar_small.png" border="0"/> ) at the top to navigate back to the
+    new user experience.</h5>
 
 

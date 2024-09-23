@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -38,114 +37,114 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="dx_associations")
+@Table(name = "dx_associations")
 public class DxAssociation extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id = null;
-	
-	@Column(name="dx_codetype")
-	private String dxCodeType;
-	
-	@Column(name="dx_code")
-	private String dxCode;
-	
-	@Column(name="codetype")
-	private String codeType;
-	
-	@Column(name="code")
-	private String code;
-	
-	@Column(name="update_date")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id = null;
 
-	@Transient
-	private String dxDescription;
-	
-	@Transient
-	private String description;
-	
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "dx_codetype")
+    private String dxCodeType;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "dx_code")
+    private String dxCode;
 
-	public String getDxCodeType() {
-		return dxCodeType;
-	}
+    @Column(name = "codetype")
+    private String codeType;
 
-	public void setDxCodeType(String dxCodeType) {
-		this.dxCodeType = dxCodeType;
-	}
+    @Column(name = "code")
+    private String code;
 
-	public String getDxCode() {
-		return dxCode;
-	}
+    @Column(name = "update_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDate;
 
-	public void setDxCode(String dxCode) {
-		this.dxCode = dxCode;
-	}
+    @Transient
+    private String dxDescription;
 
-	public String getCodeType() {
-		return codeType;
-	}
+    @Transient
+    private String description;
 
-	public void setCodeType(String codeType) {
-		this.codeType = codeType;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getDxCodeType() {
+        return dxCodeType;
+    }
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    public void setDxCodeType(String dxCodeType) {
+        this.dxCodeType = dxCodeType;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	
-	public String getDxDescription() {
-		return dxDescription;
-	}
+    public String getDxCode() {
+        return dxCode;
+    }
 
-	public void setDxDescription(String dxDescription) {
-		this.dxDescription = dxDescription;
-	}
+    public void setDxCode(String dxCode) {
+        this.dxCode = dxCode;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getCodeType() {
+        return codeType;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCodeType(String codeType) {
+        this.codeType = codeType;
+    }
 
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    public String getCode() {
+        return code;
+    }
 
-		DxAssociation assoc = (DxAssociation) o;
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-		if (id != null ? !id.equals(assoc.id) : assoc.id != null) return false;
+    public Date getUpdateDate() {
+        return updateDate;
+    }
 
-		return true;
-	}
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 
-	public int hashCode() {
-		return (id != null ? id.hashCode() : 0);
-	}
-	
-	
+    public String getDxDescription() {
+        return dxDescription;
+    }
+
+    public void setDxDescription(String dxDescription) {
+        this.dxDescription = dxDescription;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DxAssociation assoc = (DxAssociation) o;
+
+        if (id != null ? !id.equals(assoc.id) : assoc.id != null) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        return (id != null ? id.hashCode() : 0);
+    }
+
+
 }

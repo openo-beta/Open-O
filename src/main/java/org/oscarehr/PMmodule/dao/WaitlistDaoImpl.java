@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.PMmodule.dao;
@@ -255,13 +255,13 @@ public class WaitlistDaoImpl implements WaitlistDao {
         //         "v.dateCreated, p.name, v.vacancyName  FROM vacancy v JOIN vacancy_template t ON v.templateId=t.TEMPLATE_ID JOIN program p ON v.wlProgramId=p.id  WHERE v.id=?1";
 
         String queryString = "SELECT v.vacancyName AS v_vacancyName, t.NAME AS t_name, " +
-                         "v.dateCreated AS v_dateCreated, p.name AS p_name, " +
-                         "v.vacancyName AS v_vacancyName_duplicate " +
-                         "FROM vacancy v " +
-                         "JOIN vacancy_template t ON v.templateId = t.TEMPLATE_ID " +
-                         "JOIN program p ON v.wlProgramId = p.id " +
-                         "WHERE v.id = ?1";
-                         
+                "v.dateCreated AS v_dateCreated, p.name AS p_name, " +
+                "v.vacancyName AS v_vacancyName_duplicate " +
+                "FROM vacancy v " +
+                "JOIN vacancy_template t ON v.templateId = t.TEMPLATE_ID " +
+                "JOIN program p ON v.wlProgramId = p.id " +
+                "WHERE v.id = ?1";
+
         Query query = entityManager.createNativeQuery(queryString);
         query.setParameter(1, vacancyID);
 
@@ -477,43 +477,43 @@ public class WaitlistDaoImpl implements WaitlistDao {
 
     private String[] intakeVarToCriteriaFiled(String varName, String varValue) {
         if ("age-years".equalsIgnoreCase(varName) || "age category".equalsIgnoreCase(varName)) {
-            return new String[] { "age", varValue };
+            return new String[]{"age", varValue};
         } else if ("gender".equalsIgnoreCase(varName)) {
-            return new String[] { "gender", varValue };
+            return new String[]{"gender", varValue};
         } else if ("preferred-language".equalsIgnoreCase(varName)) {
             if ("eng".equalsIgnoreCase(varValue) || "english".equalsIgnoreCase(varValue)) {
-                return new String[] { "language", "English" };
+                return new String[]{"language", "English"};
             } else if ("fre".equalsIgnoreCase(varValue) || "french".equalsIgnoreCase(varValue)) {
-                return new String[] { "language", "French" };
+                return new String[]{"language", "French"};
             } else {
-                return new String[] { "language", "Other" };
+                return new String[]{"language", "Other"};
             }
         } else if ("location-preferences".equalsIgnoreCase(varName)) {
-            return new String[] { "area", varValue };
+            return new String[]{"area", varValue};
         } else if ("prepared-live-toronto".equalsIgnoreCase(varName)) {
             if ("yes".equalsIgnoreCase(varValue)) {
-                return new String[] { "area", "Toronto" };
+                return new String[]{"area", "Toronto"};
             }
         } else if ("current-housing".equalsIgnoreCase(varName)) {
             if ("other".equalsIgnoreCase(varValue)) {
-                return new String[] { "residence", "Homeless" };
+                return new String[]{"residence", "Homeless"};
             } else if ("no-fixed-address".equalsIgnoreCase(varValue)) {
-                return new String[] { "residence", "Transitional" };
+                return new String[]{"residence", "Transitional"};
             } else {
-                return new String[] { "residence", "Housed" };
+                return new String[]{"residence", "Housed"};
             }
         } else if ("has-mental-illness-primary".equalsIgnoreCase(varName)) {
             if (!"no".equalsIgnoreCase(varValue) && !"unknown".equalsIgnoreCase(varValue)) {
-                return new String[] { "Serious and Persistent Mental Illness Diagnosis", varValue,
-                        "Serious and Persistent Mental Illness Diagnosis", "No Formal Diagnosis" };
+                return new String[]{"Serious and Persistent Mental Illness Diagnosis", varValue,
+                        "Serious and Persistent Mental Illness Diagnosis", "No Formal Diagnosis"};
             } else if (!"no".equalsIgnoreCase(varValue)) {
-                return new String[] { "Serious and Persistent Mental Illness Diagnosis", "Formal Diagnosis",
-                        "Serious and Persistent Mental Illness Diagnosis", varValue };
+                return new String[]{"Serious and Persistent Mental Illness Diagnosis", "Formal Diagnosis",
+                        "Serious and Persistent Mental Illness Diagnosis", varValue};
             }
         } else if ("current-legal-involvements".equalsIgnoreCase(varName)) {
-            return new String[] { "Legal History", varValue };
+            return new String[]{"Legal History", varValue};
         }
-        return new String[] { varName, varValue };
+        return new String[]{varName, varValue};
     }
 
     @Override

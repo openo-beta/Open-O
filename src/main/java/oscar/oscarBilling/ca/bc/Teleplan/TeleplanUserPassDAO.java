@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,72 +40,72 @@ import org.oscarehr.util.SpringUtils;
  * @author jay
  */
 public class TeleplanUserPassDAO {
-    static Logger log=MiscUtils.getLogger();
+    static Logger log = MiscUtils.getLogger();
     private PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
-    
-    
+
+
     public TeleplanUserPassDAO() {
     }
-    
-    private void setUsername(String username){
-    	Property p = new Property();
-    	p.setName("teleplan_username");
-    	p.setValue(username);
-    	propertyDao.persist(p);
+
+    private void setUsername(String username) {
+        Property p = new Property();
+        p.setName("teleplan_username");
+        p.setValue(username);
+        propertyDao.persist(p);
     }
-    
-    private void setPassword(String password){
-    	Property p = new Property();
-    	p.setName("teleplan_password");
-    	p.setValue(password);
-    	propertyDao.persist(p);
+
+    private void setPassword(String password) {
+        Property p = new Property();
+        p.setName("teleplan_password");
+        p.setValue(password);
+        propertyDao.persist(p);
     }
-    
-    
-    private void updateUsername(String username){
-    	List<Property> ps = propertyDao.findByName("teleplan_username");
-    	for(Property p:ps) {
-    		p.setValue(username);
-    		propertyDao.merge(p);
-    	}
+
+
+    private void updateUsername(String username) {
+        List<Property> ps = propertyDao.findByName("teleplan_username");
+        for (Property p : ps) {
+            p.setValue(username);
+            propertyDao.merge(p);
+        }
     }
-    
-    private void updatePassword(String password){
-    	List<Property> ps = propertyDao.findByName("teleplan_password");
-    	for(Property p:ps) {
-    		p.setValue(password);
-    		propertyDao.merge(p);
-    	}
+
+    private void updatePassword(String password) {
+        List<Property> ps = propertyDao.findByName("teleplan_password");
+        for (Property p : ps) {
+            p.setValue(password);
+            propertyDao.merge(p);
+        }
     }
-    
-    public boolean hasUsernamePassword(){
+
+    public boolean hasUsernamePassword() {
         return hasUsername();
     }
-    
-    private boolean hasUsername(){
-    	boolean hasSequence = false;
+
+    private boolean hasUsername() {
+        boolean hasSequence = false;
         List<Property> ps = propertyDao.findByName("teleplan_username");
-        if(!ps.isEmpty())
-        	hasSequence=true;
+        if (!ps.isEmpty())
+            hasSequence = true;
         return hasSequence;
     }
-    
-    private boolean hasPassword(){
-    	boolean hasSequence = false;
+
+    private boolean hasPassword() {
+        boolean hasSequence = false;
         List<Property> ps = propertyDao.findByName("teleplan_password");
-        if(!ps.isEmpty())
-        	hasSequence=true;
+        if (!ps.isEmpty())
+            hasSequence = true;
         return hasSequence;
     }
-    
-    public void saveUpdateUsername(String username){
-        if(hasUsername()){
-            log.debug("has username"+username);
+
+    public void saveUpdateUsername(String username) {
+        if (hasUsername()) {
+            log.debug("has username" + username);
             updateUsername(username);
-        }else{
-            log.debug("not username"+username);
+        } else {
+            log.debug("not username" + username);
             setUsername(username);
-        }  
+        }
     }
 
     public void saveUpdatePasssword(String password) {
@@ -120,17 +120,17 @@ public class TeleplanUserPassDAO {
         if(hasPassword()) {
             log.debug("has password" + password);
             updatePassword(password);
-        }else{
-            log.debug("not password"+password);
+        } else {
+            log.debug("not password" + password);
             setPassword(password);
-        }  
+        }
     }
-    
-    public String[] getUsernamePassword(){
+
+    public String[] getUsernamePassword() {
         String[] str = new String[2];
         List<Property> ps = propertyDao.findByName("teleplan_username");
-        for(Property p:ps) {
-        	str[0] = p.getValue();
+        for (Property p : ps) {
+            str[0] = p.getValue();
         }
         ps = propertyDao.findByName("teleplan_password");
         for(Property p:ps) {
@@ -150,7 +150,6 @@ public class TeleplanUserPassDAO {
         }
         return str;
     }
-     
-  
-    
+
+
 }

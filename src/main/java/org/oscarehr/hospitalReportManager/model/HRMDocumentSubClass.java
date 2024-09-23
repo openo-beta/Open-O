@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -22,78 +22,78 @@ import org.oscarehr.common.model.AbstractModel;
 @Entity
 public class HRMDocumentSubClass extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private Integer hrmDocumentId;
-	private String subClass;
-	private String subClassMnemonic;
-	private String subClassDescription;
-	private Date subClassDateTime;
-	private boolean isActive;
-	private String sendingFacilityId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private Integer hrmDocumentId;
+    private String subClass;
+    private String subClassMnemonic;
+    private String subClassDescription;
+    private Date subClassDateTime;
+    private boolean isActive;
+    private String sendingFacilityId;
 
 
-	@Override
+    @Override
     public Integer getId() {
-	    return id;
+        return id;
     }
 
-	public Integer getHrmDocumentId() {
-    	return hrmDocumentId;
+    public Integer getHrmDocumentId() {
+        return hrmDocumentId;
     }
 
-	public void setHrmDocumentId(Integer hrmDocumentId) {
-    	this.hrmDocumentId = hrmDocumentId;
+    public void setHrmDocumentId(Integer hrmDocumentId) {
+        this.hrmDocumentId = hrmDocumentId;
     }
 
-	public String getSubClass() {
-    	return subClass;
+    public String getSubClass() {
+        return subClass;
     }
 
-	public void setSubClass(String subClass) {
-    	this.subClass = subClass;
+    public void setSubClass(String subClass) {
+        this.subClass = subClass;
     }
 
-	public String getSubClassMnemonic() {
-    	return subClassMnemonic;
+    public String getSubClassMnemonic() {
+        return subClassMnemonic;
     }
 
-	public void setSubClassMnemonic(String subClassMnemonic) {
-    	this.subClassMnemonic = subClassMnemonic;
+    public void setSubClassMnemonic(String subClassMnemonic) {
+        this.subClassMnemonic = subClassMnemonic;
     }
 
-	public String getSubClassDescription() {
-    	return subClassDescription;
+    public String getSubClassDescription() {
+        return subClassDescription;
     }
 
-	public void setSubClassDescription(String subClassDescription) {
-    	this.subClassDescription = subClassDescription;
+    public void setSubClassDescription(String subClassDescription) {
+        this.subClassDescription = subClassDescription;
     }
 
-	public Date getSubClassDateTime() {
-    	return subClassDateTime;
+    public Date getSubClassDateTime() {
+        return subClassDateTime;
     }
 
-	public void setSubClassDateTime(Date subClassDateTime) {
-    	this.subClassDateTime = subClassDateTime;
+    public void setSubClassDateTime(Date subClassDateTime) {
+        this.subClassDateTime = subClassDateTime;
     }
 
-	public boolean isActive() {
-    	return isActive;
+    public boolean isActive() {
+        return isActive;
     }
 
-	public void setActive(boolean isActive) {
-    	this.isActive = isActive;
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
-	public String getSendingFacilityId() {
-		return sendingFacilityId;
-	}
+    public String getSendingFacilityId() {
+        return sendingFacilityId;
+    }
 
-	public void setSendingFacilityId(String sendingFacilityId) {
-		this.sendingFacilityId = sendingFacilityId;
-	}
+    public void setSendingFacilityId(String sendingFacilityId) {
+        this.sendingFacilityId = sendingFacilityId;
+    }
 
 }

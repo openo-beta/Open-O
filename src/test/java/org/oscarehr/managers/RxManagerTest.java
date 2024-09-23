@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -50,6 +50,7 @@ public class RxManagerTest extends RxManagerImpl {
 
     Drug old = null;
     int daoAddNewDrugCalled = 0;
+
     @Before
     public void before() {
         this.drugDao = new MockDrugDao();
@@ -365,7 +366,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testPrescribeBasicMultiple(){
+    public void testPrescribeBasicMultiple() {
 
         List<Drug> drugs = new ArrayList<Drug>();
         drugs.add(getTestDrug());
@@ -383,7 +384,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testShouldReturnNullOnNullInfo(){
+    public void testShouldReturnNullOnNullInfo() {
 
         List<Drug> drugs = new ArrayList<Drug>();
         drugs.add(getTestDrug());
@@ -393,7 +394,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testShouldReturnNullOnNullDrugs(){
+    public void testShouldReturnNullOnNullDrugs() {
 
         LoggedInInfo info = new LoggedInInfo();
         PrescriptionDrugs pd = prescribe(info, null, 1);
@@ -402,7 +403,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testShouldReturnNullOnEmptyDrugs(){
+    public void testShouldReturnNullOnEmptyDrugs() {
 
         List<Drug> l = new ArrayList<Drug>();
         LoggedInInfo info = new LoggedInInfo();
@@ -412,7 +413,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testShouldReturnNullOnInvalidDemoNo(){
+    public void testShouldReturnNullOnInvalidDemoNo() {
 
         List<Drug> drugs = new ArrayList<Drug>();
         drugs.add(getTestDrug());
@@ -423,7 +424,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testShouldReturnNullOnDrugThatCannotBePrescribed(){
+    public void testShouldReturnNullOnDrugThatCannotBePrescribed() {
 
         List<Drug> drugs = new ArrayList<Drug>();
         Drug d = getTestDrug();
@@ -437,7 +438,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void testShouldDenyAcess(){
+    public void testShouldDenyAcess() {
         List<Drug> drugs = new ArrayList<Drug>();
         Drug d = getTestDrug();
         drugs.add(d);
@@ -446,7 +447,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testShouldAttemptToAddDrugIfDoesNotExist(){
+    public void testShouldAttemptToAddDrugIfDoesNotExist() {
 
         List<Drug> drugs = new ArrayList<Drug>();
         Drug d = getTestDrug();
@@ -463,7 +464,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testShouldReturnNullIfAddingANewDrugFails(){
+    public void testShouldReturnNullIfAddingANewDrugFails() {
 
         List<Drug> drugs = new ArrayList<Drug>();
         Drug d = getTestDrug();
@@ -479,60 +480,60 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testCanPrescribeBasic(){
+    public void testCanPrescribeBasic() {
         Drug d = getTestDrug();
         assertTrue(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseOnNull(){
+    public void testCanPrescribeIsFalseOnNull() {
         assertFalse(canPrescribe(null));
     }
 
     @Test
-    public void testCanPrescribeIsFalseNullProvider(){
+    public void testCanPrescribeIsFalseNullProvider() {
         Drug d = getTestDrug();
         d.setProviderNo(null);
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseEmptyStringProvider(){
+    public void testCanPrescribeIsFalseEmptyStringProvider() {
         Drug d = getTestDrug();
         d.setProviderNo("");
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseNullDemographic(){
+    public void testCanPrescribeIsFalseNullDemographic() {
         Drug d = getTestDrug();
         d.setDemographicId(null);
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseInvalidDemographic(){
+    public void testCanPrescribeIsFalseInvalidDemographic() {
         Drug d = getTestDrug();
         d.setDemographicId(-1);
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseOnNullStartDate(){
+    public void testCanPrescribeIsFalseOnNullStartDate() {
         Drug d = getTestDrug();
         d.setRxDate(null);
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseOnNullEndDate(){
+    public void testCanPrescribeIsFalseOnNullEndDate() {
         Drug d = getTestDrug();
         d.setEndDate(null);
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseOnBadDateSequence(){
+    public void testCanPrescribeIsFalseOnBadDateSequence() {
         Drug d = getTestDrug();
 
         // start after end date.
@@ -543,21 +544,21 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testCanPrescribeIsFalseOnNullInstructions(){
+    public void testCanPrescribeIsFalseOnNullInstructions() {
         Drug d = getTestDrug();
         d.setSpecial(null);
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testCanPrescribeIsFalseOnEmptyStringInstructions(){
+    public void testCanPrescribeIsFalseOnEmptyStringInstructions() {
         Drug d = getTestDrug();
         d.setSpecial("");
         assertFalse(canPrescribe(d));
     }
 
     @Test
-    public void testGetHistoryBasic(){
+    public void testGetHistoryBasic() {
 
         LoggedInInfo info = new LoggedInInfo();
 
@@ -569,7 +570,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test
-    public void testGetHistoryReturnsEmptyListOnInvalidDrug(){
+    public void testGetHistoryReturnsEmptyListOnInvalidDrug() {
 
         LoggedInInfo info = new LoggedInInfo();
 
@@ -581,7 +582,7 @@ public class RxManagerTest extends RxManagerImpl {
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void testGetHistoryCanDenyAccess(){
+    public void testGetHistoryCanDenyAccess() {
 
         LoggedInInfo info = new LoggedInInfo();
 
@@ -629,14 +630,14 @@ public class RxManagerTest extends RxManagerImpl {
 
     }
 
-    public Prescription getTestPrescription(){
+    public Prescription getTestPrescription() {
 
         Prescription p = new Prescription();
 
         p.setDemographicId(1);
         p.setProviderNo("1");
         p.setTextView("PRESCRIPTION TEXT");
-        p.setDatePrescribed( new Date());
+        p.setDatePrescribed(new Date());
         p.setComments("COMMENT TEXT");
 
         return p;
@@ -661,15 +662,15 @@ public class RxManagerTest extends RxManagerImpl {
     // Uses to mock objects to get around dependancy injection
     // allows for more control over exactly what is tested.
 
-    public class MockPrescriptionManager extends PrescriptionManagerImpl{
+    public class MockPrescriptionManager extends PrescriptionManagerImpl {
 
-        public MockPrescriptionManager(){
+        public MockPrescriptionManager() {
             super();
         }
 
         public Prescription createNewPrescription(LoggedInInfo info, List<Drug> drugs, Integer demographicNo) {
 
-            if(demographicNo > 10) return null;
+            if (demographicNo > 10) return null;
             else return getTestPrescription();
 
         }
@@ -727,9 +728,9 @@ public class RxManagerTest extends RxManagerImpl {
 
         public List<Drug> findByDemographicIdAndDrugId(int demographicNo, Integer drugId) {
 
-            if(drugId > 5) {
+            if (drugId > 5) {
                 return new ArrayList<Drug>();
-            } else{
+            } else {
                 List<Drug> drugs = new ArrayList<Drug>();
                 Drug d = getTestDrug();
                 d.setId(drugId);
@@ -742,9 +743,9 @@ public class RxManagerTest extends RxManagerImpl {
 
         public List<Drug> findByAtc(String atc) {
 
-            if(atc.equals("BAD_ATC")){
+            if (atc.equals("BAD_ATC")) {
                 return new ArrayList<Drug>();
-            }else{
+            } else {
                 List<Drug> drugs = new ArrayList<Drug>();
                 Drug d = getTestDrug();
                 drugs.add(d);
@@ -752,9 +753,9 @@ public class RxManagerTest extends RxManagerImpl {
             }
         }
 
-        
+
         public List<Drug> findByDemographicIdAndAtc(int demographicNo, String atc) {
-        		return new ArrayList<Drug>();
+            return new ArrayList<Drug>();
         }
 
         public boolean addNewDrug(Drug d) {
@@ -796,6 +797,7 @@ public class RxManagerTest extends RxManagerImpl {
 
             return null;
         }
+
         /**
          * Mock find() method that searches that test data
          * for a drug with appropriate ID.
@@ -811,6 +813,7 @@ public class RxManagerTest extends RxManagerImpl {
 
             return null;
         }
+
         /**
          * Override method for testing purposes.
          */
@@ -823,7 +826,6 @@ public class RxManagerTest extends RxManagerImpl {
             return;
 
         }
-
 
 
     }

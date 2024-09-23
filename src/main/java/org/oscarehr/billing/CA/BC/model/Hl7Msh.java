@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,242 +38,241 @@ import javax.persistence.TemporalType;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="hl7_msh")
+@Table(name = "hl7_msh")
 public class Hl7Msh extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="msh_id")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "msh_id")
+    private Integer id;
 
-	@Column(name="message_id")
-	private int messageId;
-	
-	private String seperator;
-	
-	@Column(name="encoding_characters")
-	private String encoding;
-	
-	@Column(name="sending_application")
-	private String sendingApp;
-	
-	@Column(name="sending_facility")
-	private String sendingFacility;
-	
-	@Column(name="receiving_application")
-	private String receivingApp;
-	
-	@Column(name="receiving_facility")
-	private String receivingFacility;
-	
-	@Column(name="date_time_of_message")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateTime;
-	
-	private String security;
-	
-	@Column(name="message_type")
-	private String messageType;
-	
-	@Column(name="message_control_id")
-	private String controlId;
-	
-	@Column(name="processing_id")
-	private String processingId;
-	
-	@Column(name="version_id")
-	private String versionId;
-	
-	@Column(name="sequence_number")
-	private String sequenceNumber;
-	
-	@Column(name="continuation_pointer")
-	private String continuationPointer;
-	
-	@Column(name="accept_acknowledgment_type")
-	private String acceptAckType;
-	
-	@Column(name="application_acknowledge_type")
-	private String applicationAckType;
-	
-	@Column(name="country_code")
-	private String countryCode;
-	
-	@Column(name="character_set")
-	private String characterSet;
-	
-	@Column(name="principal_language_of_message")
-	private String language;
+    @Column(name = "message_id")
+    private int messageId;
 
-	public Integer getId() {
-		return id;
-	}
+    private String seperator;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "encoding_characters")
+    private String encoding;
 
-	public int getMessageId() {
-		return messageId;
-	}
+    @Column(name = "sending_application")
+    private String sendingApp;
 
-	public void setMessageId(int messageId) {
-		this.messageId = messageId;
-	}
+    @Column(name = "sending_facility")
+    private String sendingFacility;
 
-	public String getSeperator() {
-		return seperator;
-	}
+    @Column(name = "receiving_application")
+    private String receivingApp;
 
-	public void setSeperator(String seperator) {
-		this.seperator = seperator;
-	}
+    @Column(name = "receiving_facility")
+    private String receivingFacility;
 
-	public String getEncoding() {
-		return encoding;
-	}
+    @Column(name = "date_time_of_message")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateTime;
 
-	public void setEncoding(String encoding) {
-		this.encoding = encoding;
-	}
+    private String security;
 
-	public String getSendingApp() {
-		return sendingApp;
-	}
+    @Column(name = "message_type")
+    private String messageType;
 
-	public void setSendingApp(String sendingApp) {
-		this.sendingApp = sendingApp;
-	}
+    @Column(name = "message_control_id")
+    private String controlId;
 
-	public String getSendingFacility() {
-		return sendingFacility;
-	}
+    @Column(name = "processing_id")
+    private String processingId;
 
-	public void setSendingFacility(String sendingFacility) {
-		this.sendingFacility = sendingFacility;
-	}
+    @Column(name = "version_id")
+    private String versionId;
 
-	public String getReceivingApp() {
-		return receivingApp;
-	}
+    @Column(name = "sequence_number")
+    private String sequenceNumber;
 
-	public void setReceivingApp(String receivingApp) {
-		this.receivingApp = receivingApp;
-	}
+    @Column(name = "continuation_pointer")
+    private String continuationPointer;
 
-	public String getReceivingFacility() {
-		return receivingFacility;
-	}
+    @Column(name = "accept_acknowledgment_type")
+    private String acceptAckType;
 
-	public void setReceivingFacility(String receivingFacility) {
-		this.receivingFacility = receivingFacility;
-	}
+    @Column(name = "application_acknowledge_type")
+    private String applicationAckType;
 
-	public Date getDateTime() {
-		return dateTime;
-	}
+    @Column(name = "country_code")
+    private String countryCode;
 
-	public void setDateTime(Date dateTime) {
-		this.dateTime = dateTime;
-	}
+    @Column(name = "character_set")
+    private String characterSet;
 
-	public String getSecurity() {
-		return security;
-	}
+    @Column(name = "principal_language_of_message")
+    private String language;
 
-	public void setSecurity(String security) {
-		this.security = security;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getMessageType() {
-		return messageType;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setMessageType(String messageType) {
-		this.messageType = messageType;
-	}
+    public int getMessageId() {
+        return messageId;
+    }
 
-	public String getControlId() {
-		return controlId;
-	}
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
 
-	public void setControlId(String controlId) {
-		this.controlId = controlId;
-	}
+    public String getSeperator() {
+        return seperator;
+    }
 
-	public String getProcessingId() {
-		return processingId;
-	}
+    public void setSeperator(String seperator) {
+        this.seperator = seperator;
+    }
 
-	public void setProcessingId(String processingId) {
-		this.processingId = processingId;
-	}
+    public String getEncoding() {
+        return encoding;
+    }
 
-	public String getVersionId() {
-		return versionId;
-	}
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
 
-	public void setVersionId(String versionId) {
-		this.versionId = versionId;
-	}
+    public String getSendingApp() {
+        return sendingApp;
+    }
 
-	public String getSequenceNumber() {
-		return sequenceNumber;
-	}
+    public void setSendingApp(String sendingApp) {
+        this.sendingApp = sendingApp;
+    }
 
-	public void setSequenceNumber(String sequenceNumber) {
-		this.sequenceNumber = sequenceNumber;
-	}
+    public String getSendingFacility() {
+        return sendingFacility;
+    }
 
-	public String getContinuationPointer() {
-		return continuationPointer;
-	}
+    public void setSendingFacility(String sendingFacility) {
+        this.sendingFacility = sendingFacility;
+    }
 
-	public void setContinuationPointer(String continuationPointer) {
-		this.continuationPointer = continuationPointer;
-	}
+    public String getReceivingApp() {
+        return receivingApp;
+    }
+
+    public void setReceivingApp(String receivingApp) {
+        this.receivingApp = receivingApp;
+    }
+
+    public String getReceivingFacility() {
+        return receivingFacility;
+    }
+
+    public void setReceivingFacility(String receivingFacility) {
+        this.receivingFacility = receivingFacility;
+    }
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getSecurity() {
+        return security;
+    }
+
+    public void setSecurity(String security) {
+        this.security = security;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getControlId() {
+        return controlId;
+    }
+
+    public void setControlId(String controlId) {
+        this.controlId = controlId;
+    }
+
+    public String getProcessingId() {
+        return processingId;
+    }
+
+    public void setProcessingId(String processingId) {
+        this.processingId = processingId;
+    }
+
+    public String getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(String versionId) {
+        this.versionId = versionId;
+    }
+
+    public String getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(String sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
+    public String getContinuationPointer() {
+        return continuationPointer;
+    }
+
+    public void setContinuationPointer(String continuationPointer) {
+        this.continuationPointer = continuationPointer;
+    }
 
 
+    public String getAcceptAckType() {
+        return acceptAckType;
+    }
 
-	public String getAcceptAckType() {
-		return acceptAckType;
-	}
+    public void setAcceptAckType(String acceptAckType) {
+        this.acceptAckType = acceptAckType;
+    }
 
-	public void setAcceptAckType(String acceptAckType) {
-		this.acceptAckType = acceptAckType;
-	}
+    public String getApplicationAckType() {
+        return applicationAckType;
+    }
 
-	public String getApplicationAckType() {
-		return applicationAckType;
-	}
+    public void setApplicationAckType(String applicationAckType) {
+        this.applicationAckType = applicationAckType;
+    }
 
-	public void setApplicationAckType(String applicationAckType) {
-		this.applicationAckType = applicationAckType;
-	}
+    public String getCountryCode() {
+        return countryCode;
+    }
 
-	public String getCountryCode() {
-		return countryCode;
-	}
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
+    public String getCharacterSet() {
+        return characterSet;
+    }
 
-	public String getCharacterSet() {
-		return characterSet;
-	}
+    public void setCharacterSet(String characterSet) {
+        this.characterSet = characterSet;
+    }
 
-	public void setCharacterSet(String characterSet) {
-		this.characterSet = characterSet;
-	}
+    public String getLanguage() {
+        return language;
+    }
 
-	public String getLanguage() {
-		return language;
-	}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-	
-	
+
 }

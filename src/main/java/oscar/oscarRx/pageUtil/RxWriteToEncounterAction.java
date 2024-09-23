@@ -6,24 +6,24 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *    
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
  */
- 
- package oscar.oscarRx.pageUtil;
+
+package oscar.oscarRx.pageUtil;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -39,6 +39,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.oscarEncounter.data.EctProgram;
+
 import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
@@ -51,18 +52,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Locale;
+
 import org.owasp.encoder.Encode;
 
 public class RxWriteToEncounterAction extends Action {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
+
     private oscar.oscarRx.pageUtil.RxSessionBean rxSessionBean = null;
 
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, "w");
-        
+
         HttpSession session = request.getSession();
         rxSessionBean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
         if (rxSessionBean == null) {
@@ -71,9 +73,8 @@ public class RxWriteToEncounterAction extends Action {
         }
         String demographicNo = String.valueOf(rxSessionBean.getDemographicNo());
         String programNo = new EctProgram(session).getProgram(session.getAttribute("user").toString());
-        
 
-        
+
         CaseManagementManager caseManagementMgr = SpringUtils.getBean(CaseManagementManager.class);
         CaseManagementTmpSaveDao caseManagementTmpSaveDao = SpringUtils.getBean(CaseManagementTmpSaveDao.class);
         CaseManagementNote note = getLastSaved(request, demographicNo, loggedInInfo.getLoggedInProviderNo(), caseManagementMgr);
@@ -81,7 +82,7 @@ public class RxWriteToEncounterAction extends Action {
         Date today = new Date();
         if (tmpSave != null) {
             String noteBody = generateNote(loggedInInfo, Encode.forJavaScript(request.getParameter("body")), false);
-            
+
             if (tmpSave.getNoteId() > 0) {
                 note = caseManagementMgr.getNote(String.valueOf(tmpSave.getNoteId()));
                 if (note.getUpdate_date().after(tmpSave.getUpdateDate())) {
@@ -104,19 +105,19 @@ public class RxWriteToEncounterAction extends Action {
             String noteBody = generateNote(loggedInInfo, request.getParameter("body"), true);
             createAndSaveNewNote(loggedInInfo, demographicNo, programNo, caseManagementMgr, today, noteBody, request.getParameter("sign"));
         }
-        
-        
+
+
         return null;
     }
-    
+
     private String generateNote(LoggedInInfo loggedInInfo, String noteBody, boolean addDateString) {
-     
-        SimpleDateFormat df =  new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String formattedDate = df.format(new Date());
 
-        String dateString = "["+formattedDate+" .:Rx]\n\n";
+        String dateString = "[" + formattedDate + " .:Rx]\n\n";
         String note = addDateString ? dateString : "";
-        note += noteBody;        
+        note += noteBody;
         return note;
     }
 
@@ -125,7 +126,7 @@ public class RxWriteToEncounterAction extends Action {
             throw new RuntimeException("missing required security object (_rx)");
         }
     }
-    
+
     public CaseManagementNote getLastSaved(HttpServletRequest request, String demono, String providerNo, CaseManagementManager caseManagementMgr) {
         HttpSession session = request.getSession();
         String programId = (String) session.getAttribute("case_program_id");
@@ -151,8 +152,8 @@ public class RxWriteToEncounterAction extends Action {
         note.setProviderNo(loggedInInfo.getLoggedInProviderNo());
         note.setSigned(false);
         note.setSigning_provider_no("");
-        if ("sign".equals(signNote)) { 
-            note.setSigned(true); 
+        if ("sign".equals(signNote)) {
+            note.setSigned(true);
             note.setSigning_provider_no(loggedInInfo.getLoggedInProviderNo());
         }
         note.setProgram_no(programNo);

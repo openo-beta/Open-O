@@ -24,153 +24,156 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.consult" rights="w" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../../securityError.jsp?type=_admin&type=_admin.consult");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../../securityError.jsp?type=_admin&type=_admin.consult");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <!DOCTYPE html>
 <html:html lang="en">
-<jsp:useBean id="displayServiceUtil" scope="request"
-	class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil" />
-<%
-displayServiceUtil.estSpecialistVector();
-%>
-<head>
+    <jsp:useBean id="displayServiceUtil" scope="request"
+                 class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
+    <%
+        displayServiceUtil.estSpecialistVector();
+    %>
+    <head>
 
-<title><bean:message
-	key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title" />
-</title>
-	<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<html:base />
-	<script language="javascript">
-		function BackToOscar()
-		{
-			window.close();
-		}
-	</script>
-	<link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
+        <title><bean:message
+                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/>
+        </title>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <html:base/>
+        <script language="javascript">
+            function BackToOscar() {
+                window.close();
+            }
+        </script>
+        <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
 
-</head>
+    </head>
 
-<body class="BodyStyle" vlink="#0000FF">
-<jsp:include page="../../../images/spinner.jsp" flush="true"/>
-<script>
-	ShowSpin(true);
-	document.onreadystatechange = function () {
-		if (document.readyState === "interactive") {
-			HideSpin();
-		}
-	}
-</script>
-<html:errors />
-<div id="service-providers-wrapper" style="margin:auto 10px;">
-<table class="MainTable" id="scrollNumber1" >
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn">Consultation</td>
-		<td class="MainTableTopRowRightColumn">
-		<table class="TopStatusBar">
-			<tr>
-				<td class="Header"><bean:message
-					key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title" />
-				</td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr style="vertical-align: top">
-		<td class="MainTableLeftColumn">
-		<%oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar(request);
-                  out.print(titlebar.estBar(request));
-                  %>
-		</td>
-		<td class="MainTableRightColumn">
-		<table cellpadding="0" cellspacing="2"
-			style="border-collapse: collapse" bordercolor="#111111" width="100%">
+    <body class="BodyStyle" vlink="#0000FF">
+    <jsp:include page="../../../images/spinner.jsp" flush="true"/>
+    <script>
+        ShowSpin(true);
+        document.onreadystatechange = function () {
+            if (document.readyState === "interactive") {
+                HideSpin();
+            }
+        }
+    </script>
+    <html:errors/>
+    <div id="service-providers-wrapper" style="margin:auto 10px;">
+        <table class="MainTable" id="scrollNumber1">
+            <tr class="MainTableTopRow">
+                <td class="MainTableTopRowLeftColumn">Consultation</td>
+                <td class="MainTableTopRowRightColumn">
+                    <table class="TopStatusBar">
+                        <tr>
+                            <td class="Header"><bean:message
+                                    key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr style="vertical-align: top">
+                <td class="MainTableLeftColumn">
+                    <%
+                        oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar(request);
+                        out.print(titlebar.estBar(request));
+                    %>
+                </td>
+                <td class="MainTableRightColumn">
+                    <table cellpadding="0" cellspacing="2"
+                           style="border-collapse: collapse" bordercolor="#111111" width="100%">
 
-			<!----Start new rows here-->
-			<tr>
+                        <!----Start new rows here-->
+                        <tr>
                             <td>
-				<bean:message
-					key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.msgClickOn" /><br>
+                                <bean:message
+                                        key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.msgClickOn"/><br>
 
-				</td>
-			</tr>
-			<tr>
-				<td><html:form action="/oscarEncounter/EditSpecialists">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><html:form action="/oscarEncounter/EditSpecialists">
 
-					<table>
-						<tr>
-							<th>&nbsp;</th>
-							<th><bean:message
-								key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.specialist" />
-							</th>
-							<th><bean:message
-								key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.address" />
-							</th>
-							<th><bean:message
-								key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.phone" />
-							</th>
-							<th><bean:message
-								key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.fax" />
-							</th>
+                                <table>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th><bean:message
+                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.specialist"/>
+                                        </th>
+                                        <th><bean:message
+                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.address"/>
+                                        </th>
+                                        <th><bean:message
+                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.phone"/>
+                                        </th>
+                                        <th><bean:message
+                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.fax"/>
+                                        </th>
 
-						</tr>
-						<%
+                                    </tr>
+                                    <%
 
-                                 for(int i=0;i < displayServiceUtil.specIdVec.size(); i++){
-                                 String  specId     = displayServiceUtil.specIdVec.elementAt(i);
-                                 String  fName      = displayServiceUtil.fNameVec.elementAt(i);
-                                 String  lName      = displayServiceUtil.lNameVec.elementAt(i);
-                                 String  proLetters = displayServiceUtil.proLettersVec.elementAt(i);
-                                 String  address    = displayServiceUtil.addressVec.elementAt(i);
-                                 String  phone      = displayServiceUtil.phoneVec.elementAt(i);
-                                 String  fax        = displayServiceUtil.faxVec.elementAt(i);
-                              %>
-							
-						<tr>
-							<td><input type="checkbox" name="specialists"
-								value="<%=specId%>"></td>
-							<td>
-							<%
-                                      out.print("<a href=\"../../EditSpecialists.do?specId="+specId+"\"/>");
-                                      out.print(Encode.forHtmlContent(lName+" "+fName+" "+(proLetters==null?"":proLetters)));
-                                      out.print("</a>");
+                                        for (int i = 0; i < displayServiceUtil.specIdVec.size(); i++) {
+                                            String specId = displayServiceUtil.specIdVec.elementAt(i);
+                                            String fName = displayServiceUtil.fNameVec.elementAt(i);
+                                            String lName = displayServiceUtil.lNameVec.elementAt(i);
+                                            String proLetters = displayServiceUtil.proLettersVec.elementAt(i);
+                                            String address = displayServiceUtil.addressVec.elementAt(i);
+                                            String phone = displayServiceUtil.phoneVec.elementAt(i);
+                                            String fax = displayServiceUtil.faxVec.elementAt(i);
                                     %>
-							</td>
-							<td><%=Encode.forHtmlContent(address) %></td>
-							<td><%=Encode.forHtmlContent(phone)%></td>
-							<td><%=Encode.forHtmlContent(fax)%></td>
-						</tr>
-						<% }%>
 
-					</table>
+                                    <tr>
+                                        <td><input type="checkbox" name="specialists"
+                                                   value="<%=specId%>"></td>
+                                        <td>
+                                            <%
+                                                out.print("<a href=\"../../EditSpecialists.do?specId=" + specId + "\"/>");
+                                                out.print(Encode.forHtmlContent(lName + " " + fName + " " + (proLetters == null ? "" : proLetters)));
+                                                out.print("</a>");
+                                            %>
+                                        </td>
+                                        <td><%=Encode.forHtmlContent(address) %>
+                                        </td>
+                                        <td><%=Encode.forHtmlContent(phone)%>
+                                        </td>
+                                        <td><%=Encode.forHtmlContent(fax)%>
+                                        </td>
+                                    </tr>
+                                    <% }%>
 
-				</html:form></td>
-			</tr>
+                                </table>
 
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</div>
-</body>
+                            </html:form></td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="MainTableBottomRowLeftColumn"></td>
+                <td class="MainTableBottomRowRightColumn"></td>
+            </tr>
+        </table>
+    </div>
+    </body>
 </html:html>

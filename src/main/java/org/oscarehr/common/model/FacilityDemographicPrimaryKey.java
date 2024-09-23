@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -38,60 +37,57 @@ import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
  */
 @Embeddable
 public class FacilityDemographicPrimaryKey implements Serializable {
-	private Integer facilityId = null;
-	private Integer demographicId = null;
+    private Integer facilityId = null;
+    private Integer demographicId = null;
 
-	public FacilityDemographicPrimaryKey()
-	{
-		// do nothing, required by jpa
-	}
-	
-	public FacilityDemographicPrimaryKey(Integer facilityId, Integer demographicId)
-	{
-		this.facilityId=facilityId;
-		this.demographicId=demographicId;
-	}
-	
-	public FacilityDemographicPrimaryKey(FacilityIdIntegerCompositePk pk)
-	{
-		this.facilityId=pk.getIntegratorFacilityId();
-		this.demographicId=pk.getCaisiItemId();
-	}
-	
-	public Integer getFacilityId() {
-		return facilityId;
-	}
+    public FacilityDemographicPrimaryKey() {
+        // do nothing, required by jpa
+    }
 
-	public void setFacilityId(Integer facilityId) {
-		this.facilityId = facilityId;
-	}
+    public FacilityDemographicPrimaryKey(Integer facilityId, Integer demographicId) {
+        this.facilityId = facilityId;
+        this.demographicId = demographicId;
+    }
 
-	public Integer getDemographicId() {
-		return demographicId;
-	}
+    public FacilityDemographicPrimaryKey(FacilityIdIntegerCompositePk pk) {
+        this.facilityId = pk.getIntegratorFacilityId();
+        this.demographicId = pk.getCaisiItemId();
+    }
 
-	public void setDemographicId(Integer demographicId) {
-		this.demographicId = demographicId;
-	}
+    public Integer getFacilityId() {
+        return facilityId;
+    }
 
-	@Override
-	public String toString() {
-		return ("facilityId=" + facilityId + ", demographicId=" + demographicId);
-	}
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
+    }
 
-	@Override
-	public int hashCode() {
-		return (demographicId);
-	}
+    public Integer getDemographicId() {
+        return demographicId;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		try {
-			FacilityDemographicPrimaryKey o1 = (FacilityDemographicPrimaryKey) o;
-			return ((facilityId.equals(o1.facilityId)) && (demographicId .equals(o1.demographicId)));
-		} catch (RuntimeException e) {
-			return (false);
-		}
-	}
+    public void setDemographicId(Integer demographicId) {
+        this.demographicId = demographicId;
+    }
+
+    @Override
+    public String toString() {
+        return ("facilityId=" + facilityId + ", demographicId=" + demographicId);
+    }
+
+    @Override
+    public int hashCode() {
+        return (demographicId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        try {
+            FacilityDemographicPrimaryKey o1 = (FacilityDemographicPrimaryKey) o;
+            return ((facilityId.equals(o1.facilityId)) && (demographicId.equals(o1.demographicId)));
+        } catch (RuntimeException e) {
+            return (false);
+        }
+    }
 
 }

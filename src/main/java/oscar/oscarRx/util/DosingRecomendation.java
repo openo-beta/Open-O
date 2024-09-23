@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,10 +40,10 @@ public class DosingRecomendation {
     private String name = null;
     private String atccode = null;
     private String moreinfo = null;
-    private ArrayList<Hashtable<String,String>> Dose = null;
+    private ArrayList<Hashtable<String, String>> Dose = null;
 
-    public String toString(){
-        return "name: "+name+" atccode: "+atccode;
+    public String toString() {
+        return "name: " + name + " atccode: " + atccode;
 
     }
 
@@ -75,14 +75,13 @@ public class DosingRecomendation {
         this.moreinfo = moreinfo;
     }
 
-    public ArrayList<Hashtable<String,String>> getDose() {
+    public ArrayList<Hashtable<String, String>> getDose() {
         return Dose;
     }
 
-    public void setDose(ArrayList<Hashtable<String,String>> Dose) {
+    public void setDose(ArrayList<Hashtable<String, String>> Dose) {
         this.Dose = Dose;
     }
-
 
 
     /*
@@ -94,57 +93,56 @@ public class DosingRecomendation {
      "&lt;15"   less than 15
      "&gt;50"   greater than 50
      */
-    public boolean valueInRangeOfDose(int val , Hashtable<String,String> doseVal){
+    public boolean valueInRangeOfDose(int val, Hashtable<String, String> doseVal) {
         boolean valueInRange = false;
-        try{
-            String toParse  =  doseVal.get("clcrrange");
+        try {
+            String toParse = doseVal.get("clcrrange");
 
-            MiscUtils.getLogger().debug("TO PARSE: "+toParse);
-            if (toParse == null){
-               return false;
+            MiscUtils.getLogger().debug("TO PARSE: " + toParse);
+            if (toParse == null) {
+                return false;
             }
 
-            if (toParse.indexOf("-") != -1){ //between style
+            if (toParse.indexOf("-") != -1) { //between style
                 String[] betweenVals = toParse.split("-");
-                if (betweenVals.length == 2 ){
+                if (betweenVals.length == 2) {
                     int lower = Integer.parseInt(betweenVals[0]);
                     int upper = Integer.parseInt(betweenVals[1]);
 
-                    if (val >= lower && val <= upper){
+                    if (val >= lower && val <= upper) {
                         valueInRange = true;
                     }
                 }
 
-            }else if (toParse.indexOf("&gt;") != -1 ||  toParse.indexOf(">") != -1 ){ // greater than style
-                toParse = toParse.replaceFirst("&gt;","");
-                toParse = toParse.replaceFirst(">","");
+            } else if (toParse.indexOf("&gt;") != -1 || toParse.indexOf(">") != -1) { // greater than style
+                toParse = toParse.replaceFirst("&gt;", "");
+                toParse = toParse.replaceFirst(">", "");
 
                 int gt = Integer.parseInt(toParse);
-                if(val >= gt){
+                if (val >= gt) {
                     valueInRange = true;
                 }
-            }else if (toParse.indexOf("&lt;") != -1  ||  toParse.indexOf("<") != -1 ){ // less than style
-                toParse = toParse.replaceFirst("&lt;","");
-                toParse = toParse.replaceFirst("<","");
+            } else if (toParse.indexOf("&lt;") != -1 || toParse.indexOf("<") != -1) { // less than style
+                toParse = toParse.replaceFirst("&lt;", "");
+                toParse = toParse.replaceFirst("<", "");
 
                 int lt = Integer.parseInt(toParse);
-                if(val <= lt){
+                if (val <= lt) {
                     valueInRange = true;
                 }
-            }else if (!toParse.equals("")){ // less than style
+            } else if (!toParse.equals("")) { // less than style
                 int eq = Integer.parseInt(toParse);
-                if(val == eq){
+                if (val == eq) {
                     valueInRange = true;
                 }
             }
 
 
-        }catch(Exception e){
+        } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
         return valueInRange;
     }
-
 
 
 }

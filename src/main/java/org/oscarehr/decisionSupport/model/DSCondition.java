@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -64,7 +64,7 @@ public class DSCondition {
      * @return the label
      */
     public String getLabel() {
-        _log.debug("getting label in "+this.hashCode());
+        _log.debug("getting label in " + this.hashCode());
         return label;
     }
 
@@ -73,10 +73,10 @@ public class DSCondition {
      * @param label the label to set
      */
     public void setLabel(String label) {
-        _log.debug("Setting label in "+this.hashCode());
+        _log.debug("Setting label in " + this.hashCode());
         this.label = label;
     }
-    
+
     public enum ListOperator {any, all, not, notany, notall}
 
     protected DSDemographicAccess.Module module;
@@ -84,8 +84,8 @@ public class DSCondition {
     protected List<DSValue> values;
     private Hashtable param = null;
     private String label = null;
-    private String desc  = null;
-    
+    private String desc = null;
+
     /**
      * @return the conditionType
      */
@@ -99,6 +99,7 @@ public class DSCondition {
     public void setConditionType(DSDemographicAccess.Module conditionType) {
         this.module = conditionType;
     }
+
     /**
      * @return the type
      */
@@ -136,13 +137,13 @@ public class DSCondition {
         this.values = values;
     }
 
-	public String getDesc() {
-		return desc;
-	}
+    public String getDesc() {
+        return desc;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-    
-    
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+
 }

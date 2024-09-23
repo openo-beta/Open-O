@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -56,23 +56,24 @@ import oscar.oscarDemographic.data.DemographicMerged;
  *
  * @author wrighd
  */
-public class DemographicMergeRecordAction  extends Action {
+public class DemographicMergeRecordAction extends Action {
 
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    
+
     public DemographicMergeRecordAction() {
 
     }
-    public ActionForward execute(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
 
-    	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    	
-    	if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
-			throw new SecurityException("missing required security object (_demographic)");
-		}
-    	
-        if (request.getParameterValues("records")==null) {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
+            throw new SecurityException("missing required security object (_demographic)");
+        }
+
+        if (request.getParameterValues("records") == null) {
             return mapping.findForward("failure");
         }
         String outcome = "success";
@@ -82,28 +83,28 @@ public class DemographicMergeRecordAction  extends Action {
         String provider_no = request.getParameter("provider_no");
         DemographicMerged dmDAO = new DemographicMerged();
 
-        if (action.equals("merge") && head != null && records.size() > 1 && records.contains(head)){
+        if (action.equals("merge") && head != null && records.size() > 1 && records.contains(head)) {
 
-            for (int i=0; i < records.size(); i++){
-                if (!( records.get(i)).equals(head))
-                     dmDAO.Merge( loggedInInfo, records.get(i), head);
-                    
+            for (int i = 0; i < records.size(); i++) {
+                if (!(records.get(i)).equals(head))
+                    dmDAO.Merge(loggedInInfo, records.get(i), head);
+
             }
 
-        }else if(action.equals("unmerge") && records.size() > 0){
+        } else if (action.equals("unmerge") && records.size() > 0) {
             outcome = "successUnMerge";
-            for (int i=0; i < records.size(); i++){
+            for (int i = 0; i < records.size(); i++) {
                 String demographic_no = records.get(i);
                 dmDAO.UnMerge(loggedInInfo, demographic_no, provider_no);
-               
+
             }
 
-        }else{
+        } else {
             outcome = "failure";
         }
-        request.setAttribute("mergeoutcome",outcome);
+        request.setAttribute("mergeoutcome", outcome);
 
-        if (request.getParameter("caisiSearch") != null && request.getParameter("caisiSearch").equalsIgnoreCase("yes")){
+        if (request.getParameter("caisiSearch") != null && request.getParameter("caisiSearch").equalsIgnoreCase("yes")) {
             outcome = "caisiSearch";
         }
 

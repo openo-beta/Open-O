@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,24 +35,24 @@ import oscar.OscarProperties;
 
 public class BORN18MSchedulerJob extends TimerTask {
 
-	private static final OscarProperties oscarProperties = OscarProperties.getInstance();
-	
-	private static final String uploadHour = oscarProperties.getProperty("born18m_upload_hour", "01");
-	private static final Logger logger = MiscUtils.getLogger();
+    private static final OscarProperties oscarProperties = OscarProperties.getInstance();
 
-	
-	@Override
-	public void run() {
-		
-    	Calendar cal = Calendar.getInstance();
-    	SimpleDateFormat sdf = new SimpleDateFormat("HH");
-    	if (!sdf.format(cal.getTime()).equals(uploadHour)) return;
-		
-		logger.info("starting BORN18M upload job");
-		
-		BORN18MConnector c = new BORN18MConnector();
+    private static final String uploadHour = oscarProperties.getProperty("born18m_upload_hour", "01");
+    private static final Logger logger = MiscUtils.getLogger();
+
+
+    @Override
+    public void run() {
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+        if (!sdf.format(cal.getTime()).equals(uploadHour)) return;
+
+        logger.info("starting BORN18M upload job");
+
+        BORN18MConnector c = new BORN18MConnector();
         c.updateBorn();
-        
-		logger.info("done BORN18M upload job");
-	}
+
+        logger.info("done BORN18M upload job");
+    }
 }

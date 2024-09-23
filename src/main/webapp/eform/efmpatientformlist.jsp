@@ -29,35 +29,34 @@
 <%@page import="org.oscarehr.sharingcenter.model.AffinityDomainDataObject"%>
 <%@page import="org.oscarehr.util.SpringUtils"%>
 
-<%@page import="java.util.*,oscar.eform.*"%>
-<%@page import="org.oscarehr.web.eform.EfmPatientFormList"%>
+<%@page import="java.util.*,oscar.eform.*" %>
+<%@page import="org.oscarehr.web.eform.EfmPatientFormList" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-	String demographic_no = request.getParameter("demographic_no");
-	String deepColor = "#CCCCFF", weakColor = "#EEEEFF";
+    String demographic_no = request.getParameter("demographic_no");
+    String deepColor = "#CCCCFF", weakColor = "#EEEEFF";
 
-	if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
-	String roleName$ = (String)session.getAttribute("userrole") + "," + (String)session.getAttribute("user");
-	String country = request.getLocale().getCountry();
-	String orderByRequest = request.getParameter("orderby");
-	String orderBy = "";
-	if (orderByRequest == null) orderBy = EFormUtil.DATE;
-	else if (orderByRequest.equals("form_subject")) orderBy = EFormUtil.SUBJECT;
-	else if (orderByRequest.equals("form_name")) orderBy = EFormUtil.NAME;
+    if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String country = request.getLocale().getCountry();
+    String orderByRequest = request.getParameter("orderby");
+    String orderBy = "";
+    if (orderByRequest == null) orderBy = EFormUtil.DATE;
+    else if (orderByRequest.equals("form_subject")) orderBy = EFormUtil.SUBJECT;
+    else if (orderByRequest.equals("form_name")) orderBy = EFormUtil.NAME;
 
-	String groupView = request.getParameter("group_view");
-	if (groupView == null)
-	{
-		groupView = "";
-	}
+    String groupView = request.getParameter("group_view");
+    if (groupView == null) {
+        groupView = "";
+    }
 
-	String appointment = request.getParameter("appointment");
-	String parentAjaxId = request.getParameter("parentAjaxId");
+    String appointment = request.getParameter("appointment");
+    String parentAjaxId = request.getParameter("parentAjaxId");
 
-	boolean isMyOscarAvailable = EfmPatientFormList.isMyOscarAvailable(Integer.parseInt(demographic_no));
+    boolean isMyOscarAvailable = EfmPatientFormList.isMyOscarAvailable(Integer.parseInt(demographic_no));
 
-	// MARC-HI's Sharing Center
-	boolean isSharingCenterEnabled = SharingCenterUtil.isEnabled();
+    // MARC-HI's Sharing Center
+    boolean isSharingCenterEnabled = SharingCenterUtil.isEnabled();
 
 	// get all installed affinity domains
 	AffinityDomainDao affDao = SpringUtils.getBean(AffinityDomainDao.class);
@@ -291,7 +290,7 @@
 						<span style="float: right;">
                           <select name="affinityDomain">
 
-                            <% for(AffinityDomainDataObject domain : affinityDomains) { %>
+                            <% for (AffinityDomainDataObject domain : affinityDomains) { %>
                               <option value="<%=domain.getId()%>"><%=domain.getName()%></option>
                             <% } %>
 

@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -213,8 +212,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -236,11 +235,11 @@ public class Referral {
 
     /**
      * Gets the value of the optimal property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getOptimal() {
         return optimal;
@@ -248,11 +247,11 @@ public class Referral {
 
     /**
      * Sets the value of the optimal property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setOptimal(String value) {
         this.optimal = value;
@@ -260,11 +259,11 @@ public class Referral {
 
     /**
      * Gets the value of the specifyOptimal property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSpecifyOptimal() {
         return specifyOptimal;
@@ -272,11 +271,11 @@ public class Referral {
 
     /**
      * Sets the value of the specifyOptimal property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSpecifyOptimal(String value) {
         this.specifyOptimal = value;
@@ -284,11 +283,11 @@ public class Referral {
 
     /**
      * Gets the value of the actual property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getActual() {
         return actual;
@@ -296,11 +295,11 @@ public class Referral {
 
     /**
      * Sets the value of the actual property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setActual(String value) {
         this.actual = value;
@@ -308,11 +307,11 @@ public class Referral {
 
     /**
      * Gets the value of the specifyActual property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSpecifyActual() {
         return specifyActual;
@@ -320,11 +319,11 @@ public class Referral {
 
     /**
      * Sets the value of the specifyActual property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSpecifyActual(String value) {
         this.specifyActual = value;
@@ -332,11 +331,11 @@ public class Referral {
 
     /**
      * Gets the value of the differenceReason property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDifferenceReason() {
         return differenceReason;
@@ -344,11 +343,11 @@ public class Referral {
 
     /**
      * Sets the value of the differenceReason property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDifferenceReason(String value) {
         this.differenceReason = value;
@@ -356,11 +355,11 @@ public class Referral {
 
     /**
      * Gets the value of the status property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getStatus() {
         return status;
@@ -368,11 +367,11 @@ public class Referral {
 
     /**
      * Sets the value of the status property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStatus(String value) {
         this.status = value;

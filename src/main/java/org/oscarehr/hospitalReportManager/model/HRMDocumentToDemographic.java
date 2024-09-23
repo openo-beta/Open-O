@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -22,41 +22,41 @@ import org.oscarehr.common.model.AbstractModel;
 @Entity
 public class HRMDocumentToDemographic extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private Integer demographicNo;
-	private Integer hrmDocumentId;
-	private Date timeAssigned;
-	
-	@Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private Integer demographicNo;
+    private Integer hrmDocumentId;
+    private Date timeAssigned;
+
+    @Override
     public Integer getId() {
-	    return id;
+        return id;
     }
 
-	public Integer getDemographicNo() {
-    	return demographicNo;
+    public Integer getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setDemographicNo(Integer demographicNo) {
-    	this.demographicNo = demographicNo;
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public Date getTimeAssigned() {
-    	return timeAssigned;
+    public Date getTimeAssigned() {
+        return timeAssigned;
     }
 
-	public void setTimeAssigned(Date timeAssigned) {
-    	this.timeAssigned = timeAssigned;
+    public void setTimeAssigned(Date timeAssigned) {
+        this.timeAssigned = timeAssigned;
     }
 
-	public Integer getHrmDocumentId() {
-    	return hrmDocumentId;
+    public Integer getHrmDocumentId() {
+        return hrmDocumentId;
     }
 
-	public void setHrmDocumentId(Integer hrmDocumentId) {
-    	this.hrmDocumentId = hrmDocumentId;
+    public void setHrmDocumentId(Integer hrmDocumentId) {
+        this.hrmDocumentId = hrmDocumentId;
     }
 
 }

@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,87 +32,87 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="caisi_form_data_tmpsave")
+@Table(name = "caisi_form_data_tmpsave")
 public class CaisiFormDataTmpSave extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="tmp_form_data_id")
-	private Integer id;
-	
-	
-	@Column(name="tmp_instance_id")
-	private Integer tmpInstanceId;
-	
-	@Column(name="page_number")
-	private Integer pageNumber;
-	
-	@Column(name="section_id")
-	private Integer sectionId;
-	
-	@Column(name="question_id")
-	private Integer questionId;
-	
-	private String value;
-	
-	@Column(name="data_key")
-	private String dataKey;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tmp_form_data_id")
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "tmp_instance_id")
+    private Integer tmpInstanceId;
 
-	public Integer getTmpInstanceId() {
-		return tmpInstanceId;
-	}
+    @Column(name = "page_number")
+    private Integer pageNumber;
 
-	public void setTmpInstanceId(Integer tmpInstanceId) {
-		this.tmpInstanceId = tmpInstanceId;
-	}
+    @Column(name = "section_id")
+    private Integer sectionId;
 
-	public Integer getPageNumber() {
-		return pageNumber;
-	}
+    @Column(name = "question_id")
+    private Integer questionId;
 
-	public void setPageNumber(Integer pageNumber) {
-		this.pageNumber = pageNumber;
-	}
+    private String value;
 
-	public Integer getSectionId() {
-		return sectionId;
-	}
+    @Column(name = "data_key")
+    private String dataKey;
 
-	public void setSectionId(Integer sectionId) {
-		this.sectionId = sectionId;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getQuestionId() {
-		return questionId;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setQuestionId(Integer questionId) {
-		this.questionId = questionId;
-	}
+    public Integer getTmpInstanceId() {
+        return tmpInstanceId;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public void setTmpInstanceId(Integer tmpInstanceId) {
+        this.tmpInstanceId = tmpInstanceId;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
 
-	public String getDataKey() {
-		return dataKey;
-	}
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
 
-	public void setDataKey(String dataKey) {
-		this.dataKey = dataKey;
-	}
-	
-	
+    public Integer getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(Integer sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public Integer getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getDataKey() {
+        return dataKey;
+    }
+
+    public void setDataKey(String dataKey) {
+        this.dataKey = dataKey;
+    }
+
+
 }

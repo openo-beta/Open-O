@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -35,54 +34,54 @@ import oscar.oscarLab.ca.all.util.Utilities;
 
 public class EpsilonHandler implements MessageHandler {
 
-	private static Logger logger = MiscUtils.getLogger();
-	
-	/*
-	@SuppressWarnings("unchecked")	
-	public String parse(String fileName, int fileId) {
+    private static Logger logger = MiscUtils.getLogger();
 
-		Utilities u = new Utilities();
-		MessageUploader uploader = new MessageUploader();
-		int i = 0;
-		try {
-			ArrayList messages = u.separateMessages(fileName);
-			for (i = 0; i < messages.size(); i++) {
+    /*
+    @SuppressWarnings("unchecked")
+    public String parse(String fileName, int fileId) {
 
-				String msg = (String) messages.get(i);
-				uploader.routeReport("Epsilon", msg, fileId);
+        Utilities u = new Utilities();
+        MessageUploader uploader = new MessageUploader();
+        int i = 0;
+        try {
+            ArrayList messages = u.separateMessages(fileName);
+            for (i = 0; i < messages.size(); i++) {
 
-			}
-		} catch (Exception e) {
-			uploader.clean(fileId);
-			logger.error("Could not upload message: ", e);			
-			return null;
-		}
-		return ("success");
+                String msg = (String) messages.get(i);
+                uploader.routeReport("Epsilon", msg, fileId);
 
-	}
-	*/
-	@Override
-    public String parse(LoggedInInfo loggedInInfo,String serviceName, String fileName, int fileId, String ipAddr) {
-		int i = 0;
-		try {
+            }
+        } catch (Exception e) {
+            uploader.clean(fileId);
+            logger.error("Could not upload message: ", e);
+            return null;
+        }
+        return ("success");
 
-			StringBuilder audit = new StringBuilder();
-			ArrayList<String> messages = Utilities.separateMessages(fileName);
-			for (i = 0; i < messages.size(); i++) {
+    }
+    */
+    @Override
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
+        int i = 0;
+        try {
 
-				String msg = messages.get(i);
-				String auditLine = MessageUploader.routeReport(loggedInInfo, serviceName, "EPSILON", msg, fileId) + "\n";
-				audit.append(auditLine);
+            StringBuilder audit = new StringBuilder();
+            ArrayList<String> messages = Utilities.separateMessages(fileName);
+            for (i = 0; i < messages.size(); i++) {
 
-			}
-			logger.debug("Parsed OK");
+                String msg = messages.get(i);
+                String auditLine = MessageUploader.routeReport(loggedInInfo, serviceName, "EPSILON", msg, fileId) + "\n";
+                audit.append(auditLine);
 
-			return (audit.toString());
+            }
+            logger.debug("Parsed OK");
 
-		} catch (Exception e) {
-			MessageUploader.clean(fileId);
-			logger.error("Could not parse message", e);
-			return null;
-		}
+            return (audit.toString());
+
+        } catch (Exception e) {
+            MessageUploader.clean(fileId);
+            logger.error("Could not parse message", e);
+            return null;
+        }
     }
 }

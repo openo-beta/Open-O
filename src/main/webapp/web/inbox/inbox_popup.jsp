@@ -24,14 +24,16 @@
 
 --%>
 <script>
-function newWindow(url) {
-    newwindow=window.open(url,'inbox','height=700,width=1000');
-    if (window.focus) {newwindow.focus()}
-    return false;
-}
+    function newWindow(url) {
+        newwindow = window.open(url, 'inbox', 'height=700,width=1000');
+        if (window.focus) {
+            newwindow.focus()
+        }
+        return false;
+    }
 
 
-newWindow('../documentManager/inboxManage.do?method=prepareForIndexPage','inbox');
+    newWindow('../documentManager/inboxManage.do?method=prepareForIndexPage', 'inbox');
 </script>
 <p class="info">Inbox Panel is popped-out..ensure you do not have a popup blocker running.</p>
 

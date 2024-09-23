@@ -5,21 +5,23 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
+ *
+ * @author Shazib
  */
 /**
  * @author Shazib
@@ -45,6 +47,7 @@ import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.SystemMessage;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
+
 /**
  * @author Shazib
  */
@@ -52,65 +55,64 @@ import org.oscarehr.util.SpringUtils;
 @SuppressWarnings("unused")
 public class SystemMessageDaoTest extends DaoTestFixtures {
 
-	protected SystemMessageDao dao = SpringUtils.getBean(SystemMessageDao.class);
-	DateFormat dfm = new SimpleDateFormat("yyyyMMdd");
+    protected SystemMessageDao dao = SpringUtils.getBean(SystemMessageDao.class);
+    DateFormat dfm = new SimpleDateFormat("yyyyMMdd");
 
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("SystemMessage");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("SystemMessage");
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		SystemMessage entity = new SystemMessage();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		dao.persist(entity);
-		assertNotNull(entity.getId());
-	}
+    @Test
+    public void testCreate() throws Exception {
+        SystemMessage entity = new SystemMessage();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        dao.persist(entity);
+        assertNotNull(entity.getId());
+    }
 
 
-	@Test
-	public void testFindAll() throws Exception {
-		
-		SystemMessage sysMessage1 = new SystemMessage();
-		EntityDataGenerator.generateTestDataForModelClass(sysMessage1);
-		Date date1 = new Date(dfm.parse("20110701").getTime());
-		sysMessage1.setExpiryDate(date1);
-		dao.persist(sysMessage1);
-		
-		SystemMessage sysMessage2 = new SystemMessage();
-		EntityDataGenerator.generateTestDataForModelClass(sysMessage2);
-		Date date2 = new Date(dfm.parse("20100701").getTime());
-		sysMessage2.setExpiryDate(date2);
-		dao.persist(sysMessage2);
-		
-		SystemMessage sysMessage3 = new SystemMessage();
-		EntityDataGenerator.generateTestDataForModelClass(sysMessage3);
-		Date date3 = new Date(dfm.parse("20120701").getTime());
-		sysMessage3.setExpiryDate(date3);
-		dao.persist(sysMessage3);
-		
-		List<SystemMessage> result = dao.findAll();
-		List<SystemMessage> expectedResult = new ArrayList<SystemMessage>(Arrays.asList(sysMessage3,sysMessage1,sysMessage2));
-			
-		Logger logger = MiscUtils.getLogger();
+    @Test
+    public void testFindAll() throws Exception {
 
-		if (result.size() != expectedResult.size()) {
-			logger.warn("Array sizes do not match.");
-			fail("Array sizes do not match.");
-		}
+        SystemMessage sysMessage1 = new SystemMessage();
+        EntityDataGenerator.generateTestDataForModelClass(sysMessage1);
+        Date date1 = new Date(dfm.parse("20110701").getTime());
+        sysMessage1.setExpiryDate(date1);
+        dao.persist(sysMessage1);
 
-		for (int i = 0; i < expectedResult.size(); i++) {
-			if (!expectedResult.get(i).equals(result.get(i))){
-				logger.warn("Items do not match.");
-				fail("Items do not match.");
-			}
-		}
-		assertTrue(true);
-		
-		
-		
-	}
+        SystemMessage sysMessage2 = new SystemMessage();
+        EntityDataGenerator.generateTestDataForModelClass(sysMessage2);
+        Date date2 = new Date(dfm.parse("20100701").getTime());
+        sysMessage2.setExpiryDate(date2);
+        dao.persist(sysMessage2);
+
+        SystemMessage sysMessage3 = new SystemMessage();
+        EntityDataGenerator.generateTestDataForModelClass(sysMessage3);
+        Date date3 = new Date(dfm.parse("20120701").getTime());
+        sysMessage3.setExpiryDate(date3);
+        dao.persist(sysMessage3);
+
+        List<SystemMessage> result = dao.findAll();
+        List<SystemMessage> expectedResult = new ArrayList<SystemMessage>(Arrays.asList(sysMessage3, sysMessage1, sysMessage2));
+
+        Logger logger = MiscUtils.getLogger();
+
+        if (result.size() != expectedResult.size()) {
+            logger.warn("Array sizes do not match.");
+            fail("Array sizes do not match.");
+        }
+
+        for (int i = 0; i < expectedResult.size(); i++) {
+            if (!expectedResult.get(i).equals(result.get(i))) {
+                logger.warn("Items do not match.");
+                fail("Items do not match.");
+            }
+        }
+        assertTrue(true);
+
+
+    }
 
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,69 +40,69 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.StringUtils;
 
 @Entity
-@Table(name="measurementType")
+@Table(name = "measurementType")
 public class MeasurementType extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String type;
-	private String typeDisplayName;
-	private String typeDescription;
-	private String measuringInstruction;
-	private String validation;
+    private String type;
+    private String typeDisplayName;
+    private String typeDescription;
+    private String measuringInstruction;
+    private String validation;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDate=new Date();
-	
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate = new Date();
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
 
-	public String getType() {
-    	return (type);
+    @Override
+    public Integer getId() {
+        return id;
     }
 
-	public void setType(String type) {
-    	this.type = StringUtils.trimToNull(type);
+    public String getType() {
+        return (type);
     }
 
-	public String getTypeDisplayName() {
-    	return (typeDisplayName);
+    public void setType(String type) {
+        this.type = StringUtils.trimToNull(type);
     }
 
-	public void setTypeDisplayName(String typeDisplayName) {
-    	this.typeDisplayName = StringUtils.trimToNull(typeDisplayName);
+    public String getTypeDisplayName() {
+        return (typeDisplayName);
     }
 
-	public String getTypeDescription() {
-    	return (typeDescription);
+    public void setTypeDisplayName(String typeDisplayName) {
+        this.typeDisplayName = StringUtils.trimToNull(typeDisplayName);
     }
 
-	public void setTypeDescription(String typeDescription) {
-    	this.typeDescription = StringUtils.trimToNull(typeDescription);
+    public String getTypeDescription() {
+        return (typeDescription);
     }
 
-	public String getMeasuringInstruction() {
-    	return (measuringInstruction);
+    public void setTypeDescription(String typeDescription) {
+        this.typeDescription = StringUtils.trimToNull(typeDescription);
     }
 
-	public void setMeasuringInstruction(String measuringInstruction) {
-    	this.measuringInstruction = StringUtils.trimToEmpty(measuringInstruction);
+    public String getMeasuringInstruction() {
+        return (measuringInstruction);
     }
 
-	public String getValidation() {
-    	return (validation);
+    public void setMeasuringInstruction(String measuringInstruction) {
+        this.measuringInstruction = StringUtils.trimToEmpty(measuringInstruction);
     }
 
-	public void setValidation(String validation) {
-    	this.validation = StringUtils.trimToNull(validation);
+    public String getValidation() {
+        return (validation);
     }
 
-	public Date getCreateDate() {
-    	return (createDate);
+    public void setValidation(String validation) {
+        this.validation = StringUtils.trimToNull(validation);
+    }
+
+    public Date getCreateDate() {
+        return (createDate);
     }
 }

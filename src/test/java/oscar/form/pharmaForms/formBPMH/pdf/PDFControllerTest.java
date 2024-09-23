@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * The Pharmacists Clinic
  * Faculty of Pharmaceutical Sciences
@@ -42,7 +42,7 @@ import oscar.form.pharmaForms.formBPMH.bean.BpmhDrug;
 import oscar.form.pharmaForms.formBPMH.bean.BpmhFormBean;
 
 /*
- * Author: Dennis Warren 
+ * Author: Dennis Warren
  * Company: Colcamex Resources
  * Date: November 2014
  * For: UBC Pharmacy Clinic and McMaster Department of Family Medicine
@@ -50,102 +50,102 @@ import oscar.form.pharmaForms.formBPMH.bean.BpmhFormBean;
 
 public class PDFControllerTest {
 
-	private static PDFController pdfController;
-	private static BpmhFormBean data;
-	private static Demographic demographic;
-	private static BpmhDrug bpmhDrug1;
-	private static URL url;
-	
-	@Before
-	public void setUp() {
-		ClassLoader loader = PDFController.class.getClassLoader();
-		url = loader.getResource("oscar/form/prop/bpmh_template_marked.pdf");
+    private static PDFController pdfController;
+    private static BpmhFormBean data;
+    private static Demographic demographic;
+    private static BpmhDrug bpmhDrug1;
+    private static URL url;
 
-		pdfController = new PDFController(url.getPath());			
-		pdfController.setOutputPath("/var/lib/OscarDocument");
-		
-		demographic = new Demographic();
-		demographic.setDemographicNo(12345);
-		demographic.setFirstName("Dennis");
-		demographic.setLastName("Warren");
-		demographic.setHin("9374636728674");
-		demographic.setEffDate(new Date());
-		
-		bpmhDrug1 = new BpmhDrug();
-		bpmhDrug1.setGenericName("GENERIC DRUG");
-		bpmhDrug1.setWhy("This is a description.");
-		bpmhDrug1.setWhat("chicken butt");
-		
-		BpmhDrug bpmhDrug2 = new BpmhDrug();		
-		bpmhDrug2.setGenericName("DRUG NAME");
-		bpmhDrug2.setWhy("take this drug daily");
-		
-		List<BpmhDrug> bpmhDrugList = new ArrayList<BpmhDrug>();
-		bpmhDrugList.add(bpmhDrug1);
-		bpmhDrugList.add(bpmhDrug2);
-		
-		data = new BpmhFormBean();
-		data.setDemographicNo("2345");
-		data.setFamilyDrName("Dr. Who");
-		data.setDemographic(demographic);
-		data.setDrugs(bpmhDrugList);
-	}
-	
-	@After
-	public void tearDown() {
-		pdfController = null;
-		data = null;
-		demographic = null;
-		bpmhDrug1 = null;
-		url = null;
-	}
+    @Before
+    public void setUp() {
+        ClassLoader loader = PDFController.class.getClassLoader();
+        url = loader.getResource("oscar/form/prop/bpmh_template_marked.pdf");
 
-	@Test
-	public void testGetOutput() {
-		assertEquals( "/var/lib/OscarDocument", pdfController.getOutputPath() );
-	}
-	
-	@Test
-	public void testGetInput() {
-		assertEquals("bpmh_template_marked.pdf", pdfController.getFilePath().getName());
-	}
-	
-	@Test
-	public void testWriteDataToPDF() {
-		pdfController.writeDataToPDF(data, new String[]{"1"}, "6789");
-	}
-	
-	@Test
-	public void testGetGetterMethods() {
-		pdfController.setDataObject(demographic);
-		assertEquals("Dennis",pdfController.invokeValue("firstName"));
-		assertEquals("9374636728674",pdfController.invokeValue("hin"));
-	}
-	
-	@Test
-	public void testGetGetterMethodsWithMissingValue() {
-		
-		Map<String,Method> getterMethods = PDFController.getGetterMethods(data);
-		
-		assertEquals(null, PDFController.invokeValue("democratic.fakemethod", getterMethods, data));
-		assertEquals(null, PDFController.invokeValue("fakemethod", getterMethods, data));
-		
-	}
-	
-	@Test
-	public void testGetGetterMethodsWithListDataTypes() {
+        pdfController = new PDFController(url.getPath());
+        pdfController.setOutputPath("/var/lib/OscarDocument");
+
+        demographic = new Demographic();
+        demographic.setDemographicNo(12345);
+        demographic.setFirstName("Dennis");
+        demographic.setLastName("Warren");
+        demographic.setHin("9374636728674");
+        demographic.setEffDate(new Date());
+
+        bpmhDrug1 = new BpmhDrug();
+        bpmhDrug1.setGenericName("GENERIC DRUG");
+        bpmhDrug1.setWhy("This is a description.");
+        bpmhDrug1.setWhat("chicken butt");
+
+        BpmhDrug bpmhDrug2 = new BpmhDrug();
+        bpmhDrug2.setGenericName("DRUG NAME");
+        bpmhDrug2.setWhy("take this drug daily");
+
+        List<BpmhDrug> bpmhDrugList = new ArrayList<BpmhDrug>();
+        bpmhDrugList.add(bpmhDrug1);
+        bpmhDrugList.add(bpmhDrug2);
+
+        data = new BpmhFormBean();
+        data.setDemographicNo("2345");
+        data.setFamilyDrName("Dr. Who");
+        data.setDemographic(demographic);
+        data.setDrugs(bpmhDrugList);
+    }
+
+    @After
+    public void tearDown() {
+        pdfController = null;
+        data = null;
+        demographic = null;
+        bpmhDrug1 = null;
+        url = null;
+    }
+
+    @Test
+    public void testGetOutput() {
+        assertEquals("/var/lib/OscarDocument", pdfController.getOutputPath());
+    }
+
+    @Test
+    public void testGetInput() {
+        assertEquals("bpmh_template_marked.pdf", pdfController.getFilePath().getName());
+    }
+
+    @Test
+    public void testWriteDataToPDF() {
+        pdfController.writeDataToPDF(data, new String[]{"1"}, "6789");
+    }
+
+    @Test
+    public void testGetGetterMethods() {
+        pdfController.setDataObject(demographic);
+        assertEquals("Dennis", pdfController.invokeValue("firstName"));
+        assertEquals("9374636728674", pdfController.invokeValue("hin"));
+    }
+
+    @Test
+    public void testGetGetterMethodsWithMissingValue() {
+
+        Map<String, Method> getterMethods = PDFController.getGetterMethods(data);
+
+        assertEquals(null, PDFController.invokeValue("democratic.fakemethod", getterMethods, data));
+        assertEquals(null, PDFController.invokeValue("fakemethod", getterMethods, data));
+
+    }
+
+    @Test
+    public void testGetGetterMethodsWithListDataTypes() {
 //		Map<String,Method> getterMethods = PDFController.getGetterMethods(data);
-		pdfController.setDataObject(data);
-		assertEquals( "GENERIC DRUG" , pdfController.invokeValue("drugs#0.genericName") );
-		assertEquals( "DRUG NAME" , pdfController.invokeValue("drugs#1.genericName") );
-		assertEquals( "take this drug daily" , pdfController.invokeValue("drugs#1.why") );
-		
+        pdfController.setDataObject(data);
+        assertEquals("GENERIC DRUG", pdfController.invokeValue("drugs#0.genericName"));
+        assertEquals("DRUG NAME", pdfController.invokeValue("drugs#1.genericName"));
+        assertEquals("take this drug daily", pdfController.invokeValue("drugs#1.why"));
+
 //		Iterator<String> it = getterMethods.keySet().iterator();
 //		
 //		while(it.hasNext()) {
 
 //		}
 
-	}
+    }
 
 }

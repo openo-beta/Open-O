@@ -26,22 +26,22 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <div class="modal-header">
     <h4><bean:message key="tickler.comments.title" bundle="ui"/></h4>
-</div>  
+</div>
 <div class="modal-body">
-	<table class="table">
-		<thead>
-			<tr>
-				<th><bean:message key="tickler.comments.provider" bundle="ui"/></th>
-				<th><bean:message key="tickler.comments.updateDate" bundle="ui"/></th>
-				<th><bean:message key="tickler.comments.comment" bundle="ui"/></th>
-			</tr>
-		</thead>
-		<tr ng-repeat="c in tickler.ticklerComments | orderBy:'updateDate':true">
-			<td>{{c.providerName}}</td>
-			<td>{{c.updateDate | date: 'yyyy-MM-dd HH:mm'}}</td>
-			<td>{{c.message}}</td>
-		</tr>
-	</table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th><bean:message key="tickler.comments.provider" bundle="ui"/></th>
+            <th><bean:message key="tickler.comments.updateDate" bundle="ui"/></th>
+            <th><bean:message key="tickler.comments.comment" bundle="ui"/></th>
+        </tr>
+        </thead>
+        <tr ng-repeat="c in tickler.ticklerComments | orderBy:'updateDate':true">
+            <td>{{c.providerName}}</td>
+            <td>{{c.updateDate | date: 'yyyy-MM-dd HH:mm'}}</td>
+            <td>{{c.message}}</td>
+        </tr>
+    </table>
 
 </div>
 <div class="modal-footer">

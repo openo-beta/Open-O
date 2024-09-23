@@ -25,64 +25,68 @@
 --%>
 
 <%-- TODO:Only works for local patients right now. Not sure if that's a big deal. Probably should be a warning that this isn't a local patient --%>
-<%@page import="org.oscarehr.myoscar.client.ws_manager.AccountManager"%>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo"%>
-<%@page import="org.apache.http.HttpRequest"%>
+<%@page import="org.oscarehr.myoscar.client.ws_manager.AccountManager" %>
+<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
+<%@page import="org.apache.http.HttpRequest" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.phr.util.MyOscarUtils"%>
-<%@page import="org.oscarehr.phr.RegistrationHelper"%>
+<%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
+<%@page import="org.oscarehr.phr.RegistrationHelper" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}" scope="request" />
+<c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%
-MyOscarLoggedInInfo myOscarLoggedInInfo=MyOscarLoggedInInfo.getLoggedInInfo(session);
-String myOscarUserName = getWebMember(request,"myOscarUserName");
-String demographic = getWebMember(request,"demoNo");
-Long myOscarUserId=AccountManager.getUserId(myOscarLoggedInInfo, myOscarUserName);
+    MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
+    String myOscarUserName = getWebMember(request, "myOscarUserName");
+    String demographic = getWebMember(request, "demoNo");
+    Long myOscarUserId = AccountManager.getUserId(myOscarLoggedInInfo, myOscarUserName);
 
 
-
-if(myOscarLoggedInInfo !=null && myOscarLoggedInInfo.isLoggedIn() && myOscarUserName != null && demographic != null){ 
-	if(!RegistrationHelper.iHavePatientRelationship(myOscarLoggedInInfo,myOscarUserId)){ %>
-    	<span id="relationshipMessage" style="color:red; font-size:x-small;padding-left:3px;"><bean:message key="phr.verification.patient.not.respond" />
-      		<a id="relationshipAdder" href="javascript:void();"><bean:message key="phr.verification.addPatientRelationship"/></a>
+    if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn() && myOscarUserName != null && demographic != null) {
+        if (!RegistrationHelper.iHavePatientRelationship(myOscarLoggedInInfo, myOscarUserId)) { %>
+<span id="relationshipMessage" style="color:red; font-size:x-small;padding-left:3px;"><bean:message
+        key="phr.verification.patient.not.respond"/>
+      		<a id="relationshipAdder" href="javascript:void();"><bean:message
+                    key="phr.verification.addPatientRelationship"/></a>
       	</span>
-	<%}else{ %>
-		<span id="relationshipMessage" style="font-size:x-small;">
+<%} else { %>
+<span id="relationshipMessage" style="font-size:x-small;">
 			<bean:message key="phr.verification.patientRelationshipExists"/>
 		</span>
-	<%}
-}else if(myOscarLoggedInInfo ==null || !myOscarLoggedInInfo.isLoggedIn()){ MiscUtils.getLogger().debug("should show not logged in message");%>
-	<bean:message key="phr.verification.notloggedin"/>
-<%}%>	      
+<%
+    }
+} else if (myOscarLoggedInInfo == null || !myOscarLoggedInInfo.isLoggedIn()) {
+    MiscUtils.getLogger().debug("should show not logged in message");
+%>
+<bean:message key="phr.verification.notloggedin"/>
+<%}%>
 <script type="text/javascript">
-$(function() {
-  $("#relationshipAdder").click(function() {
-    $(this).attr("disabled", "true");
-    $.ajax({
-      url: '<c:out value="${ctx}"/>/phr/UserManagement.do?method=addPatientRelationship&demoNo=<%=demographic%>&myOscarUserName=<%=myOscarUserName%>',
-      dataType: "html",
-      timeout: 5000,
-      error: function() {
-        alert("Error talking to server.");
-        $(this).attr("disabled", "false");
-      },
-      success: function(data) {
-        $("#relationshipMessage").html(data);
-        $(this).attr("disabled", "false");
-      }
+    $(function () {
+        $("#relationshipAdder").click(function () {
+            $(this).attr("disabled", "true");
+            $.ajax({
+                url: '<c:out value="${ctx}"/>/phr/UserManagement.do?method=addPatientRelationship&demoNo=<%=demographic%>&myOscarUserName=<%=myOscarUserName%>',
+                dataType: "html",
+                timeout: 5000,
+                error: function () {
+                    alert("Error talking to server.");
+                    $(this).attr("disabled", "false");
+                },
+                success: function (data) {
+                    $("#relationshipMessage").html(data);
+                    $(this).attr("disabled", "false");
+                }
+            });
+        });
     });
-  });
-});
 </script>
 <%!
-String getWebMember(HttpServletRequest request,String str){
-	String ret = request.getParameter(str);
-	if(ret == null){
-		ret = (String) request.getAttribute(str);
-	}
-	return ret;
-}
+    String getWebMember(HttpServletRequest request, String str) {
+        String ret = request.getParameter(str);
+        if (ret == null) {
+            ret = (String) request.getAttribute(str);
+        }
+        return ret;
+    }
 %>

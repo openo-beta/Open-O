@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,7 +39,7 @@ import java.util.Date;
 @Entity
 @IdClass(CompositeFormBCAR2020TextId.class)
 @Table(name = "formBCAR2020Text")
-public class FormBCAR2020Text extends AbstractModel<CompositeFormBCAR2020TextId> implements Serializable{
+public class FormBCAR2020Text extends AbstractModel<CompositeFormBCAR2020TextId> implements Serializable {
     @Id
     @Column(name = "form_id")
     Integer formId;
@@ -55,16 +55,16 @@ public class FormBCAR2020Text extends AbstractModel<CompositeFormBCAR2020TextId>
     @NotNull
     @Column(name = "provider_no")
     String providerNo;
-    
+
     @Column(name = "val")
     String value = "";
 
     @Column(name = "field_edited")
     Date fieldEdited;
-    
+
     public FormBCAR2020Text() {
     }
-    
+
     public FormBCAR2020Text(Integer formId, String providerNo, Integer pageNo, String field, String value) {
         this.formId = formId;
         this.providerNo = providerNo;
@@ -72,22 +72,26 @@ public class FormBCAR2020Text extends AbstractModel<CompositeFormBCAR2020TextId>
         this.field = field;
         this.value = value;
     }
-    
+
     @Override
-    public CompositeFormBCAR2020TextId getId(){
+    public CompositeFormBCAR2020TextId getId() {
         return new CompositeFormBCAR2020TextId(formId, pageNo, field);
     }
 
     @PrePersist
     public void prePersist() {
-        if (fieldEdited == null){
+        if (fieldEdited == null) {
             setFieldEdited(new Date());
         }
     }
 
-    public Integer getFormId() { return formId; }
+    public Integer getFormId() {
+        return formId;
+    }
 
-    public void setFormId(Integer formId) { this.formId = formId; }
+    public void setFormId(Integer formId) {
+        this.formId = formId;
+    }
 
     public String getProviderNo() {
         return providerNo;

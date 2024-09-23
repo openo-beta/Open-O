@@ -26,57 +26,56 @@
 --%>
 
 <%
-  if(session.getValue("user") == null) response.sendRedirect("../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect("../logout.jsp");
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@page import="java.util.*,org.oscarehr.learning.web.CourseManagerAction,org.oscarehr.common.model.SecRole"%>
-
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@page import="java.util.*,org.oscarehr.learning.web.CourseManagerAction,org.oscarehr.common.model.SecRole" %>
 
 
 <html:html lang="en">
 
-<head>
-<title><bean:message key="oscarLearning.studentImport.title" /></title>
-<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <head>
+        <title><bean:message key="oscarLearning.studentImport.title"/></title>
+        <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
+    </head>
 
-<body>
-
-
-<div class="container-fluid">
-
-<h3><bean:message key="admin.admin.learning.importStudent"/></h3>
-<div class="well">
-
-	
-	<%
-		String totalImported = request.getParameter("r");
-		if(totalImported != null && totalImported.length()>0) {
-	%>				
-	
-		<h4><%=totalImported%> Records Successfully Imported.</h4>
-	<%
-		}
-	%>
+    <body>
 
 
+    <div class="container-fluid">
 
-	<div id="upload_form">
-		
-		<p>Batch upload student data into oscarLearning system. Format should be as follows (per line)</p>
-		<p>lastname,firstname,username,password,pin,student#</p>
-		<h4>Upload CSV file:</h4>
-		
-		<html:form action="/oscarLearning/StudentImport.do?method=uploadFile" method="post" enctype="multipart/form-data">
-			<html:file property="file"></html:file>						
-			<br/>
-			<html:submit/>
-		</html:form>
-	</div>
-</div>
-</div>
-</body>
+        <h3><bean:message key="admin.admin.learning.importStudent"/></h3>
+        <div class="well">
+
+
+            <%
+                String totalImported = request.getParameter("r");
+                if (totalImported != null && totalImported.length() > 0) {
+            %>
+
+            <h4><%=totalImported%> Records Successfully Imported.</h4>
+            <%
+                }
+            %>
+
+
+            <div id="upload_form">
+
+                <p>Batch upload student data into oscarLearning system. Format should be as follows (per line)</p>
+                <p>lastname,firstname,username,password,pin,student#</p>
+                <h4>Upload CSV file:</h4>
+
+                <html:form action="/oscarLearning/StudentImport.do?method=uploadFile" method="post"
+                           enctype="multipart/form-data">
+                    <html:file property="file"></html:file>
+                    <br/>
+                    <html:submit/>
+                </html:form>
+            </div>
+        </div>
+    </div>
+    </body>
 </html:html>

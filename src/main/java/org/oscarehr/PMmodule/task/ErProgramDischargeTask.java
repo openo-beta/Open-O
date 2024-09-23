@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -43,7 +42,7 @@ import org.oscarehr.util.ShutdownException;
 
 public class ErProgramDischargeTask extends TimerTask {
 
-    private static final Logger log= org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger log = org.oscarehr.util.MiscUtils.getLogger();
 
     private ProviderManager providerManager;
 
@@ -67,7 +66,7 @@ public class ErProgramDischargeTask extends TimerTask {
 
     public void run() {
 
-		try {
+        try {
             log.debug("running ErProgramDischargeTask");
             //log.info("Running ErProgramDischargeTask.............");
 
@@ -76,15 +75,15 @@ public class ErProgramDischargeTask extends TimerTask {
             List providers = providerManager.getProviders();
             boolean er_clerk = false;
 
-            for (Iterator i = providers.iterator(); i.hasNext();) {
-            	MiscUtils.checkShutdownSignaled();
-            	
-                Provider provider = (Provider)i.next();
+            for (Iterator i = providers.iterator(); i.hasNext(); ) {
+                MiscUtils.checkShutdownSignaled();
+
+                Provider provider = (Provider) i.next();
 
                 er_clerk = false;
                 List<SecUserRole> roles = providerManager.getSecUserRoles(provider.getProviderNo());
-                for (Iterator ii = roles.iterator(); ii.hasNext();) {
-                    SecUserRole secUserRole = (SecUserRole)ii.next();
+                for (Iterator ii = roles.iterator(); ii.hasNext(); ) {
+                    SecUserRole secUserRole = (SecUserRole) ii.next();
                     if (UserRoleUtils.Roles.er_clerk.name().equals(secUserRole.getRoleName())) {
                         er_clerk = true;
                     }
@@ -98,7 +97,7 @@ public class ErProgramDischargeTask extends TimerTask {
 
                 ProgramProvider programProvider = null;
                 if (programDomain.size() > 0) {
-                    programProvider = (ProgramProvider)programDomain.get(0);
+                    programProvider = (ProgramProvider) programDomain.get(0);
                 }
                 if (programProvider != null) {
                     // loop clients in the ER program
@@ -106,10 +105,10 @@ public class ErProgramDischargeTask extends TimerTask {
 
                     if (programAdmissions == null) continue;
 
-                    for (Iterator j = programAdmissions.iterator(); j.hasNext();) {
-                    	MiscUtils.checkShutdownSignaled();
-                    	
-                        Admission admission = (Admission)j.next();
+                    for (Iterator j = programAdmissions.iterator(); j.hasNext(); ) {
+                        MiscUtils.checkShutdownSignaled();
+
+                        Admission admission = (Admission) j.next();
 
                         // check admission date, determine if we should discharge
                         Date admissionDate = admission.getAdmissionDate();
@@ -130,9 +129,8 @@ public class ErProgramDischargeTask extends TimerTask {
                 }
             }
         } catch (ShutdownException e) {
-        	log.debug("ErProgramDischargeTask noticed shutdown hook.");
-        }
-        finally {
+            log.debug("ErProgramDischargeTask noticed shutdown hook.");
+        } finally {
             DbConnectionFilter.releaseAllThreadDbResources();
         }
     }

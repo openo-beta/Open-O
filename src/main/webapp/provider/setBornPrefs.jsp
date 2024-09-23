@@ -24,53 +24,54 @@
 
 --%>
 
-<%@page contentType="text/html"%>
-<%@ include file="/casemgmt/taglibs.jsp"%>
+<%@page contentType="text/html" %>
+<%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="java.util.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 
 <html:html>
-	<head>
-		<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-		<html:base />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title><bean-el:message key="${providertitle}" /></title>
-		<link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
-	</head>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <html:base/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title><bean-el:message key="${providertitle}"/></title>
+        <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
+    </head>
 
-	<body class="BodyStyle" vlink="#0000FF">
-		<table class="MainTable" id="scrollNumber1" name="encounterTable">
-			<tr class="MainTableTopRow">
-				<td class="MainTableTopRowLeftColumn">
-					<bean-el:message key="${providermsgPrefs}" />
-			   	</td>
-				<td style="color: white" class="MainTableTopRowRightColumn"></td>
-			</tr>
-			<tr>
-				<td class="MainTableLeftColumn"></td>
-				<td class="MainTableRightColumn">
-			<%if( request.getAttribute("status") == null ){%>
-					<html:form action="/setProviderStaleDate.do">
-						<input type="hidden" name="method" value="<c:out value="${method}"/>">
-						<html:checkbox property="bornPromptsProperty.checked">
-						<bean:message key="provider.pref.bornPrompts"/></html:checkbox>
-						<br/><br/>
-						<input type="submit" value="<bean-el:message key="${providerbtnSubmit}"/>"/>
-						<input type="button" value="<bean-el:message key="${providerbtnCancel}"/>" onclick="window.close();"/>
-					</html:form>
-			<%}else {%>
-					<bean-el:message key="${providermsgSuccess}" />
-					<br/><br/>
-					<input type="button" value="<bean-el:message key="${providerbtnClose}"/>" onclick="window.close();"/>
-			<%}%>
-				</td>
-			</tr>
-			<tr>
-				<td class="MainTableBottomRowLeftColumn"></td>
-				<td class="MainTableBottomRowRightColumn"></td>
-			</tr>
-		</table>
-	</body>
+    <body class="BodyStyle" vlink="#0000FF">
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn">
+                <bean-el:message key="${providermsgPrefs}"/>
+            </td>
+            <td style="color: white" class="MainTableTopRowRightColumn"></td>
+        </tr>
+        <tr>
+            <td class="MainTableLeftColumn"></td>
+            <td class="MainTableRightColumn">
+                <%if (request.getAttribute("status") == null) {%>
+                <html:form action="/setProviderStaleDate.do">
+                    <input type="hidden" name="method" value="<c:out value="${method}"/>">
+                    <html:checkbox property="bornPromptsProperty.checked">
+                        <bean:message key="provider.pref.bornPrompts"/></html:checkbox>
+                    <br/><br/>
+                    <input type="submit" value="<bean-el:message key="${providerbtnSubmit}"/>"/>
+                    <input type="button" value="<bean-el:message key="${providerbtnCancel}"/>"
+                           onclick="window.close();"/>
+                </html:form>
+                <%} else {%>
+                <bean-el:message key="${providermsgSuccess}"/>
+                <br/><br/>
+                <input type="button" value="<bean-el:message key="${providerbtnClose}"/>" onclick="window.close();"/>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
+    </body>
 </html:html>

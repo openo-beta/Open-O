@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -83,21 +83,21 @@ public class SecurityInfoManagerImpl implements SecurityInfoManager {
     /**
      * Checks to see if this provider has the privilege to the security object being
      * requested.
-     * 
+     *
      * The way it's coded now
-     * 
+     *
      * get all the roles associated with the logged in provider, including the
      * roleName=providerNo.
      * find the privileges using the roles list.
-     * 
+     *
      * Loop through all the rights, if we find one that can evaluate to true , we
      * exit..else we keep checking
-     * 
+     *
      * if r then an entry with r | u |w | x is required
      * if u then an entry with u | w | x is required
      * if w then an entry with w | x is required
      * if d then an entry with d | x is required
-     * 
+     *
      * Privileges priority is taken care of by
      * OscarRoleObjectPrivilege.checkPrivilege()
      *

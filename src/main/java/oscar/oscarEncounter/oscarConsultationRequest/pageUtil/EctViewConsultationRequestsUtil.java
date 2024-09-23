@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -103,7 +103,7 @@ public class EctViewConsultationRequestsUtil {
           for( int idx = 0; idx < consultList.size(); ++idx ) {
               consult = (ConsultationRequest)consultList.get(idx);
               demo = demographicManager.getDemographic(loggedInInfo, consult.getDemographicId());
-              
+
               String serviceDescription = "";
               // If service id is 0, check the extensions table
               if (consult.getServiceId() == 0) {
@@ -115,24 +115,22 @@ public class EctViewConsultationRequestsUtil {
                  }
               }
 
-              providerId = demo.getProviderNo();
-              if( providerId != null && !providerId.equals("")) {
-                  prov = providerDao.getProvider(demo.getProviderNo());
-                  providerName = prov.getFormattedName();
-                  providerNo.add(prov.getProviderNo());
-              }
-              else {
-                  providerName = "N/A";
-                  providerNo.add("-1");
-              }
+                providerId = demo.getProviderNo();
+                if (providerId != null && !providerId.equals("")) {
+                    prov = providerDao.getProvider(demo.getProviderNo());
+                    providerName = prov.getFormattedName();
+                    providerNo.add(prov.getProviderNo());
+                } else {
+                    providerName = "N/A";
+                    providerNo.add("-1");
+                }
 
-              if( consult.getProfessionalSpecialist() == null ) {
-                  specialistName = "N/A";
-              }
-              else {
-                  specialist = consult.getProfessionalSpecialist();
-                  specialistName = specialist.getLastName() + ", " + specialist.getFirstName();
-              }
+                if (consult.getProfessionalSpecialist() == null) {
+                    specialistName = "N/A";
+                } else {
+                    specialist = consult.getProfessionalSpecialist();
+                    specialistName = specialist.getLastName() + ", " + specialist.getFirstName();
+                }
 
               demographicNo.add(consult.getDemographicId().toString());
               date.add(DateFormatUtils.ISO_DATE_FORMAT.format(consult.getReferralDate()));
@@ -214,9 +212,9 @@ public class EctViewConsultationRequestsUtil {
                  }
               }
 
-              Demographic demo = demoManager.getDemographic(loggedInInfo, consult.getDemographicId());
-              String providerId = demo.getProviderNo();
-              String providerName = (providerId != null && !providerId.isEmpty()) ? providerDao.getProvider(providerId).getFormattedName() : "N/A";
+                Demographic demo = demoManager.getDemographic(loggedInInfo, consult.getDemographicId());
+                String providerId = demo.getProviderNo();
+                String providerName = (providerId != null && !providerId.isEmpty()) ? providerDao.getProvider(providerId).getFormattedName() : "N/A";
 
               ids.add(consult.getId().toString());
               status.add(consult.getStatus());

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -44,7 +44,7 @@ import oscar.oscarProvider.data.ProviderMyOscarIdData;
 public class ProviderPHRCheck extends TagSupport {
 
     protected String providerNo = null;
-    
+
     private AppManager appManager = SpringUtils.getBean(AppManager.class);
 
     public String getProvider() {
@@ -58,23 +58,23 @@ public class ProviderPHRCheck extends TagSupport {
 
     public int doStartTag() throws JspException {
 
-        boolean conditionMet = false ;
-       
-          try {     
-	        	  if(appManager.hasAppDefinition(LoggedInInfo.getLoggedInInfoFromSession(this.pageContext.getSession()), "PHR")) {
-	        		  if( !ProviderMyOscarIdData.idIsSet(providerNo) ) {
-	        			  conditionMet = true;
-	        		  }
-	        	  }
-          }catch(NullPointerException e) {
-        	  	MiscUtils.getLogger().debug("INVALID provider");
+        boolean conditionMet = false;
+
+        try {
+            if (appManager.hasAppDefinition(LoggedInInfo.getLoggedInInfoFromSession(this.pageContext.getSession()), "PHR")) {
+                if (!ProviderMyOscarIdData.idIsSet(providerNo)) {
+                    conditionMet = true;
+                }
+            }
+        } catch (NullPointerException e) {
+            MiscUtils.getLogger().debug("INVALID provider");
             MiscUtils.getLogger().error("Error", e);
-          }
-        
-        if (conditionMet)         
+        }
+
+        if (conditionMet)
             return (EVAL_BODY_INCLUDE);
         else
-            return (SKIP_BODY);        
+            return (SKIP_BODY);
 
     }
 
@@ -83,10 +83,10 @@ public class ProviderPHRCheck extends TagSupport {
         return (EVAL_PAGE);
 
     }
-   
+
     public void release() {
 
-        providerNo = null;        
+        providerNo = null;
     }
 
 }

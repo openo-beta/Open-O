@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,70 +32,67 @@ import javax.persistence.Id;
 @Entity
 public class CtlRelationships extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String value;
-	
-	private String label;
-	
-	private boolean active=true;
-	
-	private String maleInverse;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String femaleInverse;
+    private String value;
 
-	public Integer getId() {
-		return id;
-	}
+    private String label;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private boolean active = true;
 
-	public String getValue() {
-		return value;
-	}
+    private String maleInverse;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    private String femaleInverse;
 
-	public String getLabel() {
-		return label;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public String getMaleInverse() {
-		return maleInverse;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public void setMaleInverse(String maleInverse) {
-		this.maleInverse = maleInverse;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	public String getFemaleInverse() {
-		return femaleInverse;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public void setFemaleInverse(String femaleInverse) {
-		this.femaleInverse = femaleInverse;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	
-	
-	
-	
+    public String getMaleInverse() {
+        return maleInverse;
+    }
+
+    public void setMaleInverse(String maleInverse) {
+        this.maleInverse = maleInverse;
+    }
+
+    public String getFemaleInverse() {
+        return femaleInverse;
+    }
+
+    public void setFemaleInverse(String femaleInverse) {
+        this.femaleInverse = femaleInverse;
+    }
+
+
 }

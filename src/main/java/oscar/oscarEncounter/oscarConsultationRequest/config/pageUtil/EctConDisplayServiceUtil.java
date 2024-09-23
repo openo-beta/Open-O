@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,10 +40,9 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.util.ConversionUtils;
 
-public class EctConDisplayServiceUtil
-{
-	private ConsultationServiceDao consultationServiceDao = (ConsultationServiceDao)SpringUtils.getBean(ConsultationServiceDao.class);
-	
+public class EctConDisplayServiceUtil {
+    private ConsultationServiceDao consultationServiceDao = (ConsultationServiceDao) SpringUtils.getBean(ConsultationServiceDao.class);
+
     public Vector<String> fNameVec;
     public Vector<String> lNameVec;
     public Vector<String> proLettersVec;
@@ -57,25 +56,23 @@ public class EctConDisplayServiceUtil
     public Vector<String> serviceName;
     public Vector<String> serviceId;
     public ArrayList<String> referralNoVec;
-	
-    public String getServiceDesc(String serId)
-    {
+
+    public String getServiceDesc(String serId) {
         String retval = new String();
 
         ConsultationServices cs = consultationServiceDao.find(Integer.parseInt(serId));
-        if(cs != null) {
-        	retval = cs.getServiceDesc();
+        if (cs != null) {
+            retval = cs.getServiceDesc();
         }
 
         return retval;
     }
-    
+
     public void estSpecialist() {
-    	estSpecialistVector();
+        estSpecialistVector();
     }
 
-    public void estSpecialistVector()
-    {
+    public void estSpecialistVector() {
         fNameVec = new Vector<String>();
         lNameVec = new Vector<String>();
         proLettersVec = new Vector<String>();
@@ -87,9 +84,9 @@ public class EctConDisplayServiceUtil
         specTypeVec = new Vector<String>();
         specIdVec = new Vector<String>();
         referralNoVec = new ArrayList<String>();
-        
-        ProfessionalSpecialistDao dao = SpringUtils.getBean(ProfessionalSpecialistDao.class);        
-        for(ProfessionalSpecialist ps : dao.findAll()) {
+
+        ProfessionalSpecialistDao dao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
+        for (ProfessionalSpecialist ps : dao.findAll()) {
             fNameVec.add(ps.getFirstName());
             lNameVec.add(ps.getLastName());
             proLettersVec.add(ps.getProfessionalLetters());
@@ -106,22 +103,21 @@ public class EctConDisplayServiceUtil
     public Vector<String> getSpecialistInField(String serviceId) {
         Vector<String> vector = new Vector<String>();
         ServiceSpecialistsDao dao = SpringUtils.getBean(ServiceSpecialistsDao.class);
-        
-        for(ServiceSpecialists ss : dao.findByServiceId(ConversionUtils.fromIntString(serviceId))) {
-        	vector.add("" + ss.getId().getSpecId());
+
+        for (ServiceSpecialists ss : dao.findByServiceId(ConversionUtils.fromIntString(serviceId))) {
+            vector.add("" + ss.getId().getSpecId());
         }
         return vector;
     }
 
-    public void estServicesVectors()
-    {
+    public void estServicesVectors() {
         serviceId = new Vector<String>();
         serviceName = new Vector<String>();
 
         List<ConsultationServices> services = consultationServiceDao.findActive();
-        for(ConsultationServices service:services) {
-        	serviceId.add(String.valueOf(service.getServiceId()));
-        	serviceName.add(service.getServiceDesc());
+        for (ConsultationServices service : services) {
+            serviceId.add(String.valueOf(service.getServiceId()));
+            serviceName.add(service.getServiceDesc());
         }
 
     }

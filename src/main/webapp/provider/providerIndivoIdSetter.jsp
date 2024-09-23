@@ -24,92 +24,90 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ page import="oscar.oscarProvider.data.*"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ page import="oscar.oscarProvider.data.*" %>
 
 
 <%
-if(session.getValue("user") == null)
-    response.sendRedirect("../logout.htm");
-  
-String curUser_no;
-curUser_no = (String) session.getAttribute("user");
+    if (session.getValue("user") == null)
+        response.sendRedirect("../logout.htm");
+
+    String curUser_no;
+    curUser_no = (String) session.getAttribute("user");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 
 <html:html>
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<html:base />
-<title><bean:message key="provider.setPHRLogin.title" /></title>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <html:base/>
+        <title><bean:message key="provider.setPHRLogin.title"/></title>
 
-<link rel="stylesheet" type="text/css"
-	href="../oscarEncounter/encounterStyles.css">
+        <link rel="stylesheet" type="text/css"
+              href="../oscarEncounter/encounterStyles.css">
 
-<script type="text/javascript">
+        <script type="text/javascript">
             function validate() {
                 var ret = true;
                 var login = document.forms["setMyOscarIdForm"].myOscarLoginId.value.replace(/^\s+|\s+$/g, '');
-                if(login.length < 3) {
+                if (login.length < 3) {
                     alert("Login must be at least 3 characters");
                     ret = false;
                 }
-                
+
                 document.forms["setMyOscarIdForm"].myOscarLoginId.value = login;
                 document.forms["setMyOscarIdForm"].myOscarLoginId.focus();
                 return ret;
             }
         </script>
-</head>
+    </head>
 
-<body class="BodyStyle" vlink="#0000FF">
+    <body class="BodyStyle" vlink="#0000FF">
 
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn"><bean:message
-			key="provider.setColour.msgPrefs" /></td>
-		<td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-			key="provider.setPHRLogin.msgMyOscarId" /></td>
-	</tr>
-	<tr>
-		<td class="MainTableLeftColumn">&nbsp;</td>
-		<td class="MainTableRightColumn"><html:errors /> <%
-              String login = ProviderMyOscarIdData.getMyOscarId(curUser_no);
-               int atsign = login.indexOf("@");
-               if( atsign > -1 )
-                   login = login.substring(0,atsign);
-                   
-               if( request.getAttribute("status") == null )
-               {
-      
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn"><bean:message
+                    key="provider.setColour.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
+                    key="provider.setPHRLogin.msgMyOscarId"/></td>
+        </tr>
+        <tr>
+            <td class="MainTableLeftColumn">&nbsp;</td>
+            <td class="MainTableRightColumn"><html:errors/> <%
+                String login = ProviderMyOscarIdData.getMyOscarId(curUser_no);
+                int atsign = login.indexOf("@");
+                if (atsign > -1)
+                    login = login.substring(0, atsign);
+
+                if (request.getAttribute("status") == null) {
+
             %> <html:form action="/setMyOscarId.do">
-			<bean:message key="provider.setPHRLogin.msgEdit" />&nbsp;&nbsp;
-               <html:text property="myOscarLoginId" value="<%=login%>"
-				size="20" />
-			<br>
-			<input type="submit" onclick="return validate();"
-				value="<bean:message key="provider.setPHRLogin.btnSubmit"/>" />
-		</html:form> <%
-               }               
-               else if( ((String)request.getAttribute("status")).equals("complete") ) {
-            %> <bean:message key="provider.setPHRLogin.msgSuccess" />&nbsp;'<%=login%>'
+                <bean:message key="provider.setPHRLogin.msgEdit"/>&nbsp;&nbsp;
+                <html:text property="myOscarLoginId" value="<%=login%>"
+                           size="20"/>
+                <br>
+                <input type="submit" onclick="return validate();"
+                       value="<bean:message key="provider.setPHRLogin.btnSubmit"/>"/>
+            </html:form> <%
+            } else if (((String) request.getAttribute("status")).equals("complete")) {
+            %> <bean:message key="provider.setPHRLogin.msgSuccess"/>&nbsp;'<%=login%>'
 
-		<%
-               }
-            %>
-		</td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-<script type="text/javascript">
-        if( document.forms.length > 0 )
+                <%
+                    }
+                %>
+            </td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        if (document.forms.length > 0)
             document.forms["setMyOscarIdForm"].myOscarLoginId.focus();
     </script>
-</body>
+    </body>
 </html:html>

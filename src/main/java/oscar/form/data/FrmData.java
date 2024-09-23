@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,7 +42,7 @@ import oscar.util.UtilDateUtilities;
 
 public class FrmData {
     private static final Logger _log = MiscUtils.getLogger();
-    private static EncounterFormDao encounterFormDao=(EncounterFormDao)SpringUtils.getBean(EncounterFormDao.class);
+    private static EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
 
     public class Form {
         private String formName;
@@ -55,23 +55,30 @@ public class FrmData {
             this.formTable = formTable;
         }
 
-        public String getFormName() {       return formName;        }
-        public String getFormPage() {       return formPage;        }
-        public String getFormTable() {      return formTable;       }
+        public String getFormName() {
+            return formName;
+        }
+
+        public String getFormPage() {
+            return formPage;
+        }
+
+        public String getFormTable() {
+            return formTable;
+        }
     }
 
     public Form[] getForms() {
 
-    	List<EncounterForm> results=encounterFormDao.findAll();
+        List<EncounterForm> results = encounterFormDao.findAll();
 
-    	ArrayList<Form> forms = new ArrayList<Form>();
-    	for (EncounterForm encounterForm : results)
-    	{
+        ArrayList<Form> forms = new ArrayList<Form>();
+        for (EncounterForm encounterForm : results) {
             Form frm = new Form(encounterForm.getFormName(), encounterForm.getFormValue(), encounterForm.getFormTable());
             forms.add(frm);
-    	}
+        }
 
-    	return(forms.toArray(new Form[0]));
+        return (forms.toArray(new Form[0]));
     }
 
     public class PatientForm {
@@ -87,10 +94,21 @@ public class FrmData {
             this.edited = edited;
         }
 
-        public String getFormId() {            return formId;        }
-        public String getDemoNo() {            return demoNo;        }
-        public String getCreated() {            return created;        }
-        public String getEdited() {            return edited;        }
+        public String getFormId() {
+            return formId;
+        }
+
+        public String getDemoNo() {
+            return demoNo;
+        }
+
+        public String getCreated() {
+            return created;
+        }
+
+        public String getEdited() {
+            return edited;
+        }
     }
 
     public PatientForm[] getPatientForms(String demoNo, String table) throws SQLException {
@@ -98,11 +116,11 @@ public class FrmData {
 
 
         String sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table
-                    + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC";
+                + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC";
         ResultSet rs = DBHandler.GetSQL(sql);
-        while(rs.next()) {
+        while (rs.next()) {
             PatientForm frm = new PatientForm(oscar.Misc.getString(rs, "ID"), oscar.Misc.getString(rs, "demographic_no"),
-                                UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
+                    UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
             forms.add(frm);
         }
 
@@ -119,16 +137,16 @@ public class FrmData {
         String sql = "SELECT e.form_table from encounterForm e, study s where e.form_name = s.form_name and s.study_no = " + studyNo;
         String table = "";
         ResultSet rs = DBHandler.GetSQL(sql);
-        while(rs.next()) {
+        while (rs.next()) {
             table = oscar.Misc.getString(rs, "form_table");
         }
         rs = null;
 
         sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC limit 0,1";
         rs = DBHandler.GetSQL(sql);
-        while(rs.next()) {
+        while (rs.next()) {
             frm = new PatientForm(oscar.Misc.getString(rs, "ID"), oscar.Misc.getString(rs, "demographic_no"),
-                                UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
+                    UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
         }
 
         rs.close();
@@ -141,7 +159,7 @@ public class FrmData {
 
         String sql = "SELECT study_name, study_link FROM study WHERE study_no=" + studyNo;
         ResultSet rs = DBHandler.GetSQL(sql);
-        while(rs.next()) {
+        while (rs.next()) {
             ret[0] = oscar.Misc.getString(rs, "study_name");
             ret[1] = oscar.Misc.getString(rs, "study_link");
         }
@@ -150,37 +168,37 @@ public class FrmData {
         return ret;
     }
 
-	//ret[0] = form path;   ret[1] = formId
+    //ret[0] = form path;   ret[1] = formId
     public String[] getShortcutFormValue(String demoNo, String formName) throws java.sql.SQLException {
         String[] ret = new String[2];
-		String table = null;
+        String table = null;
 
-		EncounterFormDao encounterFormDao=(EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
-		List<EncounterForm> forms=encounterFormDao.findByFormName(formName);
+        EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
+        List<EncounterForm> forms = encounterFormDao.findByFormName(formName);
 
-		for (EncounterForm encounterForm : forms)
-		{
+        for (EncounterForm encounterForm : forms) {
             ret[0] = encounterForm.getFormValue();
             table = encounterForm.getFormTable();
-		}
+        }
 
 
         String sql;
         ResultSet rs;
 
-		ret[1] = "0";
+        ret[1] = "0";
         if (table.equals("form")) {
             String searchFormName = formName;
-            if (searchFormName.equals("AR1")) searchFormName = "ar1_99_12"; // quick hack for ease of migration from old forms to new
+            if (searchFormName.equals("AR1"))
+                searchFormName = "ar1_99_12"; // quick hack for ease of migration from old forms to new
             if (searchFormName.equals("AR2")) searchFormName = "ar2_99_08"; // ditto
-            sql = "SELECT form_no FROM " + table + " WHERE demographic_no=" + demoNo +" AND form_name='" + searchFormName + "' order by form_no desc limit 0,1";
+            sql = "SELECT form_no FROM " + table + " WHERE demographic_no=" + demoNo + " AND form_name='" + searchFormName + "' order by form_no desc limit 0,1";
             rs = DBHandler.GetSQL(sql);
-            while(rs.next()) {
+            while (rs.next()) {
                 ret[1] = oscar.Misc.getString(rs, "form_no");
             }
             String[] xmlForm = ret.clone();
 
-            if ( formName.equals("AR1")){
+            if (formName.equals("AR1")) {
                 //First check to see if there are records for 2005
 
                 ret = getShortcutFormValue(demoNo, "AR2005");
@@ -188,59 +206,57 @@ public class FrmData {
                 String[] foo = ret[0].split(".jsp");
                 ret[0] = foo[0] + "pg1.jsp" + foo[1];
                 MiscUtils.getLogger().debug("getShortcutFormValue forwarding new AR1 to: " + ret[0]);
-                String[] first_pick =  ret.clone();
+                String[] first_pick = ret.clone();
 
                 //Check if AR has any forms
-                if (ret[1].equals("0")){
+                if (ret[1].equals("0")) {
                     ret = getShortcutFormValue(demoNo, "AR");
                     MiscUtils.getLogger().debug("ret[0] is: " + ret[0]);
                     foo = ret[0].split(".jsp");
                     ret[0] = foo[0] + "pg1.jsp" + foo[1];
                     MiscUtils.getLogger().debug("getShortcutFormValue forwarding new AR1 to: " + ret[0]);
 
-                    if(ret[1].equals("0") && !xmlForm[1].equals("0")) { // Nothing found in AR but there are records in the old xml form
+                    if (ret[1].equals("0") && !xmlForm[1].equals("0")) { // Nothing found in AR but there are records in the old xml form
                         ret = xmlForm;
-                    }else if (ret[1].equals("0")) {  // Nothing in either old form Go with new one
+                    } else if (ret[1].equals("0")) {  // Nothing in either old form Go with new one
                         ret = first_pick;
                     }
                 }
 
-            }else if ( formName.equals("AR2")){
+            } else if (formName.equals("AR2")) {
                 ret = getShortcutFormValue(demoNo, "AR");
                 String[] foo = ret[0].split(".jsp");
                 ret[0] = foo[0] + "pg2.jsp" + foo[1];
                 MiscUtils.getLogger().debug("getShortcutFormValue forwarding new AR2 to: " + ret[0]);
-                String[] first_pick =  ret.clone();
-                if (ret[1].equals("0")){
-                   ret = getShortcutFormValue(demoNo, "AR");
-                   foo = ret[0].split(".jsp");
-                   ret[0] = foo[0] + "pg2.jsp" + foo[1];
-                   MiscUtils.getLogger().debug("getShortcutFormValue forwarding new AR2 to: " + ret[0]);
-                   if(ret[1].equals("0") && !xmlForm[1].equals("0")) { // Nothing found in AR but there are records in the old xml form
+                String[] first_pick = ret.clone();
+                if (ret[1].equals("0")) {
+                    ret = getShortcutFormValue(demoNo, "AR");
+                    foo = ret[0].split(".jsp");
+                    ret[0] = foo[0] + "pg2.jsp" + foo[1];
+                    MiscUtils.getLogger().debug("getShortcutFormValue forwarding new AR2 to: " + ret[0]);
+                    if (ret[1].equals("0") && !xmlForm[1].equals("0")) { // Nothing found in AR but there are records in the old xml form
                         ret = xmlForm;
-                   }else if (ret[1].equals("0")){  // Nothing in either old form Go with new one
+                    } else if (ret[1].equals("0")) {  // Nothing in either old form Go with new one
                         ret = first_pick;
-                   }
+                    }
                 }
             }
 
-   
-        } else if("".equals(table)){
-        	rs = null;
+
+        } else if ("".equals(table)) {
+            rs = null;
             ret[1] = "0";
-        } 
-        
-        else {
-            sql = "SELECT ID FROM " + table + " WHERE demographic_no=" + demoNo +" order by formEdited desc limit 0,1";
+        } else {
+            sql = "SELECT ID FROM " + table + " WHERE demographic_no=" + demoNo + " order by formEdited desc limit 0,1";
             rs = DBHandler.GetSQL(sql);
-            while(rs.next()) {
+            while (rs.next()) {
                 ret[1] = oscar.Misc.getString(rs, "ID");
             }
         }
 
-        if(rs != null)
-        	rs.close();
-        _log.debug("RETURNING "+ret[0]+" = "+ret[1]);
+        if (rs != null)
+            rs.close();
+        _log.debug("RETURNING " + ret[0] + " = " + ret[1]);
         return ret;
     }
 
@@ -250,12 +266,12 @@ public class FrmData {
 
         String sql = "SELECT value FROM property WHERE name='resource'";
         ResultSet rs = DBHandler.GetSQL(sql);
-        while(rs.next()) {
+        while (rs.next()) {
             ret = oscar.Misc.getString(rs, "value");
         }
 
         rs.close();
-        if(ret.compareTo("")==0)
+        if (ret.compareTo("") == 0)
             ret = "http://resource.oscarmcmaster.org/oscarResource/";
         return ret;
 
@@ -267,7 +283,7 @@ public class FrmData {
 
         String sql = "SELECT value FROM property WHERE name='" + name + "'";
         ResultSet rs = DBHandler.GetSQL(sql);
-        while(rs.next()) {
+        while (rs.next()) {
             ret = oscar.Misc.getString(rs, "value");
         }
 

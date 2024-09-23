@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -100,10 +100,10 @@ public class RxWebService extends AbstractServiceImpl {
 
     @Autowired
     protected FavoriteConverter favoriteConverter;
-    
+
     @Autowired
     protected DemographicManager demographicManager;
-    
+
     @Autowired
     protected PrescriptionManager prescriptionManager;
 
@@ -112,9 +112,10 @@ public class RxWebService extends AbstractServiceImpl {
     @Produces("application/json")
     public DrugSearchResponse drugs(@QueryParam("demographicNo") int demographicNo)
             throws OperationNotSupportedException {
-    	return drugs(demographicNo,null);
-    	
+        return drugs(demographicNo, null);
+
     }
+
     /**
      * Gets drugs for the demographic and filter based on their status.
      *
@@ -160,68 +161,73 @@ public class RxWebService extends AbstractServiceImpl {
 
         return response;
     }
-    
-	@GET
-	@Path("rxStatus")
-	@Produces(MediaType.APPLICATION_JSON) 
-	public Response getDocumentCategories() {
-		return Response.status(Status.OK).entity(RxStatus.values()).build();
-	}
+
+    @GET
+    @Path("rxStatus")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDocumentCategories() {
+        return Response.status(Status.OK).entity(RxStatus.values()).build();
+    }
 
     @GET
     @Path("/drugs/{status}/{demographicNo}")
     @Produces(MediaType.APPLICATION_JSON)
     public DrugSearchResponse drugs(@PathParam("status") String status, @PathParam("demographicNo") int demographicNo) {
-    	DrugSearchResponse drugResponse;
-    	
-    	switch (RxStatus.valueOf(status.trim().toUpperCase())) {
-		case ALL: drugResponse = getAllDrugs(demographicNo);
-			break;
-		case ARCHIVED: drugResponse = getCurrentDrugs(demographicNo);
-			break;
-		case CURRENT: drugResponse = getLongtermDrugs(demographicNo);
-			break;
-		case LONGTERM: drugResponse = getArchivedDrugs(demographicNo);
-			break;
-		default: drugResponse = null;
-			break;   	
-    	}
-    	
-    	return drugResponse;
+        DrugSearchResponse drugResponse;
+
+        switch (RxStatus.valueOf(status.trim().toUpperCase())) {
+            case ALL:
+                drugResponse = getAllDrugs(demographicNo);
+                break;
+            case ARCHIVED:
+                drugResponse = getCurrentDrugs(demographicNo);
+                break;
+            case CURRENT:
+                drugResponse = getLongtermDrugs(demographicNo);
+                break;
+            case LONGTERM:
+                drugResponse = getArchivedDrugs(demographicNo);
+                break;
+            default:
+                drugResponse = null;
+                break;
+        }
+
+        return drugResponse;
     }
-    
+
     @GET
     @Path("/drugs/all/{demographicNo}")
     @Produces(MediaType.APPLICATION_JSON)
     public DrugSearchResponse getAllDrugs(@PathParam("demographicNo") int demographicNo) {
-    	List<Drug> drugList = rxManager.getDrugs(getLoggedInInfo(), demographicNo, RxStatus.ALL);
-    	return new DrugSearchResponse( this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList) );
+        List<Drug> drugList = rxManager.getDrugs(getLoggedInInfo(), demographicNo, RxStatus.ALL);
+        return new DrugSearchResponse(this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList));
     }
-    
+
     @GET
     @Path("/drugs/current/{demographicNo}")
     @Produces(MediaType.APPLICATION_JSON)
     public DrugSearchResponse getCurrentDrugs(@PathParam("demographicNo") int demographicNo) {
-    	List<Drug> drugList = rxManager.getDrugs(getLoggedInInfo(), demographicNo, RxStatus.CURRENT);
-    	return new DrugSearchResponse( this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList) );
+        List<Drug> drugList = rxManager.getDrugs(getLoggedInInfo(), demographicNo, RxStatus.CURRENT);
+        return new DrugSearchResponse(this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList));
     }
-    
+
     @GET
     @Path("/drugs/longterm/{demographicNo}")
     @Produces(MediaType.APPLICATION_JSON)
     public DrugSearchResponse getLongtermDrugs(@PathParam("demographicNo") int demographicNo) {
-    	List<Drug> drugList = rxManager.getLongTermDrugs(getLoggedInInfo(), demographicNo);
-    	return new DrugSearchResponse( this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList) );
+        List<Drug> drugList = rxManager.getLongTermDrugs(getLoggedInInfo(), demographicNo);
+        return new DrugSearchResponse(this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList));
     }
-    
+
     @GET
     @Path("/drugs/archived/{demographicNo}")
     @Produces(MediaType.APPLICATION_JSON)
     public DrugSearchResponse getArchivedDrugs(@PathParam("demographicNo") int demographicNo) {
-    	List<Drug> drugList = rxManager.getDrugs(getLoggedInInfo(), demographicNo, RxStatus.ARCHIVED);
-    	return new DrugSearchResponse( this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList) );
+        List<Drug> drugList = rxManager.getDrugs(getLoggedInInfo(), demographicNo, RxStatus.ARCHIVED);
+        return new DrugSearchResponse(this.drugConverter.getAllAsTransferObjects(getLoggedInInfo(), drugList));
     }
-    
+
     /**
      * Adds a new drug to the drugs table.
      *
@@ -387,23 +393,23 @@ public class RxWebService extends AbstractServiceImpl {
         return resp;
 
     }
-    
+
     @Path("/drug/{drugId}")
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public DrugResponse represcribe(@PathParam("drugId") Integer drugId) {
-    		LoggedInInfo info = getLoggedInInfo();
-    		Drug drug = rxManager.getDrug(info, drugId);
-    		DrugResponse resp = new DrugResponse();
-    		String special = RxUtil.trimSpecial(drug);
-    		drug.setSpecial(special);
-    		resp.setSuccess(true);
+        LoggedInInfo info = getLoggedInInfo();
+        Drug drug = rxManager.getDrug(info, drugId);
+        DrugResponse resp = new DrugResponse();
+        String special = RxUtil.trimSpecial(drug);
+        drug.setSpecial(special);
+        resp.setSuccess(true);
         resp.setDrug(this.drugConverter.getAsTransferObject(info, drug));
-    		
-    		return resp;
+
+        return resp;
     }
- 
+
 
     /**
      * Creates a prescription for the drugs that are provided.
@@ -418,7 +424,7 @@ public class RxWebService extends AbstractServiceImpl {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PrescriptionResponse prescribe(
             List<DrugTo1> drugTransferObjects,
-            @QueryParam("demographicNo")int demographicNo
+            @QueryParam("demographicNo") int demographicNo
     ) {
 
 
@@ -432,7 +438,7 @@ public class RxWebService extends AbstractServiceImpl {
         PrescriptionResponse resp = new PrescriptionResponse();
 
         // sanity check for input parameters
-        if(drugTransferObjects == null || demographicNo < 0 || drugTransferObjects.size() < 1){
+        if (drugTransferObjects == null || demographicNo < 0 || drugTransferObjects.size() < 1) {
             resp.setSuccess(false);
             resp.setMessage("Invalid parameters passed to prescribe");
             return resp;
@@ -454,7 +460,7 @@ public class RxWebService extends AbstractServiceImpl {
         } catch (ConversionException ce) {
 
             logger.info("Failed to convert from transfer object to domain object: " + ce.getMessage());
-            logger.error("ERROR",ce);
+            logger.error("ERROR", ce);
             resp.setMessage("Could not convert provided drugs to domain object, prescribe failed.");
             resp.setSuccess(false);
 
@@ -464,7 +470,7 @@ public class RxWebService extends AbstractServiceImpl {
         // attempt to prescribe the drugs.
         pd = rxManager.prescribe(info, drugs, demographicNo);
 
-        if(pd != null){
+        if (pd != null) {
 
             // prescribe was success. We can now prepare the response.
             resp.setDrugs(this.drugConverter.getAllAsTransferObjects(info, pd.drugs));
@@ -473,7 +479,7 @@ public class RxWebService extends AbstractServiceImpl {
 
             return resp;
 
-        }else{
+        } else {
 
             logger.error("Failed to prescribe drugs: " + drugs.toString());
             resp.setMessage("Failed to prescribe drugs");
@@ -497,7 +503,7 @@ public class RxWebService extends AbstractServiceImpl {
     public DrugSearchResponse history(
             @QueryParam("id") int id,
             @QueryParam("demographicNo") int demographicNo
-    ){
+    ) {
 
         LoggedInInfo info = getLoggedInInfo();
 
@@ -513,12 +519,12 @@ public class RxWebService extends AbstractServiceImpl {
 
         return resp;
     }
-    
-    
+
+
     @Path("/prescriptions")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PrescriptionTo1> getPrescriptions(@QueryParam("demographicNo") int demographicNo){
+    public List<PrescriptionTo1> getPrescriptions(@QueryParam("demographicNo") int demographicNo) {
 
         LoggedInInfo info = getLoggedInInfo();
 
@@ -526,17 +532,17 @@ public class RxWebService extends AbstractServiceImpl {
         if (!securityInfoManager.hasPrivilege(info, "_rx", "r", demographicNo)) {
             throw new AccessDeniedException("_rx", "r", demographicNo);
         }
-        
+
         List<Prescription> prescriptions = prescriptionManager.getPrescriptions(info, demographicNo);
         List<PrescriptionTo1> retPrescriptions = prescriptionConverter.getAllAsTransferObjects(info, prescriptions);
-       
-		return retPrescriptions;
+
+        return retPrescriptions;
     }
-    
+
     @Path("/recordPrescriptionPrint/{scriptNo}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public PrescriptionTo1 recordPrescriptionPrint(@PathParam("scriptNo") int scriptNo){
+    public PrescriptionTo1 recordPrescriptionPrint(@PathParam("scriptNo") int scriptNo) {
 
         LoggedInInfo info = getLoggedInInfo();
 
@@ -544,22 +550,22 @@ public class RxWebService extends AbstractServiceImpl {
         //if (!securityInfoManager.hasPrivilege(info, "_rx", "r", demographicNo)) {
         //    throw new AccessDeniedException("_rx", "r", demographicNo);
         //}
-        
-        
-        prescriptionManager.print(info,scriptNo);
-        
-        Prescription prescription = prescriptionManager.getPrescription(info,scriptNo);
-        
-        
+
+
+        prescriptionManager.print(info, scriptNo);
+
+        Prescription prescription = prescriptionManager.getPrescription(info, scriptNo);
+
+
         PrescriptionTo1 retPrescriptions = prescriptionConverter.getAsTransferObject(info, prescription);
-       
-		return retPrescriptions;
+
+        return retPrescriptions;
     }
 
     @Path("/favorites")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public FavoriteResponse favourites(){
+    public FavoriteResponse favourites() {
 
         // No access control check required, we are not accessing a patient record.
         // TODO: Revise access control policies and re-evalute this to see if it requires access control check.
@@ -580,7 +586,7 @@ public class RxWebService extends AbstractServiceImpl {
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public GenericRESTResponse addFavorite(FavoriteTo1 newFavorite){
+    public GenericRESTResponse addFavorite(FavoriteTo1 newFavorite) {
 
         // No access control check required, we are not accessing a patient record.
         // TODO: Revise access control policies and re-evalute this to see if it requires access control check.
@@ -589,19 +595,19 @@ public class RxWebService extends AbstractServiceImpl {
 
         GenericRESTResponse resp = new GenericRESTResponse();
 
-        try{
+        try {
 
             Favorite f = this.favoriteConverter.getAsDomainObject(info, newFavorite);
 
-            if(this.rxManager.addFavorite(f)){
+            if (this.rxManager.addFavorite(f)) {
                 resp.setSuccess(true);
                 resp.setMessage("added favorite");
-            }else{
+            } else {
                 resp.setSuccess(false);
                 resp.setMessage("failed to add new favorite");
             }
 
-        }catch(ConversionException e){
+        } catch (ConversionException e) {
             logger.error(e.getStackTrace());
             resp.setSuccess(false);
             resp.setMessage("Failed to add favorite.");
@@ -610,148 +616,145 @@ public class RxWebService extends AbstractServiceImpl {
         return resp;
 
     }
-    
-    
+
+
     @GET
     @Path("/{demographicNo}/watermark/{rxNo}")
     @Produces("image/png")
-    public StreamingOutput watermark(@PathParam("demographicNo") Integer demographicNo,@PathParam("rxNo") Integer rxNo  ,@Context HttpServletRequest request,@Context HttpServletResponse response){
-    		LoggedInInfo loggedInInfo = getLoggedInInfo();
-    		response.setContentType("image/png");
-    		List<Drug> list = prescriptionManager.getDrugsByScriptNo(loggedInInfo, rxNo,null);
-    		StringBuilder sb = new StringBuilder();
-    		for(Drug drug: list) {
-    			sb.append(drug.getSpecial());
-    			sb.append("\n\n");
-    		}
-    		
-    		final String text = sb.toString();
-    		return new StreamingOutput() {
-    			@Override
-    			public void write(java.io.OutputStream os)
-    					throws IOException, WebApplicationException {
-    				try{
-    			
-    					BufferedImage img = RxUtil.getWaterMarkImage(text);
-    		            ImageIO.write(img,"PNG", os);
-    					
-    				}catch(Exception e) {
-    					logger.error("error writing image",e);
-    				}
-    			}
-    			
-    		};
-		
+    public StreamingOutput watermark(@PathParam("demographicNo") Integer demographicNo, @PathParam("rxNo") Integer rxNo, @Context HttpServletRequest request, @Context HttpServletResponse response) {
+        LoggedInInfo loggedInInfo = getLoggedInInfo();
+        response.setContentType("image/png");
+        List<Drug> list = prescriptionManager.getDrugsByScriptNo(loggedInInfo, rxNo, null);
+        StringBuilder sb = new StringBuilder();
+        for (Drug drug : list) {
+            sb.append(drug.getSpecial());
+            sb.append("\n\n");
+        }
+
+        final String text = sb.toString();
+        return new StreamingOutput() {
+            @Override
+            public void write(java.io.OutputStream os)
+                    throws IOException, WebApplicationException {
+                try {
+
+                    BufferedImage img = RxUtil.getWaterMarkImage(text);
+                    ImageIO.write(img, "PNG", os);
+
+                } catch (Exception e) {
+                    logger.error("error writing image", e);
+                }
+            }
+
+        };
+
     }
+
     @POST
-	@Path("/{demographicNo}/print/{rxNo}")
-	@Produces("application/pdf")
+    @Path("/{demographicNo}/print/{rxNo}")
+    @Produces("application/pdf")
     @Consumes(MediaType.APPLICATION_JSON)
-	public StreamingOutput print(@PathParam("demographicNo") Integer demographicNo,@PathParam("rxNo") Integer rxNo  ,@Context HttpServletRequest request,PrintRxTo1 transferObject){
-    	
-    		LoggedInInfo loggedInInfo = getLoggedInInfo();
-    		Demographic demographic = demographicManager.getDemographic(getLoggedInInfo(), demographicNo);
-    		
-    		LogAction.addLog(loggedInInfo, "PRINT", "drug", ""+transferObject.getDrugId(), ""+demographicNo, transferObject.toString());
-    		
-    		for(PrintPointTo1 point : transferObject.getPrintPoints()) {
-			
-			if(point.getText().startsWith("@@")) {
-				switch (point.getText()) {
-					case "@@HIN":
-						point.setText(demographic.getHin());
-						break;
-					case "@@DEMO.FIRSTNAME":
-						point.setText(demographic.getFirstName());
-						break;
-					case "@@DEMO.LASTNAME":
-						point.setText(demographic.getLastName());
-						break;
-					case "@@ADDRESS.STREET":
-						point.setText(demographic.getAddress());
-						break;
-					case "@@ADDRESS.CITY":
-						point.setText(demographic.getCity());
-						break;
-					case "@@ADDRESS.PROV":
-						point.setText(demographic.getProvince());
-						break;
-					
-					case "@@DEMO.DOB.DAY":
-						point.setText(demographic.getDateOfBirth());
-						break;
-					case "@@DEMO.DOB.MONTH":
-						point.setText(demographic.getMonthOfBirth());
-						break;
-					case "@@DEMO.DOB.YEAR":
-						point.setText(demographic.getYearOfBirth());
-						break;
-				}
-				
-				
-				
-			}
-			
-			
-			
-			
-		}
-    		
-    		final PrintRxTo1 rxToPrint = transferObject;
-    	
-    		return new StreamingOutput() {
-			@Override
-			public void write(java.io.OutputStream os)
-					throws IOException, WebApplicationException {
-				try{
-					PDDocument document = new PDDocument();
-					
-				    //Embedding javascript to print dialog
-					if(rxToPrint.isAutoPrint()) {
-						PDActionJavaScript PDAjavascript = new PDActionJavaScript("this.print();");
-						document.getDocumentCatalog().setOpenAction(PDAjavascript);
-					}
-							
-				    PDRectangle rect = new PDRectangle(rxToPrint.getWidth(),rxToPrint.getHeight());
-					PDPage page = new PDPage(rect);// PDPage.PAGE_SIZE_A5);
-					document.addPage( page );
+    public StreamingOutput print(@PathParam("demographicNo") Integer demographicNo, @PathParam("rxNo") Integer rxNo, @Context HttpServletRequest request, PrintRxTo1 transferObject) {
 
-					// Create a new font object selecting one of the PDF base fonts
-					PDFont font = PDType1Font.HELVETICA_BOLD;
+        LoggedInInfo loggedInInfo = getLoggedInInfo();
+        Demographic demographic = demographicManager.getDemographic(getLoggedInInfo(), demographicNo);
 
-					// Start a new content stream which will "hold" the to be created content
-					PDPageContentStream contentStream = new PDPageContentStream(document, page);
-					
-					for(PrintPointTo1 point : rxToPrint.getPrintPoints()) {
-						contentStream.beginText();
-						contentStream.setFont( font, point.getFontSize() );
-						contentStream.moveTextPositionByAmount( point.getX(), point.getY() );
-						contentStream.drawString( point.getText() );
-						contentStream.endText();
-						
-					}
-					
-					float[] x = rxToPrint.getxPolygonCoords();
-					float[] y = rxToPrint.getyPolygonCoords();
-					if(x !=null && y != null && x.length > 1 && y.length > 1) {
-						contentStream.drawPolygon(x,y);
-					}
-					
-					contentStream.close();
+        LogAction.addLog(loggedInInfo, "PRINT", "drug", "" + transferObject.getDrugId(), "" + demographicNo, transferObject.toString());
 
-					
-					document.save( os);
-					document.close();
-		        }catch(Exception e){
-		        		logger.error("error streaming",e);
-		        }finally{
-		        		IOUtils.closeQuietly(os);
-		        }
-				
-			}  
-	    };
+        for (PrintPointTo1 point : transferObject.getPrintPoints()) {
+
+            if (point.getText().startsWith("@@")) {
+                switch (point.getText()) {
+                    case "@@HIN":
+                        point.setText(demographic.getHin());
+                        break;
+                    case "@@DEMO.FIRSTNAME":
+                        point.setText(demographic.getFirstName());
+                        break;
+                    case "@@DEMO.LASTNAME":
+                        point.setText(demographic.getLastName());
+                        break;
+                    case "@@ADDRESS.STREET":
+                        point.setText(demographic.getAddress());
+                        break;
+                    case "@@ADDRESS.CITY":
+                        point.setText(demographic.getCity());
+                        break;
+                    case "@@ADDRESS.PROV":
+                        point.setText(demographic.getProvince());
+                        break;
+
+                    case "@@DEMO.DOB.DAY":
+                        point.setText(demographic.getDateOfBirth());
+                        break;
+                    case "@@DEMO.DOB.MONTH":
+                        point.setText(demographic.getMonthOfBirth());
+                        break;
+                    case "@@DEMO.DOB.YEAR":
+                        point.setText(demographic.getYearOfBirth());
+                        break;
+                }
+
+
+            }
+
+
+        }
+
+        final PrintRxTo1 rxToPrint = transferObject;
+
+        return new StreamingOutput() {
+            @Override
+            public void write(java.io.OutputStream os)
+                    throws IOException, WebApplicationException {
+                try {
+                    PDDocument document = new PDDocument();
+
+                    //Embedding javascript to print dialog
+                    if (rxToPrint.isAutoPrint()) {
+                        PDActionJavaScript PDAjavascript = new PDActionJavaScript("this.print();");
+                        document.getDocumentCatalog().setOpenAction(PDAjavascript);
+                    }
+
+                    PDRectangle rect = new PDRectangle(rxToPrint.getWidth(), rxToPrint.getHeight());
+                    PDPage page = new PDPage(rect);// PDPage.PAGE_SIZE_A5);
+                    document.addPage(page);
+
+                    // Create a new font object selecting one of the PDF base fonts
+                    PDFont font = PDType1Font.HELVETICA_BOLD;
+
+                    // Start a new content stream which will "hold" the to be created content
+                    PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+                    for (PrintPointTo1 point : rxToPrint.getPrintPoints()) {
+                        contentStream.beginText();
+                        contentStream.setFont(font, point.getFontSize());
+                        contentStream.moveTextPositionByAmount(point.getX(), point.getY());
+                        contentStream.drawString(point.getText());
+                        contentStream.endText();
+
+                    }
+
+                    float[] x = rxToPrint.getxPolygonCoords();
+                    float[] y = rxToPrint.getyPolygonCoords();
+                    if (x != null && y != null && x.length > 1 && y.length > 1) {
+                        contentStream.drawPolygon(x, y);
+                    }
+
+                    contentStream.close();
+
+
+                    document.save(os);
+                    document.close();
+                } catch (Exception e) {
+                    logger.error("error streaming", e);
+                } finally {
+                    IOUtils.closeQuietly(os);
+                }
+
+            }
+        };
     }
-	
 
 
 }

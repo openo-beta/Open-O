@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -21,59 +21,59 @@ import org.oscarehr.common.model.AbstractModel;
 @Entity
 public class HRMDocumentComment extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String providerNo;
-	private Integer hrmDocumentId;
-	private String comment;
-	private Date commentTime;
-	private Boolean deleted = false;
-	
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public String getProviderNo() {
-    	return providerNo;
+    private String providerNo;
+    private Integer hrmDocumentId;
+    private String comment;
+    private Date commentTime;
+    private Boolean deleted = false;
+
+    @Override
+    public Integer getId() {
+        return id;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public Integer getHrmDocumentId() {
-    	return hrmDocumentId;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public void setHrmDocumentId(Integer hrmDocumentId) {
-    	this.hrmDocumentId = hrmDocumentId;
+    public Integer getHrmDocumentId() {
+        return hrmDocumentId;
     }
 
-	public String getComment() {
-    	return comment;
+    public void setHrmDocumentId(Integer hrmDocumentId) {
+        this.hrmDocumentId = hrmDocumentId;
     }
 
-	public void setComment(String comment) {
-    	this.comment = comment;
+    public String getComment() {
+        return comment;
     }
 
-	public Date getCommentTime() {
-    	return commentTime;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-	public void setCommentTime(Date commentTime) {
-    	this.commentTime = commentTime;
+    public Date getCommentTime() {
+        return commentTime;
     }
 
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-	
-	public Boolean isDeleted() {
-		return this.deleted;
-	}
-	
+    public void setCommentTime(Date commentTime) {
+        this.commentTime = commentTime;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Boolean isDeleted() {
+        return this.deleted;
+    }
+
 }

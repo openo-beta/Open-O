@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -49,172 +48,173 @@ import javax.persistence.TemporalType;
 @Entity
 public class OcanClientForm extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String ocanFormVersion=null;
-	private String providerNo = null;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date created = new Date();
-	
-	private Integer facilityId=null;
-	private Integer clientId=null;
-	
-	private String lastName;
-	private String firstName;
-	
-	private String dateOfBirth;
-	
-	private Date startDate;
-	private Date completionDate;
-	
-	private String assessmentStatus;
-	
-	private String providerName;
-	
-	public OcanClientForm() {		
-	}
-	
-	public Integer getId() {
-		return id;
-	}
+    private String ocanFormVersion = null;
+    private String providerNo = null;
 
-	public Date getCreated() {
-		return created;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date();
 
-	public String getOcanFormVersion() {
-    	return ocanFormVersion;
+    private Integer facilityId = null;
+    private Integer clientId = null;
+
+    private String lastName;
+    private String firstName;
+
+    private String dateOfBirth;
+
+    private Date startDate;
+    private Date completionDate;
+
+    private String assessmentStatus;
+
+    private String providerName;
+
+    public OcanClientForm() {
     }
 
-	public void setOcanFormVersion(String cdsFormVersion) {
-    	this.ocanFormVersion = cdsFormVersion;
+    public Integer getId() {
+        return id;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public Date getCreated() {
+        return created;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public String getOcanFormVersion() {
+        return ocanFormVersion;
     }
 
-	public Integer getFacilityId() {
-    	return facilityId;
+    public void setOcanFormVersion(String cdsFormVersion) {
+        this.ocanFormVersion = cdsFormVersion;
     }
 
-	public void setFacilityId(Integer facilityId) {
-    	this.facilityId = facilityId;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public Integer getClientId() {
-    	return clientId;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public void setClientId(Integer clientId) {
-    	this.clientId = clientId;
+    public Integer getFacilityId() {
+        return facilityId;
     }
 
-	public boolean equals(OcanClientForm o) {
-		try {
-			return (id != null && id.intValue() == o.id.intValue());
-		} catch (Exception e) {
-			return (false);
-		}
-	}
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
+    }
 
-	public int hashCode() {
-		return (id != null ? id.hashCode() : 0);
-	}
-	
-	@PreRemove
-	protected void jpaPreventDelete()
-	{
-		throw(new UnsupportedOperationException("Remove is not allowed for this type of item."));
-	}
+    public Integer getClientId() {
+        return clientId;
+    }
 
-	@PreUpdate
-	protected void jpaPreventUpdate()
-	{
-		throw(new UnsupportedOperationException("Update is not allowed for this type of item."));
-	}
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public boolean equals(OcanClientForm o) {
+        try {
+            return (id != null && id.intValue() == o.id.intValue());
+        } catch (Exception e) {
+            return (false);
+        }
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public int hashCode() {
+        return (id != null ? id.hashCode() : 0);
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    @PreRemove
+    protected void jpaPreventDelete() {
+        throw (new UnsupportedOperationException("Remove is not allowed for this type of item."));
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @PreUpdate
+    protected void jpaPreventUpdate() {
+        throw (new UnsupportedOperationException("Update is not allowed for this type of item."));
+    }
 
-	
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public Date getCompletionDate() {
-		return completionDate;
-	}
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
-	}
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
-	public String getFormattedStartDate() {
-		Date d = getStartDate();
-		if(d==null) {return "";}
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		return formatter.format(d);
-	}
-	
-	public String getFormattedCompletionDate() {
-		Date d = getCompletionDate();
-		if(d==null) {return "";}
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		return formatter.format(d);
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public String getAssessmentStatus() {
-		return assessmentStatus;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public void setAssessmentStatus(String assessmentStatus) {
-		this.assessmentStatus = assessmentStatus;
-	}
+    public Date getCompletionDate() {
+        return completionDate;
+    }
 
-	public String getProviderName() {
-		return providerName;
-	}
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
+    }
 
-	public void setProviderName(String providerName) {
-		this.providerName = providerName;
-	}
+    public String getFormattedStartDate() {
+        Date d = getStartDate();
+        if (d == null) {
+            return "";
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(d);
+    }
+
+    public String getFormattedCompletionDate() {
+        Date d = getCompletionDate();
+        if (d == null) {
+            return "";
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(d);
+    }
+
+    public String getAssessmentStatus() {
+        return assessmentStatus;
+    }
+
+    public void setAssessmentStatus(String assessmentStatus) {
+        this.assessmentStatus = assessmentStatus;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
 
 }

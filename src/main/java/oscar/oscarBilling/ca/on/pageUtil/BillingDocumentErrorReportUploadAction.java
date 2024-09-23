@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -71,295 +71,290 @@ import oscar.oscarBilling.ca.on.data.BillingClaimsErrorReportBeanHandlerSave;
 
 public class BillingDocumentErrorReportUploadAction extends Action {
 
-	private BatchEligibilityDao batchEligibilityDao = (BatchEligibilityDao)SpringUtils.getBean(BatchEligibilityDao.class);
-	private DemographicCustDao demographicCustDao = (DemographicCustDao)SpringUtils.getBean(DemographicCustDao.class);
-	private DemographicManager demographicManager =  SpringUtils.getBean(DemographicManager.class);
+    private BatchEligibilityDao batchEligibilityDao = (BatchEligibilityDao) SpringUtils.getBean(BatchEligibilityDao.class);
+    private DemographicCustDao demographicCustDao = (DemographicCustDao) SpringUtils.getBean(DemographicCustDao.class);
+    private DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		BillingDocumentErrorReportUploadForm frm = (BillingDocumentErrorReportUploadForm) form;
-		request.getSession().setAttribute("BillingDocumentErrorReportUploadForm", frm);
-		FormFile file1 = frm.getFile1();
-		ActionMessages errors = new ActionMessages();
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+                                 HttpServletResponse response) throws ServletException, IOException {
+        BillingDocumentErrorReportUploadForm frm = (BillingDocumentErrorReportUploadForm) form;
+        request.getSession().setAttribute("BillingDocumentErrorReportUploadForm", frm);
+        FormFile file1 = frm.getFile1();
+        ActionMessages errors = new ActionMessages();
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-		String filename = request.getParameter("filename") == null ? "null" : request.getParameter("filename");
-		
-		if (filename == "null") {
-			if (!saveFile(file1)) {
-				errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.fileNotAdded"));
-				saveErrors(request, errors);
-				return (new ActionForward(mapping.getInput()));
-			} else {
-				if (getData(loggedInInfo, file1.toString(), "DOCUMENT_DIR", request))
-					return file1.getFileName().startsWith("L") ? mapping.findForward("outside") : mapping.findForward("success");
-				else {
-					errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.incorrectFileFormat"));
-					saveErrors(request, errors);
-					return (new ActionForward(mapping.getInput()));
-				}
-			}
-		} else {
-			if (getData(loggedInInfo, filename, "ONEDT_INBOX", request)) {
-				return filename.startsWith("L") ? mapping.findForward("outside") : mapping.findForward("success");
-			} else if (getData(loggedInInfo, filename, "ONEDT_ARCHIVE", request)) {
-				return filename.startsWith("L") ? mapping.findForward("outside") : mapping.findForward("success");
-			} else {
-				errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.incorrectFileFormat"));
-				saveErrors(request, errors);
-				return (new ActionForward(mapping.getInput()));
-			}
-		}
-	}
+        String filename = request.getParameter("filename") == null ? "null" : request.getParameter("filename");
 
-	/**
-	 *
-	 * Save a Jakarta FormFile to a preconfigured place.
-	 *
-	 * @param file
-	 * @return boolean
-	 */
-	public static boolean saveFile(FormFile file) {
-		String retVal = null;
-		boolean isAdded = true;
+        if (filename == "null") {
+            if (!saveFile(file1)) {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.fileNotAdded"));
+                saveErrors(request, errors);
+                return (new ActionForward(mapping.getInput()));
+            } else {
+                if (getData(loggedInInfo, file1.toString(), "DOCUMENT_DIR", request))
+                    return file1.getFileName().startsWith("L") ? mapping.findForward("outside") : mapping.findForward("success");
+                else {
+                    errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.incorrectFileFormat"));
+                    saveErrors(request, errors);
+                    return (new ActionForward(mapping.getInput()));
+                }
+            }
+        } else {
+            if (getData(loggedInInfo, filename, "ONEDT_INBOX", request)) {
+                return filename.startsWith("L") ? mapping.findForward("outside") : mapping.findForward("success");
+            } else if (getData(loggedInInfo, filename, "ONEDT_ARCHIVE", request)) {
+                return filename.startsWith("L") ? mapping.findForward("outside") : mapping.findForward("success");
+            } else {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.incorrectFileFormat"));
+                saveErrors(request, errors);
+                return (new ActionForward(mapping.getInput()));
+            }
+        }
+    }
 
-		try {
-			// retrieve the file data
-			InputStream stream = file.getInputStream();
-			OscarProperties props = OscarProperties.getInstance();
+    /**
+     *
+     * Save a Jakarta FormFile to a preconfigured place.
+     *
+     * @param file
+     * @return boolean
+     */
+    public static boolean saveFile(FormFile file) {
+        String retVal = null;
+        boolean isAdded = true;
 
-			// properties must exist
-			String place = props.getProperty("DOCUMENT_DIR");
+        try {
+            // retrieve the file data
+            InputStream stream = file.getInputStream();
+            OscarProperties props = OscarProperties.getInstance();
 
-			if (!place.endsWith("/"))
-				place = new StringBuilder(place).insert(place.length(), "/").toString();
-			retVal = place + file.getFileName();
-			MiscUtils.getLogger().debug(retVal);
-			// write the file to the file specified
-			OutputStream bos = new FileOutputStream(retVal);
-			int bytesRead = 0;
-			byte[] buffer = file.getFileData();
-			while ((bytesRead = stream.read(buffer)) != -1) {
-				bos.write(buffer, 0, bytesRead);
-			}
-			bos.close();
+            // properties must exist
+            String place = props.getProperty("DOCUMENT_DIR");
 
-			// close the stream
-			stream.close();
-			FileUtils.copyFileToDirectory(new File(retVal), new File(OscarProperties.getInstance().getProperty("ONEDT_INBOX")));
-			
-		} catch (FileNotFoundException e) {
-			MiscUtils.getLogger().error("File not found", e);
-			return isAdded = false;
+            if (!place.endsWith("/"))
+                place = new StringBuilder(place).insert(place.length(), "/").toString();
+            retVal = place + file.getFileName();
+            MiscUtils.getLogger().debug(retVal);
+            // write the file to the file specified
+            OutputStream bos = new FileOutputStream(retVal);
+            int bytesRead = 0;
+            byte[] buffer = file.getFileData();
+            while ((bytesRead = stream.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            bos.close();
 
-		} catch (IOException ioe) {
-			MiscUtils.getLogger().error("Error", ioe);
-			return isAdded = false;
-		}
+            // close the stream
+            stream.close();
+            FileUtils.copyFileToDirectory(new File(retVal), new File(OscarProperties.getInstance().getProperty("ONEDT_INBOX")));
 
-		return isAdded;
-	}
+        } catch (FileNotFoundException e) {
+            MiscUtils.getLogger().error("File not found", e);
+            return isAdded = false;
+
+        } catch (IOException ioe) {
+            MiscUtils.getLogger().error("Error", ioe);
+            return isAdded = false;
+        }
+
+        return isAdded;
+    }
 
 
+    /**
+     *
+     * Get Data from the file.
+     *
+     * @param file
+     * @return
+     */
+    private boolean getData(LoggedInInfo loggedInInfo, String fileName, String pathDir, HttpServletRequest request) {
+        boolean isGot = false;
 
-	/**
-	 *
-	 * Get Data from the file.
-	 *
-	 * @param file
-	 * @return
-	 */
-	private boolean getData(LoggedInInfo loggedInInfo, String fileName, String pathDir, HttpServletRequest request) {
-		boolean isGot = false;
+        try {
+            OscarProperties props = OscarProperties.getInstance();
+            // properties must exist
+            String filepath = props.getProperty(pathDir);
+            boolean bNewBilling = props.getProperty("isNewONbilling", "").equals("true") ? true : false;
+            if (!filepath.endsWith("/"))
+                filepath = new StringBuilder(filepath).insert(filepath.length(), "/").toString();
 
-		try {
-			OscarProperties props = OscarProperties.getInstance();
-			// properties must exist
-			String filepath = props.getProperty(pathDir);
-			boolean bNewBilling = props.getProperty("isNewONbilling", "").equals("true") ? true : false;
-			if (!filepath.endsWith("/"))
-				filepath = new StringBuilder(filepath).insert(filepath.length(), "/").toString();
+            FileInputStream file = new FileInputStream(filepath + fileName);
+            MiscUtils.getLogger().debug("file path: " + filepath + fileName);
+            // Assign associated report Name
+            ArrayList<String> messages = new ArrayList<String>();
+            String ReportName = "";
 
-			FileInputStream file = new FileInputStream(filepath + fileName);
-			MiscUtils.getLogger().debug("file path: " + filepath + fileName);
-			// Assign associated report Name
-			ArrayList<String> messages = new ArrayList<String>();
-			String ReportName = "";
-			
-			if (fileName.substring(0, 1).compareTo("E") == 0 || fileName.substring(0, 1).compareTo("F") == 0) {
-				ReportName = "Claims Error Report";
-				BillingClaimsErrorReportBeanHandler hd = generateReportE(file, bNewBilling, fileName);
-				request.setAttribute("claimsErrors", hd);
-				isGot = hd.verdict;
-			}
-			else if (fileName.substring(0, 1).compareTo("B") == 0) {
-				ReportName = "Claim Batch Acknowledgement Report";
-				BillingClaimBatchAcknowledgementReportBeanHandler hd = generateReportB(file);
-				request.setAttribute("batchAcks", hd);
-				isGot = hd.verdict;
-			}
-			else if (fileName.substring(0, 1).compareTo("X") == 0) {
-				ReportName = "Claim File Rejection Report";
-				messages = generateReportX(file);
-				request.setAttribute("messages", messages);
-				isGot = reportXIsGenerated;
-			}
-			else if (fileName.substring(0, 1).compareTo("R") == 0) {
-				ReportName = "EDT OBEC Output Specification";
-				BillingEDTOBECOutputSpecificationBeanHandler hd = generateReportR(loggedInInfo, file);
-				request.setAttribute("outputSpecs", hd);
-				isGot = hd.verdict;
-			}
-			else if (fileName.substring(0,1).compareTo("L") == 0) {
-				ReportName = "OUTSIDE USE REPORT";
-				request.setAttribute("backupfilepath", filepath);
-				request.setAttribute("filename", fileName);
-				isGot = true;
-			}
-			
-			request.setAttribute("ReportName", ReportName);
-		} catch (FileNotFoundException fnfe) {
+            if (fileName.substring(0, 1).compareTo("E") == 0 || fileName.substring(0, 1).compareTo("F") == 0) {
+                ReportName = "Claims Error Report";
+                BillingClaimsErrorReportBeanHandler hd = generateReportE(file, bNewBilling, fileName);
+                request.setAttribute("claimsErrors", hd);
+                isGot = hd.verdict;
+            } else if (fileName.substring(0, 1).compareTo("B") == 0) {
+                ReportName = "Claim Batch Acknowledgement Report";
+                BillingClaimBatchAcknowledgementReportBeanHandler hd = generateReportB(file);
+                request.setAttribute("batchAcks", hd);
+                isGot = hd.verdict;
+            } else if (fileName.substring(0, 1).compareTo("X") == 0) {
+                ReportName = "Claim File Rejection Report";
+                messages = generateReportX(file);
+                request.setAttribute("messages", messages);
+                isGot = reportXIsGenerated;
+            } else if (fileName.substring(0, 1).compareTo("R") == 0) {
+                ReportName = "EDT OBEC Output Specification";
+                BillingEDTOBECOutputSpecificationBeanHandler hd = generateReportR(loggedInInfo, file);
+                request.setAttribute("outputSpecs", hd);
+                isGot = hd.verdict;
+            } else if (fileName.substring(0, 1).compareTo("L") == 0) {
+                ReportName = "OUTSIDE USE REPORT";
+                request.setAttribute("backupfilepath", filepath);
+                request.setAttribute("filename", fileName);
+                isGot = true;
+            }
 
-			MiscUtils.getLogger().debug("File not found");
-			MiscUtils.getLogger().error("Error", fnfe);
-			return isGot = false;
+            request.setAttribute("ReportName", ReportName);
+        } catch (FileNotFoundException fnfe) {
 
-		}
-		return isGot;
-	}
+            MiscUtils.getLogger().debug("File not found");
+            MiscUtils.getLogger().error("Error", fnfe);
+            return isGot = false;
 
-	/**
-	 *
-	 * Generate Claims Error Report (E).
-	 *
-	 * @param file
-	 * @return BillingClaimsErrorReportBeanHandler
-	 */
-	private BillingClaimsErrorReportBeanHandler generateReportE(FileInputStream file, boolean bB, String filename) {
-		BillingClaimsErrorReportBeanHandler hd = null;
-		if (bB) {
-			hd = (new BillingClaimsErrorReportBeanHandlerSave(file, filename)).getErrorReportBeanObj(file);
-		} else {
-			hd = new BillingClaimsErrorReportBeanHandler(file);
-		}
+        }
+        return isGot;
+    }
 
-		return hd;
-	}
+    /**
+     *
+     * Generate Claims Error Report (E).
+     *
+     * @param file
+     * @return BillingClaimsErrorReportBeanHandler
+     */
+    private BillingClaimsErrorReportBeanHandler generateReportE(FileInputStream file, boolean bB, String filename) {
+        BillingClaimsErrorReportBeanHandler hd = null;
+        if (bB) {
+            hd = (new BillingClaimsErrorReportBeanHandlerSave(file, filename)).getErrorReportBeanObj(file);
+        } else {
+            hd = new BillingClaimsErrorReportBeanHandler(file);
+        }
 
-	/**
-	 *
-	 * Generate Claim Batch Acknowledgement Report (B).
-	 *
-	 * @param file
-	 * @return BillingClaimBatchAcknowlegementReportBeanHandler
-	 */
-	private BillingClaimBatchAcknowledgementReportBeanHandler generateReportB(FileInputStream file) {
-		BillingClaimBatchAcknowledgementReportBeanHandler hd = new BillingClaimBatchAcknowledgementReportBeanHandler(
-				file);
+        return hd;
+    }
 
-		return hd;
-	}
+    /**
+     *
+     * Generate Claim Batch Acknowledgement Report (B).
+     *
+     * @param file
+     * @return BillingClaimBatchAcknowlegementReportBeanHandler
+     */
+    private BillingClaimBatchAcknowledgementReportBeanHandler generateReportB(FileInputStream file) {
+        BillingClaimBatchAcknowledgementReportBeanHandler hd = new BillingClaimBatchAcknowledgementReportBeanHandler(
+                file);
 
-	/**
-	 *
-	 * Generate Claim File Rejection Report (X).
-	 *
-	 * @param file
-	 * @return
-	 */
-	private boolean reportXIsGenerated = true;
+        return hd;
+    }
 
-	private ArrayList<String> generateReportX(FileInputStream file) {
-		ArrayList<String> messages = new ArrayList<String>();
-		messages.add("M01 | Message Reason         Length     Msg Type   Filler  Record Image");
-		messages.add("M02 | File:    File Name    Date:   Mail Date   Time: Mail Time     Process Date");
-		InputStreamReader reader = new InputStreamReader(file);
-		BufferedReader input = new BufferedReader(reader);
-		String nextline;
-		try {
-			while ((nextline = input.readLine()) != null) {
-				String headerCount = nextline.substring(2, 3);
+    /**
+     *
+     * Generate Claim File Rejection Report (X).
+     *
+     * @param file
+     * @return
+     */
+    private boolean reportXIsGenerated = true;
 
-				if (headerCount.compareTo("1") == 0) {
-					String recordLength = nextline.substring(23, 28);
-					String msgType = nextline.substring(28, 31);
-					String filler = nextline.substring(32, 39);
-					String error = nextline.substring(39, 76);
-					String explain = nextline.substring(3, 23);
-					String msg = "M01 | " + explain + "   " + recordLength + "   " + msgType + "   " + filler + "   "
-							+ URLEncoder.encode(error, "UTF-8");
-					messages.add(msg);
+    private ArrayList<String> generateReportX(FileInputStream file) {
+        ArrayList<String> messages = new ArrayList<String>();
+        messages.add("M01 | Message Reason         Length     Msg Type   Filler  Record Image");
+        messages.add("M02 | File:    File Name    Date:   Mail Date   Time: Mail Time     Process Date");
+        InputStreamReader reader = new InputStreamReader(file);
+        BufferedReader input = new BufferedReader(reader);
+        String nextline;
+        try {
+            while ((nextline = input.readLine()) != null) {
+                String headerCount = nextline.substring(2, 3);
 
-				}
-				if (headerCount.compareTo("2") == 0) {
-					String mailFile = nextline.substring(8, 20);
-					String mailDate = nextline.substring(25, 33);
-					String mailTime = nextline.substring(38, 44);
-					String batchProcessDate = nextline.substring(50, 58);
-					String msg = "M02 | File:   " + mailFile + "    " + "Date:   " + mailDate + "   " + "Time: "
-							+ mailTime + "     PDate: " + batchProcessDate;
-					messages.add(msg);
-				}
-			}
+                if (headerCount.compareTo("1") == 0) {
+                    String recordLength = nextline.substring(23, 28);
+                    String msgType = nextline.substring(28, 31);
+                    String filler = nextline.substring(32, 39);
+                    String error = nextline.substring(39, 76);
+                    String explain = nextline.substring(3, 23);
+                    String msg = "M01 | " + explain + "   " + recordLength + "   " + msgType + "   " + filler + "   "
+                            + URLEncoder.encode(error, "UTF-8");
+                    messages.add(msg);
 
-		} catch (IOException ioe) {
-			MiscUtils.getLogger().error("Error", ioe);
-		} catch (StringIndexOutOfBoundsException ioe) {
-			reportXIsGenerated = false;
-		}
-		return messages;
-	}
+                }
+                if (headerCount.compareTo("2") == 0) {
+                    String mailFile = nextline.substring(8, 20);
+                    String mailDate = nextline.substring(25, 33);
+                    String mailTime = nextline.substring(38, 44);
+                    String batchProcessDate = nextline.substring(50, 58);
+                    String msg = "M02 | File:   " + mailFile + "    " + "Date:   " + mailDate + "   " + "Time: "
+                            + mailTime + "     PDate: " + batchProcessDate;
+                    messages.add(msg);
+                }
+            }
 
-	/**
-	 *
-	 * Generate EDT OBEC Output Specification (R).
-	 *
-	 * @param file
-	 * @return BillingEDTOBECOutputSpecificationBeanHandler
-	 */
-	@SuppressWarnings("unchecked")
+        } catch (IOException ioe) {
+            MiscUtils.getLogger().error("Error", ioe);
+        } catch (StringIndexOutOfBoundsException ioe) {
+            reportXIsGenerated = false;
+        }
+        return messages;
+    }
+
+    /**
+     *
+     * Generate EDT OBEC Output Specification (R).
+     *
+     * @param file
+     * @return BillingEDTOBECOutputSpecificationBeanHandler
+     */
+    @SuppressWarnings("unchecked")
     private BillingEDTOBECOutputSpecificationBeanHandler generateReportR(LoggedInInfo loggedInInfo, FileInputStream file) {
-		BillingEDTOBECOutputSpecificationBeanHandler hd = new BillingEDTOBECOutputSpecificationBeanHandler(loggedInInfo, file);
-		Vector<BillingEDTOBECOutputSpecificationBean> outputSpecVector = hd.getEDTOBECOutputSecifiationBeanVector();
+        BillingEDTOBECOutputSpecificationBeanHandler hd = new BillingEDTOBECOutputSpecificationBeanHandler(loggedInInfo, file);
+        Vector<BillingEDTOBECOutputSpecificationBean> outputSpecVector = hd.getEDTOBECOutputSecifiationBeanVector();
 
-		for (int i = 0; i < outputSpecVector.size(); i++) {
-			BillingEDTOBECOutputSpecificationBean bean = outputSpecVector.elementAt(i);
-			String hin = bean.getHealthNo();
-			String responseCode = bean.getResponseCode();
-			int responseCodeNum = -1;
-			try {
-				responseCodeNum = Integer.parseInt(responseCode);
-			} catch (Exception e) {
-				MiscUtils.getLogger().error("Error",e);
-			}
+        for (int i = 0; i < outputSpecVector.size(); i++) {
+            BillingEDTOBECOutputSpecificationBean bean = outputSpecVector.elementAt(i);
+            String hin = bean.getHealthNo();
+            String responseCode = bean.getResponseCode();
+            int responseCodeNum = -1;
+            try {
+                responseCodeNum = Integer.parseInt(responseCode);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
+            }
 
-			if (responseCodeNum < 50 || responseCodeNum > 59) {
+            if (responseCodeNum < 50 || responseCodeNum > 59) {
 
-				BatchEligibility batchEligibility = batchEligibilityDao.find(Integer.parseInt(responseCode));
-				
-				List<Demographic> ds = demographicManager.searchByHealthCard(loggedInInfo, hin);
-				
-				if (!ds.isEmpty()) {
-					Demographic d = ds.get(0);
-					if (d.getVer().trim().compareTo(bean.getVersion().trim()) == 0) {
-						for(Demographic demographic:ds) {
-							demographic.setVer("##");
-							demographicManager.updateDemographic(loggedInInfo, demographic);
-						}
-						DemographicCust demographicCust = demographicCustDao.find(d.getDemographicNo());
-						if(demographicCust != null && batchEligibility != null) {
-							String newAlert =  demographicCust.getAlert() + "\n" + "Invalid old version code: "
-									+ bean.getVersion() + "\nReason: " + batchEligibility.getMOHResponse() + "- "
-									+ batchEligibility.getReason() + "\nResponse Code: " + responseCode;
-							demographicCust.setAlert(newAlert);
-							demographicCustDao.merge(demographicCust);
-						}
-					}
-				}
-			}
-		}
+                BatchEligibility batchEligibility = batchEligibilityDao.find(Integer.parseInt(responseCode));
 
-		return hd;
-	}
+                List<Demographic> ds = demographicManager.searchByHealthCard(loggedInInfo, hin);
+
+                if (!ds.isEmpty()) {
+                    Demographic d = ds.get(0);
+                    if (d.getVer().trim().compareTo(bean.getVersion().trim()) == 0) {
+                        for (Demographic demographic : ds) {
+                            demographic.setVer("##");
+                            demographicManager.updateDemographic(loggedInInfo, demographic);
+                        }
+                        DemographicCust demographicCust = demographicCustDao.find(d.getDemographicNo());
+                        if (demographicCust != null && batchEligibility != null) {
+                            String newAlert = demographicCust.getAlert() + "\n" + "Invalid old version code: "
+                                    + bean.getVersion() + "\nReason: " + batchEligibility.getMOHResponse() + "- "
+                                    + batchEligibility.getReason() + "\nResponse Code: " + responseCode;
+                            demographicCust.setAlert(newAlert);
+                            demographicCustDao.merge(demographicCust);
+                        }
+                    }
+                }
+            }
+        }
+
+        return hd;
+    }
 
 }

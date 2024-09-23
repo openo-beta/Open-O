@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,65 +35,64 @@ import org.oscarehr.ws.rest.to.model.AppointmentTypeTo1;
 import org.oscarehr.ws.rest.to.model.LookupListItemTo1;
 
 @XmlRootElement
-public class SchedulingResponse  implements Serializable {
+public class SchedulingResponse implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private AppointmentTo1 appointment;
-	
-	private List<AppointmentStatusTo1> statuses;
-	
-	private List<AppointmentTypeTo1> types;
-	
-	private List<LookupListItemTo1> reasons;
-	
-	private List<AppointmentTo1> appointments;
-	
-	
-	public SchedulingResponse() {
-		
-	}
+    private AppointmentTo1 appointment;
 
-	public AppointmentTo1 getAppointment() {
-		return appointment;
-	}
+    private List<AppointmentStatusTo1> statuses;
 
-	public void setAppointment(AppointmentTo1 appointment) {
-		this.appointment = appointment;
-	}
+    private List<AppointmentTypeTo1> types;
 
-	public List<AppointmentStatusTo1> getStatuses() {
-		return statuses;
-	}
+    private List<LookupListItemTo1> reasons;
 
-	public void setStatuses(List<AppointmentStatusTo1> statuses) {
-		this.statuses = statuses;
-	}
+    private List<AppointmentTo1> appointments;
 
-	public List<AppointmentTypeTo1> getTypes() {
-		return types;
-	}
 
-	public void setTypes(List<AppointmentTypeTo1> types) {
-		this.types = types;
-	}
+    public SchedulingResponse() {
 
-	public List<LookupListItemTo1> getReasons() {
-		return reasons;
-	}
+    }
 
-	public void setReasons(List<LookupListItemTo1> reasons) {
-		this.reasons = reasons;
-	}
+    public AppointmentTo1 getAppointment() {
+        return appointment;
+    }
 
-	public List<AppointmentTo1> getAppointments() {
-		return appointments;
-	}
+    public void setAppointment(AppointmentTo1 appointment) {
+        this.appointment = appointment;
+    }
 
-	public void setAppointments(List<AppointmentTo1> appointments) {
-		this.appointments = appointments;
-	}
-	
-	
-	
+    public List<AppointmentStatusTo1> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<AppointmentStatusTo1> statuses) {
+        this.statuses = statuses;
+    }
+
+    public List<AppointmentTypeTo1> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<AppointmentTypeTo1> types) {
+        this.types = types;
+    }
+
+    public List<LookupListItemTo1> getReasons() {
+        return reasons;
+    }
+
+    public void setReasons(List<LookupListItemTo1> reasons) {
+        this.reasons = reasons;
+    }
+
+    public List<AppointmentTo1> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<AppointmentTo1> appointments) {
+        this.appointments = appointments;
+    }
+
+
 }

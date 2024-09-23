@@ -19,7 +19,7 @@
 --%>
 
 
-<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat"%>
+<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
 
 <%@page import="org.oscarehr.common.model.CtlBillingType" %>
 <%@page import="org.oscarehr.common.dao.CtlBillingTypeDao" %>
@@ -31,21 +31,21 @@
 
 
 <%
-	CtlBillingTypeDao billingTypeDao = SpringUtils.getBean(CtlBillingTypeDao.class);
-	CtlBillingServiceDao billingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
-	CtlDiagCodeDao diagCodeDao = SpringUtils.getBean(CtlDiagCodeDao.class);
+    CtlBillingTypeDao billingTypeDao = SpringUtils.getBean(CtlBillingTypeDao.class);
+    CtlBillingServiceDao billingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
+    CtlDiagCodeDao diagCodeDao = SpringUtils.getBean(CtlDiagCodeDao.class);
 
-	String typeid = request.getParameter("servicetype");
-	
-	for(CtlBillingService b : billingServiceDao.findByServiceType(typeid)) {
-		billingServiceDao.remove(b.getId());
-	}
-	
-	for(CtlDiagCode d: diagCodeDao.findByServiceType(typeid)) {
-		diagCodeDao.remove(d.getId());
-	}
-	
-	billingTypeDao.remove(typeid);
+    String typeid = request.getParameter("servicetype");
+
+    for (CtlBillingService b : billingServiceDao.findByServiceType(typeid)) {
+        billingServiceDao.remove(b.getId());
+    }
+
+    for (CtlDiagCode d : diagCodeDao.findByServiceType(typeid)) {
+        diagCodeDao.remove(d.getId());
+    }
+
+    billingTypeDao.remove(typeid);
 %>
 
 <script LANGUAGE="JavaScript">

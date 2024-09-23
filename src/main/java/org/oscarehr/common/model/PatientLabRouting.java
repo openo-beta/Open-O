@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,83 +42,84 @@ import javax.persistence.TemporalType;
 @Table(name = "patientLabRouting")
 public class PatientLabRouting extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name = "lab_no")
-	/** This is also referred to as segmentId in parts of the code... */
-	private int labNo;
+    @Column(name = "lab_no")
+    /** This is also referred to as segmentId in parts of the code... */
+    private int labNo;
 
-	@Column(name = "lab_type")
-	private String labType;
+    @Column(name = "lab_type")
+    private String labType;
 
-	@Column(name = "demographic_no")
-	private Integer demographicNo;
+    @Column(name = "demographic_no")
+    private Integer demographicNo;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateModified = new Date();
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date created = new Date();
-	
-	public PatientLabRouting() {}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateModified = new Date();
 
-	public PatientLabRouting(int labNo, String labType, Integer demographicNo) {
-		this.labNo = labNo;
-		this.labType = labType;
-		this.demographicNo = demographicNo;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date();
 
-	public int getLabNo() {
-    	return labNo;
+    public PatientLabRouting() {
     }
 
-	public void setLabNo(int labNo) {
-    	this.labNo = labNo;
+    public PatientLabRouting(int labNo, String labType, Integer demographicNo) {
+        this.labNo = labNo;
+        this.labType = labType;
+        this.demographicNo = demographicNo;
     }
 
-	public String getLabType() {
-    	return labType;
+    public int getLabNo() {
+        return labNo;
     }
 
-	public void setLabType(String labType) {
-    	this.labType = labType;
+    public void setLabNo(int labNo) {
+        this.labNo = labNo;
     }
 
-	public Integer getDemographicNo() {
-    	return demographicNo;
-    }
-	
-	public void setDemographicNo(Integer demographicNo) {
-    	this.demographicNo = demographicNo;
+    public String getLabType() {
+        return labType;
     }
 
-	
-	public Date getDateModified() {
-		return dateModified;
-	}
+    public void setLabType(String labType) {
+        this.labType = labType;
+    }
 
-	public void setDateModified(Date dateModified) {
-		this.dateModified = dateModified;
-	}
-	
-	public Date getCreated() {
-		return this.created;
-	}
-	
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	@PrePersist
-	@PreUpdate
-	protected void jpa_setDateModified() {
-		this.dateModified = new Date();
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	@Override
+
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public Date getCreated() {
+        return this.created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void jpa_setDateModified() {
+        this.dateModified = new Date();
+    }
+
+    @Override
     public Integer getId() {
-    	return id;
+        return id;
     }
 }

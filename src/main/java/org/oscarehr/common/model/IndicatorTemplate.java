@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,164 +38,164 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="indicatorTemplate")
+@Table(name = "indicatorTemplate")
 public class IndicatorTemplate extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;	
-	
-	private Integer dashboardId;
-	
-	@Transient
-	@OneToOne(optional=true)
-    @JoinColumn(name = "dashboardId", referencedColumnName="id", insertable=false, updatable=false) 
-	private Dashboard dashboard;
-	
-	private String name;
-	private String category;
-	private String subCategory;
-	private String metricSetName;
-	private String metricLabel;
-	private String framework;
-	
-	@Temporal(TemporalType.DATE)
-	private Date frameworkVersion;
-	private String definition;
-	private String notes;
-	private String template;
-	private boolean active;
-	private boolean locked;
-	
-	private boolean shared;
-	
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getDashboardId() {
-		return dashboardId;
-	}
+    private Integer dashboardId;
 
-	public void setDashboardId(Integer dashboardId) {
-		this.dashboardId = dashboardId;
-	}
+    @Transient
+    @OneToOne(optional = true)
+    @JoinColumn(name = "dashboardId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Dashboard dashboard;
 
-	public String getName() {
-		return name;
-	}
+    private String name;
+    private String category;
+    private String subCategory;
+    private String metricSetName;
+    private String metricLabel;
+    private String framework;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Temporal(TemporalType.DATE)
+    private Date frameworkVersion;
+    private String definition;
+    private String notes;
+    private String template;
+    private boolean active;
+    private boolean locked;
 
-	public String getCategory() {
-		return category;
-	}
+    private boolean shared;
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    @Override
+    public Integer getId() {
+        return this.id;
+    }
 
-	public String getSubCategory() {
-		return subCategory;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setSubCategory(String subCategory) {
-		this.subCategory = subCategory;
-	}
-	
-	public String getMetricSetName() {
-		return metricSetName;
-	}
+    public Integer getDashboardId() {
+        return dashboardId;
+    }
 
-	public void setMetricSetName(String metricSetName) {
-		this.metricSetName = metricSetName;
-	}
+    public void setDashboardId(Integer dashboardId) {
+        this.dashboardId = dashboardId;
+    }
 
-	public String getMetricLabel() {
-		return metricLabel;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setMetricLabel(String metricLabel) {
-		this.metricLabel = metricLabel;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getFramework() {
-		return framework;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	public void setFramework(String framework) {
-		this.framework = framework;
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	public Date getFrameworkVersion() {
-		return frameworkVersion;
-	}
+    public String getSubCategory() {
+        return subCategory;
+    }
 
-	public void setFrameworkVersion(Date frameworkVersion) {
-		this.frameworkVersion = frameworkVersion;
-	}
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
 
-	public String getDefinition() {
-		return definition;
-	}
+    public String getMetricSetName() {
+        return metricSetName;
+    }
 
-	public void setDefinition(String definition) {
-		this.definition = definition;
-	}
+    public void setMetricSetName(String metricSetName) {
+        this.metricSetName = metricSetName;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public String getMetricLabel() {
+        return metricLabel;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public void setMetricLabel(String metricLabel) {
+        this.metricLabel = metricLabel;
+    }
 
-	public String getTemplate() {
-		return template;
-	}
+    public String getFramework() {
+        return framework;
+    }
 
-	public void setTemplate(String template) {
-		this.template = template;
-	}
+    public void setFramework(String framework) {
+        this.framework = framework;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public Date getFrameworkVersion() {
+        return frameworkVersion;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setFrameworkVersion(Date frameworkVersion) {
+        this.frameworkVersion = frameworkVersion;
+    }
 
-	public boolean isLocked() {
-		return locked;
-	}
+    public String getDefinition() {
+        return definition;
+    }
 
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
 
-	public Dashboard getDashboard() {
-		return dashboard;
-	}
+    public String getNotes() {
+        return notes;
+    }
 
-	public void setDashboard(Dashboard dashboard) {
-		this.dashboard = dashboard;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	public boolean isShared() {
-		return shared;
-	}
+    public String getTemplate() {
+        return template;
+    }
 
-	public void setShared(boolean shared) {
-		this.shared = shared;
-	}
+    public void setTemplate(String template) {
+        this.template = template;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public Dashboard getDashboard() {
+        return dashboard;
+    }
+
+    public void setDashboard(Dashboard dashboard) {
+        this.dashboard = dashboard;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
 
 }

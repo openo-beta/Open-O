@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,42 +36,42 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdmissionConverter extends AbstractConverter<Admission, AdmissionTo1> {
 
-	private boolean includeDemographic = false;
-	
-	private DemographicManager demographicManager;
-	
-	public AdmissionConverter includeDemographic(boolean val) {
-		includeDemographic = val;
-		return this;
-	}
+    private boolean includeDemographic = false;
 
-	@Override
-	public Admission getAsDomainObject(LoggedInInfo loggedInInfo,AdmissionTo1 t) throws ConversionException {
-		Admission d = new Admission();
-		
-		BeanUtils.copyProperties(t,d);
-		
-		return d;
-	}
+    private DemographicManager demographicManager;
 
-	@Override
-	public AdmissionTo1 getAsTransferObject(LoggedInInfo loggedInInfo,Admission d) throws ConversionException {
-		AdmissionTo1 t = new AdmissionTo1();
-		
-		BeanUtils.copyProperties(d, t);
-		
-		if(includeDemographic) {
-			if(demographicManager == null) {
-				demographicManager = SpringUtils.getBean(DemographicManager.class);
-			}
-			Demographic demo = demographicManager.getDemographic(loggedInInfo, d.getClientId());
-			if(demo != null) {
-				t.setDemographic(new DemographicConverter().getAsTransferObject(loggedInInfo,demo));
-			}
-		}
-	
-		return t;
-	}
-	
+    public AdmissionConverter includeDemographic(boolean val) {
+        includeDemographic = val;
+        return this;
+    }
+
+    @Override
+    public Admission getAsDomainObject(LoggedInInfo loggedInInfo, AdmissionTo1 t) throws ConversionException {
+        Admission d = new Admission();
+
+        BeanUtils.copyProperties(t, d);
+
+        return d;
+    }
+
+    @Override
+    public AdmissionTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Admission d) throws ConversionException {
+        AdmissionTo1 t = new AdmissionTo1();
+
+        BeanUtils.copyProperties(d, t);
+
+        if (includeDemographic) {
+            if (demographicManager == null) {
+                demographicManager = SpringUtils.getBean(DemographicManager.class);
+            }
+            Demographic demo = demographicManager.getDemographic(loggedInInfo, d.getClientId());
+            if (demo != null) {
+                t.setDemographic(new DemographicConverter().getAsTransferObject(loggedInInfo, demo));
+            }
+        }
+
+        return t;
+    }
+
 
 }

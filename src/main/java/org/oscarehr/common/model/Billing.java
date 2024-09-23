@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,284 +40,284 @@ import javax.persistence.TemporalType;
 import oscar.util.ConversionUtils;
 
 @Entity
-@Table(name="billing")
-public class Billing extends AbstractModel<Integer>{
+@Table(name = "billing")
+public class Billing extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="billing_no")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "billing_no")
+    private Integer id;
 
-	@Column(name="clinic_no")
-	private int clinicNo;
+    @Column(name = "clinic_no")
+    private int clinicNo;
 
-	@Column(name="demographic_no")
-	private int demographicNo;
+    @Column(name = "demographic_no")
+    private int demographicNo;
 
-	@Column(name="provider_no")
-	private String providerNo;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	@Column(name="appointment_no")
-	private int appointmentNo;
+    @Column(name = "appointment_no")
+    private int appointmentNo;
 
-	@Column(name="organization_spec_code")
-	private String organizationSpecCode;
+    @Column(name = "organization_spec_code")
+    private String organizationSpecCode;
 
-	@Column(name="demographic_name")
-	private String demographicName;
+    @Column(name = "demographic_name")
+    private String demographicName;
 
-	@Column(name="hin")
-	private String hin;
+    @Column(name = "hin")
+    private String hin;
 
-	@Column(name="update_date")
-	@Temporal(TemporalType.DATE)
-	private Date updateDate;
+    @Column(name = "update_date")
+    @Temporal(TemporalType.DATE)
+    private Date updateDate;
 
-	@Column(name="update_time")
-	@Temporal(TemporalType.TIME)
-	private Date updateTime;
+    @Column(name = "update_time")
+    @Temporal(TemporalType.TIME)
+    private Date updateTime;
 
-	@Column(name="billing_date")
-	@Temporal(TemporalType.DATE)
-	private Date billingDate;
+    @Column(name = "billing_date")
+    @Temporal(TemporalType.DATE)
+    private Date billingDate;
 
-	@Column(name="billing_time")
-	@Temporal(TemporalType.TIME)
-	private Date billingTime;
+    @Column(name = "billing_time")
+    @Temporal(TemporalType.TIME)
+    private Date billingTime;
 
-	@Column(name="clinic_ref_code")
-	private String clinicRefCode;
+    @Column(name = "clinic_ref_code")
+    private String clinicRefCode;
 
-	private String content;
+    private String content;
 
-	private String total;
+    private String total;
 
-	private String status;
+    private String status;
 
-	private String dob;
+    private String dob;
 
-	@Column(name="visitdate")
-	@Temporal(TemporalType.DATE)
-	private Date visitDate;
+    @Column(name = "visitdate")
+    @Temporal(TemporalType.DATE)
+    private Date visitDate;
 
-	@Column(name="visittype")
-	private String visitType;
+    @Column(name = "visittype")
+    private String visitType;
 
-	@Column(name="provider_ohip_no")
-	private String providerOhipNo;
+    @Column(name = "provider_ohip_no")
+    private String providerOhipNo;
 
-	@Column(name="provider_rma_no")
-	private String providerRmaNo;
+    @Column(name = "provider_rma_no")
+    private String providerRmaNo;
 
-	@Column(name="apptProvider_no")
-	private String apptProviderNo;
+    @Column(name = "apptProvider_no")
+    private String apptProviderNo;
 
-	@Column(name="asstProvider_no")
-	private String asstProviderNo;
+    @Column(name = "asstProvider_no")
+    private String asstProviderNo;
 
-	private String creator;
+    private String creator;
 
-	private String billingtype;
+    private String billingtype;
 
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public int getClinicNo() {
-    	return clinicNo;
+    public int getClinicNo() {
+        return clinicNo;
     }
 
-	public void setClinicNo(int clinicNo) {
-    	this.clinicNo = clinicNo;
+    public void setClinicNo(int clinicNo) {
+        this.clinicNo = clinicNo;
     }
 
-	public int getDemographicNo() {
-    	return demographicNo;
+    public int getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setDemographicNo(int demographicNo) {
-    	this.demographicNo = demographicNo;
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public int getAppointmentNo() {
-    	return appointmentNo;
+    public int getAppointmentNo() {
+        return appointmentNo;
     }
 
-	public void setAppointmentNo(int appointmentNo) {
-    	this.appointmentNo = appointmentNo;
+    public void setAppointmentNo(int appointmentNo) {
+        this.appointmentNo = appointmentNo;
     }
 
-	public String getOrganizationSpecCode() {
-    	return organizationSpecCode;
+    public String getOrganizationSpecCode() {
+        return organizationSpecCode;
     }
 
-	public void setOrganizationSpecCode(String organizationSpecCode) {
-    	this.organizationSpecCode = organizationSpecCode;
+    public void setOrganizationSpecCode(String organizationSpecCode) {
+        this.organizationSpecCode = organizationSpecCode;
     }
 
-	public String getDemographicName() {
-    	return demographicName;
+    public String getDemographicName() {
+        return demographicName;
     }
 
-	public void setDemographicName(String demographicName) {
-    	this.demographicName = demographicName;
+    public void setDemographicName(String demographicName) {
+        this.demographicName = demographicName;
     }
 
-	public String getHin() {
-    	return hin;
+    public String getHin() {
+        return hin;
     }
 
-	public void setHin(String hin) {
-    	this.hin = hin;
+    public void setHin(String hin) {
+        this.hin = hin;
     }
 
-	public Date getUpdateDate() {
-    	return updateDate;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-	public void setUpdateDate(Date updateDate) {
-    	this.updateDate = updateDate;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
-	public Date getUpdateTime() {
-    	return updateTime;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-	public void setUpdateTime(Date updateTime) {
-    	this.updateTime = updateTime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-	public Date getBillingDate() {
-    	return billingDate;
+    public Date getBillingDate() {
+        return billingDate;
     }
 
-	public void setBillingDate(Date billingDate) {
-    	this.billingDate = billingDate;
+    public void setBillingDate(Date billingDate) {
+        this.billingDate = billingDate;
     }
 
-	public Date getBillingTime() {
-    	return billingTime;
+    public Date getBillingTime() {
+        return billingTime;
     }
 
-	public void setBillingTime(Date billingTime) {
-    	this.billingTime = billingTime;
+    public void setBillingTime(Date billingTime) {
+        this.billingTime = billingTime;
     }
 
-	public String getClinicRefCode() {
-    	return clinicRefCode;
+    public String getClinicRefCode() {
+        return clinicRefCode;
     }
 
-	public void setClinicRefCode(String clinicRefCode) {
-    	this.clinicRefCode = clinicRefCode;
+    public void setClinicRefCode(String clinicRefCode) {
+        this.clinicRefCode = clinicRefCode;
     }
 
-	public String getContent() {
-    	return content;
+    public String getContent() {
+        return content;
     }
 
-	public void setContent(String content) {
-    	this.content = content;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-	public String getTotal() {
-    	return total;
+    public String getTotal() {
+        return total;
     }
 
-	public void setTotal(String total) {
-    	this.total = total;
+    public void setTotal(String total) {
+        this.total = total;
     }
 
-	public String getStatus() {
-    	return status;
-    }
-	
-	public boolean getStatusAsBoolean() {
-		return ConversionUtils.fromBoolString(getStatus());
-	}
-
-	public void setStatus(String status) {
-    	this.status = status;
+    public String getStatus() {
+        return status;
     }
 
-	public String getDob() {
-    	return dob;
+    public boolean getStatusAsBoolean() {
+        return ConversionUtils.fromBoolString(getStatus());
     }
 
-	public void setDob(String dob) {
-    	this.dob = dob;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-	public Date getVisitDate() {
-    	return visitDate;
+    public String getDob() {
+        return dob;
     }
 
-	public void setVisitDate(Date visitDate) {
-    	this.visitDate = visitDate;
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
-	public String getVisitType() {
-    	return visitType;
+    public Date getVisitDate() {
+        return visitDate;
     }
 
-	public void setVisitType(String visitType) {
-    	this.visitType = visitType;
+    public void setVisitDate(Date visitDate) {
+        this.visitDate = visitDate;
     }
 
-	public String getProviderOhipNo() {
-    	return providerOhipNo;
+    public String getVisitType() {
+        return visitType;
     }
 
-	public void setProviderOhipNo(String providerOhipNo) {
-    	this.providerOhipNo = providerOhipNo;
+    public void setVisitType(String visitType) {
+        this.visitType = visitType;
     }
 
-	public String getProviderRmaNo() {
-    	return providerRmaNo;
+    public String getProviderOhipNo() {
+        return providerOhipNo;
     }
 
-	public void setProviderRmaNo(String providerRmaNo) {
-    	this.providerRmaNo = providerRmaNo;
+    public void setProviderOhipNo(String providerOhipNo) {
+        this.providerOhipNo = providerOhipNo;
     }
 
-	public String getApptProviderNo() {
-    	return apptProviderNo;
+    public String getProviderRmaNo() {
+        return providerRmaNo;
     }
 
-	public void setApptProviderNo(String apptProviderNo) {
-    	this.apptProviderNo = apptProviderNo;
+    public void setProviderRmaNo(String providerRmaNo) {
+        this.providerRmaNo = providerRmaNo;
     }
 
-	public String getAsstProviderNo() {
-    	return asstProviderNo;
+    public String getApptProviderNo() {
+        return apptProviderNo;
     }
 
-	public void setAsstProviderNo(String asstProviderNo) {
-    	this.asstProviderNo = asstProviderNo;
+    public void setApptProviderNo(String apptProviderNo) {
+        this.apptProviderNo = apptProviderNo;
     }
 
-	public String getCreator() {
-    	return creator;
+    public String getAsstProviderNo() {
+        return asstProviderNo;
     }
 
-	public void setCreator(String creator) {
-    	this.creator = creator;
+    public void setAsstProviderNo(String asstProviderNo) {
+        this.asstProviderNo = asstProviderNo;
     }
 
-	public String getBillingtype() {
-    	return billingtype;
+    public String getCreator() {
+        return creator;
     }
 
-	public void setBillingtype(String billingtype) {
-    	this.billingtype = billingtype;
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getBillingtype() {
+        return billingtype;
+    }
+
+    public void setBillingtype(String billingtype) {
+        this.billingtype = billingtype;
     }
 
 

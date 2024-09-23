@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -40,7 +40,7 @@ import oscar.oscarEncounter.oscarMeasurements.util.TargetColour;
  */
 public class FlowSheetItem {
 
-    Map<String,String> allFields = null;
+    Map<String, String> allFields = null;
     private String measurementType = null;
     private String preventionType = null;
     private String displayName = null;
@@ -55,8 +55,8 @@ public class FlowSheetItem {
     private boolean hide = false;
 
     @Override
-    public String toString(){
-        return " MEASUREMENT TYPE :"+measurementType +" PREV TYPE :"+preventionType+" dsRulesFileName :"+dsRulesFileName+" ruleBASE :"+ruleBase;
+    public String toString() {
+        return " MEASUREMENT TYPE :" + measurementType + " PREV TYPE :" + preventionType + " dsRulesFileName :" + dsRulesFileName + " ruleBASE :" + ruleBase;
     }
 
    /*
@@ -82,11 +82,11 @@ public class FlowSheetItem {
         graphable="no"/>
     */
 
-    public FlowSheetItem(){
+    public FlowSheetItem() {
 
     }
 
-    public FlowSheetItem(Map<String,String> hashtable){
+    public FlowSheetItem(Map<String, String> hashtable) {
         allFields = hashtable;
 
         measurementType = allFields.get("measurement_type");
@@ -94,8 +94,8 @@ public class FlowSheetItem {
         displayName = allFields.get("display_name");
         guideline = allFields.get("guideline");
         String graph = allFields.get("graphable");
-        if (graph != null && graph.equals("yes")){
-           graphable = true;
+        if (graph != null && graph.equals("yes")) {
+            graphable = true;
         }
         dsRulesFileName = allFields.get("ds_rules");
 
@@ -140,14 +140,14 @@ public class FlowSheetItem {
         this.recommendations = recommendations;
     }
 
-    public String getItemName(){
-        if (measurementType !=null){
+    public String getItemName() {
+        if (measurementType != null) {
             return measurementType;
         }
         return preventionType;
     }
 
-    public Map<String,String> getAllFields(){
+    public Map<String, String> getAllFields() {
         return allFields;
     }
 
@@ -172,7 +172,7 @@ public class FlowSheetItem {
     }
 
     public void setTargetColour(List<TargetColour> targetColour) {
-        this.targetColour =targetColour;
+        this.targetColour = targetColour;
     }
 
 

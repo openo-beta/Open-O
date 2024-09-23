@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,48 +42,47 @@ import javax.persistence.TemporalType;
  *
 
  create table flowsheet_drug (
-      id int(10) NOT NULL auto_increment primary key,
-      flowsheet varchar(40),
-      atcCode varchar(40),
-      provider_no varchar(6),
-      demographic_no int(10),
-      create_date datetime,
-      archived char(1) default '0',
-      archived_date datetime
+ id int(10) NOT NULL auto_increment primary key,
+ flowsheet varchar(40),
+ atcCode varchar(40),
+ provider_no varchar(6),
+ demographic_no int(10),
+ create_date datetime,
+ archived char(1) default '0',
+ archived_date datetime
 
 
-    ) ;
-
+ ) ;
  *
  *
  * @author jaygallagher
  */
 
 @Entity
-@Table(name="flowsheet_drug")
-public class FlowSheetDrug  extends AbstractModel<Integer>{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "flowsheet_drug")
+public class FlowSheetDrug extends AbstractModel<Integer> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String flowsheet = null;
 
-    @Column(name="atc_code")
+    @Column(name = "atc_code")
     private String atcCode = null;
 
-    @Column(name="provider_no")
+    @Column(name = "provider_no")
     private String providerNo = null;
 
-    @Column(name="demographic_no")
+    @Column(name = "demographic_no")
     private int demographicNo;
 
-    @Column(name="create_date")
+    @Column(name = "create_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate = null;
 
     private boolean archived = false;
 
-    @Column(name="archived_date")
+    @Column(name = "archived_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date archivedDate = null;
 

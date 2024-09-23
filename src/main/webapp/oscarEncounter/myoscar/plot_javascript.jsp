@@ -23,72 +23,72 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script type="text/javascript" language="javascript">
-	// value="${param.series1}"
+    // value="${param.series1}"
 
-	jQuery(document).ready(function() {
-		
-		var line1 = [];
-	<c:if test="${not empty param.series1}">
-		line1 = [${param.series1}];
-	</c:if>
-		
-		var line2 = [];
-	<c:if test="${not empty param.series2}">
-		line2 = [${param.series2}];
-	</c:if>
-		
-		var series = new Array();
-		var seriesLabels = new Array();
-		if (line1 && line1.length != 0) {
-			series[0] = line1;
-			seriesLabels[0] = {
-					label : '${param.series1Label}',
-					showMarker:true
-				};
-		}
-		
-		if (line2 && line2.length != 0) {
-			series[1] = line2;
-			seriesLabels[1] = {
-					label : '${param.series2Label}',
-					showMarker:true
-				};
-		}
-		
-		if (series.length == 0) {
-			return;
-		}
-		
-		plot = jQuery.jqplot ('chart', series, {
-			series: seriesLabels,
-			legend: {
-			      show: true,
-			      location: 'ne',
-			      xoffset: 12,
-			      yoffset: 12,
-			},
-			axes : {
-				xaxis : {
-					label : 'Date',
-					// tickInterval:'1 day',
-					renderer : jQuery.jqplot.DateAxisRenderer,
-					tickOptions : {
-						formatString : '%b'
-					},
-				},
-				yaxis : {
-					label : '${param.yaxisLabel}'
-				}
-			}
-		});
-		var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
-		console.log('responsivechild ' + pymChild.id + ' '+ height);
-		console.log(pymChild);
-		        // Send the height to the parent.
-		        window.parent.postMessage('responsivechild ' + pymChild.id + ' '+ height, '*');
-	});
+    jQuery(document).ready(function () {
+
+        var line1 = [];
+        <c:if test="${not empty param.series1}">
+        line1 = [${param.series1}];
+        </c:if>
+
+        var line2 = [];
+        <c:if test="${not empty param.series2}">
+        line2 = [${param.series2}];
+        </c:if>
+
+        var series = new Array();
+        var seriesLabels = new Array();
+        if (line1 && line1.length != 0) {
+            series[0] = line1;
+            seriesLabels[0] = {
+                label: '${param.series1Label}',
+                showMarker: true
+            };
+        }
+
+        if (line2 && line2.length != 0) {
+            series[1] = line2;
+            seriesLabels[1] = {
+                label: '${param.series2Label}',
+                showMarker: true
+            };
+        }
+
+        if (series.length == 0) {
+            return;
+        }
+
+        plot = jQuery.jqplot('chart', series, {
+            series: seriesLabels,
+            legend: {
+                show: true,
+                location: 'ne',
+                xoffset: 12,
+                yoffset: 12,
+            },
+            axes: {
+                xaxis: {
+                    label: 'Date',
+                    // tickInterval:'1 day',
+                    renderer: jQuery.jqplot.DateAxisRenderer,
+                    tickOptions: {
+                        formatString: '%b'
+                    },
+                },
+                yaxis: {
+                    label: '${param.yaxisLabel}'
+                }
+            }
+        });
+        var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
+        console.log('responsivechild ' + pymChild.id + ' ' + height);
+        console.log(pymChild);
+        // Send the height to the parent.
+        window.parent.postMessage('responsivechild ' + pymChild.id + ' ' + height, '*');
+    });
 </script>

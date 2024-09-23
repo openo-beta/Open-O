@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,36 +37,36 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "providerLabRoutingFavorites")
 public class ProviderLabRoutingFavorite extends AbstractModel<Integer> implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String provider_no;
-	private String route_to_provider_no;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String provider_no;
+    private String route_to_provider_no;
 
-	@Override
+    @Override
     public Integer getId() {
-	    
-	    return id;
+
+        return id;
     }
 
-	public void setId(Integer id) {
-	    this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getProvider_no() {
-	    return provider_no;
+    public String getProvider_no() {
+        return provider_no;
     }
 
-	public void setProvider_no(String provider_no) {
-	    this.provider_no = provider_no;
+    public void setProvider_no(String provider_no) {
+        this.provider_no = provider_no;
     }
 
-	public String getRoute_to_provider_no() {
-	    return route_to_provider_no;
+    public String getRoute_to_provider_no() {
+        return route_to_provider_no;
     }
 
-	public void setRoute_to_provider_no(String route_to_provider_no) {
-	    this.route_to_provider_no = route_to_provider_no;
+    public void setRoute_to_provider_no(String route_to_provider_no) {
+        this.route_to_provider_no = route_to_provider_no;
     }
 
 }

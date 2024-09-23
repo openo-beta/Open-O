@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,99 +36,98 @@ import javax.persistence.TemporalType;
 @Entity
 public class ServiceAccessToken extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private Integer clientId;
-	
-	private String tokenId;
-	
-	private String tokenSecret;
-	
-	private String scopes;
-	
-	private long lifetime;
-	
-	private long issued;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
-	
-	private String providerNo;
+    private Integer clientId;
 
-	public Integer getId() {
-		return id;
-	}
+    private String tokenId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String tokenSecret;
 
-	public Integer getClientId() {
-		return clientId;
-	}
+    private String scopes;
 
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
-	}
+    private long lifetime;
 
-	public String getTokenId() {
-		return tokenId;
-	}
+    private long issued;
 
-	public void setTokenId(String tokenId) {
-		this.tokenId = tokenId;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
 
-	public String getTokenSecret() {
-		return tokenSecret;
-	}
+    private String providerNo;
 
-	public void setTokenSecret(String tokenSecret) {
-		this.tokenSecret = tokenSecret;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public long getLifetime() {
-		return lifetime;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setLifetime(long lifetime) {
-		this.lifetime = lifetime;
-	}
+    public Integer getClientId() {
+        return clientId;
+    }
 
-	public long getIssued() {
-		return issued;
-	}
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
 
-	public void setIssued(long issued) {
-		this.issued = issued;
-	}
+    public String getTokenId() {
+        return tokenId;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public String getTokenSecret() {
+        return tokenSecret;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setTokenSecret(String tokenSecret) {
+        this.tokenSecret = tokenSecret;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public long getLifetime() {
+        return lifetime;
+    }
 
-	public String getScopes() {
-		return scopes;
-	}
+    public void setLifetime(long lifetime) {
+        this.lifetime = lifetime;
+    }
 
-	public void setScopes(String scopes) {
-		this.scopes = scopes;
-	}
+    public long getIssued() {
+        return issued;
+    }
 
-	
-	
+    public void setIssued(long issued) {
+        this.issued = issued;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public String getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String scopes) {
+        this.scopes = scopes;
+    }
+
+
 }

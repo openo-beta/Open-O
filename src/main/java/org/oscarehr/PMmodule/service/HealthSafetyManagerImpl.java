@@ -7,19 +7,19 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
- *
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -30,23 +30,23 @@ import org.oscarehr.PMmodule.model.HealthSafety;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class HealthSafetyManagerImpl implements HealthSafetyManager{
-    
-    private HealthSafetyDao healthSafetyDao=null;
+public class HealthSafetyManagerImpl implements HealthSafetyManager {
 
-	public HealthSafetyDao getHealthSafetyDao() {
-		return healthSafetyDao;
-	}
+    private HealthSafetyDao healthSafetyDao = null;
 
-	public void setHealthSafetyDao(HealthSafetyDao healthSafetyDao) {
-		this.healthSafetyDao = healthSafetyDao;
-	}
+    public HealthSafetyDao getHealthSafetyDao() {
+        return healthSafetyDao;
+    }
 
-	public HealthSafety getHealthSafetyByDemographic(Long demographicNo) {
-		return healthSafetyDao.getHealthSafetyByDemographic(demographicNo);
-	}
+    public void setHealthSafetyDao(HealthSafetyDao healthSafetyDao) {
+        this.healthSafetyDao = healthSafetyDao;
+    }
+
+    public HealthSafety getHealthSafetyByDemographic(Long demographicNo) {
+        return healthSafetyDao.getHealthSafetyByDemographic(demographicNo);
+    }
 
     public void saveHealthSafetyByDemographic(HealthSafety healthsafety) {
-    	healthSafetyDao.saveHealthSafetyByDemographic(healthsafety);
+        healthSafetyDao.saveHealthSafetyByDemographic(healthsafety);
     }
 }

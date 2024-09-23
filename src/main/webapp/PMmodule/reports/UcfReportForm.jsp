@@ -22,86 +22,87 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@page import="java.util.*"%>
-<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="java.util.*" %>
+<%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page
-	import="org.springframework.web.context.support.WebApplicationContextUtils"%>
-<%@page import="org.caisi.dao.*"%>
-<%@page import="org.caisi.model.*"%>
-<%@page import="org.oscarehr.PMmodule.model.*"%>
-<%@page import="org.oscarehr.PMmodule.dao.*"%>
-<%@page import="org.oscarehr.common.model.CaisiForm"%>
-<%@page import="org.oscarehr.common.dao.CaisiFormDao"%>
+        import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@page import="org.caisi.dao.*" %>
+<%@page import="org.caisi.model.*" %>
+<%@page import="org.oscarehr.PMmodule.model.*" %>
+<%@page import="org.oscarehr.PMmodule.dao.*" %>
+<%@page import="org.oscarehr.common.model.CaisiForm" %>
+<%@page import="org.oscarehr.common.dao.CaisiFormDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.survey.service.OscarFormManager" %>
 <%
-CaisiFormDao caisiFormDao = SpringUtils.getBean(CaisiFormDao.class);	
+    CaisiFormDao caisiFormDao = SpringUtils.getBean(CaisiFormDao.class);
 
 %>
 <script>
-	function getReport() {
-		var formId = document.ucfForm.formId.value;	 
-		if(formId != "") {alert("formid = "+formId);
-			//alert('<html:rewrite action="/SurveyManager"/>?method=export_csv&id=' + formId);	
-			location.href='<html:rewrite action="/SurveyManager"/>?method=getUcfReport&forId=' + formId;		
-			return true;
-		} else {
-			alert("Please select a form from the form list.");
-			return false;
-		}	
-	}
+    function getReport() {
+        var formId = document.ucfForm.formId.value;
+        if (formId != "") {
+            alert("formid = " + formId);
+            //alert('<html:rewrite action="/SurveyManager"/>?method=export_csv&id=' + formId);
+            location.href = '<html:rewrite action="/SurveyManager"/>?method=getUcfReport&forId=' + formId;
+            return true;
+        } else {
+            alert("Please select a form from the form list.");
+            return false;
+        }
+    }
 </script>
 <%
-	
-	List<CaisiForm> forms = caisiFormDao.getCaisiForms();
-	
+
+    List<CaisiForm> forms = caisiFormDao.getCaisiForms();
+
 %>
 
-<%@include file="/layouts/caisi_html_top.jspf"%>
+<%@include file="/layouts/caisi_html_top.jspf" %>
 
 <h1>User Created Form Report</h1>
 
 <form method="post" name="ucfForm"
-	action="<%=request.getContextPath()%>/PMmodule/reports/UcfReport.jsp">
-<table>
-	<tr>
-		<td>User Created Forms</td>
-		<td>StartDate</td>
-		<td>EndDate</td>
-	</tr>
+      action="<%=request.getContextPath()%>/PMmodule/reports/UcfReport.jsp">
+    <table>
+        <tr>
+            <td>User Created Forms</td>
+            <td>StartDate</td>
+            <td>EndDate</td>
+        </tr>
 
-	<tr>
-		<td><select name="formId">
-			<% 
-					for(CaisiForm form : forms) {
-						%>
-			<option value="<%=form.getId() %>"><%=form.getDescription() %></option>
-			<% 
-					}
-					%>
+        <tr>
+            <td><select name="formId">
+                <%
+                    for (CaisiForm form : forms) {
+                %>
+                <option value="<%=form.getId() %>"><%=form.getDescription() %>
+                </option>
+                <%
+                    }
+                %>
 
-		</select></td>
+            </select></td>
 
-		<td><input type="text" name="startDate" /></td>
+            <td><input type="text" name="startDate"/></td>
 
-		<td><input type="text" name="endDate" /></td>
-	</tr>
+            <td><input type="text" name="endDate"/></td>
+        </tr>
 
-	<tr>
-		<td></td>
-		<td>(YYYY-MM-DD)</td>
-		<td>(YYYY-MM-DD)</td>
-	</tr>
+        <tr>
+            <td></td>
+            <td>(YYYY-MM-DD)</td>
+            <td>(YYYY-MM-DD)</td>
+        </tr>
 
-	<tr>
-		<td></td>
-		<td><input type="submit" /></td>
-		<td><input type="button" value="Back"
-			onclick="document.location='<%=request.getContextPath()%>/PMmodule/ProviderInfo.do'" /></td>
-	</tr>
-</table>
+        <tr>
+            <td></td>
+            <td><input type="submit"/></td>
+            <td><input type="button" value="Back"
+                       onclick="document.location='<%=request.getContextPath()%>/PMmodule/ProviderInfo.do'"/></td>
+        </tr>
+    </table>
 </form>
 
 
-
-<%@include file="/layouts/caisi_html_bottom.jspf"%>
+<%@include file="/layouts/caisi_html_bottom.jspf" %>

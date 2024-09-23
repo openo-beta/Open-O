@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -29,103 +29,102 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="OscarJob")
+@XmlRootElement(name = "OscarJob")
 public class OscarJobTo1 implements Serializable {
-   
-	private static final long serialVersionUID = 1L;
-	
-	private Integer id;
-	
-	private String name;
-	
-	private String description;
-	
-	private int oscarJobTypeId;
-	
-	private OscarJobTypeTo1 oscarJobType;
-		
-	private String cronExpression;
-	
-	private boolean enabled = false;
 
-	private String providerNo;
-	
-	/* for web */
-	private Date nextPlannedExecutionDate;
-	
+    private static final long serialVersionUID = 1L;
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer id;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    private String description;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private int oscarJobTypeId;
 
-	public String getDescription() {
-		return description;
-	}
+    private OscarJobTypeTo1 oscarJobType;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private String cronExpression;
 
-	public int getOscarJobTypeId() {
-		return oscarJobTypeId;
-	}
+    private boolean enabled = false;
 
-	public void setOscarJobTypeId(int oscarJobTypeId) {
-		this.oscarJobTypeId = oscarJobTypeId;
-	}
+    private String providerNo;
 
-	public String getCronExpression() {
-		return cronExpression;
-	}
+    /* for web */
+    private Date nextPlannedExecutionDate;
 
-	public void setCronExpression(String cronExpression) {
-		this.cronExpression = cronExpression;
-	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public OscarJobTypeTo1 getOscarJobType() {
-		return oscarJobType;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setOscarJobType(OscarJobTypeTo1 oscarJobType) {
-		this.oscarJobType = oscarJobType;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Date getNextPlannedExecutionDate() {
-		return nextPlannedExecutionDate;
-	}
+    public int getOscarJobTypeId() {
+        return oscarJobTypeId;
+    }
 
-	public void setNextPlannedExecutionDate(Date nextPlannedExecutionDate) {
-		this.nextPlannedExecutionDate = nextPlannedExecutionDate;
-	}
-	
-	
-	
+    public void setOscarJobTypeId(int oscarJobTypeId) {
+        this.oscarJobTypeId = oscarJobTypeId;
+    }
+
+    public String getCronExpression() {
+        return cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public OscarJobTypeTo1 getOscarJobType() {
+        return oscarJobType;
+    }
+
+    public void setOscarJobType(OscarJobTypeTo1 oscarJobType) {
+        this.oscarJobType = oscarJobType;
+    }
+
+    public Date getNextPlannedExecutionDate() {
+        return nextPlannedExecutionDate;
+    }
+
+    public void setNextPlannedExecutionDate(Date nextPlannedExecutionDate) {
+        this.nextPlannedExecutionDate = nextPlannedExecutionDate;
+    }
+
+
 }

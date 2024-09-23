@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -44,18 +44,18 @@ public class BedCheckTimeDaoImpl extends AbstractDaoImpl<BedCheckTime> implement
     private Logger log = MiscUtils.getLogger();
 
     public BedCheckTimeDaoImpl() {
-		super(BedCheckTime.class);
-	}
+        super(BedCheckTime.class);
+    }
 
     @Override
     public boolean bedCheckTimeExists(Integer programId, Date time) {
         Query query = entityManager.createQuery("select b from BedCheckTime b where b.programId = ? and b.time = ?");
-    	query.setParameter(0, programId);
-    	query.setParameter(1, time);
-    	
-    	@SuppressWarnings("unchecked")
-    	List<BedCheckTime> bedCheckTimes = query.getResultList();
-    	
+        query.setParameter(0, programId);
+        query.setParameter(1, time);
+
+        @SuppressWarnings("unchecked")
+        List<BedCheckTime> bedCheckTimes = query.getResultList();
+
         log.debug("bedCheckTimeExists: " + (bedCheckTimes.size() > 0));
 
         return bedCheckTimes.size() > 0;
@@ -80,13 +80,13 @@ public class BedCheckTimeDaoImpl extends AbstractDaoImpl<BedCheckTime> implement
     @Deprecated
     @Override
     public void saveBedCheckTime(BedCheckTime bedCheckTime) {
-        if(bedCheckTime == null)
-    		return;
-    	if(bedCheckTime.getId() == null || bedCheckTime.getId().intValue() == 0)
-    		persist(bedCheckTime);
-    	else
-    		merge(bedCheckTime);
-       
+        if (bedCheckTime == null)
+            return;
+        if (bedCheckTime.getId() == null || bedCheckTime.getId().intValue() == 0)
+            persist(bedCheckTime);
+        else
+            merge(bedCheckTime);
+
         log.debug("saveBedCheckTime: id " + bedCheckTime.getId());
     }
 
@@ -94,7 +94,7 @@ public class BedCheckTimeDaoImpl extends AbstractDaoImpl<BedCheckTime> implement
     @Override
     public void deleteBedCheckTime(BedCheckTime bedCheckTime) {
         remove(bedCheckTime.getId());
- 
+
         log.debug("deleteBedCheckTime: " + bedCheckTime);
     }
 
@@ -129,15 +129,15 @@ public class BedCheckTimeDaoImpl extends AbstractDaoImpl<BedCheckTime> implement
     @Override
     public List<BedCheckTime> getBedCheckTimes(String queryStr, Object[] values) {
         Query query = entityManager.createQuery(queryStr);
-    	if(values != null) {
-	    	for(int x=0;x<values.length;x++) {
-	    		query.setParameter(x, values[x]);
-	    	}
-    	}
-    	
-    	@SuppressWarnings("unchecked")
-    	List<BedCheckTime> results = query.getResultList();
-    	
-    	return results;
+        if (values != null) {
+            for (int x = 0; x < values.length; x++) {
+                query.setParameter(x, values[x]);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        List<BedCheckTime> results = query.getResultList();
+
+        return results;
     }
 }

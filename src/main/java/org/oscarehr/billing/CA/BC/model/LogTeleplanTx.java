@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,54 +34,53 @@ import javax.persistence.Table;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="log_teleplantx")
+@Table(name = "log_teleplantx")
 public class LogTeleplanTx extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="log_no")
-	private Integer id;
-	
-	byte[] claim;
-	
-	@Column(name="sequence_no")
-	private int sequenceNo;
-	
-	@Column(name="billingmaster_no")
-	private int billingMasterNo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "log_no")
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    byte[] claim;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "sequence_no")
+    private int sequenceNo;
 
-	public byte[] getClaim() {
-		return claim;
-	}
+    @Column(name = "billingmaster_no")
+    private int billingMasterNo;
 
-	public void setClaim(byte[] claim) {
-		this.claim = claim;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public int getSequenceNo() {
-		return sequenceNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setSequenceNo(int sequenceNo) {
-		this.sequenceNo = sequenceNo;
-	}
+    public byte[] getClaim() {
+        return claim;
+    }
 
-	public int getBillingMasterNo() {
-		return billingMasterNo;
-	}
+    public void setClaim(byte[] claim) {
+        this.claim = claim;
+    }
 
-	public void setBillingMasterNo(int billingMasterNo) {
-		this.billingMasterNo = billingMasterNo;
-	}
-	
-	
-	
+    public int getSequenceNo() {
+        return sequenceNo;
+    }
+
+    public void setSequenceNo(int sequenceNo) {
+        this.sequenceNo = sequenceNo;
+    }
+
+    public int getBillingMasterNo() {
+        return billingMasterNo;
+    }
+
+    public void setBillingMasterNo(int billingMasterNo) {
+        this.billingMasterNo = billingMasterNo;
+    }
+
+
 }

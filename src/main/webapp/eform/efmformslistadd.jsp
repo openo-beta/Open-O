@@ -134,7 +134,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar" style="width:100%">
                     <tr>
-                        <td >
+                        <td>
                             <bean:message key="eform.myform.msgFormLib"/>
                         </td>
                         <td>&nbsp;

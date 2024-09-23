@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,42 +34,42 @@ import javax.persistence.Table;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="ctl_servicecodes_dxcodes")
-public class CtlServiceCodesDxCodes extends AbstractModel<Integer>{
+@Table(name = "ctl_servicecodes_dxcodes")
+public class CtlServiceCodesDxCodes extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name="service_code")
-	private String serviceCode;
-	
-	@Column(name="dxcode")
-	private String dxCode;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "service_code")
+    private String serviceCode;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "dxcode")
+    private String dxCode;
 
-	public String getServiceCode() {
-		return serviceCode;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setServiceCode(String serviceCode) {
-		this.serviceCode = serviceCode;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getDxCode() {
-		return dxCode;
-	}
+    public String getServiceCode() {
+        return serviceCode;
+    }
 
-	public void setDxCode(String dxCode) {
-		this.dxCode = dxCode;
-	}
-	
-	
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
+    }
+
+    public String getDxCode() {
+        return dxCode;
+    }
+
+    public void setDxCode(String dxCode) {
+        this.dxCode = dxCode;
+    }
+
+
 }

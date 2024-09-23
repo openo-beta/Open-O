@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,45 +30,45 @@ import org.apache.struts.action.ActionForm;
 
 
 public final class BillingForm extends ActionForm {
-    
-    
+
+
     String requestId;
     String xml_location;
     String xml_provider;
     String xml_visittype;
-    
-    
-    public String getRequestId(){
+
+
+    public String getRequestId() {
         return requestId;
     }
-    
-    public void setRequestId(String id ){
+
+    public void setRequestId(String id) {
         this.requestId = id;
     }
-    
-    public void setXml_location(String id ){
+
+    public void setXml_location(String id) {
         this.xml_location = id;
     }
-    
-    public String getXml_location(){
+
+    public String getXml_location() {
         return xml_location;
     }
-    
-    
-    public void setXml_provider(String id ){
+
+
+    public void setXml_provider(String id) {
         this.xml_provider = id;
     }
-    
-    public String getXml_provider(){
+
+    public String getXml_provider() {
         return xml_provider;
     }
-    
-    public void setXml_visittype(String id ){
+
+    public void setXml_visittype(String id) {
         this.xml_visittype = id;
     }
-    
-    public String getXml_visittype(){
+
+    public String getXml_visittype() {
         return xml_visittype;
     }
-    
+
 }

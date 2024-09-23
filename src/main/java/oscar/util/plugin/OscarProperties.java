@@ -6,12 +6,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -22,25 +22,26 @@ package oscar.util.plugin;
 import java.util.Properties;
 
 public class OscarProperties extends Properties {
-	private static Properties properties;
-	
-	private OscarProperties() {}
-	
-	public OscarProperties getInstance() {
-		return (OscarProperties)properties;
-	}
+    private static Properties properties;
 
-	/**
-	 * @return Returns the properties.
-	 */
-	public static Properties getProperties() {
-		return properties;
-	}
+    private OscarProperties() {
+    }
 
-	/**
-	 * @param properties The properties to set.
-	 */
-	public static void setProperties(Properties properties) {
-		OscarProperties.properties = properties;
-	}
+    public OscarProperties getInstance() {
+        return (OscarProperties) properties;
+    }
+
+    /**
+     * @return Returns the properties.
+     */
+    public static Properties getProperties() {
+        return properties;
+    }
+
+    /**
+     * @param properties The properties to set.
+     */
+    public static void setProperties(Properties properties) {
+        OscarProperties.properties = properties;
+    }
 }

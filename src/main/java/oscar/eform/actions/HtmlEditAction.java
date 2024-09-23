@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,17 +47,17 @@ import oscar.eform.data.HtmlEditForm;
 
 
 public class HtmlEditAction extends Action {
-	
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-	
+
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	
+
         HtmlEditForm fm = (HtmlEditForm) form;
-       
-        if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
-			throw new SecurityException("missing required security object (_eform)");
-		}
-        
+
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
+            throw new SecurityException("missing required security object (_eform)");
+        }
+
         try {
             String fid = fm.getFid();
             String formName = fm.getFormName();
@@ -67,7 +67,7 @@ public class HtmlEditAction extends Action {
             boolean showLatestFormOnly = WebUtils.isChecked(request, "showLatestFormOnly");
             boolean patientIndependent = WebUtils.isChecked(request, "patientIndependent");
             String roleType = fm.getRoleType();
-            
+
             HashMap<String, String> errors = new HashMap<String, String>();
             EFormBase updatedform = new EFormBase(fid, formName, formSubject, formFileName, formHtml, showLatestFormOnly, patientIndependent, roleType); //property container (bean)
             //validation...
@@ -84,21 +84,21 @@ public class HtmlEditAction extends Action {
                 EFormUtil.updateEForm(updatedform);
                 request.setAttribute("success", "true");
             }
-            
+
             HashMap<String, Object> curht = createHashMap(fid, formName, formSubject, formFileName, formHtml, showLatestFormOnly, patientIndependent, roleType);
             request.setAttribute("submitted", curht);
-            
+
             request.setAttribute("errors", errors);
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
 
-        return(mapping.findForward("success"));
+        return (mapping.findForward("success"));
     }
-    
+
     private HashMap<String, Object> createHashMap(String fid, String formName, String formSubject, String formFileName, String formHtml, boolean showLatestFormOnly, boolean patientIndependent, String roleType) {
-    	HashMap<String, Object> curht = new HashMap<String, Object>();
-        curht.put("fid", fid);  
+        HashMap<String, Object> curht = new HashMap<String, Object>();
+        curht.put("fid", fid);
         curht.put("formName", formName);
         curht.put("formSubject", formSubject);
         curht.put("formFileName", formFileName);
@@ -106,7 +106,7 @@ public class HtmlEditAction extends Action {
         curht.put("showLatestFormOnly", showLatestFormOnly);
         curht.put("patientIndependent", patientIndependent);
         curht.put("roleType", roleType);
-        
+
         if (fid.length() == 0) {
             curht.put("formDate", "--");
             curht.put("formTime", "--");
@@ -116,5 +116,5 @@ public class HtmlEditAction extends Action {
         }
         return curht;
     }
-    
+
 }

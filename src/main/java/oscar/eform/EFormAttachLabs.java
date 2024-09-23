@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,7 +46,7 @@ import oscar.oscarLab.ca.on.LabResultData;
  */
 public class EFormAttachLabs {
 
-	private static EFormDocsDao eformDocsDao = SpringUtils.getBean(EFormDocsDao.class);
+    private static EFormDocsDao eformDocsDao = SpringUtils.getBean(EFormDocsDao.class);
 
     public final static boolean ATTACHED = true;
     public final static boolean UNATTACHED = false;
@@ -63,18 +63,17 @@ public class EFormAttachLabs {
         docs = new ArrayList<String>(d.length);
 
         if (OscarProperties.getInstance().isPropertyActive("consultation_indivica_attachment_enabled")) {
-	        for(int idx = 0; idx < d.length; ++idx ) {
-	            docs.add(d[idx]);
-	        }
-        }
-        else {
-	        //if dummy entry skip
-	        if( !d[0].equals("0") ) {
-	            for(int idx = 0; idx < d.length; ++idx ) {
-	                if( d[idx].charAt(0) == 'L')
-	                    docs.add(d[idx].substring(1));
-	            }
-	        }
+            for (int idx = 0; idx < d.length; ++idx) {
+                docs.add(d[idx]);
+            }
+        } else {
+            //if dummy entry skip
+            if (!d[0].equals("0")) {
+                for (int idx = 0; idx < d.length; ++idx) {
+                    if (d[idx].charAt(0) == 'L')
+                        docs.add(d[idx].substring(1));
+                }
+            }
         }
     }
 
@@ -82,53 +81,53 @@ public class EFormAttachLabs {
 
         //first we get a list of currently attached labs
         CommonLabResultData labResData = new CommonLabResultData();
-        ArrayList<LabResultData> oldlist = labResData.populateLabResultsDataEForm(loggedInInfo, demoNo,reqId,CommonLabResultData.ATTACHED);
+        ArrayList<LabResultData> oldlist = labResData.populateLabResultsDataEForm(loggedInInfo, demoNo, reqId, CommonLabResultData.ATTACHED);
         ArrayList<String> newlist = new ArrayList<String>();
         ArrayList<LabResultData> keeplist = new ArrayList<LabResultData>();
         boolean alreadyAttached;
         //add new documents to list and get ids of docs to keep attached
-        for(int i = 0; i < docs.size(); ++i) {
+        for (int i = 0; i < docs.size(); ++i) {
             alreadyAttached = false;
-            for(int j = 0; j < oldlist.size(); ++j) {
-                if( (oldlist.get(j)).labPatientId.equals(docs.get(i)) ) {
+            for (int j = 0; j < oldlist.size(); ++j) {
+                if ((oldlist.get(j)).labPatientId.equals(docs.get(i))) {
                     alreadyAttached = true;
                     keeplist.add(oldlist.get(j));
                     break;
                 }
             }
-            if( !alreadyAttached )
+            if (!alreadyAttached)
                 newlist.add(docs.get(i));
         }
 
         //now compare what we need to keep with what we have and remove association
-        for(int i = 0; i < oldlist.size(); ++i) {
-            if( keeplist.contains(oldlist.get(i)))
+        for (int i = 0; i < oldlist.size(); ++i) {
+            if (keeplist.contains(oldlist.get(i)))
                 continue;
 
-           detachLabConsult((oldlist.get(i)).labPatientId, reqId);
+            detachLabConsult((oldlist.get(i)).labPatientId, reqId);
         }
 
         //now we can add association to new list
-        for(int i = 0; i < newlist.size(); ++i)
+        for (int i = 0; i < newlist.size(); ++i)
             attachLabConsult(providerNo, newlist.get(i), reqId);
     }
 
     public static void detachLabConsult(String LabNo, String consultId) {
-    	List<EFormDocs> consultDocs = eformDocsDao.findByFdidIdDocNoDocType(Integer.parseInt(consultId), Integer.parseInt(LabNo), ConsultDocs.DOCTYPE_LAB);
-    	for(EFormDocs consultDoc:consultDocs) {
-    		consultDoc.setDeleted("Y");
-    		eformDocsDao.merge(consultDoc);
-    	}
+        List<EFormDocs> consultDocs = eformDocsDao.findByFdidIdDocNoDocType(Integer.parseInt(consultId), Integer.parseInt(LabNo), ConsultDocs.DOCTYPE_LAB);
+        for (EFormDocs consultDoc : consultDocs) {
+            consultDoc.setDeleted("Y");
+            eformDocsDao.merge(consultDoc);
+        }
     }
 
     public static void attachLabConsult(String providerNo, String LabNo, String consultId) {
-    	EFormDocs consultDoc = new EFormDocs();
-    	consultDoc.setFdid(Integer.parseInt(consultId));
-    	consultDoc.setDocumentNo(Integer.parseInt(LabNo));
-    	consultDoc.setDocType(ConsultDocs.DOCTYPE_LAB);
-    	consultDoc.setAttachDate(new Date());
-    	consultDoc.setProviderNo(providerNo);
-    	eformDocsDao.persist(consultDoc);
+        EFormDocs consultDoc = new EFormDocs();
+        consultDoc.setFdid(Integer.parseInt(consultId));
+        consultDoc.setDocumentNo(Integer.parseInt(LabNo));
+        consultDoc.setDocType(ConsultDocs.DOCTYPE_LAB);
+        consultDoc.setAttachDate(new Date());
+        consultDoc.setProviderNo(providerNo);
+        eformDocsDao.persist(consultDoc);
     }
 
 

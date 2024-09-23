@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,7 +49,7 @@ public class DesAnnualReviewPlannerChecklistHandler extends DefaultHandler {
 
     public DesAnnualReviewPlannerChecklistHandler(Properties savedltcrisks) {
         savedar1params = savedltcrisks;
-        for (Enumeration e = savedar1params.propertyNames() ; e.hasMoreElements() ;) {
+        for (Enumeration e = savedar1params.propertyNames(); e.hasMoreElements(); ) {
             MiscUtils.getLogger().debug("x :");
             MiscUtils.getLogger().debug("&& :" + e.nextElement());
         }
@@ -98,12 +98,12 @@ public class DesAnnualReviewPlannerChecklistHandler extends DefaultHandler {
                 if (atts.getQName(i) == "riskname") { //not riskname
                     riskName = atts.getValue(i);
                     MiscUtils.getLogger().debug("Mapping ends for prefix :" + riskName);
-                    
-                    for (Enumeration e = savedar1params.propertyNames() ; e.hasMoreElements() ;) {
+
+                    for (Enumeration e = savedar1params.propertyNames(); e.hasMoreElements(); ) {
                         MiscUtils.getLogger().debug("x :");
                         MiscUtils.getLogger().debug("&& :" + e.nextElement());
                     }
-                    
+
                     starttag = "<checklist_" + riskName + ">";
                     endtag = "</checklist_" + riskName + ">";
                     //		    SxmlMisc sxmlrisks=new SxmlMisc(); savedriskname =

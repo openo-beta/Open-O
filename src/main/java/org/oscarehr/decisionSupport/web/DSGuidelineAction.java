@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -57,10 +57,10 @@ import oscar.oscarDemographic.data.DemographicData;
  */
 public class DSGuidelineAction extends DispatchAction {
 
-	private DSService dsService;
+    private DSService dsService;
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-       return super.execute(mapping, form, request, response);
+        return super.execute(mapping, form, request, response);
     }
 
     public DSGuidelineAction() {
@@ -68,13 +68,13 @@ public class DSGuidelineAction extends DispatchAction {
     }
 
 
-    public ActionForward unspecified(ActionMapping mapping, ActionForm  form,
-           HttpServletRequest request, HttpServletResponse response)
-           throws Exception {
-           return list(mapping,form,request,response);
+    public ActionForward unspecified(ActionMapping mapping, ActionForm form,
+                                     HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        return list(mapping, form, request, response);
     }
 
-    public ActionForward list(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  {
+    public ActionForward list(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         String providerNo = request.getParameter("provider_no");
         List<DSGuideline> providerGuidelines = new ArrayList<DSGuideline>();
         if (providerNo != null)
@@ -84,8 +84,8 @@ public class DSGuidelineAction extends DispatchAction {
     }
 
     public ActionForward detail(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    	
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
         String guidelineId = request.getParameter("guidelineId");
         String demographicNo = request.getParameter("demographic_no");
         if (guidelineId == null) {
@@ -98,7 +98,7 @@ public class DSGuidelineAction extends DispatchAction {
             request.setAttribute("guideline", dsGuideline);
             List<DSCondition> dsConditions = dsGuideline.getConditions();
             List<ConditionResult> conditionResults = new ArrayList<ConditionResult>();
-            for (DSCondition dsCondition: dsConditions) {
+            for (DSCondition dsCondition : dsConditions) {
                 conditionResults.add(new ConditionResult(dsCondition, null, null));
             }
             request.setAttribute("conditionResults", conditionResults);
@@ -106,7 +106,7 @@ public class DSGuidelineAction extends DispatchAction {
         }
         List<DSCondition> dsConditions = dsGuideline.getConditions();
         List<ConditionResult> conditionResults = new ArrayList<ConditionResult>();
-        for (DSCondition dsCondition: dsConditions) { //if viewing details about guideline in regards to patient
+        for (DSCondition dsCondition : dsConditions) { //if viewing details about guideline in regards to patient
             DSGuideline testGuideline = factory.createBlankGuideline();
             //BeanUtils.copyProperties(dsCondition, testGuideline);
             ArrayList<DSCondition> testCondition = new ArrayList<DSCondition>();
@@ -141,16 +141,35 @@ public class DSGuidelineAction extends DispatchAction {
         DSCondition condition;
         Boolean result;
         String actualValues;
+
         public ConditionResult(DSCondition condition, Boolean result, String actualValues) {
             this.condition = condition;
             this.result = result;
             this.actualValues = actualValues;
         }
-        public void setCondition(DSCondition condition) { this.condition = condition; }
-        public DSCondition getCondition() { return this.condition; }
-        public void setResult(Boolean result) { this.result = result; }
-        public Boolean getResult() { return this.result; }
-        public void setActualValues(String actualValues) { this.actualValues = actualValues; }
-        public String getActualValues() { return this.actualValues; }
+
+        public void setCondition(DSCondition condition) {
+            this.condition = condition;
+        }
+
+        public DSCondition getCondition() {
+            return this.condition;
+        }
+
+        public void setResult(Boolean result) {
+            this.result = result;
+        }
+
+        public Boolean getResult() {
+            return this.result;
+        }
+
+        public void setActualValues(String actualValues) {
+            this.actualValues = actualValues;
+        }
+
+        public String getActualValues() {
+            return this.actualValues;
+        }
     }
 }

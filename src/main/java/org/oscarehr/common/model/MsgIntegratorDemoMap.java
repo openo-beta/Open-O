@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,45 +31,54 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="msgIntegratorDemoMap")
+@Table(name = "msgIntegratorDemoMap")
 public class MsgIntegratorDemoMap extends AbstractModel<Integer> {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private int messageId;
-	private int sourceDemographicNo;
-	private long msgDemoMapId;
-	private int sourceFacilityId;
-	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public int getMessageId() {
-		return messageId;
-	}
-	public void setMessageId(int messageId) {
-		this.messageId = messageId;
-	}
-	public int getSourceDemographicNo() {
-		return sourceDemographicNo;
-	}
-	public void setSourceDemographicNo(int sourceDemographicNo) {
-		this.sourceDemographicNo = sourceDemographicNo;
-	}
-	public long getMsgDemoMapId() {
-		return msgDemoMapId;
-	}
-	public void setMsgDemoMapId(long msgDemoMapId) {
-		this.msgDemoMapId = msgDemoMapId;
-	}
-	public int getSourceFacilityId() {
-		return sourceFacilityId;
-	}
-	public void setSourceFacilityId(int sourceFacilityId) {
-		this.sourceFacilityId = sourceFacilityId;
-	}
+    private Integer id;
+    private int messageId;
+    private int sourceDemographicNo;
+    private long msgDemoMapId;
+    private int sourceFacilityId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
+    public int getSourceDemographicNo() {
+        return sourceDemographicNo;
+    }
+
+    public void setSourceDemographicNo(int sourceDemographicNo) {
+        this.sourceDemographicNo = sourceDemographicNo;
+    }
+
+    public long getMsgDemoMapId() {
+        return msgDemoMapId;
+    }
+
+    public void setMsgDemoMapId(long msgDemoMapId) {
+        this.msgDemoMapId = msgDemoMapId;
+    }
+
+    public int getSourceFacilityId() {
+        return sourceFacilityId;
+    }
+
+    public void setSourceFacilityId(int sourceFacilityId) {
+        this.sourceFacilityId = sourceFacilityId;
+    }
 }

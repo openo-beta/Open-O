@@ -1,7 +1,4 @@
-
 <%--
-
-
     Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
     This program is free software; you can redistribute it and/or
@@ -21,31 +18,29 @@
     This software was written for
     Centre for Research on Inner City Health, St. Michael's Hospital,
     Toronto, Ontario, Canada
-
 --%>
-
 
 
 <%-- Error Messages --%>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="1"
-	bgcolor="#C0C0C0">
+       bgcolor="#C0C0C0">
 
-	<logic:messagesPresent>
-		<html:messages id="error">
-			<tr>
-				<td class="error"><c:out value="${error}" /></td>
-			</tr>
-		</html:messages>
-	</logic:messagesPresent>
+    <logic:messagesPresent>
+        <html:messages id="error">
+            <tr>
+                <td class="error"><c:out value="${error}"/></td>
+            </tr>
+        </html:messages>
+    </logic:messagesPresent>
 
-	<%-- Success Messages --%>
-	<logic:messagesPresent message="true">
-		<html:messages id="message" message="true">
-			<tr>
-				<td class="message"><c:out value="${message}" /></td>
-			</tr>
-		</html:messages>
-	</logic:messagesPresent>
+    <%-- Success Messages --%>
+    <logic:messagesPresent message="true">
+        <html:messages id="message" message="true">
+            <tr>
+                <td class="message"><c:out value="${message}"/></td>
+            </tr>
+        </html:messages>
+    </logic:messagesPresent>
 
 </table>

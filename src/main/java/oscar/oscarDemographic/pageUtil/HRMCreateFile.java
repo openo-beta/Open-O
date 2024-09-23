@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -119,14 +119,14 @@ public class HRMCreateFile {
 
         HRMlegalName.setFirstName(HRMfirstName);
         HRMlegalName.setLastName(HRMlastName);
-        if (namePurpose!=null) HRMlegalName.setNamePurpose(PersonNamePurposeCode.fromValue(namePurpose.toString()));
+        if (namePurpose != null) HRMlegalName.setNamePurpose(PersonNamePurposeCode.fromValue(namePurpose.toString()));
 
         HRMpersonName.setLegalName(HRMlegalName);
         HRMdemo.setNames(HRMpersonName);
 
         //Gender
         cdsDt.Gender.Enum gender = demo.getGender();
-        if (gender!=null) HRMdemo.setGender(Gender.fromValue(gender.toString()));
+        if (gender != null) HRMdemo.setGender(Gender.fromValue(gender.toString()));
 
         //ChartNumber
         HRMdemo.setChartNumber(demo.getChartNumber());
@@ -145,49 +145,53 @@ public class HRMCreateFile {
 
         //PreferredLanguages
         cdsDt.OfficialSpokenLanguageCode.Enum officialLang = demo.getPreferredOfficialLanguage();
-        if (officialLang!=null) HRMdemo.setPreferredOfficialLanguage(OfficialSpokenLanguageCode.fromValue(officialLang.toString()));
+        if (officialLang != null)
+            HRMdemo.setPreferredOfficialLanguage(OfficialSpokenLanguageCode.fromValue(officialLang.toString()));
 
         HRMdemo.setPreferredSpokenLanguage(demo.getPreferredSpokenLanguage());
 
         //DateOfBirth
-        if (demo.getDateOfBirth()!=null) HRMdemo.setDateOfBirth(getDateFP(demo.getDateOfBirth()));
+        if (demo.getDateOfBirth() != null) HRMdemo.setDateOfBirth(getDateFP(demo.getDateOfBirth()));
 
         //PersonStatus
         cdsDt.PersonStatus.Enum personStatus = demo.getPersonStatusCode().getPersonStatusAsEnum();
-        if (personStatus!=null) HRMdemo.setPersonStatusCode(PersonStatus.fromValue(personStatus.toString()));
+        if (personStatus != null) HRMdemo.setPersonStatusCode(PersonStatus.fromValue(personStatus.toString()));
         else HRMdemo.setPersonStatusCode(PersonStatus.I);
 
-        if (demo.getPersonStatusDate()!=null) HRMdemo.setPersonStatusDate(getDateFP(demo.getPersonStatusDate()));
+        if (demo.getPersonStatusDate() != null) HRMdemo.setPersonStatusDate(getDateFP(demo.getPersonStatusDate()));
 
         //EnrollmentStatus
-        if(demo.getEnrolment() != null) {
-	        EnrolmentHistory[] enrolments = demo.getEnrolment().getEnrolmentHistoryArray();
-	        if (enrolments!=null && enrolments.length>0) {
-	            cdsDt.EnrollmentStatus.Enum enrollmentStatus = enrolments[0].getEnrollmentStatus();
-	            if (enrollmentStatus!=null) HRMdemo.setEnrollmentStatus(enrollmentStatus.toString());
-	
-	            if (enrolments[0].getEnrollmentDate()!=null) HRMdemo.setEnrollmentDate(getDateFP(enrolments[0].getEnrollmentDate()));
-	            if (enrolments[0].getEnrollmentTerminationDate()!=null) HRMdemo.setEnrollmentTerminationDate(getDateFP(enrolments[0].getEnrollmentTerminationDate()));
-	        }
+        if (demo.getEnrolment() != null) {
+            EnrolmentHistory[] enrolments = demo.getEnrolment().getEnrolmentHistoryArray();
+            if (enrolments != null && enrolments.length > 0) {
+                cdsDt.EnrollmentStatus.Enum enrollmentStatus = enrolments[0].getEnrollmentStatus();
+                if (enrollmentStatus != null) HRMdemo.setEnrollmentStatus(enrollmentStatus.toString());
+
+                if (enrolments[0].getEnrollmentDate() != null)
+                    HRMdemo.setEnrollmentDate(getDateFP(enrolments[0].getEnrollmentDate()));
+                if (enrolments[0].getEnrollmentTerminationDate() != null)
+                    HRMdemo.setEnrollmentTerminationDate(getDateFP(enrolments[0].getEnrollmentTerminationDate()));
+            }
         }
-        
+
         //HealhCard
         cdsDt.HealthCard healthCard = demo.getHealthCard();
-        if (healthCard!=null) {
+        if (healthCard != null) {
             HealthCard HRMhealthCard = new HealthCard();
             HRMhealthCard.setNumber(healthCard.getNumber());
             HRMhealthCard.setVersion(healthCard.getVersion());
-            if (healthCard.getProvinceCode()!=null) HRMhealthCard.setProvinceCode(healthCard.getProvinceCode().toString());
-            if (healthCard.getExpirydate()!=null) HRMhealthCard.setExpirydate(getXgc(healthCard.getExpirydate()));
+            if (healthCard.getProvinceCode() != null)
+                HRMhealthCard.setProvinceCode(healthCard.getProvinceCode().toString());
+            if (healthCard.getExpirydate() != null) HRMhealthCard.setExpirydate(getXgc(healthCard.getExpirydate()));
 
             HRMdemo.setHealthCard(HRMhealthCard);
         }
 
         //PrimaryPhysician
         DemographicsDocument.Demographics.PrimaryPhysician primaryPhysician = demo.getPrimaryPhysician();
-        if (primaryPhysician!=null) {
+        if (primaryPhysician != null) {
             Demographics.PrimaryPhysician HRMprimaryPhysician = new Demographics.PrimaryPhysician();
-            if (primaryPhysician.getName()!=null) {
+            if (primaryPhysician.getName() != null) {
                 HRMprimaryPhysician.setName(copyPersonNameSimple(primaryPhysician.getName()));
             }
             HRMprimaryPhysician.setOHIPPhysicianId(primaryPhysician.getOHIPPhysicianId());
@@ -206,19 +210,19 @@ public class HRMCreateFile {
 
             //AuthorPhysician
             SourceAuthorPhysician authorPhysician = report.getSourceAuthorPhysician();
-            if (authorPhysician!=null && authorPhysician.getAuthorName()!=null) {
+            if (authorPhysician != null && authorPhysician.getAuthorName() != null) {
                 HRMreport.setAuthorPhysician(copyPersonNameSimple(authorPhysician.getAuthorName()));
             }
 
             //ReportClass
-            if (report.getClass1()!=null) HRMreport.setClazz(ReportClass.fromValue(report.getClass1().toString()));
+            if (report.getClass1() != null) HRMreport.setClazz(ReportClass.fromValue(report.getClass1().toString()));
 
             //SubClass
             HRMreport.setSubClass(report.getSubClass());
 
             //Content
             cdsDt.ReportContent reportContent = report.getContent();
-            if (reportContent!=null && reportContent.getTextContent()!=null) {
+            if (reportContent != null && reportContent.getTextContent() != null) {
                 ReportContent HRMreportContent = new ReportContent();
                 HRMreportContent.setTextContent(reportContent.getTextContent());
                 HRMreport.setContent(HRMreportContent);
@@ -228,22 +232,23 @@ public class HRMCreateFile {
             HRMreport.setFileExtensionAndVersion(report.getFileExtensionAndVersion());
 
             //Format
-            if (report.getFormat()!=null) {
+            if (report.getFormat() != null) {
                 if (report.getFormat().equals(cdsDt.ReportFormat.TEXT)) {
                     HRMreport.setFormat(ReportFormat.TEXT);
                 }
             }
 
             //EventDateTime
-            if (report.getEventDateTime()!=null) HRMreport.setEventDateTime(getDateFP(report.getEventDateTime()));
+            if (report.getEventDateTime() != null) HRMreport.setEventDateTime(getDateFP(report.getEventDateTime()));
 
             //ReceivedDateTime
-            if (report.getReceivedDateTime()!=null) HRMreport.setReceivedDateTime(getDateFP(report.getReceivedDateTime()));
+            if (report.getReceivedDateTime() != null)
+                HRMreport.setReceivedDateTime(getDateFP(report.getReceivedDateTime()));
 
             //Reviews
             ReportReviewed[] reportReviews = report.getReportReviewedArray();
-            if (reportReviews!=null && reportReviews.length>0) {
-                if (reportReviews[0].getDateTimeReportReviewed()!=null) {
+            if (reportReviews != null && reportReviews.length > 0) {
+                if (reportReviews[0].getDateTimeReportReviewed() != null) {
                     HRMreport.setReviewedDateTime(getDateFP(reportReviews[0].getDateTimeReportReviewed()));
                 }
 
@@ -261,7 +266,7 @@ public class HRMCreateFile {
 
             //OBRConent
             OBRContent[] OBRs = report.getOBRContentArray();
-            if (OBRs!=null) {
+            if (OBRs != null) {
                 List<ReportsReceived.OBRContent> HRMobrs = HRMreport.getOBRContent();
                 for (OBRContent OBR : OBRs) {
                     ReportsReceived.OBRContent HRMobr = new ReportsReceived.OBRContent();
@@ -270,7 +275,7 @@ public class HRMCreateFile {
                     HRMobr.setAccompanyingDescription(OBR.getAccompanyingDescription());
                     HRMobr.setAccompanyingMnemonic(OBR.getAccompanyingMnemonic());
                     HRMobr.setAccompanyingSubClass(OBR.getAccompanyingSubClass());
-                    if (OBR.getObservationDateTime()!=null) {
+                    if (OBR.getObservationDateTime() != null) {
                         HRMobr.setObservationDateTime(getDateFP(OBR.getObservationDateTime()));
                     }
                 }
@@ -287,21 +292,19 @@ public class HRMCreateFile {
     }
 
 
-
-
     static private DateFullOrPartial getDateFP(cdsDt.DateFullOrPartial idfp) throws DatatypeConfigurationException {
         Calendar cal = idfp.getFullDate();
-        if (cal==null) cal = idfp.getYearMonth();
-        if (cal==null) cal = idfp.getYearOnly();
+        if (cal == null) cal = idfp.getYearMonth();
+        if (cal == null) cal = idfp.getYearOnly();
 
         return getDateFP(cal);
     }
 
     static private DateFullOrPartial getDateFP(cdsDt.DateTimeFullOrPartial idfp) throws DatatypeConfigurationException {
         Calendar cal = idfp.getFullDate();
-        if (cal==null) cal = idfp.getFullDateTime();
-        if (cal==null) cal = idfp.getYearMonth();
-        if (cal==null) cal = idfp.getYearOnly();
+        if (cal == null) cal = idfp.getFullDateTime();
+        if (cal == null) cal = idfp.getYearMonth();
+        if (cal == null) cal = idfp.getYearOnly();
 
         return getDateFP(cal);
     }
@@ -319,7 +322,7 @@ public class HRMCreateFile {
         XMLGregorianCalendar xgc = dtf.newXMLGregorianCalendar();
 
         xgc.setYear(cal.get(Calendar.YEAR));
-        xgc.setMonth(cal.get(Calendar.MONTH)+1);
+        xgc.setMonth(cal.get(Calendar.MONTH) + 1);
         xgc.setDay(cal.get(Calendar.DAY_OF_MONTH));
         xgc.setHour(cal.get(Calendar.HOUR_OF_DAY));
         xgc.setMinute(cal.get(Calendar.MINUTE));

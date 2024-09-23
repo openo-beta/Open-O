@@ -1,27 +1,27 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -164,8 +164,8 @@ public interface CaseManagementManager {
     public void saveEctWin(EncounterWindow ectWin);
 
     public EncounterWindow getEctWin(String provider);
-	
-	public SecRole getSecRoleByRoleName(String roleName);
+
+    public SecRole getSecRoleByRoleName(String roleName);
 
     public void saveNoteExt(CaseManagementNoteExt cExt);
 
@@ -176,7 +176,7 @@ public interface CaseManagementManager {
     public void updateNoteLink(CaseManagementNoteLink cLink);
 
     public String saveNote(CaseManagementCPP cpp, CaseManagementNote note, String cproviderNo, String userName,
-            String lastStr, String roleName);
+                           String lastStr, String roleName);
 
     public List getNotes(String demographic_no, UserProperty prop);
 
@@ -185,7 +185,7 @@ public interface CaseManagementManager {
     public List<CaseManagementNote> getNotes(String demographic_no, String[] issues, UserProperty prop);
 
     public List<CaseManagementNote> getNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues,
-            UserProperty prop);
+                                             UserProperty prop);
 
     public List<CaseManagementNote> getNotes(String demographic_no);
 
@@ -352,7 +352,7 @@ public interface CaseManagementManager {
     public List<CaseManagementNote> getIssueHistory(String issueIds, String demoNo);
 
     public List<CaseManagementNote> filterNotes(LoggedInInfo loggedInInfo, String providerNo,
-            Collection<CaseManagementNote> notes, String programId);
+                                                Collection<CaseManagementNote> notes, String programId);
 
     public List<EChartNoteEntry> filterNotes1(String providerNo, Collection<EChartNoteEntry> notes, String programId);
 
@@ -367,12 +367,12 @@ public interface CaseManagementManager {
     public List<Issue> searchIssues(String providerNo, String programId, String search);
 
     public List<Issue> searchIssues(String providerNo, String programId, String search, int startIndex,
-            int numToReturn);
+                                    int numToReturn);
 
     public List searchIssuesNoRolesConcerned(String providerNo, String programId, String search);
 
     public List<CaseManagementIssue> filterIssues(LoggedInInfo loggedInInfo, String providerNo,
-            List<CaseManagementIssue> issues, String programId);
+                                                  List<CaseManagementIssue> issues, String programId);
 
     public void updateNote(CaseManagementNote note);
 
@@ -437,7 +437,7 @@ public interface CaseManagementManager {
     public void setSecRoleDao(SecRoleDao secRoleDao);
 
     public void saveToDx(LoggedInInfo loggedInInfo, String demographicNo, String code, String codingSystem,
-            boolean association);
+                         boolean association);
 
     public void saveToDx(LoggedInInfo loggedInInfo, String demographicNo, String code);
 
@@ -454,14 +454,14 @@ public interface CaseManagementManager {
     public CaseManagementNote getLastSaved(String programId, String demono, String providerNo, Map unlockedNotesMap);
 
     public CaseManagementNote makeNewNote(String providerNo, String demographicNo, String encType, String appointmentNo,
-            Locale locale);
+                                          Locale locale);
 
     public void addNewNoteLink(Long noteId);
 
     public CaseManagementNote saveCaseManagementNote(LoggedInInfo loggedInInfo, CaseManagementNote note,
-            List<CaseManagementIssue> issuelist, CaseManagementCPP cpp, String ongoing, boolean verify, Locale locale,
-            Date now, CaseManagementNote annotationNote, String userName, String user, String remoteAddr,
-            String lastSavedNoteString) throws Exception;
+                                                     List<CaseManagementIssue> issuelist, CaseManagementCPP cpp, String ongoing, boolean verify, Locale locale,
+                                                     Date now, CaseManagementNote annotationNote, String userName, String user, String remoteAddr,
+                                                     String lastSavedNoteString) throws Exception;
 
     public void setCPPMedicalHistory(CaseManagementCPP cpp, String providerNo, List accessRight);
 

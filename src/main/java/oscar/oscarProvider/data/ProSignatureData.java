@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,52 +34,52 @@ import org.oscarehr.util.SpringUtils;
 
 
 public class ProSignatureData {
-	
-	private ProviderExtDao providerExtDao = SpringUtils.getBean(ProviderExtDao.class);
 
-    public boolean hasSignature(String proNo){
-       boolean retval = false;
-       
-      ProviderExt pe =  providerExtDao.find(proNo);
-      if(pe!=null && pe.getSignature()!=null) {
-    	  retval=true;
-      }
-       
-       return retval;
+    private ProviderExtDao providerExtDao = SpringUtils.getBean(ProviderExtDao.class);
+
+    public boolean hasSignature(String proNo) {
+        boolean retval = false;
+
+        ProviderExt pe = providerExtDao.find(proNo);
+        if (pe != null && pe.getSignature() != null) {
+            retval = true;
+        }
+
+        return retval;
     }
-    
-    public String getSignature(String providerNo){
-       String retval = "";
-       ProviderExt pe =  providerExtDao.find(providerNo);
-       if(pe != null) {
-    	   retval = pe.getSignature();
-       }
-       return retval;
+
+    public String getSignature(String providerNo) {
+        String retval = "";
+        ProviderExt pe = providerExtDao.find(providerNo);
+        if (pe != null) {
+            retval = pe.getSignature();
+        }
+        return retval;
     }
-   
-    public void enterSignature(String providerNo,String signature){
-       
-	if (hasSignature(providerNo)){
-           updateSignature(providerNo,signature);
-        }else{
-           addSignature(providerNo,signature);
+
+    public void enterSignature(String providerNo, String signature) {
+
+        if (hasSignature(providerNo)) {
+            updateSignature(providerNo, signature);
+        } else {
+            addSignature(providerNo, signature);
         }
 
     }
 
 
-    private void addSignature(String providerNo,String signature){
-    	ProviderExt pe = new ProviderExt();
-    	pe.setProviderNo(providerNo);
-    	pe.setSignature(signature);
-    	providerExtDao.persist(pe);
+    private void addSignature(String providerNo, String signature) {
+        ProviderExt pe = new ProviderExt();
+        pe.setProviderNo(providerNo);
+        pe.setSignature(signature);
+        providerExtDao.persist(pe);
     }
- 
-    private void updateSignature(String providerNo,String signature){
-    	ProviderExt pe =  providerExtDao.find(providerNo);
-    	if(pe != null) {
-    		pe.setSignature(signature);
-    		providerExtDao.merge(pe);
-    	}
+
+    private void updateSignature(String providerNo, String signature) {
+        ProviderExt pe = providerExtDao.find(providerNo);
+        if (pe != null) {
+            pe.setSignature(signature);
+            providerExtDao.merge(pe);
+        }
     }
 }

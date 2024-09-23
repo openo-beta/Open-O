@@ -6,20 +6,20 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
- *
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -56,48 +56,48 @@ import com.quatro.model.security.Secuserrole;
  */
 
 public interface SecuserroleDao {
-	public static final String PROVIDER_NO = "providerNo";
-	public static final String ROLE_NAME = "roleName";
-	public static final String ORGCD = "orgcd";
-	public static final String ACTIVEYN = "activeyn";
+    public static final String PROVIDER_NO = "providerNo";
+    public static final String ROLE_NAME = "roleName";
+    public static final String ORGCD = "orgcd";
+    public static final String ACTIVEYN = "activeyn";
 
-	public void saveAll(List list);
+    public void saveAll(List list);
 
-	public void save(Secuserrole transientInstance);
+    public void save(Secuserrole transientInstance);
 
-	public void updateRoleName(Integer id, String roleName);
+    public void updateRoleName(Integer id, String roleName);
 
-	public void delete(Secuserrole persistentInstance);
+    public void delete(Secuserrole persistentInstance);
 
-	public int deleteByOrgcd(String orgcd);
+    public int deleteByOrgcd(String orgcd);
 
-	public int deleteByProviderNo(String providerNo);
+    public int deleteByProviderNo(String providerNo);
 
-	public int deleteById(Integer id);
+    public int deleteById(Integer id);
 
-	public int update(Secuserrole instance);
+    public int update(Secuserrole instance);
 
-	public Secuserrole findById(java.lang.Integer id);
+    public Secuserrole findById(java.lang.Integer id);
 
-	public List findByExample(Secuserrole instance);
+    public List findByExample(Secuserrole instance);
 
-	public List findByProperty(String propertyName, Object value);
+    public List findByProperty(String propertyName, Object value);
 
-	public List findByProviderNo(Object providerNo);
+    public List findByProviderNo(Object providerNo);
 
-	public List findByRoleName(Object roleName);
+    public List findByRoleName(Object roleName);
 
-	public List findByOrgcd(Object orgcd, boolean activeOnly);
+    public List findByOrgcd(Object orgcd, boolean activeOnly);
 
-	public List searchByCriteria(StaffForm staffForm);
+    public List searchByCriteria(StaffForm staffForm);
 
-	public List findByActiveyn(Object activeyn);
+    public List findByActiveyn(Object activeyn);
 
-	public List findAll();
+    public List findAll();
 
-	public Secuserrole merge(Secuserrole detachedInstance);
+    public Secuserrole merge(Secuserrole detachedInstance);
 
-	public void attachDirty(Secuserrole instance);
+    public void attachDirty(Secuserrole instance);
 
-	public void attachClean(Secuserrole instance);
+    public void attachClean(Secuserrole instance);
 }

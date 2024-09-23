@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,286 +32,286 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="favorites")
+@Table(name = "favorites")
 public class Favorites extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="favoriteid")
-	private Integer id;
-	
-	@Column(name="provider_no")
-	private String providerNo;
-	
-	@Column(name="favoritename")
-	private String favoriteName;
-	
-	@Column(name="BN")
-	private String bn;
-	
-	@Column(name="GCN_SEQNO")
-	private double gcnSeqNo;
-	
-	private String customName;
-	
-	@Column(name="takemin")
-	private double takeMin;
-	
-	@Column(name="takemax")
-	private double takeMax;
-	
-	@Column(name="freqcode")
-	private String freqCode;
-	
-	private String duration;
-	
-	@Column(name="durunit")
-	private String durationUnit;
-	
-	private String quantity;
-	
-	@Column(name = "`repeat`")
-	private int repeat;
-	
-	@Column(name="nosubs")
-	private boolean noSubs;
-	
-	private boolean prn;
-	
-	private String special;
-	
-	@Column(name="GN")
-	private String gn;
-	
-	@Column(name="ATC")
-	private String atc;
-	
-	@Column(name="regional_identifier")
-	private String regionalIdentifier;
-	
-	private String unit;
-	
-	private String method;
-	
-	private String route;
-	
-	@Column(name="drug_form")
-	private String drugForm;
-	
-	private String dosage;
-	
-	@Column(name="custom_instructions")
-	private boolean customInstructions;
-	
-	private String unitName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "favoriteid")
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "favoritename")
+    private String favoriteName;
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    @Column(name = "BN")
+    private String bn;
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    @Column(name = "GCN_SEQNO")
+    private double gcnSeqNo;
 
-	public String getFavoriteName() {
-		return favoriteName;
-	}
+    private String customName;
 
-	public void setFavoriteName(String favoriteName) {
-		this.favoriteName = favoriteName;
-	}
+    @Column(name = "takemin")
+    private double takeMin;
 
-	public String getBn() {
-		return bn;
-	}
+    @Column(name = "takemax")
+    private double takeMax;
 
-	public void setBn(String bn) {
-		this.bn = bn;
-	}
+    @Column(name = "freqcode")
+    private String freqCode;
 
-	public double getGcnSeqNo() {
-		return gcnSeqNo;
-	}
+    private String duration;
 
-	public void setGcnSeqNo(double gcnSeqNo) {
-		this.gcnSeqNo = gcnSeqNo;
-	}
+    @Column(name = "durunit")
+    private String durationUnit;
 
-	public String getCustomName() {
-		return customName;
-	}
+    private String quantity;
 
-	public void setCustomName(String customName) {
-		this.customName = customName;
-	}
+    @Column(name = "`repeat`")
+    private int repeat;
 
-	public double getTakeMin() {
-		return takeMin;
-	}
+    @Column(name = "nosubs")
+    private boolean noSubs;
 
-	public void setTakeMin(double takeMin) {
-		this.takeMin = takeMin;
-	}
+    private boolean prn;
 
-	public double getTakeMax() {
-		return takeMax;
-	}
+    private String special;
 
-	public void setTakeMax(double takeMax) {
-		this.takeMax = takeMax;
-	}
+    @Column(name = "GN")
+    private String gn;
 
-	public String getFreqCode() {
-		return freqCode;
-	}
+    @Column(name = "ATC")
+    private String atc;
 
-	public void setFreqCode(String freqCode) {
-		this.freqCode = freqCode;
-	}
+    @Column(name = "regional_identifier")
+    private String regionalIdentifier;
 
-	public String getDuration() {
-		return duration;
-	}
+    private String unit;
 
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
+    private String method;
 
-	public String getDurationUnit() {
-		return durationUnit;
-	}
+    private String route;
 
-	public void setDurationUnit(String durationUnit) {
-		this.durationUnit = durationUnit;
-	}
+    @Column(name = "drug_form")
+    private String drugForm;
 
-	public String getQuantity() {
-		return quantity;
-	}
+    private String dosage;
 
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
+    @Column(name = "custom_instructions")
+    private boolean customInstructions;
 
-	public int getRepeat() {
-		return repeat;
-	}
+    private String unitName;
 
-	public void setRepeat(int repeat) {
-		this.repeat = repeat;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public boolean isNoSubs() {
-		return noSubs;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setNoSubs(boolean noSubs) {
-		this.noSubs = noSubs;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public boolean isPrn() {
-		return prn;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public void setPrn(boolean prn) {
-		this.prn = prn;
-	}
+    public String getFavoriteName() {
+        return favoriteName;
+    }
 
-	public String getSpecial() {
-		return special;
-	}
+    public void setFavoriteName(String favoriteName) {
+        this.favoriteName = favoriteName;
+    }
 
-	public void setSpecial(String special) {
-		this.special = special;
-	}
+    public String getBn() {
+        return bn;
+    }
 
-	public String getGn() {
-		return gn;
-	}
+    public void setBn(String bn) {
+        this.bn = bn;
+    }
 
-	public void setGn(String gn) {
-		this.gn = gn;
-	}
+    public double getGcnSeqNo() {
+        return gcnSeqNo;
+    }
 
-	public String getAtc() {
-		return atc;
-	}
+    public void setGcnSeqNo(double gcnSeqNo) {
+        this.gcnSeqNo = gcnSeqNo;
+    }
 
-	public void setAtc(String atc) {
-		this.atc = atc;
-	}
+    public String getCustomName() {
+        return customName;
+    }
 
-	public String getRegionalIdentifier() {
-		return regionalIdentifier;
-	}
+    public void setCustomName(String customName) {
+        this.customName = customName;
+    }
 
-	public void setRegionalIdentifier(String regionalIdentifier) {
-		this.regionalIdentifier = regionalIdentifier;
-	}
+    public double getTakeMin() {
+        return takeMin;
+    }
 
-	public String getUnit() {
-		return unit;
-	}
+    public void setTakeMin(double takeMin) {
+        this.takeMin = takeMin;
+    }
 
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+    public double getTakeMax() {
+        return takeMax;
+    }
 
-	public String getMethod() {
-		return method;
-	}
+    public void setTakeMax(double takeMax) {
+        this.takeMax = takeMax;
+    }
 
-	public void setMethod(String method) {
-		this.method = method;
-	}
+    public String getFreqCode() {
+        return freqCode;
+    }
 
-	public String getRoute() {
-		return route;
-	}
+    public void setFreqCode(String freqCode) {
+        this.freqCode = freqCode;
+    }
 
-	public void setRoute(String route) {
-		this.route = route;
-	}
+    public String getDuration() {
+        return duration;
+    }
 
-	public String getDrugForm() {
-		return drugForm;
-	}
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
-	public void setDrugForm(String drugForm) {
-		this.drugForm = drugForm;
-	}
+    public String getDurationUnit() {
+        return durationUnit;
+    }
 
-	public String getDosage() {
-		return dosage;
-	}
+    public void setDurationUnit(String durationUnit) {
+        this.durationUnit = durationUnit;
+    }
 
-	public void setDosage(String dosage) {
-		this.dosage = dosage;
-	}
+    public String getQuantity() {
+        return quantity;
+    }
 
-	public boolean isCustomInstructions() {
-		return customInstructions;
-	}
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 
-	public void setCustomInstructions(boolean customInstructions) {
-		this.customInstructions = customInstructions;
-	}
+    public int getRepeat() {
+        return repeat;
+    }
 
-	public String getUnitName() {
-		return unitName;
-	}
+    public void setRepeat(int repeat) {
+        this.repeat = repeat;
+    }
 
-	public void setUnitName(String unitName) {
-		this.unitName = unitName;
-	}
-	
-	
+    public boolean isNoSubs() {
+        return noSubs;
+    }
+
+    public void setNoSubs(boolean noSubs) {
+        this.noSubs = noSubs;
+    }
+
+    public boolean isPrn() {
+        return prn;
+    }
+
+    public void setPrn(boolean prn) {
+        this.prn = prn;
+    }
+
+    public String getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(String special) {
+        this.special = special;
+    }
+
+    public String getGn() {
+        return gn;
+    }
+
+    public void setGn(String gn) {
+        this.gn = gn;
+    }
+
+    public String getAtc() {
+        return atc;
+    }
+
+    public void setAtc(String atc) {
+        this.atc = atc;
+    }
+
+    public String getRegionalIdentifier() {
+        return regionalIdentifier;
+    }
+
+    public void setRegionalIdentifier(String regionalIdentifier) {
+        this.regionalIdentifier = regionalIdentifier;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getDrugForm() {
+        return drugForm;
+    }
+
+    public void setDrugForm(String drugForm) {
+        this.drugForm = drugForm;
+    }
+
+    public String getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
+    }
+
+    public boolean isCustomInstructions() {
+        return customInstructions;
+    }
+
+    public void setCustomInstructions(boolean customInstructions) {
+        this.customInstructions = customInstructions;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+
+
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,47 +41,47 @@ import javax.persistence.TemporalType;
 @Table(name = "quickListUser")
 public class QuickListUser extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id = null;
 
-	private String providerNo;
+    private String providerNo;
 
-	private String quickListName;
+    private String quickListName;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastUsed;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUsed;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public String getQuickListName() {
-    	return quickListName;
+    public String getQuickListName() {
+        return quickListName;
     }
 
-	public void setQuickListName(String quickListName) {
-    	this.quickListName = quickListName;
+    public void setQuickListName(String quickListName) {
+        this.quickListName = quickListName;
     }
 
-	public Date getLastUsed() {
-    	return lastUsed;
+    public Date getLastUsed() {
+        return lastUsed;
     }
 
-	public void setLastUsed(Date lastUsed) {
-    	this.lastUsed = lastUsed;
+    public void setLastUsed(Date lastUsed) {
+        this.lastUsed = lastUsed;
     }
 
 

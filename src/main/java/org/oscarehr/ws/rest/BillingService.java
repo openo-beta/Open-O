@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,26 +41,26 @@ import oscar.OscarProperties;
 @Path("/billing")
 public class BillingService extends AbstractServiceImpl {
 
-	@Autowired
-	BillingManager billingManager;
+    @Autowired
+    BillingManager billingManager;
 
-	private OscarProperties oscarProperties = OscarProperties.getInstance();
-	
-	@GET
-	@Path("/uniqueServiceTypes")
-	@Produces("application/json")
-	public AbstractSearchResponse<ServiceTypeTo> getUniqueServiceTypes(@QueryParam("type")  String type) {
-		AbstractSearchResponse<ServiceTypeTo> response = new AbstractSearchResponse<ServiceTypeTo>();
-		ServiceTypeConverter converter = new ServiceTypeConverter();
-		if(type == null) {
-			response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(),billingManager.getUniqueServiceTypes(getLoggedInInfo())));	
-		} else {
-			response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(),billingManager.getUniqueServiceTypes(getLoggedInInfo(),type)));
-		}
-		response.setTotal(response.getContent().size());
-		return response;
+    private OscarProperties oscarProperties = OscarProperties.getInstance();
 
-	}
+    @GET
+    @Path("/uniqueServiceTypes")
+    @Produces("application/json")
+    public AbstractSearchResponse<ServiceTypeTo> getUniqueServiceTypes(@QueryParam("type") String type) {
+        AbstractSearchResponse<ServiceTypeTo> response = new AbstractSearchResponse<ServiceTypeTo>();
+        ServiceTypeConverter converter = new ServiceTypeConverter();
+        if (type == null) {
+            response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(), billingManager.getUniqueServiceTypes(getLoggedInInfo())));
+        } else {
+            response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(), billingManager.getUniqueServiceTypes(getLoggedInInfo(), type)));
+        }
+        response.setTotal(response.getContent().size());
+        return response;
+
+    }
 
     @GET
     @Path("/billingRegion")
@@ -68,20 +68,20 @@ public class BillingService extends AbstractServiceImpl {
     public GenericRESTResponse billingRegion() {
         boolean billRegionSet = true;
         String billRegion = oscarProperties.getProperty("billregion", "").trim().toUpperCase();
-        if(billRegion.isEmpty()){
+        if (billRegion.isEmpty()) {
             billRegionSet = false;
         }
         return new GenericRESTResponse(billRegionSet, billRegion);
     }
-	
+
     @GET
     @Path("/defaultView")
     @Produces("application/json")
     public GenericRESTResponse defaultView() {
         boolean defaultViewSet = true;
         String defaultView = oscarProperties.getProperty("default_view", "").trim();
-        if(defaultView.isEmpty()){
-        	defaultViewSet = false;
+        if (defaultView.isEmpty()) {
+            defaultViewSet = false;
         }
         return new GenericRESTResponse(defaultViewSet, defaultView);
     }

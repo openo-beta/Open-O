@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -31,95 +31,95 @@ import javax.persistence.Id;
 
 @Entity
 public class CVCImmunization extends AbstractModel<Integer> {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private int versionId;
-	
-	private String snomedConceptId;
-	private String displayName;
-	private String picklistName;
-	private Boolean generic;
-	
 
-	/* for tradename ones*/
-	Integer prevalence;
-	String parentConceptId;
-	boolean ispa;
-	
-	
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private int versionId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String snomedConceptId;
+    private String displayName;
+    private String picklistName;
+    private Boolean generic;
 
-	public String getSnomedConceptId() {
-		return snomedConceptId;
-	}
 
-	public void setSnomedConceptId(String snomedConceptId) {
-		this.snomedConceptId = snomedConceptId;
-	}
+    /* for tradename ones*/
+    Integer prevalence;
+    String parentConceptId;
+    boolean ispa;
 
-	public String getDisplayName() {
-		return displayName;
-	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getPicklistName() {
-		return picklistName;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setPicklistName(String picklistName) {
-		this.picklistName = picklistName;
-	}
+    public String getSnomedConceptId() {
+        return snomedConceptId;
+    }
 
-	public int getVersionId() {
-		return versionId;
-	}
+    public void setSnomedConceptId(String snomedConceptId) {
+        this.snomedConceptId = snomedConceptId;
+    }
 
-	public void setVersionId(int versionId) {
-		this.versionId = versionId;
-	}
+    public String getDisplayName() {
+        return displayName;
+    }
 
-	public boolean isGeneric() {
-		return generic;
-	}
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
-	public void setGeneric(boolean generic) {
-		this.generic = generic;
-	}
+    public String getPicklistName() {
+        return picklistName;
+    }
 
-	public Integer getPrevalence() {
-		return prevalence;
-	}
+    public void setPicklistName(String picklistName) {
+        this.picklistName = picklistName;
+    }
 
-	public void setPrevalence(Integer prevalence) {
-		this.prevalence = prevalence;
-	}
+    public int getVersionId() {
+        return versionId;
+    }
 
-	public String getParentConceptId() {
-		return parentConceptId;
-	}
+    public void setVersionId(int versionId) {
+        this.versionId = versionId;
+    }
 
-	public void setParentConceptId(String parentConceptId) {
-		this.parentConceptId = parentConceptId;
-	}
+    public boolean isGeneric() {
+        return generic;
+    }
 
-	public boolean isIspa() {
-		return ispa;
-	}
+    public void setGeneric(boolean generic) {
+        this.generic = generic;
+    }
 
-	public void setIspa(boolean ispa) {
-		this.ispa = ispa;
-	}
-	
+    public Integer getPrevalence() {
+        return prevalence;
+    }
+
+    public void setPrevalence(Integer prevalence) {
+        this.prevalence = prevalence;
+    }
+
+    public String getParentConceptId() {
+        return parentConceptId;
+    }
+
+    public void setParentConceptId(String parentConceptId) {
+        this.parentConceptId = parentConceptId;
+    }
+
+    public boolean isIspa() {
+        return ispa;
+    }
+
+    public void setIspa(boolean ispa) {
+        this.ispa = ispa;
+    }
+
 
 }

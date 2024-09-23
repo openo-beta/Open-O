@@ -24,53 +24,54 @@
 
 --%>
 
-<%@page contentType="text/html"%>
-<%@ include file="/casemgmt/taglibs.jsp"%>
+<%@page contentType="text/html" %>
+<%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="java.util.*" %>
 <%
-if(session.getValue("user") == null) response.sendRedirect("../logout.htm");
-if(session.getAttribute("userrole") == null ) response.sendRedirect("../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect("../logout.htm");
+    if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}"
-       scope="request" />
+       scope="request"/>
 <html:html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base />
+        <html:base/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><bean-el:message key="${providertitle}" /></title>
+        <title><bean-el:message key="${providertitle}"/></title>
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
     </head>
 
     <body class="BodyStyle" vlink="#0000FF">
-        <table class="MainTable" id="scrollNumber1" name="encounterTable">
-            <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><bean-el:message
-                        key="${providermsgPrefs}" /></td>
-                <td style="color: white" class="MainTableTopRowRightColumn"><bean-el:message
-                        key="${providermsgProvider}" /></td>
-            </tr>
-            <tr>
-                <td class="MainTableLeftColumn">&nbsp;</td>
-                <td class="MainTableRightColumn">
-                    <%if( request.getAttribute("status") == null ){%> <bean-el:message
-                        key="${providermsgEdit}" /> 
-                    <html:form action="/setProviderStaleDate.do">
-                        <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                        <html:checkbox property="eDocBrowserInDocumentReportProperty.checked"><bean:message key="provider.setEDocBrowserInDocumentReport.msgEnableLink"/></html:checkbox>
-                            <br/>
-                        <html:submit property="btnApply"/>
-                    </html:form> <%}else {%> <bean-el:message key="${providermsgSuccess}" /> <br>
-                    <%}%>
-                </td>
-            </tr>
-            <tr>
-                <td class="MainTableBottomRowLeftColumn"></td>
-                <td class="MainTableBottomRowRightColumn"></td>
-            </tr>
-        </table>
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn"><bean-el:message
+                    key="${providermsgPrefs}"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><bean-el:message
+                    key="${providermsgProvider}"/></td>
+        </tr>
+        <tr>
+            <td class="MainTableLeftColumn">&nbsp;</td>
+            <td class="MainTableRightColumn">
+                <%if (request.getAttribute("status") == null) {%> <bean-el:message
+                    key="${providermsgEdit}"/>
+                <html:form action="/setProviderStaleDate.do">
+                    <input type="hidden" name="method" value="<c:out value="${method}"/>">
+                    <html:checkbox property="eDocBrowserInDocumentReportProperty.checked"><bean:message
+                            key="provider.setEDocBrowserInDocumentReport.msgEnableLink"/></html:checkbox>
+                    <br/>
+                    <html:submit property="btnApply"/>
+                </html:form> <%} else {%> <bean-el:message key="${providermsgSuccess}"/> <br>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
     </body>
 </html:html>

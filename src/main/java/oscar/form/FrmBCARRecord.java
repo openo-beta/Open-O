@@ -11,34 +11,34 @@ import org.oscarehr.util.LoggedInInfo;
 import oscar.util.UtilDateUtilities;
 
 public class FrmBCARRecord extends FrmRecord {
-	
-	public FrmBCARRecord() {
-		this.dateFormat = "dd/MM/yyyy";
-	}
 
-	public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException {
+    public FrmBCARRecord() {
+        this.dateFormat = "dd/MM/yyyy";
+    }
 
-		Properties props = new Properties();
+    public Properties getFormRecord(LoggedInInfo loggedInInfo, int demographicNo, int existingID) throws SQLException {
 
-		if (existingID <= 0) {
+        Properties props = new Properties();
 
-			this.setDemoProperties(loggedInInfo, demographicNo, props);
+        if (existingID <= 0) {
 
-			props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), dateFormat));
-			props.setProperty("pg1_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
-			props.setProperty("pg2_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
-			props.setProperty("pg3_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
+            this.setDemoProperties(loggedInInfo, demographicNo, props);
 
-		} else {
-			String sql = "SELECT * FROM formBCAR WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-			FrmRecordHelp frh = new FrmRecordHelp();
-			frh.setDateFormat(dateFormat);
-			props = (frh).getFormRecord(sql);
+            props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), dateFormat));
+            props.setProperty("pg1_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
+            props.setProperty("pg2_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
+            props.setProperty("pg3_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
 
-			this.setDemoCurProperties(loggedInInfo, demographicNo, props);
-		}
-		return props;
-	}
+        } else {
+            String sql = "SELECT * FROM formBCAR WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+            FrmRecordHelp frh = new FrmRecordHelp();
+            frh.setDateFormat(dateFormat);
+            props = (frh).getFormRecord(sql);
+
+            this.setDemoCurProperties(loggedInInfo, demographicNo, props);
+        }
+        return props;
+    }
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");

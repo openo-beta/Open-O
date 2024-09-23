@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,74 +36,74 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="hsfo_recommit_schedule")
+@Table(name = "hsfo_recommit_schedule")
 public class HsfoRecommitSchedule extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String status;
-	
-	private String memo;
-	
-	@Column(name="schedule_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date scheduleTime;
-	
-	@Column(name="user_no")
-	private String userNo;
-	
-	@Column(name="check_flag")
-	private boolean checkFlag;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    private String status;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String memo;
 
-	public String getStatus() {
-		return status;
-	}
+    @Column(name = "schedule_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date scheduleTime;
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    @Column(name = "user_no")
+    private String userNo;
 
-	public String getMemo() {
-		return memo;
-	}
+    @Column(name = "check_flag")
+    private boolean checkFlag;
 
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getScheduleTime() {
-		return scheduleTime;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setScheduleTime(Date scheduleTime) {
-		this.scheduleTime = scheduleTime;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getUserNo() {
-		return userNo;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setUserNo(String userNo) {
-		this.userNo = userNo;
-	}
+    public String getMemo() {
+        return memo;
+    }
 
-	public boolean isCheckFlag() {
-		return checkFlag;
-	}
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 
-	public void setCheckFlag(boolean checkFlag) {
-		this.checkFlag = checkFlag;
-	}
-	
-	
+    public Date getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(Date scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+
+    public String getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
+    }
+
+    public boolean isCheckFlag() {
+        return checkFlag;
+    }
+
+    public void setCheckFlag(boolean checkFlag) {
+        this.checkFlag = checkFlag;
+    }
+
+
 }

@@ -29,9 +29,9 @@ public class EmailStatusResult implements Comparable<EmailStatusResult> {
     public EmailStatusResult() {
     }
 
-    public EmailStatusResult(Integer logId, String subject, String senderFirstName, String senderLastName, String senderEmail, 
-                             String recipientFirstName, String recipientLastName, String recipientEmail, String providerFirstName, 
-                             String providerLastName, boolean isEncrypted, String password, EmailStatus status, 
+    public EmailStatusResult(Integer logId, String subject, String senderFirstName, String senderLastName, String senderEmail,
+                             String recipientFirstName, String recipientLastName, String recipientEmail, String providerFirstName,
+                             String providerLastName, boolean isEncrypted, String password, EmailStatus status,
                              String errorMessage, Date created) {
         this.logId = logId;
         this.subject = subject;
@@ -89,7 +89,7 @@ public class EmailStatusResult implements Comparable<EmailStatusResult> {
     public void setSenderFullName(String senderFirstName, String senderLastName) {
         this.senderFirstName = senderFirstName;
         this.senderLastName = senderLastName;
-    } 
+    }
 
     public String getSenderEmail() {
         return senderEmail;

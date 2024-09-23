@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,7 +47,7 @@ import oscar.form.data.FrmVTData;
 public class FrmXml2VTData {
     private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
 
-    static String[] elementAttrName = new String[] { "value", "signed_when", "signed_who", "signed_how" };
+    static String[] elementAttrName = new String[]{"value", "signed_when", "signed_who", "signed_how"};
 
     // HashTable:
     // "VTData":VTData; "VisitDrug":Vector-VisitDrug; "PatientContactInfo":PatientContactInfo
@@ -61,7 +61,7 @@ public class FrmXml2VTData {
 
         // Get object reference of root element SitePatientVisitRecords.
         SitePatientVisitRecords visit = xmlDoc.getSitePatientVisitRecords();
-        SitePatientVisitRecords.SitePatientVisit [] visitRec = visit.getSitePatientVisitArray();
+        SitePatientVisitRecords.SitePatientVisit[] visitRec = visit.getSitePatientVisitArray();
         // Get version value
         String version = visit.getVersion();
 
@@ -90,7 +90,7 @@ public class FrmXml2VTData {
     }
 
     static private void setObjectsProperty(Method[] xmlMethods, Object rec, Object ret, Class objC,
-            Properties propPFieldName) {
+                                           Properties propPFieldName) {
         for (int i = 0; i < xmlMethods.length; i++) {
             String xmlMethodsName = xmlMethods[i].getName();
             // Only interested in method name startsWith get/is
@@ -129,11 +129,11 @@ public class FrmXml2VTData {
     }
 
     static private Object setObjectProperty(Object ret, Class objC, Properties propPFieldName, String xmlMethodsName,
-            String xmlValue) {
+                                            String xmlValue) {
         if (xmlMethodsName.length() > 3 && propPFieldName.containsKey(xmlMethodsName.substring(3))) {
             try {
-                Class[] argClass = new Class[] { String.class };
-                Object[] arguments = new Object[] { xmlValue };
+                Class[] argClass = new Class[]{String.class};
+                Object[] arguments = new Object[]{xmlValue};
                 // Find the obj set method and set prop
                 Method tempPMethod = objC.getMethod("set"
                         + propPFieldName.getProperty(xmlMethodsName.substring(3), ""), argClass);

@@ -1,22 +1,21 @@
-//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2012- Centre de Medecine Integree
- *
+ * <p>
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre de Medecine Integree, Saint-Laurent, Quebec, Canada to be provided
  * as part of the OSCAR McMaster EMR System
@@ -26,12 +25,14 @@ package org.oscarehr.printer;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.itextpdf.text.pdf.PdfAction;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -46,7 +47,7 @@ public class PrinterListAction extends DispatchAction {
         Document document = null;
         PdfWriter writer = null;
         OutputStream os = null;
-        
+
         try {
             document = new Document();
             baos = new ByteArrayOutputStream();
@@ -86,11 +87,19 @@ public class PrinterListAction extends DispatchAction {
         } catch (DocumentException e) {
             throw new IOException(e.getMessage());
         } finally {
-            if(os!=null) { os.close(); }
-            if(document!=null) { document.close(); }
-            if(writer!=null) { writer.close(); }
-            if(baos!=null) { baos.close(); }
-      }  
+            if (os != null) {
+                os.close();
+            }
+            if (document != null) {
+                document.close();
+            }
+            if (writer != null) {
+                writer.close();
+            }
+            if (baos != null) {
+                baos.close();
+            }
+        }
         return null;
     }
 

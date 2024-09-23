@@ -26,38 +26,43 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 
 <div class="modal-header">
-    <h4><bean:message key="patientsearch.integrator.title" bundle="ui"/>s ({{total}} <bean:message key="patientsearch.integrator.found" bundle="ui"/>)</h4>
-</div>  
-<div class="modal-body" >
-	<table class="table">
-		<thead>
-			<tr>
-				<th><bean:message key="patientsearch.integrator.header.name" bundle="ui"/></th>
-				<th><bean:message key="patientsearch.integrator.header.gender" bundle="ui"/></th>
-				<th><bean:message key="patientsearch.integrator.header.dob" bundle="ui"/></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tr ng-repeat="d in results | offset:startIndex | limitTo:pageSize">
-			<td>{{d.lastName}}, {{d.firstName}}</td>
-			<td>{{d.sex}}</td>
-			<td>{{d.dob| date: 'yyyy-MM-dd'}}</td>
-			<td><button class="btn btn-primary" ng-click="doImport(d)"><bean:message key="patientsearch.integrator.import" bundle="ui"/></button>
-</td>
-		</tr>
-		<tfoot ng-show="total > pageSize">
-			<tr>
-				<td colspan="4">						
-					<button class="btn" ng-click="prevPage()" ng-disabled="startIndex==0"><bean:message key="patientsearch.integrator.prev" bundle="ui"/></button>
-					<button class="btn" ng-click="nextPage()" ng-disabled="startIndex+pageSize > total"><bean:message key="patientsearch.integrator.next" bundle="ui"/></button>
-				</td>
-			</tr>
-		</tfoot>
-	</table>
-	
-<!-- 
-<pre>{{results}}</pre>
--->
+    <h4><bean:message key="patientsearch.integrator.title" bundle="ui"/>s ({{total}} <bean:message
+            key="patientsearch.integrator.found" bundle="ui"/>)</h4>
+</div>
+<div class="modal-body">
+    <table class="table">
+        <thead>
+        <tr>
+            <th><bean:message key="patientsearch.integrator.header.name" bundle="ui"/></th>
+            <th><bean:message key="patientsearch.integrator.header.gender" bundle="ui"/></th>
+            <th><bean:message key="patientsearch.integrator.header.dob" bundle="ui"/></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tr ng-repeat="d in results | offset:startIndex | limitTo:pageSize">
+            <td>{{d.lastName}}, {{d.firstName}}</td>
+            <td>{{d.sex}}</td>
+            <td>{{d.dob | date: 'yyyy-MM-dd'}}</td>
+            <td>
+                <button class="btn btn-primary" ng-click="doImport(d)"><bean:message
+                        key="patientsearch.integrator.import" bundle="ui"/></button>
+            </td>
+        </tr>
+        <tfoot ng-show="total > pageSize">
+        <tr>
+            <td colspan="4">
+                <button class="btn" ng-click="prevPage()" ng-disabled="startIndex==0"><bean:message
+                        key="patientsearch.integrator.prev" bundle="ui"/></button>
+                <button class="btn" ng-click="nextPage()" ng-disabled="startIndex+pageSize > total"><bean:message
+                        key="patientsearch.integrator.next" bundle="ui"/></button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <!--
+    <pre>{{results}}</pre>
+    -->
 </div>
 <div class="modal-footer">
     <button class="btn" ng-click="close()"><bean:message key="global.close" bundle="ui"/></button>

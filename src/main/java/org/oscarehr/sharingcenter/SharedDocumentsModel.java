@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,8 +37,7 @@ import org.oscarehr.sharingcenter.model.PolicyDefinitionDataObject;
  *
  * @author tylerg
  */
-public class SharedDocumentsModel
-{
+public class SharedDocumentsModel {
     private List<AffinityDomainDocuments> affinityDomainSharedDocuments;
     private List<AffinityDomainFolderMetaData> folders;
     private List<AffinityDomainDataObject> sharedAffinityDomains;
@@ -46,113 +45,93 @@ public class SharedDocumentsModel
     private AffinityDomainDataObject selectedAffinityDomain;
     private List<PolicyDefinitionDataObject> unconsentedPolicies;
     private List<String> errors;
-    private boolean consentGiven;    
+    private boolean consentGiven;
     private List<PolicyDefinitionDataObject> elevatePolicies;
     private Demographic demographic;
-    private List<Demographic> decisionMakers;    
+    private List<Demographic> decisionMakers;
     private List<String> downloadedDocumentNames;
-    
-    public List<AffinityDomainDocuments> getAffinityDomainSharedDocuments()
-    {
+
+    public List<AffinityDomainDocuments> getAffinityDomainSharedDocuments() {
         return affinityDomainSharedDocuments;
     }
 
-    public void setAffinityDomainSharedDocuments(List<AffinityDomainDocuments> affinityDomainSharedDocuments)
-    {
+    public void setAffinityDomainSharedDocuments(List<AffinityDomainDocuments> affinityDomainSharedDocuments) {
         this.affinityDomainSharedDocuments = affinityDomainSharedDocuments;
     }
 
-    public List<AffinityDomainFolderMetaData> getFolders()
-    {
+    public List<AffinityDomainFolderMetaData> getFolders() {
         return folders;
     }
 
-    public void setFolders(List<AffinityDomainFolderMetaData> folders)
-    {
+    public void setFolders(List<AffinityDomainFolderMetaData> folders) {
         this.folders = folders;
     }
 
-    public List<AffinityDomainDataObject> getSharedAffinityDomains()
-    {
+    public List<AffinityDomainDataObject> getSharedAffinityDomains() {
         return sharedAffinityDomains;
     }
 
-    public void setSharedAffinityDomains(List<AffinityDomainDataObject> sharedAffinityDomains)
-    {
+    public void setSharedAffinityDomains(List<AffinityDomainDataObject> sharedAffinityDomains) {
         this.sharedAffinityDomains = sharedAffinityDomains;
     }
 
-    public CodeMappingDataObject getConsentCodeMappings()
-    {
+    public CodeMappingDataObject getConsentCodeMappings() {
         return consentCodeMappings;
     }
 
-    public void setConsentCodeMappings(CodeMappingDataObject consentCodeMappings)
-    {
+    public void setConsentCodeMappings(CodeMappingDataObject consentCodeMappings) {
         this.consentCodeMappings = consentCodeMappings;
     }
 
-    public AffinityDomainDataObject getSelectedAffinityDomain()
-    {
+    public AffinityDomainDataObject getSelectedAffinityDomain() {
         return selectedAffinityDomain;
     }
 
-    public List<String> getErrors()
-    {
+    public List<String> getErrors() {
         return errors;
     }
-    public void setSelectedAffinityDomain(AffinityDomainDataObject selectedAffinityDomain)
-    {
-        this.selectedAffinityDomain = selectedAffinityDomain;
-    }    
 
-    public boolean isConsentGiven()
-    {
+    public void setSelectedAffinityDomain(AffinityDomainDataObject selectedAffinityDomain) {
+        this.selectedAffinityDomain = selectedAffinityDomain;
+    }
+
+    public boolean isConsentGiven() {
         return consentGiven;
     }
 
-    public void setConsentGiven(boolean consentGiven)
-    {
+    public void setConsentGiven(boolean consentGiven) {
         this.consentGiven = consentGiven;
     }
 
-    public List<PolicyDefinitionDataObject> getElevatePolicies()
-    {
+    public List<PolicyDefinitionDataObject> getElevatePolicies() {
         return elevatePolicies;
-    }    
+    }
 
-    public List<PolicyDefinitionDataObject> getUnconsentedPolicies()
-    {
+    public List<PolicyDefinitionDataObject> getUnconsentedPolicies() {
         return unconsentedPolicies;
-    }    
+    }
 
-    public Demographic getDemographic()
-    {
+    public Demographic getDemographic() {
         return demographic;
     }
 
-    public void setDemographic(Demographic demographic)
-    {
+    public void setDemographic(Demographic demographic) {
         this.demographic = demographic;
     }
 
-    public List<Demographic> getDecisionMakers()
-    {
+    public List<Demographic> getDecisionMakers() {
         return decisionMakers;
     }
 
-    public void setDecisionMakers(List<Demographic> decisionMakers)
-    {
+    public void setDecisionMakers(List<Demographic> decisionMakers) {
         this.decisionMakers = decisionMakers;
     }
 
-    public List<String> getDownloadedDocumentNames()
-    {
+    public List<String> getDownloadedDocumentNames() {
         return downloadedDocumentNames;
     }
 
-    public SharedDocumentsModel()
-    {
+    public SharedDocumentsModel() {
         this.affinityDomainSharedDocuments = new ArrayList<AffinityDomainDocuments>();
         this.folders = new ArrayList<AffinityDomainFolderMetaData>();
         this.affinityDomainSharedDocuments = new ArrayList<AffinityDomainDocuments>();
@@ -162,26 +141,22 @@ public class SharedDocumentsModel
         this.downloadedDocumentNames = new ArrayList<String>();
     }
 
-    public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments)
-    {
+    public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments) {
         this();
         this.affinityDomainSharedDocuments = affintyDomainDocuments;
     }
 
-    public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments, List<AffinityDomainFolderMetaData> folders)
-    {
+    public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments, List<AffinityDomainFolderMetaData> folders) {
         this(affintyDomainDocuments);
         this.folders = folders;
     }
 
-    public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments, List<AffinityDomainFolderMetaData> folders, List<AffinityDomainDataObject> sharedAffinityDomains)
-    {
+    public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments, List<AffinityDomainFolderMetaData> folders, List<AffinityDomainDataObject> sharedAffinityDomains) {
         this(affintyDomainDocuments, folders);
         this.sharedAffinityDomains = sharedAffinityDomains;
     }
-    
-     public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments, List<AffinityDomainFolderMetaData> folders, List<AffinityDomainDataObject> sharedAffinityDomains, AffinityDomainDataObject selectedAffinityDomain)
-    {
+
+    public SharedDocumentsModel(List<AffinityDomainDocuments> affintyDomainDocuments, List<AffinityDomainFolderMetaData> folders, List<AffinityDomainDataObject> sharedAffinityDomains, AffinityDomainDataObject selectedAffinityDomain) {
         this(affintyDomainDocuments, folders, sharedAffinityDomains);
         this.selectedAffinityDomain = selectedAffinityDomain;
     }

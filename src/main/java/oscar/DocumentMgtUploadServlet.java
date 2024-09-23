@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -44,45 +44,39 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.oscarehr.util.MiscUtils;
 
-public class DocumentMgtUploadServlet extends HttpServlet{
-  final static int BUFFER = 2048;
-  public java.util.Date today;
-  public String output;
-  public SimpleDateFormat formatter;
+public class DocumentMgtUploadServlet extends HttpServlet {
+    final static int BUFFER = 2048;
+    public java.util.Date today;
+    public String output;
+    public SimpleDateFormat formatter;
 
 
-  public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException  {
-	  
-   
-   
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 
-    
-   
-    formatter = new SimpleDateFormat("yyyyMMddHmmss");
-    today = new java.util.Date();
-    output = formatter.format(today);
+        formatter = new SimpleDateFormat("yyyyMMddHmmss");
+        today = new java.util.Date();
+        output = formatter.format(today);
 
-   
-    
-    String foldername="", fileheader="", forwardTo="";
-   
 
-    // Get properties from oscar_mcmaster.properties
-    Properties ap = OscarProperties.getInstance();
-      
-    forwardTo  = ap.getProperty("DOC_FORWARD");
-    foldername = ap.getProperty("DOCUMENT_DIR");
+        String foldername = "", fileheader = "", forwardTo = "";
 
-    if (forwardTo == null || forwardTo.length() < 1) return;
 
-        
+        // Get properties from oscar_mcmaster.properties
+        Properties ap = OscarProperties.getInstance();
+
+        forwardTo = ap.getProperty("DOC_FORWARD");
+        foldername = ap.getProperty("DOCUMENT_DIR");
+
+        if (forwardTo == null || forwardTo.length() < 1) return;
+
+
         //		 Create a new file upload handler
         DiskFileUpload upload = new DiskFileUpload();
 
         try {
             //		 Parse the request
-            List  items = upload.parseRequest(request);
+            List items = upload.parseRequest(request);
 //          Process the uploaded items
             Iterator iter = items.iterator();
             while (iter.hasNext()) {
@@ -93,13 +87,13 @@ public class DocumentMgtUploadServlet extends HttpServlet{
                     //String value = item.getString(); 
 
                 } else {
-                    String pathName = item.getName();  
-                    String [] fullFile = pathName.split("[/|\\\\]");
-            		File savedFile = new File(foldername, output + fullFile[fullFile.length-1]);
+                    String pathName = item.getName();
+                    String[] fullFile = pathName.split("[/|\\\\]");
+                    File savedFile = new File(foldername, output + fullFile[fullFile.length - 1]);
 
-                    fileheader = output + fullFile[fullFile.length-1];
-            		
-            		item.write(savedFile);
+                    fileheader = output + fullFile[fullFile.length - 1];
+
+                    item.write(savedFile);
                 }
             }
         } catch (FileUploadException e) {
@@ -178,28 +172,28 @@ public class DocumentMgtUploadServlet extends HttpServlet{
     dest.close();
     sis.close();
 */
-    DocumentBean documentBean = new DocumentBean();
+        DocumentBean documentBean = new DocumentBean();
 
-    request.setAttribute("documentBean", documentBean);
+        request.setAttribute("documentBean", documentBean);
 
-    documentBean.setFilename(fileheader);
+        documentBean.setFilename(fileheader);
 
-       //  documentBean.setFileDesc(filedesc);
+        //  documentBean.setFileDesc(filedesc);
 
-       //  documentBean.setFoldername(foldername);
+        //  documentBean.setFoldername(foldername);
 
-       //  documentBean.setFunction(function);
+        //  documentBean.setFunction(function);
 
-       //  documentBean.setFunctionID(function_id);
+        //  documentBean.setFunctionID(function_id);
 
-       //  documentBean.setCreateDate(fileheader);
+        //  documentBean.setCreateDate(fileheader);
 
-       //  documentBean.setDocCreator(creator);
+        //  documentBean.setDocCreator(creator);
 
-    // Call the output page.
+        // Call the output page.
 
-    RequestDispatcher dispatch = getServletContext().getRequestDispatcher(forwardTo);
-    dispatch.forward(request, response);
-  }
+        RequestDispatcher dispatch = getServletContext().getRequestDispatcher(forwardTo);
+        dispatch.forward(request, response);
+    }
 
 }

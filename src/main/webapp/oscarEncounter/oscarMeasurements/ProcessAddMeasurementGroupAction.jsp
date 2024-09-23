@@ -25,53 +25,51 @@
 --%>
 
 <%
-  if(session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page
-	import="java.lang.*,oscar.oscarEncounter.oscarMeasurements.pageUtil.*"%>
+        import="java.lang.*,oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
 
 <html:html lang="en">
 
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title><bean:message
-	key="oscarEncounter.Measurements.msgProcessAddMeasurementGroupAction" />
-</title>
-<html:base />
-</head>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title><bean:message
+                key="oscarEncounter.Measurements.msgProcessAddMeasurementGroupAction"/>
+        </title>
+        <html:base/>
+    </head>
 
-<script language="javascript">
+    <script language="javascript">
 
-function submitForm(){
-    
-    document.forms[0].submit();
-    
- }
+        function submitForm() {
 
+            document.forms[0].submit();
 
-</script>
-
-<link rel="stylesheet" type="text/css" href="../styles.css">
-<body topmargin="0" leftmargin="0" vlink="#0000FF">
-<html:errors />
-<table>
-	<form action="SetupAddMeasurementGroup.do">
-	<tr>
-		<input type="hidden" name="value(groupName)"
-			value="<bean:write name="groupName"/>" />
-		<td>Processing...</td>
-		<script>
-                submitForm();
-            </script>
-	</tr>
-	</form>
-</table>
+        }
 
 
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <body topmargin="0" leftmargin="0" vlink="#0000FF">
+    <html:errors/>
+    <table>
+        <form action="SetupAddMeasurementGroup.do">
+            <tr>
+                <input type="hidden" name="value(groupName)"
+                       value="<bean:write name="groupName"/>"/>
+                <td>Processing...</td>
+                <script>
+                    submitForm();
+                </script>
+            </tr>
+        </form>
+    </table>
 
 
-</body>
+    </body>
 </html:html>

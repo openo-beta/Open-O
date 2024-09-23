@@ -7,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -38,19 +38,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CaisiFormInstanceTmpSaveDaoImpl extends AbstractDaoImpl<CaisiFormInstanceTmpSave> implements CaisiFormInstanceTmpSaveDao {
 
-	public CaisiFormInstanceTmpSaveDaoImpl() {
-		super(CaisiFormInstanceTmpSave.class);
-	}
-	
-	public List<CaisiFormInstance> getTmpForms(Integer instanceId,Integer formId, Integer clientId, Integer providerNo) {
-    	Query query = entityManager.createQuery("select f from CaisiFormInstanceTmpSave f where f.instanceId = ? and f.formId = ? and f.clientId = ? and f.userId = ? order by f.dateCreated DESC");
-		query.setParameter(0, instanceId);
-		query.setParameter(1, formId);
-		query.setParameter(2, clientId);
-		query.setParameter(3, providerNo);
-		@SuppressWarnings("unchecked")
+    public CaisiFormInstanceTmpSaveDaoImpl() {
+        super(CaisiFormInstanceTmpSave.class);
+    }
+
+    public List<CaisiFormInstance> getTmpForms(Integer instanceId, Integer formId, Integer clientId, Integer providerNo) {
+        Query query = entityManager.createQuery("select f from CaisiFormInstanceTmpSave f where f.instanceId = ? and f.formId = ? and f.clientId = ? and f.userId = ? order by f.dateCreated DESC");
+        query.setParameter(0, instanceId);
+        query.setParameter(1, formId);
+        query.setParameter(2, clientId);
+        query.setParameter(3, providerNo);
+        @SuppressWarnings("unchecked")
         List<CaisiFormInstance> result = query.getResultList();
-		
+
         return result;
     }
 }

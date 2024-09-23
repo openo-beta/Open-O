@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,276 +49,276 @@ import org.apache.logging.log4j.Logger;
  */
 public class BaseLoginModule implements LoginModule {
 
-	/**
-	 * Option key for the authorization.
-	 */
-	public static final String OPTION_ATN_ENABLED = "authorizationEnabled";
+    /**
+     * Option key for the authorization.
+     */
+    public static final String OPTION_ATN_ENABLED = "authorizationEnabled";
 
-	protected static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    protected static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-	private Subject subject;
+    private Subject subject;
 
-	private Map<String, ?> sharedState;
+    private Map<String, ?> sharedState;
 
-	private Map<String, ?> options;
+    private Map<String, ?> options;
 
-	private CallbackHandler callbackHandler;
+    private CallbackHandler callbackHandler;
 
-	private OscarPrincipal principal;
+    private OscarPrincipal principal;
 
-	private Group rolesGroup;
+    private Group rolesGroup;
 
-	private Group callerPrincipal;
+    private Group callerPrincipal;
 
-	private Group authPrincipal;
+    private Group authPrincipal;
 
-	private boolean authorizationEnabled = false;
+    private boolean authorizationEnabled = false;
 
-	private List<String> defaultRoles = new ArrayList<String>();
+    private List<String> defaultRoles = new ArrayList<String>();
 
-	/**
-	 * Sets parameters for further user.
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject, javax.security.auth.callback.CallbackHandler, java.util.Map, java.util.Map)
-	 */
-	@Override
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
-		setSharedState(sharedState);
-		setSubject(subject);
-		setCallbackHandler(callbackHandler);
-		setOptions(options);
-		
-		setAuthorizationEnabled(Boolean.parseBoolean("" + options.get(OPTION_ATN_ENABLED)));
-	}
+    /**
+     * Sets parameters for further user.
+     *
+     * @see javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject, javax.security.auth.callback.CallbackHandler, java.util.Map, java.util.Map)
+     */
+    @Override
+    public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
+        setSharedState(sharedState);
+        setSubject(subject);
+        setCallbackHandler(callbackHandler);
+        setOptions(options);
 
-	/**
-	 * Carries out the login process.
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#login()
-	 */
-	@Override
-	public boolean login() throws LoginException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Initiating login for " + this);
-		}
+        setAuthorizationEnabled(Boolean.parseBoolean("" + options.get(OPTION_ATN_ENABLED)));
+    }
 
-		NameCallback nameCallback = new NameCallback("Username");
-		PasswordCallback passwordCallback = new PasswordCallback("Password", false);
+    /**
+     * Carries out the login process.
+     *
+     * @see javax.security.auth.spi.LoginModule#login()
+     */
+    @Override
+    public boolean login() throws LoginException {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Initiating login for " + this);
+        }
 
-		try {
-			getCallbackHandler().handle(new Callback[] { nameCallback, passwordCallback });
-		} catch (IOException e1) {
-			throw new LoginException("Unable to retrieve user name or password");
-		} catch (UnsupportedCallbackException e1) {
-			throw new LoginException("Invalid callbacks for retrieving user name or password");
-		}
+        NameCallback nameCallback = new NameCallback("Username");
+        PasswordCallback passwordCallback = new PasswordCallback("Password", false);
 
-		String loginName = nameCallback.getName();
-		char[] password = null;
+        try {
+            getCallbackHandler().handle(new Callback[]{nameCallback, passwordCallback});
+        } catch (IOException e1) {
+            throw new LoginException("Unable to retrieve user name or password");
+        } catch (UnsupportedCallbackException e1) {
+            throw new LoginException("Invalid callbacks for retrieving user name or password");
+        }
 
-		// since password is an array, getting a shared instance won't fly - copy it
-		char[] tempPassword = passwordCallback.getPassword();
-		if (tempPassword != null) {
-			password = new char[tempPassword.length];
-			System.arraycopy(tempPassword, 0, password, 0, tempPassword.length);
-			passwordCallback.clearPassword();
-		}
-		passwordCallback.clearPassword();
+        String loginName = nameCallback.getName();
+        char[] password = null;
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Started authentication for " + loginName);
-		}
+        // since password is an array, getting a shared instance won't fly - copy it
+        char[] tempPassword = passwordCallback.getPassword();
+        if (tempPassword != null) {
+            password = new char[tempPassword.length];
+            System.arraycopy(tempPassword, 0, password, 0, tempPassword.length);
+            passwordCallback.clearPassword();
+        }
+        passwordCallback.clearPassword();
 
-		long loginDuration = System.currentTimeMillis();
-		try {
-			// carry out authentication
-			OscarPrincipal principal = authenticate(loginName, password);
-			if (principal == null) throw new LoginException("Invalid login name or password");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Started authentication for " + loginName);
+        }
 
-			loginDuration = System.currentTimeMillis() - loginDuration;
-			Arrays.fill(password, ' ');// clear password
-			setPrincipal(principal);
+        long loginDuration = System.currentTimeMillis();
+        try {
+            // carry out authentication
+            OscarPrincipal principal = authenticate(loginName, password);
+            if (principal == null) throw new LoginException("Invalid login name or password");
 
-			if (logger.isInfoEnabled()) {
-				logger.info("Authenticated user as: " + principal);
-			}
-		} catch (LoginException e) {
-			throw e;
-		} catch (Exception e) {
-			logger.error("Unable to complete authentication", e);
-			throw new LoginException("Unable to authenticate: " + e.getMessage());
-		}
+            loginDuration = System.currentTimeMillis() - loginDuration;
+            Arrays.fill(password, ' ');// clear password
+            setPrincipal(principal);
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Logged in " + loginName + " successfully in {1} ms" + loginDuration);
-		}
+            if (logger.isInfoEnabled()) {
+                logger.info("Authenticated user as: " + principal);
+            }
+        } catch (LoginException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Unable to complete authentication", e);
+            throw new LoginException("Unable to authenticate: " + e.getMessage());
+        }
 
-		if (isAuthorizationEnabled()) {
-			// CallerPrincipal group is necessary for making custom principal as the
-			// principal returned by the getUserPrincipal() methods in web apps
-			OscarGroup callerPrincipal = new OscarGroup("CallerPrincipal");
-			callerPrincipal.addMember(getPrincipal());
-			setCallerPrincipal(callerPrincipal);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Logged in " + loginName + " successfully in {1} ms" + loginDuration);
+        }
 
-			OscarGroup authPrincipal = new OscarGroup("AuthPrincipal");
-			authPrincipal.addMember(getPrincipal());
-			setAuthPrincipal(authPrincipal);
+        if (isAuthorizationEnabled()) {
+            // CallerPrincipal group is necessary for making custom principal as the
+            // principal returned by the getUserPrincipal() methods in web apps
+            OscarGroup callerPrincipal = new OscarGroup("CallerPrincipal");
+            callerPrincipal.addMember(getPrincipal());
+            setCallerPrincipal(callerPrincipal);
 
-			Group rolesGroup = new OscarGroup("Roles");
-			for (OscarRole role : getRoles(loginName)) {
-				rolesGroup.addMember(role);
-			}
-			setRolesGroup(rolesGroup);
-		}
+            OscarGroup authPrincipal = new OscarGroup("AuthPrincipal");
+            authPrincipal.addMember(getPrincipal());
+            setAuthPrincipal(authPrincipal);
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Completed login for " + this);
-		}
+            Group rolesGroup = new OscarGroup("Roles");
+            for (OscarRole role : getRoles(loginName)) {
+                rolesGroup.addMember(role);
+            }
+            setRolesGroup(rolesGroup);
+        }
 
-		return true;
-	}
+        if (logger.isDebugEnabled()) {
+            logger.debug("Completed login for " + this);
+        }
 
-	@SuppressWarnings("unused")
-	protected List<OscarRole> getRoles(String loginName) {
-		return new ArrayList<OscarRole>();
-	}
+        return true;
+    }
 
-	@SuppressWarnings("unused")
-	protected OscarPrincipal authenticate(String loginName, char[] password) throws Exception, LoginException {
-		if (loginName == null) throw new LoginException("Empty login or password");
-		return null;
-	}
+    @SuppressWarnings("unused")
+    protected List<OscarRole> getRoles(String loginName) {
+        return new ArrayList<OscarRole>();
+    }
 
-	public OscarPrincipal getPrincipal() {
-		return principal;
-	}
+    @SuppressWarnings("unused")
+    protected OscarPrincipal authenticate(String loginName, char[] password) throws Exception, LoginException {
+        if (loginName == null) throw new LoginException("Empty login or password");
+        return null;
+    }
 
-	public void setPrincipal(OscarPrincipal principal) {
-		this.principal = principal;
-	}
+    public OscarPrincipal getPrincipal() {
+        return principal;
+    }
 
-	private Principal[] getPrincipals() {
-		return new Principal[] { getPrincipal(), getRolesGroup(), getCallerPrincipal(), getAuthPrincipal() };
-	}
+    public void setPrincipal(OscarPrincipal principal) {
+        this.principal = principal;
+    }
 
-	@Override
-	public boolean commit() throws LoginException {
-		Set<Principal> principals = getSubject().getPrincipals();
-		for (Principal principal : getPrincipals()) {
-			if (principal != null) {
-				principals.add(principal);
-			}
-		}
+    private Principal[] getPrincipals() {
+        return new Principal[]{getPrincipal(), getRolesGroup(), getCallerPrincipal(), getAuthPrincipal()};
+    }
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Completed commit for " + this);
-		}
-		return true;
-	}
+    @Override
+    public boolean commit() throws LoginException {
+        Set<Principal> principals = getSubject().getPrincipals();
+        for (Principal principal : getPrincipals()) {
+            if (principal != null) {
+                principals.add(principal);
+            }
+        }
 
-	@Override
-	public boolean abort() throws LoginException {
-		setSubject(null);
-		setCallbackHandler(null);
-		setPrincipal(null);
-		setRolesGroup(null);
-		setCallerPrincipal(null);
-		setAuthPrincipal(null);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Completed commit for " + this);
+        }
+        return true;
+    }
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Completed abort for " + this);
-		}
-		return true;
-	}
+    @Override
+    public boolean abort() throws LoginException {
+        setSubject(null);
+        setCallbackHandler(null);
+        setPrincipal(null);
+        setRolesGroup(null);
+        setCallerPrincipal(null);
+        setAuthPrincipal(null);
 
-	@Override
-	public boolean logout() throws LoginException {
-		Set<Principal> principals = getSubject().getPrincipals();
-		for (Principal principal : getPrincipals())
-			principals.remove(principal);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Completed abort for " + this);
+        }
+        return true;
+    }
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Completed logout for " + this);
-		}
-		return true;
-	}
+    @Override
+    public boolean logout() throws LoginException {
+        Set<Principal> principals = getSubject().getPrincipals();
+        for (Principal principal : getPrincipals())
+            principals.remove(principal);
 
-	private Subject getSubject() {
-		return subject;
-	}
+        if (logger.isDebugEnabled()) {
+            logger.debug("Completed logout for " + this);
+        }
+        return true;
+    }
 
-	private void setSubject(Subject subject) {
-		this.subject = subject;
-	}
+    private Subject getSubject() {
+        return subject;
+    }
 
-	private CallbackHandler getCallbackHandler() {
-		return callbackHandler;
-	}
+    private void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 
-	private void setCallbackHandler(CallbackHandler callbackHandler) {
-		this.callbackHandler = callbackHandler;
-	}
+    private CallbackHandler getCallbackHandler() {
+        return callbackHandler;
+    }
 
-	public List<String> getDefaultRoles() {
-		return defaultRoles;
-	}
+    private void setCallbackHandler(CallbackHandler callbackHandler) {
+        this.callbackHandler = callbackHandler;
+    }
 
-	public void setDefaultRoles(List<String> defaultRoles) {
-		this.defaultRoles = defaultRoles;
-	}
+    public List<String> getDefaultRoles() {
+        return defaultRoles;
+    }
 
-	public Map<String, ?> getSharedState() {
-		return sharedState;
-	}
+    public void setDefaultRoles(List<String> defaultRoles) {
+        this.defaultRoles = defaultRoles;
+    }
 
-	public void setSharedState(Map<String, ?> sharedState) {
-		this.sharedState = sharedState;
-	}
+    public Map<String, ?> getSharedState() {
+        return sharedState;
+    }
 
-	public Group getRolesGroup() {
-		return rolesGroup;
-	}
+    public void setSharedState(Map<String, ?> sharedState) {
+        this.sharedState = sharedState;
+    }
 
-	public void setRolesGroup(Group rolesGroup) {
-		this.rolesGroup = rolesGroup;
-	}
+    public Group getRolesGroup() {
+        return rolesGroup;
+    }
 
-	public Group getCallerPrincipal() {
-		return callerPrincipal;
-	}
+    public void setRolesGroup(Group rolesGroup) {
+        this.rolesGroup = rolesGroup;
+    }
 
-	public void setCallerPrincipal(Group callerPrincipal) {
-		this.callerPrincipal = callerPrincipal;
-	}
+    public Group getCallerPrincipal() {
+        return callerPrincipal;
+    }
 
-	public Group getAuthPrincipal() {
-		return authPrincipal;
-	}
+    public void setCallerPrincipal(Group callerPrincipal) {
+        this.callerPrincipal = callerPrincipal;
+    }
 
-	public void setAuthPrincipal(Group authPrincipal) {
-		this.authPrincipal = authPrincipal;
-	}
+    public Group getAuthPrincipal() {
+        return authPrincipal;
+    }
 
-	public Map<String, ?> getOptions() {
-		return options;
-	}
+    public void setAuthPrincipal(Group authPrincipal) {
+        this.authPrincipal = authPrincipal;
+    }
 
-	public void setOptions(Map<String, ?> options) {
-		this.options = options;
-	}
+    public Map<String, ?> getOptions() {
+        return options;
+    }
 
-	/**
-	 * Checks if this login module should provide authorization information 
-	 * after successful authentication is complete.
-	 * 
-	 * @return
-	 * 		Returns true if role and group information should be populated and false otherwise.
-	 */
-	public boolean isAuthorizationEnabled() {
-		return authorizationEnabled;
-	}
+    public void setOptions(Map<String, ?> options) {
+        this.options = options;
+    }
 
-	public void setAuthorizationEnabled(boolean authorizationEnabled) {
-		this.authorizationEnabled = authorizationEnabled;
-	}
+    /**
+     * Checks if this login module should provide authorization information
+     * after successful authentication is complete.
+     *
+     * @return
+     *        Returns true if role and group information should be populated and false otherwise.
+     */
+    public boolean isAuthorizationEnabled() {
+        return authorizationEnabled;
+    }
+
+    public void setAuthorizationEnabled(boolean authorizationEnabled) {
+        this.authorizationEnabled = authorizationEnabled;
+    }
 }

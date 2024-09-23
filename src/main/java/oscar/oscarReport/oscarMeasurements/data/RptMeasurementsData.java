@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,34 +38,34 @@ import oscar.util.ConversionUtils;
  */
 public class RptMeasurementsData {
 
-	/**
- 	 * Gets the number of Patient seen during aspecific time period
-	 *
-	 * @return 
-	 * 		number or Patients seen in Integer
-	 */
-	public int getNbPatientSeen(String startDateA, String endDateA) {
-		int nbPatient = 0;
-		MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
-		for (Object o : dao.findByCreateDate(ConversionUtils.fromDateString(startDateA), ConversionUtils.fromDateString(endDateA))) {
-			nbPatient = (Integer) o;
-		}
-		return nbPatient;
-	}
+    /**
+     * Gets the number of Patient seen during aspecific time period
+     *
+     * @return
+     *        number or Patients seen in Integer
+     */
+    public int getNbPatientSeen(String startDateA, String endDateA) {
+        int nbPatient = 0;
+        MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
+        for (Object o : dao.findByCreateDate(ConversionUtils.fromDateString(startDateA), ConversionUtils.fromDateString(endDateA))) {
+            nbPatient = (Integer) o;
+        }
+        return nbPatient;
+    }
 
-	/**
-	 * get the number of patients during a specific time period
-	 *
-	 * @return 
-	 * 		ArrayList which contain the result in String format
-	 */
-	public ArrayList getPatientsSeen(String startDate, String endDate) {
-		ArrayList patients = new ArrayList();
-		MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
-		for (Object[] o : dao.findByCreateDate(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate))) {
-			Integer i = (Integer) o[0];
-			patients.add("" + i);
-		}
-		return patients;
-	}
+    /**
+     * get the number of patients during a specific time period
+     *
+     * @return
+     *        ArrayList which contain the result in String format
+     */
+    public ArrayList getPatientsSeen(String startDate, String endDate) {
+        ArrayList patients = new ArrayList();
+        MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
+        for (Object[] o : dao.findByCreateDate(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate))) {
+            Integer i = (Integer) o[0];
+            patients.add("" + i);
+        }
+        return patients;
+    }
 }

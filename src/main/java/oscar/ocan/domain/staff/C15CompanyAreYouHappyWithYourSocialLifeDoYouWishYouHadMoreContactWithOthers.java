@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -43,9 +42,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -65,20 +64,20 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "c1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr",
-    "c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives",
-    "c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact",
-    "c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact",
-    "cComments",
-    "cActions",
-    "cByWhom",
-    "cReviewDate",
-    "cHaveThereBeenAnyChangesToYourSocialPatternsRecently"
+        "c1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr",
+        "c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives",
+        "c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact",
+        "c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact",
+        "cComments",
+        "cActions",
+        "cByWhom",
+        "cReviewDate",
+        "cHaveThereBeenAnyChangesToYourSocialPatternsRecently"
 })
 @XmlRootElement(name = "C15__Company__Are_you_happy_with_your_social_life__Do_you_wish_you_had_more_contact_with_others_")
 public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers {
@@ -104,11 +103,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the c1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr() {
         return c1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr;
@@ -116,11 +115,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the c1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr(BigInteger value) {
         this.c1DoesThePersonNeedHelpWithSocialContactIfRated0Or9SkipQuestions23AndPr = value;
@@ -128,11 +127,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives() {
         return c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives;
@@ -140,11 +139,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives(BigInteger value) {
         this.c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives = value;
@@ -152,11 +151,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact() {
         return c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact;
@@ -164,11 +163,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact(BigInteger value) {
         this.c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesInOrganizingSocialContact = value;
@@ -176,11 +175,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public BigInteger getC3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact() {
         return c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact;
@@ -188,11 +187,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigInteger }
-     *     
+     *
      */
     public void setC3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact(BigInteger value) {
         this.c3BHowMuchHelpDoesThePersonNeedFromLocalServicesInOrganizingSocialContact = value;
@@ -200,11 +199,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the cComments property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link CComments }
-     *     
+     *
      */
     public CComments getCComments() {
         return cComments;
@@ -212,11 +211,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the cComments property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link CComments }
-     *     
+     *
      */
     public void setCComments(CComments value) {
         this.cComments = value;
@@ -224,11 +223,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the cActions property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCActions() {
         return cActions;
@@ -236,11 +235,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the cActions property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCActions(String value) {
         this.cActions = value;
@@ -248,11 +247,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the cByWhom property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCByWhom() {
         return cByWhom;
@@ -260,11 +259,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the cByWhom property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCByWhom(String value) {
         this.cByWhom = value;
@@ -272,11 +271,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the cReviewDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCReviewDate() {
         return cReviewDate;
@@ -284,11 +283,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the cReviewDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCReviewDate(String value) {
         this.cReviewDate = value;
@@ -296,11 +295,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Gets the value of the cHaveThereBeenAnyChangesToYourSocialPatternsRecently property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link CHaveThereBeenAnyChangesToYourSocialPatternsRecently }
-     *     
+     *
      */
     public CHaveThereBeenAnyChangesToYourSocialPatternsRecently getCHaveThereBeenAnyChangesToYourSocialPatternsRecently() {
         return cHaveThereBeenAnyChangesToYourSocialPatternsRecently;
@@ -308,11 +307,11 @@ public class C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWi
 
     /**
      * Sets the value of the cHaveThereBeenAnyChangesToYourSocialPatternsRecently property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link CHaveThereBeenAnyChangesToYourSocialPatternsRecently }
-     *     
+     *
      */
     public void setCHaveThereBeenAnyChangesToYourSocialPatternsRecently(CHaveThereBeenAnyChangesToYourSocialPatternsRecently value) {
         this.cHaveThereBeenAnyChangesToYourSocialPatternsRecently = value;

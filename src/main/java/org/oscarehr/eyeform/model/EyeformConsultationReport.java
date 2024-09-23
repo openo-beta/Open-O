@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,316 +42,315 @@ import org.oscarehr.common.model.Provider;
 
 @Entity
 public class EyeformConsultationReport extends AbstractModel<Integer> {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
-	
-	private int referralId;
-	private int greeting;
-	private int appointmentNo;
-	
-	@Temporal(TemporalType.DATE)
-	private Date appointmentDate;
-	
-	@Temporal(TemporalType.TIME)
-	private Date appointmentTime;
-	
-	private int demographicNo;
-	private String reason;
-	private String type;
-	private String cc;
-	private String memo;
-	private String clinicalInfo;
-	private String currentMeds;
-	private String allergies;
-	private String providerNo;
-	private String status;
-	private String sendTo;
-	private String examination;
-	private String concurrentProblems;
-	private String impression;
-	private String plan;
-	private String urgency;
-	private int patientWillBook;
-	
-	@Transient
-	private Demographic demographic = null;
-	@Transient
-	private Provider provider = null;
-	@Transient
-	private String referralNo;
-	
-	
-	public EyeformConsultationReport() {
-		date = new Date();
-	}
-	
-	public Date getDate() {
-		return date;
-	}
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
+    private int referralId;
+    private int greeting;
+    private int appointmentNo;
 
-	public int getReferralId() {
-		return referralId;
-	}
+    @Temporal(TemporalType.DATE)
+    private Date appointmentDate;
 
+    @Temporal(TemporalType.TIME)
+    private Date appointmentTime;
 
-	public void setReferralId(int referralId) {
-		this.referralId = referralId;
-	}
+    private int demographicNo;
+    private String reason;
+    private String type;
+    private String cc;
+    private String memo;
+    private String clinicalInfo;
+    private String currentMeds;
+    private String allergies;
+    private String providerNo;
+    private String status;
+    private String sendTo;
+    private String examination;
+    private String concurrentProblems;
+    private String impression;
+    private String plan;
+    private String urgency;
+    private int patientWillBook;
 
+    @Transient
+    private Demographic demographic = null;
+    @Transient
+    private Provider provider = null;
+    @Transient
+    private String referralNo;
 
-	public int getGreeting() {
-		return greeting;
-	}
 
+    public EyeformConsultationReport() {
+        date = new Date();
+    }
 
-	public void setGreeting(int greeting) {
-		this.greeting = greeting;
-	}
+    public Date getDate() {
+        return date;
+    }
 
 
-	public int getAppointmentNo() {
-		return appointmentNo;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
 
-	public void setAppointmentNo(int appointmentNo) {
-		this.appointmentNo = appointmentNo;
-	}
+    public int getReferralId() {
+        return referralId;
+    }
 
 
-	public Date getAppointmentDate() {
-		return appointmentDate;
-	}
+    public void setReferralId(int referralId) {
+        this.referralId = referralId;
+    }
 
 
-	public void setAppointmentDate(Date appointmentDate) {
-		this.appointmentDate = appointmentDate;
-	}
+    public int getGreeting() {
+        return greeting;
+    }
 
 
-	public Date getAppointmentTime() {
-		return appointmentTime;
-	}
+    public void setGreeting(int greeting) {
+        this.greeting = greeting;
+    }
 
 
-	public void setAppointmentTime(Date appointmentTime) {
-		this.appointmentTime = appointmentTime;
-	}
+    public int getAppointmentNo() {
+        return appointmentNo;
+    }
 
 
-	public String getReason() {
-		return reason;
-	}
+    public void setAppointmentNo(int appointmentNo) {
+        this.appointmentNo = appointmentNo;
+    }
 
 
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
+    public Date getAppointmentDate() {
+        return appointmentDate;
+    }
 
 
-	public String getType() {
-		return type;
-	}
+    public void setAppointmentDate(Date appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
 
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public Date getAppointmentTime() {
+        return appointmentTime;
+    }
 
 
-	public String getCc() {
-		return cc;
-	}
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
 
 
-	public void setCc(String cc) {
-		this.cc = cc;
-	}
+    public String getReason() {
+        return reason;
+    }
 
 
-	public String getMemo() {
-		return memo;
-	}
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
 
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
+    public String getType() {
+        return type;
+    }
 
 
-	public String getClinicalInfo() {
-		return clinicalInfo;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
 
-	public void setClinicalInfo(String clinicalInfo) {
-		this.clinicalInfo = clinicalInfo;
-	}
+    public String getCc() {
+        return cc;
+    }
 
 
-	public String getCurrentMeds() {
-		return currentMeds;
-	}
+    public void setCc(String cc) {
+        this.cc = cc;
+    }
 
 
-	public void setCurrentMeds(String currentMeds) {
-		this.currentMeds = currentMeds;
-	}
+    public String getMemo() {
+        return memo;
+    }
 
 
-	public String getAllergies() {
-		return allergies;
-	}
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 
 
-	public void setAllergies(String allergies) {
-		this.allergies = allergies;
-	}
+    public String getClinicalInfo() {
+        return clinicalInfo;
+    }
 
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setClinicalInfo(String clinicalInfo) {
+        this.clinicalInfo = clinicalInfo;
+    }
 
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public String getCurrentMeds() {
+        return currentMeds;
+    }
 
 
-	public String getStatus() {
-		return status;
-	}
+    public void setCurrentMeds(String currentMeds) {
+        this.currentMeds = currentMeds;
+    }
 
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getAllergies() {
+        return allergies;
+    }
 
 
-	public String getSendTo() {
-		return sendTo;
-	}
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
 
 
-	public void setSendTo(String sendTo) {
-		this.sendTo = sendTo;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
 
-	public String getExamination() {
-		return examination;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
 
-	public void setExamination(String examination) {
-		this.examination = examination;
-	}
+    public String getStatus() {
+        return status;
+    }
 
 
-	public String getConcurrentProblems() {
-		return concurrentProblems;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 
-	public void setConcurrentProblems(String concurrentProblems) {
-		this.concurrentProblems = concurrentProblems;
-	}
+    public String getSendTo() {
+        return sendTo;
+    }
 
 
-	public String getImpression() {
-		return impression;
-	}
+    public void setSendTo(String sendTo) {
+        this.sendTo = sendTo;
+    }
 
 
-	public void setImpression(String impression) {
-		this.impression = impression;
-	}
+    public String getExamination() {
+        return examination;
+    }
 
 
-	public String getPlan() {
-		return plan;
-	}
+    public void setExamination(String examination) {
+        this.examination = examination;
+    }
 
 
-	public void setPlan(String plan) {
-		this.plan = plan;
-	}
+    public String getConcurrentProblems() {
+        return concurrentProblems;
+    }
 
 
-	public String getUrgency() {
-		return urgency;
-	}
+    public void setConcurrentProblems(String concurrentProblems) {
+        this.concurrentProblems = concurrentProblems;
+    }
 
 
-	public void setUrgency(String urgency) {
-		this.urgency = urgency;
-	}
+    public String getImpression() {
+        return impression;
+    }
 
 
-	public int getPatientWillBook() {
-		return patientWillBook;
-	}
+    public void setImpression(String impression) {
+        this.impression = impression;
+    }
 
 
-	public void setPatientWillBook(int patientWillBook) {
-		this.patientWillBook = patientWillBook;
-	}
+    public String getPlan() {
+        return plan;
+    }
 
 
-	public Integer getId() {
-		return id;
-	}
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
 
 
-	public int getDemographicNo() {
-		return demographicNo;
-	}
+    public String getUrgency() {
+        return urgency;
+    }
 
 
-	public void setDemographicNo(int demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public void setUrgency(String urgency) {
+        this.urgency = urgency;
+    }
 
 
-	public Demographic getDemographic() {
-		return demographic;
-	}
+    public int getPatientWillBook() {
+        return patientWillBook;
+    }
 
 
-	public void setDemographic(Demographic demographic) {
-		this.demographic = demographic;
-	}
+    public void setPatientWillBook(int patientWillBook) {
+        this.patientWillBook = patientWillBook;
+    }
 
 
-	public Provider getProvider() {
-		return provider;
-	}
+    public Integer getId() {
+        return id;
+    }
 
 
-	public void setProvider(Provider provider) {
-		this.provider = provider;
-	}
+    public int getDemographicNo() {
+        return demographicNo;
+    }
 
-	public String getReferralNo() {
-		return referralNo;
-	}
 
-	public void setReferralNo(String referralNo) {
-		this.referralNo = referralNo;
-	}
-	
-	
-	
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
+    }
+
+
+    public Demographic getDemographic() {
+        return demographic;
+    }
+
+
+    public void setDemographic(Demographic demographic) {
+        this.demographic = demographic;
+    }
+
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public String getReferralNo() {
+        return referralNo;
+    }
+
+    public void setReferralNo(String referralNo) {
+        this.referralNo = referralNo;
+    }
+
+
 }

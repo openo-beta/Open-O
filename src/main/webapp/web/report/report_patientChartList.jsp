@@ -26,22 +26,23 @@
 <h1>Patient Chart List</h1>
 
 <div class="row" ng-controller="ReportPatientChartListCtrl">
-	<div class="col-md-4">
-		<form role="form">
-			<div class="form-group">
-				<label>Provider*:</label> 
-				
-				<div class="input-group">
-					<input type="text"
-						ng-model="data.providerNo" placeholder="Provider"
-						uib-typeahead="pt.providerNo as pt.name for pt in searchProviders($viewValue)"
-						typeahead-on-select="updateProviderNo($item, $model, $label)"
-						class="form-control"/>
-						<span class="input-group-addon"><span class="glyphicon glyphicon-remove" ng-click="params.providerNo='';data.providerNo=''"></span></span>
-					</div>
-			</div>
-			
-  			<button type="submit" class="btn btn-default" ng-click="generateReport()">Generate Report</button>
-		</form>
-	</div>
+    <div class="col-md-4">
+        <form role="form">
+            <div class="form-group">
+                <label>Provider*:</label>
+
+                <div class="input-group">
+                    <input type="text"
+                           ng-model="data.providerNo" placeholder="Provider"
+                           uib-typeahead="pt.providerNo as pt.name for pt in searchProviders($viewValue)"
+                           typeahead-on-select="updateProviderNo($item, $model, $label)"
+                           class="form-control"/>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"
+                                                          ng-click="params.providerNo='';data.providerNo=''"></span></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-default" ng-click="generateReport()">Generate Report</button>
+        </form>
+    </div>
 </div>

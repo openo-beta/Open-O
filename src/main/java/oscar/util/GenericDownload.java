@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -45,7 +45,8 @@ import oscar.OscarProperties;
  */
 public class GenericDownload extends HttpServlet {
 
-    public GenericDownload() {}
+    public GenericDownload() {
+    }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         HttpSession session = req.getSession(true);
@@ -83,12 +84,12 @@ public class GenericDownload extends HttpServlet {
     }
 
     protected void transferFile(HttpServletResponse res, ServletOutputStream stream, String dir, String filename) throws IOException {
-            transferFile(res,stream,dir,filename,null);
+        transferFile(res, stream, dir, filename, null);
     }
 
     protected void transferFile(HttpServletResponse res, ServletOutputStream stream, String dir, String filename,
-            String contentType) throws IOException {
-            //faster than "transferFile" method - clocked at 1.1MB/s on a 10Mbps switch
+                                String contentType) throws IOException {
+        //faster than "transferFile" method - clocked at 1.1MB/s on a 10Mbps switch
         int BUFFER_SIZE = 2048;
         String setContentType = "application/octet-stream";
         if (contentType != null) {
@@ -102,8 +103,8 @@ public class GenericDownload extends HttpServlet {
         int bufferSize;
         byte[] buffer = new byte[BUFFER_SIZE];
 
-        while(( bufferSize = fis.read(buffer)) != -1) {
-             stream.write(buffer, 0, bufferSize);
+        while ((bufferSize = fis.read(buffer)) != -1) {
+            stream.write(buffer, 0, bufferSize);
 
         }
         fis.close();

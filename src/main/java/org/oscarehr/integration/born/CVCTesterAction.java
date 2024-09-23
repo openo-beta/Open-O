@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,7 +51,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * 
+ *
  * @author marc
  *
  *
@@ -64,78 +64,77 @@ import net.sf.json.JSONObject;
  */
 public class CVCTesterAction extends DispatchAction {
 
-	Logger logger = MiscUtils.getLogger();
-	
-	CanadianVaccineCatalogueManager cvcManager = SpringUtils.getBean(CanadianVaccineCatalogueManager.class);
+    Logger logger = MiscUtils.getLogger();
 
-	public ActionForward getLotNumberAndExpiryDates(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String snomedConceptId = request.getParameter("snomedConceptId");
-		if(snomedConceptId != null) {
-			CVCMedication med = cvcManager.getMedicationBySnomedConceptId(snomedConceptId);
-			JSONArray json =  new JSONArray();
-			for(CVCMedicationLotNumber ln : med.getLotNumberList()) {
-				JSONObject obj = new JSONObject();
-				obj.put("lotNumber", ln.getLotNumber());
-				obj.put("expiryDate", ln.getExpiryDate());
-				json.add(obj);
-			}
-			json.write(response.getWriter());
-		}
-		return null;
-	}
-	
+    CanadianVaccineCatalogueManager cvcManager = SpringUtils.getBean(CanadianVaccineCatalogueManager.class);
 
-	public ActionForward query(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String query = request.getParameter("query");
-		
-		JSONArray arr = new JSONArray();
-		StringBuilder matchedLotNumber = new StringBuilder();
-		
-		
-		List<CVCImmunization> results = new ArrayList<CVCImmunization>();
-		
-		//name
-		List<CVCImmunization> l1 = cvcManager.query(query, true, true, false, false,null);
-		
-		//lot#
-		List<CVCImmunization> l2 = cvcManager.query(query, false, false, true, false,matchedLotNumber);
-		
-		//GTIN
-		List<CVCImmunization> l3 = cvcManager.query(query, false, false, false, true,null);
-		
-		results.addAll(l1);
-		results.addAll(l2);
-		results.addAll(l3);
-		
-		//unique it
-		Map<String, CVCImmunization> tmp = new HashMap<String, CVCImmunization>();
-		for (CVCImmunization i : results) {
-			tmp.put(i.getSnomedConceptId(), i);
-		}
-		List<CVCImmunization> uniqueResults = new ArrayList<CVCImmunization>(tmp.values());
+    public ActionForward getLotNumberAndExpiryDates(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String snomedConceptId = request.getParameter("snomedConceptId");
+        if (snomedConceptId != null) {
+            CVCMedication med = cvcManager.getMedicationBySnomedConceptId(snomedConceptId);
+            JSONArray json = new JSONArray();
+            for (CVCMedicationLotNumber ln : med.getLotNumberList()) {
+                JSONObject obj = new JSONObject();
+                obj.put("lotNumber", ln.getLotNumber());
+                obj.put("expiryDate", ln.getExpiryDate());
+                json.add(obj);
+            }
+            json.write(response.getWriter());
+        }
+        return null;
+    }
 
-		//sort it
-		Collections.sort(uniqueResults, new PrevalenceComparator());
-				
-		
-		
-		for(CVCImmunization result:uniqueResults) {
-			JSONObject obj = new JSONObject();
-			obj.put("name", result.getPicklistName());
-			obj.put("generic", result.isGeneric());
-			obj.put("genericSnomedId", result.isGeneric() ? result.getSnomedConceptId() : result.getParentConceptId());
-			obj.put("snomedId",result.getSnomedConceptId());
-			obj.put("lotNumber", uniqueResults.size() == 1 && matchedLotNumber != null && matchedLotNumber.length()>0 ? matchedLotNumber.toString() : "");
-			arr.add(obj);
-		}
-		
-		JSONObject t = new JSONObject();
-		t.put("results",arr);
-		response.setContentType("application/json");
-		t.write(response.getWriter());
-		
-		return null;
-	}
+
+    public ActionForward query(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String query = request.getParameter("query");
+
+        JSONArray arr = new JSONArray();
+        StringBuilder matchedLotNumber = new StringBuilder();
+
+
+        List<CVCImmunization> results = new ArrayList<CVCImmunization>();
+
+        //name
+        List<CVCImmunization> l1 = cvcManager.query(query, true, true, false, false, null);
+
+        //lot#
+        List<CVCImmunization> l2 = cvcManager.query(query, false, false, true, false, matchedLotNumber);
+
+        //GTIN
+        List<CVCImmunization> l3 = cvcManager.query(query, false, false, false, true, null);
+
+        results.addAll(l1);
+        results.addAll(l2);
+        results.addAll(l3);
+
+        //unique it
+        Map<String, CVCImmunization> tmp = new HashMap<String, CVCImmunization>();
+        for (CVCImmunization i : results) {
+            tmp.put(i.getSnomedConceptId(), i);
+        }
+        List<CVCImmunization> uniqueResults = new ArrayList<CVCImmunization>(tmp.values());
+
+        //sort it
+        Collections.sort(uniqueResults, new PrevalenceComparator());
+
+
+        for (CVCImmunization result : uniqueResults) {
+            JSONObject obj = new JSONObject();
+            obj.put("name", result.getPicklistName());
+            obj.put("generic", result.isGeneric());
+            obj.put("genericSnomedId", result.isGeneric() ? result.getSnomedConceptId() : result.getParentConceptId());
+            obj.put("snomedId", result.getSnomedConceptId());
+            obj.put("lotNumber", uniqueResults.size() == 1 && matchedLotNumber != null && matchedLotNumber.length() > 0 ? matchedLotNumber.toString() : "");
+            arr.add(obj);
+        }
+
+        JSONObject t = new JSONObject();
+        t.put("results", arr);
+        response.setContentType("application/json");
+        t.write(response.getWriter());
+
+        return null;
+    }
 	
 	
 	
@@ -284,18 +283,18 @@ public class CVCTesterAction extends DispatchAction {
 }
 
 class PrevalenceComparator implements Comparator<CVCImmunization> {
-    public int compare( CVCImmunization i1, CVCImmunization i2 ) {
-  
-            Integer d1 = i1.getPrevalence();
-            Integer d2 = i2.getPrevalence();
-            
-            if( d1 == null && d2 != null )
-                    return 1;
-            else if( d1 != null && d2 == null )
-                    return -1;
-            else if( d1 == null && d2 == null )
-                    return 0;
-            else
-                    return d1.compareTo(d2) * -1;
+    public int compare(CVCImmunization i1, CVCImmunization i2) {
+
+        Integer d1 = i1.getPrevalence();
+        Integer d2 = i2.getPrevalence();
+
+        if (d1 == null && d2 != null)
+            return 1;
+        else if (d1 != null && d2 == null)
+            return -1;
+        else if (d1 == null && d2 == null)
+            return 0;
+        else
+            return d1.compareTo(d2) * -1;
     }
 }

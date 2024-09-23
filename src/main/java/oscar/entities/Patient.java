@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -26,200 +26,201 @@
 package oscar.entities;
 
 public class Patient {
-  private String firstName;
-  private String lastName;
-  private String phone;
-  private String gender;
-  private String address;
-  private String city;
-  private String province;
-  private String postal;
-  private String phone2;
-  private String email;
-  private int myOscarUserName;
-  private String yearOfBirth;
-  private String monthOfBirth;
-  private String dateOfBirth;
-  private String hin;
-  private String ver;
-  private String id;
-  private int providerNo;
-  private String chartNo;
-  private String demographicNo;
-  public Patient() {
-  }
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private String gender;
+    private String address;
+    private String city;
+    private String province;
+    private String postal;
+    private String phone2;
+    private String email;
+    private int myOscarUserName;
+    private String yearOfBirth;
+    private String monthOfBirth;
+    private String dateOfBirth;
+    private String hin;
+    private String ver;
+    private String id;
+    private int providerNo;
+    private String chartNo;
+    private String demographicNo;
 
-  public String getFirstName() {
-    return firstName;
-  }
+    public Patient() {
+    }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+    public String getFirstName() {
+        return firstName;
+    }
 
-  public String getLastName() {
-    return lastName;
-  }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+    public String getLastName() {
+        return lastName;
+    }
 
-  public String getPhone() {
-    return phone;
-  }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
+    public String getPhone() {
+        return phone;
+    }
 
-  public String getGender() {
-    return gender;
-  }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
+    public String getGender() {
+        return gender;
+    }
 
-  public String getAddress() {
-    return address;
-  }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-  public void setAddress(String address) {
-    this.address = address;
-  }
+    public String getAddress() {
+        return address;
+    }
 
-  public String getCity() {
-    return city;
-  }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-  public void setCity(String city) {
-    this.city = city;
-  }
+    public String getCity() {
+        return city;
+    }
 
-  public String getProvince() {
-    return province;
-  }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-  public void setProvince(String province) {
-    this.province = province;
-  }
+    public String getProvince() {
+        return province;
+    }
 
-  public String getPostal() {
-    return postal;
-  }
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
-  public void setPostal(String postal) {
-    this.postal = postal;
-  }
+    public String getPostal() {
+        return postal;
+    }
 
-  public String getPhone2() {
-    return phone2;
-  }
+    public void setPostal(String postal) {
+        this.postal = postal;
+    }
 
-  public void setPhone2(String phone2) {
-    this.phone2 = phone2;
-  }
+    public String getPhone2() {
+        return phone2;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public int getMyOscarUserName() {
-	return (myOscarUserName);
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setMyOscarUserName(int myOscarUserName) {
-	this.myOscarUserName = myOscarUserName;
-  }
+    public int getMyOscarUserName() {
+        return (myOscarUserName);
+    }
 
-  public String getYearOfBirth() {
-    return yearOfBirth;
-  }
+    public void setMyOscarUserName(int myOscarUserName) {
+        this.myOscarUserName = myOscarUserName;
+    }
 
-  public void setYearOfBirth(String yearOfBirth) {
-    this.yearOfBirth = yearOfBirth;
-  }
+    public String getYearOfBirth() {
+        return yearOfBirth;
+    }
 
-  public String getMonthOfBirth() {
-    return monthOfBirth;
-  }
+    public void setYearOfBirth(String yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
+    }
 
-  public void setMonthOfBirth(String monthOfBirth) {
-    this.monthOfBirth = monthOfBirth;
-  }
+    public String getMonthOfBirth() {
+        return monthOfBirth;
+    }
 
-  public String getDateOfBirth() {
-    return dateOfBirth;
-  }
+    public void setMonthOfBirth(String monthOfBirth) {
+        this.monthOfBirth = monthOfBirth;
+    }
 
-  public void setDateOfBirth(String dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-  }
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-  public String getHin() {
-    return hin;
-  }
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-  public void setHin(String hin) {
-    this.hin = hin;
-  }
+    public String getHin() {
+        return hin;
+    }
 
-  public String getVer() {
-    return ver;
-  }
+    public void setHin(String hin) {
+        this.hin = hin;
+    }
 
-  public void setVer(String ver) {
-    this.ver = ver;
-  }
+    public String getVer() {
+        return ver;
+    }
 
-  /**
-   * getBirthDate
-   *
-   * @return String
-   */
-  public String getBirthDate() {
-    return this.yearOfBirth + "/" + this.getMonthOfBirth() + "/" +
-        this.getDateOfBirth();
-  }
+    public void setVer(String ver) {
+        this.ver = ver;
+    }
 
-  public String getId() {
-    return id;
-  }
+    /**
+     * getBirthDate
+     *
+     * @return String
+     */
+    public String getBirthDate() {
+        return this.yearOfBirth + "/" + this.getMonthOfBirth() + "/" +
+                this.getDateOfBirth();
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public int getProviderNo() {
-    return providerNo;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public void setProviderNo(int providerNo) {
-    this.providerNo = providerNo;
-  }
+    public int getProviderNo() {
+        return providerNo;
+    }
 
-  public String getChartNo() {
-    return chartNo;
-  }
+    public void setProviderNo(int providerNo) {
+        this.providerNo = providerNo;
+    }
 
-  public String getDemographicNo() {
-    return demographicNo;
-  }
+    public String getChartNo() {
+        return chartNo;
+    }
 
-  public void setChartNo(String chartNo) {
-    this.chartNo = chartNo;
-  }
+    public String getDemographicNo() {
+        return demographicNo;
+    }
 
-  public void setDemographicNo(String demographicNo) {
-    this.demographicNo = demographicNo;
-  }
+    public void setChartNo(String chartNo) {
+        this.chartNo = chartNo;
+    }
 
-  public String getBirthDay(){
-   return this.yearOfBirth + "-" + this.monthOfBirth + "-" + this.dateOfBirth;
-  }
+    public void setDemographicNo(String demographicNo) {
+        this.demographicNo = demographicNo;
+    }
+
+    public String getBirthDay() {
+        return this.yearOfBirth + "-" + this.monthOfBirth + "-" + this.dateOfBirth;
+    }
 }

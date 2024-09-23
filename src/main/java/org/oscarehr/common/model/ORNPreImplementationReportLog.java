@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,69 +37,60 @@ import javax.persistence.TemporalType;
 @Entity
 public class ORNPreImplementationReportLog extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id = null;
 
-	private String providerNo;
-	
-	private String reportData;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastUpdateDate;
-	
-	
-	
-	public Integer getId() {
-		return id;
-	}
+    private String providerNo;
+
+    private String reportData;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdateDate;
 
 
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+    public Integer getId() {
+        return id;
+    }
 
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 
-
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
-
+    public String getProviderNo() {
+        return providerNo;
+    }
 
 
-	public String getReportData() {
-		return reportData;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
 
-
-	public void setReportData(String reportData) {
-		this.reportData = reportData;
-	}
-
+    public String getReportData() {
+        return reportData;
+    }
 
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public void setReportData(String reportData) {
+        this.reportData = reportData;
+    }
 
 
-
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
-
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
 
-	@PrePersist
-	protected void jpa_prePersistUpdate() {
-		lastUpdateDate = new Date();
-	}
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+
+    @PrePersist
+    protected void jpa_prePersistUpdate() {
+        lastUpdateDate = new Date();
+    }
 }

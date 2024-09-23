@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -49,127 +49,127 @@ import org.springframework.beans.BeanUtils;
 
 public class IntegratorPushAction extends DispatchAction {
 
-	private UserPropertyDAO userPropertyDao = SpringUtils.getBean(UserPropertyDAO.class);
-	private IntegratorPushManager integratorPushManager = SpringUtils.getBean(IntegratorPushManager.class);
+    private UserPropertyDAO userPropertyDao = SpringUtils.getBean(UserPropertyDAO.class);
+    private IntegratorPushManager integratorPushManager = SpringUtils.getBean(IntegratorPushManager.class);
 
-	public ActionForward getPushData(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    public ActionForward getPushData(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
-		JSONObject json = null;
-		
-		com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
-		if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
-			List<IntegratorProgress> ipList = integratorPushManager.findAll();
-			List<IntegratorPushItem> results = new ArrayList<IntegratorPushItem>();
-			for(IntegratorProgress ip:ipList) {
-	        	IntegratorPushItem item =  new IntegratorPushItem();
-	        	BeanUtils.copyProperties(ip, item);
-	        	item.setTotalDemographics(integratorPushManager.getTotalItemsForProgress(ip.getId()));
-	        	item.setTotalOutstanding(integratorPushManager.getTotalOutstandingItemsForProgress(ip.getId()));
-	        	results.add(item);
-	        }
-			
-			IntegratorPushResponse ipResponse = new IntegratorPushResponse();
-			ipResponse.setItems(results);
-			ipResponse.setPaused(integratorPushManager.isPauseFlagSet());
-			//jsonArray = JSONArray.fromObject( results );
-			json = JSONObject.fromObject(ipResponse);
-	        
-		}
+        JSONObject json = null;
 
-		try {
-			json.write(response.getWriter());
-		} catch (IOException e) {
-			MiscUtils.getLogger().error("Couldn't return result", e);
-		}
-		
-		return null;
-	}
+        com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+        if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
+            List<IntegratorProgress> ipList = integratorPushManager.findAll();
+            List<IntegratorPushItem> results = new ArrayList<IntegratorPushItem>();
+            for (IntegratorProgress ip : ipList) {
+                IntegratorPushItem item = new IntegratorPushItem();
+                BeanUtils.copyProperties(ip, item);
+                item.setTotalDemographics(integratorPushManager.getTotalItemsForProgress(ip.getId()));
+                item.setTotalOutstanding(integratorPushManager.getTotalOutstandingItemsForProgress(ip.getId()));
+                results.add(item);
+            }
 
-	/**
-	 * We basically just set a system property in the DB so that the next time the job runs, it either, does or not based on the property
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	public ActionForward disableNextAndFuturePushes(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+            IntegratorPushResponse ipResponse = new IntegratorPushResponse();
+            ipResponse.setItems(results);
+            ipResponse.setPaused(integratorPushManager.isPauseFlagSet());
+            //jsonArray = JSONArray.fromObject( results );
+            json = JSONObject.fromObject(ipResponse);
 
-		JSONObject json = new JSONObject();
+        }
 
-		com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
-		if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
+        try {
+            json.write(response.getWriter());
+        } catch (IOException e) {
+            MiscUtils.getLogger().error("Couldn't return result", e);
+        }
 
-			String strType = request.getParameter("type");
-			Boolean type = Boolean.valueOf(strType);
+        return null;
+    }
 
-			UserProperty prop = userPropertyDao.getProp(IntegratorPushManager.DISABLE_INTEGRATOR_PUSH_PROP);
-			if (prop == null) {
-				prop = new UserProperty();
-				prop.setName(IntegratorPushManager.DISABLE_INTEGRATOR_PUSH_PROP);
-				prop.setProviderNo(null);
-				prop.setValue(type.toString());
-				userPropertyDao.persist(prop);
-			} else {
-				prop.setValue(type.toString());
-				userPropertyDao.merge(prop);
-			}
-			json.put("success", true);
-			json.put("DISABLE_INTEGRATOR_PUSH_PROP", prop.getValue());
+    /**
+     * We basically just set a system property in the DB so that the next time the job runs, it either, does or not based on the property
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     */
+    public ActionForward disableNextAndFuturePushes(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
-		} else {
-			json.put("success", false);
-			json.put("reason", "Access Denied");
-		}
+        JSONObject json = new JSONObject();
 
-		try {
-			json.write(response.getWriter());
-		} catch (IOException e) {
-			MiscUtils.getLogger().error("Couldn't return result", e);
-		}
+        com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+        if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
 
-		return null;
-	}
-	
-	public ActionForward togglePause(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		JSONObject json = new JSONObject();
+            String strType = request.getParameter("type");
+            Boolean type = Boolean.valueOf(strType);
 
-		String in = request.getParameter("pause");
-		boolean doPause = false;
-		
-		if(in != null) {
-			doPause = Boolean.valueOf(in);
-			
-			com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
-			if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
-	
-				UserProperty prop = userPropertyDao.getProp(IntegratorPushManager.INTEGRATOR_PAUSE_FULL_PUSH);
-				if (prop == null) {
-					prop = new UserProperty();
-					prop.setName(IntegratorPushManager.INTEGRATOR_PAUSE_FULL_PUSH);
-					prop.setProviderNo(null);
-					prop.setValue(new  Boolean(doPause).toString());
-					userPropertyDao.persist(prop);
-				} else {
-					prop.setValue(new  Boolean(doPause).toString());
-					userPropertyDao.merge(prop);
-				}
-				json.put("success", true);
-				json.put("INTEGRATOR_PAUSE_FULL_PUSH", prop.getValue());
-	
-			} else {
-				json.put("success", false);
-				json.put("reason", "Access Denied");
-			}
-		}
-		
-		try {
-			json.write(response.getWriter());
-		} catch (IOException e) {
-			MiscUtils.getLogger().error("Couldn't return result", e);
-		}
+            UserProperty prop = userPropertyDao.getProp(IntegratorPushManager.DISABLE_INTEGRATOR_PUSH_PROP);
+            if (prop == null) {
+                prop = new UserProperty();
+                prop.setName(IntegratorPushManager.DISABLE_INTEGRATOR_PUSH_PROP);
+                prop.setProviderNo(null);
+                prop.setValue(type.toString());
+                userPropertyDao.persist(prop);
+            } else {
+                prop.setValue(type.toString());
+                userPropertyDao.merge(prop);
+            }
+            json.put("success", true);
+            json.put("DISABLE_INTEGRATOR_PUSH_PROP", prop.getValue());
 
-		return null;
-	}
+        } else {
+            json.put("success", false);
+            json.put("reason", "Access Denied");
+        }
+
+        try {
+            json.write(response.getWriter());
+        } catch (IOException e) {
+            MiscUtils.getLogger().error("Couldn't return result", e);
+        }
+
+        return null;
+    }
+
+    public ActionForward togglePause(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        JSONObject json = new JSONObject();
+
+        String in = request.getParameter("pause");
+        boolean doPause = false;
+
+        if (in != null) {
+            doPause = Boolean.valueOf(in);
+
+            com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+            if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
+
+                UserProperty prop = userPropertyDao.getProp(IntegratorPushManager.INTEGRATOR_PAUSE_FULL_PUSH);
+                if (prop == null) {
+                    prop = new UserProperty();
+                    prop.setName(IntegratorPushManager.INTEGRATOR_PAUSE_FULL_PUSH);
+                    prop.setProviderNo(null);
+                    prop.setValue(new Boolean(doPause).toString());
+                    userPropertyDao.persist(prop);
+                } else {
+                    prop.setValue(new Boolean(doPause).toString());
+                    userPropertyDao.merge(prop);
+                }
+                json.put("success", true);
+                json.put("INTEGRATOR_PAUSE_FULL_PUSH", prop.getValue());
+
+            } else {
+                json.put("success", false);
+                json.put("reason", "Access Denied");
+            }
+        }
+
+        try {
+            json.write(response.getWriter());
+        } catch (IOException e) {
+            MiscUtils.getLogger().error("Couldn't return result", e);
+        }
+
+        return null;
+    }
 
 }

@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -143,8 +143,8 @@ public class EctSessionBean implements java.io.Serializable {
 
         //This block gets the patient age and
         DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
-        Demographic d  = demographicManager.getDemographic(loggedInInfo, demographicNo);
-        
+        Demographic d = demographicManager.getDemographic(loggedInInfo, demographicNo);
+
         patientLastName = d.getLastName();
         patientFirstName = d.getFirstName();
         address = d.getAddress();
@@ -158,44 +158,44 @@ public class EctSessionBean implements java.io.Serializable {
         roster = d.getRosterStatus();
         patientSex = d.getSex();
 
-        if (yearOfBirth.equals("null") || yearOfBirth=="") {
+        if (yearOfBirth.equals("null") || yearOfBirth == "") {
             yearOfBirth = "0";
         }
-        if (monthOfBirth.equals("null") || monthOfBirth=="") {
+        if (monthOfBirth.equals("null") || monthOfBirth == "") {
             monthOfBirth = "0";
         }
-        if (dateOfBirth.equals("null") || dateOfBirth=="") {
+        if (dateOfBirth.equals("null") || dateOfBirth == "") {
             dateOfBirth = "0";
         }
-    
-        if(yearOfBirth!="" && yearOfBirth!=null)
-        	patientAge = UtilDateUtilities
-                .calcAge(UtilDateUtilities.calcDate(yearOfBirth, monthOfBirth, dateOfBirth));
+
+        if (yearOfBirth != "" && yearOfBirth != null)
+            patientAge = UtilDateUtilities
+                    .calcAge(UtilDateUtilities.calcDate(yearOfBirth, monthOfBirth, dateOfBirth));
 
         OscarAppointmentDao apptDao = SpringUtils.getBean(OscarAppointmentDao.class);
-        for(Appointment appt : apptDao.findByProviderAndDate(curProviderNo, ConversionUtils.fromDateString(appointmentDate))){
+        for (Appointment appt : apptDao.findByProviderAndDate(curProviderNo, ConversionUtils.fromDateString(appointmentDate))) {
             appointmentsIdArray.add(appt.getId().toString());
             appointmentsNamesArray.add(appt.getName() + " " + ConversionUtils.toTimeString(appt.getStartTime()));
         }
-        
+
         EncounterTemplateDao ectDao = SpringUtils.getBean(EncounterTemplateDao.class);
-        for(EncounterTemplate ect : ectDao.findAll()) {
+        for (EncounterTemplate ect : ectDao.findAll()) {
             templateNames.add(ect.getEncounterTemplateName());
         }
-        
+
         MeasurementGroupStyleDao mgsDao = SpringUtils.getBean(MeasurementGroupStyleDao.class);
-        for(MeasurementGroupStyle mgs : mgsDao.findAll()) {
+        for (MeasurementGroupStyle mgs : mgsDao.findAll()) {
             measurementGroupNames.add(mgs.getGroupName());
         }
 
         OscarProperties properties = OscarProperties.getInstance();
-		if( !Boolean.parseBoolean(properties.getProperty("AbandonOldChart", "false"))) {
-			EChartDao ecDao = SpringUtils.getBean(EChartDao.class);
-			List<EChart> ecs = ecDao.getChartsForDemographic(ConversionUtils.fromIntString(demographicNo));
-			if (!ecs.isEmpty()) {
-				EChart ec = ecs.get(0); 
+        if (!Boolean.parseBoolean(properties.getProperty("AbandonOldChart", "false"))) {
+            EChartDao ecDao = SpringUtils.getBean(EChartDao.class);
+            List<EChart> ecs = ecDao.getChartsForDemographic(ConversionUtils.fromIntString(demographicNo));
+            if (!ecs.isEmpty()) {
+                EChart ec = ecs.get(0);
                 eChartId = ec.getId().toString();
-                eChartTimeStamp =  ec.getTimestamp();
+                eChartTimeStamp = ec.getTimestamp();
                 socialHistory = ec.getSocialHistory();
                 familyHistory = ec.getFamilyHistory();
                 medicalHistory = ec.getMedicalHistory();
@@ -213,11 +213,11 @@ public class EctSessionBean implements java.io.Serializable {
                 encounter = "";
                 subject = "";
             }
-		}
+        }
 
         if (oscarMsgID != null) {
-        	MessageTblDao mtDao = SpringUtils.getBean(MessageTblDao.class);
-        	MessageTbl mt = mtDao.find(ConversionUtils.fromIntString(oscarMsgID));
+            MessageTblDao mtDao = SpringUtils.getBean(MessageTblDao.class);
+            MessageTbl mt = mtDao.find(ConversionUtils.fromIntString(oscarMsgID));
             if (mt != null) {
                 String message = mt.getMessage();
                 String subject = mt.getSubject();
@@ -230,8 +230,8 @@ public class EctSessionBean implements java.io.Serializable {
             }
         }
 
-        if(myoscarMsgId != null){
-        	oscarMsg = myoscarMsgId;
+        if (myoscarMsgId != null) {
+            oscarMsg = myoscarMsgId;
         }
 
     }
@@ -249,33 +249,33 @@ public class EctSessionBean implements java.io.Serializable {
         templateNames = new ArrayList<String>();
 
         OscarAppointmentDao apptDao = SpringUtils.getBean(OscarAppointmentDao.class);
-		Appointment appt = apptDao.find(ConversionUtils.fromIntString(appointmentNo));
-		demographicNo = "" + appt.getDemographicNo();
-		this.appointmentNo = appointmentNo;
-		reason = appt.getReason();
-		encType = new String("face to face encounter with client");
-		appointmentDate = ConversionUtils.toDateString(appt.getAppointmentDate());
-		startTime = ConversionUtils.toDateString(appt.getStartTime());
-		status = appt.getStatus();
-        
-        for(Appointment a : apptDao.findByProviderAndDate(curProviderNo, appt.getAppointmentDate())){
+        Appointment appt = apptDao.find(ConversionUtils.fromIntString(appointmentNo));
+        demographicNo = "" + appt.getDemographicNo();
+        this.appointmentNo = appointmentNo;
+        reason = appt.getReason();
+        encType = new String("face to face encounter with client");
+        appointmentDate = ConversionUtils.toDateString(appt.getAppointmentDate());
+        startTime = ConversionUtils.toDateString(appt.getStartTime());
+        status = appt.getStatus();
+
+        for (Appointment a : apptDao.findByProviderAndDate(curProviderNo, appt.getAppointmentDate())) {
             appointmentsIdArray.add(a.getId().toString());
             appointmentsNamesArray.add(a.getName() + " " + ConversionUtils.toTimeString(a.getStartTime()));
         }
-        
+
         EncounterTemplateDao ectDao = SpringUtils.getBean(EncounterTemplateDao.class);
-        for(EncounterTemplate ect : ectDao.findAll()) {
+        for (EncounterTemplate ect : ectDao.findAll()) {
             templateNames.add(ect.getEncounterTemplateName());
         }
-        
-    	OscarProperties properties = OscarProperties.getInstance();
-		if( !Boolean.parseBoolean(properties.getProperty("AbandonOldChart", "false"))) {
-			EChartDao ecDao = SpringUtils.getBean(EChartDao.class);
-			List<EChart> ecs = ecDao.getChartsForDemographic(ConversionUtils.fromIntString(demographicNo));
-			if (!ecs.isEmpty()) {
-				EChart ec = ecs.get(0); 
+
+        OscarProperties properties = OscarProperties.getInstance();
+        if (!Boolean.parseBoolean(properties.getProperty("AbandonOldChart", "false"))) {
+            EChartDao ecDao = SpringUtils.getBean(EChartDao.class);
+            List<EChart> ecs = ecDao.getChartsForDemographic(ConversionUtils.fromIntString(demographicNo));
+            if (!ecs.isEmpty()) {
+                EChart ec = ecs.get(0);
                 eChartId = ec.getId().toString();
-                eChartTimeStamp =  ec.getTimestamp();
+                eChartTimeStamp = ec.getTimestamp();
                 socialHistory = ec.getSocialHistory();
                 familyHistory = ec.getFamilyHistory();
                 medicalHistory = ec.getMedicalHistory();
@@ -293,16 +293,16 @@ public class EctSessionBean implements java.io.Serializable {
                 encounter = "";
                 subject = "";
             }
-		}
-      
+        }
+
         //apointmentsIdArray and the appointmentsNamesArray are
         //already set up so no need to get them again
-    
+
         //
-		DemographicManager demogaphicManager = SpringUtils.getBean(DemographicManager.class);
-		Demographic demo = demogaphicManager.getDemographic(loggedInInfo, demographicNo);
+        DemographicManager demogaphicManager = SpringUtils.getBean(DemographicManager.class);
+        Demographic demo = demogaphicManager.getDemographic(loggedInInfo, demographicNo);
         if (demo != null) {
-            patientLastName = demo.getLastName(); 
+            patientLastName = demo.getLastName();
             patientFirstName = demo.getFirstName();
             address = demo.getAddress();
             city = demo.getCity();
@@ -325,43 +325,43 @@ public class EctSessionBean implements java.io.Serializable {
             }
         }
         patientAge = UtilDateUtilities
-                    .calcAge(UtilDateUtilities.calcDate(yearOfBirth, monthOfBirth, dateOfBirth));
-        
+                .calcAge(UtilDateUtilities.calcDate(yearOfBirth, monthOfBirth, dateOfBirth));
+
     }
 
- /**
-  * over loaded method sets up the encounter page for print
-  * @param echartid
-  * @param demographicNo
-  */
+    /**
+     * over loaded method sets up the encounter page for print
+     * @param echartid
+     * @param demographicNo
+     */
     public void setUpEncounterPage(LoggedInInfo loggedInInfo, String echartid, String demographicNo) {
         resetAll();
 
         OscarProperties properties = OscarProperties.getInstance();
-		if( !Boolean.parseBoolean(properties.getProperty("AbandonOldChart", "false"))) {
-	        EChartDao ecDao = SpringUtils.getBean(EChartDao.class);
-			EChart ec = ecDao.find(ConversionUtils.fromIntString(echartid));
-			if (ec.getDemographicNo() != ConversionUtils.fromIntString(demographicNo)) {
-				ec = null;
-			}
-			
-			if (ec != null) {
-	            eChartId = ec.getId().toString();
-	            eChartTimeStamp =  ec.getTimestamp();
-	            socialHistory = ec.getSocialHistory();
-	            familyHistory = ec.getFamilyHistory();
-	            medicalHistory = ec.getMedicalHistory();
-	            ongoingConcerns = ec.getOngoingConcerns();
-	            reminders = ec.getReminders();
-	            encounter = ec.getEncounter();
-	            subject = ec.getSubject();
-	        }
-		}
+        if (!Boolean.parseBoolean(properties.getProperty("AbandonOldChart", "false"))) {
+            EChartDao ecDao = SpringUtils.getBean(EChartDao.class);
+            EChart ec = ecDao.find(ConversionUtils.fromIntString(echartid));
+            if (ec.getDemographicNo() != ConversionUtils.fromIntString(demographicNo)) {
+                ec = null;
+            }
 
-		DemographicManager demogaphicManager = SpringUtils.getBean(DemographicManager.class);
-		Demographic demo = demogaphicManager.getDemographic(loggedInInfo, demographicNo);
-		if (demo != null) {
-            patientLastName = demo.getLastName(); 
+            if (ec != null) {
+                eChartId = ec.getId().toString();
+                eChartTimeStamp = ec.getTimestamp();
+                socialHistory = ec.getSocialHistory();
+                familyHistory = ec.getFamilyHistory();
+                medicalHistory = ec.getMedicalHistory();
+                ongoingConcerns = ec.getOngoingConcerns();
+                reminders = ec.getReminders();
+                encounter = ec.getEncounter();
+                subject = ec.getSubject();
+            }
+        }
+
+        DemographicManager demogaphicManager = SpringUtils.getBean(DemographicManager.class);
+        Demographic demo = demogaphicManager.getDemographic(loggedInInfo, demographicNo);
+        if (demo != null) {
+            patientLastName = demo.getLastName();
             patientFirstName = demo.getFirstName();
             address = demo.getAddress();
             city = demo.getCity();
@@ -384,7 +384,7 @@ public class EctSessionBean implements java.io.Serializable {
             }
         }
         patientAge = UtilDateUtilities
-                    .calcAge(UtilDateUtilities.calcDate(yearOfBirth, monthOfBirth, dateOfBirth));
+                .calcAge(UtilDateUtilities.calcDate(yearOfBirth, monthOfBirth, dateOfBirth));
     }
 
     public String getTeam() {

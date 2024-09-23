@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,229 +38,229 @@ import javax.persistence.TemporalType;
 import org.oscarehr.common.model.AbstractModel;
 
 @Entity
-@Table(name="hl7_obx")
+@Table(name = "hl7_obx")
 public class Hl7Obx extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="obx_id")
-	private Integer id;
-	
-	@Column(name="obr_id")
-	private int obrId;
-	
-	@Column(name="set_id")
-	private String setId;
-	
-	@Column(name="value_type")
-	private String valueType;
-	
-	@Column(name="observation_identifier")
-	private String observationIdentifier;
-	
-	@Column(name="observation_sub_id")
-	private String observationSubId;
-	
-	@Column(name="observation_results")
-	private String observationResults;
-	
-	private String units;
-	
-	@Column(name="reference_range")
-	private String referenceRange;
-	
-	@Column(name="abnormal_flags")
-	private String abnormalFlags;
-	
-	private String probability;
-	
-	@Column(name="nature_of_abnormal_test")
-	private String natureOfAbnormalTest;
-	
-	@Column(name="observation_result_status")
-	private String observationResultStatus;
-	
-	@Column(name="date_last_normal_value")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateLastNormalValue;
-	
-	@Column(name="user_defined_access_checks")
-	private String userDefinedAccessChecks;
-	
-	@Column(name="observation_date_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date observationDateTime;
-	
-	@Column(name="producer_id")
-	private String producerId;
-	
-	@Column(name="responsible_observer")
-	private String responsibleObserver;
-	
-	@Column(name="observation_method")
-	private String observationMethod;
-	
-	private String note;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "obx_id")
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "obr_id")
+    private int obrId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "set_id")
+    private String setId;
 
-	public int getObrId() {
-		return obrId;
-	}
+    @Column(name = "value_type")
+    private String valueType;
 
-	public void setObrId(int obrId) {
-		this.obrId = obrId;
-	}
+    @Column(name = "observation_identifier")
+    private String observationIdentifier;
 
-	public String getSetId() {
-		return setId;
-	}
+    @Column(name = "observation_sub_id")
+    private String observationSubId;
 
-	public void setSetId(String setId) {
-		this.setId = setId;
-	}
+    @Column(name = "observation_results")
+    private String observationResults;
 
-	public String getValueType() {
-		return valueType;
-	}
+    private String units;
 
-	public void setValueType(String valueType) {
-		this.valueType = valueType;
-	}
+    @Column(name = "reference_range")
+    private String referenceRange;
 
-	public String getObservationIdentifier() {
-		return observationIdentifier;
-	}
+    @Column(name = "abnormal_flags")
+    private String abnormalFlags;
 
-	public void setObservationIdentifier(String observationIdentifier) {
-		this.observationIdentifier = observationIdentifier;
-	}
+    private String probability;
 
-	public String getObservationSubId() {
-		return observationSubId;
-	}
+    @Column(name = "nature_of_abnormal_test")
+    private String natureOfAbnormalTest;
 
-	public void setObservationSubId(String observationSubId) {
-		this.observationSubId = observationSubId;
-	}
+    @Column(name = "observation_result_status")
+    private String observationResultStatus;
 
-	public String getObservationResults() {
-		return observationResults;
-	}
+    @Column(name = "date_last_normal_value")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateLastNormalValue;
 
-	public void setObservationResults(String observationResults) {
-		this.observationResults = observationResults;
-	}
+    @Column(name = "user_defined_access_checks")
+    private String userDefinedAccessChecks;
 
-	public String getUnits() {
-		return units;
-	}
+    @Column(name = "observation_date_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date observationDateTime;
 
-	public void setUnits(String units) {
-		this.units = units;
-	}
+    @Column(name = "producer_id")
+    private String producerId;
 
-	public String getReferenceRange() {
-		return referenceRange;
-	}
+    @Column(name = "responsible_observer")
+    private String responsibleObserver;
 
-	public void setReferenceRange(String referenceRange) {
-		this.referenceRange = referenceRange;
-	}
+    @Column(name = "observation_method")
+    private String observationMethod;
 
-	public String getAbnormalFlags() {
-		return abnormalFlags;
-	}
+    private String note;
 
-	public void setAbnormalFlags(String abnormalFlags) {
-		this.abnormalFlags = abnormalFlags;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getProbability() {
-		return probability;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setProbability(String probability) {
-		this.probability = probability;
-	}
+    public int getObrId() {
+        return obrId;
+    }
 
-	public String getNatureOfAbnormalTest() {
-		return natureOfAbnormalTest;
-	}
+    public void setObrId(int obrId) {
+        this.obrId = obrId;
+    }
 
-	public void setNatureOfAbnormalTest(String natureOfAbnormalTest) {
-		this.natureOfAbnormalTest = natureOfAbnormalTest;
-	}
+    public String getSetId() {
+        return setId;
+    }
 
-	public String getObservationResultStatus() {
-		return observationResultStatus;
-	}
+    public void setSetId(String setId) {
+        this.setId = setId;
+    }
 
-	public void setObservationResultStatus(String observationResultStatus) {
-		this.observationResultStatus = observationResultStatus;
-	}
+    public String getValueType() {
+        return valueType;
+    }
 
-	public Date getDateLastNormalValue() {
-		return dateLastNormalValue;
-	}
+    public void setValueType(String valueType) {
+        this.valueType = valueType;
+    }
 
-	public void setDateLastNormalValue(Date dateLastNormalValue) {
-		this.dateLastNormalValue = dateLastNormalValue;
-	}
+    public String getObservationIdentifier() {
+        return observationIdentifier;
+    }
 
-	public String getUserDefinedAccessChecks() {
-		return userDefinedAccessChecks;
-	}
+    public void setObservationIdentifier(String observationIdentifier) {
+        this.observationIdentifier = observationIdentifier;
+    }
 
-	public void setUserDefinedAccessChecks(String userDefinedAccessChecks) {
-		this.userDefinedAccessChecks = userDefinedAccessChecks;
-	}
+    public String getObservationSubId() {
+        return observationSubId;
+    }
 
-	public Date getObservationDateTime() {
-		return observationDateTime;
-	}
+    public void setObservationSubId(String observationSubId) {
+        this.observationSubId = observationSubId;
+    }
 
-	public void setObservationDateTime(Date observationDateTime) {
-		this.observationDateTime = observationDateTime;
-	}
+    public String getObservationResults() {
+        return observationResults;
+    }
 
-	public String getProducerId() {
-		return producerId;
-	}
+    public void setObservationResults(String observationResults) {
+        this.observationResults = observationResults;
+    }
 
-	public void setProducerId(String producerId) {
-		this.producerId = producerId;
-	}
+    public String getUnits() {
+        return units;
+    }
 
-	public String getResponsibleObserver() {
-		return responsibleObserver;
-	}
+    public void setUnits(String units) {
+        this.units = units;
+    }
 
-	public void setResponsibleObserver(String responsibleObserver) {
-		this.responsibleObserver = responsibleObserver;
-	}
+    public String getReferenceRange() {
+        return referenceRange;
+    }
 
-	public String getObservationMethod() {
-		return observationMethod;
-	}
+    public void setReferenceRange(String referenceRange) {
+        this.referenceRange = referenceRange;
+    }
 
-	public void setObservationMethod(String observationMethod) {
-		this.observationMethod = observationMethod;
-	}
+    public String getAbnormalFlags() {
+        return abnormalFlags;
+    }
 
-	public String getNote() {
-		return note;
-	}
+    public void setAbnormalFlags(String abnormalFlags) {
+        this.abnormalFlags = abnormalFlags;
+    }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
-	
-	
+    public String getProbability() {
+        return probability;
+    }
+
+    public void setProbability(String probability) {
+        this.probability = probability;
+    }
+
+    public String getNatureOfAbnormalTest() {
+        return natureOfAbnormalTest;
+    }
+
+    public void setNatureOfAbnormalTest(String natureOfAbnormalTest) {
+        this.natureOfAbnormalTest = natureOfAbnormalTest;
+    }
+
+    public String getObservationResultStatus() {
+        return observationResultStatus;
+    }
+
+    public void setObservationResultStatus(String observationResultStatus) {
+        this.observationResultStatus = observationResultStatus;
+    }
+
+    public Date getDateLastNormalValue() {
+        return dateLastNormalValue;
+    }
+
+    public void setDateLastNormalValue(Date dateLastNormalValue) {
+        this.dateLastNormalValue = dateLastNormalValue;
+    }
+
+    public String getUserDefinedAccessChecks() {
+        return userDefinedAccessChecks;
+    }
+
+    public void setUserDefinedAccessChecks(String userDefinedAccessChecks) {
+        this.userDefinedAccessChecks = userDefinedAccessChecks;
+    }
+
+    public Date getObservationDateTime() {
+        return observationDateTime;
+    }
+
+    public void setObservationDateTime(Date observationDateTime) {
+        this.observationDateTime = observationDateTime;
+    }
+
+    public String getProducerId() {
+        return producerId;
+    }
+
+    public void setProducerId(String producerId) {
+        this.producerId = producerId;
+    }
+
+    public String getResponsibleObserver() {
+        return responsibleObserver;
+    }
+
+    public void setResponsibleObserver(String responsibleObserver) {
+        this.responsibleObserver = responsibleObserver;
+    }
+
+    public String getObservationMethod() {
+        return observationMethod;
+    }
+
+    public void setObservationMethod(String observationMethod) {
+        this.observationMethod = observationMethod;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+
 }

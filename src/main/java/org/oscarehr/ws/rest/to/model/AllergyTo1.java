@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -28,214 +28,214 @@ import java.util.Date;
 
 public class AllergyTo1 {
 
-	private Integer id;
-	private Integer demographicNo;
+    private Integer id;
+    private Integer demographicNo;
 
-	private Date entryDate;
+    private Date entryDate;
 
-	private String description;
+    private String description;
 
-	private String reaction;
-	
-	private boolean archived=false;
+    private String reaction;
 
-	private Integer hiclSeqno;
+    private boolean archived = false;
 
-	private Integer hicSeqno;
+    private Integer hiclSeqno;
 
-	private Integer agcsp;
+    private Integer hicSeqno;
 
-	private Integer agccs;
+    private Integer agcsp;
 
-	private Integer typeCode;
+    private Integer agccs;
 
-	private String drugrefId;
+    private Integer typeCode;
 
-	private Date startDate;
+    private String drugrefId;
 
-	private String ageOfOnset;
+    private Date startDate;
 
-	private String severityOfReaction;
+    private String ageOfOnset;
 
-	private String onsetOfReaction;
+    private String severityOfReaction;
 
-	private String regionalIdentifier;
+    private String onsetOfReaction;
 
-	private String lifeStage;
+    private String regionalIdentifier;
 
-	private int position=0;
+    private String lifeStage;
 
-	private Date lastUpdateDate;
+    private int position = 0;
 
-	private String providerNo;
+    private Date lastUpdateDate;
 
-	public Integer getId() {
-		return id;
-	}
+    private String providerNo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	public Date getEntryDate() {
-		return entryDate;
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public void setEntryDate(Date entryDate) {
-		this.entryDate = entryDate;
-	}
+    public Date getEntryDate() {
+        return entryDate;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getReaction() {
-		return reaction;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setReaction(String reaction) {
-		this.reaction = reaction;
-	}
+    public String getReaction() {
+        return reaction;
+    }
 
-	public boolean isArchived() {
-		return archived;
-	}
+    public void setReaction(String reaction) {
+        this.reaction = reaction;
+    }
 
-	public void setArchived(boolean archived) {
-		this.archived = archived;
-	}
+    public boolean isArchived() {
+        return archived;
+    }
 
-	public Integer getHiclSeqno() {
-		return hiclSeqno;
-	}
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
 
-	public void setHiclSeqno(Integer hiclSeqno) {
-		this.hiclSeqno = hiclSeqno;
-	}
+    public Integer getHiclSeqno() {
+        return hiclSeqno;
+    }
 
-	public Integer getHicSeqno() {
-		return hicSeqno;
-	}
+    public void setHiclSeqno(Integer hiclSeqno) {
+        this.hiclSeqno = hiclSeqno;
+    }
 
-	public void setHicSeqno(Integer hicSeqno) {
-		this.hicSeqno = hicSeqno;
-	}
+    public Integer getHicSeqno() {
+        return hicSeqno;
+    }
 
-	public Integer getAgcsp() {
-		return agcsp;
-	}
+    public void setHicSeqno(Integer hicSeqno) {
+        this.hicSeqno = hicSeqno;
+    }
 
-	public void setAgcsp(Integer agcsp) {
-		this.agcsp = agcsp;
-	}
+    public Integer getAgcsp() {
+        return agcsp;
+    }
 
-	public Integer getAgccs() {
-		return agccs;
-	}
+    public void setAgcsp(Integer agcsp) {
+        this.agcsp = agcsp;
+    }
 
-	public void setAgccs(Integer agccs) {
-		this.agccs = agccs;
-	}
+    public Integer getAgccs() {
+        return agccs;
+    }
 
-	public Integer getTypeCode() {
-		return typeCode;
-	}
+    public void setAgccs(Integer agccs) {
+        this.agccs = agccs;
+    }
 
-	public void setTypeCode(Integer typeCode) {
-		this.typeCode = typeCode;
-	}
+    public Integer getTypeCode() {
+        return typeCode;
+    }
 
-	public String getDrugrefId() {
-		return drugrefId;
-	}
+    public void setTypeCode(Integer typeCode) {
+        this.typeCode = typeCode;
+    }
 
-	public void setDrugrefId(String drugrefId) {
-		this.drugrefId = drugrefId;
-	}
+    public String getDrugrefId() {
+        return drugrefId;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public void setDrugrefId(String drugrefId) {
+        this.drugrefId = drugrefId;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public String getAgeOfOnset() {
-		return ageOfOnset;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public void setAgeOfOnset(String ageOfOnset) {
-		this.ageOfOnset = ageOfOnset;
-	}
+    public String getAgeOfOnset() {
+        return ageOfOnset;
+    }
 
-	public String getSeverityOfReaction() {
-		return severityOfReaction;
-	}
+    public void setAgeOfOnset(String ageOfOnset) {
+        this.ageOfOnset = ageOfOnset;
+    }
 
-	public void setSeverityOfReaction(String severityOfReaction) {
-		this.severityOfReaction = severityOfReaction;
-	}
+    public String getSeverityOfReaction() {
+        return severityOfReaction;
+    }
 
-	public String getOnsetOfReaction() {
-		return onsetOfReaction;
-	}
+    public void setSeverityOfReaction(String severityOfReaction) {
+        this.severityOfReaction = severityOfReaction;
+    }
 
-	public void setOnsetOfReaction(String onsetOfReaction) {
-		this.onsetOfReaction = onsetOfReaction;
-	}
+    public String getOnsetOfReaction() {
+        return onsetOfReaction;
+    }
 
-	public String getRegionalIdentifier() {
-		return regionalIdentifier;
-	}
+    public void setOnsetOfReaction(String onsetOfReaction) {
+        this.onsetOfReaction = onsetOfReaction;
+    }
 
-	public void setRegionalIdentifier(String regionalIdentifier) {
-		this.regionalIdentifier = regionalIdentifier;
-	}
+    public String getRegionalIdentifier() {
+        return regionalIdentifier;
+    }
 
-	public String getLifeStage() {
-		return lifeStage;
-	}
+    public void setRegionalIdentifier(String regionalIdentifier) {
+        this.regionalIdentifier = regionalIdentifier;
+    }
 
-	public void setLifeStage(String lifeStage) {
-		this.lifeStage = lifeStage;
-	}
+    public String getLifeStage() {
+        return lifeStage;
+    }
 
-	public int getPosition() {
-		return position;
-	}
+    public void setLifeStage(String lifeStage) {
+        this.lifeStage = lifeStage;
+    }
 
-	public void setPosition(int position) {
-		this.position = position;
-	}
+    public int getPosition() {
+        return position;
+    }
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
-	}
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
-	}
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
-	
-	
+    public String getProviderNo() {
+        return providerNo;
+    }
+
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+
 }

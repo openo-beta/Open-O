@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,132 +42,132 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="study")
+@Table(name = "study")
 public class StudyDetails extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="study_no")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "study_no")
+    private Integer id;
 
-	@Column(name="study_name")
-	private String studyName;
+    @Column(name = "study_name")
+    private String studyName;
 
-	@Column(name="study_link")
-	private String studyLink;
+    @Column(name = "study_link")
+    private String studyLink;
 
-	private String description;
+    private String description;
 
-	@Column(name="form_name")
-	private String formName;
+    @Column(name = "form_name")
+    private String formName;
 
-	private int current1;
+    private int current1;
 
-	@Column(name="remote_serverurl")
-	private String remoteServerUrl;
+    @Column(name = "remote_serverurl")
+    private String remoteServerUrl;
 
-	@Column(name="provider_no")
-	private String providerNo;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date timestamp;
-	
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(name="providerstudy", joinColumns= @JoinColumn(name="study_no"),
-									 inverseJoinColumns= @JoinColumn(name="provider_no"))
-	Set<Provider>providers;
-	
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(name="demographicstudy", joinColumns= @JoinColumn(name="study_no"),
-										inverseJoinColumns= @JoinColumn(name="demographic_no"))
-	Set<Demographic>demographics;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
 
-	public Integer getId() {
-    	return id;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "providerstudy", joinColumns = @JoinColumn(name = "study_no"),
+            inverseJoinColumns = @JoinColumn(name = "provider_no"))
+    Set<Provider> providers;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "demographicstudy", joinColumns = @JoinColumn(name = "study_no"),
+            inverseJoinColumns = @JoinColumn(name = "demographic_no"))
+    Set<Demographic> demographics;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getStudyName() {
-    	return studyName;
+    public String getStudyName() {
+        return studyName;
     }
 
-	public void setStudyName(String studyName) {
-    	this.studyName = studyName;
+    public void setStudyName(String studyName) {
+        this.studyName = studyName;
     }
 
-	public String getStudyLink() {
-    	return studyLink;
+    public String getStudyLink() {
+        return studyLink;
     }
 
-	public void setStudyLink(String studyLink) {
-    	this.studyLink = studyLink;
+    public void setStudyLink(String studyLink) {
+        this.studyLink = studyLink;
     }
 
-	public String getDescription() {
-    	return description;
+    public String getDescription() {
+        return description;
     }
 
-	public void setDescription(String description) {
-    	this.description = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-	public String getFormName() {
-    	return formName;
+    public String getFormName() {
+        return formName;
     }
 
-	public void setFormName(String formName) {
-    	this.formName = formName;
+    public void setFormName(String formName) {
+        this.formName = formName;
     }
 
-	public int getCurrent1() {
-    	return current1;
+    public int getCurrent1() {
+        return current1;
     }
 
-	public void setCurrent1(int current1) {
-    	this.current1 = current1;
+    public void setCurrent1(int current1) {
+        this.current1 = current1;
     }
 
-	public String getRemoteServerUrl() {
-    	return remoteServerUrl;
+    public String getRemoteServerUrl() {
+        return remoteServerUrl;
     }
 
-	public void setRemoteServerUrl(String remoteServerUrl) {
-    	this.remoteServerUrl = remoteServerUrl;
+    public void setRemoteServerUrl(String remoteServerUrl) {
+        this.remoteServerUrl = remoteServerUrl;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public Date getTimestamp() {
-    	return timestamp;
+    public Date getTimestamp() {
+        return timestamp;
     }
 
-	public void setTimestamp(Date timestamp) {
-    	this.timestamp = timestamp;
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
-	public Set<Provider> getProviders() {
-    	return providers;
+    public Set<Provider> getProviders() {
+        return providers;
     }
 
-	public void setProviders(Set<Provider> providers) {
-    	this.providers = providers;
+    public void setProviders(Set<Provider> providers) {
+        this.providers = providers;
     }
 
-	public Set<Demographic> getDemographics() {
-    	return demographics;
+    public Set<Demographic> getDemographics() {
+        return demographics;
     }
 
-	public void setDemographics(Set<Demographic> demographics) {
-    	this.demographics = demographics;
+    public void setDemographics(Set<Demographic> demographics) {
+        this.demographics = demographics;
     }
 
 

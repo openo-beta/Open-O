@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -112,9 +112,9 @@ public class ImageIoUtils {
         int imageWidth = image.getWidth();
         int imageHeight = image.getHeight();
         if (maxWidth < imageWidth || maxHeight < imageHeight) {
-            float shrinkRatio = Math.min((float)maxHeight / (float)imageHeight, (float)maxWidth / (float)imageWidth);
-            int newWidth = (int)((float)imageWidth * shrinkRatio);
-            int newHeight = (int)((float)imageHeight * shrinkRatio);
+            float shrinkRatio = Math.min((float) maxHeight / (float) imageHeight, (float) maxWidth / (float) imageWidth);
+            int newWidth = (int) ((float) imageWidth * shrinkRatio);
+            int newHeight = (int) ((float) imageHeight * shrinkRatio);
             image = toBufferedImage(image.getScaledInstance(newWidth, newHeight, 4));
         }
 
@@ -132,8 +132,8 @@ public class ImageIoUtils {
 
             try {
                 jpgImageWriter.setOutput(imageOutputStream);
-                IIOImage iioImage = new IIOImage(image, (List)null, (IIOMetadata)null);
-                jpgImageWriter.write((IIOMetadata)null, iioImage, imageWriteParam);
+                IIOImage iioImage = new IIOImage(image, (List) null, (IIOMetadata) null);
+                jpgImageWriter.write((IIOMetadata) null, iioImage, imageWriteParam);
             } finally {
                 imageOutputStream.close();
             }
@@ -146,7 +146,7 @@ public class ImageIoUtils {
     public static ImageWriter getJpgImageWriter() {
         Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
         if (writers.hasNext()) {
-            return (ImageWriter)writers.next();
+            return (ImageWriter) writers.next();
         } else {
             throw new IllegalStateException("Missing jpg Image Writer");
         }
@@ -160,8 +160,8 @@ public class ImageIoUtils {
 
             try {
                 pngImageWriter.setOutput(imageOutputStream);
-                IIOImage iioImage = new IIOImage(image, (List)null, (IIOMetadata)null);
-                pngImageWriter.write((IIOMetadata)null, iioImage, (ImageWriteParam)null);
+                IIOImage iioImage = new IIOImage(image, (List) null, (IIOMetadata) null);
+                pngImageWriter.write((IIOMetadata) null, iioImage, (ImageWriteParam) null);
             } finally {
                 imageOutputStream.close();
             }
@@ -174,18 +174,18 @@ public class ImageIoUtils {
     public static ImageWriter getPngImageWriter() {
         Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("png");
         if (writers.hasNext()) {
-            return (ImageWriter)writers.next();
+            return (ImageWriter) writers.next();
         } else {
             throw new IllegalStateException("Missing png Image Writer");
         }
     }
 
     public static BufferedImage toBufferedImage(Image image) {
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth((ImageObserver)null), image.getHeight((ImageObserver)null), 1);
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth((ImageObserver) null), image.getHeight((ImageObserver) null), 1);
         Graphics2D g2d = bufferedImage.createGraphics();
 
         try {
-            g2d.drawImage(image, 0, 0, (ImageObserver)null);
+            g2d.drawImage(image, 0, 0, (ImageObserver) null);
         } finally {
             g2d.dispose();
         }

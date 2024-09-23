@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,127 +30,126 @@ import java.util.Date;
 //@XmlRootElement(name = "eformReportTool")
 public class EFormReportToolTo1 implements Serializable {
 
-	private Integer id;
+    private Integer id;
 
-	private String name;
+    private String name;
 
-	private String tableName;
+    private String tableName;
 
-	private int eformId;
+    private int eformId;
 
-	private Date expiryDate;
+    private Date expiryDate;
 
-	private Date dateCreated;
+    private Date dateCreated;
 
-	private String providerNo;
+    private String providerNo;
 
-	private String eformName;
+    private String eformName;
 
-	private Date dateLastPopulated;
+    private Date dateLastPopulated;
 
-	private boolean latestMarked;
+    private boolean latestMarked;
 
-	private int numRecordsInTable;
-	
-	private String expiryDateString;
-	
+    private int numRecordsInTable;
 
-	public Integer getId() {
-		return id;
-	}
+    private String expiryDateString;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
-	public String getName() {
-		return name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getTableName() {
-		return tableName;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public int getEformId() {
-		return eformId;
-	}
+    public String getTableName() {
+        return tableName;
+    }
 
-	public void setEformId(int eformId) {
-		this.eformId = eformId;
-	}
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
+    public int getEformId() {
+        return eformId;
+    }
 
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    public void setEformId(int eformId) {
+        this.eformId = eformId;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
-	public String getProviderNo() {
-		return providerNo;
-	}
+    public Date getDateCreated() {
+        return dateCreated;
+    }
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	public String getEformName() {
-		return eformName;
-	}
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-	public void setEformName(String eformName) {
-		this.eformName = eformName;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-	public Date getDateLastPopulated() {
-		return dateLastPopulated;
-	}
+    public String getEformName() {
+        return eformName;
+    }
 
-	public void setDateLastPopulated(Date dateLastPopulated) {
-		this.dateLastPopulated = dateLastPopulated;
-	}
+    public void setEformName(String eformName) {
+        this.eformName = eformName;
+    }
 
-	public boolean isLatestMarked() {
-		return latestMarked;
-	}
+    public Date getDateLastPopulated() {
+        return dateLastPopulated;
+    }
 
-	public void setLatestMarked(boolean latestMarked) {
-		this.latestMarked = latestMarked;
-	}
+    public void setDateLastPopulated(Date dateLastPopulated) {
+        this.dateLastPopulated = dateLastPopulated;
+    }
 
-	public int getNumRecordsInTable() {
-		return numRecordsInTable;
-	}
+    public boolean isLatestMarked() {
+        return latestMarked;
+    }
 
-	public void setNumRecordsInTable(int numRecordsInTable) {
-		this.numRecordsInTable = numRecordsInTable;
-	}
+    public void setLatestMarked(boolean latestMarked) {
+        this.latestMarked = latestMarked;
+    }
 
-	public String getExpiryDateString() {
-		return expiryDateString;
-	}
+    public int getNumRecordsInTable() {
+        return numRecordsInTable;
+    }
 
-	public void setExpiryDateString(String expiryDateString) {
-		this.expiryDateString = expiryDateString;
-	}
-	
-	
-	
+    public void setNumRecordsInTable(int numRecordsInTable) {
+        this.numRecordsInTable = numRecordsInTable;
+    }
+
+    public String getExpiryDateString() {
+        return expiryDateString;
+    }
+
+    public void setExpiryDateString(String expiryDateString) {
+        this.expiryDateString = expiryDateString;
+    }
+
+
 }

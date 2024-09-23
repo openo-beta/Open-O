@@ -43,11 +43,11 @@ public class DeleteEDTTest extends EDTBaseTest {
             resourceIds.add(detailList.getData().get(0).getResourceID());
             detailList = edtDelegate.list(ResourceType.UPLOAD_OBEC_INBOUND_FILE.getType(), ResourceStatus.UPLOADED, BigInteger.valueOf(1));
             resourceIds.add(detailList.getData().get(0).getResourceID());
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         try {
@@ -70,7 +70,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.SUBMITTED, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -78,7 +78,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         assertNotNull(detailList);
         assertTrue(detailList.getData().size() > 0);
         resourceIds.add(detailList.getData().get(0).getResourceID());
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         try {
@@ -103,7 +103,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.DOWNLOAD_BATCH_EDIT.getType(), ResourceStatus.DOWNLOADABLE, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -111,7 +111,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         assertNotNull(detailList);
         assertTrue(detailList.getData().size() > 0);
         resourceIds.add(detailList.getData().get(0).getResourceID());
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         try {
@@ -136,7 +136,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.UPLOADED, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -144,7 +144,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         assertNotNull(detailList);
         assertTrue(detailList.getData().size() > 0);
         resourceIds.add(detailList.getData().get(0).getResourceID());
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         edtDelegate = newDelegate("001CF");
@@ -174,7 +174,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.UPLOADED, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -182,7 +182,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         assertNotNull(detailList);
         assertTrue(detailList.getData().size() > 0);
         resourceIds.add(detailList.getData().get(0).getResourceID());
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         edtDelegate = newDelegate("999999");
@@ -204,9 +204,9 @@ public class DeleteEDTTest extends EDTBaseTest {
         System.out.println("--------------- testDelete_Uploaded_Claim_File_With_Invalid_Resource_Id_FAILED_EEDTS0056 ---------------\n" + "Actual Results:");
 
         List<BigInteger> resourceIds = new ArrayList<>();
-        
+
         resourceIds.add(new BigInteger("99988888"));
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         try {
@@ -224,7 +224,7 @@ public class DeleteEDTTest extends EDTBaseTest {
 
     /*
      * $$: The Delete method expects a BigInteger for the resourceID parameter, so I am getting an error: NumberFormat for input string: "$$".
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -233,7 +233,7 @@ public class DeleteEDTTest extends EDTBaseTest {
         System.out.println("--------------- testDelete_Uploaded_Claim_File_With_Invalid_Resource_Id_FAILED_Rejected_By_Policy ---------------\n" + "Actual Results:");
 
         List<BigInteger> resourceIds = new ArrayList<>();
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         try {
@@ -253,9 +253,9 @@ public class DeleteEDTTest extends EDTBaseTest {
     }
 
     /*
-     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}delete of type {http://edt.health.ontario.ca/}delete, 
+     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}delete of type {http://edt.health.ontario.ca/}delete,
      * found </ns5:delete> (in namespace http://edt.health.ontario.ca/), but next item should be resourceIDs
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -264,17 +264,21 @@ public class DeleteEDTTest extends EDTBaseTest {
         System.out.println("--------------- testDelete_With_Blank_Resource_ID_And_Blank_MOHID_FAILED_Rejected_By_Policy ---------------\n" + "Actual Results:");
 
         List<BigInteger> resourceIds = new ArrayList<>();
-        
+
         resourceIds.add(null);
- 
+
         // Delete files using resourceIds
         ResourceResult resourceResult = null;
         edtDelegate = newDelegate("");
         try {
             resourceResult = edtDelegate.delete(resourceIds);
         } catch (Faultexception | SOAPFaultException e) {
-            if (e instanceof Faultexception) { printFaultException((Faultexception) e); }
-            if (e instanceof SOAPFaultException) { logger.error(e); }
+            if (e instanceof Faultexception) {
+                printFaultException((Faultexception) e);
+            }
+            if (e instanceof SOAPFaultException) {
+                logger.error(e);
+            }
             return;
         }
 

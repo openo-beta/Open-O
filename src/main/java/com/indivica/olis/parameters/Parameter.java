@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -12,13 +12,13 @@ package com.indivica.olis.parameters;
 
 public interface Parameter {
 
-	public String toOlisString();
-	
-	public void setValue(Object value);
-	
-	public void setValue(Integer part, Object value);
-	
-	public void setValue(Integer part, Integer part2, Object value);
+    public String toOlisString();
 
-	public String getQueryCode();
+    public void setValue(Object value);
+
+    public void setValue(Integer part, Object value);
+
+    public void setValue(Integer part, Integer part2, Object value);
+
+    public String getQueryCode();
 }

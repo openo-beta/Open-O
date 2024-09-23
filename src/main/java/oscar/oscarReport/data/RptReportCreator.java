@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -54,10 +54,10 @@ public final class RptReportCreator {
         String sql = "select * from reportConfig where report_id = " + recordId + " order by order_no";
         ResultSet rs = DBHelp.searchDBRecord(sql);
         while (rs.next()) {
-            String caption = DBHelp.getString(rs,"caption");
-            ret.append( (ret.length() < 8 ? " " : ", ") + DBHelp.getString(rs,"table_name") + "." + DBHelp.getString(rs,"name") );
-            if(caption != null && caption.length() > 0){
-               ret.append(" as '" + StringEscapeUtils.escapeSql(DBHelp.getString(rs,"caption")) + "'");
+            String caption = DBHelp.getString(rs, "caption");
+            ret.append((ret.length() < 8 ? " " : ", ") + DBHelp.getString(rs, "table_name") + "." + DBHelp.getString(rs, "name"));
+            if (caption != null && caption.length() > 0) {
+                ret.append(" as '" + StringEscapeUtils.escapeSql(DBHelp.getString(rs, "caption")) + "'");
             }
         }
         rs.close();
@@ -71,7 +71,7 @@ public final class RptReportCreator {
                 + " order by table_name desc";
         ResultSet rs = DBHelp.searchDBRecord(sql);
         if (rs.next()) {
-            ret = DBHelp.getString(rs,"table_name");
+            ret = DBHelp.getString(rs, "table_name");
         }
         rs.close();
         return ret;
@@ -85,7 +85,7 @@ public final class RptReportCreator {
                 + " order by table_name desc";
         ResultSet rs = DBHelp.searchDBRecord(sql);
         while (rs.next()) {
-            vec.add(DBHelp.getString(rs,"table_name"));
+            vec.add(DBHelp.getString(rs, "table_name"));
         }
         rs.close();
         for (int i = 0; i < vec.size(); i++) {
@@ -103,7 +103,7 @@ public final class RptReportCreator {
     }
 
     // Replace the result one by one if not null
-    public static String getWhereValueClause(String value, Vector vec)  {
+    public static String getWhereValueClause(String value, Vector vec) {
         String ret = "";
         for (int i = 0; i < 100; i++) {
             if (value.matches("[^\\{\\}\\$]*\\$\\{[^\\{\\}]+\\}.*")) {
@@ -117,7 +117,7 @@ public final class RptReportCreator {
         return ret;
     }
 
-    public static boolean isIncludeDemo(String value)  {
+    public static boolean isIncludeDemo(String value) {
         boolean ret = false;
         if (value.indexOf("demographic.") >= 0)
             ret = true;
@@ -183,7 +183,7 @@ public final class RptReportCreator {
             for (int i = 0; i < vecFieldName.size(); i++) {
                 try {
                     prop.setProperty((String) vecFieldName.get(i),
-                            DBHelp.getString(rs,(String) vecFieldName.get(i)) == null ? "" : rs
+                            DBHelp.getString(rs, (String) vecFieldName.get(i)) == null ? "" : rs
                                     .getString((String) vecFieldName.get(i)));
                 } catch (SQLException e) {
                     prop.setProperty((String) vecFieldName.get(i), "" + rs.getInt((String) vecFieldName.get(i)));

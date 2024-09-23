@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,41 +51,41 @@ import oscar.log.LogConst;
  *
  */
 public class GenerateTraceAction extends DispatchAction {
-	public static int BUFFER_SIZE = 8192;
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		String userName = (String) request.getSession().getAttribute("user");
-		String roleName$ = (String) request.getSession().getAttribute("userrole") + "," + userName;
-		if (!GenerateTraceabilityUtil.hasPrivilege("_admin, _admin.traceability", roleName$)) {
-			MiscUtils.getLogger().error("Access denied: " + userName);
-			return null;
-		}
-		PipedInputStream pipedInputStream = null;
-		PipedOutputStream pipedOutputStream = null;
-		ExecutorService executor = null;
-		Future<String> futureTRP = null;
-		Future<String> futureTRC = null;
-		try {
-			pipedInputStream = new PipedInputStream(BUFFER_SIZE);
-			pipedOutputStream = new PipedOutputStream(pipedInputStream);
-			
-			executor = Executors.newFixedThreadPool(2);
-	        TraceDataProcessor traceDataProcessor = new TraceDataProcessor(pipedOutputStream, request);
-			TraceDataConsumer traceDataConsumer = new TraceDataConsumer(pipedInputStream, response);
-			
-			futureTRP = executor.submit(traceDataProcessor);
-			futureTRC = executor.submit(traceDataConsumer);
+    public static int BUFFER_SIZE = 8192;
+
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String userName = (String) request.getSession().getAttribute("user");
+        String roleName$ = (String) request.getSession().getAttribute("userrole") + "," + userName;
+        if (!GenerateTraceabilityUtil.hasPrivilege("_admin, _admin.traceability", roleName$)) {
+            MiscUtils.getLogger().error("Access denied: " + userName);
+            return null;
+        }
+        PipedInputStream pipedInputStream = null;
+        PipedOutputStream pipedOutputStream = null;
+        ExecutorService executor = null;
+        Future<String> futureTRP = null;
+        Future<String> futureTRC = null;
+        try {
+            pipedInputStream = new PipedInputStream(BUFFER_SIZE);
+            pipedOutputStream = new PipedOutputStream(pipedInputStream);
+
+            executor = Executors.newFixedThreadPool(2);
+            TraceDataProcessor traceDataProcessor = new TraceDataProcessor(pipedOutputStream, request);
+            TraceDataConsumer traceDataConsumer = new TraceDataConsumer(pipedInputStream, response);
+
+            futureTRP = executor.submit(traceDataProcessor);
+            futureTRC = executor.submit(traceDataConsumer);
 
             MiscUtils.getLogger().debug(new java.util.Date() + " " + futureTRP.get());
             MiscUtils.getLogger().debug(new java.util.Date() + " " + futureTRC.get());
             LogAction.addLog(userName, LogConst.ADD, "traceability downloaded", "trace_" + InetAddress.getLocalHost().getHostName().replace(' ', '_') + ".bin");
-			executor.shutdown();
-		} catch (Exception e) {
-			MiscUtils.getLogger().error("Not able to create", e);
-		}
-		finally {
-			pipedInputStream.close();
-			pipedOutputStream.close();
-		}
-		return null;
-	}
+            executor.shutdown();
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Not able to create", e);
+        } finally {
+            pipedInputStream.close();
+            pipedOutputStream.close();
+        }
+        return null;
+    }
 }

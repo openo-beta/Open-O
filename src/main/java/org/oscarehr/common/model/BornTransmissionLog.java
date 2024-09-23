@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,113 +36,113 @@ import javax.persistence.TemporalType;
 @Entity
 public class BornTransmissionLog extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date submitDateTime;
-	
-	private boolean success;
-	
-	private String filename;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private Integer demographicNo;
-	private String type;
-	private String httpCode;
-	private String httpResult;
-	private String httpHeaders;
-	private String hialTransactionId;
-	private String contentLocation;
-	
-	public Integer getId() {
-    	return id;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date submitDateTime;
+
+    private boolean success;
+
+    private String filename;
+
+    private Integer demographicNo;
+    private String type;
+    private String httpCode;
+    private String httpResult;
+    private String httpHeaders;
+    private String hialTransactionId;
+    private String contentLocation;
+
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public Date getSubmitDateTime() {
-    	return submitDateTime;
+    public Date getSubmitDateTime() {
+        return submitDateTime;
     }
 
-	public void setSubmitDateTime(Date submitDateTime) {
-    	this.submitDateTime = submitDateTime;
+    public void setSubmitDateTime(Date submitDateTime) {
+        this.submitDateTime = submitDateTime;
     }
 
-	public boolean isSuccess() {
-    	return success;
+    public boolean isSuccess() {
+        return success;
     }
 
-	public void setSuccess(boolean success) {
-    	this.success = success;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
-	public String getFilename() {
-    	return filename;
+    public String getFilename() {
+        return filename;
     }
 
-	public void setFilename(String filename) {
-    	this.filename = filename;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getHttpCode() {
-		return httpCode;
-	}
+    public String getHttpCode() {
+        return httpCode;
+    }
 
-	public void setHttpCode(String httpCode) {
-		this.httpCode = httpCode;
-	}
+    public void setHttpCode(String httpCode) {
+        this.httpCode = httpCode;
+    }
 
-	public String getHttpResult() {
-		return httpResult;
-	}
+    public String getHttpResult() {
+        return httpResult;
+    }
 
-	public void setHttpResult(String httpResult) {
-		this.httpResult = httpResult;
-	}
+    public void setHttpResult(String httpResult) {
+        this.httpResult = httpResult;
+    }
 
-	public String getHttpHeaders() {
-		return httpHeaders;
-	}
+    public String getHttpHeaders() {
+        return httpHeaders;
+    }
 
-	public void setHttpHeaders(String httpHeaders) {
-		this.httpHeaders = httpHeaders;
-	}
+    public void setHttpHeaders(String httpHeaders) {
+        this.httpHeaders = httpHeaders;
+    }
 
-	public String getHialTransactionId() {
-		return hialTransactionId;
-	}
+    public String getHialTransactionId() {
+        return hialTransactionId;
+    }
 
-	public void setHialTransactionId(String hialTransactionId) {
-		this.hialTransactionId = hialTransactionId;
-	}
+    public void setHialTransactionId(String hialTransactionId) {
+        this.hialTransactionId = hialTransactionId;
+    }
 
-	public String getContentLocation() {
-		return contentLocation;
-	}
+    public String getContentLocation() {
+        return contentLocation;
+    }
 
-	public void setContentLocation(String contentLocation) {
-		this.contentLocation = contentLocation;
-	}
-	
-	
+    public void setContentLocation(String contentLocation) {
+        this.contentLocation = contentLocation;
+    }
+
+
 }

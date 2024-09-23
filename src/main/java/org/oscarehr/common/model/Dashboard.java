@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,88 +37,88 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="dashboard")
+@Table(name = "dashboard")
 public class Dashboard extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	
-	private String name;
-	private String description;
-	private String creator;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date edited;
-	private boolean active;
-	private boolean locked;
-	
-	@Transient
-	private List<IndicatorTemplate> indicators;
-	
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public String getName() {
-		return name;
-	}
+    private String name;
+    private String description;
+    private String creator;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date edited;
+    private boolean active;
+    private boolean locked;
 
-	public String getDescription() {
-		return description;
-	}
+    @Transient
+    private List<IndicatorTemplate> indicators;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Override
+    public Integer getId() {
+        return this.id;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Date getEdited() {
-		return edited;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setEdited(Date edited) {
-		this.edited = edited;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public boolean isLocked() {
-		return locked;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
+    public Date getEdited() {
+        return edited;
+    }
 
-	public List<IndicatorTemplate> getIndicators() {
-		return indicators;
-	}
+    public void setEdited(Date edited) {
+        this.edited = edited;
+    }
 
-	public void setIndicators(List<IndicatorTemplate> indicators) {
-		this.indicators = indicators;
-	}
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public List<IndicatorTemplate> getIndicators() {
+        return indicators;
+    }
+
+    public void setIndicators(List<IndicatorTemplate> indicators) {
+        this.indicators = indicators;
+    }
 
 }

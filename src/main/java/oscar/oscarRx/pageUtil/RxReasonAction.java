@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -51,115 +51,114 @@ import oscar.log.LogConst;
 
 
 public final class RxReasonAction extends DispatchAction {
-	private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
 
-	/*
-	 * Needed for a new Drug Reason
-	 *
-	private Integer drugId = null;
-	private String codingSystem = null;    // (icd9,icd10,etc...) OR protocol
-	private String code = null;   // (250 (for icd9) or could be the protocol identifier )
-	private String comments = null;
-	private Boolean primaryReasonFlag;
-	private String providerNo = null;
-	private Integer demographicNo = null;
-	 */
-    public ActionForward addDrugReason(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+    /*
+     * Needed for a new Drug Reason
+     *
+    private Integer drugId = null;
+    private String codingSystem = null;    // (icd9,icd10,etc...) OR protocol
+    private String code = null;   // (250 (for icd9) or could be the protocol identifier )
+    private String comments = null;
+    private Boolean primaryReasonFlag;
+    private String providerNo = null;
+    private Integer demographicNo = null;
+     */
+    public ActionForward addDrugReason(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
-		if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "r", null)) {
-			throw new RuntimeException("missing required security object (_rx)");
-		}
-		
-    		MessageResources mResources = MessageResources.getMessageResources( "oscarResources" );
-    		DrugReasonDao drugReasonDao     = (DrugReasonDao) SpringUtils.getBean(DrugReasonDao.class);
-    		Icd9Dao icd9Dao = (Icd9Dao)  SpringUtils.getBean(Icd9Dao.class);
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "r", null)) {
+            throw new RuntimeException("missing required security object (_rx)");
+        }
 
-            String codingSystem = request.getParameter("codingSystem");
-            String primaryReasonFlagStr = request.getParameter("primaryReasonFlag");
-            String comments = request.getParameter("comments");
-            String code = request.getParameter("code");
+        MessageResources mResources = MessageResources.getMessageResources("oscarResources");
+        DrugReasonDao drugReasonDao = (DrugReasonDao) SpringUtils.getBean(DrugReasonDao.class);
+        Icd9Dao icd9Dao = (Icd9Dao) SpringUtils.getBean(Icd9Dao.class);
 
-            String drugIdStr = request.getParameter("drugId");
-            String demographicNo = request.getParameter("demographicNo");
-            String providerNo = (String) request.getSession().getAttribute("user");
+        String codingSystem = request.getParameter("codingSystem");
+        String primaryReasonFlagStr = request.getParameter("primaryReasonFlag");
+        String comments = request.getParameter("comments");
+        String code = request.getParameter("code");
 
-            request.setAttribute("drugId",Integer.parseInt(drugIdStr));
-    		request.setAttribute("demoNo",Integer.parseInt(demographicNo));
+        String drugIdStr = request.getParameter("drugId");
+        String demographicNo = request.getParameter("demographicNo");
+        String providerNo = (String) request.getSession().getAttribute("user");
 
-    		if(code != null && code.trim().equals("")){
-				request.setAttribute("message", mResources.getMessage("SelectReason.error.codeEmpty"));
-    			return (mapping.findForward("success"));
-    		}
+        request.setAttribute("drugId", Integer.parseInt(drugIdStr));
+        request.setAttribute("demoNo", Integer.parseInt(demographicNo));
 
-    		List<Icd9> list = icd9Dao.getIcd9Code(code);
-            if (list.size() == 0){
-				request.setAttribute("message", mResources.getMessage("SelectReason.error.codeValid"));
-            	return (mapping.findForward("success"));
-            }
+        if (code != null && code.trim().equals("")) {
+            request.setAttribute("message", mResources.getMessage("SelectReason.error.codeEmpty"));
+            return (mapping.findForward("success"));
+        }
 
-            if(drugReasonDao.hasReason(Integer.parseInt(drugIdStr),codingSystem, code, true)){
-            	request.setAttribute("message", mResources.getMessage("SelectReason.error.duplicateCode"));
-            	return (mapping.findForward("success"));
-            }
+        List<Icd9> list = icd9Dao.getIcd9Code(code);
+        if (list.size() == 0) {
+            request.setAttribute("message", mResources.getMessage("SelectReason.error.codeValid"));
+            return (mapping.findForward("success"));
+        }
 
-            MiscUtils.getLogger().debug("addDrugReasonCalled codingSystem "+codingSystem+ " code "+code+ " drugIdStr "+drugIdStr);
+        if (drugReasonDao.hasReason(Integer.parseInt(drugIdStr), codingSystem, code, true)) {
+            request.setAttribute("message", mResources.getMessage("SelectReason.error.duplicateCode"));
+            return (mapping.findForward("success"));
+        }
+
+        MiscUtils.getLogger().debug("addDrugReasonCalled codingSystem " + codingSystem + " code " + code + " drugIdStr " + drugIdStr);
 
 
+        boolean primaryReasonFlag = true;
+        if (!"true".equals(primaryReasonFlagStr)) {
+            primaryReasonFlag = false;
+        }
 
-            boolean primaryReasonFlag = true;
-            if(!"true".equals(primaryReasonFlagStr)){
-            	primaryReasonFlag = false;
-            }
+        DrugReason dr = new DrugReason();
 
-            DrugReason dr = new DrugReason();
+        dr.setDrugId(Integer.parseInt(drugIdStr));
+        dr.setProviderNo(providerNo);
+        dr.setDemographicNo(Integer.parseInt(demographicNo));
 
-            dr.setDrugId(Integer.parseInt(drugIdStr));
-            dr.setProviderNo(providerNo);
-            dr.setDemographicNo(Integer.parseInt(demographicNo));
+        dr.setCodingSystem(codingSystem);
+        dr.setCode(code);
+        dr.setComments(comments);
+        dr.setPrimaryReasonFlag(primaryReasonFlag);
+        dr.setArchivedFlag(false);
+        dr.setDateCoded(new Date());
 
-            dr.setCodingSystem(codingSystem);
-            dr.setCode(code);
-            dr.setComments(comments);
-            dr.setPrimaryReasonFlag(primaryReasonFlag);
-            dr.setArchivedFlag(false);
-            dr.setDateCoded(new Date());
+        drugReasonDao.addNewDrugReason(dr);
 
-            drugReasonDao.addNewDrugReason(dr);
+        String ip = request.getRemoteAddr();
+        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DRUGREASON, "" + dr.getId(), ip, demographicNo, dr.getAuditString());
 
-            String ip = request.getRemoteAddr();
-            LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DRUGREASON, ""+dr.getId() , ip,demographicNo,dr.getAuditString());
-
-            return (mapping.findForward("close"));
+        return (mapping.findForward("close"));
     }
 
 
-    public ActionForward archiveReason(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+    public ActionForward archiveReason(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
-		if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "r", null)) {
-			throw new RuntimeException("missing required security object (_rx)");
-		}
-		
-    	MessageResources mResources = MessageResources.getMessageResources( "ApplicationResources" );
-		DrugReasonDao drugReasonDao     = (DrugReasonDao) SpringUtils.getBean(DrugReasonDao.class);
-		String reasonId = request.getParameter("reasonId");
-		String archiveReason = request.getParameter("archiveReason");
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "r", null)) {
+            throw new RuntimeException("missing required security object (_rx)");
+        }
 
-		DrugReason drugReason = drugReasonDao.find(Integer.parseInt(reasonId));
+        MessageResources mResources = MessageResources.getMessageResources("ApplicationResources");
+        DrugReasonDao drugReasonDao = (DrugReasonDao) SpringUtils.getBean(DrugReasonDao.class);
+        String reasonId = request.getParameter("reasonId");
+        String archiveReason = request.getParameter("archiveReason");
 
-		drugReason.setArchivedFlag(true);
-		drugReason.setArchivedReason(archiveReason);
+        DrugReason drugReason = drugReasonDao.find(Integer.parseInt(reasonId));
 
-		drugReasonDao.merge(drugReason);
+        drugReason.setArchivedFlag(true);
+        drugReason.setArchivedReason(archiveReason);
 
-		request.setAttribute("drugId",drugReason.getDrugId());
-		request.setAttribute("demoNo",drugReason.getDemographicNo());
+        drugReasonDao.merge(drugReason);
 
-		String ip = request.getRemoteAddr();
-        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ARCHIVE, LogConst.CON_DRUGREASON, ""+drugReason.getId() , ip,""+drugReason.getDemographicNo(), drugReason.getAuditString());
+        request.setAttribute("drugId", drugReason.getDrugId());
+        request.setAttribute("demoNo", drugReason.getDemographicNo());
 
-		request.setAttribute("message", mResources.getMessage("SelectReason.msg.archived"));
-		return (mapping.findForward("success"));
+        String ip = request.getRemoteAddr();
+        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ARCHIVE, LogConst.CON_DRUGREASON, "" + drugReason.getId(), ip, "" + drugReason.getDemographicNo(), drugReason.getAuditString());
+
+        request.setAttribute("message", mResources.getMessage("SelectReason.msg.archived"));
+        return (mapping.findForward("success"));
     }
 }
 

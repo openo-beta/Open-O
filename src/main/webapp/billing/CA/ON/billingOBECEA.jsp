@@ -17,49 +17,49 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
-<%   
-  if(session.getValue("user") == null)
-    response.sendRedirect("../../logout.jsp");
-  
-  String user_no;
-  user_no = (String) session.getAttribute("user");
-  String docdownload = oscarVariables.getProperty("project_home") ;;
-  session.setAttribute("homepath", docdownload);      
+<%
+    if (session.getValue("user") == null)
+        response.sendRedirect("../../logout.jsp");
+
+    String user_no;
+    user_no = (String) session.getAttribute("user");
+    String docdownload = oscarVariables.getProperty("project_home");
+    ;
+    session.setAttribute("homepath", docdownload);
 
 %>
 <!DOCTYPE html>
 <html:html>
-<head>
+    <head>
 
-<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
-<title>EDT OBEC Response Report Generator</title>
-</head>
+        <title>EDT OBEC Response Report Generator</title>
+    </head>
 
-<body>
+    <body>
 
-<p>EDT OBEC Response Report Generator</p>
+    <p>EDT OBEC Response Report Generator</p>
 
-<html:form action="/oscarBilling/DocumentErrorReportUpload.do"	method="POST" enctype="multipart/form-data">
-	
-
-
-    <div class="alert alert-error">
-  
-    <html:errors />
-    </div>
-
-<div class="well">
-Select diskette <input type="file" name="file1" value="" required>
-
-<input type="submit" name="Submit" class="btn btn-primary" value="Create Report">
-</div>
+    <html:form action="/oscarBilling/DocumentErrorReportUpload.do" method="POST" enctype="multipart/form-data">
 
 
-</html:form>
-</body>
+        <div class="alert alert-error">
+
+            <html:errors/>
+        </div>
+
+        <div class="well">
+            Select diskette <input type="file" name="file1" value="" required>
+
+            <input type="submit" name="Submit" class="btn btn-primary" value="Create Report">
+        </div>
+
+
+    </html:form>
+    </body>
 </html:html>

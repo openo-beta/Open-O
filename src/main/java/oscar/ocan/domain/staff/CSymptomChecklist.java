@@ -1,22 +1,21 @@
 //CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -86,43 +85,43 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cNone",
-    "cAbnormalAffect",
-    "cAbnormalThoughtProcessForm",
-    "cAnger",
-    "cAnxiety",
-    "cCommandHallucinations",
-    "cCompulsiveBehaviour",
-    "cDecreasedEnergy",
-    "cDelusions",
-    "cEpisodesOfPanic",
-    "cFears",
-    "cGuiltShame",
-    "cHallucinations",
-    "cHopelessness",
-    "cHygiene",
-    "cInabilityTOExperienceJoyPleasure",
-    "cInflatedSelfWorth",
-    "cIntrusiveThoughts",
-    "cIrritability",
-    "cObsessiveThoughts",
-    "cPhobias",
-    "cPressuredSpeech",
-    "cRacingThoughts",
-    "cRapidMoodChanges",
-    "cRelivingTraumaticMemories",
-    "cSelfDeprecation",
-    "cSleepProblems",
-    "cTearfulness",
-    "cUnusualOrAbnormalPhysicalMovements",
-    "cUnknown",
-    "cOther",
-    "cSpecify"
+        "cNone",
+        "cAbnormalAffect",
+        "cAbnormalThoughtProcessForm",
+        "cAnger",
+        "cAnxiety",
+        "cCommandHallucinations",
+        "cCompulsiveBehaviour",
+        "cDecreasedEnergy",
+        "cDelusions",
+        "cEpisodesOfPanic",
+        "cFears",
+        "cGuiltShame",
+        "cHallucinations",
+        "cHopelessness",
+        "cHygiene",
+        "cInabilityTOExperienceJoyPleasure",
+        "cInflatedSelfWorth",
+        "cIntrusiveThoughts",
+        "cIrritability",
+        "cObsessiveThoughts",
+        "cPhobias",
+        "cPressuredSpeech",
+        "cRacingThoughts",
+        "cRapidMoodChanges",
+        "cRelivingTraumaticMemories",
+        "cSelfDeprecation",
+        "cSleepProblems",
+        "cTearfulness",
+        "cUnusualOrAbnormalPhysicalMovements",
+        "cUnknown",
+        "cOther",
+        "cSpecify"
 })
 @XmlRootElement(name = "CSymptom_checklist")
 public class CSymptomChecklist {
@@ -194,11 +193,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cNone property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCNone() {
         return cNone;
@@ -206,11 +205,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cNone property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCNone(String value) {
         this.cNone = value;
@@ -218,11 +217,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cAbnormalAffect property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAbnormalAffect() {
         return cAbnormalAffect;
@@ -230,11 +229,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cAbnormalAffect property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAbnormalAffect(String value) {
         this.cAbnormalAffect = value;
@@ -242,11 +241,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cAbnormalThoughtProcessForm property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAbnormalThoughtProcessForm() {
         return cAbnormalThoughtProcessForm;
@@ -254,11 +253,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cAbnormalThoughtProcessForm property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAbnormalThoughtProcessForm(String value) {
         this.cAbnormalThoughtProcessForm = value;
@@ -266,11 +265,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cAnger property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAnger() {
         return cAnger;
@@ -278,11 +277,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cAnger property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAnger(String value) {
         this.cAnger = value;
@@ -290,11 +289,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cAnxiety property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCAnxiety() {
         return cAnxiety;
@@ -302,11 +301,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cAnxiety property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCAnxiety(String value) {
         this.cAnxiety = value;
@@ -314,11 +313,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cCommandHallucinations property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCCommandHallucinations() {
         return cCommandHallucinations;
@@ -326,11 +325,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cCommandHallucinations property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCCommandHallucinations(String value) {
         this.cCommandHallucinations = value;
@@ -338,11 +337,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cCompulsiveBehaviour property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCCompulsiveBehaviour() {
         return cCompulsiveBehaviour;
@@ -350,11 +349,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cCompulsiveBehaviour property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCCompulsiveBehaviour(String value) {
         this.cCompulsiveBehaviour = value;
@@ -362,11 +361,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cDecreasedEnergy property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCDecreasedEnergy() {
         return cDecreasedEnergy;
@@ -374,11 +373,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cDecreasedEnergy property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCDecreasedEnergy(String value) {
         this.cDecreasedEnergy = value;
@@ -386,11 +385,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cDelusions property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCDelusions() {
         return cDelusions;
@@ -398,11 +397,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cDelusions property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCDelusions(String value) {
         this.cDelusions = value;
@@ -410,11 +409,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cEpisodesOfPanic property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCEpisodesOfPanic() {
         return cEpisodesOfPanic;
@@ -422,11 +421,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cEpisodesOfPanic property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCEpisodesOfPanic(String value) {
         this.cEpisodesOfPanic = value;
@@ -434,11 +433,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cFears property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCFears() {
         return cFears;
@@ -446,11 +445,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cFears property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCFears(String value) {
         this.cFears = value;
@@ -458,11 +457,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cGuiltShame property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCGuiltShame() {
         return cGuiltShame;
@@ -470,11 +469,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cGuiltShame property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCGuiltShame(String value) {
         this.cGuiltShame = value;
@@ -482,11 +481,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cHallucinations property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCHallucinations() {
         return cHallucinations;
@@ -494,11 +493,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cHallucinations property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCHallucinations(String value) {
         this.cHallucinations = value;
@@ -506,11 +505,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cHopelessness property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCHopelessness() {
         return cHopelessness;
@@ -518,11 +517,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cHopelessness property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCHopelessness(String value) {
         this.cHopelessness = value;
@@ -530,11 +529,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cHygiene property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCHygiene() {
         return cHygiene;
@@ -542,11 +541,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cHygiene property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCHygiene(String value) {
         this.cHygiene = value;
@@ -554,11 +553,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cInabilityTOExperienceJoyPleasure property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCInabilityTOExperienceJoyPleasure() {
         return cInabilityTOExperienceJoyPleasure;
@@ -566,11 +565,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cInabilityTOExperienceJoyPleasure property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCInabilityTOExperienceJoyPleasure(String value) {
         this.cInabilityTOExperienceJoyPleasure = value;
@@ -578,11 +577,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cInflatedSelfWorth property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCInflatedSelfWorth() {
         return cInflatedSelfWorth;
@@ -590,11 +589,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cInflatedSelfWorth property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCInflatedSelfWorth(String value) {
         this.cInflatedSelfWorth = value;
@@ -602,11 +601,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cIntrusiveThoughts property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCIntrusiveThoughts() {
         return cIntrusiveThoughts;
@@ -614,11 +613,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cIntrusiveThoughts property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCIntrusiveThoughts(String value) {
         this.cIntrusiveThoughts = value;
@@ -626,11 +625,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cIrritability property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCIrritability() {
         return cIrritability;
@@ -638,11 +637,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cIrritability property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCIrritability(String value) {
         this.cIrritability = value;
@@ -650,11 +649,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cObsessiveThoughts property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCObsessiveThoughts() {
         return cObsessiveThoughts;
@@ -662,11 +661,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cObsessiveThoughts property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCObsessiveThoughts(String value) {
         this.cObsessiveThoughts = value;
@@ -674,11 +673,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cPhobias property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCPhobias() {
         return cPhobias;
@@ -686,11 +685,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cPhobias property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCPhobias(String value) {
         this.cPhobias = value;
@@ -698,11 +697,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cPressuredSpeech property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCPressuredSpeech() {
         return cPressuredSpeech;
@@ -710,11 +709,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cPressuredSpeech property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCPressuredSpeech(String value) {
         this.cPressuredSpeech = value;
@@ -722,11 +721,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cRacingThoughts property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCRacingThoughts() {
         return cRacingThoughts;
@@ -734,11 +733,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cRacingThoughts property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCRacingThoughts(String value) {
         this.cRacingThoughts = value;
@@ -746,11 +745,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cRapidMoodChanges property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCRapidMoodChanges() {
         return cRapidMoodChanges;
@@ -758,11 +757,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cRapidMoodChanges property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCRapidMoodChanges(String value) {
         this.cRapidMoodChanges = value;
@@ -770,11 +769,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cRelivingTraumaticMemories property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCRelivingTraumaticMemories() {
         return cRelivingTraumaticMemories;
@@ -782,11 +781,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cRelivingTraumaticMemories property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCRelivingTraumaticMemories(String value) {
         this.cRelivingTraumaticMemories = value;
@@ -794,11 +793,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cSelfDeprecation property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCSelfDeprecation() {
         return cSelfDeprecation;
@@ -806,11 +805,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cSelfDeprecation property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCSelfDeprecation(String value) {
         this.cSelfDeprecation = value;
@@ -818,11 +817,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cSleepProblems property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCSleepProblems() {
         return cSleepProblems;
@@ -830,11 +829,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cSleepProblems property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCSleepProblems(String value) {
         this.cSleepProblems = value;
@@ -842,11 +841,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cTearfulness property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCTearfulness() {
         return cTearfulness;
@@ -854,11 +853,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cTearfulness property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCTearfulness(String value) {
         this.cTearfulness = value;
@@ -866,11 +865,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cUnusualOrAbnormalPhysicalMovements property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCUnusualOrAbnormalPhysicalMovements() {
         return cUnusualOrAbnormalPhysicalMovements;
@@ -878,11 +877,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cUnusualOrAbnormalPhysicalMovements property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCUnusualOrAbnormalPhysicalMovements(String value) {
         this.cUnusualOrAbnormalPhysicalMovements = value;
@@ -890,11 +889,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cUnknown property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCUnknown() {
         return cUnknown;
@@ -902,11 +901,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cUnknown property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -914,11 +913,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cOther property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link COther }
-     *     
+     *
      */
     public COther getCOther() {
         return cOther;
@@ -926,11 +925,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cOther property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link COther }
-     *     
+     *
      */
     public void setCOther(COther value) {
         this.cOther = value;
@@ -938,11 +937,11 @@ public class CSymptomChecklist {
 
     /**
      * Gets the value of the cSpecify property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCSpecify() {
         return cSpecify;
@@ -950,11 +949,11 @@ public class CSymptomChecklist {
 
     /**
      * Sets the value of the cSpecify property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCSpecify(String value) {
         this.cSpecify = value;

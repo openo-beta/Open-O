@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,27 +33,27 @@ import javax.persistence.Id;
 @Entity
 public class SnomedCore extends AbstractCodeSystemModel<Integer> implements java.io.Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-     private Integer id;
-	@Column(name="SnomedCore")
-     private String snomedCore;
-     private String description;
-     private String conceptStatus;
-     private String umlsCui;
-     private int occurance;
-     private double usagePercentage;
-     private String firstInSubset;
-     private String isRetiredFromSubset;
-     private String lastInSubset;
-     private String replacedBySnomedCid;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "SnomedCore")
+    private String snomedCore;
+    private String description;
+    private String conceptStatus;
+    private String umlsCui;
+    private int occurance;
+    private double usagePercentage;
+    private String firstInSubset;
+    private String isRetiredFromSubset;
+    private String lastInSubset;
+    private String replacedBySnomedCid;
 
     public SnomedCore() {
     }
 
     public SnomedCore(String snomedCore, String description) {
-       this.snomedCore = snomedCore;
-       this.description = description;
+        this.snomedCore = snomedCore;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -63,6 +63,7 @@ public class SnomedCore extends AbstractCodeSystemModel<Integer> implements java
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getSnomedCore() {
         return this.snomedCore;
     }
@@ -70,6 +71,7 @@ public class SnomedCore extends AbstractCodeSystemModel<Integer> implements java
     public void setSnomedCore(String snomedCore) {
         this.snomedCore = snomedCore;
     }
+
     public String getDescription() {
         return this.description;
     }
@@ -80,80 +82,80 @@ public class SnomedCore extends AbstractCodeSystemModel<Integer> implements java
 
 
     public String getCode() {
-    	return snomedCore;
+        return snomedCore;
     }
 
     public String getCodingSystem() {
-    	return "SnomedCore";
+        return "SnomedCore";
     }
 
-	public String getConceptStatus() {
-    	return conceptStatus;
+    public String getConceptStatus() {
+        return conceptStatus;
     }
 
-	public void setConceptStatus(String conceptStatus) {
-    	this.conceptStatus = conceptStatus;
+    public void setConceptStatus(String conceptStatus) {
+        this.conceptStatus = conceptStatus;
     }
 
-	public String getUmlsCui() {
-    	return umlsCui;
+    public String getUmlsCui() {
+        return umlsCui;
     }
 
-	public void setUmlsCui(String umlsCui) {
-    	this.umlsCui = umlsCui;
+    public void setUmlsCui(String umlsCui) {
+        this.umlsCui = umlsCui;
     }
 
-	public int getOccurance() {
-    	return occurance;
+    public int getOccurance() {
+        return occurance;
     }
 
-	public void setOccurance(int occurance) {
-    	this.occurance = occurance;
+    public void setOccurance(int occurance) {
+        this.occurance = occurance;
     }
 
-	public double getUsagePercentage() {
-    	return usagePercentage;
+    public double getUsagePercentage() {
+        return usagePercentage;
     }
 
-	public void setUsagePercentage(double usagePercentage) {
-    	this.usagePercentage = usagePercentage;
+    public void setUsagePercentage(double usagePercentage) {
+        this.usagePercentage = usagePercentage;
     }
 
-	public String getFirstInSubset() {
-    	return firstInSubset;
+    public String getFirstInSubset() {
+        return firstInSubset;
     }
 
-	public void setFirstInSubset(String firstInSubset) {
-    	this.firstInSubset = firstInSubset;
+    public void setFirstInSubset(String firstInSubset) {
+        this.firstInSubset = firstInSubset;
     }
 
-	public String getIsRetiredFromSubset() {
-    	return isRetiredFromSubset;
+    public String getIsRetiredFromSubset() {
+        return isRetiredFromSubset;
     }
 
-	public void setIsRetiredFromSubset(String isRetiredFromSubset) {
-    	this.isRetiredFromSubset = isRetiredFromSubset;
+    public void setIsRetiredFromSubset(String isRetiredFromSubset) {
+        this.isRetiredFromSubset = isRetiredFromSubset;
     }
 
-	public String getLastInSubset() {
-    	return lastInSubset;
+    public String getLastInSubset() {
+        return lastInSubset;
     }
 
-	public void setLastInSubset(String lastInSubset) {
-    	this.lastInSubset = lastInSubset;
+    public void setLastInSubset(String lastInSubset) {
+        this.lastInSubset = lastInSubset;
     }
 
-	public String getReplacedBySnomedCid() {
-    	return replacedBySnomedCid;
+    public String getReplacedBySnomedCid() {
+        return replacedBySnomedCid;
     }
 
-	public void setReplacedBySnomedCid(String replacedBySnomedCid) {
-    	this.replacedBySnomedCid = replacedBySnomedCid;
+    public void setReplacedBySnomedCid(String replacedBySnomedCid) {
+        this.replacedBySnomedCid = replacedBySnomedCid;
     }
 
-	@Override
-	public void setCode(String code) {
-		this.setSnomedCore(code);
-	}
+    @Override
+    public void setCode(String code) {
+        this.setSnomedCore(code);
+    }
 
 }

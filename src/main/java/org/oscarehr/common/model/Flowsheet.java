@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,64 +39,64 @@ import javax.persistence.TemporalType;
 @Entity
 public class Flowsheet extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
-	private boolean enabled;
-	private String content;
-	private boolean external;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdDate;
-	
-	public Flowsheet() {
-		
-	}
-	
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private boolean enabled;
+    private String content;
+    private boolean external;
 
-	public String getName() {
-		return name;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Flowsheet() {
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public boolean isExternal() {
-		return external;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setExternal(boolean external) {
-		this.external = external;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	
-	
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public boolean isExternal() {
+        return external;
+    }
+
+    public void setExternal(boolean external) {
+        this.external = external;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+
 }

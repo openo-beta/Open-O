@@ -6,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -42,25 +42,25 @@ public class CtlDocTypeDaoImpl extends AbstractDaoImpl<CtlDocType> implements Ct
         super(CtlDocType.class);
     }
 
-    public void changeDocType(String docType, String module, String status){
+    public void changeDocType(String docType, String module, String status) {
         String sql = "UPDATE CtlDocType SET status =?1 WHERE module =?2 AND doctype =?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1,status);
+        query.setParameter(1, status);
         query.setParameter(2, module);
         query.setParameter(3, docType);
 
         query.executeUpdate();
     }
 
-    public List<CtlDocType> findByStatusAndModule(String[] status, String module){
+    public List<CtlDocType> findByStatusAndModule(String[] status, String module) {
         List<String> result = new ArrayList<String>();
-        for(int x=0;x<status.length;x++) {
+        for (int x = 0; x < status.length; x++) {
             result.add(status[x]);
         }
         return this.findByStatusAndModule(result, module);
     }
 
-    public List<CtlDocType> findByStatusAndModule(List<String> status, String module){
+    public List<CtlDocType> findByStatusAndModule(List<String> status, String module) {
         Query query = entityManager.createQuery("select c from CtlDocType c where c.status in (?1) and c.module=?2");
         query.setParameter(1, status);
         query.setParameter(2, module);
@@ -69,7 +69,7 @@ public class CtlDocTypeDaoImpl extends AbstractDaoImpl<CtlDocType> implements Ct
         return results;
     }
 
-    public List<CtlDocType> findByDocTypeAndModule(String docType, String module){
+    public List<CtlDocType> findByDocTypeAndModule(String docType, String module) {
         Query query = entityManager.createQuery("select c from CtlDocType c where c.docType=?1 and c.module=?2");
         query.setParameter(1, docType);
         query.setParameter(2, module);
@@ -78,7 +78,7 @@ public class CtlDocTypeDaoImpl extends AbstractDaoImpl<CtlDocType> implements Ct
         return results;
     }
 
-    public void addDocType(String docType, String module) {        
+    public void addDocType(String docType, String module) {
         CtlDocType d = new CtlDocType();
         d.setDocType(docType);
         d.setModule(module);
@@ -89,7 +89,7 @@ public class CtlDocTypeDaoImpl extends AbstractDaoImpl<CtlDocType> implements Ct
     public List<String> findModules() {
         Query query = createQuery("SELECT DISTINCT d.module", "d", "");
         List<String> result = new ArrayList<String>();
-        for(Object o : query.getResultList()) {
+        for (Object o : query.getResultList()) {
             result.add(String.valueOf(o));
         }
         return result;

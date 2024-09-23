@@ -24,59 +24,61 @@
 
 --%>
 
-<%@ include file="/casemgmt/taglibs.jsp"%>
+<%@ include file="/casemgmt/taglibs.jsp" %>
 
 <%
-if(session.getValue("user") == null)
-    response.sendRedirect("../logout.htm");
-  String curUser_no;
-  curUser_no = (String) session.getAttribute("user");
-   String tite = (String) request.getAttribute("provider.title");
+    if (session.getValue("user") == null)
+        response.sendRedirect("../logout.htm");
+    String curUser_no;
+    curUser_no = (String) session.getAttribute("user");
+    String tite = (String) request.getAttribute("provider.title");
 
 %>
 <!DOCTYPE html>
-<c:set var="ctx" value="${pageContext.request.contextPath}"	scope="request" />
+<c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <html:html>
-<head>
-<html:base />
-<title><bean-el:message key="${providertitle}" /></title>
+    <head>
+        <html:base/>
+        <title><bean-el:message key="${providertitle}"/></title>
 
         <script src="<c:out value="${ctx}"/>/js/global.js"></script>
-        <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"	></script>
+        <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
         <link href="<c:out value="${ctx}"/>/css/bootstrap.css" rel="stylesheet" type="text/css"><!-- Bootstrap 2.3.1 -->
 
-</head>
+    </head>
 
-<body class="BodyStyle">
+    <body class="BodyStyle">
 
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn"><h4><bean-el:message
-			key="${providermsgPrefs}" /></h4></td>
-		<td class="MainTableTopRowRightColumn"><h4>&nbsp;&nbsp;<bean-el:message
-			key="${providermsgProvider}" /></h4></td>
-	</tr>
-	<tr>
-		<td class="MainTableLeftColumn">&nbsp;</td>
-		<td class="MainTableRightColumn">
-		<%if( request.getAttribute("status") == null ){%> <bean-el:message
-			key="${providermsgEdit}" /> <!--c:out value="${rxDefaultQuantityProperty.value}" /-->
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn"><h4><bean-el:message
+                    key="${providermsgPrefs}"/></h4></td>
+            <td class="MainTableTopRowRightColumn"><h4>&nbsp;&nbsp;<bean-el:message
+                    key="${providermsgProvider}"/></h4></td>
+        </tr>
+        <tr>
+            <td class="MainTableLeftColumn">&nbsp;</td>
+            <td class="MainTableRightColumn">
+                <%if (request.getAttribute("status") == null) {%> <bean-el:message
+                    key="${providermsgEdit}"/> <!--c:out value="${rxDefaultQuantityProperty.value}" /-->
                 <html:form styleId="providerForm" action="/setProviderStaleDate.do">
-			<input type="hidden" name="method" value="<c:out value="${method}"/>">
-			<html:text styleId="numericFormField" property="rxDefaultQuantityProperty.value" />
-				<p id="errorMessage" class="alert alert-danger" style="display: none; color: red;">
-					Invalid input.
-				</p>
-				<br>
-			<input type="submit" value="<bean-el:message key="${providerbtnSubmit}" />" />
-		</html:form> <%}else {%> <div class="alert alert-success" ><bean-el:message key="${providermsgSuccess}" /></div> <br>
-		<%}%>
-		</td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</body>
+                    <input type="hidden" name="method" value="<c:out value="${method}"/>">
+                    <html:text styleId="numericFormField" property="rxDefaultQuantityProperty.value"/>
+                    <p id="errorMessage" class="alert alert-danger" style="display: none; color: red;">
+                        Invalid input.
+                    </p>
+                    <br>
+                    <input type="submit" value="<bean-el:message key="${providerbtnSubmit}" />"/>
+                </html:form> <%} else {%>
+                <div class="alert alert-success"><bean-el:message key="${providermsgSuccess}"/></div>
+                <br>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
+    </body>
 </html:html>

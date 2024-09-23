@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -47,114 +47,114 @@ import oscar.oscarPrevention.PreventionDisplayConfig;
 @Component
 public class PreventionsSummary implements Summary {
 
-	@Autowired
-	private PreventionManager preventionManager;
-	
-	public SummaryTo1 getSummary(LoggedInInfo loggedInInfo,Integer demographicNo,String summaryCode){
-		
-		SummaryTo1 summary = new SummaryTo1("Preventions",0,SummaryTo1.PREVENTIONS);
-		
-		List<SummaryItemTo1> list = summary.getSummaryItem();
-		
-		preventionsList(loggedInInfo, list, demographicNo);
-		
-		return summary;
-	}
-	
+    @Autowired
+    private PreventionManager preventionManager;
 
-	@SuppressWarnings("unchecked")
-	private void preventionsList(LoggedInInfo loggedInInfo,List<SummaryItemTo1> list, Integer demographicNo){
-		
-		String url = "../oscarPrevention/index.jsp?demographic_no="+demographicNo;
-		
-		//saved preventions for demographicNo
-		List<Prevention> preventions = preventionManager.getPreventionsByDemographicNo(loggedInInfo, demographicNo);
-		
-		SummaryItemTo1 summaryItem;
-				
-		oscar.oscarPrevention.Prevention p = PreventionData.getPrevention(loggedInInfo, demographicNo);
+    public SummaryTo1 getSummary(LoggedInInfo loggedInInfo, Integer demographicNo, String summaryCode) {
+
+        SummaryTo1 summary = new SummaryTo1("Preventions", 0, SummaryTo1.PREVENTIONS);
+
+        List<SummaryItemTo1> list = summary.getSummaryItem();
+
+        preventionsList(loggedInInfo, list, demographicNo);
+
+        return summary;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private void preventionsList(LoggedInInfo loggedInInfo, List<SummaryItemTo1> list, Integer demographicNo) {
+
+        String url = "../oscarPrevention/index.jsp?demographic_no=" + demographicNo;
+
+        //saved preventions for demographicNo
+        List<Prevention> preventions = preventionManager.getPreventionsByDemographicNo(loggedInInfo, demographicNo);
+
+        SummaryItemTo1 summaryItem;
+
+        oscar.oscarPrevention.Prevention p = PreventionData.getPrevention(loggedInInfo, demographicNo);
 
         PreventionDS pf = SpringUtils.getBean(PreventionDS.class);
 
-        try{
+        try {
             pf.getMessages(p);
-        }catch(Exception dsException){
+        } catch (Exception dsException) {
             //do nothing for now
         }
-        
+
         //create list of preventions
         PreventionDisplayConfig pdc = PreventionDisplayConfig.getInstance();
-        ArrayList<HashMap<String,String>> prevList = pdc.getPreventions(); 
-        
-        //get warnings from list of preventions for demographicNo
-		@SuppressWarnings("rawtypes")
-		Map warningTable = p.getWarningMsgs();
-				
-		List<String> items = new ArrayList<String>();
+        ArrayList<HashMap<String, String>> prevList = pdc.getPreventions();
 
-		for (int i = 0 ; i < prevList.size(); i++){
-			
-			HashMap<String,String> h = prevList.get(i);
+        //get warnings from list of preventions for demographicNo
+        @SuppressWarnings("rawtypes")
+        Map warningTable = p.getWarningMsgs();
+
+        List<String> items = new ArrayList<String>();
+
+        for (int i = 0; i < prevList.size(); i++) {
+
+            HashMap<String, String> h = prevList.get(i);
             String prevName = h.get("name");
-            ArrayList<Map<String,Object>> alist = PreventionData.getPreventionData(loggedInInfo, prevName, demographicNo);
-            Date demographicDateOfBirth=PreventionData.getDemographicDateOfBirth(loggedInInfo, demographicNo);
-            PreventionData.addRemotePreventions(loggedInInfo, alist, demographicNo,prevName,demographicDateOfBirth);
-            boolean show = pdc.display(loggedInInfo, h, demographicNo.toString(),alist.size());
-            if( show ) {
-              //add warnings right away so they display first
-        	  if( warningTable.containsKey(prevName) ){
-					summaryItem = new SummaryItemTo1(0, prevName, url, "prevention");
-					summaryItem.setIndicatorClass("highlight");
-					summaryItem.setWarning(warningTable.get(prevName).toString());
-					list.add(summaryItem);
-              } else {
-            	  
-            	  if(!isPreventionExist(preventions, prevName)){//don't add to items if data entered already
-                  	items.add(prevName);
-            	  }
-              }
+            ArrayList<Map<String, Object>> alist = PreventionData.getPreventionData(loggedInInfo, prevName, demographicNo);
+            Date demographicDateOfBirth = PreventionData.getDemographicDateOfBirth(loggedInInfo, demographicNo);
+            PreventionData.addRemotePreventions(loggedInInfo, alist, demographicNo, prevName, demographicDateOfBirth);
+            boolean show = pdc.display(loggedInInfo, h, demographicNo.toString(), alist.size());
+            if (show) {
+                //add warnings right away so they display first
+                if (warningTable.containsKey(prevName)) {
+                    summaryItem = new SummaryItemTo1(0, prevName, url, "prevention");
+                    summaryItem.setIndicatorClass("highlight");
+                    summaryItem.setWarning(warningTable.get(prevName).toString());
+                    list.add(summaryItem);
+                } else {
+
+                    if (!isPreventionExist(preventions, prevName)) {//don't add to items if data entered already
+                        items.add(prevName);
+                    }
+                }
 
             }
-		}
-		
-		
-		//add the rest of the items
-        for(int idx = 0; idx < items.size(); ++idx ){
-	        	summaryItem = new SummaryItemTo1(0, items.get(idx),url,"prevention");
-	        	list.add(summaryItem);
         }
 
-		for(Prevention prevention:preventions) {
-			summaryItem = new SummaryItemTo1(prevention.getId(), prevention.getPreventionType(),url,"prevention");
-			summaryItem.setDate(prevention.getPreventionDate());
-		    if( prevention.isRefused() ) {
+
+        //add the rest of the items
+        for (int idx = 0; idx < items.size(); ++idx) {
+            summaryItem = new SummaryItemTo1(0, items.get(idx), url, "prevention");
+            list.add(summaryItem);
+        }
+
+        for (Prevention prevention : preventions) {
+            summaryItem = new SummaryItemTo1(prevention.getId(), prevention.getPreventionType(), url, "prevention");
+            summaryItem.setDate(prevention.getPreventionDate());
+            if (prevention.isRefused()) {
                 summaryItem.setIndicatorClass("refused");
-            }else if( prevention.isIneligible()) {
-            	summaryItem.setIndicatorClass("ineligible");
-            }else if(PreventionData.getExtValue(String.valueOf(prevention.getId()), "result").equals("abnormal")){
-            	summaryItem.setIndicatorClass("abnormal-prev");
-            }else if(PreventionData.getExtValue(String.valueOf(prevention.getId()), "result").equals("pending")){
-                	summaryItem.setIndicatorClass("pending");
+            } else if (prevention.isIneligible()) {
+                summaryItem.setIndicatorClass("ineligible");
+            } else if (PreventionData.getExtValue(String.valueOf(prevention.getId()), "result").equals("abnormal")) {
+                summaryItem.setIndicatorClass("abnormal-prev");
+            } else if (PreventionData.getExtValue(String.valueOf(prevention.getId()), "result").equals("pending")) {
+                summaryItem.setIndicatorClass("pending");
             }
-			
-			list.add(summaryItem);
-		}
-		
-		//sort items
-		//Collections.sort(list, new ChronologicAsc());
-	        
-	}	
-	
-	private boolean isPreventionExist(List<Prevention> preventions, String prevName){
-		
-		for(Prevention prevention:preventions) {
-			if(prevention.getPreventionType().equals(prevName)){
-				return true;
-			}
-		}
-		
-		return false;
-	}
+
+            list.add(summaryItem);
+        }
+
+        //sort items
+        //Collections.sort(list, new ChronologicAsc());
+
+    }
+
+    private boolean isPreventionExist(List<Prevention> preventions, String prevName) {
+
+        for (Prevention prevention : preventions) {
+            if (prevention.getPreventionType().equals(prevName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 	
 	/* @SuppressWarnings("rawtypes")
 	 public class ChronologicAsc implements Comparator {
@@ -174,5 +174,5 @@ public class PreventionsSummary implements Summary {
 				 return -(i1.getDate().compareTo(i2.getDate()));
 		 }
 	 }*/
-	
+
 }

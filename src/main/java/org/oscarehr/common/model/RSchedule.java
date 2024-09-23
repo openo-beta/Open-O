@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,114 +38,114 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="rschedule")
+@Table(name = "rschedule")
 public class RSchedule extends AbstractModel<Integer> {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="provider_no")
-	private String providerNo;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	@Temporal(TemporalType.DATE)
-	private Date sDate;
+    @Temporal(TemporalType.DATE)
+    private Date sDate;
 
-	@Temporal(TemporalType.DATE)
-	private Date eDate;
+    @Temporal(TemporalType.DATE)
+    private Date eDate;
 
-	private String available;
+    private String available;
 
-	@Column(name="day_of_week")
-	private String dayOfWeek;
+    @Column(name = "day_of_week")
+    private String dayOfWeek;
 
-	@Column(name="avail_hour")
-	private String availHour;
+    @Column(name = "avail_hour")
+    private String availHour;
 
-	@Column(name="avail_hourB")
-	private String availHourB;
+    @Column(name = "avail_hourB")
+    private String availHourB;
 
-	private String creator;
+    private String creator;
 
-	private String status;
+    private String status;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public Date getsDate() {
-    	return sDate;
+    public Date getsDate() {
+        return sDate;
     }
 
-	public void setsDate(Date sDate) {
-    	this.sDate = sDate;
+    public void setsDate(Date sDate) {
+        this.sDate = sDate;
     }
 
-	public Date geteDate() {
-    	return eDate;
+    public Date geteDate() {
+        return eDate;
     }
 
-	public void seteDate(Date eDate) {
-    	this.eDate = eDate;
+    public void seteDate(Date eDate) {
+        this.eDate = eDate;
     }
 
-	public String getAvailable() {
-    	return available;
+    public String getAvailable() {
+        return available;
     }
 
-	public void setAvailable(String available) {
-    	this.available = available;
+    public void setAvailable(String available) {
+        this.available = available;
     }
 
-	public String getDayOfWeek() {
-    	return dayOfWeek;
+    public String getDayOfWeek() {
+        return dayOfWeek;
     }
 
-	public void setDayOfWeek(String dayOfWeek) {
-    	this.dayOfWeek = dayOfWeek;
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
-	public String getAvailHour() {
-    	return availHour;
+    public String getAvailHour() {
+        return availHour;
     }
 
-	public void setAvailHour(String availHour) {
-    	this.availHour = availHour;
+    public void setAvailHour(String availHour) {
+        this.availHour = availHour;
     }
 
-	public String getAvailHourB() {
-    	return availHourB;
+    public String getAvailHourB() {
+        return availHourB;
     }
 
-	public void setAvailHourB(String availHourB) {
-    	this.availHourB = availHourB;
+    public void setAvailHourB(String availHourB) {
+        this.availHourB = availHourB;
     }
 
-	public String getCreator() {
-    	return creator;
+    public String getCreator() {
+        return creator;
     }
 
-	public void setCreator(String creator) {
-    	this.creator = creator;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-	public String getStatus() {
-    	return status;
+    public String getStatus() {
+        return status;
     }
 
-	public void setStatus(String status) {
-    	this.status = status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 

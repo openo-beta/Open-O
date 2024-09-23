@@ -31,8 +31,8 @@ public class SubmitEDTTest extends EDTBaseTest {
     @Test
     public void testSubmit_Valid_Claim_File_SUCCESS_IEDTS0001() {
         System.out.println("--------------- testSubmit_Valid_Claim_File_SUCCESS_IEDTS0001 ---------------\n" + "Actual Results:");
-		List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        List<UploadData> uploads = new ArrayList<UploadData>();
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         try {
@@ -49,8 +49,8 @@ public class SubmitEDTTest extends EDTBaseTest {
     @Test
     public void testSubmit_Valid_Stale_Dated_Claim_File_SUCCESS_IEDTS0001() {
         System.out.println("--------------- testSubmit_Valid_Stale_Dated_Claim_File_SUCCESS_IEDTS0001 ---------------\n" + "Actual Results:");
-		List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_STALE_DATED_CLAIMS_FILE, ResourceType.UPLOAD_STALE_DATED_CLAIM_FILE));
+        List<UploadData> uploads = new ArrayList<UploadData>();
+        uploads.add(createUploadData(FilePath.MCEDT_STALE_DATED_CLAIMS_FILE, ResourceType.UPLOAD_STALE_DATED_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         try {
@@ -68,7 +68,7 @@ public class SubmitEDTTest extends EDTBaseTest {
     public void testSubmit_Valid_OBEC_File_SUCCESS_IEDTS0001() {
         System.out.println("--------------- testSubmit_Valid_OBEC_File_SUCCESS_IEDTS0001 ---------------\n" + "Actual Results:");
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         try {
@@ -86,7 +86,7 @@ public class SubmitEDTTest extends EDTBaseTest {
     public void testSubmit_Valid_Claim_File_And_Stale_Dated_Claim_File_And_OBEC_File_SUCCESS_IEDTS0001() {
         System.out.println("--------------- testSubmit_Valid_Claim_File_And_Stale_Dated_Claim_File_And_OBEC_File_SUCCESS_IEDTS0001 ---------------\n" + "Actual Results:");
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         uploads.add(createUploadData(FilePath.MCEDT_STALE_DATED_CLAIMS_FILE, ResourceType.UPLOAD_STALE_DATED_CLAIM_FILE));
         uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
 
@@ -107,7 +107,7 @@ public class SubmitEDTTest extends EDTBaseTest {
     public void testSubmit_Five_Valid_Claim_File_SUCCESS_IEDTS0001() {
         System.out.println("--------------- testSubmit_Five_Valid_Claim_File_SUCCESS_IEDTS0001 ---------------\n" + "Actual Results:");
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
@@ -133,8 +133,8 @@ public class SubmitEDTTest extends EDTBaseTest {
     @Test
     public void testSubmit_With_Valid_ResourceID_And_Invalid_MOHID_FAILED_EEDTS0012() {
         System.out.println("--------------- testSubmit_With_Valid_ResourceID_And_Invalid_MOHID_FAILED_EEDTS0012 ---------------\n" + "Actual Results:");
-		List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        List<UploadData> uploads = new ArrayList<UploadData>();
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         try {
@@ -165,7 +165,7 @@ public class SubmitEDTTest extends EDTBaseTest {
 
     /*
      * $$$$$$: The Submit method expects a BigInteger for the resourceID parameter, so I am getting an error: NumberFormat for input string: "$$$$$$".
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -186,9 +186,9 @@ public class SubmitEDTTest extends EDTBaseTest {
     }
 
     /*
-     * Oscar dependency is showing an error: Failed to Submit: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}submit of type {http://edt.health.ontario.ca/}submit, 
+     * Oscar dependency is showing an error: Failed to Submit: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}submit of type {http://edt.health.ontario.ca/}submit,
      * found </ns5> (in namespace http://edt.health.ontario.ca/), but the next item should be resourceIDs.
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -213,7 +213,7 @@ public class SubmitEDTTest extends EDTBaseTest {
     public void testUpload_Valid_File_Then_Submit_With_Valid_ResourceID_And_Invalid_MOHID_FAILED_EEDTS0054() {
         System.out.println("--------------- testUpload_Valid_File_Then_Submit_With_Valid_ResourceID_And_Invalid_MOHID_FAILED_EEDTS0054 ---------------\n" + "Actual Results:");
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         try {
@@ -231,8 +231,8 @@ public class SubmitEDTTest extends EDTBaseTest {
     @Test
     public void testSubmit_Already_Submitted_File_FAILED_EEDTS0055() {
         System.out.println("--------------- testSubmit_Already_Submitted_File_FAILED_EEDTS0055 ---------------\n" + "Actual Results:");
-		List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        List<UploadData> uploads = new ArrayList<UploadData>();
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         try {

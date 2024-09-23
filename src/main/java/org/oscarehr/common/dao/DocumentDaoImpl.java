@@ -6,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -81,7 +81,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findCtlDocsAndDocsByModuleDocTypeAndModuleId(Module module, DocumentType docType,
-            Integer moduleId) {
+                                                                       Integer moduleId) {
         String sql = "FROM CtlDocument c, Document d " +
                 "WHERE c.id.module = :module " +
                 "AND c.id.documentNo = d.documentNo " +
@@ -160,7 +160,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findCtlDocsAndDocsByModuleCreatorResponsibleAndDates(Module module, String providerNo,
-            String responsible, Date from, Date to, boolean unmatchedDemographics) {
+                                                                               String responsible, Date from, Date to, boolean unmatchedDemographics) {
         String sql = "FROM Document d, CtlDocument c " +
                 "WHERE c.documentNo = d.documentNo " +
                 "AND c.module= :module " +
@@ -268,7 +268,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     /**
      * Finds all documents for the specified demographic id
-     * 
+     *
      * @param demoNo
      */
     @Override
@@ -291,10 +291,10 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     /**
      * @Deprecated
-     * 
+     *
      *             Chop-chop. Please don't ask what this spagehtti does, better
      *             don't use it.
-     * 
+     *
      * @param module
      * @param moduleid
      * @param docType
@@ -309,7 +309,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
     @Deprecated
     @Override
     public List<Object[]> findDocuments(String module, String moduleid, String docType, boolean includePublic,
-            boolean includeDeleted, boolean includeActive, EDocSort sort, Date since) {
+                                        boolean includeDeleted, boolean includeActive, EDocSort sort, Date since) {
         Map<String, Object> params = new HashMap<String, Object>();
 
         StringBuilder buf = new StringBuilder("SELECT DISTINCT c, d " +
@@ -424,7 +424,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
      */
     @Override
     public List<Document> findByProgramProviderDemographicUpdateDate(Integer programId, String providerNo,
-            Integer demographicId, Date updatedAfterThisDateExclusive, int itemsToReturn) {
+                                                                     Integer demographicId, Date updatedAfterThisDateExclusive, int itemsToReturn) {
         String sql = "select d from " + modelClass.getSimpleName()
                 + " d, CtlDocument c where c.id.documentNo=d.documentNo and c.id.module='demographic' AND c.id.moduleId = :demographicId and (d.programId=:programId or d.programId is null or d.programId=-1) and d.doccreator=:providerNo and d.updatedatetime>:updatedAfterThisDateExclusive order by d.updatedatetime";
 

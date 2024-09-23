@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,11 +46,11 @@ import org.oscarehr.util.MiscUtils;
  * Temporary and will be refactored to include the other billing systems. And probably more of a centralized rule repository.
  * @author jay
  */
-public class StudyGuidelines  {
+public class StudyGuidelines {
 
     private static Logger log = MiscUtils.getLogger();
 
-    private List<DSGuideline> studyGuideLines = null ;
+    private List<DSGuideline> studyGuideLines = null;
 
 
     static StudyGuidelines studyGuideLine = new StudyGuidelines();
@@ -61,15 +61,15 @@ public class StudyGuidelines  {
      * Creates a new instance of MeasurementTemplateFlowSheetConfig
      */
     private StudyGuidelines() {
-    	studyFilesMap = new HashMap<String, String>();
-    	studyFilesMap.put(Study.MYMEDS, "myMEDS.xml");
+        studyFilesMap = new HashMap<String, String>();
+        studyFilesMap.put(Study.MYMEDS, "myMEDS.xml");
     }
 
     static public StudyGuidelines getInstance(String study) {
-        if (studyGuideLine.studyGuideLines == null) {                
-               studyGuideLine.loadGuidelines(study);
+        if (studyGuideLine.studyGuideLines == null) {
+            studyGuideLine.loadGuidelines(study);
         }
-        
+
         return studyGuideLine;
     }
 
@@ -84,21 +84,21 @@ public class StudyGuidelines  {
         DSGuideline guideline = null;
         StringBuilder sb = new StringBuilder();
         String studyFileName = studyFilesMap.get(study);
-        try{
-        	String streamToGet = "org/oscarehr/study/decisionSupport/"+studyFileName;
-            log.debug("Trying to get "+streamToGet);
+        try {
+            String streamToGet = "org/oscarehr/study/decisionSupport/" + studyFileName;
+            log.debug("Trying to get " + streamToGet);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(streamToGet)));
             String str;
             while ((str = in.readLine()) != null) {
-            	sb.append(str+"\n");
+                sb.append(str + "\n");
             }
             in.close();
             DSGuidelineFactory dsFactory = new DSGuidelineFactory();
-            log.debug("xml "+sb.toString());
+            log.debug("xml " + sb.toString());
             guideline = dsFactory.createGuidelineFromXml(sb.toString());
             studyGuideLines.add(guideline);
-        }catch(Exception e){
-        	MiscUtils.getLogger().error("Error", e);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
         }
     }
 
@@ -107,21 +107,19 @@ public class StudyGuidelines  {
         log.debug("passed in provider: " + providerNo + " demographicNo " + demographicNo + " dynamicArgs size " + dynamicArgs.size());
         log.info("Decision Support 'evaluateAndGetConsequences' has been called, reading " + studyGuideLines.size() + " for this provider");
         ArrayList<DSConsequence> allResultingConsequences = new ArrayList<DSConsequence>();
-        for (DSGuideline dsGuideline: studyGuideLines) {
+        for (DSGuideline dsGuideline : studyGuideLines) {
             try {
                 List<DSConsequence> newConsequences = dsGuideline.evaluate(loggedInInfo, demographicNo, providerNo, dynamicArgs);
                 if (newConsequences != null) {
                     allResultingConsequences.addAll(newConsequences);
                 }
             } catch (DecisionSupportException dse) {
-                log.error("Failed to evaluate the patient against guideline, skipping guideline uuid: " , dse);
+                log.error("Failed to evaluate the patient against guideline, skipping guideline uuid: ", dse);
             }
         }
         log.info("Decision Support 'evaluateAndGetConsequences' finished, returing " + allResultingConsequences.size() + " consequences");
         return allResultingConsequences;
     }
-
-
 
 
 }

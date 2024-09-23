@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,200 +33,200 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.oscarehr.common.model.Tickler;
 
-@XmlRootElement(name="tickler")
+@XmlRootElement(name = "tickler")
 public class TicklerTo1 implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-	public static enum STATUS {
+
+    public static enum STATUS {
         A, C, D
-	}
-	
-	
-	private Integer id;
-	
-	private Integer demographicNo;
-	
-	private Integer programId;
-	
-	private String message;
-	
-	private Tickler.STATUS status;
-	
-	private Date updateDate ;
-	
-	private Date serviceDate;
-	
-	private String creator;
-	
-	private Tickler.PRIORITY priority ;
-	
-	private String taskAssignedTo;
+    }
 
-	//private Set<TicklerUpdate> updates = new HashSet<TicklerUpdate>();
-	
-	//private Set<TicklerComment> comments = new HashSet<TicklerComment>();
-	
-	private String demographicName;
-	  
-	private String creatorName;
-	   
-	private String taskAssignedToName;
-	   
-	private String statusName;
-	   
-	private List<TicklerLinkTo1> ticklerLinks = new ArrayList<TicklerLinkTo1>();
-	
-	private List<TicklerUpdateTo1> ticklerUpdates = new ArrayList<TicklerUpdateTo1>();
-	
-	private List<TicklerCommentTo1> ticklerComments = new ArrayList<TicklerCommentTo1>();
-	
-	private ProgramTo1 program;
-	
-	
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private Integer id;
 
-	public Integer getDemographicNo() {
-		return demographicNo;
-	}
+    private Integer demographicNo;
 
-	public void setDemographicNo(Integer demographicNo) {
-		this.demographicNo = demographicNo;
-	}
+    private Integer programId;
 
-	public Integer getProgramId() {
-		return programId;
-	}
+    private String message;
 
-	public void setProgramId(Integer programId) {
-		this.programId = programId;
-	}
+    private Tickler.STATUS status;
 
-	public String getMessage() {
-		return message;
-	}
+    private Date updateDate;
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    private Date serviceDate;
 
-	public Tickler.STATUS getStatus() {
-		return status;
-	}
+    private String creator;
 
-	public void setStatus(Tickler.STATUS status) {
-		this.status = status;
-	}
+    private Tickler.PRIORITY priority;
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    private String taskAssignedTo;
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    //private Set<TicklerUpdate> updates = new HashSet<TicklerUpdate>();
 
-	public Date getServiceDate() {
-		return serviceDate;
-	}
+    //private Set<TicklerComment> comments = new HashSet<TicklerComment>();
 
-	public void setServiceDate(Date serviceDate) {
-		this.serviceDate = serviceDate;
-	}
+    private String demographicName;
 
-	public String getCreator() {
-		return creator;
-	}
+    private String creatorName;
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    private String taskAssignedToName;
 
-	public Tickler.PRIORITY getPriority() {
-		return priority;
-	}
+    private String statusName;
 
-	public void setPriority(Tickler.PRIORITY priority) {
-		this.priority = priority;
-	}
+    private List<TicklerLinkTo1> ticklerLinks = new ArrayList<TicklerLinkTo1>();
 
-	public String getTaskAssignedTo() {
-		return taskAssignedTo;
-	}
+    private List<TicklerUpdateTo1> ticklerUpdates = new ArrayList<TicklerUpdateTo1>();
 
-	public void setTaskAssignedTo(String taskAssignedTo) {
-		this.taskAssignedTo = taskAssignedTo;
-	}
+    private List<TicklerCommentTo1> ticklerComments = new ArrayList<TicklerCommentTo1>();
 
-	public String getDemographicName() {
-		return demographicName;
-	}
+    private ProgramTo1 program;
 
-	public void setDemographicName(String demographicName) {
-		this.demographicName = demographicName;
-	}
 
-	public String getCreatorName() {
-		return creatorName;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setCreatorName(String creatorName) {
-		this.creatorName = creatorName;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getTaskAssignedToName() {
-		return taskAssignedToName;
-	}
+    public Integer getDemographicNo() {
+        return demographicNo;
+    }
 
-	public void setTaskAssignedToName(String taskAssignedToName) {
-		this.taskAssignedToName = taskAssignedToName;
-	}
+    public void setDemographicNo(Integer demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-	public String getStatusName() {
-		return statusName;
-	}
+    public Integer getProgramId() {
+        return programId;
+    }
 
-	public void setStatusName(String statusName) {
-		this.statusName = statusName;
-	}
+    public void setProgramId(Integer programId) {
+        this.programId = programId;
+    }
 
-	public List<TicklerLinkTo1> getTicklerLinks() {
-		return ticklerLinks;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setTicklerLinks(List<TicklerLinkTo1> ticklerLinks) {
-		this.ticklerLinks = ticklerLinks;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public List<TicklerUpdateTo1> getTicklerUpdates() {
-		return ticklerUpdates;
-	}
+    public Tickler.STATUS getStatus() {
+        return status;
+    }
 
-	public void setTicklerUpdates(List<TicklerUpdateTo1> ticklerUpdates) {
-		this.ticklerUpdates = ticklerUpdates;
-	}
+    public void setStatus(Tickler.STATUS status) {
+        this.status = status;
+    }
 
-	public List<TicklerCommentTo1> getTicklerComments() {
-		return ticklerComments;
-	}
+    public Date getUpdateDate() {
+        return updateDate;
+    }
 
-	public void setTicklerComments(List<TicklerCommentTo1> ticklerComments) {
-		this.ticklerComments = ticklerComments;
-	}
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 
-	public ProgramTo1 getProgram() {
-		return program;
-	}
+    public Date getServiceDate() {
+        return serviceDate;
+    }
 
-	public void setProgram(ProgramTo1 program) {
-		this.program = program;
-	}
-	
-	
+    public void setServiceDate(Date serviceDate) {
+        this.serviceDate = serviceDate;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Tickler.PRIORITY getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Tickler.PRIORITY priority) {
+        this.priority = priority;
+    }
+
+    public String getTaskAssignedTo() {
+        return taskAssignedTo;
+    }
+
+    public void setTaskAssignedTo(String taskAssignedTo) {
+        this.taskAssignedTo = taskAssignedTo;
+    }
+
+    public String getDemographicName() {
+        return demographicName;
+    }
+
+    public void setDemographicName(String demographicName) {
+        this.demographicName = demographicName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String getTaskAssignedToName() {
+        return taskAssignedToName;
+    }
+
+    public void setTaskAssignedToName(String taskAssignedToName) {
+        this.taskAssignedToName = taskAssignedToName;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public List<TicklerLinkTo1> getTicklerLinks() {
+        return ticklerLinks;
+    }
+
+    public void setTicklerLinks(List<TicklerLinkTo1> ticklerLinks) {
+        this.ticklerLinks = ticklerLinks;
+    }
+
+    public List<TicklerUpdateTo1> getTicklerUpdates() {
+        return ticklerUpdates;
+    }
+
+    public void setTicklerUpdates(List<TicklerUpdateTo1> ticklerUpdates) {
+        this.ticklerUpdates = ticklerUpdates;
+    }
+
+    public List<TicklerCommentTo1> getTicklerComments() {
+        return ticklerComments;
+    }
+
+    public void setTicklerComments(List<TicklerCommentTo1> ticklerComments) {
+        this.ticklerComments = ticklerComments;
+    }
+
+    public ProgramTo1 getProgram() {
+        return program;
+    }
+
+    public void setProgram(ProgramTo1 program) {
+        this.program = program;
+    }
+
+
 }

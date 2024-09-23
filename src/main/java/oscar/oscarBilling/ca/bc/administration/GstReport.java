@@ -21,7 +21,7 @@ import java.util.Vector;
 
 public class GstReport {
 
-    public Vector<Properties> getGST(LoggedInInfo loggedInInfo, String[] providerNos, String startDate, String endDate)  {
+    public Vector<Properties> getGST(LoggedInInfo loggedInInfo, String[] providerNos, String startDate, String endDate) {
         Properties props;
         Vector<Properties> list = new Vector<Properties>();
         BillingDao dao = SpringUtils.getBean(BillingDao.class);
@@ -40,7 +40,7 @@ public class GstReport {
                 props.setProperty("date", ConversionUtils.toDateString(b.getBillingDate()));
                 props.setProperty("demographic_no", "" + bm.getDemographicNo());
 
-                Demographic demo = demographicManager.getDemographic(loggedInInfo,bm.getDemographicNo());
+                Demographic demo = demographicManager.getDemographic(loggedInInfo, bm.getDemographicNo());
                 if (demo != null) {
                     props.setProperty("name", demo.getFirstName() + " " + demo.getLastName());
                 }

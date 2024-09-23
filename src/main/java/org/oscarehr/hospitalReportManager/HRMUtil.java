@@ -1,7 +1,7 @@
 //CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -34,327 +34,323 @@ import oscar.util.StringUtils;
 
 public class HRMUtil {
 
-	private static final Logger logger = MiscUtils.getLogger();
+    private static final Logger logger = MiscUtils.getLogger();
 
-	public static final String DATE = "time_received";
-	public static final String TYPE = " report_type";
+    public static final String DATE = "time_received";
+    public static final String TYPE = " report_type";
 
-	private static HRMDocumentDao hrmDocumentDao = (HRMDocumentDao) SpringUtils.getBean(HRMDocumentDao.class);
-	private static HRMDocumentToDemographicDao hrmDocumentToDemographicDao = (HRMDocumentToDemographicDao) SpringUtils.getBean(HRMDocumentToDemographicDao.class);
-	private static HRMSubClassDao hrmSubClassDao = (HRMSubClassDao) SpringUtils.getBean(HRMSubClassDao.class);
-	private static HRMDocumentSubClassDao hrmDocumentSubClassDao = (HRMDocumentSubClassDao) SpringUtils.getBean(HRMDocumentSubClassDao.class);
-	private static HRMCategoryDao hrmCategoryDao = SpringUtils.getBean(HRMCategoryDao.class);
-	private static final NioFileManager nioFileManager = SpringUtils.getBean(NioFileManager.class);
-	private static final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private static HRMDocumentDao hrmDocumentDao = (HRMDocumentDao) SpringUtils.getBean(HRMDocumentDao.class);
+    private static HRMDocumentToDemographicDao hrmDocumentToDemographicDao = (HRMDocumentToDemographicDao) SpringUtils.getBean(HRMDocumentToDemographicDao.class);
+    private static HRMSubClassDao hrmSubClassDao = (HRMSubClassDao) SpringUtils.getBean(HRMSubClassDao.class);
+    private static HRMDocumentSubClassDao hrmDocumentSubClassDao = (HRMDocumentSubClassDao) SpringUtils.getBean(HRMDocumentSubClassDao.class);
+    private static HRMCategoryDao hrmCategoryDao = SpringUtils.getBean(HRMCategoryDao.class);
+    private static final NioFileManager nioFileManager = SpringUtils.getBean(NioFileManager.class);
+    private static final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
 
-	public HRMUtil() {
+    public HRMUtil() {
 
-	}
+    }
 
-	/*
-	 * Return information about each HRM document associated with a particular demographic
-	 * Because multiple versions of a single HRM document can be received, 
-	 */
-	public static ArrayList<HashMap<String, ? extends Object>> listHRMDocuments(LoggedInInfo loggedInInfo, String sortBy, boolean sortAsc, String demographicNo,boolean filterDuplicates){
+    /*
+     * Return information about each HRM document associated with a particular demographic
+     * Because multiple versions of a single HRM document can be received,
+     */
+    public static ArrayList<HashMap<String, ? extends Object>> listHRMDocuments(LoggedInInfo loggedInInfo, String sortBy, boolean sortAsc, String demographicNo, boolean filterDuplicates) {
 
-		ArrayList<HashMap<String, ? extends Object>> hrmdocslist = new ArrayList<HashMap<String, ?>>();
+        ArrayList<HashMap<String, ? extends Object>> hrmdocslist = new ArrayList<HashMap<String, ?>>();
 
-		//get a list of all HRM documents linked to a particular demographic
-		List<HRMDocumentToDemographic> hrmDocResultsDemographic = hrmDocumentToDemographicDao.findByDemographicNo(demographicNo);
-		List<HRMDocument> hrmDocumentsAll = new LinkedList<HRMDocument>();
-		HashMap<String,ArrayList<Integer>> duplicateLabIds=new HashMap<String, ArrayList<Integer>>();
+        //get a list of all HRM documents linked to a particular demographic
+        List<HRMDocumentToDemographic> hrmDocResultsDemographic = hrmDocumentToDemographicDao.findByDemographicNo(demographicNo);
+        List<HRMDocument> hrmDocumentsAll = new LinkedList<HRMDocument>();
+        HashMap<String, ArrayList<Integer>> duplicateLabIds = new HashMap<String, ArrayList<Integer>>();
 
-		//multiple versions of essentially the same HRM document are possible
-		//create a list of documents to display that include / exclude duplicates based on filterDuplicates parameter
-		HashMap<String,HRMDocument> docsToDisplay = null;
-		if (filterDuplicates){			
-			docsToDisplay=filterDuplicates(loggedInInfo, hrmDocResultsDemographic, duplicateLabIds);
-		} else {			
-			docsToDisplay=noFilterDuplicates(loggedInInfo, hrmDocResultsDemographic);
-		}
-		
-		//iterate over this set to generate a hashmap of summary information for each HRM document
-		//(e.g. id, time received, type, status, etc...)
-		//the set of HRM documents should not be changed, this is simply generating the most appropriate summary in the circumstances
-		for (Map.Entry<String, HRMDocument> entry : docsToDisplay.entrySet()) {
-			String duplicateKey=entry.getKey();
-			HRMDocument hrmDocument = entry.getValue();
-			HRMReport hrmReport = HRMReportParser.parseReport(loggedInInfo, hrmDocument.getReportFile());
-			if (hrmReport == null) { continue; }
+        //multiple versions of essentially the same HRM document are possible
+        //create a list of documents to display that include / exclude duplicates based on filterDuplicates parameter
+        HashMap<String, HRMDocument> docsToDisplay = null;
+        if (filterDuplicates) {
+            docsToDisplay = filterDuplicates(loggedInInfo, hrmDocResultsDemographic, duplicateLabIds);
+        } else {
+            docsToDisplay = noFilterDuplicates(loggedInInfo, hrmDocResultsDemographic);
+        }
 
-			String categoryName = "";
-			if(hrmDocument.getHrmCategoryId()!= null) {
-				HRMCategory category = hrmCategoryDao.find(hrmDocument.getHrmCategoryId());
-				categoryName = category.getCategoryName();
-			}
+        //iterate over this set to generate a hashmap of summary information for each HRM document
+        //(e.g. id, time received, type, status, etc...)
+        //the set of HRM documents should not be changed, this is simply generating the most appropriate summary in the circumstances
+        for (Map.Entry<String, HRMDocument> entry : docsToDisplay.entrySet()) {
+            String duplicateKey = entry.getKey();
+            HRMDocument hrmDocument = entry.getValue();
+            HRMReport hrmReport = HRMReportParser.parseReport(loggedInInfo, hrmDocument.getReportFile());
+            if (hrmReport == null) {
+                continue;
+            }
 
-			String dispSubClass = "";
-			HRMSubClass hrmSubClass;
-			List<HRMDocumentSubClass> subClassList = hrmDocumentSubClassDao.getSubClassesByDocumentId(hrmDocument.getId());
-			if (hrmReport.getFirstReportClass().equalsIgnoreCase("Diagnostic Imaging Report") || hrmReport.getFirstReportClass().equalsIgnoreCase("Cardio Respiratory Report")) {
-				//Get first sub class to display on eChart
-				if (subClassList != null && subClassList.size() > 0) {
-					HRMDocumentSubClass firstSubClass = subClassList.get(0);
-					hrmSubClass = hrmSubClassDao.findApplicableSubClassMapping(hrmReport.getFirstReportClass(), firstSubClass.getSubClass(), firstSubClass.getSubClassMnemonic(), hrmReport.getSendingFacilityId());
-					dispSubClass = hrmSubClass != null ? hrmSubClass.getSubClassDescription() : "";
-				}
+            String categoryName = "";
+            if (hrmDocument.getHrmCategoryId() != null) {
+                HRMCategory category = hrmCategoryDao.find(hrmDocument.getHrmCategoryId());
+                categoryName = category.getCategoryName();
+            }
 
-				if (StringUtils.isNullOrEmpty(dispSubClass) && hrmReport.getAccompanyingSubclassList().size() > 0){
-					// if sub class doesn't exist, display the accompanying subclass
-					dispSubClass = hrmReport.getFirstAccompanyingSubClass();
-				}
-			} else {
-				//Medical Records Report
-				String[] reportSubClass = hrmReport.getFirstReportSubClass() != null ? hrmReport.getFirstReportSubClass().split("\\^") : null;
-				if (reportSubClass != null && reportSubClass.length > 1) {
-					dispSubClass = reportSubClass[1];
-				}
-			}
+            String dispSubClass = "";
+            HRMSubClass hrmSubClass;
+            List<HRMDocumentSubClass> subClassList = hrmDocumentSubClassDao.getSubClassesByDocumentId(hrmDocument.getId());
+            if (hrmReport.getFirstReportClass().equalsIgnoreCase("Diagnostic Imaging Report") || hrmReport.getFirstReportClass().equalsIgnoreCase("Cardio Respiratory Report")) {
+                //Get first sub class to display on eChart
+                if (subClassList != null && subClassList.size() > 0) {
+                    HRMDocumentSubClass firstSubClass = subClassList.get(0);
+                    hrmSubClass = hrmSubClassDao.findApplicableSubClassMapping(hrmReport.getFirstReportClass(), firstSubClass.getSubClass(), firstSubClass.getSubClassMnemonic(), hrmReport.getSendingFacilityId());
+                    dispSubClass = hrmSubClass != null ? hrmSubClass.getSubClassDescription() : "";
+                }
 
-			String reportDate = "";
-			if (hrmDocument.getReportDate() != null) { reportDate = hrmDocument.getReportDate().toString(); }
+                if (StringUtils.isNullOrEmpty(dispSubClass) && hrmReport.getAccompanyingSubclassList().size() > 0) {
+                    // if sub class doesn't exist, display the accompanying subclass
+                    dispSubClass = hrmReport.getFirstAccompanyingSubClass();
+                }
+            } else {
+                //Medical Records Report
+                String[] reportSubClass = hrmReport.getFirstReportSubClass() != null ? hrmReport.getFirstReportSubClass().split("\\^") : null;
+                if (reportSubClass != null && reportSubClass.length > 1) {
+                    dispSubClass = reportSubClass[1];
+                }
+            }
 
-			String displayHRMDocumentName = getHRMDocumentDisplayName(hrmDocument.getDescription(), dispSubClass, hrmDocument.getReportType(), hrmDocument.getReportStatus());
+            String reportDate = "";
+            if (hrmDocument.getReportDate() != null) {
+                reportDate = hrmDocument.getReportDate().toString();
+            }
 
-			HashMap<String, Object> curht = new HashMap<String, Object>();
-			curht.put("id", hrmDocument.getId());
-			curht.put("time_received", hrmDocument.getTimeReceived().toString());
-			curht.put("report_type", hrmDocument.getReportType());
-			curht.put("report_status", hrmDocument.getReportStatus());
-			curht.put("report_date", reportDate);
-			curht.put("category", categoryName);
-			curht.put("description", hrmDocument.getDescription());
-			curht.put("class_subclass", dispSubClass);
-			curht.put("name", displayHRMDocumentName);
+            String displayHRMDocumentName = getHRMDocumentDisplayName(hrmDocument.getDescription(), dispSubClass, hrmDocument.getReportType(), hrmDocument.getReportStatus());
 
-			if (filterDuplicates){
-				StringBuilder duplicateLabIdQueryString=new StringBuilder();
-				ArrayList<Integer> duplicateIdList=duplicateLabIds.get(duplicateKey);
-				if (duplicateIdList!=null)
-				{
-					for (Integer duplicateLabIdTemp : duplicateIdList)
-					{
-						if (duplicateLabIdQueryString.length()>0) duplicateLabIdQueryString.append(',');
-						duplicateLabIdQueryString.append(duplicateLabIdTemp);
-					}
-				}
-				curht.put("duplicateLabIds", duplicateLabIdQueryString.toString());
-			}			
+            HashMap<String, Object> curht = new HashMap<String, Object>();
+            curht.put("id", hrmDocument.getId());
+            curht.put("time_received", hrmDocument.getTimeReceived().toString());
+            curht.put("report_type", hrmDocument.getReportType());
+            curht.put("report_status", hrmDocument.getReportStatus());
+            curht.put("report_date", reportDate);
+            curht.put("category", categoryName);
+            curht.put("description", hrmDocument.getDescription());
+            curht.put("class_subclass", dispSubClass);
+            curht.put("name", displayHRMDocumentName);
 
-			hrmdocslist.add(curht);
-			hrmDocumentsAll.add(hrmDocument);
-		}
+            if (filterDuplicates) {
+                StringBuilder duplicateLabIdQueryString = new StringBuilder();
+                ArrayList<Integer> duplicateIdList = duplicateLabIds.get(duplicateKey);
+                if (duplicateIdList != null) {
+                    for (Integer duplicateLabIdTemp : duplicateIdList) {
+                        if (duplicateLabIdQueryString.length() > 0) duplicateLabIdQueryString.append(',');
+                        duplicateLabIdQueryString.append(duplicateLabIdTemp);
+                    }
+                }
+                curht.put("duplicateLabIds", duplicateLabIdQueryString.toString());
+            }
 
-		if("report_name".equals(sortBy) ){
-			Collections.sort(hrmdocslist,new Comparator<HashMap<String, ? extends Object>>() {
-				public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
-					return ((String)o1.get("report_type")).compareTo((String)o2.get("report_type"));
-				}
-			});
-		} else if("report_date".equals(sortBy) ){
-			Collections.sort(hrmdocslist,new Comparator<HashMap<String, ? extends Object>>() {
-				public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
-					if (((String)o1.get("report_date")).equals((String)o2.get("report_date"))){
-						//if sorting by report date, use the time received as a secondary sort if the report dates are equal
-						return ((String)o1.get("time_received")).compareTo((String)o2.get("time_received"));
-					}
-					return ((String)o1.get("report_date")).compareTo((String)o2.get("report_date"));
-				}
-			});
-		} else if("time_received".equals(sortBy) ){
-			Collections.sort(hrmdocslist,new Comparator<HashMap<String, ? extends Object>>() {
-				public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
-					if (((String)o1.get("time_received")).equals((String)o2.get("time_received"))){
-						//if sorting by time received, use the report date as a secondary sort if the time received are equal
-						return ((String)o1.get("report_date")).compareTo((String)o2.get("report_date"));
-					}
-					return ((String)o1.get("time_received")).compareTo((String)o2.get("time_received"));
-				}
-			});
-		} else if("category".equals(sortBy) ){
-			Collections.sort(hrmdocslist,new Comparator<HashMap<String, ? extends Object>>() {
-				public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
-					return ((String)o1.get("category")).compareTo((String)o2.get("category"));
-				}
-			});
-		}
+            hrmdocslist.add(curht);
+            hrmDocumentsAll.add(hrmDocument);
+        }
 
-		if(!sortAsc) {
-			Collections.reverse(hrmdocslist);
-		}
+        if ("report_name".equals(sortBy)) {
+            Collections.sort(hrmdocslist, new Comparator<HashMap<String, ? extends Object>>() {
+                public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
+                    return ((String) o1.get("report_type")).compareTo((String) o2.get("report_type"));
+                }
+            });
+        } else if ("report_date".equals(sortBy)) {
+            Collections.sort(hrmdocslist, new Comparator<HashMap<String, ? extends Object>>() {
+                public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
+                    if (((String) o1.get("report_date")).equals((String) o2.get("report_date"))) {
+                        //if sorting by report date, use the time received as a secondary sort if the report dates are equal
+                        return ((String) o1.get("time_received")).compareTo((String) o2.get("time_received"));
+                    }
+                    return ((String) o1.get("report_date")).compareTo((String) o2.get("report_date"));
+                }
+            });
+        } else if ("time_received".equals(sortBy)) {
+            Collections.sort(hrmdocslist, new Comparator<HashMap<String, ? extends Object>>() {
+                public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
+                    if (((String) o1.get("time_received")).equals((String) o2.get("time_received"))) {
+                        //if sorting by time received, use the report date as a secondary sort if the time received are equal
+                        return ((String) o1.get("report_date")).compareTo((String) o2.get("report_date"));
+                    }
+                    return ((String) o1.get("time_received")).compareTo((String) o2.get("time_received"));
+                }
+            });
+        } else if ("category".equals(sortBy)) {
+            Collections.sort(hrmdocslist, new Comparator<HashMap<String, ? extends Object>>() {
+                public int compare(HashMap<String, ? extends Object> o1, HashMap<String, ? extends Object> o2) {
+                    return ((String) o1.get("category")).compareTo((String) o2.get("category"));
+                }
+            });
+        }
 
-		return hrmdocslist;
+        if (!sortAsc) {
+            Collections.reverse(hrmdocslist);
+        }
 
-	}
+        return hrmdocslist;
 
-	private static HashMap<String,HRMDocument> noFilterDuplicates(LoggedInInfo loggedInInfo, List<HRMDocumentToDemographic> hrmDocumentToDemographics) {
-		HashMap<String,HRMDocument> docsToDisplay = new HashMap<String,HRMDocument>();	
-		for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographics){
-			int id = hrmDocumentToDemographic.getHrmDocumentId() != null ? hrmDocumentToDemographic.getHrmDocumentId() : 0;
-			List<HRMDocument> hrmDocuments = hrmDocumentDao.findById(id);
-			for (HRMDocument hrmDocument : hrmDocuments){
-				docsToDisplay.put(Integer.toString(id),hrmDocument);				
-			}
-		}
-		return(docsToDisplay);
-	}
+    }
 
-	
-	private static HashMap<String,HRMDocument> filterDuplicates(LoggedInInfo loggedInInfo, List<HRMDocumentToDemographic> hrmDocumentToDemographics, HashMap<String,ArrayList<Integer>> duplicateLabIds) {
+    private static HashMap<String, HRMDocument> noFilterDuplicates(LoggedInInfo loggedInInfo, List<HRMDocumentToDemographic> hrmDocumentToDemographics) {
+        HashMap<String, HRMDocument> docsToDisplay = new HashMap<String, HRMDocument>();
+        for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographics) {
+            int id = hrmDocumentToDemographic.getHrmDocumentId() != null ? hrmDocumentToDemographic.getHrmDocumentId() : 0;
+            List<HRMDocument> hrmDocuments = hrmDocumentDao.findById(id);
+            for (HRMDocument hrmDocument : hrmDocuments) {
+                docsToDisplay.put(Integer.toString(id), hrmDocument);
+            }
+        }
+        return (docsToDisplay);
+    }
 
-		HashMap<String,HRMDocument> docsToDisplay = new HashMap<String,HRMDocument>();
-		HashMap<String,HRMReport> labReports=new HashMap<String,HRMReport>();
 
-		for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographics)
-		{
-			int id = hrmDocumentToDemographic.getHrmDocumentId() != null ? hrmDocumentToDemographic.getHrmDocumentId() : 0;
-			List<HRMDocument> hrmDocuments = hrmDocumentDao.findById(id);
+    private static HashMap<String, HRMDocument> filterDuplicates(LoggedInInfo loggedInInfo, List<HRMDocumentToDemographic> hrmDocumentToDemographics, HashMap<String, ArrayList<Integer>> duplicateLabIds) {
 
-			for (HRMDocument hrmDocument : hrmDocuments)
-			{
-				HRMReport hrmReport = HRMReportParser.parseReport(loggedInInfo, hrmDocument.getReportFile());
-				if (hrmReport == null) continue;
-				hrmReport.setHrmDocumentId(hrmDocument.getId());
-				String duplicateKey=hrmReport.getSendingFacilityId()+':'+hrmReport.getSendingFacilityReportNo()+':'+hrmReport.getDeliverToUserId();
+        HashMap<String, HRMDocument> docsToDisplay = new HashMap<String, HRMDocument>();
+        HashMap<String, HRMReport> labReports = new HashMap<String, HRMReport>();
 
-				// if no duplicate
-				if (!docsToDisplay.containsKey(duplicateKey))
-				{
-					docsToDisplay.put(duplicateKey,hrmDocument);
-					labReports.put(duplicateKey, hrmReport);
-				}
-				else // there exists an entry like this one
-				{
-					HRMReport previousHrmReport=labReports.get(duplicateKey);
+        for (HRMDocumentToDemographic hrmDocumentToDemographic : hrmDocumentToDemographics) {
+            int id = hrmDocumentToDemographic.getHrmDocumentId() != null ? hrmDocumentToDemographic.getHrmDocumentId() : 0;
+            List<HRMDocument> hrmDocuments = hrmDocumentDao.findById(id);
 
-					logger.debug("Duplicate report found : previous="+previousHrmReport.getHrmDocumentId()+", current="+hrmReport.getHrmDocumentId());
+            for (HRMDocument hrmDocument : hrmDocuments) {
+                HRMReport hrmReport = HRMReportParser.parseReport(loggedInInfo, hrmDocument.getReportFile());
+                if (hrmReport == null) continue;
+                hrmReport.setHrmDocumentId(hrmDocument.getId());
+                String duplicateKey = hrmReport.getSendingFacilityId() + ':' + hrmReport.getSendingFacilityReportNo() + ':' + hrmReport.getDeliverToUserId();
 
-					Integer duplicateIdToAdd;
+                // if no duplicate
+                if (!docsToDisplay.containsKey(duplicateKey)) {
+                    docsToDisplay.put(duplicateKey, hrmDocument);
+                    labReports.put(duplicateKey, hrmReport);
+                } else // there exists an entry like this one
+                {
+                    HRMReport previousHrmReport = labReports.get(duplicateKey);
 
-					// if the current entry is newer than the previous one then replace it, other wise just keep the previous entry
-					if (HRMResultsData.isNewer(hrmReport, previousHrmReport))
-					{
-						HRMDocument previousHRMDocument = docsToDisplay.get(duplicateKey);
-						duplicateIdToAdd=previousHRMDocument.getId();
+                    logger.debug("Duplicate report found : previous=" + previousHrmReport.getHrmDocumentId() + ", current=" + hrmReport.getHrmDocumentId());
 
-						docsToDisplay.put(duplicateKey,hrmDocument);
-						labReports.put(duplicateKey, hrmReport);
-					}
-					else
-					{
-						duplicateIdToAdd=hrmDocument.getId();
-					}
+                    Integer duplicateIdToAdd;
 
-					ArrayList<Integer> duplicateIds=duplicateLabIds.get(duplicateKey);
-					if (duplicateIds==null)
-					{
-						duplicateIds=new ArrayList<Integer>();
-						duplicateLabIds.put(duplicateKey, duplicateIds);
-					}
+                    // if the current entry is newer than the previous one then replace it, other wise just keep the previous entry
+                    if (HRMResultsData.isNewer(hrmReport, previousHrmReport)) {
+                        HRMDocument previousHRMDocument = docsToDisplay.get(duplicateKey);
+                        duplicateIdToAdd = previousHRMDocument.getId();
 
-					duplicateIds.add(duplicateIdToAdd);
-				}
-			}
-		}
+                        docsToDisplay.put(duplicateKey, hrmDocument);
+                        labReports.put(duplicateKey, hrmReport);
+                    } else {
+                        duplicateIdToAdd = hrmDocument.getId();
+                    }
 
-		return(docsToDisplay);
-	}
-	
-	public static ArrayList<HashMap<String, ? extends Object>> listMappings(){
-		ArrayList<HashMap<String, ? extends Object>> hrmdocslist = new ArrayList<HashMap<String, ?>>();
+                    ArrayList<Integer> duplicateIds = duplicateLabIds.get(duplicateKey);
+                    if (duplicateIds == null) {
+                        duplicateIds = new ArrayList<Integer>();
+                        duplicateLabIds.put(duplicateKey, duplicateIds);
+                    }
 
-		List<HRMSubClass> hrmSubClasses = hrmSubClassDao.listAll();
+                    duplicateIds.add(duplicateIdToAdd);
+                }
+            }
+        }
 
-		for (HRMSubClass hrmSubClass : hrmSubClasses) {
+        return (docsToDisplay);
+    }
 
-			HashMap<String, Object> curht = new HashMap<String, Object>();
-			curht.put("id", hrmSubClass.getSendingFacilityId());
-			curht.put("sub_class", hrmSubClass.getSubClassName());
-			curht.put("class", hrmSubClass.getClassName());
-			curht.put("category", hrmSubClass.getHrmCategory());
-			curht.put("mnemonic", (hrmSubClass.getSubClassMnemonic() != null ? hrmSubClass.getSubClassMnemonic() : ""));
-			curht.put("description", (hrmSubClass.getSubClassDescription() != null ? hrmSubClass.getSubClassDescription() : ""));
-			curht.put("mappingId", hrmSubClass.getId());
+    public static ArrayList<HashMap<String, ? extends Object>> listMappings() {
+        ArrayList<HashMap<String, ? extends Object>> hrmdocslist = new ArrayList<HashMap<String, ?>>();
 
-			hrmdocslist.add(curht);
+        List<HRMSubClass> hrmSubClasses = hrmSubClassDao.listAll();
 
-		}
+        for (HRMSubClass hrmSubClass : hrmSubClasses) {
 
-		return hrmdocslist;
+            HashMap<String, Object> curht = new HashMap<String, Object>();
+            curht.put("id", hrmSubClass.getSendingFacilityId());
+            curht.put("sub_class", hrmSubClass.getSubClassName());
+            curht.put("class", hrmSubClass.getClassName());
+            curht.put("category", hrmSubClass.getHrmCategory());
+            curht.put("mnemonic", (hrmSubClass.getSubClassMnemonic() != null ? hrmSubClass.getSubClassMnemonic() : ""));
+            curht.put("description", (hrmSubClass.getSubClassDescription() != null ? hrmSubClass.getSubClassDescription() : ""));
+            curht.put("mappingId", hrmSubClass.getId());
 
-	}
+            hrmdocslist.add(curht);
 
-	public static HRMDocument getHRMDocumentById(LoggedInInfo loggedInInfo, Integer hrmId) {
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
-			throw new SecurityException("missing required security object (_hrm)");
-		}
+        }
 
-		HRMDocument hrmDocument = hrmDocumentDao.find(hrmId);
-		HRMReport hrmReport = HRMReportParser.parseReport(loggedInInfo, hrmDocument.getReportFile());
-		if (hrmReport == null) { return null; }
-		String dispSubClass = "";
-		HRMSubClass hrmSubClass;
-		List<HRMDocumentSubClass> subClassList = new ArrayList<>(hrmDocument.getAccompanyingSubClasses());
-		if (hrmReport.getFirstReportClass().equalsIgnoreCase("Diagnostic Imaging Report") || hrmReport.getFirstReportClass().equalsIgnoreCase("Cardio Respiratory Report")) {
-			//Get first sub class to display on eChart
-			if (subClassList != null && subClassList.size() > 0) {
-				HRMDocumentSubClass firstSubClass = subClassList.get(0);
-				hrmSubClass = hrmSubClassDao.findApplicableSubClassMapping(hrmReport.getFirstReportClass(), firstSubClass.getSubClass(), firstSubClass.getSubClassMnemonic(), hrmReport.getSendingFacilityId());
-				dispSubClass = hrmSubClass != null ? hrmSubClass.getSubClassDescription() : "";
-			}
+        return hrmdocslist;
 
-			if (StringUtils.isNullOrEmpty(dispSubClass) && hrmReport.getAccompanyingSubclassList().size() > 0){
-				// if sub class doesn't exist, display the accompanying subclass
-				dispSubClass = hrmReport.getFirstAccompanyingSubClass();
-			}
-		} else {
-			//Medical Records Report
-			String[] reportSubClass = hrmReport.getFirstReportSubClass() != null ? hrmReport.getFirstReportSubClass().split("\\^") : null;
-			if (reportSubClass != null && reportSubClass.length > 1) {
-				dispSubClass = reportSubClass[1];
-			}
-		}
+    }
 
-		String hrmDocumentDisplayName = getHRMDocumentDisplayName(hrmDocument.getDescription(), dispSubClass, hrmDocument.getReportType(), hrmDocument.getReportStatus());
-		hrmDocument.setDisplayName(hrmDocumentDisplayName);
-		return hrmDocument;
-	}
+    public static HRMDocument getHRMDocumentById(LoggedInInfo loggedInInfo, Integer hrmId) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
+            throw new SecurityException("missing required security object (_hrm)");
+        }
 
-	private static String getHRMDocumentDisplayName(String description, String subClass, String reportType, String reportStatus) {
-		String displayHRMName = "";
-		if (!StringUtils.isNullOrEmpty(description)) {
-			displayHRMName = description;
-		} else if (!StringUtils.isNullOrEmpty(subClass)) {
-			displayHRMName = subClass;
-		} else {
-			displayHRMName = reportType;
-		}
+        HRMDocument hrmDocument = hrmDocumentDao.find(hrmId);
+        HRMReport hrmReport = HRMReportParser.parseReport(loggedInInfo, hrmDocument.getReportFile());
+        if (hrmReport == null) {
+            return null;
+        }
+        String dispSubClass = "";
+        HRMSubClass hrmSubClass;
+        List<HRMDocumentSubClass> subClassList = new ArrayList<>(hrmDocument.getAccompanyingSubClasses());
+        if (hrmReport.getFirstReportClass().equalsIgnoreCase("Diagnostic Imaging Report") || hrmReport.getFirstReportClass().equalsIgnoreCase("Cardio Respiratory Report")) {
+            //Get first sub class to display on eChart
+            if (subClassList != null && subClassList.size() > 0) {
+                HRMDocumentSubClass firstSubClass = subClassList.get(0);
+                hrmSubClass = hrmSubClassDao.findApplicableSubClassMapping(hrmReport.getFirstReportClass(), firstSubClass.getSubClass(), firstSubClass.getSubClassMnemonic(), hrmReport.getSendingFacilityId());
+                dispSubClass = hrmSubClass != null ? hrmSubClass.getSubClassDescription() : "";
+            }
 
-		if (!StringUtils.isNullOrEmpty(reportStatus) && reportStatus.equalsIgnoreCase("C")) {
-			displayHRMName = "(Cancelled) " + displayHRMName;
-		}
-		return displayHRMName;
-	}
+            if (StringUtils.isNullOrEmpty(dispSubClass) && hrmReport.getAccompanyingSubclassList().size() > 0) {
+                // if sub class doesn't exist, display the accompanying subclass
+                dispSubClass = hrmReport.getFirstAccompanyingSubClass();
+            }
+        } else {
+            //Medical Records Report
+            String[] reportSubClass = hrmReport.getFirstReportSubClass() != null ? hrmReport.getFirstReportSubClass().split("\\^") : null;
+            if (reportSubClass != null && reportSubClass.length > 1) {
+                dispSubClass = reportSubClass[1];
+            }
+        }
 
-	public static Path renderHRM(LoggedInInfo loggedInInfo, Integer hrmId) throws PDFGenerationException {
-		if(!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
-			throw new SecurityException("missing required security object (_hrm)");
-		}
+        String hrmDocumentDisplayName = getHRMDocumentDisplayName(hrmDocument.getDescription(), dispSubClass, hrmDocument.getReportType(), hrmDocument.getReportStatus());
+        hrmDocument.setDisplayName(hrmDocumentDisplayName);
+        return hrmDocument;
+    }
 
-		Path path = null;
-		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-			HRMPDFCreator hrmpdfCreator = new HRMPDFCreator(outputStream, hrmId, loggedInInfo);
-			hrmpdfCreator.printPdf();
-			path = nioFileManager.saveTempFile("temporaryPDF" + new Date().getTime(), outputStream);
-		} catch (IOException e) {
-			throw new PDFGenerationException("Error Details: HRM [" + getHRMDocumentDisplayName(hrmId) + "] could not be converted into a PDF", e);
-		}
-		return path;
-	}
+    private static String getHRMDocumentDisplayName(String description, String subClass, String reportType, String reportStatus) {
+        String displayHRMName = "";
+        if (!StringUtils.isNullOrEmpty(description)) {
+            displayHRMName = description;
+        } else if (!StringUtils.isNullOrEmpty(subClass)) {
+            displayHRMName = subClass;
+        } else {
+            displayHRMName = reportType;
+        }
 
-	private static String getHRMDocumentDisplayName(Integer hrmId) {
-		HRMDocument hrmDocument = hrmDocumentDao.find(hrmId);
-		return getHRMDocumentDisplayName(hrmDocument.getDescription(), "", hrmDocument.getReportType(), hrmDocument.getReportStatus());
-	}
+        if (!StringUtils.isNullOrEmpty(reportStatus) && reportStatus.equalsIgnoreCase("C")) {
+            displayHRMName = "(Cancelled) " + displayHRMName;
+        }
+        return displayHRMName;
+    }
+
+    public static Path renderHRM(LoggedInInfo loggedInInfo, Integer hrmId) throws PDFGenerationException {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
+            throw new SecurityException("missing required security object (_hrm)");
+        }
+
+        Path path = null;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            HRMPDFCreator hrmpdfCreator = new HRMPDFCreator(outputStream, hrmId, loggedInInfo);
+            hrmpdfCreator.printPdf();
+            path = nioFileManager.saveTempFile("temporaryPDF" + new Date().getTime(), outputStream);
+        } catch (IOException e) {
+            throw new PDFGenerationException("Error Details: HRM [" + getHRMDocumentDisplayName(hrmId) + "] could not be converted into a PDF", e);
+        }
+        return path;
+    }
+
+    private static String getHRMDocumentDisplayName(Integer hrmId) {
+        HRMDocument hrmDocument = hrmDocumentDao.find(hrmId);
+        return getHRMDocumentDisplayName(hrmDocument.getDescription(), "", hrmDocument.getReportType(), hrmDocument.getReportStatus());
+    }
 }

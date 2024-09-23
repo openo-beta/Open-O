@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -37,41 +37,41 @@ import oscar.OscarProperties;
 
 /**
  *
- * @author  Jay Gallagher
+ * @author Jay Gallagher
  */
 public class SurveyInfo {
-   private static Logger log = MiscUtils.getLogger();
-   
-   /** Creates a new instance of SurveyInfo */
-   public SurveyInfo() {
-   }
-   
-   public ArrayList getFileNames(String surveyId){
-      
-      ArrayList list = new ArrayList();
-      
-      String fileDir = OscarProperties.getInstance().getProperty("surveillance_directory");
-      log.debug("Opening directory "+fileDir );
-      File dir = new File(fileDir);
-                                
-      String[] children = dir.list();
-      
-      for (int i=0; i<children.length; i++) {
-         if (children[i].startsWith(surveyId)){
-            String str[] = {children[i],getCreateDate(fileDir+children[i])};
-            //list.add(children[i]);            
-            list.add(str);            
-         }
-      }
-                       
-      return list;
-   }
-   
-   private String getCreateDate(String filename){
-      File file = new File(filename);
-      // Get the last modified time
-      long modifiedTime = file.lastModified();
-      Date d = new Date(modifiedTime);
-      return d.toString();      
-   }
+    private static Logger log = MiscUtils.getLogger();
+
+    /** Creates a new instance of SurveyInfo */
+    public SurveyInfo() {
+    }
+
+    public ArrayList getFileNames(String surveyId) {
+
+        ArrayList list = new ArrayList();
+
+        String fileDir = OscarProperties.getInstance().getProperty("surveillance_directory");
+        log.debug("Opening directory " + fileDir);
+        File dir = new File(fileDir);
+
+        String[] children = dir.list();
+
+        for (int i = 0; i < children.length; i++) {
+            if (children[i].startsWith(surveyId)) {
+                String str[] = {children[i], getCreateDate(fileDir + children[i])};
+                //list.add(children[i]);
+                list.add(str);
+            }
+        }
+
+        return list;
+    }
+
+    private String getCreateDate(String filename) {
+        File file = new File(filename);
+        // Get the last modified time
+        long modifiedTime = file.lastModified();
+        Date d = new Date(modifiedTime);
+        return d.toString();
+    }
 }

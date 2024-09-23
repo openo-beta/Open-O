@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -94,7 +94,7 @@ public class FrmFormAction extends Action {
     private String _dateFormat = "yyyy/MM/dd";
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-            HttpServletResponse response)
+                                 HttpServletResponse response)
             throws ServletException, IOException {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -303,7 +303,7 @@ public class FrmFormAction extends Action {
                 .find("../form/SetupForm.do?formName=" + formName + "&demographic_no=");
         String formNameByFormTable = encounterForm.getFormName();
         logger.debug("formNameByFormTable" + formNameByFormTable);
-        String[] formPath = { "", "0" };
+        String[] formPath = {"", "0"};
         try {
             formPath = (new FrmData()).getShortcutFormValue(demographicNo, formNameByFormTable);
         } catch (SQLException e) {
@@ -313,7 +313,7 @@ public class FrmFormAction extends Action {
     }
 
     private boolean validate(String inputValue, String observationDate, EctMeasurementTypesBean mt,
-            EctValidationsBean validation, HttpServletRequest request, ActionMessages errors) {
+                             EctValidationsBean validation, HttpServletRequest request, ActionMessages errors) {
         EctValidation ectValidation = new EctValidation();
         boolean valid = true;
 
@@ -377,8 +377,8 @@ public class FrmFormAction extends Action {
     }
 
     private boolean write2MeasurementTable(String demographicNo, String providerNo,
-            EctMeasurementTypesBean mt, String inputValue,
-            String dateObservedString, String comments) {
+                                           EctMeasurementTypesBean mt, String inputValue,
+                                           String dateObservedString, String comments) {
         boolean newDataAdded = false;
         if (!GenericValidator.isBlankOrNull(inputValue)) {
             SearchCriteria criteria = new SearchCriteria();

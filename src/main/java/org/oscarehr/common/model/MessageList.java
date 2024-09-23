@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -33,98 +33,97 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="messagelisttbl")
+@Table(name = "messagelisttbl")
 public class MessageList extends AbstractModel<Integer> {
 
-	public static final String STATUS_DELETED = "del";
-	public static final String STATUS_NEW = "new";
-	public static final String STATUS_READ = "read";
-	public static final String STATUS_SENT = "sent";
-	public static final String STATUS_REMOTE = "remote";
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    public static final String STATUS_DELETED = "del";
+    public static final String STATUS_NEW = "new";
+    public static final String STATUS_READ = "read";
+    public static final String STATUS_SENT = "sent";
+    public static final String STATUS_REMOTE = "remote";
 
-	private long message;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="provider_no")
-	private String providerNo;
+    private long message;
 
-	private String status;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	private int remoteLocation;
-	
-	@Column(name="destinationFacilityId")
-	private int destinationFacilityId;
-	
-	@Column(name="sourceFacilityId")
-	private int sourceFacilityId;
-	
-	public int getDestinationFacilityId() {
-		return destinationFacilityId;
-	}
+    private String status;
 
-	public void setDestinationFacilityId(int destinationFacilityId) {
-		this.destinationFacilityId = destinationFacilityId;
-	}
+    private int remoteLocation;
 
-	public int getSourceFacilityId() {
-		return sourceFacilityId;
-	}
+    @Column(name = "destinationFacilityId")
+    private int destinationFacilityId;
 
-	public void setSourceFacilityId(int sourceFacilityId) {
-		this.sourceFacilityId = sourceFacilityId;
-	}
+    @Column(name = "sourceFacilityId")
+    private int sourceFacilityId;
 
-	public Integer getId() {
-    	return id;
+    public int getDestinationFacilityId() {
+        return destinationFacilityId;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setDestinationFacilityId(int destinationFacilityId) {
+        this.destinationFacilityId = destinationFacilityId;
     }
 
-	public long getMessage() {
-    	return message;
+    public int getSourceFacilityId() {
+        return sourceFacilityId;
     }
 
-	public void setMessage(long message) {
-    	this.message = message;
+    public void setSourceFacilityId(int sourceFacilityId) {
+        this.sourceFacilityId = sourceFacilityId;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public Integer getId() {
+        return id;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public String getStatus() {
-    	return status;
+    public long getMessage() {
+        return message;
     }
 
-	public void setStatus(String status) {
-    	this.status = status;
+    public void setMessage(long message) {
+        this.message = message;
     }
 
-	public int getRemoteLocation() {
-    	return remoteLocation;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setRemoteLocation(int remoteLocation) {
-    	this.remoteLocation = remoteLocation;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public void setDeleted(boolean isDeleted) {
-		if (isDeleted) {
-			setStatus(STATUS_DELETED);
-		} else {
-			setStatus(null);
-		}
+    public String getStatus() {
+        return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getRemoteLocation() {
+        return remoteLocation;
+    }
+
+    public void setRemoteLocation(int remoteLocation) {
+        this.remoteLocation = remoteLocation;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        if (isDeleted) {
+            setStatus(STATUS_DELETED);
+        } else {
+            setStatus(null);
+        }
+    }
 
 
 }

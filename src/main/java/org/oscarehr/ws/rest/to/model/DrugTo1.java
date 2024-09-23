@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -32,17 +32,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="drug")
+@XmlRootElement(name = "drug")
 public class DrugTo1 implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private Integer drugId;
 
     private String brandName;
 
     private String genericName;
-    
+
     private String customName;
 
     private String atc;
@@ -61,7 +61,7 @@ public class DrugTo1 implements Serializable {
     private Date rxDate;
 
     private Date endDate;
-    
+
     private Date writtenDate;
 
     private String frequency;
@@ -101,12 +101,12 @@ public class DrugTo1 implements Serializable {
     private Boolean longTerm;
 
     private Boolean noSubstitutions;
-    
+
     private Boolean dispenseInternal = null;
     private String dispenseIntervalNumber = null;
     private Integer refillDuration = null;
     private Integer refillQuantity = null;
-    
+
 
     public String getAdditionalInstructions() {
         return additionalInstructions;
@@ -348,51 +348,51 @@ public class DrugTo1 implements Serializable {
         this.quantity = quantity;
     }
 
-	public Date getWrittenDate() {
-		return writtenDate;
-	}
+    public Date getWrittenDate() {
+        return writtenDate;
+    }
 
-	public void setWrittenDate(Date writtenDate) {
-		this.writtenDate = writtenDate;
-	}
+    public void setWrittenDate(Date writtenDate) {
+        this.writtenDate = writtenDate;
+    }
 
-	public String getCustomName() {
-		return customName;
-	}
+    public String getCustomName() {
+        return customName;
+    }
 
-	public void setCustomName(String customName) {
-		this.customName = customName;
-	}
+    public void setCustomName(String customName) {
+        this.customName = customName;
+    }
 
-	public Boolean getDispenseInternal() {
-		return dispenseInternal;
-	}
+    public Boolean getDispenseInternal() {
+        return dispenseInternal;
+    }
 
-	public void setDispenseInternal(Boolean dispenseInternal) {
-		this.dispenseInternal = dispenseInternal;
-	}
+    public void setDispenseInternal(Boolean dispenseInternal) {
+        this.dispenseInternal = dispenseInternal;
+    }
 
-	public String getDispenseIntervalNumber() {
-		return dispenseIntervalNumber;
-	}
+    public String getDispenseIntervalNumber() {
+        return dispenseIntervalNumber;
+    }
 
-	public void setDispenseIntervalNumber(String dispenseIntervalNumber) {
-		this.dispenseIntervalNumber = dispenseIntervalNumber;
-	}
+    public void setDispenseIntervalNumber(String dispenseIntervalNumber) {
+        this.dispenseIntervalNumber = dispenseIntervalNumber;
+    }
 
-	public Integer getRefillDuration() {
-		return refillDuration;
-	}
+    public Integer getRefillDuration() {
+        return refillDuration;
+    }
 
-	public void setRefillDuration(Integer refillDuration) {
-		this.refillDuration = refillDuration;
-	}
+    public void setRefillDuration(Integer refillDuration) {
+        this.refillDuration = refillDuration;
+    }
 
-	public Integer getRefillQuantity() {
-		return refillQuantity;
-	}
+    public Integer getRefillQuantity() {
+        return refillQuantity;
+    }
 
-	public void setRefillQuantity(Integer refillQuantity) {
-		this.refillQuantity = refillQuantity;
-	}
+    public void setRefillQuantity(Integer refillQuantity) {
+        this.refillQuantity = refillQuantity;
+    }
 }

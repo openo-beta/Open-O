@@ -24,38 +24,38 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-<html:base />
-<link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
+        <html:base/>
+        <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
 
-<title><bean:message key="provider.editRxFax.title" /></title>
+        <title><bean:message key="provider.editRxFax.title"/></title>
 
-</head>
+    </head>
 
-<body class="BodyStyle" vlink="#0000FF">
+    <body class="BodyStyle" vlink="#0000FF">
 
-<table class="MainTable" id="scrollNumber1" name="encounterTable">
-	<tr class="MainTableTopRow">
-		<td class="MainTableTopRowLeftColumn"><bean:message
-			key="provider.setColour.msgPrefs" /></td>
-		<td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-			key="provider.setColour.msgProviderColour" /></td>
-	</tr>
-	<tr>
-		<td class="MainTableLeftColumn">&nbsp;</td>
-		<td style="color: red" class="MainTableRightColumn"><bean:message
-			key="provider.setColour.msgError" /></td>
-	</tr>
-	<tr>
-		<td class="MainTableBottomRowLeftColumn"></td>
-		<td class="MainTableBottomRowRightColumn"></td>
-	</tr>
-</table>
-</body>
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn"><bean:message
+                    key="provider.setColour.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
+                    key="provider.setColour.msgProviderColour"/></td>
+        </tr>
+        <tr>
+            <td class="MainTableLeftColumn">&nbsp;</td>
+            <td style="color: red" class="MainTableRightColumn"><bean:message
+                    key="provider.setColour.msgError"/></td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
+    </body>
 </html:html>

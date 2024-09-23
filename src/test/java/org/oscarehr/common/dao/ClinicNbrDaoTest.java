@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,13 +36,13 @@ import org.oscarehr.util.SpringUtils;
 
 public class ClinicNbrDaoTest extends DaoTestFixtures {
 
-	protected ClinicNbrDao dao = (ClinicNbrDao)SpringUtils.getBean(ClinicNbrDao.class);
-	Logger logger = MiscUtils.getLogger();
+    protected ClinicNbrDao dao = (ClinicNbrDao) SpringUtils.getBean(ClinicNbrDao.class);
+    Logger logger = MiscUtils.getLogger();
 
-	@Before
-	public void setUp() throws Exception {
-		SchemaUtils.restoreTable("clinic_nbr");
-	}
+    @Before
+    public void setUp() throws Exception {
+        SchemaUtils.restoreTable("clinic_nbr");
+    }
 
 //	@Test
 //	/**
@@ -100,42 +100,42 @@ public class ClinicNbrDaoTest extends DaoTestFixtures {
 //		assertTrue(true);
 //	}
 
-	@Test
-	/**
-	 * Ensures that the removeEntry() method deletes records
-	 * by setting the status to 'D'
-	 * @throws Exception
-	 */
-	public void testRemoveEntry() throws Exception {
-		ClinicNbr nbr1 = new ClinicNbr();
-		EntityDataGenerator.generateTestDataForModelClass(nbr1);
-		nbr1.setNbrStatus("A");
-		dao.persist(nbr1);
-		
-		dao.removeEntry(1);
-		nbr1 = dao.find(1);
-		assertEquals("D", nbr1.getNbrStatus());
-	}
+    @Test
+    /**
+     * Ensures that the removeEntry() method deletes records
+     * by setting the status to 'D'
+     * @throws Exception
+     */
+    public void testRemoveEntry() throws Exception {
+        ClinicNbr nbr1 = new ClinicNbr();
+        EntityDataGenerator.generateTestDataForModelClass(nbr1);
+        nbr1.setNbrStatus("A");
+        dao.persist(nbr1);
 
-	@Test
-	/**
-	 * Ensures that the addEntry() method persists new
-	 * records to the table given the value and string.
-	 * @throws Exception
-	 */
-	public void testAddEntry() throws Exception {
-		String nbrValue = "A";
-		String nbrString ="RMA";
-		
-		ClinicNbr nbr1 = new ClinicNbr();
-		EntityDataGenerator.generateTestDataForModelClass(nbr1);
-		nbr1.setNbrString(nbrString);
-		nbr1.setNbrValue(nbrValue);
-		
-		dao.addEntry(nbrValue, nbrString);
-		
-		assertEquals("RMA", nbr1.getNbrString());
-		assertEquals("A", nbr1.getNbrValue());
-	}
+        dao.removeEntry(1);
+        nbr1 = dao.find(1);
+        assertEquals("D", nbr1.getNbrStatus());
+    }
+
+    @Test
+    /**
+     * Ensures that the addEntry() method persists new
+     * records to the table given the value and string.
+     * @throws Exception
+     */
+    public void testAddEntry() throws Exception {
+        String nbrValue = "A";
+        String nbrString = "RMA";
+
+        ClinicNbr nbr1 = new ClinicNbr();
+        EntityDataGenerator.generateTestDataForModelClass(nbr1);
+        nbr1.setNbrString(nbrString);
+        nbr1.setNbrValue(nbrValue);
+
+        dao.addEntry(nbrValue, nbrString);
+
+        assertEquals("RMA", nbr1.getNbrString());
+        assertEquals("A", nbr1.getNbrValue());
+    }
 
 }

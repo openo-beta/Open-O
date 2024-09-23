@@ -5,17 +5,17 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,87 +38,87 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="form")
-public class Form extends AbstractModel<Integer>{
+@Table(name = "form")
+public class Form extends AbstractModel<Integer> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="form_no")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "form_no")
+    private Integer id;
 
-	@Column(name="demographic_no")
-	private int demographicNo;
+    @Column(name = "demographic_no")
+    private int demographicNo;
 
-	@Column(name="provider_no")
-	private String providerNo;
+    @Column(name = "provider_no")
+    private String providerNo;
 
-	@Column(name="form_date")
-	@Temporal(TemporalType.DATE)
-	private Date formDate;
+    @Column(name = "form_date")
+    @Temporal(TemporalType.DATE)
+    private Date formDate;
 
-	@Column(name="form_time")
-	@Temporal(TemporalType.TIME)
-	private Date formTime;
+    @Column(name = "form_time")
+    @Temporal(TemporalType.TIME)
+    private Date formTime;
 
-	@Column(name="form_name")
-	private String formName;
+    @Column(name = "form_name")
+    private String formName;
 
-	private String content;
+    private String content;
 
-	public Integer getId() {
-    	return id;
+    public Integer getId() {
+        return id;
     }
 
-	public void setId(Integer id) {
-    	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-	public int getDemographicNo() {
-    	return demographicNo;
+    public int getDemographicNo() {
+        return demographicNo;
     }
 
-	public void setDemographicNo(int demographicNo) {
-    	this.demographicNo = demographicNo;
+    public void setDemographicNo(int demographicNo) {
+        this.demographicNo = demographicNo;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public Date getFormDate() {
-    	return formDate;
+    public Date getFormDate() {
+        return formDate;
     }
 
-	public void setFormDate(Date formDate) {
-    	this.formDate = formDate;
+    public void setFormDate(Date formDate) {
+        this.formDate = formDate;
     }
 
-	public Date getFormTime() {
-    	return formTime;
+    public Date getFormTime() {
+        return formTime;
     }
 
-	public void setFormTime(Date formTime) {
-    	this.formTime = formTime;
+    public void setFormTime(Date formTime) {
+        this.formTime = formTime;
     }
 
-	public String getFormName() {
-    	return formName;
+    public String getFormName() {
+        return formName;
     }
 
-	public void setFormName(String formName) {
-    	this.formName = formName;
+    public void setFormName(String formName) {
+        this.formName = formName;
     }
 
-	public String getContent() {
-    	return content;
+    public String getContent() {
+        return content;
     }
 
-	public void setContent(String content) {
-    	this.content = content;
+    public void setContent(String content) {
+        this.content = content;
     }
 
 
