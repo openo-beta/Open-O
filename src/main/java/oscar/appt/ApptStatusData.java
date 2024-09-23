@@ -138,11 +138,10 @@ public final class ApptStatusData {
     }
 
     /**
-     *  Pulls in the short letters which represent the appointment status.
+     * Pulls in the short letters which represent the appointment status.
      *
-     *    @Author Trimara Corp.
-     *    @Return Short letters or null
-     *
+     * @Author Trimara Corp.
+     * @Return Short letters or null
      **/
     public String getShortLetters() {
         return getStr("short_letters");
@@ -153,7 +152,6 @@ public final class ApptStatusData {
      *
      * @Author Trimara Corp.
      * @Return An integer representing the hex code for the colour. Null if there is no colour.
-     *
      **/
     public String getShortLetterColour() {
         return getStr("short_letter_colour");

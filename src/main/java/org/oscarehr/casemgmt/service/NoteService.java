@@ -34,10 +34,8 @@ public interface NoteService {
     /**
      * Searches for demographic notes.
      *
-     * @param criteria
-     * 		Criteria to be used during the search.
-     * @return
-     *        Returns all notes satisfying the search criteria.
+     * @param criteria Criteria to be used during the search.
+     * @return Returns all notes satisfying the search criteria.
      */
     NoteSelectionResult findNotes(LoggedInInfo loggedInInfo, NoteSelectionCriteria criteria);
 

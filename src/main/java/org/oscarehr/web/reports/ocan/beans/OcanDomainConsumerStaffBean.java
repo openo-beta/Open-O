@@ -148,19 +148,19 @@ public class OcanDomainConsumerStaffBean {
     /**
      * This is the comparator for sorting a set of domains based on the current OCAN. We're basically
      * telling it whether it's higher or lower row in the report.
-     *
+     * <p>
      * RULES
      * -----
      * 1) Order by the grouping of needs in the following order
-     *    Unmet Needs
-     *    Met Needs
-     *    No Needs
-     *    Unknown
-     *
-     *  2) If need rating is the same for Consumer and Staff, there is an "Agreement". Agreements
-     *     should be ordered at the top of the need rating.
-     *
-     *  3) If there is a "Disagreement", then the higher need rating will be taken into account.
+     * Unmet Needs
+     * Met Needs
+     * No Needs
+     * Unknown
+     * <p>
+     * 2) If need rating is the same for Consumer and Staff, there is an "Agreement". Agreements
+     * should be ordered at the top of the need rating.
+     * <p>
+     * 3) If there is a "Disagreement", then the higher need rating will be taken into account.
      */
 
     public static Comparator<OcanDomainConsumerStaffBean> getNeedsComparator1() {

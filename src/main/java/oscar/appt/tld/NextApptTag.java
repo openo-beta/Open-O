@@ -34,7 +34,6 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- *
  * @author jay
  */
 public class NextApptTag extends TagSupport {
@@ -43,7 +42,9 @@ public class NextApptTag extends TagSupport {
     private String date = null;
     private String format = null;
 
-    /** Creates a new instance of NextApptTag */
+    /**
+     * Creates a new instance of NextApptTag
+     */
     public NextApptTag() {
     }
 

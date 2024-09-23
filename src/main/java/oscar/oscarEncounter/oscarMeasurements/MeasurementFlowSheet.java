@@ -61,7 +61,6 @@ import oscar.oscarEncounter.oscarMeasurements.util.RuleBaseCreator;
 import oscar.oscarEncounter.oscarMeasurements.util.TargetColour;
 
 /**
- *
  * @author jay
  */
 public class MeasurementFlowSheet {
@@ -187,7 +186,9 @@ public class MeasurementFlowSheet {
         return sb.toString();
     }
 
-    /** Creates a new instance of MeasurementFlowSheet */
+    /**
+     * Creates a new instance of MeasurementFlowSheet
+     */
     public MeasurementFlowSheet() {
     }
 

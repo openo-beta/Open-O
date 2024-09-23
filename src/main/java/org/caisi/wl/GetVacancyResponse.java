@@ -46,8 +46,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getVacancyResponse", propOrder = {"_return"})
@@ -60,7 +58,6 @@ public class GetVacancyResponse {
      * Gets the value of the return property.
      *
      * @return possible object is {@link VacancyDisplayBO }
-     *
      */
     public VacancyDisplayBO getReturn() {
         return _return;
@@ -69,9 +66,7 @@ public class GetVacancyResponse {
     /**
      * Sets the value of the return property.
      *
-     * @param value
-     *            allowed object is {@link VacancyDisplayBO }
-     *
+     * @param value allowed object is {@link VacancyDisplayBO }
      */
     public void setReturn(VacancyDisplayBO value) {
         this._return = value;

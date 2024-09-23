@@ -30,8 +30,7 @@ import java.util.List;
 import org.oscarehr.casemgmt.web.NoteDisplay;
 
 /**
- * Holds results of a note search. 
- *
+ * Holds results of a note search.
  */
 public class NoteSelectionResult {
 
@@ -43,8 +42,7 @@ public class NoteSelectionResult {
      * being provided in the {@link #getNotes()} list. This is usually set when
      * notes are limited in the search criteria.
      *
-     * @return
-     *        Returns true if there are more notes available than returned and false otherwise
+     * @return Returns true if there are more notes available than returned and false otherwise
      */
     public boolean isMoreNotes() {
         return moreNotes;
@@ -55,9 +53,8 @@ public class NoteSelectionResult {
      * being provided in the {@link #getNotes()} list. This is usually set when
      * notes are limited in the search criteria.
      *
-     * @param moreNotes
-     * 		Flag that should be set to true if there are more notes available
-     * than returned and false otherwise
+     * @param moreNotes Flag that should be set to true if there are more notes available
+     *                  than returned and false otherwise
      */
     public void setMoreNotes(boolean moreNotes) {
         this.moreNotes = moreNotes;
@@ -66,8 +63,7 @@ public class NoteSelectionResult {
     /**
      * Gets the display notes to be rendered to the user
      *
-     * @return
-     *        Returns the notes
+     * @return Returns the notes
      */
     public List<NoteDisplay> getNotes() {
         return notes;
@@ -76,8 +72,7 @@ public class NoteSelectionResult {
     /**
      * Sets the display notes to be rendered to the user
      *
-     * @param notes
-     * 		Notes to be set
+     * @param notes Notes to be set
      */
     public void setNotes(List<NoteDisplay> notes) {
         this.notes = notes;

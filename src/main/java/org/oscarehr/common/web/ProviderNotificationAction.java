@@ -45,7 +45,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 /**
- * Creates a provider notification record. 
+ * Creates a provider notification record.
  */
 public class ProviderNotificationAction extends Action {
 

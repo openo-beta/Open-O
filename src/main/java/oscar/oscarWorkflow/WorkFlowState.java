@@ -35,10 +35,7 @@ import org.oscarehr.common.dao.WorkFlowDao;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author jay
- *
- *
  */
 public class WorkFlowState {
     public final static String RHWORKFLOW = "RH";

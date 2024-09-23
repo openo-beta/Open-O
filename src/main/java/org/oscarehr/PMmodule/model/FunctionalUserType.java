@@ -55,9 +55,9 @@ public class FunctionalUserType implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native"
-     *  column="id"
+     * <p>
+     * generator-class="native"
+     * column="id"
      */
     public Long getId() {
         return _id;
@@ -65,6 +65,7 @@ public class FunctionalUserType implements Serializable {
 
     /**
      * Set the unique identifier of this class
+     *
      * @param _id the new ID
      */
     public void setId(Long _id) {
@@ -81,6 +82,7 @@ public class FunctionalUserType implements Serializable {
 
     /**
      * Set the value related to the column: name
+     *
      * @param _name the name value
      */
     public void setName(String _name) {

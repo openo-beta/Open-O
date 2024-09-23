@@ -258,7 +258,7 @@ public class ClinicaidCommunication {
      *
      * @param identifier id of the logged in user
      * @param first_name first name of the logged in user
-     * @param last_name last name of the logged in user
+     * @param last_name  last name of the logged in user
      * @return Demographic
      */
     private String getNonce(

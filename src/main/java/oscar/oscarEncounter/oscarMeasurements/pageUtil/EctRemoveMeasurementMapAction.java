@@ -53,7 +53,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarEncounter.oscarMeasurements.data.MeasurementMapConfig;
 
 /**
- *
  * @author wrighd
  */
 public class EctRemoveMeasurementMapAction extends Action {
@@ -61,7 +60,9 @@ public class EctRemoveMeasurementMapAction extends Action {
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of EctEditMeasurementMapAction */
+    /**
+     * Creates a new instance of EctEditMeasurementMapAction
+     */
     public EctRemoveMeasurementMapAction() {
     }
 

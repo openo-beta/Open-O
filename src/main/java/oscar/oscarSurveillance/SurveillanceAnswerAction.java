@@ -49,13 +49,14 @@ import org.oscarehr.util.MiscUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class SurveillanceAnswerAction extends Action {
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of SurveillanceAnswerAction */
+    /**
+     * Creates a new instance of SurveillanceAnswerAction
+     */
     public SurveillanceAnswerAction() {
     }
 

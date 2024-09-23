@@ -56,7 +56,7 @@ import org.oscarehr.util.SpringUtils;
 
 /**
  * All Data with getters should be HTML escaped.
- * For the parameters read in as query parameters this should already be escaped but 
+ * For the parameters read in as query parameters this should already be escaped but
  * for things like the textMessage you need to escape it manually.
  */
 public final class SendOruR01UIBean {

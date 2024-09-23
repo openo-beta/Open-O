@@ -63,16 +63,22 @@ public class CriteriaSelectionOption extends AbstractModel<Integer> implements j
     }
 
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public CriteriaSelectionOption() {
     }
 
-    /** minimal constructor */
+    /**
+     * minimal constructor
+     */
     public CriteriaSelectionOption(Integer criteriaId) {
         this.criteriaId = criteriaId;
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public CriteriaSelectionOption(Integer criteriaId, String optionValue) {
         this.criteriaId = criteriaId;
         this.optionValue = optionValue;

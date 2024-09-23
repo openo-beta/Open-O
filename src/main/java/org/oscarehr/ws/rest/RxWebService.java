@@ -121,9 +121,7 @@ public class RxWebService extends AbstractServiceImpl {
      *
      * @param demographicNo the demographic identifier to look up drugs for.
      * @param status        the status to use to filter the results on {"", current, archived,}
-     *
      * @return a response containing a list of drugs that meet the status criteria.
-     *
      * @throws AccessDeniedException          if the current user does not have permission to access this data.
      * @throws OperationNotSupportedException if the requested status is unknown.
      */
@@ -233,7 +231,6 @@ public class RxWebService extends AbstractServiceImpl {
      *
      * @param transferObject the drug information
      * @param demographicNo  the identifier for the demographic this drug is for.
-     *
      * @return a drug transfer object that reflects the new drug in the database.
      */
     @POST
@@ -292,10 +289,8 @@ public class RxWebService extends AbstractServiceImpl {
      *
      * @param transferObject the data to make the update based on.
      * @param demographicNo  the demographic this drug is for.
-     *
      * @return a response object containing a drug transfer object
      * that reflects updated version in the database.
-     *
      * @throws AccessDeniedException if the current user is not allowed to write
      *                               prescription information to this demographic.
      */
@@ -359,7 +354,6 @@ public class RxWebService extends AbstractServiceImpl {
      *                      "ineffectiveTreatment", "other", "cost", "drugInteraction",
      *                      "patientRequest", "unknown", "deleted", "simplifyingTreatment"}
      * @param demographicNo the demographic the drug is associated with.
-     *
      * @return a generic response indicating success or failure.
      */
     @Path("/discontinue")
@@ -415,7 +409,7 @@ public class RxWebService extends AbstractServiceImpl {
      * Creates a prescription for the drugs that are provided.
      *
      * @param drugTransferObjects a non-empty list of drugs to include on the prescription.
-     * @param demographicNo the demographic this prescription is for.
+     * @param demographicNo       the demographic this prescription is for.
      * @return the completed prescription or an indication of failure.
      */
     @Path("/prescribe")
@@ -493,7 +487,7 @@ public class RxWebService extends AbstractServiceImpl {
     /**
      * Looks up the history of a particular drug.
      *
-     * @param id the drug identifier to get history for.
+     * @param id            the drug identifier to get history for.
      * @param demographicNo the id of the demographic associated with the drug.
      * @return a response containing the drugs in the history.
      */

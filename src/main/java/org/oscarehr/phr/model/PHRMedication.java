@@ -75,7 +75,9 @@ import oscar.oscarRx.util.RxUtil;
 public class PHRMedication extends PHRDocument {
     private static Logger logger = MiscUtils.getLogger();
 
-    /** Creates a new instance of PHRMessage */
+    /**
+     * Creates a new instance of PHRMessage
+     */
     public PHRMedication() {
         // super();
     }

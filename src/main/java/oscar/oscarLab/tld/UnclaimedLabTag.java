@@ -35,7 +35,6 @@ import org.oscarehr.common.model.ProviderLabRoutingModel;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class UnclaimedLabTag extends TagSupport {

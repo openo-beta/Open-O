@@ -287,8 +287,7 @@ public class SplitDocumentAction extends DispatchAction {
     }
 
     /**
-     *
-     * @param pdf The pdf document
+     * @param pdf      The pdf document
      * @param fileName The file name string
      * @return A boolean value indicating if the file was successfully saved without errors
      */
@@ -320,7 +319,7 @@ public class SplitDocumentAction extends DispatchAction {
     /**
      * Sets file permissions for the file that is being modified.
      *
-     * @param   file  A file
+     * @param file A file
      */
     private void setFilePermissions(File file) {
         file.setWritable(true, false);

@@ -40,12 +40,13 @@ import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandle
 import oscar.oscarMDS.data.ProviderData;
 
 /**
- *
  * @author Jay
  */
 public class ReportEvaluator {
 
-    /** Creates a new instance of ReportEvaluator */
+    /**
+     * Creates a new instance of ReportEvaluator
+     */
     int denominatorCount = 0;
     int numeratorCount = 0;
     Denominator denominator = null;

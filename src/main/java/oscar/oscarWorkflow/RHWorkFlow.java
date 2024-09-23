@@ -35,11 +35,14 @@ import org.oscarehr.util.MiscUtils;
 
 /**
  * Generic WorkFlow Description
+ *
  * @author jay
  */
 public class RHWorkFlow implements WorkFlow {
 
-    /** Creates a new instance of RHWorkFlow */
+    /**
+     * Creates a new instance of RHWorkFlow
+     */
     static final String WORKFLOWTYPE = "RH";
     static Hashtable<String, WFState> states = null;
     static ArrayList<WFState> stateList = null;

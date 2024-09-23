@@ -49,8 +49,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "matchParam", propOrder = {"clientID", "contactDateTime",
@@ -64,7 +62,6 @@ public class MatchParam {
 
     /**
      * Gets the value of the clientID property.
-     *
      */
     public int getClientID() {
         return clientID;
@@ -72,7 +69,6 @@ public class MatchParam {
 
     /**
      * Sets the value of the clientID property.
-     *
      */
     public void setClientID(int value) {
         this.clientID = value;
@@ -82,7 +78,6 @@ public class MatchParam {
      * Gets the value of the contactDateTime property.
      *
      * @return possible object is {@link XMLGregorianCalendar }
-     *
      */
     public XMLGregorianCalendar getContactDateTime() {
         return contactDateTime;
@@ -91,9 +86,7 @@ public class MatchParam {
     /**
      * Sets the value of the contactDateTime property.
      *
-     * @param value
-     *            allowed object is {@link XMLGregorianCalendar }
-     *
+     * @param value allowed object is {@link XMLGregorianCalendar }
      */
     public void setContactDateTime(XMLGregorianCalendar value) {
         this.contactDateTime = value;
@@ -101,7 +94,6 @@ public class MatchParam {
 
     /**
      * Gets the value of the vacancyID property.
-     *
      */
     public int getVacancyID() {
         return vacancyID;
@@ -109,7 +101,6 @@ public class MatchParam {
 
     /**
      * Sets the value of the vacancyID property.
-     *
      */
     public void setVacancyID(int value) {
         this.vacancyID = value;

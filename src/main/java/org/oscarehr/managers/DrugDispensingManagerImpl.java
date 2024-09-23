@@ -56,8 +56,9 @@ public class DrugDispensingManagerImpl implements DrugDispensingManager {
 
     /**
      * Return the dispensing status as a string.
-     *
+     * <p>
      * there's some extra code in here to be used later to get info about doses remaining/available/dispensed
+     *
      * @param drugId
      * @return
      */

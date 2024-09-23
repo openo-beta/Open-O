@@ -30,7 +30,6 @@ import org.oscarehr.common.model.Provider;
 
 /**
  * Adapter class for bridging OSCAR provider to the JAAS principal.
- *
  */
 public class OscarPrincipal extends Provider implements Principal {
 
@@ -64,8 +63,7 @@ public class OscarPrincipal extends Provider implements Principal {
     /**
      * Creates a new instance deep copy of this instance.
      *
-     * @return
-     *        Returns a new copy of the provider with all matching fields populated.
+     * @return Returns a new copy of the provider with all matching fields populated.
      */
     public Provider asProvider() {
         return new Provider(this);

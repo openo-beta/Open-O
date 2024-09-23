@@ -45,8 +45,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "recordMatchWasForwarded", propOrder = {"arg0"})
@@ -58,7 +56,6 @@ public class RecordMatchWasForwarded {
      * Gets the value of the arg0 property.
      *
      * @return possible object is {@link MatchParam }
-     *
      */
     public MatchParam getArg0() {
         return arg0;
@@ -67,9 +64,7 @@ public class RecordMatchWasForwarded {
     /**
      * Sets the value of the arg0 property.
      *
-     * @param value
-     *            allowed object is {@link MatchParam }
-     *
+     * @param value allowed object is {@link MatchParam }
      */
     public void setArg0(MatchParam value) {
         this.arg0 = value;

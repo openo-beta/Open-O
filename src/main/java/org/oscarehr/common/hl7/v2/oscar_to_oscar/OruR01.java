@@ -84,6 +84,7 @@ public final class OruR01 {
 
     /**
      * This method is essentially used to make an ORU_R01 containing pretty much any random data.
+     *
      * @throws UnsupportedEncodingException
      */
     public static ORU_R01 makeOruR01(Clinic clinic, Demographic demographic, ObservationData observationData, Provider sendingProvider, ProfessionalSpecialist receivingProfessionalSpecialist) throws HL7Exception, UnsupportedEncodingException {

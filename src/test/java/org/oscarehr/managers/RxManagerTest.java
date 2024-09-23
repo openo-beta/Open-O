@@ -784,7 +784,6 @@ public class RxManagerTest extends RxManagerImpl {
          * for a drug with appropriate ID.
          *
          * @param i
-         *
          * @return
          */
         public Drug find(Object i) {
@@ -803,7 +802,6 @@ public class RxManagerTest extends RxManagerImpl {
          * for a drug with appropriate ID.
          *
          * @param i
-         *
          * @return
          */
         public Drug find(int i) {

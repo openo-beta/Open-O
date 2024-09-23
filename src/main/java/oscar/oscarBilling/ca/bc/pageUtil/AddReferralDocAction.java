@@ -40,7 +40,6 @@ import org.oscarehr.common.model.Billingreferral;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class AddReferralDocAction extends Action {

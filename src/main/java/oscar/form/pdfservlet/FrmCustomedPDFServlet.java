@@ -300,15 +300,14 @@ public class FrmCustomedPDFServlet extends HttpServlet {
         }
 
         /**
-         *
-         * @param cb Pdf Content bytes
-         * @param bf Base Font
-         * @param fontSize Current size of font
+         * @param cb        Pdf Content bytes
+         * @param bf        Base Font
+         * @param fontSize  Current size of font
          * @param alignment Alignment of text: left, right, centre
-         * @param text The text to be written into the content bytes
-         * @param x X (horizontal) position relative to the bottom LEFT of the page
-         * @param y Y (vertical) position relative to the bottom LEFT of the page
-         * @param rotation Degree of rotation for the text (usually 0)
+         * @param text      The text to be written into the content bytes
+         * @param x         X (horizontal) position relative to the bottom LEFT of the page
+         * @param y         Y (vertical) position relative to the bottom LEFT of the page
+         * @param rotation  Degree of rotation for the text (usually 0)
          */
         public void writeDirectContent(PdfContentByte cb, BaseFont bf, float fontSize, int alignment, String text, float x, float y, float rotation) {
             cb.beginText();

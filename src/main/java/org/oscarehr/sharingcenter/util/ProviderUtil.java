@@ -55,9 +55,7 @@ public class ProviderUtil {
      * Creates a provider, if there is no provider this will use the currently logged in doctor.
      *
      * @param demographic The patient demographic.
-     *
-     * @param providerNo The doctor provider number.
-     *
+     * @param providerNo  The doctor provider number.
      * @return Returns a Provider object.
      */
     public static Provider createProvider(Demographic demographic, String providerNo) {

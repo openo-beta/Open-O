@@ -41,7 +41,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 
 /**
- *
  * @author Jay Gallagher
  */
 public class ConsultTag extends TagSupport {

@@ -36,7 +36,6 @@ import javax.xml.soap.SOAPFactory;
 
 /**
  * A value type that stores the patient data accepted by the External Prescriber.
- *
  */
 public class ERxPatientData {
     /**
@@ -81,7 +80,9 @@ public class ERxPatientData {
      * The patient's family name. This field is mandatory.
      */
     private String lastname;
-    /** The patient's second given name, if applicable. */
+    /**
+     * The patient's second given name, if applicable.
+     */
     private String middleName;
     /**
      * The patient's name suffix. Examples include: * "PEng"
@@ -104,19 +105,33 @@ public class ERxPatientData {
      */
     private Date validBirthDate;
 
-    /** The patient's gender in the form "M" or "F". */
+    /**
+     * The patient's gender in the form "M" or "F".
+     */
     private String gender;
-    /** The patient's street address. */
+    /**
+     * The patient's street address.
+     */
     private String address;
-    /** The patient's city */
+    /**
+     * The patient's city
+     */
     private String city;
-    /** The patient's state or province. */
+    /**
+     * The patient's state or province.
+     */
     private String state;
-    /** The patient's zipcode or postal code. */
+    /**
+     * The patient's zipcode or postal code.
+     */
     private String zipCode;
-    /** The patient's primary telephone number. */
+    /**
+     * The patient's primary telephone number.
+     */
     private String phone1;
-    /** The patient's alternate telephone number. */
+    /**
+     * The patient's alternate telephone number.
+     */
     private String phone2;
     /**
      * The patient's chart number. This field is not mandatory, but is strongly
@@ -124,7 +139,9 @@ public class ERxPatientData {
      */
     private String chartNumber;
 
-    /** The patient's alternate chart number. */
+    /**
+     * The patient's alternate chart number.
+     */
     private String altChartNumber;
     /**
      * The patient's primary identification number. This field is not mandatory,
@@ -142,7 +159,9 @@ public class ERxPatientData {
      * text.
      */
     private String pin1Expiration;
-    /** The patient's secondary identification number. */
+    /**
+     * The patient's secondary identification number.
+     */
     private String pin2;
     /**
      * The type of secondary identification number. Valid values are: 1 = HCN
@@ -155,7 +174,9 @@ public class ERxPatientData {
      * text.
      */
     private String pin2Expiration;
-    /** The patient's tertiary identification number. */
+    /**
+     * The patient's tertiary identification number.
+     */
     private String pin3;
     /**
      * The type of tertiary identification number. Valid values are: 1 = HCN
@@ -181,15 +202,11 @@ public class ERxPatientData {
      * Creates an instance of a ERxPatientData. This constructor fills all
      * available fields.
      *
-     * @param patientId
-     *            The unique patient identifier provided by the client [OSCAR]
-     *            software.
-     * @param mergeToId
-     *            A new unique patient identifier.
-     * @param delete
-     *            Whether or not to delete this patient's record.
-     * @param firstname
-     *            The patient's first given name.
+     * @param patientId      The unique patient identifier provided by the client [OSCAR]
+     *                       software.
+     * @param mergeToId      A new unique patient identifier.
+     * @param delete         Whether or not to delete this patient's record.
+     * @param firstname      The patient's first given name.
      * @param lastname
      * @param middleName
      * @param nameSuffix
@@ -261,13 +278,10 @@ public class ERxPatientData {
      * Creates an instance of a ERxPatientData. This constructor only fills the
      * mandatory fields.
      *
-     * @param patientId
-     *            The unique patient identifier provided by the client [OSCAR]
-     *            software.
-     * @param firstname
-     *            The patient's first given name.
-     * @param lastname
-     *            The patient's family name.
+     * @param patientId The unique patient identifier provided by the client [OSCAR]
+     *                  software.
+     * @param firstname The patient's first given name.
+     * @param lastname  The patient's family name.
      */
     public ERxPatientData(String patientId, String firstname, String lastname) {
         super();
@@ -303,24 +317,16 @@ public class ERxPatientData {
      * Creates an instance of a ERxPatientData. This constructor only fills the
      * mandatory fields and strongly recommended fields.
      *
-     * @param patientId
-     *            The unique patient identifier provided by the client [OSCAR]
-     *            software.
-     * @param firstname
-     *            The patient's first given name.
-     * @param lastname
-     *            The patient's surname.
-     * @param chartNumber
-     *            The patient's chart number.
-     * @param pin1
-     *            The patient's primary identification number.
-     * @param pin1type
-     *            The type of primary identification number.
-     * @param pin1Expiration
-     *            The date that the primary identification number expires in
-     *            free-form text.
-     * @param hip
-     *            The patient's public Health Insurance Plan identifier.
+     * @param patientId      The unique patient identifier provided by the client [OSCAR]
+     *                       software.
+     * @param firstname      The patient's first given name.
+     * @param lastname       The patient's surname.
+     * @param chartNumber    The patient's chart number.
+     * @param pin1           The patient's primary identification number.
+     * @param pin1type       The type of primary identification number.
+     * @param pin1Expiration The date that the primary identification number expires in
+     *                       free-form text.
+     * @param hip            The patient's public Health Insurance Plan identifier.
      */
     public ERxPatientData(String patientId, String firstname, String lastname,
                           String chartNumber, String pin1, int pin1type, String pin1Expiration,
@@ -524,8 +530,7 @@ public class ERxPatientData {
      * Get a SOAP document fragment representing this object.
      *
      * @return A SOAPElement representing this patient data.
-     * @throws SOAPException
-     *             If an error occurred when trying to construct the element.
+     * @throws SOAPException If an error occurred when trying to construct the element.
      */
     public SOAPElement getSOAPElement() throws SOAPException {
         SOAPElement answer = SOAPFactory.newInstance().createElement("patient");
@@ -614,232 +619,203 @@ public class ERxPatientData {
     }
 
     /**
-     * @param address
-     *            the address to set
+     * @param address the address to set
      */
     public void setAddress(String address) {
         this.address = address;
     }
 
     /**
-     * @param altChartNumber
-     *            the altChartNumber to set
+     * @param altChartNumber the altChartNumber to set
      */
     public void setAltChartNumber(String altChartNumber) {
         this.altChartNumber = altChartNumber;
     }
 
     /**
-     * @param birthdate
-     *            the birthdate to set
+     * @param birthdate the birthdate to set
      */
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
     /**
-     * @param chartNumber
-     *            the chartNumber to set
+     * @param chartNumber the chartNumber to set
      */
     public void setChartNumber(String chartNumber) {
         this.chartNumber = chartNumber;
     }
 
     /**
-     * @param city
-     *            the city to set
+     * @param city the city to set
      */
     public void setCity(String city) {
         this.city = city;
     }
 
     /**
-     * @param delete
-     *            the delete to set
+     * @param delete the delete to set
      */
     public void setDelete(int delete) {
         this.delete = delete;
     }
 
     /**
-     * @param firstname
-     *            the firstname to set
+     * @param firstname the firstname to set
      */
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
     /**
-     * @param gender
-     *            the gender to set
+     * @param gender the gender to set
      */
     public void setGender(String gender) {
         this.gender = gender;
     }
 
     /**
-     * @param hip
-     *            the hip to set
+     * @param hip the hip to set
      */
     public void setHip(int hip) {
         this.hip = new Integer(hip);
     }
 
     /**
-     * @param lastname
-     *            the lastname to set
+     * @param lastname the lastname to set
      */
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
     /**
-     * @param mergeToId
-     *            the mergeToId to set
+     * @param mergeToId the mergeToId to set
      */
     public void setMergeToId(String mergeToId) {
         this.mergeToId = mergeToId;
     }
 
     /**
-     * @param middleName
-     *            the middleName to set
+     * @param middleName the middleName to set
      */
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
 
     /**
-     * @param namePrefix
-     *            the namePrefix to set
+     * @param namePrefix the namePrefix to set
      */
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
     }
 
     /**
-     * @param nameSuffix
-     *            the nameSuffix to set
+     * @param nameSuffix the nameSuffix to set
      */
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
     }
 
     /**
-     * @param patientId
-     *            the patientId to set
+     * @param patientId the patientId to set
      */
     public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
     /**
-     * @param phone1
-     *            the phone1 to set
+     * @param phone1 the phone1 to set
      */
     public void setPhone1(String phone1) {
         this.phone1 = phone1;
     }
 
     /**
-     * @param phone2
-     *            the phone2 to set
+     * @param phone2 the phone2 to set
      */
     public void setPhone2(String phone2) {
         this.phone2 = phone2;
     }
 
     /**
-     * @param pin1
-     *            the pin1 to set
+     * @param pin1 the pin1 to set
      */
     public void setPin1(String pin1) {
         this.pin1 = pin1;
     }
 
     /**
-     * @param pin1Expiration
-     *            the pin1Expiration to set
+     * @param pin1Expiration the pin1Expiration to set
      */
     public void setPin1Expiration(String pin1Expiration) {
         this.pin1Expiration = pin1Expiration;
     }
 
     /**
-     * @param pin1type
-     *            the pin1type to set
+     * @param pin1type the pin1type to set
      */
     public void setPin1type(int pin1type) {
         this.pin1type = new Integer(pin1type);
     }
 
     /**
-     * @param pin2
-     *            the pin2 to set
+     * @param pin2 the pin2 to set
      */
     public void setPin2(String pin2) {
         this.pin2 = pin2;
     }
 
     /**
-     * @param pin2Expiration
-     *            the pin2Expiration to set
+     * @param pin2Expiration the pin2Expiration to set
      */
     public void setPin2Expiration(String pin2Expiration) {
         this.pin2Expiration = pin2Expiration;
     }
 
     /**
-     * @param pin2type
-     *            the pin2type to set
+     * @param pin2type the pin2type to set
      */
     public void setPin2type(int pin2type) {
         this.pin2type = new Integer(pin2type);
     }
 
     /**
-     * @param pin3
-     *            the pin3 to set
+     * @param pin3 the pin3 to set
      */
     public void setPin3(String pin3) {
         this.pin3 = pin3;
     }
 
     /**
-     * @param pin3Expiration
-     *            the pin3Expiration to set
+     * @param pin3Expiration the pin3Expiration to set
      */
     public void setPin3Expiration(String pin3Expiration) {
         this.pin3Expiration = pin3Expiration;
     }
 
     /**
-     * @param pin3type
-     *            the pin3type to set
+     * @param pin3type the pin3type to set
      */
     public void setPin3type(int pin3type) {
         this.pin3type = new Integer(pin3type);
     }
 
     /**
-     * @param state
-     *            the state to set
+     * @param state the state to set
      */
     public void setState(String state) {
         this.state = state;
     }
 
     /**
-     * @param validBirthDate
-     *            the validBirthDate to set
+     * @param validBirthDate the validBirthDate to set
      */
     public void setValidBirthDate(Date validBirthDate) {
         this.validBirthDate = validBirthDate;
     }
 
     /**
-     * @param zipCode
-     *            the zipCode to set
+     * @param zipCode the zipCode to set
      */
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;

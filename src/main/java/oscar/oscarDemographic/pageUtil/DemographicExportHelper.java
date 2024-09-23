@@ -50,9 +50,8 @@ import cds.MedicationsAndTreatmentsDocument.MedicationsAndTreatments;
 import cds.PatientRecordDocument.PatientRecord;
 
 /**
- * Manager class for handling demographic exports. This component retains state for each export, and therefore must not be 
- * created as a field, but instead looked up for each individual export. 
- *
+ * Manager class for handling demographic exports. This component retains state for each export, and therefore must not be
+ * created as a field, but instead looked up for each individual export.
  */
 @Component
 @Scope("prototype")

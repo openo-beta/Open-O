@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author tylerg
  */
 public class AffinityDomainDocuments {

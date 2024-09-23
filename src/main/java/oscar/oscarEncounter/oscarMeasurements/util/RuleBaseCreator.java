@@ -41,6 +41,7 @@ import org.oscarehr.util.MiscUtils;
 
 /**
  * Class used to create Drools XML files
+ *
  * @author jaygallagher
  */
 public class RuleBaseCreator {

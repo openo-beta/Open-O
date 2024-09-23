@@ -104,6 +104,7 @@ public class SystemPreferences extends AbstractModel<Integer> {
 
     /**
      * Gets the system preference as a boolean
+     *
      * @return true if value is "true", false otherwise
      */
     public Boolean getValueAsBoolean() {

@@ -95,6 +95,7 @@ public class ContactIdentifier implements Serializable {
      * in the form of a string
      * contactId - facilityId - clinicLocationNo - messenger group identifier (groupId)
      * Defaults for each Id is 0
+     *
      * @param compositeId
      */
     public void setCompositeId(String compositeId) {

@@ -29,7 +29,6 @@ import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.util.LoggedInInfo;
 
 /**
- *
  * Handles logic of attaching documents to a specified consultation
  */
 @Deprecated

@@ -29,26 +29,25 @@ package oscar.oscarLab.ca.all.upload.handlers;
 import org.oscarehr.util.LoggedInInfo;
 
 /**
- *
  * @author wrighd
  */
 public interface MessageHandler {
 
 
     /**
-     *  The flat file specified by 'fileName' will be parsed and each hl7 message
-     *  contained within the file will be uploaded to the database seperately.
-     *      - The messages are usually separated by either MSH segments or PID
-     *      segments. If they are seperated by PID segments the MSH segment from
-     *      the beginning of the file must be included at the beginning of each
-     *      hl7_message.
-     *
-     *  If the hl7 message is a lab and 'oscar.oscarLab.ca.all.parsers.XXXXHandler'
-     *  has been created 'oscar.oscarLab.ca.all.upload.MessageUploader  routeReport("XXXX", hl7_message)'
-     *  should be used to upload the message to the database.
-     *
-     *  If any exceptions are encountered the method should return 'null'
-     *  otherwise it should return the String "success"
+     * The flat file specified by 'fileName' will be parsed and each hl7 message
+     * contained within the file will be uploaded to the database seperately.
+     * - The messages are usually separated by either MSH segments or PID
+     * segments. If they are seperated by PID segments the MSH segment from
+     * the beginning of the file must be included at the beginning of each
+     * hl7_message.
+     * <p>
+     * If the hl7 message is a lab and 'oscar.oscarLab.ca.all.parsers.XXXXHandler'
+     * has been created 'oscar.oscarLab.ca.all.upload.MessageUploader  routeReport("XXXX", hl7_message)'
+     * should be used to upload the message to the database.
+     * <p>
+     * If any exceptions are encountered the method should return 'null'
+     * otherwise it should return the String "success"
      */
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr);
 

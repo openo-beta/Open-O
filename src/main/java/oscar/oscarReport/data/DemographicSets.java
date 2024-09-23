@@ -35,14 +35,13 @@ import org.oscarehr.common.dao.DemographicSetsDao;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author Jay Gallagher
- *
-create table demographicSets (
-demographic_no int(10),
-set_name varchar(20),
-eligibility char(1)
-);
+ * <p>
+ * create table demographicSets (
+ * demographic_no int(10),
+ * set_name varchar(20),
+ * eligibility char(1)
+ * );
  */
 
 public class DemographicSets {

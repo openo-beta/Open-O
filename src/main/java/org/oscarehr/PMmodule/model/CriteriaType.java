@@ -71,11 +71,15 @@ public class CriteriaType extends AbstractModel<Integer> implements java.io.Seri
     }
 
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public CriteriaType() {
     }
 
-    /** minimal constructor */
+    /**
+     * minimal constructor
+     */
     public CriteriaType(String fieldName, String fieldType, Boolean active,
                         Boolean canBeAdhoc) {
         this.fieldName = fieldName;
@@ -84,7 +88,9 @@ public class CriteriaType extends AbstractModel<Integer> implements java.io.Seri
         this.canBeAdhoc = canBeAdhoc;
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public CriteriaType(String fieldName, String fieldType,
                         String defaultValue, Boolean active, Integer wlProgramId,
                         Boolean canBeAdhoc) {

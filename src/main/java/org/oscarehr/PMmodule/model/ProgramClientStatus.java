@@ -54,9 +54,9 @@ public class ProgramClientStatus implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native"
-     *  column="clientstatus_id"
+     * <p>
+     * generator-class="native"
+     * column="clientstatus_id"
      */
     public Integer getId() {
         return id;
@@ -64,6 +64,7 @@ public class ProgramClientStatus implements Serializable {
 
     /**
      * Set the unique identifier of this class
+     *
      * @param id the new ID
      */
     public void setId(Integer id) {
@@ -80,6 +81,7 @@ public class ProgramClientStatus implements Serializable {
 
     /**
      * Set the value related to the column: name
+     *
      * @param name the name value
      */
     public void setName(String name) {
@@ -95,6 +97,7 @@ public class ProgramClientStatus implements Serializable {
 
     /**
      * Set the value related to the column: program_id
+     *
      * @param programId the program_id value
      */
     public void setProgramId(Integer programId) {

@@ -812,7 +812,7 @@ public class ExcellerisOntarioHandler implements MessageHandler {
 
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
     public ArrayList<String> getHeaders() {
         int i;
@@ -940,7 +940,6 @@ public class ExcellerisOntarioHandler implements MessageHandler {
     /**
      * If the first OBX segment is presenting a textual report and the lab type is
      * not in the unstructured (PATH or ITS) lab types.
-     *
      */
     public boolean isReportData() {
         return (OBX_DATA_TYPES.TX.name().equals(getOBXValueType(0, 0))

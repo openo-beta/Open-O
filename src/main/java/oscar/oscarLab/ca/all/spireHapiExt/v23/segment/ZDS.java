@@ -39,7 +39,7 @@ import ca.uhn.hl7v2.parser.ModelClassFactory;
 
 /**
  * ZDS custom segment
- *
+ * <p>
  * Note that custom segments extend from {@link AbstractSegment}
  */
 public class ZDS extends AbstractSegment {

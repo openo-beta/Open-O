@@ -272,6 +272,7 @@ public class BillingSaveBillingAction extends Action {
 
     /**
      * Adds a new entry into the billing_history table
+     *
      * @param newInvNo String
      */
     private void createBillArchive(int billingMasterNo, String status) {

@@ -34,7 +34,6 @@ import java.sql.Timestamp;
 
 /**
  * The persistent class for the dataExport database table.
- *
  */
 @Entity
 @Table(name = "dataExport")

@@ -36,13 +36,14 @@ import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class SurveyInfo {
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of SurveyInfo */
+    /**
+     * Creates a new instance of SurveyInfo
+     */
     public SurveyInfo() {
     }
 

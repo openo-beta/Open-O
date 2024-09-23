@@ -132,7 +132,7 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
     private boolean eRxEnabled = false;
     /**
      * The URL of the external prescription SSO (Single Sign On) web service that is used on the oscarRx ERx link.
-     *
+     * <p>
      * FUTURE: Once org.oscarehr.oscarRx.erx supports more than one external
      * prescription service, this field should return the URL for the service
      * that the provider has chosen to use. At this point, the property oscarRx_SSO_URL
@@ -141,7 +141,7 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
     private String eRx_SSO_URL = OscarProperties.getInstance().getProperty("util.erx.oscarRx_sso_url");
     /**
      * The provider's username on the external prescription web service.
-     *
+     * <p>
      * FUTURE: org.oscarehr.oscarRx.erx should, in the future, support more than
      * one external prescription service, which may not necessarily require a
      * username. Storing and retrieving some sort of authentication structure
@@ -151,7 +151,7 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
     private String eRxUsername = null;
     /**
      * The provider's password on the external prescription web service.
-     *
+     * <p>
      * FUTURE: org.oscarehr.oscarRx.erx should, in the future, support more than
      * one external prescription service, which may not necessarily require a
      * password. Storing and retrieving some sort of authentication structure
@@ -162,7 +162,7 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
     /**
      * The ID of the facility that the provider is associated with in the external
      * prescription service's authentication system.
-     *
+     * <p>
      * FUTURE: org.oscarehr.oscarRx.erx should, in the future, support more than
      * one external prescription service, which may not necessarily require a
      * facilityId. Storing and retrieving some sort of authentication structure
@@ -386,7 +386,6 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
     /**
      * Returns the provider's username on the external prescription web service.
      *
-     *
      * @return The current value of eRxUsername.
      */
     public String getERxUsername() {
@@ -416,9 +415,8 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
      * Change whether or not the provider has enabled the use of an external
      * prescription service.
      *
-     * @param eRxEnabled
-     *            TRUE to enable the use of an external prescription service;
-     *            FALSE otherwise.
+     * @param eRxEnabled TRUE to enable the use of an external prescription service;
+     *                   FALSE otherwise.
      */
     public void setERxEnabled(boolean eRxEnabled) {
         this.eRxEnabled = eRxEnabled;
@@ -428,24 +426,21 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
      * Change the ID of the facility that the doctor is associated with in the
      * external prescription service's authentication system.
      *
-     * @param eRxFacility
-     *            the new eRxFacility
+     * @param eRxFacility the new eRxFacility
      */
     public void setERxFacility(String eRxFacility) {
         this.eRxFacility = eRxFacility;
     }
 
     /**
-     * @param eRxPassword
-     *            the new eRxPassword
+     * @param eRxPassword the new eRxPassword
      */
     public void setERxPassword(String eRxPassword) {
         this.eRxPassword = eRxPassword;
     }
 
     /**
-     * @param eRxUsername
-     *            the eRxUsername to set
+     * @param eRxUsername the eRxUsername to set
      */
     public void setERxUsername(String eRxUsername) {
         this.eRxUsername = eRxUsername;
@@ -455,17 +450,15 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
      * Change whether or not the provider has enabled the training mode of the external
      * prescription service.
      *
-     * @param eRxTrainingMode
-     *            TRUE to enable the use of an external prescription service;
-     *            FALSE otherwise.
+     * @param eRxTrainingMode TRUE to enable the use of an external prescription service;
+     *                        FALSE otherwise.
      */
     public void setERxTrainingMode(boolean eRxTrainingMode) {
         this.eRxTrainingMode = eRxTrainingMode;
     }
 
     /**
-     * @param eRx_SSO_URL
-     *            the eRx_SSO_URL to set
+     * @param eRx_SSO_URL the eRx_SSO_URL to set
      */
     public void setERx_SSO_URL(String eRx_SSO_URL) {
         this.eRx_SSO_URL = eRx_SSO_URL;

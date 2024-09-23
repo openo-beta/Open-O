@@ -42,13 +42,16 @@ import oscar.OscarProperties;
 
 /**
  * eform_image
+ *
  * @author jay
- *and Paul
+ * and Paul
  */
 public class DisplayImageAction extends DownloadAction {
 
 
-    /** Creates a new instance of DisplayImageAction */
+    /**
+     * Creates a new instance of DisplayImageAction
+     */
     public DisplayImageAction() {
     }
 
@@ -152,11 +155,9 @@ public class DisplayImageAction extends DownloadAction {
     }
 
     /**
-     *
      * @param f String <filename e.g example.jpeg>
-     * This method used to get file extension from a given filename
+     *          This method used to get file extension from a given filename
      * @return String <file extension>
-     *
      */
     public String extension(String f) {
         int dot = f.lastIndexOf(".");
@@ -187,10 +188,8 @@ public class DisplayImageAction extends DownloadAction {
     }
 
     /**
-     *
      * Process only files under dir
      * This method used to list images for eform generator
-     *
      */
     public String[] visitAllFiles(File dir) {
         String[] children = null;

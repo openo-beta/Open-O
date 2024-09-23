@@ -42,8 +42,8 @@ import org.oscarehr.PMmodule.service.ProviderManager;
 
 /**
  * Will report some basic statistics out of the PMM
- *
- * 1) # of programs 
+ * <p>
+ * 1) # of programs
  * 2) # of bed programs
  * 3) # of service programs
  */

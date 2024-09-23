@@ -47,7 +47,6 @@ import org.oscarehr.util.SpringUtils;
  * The backend servlet to handle the export process for documents.
  *
  * @author oscar
- *
  */
 public class DemographicExportServlet extends Action {
 

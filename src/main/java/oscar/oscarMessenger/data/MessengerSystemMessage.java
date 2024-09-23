@@ -45,6 +45,7 @@ public class MessengerSystemMessage {
     /**
      * Instantiate with a list of known provider numbers for whom
      * this message is for.
+     *
      * @param recipients
      */
     public MessengerSystemMessage(String[] recipients) {

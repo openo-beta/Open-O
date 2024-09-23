@@ -48,7 +48,6 @@ import oscar.util.ConversionUtils;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class CMLLabTest {

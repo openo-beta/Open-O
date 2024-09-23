@@ -82,17 +82,23 @@ public class Vacancy extends AbstractModel<Integer> implements java.io.Serializa
         this.id = id;
     }
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Vacancy() {
     }
 
-    /** minimal constructor */
+    /**
+     * minimal constructor
+     */
     public Vacancy(Integer templateId, String status) {
         this.templateId = templateId;
         this.status = status;
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public Vacancy(Integer templateId, String status, Timestamp dateClosed,
                    String reasonClosed, String name) {
         this.templateId = templateId;

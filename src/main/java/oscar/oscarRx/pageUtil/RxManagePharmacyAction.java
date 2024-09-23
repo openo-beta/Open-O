@@ -57,7 +57,6 @@ import oscar.oscarRx.data.RxPharmacyData;
 import oscar.util.StringUtils;
 
 /**
- *
  * @author Jay Gallagher & Jackson Bi
  */
 public final class RxManagePharmacyAction extends DispatchAction {
@@ -301,7 +300,9 @@ public final class RxManagePharmacyAction extends DispatchAction {
         return null;
     }
 
-    /** Creates a new instance of RxManagePharmacyAction */
+    /**
+     * Creates a new instance of RxManagePharmacyAction
+     */
     public RxManagePharmacyAction() {
     }
 

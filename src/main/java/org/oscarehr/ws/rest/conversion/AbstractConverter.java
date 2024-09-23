@@ -30,12 +30,10 @@ import java.util.List;
 import org.oscarehr.util.LoggedInInfo;
 
 /**
- * Base class for defining conversion between domain model objects and transfer objects 
+ * Base class for defining conversion between domain model objects and transfer objects
  *
- * @param <D>
- * 		Domain object type
- * @param <T>
- * 		Transfer object type
+ * @param <D> Domain object type
+ * @param <T> Transfer object type
  */
 // TODO define TO interface and bound T by that
 public abstract class AbstractConverter<D, T> {

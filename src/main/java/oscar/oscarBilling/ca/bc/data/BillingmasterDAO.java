@@ -46,7 +46,6 @@ import oscar.entities.WCB;
 import oscar.util.ConversionUtils;
 
 /**
- *
  * @author jay
  */
 @Repository
@@ -58,7 +57,9 @@ public class BillingmasterDAO {
     @PersistenceContext(unitName = "entityManagerFactory")
     protected EntityManager entityManager = null;
 
-    /** Creates a new instance of BillingmasterDAO */
+    /**
+     * Creates a new instance of BillingmasterDAO
+     */
     public BillingmasterDAO() {
     }
 
@@ -168,12 +169,9 @@ public class BillingmasterDAO {
     /**
      * Sets the specified billing unit for the billing master with the specified number.
      *
-     * @param billingUnit
-     * 		Billing unit to be set on the billing master
-     * @param billingNo
-     * 		Number of the billing master to be updated
-     * @return
-     *        Returns the total number of rows affected by the operation
+     * @param billingUnit Billing unit to be set on the billing master
+     * @param billingNo   Number of the billing master to be updated
+     * @return Returns the total number of rows affected by the operation
      */
     public int updateBillingUnitForBillingNumber(String billingUnit, Integer billingNo) {
         Query query = entityManager.createQuery("UPDATE " + Billingmaster.class.getSimpleName() + " b SET b.billingUnit = :billingUnit WHERE b.billingNo = :billingNo");

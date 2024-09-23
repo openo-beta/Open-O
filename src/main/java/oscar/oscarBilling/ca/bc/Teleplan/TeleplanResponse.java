@@ -40,7 +40,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author jay
  */
 public class TeleplanResponse {
@@ -52,7 +51,9 @@ public class TeleplanResponse {
     private String msgs = null;
     private int lineCount = 0;
 
-    /** Creates a new instance of TeleplanResponse */
+    /**
+     * Creates a new instance of TeleplanResponse
+     */
     public TeleplanResponse() {
     }
 

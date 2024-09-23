@@ -55,7 +55,7 @@ public class PublicKey extends AbstractModel<String> implements Serializable {
      * uses to contact "our" server, if we want to sent back information, we would
      * then look up the corresponding professional specialist entry to know what
      * the contact information for their server is.
-     *
+     * <p>
      * This value can be null. Null means we have no way to contact them back.
      */
     private Integer matchingProfessionalSpecialistId = null;

@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
  * Write it to servlet output stream for consuming(downloading) by client
  *
  * @author oscar
- *
  */
 public class TraceabilityReportConsumer implements Callable<String> {
     private InputStream inputStream;

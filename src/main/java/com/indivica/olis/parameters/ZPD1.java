@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Consent to view blocked information
- * @author jen
  *
+ * @author jen
  */
 public class ZPD1 implements Parameter {
 

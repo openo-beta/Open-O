@@ -42,7 +42,6 @@ import org.oscarehr.common.dao.ProviderDefaultProgramDao;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author cronnie
  */
 public class programExclusiveViewTag extends TagSupport {

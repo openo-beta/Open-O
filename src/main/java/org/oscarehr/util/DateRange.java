@@ -40,13 +40,9 @@ public class DateRange implements Serializable {
     /**
      * Creates a new instance of date range.
      *
-     * @param from
-     * 		Date representing start of the date rage
-     * @param to
-     * 		Date representing end of the date rage
-     *
-     * @throws IllegalArgumentException
-     * 		IllegalArgumentException is thrown  in case from occurs after the to date.
+     * @param from Date representing start of the date rage
+     * @param to   Date representing end of the date rage
+     * @throws IllegalArgumentException IllegalArgumentException is thrown  in case from occurs after the to date.
      */
     public DateRange(Date from, Date to) {
         if (from != null && to != null) {
@@ -61,11 +57,8 @@ public class DateRange implements Serializable {
     /**
      * Checks if the specified date falls into the range represented by this instance.
      *
-     * @param date
-     * 		Date to be check
-     * @return
-     *        Returns true if the date belongs to this range and false otherwise.
-     *
+     * @param date Date to be check
+     * @return Returns true if the date belongs to this range and false otherwise.
      */
     public boolean isInRange(Date date) {
         if (getFrom() != null) {

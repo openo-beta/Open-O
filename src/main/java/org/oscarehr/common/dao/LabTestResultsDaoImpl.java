@@ -68,12 +68,9 @@ public class LabTestResultsDaoImpl extends AbstractDaoImpl<LabTestResults> imple
     /**
      * Finds unique test names for the specified patient and lab type
      *
-     * @param demoNo
-     * 		Demographic id of the patient
-     * @param labType
-     * 		Type of the lab to find results for
-     * @return
-     *        Returns a list of triples containing lab type, test title and test name.
+     * @param demoNo  Demographic id of the patient
+     * @param labType Type of the lab to find results for
+     * @return Returns a list of triples containing lab type, test title and test name.
      */
     @Override
     public List<Object[]> findUniqueTestNames(Integer demoNo, String labType) {

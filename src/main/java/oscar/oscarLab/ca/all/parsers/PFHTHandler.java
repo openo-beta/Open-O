@@ -168,7 +168,7 @@ public class PFHTHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information about the Observation Request
+     * Methods to get information about the Observation Request
      */
     public int getOBRCount() {
         return (obrSegMap.size());
@@ -388,14 +388,14 @@ public class PFHTHandler implements MessageHandler {
     }
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
     public ArrayList<String> getHeaders() {
         return headers;
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBRCommentCount(int i) {
         int count = 0;
@@ -468,7 +468,7 @@ public class PFHTHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBXCommentCount(int i, int j) {
         int count = 0;
@@ -510,7 +510,7 @@ public class PFHTHandler implements MessageHandler {
 
 
     /**
-     *  Methods to get information about the patient
+     * Methods to get information about the patient
      */
     public String getPatientName() {
         return (getFirstName() + " " + getLastName());

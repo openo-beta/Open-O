@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Ordering Facility ID (Z06 Only - Depricated in Z01)
- * @author jen
  *
+ * @author jen
  */
 public class ORC21 implements Parameter {
 

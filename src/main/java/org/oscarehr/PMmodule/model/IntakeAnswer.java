@@ -141,8 +141,8 @@ public class IntakeAnswer implements Comparable<IntakeAnswer>, Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native" column="intake_answer_id"
+     * <p>
+     * generator-class="native" column="intake_answer_id"
      */
     public Integer getId() {
         return id;
@@ -151,8 +151,7 @@ public class IntakeAnswer implements Comparable<IntakeAnswer>, Serializable {
     /**
      * Set the unique identifier of this class
      *
-     * @param id
-     *            the new ID
+     * @param id the new ID
      */
     public void setId(Integer id) {
         this.id = id;
@@ -162,8 +161,7 @@ public class IntakeAnswer implements Comparable<IntakeAnswer>, Serializable {
     /**
      * Set the value related to the column: val
      *
-     * @param value
-     *            the val value
+     * @param value the val value
      */
     public void setValue(String value) {
         this.value = value;
@@ -179,8 +177,7 @@ public class IntakeAnswer implements Comparable<IntakeAnswer>, Serializable {
     /**
      * Set the value related to the column: intake_id
      *
-     * @param intake
-     *            the intake_id value
+     * @param intake the intake_id value
      */
     public void setIntake(Intake intake) {
         this.intake = intake;
@@ -204,8 +201,7 @@ public class IntakeAnswer implements Comparable<IntakeAnswer>, Serializable {
     /**
      * Set the value related to the column: intake_node_id
      *
-     * @param node
-     *            the intake_node_id value
+     * @param node the intake_node_id value
      */
     public void setNode(IntakeNode node) {
         this.node = node;

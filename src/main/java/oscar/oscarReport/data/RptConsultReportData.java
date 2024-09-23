@@ -49,7 +49,7 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.ConversionUtils;
 
 /**
- *This classes main function ConsultReportGenerate collects a group of patients with consults in the last specified date
+ * This classes main function ConsultReportGenerate collects a group of patients with consults in the last specified date
  */
 public class RptConsultReportData {
 
@@ -96,7 +96,7 @@ public class RptConsultReportData {
     }
 
     /**
-     *This is a inner class that stores info on demographics.  It will get Consult letters that have been scanned and consults for the patient
+     * This is a inner class that stores info on demographics.  It will get Consult letters that have been scanned and consults for the patient
      */
     public class DemoConsultDataStruct {
         public String demoNo;

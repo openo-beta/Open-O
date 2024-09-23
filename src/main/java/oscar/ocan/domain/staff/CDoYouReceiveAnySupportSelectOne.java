@@ -59,8 +59,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -90,10 +88,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Gets the value of the cIndependent property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCIndependent() {
         return cIndependent;
@@ -102,10 +98,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Sets the value of the cIndependent property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCIndependent(String value) {
         this.cIndependent = value;
@@ -114,10 +108,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Gets the value of the cAssistedSupported property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAssistedSupported() {
         return cAssistedSupported;
@@ -126,10 +118,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Sets the value of the cAssistedSupported property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAssistedSupported(String value) {
         this.cAssistedSupported = value;
@@ -138,10 +128,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Gets the value of the cSupervisedNonFacility property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSupervisedNonFacility() {
         return cSupervisedNonFacility;
@@ -150,10 +138,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Sets the value of the cSupervisedNonFacility property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSupervisedNonFacility(String value) {
         this.cSupervisedNonFacility = value;
@@ -162,10 +148,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Gets the value of the cSupervisedFacility property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSupervisedFacility() {
         return cSupervisedFacility;
@@ -174,10 +158,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Sets the value of the cSupervisedFacility property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSupervisedFacility(String value) {
         this.cSupervisedFacility = value;
@@ -186,10 +168,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Gets the value of the cUnknown property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -198,10 +178,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Sets the value of the cUnknown property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -210,10 +188,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -222,10 +198,8 @@ public class CDoYouReceiveAnySupportSelectOne {
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

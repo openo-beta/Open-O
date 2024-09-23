@@ -90,12 +90,9 @@ public class ERxCommunicator {
     /**
      * Creates an instance of a ERxCommunicator.
      *
-     * @param remoteURL
-     *            The URL to connect to
-     * @param username
-     *            The username to use when connecting
-     * @param password
-     *            The password to use when connecting
+     * @param remoteURL The URL to connect to
+     * @param username  The username to use when connecting
+     * @param password  The password to use when connecting
      * @param locale
      */
     public ERxCommunicator(URL remoteURL, String username, String password,
@@ -112,9 +109,8 @@ public class ERxCommunicator {
     /**
      * Open a connection to the remote URL so we can send data.
      *
-     * @throws SOAPException
-     *             Throws a SOAPException if there was a problem when
-     *             connecting.
+     * @throws SOAPException Throws a SOAPException if there was a problem when
+     *                       connecting.
      */
     protected void connect() throws SOAPException {
         this.socket = SOAPConnectionFactory.newInstance().createConnection();
@@ -199,12 +195,9 @@ public class ERxCommunicator {
     /**
      * Parse a SOAPFault returned in a message.
      *
-     * @param fault
-     *            The fault to parse.
-     * @param request
-     *            The request that caused the fault
-     * @param response
-     *            The full response returned by the server
+     * @param fault    The fault to parse.
+     * @param request  The request that caused the fault
+     * @param response The full response returned by the server
      */
     private void parseFault(SOAPFault responseFault, SOAPMessage request,
                             SOAPMessage response) {
@@ -223,11 +216,9 @@ public class ERxCommunicator {
     /**
      * Request a list of prescriptions from External Prescriber.
      *
-     * @param facilityId
-     *            A unique identifier for the facility requesting the data.
-     * @param patientId
-     *            A unique identifier for the patient whose data is being
-     *            requested.
+     * @param facilityId A unique identifier for the facility requesting the data.
+     * @param patientId  A unique identifier for the patient whose data is being
+     *                   requested.
      */
     @SuppressWarnings("unchecked")
     public List<ERxPrescription> requestPrescriptionData(String facilityId,
@@ -316,7 +307,7 @@ public class ERxCommunicator {
 
     /**
      * Send patient data to External Prescriber.
-     *
+     * <p>
      * This should happen when the Patient checks in, before they get to see the
      * Provider.
      */
@@ -394,8 +385,7 @@ public class ERxCommunicator {
     /**
      * Changes the value of locale.
      *
-     * @param locale
-     *            The new locale.
+     * @param locale The new locale.
      */
     public void setLocale(String locale) {
         this.locale = locale;
@@ -404,8 +394,7 @@ public class ERxCommunicator {
     /**
      * Change the password that this communicator will use when connecting.
      *
-     * @param password
-     *            the password to set
+     * @param password the password to set
      */
     public void setPassword(String password) {
         this.password = password;
@@ -414,16 +403,14 @@ public class ERxCommunicator {
     /**
      * Change the URL that this communicator will connect to.
      *
-     * @param remoteURL
-     *            the remoteURL to set
+     * @param remoteURL the remoteURL to set
      */
     public void setRemoteURL(URL remoteURL) {
         this.remoteURL = remoteURL;
     }
 
     /**
-     * @param soapConnectionMethod
-     *            the soapConnectionMethod to set
+     * @param soapConnectionMethod the soapConnectionMethod to set
      */
     public void setSoapConnectionMethod(String soapConnectionMethod) {
         this.soapConnectionProtocol = soapConnectionMethod;
@@ -432,8 +419,7 @@ public class ERxCommunicator {
     /**
      * Changes the value of soapConnectionProtocol.
      *
-     * @param soapConnectionProtocol
-     *            The new soapConnectionProtocol.
+     * @param soapConnectionProtocol The new soapConnectionProtocol.
      */
     public void setSoapConnectionProtocol(String soapConnectionProtocol) {
         this.soapConnectionProtocol = soapConnectionProtocol;
@@ -442,8 +428,7 @@ public class ERxCommunicator {
     /**
      * Changes the value of socket.
      *
-     * @param socket
-     *            The new socket.
+     * @param socket The new socket.
      */
     public void setSocket(SOAPConnection socket) {
         this.socket = socket;
@@ -452,8 +437,7 @@ public class ERxCommunicator {
     /**
      * Change the username that this communicator will use when connecting.
      *
-     * @param username
-     *            the username to set
+     * @param username the username to set
      */
     public void setUsername(String username) {
         this.username = username;
@@ -463,11 +447,10 @@ public class ERxCommunicator {
      * A helper function to transform a SOAPMessage to a string. Primarily used
      * for constructing helpful errors.
      *
-     * @param message
-     *            The message to translate.
+     * @param message The message to translate.
      * @return The message in String form, or
-     *         "[Unable to convert SOAPMessage message.toString() to string]" if
-     *         there was a problem during conversion.
+     * "[Unable to convert SOAPMessage message.toString() to string]" if
+     * there was a problem during conversion.
      */
     private String transformSOAPMessageToString(SOAPMessage message) {
         StringBuilder answer = new StringBuilder();

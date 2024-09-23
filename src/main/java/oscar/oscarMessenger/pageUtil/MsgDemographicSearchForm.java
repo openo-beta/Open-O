@@ -176,6 +176,7 @@ public final class MsgDemographicSearchForm extends ActionForm {
      * im not sure why it is becuase month is stored like 1 2 3.
      * Im not sure if its correct to put it in here but it seemed like a
      * good a place as any
+     *
      * @param str string of the day of there birth
      */
     public void setDayOfBirth(String str) {

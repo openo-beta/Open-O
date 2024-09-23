@@ -41,7 +41,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 /**
- * Generic WorkFlow Description.  
+ * Generic WorkFlow Description.
  *
  * @author jay
  */

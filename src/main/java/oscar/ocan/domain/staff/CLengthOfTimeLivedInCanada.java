@@ -54,8 +54,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -70,10 +68,8 @@ public class CLengthOfTimeLivedInCanada {
     /**
      * Gets the value of the cNumberOfYearsMonths property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCNumberOfYearsMonths() {
         return cNumberOfYearsMonths;
@@ -82,10 +78,8 @@ public class CLengthOfTimeLivedInCanada {
     /**
      * Sets the value of the cNumberOfYearsMonths property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCNumberOfYearsMonths(String value) {
         this.cNumberOfYearsMonths = value;

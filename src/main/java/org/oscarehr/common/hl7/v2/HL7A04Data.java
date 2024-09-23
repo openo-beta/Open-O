@@ -209,8 +209,9 @@ public class HL7A04Data {
 
     /**
      * generateA04MessageGuelph
-     *
+     * <p>
      * Generates the encoded HL7 A04 message specific for St. Joe's Guelph
+     *
      * @throws HL7Exception
      */
     public void generateA04MessageGuelph() throws HL7Exception {

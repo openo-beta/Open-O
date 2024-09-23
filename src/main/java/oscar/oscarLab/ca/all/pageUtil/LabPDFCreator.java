@@ -76,7 +76,6 @@ import oscar.util.UtilDateUtilities;
 
 
 /**
- *
  * @author wrighd
  */
 public class LabPDFCreator extends PdfPageEventHelper {
@@ -112,7 +111,9 @@ public class LabPDFCreator extends PdfPageEventHelper {
         // Default constructor.
     }
 
-    /** Creates a new instance of LabPDFCreator */
+    /**
+     * Creates a new instance of LabPDFCreator
+     */
     public LabPDFCreator(HttpServletRequest request, OutputStream os) {
         this(os, (request.getParameter("segmentID") != null ? request.getParameter("segmentID") : (String) request.getAttribute("segmentID")), (request.getParameter("providerNo") != null ? request.getParameter("providerNo") : (String) request.getAttribute("providerNo")));
     }
@@ -1111,7 +1112,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
     }
 
     /**
-     * Since pdfPtable used in createInfotable() is not properly supported in RTF, 
+     * Since pdfPtable used in createInfotable() is not properly supported in RTF,
      * add the patient information to the RTF document using chunks and paragraphs
      */
     private void addRtfPatientInfo() throws DocumentException {

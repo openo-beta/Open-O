@@ -214,8 +214,7 @@ public class SFTPConnector {
     /**
      * Issue an 'ls' command on remote server and exclussively print the values or return them in a String array.
      *
-     * @param folder
-     *            to issue the 'ls' command on
+     * @param folder    to issue the 'ls' command on
      * @param printInfo
      * @return
      * @throws SftpException
@@ -262,11 +261,9 @@ public class SFTPConnector {
      * on the server. If you don't prepend the "./" before the folder directory, JSch will use the "/" directory (root
      * dir).
      *
-     * @param serverDirectory
-     *            directory on server side to fetch contents
-     * @throws Exception
-     *             custom error messages if Java is unable to create a folder in /tmp/oscar-sftp and parent dirs
+     * @param serverDirectory directory on server side to fetch contents
      * @return array of full path filenames
+     * @throws Exception custom error messages if Java is unable to create a folder in /tmp/oscar-sftp and parent dirs
      */
     public String[] downloadDirectoryContents(String serverDirectory) throws Exception {
         //get the filenames of all files in the directory
@@ -320,10 +317,8 @@ public class SFTPConnector {
      * Given a directory and the filenames of the directories (already pre-determined) go in the directory and delete
      * each file.
      *
-     * @param serverDirectory
-     *            the directory onto which to remove contents
-     * @param filenames
-     *            a String array of filenames of the directory, pre-fetched specifically for the directory.
+     * @param serverDirectory the directory onto which to remove contents
+     * @param filenames       a String array of filenames of the directory, pre-fetched specifically for the directory.
      * @throws SftpException
      */
     public void deleteDirectoryContents(String serverDirectory, String[] filenames) throws SftpException {
@@ -497,7 +492,7 @@ public class SFTPConnector {
 
     /**
      * Ensure that the given folder exists by creating it if it isn't present.
-     *
+     * <p>
      * Static method so other external Classes may use this feature.
      *
      * @param fullPath

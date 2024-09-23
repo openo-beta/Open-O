@@ -233,6 +233,7 @@ public class BillingCreateBillingAction extends Action {
 
     /**
      * validateServiceCodeTimes
+     *
      * @param errors ActionMessages
      */
     private void validateServiceCodeTimes(ArrayList<BillingItem> billItems,
@@ -288,6 +289,7 @@ public class BillingCreateBillingAction extends Action {
      * Validates a String array of diagnostic codes and adds an ActionMessage
      * to the ActionMessages object, for any of the codes that don't validate
      * successfully
+     *
      * @param errors ActionMessages
      */
 
@@ -314,7 +316,8 @@ public class BillingCreateBillingAction extends Action {
      * Validates a String array of service codes and adds and ActionMessage
      * to the ActionMessages object, for any of the codes that don't validate
      * successfully
-     * @param demo Demographic
+     *
+     * @param demo   Demographic
      * @param errors ActionMessages
      */
     private void validateServiceCodeList(ArrayList<BillingItem> billItems,
@@ -379,6 +382,7 @@ public class BillingCreateBillingAction extends Action {
      * The rules for the 145015  code are as follows:
      * A maximum of 6 units may be billed per calendar year
      * A maximum of 4 units may be billed on any given day
+     *
      * @param serviceDate String - The date of service
      * @return boolean -  true if the specified service is billable
      */
@@ -465,8 +469,8 @@ public class BillingCreateBillingAction extends Action {
     }
 
     /**
-     * @todo Document Me
      * @param errors ActionMessages
+     * @todo Document Me
      */
     private void validateCodeLastBilled(HttpServletRequest request,
                                         ActionMessages errors, String demoNo) {

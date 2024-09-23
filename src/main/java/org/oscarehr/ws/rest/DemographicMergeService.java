@@ -43,7 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Defines a service contract for main operations on demographic. 
+ * Defines a service contract for main operations on demographic.
  */
 @Path("/demographics/merge")
 @Component("demographicMergeService")
@@ -56,8 +56,7 @@ public class DemographicMergeService extends AbstractServiceImpl {
     /**
      * Gets child records IDs for the specified parent record
      *
-     * @param parentId
-     * 		Parent demographic record ID to merge children to
+     * @param parentId Parent demographic record ID to merge children to
      */
     @GET
     @Path("/{parentId}")
@@ -75,10 +74,8 @@ public class DemographicMergeService extends AbstractServiceImpl {
      * Merges demographic records with the specified children IDs to the
      * demographic record with the provided parent id.
      *
-     * @param parentId
-     * 		Parent demographic record ID to merge children to
-     * @param childId
-     * 		Id of the demographic record to be merged to the parent.
+     * @param parentId Parent demographic record ID to merge children to
+     * @param childId  Id of the demographic record to be merged to the parent.
      */
     @PUT
     @Path("/")
@@ -92,10 +89,8 @@ public class DemographicMergeService extends AbstractServiceImpl {
      * Unmerges demographic records with the specified children IDs from the
      * demographic record with the provided parent id.
      *
-     * @param parentId
-     * 		Parent demographic record ID to unmerge children from
-     * @param childId
-     * 		Id of the demographic record to be unmerged from the parent.
+     * @param parentId Parent demographic record ID to unmerge children from
+     * @param childId  Id of the demographic record to be unmerged from the parent.
      */
     @DELETE
     @Path("/")

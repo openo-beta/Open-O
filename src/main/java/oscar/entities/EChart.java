@@ -27,7 +27,6 @@ package oscar.entities;
 
 /**
  * Encapsulates data from table eChart
- *
  */
 public class EChart {
     /**
@@ -54,17 +53,17 @@ public class EChart {
     /**
      * Full constructor
      *
-     * @param eChartId int
-     * @param timeStamp String
-     * @param demographicNo int
-     * @param providerNo String
-     * @param subject String
-     * @param socialHistory String
-     * @param familyHistory String
-     * @param medicalHistory String
+     * @param eChartId        int
+     * @param timeStamp       String
+     * @param demographicNo   int
+     * @param providerNo      String
+     * @param subject         String
+     * @param socialHistory   String
+     * @param familyHistory   String
+     * @param medicalHistory  String
      * @param ongoingConcerns String
-     * @param reminders String
-     * @param encounter String
+     * @param reminders       String
+     * @param encounter       String
      */
     public EChart(int eChartId, String timeStamp, int demographicNo,
                   String providerNo, String subject, String socialHistory,
@@ -85,6 +84,7 @@ public class EChart {
 
     /**
      * Gets the eChartId
+     *
      * @return int eChartId
      */
     public int getEChartId() {
@@ -93,6 +93,7 @@ public class EChart {
 
     /**
      * Gets the timeStamp
+     *
      * @return String timeStamp
      */
     public String getTimeStamp() {
@@ -101,6 +102,7 @@ public class EChart {
 
     /**
      * Gets the demographicNo
+     *
      * @return int demographicNo
      */
     public int getDemographicNo() {
@@ -109,6 +111,7 @@ public class EChart {
 
     /**
      * Gets the providerNo
+     *
      * @return String providerNo
      */
     public String getProviderNo() {
@@ -117,6 +120,7 @@ public class EChart {
 
     /**
      * Gets the subject
+     *
      * @return String subject
      */
     public String getSubject() {
@@ -125,6 +129,7 @@ public class EChart {
 
     /**
      * Gets the socialHistory
+     *
      * @return String socialHistory
      */
     public String getSocialHistory() {
@@ -133,6 +138,7 @@ public class EChart {
 
     /**
      * Gets the familyHistory
+     *
      * @return String familyHistory
      */
     public String getFamilyHistory() {
@@ -141,6 +147,7 @@ public class EChart {
 
     /**
      * Gets the medicalHistory
+     *
      * @return String medicalHistory
      */
     public String getMedicalHistory() {
@@ -149,6 +156,7 @@ public class EChart {
 
     /**
      * Gets the ongoingConcerns
+     *
      * @return String ongoingConcerns
      */
     public String getOngoingConcerns() {
@@ -157,6 +165,7 @@ public class EChart {
 
     /**
      * Gets the reminders
+     *
      * @return String reminders
      */
     public String getReminders() {
@@ -165,6 +174,7 @@ public class EChart {
 
     /**
      * Gets the encounter
+     *
      * @return String encounter
      */
     public String getEncounter() {
@@ -173,6 +183,7 @@ public class EChart {
 
     /**
      * Sets the eChartId
+     *
      * @param eChartId int
      */
     public void setEChartId(int eChartId) {
@@ -181,6 +192,7 @@ public class EChart {
 
     /**
      * Sets the timeStamp
+     *
      * @param timeStamp String
      */
     public void setTimeStamp(String timeStamp) {
@@ -189,6 +201,7 @@ public class EChart {
 
     /**
      * Sets the demographicNo
+     *
      * @param demographicNo int
      */
     public void setDemographicNo(int demographicNo) {
@@ -197,6 +210,7 @@ public class EChart {
 
     /**
      * Sets the providerNo
+     *
      * @param providerNo String
      */
     public void setProviderNo(String providerNo) {
@@ -205,6 +219,7 @@ public class EChart {
 
     /**
      * Sets the subject
+     *
      * @param subject String
      */
     public void setSubject(String subject) {
@@ -213,6 +228,7 @@ public class EChart {
 
     /**
      * Sets the socialHistory
+     *
      * @param socialHistory String
      */
     public void setSocialHistory(String socialHistory) {
@@ -221,6 +237,7 @@ public class EChart {
 
     /**
      * Sets the familyHistory
+     *
      * @param familyHistory String
      */
     public void setFamilyHistory(String familyHistory) {
@@ -229,6 +246,7 @@ public class EChart {
 
     /**
      * Sets the medicalHistory
+     *
      * @param medicalHistory String
      */
     public void setMedicalHistory(String medicalHistory) {
@@ -237,6 +255,7 @@ public class EChart {
 
     /**
      * Sets the ongoingConcerns
+     *
      * @param ongoingConcerns String
      */
     public void setOngoingConcerns(String ongoingConcerns) {
@@ -245,6 +264,7 @@ public class EChart {
 
     /**
      * Sets the reminders
+     *
      * @param reminders String
      */
     public void setReminders(String reminders) {
@@ -253,6 +273,7 @@ public class EChart {
 
     /**
      * Sets the encounter
+     *
      * @param encounter String
      */
     public void setEncounter(String encounter) {

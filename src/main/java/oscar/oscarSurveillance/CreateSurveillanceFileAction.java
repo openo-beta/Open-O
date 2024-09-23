@@ -38,12 +38,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class CreateSurveillanceFileAction extends Action {
 
-    /** Creates a new instance of CreateSurveillanceFile */
+    /**
+     * Creates a new instance of CreateSurveillanceFile
+     */
     public CreateSurveillanceFileAction() {
     }
 

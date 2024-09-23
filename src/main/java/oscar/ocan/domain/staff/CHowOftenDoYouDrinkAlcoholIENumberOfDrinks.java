@@ -59,8 +59,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -84,10 +82,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Gets the value of the cDrinksMonthly property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getCDrinksMonthly() {
         return cDrinksMonthly;
@@ -96,10 +92,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Sets the value of the cDrinksMonthly property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setCDrinksMonthly(BigInteger value) {
         this.cDrinksMonthly = value;
@@ -108,10 +102,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Gets the value of the cDrinksWeekly property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getCDrinksWeekly() {
         return cDrinksWeekly;
@@ -120,10 +112,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Sets the value of the cDrinksWeekly property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setCDrinksWeekly(BigInteger value) {
         this.cDrinksWeekly = value;
@@ -132,10 +122,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Gets the value of the cDrinks23TimesWeekly property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getCDrinks23TimesWeekly() {
         return cDrinks23TimesWeekly;
@@ -144,10 +132,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Sets the value of the cDrinks23TimesWeekly property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setCDrinks23TimesWeekly(BigInteger value) {
         this.cDrinks23TimesWeekly = value;
@@ -156,10 +142,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Gets the value of the cDrinksDaily property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getCDrinksDaily() {
         return cDrinksDaily;
@@ -168,10 +152,8 @@ public class CHowOftenDoYouDrinkAlcoholIENumberOfDrinks {
     /**
      * Sets the value of the cDrinksDaily property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setCDrinksDaily(BigInteger value) {
         this.cDrinksDaily = value;

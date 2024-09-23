@@ -57,7 +57,6 @@ import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.UserProperty;
 
 /**
- *
  * @author jay
  */
 public class GenerateEnvelopesAction extends Action {
@@ -139,7 +138,9 @@ public class GenerateEnvelopesAction extends Action {
         return null;
     }
 
-    /** Creates a new instance of GenerateEnvelopesAction */
+    /**
+     * Creates a new instance of GenerateEnvelopesAction
+     */
     public GenerateEnvelopesAction() {
     }
 

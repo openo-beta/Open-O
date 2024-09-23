@@ -42,8 +42,7 @@ public class PatientSharingNetworkDao extends AbstractDaoImpl<PatientSharingNetw
     /**
      * Finds all Patient Sharing Network Association Objects in our Data model
      *
-     * @return
-     * list of all Patient Sharing Network Data Objects
+     * @return list of all Patient Sharing Network Data Objects
      */
     public List<PatientSharingNetworkDataObject> findPatientSharingNetworkDataObjects() {
         String sql = "FROM PatientSharingNetworkDataObject";

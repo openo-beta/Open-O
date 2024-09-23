@@ -30,12 +30,13 @@ import java.io.File;
 import java.util.Comparator;
 
 /**
- *
  * @author jay
  */
 public class FileSortByDate implements Comparator {
 
-    /** Creates a new instance of FileSortByDate */
+    /**
+     * Creates a new instance of FileSortByDate
+     */
     public FileSortByDate() {
     }
 

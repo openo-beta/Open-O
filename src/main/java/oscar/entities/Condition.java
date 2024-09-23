@@ -48,8 +48,6 @@ public class Condition
 
     /**
      * Set the value of coMorbidConditions
-     *
-     *
      */
     private void setCoMorbidConditions(java.util.Collection value) {
         coMorbidConditions = value;

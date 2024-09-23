@@ -42,12 +42,9 @@ public class BillingNoteDao extends AbstractDaoImpl<BillingNotes> {
     /**
      * Finds notes for the specified billing master and note type
      *
-     * @param billingmaster_no
-     * 		Billing master number to find notes for
-     * @param noteType
-     * 		Optional type of the notes to be found. If this parameter is left as null note type is not used for lookup.
-     * @return
-     *        Returns all matching notes
+     * @param billingmaster_no Billing master number to find notes for
+     * @param noteType         Optional type of the notes to be found. If this parameter is left as null note type is not used for lookup.
+     * @return Returns all matching notes
      */
     @SuppressWarnings("unchecked")
     public List<BillingNotes> findNotes(Integer billingmaster_no, Integer noteType) {
@@ -63,12 +60,9 @@ public class BillingNoteDao extends AbstractDaoImpl<BillingNotes> {
     /**
      * Gets single most recent note for the specified billing master number and note
      *
-     * @param billingmaster_no
-     * 		Billing master number to look notes for
-     * @param noteType
-     * 		Type of the note to be found
-     * @return
-     *        Returns the note or null, if no note can be found
+     * @param billingmaster_no Billing master number to look notes for
+     * @param noteType         Type of the note to be found
+     * @return Returns the note or null, if no note can be found
      */
     public BillingNotes findSingleNote(Integer billingmaster_no, Integer noteType) {
         Query query = entityManager.createQuery("FROM BillingNotes n WHERE n.billingmasterNo = :bmno AND n.noteType = :noteType ORDER BY n.createdate desc");

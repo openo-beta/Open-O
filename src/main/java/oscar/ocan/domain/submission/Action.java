@@ -89,8 +89,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -105,10 +103,8 @@ public class Action {
     /**
      * Gets the value of the priority property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPriority() {
         return priority;
@@ -117,10 +113,8 @@ public class Action {
     /**
      * Sets the value of the priority property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPriority(String value) {
         this.priority = value;
@@ -129,10 +123,8 @@ public class Action {
     /**
      * Gets the value of the domain property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDomain() {
         return domain;
@@ -141,10 +133,8 @@ public class Action {
     /**
      * Sets the value of the domain property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDomain(String value) {
         this.domain = value;

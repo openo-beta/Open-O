@@ -33,22 +33,23 @@ import org.oscarehr.common.model.Property;
 import org.oscarehr.util.SpringUtils;
 
 /**
- * Manages Fax number for provider 
- *
+ * Manages Fax number for provider
  */
 public class ProviderColourUpdater {
 
     private String strColName;
     private String provider;
 
-    /** Creates a new instance of ProviderColourUpdater */
+    /**
+     * Creates a new instance of ProviderColourUpdater
+     */
     public ProviderColourUpdater(String p) {
         strColName = "ProviderColour";
         provider = p;
     }
 
     /**
-     *Retrieve colour for current provider first by querying property table
+     * Retrieve colour for current provider first by querying property table
      */
     public String getColour() {
         PropertyDao dao = SpringUtils.getBean(PropertyDao.class);
@@ -60,7 +61,7 @@ public class ProviderColourUpdater {
     }
 
     /**
-     *set colour in property table
+     * set colour in property table
      */
     public boolean setColour(String c) {
         PropertyDao dao = SpringUtils.getBean(PropertyDao.class);

@@ -37,12 +37,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- *
  * @author jay
  */
 public class RemoveClinicalReportFromHistoryAction extends Action {
 
-    /** Creates a new instance of RunClinicalReportAction */
+    /**
+     * Creates a new instance of RunClinicalReportAction
+     */
     public RemoveClinicalReportFromHistoryAction() {
     }
 

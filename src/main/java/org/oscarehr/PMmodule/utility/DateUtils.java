@@ -504,8 +504,8 @@ public class DateUtils {
 //################################################################################
 
     /**
-     *Gets the difference between two dates, in days.
-     *Takes two dates represented in milliseconds and returns the difference in days
+     * Gets the difference between two dates, in days.
+     * Takes two dates represented in milliseconds and returns the difference in days
      */
     public static int getDifDays(long greater, long lesser) {
         double x = (greater - lesser) / 86400000;

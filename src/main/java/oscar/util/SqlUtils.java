@@ -47,8 +47,7 @@ public class SqlUtils {
     /**
      * Returns a List of String[] which contain the results of the specified arbitrary query.
      *
-     * @param qry
-     *            String - The String SQL Query
+     * @param qry String - The String SQL Query
      * @return List - The List of String[] results or null if no results were yielded
      */
     public static List<String[]> getQueryResultsList(String qry) {
@@ -88,8 +87,7 @@ public class SqlUtils {
     /**
      * Returns a single row(the first row) from a quesry result Generally should only be used with queries that return a single result Returns null if there is no result
      *
-     * @param qry
-     *            String
+     * @param qry String
      * @return String[]
      */
     public static String[] getRow(String qry) {
@@ -105,8 +103,7 @@ public class SqlUtils {
      * Returns a List of Map objects which contain the results of the specified arbitrary query. The key contains the field names of the table and the value, the field value of the
      * record
      *
-     * @param qry
-     *            String - The String SQL Query
+     * @param qry String - The String SQL Query
      * @return List - The List of String Map results or null if no results were yielded
      */
     public static List<Properties> getQueryResultsMapList(String qry) {
@@ -152,10 +149,8 @@ public class SqlUtils {
     /**
      * Creates an 'in' clause segment of an sql query. This is handy in cases where the criteria of a query is dynamic/unknown
      *
-     * @param criteria
-     *            String[] - he string array of criteria used to construct the query segment
-     * @param useQuotes
-     *            boolean - a value of true indicates that the clause components are enclosed in quotes
+     * @param criteria  String[] - he string array of criteria used to construct the query segment
+     * @param useQuotes boolean - a value of true indicates that the clause components are enclosed in quotes
      * @return String - The constructed sql 'in' clause String
      */
     public static String constructInClauseString(String[] criteria, boolean useQuotes) {

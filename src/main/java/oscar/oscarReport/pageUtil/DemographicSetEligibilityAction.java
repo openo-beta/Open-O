@@ -40,7 +40,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarReport.data.DemographicSets;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class DemographicSetEligibilityAction extends Action {

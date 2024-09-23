@@ -46,6 +46,7 @@ import java.util.*;
 
 /**
  * Forwards flow of control to Billing Preferences Screen
+ *
  * @version 1.0
  */
 public class ViewBillingPreferencesAction

@@ -27,7 +27,6 @@ package oscar.entities;
 
 /**
  * Encapsulates data from table provider
- *
  */
 public class Provider {
     private String providerNo = "";
@@ -60,23 +59,23 @@ public class Provider {
     /**
      * Full constructor
      *
-     * @param providerNo String
-     * @param lastName String
-     * @param firstName String
-     * @param providerType String
-     * @param specialty String
-     * @param team String
-     * @param sex String
-     * @param dob String
-     * @param address String
-     * @param phone String
-     * @param workPhone String
-     * @param ohipNo String
-     * @param rmaNo String
-     * @param billingNo String
-     * @param hsoNo String
-     * @param status String
-     * @param comments String
+     * @param providerNo       String
+     * @param lastName         String
+     * @param firstName        String
+     * @param providerType     String
+     * @param specialty        String
+     * @param team             String
+     * @param sex              String
+     * @param dob              String
+     * @param address          String
+     * @param phone            String
+     * @param workPhone        String
+     * @param ohipNo           String
+     * @param rmaNo            String
+     * @param billingNo        String
+     * @param hsoNo            String
+     * @param status           String
+     * @param comments         String
      * @param providerActivity String
      */
     public Provider(String providerNo, String lastName, String firstName,
@@ -107,6 +106,7 @@ public class Provider {
 
     /**
      * Gets the providerNo
+     *
      * @return String providerNo
      */
     public String getProviderNo() {
@@ -115,6 +115,7 @@ public class Provider {
 
     /**
      * Gets the lastName
+     *
      * @return String lastName
      */
     public String getLastName() {
@@ -123,6 +124,7 @@ public class Provider {
 
     /**
      * Gets the firstName
+     *
      * @return String firstName
      */
     public String getFirstName() {
@@ -131,6 +133,7 @@ public class Provider {
 
     /**
      * Gets the providerType
+     *
      * @return String providerType
      * @deprecated no longer is use 2010-04-23, marked for future removal
      */
@@ -140,6 +143,7 @@ public class Provider {
 
     /**
      * Gets the specialty
+     *
      * @return String specialty
      */
     public String getSpecialty() {
@@ -148,6 +152,7 @@ public class Provider {
 
     /**
      * Gets the team
+     *
      * @return String team
      */
     public String getTeam() {
@@ -156,6 +161,7 @@ public class Provider {
 
     /**
      * Gets the sex
+     *
      * @return String sex
      */
     public String getSex() {
@@ -164,6 +170,7 @@ public class Provider {
 
     /**
      * Gets the dob
+     *
      * @return String dob
      */
     public String getDob() {
@@ -172,6 +179,7 @@ public class Provider {
 
     /**
      * Gets the address
+     *
      * @return String address
      */
     public String getAddress() {
@@ -180,6 +188,7 @@ public class Provider {
 
     /**
      * Gets the phone
+     *
      * @return String phone
      */
     public String getPhone() {
@@ -188,6 +197,7 @@ public class Provider {
 
     /**
      * Gets the workPhone
+     *
      * @return String workPhone
      */
     public String getWorkPhone() {
@@ -196,6 +206,7 @@ public class Provider {
 
     /**
      * Gets the ohipNo
+     *
      * @return String ohipNo
      */
     public String getOhipNo() {
@@ -204,6 +215,7 @@ public class Provider {
 
     /**
      * Gets the rmaNo
+     *
      * @return String rmaNo
      */
     public String getRmaNo() {
@@ -212,6 +224,7 @@ public class Provider {
 
     /**
      * Gets the billingNo
+     *
      * @return String billingNo
      */
     public String getBillingNo() {
@@ -220,6 +233,7 @@ public class Provider {
 
     /**
      * Gets the hsoNo
+     *
      * @return String hsoNo
      */
     public String getHsoNo() {
@@ -228,6 +242,7 @@ public class Provider {
 
     /**
      * Gets the status
+     *
      * @return String status
      */
     public String getStatus() {
@@ -236,6 +251,7 @@ public class Provider {
 
     /**
      * Gets the comments
+     *
      * @return String comments
      */
     public String getComments() {
@@ -244,6 +260,7 @@ public class Provider {
 
     /**
      * Gets the providerActivity
+     *
      * @return String providerActivity
      */
     public String getProviderActivity() {
@@ -256,6 +273,7 @@ public class Provider {
 
     /**
      * Sets the providerNo
+     *
      * @param providerNo String
      */
     public void setProviderNo(String providerNo) {
@@ -264,6 +282,7 @@ public class Provider {
 
     /**
      * Sets the lastName
+     *
      * @param lastName String
      */
     public void setLastName(String lastName) {
@@ -272,6 +291,7 @@ public class Provider {
 
     /**
      * Sets the firstName
+     *
      * @param firstName String
      */
     public void setFirstName(String firstName) {
@@ -280,6 +300,7 @@ public class Provider {
 
     /**
      * Sets the providerType
+     *
      * @param providerType String
      */
     public void setProviderType(String providerType) {
@@ -288,6 +309,7 @@ public class Provider {
 
     /**
      * Sets the specialty
+     *
      * @param specialty String
      */
     public void setSpecialty(String specialty) {
@@ -296,6 +318,7 @@ public class Provider {
 
     /**
      * Sets the team
+     *
      * @param team String
      */
     public void setTeam(String team) {
@@ -304,6 +327,7 @@ public class Provider {
 
     /**
      * Sets the sex
+     *
      * @param sex String
      */
     public void setSex(String sex) {
@@ -312,6 +336,7 @@ public class Provider {
 
     /**
      * Sets the dob
+     *
      * @param dob String
      */
     public void setDob(String dob) {
@@ -320,6 +345,7 @@ public class Provider {
 
     /**
      * Sets the address
+     *
      * @param address String
      */
     public void setAddress(String address) {
@@ -328,6 +354,7 @@ public class Provider {
 
     /**
      * Sets the phone
+     *
      * @param phone String
      */
     public void setPhone(String phone) {
@@ -336,6 +363,7 @@ public class Provider {
 
     /**
      * Sets the workPhone
+     *
      * @param workPhone String
      */
     public void setWorkPhone(String workPhone) {
@@ -344,6 +372,7 @@ public class Provider {
 
     /**
      * Sets the ohipNo
+     *
      * @param ohipNo String
      */
     public void setOhipNo(String ohipNo) {
@@ -352,6 +381,7 @@ public class Provider {
 
     /**
      * Sets the rmaNo
+     *
      * @param rmaNo String
      */
     public void setRmaNo(String rmaNo) {
@@ -360,6 +390,7 @@ public class Provider {
 
     /**
      * Sets the billingNo
+     *
      * @param billingNo String
      */
     public void setBillingNo(String billingNo) {
@@ -368,6 +399,7 @@ public class Provider {
 
     /**
      * Sets the hsoNo
+     *
      * @param hsoNo String
      */
     public void setHsoNo(String hsoNo) {
@@ -376,6 +408,7 @@ public class Provider {
 
     /**
      * Sets the status
+     *
      * @param status String
      */
     public void setStatus(String status) {
@@ -384,6 +417,7 @@ public class Provider {
 
     /**
      * Sets the comments
+     *
      * @param comments String
      */
     public void setComments(String comments) {
@@ -392,6 +426,7 @@ public class Provider {
 
     /**
      * Sets the providerActivity
+     *
      * @param providerActivity String
      */
     public void setProviderActivity(String providerActivity) {

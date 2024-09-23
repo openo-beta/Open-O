@@ -34,7 +34,6 @@ package org.oscarehr.decisionSupport.model.conditionValue;
 import org.oscarehr.decisionSupport.model.DecisionSupportException;
 
 /**
- *
  * @author apavel
  */
 public class DSValueString extends DSValue {

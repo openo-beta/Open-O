@@ -45,6 +45,7 @@ public class MsgDocListForm implements java.io.Serializable {
     /**
      * If the vectors used to set up the checkbox list are no itialize this will call
      * setUpVector to init them
+     *
      * @return Vector, With strings of provider No
      */
     public Vector<String> getProviderNoVector() {
@@ -57,6 +58,7 @@ public class MsgDocListForm implements java.io.Serializable {
     /**
      * If the vectors used to set up the checkbox list are no itialize this will call
      * setUpVector to init them
+     *
      * @return Vector, With Strings of providers first names
      */
     public Vector<String> getProviderFirstName() {
@@ -69,6 +71,7 @@ public class MsgDocListForm implements java.io.Serializable {
     /**
      * If the vectors used to set up the checkbox list are no itialize this will call
      * setUpVector to init them
+     *
      * @return Vector, With Strings of providers last names
      */
     public Vector<String> getProviderLastName() {
@@ -80,6 +83,7 @@ public class MsgDocListForm implements java.io.Serializable {
 
     /**
      * Used to set the Provider No Vector
+     *
      * @param noVector
      */
     public void setProviderNoVector(Vector<String> noVector) {
@@ -88,6 +92,7 @@ public class MsgDocListForm implements java.io.Serializable {
 
     /**
      * Used to set the Providers last name
+     *
      * @param lName Vector,
      */
     public void setProviderLastName(Vector<String> lName) {
@@ -96,6 +101,7 @@ public class MsgDocListForm implements java.io.Serializable {
 
     /**
      * Used to set the Providers first name
+     *
      * @param fName
      */
     public void setProviderFirstName(Vector<String> fName) {

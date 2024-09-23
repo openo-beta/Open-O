@@ -46,9 +46,7 @@ import org.springframework.stereotype.Service;
 
 
 /**
- *
  * @author Marc Dumontier
- *
  */
 public interface EFormReportToolManager {
 

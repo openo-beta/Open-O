@@ -90,7 +90,6 @@ import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandle
 import oscar.oscarLab.ca.on.CommonLabTestValues;
 
 /**
- *
  * @author jaygallagher
  */
 public class MeasurementGraphAction2 extends Action {

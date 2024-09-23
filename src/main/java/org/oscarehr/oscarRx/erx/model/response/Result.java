@@ -70,10 +70,8 @@ public class Result {
     /**
      * Construct a Result.
      *
-     * @param toParse
-     *            A document [fragment] to parse.
-     * @throws MalformedURLException
-     *             If the document contains an invalid URL.
+     * @param toParse A document [fragment] to parse.
+     * @throws MalformedURLException If the document contains an invalid URL.
      */
     public Result(Node toParse) throws DOMException {
         super();
@@ -124,16 +122,11 @@ public class Result {
     /**
      * Construct a Result.
      *
-     * @param code
-     *            The result code.
-     * @param machineName
-     *            A machine name.
-     * @param messageEn
-     *            The result code, as an English [error] message.
-     * @param messageFr
-     *            The result code, as a French [error] message.
-     * @param url
-     *            The URL of the web service reporting the result.
+     * @param code        The result code.
+     * @param machineName A machine name.
+     * @param messageEn   The result code, as an English [error] message.
+     * @param messageFr   The result code, as a French [error] message.
+     * @param url         The URL of the web service reporting the result.
      */
     public Result(WSResult5 code, String machineName, String messageEn,
                   String messageFr, URL url) {
@@ -257,40 +250,35 @@ public class Result {
     }
 
     /**
-     * @param code
-     *            the code to set
+     * @param code the code to set
      */
     public void setCode(WSResult5 code) {
         this.code = code;
     }
 
     /**
-     * @param machineName
-     *            the machineName to set
+     * @param machineName the machineName to set
      */
     public void setMachineName(String machineName) {
         this.machineName = machineName;
     }
 
     /**
-     * @param messageEn
-     *            the messageEn to set
+     * @param messageEn the messageEn to set
      */
     public void setMessageEn(String messageEn) {
         this.messageEn = messageEn;
     }
 
     /**
-     * @param messageFr
-     *            the messageFr to set
+     * @param messageFr the messageFr to set
      */
     public void setMessageFr(String messageFr) {
         this.messageFr = messageFr;
     }
 
     /**
-     * @param url
-     *            the url to set
+     * @param url the url to set
      */
     public void setUrl(URL url) {
         this.url = url;

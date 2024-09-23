@@ -57,8 +57,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -89,8 +87,6 @@ public class PresentingIssueList {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link PresentingIssue }
-     *
-     *
      */
     public List<PresentingIssue> getPresentingIssue() {
         if (presentingIssue == null) {

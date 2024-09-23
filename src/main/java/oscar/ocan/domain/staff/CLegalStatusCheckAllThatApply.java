@@ -58,8 +58,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -86,10 +84,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Gets the value of the cPreCharge property.
      *
-     * @return
-     *     possible object is
-     *     {@link CPreCharge }
-     *
+     * @return possible object is
+     * {@link CPreCharge }
      */
     public CPreCharge getCPreCharge() {
         return cPreCharge;
@@ -98,10 +94,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Sets the value of the cPreCharge property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CPreCharge }
-     *
+     * @param value allowed object is
+     *              {@link CPreCharge }
      */
     public void setCPreCharge(CPreCharge value) {
         this.cPreCharge = value;
@@ -110,10 +104,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Gets the value of the cPreTrial property.
      *
-     * @return
-     *     possible object is
-     *     {@link CPreTrial }
-     *
+     * @return possible object is
+     * {@link CPreTrial }
      */
     public CPreTrial getCPreTrial() {
         return cPreTrial;
@@ -122,10 +114,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Sets the value of the cPreTrial property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CPreTrial }
-     *
+     * @param value allowed object is
+     *              {@link CPreTrial }
      */
     public void setCPreTrial(CPreTrial value) {
         this.cPreTrial = value;
@@ -134,10 +124,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Gets the value of the cCustodyStatus property.
      *
-     * @return
-     *     possible object is
-     *     {@link CCustodyStatus }
-     *
+     * @return possible object is
+     * {@link CCustodyStatus }
      */
     public CCustodyStatus getCCustodyStatus() {
         return cCustodyStatus;
@@ -146,10 +134,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Sets the value of the cCustodyStatus property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CCustodyStatus }
-     *
+     * @param value allowed object is
+     *              {@link CCustodyStatus }
      */
     public void setCCustodyStatus(CCustodyStatus value) {
         this.cCustodyStatus = value;
@@ -158,10 +144,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Gets the value of the cOutcomes property.
      *
-     * @return
-     *     possible object is
-     *     {@link COutcomes }
-     *
+     * @return possible object is
+     * {@link COutcomes }
      */
     public COutcomes getCOutcomes() {
         return cOutcomes;
@@ -170,10 +154,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Sets the value of the cOutcomes property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link COutcomes }
-     *
+     * @param value allowed object is
+     *              {@link COutcomes }
      */
     public void setCOutcomes(COutcomes value) {
         this.cOutcomes = value;
@@ -182,10 +164,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Gets the value of the cOther property.
      *
-     * @return
-     *     possible object is
-     *     {@link COther }
-     *
+     * @return possible object is
+     * {@link COther }
      */
     public COther getCOther() {
         return cOther;
@@ -194,10 +174,8 @@ public class CLegalStatusCheckAllThatApply {
     /**
      * Sets the value of the cOther property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link COther }
-     *
+     * @param value allowed object is
+     *              {@link COther }
      */
     public void setCOther(COther value) {
         this.cOther = value;

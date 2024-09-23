@@ -41,6 +41,7 @@ public class FacilityDaoImpl extends AbstractDaoImpl<Facility> implements Facili
 
     /**
      * Find all ordered by name.
+     *
      * @param active null is find all, true is find only active, false is find only inactive.
      */
     public List<Facility> findAll(Boolean active) {

@@ -86,8 +86,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -104,10 +102,8 @@ public class ClientCapacity {
     /**
      * Gets the value of the property property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getProperty() {
         return property;
@@ -116,10 +112,8 @@ public class ClientCapacity {
     /**
      * Sets the value of the property property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setProperty(String value) {
         this.property = value;
@@ -128,10 +122,8 @@ public class ClientCapacity {
     /**
      * Gets the value of the personalCare property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPersonalCare() {
         return personalCare;
@@ -140,10 +132,8 @@ public class ClientCapacity {
     /**
      * Sets the value of the personalCare property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPersonalCare(String value) {
         this.personalCare = value;
@@ -152,10 +142,8 @@ public class ClientCapacity {
     /**
      * Gets the value of the legalGuardian property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLegalGuardian() {
         return legalGuardian;
@@ -164,10 +152,8 @@ public class ClientCapacity {
     /**
      * Sets the value of the legalGuardian property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLegalGuardian(String value) {
         this.legalGuardian = value;

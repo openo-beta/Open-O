@@ -16,8 +16,8 @@ import com.indivica.olis.parameters.ZPD1;
 
 /**
  * Z07 - Retrieve Test Results Reportable to Public Health
- * @author jen
  *
+ * @author jen
  */
 public class Z07Query extends Query {
 

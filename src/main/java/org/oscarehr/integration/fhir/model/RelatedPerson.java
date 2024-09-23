@@ -63,15 +63,14 @@ public class RelatedPerson extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.
     /**
      * This patient is represents a relationship to another (or the same) patient
      * in focus.
-     *
+     * <p>
      * Example: if a child's immunization record is being sent to a health authority.
-     *
+     * <p>
      * The child's responsible parent would be inserted here. The child would be
      * the patient in focus. aka: the patient that this patient refers to.
-     *
+     * <p>
      * If there is no relationship, then the patient would be inserted here with a
      * relationship to ONESELF and a reference to the data contained within.
-     *
      */
     private void setPatient(Patient patient) {
 

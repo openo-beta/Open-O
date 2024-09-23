@@ -18,8 +18,8 @@ import com.indivica.olis.parameters.ZPD1;
 
 /**
  * Z50 - Identify Patient by Name, Sex, and Date of Birth
- * @author jen
  *
+ * @author jen
  */
 public class Z50Query extends Query {
 

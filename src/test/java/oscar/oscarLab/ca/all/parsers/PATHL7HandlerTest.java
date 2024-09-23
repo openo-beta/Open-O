@@ -227,6 +227,7 @@ public class PATHL7HandlerTest {
     /**
      * Converts a space delimited string into an ArrayList
      * Also eliminates duplicates and sorts alpha numerically.
+     *
      * @return
      */
     private static ArrayList<String> sortStringToList(String stringList) {

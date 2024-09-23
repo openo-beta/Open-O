@@ -51,8 +51,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "matchBO", propOrder = {"clientID", "clientName",
@@ -70,7 +68,6 @@ public class MatchBO {
 
     /**
      * Gets the value of the clientID property.
-     *
      */
     public int getClientID() {
         return clientID;
@@ -78,7 +75,6 @@ public class MatchBO {
 
     /**
      * Sets the value of the clientID property.
-     *
      */
     public void setClientID(int value) {
         this.clientID = value;
@@ -88,7 +84,6 @@ public class MatchBO {
      * Gets the value of the clientName property.
      *
      * @return possible object is {@link String }
-     *
      */
     public String getClientName() {
         return clientName;
@@ -97,9 +92,7 @@ public class MatchBO {
     /**
      * Sets the value of the clientName property.
      *
-     * @param value
-     *            allowed object is {@link String }
-     *
+     * @param value allowed object is {@link String }
      */
     public void setClientName(String value) {
         this.clientName = value;
@@ -107,7 +100,6 @@ public class MatchBO {
 
     /**
      * Gets the value of the contactAttempts property.
-     *
      */
     public int getContactAttempts() {
         return contactAttempts;
@@ -115,7 +107,6 @@ public class MatchBO {
 
     /**
      * Sets the value of the contactAttempts property.
-     *
      */
     public void setContactAttempts(int value) {
         this.contactAttempts = value;
@@ -123,7 +114,6 @@ public class MatchBO {
 
     /**
      * Gets the value of the daysInWaitList property.
-     *
      */
     public int getDaysInWaitList() {
         return daysInWaitList;
@@ -131,7 +121,6 @@ public class MatchBO {
 
     /**
      * Sets the value of the daysInWaitList property.
-     *
      */
     public void setDaysInWaitList(int value) {
         this.daysInWaitList = value;
@@ -139,7 +128,6 @@ public class MatchBO {
 
     /**
      * Gets the value of the daysSinceLastContact property.
-     *
      */
     public int getDaysSinceLastContact() {
         return daysSinceLastContact;
@@ -147,7 +135,6 @@ public class MatchBO {
 
     /**
      * Sets the value of the daysSinceLastContact property.
-     *
      */
     public void setDaysSinceLastContact(int value) {
         this.daysSinceLastContact = value;
@@ -155,7 +142,6 @@ public class MatchBO {
 
     /**
      * Gets the value of the formDataID property.
-     *
      */
     public int getFormDataID() {
         return formDataID;
@@ -163,7 +149,6 @@ public class MatchBO {
 
     /**
      * Sets the value of the formDataID property.
-     *
      */
     public void setFormDataID(int value) {
         this.formDataID = value;
@@ -171,7 +156,6 @@ public class MatchBO {
 
     /**
      * Gets the value of the percentageMatch property.
-     *
      */
     public double getPercentageMatch() {
         return percentageMatch;
@@ -179,7 +163,6 @@ public class MatchBO {
 
     /**
      * Sets the value of the percentageMatch property.
-     *
      */
     public void setPercentageMatch(double value) {
         this.percentageMatch = value;

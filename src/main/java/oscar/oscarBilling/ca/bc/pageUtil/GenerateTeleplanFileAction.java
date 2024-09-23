@@ -54,7 +54,6 @@ import oscar.util.UtilDateUtilities;
  * Goals
  * + Take file generation logic out of jsp page
  *
- *
  * @author jay
  */
 public class GenerateTeleplanFileAction extends Action {

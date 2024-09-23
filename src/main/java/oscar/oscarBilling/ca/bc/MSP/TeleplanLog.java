@@ -27,14 +27,15 @@
 package oscar.oscarBilling.ca.bc.MSP;
 
 /**
- +------------------+---------+------+-----+---------+----------------+
- | Field            | Type    | Null | Key | Default | Extra          |
- +------------------+---------+------+-----+---------+----------------+
- | log_no           | int(10) |      | PRI | NULL    | auto_increment |
- | claim            | blob    | YES  |     | NULL    |                |
- | sequence_no      | int(10) | YES  |     | NULL    |                |
- | billingmaster_no | int(10) | YES  |     | NULL    |                |
- +------------------+---------+------+-----+---------+----------------+
+ * +------------------+---------+------+-----+---------+----------------+
+ * | Field            | Type    | Null | Key | Default | Extra          |
+ * +------------------+---------+------+-----+---------+----------------+
+ * | log_no           | int(10) |      | PRI | NULL    | auto_increment |
+ * | claim            | blob    | YES  |     | NULL    |                |
+ * | sequence_no      | int(10) | YES  |     | NULL    |                |
+ * | billingmaster_no | int(10) | YES  |     | NULL    |                |
+ * +------------------+---------+------+-----+---------+----------------+
+ *
  * @author jay
  */
 public class TeleplanLog {
@@ -43,7 +44,9 @@ public class TeleplanLog {
     private int sequenceNo;
     private int billingmasterNo;
 
-    /** Creates a new instance of TeleplanLog */
+    /**
+     * Creates a new instance of TeleplanLog
+     */
     public TeleplanLog() {
     }
 

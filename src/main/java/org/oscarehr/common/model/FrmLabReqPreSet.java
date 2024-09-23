@@ -35,7 +35,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
  * @author mweston4
  */
 

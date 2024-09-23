@@ -50,7 +50,7 @@ import oscar.OscarProperties;
  * retrieved from the global OSCAR properties and appending it to the end of an HTML page.
  *
  * <p></p>
- *
+ * <p>
  * When outputting the statement, the filter uses the following conventions:
  *
  * <ul>
@@ -63,9 +63,9 @@ import oscar.OscarProperties;
  *
  * </ul>
  *
- * <p></p>  
- *
- * Please note that this filter results in not well-formed HTML content being outputted to the browser, which in turn 
+ * <p></p>
+ * <p>
+ * Please note that this filter results in not well-formed HTML content being outputted to the browser, which in turn
  * results in page rendered in Quirks mode.
  */
 public class PrivacyStatementAppendingFilter implements Filter {

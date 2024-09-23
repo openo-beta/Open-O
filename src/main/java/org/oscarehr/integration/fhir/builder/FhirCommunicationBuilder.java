@@ -45,7 +45,7 @@ import org.oscarehr.integration.fhir.model.Sender;
 
 /**
  * Use when the Communication resource is used to build a majority of the
- * message. 
+ * message.
  */
 public class FhirCommunicationBuilder extends AbstractFhirMessageBuilder<Communication> {
 

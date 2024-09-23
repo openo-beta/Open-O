@@ -40,12 +40,13 @@ import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *Class used by the HSFO Study
- *
+ * Class used by the HSFO Study
  */
 public class HSFODAO {
 
-    /** Creates a new instance of HSFODAO */
+    /**
+     * Creates a new instance of HSFODAO
+     */
     public HSFODAO() {
     }
 

@@ -74,8 +74,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -107,8 +105,6 @@ public class ImmigExpList {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     *
-     *
      */
     public List<String> getValue() {
         if (value == null) {
@@ -120,10 +116,8 @@ public class ImmigExpList {
     /**
      * Gets the value of the otherImmigExp property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOtherImmigExp() {
         return otherImmigExp;
@@ -132,10 +126,8 @@ public class ImmigExpList {
     /**
      * Sets the value of the otherImmigExp property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOtherImmigExp(String value) {
         this.otherImmigExp = value;

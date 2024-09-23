@@ -351,14 +351,10 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
      * Looks up measurement information based on the demographic id, type and
      * instructions.
      *
-     * @param demographicId
-     *                      ID of the demographic record
-     * @param type
-     *                      Type of the measurement
-     * @param instructions
-     *                      Measurement instructions
-     * @return
-     *         Returns the measurements found
+     * @param demographicId ID of the demographic record
+     * @param type          Type of the measurement
+     * @param instructions  Measurement instructions
+     * @return Returns the measurements found
      */
 
     @Override
@@ -453,13 +449,10 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     /**
      * Finds abnormal measurements for the specified patient
      *
-     * @param demoNo
-     *                  Patient ID
-     * @param loincCode
-     *                  LOINC Code
-     * @return
-     *         Returns a list of tuples containing record data, observation date,
-     *         lab no, abnormal value.
+     * @param demoNo    Patient ID
+     * @param loincCode LOINC Code
+     * @return Returns a list of tuples containing record data, observation date,
+     * lab no, abnormal value.
      */
 
     @Override

@@ -185,8 +185,7 @@ public class RptInitializePatientsInAbnormalRangeCDMReportAction extends Action 
     /**
      * Gets the number of Patient in the abnormal range during a time period
      *
-     * @return
-     *        ArrayList which contain the result in String format
+     * @return ArrayList which contain the result in String format
      */
     private ArrayList<String> getInAbnormalRangePercentage(RptInitializePatientsInAbnormalRangeCDMReportForm frm, ArrayList<String> metGLPercentageMsg, HttpServletRequest request) {
         String[] startDateC = frm.getStartDateC();

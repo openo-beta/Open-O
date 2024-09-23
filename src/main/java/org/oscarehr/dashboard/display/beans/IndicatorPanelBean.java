@@ -29,10 +29,8 @@ import java.util.List;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
- *
- * An IndicatorPanelBean contains a panel of IndicatorBeans 
+ * An IndicatorPanelBean contains a panel of IndicatorBeans
  * sorted by category and sub-category.
- *
  */
 public class IndicatorPanelBean {
 

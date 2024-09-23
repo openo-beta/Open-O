@@ -31,7 +31,7 @@ import org.displaytag.decorator.TableDecorator;
 import org.oscarehr.common.model.BillingService;
 
 /**
- A helper class for the displayTag Tag Library used to List of java beans for augmented tabular display
+ * A helper class for the displayTag Tag Library used to List of java beans for augmented tabular display
  **/
 public class BillCodesTableWrapper
         extends TableDecorator {

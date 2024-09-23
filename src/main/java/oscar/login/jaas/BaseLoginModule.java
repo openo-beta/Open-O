@@ -311,8 +311,7 @@ public class BaseLoginModule implements LoginModule {
      * Checks if this login module should provide authorization information
      * after successful authentication is complete.
      *
-     * @return
-     *        Returns true if role and group information should be populated and false otherwise.
+     * @return Returns true if role and group information should be populated and false otherwise.
      */
     public boolean isAuthorizationEnabled() {
         return authorizationEnabled;

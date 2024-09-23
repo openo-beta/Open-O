@@ -168,7 +168,6 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
      *
      * @param file
      * @param messageReceived
-     *
      * @return true if no errors found in received message, false otherwise
      */
     private boolean processResponse(File file, String messageReceived) {
@@ -187,7 +186,6 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
      * checkResponse
      *
      * @param messageReceived
-     *
      * @return true if no errors found in received message, false otherwise
      */
     private boolean checkResponse(String messageReceived) {
@@ -202,7 +200,7 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
     /**
      * sendMessage
      * Helper method for sending an Hl7 A04 message to Emerald.
-     *
+     * <p>
      * NOTES:
      * 1. '0x0b' is a character that needs to be sent before an HL7 message
      * 2. '0x0d0x1c0x0d' is the character sequence that needs to be sent after an HL7 message
@@ -222,12 +220,11 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
     /**
      * getResponse
      * Helper method to get the response message from Emerald.
-     *
+     * <p>
      * NOTES:
      * 1. '0x1c' is the last character in the message from Emerald (i.e. EOF character).
      *
      * @param in
-     *
      * @return The Emerald String response
      */
     private String getResponse(BufferedReader in) throws java.io.IOException {
@@ -250,7 +247,6 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
      * readA04File
      *
      * @param theFile
-     *
      * @return The contents of the A04 file
      */
     private String readA04File(String theFile) throws java.io.FileNotFoundException, java.io.IOException {

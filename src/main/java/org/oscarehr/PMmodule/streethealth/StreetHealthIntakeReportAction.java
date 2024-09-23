@@ -53,9 +53,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author Marc Dumontier (marc@mdumontier.com)
- *
  */
 public class StreetHealthIntakeReportAction extends DispatchAction {
 

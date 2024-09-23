@@ -45,7 +45,6 @@ import oscar.util.StringUtils;
 
 
 /**
- *
  * Retrieves consultation requests for demographic
  */
 public class EctDisplayConsultAction extends EctDisplayAction {

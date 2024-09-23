@@ -55,7 +55,6 @@ import oscar.oscarLab.ca.all.parsers.Factory;
 import oscar.oscarLab.ca.all.parsers.MessageHandler;
 
 /**
- *
  * @author wrighd
  */
 public class PrintLabsAction extends Action {
@@ -63,7 +62,9 @@ public class PrintLabsAction extends Action {
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of PrintLabsAction */
+    /**
+     * Creates a new instance of PrintLabsAction
+     */
     public PrintLabsAction() {
     }
 

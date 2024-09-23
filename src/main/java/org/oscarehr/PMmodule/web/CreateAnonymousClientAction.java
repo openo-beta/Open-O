@@ -36,12 +36,12 @@ import org.oscarehr.util.SpringUtils;
 
 /**
  * # a new client registration is automatically created
- # the first name for this client is "Anonymous[datetimestamp]" where date time stamp is the datetime that the button was clicked, the last name is ".Anonymous" (note the period before the name so that client appears at the top of the list).
- # the client anonymous value is "one time unique anonymous"
- # the client DOB is 1800-01-01
- # the client is admitted into program A at the time that the button was clicked
- * @author marc
+ * # the first name for this client is "Anonymous[datetimestamp]" where date time stamp is the datetime that the button was clicked, the last name is ".Anonymous" (note the period before the name so that client appears at the top of the list).
+ * # the client anonymous value is "one time unique anonymous"
+ * # the client DOB is 1800-01-01
+ * # the client is admitted into program A at the time that the button was clicked
  *
+ * @author marc
  */
 
 public class CreateAnonymousClientAction {

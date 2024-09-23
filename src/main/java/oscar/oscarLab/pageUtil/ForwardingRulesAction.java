@@ -56,7 +56,6 @@ import oscar.OscarProperties;
 import oscar.oscarLab.ForwardingRules;
 
 /**
- *
  * @author wrighd
  */
 public class ForwardingRulesAction extends Action {

@@ -212,8 +212,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -236,10 +234,8 @@ public class Referral {
     /**
      * Gets the value of the optimal property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOptimal() {
         return optimal;
@@ -248,10 +244,8 @@ public class Referral {
     /**
      * Sets the value of the optimal property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOptimal(String value) {
         this.optimal = value;
@@ -260,10 +254,8 @@ public class Referral {
     /**
      * Gets the value of the specifyOptimal property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSpecifyOptimal() {
         return specifyOptimal;
@@ -272,10 +264,8 @@ public class Referral {
     /**
      * Sets the value of the specifyOptimal property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSpecifyOptimal(String value) {
         this.specifyOptimal = value;
@@ -284,10 +274,8 @@ public class Referral {
     /**
      * Gets the value of the actual property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getActual() {
         return actual;
@@ -296,10 +284,8 @@ public class Referral {
     /**
      * Sets the value of the actual property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setActual(String value) {
         this.actual = value;
@@ -308,10 +294,8 @@ public class Referral {
     /**
      * Gets the value of the specifyActual property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSpecifyActual() {
         return specifyActual;
@@ -320,10 +304,8 @@ public class Referral {
     /**
      * Sets the value of the specifyActual property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSpecifyActual(String value) {
         this.specifyActual = value;
@@ -332,10 +314,8 @@ public class Referral {
     /**
      * Gets the value of the differenceReason property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDifferenceReason() {
         return differenceReason;
@@ -344,10 +324,8 @@ public class Referral {
     /**
      * Sets the value of the differenceReason property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDifferenceReason(String value) {
         this.differenceReason = value;
@@ -356,10 +334,8 @@ public class Referral {
     /**
      * Gets the value of the status property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getStatus() {
         return status;
@@ -368,10 +344,8 @@ public class Referral {
     /**
      * Sets the value of the status property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setStatus(String value) {
         this.status = value;

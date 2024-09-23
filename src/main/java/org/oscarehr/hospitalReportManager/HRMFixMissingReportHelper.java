@@ -41,13 +41,12 @@ import oscar.OscarProperties;
 
 /**
  * See bug 4195.
- *
+ * <p>
  * The issue is that there could be some files that are relative, but the file is not in DOCUMENT_DIR (still in the downloads directory)
- *
+ * <p>
  * This script (runs once on startup), goes through the HRM db records, and tries to file any missing files.
  *
  * @author marc
- *
  */
 public class HRMFixMissingReportHelper {
 

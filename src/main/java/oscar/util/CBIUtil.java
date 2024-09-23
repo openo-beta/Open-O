@@ -295,7 +295,6 @@ public class CBIUtil {
     /**
      * get admission details for which admission_status = 'current' and program
      * type is not 'community' and program's functionalCentreId is not null
-     *
      */
     public List<Admission> getAdmissionDetailsToBeSubmittedToCBI() {
         List<Admission> admissionList = null;

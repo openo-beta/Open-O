@@ -40,7 +40,6 @@ import org.oscarehr.util.SpringUtils;
  * A utility class for access measurement data.
  *
  * @author Christine Gibson
- *
  */
 public class MeasurementUtil {
 
@@ -103,7 +102,6 @@ public class MeasurementUtil {
      * Gets a list of measurements for a patient.
      *
      * @param demographicNo The demographic number of the patient.
-     *
      * @return Returns a list of measurements for the patient.
      */
     public static List<Measurement> getMeasurements(int demographicNo) {
@@ -114,9 +112,8 @@ public class MeasurementUtil {
     /**
      * Gets the MeasurementType based on the measurement instruction and type.
      *
-     * @param type The type of measurement.
+     * @param type                   The type of measurement.
      * @param measurementInstruction The measuring instruction.
-     *
      * @return Returns a MeasurementType
      */
     public static MeasurementType findByTypeMeasurementInstruction(String type, String measurementInstruction) {

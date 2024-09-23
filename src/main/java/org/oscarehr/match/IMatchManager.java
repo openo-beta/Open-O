@@ -25,12 +25,10 @@ package org.oscarehr.match;
 
 /**
  * @author AnooshTech
- *
  */
 public interface IMatchManager {
     /**
      * Defines possible {@link Event} for matches.
-     *
      */
     public static enum Event {
         CLIENT_CREATED, VACANCY_CREATED, SCHEDULED_EVENT;
@@ -38,6 +36,7 @@ public interface IMatchManager {
 
     /**
      * Processes the passed event with received entity
+     *
      * @param <E>
      * @param entity
      * @param event

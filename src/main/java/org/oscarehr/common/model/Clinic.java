@@ -40,7 +40,6 @@ import org.oscarehr.integration.fhir.resources.constants.ContactRelationship;
 import org.oscarehr.integration.fhir.resources.constants.ContactType;
 
 /**
- *
  * @author Jay Gallagher
  */
 @Entity
@@ -87,7 +86,9 @@ public class Clinic extends AbstractModel<Integer> implements Serializable, Cont
         this.id = id;
     }
 
-    /** Creates a new instance of UserProperty */
+    /**
+     * Creates a new instance of UserProperty
+     */
     public Clinic() {
     }
 

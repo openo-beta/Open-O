@@ -250,9 +250,8 @@ public class PreventionData {
     // //////
 
     /**
-     *Method to get a list of (demographic #, prevention dates, and key values) of a certain type <injectionTppe> from a start Date to an end Date with a Ext key value EG get all
+     * Method to get a list of (demographic #, prevention dates, and key values) of a certain type <injectionTppe> from a start Date to an end Date with a Ext key value EG get all
      * Rh injection's product #, from 2006-12-12 to 2006-12-18
-     *
      */
     public static ArrayList<Map<String, Object>> getExtValues(String injectionType, Date startDate, Date endDate, String keyVal) {
         ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();

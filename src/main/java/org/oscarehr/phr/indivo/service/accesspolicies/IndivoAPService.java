@@ -41,7 +41,6 @@ import org.oscarehr.phr.service.PHRService;
 import oscar.util.StringUtils;
 
 /**
- *
  * @author apavel
  */
 public class IndivoAPService extends PHRService {

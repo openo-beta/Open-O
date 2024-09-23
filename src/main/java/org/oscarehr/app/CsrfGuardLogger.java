@@ -40,7 +40,7 @@ import java.util.logging.SimpleFormatter;
 /**
  * Oscar CsrfGuardLogger
  * Extends the standard CsrfGuard JavaLogger to take into account the oscar property "csrf_log_all_messages"
- * If the property is enabled, only 
+ * If the property is enabled, only
  */
 public class CsrfGuardLogger extends JavaLogger {
 

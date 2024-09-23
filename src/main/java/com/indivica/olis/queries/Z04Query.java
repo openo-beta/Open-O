@@ -22,8 +22,8 @@ import com.indivica.olis.parameters.ZRP1;
 
 /**
  * Z04 - Retrieve Laboratory Information Updates for Practitioner
- * @author jen
  *
+ * @author jen
  */
 public class Z04Query extends Query {
 

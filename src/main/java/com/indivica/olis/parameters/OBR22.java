@@ -16,8 +16,8 @@ import java.util.List;
 
 /**
  * Start Timestamp (and End Timestamp)
- * @author jen
  *
+ * @author jen
  */
 public class OBR22 implements Parameter {
 

@@ -38,7 +38,6 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author jackson bi
  */
 @Repository

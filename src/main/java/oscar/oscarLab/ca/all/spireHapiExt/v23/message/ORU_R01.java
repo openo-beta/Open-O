@@ -35,7 +35,7 @@ public class ORU_R01 extends ca.uhn.hl7v2.model.v23.message.ORU_R01 {
 
     /**
      * Constructor
-     *
+     * <p>
      * We always have to have a constructor with this one argument
      */
     public ORU_R01(ModelClassFactory factory) throws HL7Exception {

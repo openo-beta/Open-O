@@ -31,7 +31,6 @@ import java.util.Map;
 
 /**
  * @author AnooshTech
- *
  */
 public class ClientData {
     private int clientId;

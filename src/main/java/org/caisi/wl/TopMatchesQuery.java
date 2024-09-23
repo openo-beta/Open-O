@@ -46,8 +46,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "topMatchesQuery", propOrder = {"maximum", "vacancyID"})
@@ -58,7 +56,6 @@ public class TopMatchesQuery {
 
     /**
      * Gets the value of the maximum property.
-     *
      */
     public int getMaximum() {
         return maximum;
@@ -66,7 +63,6 @@ public class TopMatchesQuery {
 
     /**
      * Sets the value of the maximum property.
-     *
      */
     public void setMaximum(int value) {
         this.maximum = value;
@@ -74,7 +70,6 @@ public class TopMatchesQuery {
 
     /**
      * Gets the value of the vacancyID property.
-     *
      */
     public int getVacancyID() {
         return vacancyID;
@@ -82,7 +77,6 @@ public class TopMatchesQuery {
 
     /**
      * Sets the value of the vacancyID property.
-     *
      */
     public void setVacancyID(int value) {
         this.vacancyID = value;

@@ -36,19 +36,29 @@ public class DigitalSignature extends AbstractModel<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id = null;
 
-    /** The facility in which this was captured */
+    /**
+     * The facility in which this was captured
+     */
     private Integer facilityId = null;
 
-    /** The provider who captured the signature */
+    /**
+     * The provider who captured the signature
+     */
     private String providerNo = null;
 
-    /** The client for which this signature belongs */
+    /**
+     * The client for which this signature belongs
+     */
     private Integer demographicId = null;
 
-    /** The date the signature was captured */
+    /**
+     * The date the signature was captured
+     */
     private Date dateSigned = null;
 
-    /** Image of the signature as a jpg */
+    /**
+     * Image of the signature as a jpg
+     */
     private byte[] signatureImage = null;
 
     @Override

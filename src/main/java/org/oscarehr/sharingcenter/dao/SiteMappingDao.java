@@ -42,8 +42,7 @@ public class SiteMappingDao extends AbstractDaoImpl<SiteMapping> {
     /**
      * Finds all site mappings in our Data model
      *
-     * @return
-     * list of all SiteMapping objects
+     * @return list of all SiteMapping objects
      */
     public List<SiteMapping> findSiteMappings() {
         String sql = "FROM SiteMapping";

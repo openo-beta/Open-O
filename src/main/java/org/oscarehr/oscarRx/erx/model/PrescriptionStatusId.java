@@ -55,12 +55,10 @@ public enum PrescriptionStatusId {
      * Convert a string (passed in a response) to it's corresponding
      * PrescriptionStatusId.
      *
-     * @param toParse
-     *            The string to convert.
+     * @param toParse The string to convert.
      * @return The PrescriptionStatusId corresponding to the given string.
-     * @throws IllegalArgumentException
-     *             Throws an IllegalArgumentException if the string doesn't
-     *             match a known PrescriptionStatusId.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the string doesn't
+     *                                  match a known PrescriptionStatusId.
      */
     public static PrescriptionStatusId parseString(String toParse)
             throws IllegalArgumentException {
@@ -89,9 +87,8 @@ public enum PrescriptionStatusId {
     /**
      * Construct a PrescriptionStatusId.
      *
-     * @param prescriptionStatusId
-     *            An integer value which must be passed in a request or parsed
-     *            in a response.
+     * @param prescriptionStatusId An integer value which must be passed in a request or parsed
+     *                             in a response.
      */
     PrescriptionStatusId(int prescriptionStatusId) {
         this.prescriptionStatusId = prescriptionStatusId;
@@ -102,7 +99,7 @@ public enum PrescriptionStatusId {
      * request.
      *
      * @return A string representing this value, suitable for sending in a
-     *         request.
+     * request.
      */
     public String getString() {
         return Integer.toString(this.prescriptionStatusId);

@@ -26,6 +26,7 @@ package org.oscarehr.PMmodule.exception;
 import org.oscarehr.PMmodule.model.ProgramClientRestriction;
 
 /**
+ *
  */
 public class ServiceRestrictionException extends Exception {
 

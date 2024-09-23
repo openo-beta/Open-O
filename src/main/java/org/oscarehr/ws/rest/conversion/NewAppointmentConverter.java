@@ -41,7 +41,6 @@ import org.oscarehr.ws.rest.to.model.NewAppointmentTo1;
  * Conversion from the web's mininal new appt. This converter adds some defaults.
  *
  * @author marc
- *
  */
 public class NewAppointmentConverter extends AbstractConverter<Appointment, NewAppointmentTo1> {
 

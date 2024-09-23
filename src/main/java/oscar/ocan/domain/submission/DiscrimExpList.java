@@ -75,8 +75,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -108,8 +106,6 @@ public class DiscrimExpList {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     *
-     *
      */
     public List<String> getValue() {
         if (value == null) {
@@ -121,10 +117,8 @@ public class DiscrimExpList {
     /**
      * Gets the value of the otherDiscrimExp property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOtherDiscrimExp() {
         return otherDiscrimExp;
@@ -133,10 +127,8 @@ public class DiscrimExpList {
     /**
      * Sets the value of the otherDiscrimExp property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOtherDiscrimExp(String value) {
         this.otherDiscrimExp = value;

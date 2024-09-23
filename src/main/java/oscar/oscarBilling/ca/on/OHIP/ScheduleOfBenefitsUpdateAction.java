@@ -46,7 +46,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.oscarBilling.ca.on.data.BillingCodeData;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class ScheduleOfBenefitsUpdateAction extends Action {

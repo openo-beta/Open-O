@@ -62,11 +62,15 @@ public class SecProvider implements java.io.Serializable {
 
     // Constructors
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public SecProvider() {
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public SecProvider(String lastName, String firstName, String providerType,
                        String specialty, String team, String sex, Date dob,
                        String address, String phone, String workPhone, String ohipNo,

@@ -319,8 +319,8 @@ public class Hsfo2Visit extends AbstractModel<Integer> implements Serializable {
 
     /**
      * the A1C in this class in percentage
-     * @param a1c  when display in the UI, the value should multiple 100 as it is percentage; when save to database, use the normal value;
      *
+     * @param a1c when display in the UI, the value should multiple 100 as it is percentage; when save to database, use the normal value;
      */
     public void setA1C(double a1c) {
         A1C = a1c;

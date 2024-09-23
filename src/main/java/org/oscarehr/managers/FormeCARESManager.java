@@ -286,6 +286,7 @@ public class FormeCARESManager {
 
     /**
      * Returns a blank tickler interface if no existing tickler is specified.
+     *
      * @param loggedInInfo
      * @param tickerString
      * @return
@@ -418,7 +419,7 @@ public class FormeCARESManager {
     /**
      * most recent Creatinine Clearance (eGFR)
      *
-     * @param loggedInInfo Authentication information for the current user
+     * @param loggedInInfo   Authentication information for the current user
      * @param jsonDataObject Current JSON Object with form data
      */
     private void setMeasurements(LoggedInInfo loggedInInfo, JSONObject jsonDataObject) {

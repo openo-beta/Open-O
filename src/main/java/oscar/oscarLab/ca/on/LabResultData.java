@@ -45,7 +45,6 @@ import oscar.util.UtilDateUtilities;
 
 
 /**
- *
  * @author Jay Gallagher
  */
 public class LabResultData implements Comparable<LabResultData> {

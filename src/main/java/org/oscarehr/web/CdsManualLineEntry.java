@@ -48,7 +48,7 @@ public class CdsManualLineEntry {
     /**
      * expects the request parameters to be of the form
      * 7-02.ma, 7-02.c0, 7-02.c1 where 7-02 is the section
-     *
+     * <p>
      * to be used with outputCdsManualLineEntryTable()
      */
     public static CdsManualLineEntry getCdsManualLineEntry(HttpServletRequest request, String section) {

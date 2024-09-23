@@ -39,10 +39,9 @@ import org.oscarehr.util.MiscUtils;
 
 /**
  * Depends on a proper convention of place-holders in the query text.
- *
+ * <p>
  * RegEx is:  "(\\$){1}(\\{){1}( )*(.)*( )*(\\}){1}"
  * ie: ${ parameter_id }
- *
  */
 public class IndicatorQueryHandler extends AbstractQueryHandler {
 
@@ -95,7 +94,7 @@ public class IndicatorQueryHandler extends AbstractQueryHandler {
      * Build graph data with GraphPlot objects and set them into the Indicator Bean for display.
      * Each row of graph plots is a new graph
      * Each GraphPlot column is a plot on the graph.
-     *
+     * <p>
      * Not Thread Safe
      */
     private void graphPlots(List<?> results) {

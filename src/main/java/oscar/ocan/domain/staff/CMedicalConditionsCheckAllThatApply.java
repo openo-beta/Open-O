@@ -97,8 +97,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -160,10 +158,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Gets the value of the cAcquiredBrainInjuryABI property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAcquiredBrainInjuryABI() {
         return cAcquiredBrainInjuryABI;
@@ -172,10 +168,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Sets the value of the cAcquiredBrainInjuryABI property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAcquiredBrainInjuryABI(String value) {
         this.cAcquiredBrainInjuryABI = value;
@@ -184,10 +178,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Gets the value of the cArthritis property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCArthritis() {
         return cArthritis;
@@ -196,10 +188,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Sets the value of the cArthritis property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCArthritis(String value) {
         this.cArthritis = value;
@@ -208,10 +198,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Gets the value of the cAutism property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAutism() {
         return cAutism;
@@ -220,10 +208,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Sets the value of the cAutism property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAutism(String value) {
         this.cAutism = value;
@@ -278,8 +264,6 @@ public class CMedicalConditionsCheckAllThatApply {
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     *
-     *
      */
     public List<Object> getCOtherOrCSpecifyOrCBreathingProblems() {
         if (cOtherOrCSpecifyOrCBreathingProblems == null) {
@@ -291,10 +275,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Gets the value of the cUnknown property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -303,10 +285,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Sets the value of the cUnknown property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -315,10 +295,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -327,10 +305,8 @@ public class CMedicalConditionsCheckAllThatApply {
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

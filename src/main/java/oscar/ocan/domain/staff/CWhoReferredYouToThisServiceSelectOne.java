@@ -64,8 +64,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -110,10 +108,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cGeneralHospital property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCGeneralHospital() {
         return cGeneralHospital;
@@ -122,10 +118,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cGeneralHospital property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCGeneralHospital(String value) {
         this.cGeneralHospital = value;
@@ -134,10 +128,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cFamilyPhysicians property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCFamilyPhysicians() {
         return cFamilyPhysicians;
@@ -146,10 +138,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cFamilyPhysicians property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCFamilyPhysicians(String value) {
         this.cFamilyPhysicians = value;
@@ -158,10 +148,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cPsychiatricHospital property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCPsychiatricHospital() {
         return cPsychiatricHospital;
@@ -170,10 +158,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cPsychiatricHospital property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCPsychiatricHospital(String value) {
         this.cPsychiatricHospital = value;
@@ -182,10 +168,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cPsychiatrists property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCPsychiatrists() {
         return cPsychiatrists;
@@ -194,10 +178,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cPsychiatrists property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCPsychiatrists(String value) {
         this.cPsychiatrists = value;
@@ -206,10 +188,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cOtherInstitution property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOtherInstitution() {
         return cOtherInstitution;
@@ -218,10 +198,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cOtherInstitution property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOtherInstitution(String value) {
         this.cOtherInstitution = value;
@@ -230,10 +208,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cMentalHealthWorker property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCMentalHealthWorker() {
         return cMentalHealthWorker;
@@ -242,10 +218,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cMentalHealthWorker property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCMentalHealthWorker(String value) {
         this.cMentalHealthWorker = value;
@@ -254,10 +228,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cCommunityMentalHealthAndAddictionOrganization property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCCommunityMentalHealthAndAddictionOrganization() {
         return cCommunityMentalHealthAndAddictionOrganization;
@@ -266,10 +238,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cCommunityMentalHealthAndAddictionOrganization property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCCommunityMentalHealthAndAddictionOrganization(String value) {
         this.cCommunityMentalHealthAndAddictionOrganization = value;
@@ -278,10 +248,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cCriminalJusticeWorker property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCCriminalJusticeWorker() {
         return cCriminalJusticeWorker;
@@ -290,10 +258,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cCriminalJusticeWorker property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCCriminalJusticeWorker(String value) {
         this.cCriminalJusticeWorker = value;
@@ -302,10 +268,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cOtherCommunityAgencies property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOtherCommunityAgencies() {
         return cOtherCommunityAgencies;
@@ -314,10 +278,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cOtherCommunityAgencies property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOtherCommunityAgencies(String value) {
         this.cOtherCommunityAgencies = value;
@@ -326,10 +288,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cSelfFamilyOrFriend property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSelfFamilyOrFriend() {
         return cSelfFamilyOrFriend;
@@ -338,10 +298,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cSelfFamilyOrFriend property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSelfFamilyOrFriend(String value) {
         this.cSelfFamilyOrFriend = value;
@@ -350,10 +308,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Gets the value of the cOther property.
      *
-     * @return
-     *     possible object is
-     *     {@link COther }
-     *
+     * @return possible object is
+     * {@link COther }
      */
     public COther getCOther() {
         return cOther;
@@ -362,10 +318,8 @@ public class CWhoReferredYouToThisServiceSelectOne {
     /**
      * Sets the value of the cOther property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link COther }
-     *
+     * @param value allowed object is
+     *              {@link COther }
      */
     public void setCOther(COther value) {
         this.cOther = value;

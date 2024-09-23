@@ -308,8 +308,7 @@ public class ProfessionalSpecialist extends AbstractModel<Integer> implements Se
      * Gets a comma-separated first and last names,
      * suffixed by the professional title letters
      *
-     * @return
-     *        Returns the formatted title
+     * @return Returns the formatted title
      */
     public String getFormattedTitle() {
         StringBuilder buf = new StringBuilder();
@@ -411,6 +410,7 @@ public class ProfessionalSpecialist extends AbstractModel<Integer> implements Se
 
     /**
      * Creates a contact string for billing invoices for this provider
+     *
      * @return A new string describing the provider's contact details
      */
     public String createContactString() {

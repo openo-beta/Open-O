@@ -175,6 +175,7 @@ public final class MessageManager {
 
     /**
      * This is a convenience method to make a basic message transfer object so you can add to it to build a more complex one
+     *
      * @param messageThreadId is the messageThread you're replying to, or can be null for new messages.
      * @param replyToPersonId if the replyTo person is different than the sending person, put their ID here, otherwise leave null
      */

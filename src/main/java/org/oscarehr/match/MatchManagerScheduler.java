@@ -33,7 +33,6 @@ import org.oscarehr.util.MiscUtils;
 
 /**
  * @author AnooshTech
- *
  */
 public class MatchManagerScheduler {
     private Logger logger = MiscUtils.getLogger();

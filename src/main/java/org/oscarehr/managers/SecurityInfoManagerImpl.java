@@ -83,24 +83,24 @@ public class SecurityInfoManagerImpl implements SecurityInfoManager {
     /**
      * Checks to see if this provider has the privilege to the security object being
      * requested.
-     *
+     * <p>
      * The way it's coded now
-     *
+     * <p>
      * get all the roles associated with the logged in provider, including the
      * roleName=providerNo.
      * find the privileges using the roles list.
-     *
+     * <p>
      * Loop through all the rights, if we find one that can evaluate to true , we
      * exit..else we keep checking
-     *
+     * <p>
      * if r then an entry with r | u |w | x is required
      * if u then an entry with u | w | x is required
      * if w then an entry with w | x is required
      * if d then an entry with d | x is required
-     *
+     * <p>
      * Privileges priority is taken care of by
      * OscarRoleObjectPrivilege.checkPrivilege()
-     *
+     * <p>
      * If patient-specific privileges are present, it takes priority over the
      * general privileges.
      * For checking non-patient-specific object privileges, call with

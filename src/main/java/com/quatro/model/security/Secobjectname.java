@@ -38,16 +38,22 @@ public class Secobjectname implements java.io.Serializable {
 
     // Constructors
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Secobjectname() {
     }
 
-    /** minimal constructor */
+    /**
+     * minimal constructor
+     */
     public Secobjectname(String objectname) {
         this.objectname = objectname;
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public Secobjectname(String objectname, String description,
                          Integer orgapplicable) {
         this.objectname = objectname;

@@ -38,7 +38,6 @@ import java.util.Random;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author rjonasz
  */
 
@@ -60,7 +59,9 @@ public class NavBarDisplayDAO {
     private String reloadUrl = null;
     private String divId = null;
 
-    /** Creates a new instance of NavBarDisplayDAO */
+    /**
+     * Creates a new instance of NavBarDisplayDAO
+     */
     public NavBarDisplayDAO() {
         LeftHeading = null;
         RightHeading = null;
@@ -247,7 +248,7 @@ public class NavBarDisplayDAO {
     }
 
     /**
-     *Item class holds list information for each row in left navbar of encounter form
+     * Item class holds list information for each row in left navbar of encounter form
      */
     public static class Item implements Comparable {
         private String title;

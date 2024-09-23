@@ -32,7 +32,6 @@ import java.util.Vector;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class RxInteractionData {

@@ -291,8 +291,8 @@ public class EctDisplayMeasurementsAction extends EctDisplayAction {
     }
 
     /**
-     *truncate string to specified length so that measurements are always displayed
-     *in a column
+     * truncate string to specified length so that measurements are always displayed
+     * in a column
      */
     public String padd(String str, String data) {
         String tmp;

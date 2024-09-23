@@ -42,13 +42,16 @@ import oscar.OscarProperties;
 
 /**
  * eform_image
+ *
  * @author Paul (apavel)
  */
 public class EctStreamStyleSheet extends DownloadAction {
 
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of DisplayImageAction */
+    /**
+     * Creates a new instance of DisplayImageAction
+     */
     public EctStreamStyleSheet() {
     }
 

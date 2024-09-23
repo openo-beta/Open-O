@@ -77,7 +77,6 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
 /**
- *
  * @author wrighd
  */
 public class EctConsultationFormRequestPrintPdf {
@@ -94,7 +93,9 @@ public class EctConsultationFormRequestPrintPdf {
     private final float LINEHEIGHT = 14;
     private final float FONTSIZE = 10;
 
-    /** Creates a new instance of EctConsultationFormRequestPrintPdf */
+    /**
+     * Creates a new instance of EctConsultationFormRequestPrintPdf
+     */
     public EctConsultationFormRequestPrintPdf(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;

@@ -48,8 +48,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "listTopMatchesResponse", propOrder = {"_return"})
@@ -77,8 +75,6 @@ public class ListTopMatchesResponse {
      *
      * <p>
      * Objects of the following type(s) are allowed in the list {@link MatchBO }
-     *
-     *
      */
     public List<MatchBO> getReturn() {
         if (_return == null) {

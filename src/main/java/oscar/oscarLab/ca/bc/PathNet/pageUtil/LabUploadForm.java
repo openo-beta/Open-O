@@ -30,7 +30,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.upload.FormFile;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class LabUploadForm extends ActionForm {

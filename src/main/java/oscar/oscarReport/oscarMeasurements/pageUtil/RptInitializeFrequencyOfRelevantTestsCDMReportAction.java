@@ -137,8 +137,7 @@ public class RptInitializeFrequencyOfRelevantTestsCDMReportAction extends Action
     /**
      * Gets the frequency of tests performed during a time period
      *
-     * @return
-     *    ArrayList which contain the result in String format
+     * @return ArrayList which contain the result in String format
      */
     private ArrayList<String> getFrequenceOfTestPerformed(RptInitializeFrequencyOfRelevantTestsCDMReportForm frm, ArrayList<String> percentageMsg, HttpServletRequest request) {
         String[] startDateD = frm.getStartDateD();

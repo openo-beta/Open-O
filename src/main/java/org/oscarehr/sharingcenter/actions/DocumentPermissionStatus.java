@@ -26,7 +26,6 @@
 package org.oscarehr.sharingcenter.actions;
 
 /**
- *
  * @author tylerg
  */
 public enum DocumentPermissionStatus {

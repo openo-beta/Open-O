@@ -32,7 +32,6 @@ import java.util.Hashtable;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author jay
  */
 public class DosingRecomendation {
@@ -47,7 +46,9 @@ public class DosingRecomendation {
 
     }
 
-    /** Creates a new instance of DosingRecomendation */
+    /**
+     * Creates a new instance of DosingRecomendation
+     */
     public DosingRecomendation() {
     }
 

@@ -63,7 +63,9 @@ public class OscarPingTalk {
 
     PingTalkClientImpl client;
 
-    /** Creates a new instance of OscarPingTalk */
+    /**
+     * Creates a new instance of OscarPingTalk
+     */
     public OscarPingTalk() {
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String urlHostName, SSLSession session) {

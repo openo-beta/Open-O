@@ -42,17 +42,17 @@ import oscar.Misc;
 import oscar.util.ConversionUtils;
 
 /**
- *
  * @author root
- *
+ * <p>
  * This class is used to deal with MSP N01 correspondence notes.
- *
  */
 public class MSPBillingNote {
 
     private BillingNoteDao billingNoteDao = SpringUtils.getBean(BillingNoteDao.class);
 
-    /** Creates a new instance of MSPBillingNote */
+    /**
+     * Creates a new instance of MSPBillingNote
+     */
     public MSPBillingNote() {
     }
 
@@ -69,7 +69,6 @@ public class MSPBillingNote {
     }
 
     /**
-     *
      * @param billingmaster_no billingmaster_no from billingmaster table to get the full note class
      * @return Returns a Note Class
      */
@@ -116,6 +115,7 @@ public class MSPBillingNote {
 
         /**
          * Getter for property billingnote_no.
+         *
          * @return Value of property billingnote_no.
          */
         public java.lang.String getBillingnote_no() {
@@ -124,6 +124,7 @@ public class MSPBillingNote {
 
         /**
          * Setter for property billingnote_no.
+         *
          * @param billingnote_no New value of property billingnote_no.
          */
         public void setBillingnote_no(java.lang.String billingnote_no) {
@@ -132,6 +133,7 @@ public class MSPBillingNote {
 
         /**
          * Getter for property billingmaster_no.
+         *
          * @return Value of property billingmaster_no.
          */
         public java.lang.String getBillingmaster_no() {
@@ -140,6 +142,7 @@ public class MSPBillingNote {
 
         /**
          * Setter for property billingmaster_no.
+         *
          * @param billingmaster_no New value of property billingmaster_no.
          */
         public void setBillingmaster_no(java.lang.String billingmaster_no) {
@@ -148,6 +151,7 @@ public class MSPBillingNote {
 
         /**
          * Getter for property createdate.
+         *
          * @return Value of property createdate.
          */
         public java.lang.String getCreatedate() {
@@ -156,6 +160,7 @@ public class MSPBillingNote {
 
         /**
          * Setter for property createdate.
+         *
          * @param createdate New value of property createdate.
          */
         public void setCreatedate(java.lang.String createdate) {
@@ -164,6 +169,7 @@ public class MSPBillingNote {
 
         /**
          * Getter for property provider_no.
+         *
          * @return Value of property provider_no.
          */
         public java.lang.String getProviderNo() {
@@ -172,6 +178,7 @@ public class MSPBillingNote {
 
         /**
          * Setter for property provider_no.
+         *
          * @param provider_no New value of property provider_no.
          */
         public void setProviderNo(java.lang.String provider_no) {
@@ -180,6 +187,7 @@ public class MSPBillingNote {
 
         /**
          * Getter for property note.
+         *
          * @return Value of property note.
          */
         public java.lang.String getNote() {
@@ -188,6 +196,7 @@ public class MSPBillingNote {
 
         /**
          * Setter for property note.
+         *
          * @param note New value of property note.
          */
         public void setNote(java.lang.String note) {

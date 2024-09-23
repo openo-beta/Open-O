@@ -13,8 +13,8 @@ package com.indivica.olis.segments;
 /**
  * When OLIS responds with a continuation pointer we can use the DSC segment
  * as well as the entire identical query to get the rest of the results.
- * @author jen
  *
+ * @author jen
  */
 public class DSCSegment implements Segment {
 

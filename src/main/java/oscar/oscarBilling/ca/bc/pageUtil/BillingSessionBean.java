@@ -455,6 +455,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property notes.
+     *
      * @return Value of property notes.
      */
     public String getNotes() {
@@ -463,6 +464,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property notes.
+     *
      * @param notes New value of property notes.
      */
     public void setNotes(String notes) {
@@ -471,6 +473,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property correspondenceCode.
+     *
      * @return Value of property correspondenceCode.
      */
     public String getCorrespondenceCode() {
@@ -479,6 +482,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property correspondenceCode.
+     *
      * @param correspondenceCode New value of property correspondenceCode.
      */
     public void setCorrespondenceCode(String correspondenceCode) {
@@ -487,6 +491,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property dependent.
+     *
      * @return Value of property dependent.
      */
     public java.lang.String getDependent() {
@@ -495,6 +500,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property dependent.
+     *
      * @param dependent New value of property dependent.
      */
     public void setDependent(java.lang.String dependent) {
@@ -503,6 +509,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property afterHours.
+     *
      * @return Value of property afterHours.
      */
     public java.lang.String getAfterHours() {
@@ -511,6 +518,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property afterHours.
+     *
      * @param afterHours New value of property afterHours.
      */
     public void setAfterHours(java.lang.String afterHours) {
@@ -519,6 +527,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property timeCall.
+     *
      * @return Value of property timeCall.
      */
     public java.lang.String getTimeCall() {
@@ -527,6 +536,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property timeCall.
+     *
      * @param timeCall New value of property timeCall.
      */
     public void setTimeCall(java.lang.String timeCall) {
@@ -535,6 +545,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property submissionCode.
+     *
      * @return Value of property submissionCode.
      */
     public java.lang.String getSubmissionCode() {
@@ -543,6 +554,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property submissionCode.
+     *
      * @param submissionCode New value of property submissionCode.
      */
     public void setSubmissionCode(java.lang.String submissionCode) {
@@ -551,6 +563,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property service_to_date.
+     *
      * @return Value of property service_to_date.
      */
     public java.lang.String getService_to_date() {
@@ -559,6 +572,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property service_to_date.
+     *
      * @param service_to_date New value of property service_to_date.
      */
     public void setService_to_date(java.lang.String service_to_date) {
@@ -567,6 +581,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property shortClaimNote.
+     *
      * @return Value of property shortClaimNote.
      */
     public java.lang.String getShortClaimNote() {
@@ -575,6 +590,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property shortClaimNote.
+     *
      * @param shortClaimNote New value of property shortClaimNote.
      */
     public void setShortClaimNote(java.lang.String shortClaimNote) {
@@ -583,6 +599,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property messageNotes.
+     *
      * @return Value of property messageNotes.
      */
     public java.lang.String getMessageNotes() {
@@ -591,6 +608,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property messageNotes.
+     *
      * @param messageNotes New value of property messageNotes.
      */
     public void setMessageNotes(java.lang.String messageNotes) {
@@ -599,6 +617,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property facilityNum.
+     *
      * @return Value of property facilityNum.
      */
     public java.lang.String getFacilityNum() {
@@ -607,6 +626,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property facilityNum.
+     *
      * @param facilityNum New value of property facilityNum.
      */
     public void setFacilityNum(java.lang.String facilityNum) {
@@ -615,6 +635,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Getter for property facilitySubNum.
+     *
      * @return Value of property facilitySubNum.
      */
     public java.lang.String getFacilitySubNum() {
@@ -623,6 +644,7 @@ public class BillingSessionBean implements java.io.Serializable {
 
     /**
      * Setter for property facilitySubNum.
+     *
      * @param facilitySubNum New value of property facilitySubNum.
      */
     public void setFacilitySubNum(java.lang.String facilitySubNum) {

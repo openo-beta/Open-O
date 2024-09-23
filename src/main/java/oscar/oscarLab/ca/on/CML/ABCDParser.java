@@ -50,7 +50,6 @@ import oscar.OscarProperties;
 import oscar.oscarLab.ca.all.upload.ProviderLabRouting;
 
 /**
- *
  * @author root
  */
 public class ABCDParser {
@@ -64,7 +63,9 @@ public class ABCDParser {
     private LabPatientPhysicianInfoDao labPatientPhysicianInfoDao = SpringUtils.getBean(LabPatientPhysicianInfoDao.class);
     private LabTestResultsDao labTestResultsDao = SpringUtils.getBean(LabTestResultsDao.class);
 
-    /** Creates a new instance of ABCDParse */
+    /**
+     * Creates a new instance of ABCDParse
+     */
     public ABCDParser() {
     }
 

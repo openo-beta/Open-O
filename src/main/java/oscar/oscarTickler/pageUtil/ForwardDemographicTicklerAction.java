@@ -43,12 +43,15 @@ import oscar.oscarDemographic.data.DemographicNameAgeString;
 
 /**
  * This class is used to forward to the add tickler screen with the demographic preselected
+ *
  * @author jay
  */
 public class ForwardDemographicTicklerAction extends Action {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of ForwardDemographicTicklerAction */
+    /**
+     * Creates a new instance of ForwardDemographicTicklerAction
+     */
     public ForwardDemographicTicklerAction() {
     }
 

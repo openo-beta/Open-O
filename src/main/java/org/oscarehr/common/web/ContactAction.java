@@ -577,23 +577,22 @@ public class ContactAction extends DispatchAction {
 
     /**
      * Saves a new or edited ProfessionalSpecialist or ProfessionalContact.
-     *
+     * <p>
      * Switches in the request parameters determine the action:
-     *
+     * <p>
      * "contactType": DemographicContact.TYPE_PROFESSIONALSPECIALIST [3] = ProfessionalSpecialist, else ProfessionalContact
      * "contactId": >0 = merge edited specialist by contactType, 0 = new specialist by contactType
      * "demographicContactId" plus "demographicNo" = when both >0 edit current DemographicContact entry.
-     *
+     * <p>
      * The incoming DynaForm is an abstract Contact entity as ProfessionalContact.
      * Contact entities are transferred to a ProfessionalSpecialst entity when required.
-     *
+     * <p>
      * This method will return a ProfessionalSpecialist entity and Contact entity whenever a potential for
      * a duplicate ProfessionalSpecialist addition is caught.  This is controlled by the ProfessionalSpecialst.referralNo
      * property.
-     *
+     * <p>
      * This method should be normalized into a Manager class in the future. It's like this because this method has/had
      * pre-existing dependents.
-     *
      */
     @SuppressWarnings("unused")
     public ActionForward saveProContact(ActionMapping mapping, ActionForm form,
@@ -1014,7 +1013,9 @@ public class ContactAction extends DispatchAction {
         return mapping.findForward("addEditPharmacy");
     }
 
-    /** #---------------------------> HELPER METHODS #---------------------------> **/
+    /**
+     * #---------------------------> HELPER METHODS #--------------------------->
+     **/
 
     /*
      * Links a Contact with Demographic with the DemographicContact associate table.
@@ -1132,7 +1133,9 @@ public class ContactAction extends DispatchAction {
     }
 
 
-    /** #---------------------------> DEPRECATED METHODS #---------------------------> **/
+    /**
+     * #---------------------------> DEPRECATED METHODS #--------------------------->
+     **/
 
     @Deprecated
     /**

@@ -39,7 +39,7 @@ import oscar.oscarRx.util.RxUtil;
 /**
  * An object that translates between Prescription objects and ERxPrescription
  * objects.
- *
+ * <p>
  * FUTURE: org.oscarehr.oscarRx.erx should, in the future, support more than one
  * external prescription service, which is unlikely to use the current
  * prescription data model. When this support is added, this class should be
@@ -243,15 +243,11 @@ public class ERxPrescriptionTranslator {
     /**
      * Generate a Prescription given an ERxPrescription.
      *
-     * @param in
-     *            The external prescription to translate.
-     * @param providerId
-     *            The ID number of the provider issuing the prescription.
-     * @param patientId
-     *            The ID number of the patient having the prescription issued to
-     *            them.
-     * @param drugAtcCode
-     *            The ATC code of the drug being prescribed.
+     * @param in          The external prescription to translate.
+     * @param providerId  The ID number of the provider issuing the prescription.
+     * @param patientId   The ID number of the patient having the prescription issued to
+     *                    them.
+     * @param drugAtcCode The ATC code of the drug being prescribed.
      * @return The translated prescription (drug).
      */
     public static Drug translateToInternal(ERxPrescription in,

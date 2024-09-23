@@ -65,14 +65,15 @@ import oscar.oscarBilling.ca.bc.data.BillingCodeData;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class ManageTeleplanAction extends DispatchAction {
 
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of ManageTeleplanAction */
+    /**
+     * Creates a new instance of ManageTeleplanAction
+     */
     public ManageTeleplanAction() {
     }
 

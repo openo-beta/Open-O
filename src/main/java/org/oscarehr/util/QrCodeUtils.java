@@ -72,7 +72,7 @@ public class QrCodeUtils {
      * are interpreted and the resulting data concatenated.
      *
      * @param qrCodeImageGap the number of pixels between the QR code images, if this value is null it will calculate it at DEFAULT_QR_CODE_GAP % of the size of the first (and presumably full size) qr code image
-     * @param scaleFactor this scales the resulting image by the provided factor, this value must be an int or it'll ruin the structure of the qr image
+     * @param scaleFactor    this scales the resulting image by the provided factor, this value must be an int or it'll ruin the structure of the qr image
      */
     public static byte[] toMultipleQrCodePngs(String s, ErrorCorrectionLevel ec, QrCodesOrientation qrCodesOrientation, Integer qrCodeImageGap, int maxQrCodeDataSize, int scaleFactor) throws IOException, WriterException {
         ArrayList<BufferedImage> results = new ArrayList<BufferedImage>();

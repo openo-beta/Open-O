@@ -56,7 +56,6 @@ import org.springframework.mail.SimpleMailMessage;
 import oscar.service.MessageMailer;
 
 /**
- *
  * @author mweston4
  */
 

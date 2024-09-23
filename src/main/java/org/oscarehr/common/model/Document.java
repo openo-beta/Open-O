@@ -60,7 +60,6 @@ import javax.persistence.Transient;
 import org.apache.commons.io.FileUtils;
 
 /**
- *
  * @author jackson
  */
 @Entity

@@ -37,12 +37,13 @@ import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author jay
  */
 public class WorkFlowDSFactory {
 
-    /** Creates a new instance of WorkFlowDSFactory */
+    /**
+     * Creates a new instance of WorkFlowDSFactory
+     */
     public WorkFlowDSFactory() {
     }
 

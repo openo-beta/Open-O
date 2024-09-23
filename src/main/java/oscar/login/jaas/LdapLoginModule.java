@@ -46,7 +46,6 @@ import org.oscarehr.util.SpringUtils;
 
 /**
  * Login module for authenticating user against LDAP.
- *
  */
 public final class LdapLoginModule extends BaseLoginModule {
 
@@ -118,10 +117,8 @@ public final class LdapLoginModule extends BaseLoginModule {
     /**
      * Generates DN from the specified login name
      *
-     * @param loginName
-     * 		Login name to create DN for
-     * @return
-     *        Returns the DN
+     * @param loginName Login name to create DN for
+     * @return Returns the DN
      */
     protected String toDn(String loginName) {
         return "CN=" + loginName + "," + getBaseDn();
@@ -130,12 +127,9 @@ public final class LdapLoginModule extends BaseLoginModule {
     /**
      * Loads principal after successful validation of login credentials
      *
-     * @param loginName
-     * 		Login name to use for loading the principal
-     * @return
-     *        Returns the loaded principal
-     * @throws LoginException
-     * 		LoginException is thrown in case there are inconsistent security info for the specified user name or if provider doesn't exist
+     * @param loginName Login name to use for loading the principal
+     * @return Returns the loaded principal
+     * @throws LoginException LoginException is thrown in case there are inconsistent security info for the specified user name or if provider doesn't exist
      */
     protected final OscarPrincipal loadPrincipal(String loginName) throws LoginException {
         // find unique security record for the validated login

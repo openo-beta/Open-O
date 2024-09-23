@@ -36,24 +36,23 @@ import org.oscarehr.common.model.AbstractModel;
 
 
 /**
- *  STU Note: Unlike many other resources, there is little prior art with regard to exchanging records of clinical assessments. 
- *  For this reason, this resource should be regarded as particularly prone to ongoing revision. In terms of scope and usage, 
- *  the Patient Care workgroup wishes to draw the attention of reviewers and implementers to the following issues:
- *
- *   When is an existing clinical impression revised, rather than a new one created (that references the existing one)? 
- *   How does that affect the status? what's the interplay between the status of the diagnosis and the status of the impression? 
- *   (e.g. for a 'provisional' impression, which bit is provisional?)
- *   This structure doesn't differentiate between a working and a final diagnosis. Given an answer to the previous question, should it?
- *   Further clarify around the relationship between care plan and impression is needed. Both answers to the previous questions 
- *   and ongoing discussions around revisions to the care plan will influence the design of clinical impression
- *   Should prognosis be represented, and if so, how much structure should it have?
- *   Should an impression reference other impressions that are related? (how related?)
- *   Investigations - the specification needs a good value set for the code for the group, and will be considering the 
- *   name "investigations" further
- *
- * For the time being, this class is written with the intention to map patient encounter notes or various text messages 
- * such as BORN transmissions. 
- *
+ * STU Note: Unlike many other resources, there is little prior art with regard to exchanging records of clinical assessments.
+ * For this reason, this resource should be regarded as particularly prone to ongoing revision. In terms of scope and usage,
+ * the Patient Care workgroup wishes to draw the attention of reviewers and implementers to the following issues:
+ * <p>
+ * When is an existing clinical impression revised, rather than a new one created (that references the existing one)?
+ * How does that affect the status? what's the interplay between the status of the diagnosis and the status of the impression?
+ * (e.g. for a 'provisional' impression, which bit is provisional?)
+ * This structure doesn't differentiate between a working and a final diagnosis. Given an answer to the previous question, should it?
+ * Further clarify around the relationship between care plan and impression is needed. Both answers to the previous questions
+ * and ongoing discussions around revisions to the care plan will influence the design of clinical impression
+ * Should prognosis be represented, and if so, how much structure should it have?
+ * Should an impression reference other impressions that are related? (how related?)
+ * Investigations - the specification needs a good value set for the code for the group, and will be considering the
+ * name "investigations" further
+ * <p>
+ * For the time being, this class is written with the intention to map patient encounter notes or various text messages
+ * such as BORN transmissions.
  */
 public class ClinicalImpression extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.ClinicalImpression, AbstractModel<?>> {
 

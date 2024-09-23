@@ -46,10 +46,8 @@ public class BillingHistoryDao extends AbstractDaoImpl<BillingHistory> {
     /**
      * Finds billing info for the specified master number
      *
-     * @param billingMasterNo
-     * 		Master number to find info for
-     * @return
-     *        Returns the list of pairs containing {@link BillingHistory}, {@link BillingPaymentType} instances
+     * @param billingMasterNo Master number to find info for
+     * @return Returns the list of pairs containing {@link BillingHistory}, {@link BillingPaymentType} instances
      */
     @SuppressWarnings("unchecked")
     public List<Object[]> findByBillingMasterNo(Integer billingMasterNo) {
@@ -67,10 +65,8 @@ public class BillingHistoryDao extends AbstractDaoImpl<BillingHistory> {
     /**
      * Finds billing history for the specified master number
      *
-     * @param billingMasterNo
-     * 		Master number to find info for
-     * @return
-     *        Returns the list of triples containing {@link Billingmaster}, {@link BillingHistory}, {@link BillingPaymentType} instances
+     * @param billingMasterNo Master number to find info for
+     * @return Returns the list of triples containing {@link Billingmaster}, {@link BillingHistory}, {@link BillingPaymentType} instances
      */
     @SuppressWarnings("unchecked")
     public List<Object[]> findBillingHistoryByBillingMasterNo(Integer billingMasterNo) {

@@ -56,8 +56,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -78,10 +76,8 @@ public class CTypeOfAddictionCheckAllThatApply {
     /**
      * Gets the value of the cGambling property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCGambling() {
         return cGambling;
@@ -90,10 +86,8 @@ public class CTypeOfAddictionCheckAllThatApply {
     /**
      * Sets the value of the cGambling property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCGambling(String value) {
         this.cGambling = value;
@@ -102,10 +96,8 @@ public class CTypeOfAddictionCheckAllThatApply {
     /**
      * Gets the value of the cNicotine property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCNicotine() {
         return cNicotine;
@@ -114,10 +106,8 @@ public class CTypeOfAddictionCheckAllThatApply {
     /**
      * Sets the value of the cNicotine property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCNicotine(String value) {
         this.cNicotine = value;
@@ -126,10 +116,8 @@ public class CTypeOfAddictionCheckAllThatApply {
     /**
      * Gets the value of the cOther property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOther() {
         return cOther;
@@ -138,10 +126,8 @@ public class CTypeOfAddictionCheckAllThatApply {
     /**
      * Sets the value of the cOther property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOther(String value) {
         this.cOther = value;

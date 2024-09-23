@@ -38,38 +38,54 @@ public enum CaseloadCategory {
     CashAdmissionDate("[CASH]AdmissionDate", "cl_search_cashaddate", "referral_date"),
     Access1AdmissionDate("[ACCESS1]AdmissionDate", "cl_search_access1addate", "referral_date");
 
-    /** The label for this category. */
+    /**
+     * The label for this category.
+     */
     private String label;
 
-    /** The database query for this category. */
+    /**
+     * The database query for this category.
+     */
     private String query;
 
-    /** The field used to sort this query. */
+    /**
+     * The field used to sort this query.
+     */
     private String field;
 
-    /** Retrieves the labels associated with this category. */
+    /**
+     * Retrieves the labels associated with this category.
+     */
     public String getLabel() {
         return label;
     }
 
-    /** Retrieve the query associated with this category. */
+    /**
+     * Retrieve the query associated with this category.
+     */
     public String getQuery() {
         return query;
     }
 
-    /** Retrieve the sort field associated with this category. */
+    /**
+     * Retrieve the sort field associated with this category.
+     */
     public Object getField() {
         return field;
     }
 
-    /** Create a category with a label and an associated database query. */
+    /**
+     * Create a category with a label and an associated database query.
+     */
     private CaseloadCategory(String label, String query, String field) {
         this.label = label;
         this.query = query;
         this.field = field;
     }
 
-    /** Retrieves a caseload category. */
+    /**
+     * Retrieves a caseload category.
+     */
     public static CaseloadCategory getCategory(String label) {
         for (CaseloadCategory cg : CaseloadCategory.values()) {
             if (cg.label.equals(label)) {
@@ -79,7 +95,9 @@ public enum CaseloadCategory {
         return null;
     }
 
-    /** Indicates if this category is a measurement */
+    /**
+     * Indicates if this category is a measurement
+     */
     public boolean isMeasurement() {
         switch (this) {
             case BMI:

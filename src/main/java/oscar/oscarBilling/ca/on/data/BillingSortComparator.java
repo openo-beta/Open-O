@@ -30,12 +30,13 @@ import java.util.Comparator;
 import java.util.Hashtable;
 
 /**
- *
  * @author jay
  */
 public class BillingSortComparator implements Comparator {
 
-    /** Creates a new instance of BillingSortComparator */
+    /**
+     * Creates a new instance of BillingSortComparator
+     */
     public BillingSortComparator() {
     }
 

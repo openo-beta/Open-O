@@ -61,7 +61,9 @@ public class ReportManager {
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of reportManager */
+    /**
+     * Creates a new instance of reportManager
+     */
     public ReportManager() {
     }
 

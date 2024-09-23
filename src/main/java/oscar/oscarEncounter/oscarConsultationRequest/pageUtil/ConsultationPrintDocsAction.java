@@ -46,7 +46,6 @@ import oscar.util.ConcatPDF;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class ConsultationPrintDocsAction extends Action {

@@ -45,8 +45,7 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.ConversionUtils;
 
 /**
- * @deprecated
- * use the common entity at org.oscarehr.common.model.MsgDemoMap  
+ * @deprecated use the common entity at org.oscarehr.common.model.MsgDemoMap
  */
 @Deprecated
 public class MsgDemoMap {

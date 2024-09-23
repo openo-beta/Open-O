@@ -36,8 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Build 'trace' map and send it to serialized compressed stream
- * @author oscar
  *
+ * @author oscar
  */
 public class TraceDataProcessor implements Callable<String> {
     private OutputStream outputStream = null;

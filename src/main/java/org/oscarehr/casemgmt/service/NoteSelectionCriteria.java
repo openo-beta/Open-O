@@ -53,8 +53,7 @@ public class NoteSelectionCriteria {
     /**
      * Gets demographic id to obtains notes for.
      *
-     * @return
-     *        Returns the notes.
+     * @return Returns the notes.
      */
     public int getDemographicId() {
         return demographicId;
@@ -63,8 +62,7 @@ public class NoteSelectionCriteria {
     /**
      * Sets demographic id to obtains notes for.
      *
-     * @param demographicId
-     * 		Demographic ID to get notes for
+     * @param demographicId Demographic ID to get notes for
      */
     public void setDemographicId(int demographicId) {
         this.demographicId = demographicId;
@@ -73,8 +71,7 @@ public class NoteSelectionCriteria {
     /**
      * Gets role of the user requesting the note.
      *
-     * @return
-     *        Returns the current user role
+     * @return Returns the current user role
      */
     public String getUserRole() {
         return userRole;
@@ -83,8 +80,7 @@ public class NoteSelectionCriteria {
     /**
      * Sets role of the user requesting the note.
      *
-     * @param userRole
-     * 		The current user role to set
+     * @param userRole The current user role to set
      */
     public void setUserRole(String userRole) {
         this.userRole = userRole;
@@ -93,8 +89,7 @@ public class NoteSelectionCriteria {
     /**
      * Gets ID of the user requesting the note report
      *
-     * @return
-     *        Returns the current user name
+     * @return Returns the current user name
      */
     public String getUserName() {
         return userName;
@@ -103,8 +98,7 @@ public class NoteSelectionCriteria {
     /**
      * Sets ID of the user requesting the note report
      *
-     * @param userName
-     * 		The current user name to set
+     * @param userName The current user name to set
      */
     public void setUserName(String userName) {
         this.userName = userName;
@@ -113,8 +107,7 @@ public class NoteSelectionCriteria {
     /**
      * Gets note sort expected for the result set. Two magic values are <code>observation_date_desc, observation_date_asc</code>
      *
-     * @return
-     *        Returns the sort order
+     * @return Returns the sort order
      */
     public String getNoteSort() {
         return noteSort;
@@ -123,9 +116,8 @@ public class NoteSelectionCriteria {
     /**
      * Checks if the {@link #getNoteSort()} specifies a valid value.
      *
-     * @return
-     *        Returns true if {@link #getNoteSort()} field should be used for sorting the results
-     * 		and false otherwise.
+     * @return Returns true if {@link #getNoteSort()} field should be used for sorting the results
+     * and false otherwise.
      */
     public boolean isNoteSortSpecified() {
         return getNoteSort() != null && !getNoteSort().trim().isEmpty();
@@ -138,8 +130,7 @@ public class NoteSelectionCriteria {
     /**
      * Gets program ID for the filtering out notes
      *
-     * @return
-     *        Returns the program id
+     * @return Returns the program id
      */
     public String getProgramId() {
         return programId;
@@ -148,8 +139,7 @@ public class NoteSelectionCriteria {
     /**
      * Sets program ID for the filtering out notes
      *
-     * @param programId
-     * 		Program ID to set
+     * @param programId Program ID to set
      */
     public void setProgramId(String programId) {
         this.programId = programId;
@@ -186,7 +176,6 @@ public class NoteSelectionCriteria {
 
     /**
      * Gets the issues filter to be used for filtering off matching notes.
-     *
      */
     public List<String> getIssues() {
         return issues;
@@ -195,8 +184,7 @@ public class NoteSelectionCriteria {
     /**
      * Sets the issues filter to be used for filtering off matching notes.
      *
-     * @param issues
-     * 		Issues to set
+     * @param issues Issues to set
      */
     public void setIssues(List<String> issues) {
         this.issues = issues;
@@ -205,8 +193,7 @@ public class NoteSelectionCriteria {
     /**
      * Gets the maximum number of results to retrieve.
      *
-     * @return
-     *        Max results to get.
+     * @return Max results to get.
      */
     public int getMaxResults() {
         return maxResults;
@@ -224,8 +211,7 @@ public class NoteSelectionCriteria {
     /**
      * Gets the position of the first result to retrieve.
      *
-     * @return
-     *        The start position of the first result, numbered from 0
+     * @return The start position of the first result, numbered from 0
      */
     public int getFirstResult() {
         return firstResult;
@@ -234,8 +220,7 @@ public class NoteSelectionCriteria {
     /**
      * Set the position of the first result to retrieve.
      *
-     * @param firstResult
-     * 		The start position of the first result, numbered from 0
+     * @param firstResult The start position of the first result, numbered from 0
      */
     public void setFirstResult(int firstResult) {
         this.firstResult = firstResult;

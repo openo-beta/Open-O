@@ -97,6 +97,7 @@ public final class RefI12 {
     /**
      * An empty PV1 segment helps the parser get the NTE's in the right spot, otherwise sometimes the NTE's end up in the OBR segment instead of it's own
      * top level segment. This is a glitch with the HAPI parser.
+     *
      * @throws DataTypeException
      */
     private static void addEmptyPV1(REF_I12 referralMsg) throws DataTypeException {

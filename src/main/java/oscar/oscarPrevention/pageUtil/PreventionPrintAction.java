@@ -50,7 +50,6 @@ import org.oscarehr.util.SpringUtils;
 
 
 /**
- *
  * Convert submitted preventions into pdf and return file
  */
 public class PreventionPrintAction extends Action {

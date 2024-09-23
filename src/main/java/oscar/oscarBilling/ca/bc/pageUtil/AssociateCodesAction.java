@@ -33,7 +33,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- *
  * <p>Title: AssociateCodesAction</p>
  *
  * <p>Description:This Action is responsible for associating a service code with up to three use specified Diagnostic codes</p>

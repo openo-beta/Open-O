@@ -28,7 +28,6 @@ package org.oscarehr.sharingcenter;
 import org.marc.shic.core.FolderMetaData;
 
 /**
- *
  * @author tylerg
  */
 public class AffinityDomainFolderMetaData {

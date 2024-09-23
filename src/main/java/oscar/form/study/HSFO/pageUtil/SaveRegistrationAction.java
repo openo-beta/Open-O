@@ -45,12 +45,13 @@ import oscar.form.study.HSFO.PatientData;
 import oscar.form.study.HSFO.VisitData;
 
 /**
- *
  * Class used to save data from the HSFO Study form
  */
 public class SaveRegistrationAction extends DispatchAction {
 
-    /** Creates a new instance of SaveRegistrationAction */
+    /**
+     * Creates a new instance of SaveRegistrationAction
+     */
     public SaveRegistrationAction() {
     }
 

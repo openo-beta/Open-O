@@ -39,7 +39,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * Generates x,y co-ordinates for Rourke 2006 Growth Chart
  */
 public class FrmPdfGraphicRourke extends FrmPdfGraphic {

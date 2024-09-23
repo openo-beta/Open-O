@@ -44,7 +44,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.ConversionUtils;
 
 /**
- *
  * @author rjonasz
  */
 public class ThirdApptTimeReporter implements Reporter {

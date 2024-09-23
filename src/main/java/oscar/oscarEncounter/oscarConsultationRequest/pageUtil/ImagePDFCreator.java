@@ -39,8 +39,9 @@ public class ImagePDFCreator extends PdfPageEventHelper {
 
     /**
      * Prepares a ConsultationPDFCreator instance to print a consultation request to PDF.
+     *
      * @param request contains the information necessary to construct the consultation request
-     * @param os the output stream where the PDF will be written
+     * @param os      the output stream where the PDF will be written
      */
     public ImagePDFCreator(HttpServletRequest request, OutputStream os) {
         this.imagePath = (String) request.getAttribute("imagePath");
@@ -56,7 +57,8 @@ public class ImagePDFCreator extends PdfPageEventHelper {
 
     /**
      * Prints the consultation request.
-     * @throws IOException when an error with the output stream occurs
+     *
+     * @throws IOException       when an error with the output stream occurs
      * @throws DocumentException when an error in document construction occurs
      */
     public void printPdf() throws IOException, DocumentException {

@@ -39,7 +39,6 @@ import org.oscarehr.common.dao.BillingONPaymentDao;
 import org.oscarehr.common.dao.BillingONPaymentDaoImpl;
 
 /**
- *
  * @author mweston4
  */
 @Service

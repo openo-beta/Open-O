@@ -53,8 +53,7 @@ public class SecurityAddSecurityHelper {
      * <p/>
      * Processing status is available as a "message" variable.
      *
-     * @param pageContext
-     * 		JSP page context
+     * @param pageContext JSP page context
      */
     public void addProvider(PageContext pageContext) {
         String message = process(pageContext);

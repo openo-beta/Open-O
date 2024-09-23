@@ -182,6 +182,7 @@ public class PdfCoverPageCreator {
 
     /**
      * Creates a table and populates it with the clinic information for the header.
+     *
      * @return the table produced
      */
     private PdfPTable createClinicInfoHeader() {
@@ -310,8 +311,9 @@ public class PdfCoverPageCreator {
 
     /**
      * Add's the table 'add' to the table 'main' (with no border surrounding it.)
+     *
      * @param main the host table
-     * @param add the table being added
+     * @param add  the table being added
      * @return the cell containing the table being added to the main table.
      */
     private PdfPCell addTable(PdfPTable main, PdfPTable add) {
@@ -320,8 +322,9 @@ public class PdfCoverPageCreator {
 
     /**
      * Add's the table 'add' to the table 'main'.
-     * @param main the host table
-     * @param add the table being added
+     *
+     * @param main   the host table
+     * @param add    the table being added
      * @param border true if a border should surround the table being added
      * @return the cell containing the table being added to the main table.	 *
      */
@@ -340,7 +343,7 @@ public class PdfCoverPageCreator {
     /**
      * Method above sets a full border based on a boolean switch.
      * This method allows the setting of individual boarders in a Rectangle.
-     *
+     * <p>
      * borderarray is set with PdfPCell border location enumerators
      * paddingarray is set similar to CSS clockwise
      */

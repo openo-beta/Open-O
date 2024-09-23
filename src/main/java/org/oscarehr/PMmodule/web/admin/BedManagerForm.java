@@ -34,6 +34,7 @@ import org.oscarehr.common.model.Room;
 import org.oscarehr.common.model.RoomType;
 
 /**
+ *
  */
 public class BedManagerForm extends ActionForm {
 

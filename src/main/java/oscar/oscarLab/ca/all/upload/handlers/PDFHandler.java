@@ -45,7 +45,6 @@ import oscar.log.LogAction;
 import oscar.log.LogConst;
 
 /**
- *
  * @author mweston4
  */
 public class PDFHandler implements MessageHandler {

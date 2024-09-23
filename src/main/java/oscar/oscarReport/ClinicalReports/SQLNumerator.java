@@ -35,7 +35,8 @@ import org.oscarehr.util.MiscUtils;
 import oscar.oscarDB.DBHandler;
 
 /**
- * The class should evaluate a query that has a count returned.  If the count is = 0 then false is returned if >0 is returned true 
+ * The class should evaluate a query that has a count returned.  If the count is = 0 then false is returned if >0 is returned true
+ *
  * @author jay
  */
 public class SQLNumerator implements Numerator {
@@ -48,7 +49,9 @@ public class SQLNumerator implements Numerator {
 
     String processString = "demographic_no";
 
-    /** Creates a new instance of SQLNumerator */
+    /**
+     * Creates a new instance of SQLNumerator
+     */
     public SQLNumerator() {
 
     }

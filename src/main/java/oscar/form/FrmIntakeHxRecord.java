@@ -31,7 +31,6 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.util.LoggedInInfo;
 
 /**
- *
  * @author mweston4
  */
 public class FrmIntakeHxRecord extends FrmRecord {

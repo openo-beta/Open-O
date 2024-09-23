@@ -29,7 +29,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- *
  * @author mweston4
  */
 @Entity

@@ -31,7 +31,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that a method uses a native SQL query that may need to be translated or re-factored.  
+ * Indicates that a method uses a native SQL query that may need to be translated or re-factored.
  */
 @Documented
 @Retention(RetentionPolicy.SOURCE)
@@ -41,8 +41,7 @@ public @interface NativeSql {
     /**
      * Defines list of tables used in this statement.
      *
-     * @return
-     *        Returns the list of all tables names used in this native SQL.
+     * @return Returns the list of all tables names used in this native SQL.
      */
     String[] value() default "";
 }

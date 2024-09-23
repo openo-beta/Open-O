@@ -82,10 +82,8 @@ import oscar.util.StringUtils;
  * Will provide access to demographic data, as well as closely related data such
  * as
  * extensions (DemographicExt), merge data, archive data, etc.
- *
+ * <p>
  * Future Use: Add privacy, security, and consent profiles
- *
- *
  */
 @Service
 public class DemographicManagerImpl implements DemographicManager {
@@ -710,10 +708,8 @@ public class DemographicManagerImpl implements DemographicManager {
     /**
      * Gets all merged demographic for the specified parent record ID
      *
-     * @param parentId
-     *                 ID of the parent demographic record
-     * @return
-     *         Returns all merged demographic records for the specified parent id.
+     * @param parentId ID of the parent demographic record
+     * @return Returns all merged demographic records for the specified parent id.
      */
     @Override
     public List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId) {
@@ -778,8 +774,8 @@ public class DemographicManagerImpl implements DemographicManager {
 
     /**
      * @deprecated there should be a generic call for getDemographicExt(Integer
-     *             demoId, String key) instead. Then the caller should assemble what
-     *             it needs from the demographic and ext call itself.
+     * demoId, String key) instead. Then the caller should assemble what
+     * it needs from the demographic and ext call itself.
      */
     @Override
     public String getDemographicWorkPhoneAndExtension(LoggedInInfo loggedInInfo, Integer demographicNo) {
@@ -1070,7 +1066,7 @@ public class DemographicManagerImpl implements DemographicManager {
 
     /**
      * Fetch the remote demographic file from the Integrator.
-     *
+     * <p>
      * THIS IS AN INTEGRATOR FUNCTION ONLY. INTEGRATOR MUST BE ENABLED.
      *
      * @param loggedInInfo
@@ -1099,7 +1095,7 @@ public class DemographicManagerImpl implements DemographicManager {
     /**
      * Copies the given remotely Integrated demographic file into this local
      * facility.
-     *
+     * <p>
      * THIS IS AN INTEGRATOR FUNCTION ONLY. INTEGRATOR MUST BE ENABLED.
      *
      * @param loggedInInfo
@@ -1180,9 +1176,8 @@ public class DemographicManagerImpl implements DemographicManager {
 
     /**
      * Link the given demographic numbers with in the given remote facility.
-     *
+     * <p>
      * THIS IS AN INTEGRATOR FUNCTION ONLY. INTEGRATOR MUST BE ENABLED.
-     *
      */
     @Override
     public boolean linkDemographicToRemoteDemographic(LoggedInInfo loggedInInfo, int demographicNo,
@@ -1217,7 +1212,7 @@ public class DemographicManagerImpl implements DemographicManager {
      * Fetch all the the demographic ids linked by the Integrator to the given local
      * demographic number
      * and given remote facility id.
-     *
+     * <p>
      * THIS IS AN INTEGRATOR FUNCTION ONLY. INTEGRATOR MUST BE ENABLED.
      *
      * @param loggedInInfo
@@ -1252,7 +1247,7 @@ public class DemographicManagerImpl implements DemographicManager {
      * Fetch all the demographic files from all facilities linked by the Integrator
      * to the given local demographic number
      * Excludes the demographic file located in this facility
-     *
+     * <p>
      * THIS IS AN INTEGRATOR FUNCTION ONLY. INTEGRATOR MUST BE ENABLED.
      *
      * @param loggedInInfo

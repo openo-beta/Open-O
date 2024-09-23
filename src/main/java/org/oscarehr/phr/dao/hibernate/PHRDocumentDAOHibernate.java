@@ -42,7 +42,6 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 /**
- *
  * @author jay
  */
 public class PHRDocumentDAOHibernate extends HibernateDaoSupport

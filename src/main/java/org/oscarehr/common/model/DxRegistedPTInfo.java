@@ -26,7 +26,6 @@ package org.oscarehr.common.model;
 import java.io.Serializable;
 
 /**
- *
  * @author toby
  */
 public class DxRegistedPTInfo implements Serializable {

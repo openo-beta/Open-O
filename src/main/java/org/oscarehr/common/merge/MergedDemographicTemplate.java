@@ -27,7 +27,7 @@ package org.oscarehr.common.merge;
 import java.util.List;
 
 /**
- * Implementation of template method pattern for carrying out common merged demographic lookups. 
+ * Implementation of template method pattern for carrying out common merged demographic lookups.
  *
  * @param <T> Base class to be looked up
  */
@@ -37,22 +37,17 @@ public abstract class MergedDemographicTemplate<T> extends AbstractTemplate {
      * Searches content by demographic ID. This method must invoke the original implementation of the
      * method (usually prefixed with <code>WrappingClass.super.</code>).
      *
-     * @param demographic_no
-     * 		Demographic id to lookup data for
-     * @return
-     *        Returns the list of required entries for the demographic id
+     * @param demographic_no Demographic id to lookup data for
+     * @return Returns the list of required entries for the demographic id
      */
     protected abstract List<T> findById(Integer demographic_no);
 
     /**
      * Searches and adds content of the merged records to the result set of the parent record.
      *
-     * @param demographic_no
-     * 		Parent demographic id
-     * @param result
-     * 		Non-null result set for the parent demographic id
-     * @return
-     *        Returns the result set containing records for the child (merged) records
+     * @param demographic_no Parent demographic id
+     * @param result         Non-null result set for the parent demographic id
+     * @return Returns the result set containing records for the child (merged) records
      */
     public List<T> findMerged(Integer demographic_no, List<T> result) {
         List<Integer> mergedIds = getMergedIds(demographic_no);

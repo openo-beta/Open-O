@@ -57,8 +57,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -73,10 +71,8 @@ public class TimeLivedInCanada {
     /**
      * Gets the value of the years property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getYears() {
         return years;
@@ -85,10 +81,8 @@ public class TimeLivedInCanada {
     /**
      * Sets the value of the years property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setYears(BigInteger value) {
         this.years = value;
@@ -97,10 +91,8 @@ public class TimeLivedInCanada {
     /**
      * Gets the value of the months property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getMonths() {
         return months;
@@ -109,10 +101,8 @@ public class TimeLivedInCanada {
     /**
      * Sets the value of the months property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setMonths(BigInteger value) {
         this.months = value;

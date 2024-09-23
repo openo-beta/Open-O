@@ -35,21 +35,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
  * Table partial_date
- +------------+-------------+------+-----+---------+----------------+
- | Field      | Type        | Null | Key | Default | Extra          |
- +------------+-------------+------+-----+---------+----------------+
- | id         | int(11)     | NO   | PRI | NULL    | auto_increment |
- | table_name | int(11)     | YES  |     | NULL    |                |
- | table_id   | int(11)     | YES  |     | NULL    |                |
- | field_name | int(11)     | YES  |     | NULL    |                |
- | format     | varchar(10) | YES  |     | NULL    |                |
- +------------+-------------+------+-----+---------+----------------+
- *
+ * +------------+-------------+------+-----+---------+----------------+
+ * | Field      | Type        | Null | Key | Default | Extra          |
+ * +------------+-------------+------+-----+---------+----------------+
+ * | id         | int(11)     | NO   | PRI | NULL    | auto_increment |
+ * | table_name | int(11)     | YES  |     | NULL    |                |
+ * | table_id   | int(11)     | YES  |     | NULL    |                |
+ * | field_name | int(11)     | YES  |     | NULL    |                |
+ * | format     | varchar(10) | YES  |     | NULL    |                |
+ * +------------+-------------+------+-----+---------+----------------+
+ * <p>
  * Uses
- *    to record partial date format for date fields in other tables
- *
+ * to record partial date format for date fields in other tables
  *
  * @author Ronnie Cheng
  */

@@ -46,7 +46,8 @@ import oscar.oscarBilling.ca.bc.data.BillingmasterDAO;
 import oscar.util.StringUtils;
 
 /**
- * Holds Data about a teleplan submission 
+ * Holds Data about a teleplan submission
+ *
  * @author jay
  */
 public class TeleplanSubmission {
@@ -63,7 +64,9 @@ public class TeleplanSubmission {
     private int totalClaims = 0;
 
 
-    /** Creates a new instance of TeleplanSubmission */
+    /**
+     * Creates a new instance of TeleplanSubmission
+     */
     public TeleplanSubmission() {
     }
 

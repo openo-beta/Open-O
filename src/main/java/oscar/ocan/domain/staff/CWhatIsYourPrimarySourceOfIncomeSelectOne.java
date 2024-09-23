@@ -64,8 +64,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -110,10 +108,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cEmployment property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCEmployment() {
         return cEmployment;
@@ -122,10 +118,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cEmployment property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCEmployment(String value) {
         this.cEmployment = value;
@@ -134,10 +128,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cEmploymentInsurance property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCEmploymentInsurance() {
         return cEmploymentInsurance;
@@ -146,10 +138,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cEmploymentInsurance property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCEmploymentInsurance(String value) {
         this.cEmploymentInsurance = value;
@@ -158,10 +148,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cPension property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCPension() {
         return cPension;
@@ -170,10 +158,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cPension property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCPension(String value) {
         this.cPension = value;
@@ -182,10 +168,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the codsp property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCODSP() {
         return codsp;
@@ -194,10 +178,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the codsp property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCODSP(String value) {
         this.codsp = value;
@@ -206,10 +188,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cSocialAssistance property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSocialAssistance() {
         return cSocialAssistance;
@@ -218,10 +198,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cSocialAssistance property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSocialAssistance(String value) {
         this.cSocialAssistance = value;
@@ -230,10 +208,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cDisabilityAssistance property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCDisabilityAssistance() {
         return cDisabilityAssistance;
@@ -242,10 +218,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cDisabilityAssistance property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCDisabilityAssistance(String value) {
         this.cDisabilityAssistance = value;
@@ -254,10 +228,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cFamily property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCFamily() {
         return cFamily;
@@ -266,10 +238,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cFamily property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCFamily(String value) {
         this.cFamily = value;
@@ -278,10 +248,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cNoSourceOfIncome property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCNoSourceOfIncome() {
         return cNoSourceOfIncome;
@@ -290,10 +258,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cNoSourceOfIncome property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCNoSourceOfIncome(String value) {
         this.cNoSourceOfIncome = value;
@@ -302,10 +268,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cOther property.
      *
-     * @return
-     *     possible object is
-     *     {@link COther }
-     *
+     * @return possible object is
+     * {@link COther }
      */
     public COther getCOther() {
         return cOther;
@@ -314,10 +278,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cOther property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link COther }
-     *
+     * @param value allowed object is
+     *              {@link COther }
      */
     public void setCOther(COther value) {
         this.cOther = value;
@@ -326,10 +288,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cUnknown property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -338,10 +298,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cUnknown property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -350,10 +308,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -362,10 +318,8 @@ public class CWhatIsYourPrimarySourceOfIncomeSelectOne {
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

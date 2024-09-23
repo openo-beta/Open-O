@@ -63,7 +63,6 @@ import oscar.oscarPrevention.PreventionData;
 import oscar.oscarPrevention.PreventionDisplayConfig;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class AddPreventionAction extends Action {

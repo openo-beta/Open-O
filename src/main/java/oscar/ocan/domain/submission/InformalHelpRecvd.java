@@ -65,8 +65,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -78,7 +76,6 @@ public class InformalHelpRecvd {
 
     /**
      * Gets the value of the staff property.
-     *
      */
     public byte getStaff() {
         return staff;
@@ -86,7 +83,6 @@ public class InformalHelpRecvd {
 
     /**
      * Sets the value of the staff property.
-     *
      */
     public void setStaff(byte value) {
         this.staff = value;

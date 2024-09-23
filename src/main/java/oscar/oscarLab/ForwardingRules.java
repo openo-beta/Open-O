@@ -44,14 +44,15 @@ import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author wrighd
  */
 public class ForwardingRules {
 
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-    /** Creates a new instance of ForwardingRules */
+    /**
+     * Creates a new instance of ForwardingRules
+     */
     public ForwardingRules() {
     }
 

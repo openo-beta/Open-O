@@ -45,12 +45,11 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
  * HL7 Message Handler class SPECIFICALLY for Meditech's Physician Office Interface (POI)
- * The Meditech POI is used mainly with Ontario's Local Health Integration Network (LHIN) 
+ * The Meditech POI is used mainly with Ontario's Local Health Integration Network (LHIN)
  * facilitates and with BC's Interior Health Authority.
- *
+ * <p>
  * Authored by Colcamex Resources Inc.
  * Sponsored by Trimara Corp.
- *
  */
 public class MEDITECHHandler implements MessageHandler {
 
@@ -112,7 +111,6 @@ public class MEDITECHHandler implements MessageHandler {
     /**
      * If the first OBX segment is presenting a textual report and the lab type is
      * not in the unstructured (PATH or ITS) lab types.
-     *
      */
     public boolean isReportData() {
         if (OBX_DATA_TYPES.TX.name().equals(getOBXValueType(0, 0))
@@ -190,7 +188,6 @@ public class MEDITECHHandler implements MessageHandler {
      * Returns a stringed together list of OBR headings as the discipline name.
      * Alternatively, this could be adapted to return the proper discipline name stored
      * in the universial service ID.
-     *
      */
     public String getDiscipline() {
 
@@ -354,7 +351,7 @@ public class MEDITECHHandler implements MessageHandler {
 
 
     /**
-     *  The facilities specific specimen id number. Located at OBR 3.1
+     * The facilities specific specimen id number. Located at OBR 3.1
      */
     public String getSpecimenDescription(int i) {
         String specimenDescription = "";
@@ -450,7 +447,6 @@ public class MEDITECHHandler implements MessageHandler {
      * When there are multiple redundant Observation Headers, this will only return an individual Observation Header
      * If the Observation Result is empty, the Observation Header will be concatenated to the next.
      * Assumption is that any last OBR will never have empty OBX.
-     *
      */
     @Override
     public ArrayList<String> getHeaders() {
@@ -811,6 +807,7 @@ public class MEDITECHHandler implements MessageHandler {
 
     /**
      * Other Healthcare Providers PV1 52
+     *
      * @return
      */
     public String getOtherHealthcareProviders() {
@@ -827,6 +824,7 @@ public class MEDITECHHandler implements MessageHandler {
 
     /**
      * seg PV1 7
+     *
      * @return
      */
     public String getAttendingPhysician() {
@@ -843,6 +841,7 @@ public class MEDITECHHandler implements MessageHandler {
 
     /**
      * seg PV1 17
+     *
      * @return
      */
     public String getAdmittingPhysician() {

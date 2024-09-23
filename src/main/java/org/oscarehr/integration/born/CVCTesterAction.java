@@ -51,10 +51,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- *
  * @author marc
- *
- *
+ * <p>
+ * <p>
  * baseDstu3/Medication?_tag=CVC1 - All medication objects in a bundle
  * baseDstu3/ValueSet/CVC-Tradename-ValueSet - URI for the tradename valueset
  * baseDstu3/ValueSet/CVC-Generic-ValueSet - URI for the generic valueset

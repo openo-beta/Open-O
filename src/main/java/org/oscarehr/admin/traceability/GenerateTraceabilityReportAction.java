@@ -44,11 +44,11 @@ import oscar.log.LogAction;
 import oscar.log.LogConst;
 
 /**
- * Upload 'trace', process it, 
+ * Upload 'trace', process it,
  * compare with the local 'trace'
  * and create report
- * @author oscar
  *
+ * @author oscar
  */
 public class GenerateTraceabilityReportAction extends Action {
     @Override

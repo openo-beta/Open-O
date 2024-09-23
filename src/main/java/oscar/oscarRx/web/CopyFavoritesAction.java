@@ -39,7 +39,6 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author toby
  */
 public class CopyFavoritesAction extends DispatchAction {

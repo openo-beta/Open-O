@@ -108,6 +108,7 @@ public interface MessagingManager {
 
     /**
      * Get the count of all messages attached to the given demographic Id.
+     *
      * @param loggedInInfo
      * @param demographicNo
      * @return
@@ -116,6 +117,7 @@ public interface MessagingManager {
 
     /**
      * Change the status of a message (sent, read, del, new)
+     *
      * @param loggedInInfo
      * @param messageId
      * @param status
@@ -141,12 +143,13 @@ public interface MessagingManager {
     public String getDelegateName(String delegate);
 
     /**
-     * Use this method for sending messages from the Oscar system to Oscar users. 
+     * Use this method for sending messages from the Oscar system to Oscar users.
      */
     public Integer sendSystemMessage(LoggedInInfo loggedInInfo, MessengerSystemMessage systemMessage);
 
     /**
-     * Attach all providers that should receive this message. 
+     * Attach all providers that should receive this message.
+     *
      * @param loggedInInfo
      * @param messageId
      * @param recipients
@@ -174,19 +177,20 @@ public interface MessagingManager {
     public void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId, String status);
 
     /**
-     * A combined result of both the local reply recipients and recipients located in remote 
+     * A combined result of both the local reply recipients and recipients located in remote
      * facilities including the original sender.
      */
     public List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, final MessageTbl messageTbl);
 
     /**
-     * A combined result of both the local reply recipients and recipients located in remote 
+     * A combined result of both the local reply recipients and recipients located in remote
      * facilities inluding the original sender.
      */
     public List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
 
     /**
-     * Get the only the sender's identifier for a message reply. 
+     * Get the only the sender's identifier for a message reply.
+     *
      * @param loggedInInfo
      * @param messageId
      * @return
@@ -197,8 +201,8 @@ public interface MessagingManager {
 
 
     /**
-     * Recipients that were copied in on the message that have an origin in the client from where 
-     * the reply is originating. 
+     * Recipients that were copied in on the message that have an origin in the client from where
+     * the reply is originating.
      *
      * @param loggedInInfo
      * @param messageId
@@ -207,8 +211,8 @@ public interface MessagingManager {
     public List<ContactIdentifier> getAllLocalReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
 
     /**
-     * Recipients that were copied in on the message but have an origin in one of the included 
-     * remote facilities. 
+     * Recipients that were copied in on the message but have an origin in one of the included
+     * remote facilities.
      *
      * @param loggedInInfo
      * @param messageId
@@ -226,7 +230,7 @@ public interface MessagingManager {
     public Integer saveMessage(LoggedInInfo loggedInInfo, MessageTbl messageTbl);
 
     /**
-     * Get the current address book location id for this clinic from the oscarcommlocations table. 
+     * Get the current address book location id for this clinic from the oscarcommlocations table.
      *
      * @return
      */
@@ -235,6 +239,7 @@ public interface MessagingManager {
 
     /**
      * remove duplicate values from any string array.
+     *
      * @param strarray
      * @return
      */

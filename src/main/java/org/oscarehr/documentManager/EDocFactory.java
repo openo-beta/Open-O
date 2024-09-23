@@ -35,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
  * @author apavel
  */
 public class EDocFactory {

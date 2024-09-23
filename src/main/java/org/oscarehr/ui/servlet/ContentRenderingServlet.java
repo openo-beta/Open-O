@@ -45,7 +45,7 @@ import ca.uhn.hl7v2.parser.EncodingNotSupportedException;
 /**
  * This servlet requires a parameter called "source" which should signify where to get the image from.
  * An optional parameter is "download" where if the parameter is present it will download the item instead of rendering it. (the value of the parameter is not significant, i.e. download=true and download=false will both cause it to download).
- *
+ * <p>
  * Example, source=oruR01. Depending on the source, you can optionally add more parameters, as examples a oruR01 may need a
  * segmentId=5&download=true
  */

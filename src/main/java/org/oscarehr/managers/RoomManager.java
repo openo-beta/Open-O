@@ -69,8 +69,7 @@ public class RoomManager {
     /**
      * Get room
      *
-     * @param roomId
-     *            room identifier
+     * @param roomId room identifier
      * @return room
      */
     public Room getRoom(Integer roomId) {
@@ -86,6 +85,7 @@ public class RoomManager {
 
     /**
      * Get rooms
+     *
      * @return list of rooms
      */
     public Room[] getRooms(Integer facilityId) {
@@ -110,6 +110,7 @@ public class RoomManager {
 
     /**
      * Get rooms
+     *
      * @return array of rooms that have beds assigned to them.
      */
 
@@ -128,6 +129,7 @@ public class RoomManager {
 
     /**
      * Get assigned rooms
+     *
      * @return list of assigned rooms
      */
     public Room[] getAssignedBedRooms(Integer facilityId, Integer programId, Boolean active) {
@@ -142,6 +144,7 @@ public class RoomManager {
 
     /**
      * Get assigned rooms
+     *
      * @return list of assigned rooms
      */
     public Room[] getAssignedBedRooms(Integer facilityId) {
@@ -157,6 +160,7 @@ public class RoomManager {
 
     /**
      * Get rooms that are not full
+     *
      * @return list of unfilled rooms
      */
     public Room[] getUnfilledRoomIds(Bed[] beds) {
@@ -196,7 +200,7 @@ public class RoomManager {
      * @param programId
      * @param active
      * @return list of available bed rooms that have client assigned less than
-     * 			its occupancy limit.
+     * its occupancy limit.
      */
     @SuppressWarnings("unchecked")
     public Room[] getAvailableRooms(Integer facilityId, Integer programId, Boolean active, String demographicNo) {
@@ -256,6 +260,7 @@ public class RoomManager {
     /**
      * Calculate occupancy number as number of beds assigned to each room when
      * assignedBed attribute is set to 'Y'
+     *
      * @param beds
      */
     public Integer[][] calculateOccupancyAsNumOfBedsAssignedToRoom(Bed[] beds) {
@@ -334,6 +339,7 @@ public class RoomManager {
     /**
      * Test to see whether room is assigned with beds - return true or
      * assigned with no beds yet - return false
+     *
      * @param roomId
      */
     public boolean isRoomAssignedWithBeds(Integer roomId) {
@@ -350,6 +356,7 @@ public class RoomManager {
     /**
      * Used by AdmissionManager during processDischarge()  to  delete discharged
      * program-related room/bed reservation records
+     *
      * @param demographicNo
      * @param programId
      */
@@ -388,10 +395,8 @@ public class RoomManager {
     /**
      * Add new rooms
      *
-     * @param numRooms
-     *            number of rooms
-     * @throws RoomHasActiveBedsException
-     *             room has active beds
+     * @param numRooms number of rooms
+     * @throws RoomHasActiveBedsException room has active beds
      */
     public void addRooms(Integer facilityId, int numRooms) {
         if (numRooms < 1) {
@@ -408,10 +413,8 @@ public class RoomManager {
     /**
      * Save rooms
      *
-     * @param rooms
-     *            rooms to create or update
-     * @throws RoomHasActiveBedsException
-     *             room has active beds
+     * @param rooms rooms to create or update
+     * @throws RoomHasActiveBedsException room has active beds
      */
     public void saveRooms(Room[] rooms) throws DuplicateRoomNameException {
         if (rooms == null) {

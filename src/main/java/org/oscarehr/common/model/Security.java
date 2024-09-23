@@ -102,7 +102,9 @@ public class Security extends AbstractModel<Integer> {
     private String lastUpdateUser;
 
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Security() {
     }
 
@@ -119,7 +121,9 @@ public class Security extends AbstractModel<Integer> {
         setForcePasswordReset(security.isForcePasswordReset());
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public Security(String userName, String password, String providerNo, String pin, Integer BRemotelockset, Integer BLocallockset, Date dateExpiredate, Integer BExpireset, Boolean forcePasswordReset) {
         this.userName = userName;
         this.password = password;

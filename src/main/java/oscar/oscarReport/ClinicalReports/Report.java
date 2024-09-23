@@ -27,12 +27,13 @@
 package oscar.oscarReport.ClinicalReports;
 
 /**
- *
  * @author jay
  */
 public class Report {
 
-    /** Creates a new instance of Report */
+    /**
+     * Creates a new instance of Report
+     */
     public Report() {
     }
 

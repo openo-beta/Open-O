@@ -45,8 +45,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "vacancyQuery", propOrder = {"vacancyID"})
@@ -56,7 +54,6 @@ public class VacancyQuery {
 
     /**
      * Gets the value of the vacancyID property.
-     *
      */
     public int getVacancyID() {
         return vacancyID;
@@ -64,7 +61,6 @@ public class VacancyQuery {
 
     /**
      * Sets the value of the vacancyID property.
-     *
      */
     public void setVacancyID(int value) {
         this.vacancyID = value;

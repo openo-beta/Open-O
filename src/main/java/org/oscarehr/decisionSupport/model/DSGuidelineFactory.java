@@ -49,7 +49,6 @@ import org.oscarehr.decisionSupport.model.impl.drools.DSGuidelineDrools;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author apavel
  */
 public class DSGuidelineFactory {

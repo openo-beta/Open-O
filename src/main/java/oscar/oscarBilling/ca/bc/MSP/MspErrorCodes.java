@@ -43,7 +43,9 @@ import oscar.OscarProperties;
 
 public class MspErrorCodes extends Properties {
 
-    /** Creates a new instance of MspErrorCodes */
+    /**
+     * Creates a new instance of MspErrorCodes
+     */
     public MspErrorCodes() {
         super();
         try {

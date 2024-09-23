@@ -176,6 +176,7 @@ public class DocumentUploadAction extends DispatchAction {
 
     /**
      * Counts the number of pages in a local pdf file.
+     *
      * @param fileName the name of the file
      * @return the number of pages in the file
      */
@@ -185,7 +186,8 @@ public class DocumentUploadAction extends DispatchAction {
 
     /**
      * Writes an uploaded file to disk
-     * @param docFile the uploaded file
+     *
+     * @param docFile  the uploaded file
      * @param fileName the name for the file on disk
      * @throws Exception when an error occurs
      */

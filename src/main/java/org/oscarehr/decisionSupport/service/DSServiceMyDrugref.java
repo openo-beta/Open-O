@@ -58,7 +58,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import oscar.oscarRx.pageUtil.RxMyDrugrefInfoAction;
 
 /**
- *
  * @author apavel
  */
 public class DSServiceMyDrugref extends DSService {

@@ -34,19 +34,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- *	create table other_id (
- *		id int not null auto_increment primary key,
- *		table_name int not null,
- *		table_id int not null,
- *		other_key varchar(30) not null default '',
- *		other_id varchar(30) not null default '',
- *		deleted boolean not null
- *	);
- *
+ * create table other_id (
+ * id int not null auto_increment primary key,
+ * table_name int not null,
+ * table_id int not null,
+ * other_key varchar(30) not null default '',
+ * other_id varchar(30) not null default '',
+ * deleted boolean not null
+ * );
+ * <p>
  * Uses
- *    to annotate prescriptions, notes, scanned documents
- *
+ * to annotate prescriptions, notes, scanned documents
  *
  * @author Ronnie Cheng
  */

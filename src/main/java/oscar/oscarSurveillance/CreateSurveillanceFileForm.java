@@ -29,19 +29,21 @@ package oscar.oscarSurveillance;
 import org.apache.struts.action.ActionForm;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class CreateSurveillanceFileForm extends ActionForm {
 
     String surveyId;
 
-    /** Creates a new instance of CreateSurveillanceFileForm */
+    /**
+     * Creates a new instance of CreateSurveillanceFileForm
+     */
     public CreateSurveillanceFileForm() {
     }
 
     /**
      * Getter for property surveyId.
+     *
      * @return Value of property surveyId.
      */
     public java.lang.String getSurveyId() {
@@ -50,6 +52,7 @@ public class CreateSurveillanceFileForm extends ActionForm {
 
     /**
      * Setter for property surveyId.
+     *
      * @param surveyId New value of property surveyId.
      */
     public void setSurveyId(java.lang.String surveyId) {

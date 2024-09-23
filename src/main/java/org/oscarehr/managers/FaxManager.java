@@ -73,10 +73,8 @@ public interface FaxManager {
     Path renderFaxDocument(LoggedInInfo loggedInInfo, TransactionType transactionType, int transactionId, int demographicNo);
 
     /**
-     * @Deprecated
-     * Move these rendering methods into a more generic class like the DocumentManager
-     *
      * @return
+     * @Deprecated Move these rendering methods into a more generic class like the DocumentManager
      */
     Path renderFaxDocument(LoggedInInfo loggedInInfo, TransactionType transactionType, int transactionId, int demographicNo, FormTransportContainer formTransportContainer);
 
@@ -97,7 +95,6 @@ public interface FaxManager {
      * The FaxJob list that is returned contains persisted FaxJob Objects
      * This method has a specific purpose for the FaxAction class.  Use the
      * createFaxJob(LoggedInInfo loggedInInfo, Map<String, Object> faxJobMap) signature otherwise.
-     *
      */
     List<FaxJob> createAndSaveFaxJob(LoggedInInfo loggedInInfo, DynaActionForm faxActionForm);
 
@@ -114,9 +111,8 @@ public interface FaxManager {
      * senderFaxNumber
      * demographicNo
      * copytoRecipients (as String[])
-     *
+     * <p>
      * The FaxJob list that is returned contains persisted FaxJob Objects
-     *
      */
     List<FaxJob> createAndSaveFaxJob(LoggedInInfo loggedInInfo, Map<String, Object> faxJobMap);
 
@@ -132,7 +128,6 @@ public interface FaxManager {
      * demographicNo
      * copytoRecipients (as String[])
      * The FaxJob returned is NEW UN-PERSISTED FaxJob Object with a single recipient
-     *
      */
     FaxJob createFaxJob(LoggedInInfo loggedInInfo, Map<String, Object> faxJobMap);
 
@@ -140,20 +135,18 @@ public interface FaxManager {
      * Add recipients from an indexed array of JSON formatted strings
      * name:<recipient>
      * fax:<recipient fax number>
-     *
      */
     List<FaxJob> addRecipients(LoggedInInfo loggedInInfo, FaxJob faxJob, String[] faxRecipients);
 
     /**
      * Create 1 faxJob for each fax recipient. Sets each faxJob to the
      * default status of WAITNG.
-     *
      */
     List<FaxJob> addRecipients(LoggedInInfo loggedInInfo, FaxJob faxJob, List<FaxRecipient> faxRecipients);
 
     /**
      * Persist to the database for transmission later if the fax account is valid.
-     *
+     * <p>
      * The given faxjob must contain a valid sender fax number and username.
      */
     List<FaxJob> saveFaxJob(LoggedInInfo loggedInInfo, List<FaxJob> faxJobList);
@@ -165,7 +158,6 @@ public interface FaxManager {
 
     /**
      * prepend a fax cover page to the given existing PDF document.
-     *
      */
     Path addCoverPage(LoggedInInfo loggedInInfo, String note, Path currentDocument) throws IOException;
 
@@ -187,7 +179,6 @@ public interface FaxManager {
     /**
      * Get a preview image of the documents being faxed.  Default is
      * the first page only
-     *
      */
     Path getFaxPreviewImage(LoggedInInfo loggedInInfo, Path filePath);
 
@@ -198,7 +189,6 @@ public interface FaxManager {
 
     /**
      * Sets both the global user log and the fax job log.
-     *
      */
     void logFaxJob(LoggedInInfo loggedInInfo, FaxJob faxJob, TransactionType transactionType, int transactionId);
 
@@ -222,7 +212,6 @@ public interface FaxManager {
 
     /**
      * Clear the preview cache and temp directory.
-     *
      */
     boolean flush(LoggedInInfo loggedInInfo, String filePath);
 

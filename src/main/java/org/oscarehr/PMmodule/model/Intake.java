@@ -296,8 +296,8 @@ public class Intake implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native" column="intake_id"
+     * <p>
+     * generator-class="native" column="intake_id"
      */
     public Integer getId() {
         return id;
@@ -306,8 +306,7 @@ public class Intake implements Serializable {
     /**
      * Set the unique identifier of this class
      *
-     * @param id
-     *            the new ID
+     * @param id the new ID
      */
     public void setId(Integer id) {
         this.id = id;
@@ -324,8 +323,7 @@ public class Intake implements Serializable {
     /**
      * Set the value related to the column: client_id
      *
-     * @param clientId
-     *            the client_id value
+     * @param clientId the client_id value
      */
     public void setClientId(Integer clientId) {
         this.clientId = clientId;
@@ -341,8 +339,7 @@ public class Intake implements Serializable {
     /**
      * Set the value related to the column: staff_id
      *
-     * @param staffId
-     *            the staff_id value
+     * @param staffId the staff_id value
      */
     public void setStaffId(String staffId) {
         this.staffId = staffId;
@@ -358,8 +355,7 @@ public class Intake implements Serializable {
     /**
      * Set the value related to the column: creation_date
      *
-     * @param createdOn
-     *            the creation_date value
+     * @param createdOn the creation_date value
      */
     public void setCreatedOn(Calendar createdOn) {
         this.createdOn = createdOn;
@@ -375,8 +371,7 @@ public class Intake implements Serializable {
     /**
      * Set the value related to the column: intake_node_id
      *
-     * @param node
-     *            the intake_node_id value
+     * @param node the intake_node_id value
      */
     public void setNode(IntakeNode node) {
         this.node = node;
@@ -392,8 +387,7 @@ public class Intake implements Serializable {
     /**
      * Set the value related to the column: answers
      *
-     * @param answers
-     *            the answers value
+     * @param answers the answers value
      */
     public void setAnswers(java.util.Set<IntakeAnswer> answers) {
         this.answers = answers;

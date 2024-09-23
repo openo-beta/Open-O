@@ -34,7 +34,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
  * @author jackson bi
  */
 @Entity

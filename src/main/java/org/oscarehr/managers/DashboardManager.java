@@ -97,7 +97,6 @@ public interface DashboardManager {
 
     /**
      * Returns ALL available Dashboards.
-     *
      */
     List<Dashboard> getDashboards(LoggedInInfo loggedInInfo);
 
@@ -121,9 +120,8 @@ public interface DashboardManager {
      * Retrieves an XML file from a servlet request object and then saves it to
      * the local file directory and finally writes an entry in the Indicator
      * Template db table.
-     *
+     * <p>
      * Returns a JSON string: status=success, or status=error, message=[message]
-     *
      */
     String importIndicatorTemplate(LoggedInInfo loggedInInfo, byte[] bytearray);
 

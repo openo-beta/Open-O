@@ -45,7 +45,6 @@ import org.apache.struts.actions.DispatchAction;
 import oscar.oscarRx.util.RxDrugRef;
 
 /**
- *
  * @author jackson
  */
 public class RxUpdateDrugref extends DispatchAction {

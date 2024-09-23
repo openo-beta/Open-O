@@ -32,7 +32,6 @@ import java.util.Properties;
 
 /**
  * Base class for drawing growth charts on pdf
- *
  */
 public abstract class FrmPdfGraphic {
 

@@ -30,14 +30,15 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.upload.FormFile;
 
 /**
- *
  * @author jay
  */
 public class ManagePatientLettersForm extends ActionForm {
 
     private FormFile reportFile;
 
-    /** Creates a new instance of ManagePatientLettersForm */
+    /**
+     * Creates a new instance of ManagePatientLettersForm
+     */
     public ManagePatientLettersForm() {
 
     }

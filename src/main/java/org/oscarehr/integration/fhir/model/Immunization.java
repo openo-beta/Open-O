@@ -89,9 +89,7 @@ import org.oscarehr.util.SpringUtils;
  */
 
 /**
- *
  * constraint: Oscar class must implement ImmunizationInterface.
- *
  */
 public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterface>
         extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Immunization, T> {
@@ -204,7 +202,6 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
 
     /**
      * The extension URI for the administration date indicates if the immunization date was estimated.
-     *
      */
     private void setAdministrationDate(org.hl7.fhir.dstu3.model.Immunization immunization) {
 
@@ -461,9 +458,8 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
 
     /**
      * Determined if the user has selected if the immunization has been "Done Externally".
-     *
+     * <p>
      * If the dateIsEstimated is enabled. This value will also be set to NOT be a primary source.
-     *
      */
     private void setIsPrimarySource(org.hl7.fhir.dstu3.model.Immunization immunization) {
 
@@ -480,9 +476,9 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
 
     /**
      * This method is triggered when the user has indicated that the immunization has been performed externally.
-     *
+     * <p>
      * The display value is changed if the dateIsEstimated is enabled.
-     *
+     * <p>
      * The source of the data when the report of the immunization event is not based on
      * information from the person who administered the vaccine.
      */

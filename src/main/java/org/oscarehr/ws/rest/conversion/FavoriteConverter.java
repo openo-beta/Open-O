@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * Converts between domain Favorite and FavoriteTo1 objects.
- *
+ * <p>
  * This class represents the transformation between a the SQL schema
  * and the data model that is presented to a client.
  */

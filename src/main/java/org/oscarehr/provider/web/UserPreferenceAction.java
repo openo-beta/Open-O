@@ -66,14 +66,12 @@ import oscar.oscarBilling.ca.bc.MSP.MSPReconcile;
 
 
 /**
- *
  * Properties are loaded in the following order
  * Hard-coded defaults
  * OSCAR system properties file (pref.<key>)
  * Provider properties (db)
  *
  * @author Marc Dumontier
- *
  */
 public class UserPreferenceAction extends DispatchAction {
 

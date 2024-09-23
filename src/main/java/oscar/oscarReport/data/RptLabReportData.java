@@ -110,7 +110,7 @@ public class RptLabReportData {
     }
 
     /**
-     *This is a inner class that stores info on demographics.  It will get Consult letters that have been scanned and consults for the patient
+     * This is a inner class that stores info on demographics.  It will get Consult letters that have been scanned and consults for the patient
      */
     public class DemoLabDataStruct {
         public String demoNo;

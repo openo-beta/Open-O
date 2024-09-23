@@ -41,6 +41,7 @@ import oscar.oscarBilling.ca.bc.data.BillingHistoryDAO;
  * <p>Responible for executing logic for receiving a private payment</p>
  * <p>When a payment is recieved the method of payment is updated and the staus is set to paidprivate
  * <p>if the entire balance owing is recovered</p>
+ *
  * @version 1.0
  */
 public class ReceivePaymentAction

@@ -98,10 +98,8 @@ public abstract class MyOscarMeasurement implements Serializable, Comparable<MyO
      * Converts the specified XML for a measurement into text that
      * can be displayed to the end user.
      *
-     * @param element
-     * 		Root XML element returned by MyOSCAR
-     * @return
-     *        Returns the text representation of this element.
+     * @param element Root XML element returned by MyOSCAR
+     * @return Returns the text representation of this element.
      */
     protected abstract String toReadableString(Element element);
 

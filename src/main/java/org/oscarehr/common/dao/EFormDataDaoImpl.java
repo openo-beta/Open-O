@@ -359,13 +359,10 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     /**
      * Finds form data for the specified demographic record and form name
      *
-     * @param demographicNo
-     *                      Demographic number to find the form data for
-     * @param formName
-     *                      Form name to find the data for
-     * @return
-     *         Returns all active matching form data, ordered by creation date and
-     *         time
+     * @param demographicNo Demographic number to find the form data for
+     * @param formName      Form name to find the data for
+     * @return Returns all active matching form data, ordered by creation date and
+     * time
      */
     @SuppressWarnings("unchecked")
     @Override

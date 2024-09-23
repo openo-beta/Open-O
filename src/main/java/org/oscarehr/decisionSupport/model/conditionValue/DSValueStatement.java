@@ -37,7 +37,6 @@ import org.apache.commons.lang.StringUtils;
 import org.oscarehr.decisionSupport.model.DecisionSupportException;
 
 /**
- *
  * @author apavel
  */
 public class DSValueStatement extends DSValue {

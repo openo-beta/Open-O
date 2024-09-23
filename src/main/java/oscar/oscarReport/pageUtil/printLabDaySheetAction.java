@@ -46,7 +46,6 @@ import oscar.OscarAction;
 import oscar.OscarDocumentCreator;
 
 /**
- *
  * @author Toby
  */
 public class printLabDaySheetAction extends OscarAction {

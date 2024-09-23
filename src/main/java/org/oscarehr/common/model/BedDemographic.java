@@ -313,6 +313,7 @@ public class BedDemographic extends AbstractModel<BedDemographicPK> {
 
     /**
      * Set the value related to the column: late_pass
+     *
      * @param latePass the late_pass value
      */
     public void setLatePass(boolean latePass) {

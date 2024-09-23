@@ -825,6 +825,7 @@ public class BillingServiceDaoTest extends DaoTestFixtures {
 
     /**
      * Creates and populates a new BillingService with only the code and date.
+     *
      * @param code Service code
      * @param date Billing service date
      * @return BillingService
@@ -841,9 +842,10 @@ public class BillingServiceDaoTest extends DaoTestFixtures {
 
     /**
      * Creates and populates a new BillingService with a region.
-     * @param code Service code
+     *
+     * @param code   Service code
      * @param region Region
-     * @param date Billing service date
+     * @param date   Billing service date
      * @return BillingService
      * @throws Exception
      */
@@ -859,9 +861,10 @@ public class BillingServiceDaoTest extends DaoTestFixtures {
 
     /**
      * Creates and populates a new BillingService with a region and description.
-     * @param code Service code
-     * @param region Region
-     * @param date Billing service date
+     *
+     * @param code        Service code
+     * @param region      Region
+     * @param date        Billing service date
      * @param description Description of the billing service.
      * @return BillingService
      * @throws Exception

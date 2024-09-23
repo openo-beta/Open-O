@@ -35,8 +35,7 @@ import org.oscarehr.common.model.Property;
 import org.oscarehr.util.SpringUtils;
 
 /**
- * Manages Fax number for provider 
- *
+ * Manages Fax number for provider
  */
 public class ProviderFaxUpdater {
 
@@ -52,7 +51,7 @@ public class ProviderFaxUpdater {
     }
 
     /**
-     *Retrieve fax number for current provider first by querying property table then clinic table
+     * Retrieve fax number for current provider first by querying property table then clinic table
      */
     public String getFax() {
         String faxNum = "";
@@ -73,7 +72,7 @@ public class ProviderFaxUpdater {
     }
 
     /**
-     *set fax number in property table
+     * set fax number in property table
      */
     public boolean setFax(String fax) {
 

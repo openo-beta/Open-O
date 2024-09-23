@@ -50,7 +50,6 @@ import oscar.oscarPrevention.pageUtil.PreventionReportDisplay;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class ChildImmunizationReport implements PreventionReport {
@@ -66,7 +65,9 @@ public class ChildImmunizationReport implements PreventionReport {
 
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of ChildImmunizationReport */
+    /**
+     * Creates a new instance of ChildImmunizationReport
+     */
     public ChildImmunizationReport() {
     }
 

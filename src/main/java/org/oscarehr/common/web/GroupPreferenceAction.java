@@ -39,7 +39,6 @@ import org.oscarehr.common.model.MyGroup;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author mweston4
  */
 public class GroupPreferenceAction extends DispatchAction {

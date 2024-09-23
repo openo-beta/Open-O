@@ -49,7 +49,6 @@ import oscar.oscarEncounter.oscarMeasurements.util.TargetColour;
 import oscar.oscarEncounter.oscarMeasurements.util.TargetCondition;
 
 /**
- *
  * @author jay
  */
 public class DroolsNumerator2 implements Numerator {
@@ -59,7 +58,9 @@ public class DroolsNumerator2 implements Numerator {
     String[] outputfields = null;
     Hashtable outputValues = null;
 
-    /** Creates a new instance of DroolsNumerator */
+    /**
+     * Creates a new instance of DroolsNumerator
+     */
     public DroolsNumerator2() {
     }
 

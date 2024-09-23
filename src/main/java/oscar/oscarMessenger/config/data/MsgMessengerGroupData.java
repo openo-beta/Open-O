@@ -48,10 +48,10 @@ import oscar.util.ConversionUtils;
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2002</p>
  * <p>Company: </p>
+ *
  * @author unascribed
  * @version 1.0
- * @deprecated
- * Use MessagingManager
+ * @deprecated Use MessagingManager
  */
 @Deprecated
 public class MsgMessengerGroupData {

@@ -48,8 +48,7 @@ public final class EctImmInitConfigDeleteImmuSetForm extends ActionForm {
     }
 
     /**
-     * @param action
-     *            The action to set.
+     * @param action The action to set.
      */
     public void setAction(String action) {
         this.action = action;

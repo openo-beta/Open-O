@@ -48,8 +48,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "listVacanciesForAgencyProgramResponse", propOrder = {"_return"})
@@ -78,8 +76,6 @@ public class ListVacanciesForAgencyProgramResponse {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link VacancyDisplayBO }
-     *
-     *
      */
     public List<VacancyDisplayBO> getReturn() {
         if (_return == null) {

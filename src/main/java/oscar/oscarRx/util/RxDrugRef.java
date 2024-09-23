@@ -48,7 +48,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author Jay
  */
 public class RxDrugRef {
@@ -72,7 +71,9 @@ public class RxDrugRef {
     //"http://24.141.82.168:8001";
     //"http://192.168.42.3:8001";
 
-    /** Creates a new instance of DrugRef */
+    /**
+     * Creates a new instance of DrugRef
+     */
     public RxDrugRef() {
         server_url = OscarProperties.getInstance().getProperty("drugref_url");
         //server_url = System.getProperty("drugref_url");
@@ -97,12 +98,12 @@ public class RxDrugRef {
     }
 
     /**
-     *returns all matching ATC codes for a given (fraction of) a drug name.
-     *Search is case insensitive
-     *query = "select code, text from atc where text like '%s%%'" 
-     *
-     *
-     *	 [{'code':'0', 'text':'None found'}]
+     * returns all matching ATC codes for a given (fraction of) a drug name.
+     * Search is case insensitive
+     * query = "select code, text from atc where text like '%s%%'"
+     * <p>
+     * <p>
+     * [{'code':'0', 'text':'None found'}]
      */
     public Vector atc(String drug) {
         Vector params = new Vector();
@@ -112,8 +113,8 @@ public class RxDrugRef {
     }
 
     /**
-     *returns all matching ATC codes for a given Drug Identification Number.
-     *Search is case insensitive
+     * returns all matching ATC codes for a given Drug Identification Number.
+     * Search is case insensitive
      */
     public Vector atcFromDIN(String din) {
         Vector params = new Vector();
@@ -124,12 +125,12 @@ public class RxDrugRef {
 
 
     /**
-     *returns all matching ATC codes for a given (fraction of) a drug brand name.
-     *Search is case insensitive
-     *query = "select atc.atccode, pm.brandname from link_product_manufacturer pm, product p, generic_drug_name g, link_drug_atc atc 
-     *         where pm.id_product = p.id and p.id_drug = g.id_drug  and g.id_drug = atc.id_drug and pm.brandname like  '%s%%'"
-     *
-     *   [{'code':'0', 'text':'None found'}]
+     * returns all matching ATC codes for a given (fraction of) a drug brand name.
+     * Search is case insensitive
+     * query = "select atc.atccode, pm.brandname from link_product_manufacturer pm, product p, generic_drug_name g, link_drug_atc atc
+     * where pm.id_product = p.id and p.id_drug = g.id_drug  and g.id_drug = atc.id_drug and pm.brandname like  '%s%%'"
+     * <p>
+     * [{'code':'0', 'text':'None found'}]
      */
     public Vector atcFromBrand(String drug) {
         Vector params = new Vector();
@@ -140,10 +141,10 @@ public class RxDrugRef {
 
 
     /**
-     *returns the English name of a drug that matches the stated ATC code
-     *query = "select code, text from atc where code like '%s%%'"
-     *
-     *return [{'code':'0', 'text':'None found'}]
+     * returns the English name of a drug that matches the stated ATC code
+     * query = "select code, text from atc where code like '%s%%'"
+     * <p>
+     * return [{'code':'0', 'text':'None found'}]
      */
     public Vector atc2text(String code) {
         Vector params = new Vector();
@@ -158,11 +159,11 @@ public class RxDrugRef {
     }
 
     /**
-     *returns a list of drug-drug interactions as list of "dicts"
-     *atclist : list of ATC codes
-     *minimum_significance: interactions below the stated significance level will be ignored
-     *
-     *query = "select drug, effect, affected_drug, significance, evidence, reference from simple_interactions where drug = '%s' and affected_drug = '%s' and significance >= %d" %
+     * returns a list of drug-drug interactions as list of "dicts"
+     * atclist : list of ATC codes
+     * minimum_significance: interactions below the stated significance level will be ignored
+     * <p>
+     * query = "select drug, effect, affected_drug, significance, evidence, reference from simple_interactions where drug = '%s' and affected_drug = '%s' and significance >= %d" %
      */
     public Vector interaction(Vector atclist, int minimum_significance) {
         Vector params = new Vector();
@@ -238,9 +239,8 @@ public class RxDrugRef {
     }
 
     /**
-     *Returns a list of atc codes without the drug
-     *uses function atc on the back end and strips the name
-     *
+     * Returns a list of atc codes without the drug
+     * uses function atc on the back end and strips the name
      */
     public Vector drug2atclist(String drug) {
         Vector params = new Vector();
@@ -266,8 +266,8 @@ public class RxDrugRef {
     }
 
     /**
-     returns all matching search element names, ids and categoeis for the given searchString
-     Search is case insensitive
+     * returns all matching search element names, ids and categoeis for the given searchString
+     * Search is case insensitive
      */
     public Vector list_drug_element(String searchStr) throws Exception {
         Vector params = new Vector();
@@ -308,8 +308,8 @@ public class RxDrugRef {
     }
 
     /**
-     returns all matching search element names, ids and categoeis for the given searchString
-     Search is limited by the given searchForm, and is case insensitive
+     * returns all matching search element names, ids and categoeis for the given searchString
+     * Search is limited by the given searchForm, and is case insensitive
      */
     public Vector list_drug_element_route(String searchStr, String searchRoute) throws Exception {
         Vector params = new Vector();
@@ -464,13 +464,15 @@ public class RxDrugRef {
 
     ////DRUGREF API
 
-    /** applications only permitting one or few data sources will use this function to check for valid databases.
-     *
+    /**
+     * applications only permitting one or few data sources will use this function to check for valid databases.
+     * <p>
      * Applications allowing more choice will expose all possible data sources to the end user
+     *
      * @param searchexpr mnemonic describing data source,
-     *        e.g. mims, amh, rote liste, first database.
-     *        Case insensitive, partial match possible if using % as wild card
-     * @param tags see tags
+     *                   e.g. mims, amh, rote liste, first database.
+     *                   Case insensitive, partial match possible if using % as wild card
+     * @param tags       see tags
      * @return array of structs alphabetically sorted by name with the following minimum keys:
      *
      * <B>pkey</B>: integer. Primary key
@@ -484,37 +486,38 @@ public class RxDrugRef {
         return new Vector();
     }
 
-    /**useful if searches should be constrained to a single source
+    /**
+     * useful if searches should be constrained to a single source
      *
-     *@param  pkey primary key.
-     *@return tags: see [tags].
+     * @param pkey primary key.
+     * @return tags: see [tags].
      */
     @Deprecated
     public Hashtable get_source_tag(int pkey) {
         return new Hashtable();
     }
 
-    /**returns basic identifiers of all drugs, drug products and drug classes available in the database which names match searchexpr, and which other criteria match the constraints in tags
+    /**
+     * returns basic identifiers of all drugs, drug products and drug classes available in the database which names match searchexpr, and which other criteria match the constraints in tags
      *
-     *@param searchexpr (Partial) name of a drug (generic, brand name, composite drug) Case insensitive, partial match possible if using % as wild card
-     *@param tags see [tags] Additional optional keys:
-     *       classes : boolean. If true, class names (ATC) are listed
-     *       generics : boolean. If true, generic names are listed
-     *       branded : boolean. If true, branded product names are listed
-     *       composites : if true, generic composite drugs are listed
-     *
-     *@return array of structs alphabetically sorted by name with the following minimum keys:
-     *       pkey: integer. Primary key
-     *       Name: string. Name of the drug
-     *       Type: string(2):
-     *         'cl' = class
-     *         'ca' = anatomical class
-     *         'cc' = chemical class,
-     *         'ct' = therapeutic class
-     *         'ge' = generic
-     *         'gc' = composite generic (e.g. Co-Trimoxazole)
-     *         'bp' = branded product
-     *       If the parameter return_tags was given in the query, tags will be available too.
+     * @param searchexpr (Partial) name of a drug (generic, brand name, composite drug) Case insensitive, partial match possible if using % as wild card
+     * @param tags       see [tags] Additional optional keys:
+     *                   classes : boolean. If true, class names (ATC) are listed
+     *                   generics : boolean. If true, generic names are listed
+     *                   branded : boolean. If true, branded product names are listed
+     *                   composites : if true, generic composite drugs are listed
+     * @return array of structs alphabetically sorted by name with the following minimum keys:
+     * pkey: integer. Primary key
+     * Name: string. Name of the drug
+     * Type: string(2):
+     * 'cl' = class
+     * 'ca' = anatomical class
+     * 'cc' = chemical class,
+     * 'ct' = therapeutic class
+     * 'ge' = generic
+     * 'gc' = composite generic (e.g. Co-Trimoxazole)
+     * 'bp' = branded product
+     * If the parameter return_tags was given in the query, tags will be available too.
      */
     public Vector list_drugs(String searchexpr, Hashtable tags) {
         Vector params = new Vector();
@@ -562,14 +565,16 @@ public class RxDrugRef {
     }
 
 
-    /**For Creating tags
-     *@param source Primary key of the referenced information source (Drugref, MIMS, MULTUM, AMIS, Manufacturer, Inhouse, ...)
-     *@param language  string. Three character ISO language code
-     *@param country  string. Two character ISO country code
-     *@param author  integer. Primary key of the submitter of the referenced information
-     *@param modified_after  string. ISO date (yyyy-mm-dd). If set, records older than this date will be ignored.
-     *@param return_tags  boolean. If true, the values returned by a query will include applicable tag bitstrings for each returned value (will slow down query considerably, but allows client-side sub-filtering)
-     *@return Hashtable with values set from input for tags
+    /**
+     * For Creating tags
+     *
+     * @param source         Primary key of the referenced information source (Drugref, MIMS, MULTUM, AMIS, Manufacturer, Inhouse, ...)
+     * @param language       string. Three character ISO language code
+     * @param country        string. Two character ISO country code
+     * @param author         integer. Primary key of the submitter of the referenced information
+     * @param modified_after string. ISO date (yyyy-mm-dd). If set, records older than this date will be ignored.
+     * @param return_tags    boolean. If true, the values returned by a query will include applicable tag bitstrings for each returned value (will slow down query considerably, but allows client-side sub-filtering)
+     * @return Hashtable with values set from input for tags
      */
     public Hashtable tagCreator(int source, String language, String country, int author, Date modified_after, boolean return_tags) {
         Hashtable retHash = new Hashtable();
@@ -587,13 +592,15 @@ public class RxDrugRef {
     }
 
 
-    /**For Creating tags
-     *@param source Primary key of the referenced information source (Drugref, MIMS, MULTUM, AMIS, Manufacturer, Inhouse, ...)
-     *@param language  string. Three character ISO language code
-     *@param country  string. Two character ISO country code
-     *@param author  integer. Primary key of the submitter of the referenced information
-     *@param return_tags  boolean. If true, the values returned by a query will include applicable tag bitstrings for each returned value (will slow down query considerably, but allows client-side sub-filtering)
-     *@return Hashtable with values set from input for tags
+    /**
+     * For Creating tags
+     *
+     * @param source      Primary key of the referenced information source (Drugref, MIMS, MULTUM, AMIS, Manufacturer, Inhouse, ...)
+     * @param language    string. Three character ISO language code
+     * @param country     string. Two character ISO country code
+     * @param author      integer. Primary key of the submitter of the referenced information
+     * @param return_tags boolean. If true, the values returned by a query will include applicable tag bitstrings for each returned value (will slow down query considerably, but allows client-side sub-filtering)
+     * @return Hashtable with values set from input for tags
      */
     public Hashtable tagCreator(int source, String language, String country, int author, boolean return_tags) {
         Hashtable retHash = new Hashtable();
@@ -606,10 +613,12 @@ public class RxDrugRef {
     }
 
 
-    /**returns a fuill drug monograph formatted as HTML page, with all headings (= keys returned by get_drug) implemented as anchors.
-     *@param pkeye4 primary key.
-     *@param css CSS style sheet used to format the retunred HTML page. Details not finalized yet.
-     *@return base64 encoded HTML page
+    /**
+     * returns a fuill drug monograph formatted as HTML page, with all headings (= keys returned by get_drug) implemented as anchors.
+     *
+     * @param pkeye4 primary key.
+     * @param css    CSS style sheet used to format the retunred HTML page. Details not finalized yet.
+     * @return base64 encoded HTML page
      */
     @Deprecated
     public Base64 get_drug_html(int pkeye4, Base64 css) { //returns base64
@@ -617,43 +626,45 @@ public class RxDrugRef {
     }
 
 
-    /**returns all available products for a given drug as identified by pkey and constrained by tags
-     *@param pkey primary key of a drug.
-     *@param tags see [tags].
-     *@return list of structs containing the following minimum keys:
-     *           brandname : string
-     *           form : string. (tablets, capsules, ...)
-     *           strength : string. Brief human readable format
-     *           package_size : string. Brief human readable format
-     *           subsidies : string. Brief human readable format
-     *           manufacturer : string. Company name
+    /**
+     * returns all available products for a given drug as identified by pkey and constrained by tags
+     *
+     * @param pkey primary key of a drug.
+     * @param tags see [tags].
+     * @return list of structs containing the following minimum keys:
+     * brandname : string
+     * form : string. (tablets, capsules, ...)
+     * strength : string. Brief human readable format
+     * package_size : string. Brief human readable format
+     * subsidies : string. Brief human readable format
+     * manufacturer : string. Company name
      */
     @Deprecated
     public Vector list_products(int pkey, Hashtable tags) {
         return new Vector();
     }
 
-    /**returns product specific information for a given drug as identified by pkey and constrained by tags, including available package sizes and strengths, manufacturers, prices and available subsidies as well as legal / subsidy access restrictions.
+    /**
+     * returns product specific information for a given drug as identified by pkey and constrained by tags, including available package sizes and strengths, manufacturers, prices and available subsidies as well as legal / subsidy access restrictions.
      *
-     *@param pkey primary key of a specific drug product
-     *@param tags see [tags]
-     *
-     *@return returns the same struct as get_drug(), but with the following additional keys:
-     *           form : integer. Primary key of drug forms tablets, capsules, syrup ...)
-     *           form_str : string. Drug form in clear text
-     *           units: struct. Key (string) is the generic ingredient, value (string) is the SI unit for the strength (mg, ml ...)
-     *           strength : struct. Key (string) is the generic ingredient, value (Real) is the strength in units as stated above
-     *           pkg_units : string
-     *           pkg_size : real
-     *           subsidies : struct. Key is name of subsidy, value is character:
-     *                   y=yes
-     *                   n=no
-     *                   c=conditional
-     *           subsidy_conditions : struct. Key is name of subsidy, value is a string (conditions in human readable text)
-     *           subsidy_gap : struct. Key is name of subsidy, value (Real ) is th amount
-     *           brand_price_premium : struct. Key is applicability (all, pensioners ), value (Real) is the price
-     *           prices : struct. Key is price category (retail, wholesale, subsidized), value (Real) is the price
-     *           currency : string. Currency the stated price / gap / premium is based on
+     * @param pkey primary key of a specific drug product
+     * @param tags see [tags]
+     * @return returns the same struct as get_drug(), but with the following additional keys:
+     * form : integer. Primary key of drug forms tablets, capsules, syrup ...)
+     * form_str : string. Drug form in clear text
+     * units: struct. Key (string) is the generic ingredient, value (string) is the SI unit for the strength (mg, ml ...)
+     * strength : struct. Key (string) is the generic ingredient, value (Real) is the strength in units as stated above
+     * pkg_units : string
+     * pkg_size : real
+     * subsidies : struct. Key is name of subsidy, value is character:
+     * y=yes
+     * n=no
+     * c=conditional
+     * subsidy_conditions : struct. Key is name of subsidy, value is a string (conditions in human readable text)
+     * subsidy_gap : struct. Key is name of subsidy, value (Real ) is th amount
+     * brand_price_premium : struct. Key is applicability (all, pensioners ), value (Real) is the price
+     * prices : struct. Key is price category (retail, wholesale, subsidized), value (Real) is the price
+     * currency : string. Currency the stated price / gap / premium is based on
      */
     @Deprecated
     public Hashtable get_product(int pkey, Hashtable tags) {
@@ -661,31 +672,35 @@ public class RxDrugRef {
     }
 
 
-    /**returns the Consumer Product Information formatted as HTML, base64 encoded
-     *@param pkey primary key of a drug product.
-     *@param css CSS style sheet used to format the returned HTML page. Details not finalized yet.
-     *@return base64 encoded HTML page
+    /**
+     * returns the Consumer Product Information formatted as HTML, base64 encoded
+     *
+     * @param pkey primary key of a drug product.
+     * @param css  CSS style sheet used to format the returned HTML page. Details not finalized yet.
+     * @return base64 encoded HTML page
      */
     @Deprecated
     public Base64 get_product_CPI(int pkey, Base64 css) {
         return new Base64();
     }
 
-    /**returns an array of structs describing the possible interactions between any two drugs contained in drugs. Information used for interaction checking constrained by tags.
-     *@param drugs array of integers. Primary keys of drugs
-     *@param tags see [tags].
-     *@return array of structs with the following minimum keys:
-     *       affecting_drug : integer. Primary Key
-     *       affected_drug : integer. Primary key.
-     *       effect : string. Single character:
-     *           a = augments
-     *           i = inhibits
-     *           n = no effect
-     *           c = conflicting evidence
-     *       clinical_effect : boolean. If false, the effect has no bearing on clinical situations
-     *       significance : integer. Clinical significance graded 1-3, 1=mild, 2=moderate, 3=severe
-     *       evidence : integer. Level of evidence graded 1-3, 1=poor, 2=fair, 3=good
-     *       reference : integer. Primary key of reference
+    /**
+     * returns an array of structs describing the possible interactions between any two drugs contained in drugs. Information used for interaction checking constrained by tags.
+     *
+     * @param drugs array of integers. Primary keys of drugs
+     * @param tags  see [tags].
+     * @return array of structs with the following minimum keys:
+     * affecting_drug : integer. Primary Key
+     * affected_drug : integer. Primary key.
+     * effect : string. Single character:
+     * a = augments
+     * i = inhibits
+     * n = no effect
+     * c = conflicting evidence
+     * clinical_effect : boolean. If false, the effect has no bearing on clinical situations
+     * significance : integer. Clinical significance graded 1-3, 1=mild, 2=moderate, 3=severe
+     * evidence : integer. Level of evidence graded 1-3, 1=poor, 2=fair, 3=good
+     * reference : integer. Primary key of reference
      */
     @Deprecated
     public Vector list_interactions(Vector drugs, Hashtable tags) {
@@ -693,8 +708,8 @@ public class RxDrugRef {
     }
 
 
-    /**List all conditions and their codes / coding systems known to drugref, constrained by searchexpr as welll as by tags. Searchexpr accepts % as wildcard.
-     *
+    /**
+     * List all conditions and their codes / coding systems known to drugref, constrained by searchexpr as welll as by tags. Searchexpr accepts % as wildcard.
      */
     @Deprecated
     public Vector list_conditions(String searchexpr, Hashtable tags) {
@@ -702,7 +717,7 @@ public class RxDrugRef {
     }
 
     /**
-     *@param indication : integer. Primary key.
+     * @param indication : integer. Primary key.
      */
     @Deprecated
     public Vector list_drugs_for_indication(int indication, Hashtable tags) {
@@ -710,13 +725,15 @@ public class RxDrugRef {
     }
 
 
-    /**List all references this drugref database is based on.
-     *@param tags see [tags].
-     *@return array of structs with following minimum keys:
-     *           name : string. short name of reference source
-     *           full title : string.
-     *           authors : string
-     *           publ_year : string
+    /**
+     * List all references this drugref database is based on.
+     *
+     * @param tags see [tags].
+     * @return array of structs with following minimum keys:
+     * name : string. short name of reference source
+     * full title : string.
+     * authors : string
+     * publ_year : string
      */
     @Deprecated
     public Vector list_references(Hashtable tags) {

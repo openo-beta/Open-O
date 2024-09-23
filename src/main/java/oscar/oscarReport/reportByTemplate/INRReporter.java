@@ -38,12 +38,13 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.ConversionUtils;
 
 /**
- *
  * @author rjonasz
  */
 public class INRReporter implements Reporter {
 
-    /** Creates a new instance of INRReporter */
+    /**
+     * Creates a new instance of INRReporter
+     */
     public INRReporter() {
     }
 

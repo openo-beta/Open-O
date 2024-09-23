@@ -61,8 +61,8 @@ public class IntakeNodeLabel implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native" column="intake_node_label_id"
+     * <p>
+     * generator-class="native" column="intake_node_label_id"
      */
     public Integer getId() {
         return id;
@@ -71,8 +71,7 @@ public class IntakeNodeLabel implements Serializable {
     /**
      * Set the unique identifier of this class
      *
-     * @param id
-     *            the new ID
+     * @param id the new ID
      */
     public void setId(Integer id) {
         this.id = id;
@@ -89,8 +88,7 @@ public class IntakeNodeLabel implements Serializable {
     /**
      * Set the value related to the column: lbl
      *
-     * @param label
-     *            the lbl value
+     * @param label the lbl value
      */
     public void setLabel(String label) {
         this.label = label;

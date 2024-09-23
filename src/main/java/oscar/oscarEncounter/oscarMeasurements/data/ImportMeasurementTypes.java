@@ -40,7 +40,6 @@ import oscar.oscarEncounter.oscarMeasurements.bean.EctValidationsBean;
 import oscar.oscarEncounter.oscarMeasurements.util.EctFindMeasurementTypeUtil;
 
 /**
- *
  * @author jay
  */
 public class ImportMeasurementTypes {

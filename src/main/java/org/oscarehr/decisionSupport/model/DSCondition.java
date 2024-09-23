@@ -40,7 +40,6 @@ import org.oscarehr.decisionSupport.model.conditionValue.DSValue;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author apavel
  */
 public class DSCondition {
@@ -70,6 +69,7 @@ public class DSCondition {
 
     /**
      * Label is used to match the asserted value in the drools engine
+     *
      * @param label the label to set
      */
     public void setLabel(String label) {

@@ -54,7 +54,7 @@ public final class MedicalDataManager2 {
     /**
      * Cache key must be qualified so 2 people don't share a cached item, even if it's the same thing,
      * the request must be made to the server so the access is logged and authentication is checked.
-     *
+     * <p>
      * MAX_CACHE_ITEM_SIZE*items to queue = max memory used for cache, so 10,000 items at 10,240 bytes = 102,400,000 = 102 megs of rams
      */
     private static QueueCache<String, MedicalDataTransfer5> medicalDataCache = new QueueCache<String, MedicalDataTransfer5>(4, MAX_OBJECTS_TO_CACHE, MAX_TIME_TO_CACHE, null);

@@ -64,7 +64,9 @@ public class CDLHandler implements MessageHandler {
     private OBX obxseg = null;
     private ca.uhn.hl7v2.model.v23.group.ORU_R01_PATIENT pat_23;
 
-    /** Creates a new instance of CDLHandler */
+    /**
+     * Creates a new instance of CDLHandler
+     */
     public CDLHandler() {
     }
 
@@ -101,7 +103,7 @@ public class CDLHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information about the Observation Request
+     * Methods to get information about the Observation Request
      */
     public int getOBRCount() {
         return (msg.getRESPONSE().getORDER_OBSERVATIONReps());
@@ -263,7 +265,7 @@ public class CDLHandler implements MessageHandler {
     }
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
     public ArrayList<String> getHeaders() {
         int i;
@@ -297,7 +299,7 @@ public class CDLHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBRCommentCount(int i) {
         /*try {
@@ -318,7 +320,7 @@ public class CDLHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBXCommentCount(int i, int j) {
         int count = 0;
@@ -350,7 +352,7 @@ public class CDLHandler implements MessageHandler {
 
 
     /**
-     *  Methods to get information about the patient
+     * Methods to get information about the patient
      */
     public String getPatientName() {
         return (getFirstName() + " " + getLastName());

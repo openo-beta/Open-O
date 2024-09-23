@@ -49,7 +49,7 @@ public abstract class OscarSuperDao extends JdbcDaoSupport {
      * Returned collection item is an automatically populated Map.
      *
      * @param queryName sql query key
-     * @param params sql query parameters
+     * @param params    sql query parameters
      * @return List of Map objects created for each result set row
      */
     public List<Map<String, Object>> executeSelectQuery(String queryName, Object[] params) {
@@ -61,7 +61,7 @@ public abstract class OscarSuperDao extends JdbcDaoSupport {
      * Returned collection item is a value object populated by a row mapper identified by the same key.
      *
      * @param queryName sql query key
-     * @param params sql query parameters
+     * @param params    sql query parameters
      * @return List of value objects created for each result set row by a row mapper
      */
     @SuppressWarnings("unchecked")

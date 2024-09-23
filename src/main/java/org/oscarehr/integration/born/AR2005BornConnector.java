@@ -31,13 +31,11 @@ import java.io.File;
 /**
  * This class will determine which ONAREnhanced forms need to be sent to
  * BORN, and perform the transaction.
- *
+ * <p>
  * It will also check for any error files, and email any errors
  * to specified administrator
  *
- *
  * @author Marc Dumontier
- *
  */
 public class AR2005BornConnector {
 

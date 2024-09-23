@@ -62,6 +62,7 @@ public class PaginationUtils extends Action {
 
     /**
      * Load pagination request parameter for jQuery datatable plugin
+     *
      * @param request
      * @param query
      */

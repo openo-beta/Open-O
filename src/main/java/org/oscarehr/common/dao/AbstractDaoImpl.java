@@ -189,8 +189,7 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Fetches all instances of the persistent class handled by this DAO.
      *
-     * @return
-     *         Returns all instances available in the backend
+     * @return Returns all instances available in the backend
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -217,10 +216,8 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Removes an entity based on the ID
      *
-     * @param id
-     *           ID of the entity to be removed
-     * @return
-     *         Returns true if entity has been removed and false otherwise
+     * @param id ID of the entity to be removed
+     * @return Returns true if entity has been removed and false otherwise
      */
     @Override
     public boolean remove(Object id) {
@@ -286,10 +283,9 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Gets base JPQL query for the model class.
      *
-     * @return
-     *         Returns the JPQL clause in the form of
-     *         <code>"FROM {@link #getModelClassName()} AS e "</code>.
-     *         <code>e</code> stands for "entity"
+     * @return Returns the JPQL clause in the form of
+     * <code>"FROM {@link #getModelClassName()} AS e "</code>.
+     * <code>e</code> stands for "entity"
      */
     protected String getBaseQuery() {
         return getBaseQueryBuf(null, null).toString();
@@ -303,12 +299,9 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
      * Creates new string builder containing the base query with the specified
      * select and alias strings
      *
-     * @param select
-     *               Select clause to be appended to the query. May be null
-     * @param alias
-     *               Alias to be used for referencing the base entity class
-     * @return
-     *         Returns the string buffer containing the base query
+     * @param select Select clause to be appended to the query. May be null
+     * @param alias  Alias to be used for referencing the base entity class
+     * @return Returns the string buffer containing the base query
      */
     protected StringBuilder getBaseQueryBuf(String select, String alias) {
         StringBuilder buf = new StringBuilder();
@@ -334,29 +327,25 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
 
     /**
      * Creates a query with the specified entity alias and where clause
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * For example, invoking
      *
      * <pre>
      * 		createQuery("select entity.id" "entity", "entity.propertyName like :propertyValue");
      * </pre>
-     *
+     * <p>
      * would create query:
      *
      * <pre>
      * 		SELECT entity.id FROM ModelClass AS entity WHERE entity.propertyName like :propertyValue
      * </pre>
      *
-     * @param select
-     *                    Select clause to be included in the query
-     * @param alias
-     *                    Alias to be included in the query
-     * @param whereClause
-     *                    Where clause to be included in the query
-     * @return
-     *         Returns the query
+     * @param select      Select clause to be included in the query
+     * @param alias       Alias to be included in the query
+     * @param whereClause Where clause to be included in the query
+     * @return Returns the query
      */
     protected Query createQuery(String select, String alias, String whereClause) {
         StringBuilder buf = createQueryString(select, alias, whereClause);
@@ -366,15 +355,10 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Creates query string for the specified alias and where clause
      *
-     * @param select
-     *                    Select clause
-     * @param alias
-     *                    Alias to be included in the query
-     * @param whereClause
-     *                    Where clause to be included in the query
-     * @return
-     *         Returns the query string
-     *
+     * @param select      Select clause
+     * @param alias       Alias to be included in the query
+     * @param whereClause Where clause to be included in the query
+     * @return Returns the query string
      * @see #createQuery(String, String)
      */
     protected StringBuilder createQueryString(String select, String alias, String whereClause) {
@@ -393,8 +377,7 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Gets name of the model class.
      *
-     * @return
-     *         Returns the class name without package prefix
+     * @return Returns the class name without package prefix
      */
     protected String getModelClassName() {
         return getModelClass().getSimpleName();
@@ -408,10 +391,8 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
      * Saves or updates the entity based on depending if it's persistent, as
      * determined by {@link AbstractModel#isPersistent()}
      *
-     * @param entity
-     *               Entity to be saved or updated
-     * @return
-     *         Returns the entity
+     * @param entity Entity to be saved or updated
+     * @return Returns the entity
      */
     @Override
     public T saveEntity(T entity) {
@@ -426,10 +407,8 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Runs native SQL query.
      *
-     * @param sql
-     *            SQL query to run.
-     * @return
-     *         Returns list containing query results.
+     * @param sql SQL query to run.
+     * @return Returns list containing query results.
      */
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -442,9 +421,7 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Gets parameter appender with default base query set
      *
-     * @return
-     *         Returns new appender
-     *
+     * @return Returns new appender
      * @see #getBaseQuery()
      */
     protected ParamAppender getAppender() {
@@ -454,11 +431,8 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
     /**
      * Gets parameter appender with default base query set
      *
-     * @param alias
-     *              Alias to be used in the query
-     * @return
-     *         Returns new appender
-     *
+     * @param alias Alias to be used in the query
+     * @return Returns new appender
      * @see #getBaseQuery(String)
      */
     protected ParamAppender getAppender(String alias) {

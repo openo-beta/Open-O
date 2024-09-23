@@ -59,8 +59,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -94,8 +92,6 @@ public class MedicalConditionList {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     *
-     *
      */
     public List<String> getMedicalCondition() {
         if (medicalCondition == null) {
@@ -107,10 +103,8 @@ public class MedicalConditionList {
     /**
      * Gets the value of the autismDetail property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAutismDetail() {
         return autismDetail;
@@ -119,10 +113,8 @@ public class MedicalConditionList {
     /**
      * Sets the value of the autismDetail property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAutismDetail(String value) {
         this.autismDetail = value;
@@ -131,10 +123,8 @@ public class MedicalConditionList {
     /**
      * Gets the value of the otherDetail property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOtherDetail() {
         return otherDetail;
@@ -143,10 +133,8 @@ public class MedicalConditionList {
     /**
      * Sets the value of the otherDetail property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOtherDetail(String value) {
         this.otherDetail = value;

@@ -28,12 +28,10 @@ import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
 
 /**
- * Common interface to abstract a scheduleable and executible unit of work that can be run in OSCARs 
+ * Common interface to abstract a scheduleable and executible unit of work that can be run in OSCARs
  * job management system.
  *
- *
  * @author Marc Dumontier
- *
  */
 public interface OscarRunnable extends Runnable {
 

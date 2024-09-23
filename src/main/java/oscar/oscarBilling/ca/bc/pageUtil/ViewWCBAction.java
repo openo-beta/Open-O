@@ -49,7 +49,6 @@ import oscar.oscarBilling.ca.bc.data.BillingmasterDAO;
 import oscar.util.SqlUtils;
 
 /**
- *
  * <p>Title:ViewWCBAction </p>
  *
  * <p>Description: Coordinates data retrieval and configuration parameters for rendering either</p>

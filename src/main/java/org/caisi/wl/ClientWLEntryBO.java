@@ -51,8 +51,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "clientWLEntryBO", propOrder = {"attempts", "lastContact",
@@ -68,7 +66,6 @@ public class ClientWLEntryBO {
 
     /**
      * Gets the value of the attempts property.
-     *
      */
     public int getAttempts() {
         return attempts;
@@ -76,7 +73,6 @@ public class ClientWLEntryBO {
 
     /**
      * Sets the value of the attempts property.
-     *
      */
     public void setAttempts(int value) {
         this.attempts = value;
@@ -86,7 +82,6 @@ public class ClientWLEntryBO {
      * Gets the value of the lastContact property.
      *
      * @return possible object is {@link XMLGregorianCalendar }
-     *
      */
     public XMLGregorianCalendar getLastContact() {
         return lastContact;
@@ -95,9 +90,7 @@ public class ClientWLEntryBO {
     /**
      * Sets the value of the lastContact property.
      *
-     * @param value
-     *            allowed object is {@link XMLGregorianCalendar }
-     *
+     * @param value allowed object is {@link XMLGregorianCalendar }
      */
     public void setLastContact(XMLGregorianCalendar value) {
         this.lastContact = value;
@@ -107,7 +100,6 @@ public class ClientWLEntryBO {
      * Gets the value of the status property.
      *
      * @return possible object is {@link String }
-     *
      */
     public String getStatus() {
         return status;
@@ -116,9 +108,7 @@ public class ClientWLEntryBO {
     /**
      * Sets the value of the status property.
      *
-     * @param value
-     *            allowed object is {@link String }
-     *
+     * @param value allowed object is {@link String }
      */
     public void setStatus(String value) {
         this.status = value;
@@ -128,7 +118,6 @@ public class ClientWLEntryBO {
      * Gets the value of the vacancyDisplay property.
      *
      * @return possible object is {@link VacancyDisplayBO }
-     *
      */
     public VacancyDisplayBO getVacancyDisplay() {
         return vacancyDisplay;
@@ -137,9 +126,7 @@ public class ClientWLEntryBO {
     /**
      * Sets the value of the vacancyDisplay property.
      *
-     * @param value
-     *            allowed object is {@link VacancyDisplayBO }
-     *
+     * @param value allowed object is {@link VacancyDisplayBO }
      */
     public void setVacancyDisplay(VacancyDisplayBO value) {
         this.vacancyDisplay = value;
@@ -147,7 +134,6 @@ public class ClientWLEntryBO {
 
     /**
      * Gets the value of the vacancyID property.
-     *
      */
     public int getVacancyID() {
         return vacancyID;
@@ -155,7 +141,6 @@ public class ClientWLEntryBO {
 
     /**
      * Sets the value of the vacancyID property.
-     *
      */
     public void setVacancyID(int value) {
         this.vacancyID = value;

@@ -50,7 +50,6 @@ import oscar.oscarBilling.ca.bc.data.BillRecipient;
 import oscar.oscarBilling.ca.bc.data.BillingNote;
 
 /**
- *
  * @author root
  */
 public final class BillingUpdateBillingAction
@@ -89,7 +88,9 @@ public final class BillingUpdateBillingAction
         return mapping.findForward("success");
     }
 
-    /** Creates a new instance of BillingUpdateBillingAction */
+    /**
+     * Creates a new instance of BillingUpdateBillingAction
+     */
     public BillingUpdateBillingAction() {
     }
 

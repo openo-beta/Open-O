@@ -58,10 +58,9 @@ public interface AppointmentManager {
     /**
      * Returns appointment for display.
      *
-     * @param appointment                appointment data
+     * @param appointment  appointment data
      * @param loggedInInfo
      * @return appointment data
-     *
      */
     public void addAppointment(LoggedInInfo loggedInInfo, Appointment appointment);
 

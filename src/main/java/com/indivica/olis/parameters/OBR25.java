@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Test Request Status
- * @author jen
  *
+ * @author jen
  */
 public class OBR25 implements Parameter {
 

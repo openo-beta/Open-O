@@ -29,7 +29,6 @@ package org.oscarehr.oscarRx.erx.model;
 /**
  * Represents a format number used by the External Prescriber web services to indicate which
  * format to output the FormattedPrescriptionToString field.
- *
  */
 public enum PrescriptionFormat {
     /**
@@ -45,12 +44,10 @@ public enum PrescriptionFormat {
      * Convert a string (passed in a response) to it's corresponding
      * prescriptionFormat.
      *
-     * @param toParse
-     *            The string to convert.
+     * @param toParse The string to convert.
      * @return The prescriptionFormat corresponding to the given string.
-     * @throws IllegalArgumentException
-     *             Throws an IllegalArgumentException if the string doesn't
-     *             match a known prescriptionFormat.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the string doesn't
+     *                                  match a known prescriptionFormat.
      */
     public static PrescriptionFormat parseString(String toParse)
             throws IllegalArgumentException {
@@ -82,7 +79,7 @@ public enum PrescriptionFormat {
      * request.
      *
      * @return A string representing this value, suitable for sending in a
-     *         request.
+     * request.
      */
     public String getString() {
         return Integer.toString(this.prescriptionFormat);

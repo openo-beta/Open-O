@@ -79,8 +79,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -115,16 +113,16 @@ public class CDescriptionOfSideEffectsCheckAllThatApply {
     protected List<Object> content;
 
     /**
-     * Gets the rest of the content model. 
+     * Gets the rest of the content model.
      *
      * <p>
-     * You are getting this "catch-all" property because of the following reason: 
-     * The field name "COther" is used by two different parts of a schema. See: 
+     * You are getting this "catch-all" property because of the following reason:
+     * The field name "COther" is used by two different parts of a schema. See:
      * line 934 of file:/C:/%5Bjava%5D/jaxb-ri-20090206/bin/staff.xsd
      * line 933 of file:/C:/%5Bjava%5D/jaxb-ri-20090206/bin/staff.xsd
      * <p>
-     * To get rid of this property, apply a property customization to one 
-     * of both of the following declarations to change their names: 
+     * To get rid of this property, apply a property customization to one
+     * of both of the following declarations to change their names:
      * Gets the value of the content property.
      *
      * <p>
@@ -163,8 +161,6 @@ public class CDescriptionOfSideEffectsCheckAllThatApply {
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     *
-     *
      */
     public List<Object> getContent() {
         if (content == null) {

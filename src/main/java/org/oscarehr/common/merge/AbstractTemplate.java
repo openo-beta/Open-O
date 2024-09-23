@@ -30,18 +30,16 @@ import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.util.SpringUtils;
 
 /**
- * Base template class encapsulating common functionality used by extending template components.  
+ * Base template class encapsulating common functionality used by extending template components.
  */
 public abstract class AbstractTemplate {
 
     /**
      * Loads all merged ids for the specified demographic number
      *
-     * @param demographic_no
-     * 		Demographic number to fetch the merged ids for.
-     * @return
-     *        Returns the list of demographic IDs of the records merged to the
-     * 		master record (specified by demographic_no parameter).
+     * @param demographic_no Demographic number to fetch the merged ids for.
+     * @return Returns the list of demographic IDs of the records merged to the
+     * master record (specified by demographic_no parameter).
      */
     protected List<Integer> getMergedIds(Integer demographic_no) {
         DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);

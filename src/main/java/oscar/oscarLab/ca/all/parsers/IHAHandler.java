@@ -363,7 +363,7 @@ public class IHAHandler implements MessageHandler {
     }*/
 
     /**
-     *  Methods to get information about the Observation Request
+     * Methods to get information about the Observation Request
      */
     @Override
     public int getOBRCount() {
@@ -1060,7 +1060,7 @@ public class IHAHandler implements MessageHandler {
 
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
     @Override
     public ArrayList<String> getHeaders() {

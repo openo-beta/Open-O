@@ -68,11 +68,15 @@ public class VacancyTemplate extends AbstractModel<Integer> implements java.io.S
         this.id = id;
     }
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public VacancyTemplate() {
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public VacancyTemplate(Integer wlProgramId, String name, Boolean active) {
         this.wlProgramId = wlProgramId;
         this.name = name;

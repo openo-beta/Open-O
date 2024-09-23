@@ -60,14 +60,15 @@ import oscar.oscarEncounter.oscarMeasurements.data.LoincMapEntry;
 import oscar.oscarEncounter.oscarMeasurements.data.MeasurementMapConfig;
 
 /**
- *
  * @author apavel
  */
 public class PHRMeasurement extends PHRDocument {
     static final String CODING_SERVICE_LOCATION = "oscar_internal_hardcoded";
     static final String CODING_SERVICE_NAME = "oscar_internal";
 
-    /** Creates a new instance of PHRMessage */
+    /**
+     * Creates a new instance of PHRMessage
+     */
     public PHRMeasurement() {
         //super();
     }

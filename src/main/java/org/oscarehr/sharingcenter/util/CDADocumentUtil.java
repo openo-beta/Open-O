@@ -27,6 +27,11 @@
  * @author Paul Brown
  * @author Jacqueline Figueroa
  * @author Nityan Khanna
+ * <p>
+ * This class is for the purpose of creating PhrExtract Documents in Oscar.
+ * @author Paul Brown
+ * @author Jacqueline Figueroa
+ * @author Nityan Khanna
  */
 /**
  * This class is for the purpose of creating PhrExtract Documents in Oscar.

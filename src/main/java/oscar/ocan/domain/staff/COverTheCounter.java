@@ -55,8 +55,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -74,10 +72,8 @@ public class COverTheCounter {
     /**
      * Gets the value of the cPast6Months property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCPast6Months() {
         return cPast6Months;
@@ -86,10 +82,8 @@ public class COverTheCounter {
     /**
      * Sets the value of the cPast6Months property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCPast6Months(String value) {
         this.cPast6Months = value;
@@ -98,10 +92,8 @@ public class COverTheCounter {
     /**
      * Gets the value of the cEver property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCEver() {
         return cEver;
@@ -110,10 +102,8 @@ public class COverTheCounter {
     /**
      * Sets the value of the cEver property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCEver(String value) {
         this.cEver = value;

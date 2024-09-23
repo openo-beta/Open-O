@@ -33,7 +33,6 @@ import org.oscarehr.sharingcenter.model.PatientDocument;
 import org.oscarehr.sharingcenter.actions.DocumentPermissionStatus;
 
 /**
- *
  * @author tylerg
  */
 public class DocumentConsentWrapper {

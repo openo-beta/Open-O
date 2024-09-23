@@ -59,10 +59,8 @@ import java.util.regex.Pattern;
 /**
  * Will provide access to demographic data, as well as closely related data such as
  * extensions (DemographicExt), merge data, archive data, etc.
- *
+ * <p>
  * Future Use: Add privacy, security, and consent profiles
- *
- *
  */
 
 public interface DemographicManager {

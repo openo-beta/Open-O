@@ -45,8 +45,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "listVacanciesForWaitListProgram", propOrder = {"arg0"})
@@ -58,7 +56,6 @@ public class ListVacanciesForWaitListProgram {
      * Gets the value of the arg0 property.
      *
      * @return possible object is {@link ProgramQuery }
-     *
      */
     public ProgramQuery getArg0() {
         return arg0;
@@ -67,9 +64,7 @@ public class ListVacanciesForWaitListProgram {
     /**
      * Sets the value of the arg0 property.
      *
-     * @param value
-     *            allowed object is {@link ProgramQuery }
-     *
+     * @param value allowed object is {@link ProgramQuery }
      */
     public void setArg0(ProgramQuery value) {
         this.arg0 = value;

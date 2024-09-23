@@ -224,17 +224,12 @@ public class EctDisplayAction extends Action {
     /**
      * Must be implemented by subclasses to populate DAO object
      *
-     * @param bean
-     * 		Current session information
-     * @param request
-     * 		Current request
-     * @param Dao
-     * 		View DAO responsible for rendering encounter
-     * @param messages
-     * 		i18n message bundle
-     * @return
-     *        Returns true if the content was loaded successfully and false otherwise. Please note that returning false will case
-     * 	an error message rendered for this action.
+     * @param bean     Current session information
+     * @param request  Current request
+     * @param Dao      View DAO responsible for rendering encounter
+     * @param messages i18n message bundle
+     * @return Returns true if the content was loaded successfully and false otherwise. Please note that returning false will case
+     * an error message rendered for this action.
      */
     public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
         return true;
@@ -243,8 +238,7 @@ public class EctDisplayAction extends Action {
     /**
      * Must be implemented by subclasses to retrieve module name
      *
-     * @return
-     *        Returns name of the module corresponding to the mapping in the {@link #Actions}
+     * @return Returns name of the module corresponding to the mapping in the {@link #Actions}
      */
     public String getCmd() {
         return "";
@@ -254,10 +248,8 @@ public class EctDisplayAction extends Action {
      * Creates a new display item with the specified title and
      * a link that cannot be clicked at.
      *
-     * @param title
-     * 		Title to be displayed for the item
-     * @return
-     *        Returns the new item.
+     * @param title Title to be displayed for the item
+     * @return Returns the new item.
      */
     protected NavBarDisplayDAO.Item newItem(String title) {
         return newItem(title, null);
@@ -267,12 +259,9 @@ public class EctDisplayAction extends Action {
      * Creates a new display item with the specified title and color and
      * a link that cannot be clicked at.
      *
-     * @param title
-     * 		Title to be displayed for the item
-     * @param color
-     * 		Color of the link to be displayed in the item (e.g. "red", or "green")
-     * @return
-     *        Returns the new item.
+     * @param title Title to be displayed for the item
+     * @param color Color of the link to be displayed in the item (e.g. "red", or "green")
+     * @return Returns the new item.
      */
     protected NavBarDisplayDAO.Item newItem(String title, String color) {
         return newItem(title, "return false;", color);
@@ -282,14 +271,10 @@ public class EctDisplayAction extends Action {
      * Creates a new display item with the specified title and color and
      * link.
      *
-     * @param title
-     * 		Title to be displayed for the item
-     * @param color
-     * 		Color of the link to be displayed in the item (e.g. "red", or "green")
-     * @param link
-     * 		Targer URL to be opened with link is clicked
-     * @return
-     *        Returns the new item.
+     * @param title Title to be displayed for the item
+     * @param color Color of the link to be displayed in the item (e.g. "red", or "green")
+     * @param link  Targer URL to be opened with link is clicked
+     * @return Returns the new item.
      */
     protected NavBarDisplayDAO.Item newItem(String title, String url, String color) {
         NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
@@ -314,8 +299,7 @@ public class EctDisplayAction extends Action {
      * screen widget (i.e. return true in {@link #getInfo(EctSessionBean, javax.servlet.http.HttpServletRequest, NavBarDisplayDAO, org.apache.struts.util.MessageResources)}
      * and must not modify the nav bar dao).
      *
-     * @return
-     *        Returns true of the actions is enabled and false otherwise.
+     * @return Returns true of the actions is enabled and false otherwise.
      */
     public boolean isEnabled() {
         return enabled;
@@ -326,8 +310,7 @@ public class EctDisplayAction extends Action {
      * screen widget (i.e. return true in {@link #getInfo(EctSessionBean, javax.servlet.http.HttpServletRequest, NavBarDisplayDAO, org.apache.struts.util.MessageResources)}
      * and must not modify the nav bar dao).
      *
-     * @param enabled
-     * 		Boolean flag that indicates if the actions is enabled.
+     * @param enabled Boolean flag that indicates if the actions is enabled.
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;

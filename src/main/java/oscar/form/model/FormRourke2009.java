@@ -42,7 +42,6 @@ import java.sql.Timestamp;
 import org.oscarehr.common.model.AbstractModel;
 
 /**
- *
  * @author rjonasz
  */
 @Entity

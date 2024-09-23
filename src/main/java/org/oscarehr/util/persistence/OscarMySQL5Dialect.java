@@ -31,8 +31,7 @@ import org.hibernate.dialect.MySQL5Dialect;
 import org.hibernate.type.StandardBasicTypes;
 
 /**
- * Customized dialect that adds a mapping for {@link Types#LONGVARBINARY} in order to prevent {@link org.hibernate.MappingException}. 
- *
+ * Customized dialect that adds a mapping for {@link Types#LONGVARBINARY} in order to prevent {@link org.hibernate.MappingException}.
  */
 public class OscarMySQL5Dialect extends MySQL5Dialect {
 

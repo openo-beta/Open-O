@@ -107,9 +107,9 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     }
 
     /**
-     * @deprecated ordering should be done after in java not on the db when all
-     *             items are returns, use the findByDemographicId() instead.
      * @param archived can be null for both archived and non archived entries
+     * @deprecated ordering should be done after in java not on the db when all
+     * items are returns, use the findByDemographicId() instead.
      */
     @Override
     public List<Drug> findByDemographicIdOrderByDate(Integer demographicId, Boolean archived) {
@@ -133,7 +133,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     /**
      * deprecated ordering should be done after in java not on the db when all items
      * are returns, use the findByDemographicId() instead.
-     *
+     * <p>
      * undeprecated Sorting on multiple fields in the java adds complexity unless
      * special tools are used for sorting
      */
@@ -372,11 +372,9 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     /**
      * Finds all drugs and prescriptions for the specified demographic number
      *
-     * @param demographicNo
-     *                      Demographic number to search entities for
-     * @return
-     *         Returns the list of arrays, where first element is of type Drug and
-     *         the second is of type Prescription
+     * @param demographicNo Demographic number to search entities for
+     * @return Returns the list of arrays, where first element is of type Drug and
+     * the second is of type Prescription
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -390,11 +388,9 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     /**
      * Finds all drugs and prescriptions for the specified id
      *
-     * @param scriptNumber
-     *                     Script number of a prescription to be found
-     * @return
-     *         Returns the list of arrays, where first element is of type Drug and
-     *         the second is of type Prescription.
+     * @param scriptNumber Script number of a prescription to be found
+     * @return Returns the list of arrays, where first element is of type Drug and
+     * the second is of type Prescription.
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -470,12 +466,9 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
      * Selects special and special_instruction fields from drugs table ordered by
      * grugid.
      *
-     * @param parameter
-     *                  Name of the column to be queried
-     * @param value
-     *                  Value of the column to be queried
-     * @return
-     *         Returns the drugs found
+     * @param parameter Name of the column to be queried
+     * @param value     Value of the column to be queried
+     * @return Returns the drugs found
      */
     @NativeSql("drugs")
     @SuppressWarnings("unchecked")
@@ -503,14 +496,10 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     /**
      * Finds drug by the specified brand name, demographic id and provider number.
      *
-     * @param brandName
-     *                      Brand name to look for
-     * @param demographicNo
-     *                      Demographic ID to look for
-     * @param providerNo
-     *                      Provider number to look for
-     * @return
-     *         Returns the drug or null if it's not found.
+     * @param brandName     Brand name to look for
+     * @param demographicNo Demographic ID to look for
+     * @param providerNo    Provider number to look for
+     * @return Returns the drug or null if it's not found.
      */
     @Override
     public Drug findByBrandNameDemographicAndProvider(String brandName, int demographicNo, String providerNo) {
@@ -529,14 +518,10 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
      * Finds drug by the specified custom drug name, demographic id and provider
      * number.
      *
-     * @param customName
-     *                      Custom drug name to look for
-     * @param demographicNo
-     *                      Demographic ID to look for
-     * @param providerNo
-     *                      Provider number to look for
-     * @return
-     *         Returns the drug or null if it's not found.
+     * @param customName    Custom drug name to look for
+     * @param demographicNo Demographic ID to look for
+     * @param providerNo    Provider number to look for
+     * @return Returns the drug or null if it's not found.
      */
     @Override
     public Drug findByCustomNameDemographicIdAndProviderNo(String customName, int demographicNo, String providerNo) {

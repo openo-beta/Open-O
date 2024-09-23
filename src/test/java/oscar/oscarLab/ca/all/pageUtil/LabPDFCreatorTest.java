@@ -56,16 +56,14 @@ import oscar.oscarLab.ca.all.parsers.MessageHandler;
 import oscar.oscarLab.ca.all.parsers.PATHL7Handler;
 
 /**
- *
  * This unit test is used for verifying the PDF output of various lab systems
- *
+ * <p>
  * To set up:
- *
+ * <p>
  * 1.) uncomment the @Test annotations
  * 2.) set the outputFilePath attribute to a output directory and file name of your choice.
  * 3.) run unit test.
  * 4.) uncomment the Test annotations before making a commit.
- *
  */
 public class LabPDFCreatorTest {
 

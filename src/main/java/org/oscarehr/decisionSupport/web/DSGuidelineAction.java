@@ -52,7 +52,6 @@ import org.oscarehr.util.LoggedInInfo;
 import oscar.oscarDemographic.data.DemographicData;
 
 /**
- *
  * @author apavel
  */
 public class DSGuidelineAction extends DispatchAction {

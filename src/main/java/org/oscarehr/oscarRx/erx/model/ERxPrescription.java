@@ -36,32 +36,32 @@ import org.w3c.dom.NodeList;
 
 
 /**
- * A value type that stores the prescription data sent by the External Prescriber. 
+ * A value type that stores the prescription data sent by the External Prescriber.
  */
 public class ERxPrescription {
     /**
      * Physician's license number issued by a regulatory body.
-     *
+     * <p>
      * Alphanumeric characters only.
      */
     private String doctorLicenseNo;
     /**
      * A unique identifier for the patient, as set by the External Prescription software
-     *
+     * <p>
      * This field will match the WSPatientX.PatientId value (set when a patient
      * is entered).
      */
     private String patientId;
     /**
      * A unique identifier for the prescription.
-     *
+     * <p>
      * It is a string representation of a GUID.
      */
     private String prescriptionId;
     /**
      * TRUE if this prescription is of type Discontinuation/Ceasing; FALSE
      * otherwise.
-     *
+     * <p>
      * See also {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.statusID} =
      * 3, 4.
      *
@@ -73,7 +73,7 @@ public class ERxPrescription {
      * References the original
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.prescriptionId} that
      * is being discontinued/ceased.
-     *
+     * <p>
      * Is only set if
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.isDCPrescription} is
      * set to TRUE.
@@ -82,10 +82,10 @@ public class ERxPrescription {
     /**
      * Specifies the date that the prescription will be re-activated on. If
      * given, will be in the format "YYYY-MM-DD".
-     *
+     * <p>
      * Is only set if the physician is temporarily stopping the given medication
      * for a time. The medication should re-activate on the date given here.
-     *
+     * <p>
      * Is set only if
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.isDCPrescription} is
      * set to TRUE.
@@ -93,7 +93,7 @@ public class ERxPrescription {
     private String discontinuedUntil;
     /**
      * TRUE if the prescription is of type Renewal; FALSE otherwise.
-     *
+     * <p>
      * See also {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.statusID} =
      * 2.
      *
@@ -104,7 +104,7 @@ public class ERxPrescription {
      * References the original
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.prescriptionId} that
      * is being renewed.
-     *
+     * <p>
      * Is only set if
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.isRenewal} is set to
      * TRUE.
@@ -121,39 +121,39 @@ public class ERxPrescription {
     private String productName;
     /**
      * The (localized) form in which the prescribed drug will be served.
-     *
+     * <p>
      * Examples: tablet, ointment, spray, etc.
      */
     private String productForm;
     /**
      * The quantity of drug in its form.
-     *
+     * <p>
      * Example: 100mg
      */
     private String productStrength;
     /**
      * A identification code for the drug.
-     *
+     * <p>
      * In Canada, this value will be a DIN (Drug Identification Number), as
      * defined by Health Canada.
-     *
+     * <p>
      * In the United States, this value will be an NDC (National Drug Code), as
      * defined by the Food and Drug Administration.
      *
      * @see <a
-     *      href="http://www.hc-sc.gc.ca/dhp-mps/prodpharma/activit/fs-fi/dinfs_fd-eng.php">the
-     *      Health Canada website</a>
+     * href="http://www.hc-sc.gc.ca/dhp-mps/prodpharma/activit/fs-fi/dinfs_fd-eng.php">the
+     * Health Canada website</a>
      * @see <a
-     *      href="http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm">The
-     *      Food and Drug Administration (USA)'s website</a>
+     * href="http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm">The
+     * Food and Drug Administration (USA)'s website</a>
      */
     private long drugCode;
     /**
      * The quantity to dispense.
-     *
+     * <p>
      * The field {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.qtyUnitId}
      * refers to this field.
-     *
+     * <p>
      * In some prescriptions, the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.quantity} and
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.treatmentDuration}
@@ -167,12 +167,12 @@ public class ERxPrescription {
     private float quantity;
     /**
      * The dispense quantity qualifier.
-     *
+     * <p>
      * This field refers to both
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.quantity} and
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.narcoticTotalQuantity}
      * fields.
-     *
+     * <p>
      * A table of the possible values for this field and their corresponding
      * interpretations are as follows:
      * <table>
@@ -926,12 +926,12 @@ public class ERxPrescription {
      * A (localized) string representing the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.qtyUnitId}
      * interpretation.
-     *
+     * <p>
      * This field refers to both
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.quantity} and
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.narcoticTotalQuantity}
      * fields.
-     *
+     * <p>
      * This field is a fallback in case the intepreting software is missing the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.qtyUnitId}.
      */
@@ -943,7 +943,7 @@ public class ERxPrescription {
     /**
      * Refills can be specified as a duration, which defines how long the refill
      * is expected to last.
-     *
+     * <p>
      * This field combines with
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.refillsDurationTimeUnit}
      * .
@@ -957,21 +957,21 @@ public class ERxPrescription {
     /**
      * Contains the prescription's sig (i.e.: instructions on how to take the
      * drug) if manually entered by the physician.
-     *
+     * <p>
      * Example: "1 cap. daily PRN HS" means:
-     *
+     * <p>
      * - 1 = sig dosage (i.e.:
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigDosage})
-     *
+     * <p>
      * - cap. = sig unit (i.e.:
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigUnitId} and
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigUnitToString})
-     *
+     * <p>
      * - daily = sig frequency (i.e.:
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigFrequencyId} and
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigFrequencyToString}
      * )
-     *
+     * <p>
      * - HS = sig specifier (i.e.:
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigSpecifierId} and
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigSpecifierToString}
@@ -987,10 +987,10 @@ public class ERxPrescription {
     /**
      * Represents the unit of measure of
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigDosage}.
-     *
+     * <p>
      * This field appears to refer to
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigDosage}.
-     *
+     * <p>
      * A table of the possible values for this field and their corresponding
      * interpretations are as follows:
      * <table>
@@ -1744,14 +1744,14 @@ public class ERxPrescription {
      * A (localized) string representing the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigUnitId}
      * interpretation.
-     *
+     * <p>
      * This field appears to refer to
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigDosage}.
      */
     private String sigUnitToString;
     /**
      * The frequency at which the drug must be administered.
-     *
+     * <p>
      * A table of the possible values for this field and their corresponding
      * interpretations are as follows:
      * <table>
@@ -1858,17 +1858,17 @@ public class ERxPrescription {
      * A (localized) string containing the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigFrequencyId}
      * interpretation.
-     *
+     * <p>
      * This field is a fallback in case the intepreting software is missing the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigFrequencyId}.
      */
     private String sigFrequencyToString;
     /**
      * Additionnal SIG information.
-     *
+     * <p>
      * For instance, it could specify at which time of day the drug must be
      * administered or an administration route.
-     *
+     * <p>
      * A table of the possible values for this field and their corresponding
      * interpretations are as follows:
      * <table>
@@ -2028,7 +2028,7 @@ public class ERxPrescription {
     /**
      * A (localized) string representing the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigSpecifierId}.
-     *
+     * <p>
      * This field is a fallback in case the intepreting software is missing the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigSpecifierId}.
      */
@@ -2040,7 +2040,7 @@ public class ERxPrescription {
     private boolean sigPRN;
     /**
      * The duration of one dispense.
-     *
+     * <p>
      * This field combines with
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.treatmentDurationTimeUnit}
      * .
@@ -2049,7 +2049,7 @@ public class ERxPrescription {
     /**
      * This field combines with
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.treatmentDuration}.
-     *
+     * <p>
      * A table of the possible values for this field and their corresponding
      * interpretations are as follows:
      * <table>
@@ -2090,15 +2090,15 @@ public class ERxPrescription {
     /**
      * If the prescription is of type manual, this field contains direct text
      * input from the physician.
-     *
+     * <p>
      * The presence of a value in this field implies that:
-     *
+     * <p>
      * - {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigDosage} = 0
-     *
+     * <p>
      * - {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigFrequencyId} = 0
-     *
+     * <p>
      * - {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigSpecifierId} = 0
-     *
+     * <p>
      * - {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.sigPRN} = FALSE
      *
      * @see <a
@@ -2108,7 +2108,7 @@ public class ERxPrescription {
      * The time interval at which the
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.narcoticTotalQuantity}
      * must be served.
-     *
+     * <p>
      * This field combines with
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.narcoticIntervalTimeUnit}
      * .
@@ -2119,7 +2119,7 @@ public class ERxPrescription {
     /**
      * This field combines with
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.narcoticInterval}.
-     *
+     * <p>
      * A table of the possible values for this field and their corresponding
      * interpretations are as follows:
      * <table>
@@ -2158,9 +2158,9 @@ public class ERxPrescription {
     /**
      * The total quantity to be served at the specified
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.narcoticInterval}.
-     *
+     * <p>
      * Example: "# 5g per 2 days Rep.: NR" means:
-     *
+     * <p>
      * - 5 =
      * {@link org.oscarehr.oscarRx.erx.model.ERxPrescription.narcoticTotalQuantity}
      * - 2 =
@@ -2179,7 +2179,7 @@ public class ERxPrescription {
     private String status;
     /**
      * The current status of this prescription.
-     *
+     * <p>
      * A table of the possible values for this field and their corresponding
      * interpretations are as follows:
      * <table>
@@ -2225,9 +2225,9 @@ public class ERxPrescription {
     private boolean dispenseAsWritten;
     /**
      * 1 means the prescribing physician is specifying an increase in dosage;
-     *
+     * <p>
      * -1 = means the prescribing physician is specifying a decrease in dosage;
-     *
+     * <p>
      * 0 = means the prescribing physician has not specified any variation
      */
     private int dosageVariationIndicator;
@@ -2252,25 +2252,25 @@ public class ERxPrescription {
     private String prescriptionEstimatedEndDate;
     /**
      * Contains a formattted textual version of the prescription.
-     *
+     * <p>
      * IF prescription is a Manual Prescription, this field contains a direct
      * text input from the doctor.
-     *
+     * <p>
      * IF prescription is NOT a Manual Prescription, this field contains a
      * (localized) concatenated textual version of all the prescription fields.
-     *
+     * <p>
      * This field will always be populated.
      */
     private String formattedPrescriptionToString;
     /**
      * Contains an unformatted textual version of the prescription.
-     *
+     * <p>
      * IF prescription is a Manual Prescription, this field contains a direct
      * text input from the doctor.
-     *
+     * <p>
      * IF prescription is NOT a Manual Prescription, this field contains a
      * (localized) concatenated textual version of all the prescription fields.
-     *
+     * <p>
      * This field will always be populated.
      */
     private String prescriptionToString;
@@ -2278,8 +2278,7 @@ public class ERxPrescription {
     /**
      * Generate a Prescription given a SOAP node.
      *
-     * @param toParse
-     *            The SOAP node containing a prescription.
+     * @param toParse The SOAP node containing a prescription.
      */
     public ERxPrescription(Node toParse) throws DOMException {
         super();
@@ -2412,138 +2411,93 @@ public class ERxPrescription {
     /**
      * Construct a ERxPrescription.
      *
-     * @param doctorLicenseNo
-     *            Physician's license number issued by a regulatory body.
-     * @param patientId
-     *            A unique identifier for the patient, as set by the External Prescription software.
-     * @param prescriptionId
-     *            A unique identifier for the prescription.
-     * @param isDCPrescription
-     *            TRUE if this prescription is of type Discontinuation/Ceasing;
-     *            FALSE otherwise.
-     * @param discontinuedPrescriptionId
-     *            References the original
-     *            prescriptionId that is being discontinued/ceased.
-     * @param discontinuedUntil
-     *            Specifies the date that the prescription will be re-activated
-     *            on. If given, will be in the format "YYYY-MM-DD".
-     * @param isRenewal
-     *            TRUE if the prescription is of type Renewal; FALSE otherwise.
-     * @param renewedPrescriptionId
-     *            References the original
-     *            prescriptionId
-     *            that is being renewed.
-     * @param prescriptionDateTime
-     *            Represents the date the prescription was made by the
-     *            physician. If given, will be in the format "YYYY-MM-DD".
-     * @param productName
-     *            The (localized) brand name of the drug that is being
-     *            prescribed.
-     * @param productForm
-     *            The (localized) form in which the prescribed drug will be
-     *            served.
-     * @param productStrength
-     *            The quantity of drug in its form.
-     * @param drugCode
-     *            A identification code for the drug.
-     * @param quantity
-     *            The quantity to dispense.
-     * @param qtyUnitId
-     *            The dispense quantity qualifier.
-     * @param qtyUnitToString
-     *            A (localized) string representing the
-     *            qtyUnitId
-     *            interpretation.
-     * @param refills
-     *            The number of repeats.
-     * @param refillsDuration
-     *            can be specified as a duration, which defines how long the
-     *            refill is expected to last.
-     * @param sigManual
-     *            Contains the prescription's sig (i.e.: instructions on how to
-     *            take the drug) if manually entered by the physician.
-     * @param sigDosage
-     *            Represents the quantity of product in its form.
+     * @param doctorLicenseNo               Physician's license number issued by a regulatory body.
+     * @param patientId                     A unique identifier for the patient, as set by the External Prescription software.
+     * @param prescriptionId                A unique identifier for the prescription.
+     * @param isDCPrescription              TRUE if this prescription is of type Discontinuation/Ceasing;
+     *                                      FALSE otherwise.
+     * @param discontinuedPrescriptionId    References the original
+     *                                      prescriptionId that is being discontinued/ceased.
+     * @param discontinuedUntil             Specifies the date that the prescription will be re-activated
+     *                                      on. If given, will be in the format "YYYY-MM-DD".
+     * @param isRenewal                     TRUE if the prescription is of type Renewal; FALSE otherwise.
+     * @param renewedPrescriptionId         References the original
+     *                                      prescriptionId
+     *                                      that is being renewed.
+     * @param prescriptionDateTime          Represents the date the prescription was made by the
+     *                                      physician. If given, will be in the format "YYYY-MM-DD".
+     * @param productName                   The (localized) brand name of the drug that is being
+     *                                      prescribed.
+     * @param productForm                   The (localized) form in which the prescribed drug will be
+     *                                      served.
+     * @param productStrength               The quantity of drug in its form.
+     * @param drugCode                      A identification code for the drug.
+     * @param quantity                      The quantity to dispense.
+     * @param qtyUnitId                     The dispense quantity qualifier.
+     * @param qtyUnitToString               A (localized) string representing the
+     *                                      qtyUnitId
+     *                                      interpretation.
+     * @param refills                       The number of repeats.
+     * @param refillsDuration               can be specified as a duration, which defines how long the
+     *                                      refill is expected to last.
+     * @param sigManual                     Contains the prescription's sig (i.e.: instructions on how to
+     *                                      take the drug) if manually entered by the physician.
+     * @param sigDosage                     Represents the quantity of product in its form.
      * @param sigUnitId
-     * @param sigUnitToString
-     *            A (localized) string representing the
-     *            sigUnitId
-     *            interpretation.
-     * @param sigFrequencyId
-     *            The frequency at which the drug must be administered.
-     * @param sigFrequencyToString
-     *            A (localized) string containing the
-     *           sigFrequencyId
-     *            interpretation.
-     * @param sigSpecifierId
-     *            Additionnal SIG information.
-     * @param sigSpecifierToString
-     *            A (localized) string representing the
-     *            sigSpecifierId
-     *            .
-     * @param sigPRN
-     *            TRUE if this drug must be administered only if necessary;
-     *            FALSE otherwise.
-     * @param treatmentDuration
-     *            The duration of one dispense.
-     * @param treatmentDurationTimeUnit
-     *            This field combines with
-     *            treatmentDuration
-     *            .
-     * @param instructions
-     *            Manually entered instructions by the physician.
-     * @param manualPrescriptionContent
-     *            If the prescription is of type manual, this field contains
-     *            direct text input from the physician.
-     * @param narcoticInterval
-     *            The time interval at which the
-     *            narcoticTotalQuantity
-     *            must be served.
-     * @param narcoticIntervalTimeUnit
-     *            This field combines with
-     *            narcoticInterval
-     *            .
-     * @param narcoticTotalQuantity
-     *            The total quantity to be served at the specified
-     *            narcoticInterval
-     *            .
-     * @param status
-     *            A (localized) string representing the
-     *            statusID.
-     * @param statusID
-     *            The current status of this prescription.
-     * @param ceasingReason
-     *            A (localized) string stating the reason why the prescription
-     *            was discontinued/ceased.
-     * @param dispenseAsWritten
-     *            TRUE if the prescription must be dispensed as written (i.e.:
-     *            if a generic drug could not substitute the actual prescribed
-     *            drug); FALSE otherwise.
-     * @param dosageVariationIndicator
-     *            1 means the prescribing physician is specifying an increase in
-     *            dosage;
-     *
-     *            -1 = means the prescribing physician is specifying a decrease
-     *            in dosage;
-     *
-     *            0 = means the prescribing physician has not specified any
-     *            variation
-     *
-     * @param endingDate
-     *            An ending date specified by the prescribing physician. Will
-     *            have the form "YYYY-MM-DD".
-     * @param lastModifiedByName
-     *            If a prescription is modified, this field contains the
-     *            physician's full name.
-     * @param lastModifiedDate
-     *            When the prescription is modified, this field contains the
-     *            last modified date. Will have the form YYYY-MM-DD
-     * @param prescriptionEstimatedEndDate
-     *            A calculated, estimated ending date for this prescription.
-     * @param formattedPrescriptionToString
-     *            Contains a formattted textual version of the prescription.
-     * @param prescriptionToString
-     *            Contains an unformatted textual version of the prescription.
+     * @param sigUnitToString               A (localized) string representing the
+     *                                      sigUnitId
+     *                                      interpretation.
+     * @param sigFrequencyId                The frequency at which the drug must be administered.
+     * @param sigFrequencyToString          A (localized) string containing the
+     *                                      sigFrequencyId
+     *                                      interpretation.
+     * @param sigSpecifierId                Additionnal SIG information.
+     * @param sigSpecifierToString          A (localized) string representing the
+     *                                      sigSpecifierId
+     *                                      .
+     * @param sigPRN                        TRUE if this drug must be administered only if necessary;
+     *                                      FALSE otherwise.
+     * @param treatmentDuration             The duration of one dispense.
+     * @param treatmentDurationTimeUnit     This field combines with
+     *                                      treatmentDuration
+     *                                      .
+     * @param instructions                  Manually entered instructions by the physician.
+     * @param manualPrescriptionContent     If the prescription is of type manual, this field contains
+     *                                      direct text input from the physician.
+     * @param narcoticInterval              The time interval at which the
+     *                                      narcoticTotalQuantity
+     *                                      must be served.
+     * @param narcoticIntervalTimeUnit      This field combines with
+     *                                      narcoticInterval
+     *                                      .
+     * @param narcoticTotalQuantity         The total quantity to be served at the specified
+     *                                      narcoticInterval
+     *                                      .
+     * @param status                        A (localized) string representing the
+     *                                      statusID.
+     * @param statusID                      The current status of this prescription.
+     * @param ceasingReason                 A (localized) string stating the reason why the prescription
+     *                                      was discontinued/ceased.
+     * @param dispenseAsWritten             TRUE if the prescription must be dispensed as written (i.e.:
+     *                                      if a generic drug could not substitute the actual prescribed
+     *                                      drug); FALSE otherwise.
+     * @param dosageVariationIndicator      1 means the prescribing physician is specifying an increase in
+     *                                      dosage;
+     *                                      <p>
+     *                                      -1 = means the prescribing physician is specifying a decrease
+     *                                      in dosage;
+     *                                      <p>
+     *                                      0 = means the prescribing physician has not specified any
+     *                                      variation
+     * @param endingDate                    An ending date specified by the prescribing physician. Will
+     *                                      have the form "YYYY-MM-DD".
+     * @param lastModifiedByName            If a prescription is modified, this field contains the
+     *                                      physician's full name.
+     * @param lastModifiedDate              When the prescription is modified, this field contains the
+     *                                      last modified date. Will have the form YYYY-MM-DD
+     * @param prescriptionEstimatedEndDate  A calculated, estimated ending date for this prescription.
+     * @param formattedPrescriptionToString Contains a formattted textual version of the prescription.
+     * @param prescriptionToString          Contains an unformatted textual version of the prescription.
      */
     public ERxPrescription(String doctorLicenseNo, String patientId,
                            String prescriptionId, boolean isDCPrescription,
@@ -3150,8 +3104,7 @@ public class ERxPrescription {
      * Get a SOAP document fragment representing this object.
      *
      * @return A SOAPElement representing this prescription data.
-     * @throws SOAPException
-     *             If an error occurred when trying to construct the element.
+     * @throws SOAPException If an error occurred when trying to construct the element.
      */
     public SOAPElement getSOAPElement() throws SOAPException {
         SOAPElement answer =
@@ -3442,80 +3395,70 @@ public class ERxPrescription {
     }
 
     /**
-     * @param ceasingReason
-     *            the ceasingReason to set
+     * @param ceasingReason the ceasingReason to set
      */
     public void setCeasingReason(String ceasingReason) {
         this.ceasingReason = ceasingReason;
     }
 
     /**
-     * @param isDCPrescription
-     *            the isDCPrescription to set
+     * @param isDCPrescription the isDCPrescription to set
      */
     public void setDCPrescription(boolean isDCPrescription) {
         this.isDCPrescription = isDCPrescription;
     }
 
     /**
-     * @param discontinuedPrescriptionId
-     *            the discontinuedPrescriptionId to set
+     * @param discontinuedPrescriptionId the discontinuedPrescriptionId to set
      */
     public void setDiscontinuedPrescriptionId(String discontinuedPrescriptionId) {
         this.discontinuedPrescriptionId = discontinuedPrescriptionId;
     }
 
     /**
-     * @param discontinuedUntil
-     *            the discontinuedUntil to set
+     * @param discontinuedUntil the discontinuedUntil to set
      */
     public void setDiscontinuedUntil(String discontinuedUntil) {
         this.discontinuedUntil = discontinuedUntil;
     }
 
     /**
-     * @param dispenseAsWritten
-     *            the dispenseAsWritten to set
+     * @param dispenseAsWritten the dispenseAsWritten to set
      */
     public void setDispenseAsWritten(boolean dispenseAsWritten) {
         this.dispenseAsWritten = dispenseAsWritten;
     }
 
     /**
-     * @param doctorLicenseNo
-     *            the doctorLicenseNo to set
+     * @param doctorLicenseNo the doctorLicenseNo to set
      */
     public void setDoctorLicenseNo(String doctorLicenseNo) {
         this.doctorLicenseNo = doctorLicenseNo;
     }
 
     /**
-     * @param dosageVariationIndicator
-     *            the dosageVariationIndicator to set
+     * @param dosageVariationIndicator the dosageVariationIndicator to set
      */
     public void setDosageVariationIndicator(int dosageVariationIndicator) {
         this.dosageVariationIndicator = dosageVariationIndicator;
     }
 
     /**
-     * @param drugCode
-     *            the drugCode to set
+     * @param drugCode the drugCode to set
      */
     public void setDrugCode(long drugCode) {
         this.drugCode = drugCode;
     }
 
     /**
-     * @param endingDate
-     *            the endingDate to set
+     * @param endingDate the endingDate to set
      */
     public void setEndingDate(String endingDate) {
         this.endingDate = endingDate;
     }
 
     /**
-     * @param formattedPrescriptionToString
-     *            the formattedPrescriptionToString to set
+     * @param formattedPrescriptionToString the formattedPrescriptionToString to set
      */
     public void setFormattedPrescriptionToString(
             String formattedPrescriptionToString) {
@@ -3523,48 +3466,42 @@ public class ERxPrescription {
     }
 
     /**
-     * @param instructions
-     *            the instructions to set
+     * @param instructions the instructions to set
      */
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
 
     /**
-     * @param lastModifiedByName
-     *            the lastModifiedByName to set
+     * @param lastModifiedByName the lastModifiedByName to set
      */
     public void setLastModifiedByName(String lastModifiedByName) {
         this.lastModifiedByName = lastModifiedByName;
     }
 
     /**
-     * @param lastModifiedDate
-     *            the lastModifiedDate to set
+     * @param lastModifiedDate the lastModifiedDate to set
      */
     public void setLastModifiedDate(String lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
-     * @param manualPrescriptionContent
-     *            the manualPrescriptionContent to set
+     * @param manualPrescriptionContent the manualPrescriptionContent to set
      */
     public void setManualPrescriptionContent(String manualPrescriptionContent) {
         this.manualPrescriptionContent = manualPrescriptionContent;
     }
 
     /**
-     * @param narcoticInterval
-     *            the narcoticInterval to set
+     * @param narcoticInterval the narcoticInterval to set
      */
     public void setNarcoticInterval(int narcoticInterval) {
         this.narcoticInterval = narcoticInterval;
     }
 
     /**
-     * @param narcoticIntervalTimeUnit
-     *            the narcoticIntervalTimeUnit to set
+     * @param narcoticIntervalTimeUnit the narcoticIntervalTimeUnit to set
      */
     public void setNarcoticIntervalTimeUnit(
             PrescriptionTimeUnit narcoticIntervalTimeUnit) {
@@ -3572,32 +3509,28 @@ public class ERxPrescription {
     }
 
     /**
-     * @param narcoticTotalQuantity
-     *            the narcoticTotalQuantity to set
+     * @param narcoticTotalQuantity the narcoticTotalQuantity to set
      */
     public void setNarcoticTotalQuantity(float narcoticTotalQuantity) {
         this.narcoticTotalQuantity = narcoticTotalQuantity;
     }
 
     /**
-     * @param patientId
-     *            the patientId to set
+     * @param patientId the patientId to set
      */
     public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
     /**
-     * @param prescriptionDateTime
-     *            the prescriptionDateTime to set
+     * @param prescriptionDateTime the prescriptionDateTime to set
      */
     public void setPrescriptionDateTime(String prescriptionDateTime) {
         this.prescriptionDateTime = prescriptionDateTime;
     }
 
     /**
-     * @param prescriptionEstimatedEndDate
-     *            the prescriptionEstimatedEndDate to set
+     * @param prescriptionEstimatedEndDate the prescriptionEstimatedEndDate to set
      */
     public void setPrescriptionEstimatedEndDate(
             String prescriptionEstimatedEndDate) {
@@ -3605,88 +3538,77 @@ public class ERxPrescription {
     }
 
     /**
-     * @param prescriptionId
-     *            the prescriptionId to set
+     * @param prescriptionId the prescriptionId to set
      */
     public void setPrescriptionId(String prescriptionId) {
         this.prescriptionId = prescriptionId;
     }
 
     /**
-     * @param prescriptionToString
-     *            the prescriptionToString to set
+     * @param prescriptionToString the prescriptionToString to set
      */
     public void setPrescriptionToString(String prescriptionToString) {
         this.prescriptionToString = prescriptionToString;
     }
 
     /**
-     * @param productForm
-     *            the productForm to set
+     * @param productForm the productForm to set
      */
     public void setProductForm(String productForm) {
         this.productForm = productForm;
     }
 
     /**
-     * @param productName
-     *            the productName to set
+     * @param productName the productName to set
      */
     public void setProductName(String productName) {
         this.productName = productName;
     }
 
     /**
-     * @param productStrength
-     *            the productStrength to set
+     * @param productStrength the productStrength to set
      */
     public void setProductStrength(String productStrength) {
         this.productStrength = productStrength;
     }
 
     /**
-     * @param qtyUnitId
-     *            the qtyUnitId to set
+     * @param qtyUnitId the qtyUnitId to set
      */
     public void setQtyUnitId(int qtyUnitId) {
         this.qtyUnitId = qtyUnitId;
     }
 
     /**
-     * @param qtyUnitToString
-     *            the qtyUnitToString to set
+     * @param qtyUnitToString the qtyUnitToString to set
      */
     public void setQtyUnitToString(String qtyUnitToString) {
         this.qtyUnitToString = qtyUnitToString;
     }
 
     /**
-     * @param quantity
-     *            the quantity to set
+     * @param quantity the quantity to set
      */
     public void setQuantity(float quantity) {
         this.quantity = quantity;
     }
 
     /**
-     * @param refills
-     *            the refills to set
+     * @param refills the refills to set
      */
     public void setRefills(int refills) {
         this.refills = refills;
     }
 
     /**
-     * @param refillsDuration
-     *            the refillsDuration to set
+     * @param refillsDuration the refillsDuration to set
      */
     public void setRefillsDuration(int refillsDuration) {
         this.refillsDuration = refillsDuration;
     }
 
     /**
-     * @param refillsDurationTimeUnit
-     *            the refillsDurationTimeUnit to set
+     * @param refillsDurationTimeUnit the refillsDurationTimeUnit to set
      */
     public void setRefillsDurationTimeUnit(
             PrescriptionTimeUnit refillsDurationTimeUnit) {
@@ -3694,120 +3616,105 @@ public class ERxPrescription {
     }
 
     /**
-     * @param isRenewal
-     *            the isRenewal to set
+     * @param isRenewal the isRenewal to set
      */
     public void setRenewal(boolean isRenewal) {
         this.isRenewal = isRenewal;
     }
 
     /**
-     * @param renewedPrescriptionId
-     *            the renewedPrescriptionId to set
+     * @param renewedPrescriptionId the renewedPrescriptionId to set
      */
     public void setRenewedPrescriptionId(String renewedPrescriptionId) {
         this.renewedPrescriptionId = renewedPrescriptionId;
     }
 
     /**
-     * @param sigDosage
-     *            the sigDosage to set
+     * @param sigDosage the sigDosage to set
      */
     public void setSigDosage(float sigDosage) {
         this.sigDosage = sigDosage;
     }
 
     /**
-     * @param sigFrequencyId
-     *            the sigFrequencyId to set
+     * @param sigFrequencyId the sigFrequencyId to set
      */
     public void setSigFrequencyId(int sigFrequencyId) {
         this.sigFrequencyId = sigFrequencyId;
     }
 
     /**
-     * @param sigFrequencyToString
-     *            the sigFrequencyToString to set
+     * @param sigFrequencyToString the sigFrequencyToString to set
      */
     public void setSigFrequencyToString(String sigFrequencyToString) {
         this.sigFrequencyToString = sigFrequencyToString;
     }
 
     /**
-     * @param sigManual
-     *            the sigManual to set
+     * @param sigManual the sigManual to set
      */
     public void setSigManual(String sigManual) {
         this.sigManual = sigManual;
     }
 
     /**
-     * @param sigPRN
-     *            the sigPRN to set
+     * @param sigPRN the sigPRN to set
      */
     public void setSigPRN(boolean sigPRN) {
         this.sigPRN = sigPRN;
     }
 
     /**
-     * @param sigSpecifierId
-     *            the sigSpecifierId to set
+     * @param sigSpecifierId the sigSpecifierId to set
      */
     public void setSigSpecifierId(int sigSpecifierId) {
         this.sigSpecifierId = sigSpecifierId;
     }
 
     /**
-     * @param sigSpecifierToString
-     *            the sigSpecifierToString to set
+     * @param sigSpecifierToString the sigSpecifierToString to set
      */
     public void setSigSpecifierToString(String sigSpecifierToString) {
         this.sigSpecifierToString = sigSpecifierToString;
     }
 
     /**
-     * @param sigUnitId
-     *            the sigUnitId to set
+     * @param sigUnitId the sigUnitId to set
      */
     public void setSigUnitId(int sigUnitId) {
         this.sigUnitId = sigUnitId;
     }
 
     /**
-     * @param sigUnitToString
-     *            the sigUnitToString to set
+     * @param sigUnitToString the sigUnitToString to set
      */
     public void setSigUnitToString(String sigUnitToString) {
         this.sigUnitToString = sigUnitToString;
     }
 
     /**
-     * @param status
-     *            the status to set
+     * @param status the status to set
      */
     public void setStatus(String status) {
         this.status = status;
     }
 
     /**
-     * @param statusID
-     *            the statusID to set
+     * @param statusID the statusID to set
      */
     public void setStatusID(PrescriptionStatusId statusID) {
         this.statusID = statusID;
     }
 
     /**
-     * @param treatmentDuration
-     *            the treatmentDuration to set
+     * @param treatmentDuration the treatmentDuration to set
      */
     public void setTreatmentDuration(int treatmentDuration) {
         this.treatmentDuration = treatmentDuration;
     }
 
     /**
-     * @param treatmentDurationTimeUnit
-     *            the treatmentDurationTimeUnit to set
+     * @param treatmentDurationTimeUnit the treatmentDurationTimeUnit to set
      */
     public void setTreatmentDurationTimeUnit(
             PrescriptionTimeUnit treatmentDurationTimeUnit) {

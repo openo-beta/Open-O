@@ -50,16 +50,22 @@ public class LstOrgcd implements java.io.Serializable {
         this.codecsv = codecsv;
     }
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public LstOrgcd() {
     }
 
-    /** minimal constructor */
+    /**
+     * minimal constructor
+     */
     public LstOrgcd(String code) {
         this.code = code;
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public LstOrgcd(String code, String description, Integer activeyn,
                     Integer orderbyindex, String codetree, String fullcode, String codecsv) {
         this.code = code;

@@ -27,7 +27,6 @@ package oscar.entities;
 
 /**
  * Encapsulates data from table hl7_link
- *
  */
 public class Hl7Link {
     private int pidId;
@@ -45,11 +44,11 @@ public class Hl7Link {
     /**
      * Full constructor
      *
-     * @param pidId int
+     * @param pidId         int
      * @param demographicNo int
-     * @param status String
-     * @param providerNo String
-     * @param signedOn String
+     * @param status        String
+     * @param providerNo    String
+     * @param signedOn      String
      */
     public Hl7Link(int pidId, int demographicNo, String status, String providerNo,
                    String signedOn) {
@@ -62,6 +61,7 @@ public class Hl7Link {
 
     /**
      * Gets the pidId
+     *
      * @return int pidId
      */
     public int getPidId() {
@@ -70,6 +70,7 @@ public class Hl7Link {
 
     /**
      * Gets the demographicNo
+     *
      * @return int demographicNo
      */
     public int getDemographicNo() {
@@ -78,6 +79,7 @@ public class Hl7Link {
 
     /**
      * Gets the status
+     *
      * @return String status
      */
     public String getStatus() {
@@ -86,6 +88,7 @@ public class Hl7Link {
 
     /**
      * Gets the providerNo
+     *
      * @return String providerNo
      */
     public String getProviderNo() {
@@ -94,6 +97,7 @@ public class Hl7Link {
 
     /**
      * Gets the signedOn
+     *
      * @return String signedOn
      */
     public String getSignedOn() {
@@ -102,6 +106,7 @@ public class Hl7Link {
 
     /**
      * Sets the pidId
+     *
      * @param pidId int
      */
     public void setPidId(int pidId) {
@@ -110,6 +115,7 @@ public class Hl7Link {
 
     /**
      * Sets the demographicNo
+     *
      * @param demographicNo int
      */
     public void setDemographicNo(int demographicNo) {
@@ -118,6 +124,7 @@ public class Hl7Link {
 
     /**
      * Sets the status
+     *
      * @param status String
      */
     public void setStatus(String status) {
@@ -126,6 +133,7 @@ public class Hl7Link {
 
     /**
      * Sets the providerNo
+     *
      * @param providerNo String
      */
     public void setProviderNo(String providerNo) {
@@ -134,6 +142,7 @@ public class Hl7Link {
 
     /**
      * Sets the signedOn
+     *
      * @param signedOn String
      */
     public void setSignedOn(String signedOn) {

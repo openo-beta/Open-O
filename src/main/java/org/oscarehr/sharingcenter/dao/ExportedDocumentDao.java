@@ -42,8 +42,7 @@ public class ExportedDocumentDao extends AbstractDaoImpl<ExportedDocument> {
     /**
      * Finds all Exported Documents (to XDS) in our Data model
      *
-     * @return
-     * list of all exported documents
+     * @return list of all exported documents
      */
     public List<ExportedDocument> findAll() {
         String sql = "FROM ExportedDocument";

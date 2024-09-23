@@ -924,7 +924,8 @@ public class EForm extends EFormBase {
         }
     }
 
-    /** For overriding or adding Javascript to every eform
+    /**
+     * For overriding or adding Javascript to every eform
      * Add path to Javascript resource in OSCAR source code.
      */
     public void addHeadJavascript(String javascriptPath) {

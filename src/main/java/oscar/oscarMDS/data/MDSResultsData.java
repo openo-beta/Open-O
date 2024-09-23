@@ -78,7 +78,7 @@ public class MDSResultsData {
     public ArrayList<LabResultData> labResults;
 
     /**
-     *Lists CML labs predicated on relationship to patient's consultation
+     * Lists CML labs predicated on relationship to patient's consultation
      */
     //Consult Request list labs
     public ArrayList<LabResultData> populateCMLResultsData(String demographicNo, String consultationId, boolean attached) {
@@ -349,7 +349,7 @@ public class MDSResultsData {
     }
 
     /**
-     *Lists MDS labs predicated on relationship to patient's consultation
+     * Lists MDS labs predicated on relationship to patient's consultation
      */
     //Consult Request list labs
     public ArrayList<LabResultData> populateMDSResultsData(String demographicNo, String consultationId, boolean attached) {

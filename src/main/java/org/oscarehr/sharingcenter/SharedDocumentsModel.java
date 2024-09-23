@@ -34,7 +34,6 @@ import org.oscarehr.sharingcenter.model.CodeMappingDataObject;
 import org.oscarehr.sharingcenter.model.PolicyDefinitionDataObject;
 
 /**
- *
  * @author tylerg
  */
 public class SharedDocumentsModel {

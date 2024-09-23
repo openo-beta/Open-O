@@ -60,7 +60,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.oscarEncounter.oscarMeasurements.util.RuleBaseCreator;
 
 /**
- *
  * @author apavel
  */
 @Entity

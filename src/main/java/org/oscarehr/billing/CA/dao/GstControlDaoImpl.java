@@ -37,7 +37,6 @@ import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author rjonasz
  */
 @Repository

@@ -261,10 +261,8 @@ public class EctDisplayLabAction2 extends EctDisplayAction {
          * Attempts to determine service date for the aggregated
          * lab.
          *
-         * @return
-         *        Returns the service date or null if date can
-         * 		not be determined
-         *
+         * @return Returns the service date or null if date can
+         * not be determined
          */
         public Date determineResultDate(LoggedInInfo loggedInInfo) {
             String serviceDate = getServiceDate(loggedInInfo);

@@ -93,23 +93,23 @@ public class RecordUxService extends AbstractServiceImpl {
     private PreferenceManager preferenceManager;
 
     /**
-     $scope.recordtabs2 = [
-     {id : 0,name : 'Master',url : 'partials/master.html'},
-     {id : 1,name : 'Summary',url : 'partials/summary.html'},
-     {id : 2,name : 'Rx',url : 'partials/rx.jsp'},
-     {id : 3,name : 'Msg',url : 'partials/summary.html'},
-     {id : 4,name : 'Trackers',url : 'partials/tracker.jsp'},
-     {id : 5,name : 'Consults',url : 'partials/summary.html'},
-     {id : 6,name : 'Forms',url : 'partials/formview.html'},
-     {id : 7,name : 'Prevs/Measurements',url : 'partials/summary.html'},
-     {id : 8,name : 'Ticklers',url : 'partials/summary.html'},
-     {id : 9,name : 'MyOscar',url : 'partials/blank.jsp'},
-     {id : 10,name : 'Allergies',url : 'partials/summary.html'},
-     {id : 11,name : 'CPP',url : 'partials/cpp.html'},
-     {id : 12,name : 'Labs/Docs',url : 'partials/labview.html'},
-     {id : 13,name : 'Billing',url : 'partials/billing.jsp'}
-     ];
-     ...
+     * $scope.recordtabs2 = [
+     * {id : 0,name : 'Master',url : 'partials/master.html'},
+     * {id : 1,name : 'Summary',url : 'partials/summary.html'},
+     * {id : 2,name : 'Rx',url : 'partials/rx.jsp'},
+     * {id : 3,name : 'Msg',url : 'partials/summary.html'},
+     * {id : 4,name : 'Trackers',url : 'partials/tracker.jsp'},
+     * {id : 5,name : 'Consults',url : 'partials/summary.html'},
+     * {id : 6,name : 'Forms',url : 'partials/formview.html'},
+     * {id : 7,name : 'Prevs/Measurements',url : 'partials/summary.html'},
+     * {id : 8,name : 'Ticklers',url : 'partials/summary.html'},
+     * {id : 9,name : 'MyOscar',url : 'partials/blank.jsp'},
+     * {id : 10,name : 'Allergies',url : 'partials/summary.html'},
+     * {id : 11,name : 'CPP',url : 'partials/cpp.html'},
+     * {id : 12,name : 'Labs/Docs',url : 'partials/labview.html'},
+     * {id : 13,name : 'Billing',url : 'partials/billing.jsp'}
+     * ];
+     * ...
      **/
 
     @GET

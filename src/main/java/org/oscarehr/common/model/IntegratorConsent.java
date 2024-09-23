@@ -46,6 +46,7 @@ import javax.persistence.ElementCollection;
 //import org.hibernate.annotations.CollectionOfElements;
 
 /**
+ *
  */
 @Entity
 public class IntegratorConsent extends AbstractModel<Integer> {
@@ -61,7 +62,9 @@ public class IntegratorConsent extends AbstractModel<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id = null;
-    /** This is the facility which is creating this record, i.e. the facility of the provider making this change. */
+    /**
+     * This is the facility which is creating this record, i.e. the facility of the provider making this change.
+     */
     private Integer facilityId = -1;
     private Integer demographicId = -1;
     private String providerNo = null;

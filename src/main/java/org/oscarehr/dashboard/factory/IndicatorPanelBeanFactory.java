@@ -39,7 +39,6 @@ import org.oscarehr.util.MiscUtils;
 
 /**
  * Builds the Panels that hold the Indicators by sub-category.
- *
  */
 public class IndicatorPanelBeanFactory {
 
@@ -149,10 +148,10 @@ public class IndicatorPanelBeanFactory {
      * and queries in a single batch, this method will only return the Indicator ids available
      * to this panel.  Then it will be up to the loading servlet to request the Indicator Bean
      * as the Indicator id is processed.
-     *
+     * <p>
      * If a template matches both the category and sub-category then create an
      * indicator based on the data from the match.
-     *  Many Indicators can be assigned to each sub-category parameter
+     * Many Indicators can be assigned to each sub-category parameter
      */
     private IndicatorPanelBean createIndicatorPanelsWithIndicatorIds(String subcategory) {
 
@@ -191,7 +190,7 @@ public class IndicatorPanelBeanFactory {
      * Method with a single-threaded approach.  This method will get all the Indicators and run all
      * the queries in a single batch.  This method will cause the Dashboard to appear blank
      * until all the queries are completed.
-     *
+     * <p>
      * If a template matches both the category and sub-category then create an
      * indicator based on the data from the match.
      * Many Indicators can be assigned to each sub-category parameter

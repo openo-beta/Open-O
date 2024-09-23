@@ -36,13 +36,14 @@ import oscar.oscarEncounter.oscarMeasurements.data.MeasurementTypes;
 import oscar.util.ConversionUtils;
 
 /**
- *
  * @author jay
  */
 public class EctMeasurementTypeBeanHandler {
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of EctMeasurementTypeBeanHandler */
+    /**
+     * Creates a new instance of EctMeasurementTypeBeanHandler
+     */
     public EctMeasurementTypeBeanHandler() {
     }
 

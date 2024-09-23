@@ -40,7 +40,7 @@ import java.util.List;
 
 /**
  * Deprecated
- *
+ * <p>
  * To be removed in favor of a generic class that manages and saves all types of
  * attachments such as attachments to eForms, Forms or Documents.
  */

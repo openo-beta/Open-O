@@ -51,7 +51,7 @@ import java.util.Set;
 
 /**
  * Oscar OscarCsrfGuardFilter
- * A CsrfGuardFilter implementation that supports detecting and paring multipart/form-data requests in addition to 
+ * A CsrfGuardFilter implementation that supports detecting and paring multipart/form-data requests in addition to
  * the existing support
  */
 public class OscarCsrfGuardFilter implements Filter {

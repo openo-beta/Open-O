@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Requesting HIC
- * @author jen
  *
+ * @author jen
  */
 public class ZRP1 implements Parameter {
 

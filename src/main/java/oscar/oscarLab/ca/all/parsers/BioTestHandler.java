@@ -54,7 +54,6 @@ import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
- *
  * @author wrighd
  */
 public class BioTestHandler implements MessageHandler {
@@ -65,7 +64,9 @@ public class BioTestHandler implements MessageHandler {
     HashMap<OBR, ArrayList<OBX>> obrSegMap = null;
     ArrayList<OBR> obrSegKeySet = null;
 
-    /** Creates a new instance of CMLHandler */
+    /**
+     * Creates a new instance of CMLHandler
+     */
     public BioTestHandler() {
     }
 
@@ -172,7 +173,7 @@ public class BioTestHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information about the Observation Request
+     * Methods to get information about the Observation Request
      */
     public int getOBRCount() {
         return (obrSegMap.size());
@@ -395,14 +396,14 @@ public class BioTestHandler implements MessageHandler {
     }
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
     public ArrayList<String> getHeaders() {
         return headers;
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBRCommentCount(int i) {
         int count = 0;
@@ -454,7 +455,7 @@ public class BioTestHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
    /* public int getOBXCommentCount(int i, int j){
         int count = 0;
@@ -521,7 +522,7 @@ public class BioTestHandler implements MessageHandler {
 
 
     /**
-     *  Methods to get information about the patient
+     * Methods to get information about the patient
      */
     public String getPatientName() {
         return (getFirstName() + " " + getLastName());

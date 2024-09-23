@@ -37,14 +37,15 @@ import org.oscarehr.common.dao.ViewDao;
 import org.oscarehr.common.model.View;
 
 /**
- *
  * @author rjonasz
  */
 public class ProviderViewAction extends DispatchAction {
 
     private ViewDao userViewDAO;
 
-    /** Creates a new instance of ProviderViewAction */
+    /**
+     * Creates a new instance of ProviderViewAction
+     */
     public ProviderViewAction() {
     }
 

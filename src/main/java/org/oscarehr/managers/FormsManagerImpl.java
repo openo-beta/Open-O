@@ -62,9 +62,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
  * This class will change soon to incorporate dealing with forms
- *
  */
 @Service
 public class FormsManagerImpl implements FormsManager {
@@ -92,14 +90,11 @@ public class FormsManagerImpl implements FormsManager {
     /**
      * Finds all eforms based on the status.
      *
-     * @param status
-     *                  Status to be used when looking up forms.
-     * @param sortOrder
-     *                  Order how records should be sorted. Providing no sort order
+     * @param status    Status to be used when looking up forms.
+     * @param sortOrder Order how records should be sorted. Providing no sort order
      *                  delegates to the default sorting order of the persistence
      *                  provider
-     * @return
-     *         Returns the list of all forms with the specified status.
+     * @return Returns the list of all forms with the specified status.
      */
     @Override
     public List<EForm> findByStatus(LoggedInInfo loggedInInfo, boolean status, EFormSortOrder sortOrder) {
@@ -274,7 +269,7 @@ public class FormsManagerImpl implements FormsManager {
      * This method processes a PatientForm, which can be null, and retrieves data using the 'formId', 'formName',
      * and 'demographicNo' parameters from the HttpServletRequest request.
      *
-     * @param form The PatientForm to process (can be null).
+     * @param form    The PatientForm to process (can be null).
      * @param request The HttpServletRequest containing the parameters.
      */
     @Override

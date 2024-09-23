@@ -441,9 +441,9 @@ public class BillingReProcessBillAction extends Action {
     }
 
     /**
-     * @todo THis belongs in a utility class
      * @param s String
      * @return String
+     * @todo THis belongs in a utility class
      */
     public String convertDate8Char(String s) {
         String sdate = "00000000", syear = "", smonth = "", sday = "";

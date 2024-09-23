@@ -50,7 +50,6 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
  * Dual message handler for both the manual and automated lab uploads in the Calgary Lab Service HL7 format.
- *
  */
 public class CLSHandler implements MessageHandler {
 
@@ -285,7 +284,7 @@ public class CLSHandler implements MessageHandler {
     }
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
     public ArrayList<String> getHeaders() {
         ArrayList<String> headers = new ArrayList<String>();
@@ -299,7 +298,7 @@ public class CLSHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBRCommentCount(int i) {
         // OBR comments are not provided - comments are provided in NTE segment following OBX segment
@@ -327,7 +326,7 @@ public class CLSHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBXCommentCount(int i, int j) {
         int count = 0;
@@ -662,8 +661,7 @@ public class CLSHandler implements MessageHandler {
     /**
      * Gets the ordering provider name.
      *
-     * @return
-     *        Returns the provider name or an empty string if it's not specified
+     * @return Returns the provider name or an empty string if it's not specified
      */
     public String getOrderingProvider() {
         return get("/.OBR-16-2");
@@ -672,8 +670,7 @@ public class CLSHandler implements MessageHandler {
     /**
      * Gets the ordering provider ID for matching provider with the correct inbox routing.
      *
-     * @return
-     *        Returns the provider id or an empty string if it's not specified
+     * @return Returns the provider id or an empty string if it's not specified
      */
     public String getOrderingProviderId() {
         return get("/.OBR-16-1");
@@ -682,10 +679,8 @@ public class CLSHandler implements MessageHandler {
     /**
      * Gets the date and time the specimen was collected
      *
-     * @param i
-     * 		Segment count
-     * @return
-     *        Returns the date / time of the specimen collection or null if it's not available.
+     * @param i Segment count
+     * @return Returns the date / time of the specimen collection or null if it's not available.
      */
     public String getOBRDateTime(int i) {
         return get("/.OBR-7-1");
@@ -694,10 +689,8 @@ public class CLSHandler implements MessageHandler {
     /**
      * Gets the date and time the specimen was collected
      *
-     * @param i
-     * 		Segment count
-     * @return
-     *        Returns the date / time of the specimen collection or null if it's not available.
+     * @param i Segment count
+     * @return Returns the date / time of the specimen collection or null if it's not available.
      */
     public Date getOBRDateTimeAsDate(int i) {
         // 20101203122200

@@ -44,6 +44,7 @@ public class BeanUtilHlp {
 
     /**
      * A convenience method used to retrieve the field value of a specified JavaBean
+     *
      * @param bean
      * @param fieldName
      * @return the property value

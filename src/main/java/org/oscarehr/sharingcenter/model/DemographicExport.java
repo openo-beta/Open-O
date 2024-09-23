@@ -44,7 +44,6 @@ import org.oscarehr.common.model.Demographic;
  * Represents an export document of a patient
  *
  * @author oscar
- *
  */
 @Entity
 @Table(name = "sharing_document_export")
@@ -74,6 +73,7 @@ public class DemographicExport extends AbstractModel<Integer> implements Seriali
 
     /**
      * Gets the id.
+     *
      * @return Returns the id of the document.
      */
     @Override
@@ -83,6 +83,7 @@ public class DemographicExport extends AbstractModel<Integer> implements Seriali
 
     /**
      * Gets the document type of the document.
+     *
      * @return Returns the document type of the document.
      */
     public String getDocumentType() {
@@ -91,6 +92,7 @@ public class DemographicExport extends AbstractModel<Integer> implements Seriali
 
     /**
      * Sets the document type.
+     *
      * @param documentType The document type.
      */
     public void setDocumentType(String documentType) {
@@ -99,6 +101,7 @@ public class DemographicExport extends AbstractModel<Integer> implements Seriali
 
     /**
      * Gets the document.
+     *
      * @return Returns the document.
      */
     public byte[] getDocument() {
@@ -107,6 +110,7 @@ public class DemographicExport extends AbstractModel<Integer> implements Seriali
 
     /**
      * Sets the document.
+     *
      * @param document The document.
      */
     public void setDocument(byte[] document) {
@@ -115,6 +119,7 @@ public class DemographicExport extends AbstractModel<Integer> implements Seriali
 
     /**
      * Gets the demographic for the document.
+     *
      * @return Returns the Demographic object for the document.
      */
     public Demographic getDemographic() {
@@ -123,6 +128,7 @@ public class DemographicExport extends AbstractModel<Integer> implements Seriali
 
     /**
      * Sets the demographic for the document.
+     *
      * @param demographic The demographic.
      */
     public void setDemographic(Demographic demographic) {

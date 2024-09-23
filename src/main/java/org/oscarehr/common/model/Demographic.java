@@ -158,7 +158,6 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     }
 
     /**
-     *
      * @param firstName
      * @param lastName
      * @param gender
@@ -232,7 +231,6 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
 
     /**
      * Return the unique identifier of this class
-     *
      */
     public Integer getDemographicNo() {
         return demographicNo;
@@ -690,8 +688,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     /**
      * Gets demographic's full name.
      *
-     * @return
-     *        Returns the last name, first name pair.
+     * @return Returns the last name, first name pair.
      */
     public String getFullName() {
         return getLastName() + ", " + getFirstName();
@@ -709,8 +706,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     /**
      * Gets demographic's preferred name.
      *
-     * @return
-     *        Returns the preferred name.
+     * @return Returns the preferred name.
      */
     public String getPrefName() {
         if (getAlias() != null && !getAlias().isEmpty()) {
@@ -1153,6 +1149,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
 
     /**
      * Fetch a specific demographic extra object matching the given key.
+     *
      * @param key
      * @return
      */
@@ -1177,6 +1174,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
 
     /**
      * Fetch a specific extra value matching the given key.
+     *
      * @param key
      * @return
      */

@@ -1051,14 +1051,14 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
 
     /**
      * This is an override to the pushDemographicConsent method.
-     *
+     * <p>
      * Demographic information will not be pushed if a patient has revoked or
      * modified their
      * consent through the Patient Consent Module for participation in the
      * Integrator program,
      * therefore the attached consents from the pushDemographicConsent table will
      * not get pushed.
-     *
+     * <p>
      * This method ensures that the all current consents from the Patient Consent
      * Module ()
      */
@@ -2344,7 +2344,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
      * The script should also produce a checksum file for use in the logs.
      * This may involve more intervention and security hardening from the Oscar
      * support provider.
-     *
+     * <p>
      * WARNING: this method has not been tested in production as of June 15, 2018
      */
     private final String completeDocumentFile(final String parentDir, final String parentFile) {

@@ -107,6 +107,7 @@ public final class WCBAction extends Action {
     /**
      * Inserts a new wcb form into db using a default value of '0' for billing_no
      * and bill amount
+     *
      * @param frm WCBForm
      */
     private void createWCBEntry(WCBForm frm) {

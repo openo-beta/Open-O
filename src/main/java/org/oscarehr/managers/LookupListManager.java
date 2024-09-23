@@ -166,6 +166,7 @@ public class LookupListManager {
 
     /**
      * Change the display order sequence of this lookupListItem
+     *
      * @param lookupListItemId
      */
     public boolean updateLookupListItemDisplayOrder(LoggedInInfo loggedInInfo, int lookupListItemId, int lookupListItemDisplayOrder) {

@@ -37,15 +37,13 @@ import javax.servlet.http.HttpServletResponse;
 import oscar.OscarProperties;
 
 /**
- *
- * This class safely fetches static image resources for the login Index page. 
- *
+ * This class safely fetches static image resources for the login Index page.
+ * <p>
  * Resources are expected to be at OscarDocument/login.  The resource path
  * [oscar context]/loginResource/myImage.png will fetch the myImage.png image
  * from OscarDocument/login.
- *
- * It's easiest to follow a standard naming convention for each element. 
- *
+ * <p>
+ * It's easiest to follow a standard naming convention for each element.
  */
 public class LoginResourceAction extends HttpServlet {
 

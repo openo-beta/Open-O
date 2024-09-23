@@ -198,12 +198,9 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     /**
      * Finds all providers for the specified type and insurance no, ordered by last name.
      *
-     * @param providerType
-     * 		Provider type (doctor, nurse, etc.)
-     * @param insuranceNo
-     * 		Provider's insurance number
-     * @return
-     *        Returns all matching providers
+     * @param providerType Provider type (doctor, nurse, etc.)
+     * @param insuranceNo  Provider's insurance number
+     * @return Returns all matching providers
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -217,10 +214,8 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     /**
      * Finds all providers with the specified provider type
      *
-     * @param providerType
-     * 		Provider type to be found
-     * @return
-     *        Returns all the active matching providers.
+     * @param providerType Provider type to be found
+     * @return Returns all the active matching providers.
      */
     @SuppressWarnings("unchecked")
     @Override

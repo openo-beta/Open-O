@@ -49,6 +49,7 @@ import oscar.oscarReport.data.ManageLetters;
  * For a list or patients create the letter and add it to the patient record.
  * mark in patients record that a letter was generated
  * Combine the list and return a full list
+ *
  * @author jay
  */
 public class DownloadPatientLettersAction extends Action {
@@ -56,7 +57,9 @@ public class DownloadPatientLettersAction extends Action {
     private static Logger log = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of GeneratePatientLetters */
+    /**
+     * Creates a new instance of GeneratePatientLetters
+     */
     public DownloadPatientLettersAction() {
     }
 

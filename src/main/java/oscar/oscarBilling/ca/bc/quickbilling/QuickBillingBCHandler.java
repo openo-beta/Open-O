@@ -26,6 +26,10 @@
  * Company Colcamex Resources
  * Date Jun 4, 2012
  * Filename QuickBillingBCHandler.java
+ * @author Dennis Warren
+ * Company Colcamex Resources
+ * Date Jun 4, 2012
+ * Filename QuickBillingBCHandler.java
  */
 
 /**

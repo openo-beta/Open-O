@@ -128,13 +128,10 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     /**
      * Finds all providers and lab routing models for the specified lab
      *
-     * @param labNo
-     *                Lab number to find data for
-     * @param labType
-     *                Lab type to find data for
-     * @return
-     *         Returns an array of objects containing {@link Provider},
-     *         {@link ProviderLabRoutingModel} pairs.
+     * @param labNo   Lab number to find data for
+     * @param labType Lab type to find data for
+     * @return Returns an array of objects containing {@link Provider},
+     * {@link ProviderLabRoutingModel} pairs.
      */
     @Override
     public List<Object[]> getProviderLabRoutings(Integer labNo, String labType) {

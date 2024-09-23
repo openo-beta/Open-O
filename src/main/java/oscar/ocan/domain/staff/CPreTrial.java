@@ -58,8 +58,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -86,10 +84,8 @@ public class CPreTrial {
     /**
      * Gets the value of the cAwaitingFitnessAssessment property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAwaitingFitnessAssessment() {
         return cAwaitingFitnessAssessment;
@@ -98,10 +94,8 @@ public class CPreTrial {
     /**
      * Sets the value of the cAwaitingFitnessAssessment property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAwaitingFitnessAssessment(String value) {
         this.cAwaitingFitnessAssessment = value;
@@ -110,10 +104,8 @@ public class CPreTrial {
     /**
      * Gets the value of the cAwaitingTrialWithOrWithoutBail property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAwaitingTrialWithOrWithoutBail() {
         return cAwaitingTrialWithOrWithoutBail;
@@ -122,10 +114,8 @@ public class CPreTrial {
     /**
      * Sets the value of the cAwaitingTrialWithOrWithoutBail property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAwaitingTrialWithOrWithoutBail(String value) {
         this.cAwaitingTrialWithOrWithoutBail = value;
@@ -134,10 +124,8 @@ public class CPreTrial {
     /**
      * Gets the value of the cAwaitingCriminalResponsibilityAssessmentNCR property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAwaitingCriminalResponsibilityAssessmentNCR() {
         return cAwaitingCriminalResponsibilityAssessmentNCR;
@@ -146,10 +134,8 @@ public class CPreTrial {
     /**
      * Sets the value of the cAwaitingCriminalResponsibilityAssessmentNCR property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAwaitingCriminalResponsibilityAssessmentNCR(String value) {
         this.cAwaitingCriminalResponsibilityAssessmentNCR = value;
@@ -158,10 +144,8 @@ public class CPreTrial {
     /**
      * Gets the value of the cInCommunityOnOwnRecognizance property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCInCommunityOnOwnRecognizance() {
         return cInCommunityOnOwnRecognizance;
@@ -170,10 +154,8 @@ public class CPreTrial {
     /**
      * Sets the value of the cInCommunityOnOwnRecognizance property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCInCommunityOnOwnRecognizance(String value) {
         this.cInCommunityOnOwnRecognizance = value;
@@ -182,10 +164,8 @@ public class CPreTrial {
     /**
      * Gets the value of the cUnfitToStandTrial property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnfitToStandTrial() {
         return cUnfitToStandTrial;
@@ -194,10 +174,8 @@ public class CPreTrial {
     /**
      * Sets the value of the cUnfitToStandTrial property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnfitToStandTrial(String value) {
         this.cUnfitToStandTrial = value;

@@ -36,7 +36,6 @@ import org.oscarehr.common.model.OscarMsgType;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author rjonasz
  */
 @Repository

@@ -37,11 +37,10 @@ import javax.persistence.TemporalType;
  * This table is to keep track of all the "full push" events that the integrator
  * performs. The status can be running,completed,or error. When in running status,
  * you can use the associated IntegratorProgressItems to see the real time progress.
- *
+ * <p>
  * written to support checkpoint restarts.
  *
  * @author Marc Dumontier
- *
  */
 @Entity
 public class IntegratorProgress extends AbstractModel<Integer> {

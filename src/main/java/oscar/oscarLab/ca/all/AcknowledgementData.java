@@ -45,7 +45,9 @@ import oscar.util.ConversionUtils;
 
 public class AcknowledgementData {
 
-    /** Creates a new instance of AcknowledgementData */
+    /**
+     * Creates a new instance of AcknowledgementData
+     */
     private AcknowledgementData() {
         // don't instantiate
     }

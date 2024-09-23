@@ -49,7 +49,6 @@ import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
- *
  * @author wrighd
  */
 public class HHSEmrDownloadHandler extends DefaultGenericHandler implements MessageHandler {
@@ -60,7 +59,9 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
     //   Terser terser;
     //   ArrayList obrGroups = null;
 
-    /** Creates a new instance of CMLHandler */
+    /**
+     * Creates a new instance of CMLHandler
+     */
     public HHSEmrDownloadHandler() {
         super();
 

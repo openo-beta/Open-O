@@ -53,7 +53,6 @@ public class LoginModuleFactory {
 
     /**
      * Initializes this factory with the information from OSCAR properties file.
-     *
      */
     private static synchronized void init() {
         if (initialized) return;

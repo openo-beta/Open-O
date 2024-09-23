@@ -53,7 +53,7 @@ import oscar.OscarProperties;
 /**
  * the NioFileManager handles all file input and output of all OscarDocument files
  * by providing several convenience utilities.
- *
+ * <p>
  * One goal is to eliminate the use of "OscarProperties.getInstance().getProperty("DOCUMENT_DIR")"
  * in every single page of OSCAR code.
  */
@@ -113,9 +113,8 @@ public class NioFileManagerImpl implements NioFileManager {
     /**
      * First checks to see if a cache version is already available.  If one is not available then a
      * new cached version is created.
-     *
+     * <p>
      * Returns a file path to the cached version of the given PDF
-     *
      */
     public Path createCacheVersion2(LoggedInInfo loggedInInfo, String sourceDirectory, String filename, Integer pageNum) {
 
@@ -183,8 +182,8 @@ public class NioFileManagerImpl implements NioFileManager {
 
     /**
      * Save a file to the temporary directory from ByteArrayOutputStream
-     * @throws IOException
      *
+     * @throws IOException
      */
     public Path saveTempFile(final String fileName, ByteArrayOutputStream os, String fileType) throws IOException {
         Path directory = Files.createTempDirectory(TEMP_PDF_DIRECTORY + System.currentTimeMillis());
@@ -207,6 +206,7 @@ public class NioFileManagerImpl implements NioFileManager {
 
     /**
      * Delete a temp file. Do this often.
+     *
      * @param fileName
      */
     public final boolean deleteTempFile(final String fileName) {

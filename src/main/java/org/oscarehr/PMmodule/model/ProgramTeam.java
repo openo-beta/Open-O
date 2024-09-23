@@ -61,8 +61,7 @@ public class ProgramTeam implements Serializable {
     }
 
     /**
-     * @param admissions
-     *            The admissions to set.
+     * @param admissions The admissions to set.
      */
     public void setAdmissions(List admissions) {
         this.admissions = admissions;
@@ -76,8 +75,7 @@ public class ProgramTeam implements Serializable {
     }
 
     /**
-     * @param providers
-     *            The providers to set.
+     * @param providers The providers to set.
      */
     public void setProviders(List providers) {
         this.providers = providers;
@@ -88,9 +86,9 @@ public class ProgramTeam implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native"
-     *  column="team_id"
+     * <p>
+     * generator-class="native"
+     * column="team_id"
      */
     public Integer getId() {
         return id;
@@ -98,6 +96,7 @@ public class ProgramTeam implements Serializable {
 
     /**
      * Set the unique identifier of this class
+     *
      * @param id the new ID
      */
     public void setId(Integer id) {
@@ -114,6 +113,7 @@ public class ProgramTeam implements Serializable {
 
     /**
      * Set the value related to the column: name
+     *
      * @param name the name value
      */
     public void setName(String name) {
@@ -129,6 +129,7 @@ public class ProgramTeam implements Serializable {
 
     /**
      * Set the value related to the column: program_id
+     *
      * @param programId the program_id value
      */
     public void setProgramId(Integer programId) {

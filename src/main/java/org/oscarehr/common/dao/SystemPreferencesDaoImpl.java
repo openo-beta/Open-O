@@ -106,6 +106,7 @@ public class SystemPreferencesDaoImpl extends AbstractDaoImpl<SystemPreferences>
 
     /**
      * Gets a map of system preferences with the preference name as the key
+     *
      * @param keys List of keys to get the preferences for
      * @return A map of SystemPreferences with the preference name as the key
      */

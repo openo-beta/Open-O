@@ -192,7 +192,6 @@ public class FaxAction extends JSONAction {
     /**
      * Prepare a PDF of the given parameters an then return a path to
      * the for the user to review and add a cover page before sending final.
-     *
      */
     @SuppressWarnings("unused")
     public ActionForward prepareFax(ActionMapping mapping, ActionForm form,

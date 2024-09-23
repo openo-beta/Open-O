@@ -50,14 +50,15 @@ import oscar.oscarPrevention.reports.FollowupManagement;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class EctAddShortMeasurementAction extends DispatchAction {
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of EctAddShortMeasurementAction */
+    /**
+     * Creates a new instance of EctAddShortMeasurementAction
+     */
     public EctAddShortMeasurementAction() {
     }
 

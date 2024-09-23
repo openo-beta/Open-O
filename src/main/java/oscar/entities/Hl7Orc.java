@@ -27,7 +27,6 @@ package oscar.entities;
 
 /**
  * Encapsulates data from table hl7_orc
- *
  */
 public class Hl7Orc {
     /**
@@ -64,27 +63,27 @@ public class Hl7Orc {
     /**
      * Full constructor
      *
-     * @param orcId int
-     * @param pidId int
-     * @param orderControl String
-     * @param placerOrderNumber1 String
-     * @param fillerOrderNumber String
-     * @param placerOrderNumber2 String
-     * @param orderStatus String
-     * @param responseFlag String
-     * @param quantityTiming String
-     * @param parent String
-     * @param dateTimeOfTransaction String
-     * @param enteredBy String
-     * @param verifiedBy String
-     * @param orderingProvider String
-     * @param entererLocation String
-     * @param callbackPhoneNumber String
+     * @param orcId                  int
+     * @param pidId                  int
+     * @param orderControl           String
+     * @param placerOrderNumber1     String
+     * @param fillerOrderNumber      String
+     * @param placerOrderNumber2     String
+     * @param orderStatus            String
+     * @param responseFlag           String
+     * @param quantityTiming         String
+     * @param parent                 String
+     * @param dateTimeOfTransaction  String
+     * @param enteredBy              String
+     * @param verifiedBy             String
+     * @param orderingProvider       String
+     * @param entererLocation        String
+     * @param callbackPhoneNumber    String
      * @param orderEffectiveDateTime String
      * @param orderControlCodeReason String
-     * @param enteringOrganization String
-     * @param enteringDevice String
-     * @param actionBy String
+     * @param enteringOrganization   String
+     * @param enteringDevice         String
+     * @param actionBy               String
      */
     public Hl7Orc(int orcId, int pidId, String orderControl,
                   String placerOrderNumber1, String fillerOrderNumber,
@@ -121,6 +120,7 @@ public class Hl7Orc {
 
     /**
      * Gets the orcId
+     *
      * @return int orcId
      */
     public int getOrcId() {
@@ -129,6 +129,7 @@ public class Hl7Orc {
 
     /**
      * Gets the pidId
+     *
      * @return int pidId
      */
     public int getPidId() {
@@ -137,6 +138,7 @@ public class Hl7Orc {
 
     /**
      * Gets the orderControl
+     *
      * @return String orderControl
      */
     public String getOrderControl() {
@@ -145,6 +147,7 @@ public class Hl7Orc {
 
     /**
      * Gets the placerOrderNumber1
+     *
      * @return String placerOrderNumber1
      */
     public String getPlacerOrderNumber1() {
@@ -153,6 +156,7 @@ public class Hl7Orc {
 
     /**
      * Gets the fillerOrderNumber
+     *
      * @return String fillerOrderNumber
      */
     public String getFillerOrderNumber() {
@@ -161,6 +165,7 @@ public class Hl7Orc {
 
     /**
      * Gets the placerOrderNumber2
+     *
      * @return String placerOrderNumber2
      */
     public String getPlacerOrderNumber2() {
@@ -169,6 +174,7 @@ public class Hl7Orc {
 
     /**
      * Gets the orderStatus
+     *
      * @return String orderStatus
      */
     public String getOrderStatus() {
@@ -177,6 +183,7 @@ public class Hl7Orc {
 
     /**
      * Gets the responseFlag
+     *
      * @return String responseFlag
      */
     public String getResponseFlag() {
@@ -185,6 +192,7 @@ public class Hl7Orc {
 
     /**
      * Gets the quantityTiming
+     *
      * @return String quantityTiming
      */
     public String getQuantityTiming() {
@@ -193,6 +201,7 @@ public class Hl7Orc {
 
     /**
      * Gets the parent
+     *
      * @return String parent
      */
     public String getParent() {
@@ -201,6 +210,7 @@ public class Hl7Orc {
 
     /**
      * Gets the dateTimeOfTransaction
+     *
      * @return String dateTimeOfTransaction
      */
     public String getDateTimeOfTransaction() {
@@ -209,6 +219,7 @@ public class Hl7Orc {
 
     /**
      * Gets the enteredBy
+     *
      * @return String enteredBy
      */
     public String getEnteredBy() {
@@ -217,6 +228,7 @@ public class Hl7Orc {
 
     /**
      * Gets the verifiedBy
+     *
      * @return String verifiedBy
      */
     public String getVerifiedBy() {
@@ -225,6 +237,7 @@ public class Hl7Orc {
 
     /**
      * Gets the orderingProvider
+     *
      * @return String orderingProvider
      */
     public String getOrderingProvider() {
@@ -233,6 +246,7 @@ public class Hl7Orc {
 
     /**
      * Gets the entererLocation
+     *
      * @return String entererLocation
      */
     public String getEntererLocation() {
@@ -241,6 +255,7 @@ public class Hl7Orc {
 
     /**
      * Gets the callbackPhoneNumber
+     *
      * @return String callbackPhoneNumber
      */
     public String getCallbackPhoneNumber() {
@@ -249,6 +264,7 @@ public class Hl7Orc {
 
     /**
      * Gets the orderEffectiveDateTime
+     *
      * @return String orderEffectiveDateTime
      */
     public String getOrderEffectiveDateTime() {
@@ -257,6 +273,7 @@ public class Hl7Orc {
 
     /**
      * Gets the orderControlCodeReason
+     *
      * @return String orderControlCodeReason
      */
     public String getOrderControlCodeReason() {
@@ -265,6 +282,7 @@ public class Hl7Orc {
 
     /**
      * Gets the enteringOrganization
+     *
      * @return String enteringOrganization
      */
     public String getEnteringOrganization() {
@@ -273,6 +291,7 @@ public class Hl7Orc {
 
     /**
      * Gets the enteringDevice
+     *
      * @return String enteringDevice
      */
     public String getEnteringDevice() {
@@ -281,6 +300,7 @@ public class Hl7Orc {
 
     /**
      * Gets the actionBy
+     *
      * @return String actionBy
      */
     public String getActionBy() {
@@ -289,6 +309,7 @@ public class Hl7Orc {
 
     /**
      * Sets the orcId
+     *
      * @param orcId int
      */
     public void setOrcId(int orcId) {
@@ -297,6 +318,7 @@ public class Hl7Orc {
 
     /**
      * Sets the pidId
+     *
      * @param pidId int
      */
     public void setPidId(int pidId) {
@@ -305,6 +327,7 @@ public class Hl7Orc {
 
     /**
      * Sets the orderControl
+     *
      * @param orderControl String
      */
     public void setOrderControl(String orderControl) {
@@ -313,6 +336,7 @@ public class Hl7Orc {
 
     /**
      * Sets the placerOrderNumber1
+     *
      * @param placerOrderNumber1 String
      */
     public void setPlacerOrderNumber1(String placerOrderNumber1) {
@@ -321,6 +345,7 @@ public class Hl7Orc {
 
     /**
      * Sets the fillerOrderNumber
+     *
      * @param fillerOrderNumber String
      */
     public void setFillerOrderNumber(String fillerOrderNumber) {
@@ -329,6 +354,7 @@ public class Hl7Orc {
 
     /**
      * Sets the placerOrderNumber2
+     *
      * @param placerOrderNumber2 String
      */
     public void setPlacerOrderNumber2(String placerOrderNumber2) {
@@ -337,6 +363,7 @@ public class Hl7Orc {
 
     /**
      * Sets the orderStatus
+     *
      * @param orderStatus String
      */
     public void setOrderStatus(String orderStatus) {
@@ -345,6 +372,7 @@ public class Hl7Orc {
 
     /**
      * Sets the responseFlag
+     *
      * @param responseFlag String
      */
     public void setResponseFlag(String responseFlag) {
@@ -353,6 +381,7 @@ public class Hl7Orc {
 
     /**
      * Sets the quantityTiming
+     *
      * @param quantityTiming String
      */
     public void setQuantityTiming(String quantityTiming) {
@@ -361,6 +390,7 @@ public class Hl7Orc {
 
     /**
      * Sets the parent
+     *
      * @param parent String
      */
     public void setParent(String parent) {
@@ -369,6 +399,7 @@ public class Hl7Orc {
 
     /**
      * Sets the dateTimeOfTransaction
+     *
      * @param dateTimeOfTransaction String
      */
     public void setDateTimeOfTransaction(String dateTimeOfTransaction) {
@@ -377,6 +408,7 @@ public class Hl7Orc {
 
     /**
      * Sets the enteredBy
+     *
      * @param enteredBy String
      */
     public void setEnteredBy(String enteredBy) {
@@ -385,6 +417,7 @@ public class Hl7Orc {
 
     /**
      * Sets the verifiedBy
+     *
      * @param verifiedBy String
      */
     public void setVerifiedBy(String verifiedBy) {
@@ -393,6 +426,7 @@ public class Hl7Orc {
 
     /**
      * Sets the orderingProvider
+     *
      * @param orderingProvider String
      */
     public void setOrderingProvider(String orderingProvider) {
@@ -401,6 +435,7 @@ public class Hl7Orc {
 
     /**
      * Sets the entererLocation
+     *
      * @param entererLocation String
      */
     public void setEntererLocation(String entererLocation) {
@@ -409,6 +444,7 @@ public class Hl7Orc {
 
     /**
      * Sets the callbackPhoneNumber
+     *
      * @param callbackPhoneNumber String
      */
     public void setCallbackPhoneNumber(String callbackPhoneNumber) {
@@ -417,6 +453,7 @@ public class Hl7Orc {
 
     /**
      * Sets the orderEffectiveDateTime
+     *
      * @param orderEffectiveDateTime String
      */
     public void setOrderEffectiveDateTime(String
@@ -426,6 +463,7 @@ public class Hl7Orc {
 
     /**
      * Sets the orderControlCodeReason
+     *
      * @param orderControlCodeReason String
      */
     public void setOrderControlCodeReason(String orderControlCodeReason) {
@@ -434,6 +472,7 @@ public class Hl7Orc {
 
     /**
      * Sets the enteringOrganization
+     *
      * @param enteringOrganization String
      */
     public void setEnteringOrganization(String enteringOrganization) {
@@ -442,6 +481,7 @@ public class Hl7Orc {
 
     /**
      * Sets the enteringDevice
+     *
      * @param enteringDevice String
      */
     public void setEnteringDevice(String enteringDevice) {
@@ -450,6 +490,7 @@ public class Hl7Orc {
 
     /**
      * Sets the actionBy
+     *
      * @param actionBy String
      */
     public void setActionBy(String actionBy) {

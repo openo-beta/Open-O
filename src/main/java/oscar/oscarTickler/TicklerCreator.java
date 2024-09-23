@@ -44,8 +44,8 @@ public class TicklerCreator {
     /**
      * createTickler
      *
-     * @param demoNo the demographic no
-     * @param provNo the provider no
+     * @param demoNo  the demographic no
+     * @param provNo  the provider no
      * @param message the tickler message
      */
     public void createTickler(LoggedInInfo loggedInInfo, String demoNo, String provNo, String message) {
@@ -75,7 +75,7 @@ public class TicklerCreator {
     /**
      * Returns true if a tickler with the specified parameters exists
      *
-     * @param demoNo String
+     * @param demoNo  String
      * @param message String
      * @return boolean
      */
@@ -92,7 +92,7 @@ public class TicklerCreator {
      * resolveTicklers
      *
      * @param cdmPatientNos Vector (strings)
-     * @param remString String
+     * @param remString     String
      */
     public void resolveTicklers(LoggedInInfo loggedInInfo, String providerNo, List<String> cdmPatientNos, String remString) {
         ticklerManager.resolveTicklers(loggedInInfo, providerNo, cdmPatientNos, remString);

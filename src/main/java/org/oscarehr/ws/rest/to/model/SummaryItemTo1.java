@@ -32,25 +32,25 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 
 /**
- title: "Ongoing Concerns",displaySize: 5, 
- itemlist: [
- {
- id : 0,
- desc : 'INR CLINIC, A FIB/AV (bovine) replacement, TARGET 2.5 Osteopenia'
- },
- {
- id : 1,
- desc : 'Rt Knee - Dr. Who ?OA; Lt Shoulder pain incisional hernia since laparoscopy April 03 Spinal stenosis 1999 - no gurantee for surgery; sciatic pain both legs esp since fall in Feb 06'
- },
- {
- id : 2,
- desc : 'Hearing loss R worse than L - tried hearing aid'
- },
- {
- id : 3,
- desc : 'Aortic stenosis 2nd to rheumatic fever; AV replaced Jan 08 Large irreducible hiatus Hernia 11/06 HTN on Accupril & HCTZ AF; Recurrent thromboembolism of lower legs with filter insertion - on coumadin'
- } ]
- };
+ * title: "Ongoing Concerns",displaySize: 5,
+ * itemlist: [
+ * {
+ * id : 0,
+ * desc : 'INR CLINIC, A FIB/AV (bovine) replacement, TARGET 2.5 Osteopenia'
+ * },
+ * {
+ * id : 1,
+ * desc : 'Rt Knee - Dr. Who ?OA; Lt Shoulder pain incisional hernia since laparoscopy April 03 Spinal stenosis 1999 - no gurantee for surgery; sciatic pain both legs esp since fall in Feb 06'
+ * },
+ * {
+ * id : 2,
+ * desc : 'Hearing loss R worse than L - tried hearing aid'
+ * },
+ * {
+ * id : 3,
+ * desc : 'Aortic stenosis 2nd to rheumatic fever; AV replaced Jan 08 Large irreducible hiatus Hernia 11/06 HTN on Accupril & HCTZ AF; Recurrent thromboembolism of lower legs with filter insertion - on coumadin'
+ * } ]
+ * };
  */
 @XmlRootElement(name = "summaryItem")
 @XmlSeeAlso(value = {DiagnosisTo1.class})

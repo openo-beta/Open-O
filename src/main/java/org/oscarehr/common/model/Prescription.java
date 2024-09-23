@@ -131,8 +131,7 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
     /**
      * Gets a comma-separated string containing dates this prescription has been reprinted.
      *
-     * @return
-     *        Returns the dates reprinted.
+     * @return Returns the dates reprinted.
      */
     public String getDatesReprinted() {
         return (datesReprinted);
@@ -165,8 +164,7 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
     /**
      * Checks if this prescription has been reprinted
      *
-     * @return
-     *        Returns true if there is a reprint date available
+     * @return Returns true if there is a reprint date available
      */
     public boolean isReprinted() {
         return getDatesReprinted() != null && !getDatesReprinted().isEmpty();
@@ -175,8 +173,7 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
     /**
      * Gets the number of times the prescription has been reprinted
      *
-     * @return
-     *        Returns 0, if it hasn't been reprinted, or a number corresponding to the number of reprint dates
+     * @return Returns 0, if it hasn't been reprinted, or a number corresponding to the number of reprint dates
      */
     public int getReprintCount() {
         if (!isReprinted()) return 0;

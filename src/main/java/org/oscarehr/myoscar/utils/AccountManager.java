@@ -70,18 +70,18 @@ public final class AccountManager {
     /**
      * Cache key must be qualified so 2 people don't share a cached item, even if it's the same thing,
      * the request must be made to the server so the access is logged and authentication is checked.
-     *
+     * <p>
      * MAX_CACHE_ITEM_SIZE*items to queue = max memory used for cache
      */
     private static QueueCache<String, PersonTransfer3> personCache = new QueueCache<String, PersonTransfer3>(4, MAX_PEOPLE_CACHE_SIZE, MAX_PEOPLE_CACHE_TIME, null);
 
     /**
-     *  by sharing the value object having 2 caches doesn't take up more memory as it will key to the same memory location
+     * by sharing the value object having 2 caches doesn't take up more memory as it will key to the same memory location
      */
     private static QueueCache<Long, MinimalPersonTransfer3> minimalPersonCache = new QueueCache<Long, MinimalPersonTransfer3>(4, MAX_MINIMAL_PEOPLE_CACHE_SIZE, MAX_MINIMAL_PEOPLE_CACHE_TIME, null);
 
     /**
-     *  by sharing the value object having 2 caches doesn't take up more memory as it will key to the same memory location
+     * by sharing the value object having 2 caches doesn't take up more memory as it will key to the same memory location
      */
     private static QueueCache<String, MinimalPersonTransfer3> minimalPersonUsernameCache = new QueueCache<String, MinimalPersonTransfer3>(4, MAX_MINIMAL_PEOPLE_CACHE_SIZE, MAX_MINIMAL_PEOPLE_CACHE_TIME, null);
 

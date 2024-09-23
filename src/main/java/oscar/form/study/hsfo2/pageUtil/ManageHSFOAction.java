@@ -62,7 +62,6 @@ import oscar.util.UtilDateUtilities;
 
 
 /**
- *
  * Class used to fill data for the HSFO form Study
  */
 public class ManageHSFOAction extends Action {
@@ -72,7 +71,9 @@ public class ManageHSFOAction extends Action {
         registration, flowsheet, graphs
     }
 
-    /** Creates a new instance of ManageHSFOAction */
+    /**
+     * Creates a new instance of ManageHSFOAction
+     */
     public ManageHSFOAction() {
     }
 
@@ -442,6 +443,7 @@ public class ManageHSFOAction extends Action {
 
     /**
      * get the most recent lab work of this patient
+     *
      * @param hsfo2Visit
      * @param hsfo2Patient
      * @param patientId

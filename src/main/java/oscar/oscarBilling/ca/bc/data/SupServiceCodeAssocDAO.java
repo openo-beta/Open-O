@@ -102,7 +102,8 @@ public class SupServiceCodeAssocDAO extends AbstractDaoImpl<BillingTrayFee> {
 
     /**
      * Saves or updates(if exists) a procedure/tray fee association
-     * @param primaryCode String
+     *
+     * @param primaryCode   String
      * @param secondaryCode String
      */
     @SuppressWarnings("unchecked")
@@ -131,8 +132,8 @@ public class SupServiceCodeAssocDAO extends AbstractDaoImpl<BillingTrayFee> {
      * Returns the monetary value of the specified service code
      *
      * @param primaryCode String - The Service Code
-     * @param type int - The type of query to perform using either the billingservice_no or service_code fields
-     * as criterion for searching the code value
+     * @param type        int - The type of query to perform using either the billingservice_no or service_code fields
+     *                    as criterion for searching the code value
      * @return String
      */
     @SuppressWarnings("unchecked")

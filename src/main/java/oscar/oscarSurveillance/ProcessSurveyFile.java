@@ -50,7 +50,6 @@ import oscar.OscarProperties;
 import oscar.oscarDB.DBHandler;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class ProcessSurveyFile {
@@ -198,7 +197,9 @@ public class ProcessSurveyFile {
     }
 
 
-    /** Creates a new instance of ILISurveyFile */
+    /**
+     * Creates a new instance of ILISurveyFile
+     */
     public ProcessSurveyFile() {
     }
 

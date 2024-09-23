@@ -27,7 +27,8 @@ package oscar.oscarReport.reportByTemplate;
 
 /**
  * Created on December 19, 2006, 10:54 AM
- * This is an object representing each dynamic param in an sql query (i.e. billing_code) 
+ * This is an object representing each dynamic param in an sql query (i.e. billing_code)
+ *
  * @author apavel (Paul)
  */
 

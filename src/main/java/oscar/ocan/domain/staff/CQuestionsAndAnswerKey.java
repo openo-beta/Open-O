@@ -55,8 +55,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -74,10 +72,8 @@ public class CQuestionsAndAnswerKey {
     /**
      * Gets the value of the cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn property.
      *
-     * @return
-     *     possible object is
-     *     {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
-     *
+     * @return possible object is
+     * {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
      */
     public CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn getCNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn() {
         return cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn;
@@ -86,10 +82,8 @@ public class CQuestionsAndAnswerKey {
     /**
      * Sets the value of the cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
-     *
+     * @param value allowed object is
+     *              {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
      */
     public void setCNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn(CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn value) {
         this.cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn = value;
@@ -98,10 +92,8 @@ public class CQuestionsAndAnswerKey {
     /**
      * Gets the value of the chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown property.
      *
-     * @return
-     *     possible object is
-     *     {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
-     *
+     * @return possible object is
+     * {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
      */
     public CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown getCHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown() {
         return chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown;
@@ -110,10 +102,8 @@ public class CQuestionsAndAnswerKey {
     /**
      * Sets the value of the chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
-     *
+     * @param value allowed object is
+     *              {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
      */
     public void setCHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown(CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown value) {
         this.chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown = value;

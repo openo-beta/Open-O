@@ -32,7 +32,7 @@ import java.io.Serializable;
 
 
 /**
- * An interface used for all contact types in Oscar. 
+ * An interface used for all contact types in Oscar.
  */
 public interface ContactInterface extends Serializable {
 

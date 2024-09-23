@@ -103,6 +103,7 @@ public class RxLookupService extends AbstractServiceImpl {
 
     /**
      * Gets details of a specific drug product
+     *
      * @param s the id of the drug product
      * @return a response object with a single drug search object represented the details.
      */
@@ -146,7 +147,7 @@ public class RxLookupService extends AbstractServiceImpl {
 
     /**
      * Extracts medication instruction details (frequency, dose, etc...) from an instruction string.
-     *
+     * <p>
      * Uses the same parser as the old Rx2 interface did.
      *
      * @param instructions the string to parse

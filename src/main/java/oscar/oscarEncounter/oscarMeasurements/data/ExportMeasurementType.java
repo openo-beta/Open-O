@@ -35,23 +35,26 @@ import oscar.oscarEncounter.oscarMeasurements.bean.EctValidationsBean;
 import oscar.oscarEncounter.oscarMeasurements.bean.EctValidationsBeanHandler;
 
 /**
- * This class is used to export measurement types in the following format 
- * <measurement 
- type="NOSK"
- typeDesc="Smoking"
- typeDisplayName="Number of Cigarettes per day"
- measuringInstrc="Cigarettes per day">
- <validationRule
- name="Numeric Value: 0 to 300"
- maxValue="300"
- minValue="0"
- isNumeric="1"/>
- </measurement>
+ * This class is used to export measurement types in the following format
+ * <measurement
+ * type="NOSK"
+ * typeDesc="Smoking"
+ * typeDisplayName="Number of Cigarettes per day"
+ * measuringInstrc="Cigarettes per day">
+ * <validationRule
+ * name="Numeric Value: 0 to 300"
+ * maxValue="300"
+ * minValue="0"
+ * isNumeric="1"/>
+ * </measurement>
+ *
  * @author jay
  */
 public class ExportMeasurementType {
 
-    /** Creates a new instance of ExportMeasurementType */
+    /**
+     * Creates a new instance of ExportMeasurementType
+     */
     public ExportMeasurementType() {
     }
 

@@ -47,7 +47,7 @@ public final class ProviderMyOscarIdData {
     }
 
     /**
-     *Retrieve myOscar login id for current provider first by querying property table
+     * Retrieve myOscar login id for current provider first by querying property table
      */
     public static String getMyOscarId(String providerNo) {
 
@@ -60,7 +60,7 @@ public final class ProviderMyOscarIdData {
     }
 
     /**
-     *set myOscar login id in property table
+     * set myOscar login id in property table
      */
     public static boolean setId(String providerId, String id) {
         String sql;

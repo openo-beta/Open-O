@@ -98,7 +98,7 @@ public final class PrescriptionQrCodeUIBean {
      * This method is required and is coded funny because XING - the library we're using,
      * decided not to use enum's for the ec levels because they wanted to support
      * jdk 1.4 which doesn't have enums. As a result we manuallt valueOf the property.
-     *
+     * <p>
      * We need to return the static instances just in case XING decided to do what java-enums
      * do when checking equality - which is to check the in memory class instance value since
      * enums are defined as singletons.

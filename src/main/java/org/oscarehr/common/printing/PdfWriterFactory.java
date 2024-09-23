@@ -40,10 +40,10 @@ public class PdfWriterFactory {
     private static String promoText = OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT");
 
     /**
-     * @Deprecated: use the newer Itext PDF method with the same signature.
      * @param pdfContentByte
      * @param settings
      * @return
+     * @Deprecated: use the newer Itext PDF method with the same signature.
      */
     @Deprecated
     public static com.lowagie.text.pdf.PdfContentByte setFont(com.lowagie.text.pdf.PdfContentByte pdfContentByte, FontSettings settings) {
@@ -57,11 +57,11 @@ public class PdfWriterFactory {
     }
 
     /**
-     * @Deprecated: use the newer Itext PDF method with the same signature.
      * @param document
      * @param stream
      * @param settings
      * @return
+     * @Deprecated: use the newer Itext PDF method with the same signature.
      */
     @Deprecated
     public static com.lowagie.text.pdf.PdfWriter newInstance(com.lowagie.text.Document document, OutputStream stream, FontSettings settings) {

@@ -75,7 +75,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  *
- *
  */
 public class EFormPDFServlet extends HttpServlet {
 
@@ -83,7 +82,6 @@ public class EFormPDFServlet extends HttpServlet {
     Logger log = org.oscarehr.util.MiscUtils.getLogger();
 
     /**
-     *
      *
      */
     public EFormPDFServlet() {
@@ -190,23 +188,22 @@ public class EFormPDFServlet extends HttpServlet {
 
     /**
      * the form txt file has lines in the form:
-     *
+     * <p>
      * For Checkboxes:
      * ie.  ohip : left, 76, 193, 0, BaseFont.ZAPFDINGBATS, 8, \u2713
      * requestParamName : alignment, Xcoord, Ycoord, 0, font, fontSize, textToPrint[if empty, prints the value of the request param]
      * NOTE: the Xcoord and Ycoord refer to the bottom-left corner of the element
-     *
+     * <p>
      * For single-line text:
      * ie. patientCity  : left, 242, 261, 0, BaseFont.HELVETICA, 12
      * See checkbox explanation
-     *
+     * <p>
      * For multi-line text (textarea)
      * ie.  aci : left, 20, 308, 0, BaseFont.HELVETICA, 8, _, 238, 222, 10
      * requestParamName : alignment, bottomLeftXcoord, bottomLeftYcoord, 0, font, fontSize, _, topRightXcoord, topRightYcoord, spacingBtwnLines
-     *
-     *NOTE: When working on these forms in linux, it helps to load the PDF file into gimp, switch to pt. coordinate system and use the mouse to find the coordinates.
-     *Prepare to be bored!
-     *
+     * <p>
+     * NOTE: When working on these forms in linux, it helps to load the PDF file into gimp, switch to pt. coordinate system and use the mouse to find the coordinates.
+     * Prepare to be bored!
      *
      * @throws Exception
      */

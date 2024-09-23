@@ -300,10 +300,10 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
     }
 
     /**
-     * @Deprecated: use alternate method with DemographicExtKey parameter
      * @param key
      * @param val
      * @return
+     * @Deprecated: use alternate method with DemographicExtKey parameter
      */
     @Deprecated
     @Override

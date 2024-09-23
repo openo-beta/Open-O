@@ -63,25 +63,24 @@ public class InboxResultsRepositoryImpl implements InboxResultsRepository {
     /**
      * Gets a list of items in the inbox based on the supplied parameters
      *
-     *
-     * @param loggedInProvider The currently logged in provider
-     * @param providerNumber The provider number to search items for, empty string will return items for all providers, 0 will return all unmatched items
-     * @param firstName String containing a demographic first name
-     * @param lastName String containing a demographic last name
-     * @param hin String containing a demographic HIN
-     * @param startDate Date to select all inbox items that came in after, may be empty
-     * @param endDate Date to select all inbox items that came in before, may be empty
-     * @param status Status of the inbox items to search for
-     * @param abnormalStatus Abnormal status of the inbox items to search for
-     * @param matchedStatus Criteria for if the results should be matched to a demographic
-     * @param sortBy String
-     * @param sortOrder <code>ASC</code> or <code>DESC</code>
-     * @param page Starting point to select items from (Based on the resultsPerPage param)
-     * @param resultsPerPage Number of items to return
-     * @param showDocuments Whether documents should be included in the search
-     * @param showLabs Whether Labs should be included in the search
-     * @param showHrm Whether HRM should be included in the search
-     * @param getCounts Whether to get the total inbox counts based on the supplied parameters
+     * @param loggedInProvider     The currently logged in provider
+     * @param providerNumber       The provider number to search items for, empty string will return items for all providers, 0 will return all unmatched items
+     * @param firstName            String containing a demographic first name
+     * @param lastName             String containing a demographic last name
+     * @param hin                  String containing a demographic HIN
+     * @param startDate            Date to select all inbox items that came in after, may be empty
+     * @param endDate              Date to select all inbox items that came in before, may be empty
+     * @param status               Status of the inbox items to search for
+     * @param abnormalStatus       Abnormal status of the inbox items to search for
+     * @param matchedStatus        Criteria for if the results should be matched to a demographic
+     * @param sortBy               String
+     * @param sortOrder            <code>ASC</code> or <code>DESC</code>
+     * @param page                 Starting point to select items from (Based on the resultsPerPage param)
+     * @param resultsPerPage       Number of items to return
+     * @param showDocuments        Whether documents should be included in the search
+     * @param showLabs             Whether Labs should be included in the search
+     * @param showHrm              Whether HRM should be included in the search
+     * @param getCounts            Whether to get the total inbox counts based on the supplied parameters
      * @param getDemographicCounts Whether to get the inbox counts for demographics based on the supplied parameters
      * @return {@code InboxResponse} Response containing the items that matched the supplied parameters, may include counts
      */

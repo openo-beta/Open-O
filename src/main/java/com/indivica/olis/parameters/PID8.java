@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Sex (Z50 Query only)
- * @author jen
  *
+ * @author jen
  */
 public class PID8 implements Parameter {
 

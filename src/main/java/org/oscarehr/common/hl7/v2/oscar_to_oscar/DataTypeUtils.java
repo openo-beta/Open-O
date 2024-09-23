@@ -124,7 +124,7 @@ public final class DataTypeUtils {
     /**
      * @param xad
      * @param clinic
-     * @param country iso 3166, 3 digit version / hl70399 code, i.e. USA, CAN, AUS in upper case.
+     * @param country     iso 3166, 3 digit version / hl70399 code, i.e. USA, CAN, AUS in upper case.
      * @param addressType hlt0190 code, i.e. O=office, H=Home
      * @throws DataTypeException
      */
@@ -150,10 +150,10 @@ public final class DataTypeUtils {
      * @param msh
      * @param dateOfMessage
      * @param clinicName
-     * @param messageCode i.e. "REF"
-     * @param triggerEvent i.e. "I12"
+     * @param messageCode      i.e. "REF"
+     * @param triggerEvent     i.e. "I12"
      * @param messageStructure i.e. "REF_I12"
-     * @param hl7VersionId is the version of hl7 in use, i.e. "2.6"
+     * @param hl7VersionId     is the version of hl7 in use, i.e. "2.6"
      */
     public static void fillMsh(MSH msh, Date dateOfMessage, String clinicName, String messageCode, String triggerEvent, String messageStructure, String hl7VersionId) throws DataTypeException {
         msh.getFieldSeparator().setValue("|");
@@ -175,7 +175,7 @@ public final class DataTypeUtils {
     /**
      * @param sft
      * @param version major version if available
-     * @param build build date or build number if available
+     * @param build   build date or build number if available
      */
     public static void fillSft(SFT sft, String version, String build) throws DataTypeException {
         sft.getSoftwareVendorOrganization().getOrganizationName().setValue("OSCARMcMaster");
@@ -187,7 +187,7 @@ public final class DataTypeUtils {
     /**
      * @param prd
      * @param provider
-     * @param providerRoleId Note that this is not the oscar provider role, look in the method to see valid values
+     * @param providerRoleId          Note that this is not the oscar provider role, look in the method to see valid values
      * @param providerRoleDescription Note that this is not the oscar provider role, look in the method to see valid values
      */
     public static void fillPrd(PRD prd, Provider provider, String providerRoleId, String providerRoleDescription, Clinic clinic) throws DataTypeException, HL7Exception {
@@ -244,7 +244,7 @@ public final class DataTypeUtils {
     /**
      * @param prd
      * @param professionalSpecialist
-     * @param providerRoleId Note that this is not the oscar provider role, look in the method to see valid values
+     * @param providerRoleId          Note that this is not the oscar provider role, look in the method to see valid values
      * @param providerRoleDescription Note that this is not the oscar provider role, look in the method to see valid values
      */
     public static void fillPrd(PRD prd, ProfessionalSpecialist professionalSpecialist, String providerRoleId, String providerRoleDescription) throws DataTypeException, HL7Exception {
@@ -294,7 +294,7 @@ public final class DataTypeUtils {
 
     /**
      * @param pid
-     * @param pidNumber pass in the # of this pid for the sequence, i.e. normally it's 1 if you only have 1 pid entry. if this is a list of pids, then the first one is 1, second is 2 etc..
+     * @param pidNumber   pass in the # of this pid for the sequence, i.e. normally it's 1 if you only have 1 pid entry. if this is a list of pids, then the first one is 1, second is 2 etc..
      * @param demographic
      * @throws HL7Exception
      */
@@ -466,9 +466,9 @@ public final class DataTypeUtils {
 
     /**
      * @param nte
-     * @param subject should be a short string denoting what's in the comment data, i.e. "REASON_FOR_REFERRAL" or "ALLERGIES", max length is 250
+     * @param subject  should be a short string denoting what's in the comment data, i.e. "REASON_FOR_REFERRAL" or "ALLERGIES", max length is 250
      * @param fileName should be the file name if applicable, can be null if it didn't come from a file.
-     * @param data and binary data, a String must pass in bytes too as it needs to be base64 encoded for \n and \r's
+     * @param data     and binary data, a String must pass in bytes too as it needs to be base64 encoded for \n and \r's
      * @throws HL7Exception
      * @throws UnsupportedEncodingException
      */
@@ -506,7 +506,7 @@ public final class DataTypeUtils {
     /**
      * @param rol
      * @param professionalSpecialist
-     * @param actionRole the role of the given provider with regards to this communcations. There is HL7 table 0443. We will also add DataTypeUtils.ACTION_ROLE_* as roles so we can send and receive arbitrary data under arbitrary conditions.
+     * @param actionRole             the role of the given provider with regards to this communcations. There is HL7 table 0443. We will also add DataTypeUtils.ACTION_ROLE_* as roles so we can send and receive arbitrary data under arbitrary conditions.
      * @throws HL7Exception
      */
     public static void fillRol(ROL rol, ProfessionalSpecialist professionalSpecialist, String actionRole) throws HL7Exception {

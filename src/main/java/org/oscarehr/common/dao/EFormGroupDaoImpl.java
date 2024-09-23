@@ -45,14 +45,11 @@ public class EFormGroupDaoImpl extends AbstractDaoImpl<EFormGroup> implements EF
     /**
      * Deletes groups with the specified name and, optionally, form ID.
      *
-     * @param groupName
-     *                  Name of the group to delete
-     * @param formId
-     *                  ID of the form for the group to be deleted. In case this
+     * @param groupName Name of the group to delete
+     * @param formId    ID of the form for the group to be deleted. In case this
      *                  value is set to null, only the group name is used for
      *                  deletion selection
-     * @return
-     *         Returns the number of the deleted groups
+     * @return Returns the number of the deleted groups
      */
     @Override
     public int deleteByNameAndFormId(String groupName, Integer formId) {

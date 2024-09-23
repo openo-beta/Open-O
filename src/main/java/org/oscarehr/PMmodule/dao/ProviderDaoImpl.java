@@ -640,8 +640,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
     /**
      * Gets all providers with non-empty OHIP number ordered by last,then first name
      *
-     * @return
-     *         Returns the all found providers
+     * @return Returns the all found providers
      */
     @Override
     public List<Provider> getProvidersWithNonEmptyOhip() {

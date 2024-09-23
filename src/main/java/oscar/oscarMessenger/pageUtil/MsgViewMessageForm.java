@@ -38,6 +38,7 @@ public final class MsgViewMessageForm extends ActionForm {
 
     /**
      * Used to get the messge ID
+     *
      * @return String, the message ID to view
      */
     public String getMessageID() {
@@ -46,6 +47,7 @@ public final class MsgViewMessageForm extends ActionForm {
 
     /**
      * Used to Set the Message ID
+     *
      * @param messageID
      */
     public void setMessageID(String messageID) {

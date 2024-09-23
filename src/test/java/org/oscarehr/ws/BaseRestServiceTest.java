@@ -61,12 +61,12 @@ import org.oscarehr.ws.rest.to.model.Sex1;
  * Base class for restful tests. While running these tests, it's assumed that a running version of OSCAR is available.
  * Since this falls into the category of functional tests now, all subclasses must explicitly verify if the REST WS
  * tests have been enabled.
- *
- * This may change in the future as we figure out the best way to test the services, and we authenticate 
+ * <p>
+ * This may change in the future as we figure out the best way to test the services, and we authenticate
  * differently (oauth, tokens, etc)
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * This test expects the following properties provided in oscar.properties file
  *
  * <pre>
@@ -76,7 +76,6 @@ import org.oscarehr.ws.rest.to.model.Sex1;
  * test.ws.rest.login.pin=1117
  * test.ws.rest.login.host=http://localhost:8080/oscar
  * </pre>
- *
  */
 public abstract class BaseRestServiceTest {
 
@@ -110,13 +109,13 @@ public abstract class BaseRestServiceTest {
 
     /**
      * Initializes base restful settings.
-     *
+     * <p>
      * <p/>
      *
      * <b>Implementation notes</b>
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * This method works by carrying out HTTP request to the OSCAR login form. In case
      * login is successful, authenticated session cookie is provided for the inheriting classes.
      * This process can most likely be re-implemented using CXF's HTTP Conduit and AuthSupplier
@@ -215,10 +214,8 @@ public abstract class BaseRestServiceTest {
     /**
      * Marshalls specified object into XML representation
      *
-     * @param o
-     * 		Object to generate string for
-     * @return
-     *        Returns XML representation of the specified object
+     * @param o Object to generate string for
+     * @return Returns XML representation of the specified object
      */
     protected static String toXmlString(Object o) {
         if (o == null) {
@@ -272,10 +269,8 @@ public abstract class BaseRestServiceTest {
     /**
      * Creates new authenticated service for the specified service class.
      *
-     * @param resourceClass
-     * 		Service class
-     * @return
-     *        Returns the new service instance
+     * @param resourceClass Service class
+     * @return Returns the new service instance
      */
     public static <T> T getResource(Class<T> resourceClass) {
         if (client == null) {
@@ -320,10 +315,8 @@ public abstract class BaseRestServiceTest {
      * Generates test data for the specified instance. If the specified instance can not be populated
      * the method fails test.
      *
-     * @param t
-     * 		Instance to that should be populated with the test data.
-     * @return
-     *        Returns the populated instance.
+     * @param t Instance to that should be populated with the test data.
+     * @return Returns the populated instance.
      */
     protected static <T> T populate(T t) {
         try {

@@ -31,9 +31,8 @@ import org.oscarehr.common.model.AbstractModel;
 
 
 /**
- * Model class for the lst_gender database table. 
+ * Model class for the lst_gender database table.
  * Contains an enumerated class for Gender code.
- *
  */
 @Entity
 @Table(name = "lst_gender")

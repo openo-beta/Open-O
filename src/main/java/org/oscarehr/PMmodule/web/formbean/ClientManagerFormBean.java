@@ -43,8 +43,7 @@ public class ClientManagerFormBean implements Serializable {
     }
 
     /**
-     * @param tab
-     *            The tab to set.
+     * @param tab The tab to set.
      */
     public void setTab(String tab) {
         this.tab = tab;

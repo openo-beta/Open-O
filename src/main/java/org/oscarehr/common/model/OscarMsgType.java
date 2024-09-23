@@ -42,7 +42,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author rjonasz
  */
 @Entity

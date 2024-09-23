@@ -99,11 +99,10 @@ public class Site extends AbstractModel<Integer> implements java.io.Serializable
     private String siteLogoDesc = null;
 
     /**
-     *     <set name="providers" table="providersite" cascade="all" lazy="false" fetch="join" inverse="true">
-     <key column="site_id"/>
-     <many-to-many column="provider_no" class="Provider"/>
-     </set>
-
+     * <set name="providers" table="providersite" cascade="all" lazy="false" fetch="join" inverse="true">
+     * <key column="site_id"/>
+     * <many-to-many column="provider_no" class="Provider"/>
+     * </set>
      */
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

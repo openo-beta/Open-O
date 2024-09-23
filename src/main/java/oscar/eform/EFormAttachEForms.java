@@ -40,7 +40,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author rjonasz
  */
 public class EFormAttachEForms {
@@ -52,7 +51,9 @@ public class EFormAttachEForms {
     private String consultationId;
     private ArrayList<String> eForms;
 
-    /** Creates a new instance of ConsultationAttachEForms */
+    /**
+     * Creates a new instance of ConsultationAttachEForms
+     */
     public EFormAttachEForms(String provNo, String demo, String req, String[] d) {
         providerNumber = provNo;
         consultationId = req;

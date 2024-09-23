@@ -30,7 +30,6 @@ import java.util.Comparator;
 import java.util.Hashtable;
 
 /**
- *
  * @author jay
  */
 public class MyDrugrefComparator implements Comparator {

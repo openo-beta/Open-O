@@ -39,12 +39,12 @@ import org.oscarehr.util.ShutdownException;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * <p>Title:AlertTimer </p>
  *
  * <p>Description: </p>
  * AlertTimer is responsible for managing the execution Schedule of the CDM Reminders(or any other future alerts)
  * at regular intervals.
+ *
  * @author not Joel Legris
  * @version 1.0
  */

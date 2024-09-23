@@ -38,7 +38,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.oscarReport.data.RptSearchData;
 
 /**
- *
  * @author jay
  */
 public class RptDemographQueryFavouriteDeleteAction extends Action {
@@ -59,7 +58,9 @@ public class RptDemographQueryFavouriteDeleteAction extends Action {
         return mapping.findForward("success");
     }
 
-    /** Creates a new instance of RptDemographQueryFavouriteDeleteAction */
+    /**
+     * Creates a new instance of RptDemographQueryFavouriteDeleteAction
+     */
     public RptDemographQueryFavouriteDeleteAction() {
     }
 

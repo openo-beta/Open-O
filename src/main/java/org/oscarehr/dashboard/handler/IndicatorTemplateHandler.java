@@ -46,17 +46,15 @@ import org.oscarehr.util.MiscUtils;
 import org.w3c.dom.Document;
 
 /**
- *
- * Converts a XML IndicatorTemplate string into several formats: 
+ * Converts a XML IndicatorTemplate string into several formats:
  * Document
  * IndicatorTemplate Entity Bean
  * IndicatorTemplateXML Bean - for XML to POJO parsing.
  * IndicatorBean - for display layer
- *
- * Requires the proper IndicatorXMLTemplateSchema.xsd schema file to be set 
+ * <p>
+ * Requires the proper IndicatorXMLTemplateSchema.xsd schema file to be set
  * into classpath: indicatorXMLTemplates/IndicatorXMLTemplateSchema.xsd
  * This class will not instantiate without the Schema file
- *
  */
 public class IndicatorTemplateHandler {
 
@@ -99,7 +97,7 @@ public class IndicatorTemplateHandler {
      * This will validate only if the XML Document is already set in
      * properties. Should be no need to use it as the Document is validated
      * as it is being parsed.
-     *
+     * <p>
      * If validation fails - call the getValidationMessage method for the reason.
      */
     public boolean validate() {

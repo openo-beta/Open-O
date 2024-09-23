@@ -63,7 +63,6 @@ import org.oscarehr.integration.fhir.utils.FhirUtils;
 
 /**
  * Any Organizational unit that has compiled and is in stewardship of patient data.
- *
  */
 public class Organization<T extends AbstractModel<Integer> & ContactInterface> extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Organization, T> {
 

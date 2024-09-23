@@ -15,8 +15,8 @@ import java.util.Date;
 
 /**
  * Date of Birth (Z50 Query only)
- * @author jen
  *
+ * @author jen
  */
 public class PID7 implements Parameter {
 

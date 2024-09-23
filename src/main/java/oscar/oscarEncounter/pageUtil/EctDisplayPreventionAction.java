@@ -47,8 +47,7 @@ import oscar.oscarPrevention.PreventionDisplayConfig;
 import oscar.util.StringUtils;
 
 /**
- *  Creates DAO for left navbar of encounter form
- *
+ * Creates DAO for left navbar of encounter form
  */
 public class EctDisplayPreventionAction extends EctDisplayAction {
     private static final String cmd = "preventions";

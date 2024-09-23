@@ -25,7 +25,6 @@ package org.oscarehr.match;
 
 /**
  * @author AnooshTech
- *
  */
 public class MatchManagerException extends Exception {
     public MatchManagerException(String message) {

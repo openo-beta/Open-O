@@ -38,11 +38,11 @@ import org.oscarehr.oscarRx.erx.model.ERxPatientData;
  * be called by sending a SOAP request to the External Prescriber's web service.
  *
  * @see <a
- *      href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=SetPatientImmediate3">The
- *      the External Prescriber SetPatientImmediate3 web service demo page</a>
+ * href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=SetPatientImmediate3">The
+ * the External Prescriber SetPatientImmediate3 web service demo page</a>
  * @see <a
- *      href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgePatientV3.ashx#SetPatientImmediateD___6">The
- *      the External Prescriber wiki</a>
+ * href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgePatientV3.ashx#SetPatientImmediateD___6">The
+ * the External Prescriber wiki</a>
  */
 public class SetPatientImmediate3 {
     /**
@@ -78,21 +78,14 @@ public class SetPatientImmediate3 {
     /**
      * Construct a SetPatientImmediate3.
      *
-     * @param username
-     *            The username used to send the data.
-     * @param password
-     *            The password used to send the data.
-     * @param localeId
-     *            The locale to return information in.
-     * @param clientNumber
-     *            The client number sending the data.
-     * @param isTraining
-     *            True if the patient data is being sent because training is
-     *            occurring.
-     * @param transaction
-     *            A transaction object to pass in the request.
-     * @param patient
-     *            The patient data to send.
+     * @param username     The username used to send the data.
+     * @param password     The password used to send the data.
+     * @param localeId     The locale to return information in.
+     * @param clientNumber The client number sending the data.
+     * @param isTraining   True if the patient data is being sent because training is
+     *                     occurring.
+     * @param transaction  A transaction object to pass in the request.
+     * @param patient      The patient data to send.
      */
     public SetPatientImmediate3(String username, String password,
                                 String localeId, String clientNumber, boolean isTraining,
@@ -139,8 +132,7 @@ public class SetPatientImmediate3 {
      * Get a SOAP document fragment representing this object.
      *
      * @return A SOAPElement representing this object.
-     * @throws SOAPException
-     *             If an error occurred when trying to construct this element.
+     * @throws SOAPException If an error occurred when trying to construct this element.
      */
     public SOAPElement getSOAPElement() throws SOAPException {
         // Create the parent node
@@ -184,56 +176,49 @@ public class SetPatientImmediate3 {
     }
 
     /**
-     * @param clientNumber
-     *            the clientNumber to set
+     * @param clientNumber the clientNumber to set
      */
     public void setClientNumber(String clientNumber) {
         this.clientNumber = clientNumber;
     }
 
     /**
-     * @param localeId
-     *            the localeId to set
+     * @param localeId the localeId to set
      */
     public void setLocaleId(String localeId) {
         this.localeId = localeId;
     }
 
     /**
-     * @param password
-     *            the password to set
+     * @param password the password to set
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * @param patient
-     *            the patient to set
+     * @param patient the patient to set
      */
     public void setPatient(ERxPatientData patient) {
         this.patient = patient;
     }
 
     /**
-     * @param isTraining
-     *            the isTraining to set
+     * @param isTraining the isTraining to set
      */
     public void setTraining(boolean isTraining) {
         this.isTraining = isTraining;
     }
 
     /**
-     * @param transaction
-     *            the transaction to set
+     * @param transaction the transaction to set
      */
     public void setTransaction(Transaction3 transaction) {
         this.transaction = transaction;
     }
 
     /**
-     * @param username
-     *            the username to set
+     * @param username the username to set
      */
     public void setUsername(String username) {
         this.username = username;

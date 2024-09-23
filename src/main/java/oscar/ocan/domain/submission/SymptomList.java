@@ -58,8 +58,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -91,8 +89,6 @@ public class SymptomList {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     *
-     *
      */
     public List<String> getSymptom() {
         if (symptom == null) {
@@ -104,10 +100,8 @@ public class SymptomList {
     /**
      * Gets the value of the otherSymptom property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOtherSymptom() {
         return otherSymptom;
@@ -116,10 +110,8 @@ public class SymptomList {
     /**
      * Sets the value of the otherSymptom property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOtherSymptom(String value) {
         this.otherSymptom = value;

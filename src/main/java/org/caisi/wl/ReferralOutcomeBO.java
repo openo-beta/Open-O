@@ -48,8 +48,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "referralOutcomeBO", propOrder = {"accepted", "clientID",
@@ -63,7 +61,6 @@ public class ReferralOutcomeBO {
 
     /**
      * Gets the value of the accepted property.
-     *
      */
     public boolean isAccepted() {
         return accepted;
@@ -71,7 +68,6 @@ public class ReferralOutcomeBO {
 
     /**
      * Sets the value of the accepted property.
-     *
      */
     public void setAccepted(boolean value) {
         this.accepted = value;
@@ -79,7 +75,6 @@ public class ReferralOutcomeBO {
 
     /**
      * Gets the value of the clientID property.
-     *
      */
     public int getClientID() {
         return clientID;
@@ -87,7 +82,6 @@ public class ReferralOutcomeBO {
 
     /**
      * Sets the value of the clientID property.
-     *
      */
     public void setClientID(int value) {
         this.clientID = value;
@@ -97,7 +91,6 @@ public class ReferralOutcomeBO {
      * Gets the value of the rejectionReason property.
      *
      * @return possible object is {@link String }
-     *
      */
     public String getRejectionReason() {
         return rejectionReason;
@@ -106,9 +99,7 @@ public class ReferralOutcomeBO {
     /**
      * Sets the value of the rejectionReason property.
      *
-     * @param value
-     *            allowed object is {@link String }
-     *
+     * @param value allowed object is {@link String }
      */
     public void setRejectionReason(String value) {
         this.rejectionReason = value;
@@ -116,7 +107,6 @@ public class ReferralOutcomeBO {
 
     /**
      * Gets the value of the vacancyID property.
-     *
      */
     public int getVacancyID() {
         return vacancyID;
@@ -124,7 +114,6 @@ public class ReferralOutcomeBO {
 
     /**
      * Sets the value of the vacancyID property.
-     *
      */
     public void setVacancyID(int value) {
         this.vacancyID = value;

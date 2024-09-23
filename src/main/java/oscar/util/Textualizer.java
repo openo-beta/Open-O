@@ -173,7 +173,6 @@ public class Textualizer {
 
     /**
      * Converts value from string into the appropriate instance type
-     *
      */
     public static class FromTemplate {
         public Object convert(String str, PropertyDescriptor descriptor) {

@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Copied-to Practitioner
- * @author jen
  *
+ * @author jen
  */
 public class OBR28 implements Parameter {
 

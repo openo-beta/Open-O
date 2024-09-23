@@ -38,10 +38,8 @@ import oscar.log.LogAction;
 
 /**
  * Will provide access to pharmacy data.
- *
+ * <p>
  * Future Use: Add privacy, security, and consent profiles
- *
- *
  */
 @Service
 public class PharmacyManager {

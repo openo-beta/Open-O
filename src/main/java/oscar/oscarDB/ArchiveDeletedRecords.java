@@ -38,21 +38,21 @@ import org.oscarehr.util.SpringUtils;
 
 /**
  * This class is used to archive deleted or updated rows that won't be used again.
- *
- *
- CREATE TABLE `table_modification` (
- `id` int(10) NOT NULL auto_increment primary key,
- `demographic_no` int(10) NOT NULL default '0',
- `provider_no` varchar(6) NOT NULL default '',
- `modification_date` datetime default NULL,
- `modification_type` varchar(20) default NULL,
- `table_name` varchar(255) default NULL,
- `row_id` varchar(20) default NULL,
- `resultSet` text,
- KEY `table_modification_demographic_no` (`demographic_no`),
- KEY `table_modification_provider_no` (`provider_no`),
- KEY `table_modification_modification_type` (`modification_type`(10))
- );
+ * <p>
+ * <p>
+ * CREATE TABLE `table_modification` (
+ * `id` int(10) NOT NULL auto_increment primary key,
+ * `demographic_no` int(10) NOT NULL default '0',
+ * `provider_no` varchar(6) NOT NULL default '',
+ * `modification_date` datetime default NULL,
+ * `modification_type` varchar(20) default NULL,
+ * `table_name` varchar(255) default NULL,
+ * `row_id` varchar(20) default NULL,
+ * `resultSet` text,
+ * KEY `table_modification_demographic_no` (`demographic_no`),
+ * KEY `table_modification_provider_no` (`provider_no`),
+ * KEY `table_modification_modification_type` (`modification_type`(10))
+ * );
  *
  * @author Jay Gallagher
  */
@@ -61,7 +61,7 @@ public class ArchiveDeletedRecords {
     static String UPDATE = "update";
 
     /**
-     * Creates a new instance of ArchiveDeletedRecords 
+     * Creates a new instance of ArchiveDeletedRecords
      */
     public ArchiveDeletedRecords() {
     }

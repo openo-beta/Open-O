@@ -96,10 +96,14 @@ import org.oscarehr.ws.rest.to.model.DemographicSearchRequest.SEARCHMODE;
  */
 public class CaisiIntegratorManager {
 
-    /** only non-audited data should be cached in here */
+    /**
+     * only non-audited data should be cached in here
+     */
     private static QueueCache<String, Object> basicDataCache = new QueueCache<String, Object>(4, 100, org.apache.commons.lang.time.DateUtils.MILLIS_PER_HOUR, null);
 
-    /** data put here should be segmented by the requesting provider as part of the cache key */
+    /**
+     * data put here should be segmented by the requesting provider as part of the cache key
+     */
     private static QueueCache<String, Object> segmentedDataCache = new QueueCache<String, Object>(4, 100, org.apache.commons.lang.time.DateUtils.MILLIS_PER_HOUR, null);
 
     public static void setIntegratorOffline(HttpSession session, boolean status) {
@@ -694,8 +698,9 @@ public class CaisiIntegratorManager {
     }
 
     /**
-     * Get Oscar Messenger messages from the integrator. 
+     * Get Oscar Messenger messages from the integrator.
      * Unlike other Integrated objects - Provider communication will be saved into the local facility
+     *
      * @param loggedInInfo
      * @param searchRequest
      * @return

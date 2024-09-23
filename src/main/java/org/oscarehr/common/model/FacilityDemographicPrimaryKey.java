@@ -33,7 +33,7 @@ import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
  * This class is used for (at least) 2 purposes, 1) as a PrimaryKey for JPA objects,
  * 2) as a primary key for integrator processing (the reason being the pk's passed
  * by the integrator doesn't have equals/hashcode so we just use this one when
- * we need to have the keys that support equals/hashcode).  
+ * we need to have the keys that support equals/hashcode).
  */
 @Embeddable
 public class FacilityDemographicPrimaryKey implements Serializable {

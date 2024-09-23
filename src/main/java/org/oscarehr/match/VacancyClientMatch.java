@@ -28,7 +28,6 @@ import java.util.Date;
 
 /**
  * @author AnooshTech
- *
  */
 public class VacancyClientMatch implements Comparable<VacancyClientMatch> {
     public enum VacancyClientMatchStatus {

@@ -41,7 +41,6 @@ import org.springframework.stereotype.Repository;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 
 /**
- *
  * @author jay gallagher
  */
 @Repository
@@ -97,15 +96,11 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
     /**
      * Adds lab results to the provider inbox
      *
-     * @param providerNo
-     *                   Provider to add lab results to
-     * @param labNo
-     *                   Document id to be added to the inbox
-     * @param labType
-     *                   Type of the document to be added. Available document types
+     * @param providerNo Provider to add lab results to
+     * @param labNo      Document id to be added to the inbox
+     * @param labType    Type of the document to be added. Available document types
      *                   are defined in {@link oscar.oscarLab.ca.on.LabResultData}
      *                   class.
-     *
      */
     // TODO Replace labType parameter with an enum
     @SuppressWarnings("unchecked")

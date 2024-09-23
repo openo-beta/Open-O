@@ -106,10 +106,8 @@ public class FaxManagerImpl implements FaxManager {
     }
 
     /**
-     * @Deprecated
-     * Move these rendering methods into a more generic class like the DocumentManager
-     *
      * @return
+     * @Deprecated Move these rendering methods into a more generic class like the DocumentManager
      */
     @Override
     @Deprecated
@@ -208,7 +206,6 @@ public class FaxManagerImpl implements FaxManager {
      * The FaxJob list that is returned contains persisted FaxJob Objects
      * This method has a specific purpose for the FaxAction class.  Use the
      * createFaxJob(LoggedInInfo loggedInInfo, Map<String, Object> faxJobMap) signature otherwise.
-     *
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -229,9 +226,8 @@ public class FaxManagerImpl implements FaxManager {
      * senderFaxNumber
      * demographicNo
      * copytoRecipients (as String[])
-     *
+     * <p>
      * The FaxJob list that is returned contains persisted FaxJob Objects
-     *
      */
     @Override
     public List<FaxJob> createAndSaveFaxJob(LoggedInInfo loggedInInfo, Map<String, Object> faxJobMap) {
@@ -293,7 +289,6 @@ public class FaxManagerImpl implements FaxManager {
      * demographicNo
      * copytoRecipients (as String[])
      * The FaxJob returned is NEW UN-PERSISTED FaxJob Object with a single recipient
-     *
      */
     @Override
     public FaxJob createFaxJob(LoggedInInfo loggedInInfo, Map<String, Object> faxJobMap) {
@@ -373,7 +368,6 @@ public class FaxManagerImpl implements FaxManager {
      * Add recipients from an indexed array of JSON formatted strings
      * name:<recipient>
      * fax:<recipient fax number>
-     *
      */
     @Override
     public List<FaxJob> addRecipients(LoggedInInfo loggedInInfo, FaxJob faxJob, String[] faxRecipients) {
@@ -394,7 +388,6 @@ public class FaxManagerImpl implements FaxManager {
     /**
      * Create 1 faxJob for each fax recipient. Sets each faxJob to the
      * default status of WAITNG.
-     *
      */
     @Override
     public List<FaxJob> addRecipients(LoggedInInfo loggedInInfo, FaxJob faxJob, List<FaxRecipient> faxRecipients) {
@@ -431,7 +424,7 @@ public class FaxManagerImpl implements FaxManager {
 
     /**
      * Persist to the database for transmission later if the fax account is valid.
-     *
+     * <p>
      * The given faxjob must contain a valid sender fax number and username.
      */
     @Override
@@ -478,7 +471,6 @@ public class FaxManagerImpl implements FaxManager {
 
     /**
      * prepend a fax cover page to the given existing PDF document.
-     *
      */
     @Override
     public Path addCoverPage(LoggedInInfo loggedInInfo, String note, Path currentDocument) throws IOException {
@@ -539,7 +531,6 @@ public class FaxManagerImpl implements FaxManager {
     /**
      * Get a preview image of the documents being faxed.  Default is
      * the first page only
-     *
      */
     @Override
     public Path getFaxPreviewImage(LoggedInInfo loggedInInfo, Path filePath) {
@@ -565,7 +556,6 @@ public class FaxManagerImpl implements FaxManager {
 
     /**
      * Sets both the global user log and the fax job log.
-     *
      */
     @Override
     public void logFaxJob(LoggedInInfo loggedInInfo, FaxJob faxJob, TransactionType transactionType, int transactionId) {
@@ -640,7 +630,6 @@ public class FaxManagerImpl implements FaxManager {
 
     /**
      * Clear the preview cache and temp directory.
-     *
      */
     @Override
     public boolean flush(LoggedInInfo loggedInInfo, String filePath) {

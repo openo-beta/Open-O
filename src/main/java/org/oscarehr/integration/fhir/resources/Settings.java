@@ -30,7 +30,6 @@ import org.oscarehr.integration.fhir.resources.constants.Region;
 
 /**
  * TODO this will eventually load a properties file of settings.
- *
  */
 public class Settings {
 

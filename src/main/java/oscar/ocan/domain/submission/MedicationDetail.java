@@ -83,8 +83,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -101,10 +99,8 @@ public class MedicationDetail {
     /**
      * Gets the value of the takenAsPrescribed property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTakenAsPrescribed() {
         return takenAsPrescribed;
@@ -113,10 +109,8 @@ public class MedicationDetail {
     /**
      * Sets the value of the takenAsPrescribed property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTakenAsPrescribed(String value) {
         this.takenAsPrescribed = value;
@@ -125,10 +119,8 @@ public class MedicationDetail {
     /**
      * Gets the value of the isHelpProvided property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getIsHelpProvided() {
         return isHelpProvided;
@@ -137,10 +129,8 @@ public class MedicationDetail {
     /**
      * Sets the value of the isHelpProvided property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setIsHelpProvided(String value) {
         this.isHelpProvided = value;
@@ -149,10 +139,8 @@ public class MedicationDetail {
     /**
      * Gets the value of the isHelpNeeded property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getIsHelpNeeded() {
         return isHelpNeeded;
@@ -161,10 +149,8 @@ public class MedicationDetail {
     /**
      * Sets the value of the isHelpNeeded property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setIsHelpNeeded(String value) {
         this.isHelpNeeded = value;

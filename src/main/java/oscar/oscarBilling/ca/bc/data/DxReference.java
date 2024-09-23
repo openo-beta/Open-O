@@ -47,14 +47,15 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class DxReference {
     private static final Logger _log = MiscUtils.getLogger();
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 
-    /** Creates a new instance of DxReference */
+    /**
+     * Creates a new instance of DxReference
+     */
     public DxReference() {
     }
     //select dx_code1, dx_code2, dx_code3,service_date from billingmaster order by service_date desc;

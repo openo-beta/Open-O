@@ -34,13 +34,14 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author jay
  */
 public class TeleplanService {
     static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of TeleplanService */
+    /**
+     * Creates a new instance of TeleplanService
+     */
     public TeleplanService() {
     }
 

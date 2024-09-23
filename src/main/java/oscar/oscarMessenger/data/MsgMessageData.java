@@ -50,10 +50,7 @@ import org.w3c.dom.NodeList;
 import oscar.oscarMessenger.util.Msgxml;
 
 /**
- *
- * @deprecated
- * Use the MessagingManger
- *
+ * @deprecated Use the MessagingManger
  */
 @Deprecated
 public class MsgMessageData {

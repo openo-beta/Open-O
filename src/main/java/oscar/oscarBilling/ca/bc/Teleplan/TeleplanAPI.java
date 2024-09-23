@@ -46,7 +46,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author jay
  */
 public class TeleplanAPI {
@@ -70,7 +69,9 @@ public class TeleplanAPI {
 
     HttpClient httpclient = null;
 
-    /** Creates a new instance of TeleplanAPI */
+    /**
+     * Creates a new instance of TeleplanAPI
+     */
     public TeleplanAPI() {
         getClient();
     }
@@ -147,16 +148,16 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: userid, password, new password, new password
-     *Parameters to TeleplanBroker are
-     *ExternalAction = "AchangePW"
-     *username         = $uid
-     *password         = $pw
-     *new.password     = $chgpw1
-     *confirm.password = $chgpw2
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS" Password was changed successfully
-     *                                "FAILURE" Password was not changed
+     * Procedure parameters: userid, password, new password, new password
+     * Parameters to TeleplanBroker are
+     * ExternalAction = "AchangePW"
+     * username         = $uid
+     * password         = $pw
+     * new.password     = $chgpw1
+     * confirm.password = $chgpw2
+     * Results from TeleplanBroker are:
+     * "SUCCESS" Password was changed successfully
+     * "FAILURE" Password was not changed
      */
     public TeleplanResponse changePassword(String username, String password, String newPassword, String confirmPassword) {
 
@@ -173,16 +174,16 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: userid, password
-     *Parameters to TeleplanBroker are
-     *ExternalAction = "AsignOn"
-     *Username = $uid
-     *password = $pw
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS" for valid logon
-     *                                "FAILURE" for invalid logon
-     *                                "EXPIRED.PASSWORD" for valid username/password, user must change PW
-     *                                                   before the application will return a SUCCESS
+     * Procedure parameters: userid, password
+     * Parameters to TeleplanBroker are
+     * ExternalAction = "AsignOn"
+     * Username = $uid
+     * password = $pw
+     * Results from TeleplanBroker are:
+     * "SUCCESS" for valid logon
+     * "FAILURE" for invalid logon
+     * "EXPIRED.PASSWORD" for valid username/password, user must change PW
+     * before the application will return a SUCCESS
      */
     public TeleplanResponse login(String username, String password) {
         NameValuePair[] data = {
@@ -195,10 +196,10 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters:none
-     *Parameters to TeleplanBroker are
-     *ExternalAction = "AsignOff"
-     *Results from TeleplanBroker are: "SUCCESS" for valid logoff
+     * Procedure parameters:none
+     * Parameters to TeleplanBroker are
+     * ExternalAction = "AsignOff"
+     * Results from TeleplanBroker are: "SUCCESS" for valid logoff
      */
     public TeleplanResponse logoff() {
         NameValuePair[] data = {
@@ -209,7 +210,7 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: LogType which can be "T" or "L" or "S"
+     * Procedure parameters: LogType which can be "T" or "L" or "S"
      */
     public TeleplanResponse getCurrentLog(String logtype) {
         return getLog(logtype, "CURRENT");
@@ -217,15 +218,15 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: LogType, LogName
-     *Parameters to TeleplanBroker are
-     *LOGNAME = Name representing an actual log file (from getLogList) or "CURRENT"
-     *ExternalAction = "AgetLog"
-     *LOGTYPE = "T" or "L" or "S"
-     *MODE = "DOWNLOAD"
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS" for valid download
-     *                                "FAILURE" for problem
+     * Procedure parameters: LogType, LogName
+     * Parameters to TeleplanBroker are
+     * LOGNAME = Name representing an actual log file (from getLogList) or "CURRENT"
+     * ExternalAction = "AgetLog"
+     * LOGTYPE = "T" or "L" or "S"
+     * MODE = "DOWNLOAD"
+     * Results from TeleplanBroker are:
+     * "SUCCESS" for valid download
+     * "FAILURE" for problem
      */
     public TeleplanResponse getLog(String logname, String logtype) {
         NameValuePair[] data = {
@@ -240,20 +241,20 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: None
-     *Parameters to TeleplanBroker are
-     *ExternalAction = "AgetLogList"
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS"
-     *                                "FAILURE"
-     *This will return a file contain a list (1 logname/line) of logs
-     *the user can download
-     *The format of the logname is: 001E2805.LOG
-     *To convert this to the same style as the web download name you must
-     *extract the century from the first character (0..Z 0=20, Z=56)
-     *extract the Month which is the 4th character (A (Jan)..L(Dec))
-     *Then you would create the filename CCYY_MM_DD_Gdd.LOG
-     *The filename 001E2805.LOG would convert to 2001_5_28_G05.LOG
+     * Procedure parameters: None
+     * Parameters to TeleplanBroker are
+     * ExternalAction = "AgetLogList"
+     * Results from TeleplanBroker are:
+     * "SUCCESS"
+     * "FAILURE"
+     * This will return a file contain a list (1 logname/line) of logs
+     * the user can download
+     * The format of the logname is: 001E2805.LOG
+     * To convert this to the same style as the web download name you must
+     * extract the century from the first character (0..Z 0=20, Z=56)
+     * extract the Month which is the 4th character (A (Jan)..L(Dec))
+     * Then you would create the filename CCYY_MM_DD_Gdd.LOG
+     * The filename 001E2805.LOG would convert to 2001_5_28_G05.LOG
      */
     public TeleplanResponse getLogList() {
         NameValuePair[] data = {
@@ -264,13 +265,13 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: include remittance which can be either "true" or "false"
-     *Parameters to TeleplanBroker are
-     *remittance = $includeRemit which can be "true" or "false"
-     *ExternalAction = "AgetRemit"
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS"
-     *                                "FAILURE"
+     * Procedure parameters: include remittance which can be either "true" or "false"
+     * Parameters to TeleplanBroker are
+     * remittance = $includeRemit which can be "true" or "false"
+     * ExternalAction = "AgetRemit"
+     * Results from TeleplanBroker are:
+     * "SUCCESS"
+     * "FAILURE"
      */
     public TeleplanResponse getRemittance(boolean includeRemittance) {
         NameValuePair[] data = {
@@ -282,25 +283,25 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: File Type, which is outlined below
-     *Vendors use this section and command to obtain Other Processing files
-     *Parameters to TeleplanBroker are
-     *filechar = $filetype which can be:
-     *      V = VENDORS TEST SELECTION ONLY
-     *      I = MSP ICD9 Codes (4&3 some 5)
-     *      D = Diagnostic Facility's Codes
-     *      G = Geographic Differential Payment Codes
-     *      R = Rural Retention Premium Codes
-     *      ? = List of Services Available
-     *      9 = MSP Technical Use ONLY
-     *      3 = MSP Fee Schedule Costs
-     *      2 = MSP ICD9 Codes (3 char)
-     *      1 = MSP Explanatory Codes List
-     *      0 = Get list of valid codes
-     *ExternalAction = "AgetAscii"
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS"
-     *                                "FAILURE"
+     * Procedure parameters: File Type, which is outlined below
+     * Vendors use this section and command to obtain Other Processing files
+     * Parameters to TeleplanBroker are
+     * filechar = $filetype which can be:
+     * V = VENDORS TEST SELECTION ONLY
+     * I = MSP ICD9 Codes (4&3 some 5)
+     * D = Diagnostic Facility's Codes
+     * G = Geographic Differential Payment Codes
+     * R = Rural Retention Premium Codes
+     * ? = List of Services Available
+     * 9 = MSP Technical Use ONLY
+     * 3 = MSP Fee Schedule Costs
+     * 2 = MSP ICD9 Codes (3 char)
+     * 1 = MSP Explanatory Codes List
+     * 0 = Get list of valid codes
+     * ExternalAction = "AgetAscii"
+     * Results from TeleplanBroker are:
+     * "SUCCESS"
+     * "FAILURE"
      */
     public TeleplanResponse getAsciiFile(String filetype) {
         NameValuePair[] data = {
@@ -312,24 +313,24 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: File Type which is outlined below
-     *#Parameters to TeleplanBroker are
-     *This section and command restricted to MoH Internal staff access
-     *filechar = $filetype which can be:
-     *      V = VENDORS TEST SELECTION ONLY
-     *      I = MSP ICD9 Codes (4&3 some 5)
-     *      D = Diagnostic Facility's Codes
-     *      G = Geographic Differential Payment Codes
-     *      R = Rural Retention Premium Codes
-     *      ? = List of Services Available
-     *      9 = MSP Technical Use ONLY
-     *      3 = MSP Fee Schedule Costs
-     *      2 = MSP ICD9 Codes (3 char)
-     *      1 = MSP Explanatory Codes List
-     *ExternalAction = "AgetAsciiMF"
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS"
-     *                                "FAILURE"
+     * Procedure parameters: File Type which is outlined below
+     * #Parameters to TeleplanBroker are
+     * This section and command restricted to MoH Internal staff access
+     * filechar = $filetype which can be:
+     * V = VENDORS TEST SELECTION ONLY
+     * I = MSP ICD9 Codes (4&3 some 5)
+     * D = Diagnostic Facility's Codes
+     * G = Geographic Differential Payment Codes
+     * R = Rural Retention Premium Codes
+     * ? = List of Services Available
+     * 9 = MSP Technical Use ONLY
+     * 3 = MSP Fee Schedule Costs
+     * 2 = MSP ICD9 Codes (3 char)
+     * 1 = MSP Explanatory Codes List
+     * ExternalAction = "AgetAsciiMF"
+     * Results from TeleplanBroker are:
+     * "SUCCESS"
+     * "FAILURE"
      */
     public TeleplanResponse getAsciiFileMF(String filetype) {
         NameValuePair[] data = {
@@ -341,13 +342,13 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: Filename which is a string representing a file on the local system
-     *Parameters to TeleplanBroker are
-     *ExternalAction = "AputAscii"
-     *This is a RFC1867 Multi-part post
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS"
-     *                                "FAILURE"
+     * Procedure parameters: Filename which is a string representing a file on the local system
+     * Parameters to TeleplanBroker are
+     * ExternalAction = "AputAscii"
+     * This is a RFC1867 Multi-part post
+     * Results from TeleplanBroker are:
+     * "SUCCESS"
+     * "FAILURE"
      */
     public TeleplanResponse putAsciiFile(File f) throws FileNotFoundException {
 
@@ -377,13 +378,13 @@ public class TeleplanAPI {
     //-------------------------------------------------------------------------
 
     /**
-     *Procedure parameters: Filename which is a string representing a file on the local system
-     *Parameters to TeleplanBroker are
-     *ExternalAction = "AputRemit"
-     *This is a RFC1867 Multi-part post
-     *Results from TeleplanBroker are:
-     *                                "SUCCESS"
-     *                                "FAILURE"
+     * Procedure parameters: Filename which is a string representing a file on the local system
+     * Parameters to TeleplanBroker are
+     * ExternalAction = "AputRemit"
+     * This is a RFC1867 Multi-part post
+     * Results from TeleplanBroker are:
+     * "SUCCESS"
+     * "FAILURE"
      */
     public TeleplanResponse putMSPFile(File f) throws FileNotFoundException {
         Part[] parts = {new StringPart("ExternalAction", "AputRemit"), new FilePart("submitFile", f)};
@@ -414,22 +415,21 @@ public class TeleplanAPI {
     /**
      * Note: Internal field names(Patient Visit Charge) reflect Subsidy Insured Service
      * We cannot change Internal modules but you may reflect externally, see Browser screens
-     *
-     *Procedure parameters: & Parameters to TeleplanBroker:
-     *PHN	  	       	= $phn			(string representing valid PHN Number)
-     *dateOfBirthyyyy	= $dateofbirthyyyy	(string denoting numeric year)
-     *dateOfBirthmm		= $dateofbirthmm	(string denoting numeric month)
-     *dateOfBirthdd		= $dateofbirthdd	(string denoting numeric day)
-     *dateOfServiceyyyy	= $dateofserviceyyyy	(string denoting year)
-     *dateOfServicemm	= $dateofservicemm	(string denoting numeric month)
-     *dateOfServicedd	= $dateofservicedd	(string denoting numeric day)
-     *PatientVisitCharge	= $patientvisitcharge	(string representing a boolean true/false)
-     *LastEyeExam		= $lasteyeexam		(string representing a boolean true/false)
-     *PatientRestriction 	= $patientrestriction	(string representing a boolean true/false)
-     *ExternalAction 	= "AcheckE45"
-     *Results from TeleplanBroker are:
-     *           Still to be determined but "SUCCESS" & "FAILURE" will be returned
-     *
+     * <p>
+     * Procedure parameters: & Parameters to TeleplanBroker:
+     * PHN	  	       	= $phn			(string representing valid PHN Number)
+     * dateOfBirthyyyy	= $dateofbirthyyyy	(string denoting numeric year)
+     * dateOfBirthmm		= $dateofbirthmm	(string denoting numeric month)
+     * dateOfBirthdd		= $dateofbirthdd	(string denoting numeric day)
+     * dateOfServiceyyyy	= $dateofserviceyyyy	(string denoting year)
+     * dateOfServicemm	= $dateofservicemm	(string denoting numeric month)
+     * dateOfServicedd	= $dateofservicedd	(string denoting numeric day)
+     * PatientVisitCharge	= $patientvisitcharge	(string representing a boolean true/false)
+     * LastEyeExam		= $lasteyeexam		(string representing a boolean true/false)
+     * PatientRestriction 	= $patientrestriction	(string representing a boolean true/false)
+     * ExternalAction 	= "AcheckE45"
+     * Results from TeleplanBroker are:
+     * Still to be determined but "SUCCESS" & "FAILURE" will be returned
      */
     public TeleplanResponse checkElig(String phn, String dateofbirthyyyy, String dateofbirthmm, String dateofbirthdd,
                                       String dateofserviceyyyy, String dateofservicemm, String dateofservicedd,

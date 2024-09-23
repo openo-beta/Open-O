@@ -88,8 +88,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -110,10 +108,8 @@ public class ClientAddress {
     /**
      * Gets the value of the line1 property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLine1() {
         return line1;
@@ -122,10 +118,8 @@ public class ClientAddress {
     /**
      * Sets the value of the line1 property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLine1(String value) {
         this.line1 = value;
@@ -134,10 +128,8 @@ public class ClientAddress {
     /**
      * Gets the value of the line2 property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLine2() {
         return line2;
@@ -146,10 +138,8 @@ public class ClientAddress {
     /**
      * Sets the value of the line2 property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLine2(String value) {
         this.line2 = value;
@@ -158,10 +148,8 @@ public class ClientAddress {
     /**
      * Gets the value of the city property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCity() {
         return city;
@@ -170,10 +158,8 @@ public class ClientAddress {
     /**
      * Sets the value of the city property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCity(String value) {
         this.city = value;
@@ -182,10 +168,8 @@ public class ClientAddress {
     /**
      * Gets the value of the province property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getProvince() {
         return province;
@@ -194,10 +178,8 @@ public class ClientAddress {
     /**
      * Sets the value of the province property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setProvince(String value) {
         this.province = value;
@@ -206,10 +188,8 @@ public class ClientAddress {
     /**
      * Gets the value of the postalCode property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPostalCode() {
         return postalCode;
@@ -218,10 +198,8 @@ public class ClientAddress {
     /**
      * Sets the value of the postalCode property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPostalCode(String value) {
         this.postalCode = value;

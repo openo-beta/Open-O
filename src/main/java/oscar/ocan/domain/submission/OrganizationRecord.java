@@ -56,8 +56,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -78,10 +76,8 @@ public class OrganizationRecord {
     /**
      * Gets the value of the serviceOrg property.
      *
-     * @return
-     *     possible object is
-     *     {@link ServiceOrg }
-     *
+     * @return possible object is
+     * {@link ServiceOrg }
      */
     public ServiceOrg getServiceOrg() {
         return serviceOrg;
@@ -90,10 +86,8 @@ public class OrganizationRecord {
     /**
      * Sets the value of the serviceOrg property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link ServiceOrg }
-     *
+     * @param value allowed object is
+     *              {@link ServiceOrg }
      */
     public void setServiceOrg(ServiceOrg value) {
         this.serviceOrg = value;
@@ -102,10 +96,8 @@ public class OrganizationRecord {
     /**
      * Gets the value of the program property.
      *
-     * @return
-     *     possible object is
-     *     {@link Program }
-     *
+     * @return possible object is
+     * {@link Program }
      */
     public Program getProgram() {
         return program;
@@ -114,10 +106,8 @@ public class OrganizationRecord {
     /**
      * Sets the value of the program property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link Program }
-     *
+     * @param value allowed object is
+     *              {@link Program }
      */
     public void setProgram(Program value) {
         this.program = value;
@@ -126,10 +116,8 @@ public class OrganizationRecord {
     /**
      * Gets the value of the misFunction property.
      *
-     * @return
-     *     possible object is
-     *     {@link MISFunction }
-     *
+     * @return possible object is
+     * {@link MISFunction }
      */
     public MISFunction getMISFunction() {
         return misFunction;
@@ -138,10 +126,8 @@ public class OrganizationRecord {
     /**
      * Sets the value of the misFunction property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link MISFunction }
-     *
+     * @param value allowed object is
+     *              {@link MISFunction }
      */
     public void setMISFunction(MISFunction value) {
         this.misFunction = value;

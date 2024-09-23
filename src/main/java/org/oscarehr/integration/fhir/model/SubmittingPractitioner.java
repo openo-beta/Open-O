@@ -36,7 +36,7 @@ public class SubmittingPractitioner extends Practitioner {
      * record into an external registry.
      * Example: this is the practitioner whom has an Ontario ONEID account and is participating with sending patient data
      * to an external registry.
-     *
+     * <p>
      * ConfigurationManager is required.
      */
     public SubmittingPractitioner(Provider provider, OscarFhirConfigurationManager configurationManager) {

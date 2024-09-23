@@ -40,7 +40,6 @@ import org.oscarehr.util.SpringUtils;
 
 /**
  * @author AnooshTech
- *
  */
 public class Matcher {
 

@@ -62,8 +62,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -100,8 +98,6 @@ public class CSummaryOfActions {
      * {@link JAXBElement }{@code <}{@link java.math.BigInteger }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     *
-     *
      */
     public List<JAXBElement<? extends Serializable>> getCActionsOrCDomainOrCPriority() {
         if (cActionsOrCDomainOrCPriority == null) {

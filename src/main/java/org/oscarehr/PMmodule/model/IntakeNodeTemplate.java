@@ -136,8 +136,8 @@ public class IntakeNodeTemplate implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native" column="intake_node_template_id"
+     * <p>
+     * generator-class="native" column="intake_node_template_id"
      */
     public Integer getId() {
         return id;
@@ -146,8 +146,7 @@ public class IntakeNodeTemplate implements Serializable {
     /**
      * Set the unique identifier of this class
      *
-     * @param id
-     *            the new ID
+     * @param id the new ID
      */
     public void setId(Integer id) {
         this.id = id;
@@ -164,8 +163,7 @@ public class IntakeNodeTemplate implements Serializable {
     /**
      * Set the value related to the column: remote_intake_node_template_id
      *
-     * @param remoteId
-     *            the remote_intake_node_template_id value
+     * @param remoteId the remote_intake_node_template_id value
      */
     public void setRemoteId(Integer remoteId) {
         this.remoteId = remoteId;
@@ -181,8 +179,7 @@ public class IntakeNodeTemplate implements Serializable {
     /**
      * Set the value related to the column: intake_node_type_id
      *
-     * @param type
-     *            the intake_node_type_id value
+     * @param type the intake_node_type_id value
      */
     public void setType(IntakeNodeType type) {
         this.type = type;
@@ -198,8 +195,7 @@ public class IntakeNodeTemplate implements Serializable {
     /**
      * Set the value related to the column: intake_node_label_id
      *
-     * @param label
-     *            the intake_node_label_id value
+     * @param label the intake_node_label_id value
      */
     public void setLabel(IntakeNodeLabel label) {
         this.label = label;
@@ -215,8 +211,7 @@ public class IntakeNodeTemplate implements Serializable {
     /**
      * Set the value related to the column: answerElements
      *
-     * @param answerElements
-     *            the answerElements value
+     * @param answerElements the answerElements value
      */
     public void setAnswerElements(Set<IntakeAnswerElement> answerElements) {
         this.answerElements = answerElements;

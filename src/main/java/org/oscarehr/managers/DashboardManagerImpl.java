@@ -183,7 +183,6 @@ public class DashboardManagerImpl implements DashboardManager {
 
     /**
      * Returns ALL available Dashboards.
-     *
      */
     @Override
     public List<Dashboard> getDashboards(LoggedInInfo loggedInInfo) {
@@ -269,9 +268,8 @@ public class DashboardManagerImpl implements DashboardManager {
      * Retrieves an XML file from a servlet request object and then saves it to
      * the local file directory and finally writes an entry in the Indicator
      * Template db table.
-     *
+     * <p>
      * Returns a JSON string: status=success, or status=error, message=[message]
-     *
      */
     @Override
     public String importIndicatorTemplate(LoggedInInfo loggedInInfo, byte[] bytearray) {

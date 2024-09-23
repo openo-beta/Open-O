@@ -29,7 +29,7 @@ import org.oscarehr.common.model.Provider;
 /**
  * An abstract class to collect and pass inbox query parameters
  * Extending classes should translate provided parameters to the valid formats used by the inbox repository
- *
+ * <p>
  * All member variables are by default set to the most broad search criteria
  */
 public class InboxQueryParameters {

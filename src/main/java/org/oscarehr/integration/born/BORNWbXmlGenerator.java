@@ -112,11 +112,10 @@ import ca.bornontario.wb.YesNoUnknown;
 
 /**
  * For KidConnect 0-5 project (BORN)
- *
+ * <p>
  * This class basically grabs all the forms for a demographic..and generates XML documents for that patient.
  *
  * @author marc
- *
  */
 public class BORNWbXmlGenerator {
 

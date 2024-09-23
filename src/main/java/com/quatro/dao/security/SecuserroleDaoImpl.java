@@ -52,8 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
  * transactions. Each of these methods provides additional information for how
  * to configure it for the desired type of transaction control.
  *
- * @see com.quatro.model.security.Secuserrole
  * @author MyEclipse Persistence Tools
+ * @see com.quatro.model.security.Secuserrole
  */
 @Transactional
 public class SecuserroleDaoImpl extends HibernateDaoSupport implements SecuserroleDao {

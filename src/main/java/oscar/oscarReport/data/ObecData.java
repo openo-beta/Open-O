@@ -45,7 +45,7 @@ import oscar.oscarDB.DBPreparedHandler;
 import oscar.util.ConversionUtils;
 
 /**
- *This classes main function ObecGenerate collects a group of patients with health insurance number for OHIP validation in the last specified date
+ * This classes main function ObecGenerate collects a group of patients with health insurance number for OHIP validation in the last specified date
  */
 public class ObecData {
     private static Logger logger = MiscUtils.getLogger();

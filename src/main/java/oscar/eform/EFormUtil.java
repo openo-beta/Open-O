@@ -1592,7 +1592,6 @@ public class EFormUtil {
      * table and a status of unstable is set.
      * These logs are added in order to track and pre-emptively discourage use of poorly
      * developed eForms that are imported from external sources.
-     *
      */
     public static void logError(int formId, String error) {
         org.oscarehr.common.model.EForm eform = eformDao.findById(formId);

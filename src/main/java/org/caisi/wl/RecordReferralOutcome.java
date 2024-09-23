@@ -45,8 +45,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "recordReferralOutcome", propOrder = {"arg0"})
@@ -58,7 +56,6 @@ public class RecordReferralOutcome {
      * Gets the value of the arg0 property.
      *
      * @return possible object is {@link ReferralOutcomeBO }
-     *
      */
     public ReferralOutcomeBO getArg0() {
         return arg0;
@@ -67,9 +64,7 @@ public class RecordReferralOutcome {
     /**
      * Sets the value of the arg0 property.
      *
-     * @param value
-     *            allowed object is {@link ReferralOutcomeBO }
-     *
+     * @param value allowed object is {@link ReferralOutcomeBO }
      */
     public void setArg0(ReferralOutcomeBO value) {
         this.arg0 = value;

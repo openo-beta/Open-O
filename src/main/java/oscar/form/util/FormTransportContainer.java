@@ -40,11 +40,10 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.documentManager.ConvertToEdoc.DocumentType;
 
 /**
- *
  * @author denniswarren
- *
+ * <p>
  * Use this class to transport the output of an Oscar form from any
- * servlet into the ConvertToEdoc Utility.  
+ * servlet into the ConvertToEdoc Utility.
  */
 public class FormTransportContainer {
 

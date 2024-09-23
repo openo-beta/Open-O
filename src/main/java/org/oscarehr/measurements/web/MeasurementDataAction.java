@@ -197,7 +197,7 @@ public class MeasurementDataAction extends DispatchAction {
     /**
      * This function will be used to save a new measurement object to the database
      *
-     * @param request Request object containing the demographic number, appointment number, measurement type, value & instruction.
+     * @param request  Request object containing the demographic number, appointment number, measurement type, value & instruction.
      * @param response Response object to return the JSON data
      * @return JSON object containing boolean to let the user know if the save was successful or not
      */
@@ -348,7 +348,7 @@ public class MeasurementDataAction extends DispatchAction {
     /**
      * This function will be used to retrieve all measurement data of a specific type for a demographic
      *
-     * @param request Request object containing the demographic number and measurement type to be searched
+     * @param request  Request object containing the demographic number and measurement type to be searched
      * @param response Response object to return the JSON data containing measurement information
      * @return JSON object containing measurement data
      */

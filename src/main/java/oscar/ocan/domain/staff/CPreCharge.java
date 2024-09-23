@@ -55,8 +55,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -74,10 +72,8 @@ public class CPreCharge {
     /**
      * Gets the value of the cPreChargeDiversion property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCPreChargeDiversion() {
         return cPreChargeDiversion;
@@ -86,10 +82,8 @@ public class CPreCharge {
     /**
      * Sets the value of the cPreChargeDiversion property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCPreChargeDiversion(String value) {
         this.cPreChargeDiversion = value;
@@ -98,10 +92,8 @@ public class CPreCharge {
     /**
      * Gets the value of the cCourtDiversionProgram property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCCourtDiversionProgram() {
         return cCourtDiversionProgram;
@@ -110,10 +102,8 @@ public class CPreCharge {
     /**
      * Sets the value of the cCourtDiversionProgram property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCCourtDiversionProgram(String value) {
         this.cCourtDiversionProgram = value;

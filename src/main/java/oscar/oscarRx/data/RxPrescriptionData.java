@@ -1845,7 +1845,7 @@ public class RxPrescriptionData {
         }
 
         /**
-         *Setter for property custom (does it have customized directions)
+         * Setter for property custom (does it have customized directions)
          *
          * @param custom value for custom
          */

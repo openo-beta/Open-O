@@ -54,8 +54,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -70,10 +68,8 @@ public class C12AlcoholDoesDrinkingCauseYouAnyProblems {
     /**
      * Gets the value of the answerGroup property.
      *
-     * @return
-     *     possible object is
-     *     {@link AnswerGroup }
-     *
+     * @return possible object is
+     * {@link AnswerGroup }
      */
     public AnswerGroup getAnswerGroup() {
         return answerGroup;
@@ -82,10 +78,8 @@ public class C12AlcoholDoesDrinkingCauseYouAnyProblems {
     /**
      * Sets the value of the answerGroup property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link AnswerGroup }
-     *
+     * @param value allowed object is
+     *              {@link AnswerGroup }
      */
     public void setAnswerGroup(AnswerGroup value) {
         this.answerGroup = value;

@@ -51,7 +51,9 @@ public class MeasurementTypes {
     private Map<String, EctMeasurementTypesBean> byId = new HashMap<String, EctMeasurementTypesBean>();
     private Map<String, EctMeasurementTypesBean> byType = new HashMap<String, EctMeasurementTypesBean>();
 
-    /** Creates a new instance of MeasurementTypes */
+    /**
+     * Creates a new instance of MeasurementTypes
+     */
     private MeasurementTypes() {
     }
 

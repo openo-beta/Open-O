@@ -38,12 +38,11 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
- * Construct a DashboardBean 
- * Add a IndicatorTemplateHandler and IndicatorTemplates to construct a full 
- * Dashboard with the assigned Indicators by category and sub-category. 
- *
- * This class is chained together with the Indicator and PanelBean Factories to 
+ * Construct a DashboardBean
+ * Add a IndicatorTemplateHandler and IndicatorTemplates to construct a full
+ * Dashboard with the assigned Indicators by category and sub-category.
+ * <p>
+ * This class is chained together with the Indicator and PanelBean Factories to
  * create a full Dashboard from a list of Indicators and Dashboards.
  */
 public class DashboardBeanFactory {

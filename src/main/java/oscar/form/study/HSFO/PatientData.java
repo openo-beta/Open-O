@@ -30,11 +30,12 @@ import java.util.Date;
 
 /**
  * Class used by the HSFO Study
- *
  */
 public class PatientData {
 
-    /** Creates a new instance of PatientData */
+    /**
+     * Creates a new instance of PatientData
+     */
     public PatientData() {
     }
 

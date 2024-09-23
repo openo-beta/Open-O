@@ -41,10 +41,9 @@ import org.apache.struts.action.ActionMapping;
  * Company Colcamex Resources
  * Date Jun 4, 2012
  * Revised Jun 6, 2012
- * Comment 
- * One action here: save the collection of bills from the 
+ * Comment
+ * One action here: save the collection of bills from the
  * session form bean.
- *
  */
 public class QuickBillingBCSaveAction extends Action {
 

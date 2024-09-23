@@ -59,6 +59,7 @@ public class OscarAction
      * Determines if a client request is authorized to perform a specific action
      * <p>The session object is checked for the presence of a User object</p>
      * <p>If authorization is unsuccessful, the target is set to login and the request is denied access</p>
+     *
      * @param request HttpServletRequest
      * @return boolean
      */
@@ -76,9 +77,10 @@ public class OscarAction
 
     /**
      * Configures the response header for upload of specified mime-type
+     *
      * @param response HttpServletResponse
-     * @param docName String
-     * @param docType String
+     * @param docName  String
+     * @param docType  String
      */
     public void cfgHeader(HttpServletResponse response, String docName,
                           String docType) {
@@ -97,6 +99,7 @@ public class OscarAction
     /**
      * A convenience method for retrieving the servlet outputstream without
      * cluttering the calling code with verbose exception handling
+     *
      * @param response HttpServletResponse
      * @return ServletOutputStream
      */

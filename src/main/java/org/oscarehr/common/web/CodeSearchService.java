@@ -44,7 +44,6 @@ import org.oscarehr.util.SpringUtils;
 
 /**
  * @author marc
- *
  */
 public class CodeSearchService extends Action {
 

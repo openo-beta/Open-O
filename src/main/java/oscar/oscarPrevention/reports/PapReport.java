@@ -50,13 +50,14 @@ import oscar.oscarPrevention.pageUtil.PreventionReportDisplay;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class PapReport implements PreventionReport {
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of PapReport */
+    /**
+     * Creates a new instance of PapReport
+     */
     public PapReport() {
     }
 

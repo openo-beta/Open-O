@@ -50,7 +50,6 @@ import com.indivica.olis.queries.Z04Query;
 import com.indivica.olis.queries.Z06Query;
 
 /**
- *
  * @author Indivica
  */
 public class OLISPoller {

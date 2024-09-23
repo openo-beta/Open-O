@@ -41,7 +41,6 @@ import oscar.oscarLab.ca.on.CommonLabResultData;
 import oscar.oscarLab.ca.on.LabResultData;
 
 /**
- *
  * @author rjonasz
  */
 public class EFormAttachLabs {
@@ -55,7 +54,9 @@ public class EFormAttachLabs {
     private String reqId;
     private ArrayList<String> docs;
 
-    /** Creates a new instance of ConsultationAttachLabs */
+    /**
+     * Creates a new instance of ConsultationAttachLabs
+     */
     public EFormAttachLabs(String provNo, String demo, String req, String[] d) {
         providerNo = provNo;
         demoNo = demo;

@@ -70,8 +70,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -128,10 +126,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the c1DoesThePersonHaveAnyPhysicalDisabilityOrAnyPhysicalIllnessIfRated0Or9Ski property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC1DoesThePersonHaveAnyPhysicalDisabilityOrAnyPhysicalIllnessIfRated0Or9Ski() {
         return c1DoesThePersonHaveAnyPhysicalDisabilityOrAnyPhysicalIllnessIfRated0Or9Ski;
@@ -140,10 +136,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the c1DoesThePersonHaveAnyPhysicalDisabilityOrAnyPhysicalIllnessIfRated0Or9Ski property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC1DoesThePersonHaveAnyPhysicalDisabilityOrAnyPhysicalIllnessIfRated0Or9Ski(BigInteger value) {
         this.c1DoesThePersonHaveAnyPhysicalDisabilityOrAnyPhysicalIllnessIfRated0Or9Ski = value;
@@ -152,10 +146,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesForPhysicalHealthProblems property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesForPhysicalHealthProblems() {
         return c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesForPhysicalHealthProblems;
@@ -164,10 +156,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesForPhysicalHealthProblems property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesForPhysicalHealthProblems(BigInteger value) {
         this.c2HowMuchHelpDoesThePersonReceiveFromFriendsOrRelativesForPhysicalHealthProblems = value;
@@ -176,10 +166,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesForPhysicalHealthProblems property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesForPhysicalHealthProblems() {
         return c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesForPhysicalHealthProblems;
@@ -188,10 +176,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesForPhysicalHealthProblems property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC3AHowMuchHelpDoesThePersonReceiveFromLocalServicesForPhysicalHealthProblems(BigInteger value) {
         this.c3AHowMuchHelpDoesThePersonReceiveFromLocalServicesForPhysicalHealthProblems = value;
@@ -200,10 +186,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesForPhysicalHealthProblems property.
      *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC3BHowMuchHelpDoesThePersonNeedFromLocalServicesForPhysicalHealthProblems() {
         return c3BHowMuchHelpDoesThePersonNeedFromLocalServicesForPhysicalHealthProblems;
@@ -212,10 +196,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the c3BHowMuchHelpDoesThePersonNeedFromLocalServicesForPhysicalHealthProblems property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC3BHowMuchHelpDoesThePersonNeedFromLocalServicesForPhysicalHealthProblems(BigInteger value) {
         this.c3BHowMuchHelpDoesThePersonNeedFromLocalServicesForPhysicalHealthProblems = value;
@@ -224,10 +206,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cComments property.
      *
-     * @return
-     *     possible object is
-     *     {@link CComments }
-     *
+     * @return possible object is
+     * {@link CComments }
      */
     public CComments getCComments() {
         return cComments;
@@ -236,10 +216,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cComments property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CComments }
-     *
+     * @param value allowed object is
+     *              {@link CComments }
      */
     public void setCComments(CComments value) {
         this.cComments = value;
@@ -248,10 +226,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cActions property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCActions() {
         return cActions;
@@ -260,10 +236,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cActions property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCActions(String value) {
         this.cActions = value;
@@ -272,10 +246,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cByWhom property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCByWhom() {
         return cByWhom;
@@ -284,10 +256,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cByWhom property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCByWhom(String value) {
         this.cByWhom = value;
@@ -296,10 +266,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cMedicalConditionsCheckAllThatApply property.
      *
-     * @return
-     *     possible object is
-     *     {@link CMedicalConditionsCheckAllThatApply }
-     *
+     * @return possible object is
+     * {@link CMedicalConditionsCheckAllThatApply }
      */
     public CMedicalConditionsCheckAllThatApply getCMedicalConditionsCheckAllThatApply() {
         return cMedicalConditionsCheckAllThatApply;
@@ -308,10 +276,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cMedicalConditionsCheckAllThatApply property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CMedicalConditionsCheckAllThatApply }
-     *
+     * @param value allowed object is
+     *              {@link CMedicalConditionsCheckAllThatApply }
      */
     public void setCMedicalConditionsCheckAllThatApply(CMedicalConditionsCheckAllThatApply value) {
         this.cMedicalConditionsCheckAllThatApply = value;
@@ -320,10 +286,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cDoYouHaveAnyConcernsAboutYourPhysicalHealth property.
      *
-     * @return
-     *     possible object is
-     *     {@link CDoYouHaveAnyConcernsAboutYourPhysicalHealth }
-     *
+     * @return possible object is
+     * {@link CDoYouHaveAnyConcernsAboutYourPhysicalHealth }
      */
     public CDoYouHaveAnyConcernsAboutYourPhysicalHealth getCDoYouHaveAnyConcernsAboutYourPhysicalHealth() {
         return cDoYouHaveAnyConcernsAboutYourPhysicalHealth;
@@ -332,10 +296,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cDoYouHaveAnyConcernsAboutYourPhysicalHealth property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CDoYouHaveAnyConcernsAboutYourPhysicalHealth }
-     *
+     * @param value allowed object is
+     *              {@link CDoYouHaveAnyConcernsAboutYourPhysicalHealth }
      */
     public void setCDoYouHaveAnyConcernsAboutYourPhysicalHealth(CDoYouHaveAnyConcernsAboutYourPhysicalHealth value) {
         this.cDoYouHaveAnyConcernsAboutYourPhysicalHealth = value;
@@ -344,10 +306,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply property.
      *
-     * @return
-     *     possible object is
-     *     {@link CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply }
-     *
+     * @return possible object is
+     * {@link CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply }
      */
     public CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply getCIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply() {
         return cIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply;
@@ -356,10 +316,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply }
-     *
+     * @param value allowed object is
+     *              {@link CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply }
      */
     public void setCIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply(CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply value) {
         this.cIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply = value;
@@ -368,10 +326,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati property.
      *
-     * @return
-     *     possible object is
-     *     {@link CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati }
-     *
+     * @return possible object is
+     * {@link CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati }
      */
     public CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati getCListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati() {
         return cListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati;
@@ -380,10 +336,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati }
-     *
+     * @param value allowed object is
+     *              {@link CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati }
      */
     public void setCListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati(CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati value) {
         this.cListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati = value;
@@ -392,10 +346,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cMedicationsAdditionalInformation property.
      *
-     * @return
-     *     possible object is
-     *     {@link CMedicationsAdditionalInformation }
-     *
+     * @return possible object is
+     * {@link CMedicationsAdditionalInformation }
      */
     public CMedicationsAdditionalInformation getCMedicationsAdditionalInformation() {
         return cMedicationsAdditionalInformation;
@@ -404,10 +356,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cMedicationsAdditionalInformation property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CMedicationsAdditionalInformation }
-     *
+     * @param value allowed object is
+     *              {@link CMedicationsAdditionalInformation }
      */
     public void setCMedicationsAdditionalInformation(CMedicationsAdditionalInformation value) {
         this.cMedicationsAdditionalInformation = value;
@@ -416,10 +366,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cReportsSideEffectsSelectOne property.
      *
-     * @return
-     *     possible object is
-     *     {@link CReportsSideEffectsSelectOne }
-     *
+     * @return possible object is
+     * {@link CReportsSideEffectsSelectOne }
      */
     public CReportsSideEffectsSelectOne getCReportsSideEffectsSelectOne() {
         return cReportsSideEffectsSelectOne;
@@ -428,10 +376,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cReportsSideEffectsSelectOne property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CReportsSideEffectsSelectOne }
-     *
+     * @param value allowed object is
+     *              {@link CReportsSideEffectsSelectOne }
      */
     public void setCReportsSideEffectsSelectOne(CReportsSideEffectsSelectOne value) {
         this.cReportsSideEffectsSelectOne = value;
@@ -440,10 +386,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cDoTheseSideEffectsAffectYourDailyLivingSelectOne property.
      *
-     * @return
-     *     possible object is
-     *     {@link CDoTheseSideEffectsAffectYourDailyLivingSelectOne }
-     *
+     * @return possible object is
+     * {@link CDoTheseSideEffectsAffectYourDailyLivingSelectOne }
      */
     public CDoTheseSideEffectsAffectYourDailyLivingSelectOne getCDoTheseSideEffectsAffectYourDailyLivingSelectOne() {
         return cDoTheseSideEffectsAffectYourDailyLivingSelectOne;
@@ -452,10 +396,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cDoTheseSideEffectsAffectYourDailyLivingSelectOne property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CDoTheseSideEffectsAffectYourDailyLivingSelectOne }
-     *
+     * @param value allowed object is
+     *              {@link CDoTheseSideEffectsAffectYourDailyLivingSelectOne }
      */
     public void setCDoTheseSideEffectsAffectYourDailyLivingSelectOne(CDoTheseSideEffectsAffectYourDailyLivingSelectOne value) {
         this.cDoTheseSideEffectsAffectYourDailyLivingSelectOne = value;
@@ -464,10 +406,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Gets the value of the cDescriptionOfSideEffectsCheckAllThatApply property.
      *
-     * @return
-     *     possible object is
-     *     {@link CDescriptionOfSideEffectsCheckAllThatApply }
-     *
+     * @return possible object is
+     * {@link CDescriptionOfSideEffectsCheckAllThatApply }
      */
     public CDescriptionOfSideEffectsCheckAllThatApply getCDescriptionOfSideEffectsCheckAllThatApply() {
         return cDescriptionOfSideEffectsCheckAllThatApply;
@@ -476,10 +416,8 @@ public class C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatment
     /**
      * Sets the value of the cDescriptionOfSideEffectsCheckAllThatApply property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CDescriptionOfSideEffectsCheckAllThatApply }
-     *
+     * @param value allowed object is
+     *              {@link CDescriptionOfSideEffectsCheckAllThatApply }
      */
     public void setCDescriptionOfSideEffectsCheckAllThatApply(CDescriptionOfSideEffectsCheckAllThatApply value) {
         this.cDescriptionOfSideEffectsCheckAllThatApply = value;

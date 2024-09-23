@@ -44,10 +44,9 @@ import org.oscarehr.integration.fhir.resources.constants.FhirDestination;
 /**
  * A class that references a message destination header information.
  * This Object builds a FHIR MessageDestinationComponent.
- *
- * The ultimate intention of this class is to auto populate and translate specific data 
+ * <p>
+ * The ultimate intention of this class is to auto populate and translate specific data
  * according to its environment.
- *
  */
 public final class Destination {
 

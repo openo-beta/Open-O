@@ -74,19 +74,25 @@ public class Criteria extends AbstractModel<Integer> implements java.io.Serializ
         this.id = id;
     }
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Criteria() {
 
     }
 
-    /** minimal constructor */
+    /**
+     * minimal constructor
+     */
     public Criteria(Integer criteriaTypeId, Double matchScoreWeight, Integer canBeAdhoc) {
         this.criteriaTypeId = criteriaTypeId;
         this.matchScoreWeight = matchScoreWeight;
         this.canBeAdhoc = canBeAdhoc;
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public Criteria(Integer criteriaTypeId, String criteriaValue, Integer rangeStartValue, Integer rangeEndValue, Integer templateId, Integer vacancyId, Double matchScoreWeight, Integer canBeAdhoc) {
         this.criteriaTypeId = criteriaTypeId;
         this.criteriaValue = criteriaValue;

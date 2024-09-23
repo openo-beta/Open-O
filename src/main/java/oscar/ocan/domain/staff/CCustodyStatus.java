@@ -57,8 +57,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -82,10 +80,8 @@ public class CCustodyStatus {
     /**
      * Gets the value of the corbDetainedCommunityAccess property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCORBDetainedCommunityAccess() {
         return corbDetainedCommunityAccess;
@@ -94,10 +90,8 @@ public class CCustodyStatus {
     /**
      * Sets the value of the corbDetainedCommunityAccess property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCORBDetainedCommunityAccess(String value) {
         this.corbDetainedCommunityAccess = value;
@@ -106,10 +100,8 @@ public class CCustodyStatus {
     /**
      * Gets the value of the corbConditionalDischarge property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCORBConditionalDischarge() {
         return corbConditionalDischarge;
@@ -118,10 +110,8 @@ public class CCustodyStatus {
     /**
      * Sets the value of the corbConditionalDischarge property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCORBConditionalDischarge(String value) {
         this.corbConditionalDischarge = value;
@@ -130,10 +120,8 @@ public class CCustodyStatus {
     /**
      * Gets the value of the cOnParole property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOnParole() {
         return cOnParole;
@@ -142,10 +130,8 @@ public class CCustodyStatus {
     /**
      * Sets the value of the cOnParole property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOnParole(String value) {
         this.cOnParole = value;
@@ -154,10 +140,8 @@ public class CCustodyStatus {
     /**
      * Gets the value of the cOnProbation property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOnProbation() {
         return cOnProbation;
@@ -166,10 +150,8 @@ public class CCustodyStatus {
     /**
      * Sets the value of the cOnProbation property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOnProbation(String value) {
         this.cOnProbation = value;

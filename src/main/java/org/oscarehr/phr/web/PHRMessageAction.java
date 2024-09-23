@@ -95,7 +95,9 @@ public class PHRMessageAction extends DispatchAction {
         return super.execute(mapping, form, request, response);
     }
 
-    /** Creates a new instance of PHRMessageAction */
+    /**
+     * Creates a new instance of PHRMessageAction
+     */
     public PHRMessageAction() {
     }
 

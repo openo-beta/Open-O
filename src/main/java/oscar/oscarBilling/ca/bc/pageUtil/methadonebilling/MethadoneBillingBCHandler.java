@@ -141,7 +141,6 @@ public class MethadoneBillingBCHandler {
     }
 
     /**
-     *
      * @return Demographic Data Access Object
      */
     public DemographicDao getDemographicDao() {
@@ -149,7 +148,6 @@ public class MethadoneBillingBCHandler {
     }
 
     /**
-     *
      * @return Provider Data Access Object
      */
     public ProviderDao getProviderDao() {
@@ -157,7 +155,6 @@ public class MethadoneBillingBCHandler {
     }
 
     /**
-     *
      * @return Oscar Properties Object
      */
     public Properties getOscarProperties() {
@@ -168,6 +165,7 @@ public class MethadoneBillingBCHandler {
     /**
      * The number of invoices saved in the last
      * session.
+     *
      * @return int
      */
     public int getNumberSaved() {
@@ -176,6 +174,7 @@ public class MethadoneBillingBCHandler {
 
     /**
      * set the number of invoices saved in this session.
+     *
      * @param numberSaved
      */
     private void setNumberSaved(int numberSaved) {
@@ -237,6 +236,7 @@ public class MethadoneBillingBCHandler {
      * Create a new billing object to be stored into an array
      * for later processing.
      * Lots of data here is hard coded.
+     *
      * @param data
      */
     public boolean addBill(Demographic demographic, String billingType) {
@@ -363,6 +363,7 @@ public class MethadoneBillingBCHandler {
 
     /**
      * Triggers exsisting class: BillingSaveBillingAction to recursivley save the bills array list.
+     *
      * @param mapping
      * @param form
      * @param request
@@ -417,6 +418,7 @@ public class MethadoneBillingBCHandler {
 
     /**
      * remove selected bill from the bill arraylist stored in the quickBillingBCFormBean
+     *
      * @param bill
      */
     public boolean removeBill(String bill) {
@@ -428,6 +430,7 @@ public class MethadoneBillingBCHandler {
 
     /**
      * Class borrowed from BillingSaveBillingAction
+     *
      * @param bean
      * @param curDate
      * @param billingAccountStatus
@@ -566,6 +569,7 @@ public class MethadoneBillingBCHandler {
     /**
      * UTILITY METHOD -REALLY SHOULDN'T BE IN HERE...
      * But I made it static - unlike others.
+     *
      * @param s
      * @return
      */

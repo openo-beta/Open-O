@@ -36,25 +36,24 @@ import javax.xml.soap.SOAPFactory;
 
 /**
  * A value type that stores data about a single web transaction with the External Prescriber.
- *
+ * <p>
  * This class conforms to the External Prescriber's Transaction3 structure defined on their wiki
  * (retrieved 2011-12-30)
  *
  * @see <a
- *      href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=GetPrescriptions5">The
- *      the External Prescriber GetPrescriptions5 web services demo page</a>
+ * href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=GetPrescriptions5">The
+ * the External Prescriber GetPrescriptions5 web services demo page</a>
  * @see <a
- *      href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgePatientV3.ashx#TransactionD_7">The
- *      the External Prescriber wiki</a>
+ * href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgePatientV3.ashx#TransactionD_7">The
+ * the External Prescriber wiki</a>
  */
 public class Transaction3 {
     /**
      * Formats dates in a way that the the External Prescriber web services can understand.
      *
-     * @param date
-     *            The date to format. Can be null.
+     * @param date The date to format. Can be null.
      * @return The formatted date. If the date to format is null, then it
-     *         returns an empty string.
+     * returns an empty string.
      */
     private static String formatDateTime(Date date) {
         if (date == null) {
@@ -93,19 +92,14 @@ public class Transaction3 {
     /**
      * Construct a Transaction3.
      *
-     * @param transactionId
-     *            A strongly-recommended, unique, sequential number used for
-     *            debugging purposes.
-     * @param engine
-     *            The name of the software connecting to the web service.
-     * @param sender
-     *            The name of the software vendor that created the software
-     *            connecting to the web service.
-     * @param version
-     *            The version of the software connecting to the web service.
-     * @param datePatientLastModifiedLocally
-     *            The last-modified-date of the latest updated patient within
-     *            the PMIS database.
+     * @param transactionId                  A strongly-recommended, unique, sequential number used for
+     *                                       debugging purposes.
+     * @param engine                         The name of the software connecting to the web service.
+     * @param sender                         The name of the software vendor that created the software
+     *                                       connecting to the web service.
+     * @param version                        The version of the software connecting to the web service.
+     * @param datePatientLastModifiedLocally The last-modified-date of the latest updated patient within
+     *                                       the PMIS database.
      */
     public Transaction3(long transactionId, String engine, String sender, String version,
                         Date datePatientLastModifiedLocally) {
@@ -141,8 +135,7 @@ public class Transaction3 {
      * Get a SOAP document fragment representing this object.
      *
      * @return A SOAPElement representing this transaction.
-     * @throws SOAPException
-     *             If an error occurred when trying to construct the element.
+     * @throws SOAPException If an error occurred when trying to construct the element.
      */
     public SOAPElement getSOAPElement() throws SOAPException {
         SOAPElement answer = SOAPFactory.newInstance().createElement(
@@ -182,40 +175,35 @@ public class Transaction3 {
     }
 
     /**
-     * @param engine
-     *            the engine to set
+     * @param engine the engine to set
      */
     public void setEngine(String engine) {
         this.engine = engine;
     }
 
     /**
-     * @param pmisLastUpdate
-     *            the pmisLastUpdate to set
+     * @param pmisLastUpdate the pmisLastUpdate to set
      */
     public void setPmisLastUpdate(Date pmisLastUpdate) {
         this.pmisLastUpdate = pmisLastUpdate;
     }
 
     /**
-     * @param sender
-     *            the sender to set
+     * @param sender the sender to set
      */
     public void setSender(String sender) {
         this.sender = sender;
     }
 
     /**
-     * @param transactionId
-     *            the transactionId to set
+     * @param transactionId the transactionId to set
      */
     public void setTransactionId(long transactionId) {
         this.transactionId = transactionId;
     }
 
     /**
-     * @param version
-     *            the version to set
+     * @param version the version to set
      */
     public void setVersion(String version) {
         this.version = version;

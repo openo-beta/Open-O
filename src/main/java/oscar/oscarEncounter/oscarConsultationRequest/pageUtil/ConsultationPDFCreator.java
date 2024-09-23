@@ -61,8 +61,9 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Prepares a ConsultationPDFCreator instance to print a consultation request to PDF.
+     *
      * @param request contains the information necessary to construct the consultation request
-     * @param os the output stream where the PDF will be written
+     * @param os      the output stream where the PDF will be written
      */
     public ConsultationPDFCreator(HttpServletRequest request, OutputStream os) {
 
@@ -185,8 +186,9 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Add's the table 'add' to the table 'main' (with no border surrounding it.)
+     *
      * @param main the host table
-     * @param add the table being added
+     * @param add  the table being added
      * @return the cell containing the table being added to the main table.
      */
     private PdfPCell addTable(PdfPTable main, PdfPTable add) {
@@ -195,8 +197,9 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Add's the table 'add' to the table 'main'.
-     * @param main the host table
-     * @param add the table being added
+     *
+     * @param main   the host table
+     * @param add    the table being added
      * @param border true if a border should surround the table being added
      * @return the cell containing the table being added to the main table.	 *
      */
@@ -215,7 +218,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
     /**
      * Method above sets a full border based on a boolean switch.
      * This method allows the setting of individual boarders in a Rectangle.
-     *
+     * <p>
      * borderarray is set with PdfPCell border location enumerators
      * paddingarray is set similar to CSS clockwise
      */
@@ -381,6 +384,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Creates a table and populates it with the clinic information for the header.
+     *
      * @return the table produced
      */
     private PdfPTable createClinicInfoHeader() {
@@ -464,6 +468,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Creates the table containing information about the specialist.
+     *
      * @return the table produced
      */
     private PdfPTable createSpecialistTable() {
@@ -536,6 +541,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Creates the table containing information about the patient.
+     *
      * @return the table produced
      */
     private PdfPTable createPatientTable() {
@@ -594,6 +600,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
     /**
      * Creates the table containing additional information
      * about the reason for the consultation request.
+     *
      * @return the table produced
      */
     private PdfPTable createConsultDetailTable() {
@@ -718,7 +725,8 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Formats a cell to display information
-     * @param cell the cell to format
+     *
+     * @param cell   the cell to format
      * @param phrase the information to display
      * @return the formatted cell
      */
@@ -756,6 +764,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Returns a Consultation Request localized value for the key provided.
+     *
      * @param key the key to reference
      * @return the value for the key provided
      */
@@ -766,6 +775,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     /**
      * Returns the length of the string provided and 0 if the string is null.
+     *
      * @param str the string to check
      * @return the length of str
      */
@@ -779,6 +789,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
     /**
      * Converts breaking lines and non-breaking spaces to their
      * appropriate equivalents for displaying text in the PDF.
+     *
      * @param str the string to modify
      * @return the original string with all breaking lines replaced by '\n' and all non-breaking spaces replaced by ' '
      */

@@ -34,9 +34,9 @@ import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
- * MEDVUE  Radiology report parser 
- * @author divyamantha
+ * MEDVUE  Radiology report parser
  *
+ * @author divyamantha
  */
 
 public class MEDVUEHandler implements MessageHandler {
@@ -189,14 +189,14 @@ public class MEDVUEHandler implements MessageHandler {
     /**
      * In order to match ITS Report OBXs with the OBR holding them, and to keep the output style cleaner, for ITS
      * Reports we need to "trick" the style output.
-     *
+     * <p>
      * If an OBR contains an OBX segment with ITS or DPT report, then all OBXs for that OBR are considered to be report
      * types. Because an ITS or DPT is not a test, there is no need to write the test name "ITS/DPT REPORT" when viewing
      * the results. So we put "ITS/DPT REPORT" near the OBR name to classify this OBR and following OBX's as one full
      * ITS/DPT report.
-     *
+     * <p>
      * A refresher of what this method computes:
-     *
+     * <p>
      * Return the observation header which represents the observation stored in the jth OBX segment of the ith OBR
      * group. May be stored in either the OBR or OBX segment. It is used to separate the observations into groups. ie/
      * 'CHEMISTRY' 'HEMATOLOGY' '

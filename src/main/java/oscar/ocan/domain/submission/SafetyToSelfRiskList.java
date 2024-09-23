@@ -58,8 +58,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -91,8 +89,6 @@ public class SafetyToSelfRiskList {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     *
-     *
      */
     public List<String> getSafetyToSelfRisk() {
         if (safetyToSelfRisk == null) {
@@ -104,10 +100,8 @@ public class SafetyToSelfRiskList {
     /**
      * Gets the value of the otherSafetyToSelfRisk property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOtherSafetyToSelfRisk() {
         return otherSafetyToSelfRisk;
@@ -116,10 +110,8 @@ public class SafetyToSelfRiskList {
     /**
      * Sets the value of the otherSafetyToSelfRisk property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOtherSafetyToSelfRisk(String value) {
         this.otherSafetyToSelfRisk = value;

@@ -35,12 +35,13 @@ import org.oscarehr.util.MiscUtils;
 import oscar.eform.data.DatabaseAP;
 
 /**
- *
  * @author jay
  */
 public class APExecute {
 
-    /** Creates a new instance of APExecute */
+    /**
+     * Creates a new instance of APExecute
+     */
     public APExecute() {
     }
 

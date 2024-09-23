@@ -33,7 +33,6 @@ import java.util.Date;
 
 /**
  * The persistent class for the billing_on_transaction database table.
- *
  */
 @Entity
 @Table(name = "billing_on_transaction")

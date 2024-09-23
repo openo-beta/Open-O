@@ -182,7 +182,7 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
 
     /**
      * @deprecated 2013-12-09 don't use this anymore use getProgramByType, reason is
-     *             parameters should never have been "Any"
+     * parameters should never have been "Any"
      */
     @Override
     public List<Program> getAllPrograms(String programStatus, String type, int facilityId) {
@@ -244,7 +244,7 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
     /**
      * @param facilityId is allowed to be null
      * @return a list of programs in the facility and any programs with no facility
-     *         associated
+     * associated
      */
     @Override
     public List<Program> getProgramsByFacilityId(Integer facilityId) {
@@ -271,7 +271,7 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
     /**
      * @param facilityId is allowed to be null
      * @return a list of community programs in the facility and any programs with no
-     *         facility associated
+     * facility associated
      */
     @Override
     public List<Program> getCommunityProgramsByFacilityId(Integer facilityId) {

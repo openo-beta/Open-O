@@ -51,7 +51,7 @@ public final class KeyPairGen {
     }
 
     /**
-     *  Create a key pair for the specified service and store it in the database
+     * Create a key pair for the specified service and store it in the database
      */
     public static String createKeys(String name, String type) {
         byte[] pubKey;
@@ -108,7 +108,7 @@ public final class KeyPairGen {
 
 
     /**
-     *  Retrieve oscars public key and return it as a string
+     * Retrieve oscars public key and return it as a string
      */
     public static String getPublic() {
         try {
@@ -124,8 +124,8 @@ public final class KeyPairGen {
     }
 
     /**
-     *  Check if the specified service name has already been used to create a key
-     *  pair, return 'true' if it has and 'false' otherwise.
+     * Check if the specified service name has already been used to create a key
+     * pair, return 'true' if it has and 'false' otherwise.
      */
     public static boolean checkName(String name) {
         if (name.equals("oscar")) {

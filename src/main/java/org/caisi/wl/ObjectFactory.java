@@ -35,7 +35,6 @@ import javax.xml.namespace.QName;
  * can consist of schema derived interfaces and classes representing the binding
  * of schema type definitions, element declarations and model groups. Factory
  * methods for each of these are provided in this class.
- *
  */
 @XmlRegistry
 public class ObjectFactory {
@@ -80,14 +79,12 @@ public class ObjectFactory {
     /**
      * Create a new ObjectFactory that can be used to create new instances of
      * schema derived classes for package: org.caisi.wl
-     *
      */
     public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link RecordMatchWasForwarded }
-     *
      */
     public RecordMatchWasForwarded createRecordMatchWasForwarded() {
         return new RecordMatchWasForwarded();
@@ -95,7 +92,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListActiveContactAttempts }
-     *
      */
     public ListActiveContactAttempts createListActiveContactAttempts() {
         return new ListActiveContactAttempts();
@@ -103,7 +99,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListTopMatchesResponse }
-     *
      */
     public ListTopMatchesResponse createListTopMatchesResponse() {
         return new ListTopMatchesResponse();
@@ -111,7 +106,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link MatchParam }
-     *
      */
     public MatchParam createMatchParam() {
         return new MatchParam();
@@ -119,7 +113,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RecordClientContact }
-     *
      */
     public RecordClientContact createRecordClientContact() {
         return new RecordClientContact();
@@ -127,7 +120,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetVacancy }
-     *
      */
     public GetVacancy createGetVacancy() {
         return new GetVacancy();
@@ -135,7 +127,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListVacanciesForAgencyProgramResponse }
-     *
      */
     public ListVacanciesForAgencyProgramResponse createListVacanciesForAgencyProgramResponse() {
         return new ListVacanciesForAgencyProgramResponse();
@@ -143,7 +134,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientQuery }
-     *
      */
     public ClientQuery createClientQuery() {
         return new ClientQuery();
@@ -151,7 +141,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link VacancyQuery }
-     *
      */
     public VacancyQuery createVacancyQuery() {
         return new VacancyQuery();
@@ -159,7 +148,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ReferralOutcomeBO }
-     *
      */
     public ReferralOutcomeBO createReferralOutcomeBO() {
         return new ReferralOutcomeBO();
@@ -167,7 +155,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListVacanciesForWaitListProgramResponse }
-     *
      */
     public ListVacanciesForWaitListProgramResponse createListVacanciesForWaitListProgramResponse() {
         return new ListVacanciesForWaitListProgramResponse();
@@ -175,7 +162,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link VacancyDisplayBO }
-     *
      */
     public VacancyDisplayBO createVacancyDisplayBO() {
         return new VacancyDisplayBO();
@@ -183,7 +169,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link TopMatchesQuery }
-     *
      */
     public TopMatchesQuery createTopMatchesQuery() {
         return new TopMatchesQuery();
@@ -191,7 +176,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ClientWLEntryBO }
-     *
      */
     public ClientWLEntryBO createClientWLEntryBO() {
         return new ClientWLEntryBO();
@@ -199,7 +183,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RecordMatchWasForwardedResponse }
-     *
      */
     public RecordMatchWasForwardedResponse createRecordMatchWasForwardedResponse() {
         return new RecordMatchWasForwardedResponse();
@@ -207,7 +190,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RecordContactAttempt }
-     *
      */
     public RecordContactAttempt createRecordContactAttempt() {
         return new RecordContactAttempt();
@@ -215,7 +197,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RecordContactAttemptResponse }
-     *
      */
     public RecordContactAttemptResponse createRecordContactAttemptResponse() {
         return new RecordContactAttemptResponse();
@@ -223,7 +204,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListVacanciesForWaitListProgram }
-     *
      */
     public ListVacanciesForWaitListProgram createListVacanciesForWaitListProgram() {
         return new ListVacanciesForWaitListProgram();
@@ -231,7 +211,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RecordClientContactResponse }
-     *
      */
     public RecordClientContactResponse createRecordClientContactResponse() {
         return new RecordClientContactResponse();
@@ -239,7 +218,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RecordReferralOutcome }
-     *
      */
     public RecordReferralOutcome createRecordReferralOutcome() {
         return new RecordReferralOutcome();
@@ -247,7 +225,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListTopMatches }
-     *
      */
     public ListTopMatches createListTopMatches() {
         return new ListTopMatches();
@@ -255,7 +232,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RecordReferralOutcomeResponse }
-     *
      */
     public RecordReferralOutcomeResponse createRecordReferralOutcomeResponse() {
         return new RecordReferralOutcomeResponse();
@@ -263,7 +239,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetVacancyResponse }
-     *
      */
     public GetVacancyResponse createGetVacancyResponse() {
         return new GetVacancyResponse();
@@ -271,7 +246,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ProgramQuery }
-     *
      */
     public ProgramQuery createProgramQuery() {
         return new ProgramQuery();
@@ -279,7 +253,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListActiveContactAttemptsResponse }
-     *
      */
     public ListActiveContactAttemptsResponse createListActiveContactAttemptsResponse() {
         return new ListActiveContactAttemptsResponse();
@@ -287,7 +260,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link MatchBO }
-     *
      */
     public MatchBO createMatchBO() {
         return new MatchBO();
@@ -295,7 +267,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ListVacanciesForAgencyProgram }
-     *
      */
     public ListVacanciesForAgencyProgram createListVacanciesForAgencyProgram() {
         return new ListVacanciesForAgencyProgram();
@@ -304,7 +275,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link ListVacanciesForWaitListProgramResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listVacanciesForWaitListProgramResponse")
     public JAXBElement<ListVacanciesForWaitListProgramResponse> createListVacanciesForWaitListProgramResponse(
@@ -317,7 +287,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link ListTopMatchesResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listTopMatchesResponse")
     public JAXBElement<ListTopMatchesResponse> createListTopMatchesResponse(
@@ -330,7 +299,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordContactAttemptResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordContactAttemptResponse")
     public JAXBElement<RecordContactAttemptResponse> createRecordContactAttemptResponse(
@@ -343,7 +311,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordMatchWasForwarded }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordMatchWasForwarded")
     public JAXBElement<RecordMatchWasForwarded> createRecordMatchWasForwarded(
@@ -356,7 +323,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link ListVacanciesForAgencyProgramResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listVacanciesForAgencyProgramResponse")
     public JAXBElement<ListVacanciesForAgencyProgramResponse> createListVacanciesForAgencyProgramResponse(
@@ -369,7 +335,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link ListActiveContactAttempts }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listActiveContactAttempts")
     public JAXBElement<ListActiveContactAttempts> createListActiveContactAttempts(
@@ -382,7 +347,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetVacancy }
      * {@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "getVacancy")
     public JAXBElement<GetVacancy> createGetVacancy(GetVacancy value) {
@@ -393,7 +357,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordReferralOutcome }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordReferralOutcome")
     public JAXBElement<RecordReferralOutcome> createRecordReferralOutcome(
@@ -406,7 +369,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link ListActiveContactAttemptsResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listActiveContactAttemptsResponse")
     public JAXBElement<ListActiveContactAttemptsResponse> createListActiveContactAttemptsResponse(
@@ -419,7 +381,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ListTopMatches }
      * {@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listTopMatches")
     public JAXBElement<ListTopMatches> createListTopMatches(ListTopMatches value) {
@@ -430,7 +391,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordReferralOutcomeResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordReferralOutcomeResponse")
     public JAXBElement<RecordReferralOutcomeResponse> createRecordReferralOutcomeResponse(
@@ -443,7 +403,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordContactAttempt }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordContactAttempt")
     public JAXBElement<RecordContactAttempt> createRecordContactAttempt(
@@ -456,7 +415,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link ListVacanciesForAgencyProgram }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listVacanciesForAgencyProgram")
     public JAXBElement<ListVacanciesForAgencyProgram> createListVacanciesForAgencyProgram(
@@ -469,7 +427,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordClientContactResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordClientContactResponse")
     public JAXBElement<RecordClientContactResponse> createRecordClientContactResponse(
@@ -482,7 +439,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link GetVacancyResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "getVacancyResponse")
     public JAXBElement<GetVacancyResponse> createGetVacancyResponse(
@@ -494,7 +450,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordMatchWasForwardedResponse }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordMatchWasForwardedResponse")
     public JAXBElement<RecordMatchWasForwardedResponse> createRecordMatchWasForwardedResponse(
@@ -507,7 +462,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link ListVacanciesForWaitListProgram }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "listVacanciesForWaitListProgram")
     public JAXBElement<ListVacanciesForWaitListProgram> createListVacanciesForWaitListProgram(
@@ -520,7 +474,6 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}
      * {@link RecordClientContact }{@code >}
-     *
      */
     @XmlElementDecl(namespace = "http://caisi.org/wl/", name = "recordClientContact")
     public JAXBElement<RecordClientContact> createRecordClientContact(

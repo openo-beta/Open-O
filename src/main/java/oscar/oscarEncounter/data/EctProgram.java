@@ -34,13 +34,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
- *
  * @author rjonasz
  */
 public class EctProgram {
     private HttpSession se;
 
-    /** Creates a new instance of EctProgram */
+    /**
+     * Creates a new instance of EctProgram
+     */
     public EctProgram(HttpSession se) {
         this.se = se;
     }

@@ -56,7 +56,6 @@ import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean;
 import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
 
 /**
- *
  * @author apavel
  */
 public class EctSendMeasurementToPhr extends Action {

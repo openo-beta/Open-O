@@ -37,8 +37,8 @@ import com.indivica.olis.parameters.ZRP1;
 
 /**
  * Z01 - Retrieve Laboratory Information for Patient
- * @author jen
  *
+ * @author jen
  */
 public class Z01Query extends Query {
 

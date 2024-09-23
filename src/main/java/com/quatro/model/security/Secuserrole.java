@@ -67,7 +67,9 @@ public class Secuserrole implements java.io.Serializable {
     }
 
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Secuserrole() {
 
     }

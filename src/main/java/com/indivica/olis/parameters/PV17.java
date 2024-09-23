@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Attending Practitioner
- * @author jen
  *
+ * @author jen
  */
 public class PV17 implements Parameter {
 

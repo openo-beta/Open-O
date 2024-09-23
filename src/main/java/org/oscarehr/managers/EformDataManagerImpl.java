@@ -152,7 +152,7 @@ public class EformDataManagerImpl implements EformDataManager {
 
     /**
      * Saves an form as PDF in a temp directory.
-     *
+     * <p>
      * Path to a temp file is returned. Remember to change the .tmp filetype and to delete the tmp file when finished.
      */
     public Path createEformPDF(LoggedInInfo loggedInInfo, int fdid) throws PDFGenerationException {
@@ -180,9 +180,9 @@ public class EformDataManagerImpl implements EformDataManager {
 
 
     /**
-     * Get all current eForms by demographic number but do not include the HTML data. 
+     * Get all current eForms by demographic number but do not include the HTML data.
      * This is a good method for getting just the list and status of eForms. It's a little lighter on the database.
-     *
+     * <p>
      * Returns a map - not an entity
      */
     public List<Map<String, Object>> findCurrentByDemographicIdNoData(LoggedInInfo loggedInInfo, Integer demographicId) {

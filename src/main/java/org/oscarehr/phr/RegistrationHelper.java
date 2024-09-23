@@ -222,9 +222,9 @@ public final class RegistrationHelper {
     }
 
     /**
-     Checks to see if:
-     a. PatientPrimaryCareProvider exists with the myoscar user
-     b. If the current provider has verified this relationship
+     * Checks to see if:
+     * a. PatientPrimaryCareProvider exists with the myoscar user
+     * b. If the current provider has verified this relationship
      **/
     public static boolean iHavePatientRelationship(MyOscarLoggedInInfo myOscarLoggedInInfo, Long myOscarUserId) {
 

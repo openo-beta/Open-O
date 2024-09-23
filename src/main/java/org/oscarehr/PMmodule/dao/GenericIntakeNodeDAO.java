@@ -57,12 +57,12 @@ public interface GenericIntakeNodeDAO {
     public IntakeNode getIntakeNode(Integer intakeNodeId);
 
     /**
-     *Returns a list of Intake Nodes of type "intake".
+     * Returns a list of Intake Nodes of type "intake".
      */
     public List<IntakeNode> getIntakeNodes();
 
     /**
-     *Returns a list of Intake Nodes of type "intake".
+     * Returns a list of Intake Nodes of type "intake".
      */
     public List<IntakeNode> getPublishedIntakeNodesByName(String name);
 

@@ -45,7 +45,6 @@ import oscar.oscarWorkflow.WorkFlowState;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class FrmFormAddRHWorkFlowAction extends Action {
@@ -96,7 +95,9 @@ public class FrmFormAddRHWorkFlowAction extends Action {
         return mapping.findForward("success");
     }
 
-    /** Creates a new instance of FrmFormRHPreventionAction */
+    /**
+     * Creates a new instance of FrmFormRHPreventionAction
+     */
     public FrmFormAddRHWorkFlowAction() {
     }
 

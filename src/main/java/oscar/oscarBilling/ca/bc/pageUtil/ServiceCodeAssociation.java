@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * <p>Title: ServiceCodeAssociation</p>
  *
  * <p>Description: Represents an association between one service code and one to many diagnostic codes</p>
@@ -51,6 +50,7 @@ public class ServiceCodeAssociation {
 
     /**
      * Returns a String List of associated diagnostic codes
+     *
      * @return List
      */
     public List getDxCodes() {
@@ -59,6 +59,7 @@ public class ServiceCodeAssociation {
 
     /**
      * Returns the service code
+     *
      * @return String
      */
     public String getServiceCode() {
@@ -67,6 +68,7 @@ public class ServiceCodeAssociation {
 
     /**
      * Sets a String list of associated diagonostic codes
+     *
      * @param dxCodes List
      */
     public void setDxCodes(List dxCodes) {
@@ -75,6 +77,7 @@ public class ServiceCodeAssociation {
 
     /**
      * Sets the service code
+     *
      * @param serviceCode String
      */
     public void setServiceCode(String serviceCode) {
@@ -83,6 +86,7 @@ public class ServiceCodeAssociation {
 
     /**
      * Associates a diagnostic code with the service code
+     *
      * @param code String
      */
     public void addDXCode(String code) {
@@ -91,6 +95,7 @@ public class ServiceCodeAssociation {
 
     /**
      * Returns true if this service code is associate with atleast one dx code
+     *
      * @return boolean
      */
     public boolean hasDXCodes() {

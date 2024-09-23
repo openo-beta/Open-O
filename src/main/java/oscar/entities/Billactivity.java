@@ -29,7 +29,6 @@ import java.util.Date;
 
 /**
  * Encapsulates data from table billactivity
- *
  */
 public class Billactivity {
     private String monthCode;
@@ -60,19 +59,19 @@ public class Billactivity {
     /**
      * Full constructor
      *
-     * @param monthCode String
-     * @param batchcount int
-     * @param htmlfilename String
-     * @param ohipfilename String
+     * @param monthCode      String
+     * @param batchcount     int
+     * @param htmlfilename   String
+     * @param ohipfilename   String
      * @param providerohipno String
-     * @param groupno String
-     * @param creator String
-     * @param htmlcontext String
-     * @param ohipcontext String
-     * @param claimrecord String
+     * @param groupno        String
+     * @param creator        String
+     * @param htmlcontext    String
+     * @param ohipcontext    String
+     * @param claimrecord    String
      * @param updatedatetime String
-     * @param status String
-     * @param total String
+     * @param status         String
+     * @param total          String
      */
     public Billactivity(String monthCode, int batchcount, String htmlfilename,
                         String ohipfilename, String providerohipno,
@@ -96,6 +95,7 @@ public class Billactivity {
 
     /**
      * Gets the monthCode
+     *
      * @return String monthCode
      */
     public String getMonthCode() {
@@ -104,6 +104,7 @@ public class Billactivity {
 
     /**
      * Gets the batchcount
+     *
      * @return int batchcount
      */
     public int getBatchcount() {
@@ -112,6 +113,7 @@ public class Billactivity {
 
     /**
      * Gets the htmlfilename
+     *
      * @return String htmlfilename
      */
     public String getHtmlfilename() {
@@ -120,6 +122,7 @@ public class Billactivity {
 
     /**
      * Gets the ohipfilename
+     *
      * @return String ohipfilename
      */
     public String getOhipfilename() {
@@ -128,6 +131,7 @@ public class Billactivity {
 
     /**
      * Gets the providerohipno
+     *
      * @return String providerohipno
      */
     public String getProviderohipno() {
@@ -136,6 +140,7 @@ public class Billactivity {
 
     /**
      * Gets the groupno
+     *
      * @return String groupno
      */
     public String getGroupno() {
@@ -144,6 +149,7 @@ public class Billactivity {
 
     /**
      * Gets the creator
+     *
      * @return String creator
      */
     public String getCreator() {
@@ -152,6 +158,7 @@ public class Billactivity {
 
     /**
      * Gets the htmlcontext
+     *
      * @return String htmlcontext
      */
     public String getHtmlcontext() {
@@ -160,6 +167,7 @@ public class Billactivity {
 
     /**
      * Gets the ohipcontext
+     *
      * @return String ohipcontext
      */
     public String getOhipcontext() {
@@ -168,6 +176,7 @@ public class Billactivity {
 
     /**
      * Gets the claimrecord
+     *
      * @return String claimrecord
      */
     public String getClaimrecord() {
@@ -176,6 +185,7 @@ public class Billactivity {
 
     /**
      * Gets the updatedatetime
+     *
      * @return String updatedatetime
      */
     public Date getUpdatedatetime() {
@@ -184,6 +194,7 @@ public class Billactivity {
 
     /**
      * Gets the status
+     *
      * @return String status
      */
     public String getStatus() {
@@ -192,6 +203,7 @@ public class Billactivity {
 
     /**
      * Gets the total
+     *
      * @return String total
      */
     public String getTotal() {
@@ -200,6 +212,7 @@ public class Billactivity {
 
     /**
      * Sets the monthCode
+     *
      * @param monthCode String
      */
     public void setMonthCode(String monthCode) {
@@ -208,6 +221,7 @@ public class Billactivity {
 
     /**
      * Sets the batchcount
+     *
      * @param batchcount int
      */
     public void setBatchcount(int batchcount) {
@@ -216,6 +230,7 @@ public class Billactivity {
 
     /**
      * Sets the htmlfilename
+     *
      * @param htmlfilename String
      */
     public void setHtmlfilename(String htmlfilename) {
@@ -224,6 +239,7 @@ public class Billactivity {
 
     /**
      * Sets the ohipfilename
+     *
      * @param ohipfilename String
      */
     public void setOhipfilename(String ohipfilename) {
@@ -232,6 +248,7 @@ public class Billactivity {
 
     /**
      * Sets the providerohipno
+     *
      * @param providerohipno String
      */
     public void setProviderohipno(String providerohipno) {
@@ -240,6 +257,7 @@ public class Billactivity {
 
     /**
      * Sets the groupno
+     *
      * @param groupno String
      */
     public void setGroupno(String groupno) {
@@ -248,6 +266,7 @@ public class Billactivity {
 
     /**
      * Sets the creator
+     *
      * @param creator String
      */
     public void setCreator(String creator) {
@@ -256,6 +275,7 @@ public class Billactivity {
 
     /**
      * Sets the htmlcontext
+     *
      * @param htmlcontext String
      */
     public void setHtmlcontext(String htmlcontext) {
@@ -264,6 +284,7 @@ public class Billactivity {
 
     /**
      * Sets the ohipcontext
+     *
      * @param ohipcontext String
      */
     public void setOhipcontext(String ohipcontext) {
@@ -272,6 +293,7 @@ public class Billactivity {
 
     /**
      * Sets the claimrecord
+     *
      * @param claimrecord String
      */
     public void setClaimrecord(String claimrecord) {
@@ -280,6 +302,7 @@ public class Billactivity {
 
     /**
      * Sets the updatedatetime
+     *
      * @param updatedatetime String
      */
     public void setUpdatedatetime(Date updatedatetime) {
@@ -289,6 +312,7 @@ public class Billactivity {
 
     /**
      * Sets the status
+     *
      * @param status String
      */
     public void setStatus(String status) {
@@ -297,6 +321,7 @@ public class Billactivity {
 
     /**
      * Sets the total
+     *
      * @param total String
      */
     public void setTotal(String total) {

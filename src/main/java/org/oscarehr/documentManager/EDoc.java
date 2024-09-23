@@ -89,7 +89,9 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     private String abnormal = "0";
     private String receivedDate = "";
 
-    /** Creates a new instance of EDoc */
+    /**
+     * Creates a new instance of EDoc
+     */
     public EDoc() {
     }
 
@@ -149,7 +151,7 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     }
 
     /**
-     *Comparable based on document id
+     * Comparable based on document id
      */
     public int compareTo(EDoc o) {
         EDoc doc = o;
@@ -473,7 +475,7 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     }
 
     /**
-     *Returns true if document a PDF.
+     * Returns true if document a PDF.
      */
     public boolean isPDF() {
         if (this.contentType != null && this.contentType.contains("/pdf")) {
@@ -484,6 +486,7 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
 
     /**
      * Returns true if this document's content type is that of an image.
+     *
      * @return true if document is an image and false otherwise
      */
     public boolean isImage() {
@@ -492,6 +495,7 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
 
     /**
      * Returns true if this document is printable to PDF format.
+     *
      * @return true if this document is printable to PDF format and false otherwise
      */
     public boolean isPrintable() {

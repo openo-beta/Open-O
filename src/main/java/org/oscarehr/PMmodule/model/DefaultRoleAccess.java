@@ -58,9 +58,9 @@ public class DefaultRoleAccess implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native"
-     *  column="id"
+     * <p>
+     * generator-class="native"
+     * column="id"
      */
     public Long getId() {
         return _id;
@@ -68,6 +68,7 @@ public class DefaultRoleAccess implements Serializable {
 
     /**
      * Set the unique identifier of this class
+     *
      * @param _id the new ID
      */
     public void setId(Long _id) {
@@ -84,6 +85,7 @@ public class DefaultRoleAccess implements Serializable {
 
     /**
      * Set the value related to the column: role_id
+     *
      * @param _roleId the role_id value
      */
     public void setRoleId(long _roleId) {
@@ -99,6 +101,7 @@ public class DefaultRoleAccess implements Serializable {
 
     /**
      * Set the value related to the column: access_id
+     *
      * @param _accessTypeId the access_id value
      */
     public void setAccessTypeId(long _accessTypeId) {
@@ -106,8 +109,7 @@ public class DefaultRoleAccess implements Serializable {
     }
 
     /**
-     *
-     *  column=role_id
+     * column=role_id
      */
     public com.quatro.model.security.Secrole getCaisi_role() {
         return this._caisi_role;
@@ -115,6 +117,7 @@ public class DefaultRoleAccess implements Serializable {
 
     /**
      * Set the value related to the column: role_id
+     *
      * @param _caisi_role the role_id value
      */
     public void setCaisi_role(com.quatro.model.security.Secrole _caisi_role) {
@@ -122,8 +125,7 @@ public class DefaultRoleAccess implements Serializable {
     }
 
     /**
-     *
-     *  column=access_id
+     * column=access_id
      */
     public AccessType getAccess_type() {
         return this._access_type;
@@ -131,6 +133,7 @@ public class DefaultRoleAccess implements Serializable {
 
     /**
      * Set the value related to the column: access_id
+     *
      * @param _access_type the access_id value
      */
     public void setAccess_type(AccessType _access_type) {

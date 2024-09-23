@@ -100,8 +100,8 @@ public class Practitioner extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.m
 
     /**
      * In some programs the Practitioner number will be a hard requirement.
-     * @throws MandatoryAttributeException
      *
+     * @throws MandatoryAttributeException
      */
     protected void setIdentifier(org.hl7.fhir.dstu3.model.Practitioner fhirResource) throws MandatoryAttributeException {
 

@@ -44,23 +44,23 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author Jay Gallagher
- *
- *
  */
 public class RxPharmacyData {
 
     private PharmacyInfoDao pharmacyInfoDao = (PharmacyInfoDao) SpringUtils.getBean(PharmacyInfoDao.class);
     private DemographicPharmacyDao demographicPharmacyDao = (DemographicPharmacyDao) SpringUtils.getBean(DemographicPharmacyDao.class);
 
-    /** Creates a new instance of RxPharmacyData */
+    /**
+     * Creates a new instance of RxPharmacyData
+     */
     public RxPharmacyData() {
     }
 
 
     /**
      * Used to add a new pharmacy
+     *
      * @param name
      * @param address
      * @param city
@@ -79,7 +79,8 @@ public class RxPharmacyData {
 
     /**
      * Used to update an new pharmacy.  Creates a new record for this pharmacy with the same pharmacyID
-     * @param ID pharmacy ID
+     *
+     * @param ID         pharmacy ID
      * @param name
      * @param address
      * @param city
@@ -97,6 +98,7 @@ public class RxPharmacyData {
 
     /**
      * set the status of the pharmacy to 0, this will not be found in the getAllPharmacy queries
+     *
      * @param ID
      */
     public void deletePharmacy(String ID) {
@@ -112,6 +114,7 @@ public class RxPharmacyData {
 
     /**
      * Returns the latest data about a pharmacy.
+     *
      * @param ID pharmacy id
      * @return returns a pharmacy class corresponding latest data from the pharmacy ID
      */
@@ -122,6 +125,7 @@ public class RxPharmacyData {
 
     /**
      * Returns the data about a pharmacy record.  This would be used to see prior addresses or phone numbers of a pharmacy.
+     *
      * @param recordID pharmacy Record ID
      * @return Pharmacy data class
      */
@@ -132,6 +136,7 @@ public class RxPharmacyData {
 
     /**
      * Used to get a list of all the active pharmacies with their latest data
+     *
      * @return ArrayList of Pharmacy classes
      */
     public List<PharmacyInfo> getAllPharmacies() {
@@ -140,7 +145,8 @@ public class RxPharmacyData {
 
     /**
      * Used to link a patient with a pharmacy.
-     * @param pharmacyId Id of the pharmacy
+     *
+     * @param pharmacyId    Id of the pharmacy
      * @param demographicNo Patient demographic number
      */
     public PharmacyInfo addPharmacyToDemographic(String pharmacyId, String demographicNo, String preferredOrder) {
@@ -155,8 +161,8 @@ public class RxPharmacyData {
 
     /**
      * Used to get the most recent pharmacy associated with this patient.  Returns a Pharmacy object with the latest data about that pharmacy.
-     * @param demographicNo patients demographic number
      *
+     * @param demographicNo patients demographic number
      * @return Pharmacy data object
      */
     public List<PharmacyInfo> getPharmacyFromDemographic(String demographicNo) {

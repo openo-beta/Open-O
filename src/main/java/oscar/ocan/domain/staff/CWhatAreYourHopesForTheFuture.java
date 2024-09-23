@@ -54,8 +54,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -70,10 +68,8 @@ public class CWhatAreYourHopesForTheFuture {
     /**
      * Gets the value of the c property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getC() {
         return c;
@@ -82,10 +78,8 @@ public class CWhatAreYourHopesForTheFuture {
     /**
      * Sets the value of the c property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setC(String value) {
         this.c = value;

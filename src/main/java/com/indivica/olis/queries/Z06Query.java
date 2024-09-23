@@ -16,9 +16,9 @@ import com.indivica.olis.parameters.QRD7;
 import com.indivica.olis.parameters.ZPD1;
 
 /**
- * Z06 - Retrieve Laboratory Information Updates for Ordering Facility 
- * @author jen
+ * Z06 - Retrieve Laboratory Information Updates for Ordering Facility
  *
+ * @author jen
  */
 public class Z06Query extends Query {
 

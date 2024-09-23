@@ -324,7 +324,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
      * These values are cached until GC or until reset by the prevention settings.
      * Use getDisabledPreventions() directly to get the values currently set in the
      * database.
-     *
+     * <p>
      * Tried my best to refactor this using the current - odd - structure.
      */
     @Override

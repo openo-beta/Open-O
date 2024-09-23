@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Performing Laboratory
- * @author jen
  *
+ * @author jen
  */
 public class ZBR6 implements Parameter {
     private String universalId;

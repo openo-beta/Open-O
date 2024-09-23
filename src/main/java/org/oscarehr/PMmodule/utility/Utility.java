@@ -679,10 +679,8 @@ public class Utility {
      * patient will be right now or how old will they be on march.31 of this
      * year.
      *
-     * @param DOB
-     *            Demographics Date of birth
-     * @param pointInTime
-     *            The date you would like to calculate there age at.
+     * @param DOB         Demographics Date of birth
+     * @param pointInTime The date you would like to calculate there age at.
      * @return age string ( ie 2 months, 4 years .etc )
      */
     public static String calcAgeAtDate(Date DOB, Date pointInTime) {

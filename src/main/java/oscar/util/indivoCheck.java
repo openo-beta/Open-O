@@ -36,9 +36,9 @@ import org.oscarehr.util.MiscUtils;
 import oscar.oscarDemographic.data.DemographicData;
 import oscar.oscarProvider.data.ProviderMyOscarIdData;
 
-/** Tag class for checking if provider and demographic have Indivo Ids
+/**
+ * Tag class for checking if provider and demographic have Indivo Ids
  * If they do, the jsp code will be included in the page.
- *
  */
 public class indivoCheck extends TagSupport {
 

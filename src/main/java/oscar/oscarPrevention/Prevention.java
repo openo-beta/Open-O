@@ -42,7 +42,6 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class Prevention {
@@ -405,6 +404,7 @@ public class Prevention {
 
     /**
      * Getter for property DOB.
+     *
      * @return Value of property DOB.
      */
     public java.util.Date getDOB() {
@@ -413,6 +413,7 @@ public class Prevention {
 
     /**
      * Setter for property DOB.
+     *
      * @param DOB New value of property DOB.
      */
     public void setDOB(java.util.Date DOB) {

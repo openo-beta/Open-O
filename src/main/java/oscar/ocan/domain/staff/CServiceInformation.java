@@ -57,8 +57,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -82,10 +80,8 @@ public class CServiceInformation {
     /**
      * Gets the value of the cServiceRecipientLocationCountyDistrictMunicipality property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCServiceRecipientLocationCountyDistrictMunicipality() {
         return cServiceRecipientLocationCountyDistrictMunicipality;
@@ -94,10 +90,8 @@ public class CServiceInformation {
     /**
      * Sets the value of the cServiceRecipientLocationCountyDistrictMunicipality property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCServiceRecipientLocationCountyDistrictMunicipality(String value) {
         this.cServiceRecipientLocationCountyDistrictMunicipality = value;
@@ -106,10 +100,8 @@ public class CServiceInformation {
     /**
      * Gets the value of the cServiceRecipientLHIN property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCServiceRecipientLHIN() {
         return cServiceRecipientLHIN;
@@ -118,10 +110,8 @@ public class CServiceInformation {
     /**
      * Sets the value of the cServiceRecipientLHIN property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCServiceRecipientLHIN(String value) {
         this.cServiceRecipientLHIN = value;
@@ -130,10 +120,8 @@ public class CServiceInformation {
     /**
      * Gets the value of the cServiceDeliveryLHIN property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCServiceDeliveryLHIN() {
         return cServiceDeliveryLHIN;
@@ -142,10 +130,8 @@ public class CServiceInformation {
     /**
      * Sets the value of the cServiceDeliveryLHIN property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCServiceDeliveryLHIN(String value) {
         this.cServiceDeliveryLHIN = value;
@@ -154,10 +140,8 @@ public class CServiceInformation {
     /**
      * Gets the value of the cDateOfBirthAge property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCDateOfBirthAge() {
         return cDateOfBirthAge;
@@ -166,10 +150,8 @@ public class CServiceInformation {
     /**
      * Sets the value of the cDateOfBirthAge property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCDateOfBirthAge(String value) {
         this.cDateOfBirthAge = value;

@@ -40,13 +40,12 @@ public final class ResourceAttributeFilterFactory {
      * Returns a Resource Attribute Filter class customized specifically for the
      * FHIR destination and FHIR Resource.
      * For Example. A Patient FHIR resource being sent to the Ontario BORN API would have a method signature:
-     *
+     * <p>
      * getFilter("born", "org.hl7.fhir.dstu3.model.Patient")
-     *
+     * <p>
      * Or if the filter URL is known:
-     *
+     * <p>
      * getFilter("/born/Patient.filter")
-     *
      */
     public static ResourceAttributeFilter getFilter(FhirDestination destination) {
         return getFilter(destination.name().toLowerCase());

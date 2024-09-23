@@ -58,7 +58,9 @@ public class ManagePatientLettersAction extends Action {
     private static Logger log = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of GeneratePatientLetters */
+    /**
+     * Creates a new instance of GeneratePatientLetters
+     */
     public ManagePatientLettersAction() {
 
     }

@@ -42,20 +42,19 @@ import org.oscarehr.oscarRx.erx.model.PrescriptionFormat;
  * called by sending a SOAP request to the External Prescriber's web service.
  *
  * @see <a
- *      href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=GetPrescriptions5">The
- *      the External Prescriber GetPrescriptions5 web service demo page</a>
+ * href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=GetPrescriptions5">The
+ * the External Prescriber GetPrescriptions5 web service demo page</a>
  * @see <a
- *      href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgeRxV5.ashx#WSPrescriptionF___6">The
- *      the External Prescriber wiki</a>
+ * href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgeRxV5.ashx#WSPrescriptionF___6">The
+ * the External Prescriber wiki</a>
  */
 public class GetPrescriptions5 {
     /**
      * Formats dates in a way that the the External Prescriber web services can understand.
      *
-     * @param date
-     *            The date to format. Can be null.
+     * @param date The date to format. Can be null.
      * @return The formatted date. If the date to format is null, then it
-     *         returns an empty string.
+     * returns an empty string.
      */
     private static String formatDate(Date date) {
         if (date == null) {
@@ -98,18 +97,12 @@ public class GetPrescriptions5 {
     /**
      * Construct a GetPrescriptions5.
      *
-     * @param username
-     *            The username used to request the data.
-     * @param password
-     *            The password used to request the data.
-     * @param localeId
-     *            The locale to return information in.
-     * @param facilityId
-     *            The facility requesting the data.
-     * @param dateToGetPrescriptionsFrom
-     *            The date to request data from.
-     * @param format
-     *            The format that prescription text should be returned in.
+     * @param username                   The username used to request the data.
+     * @param password                   The password used to request the data.
+     * @param localeId                   The locale to return information in.
+     * @param facilityId                 The facility requesting the data.
+     * @param dateToGetPrescriptionsFrom The date to request data from.
+     * @param format                     The format that prescription text should be returned in.
      */
     public GetPrescriptions5(String username, String password,
                              String localeId, String facilityId, String patientId,
@@ -127,8 +120,7 @@ public class GetPrescriptions5 {
      * Get a SOAP document fragment representing this object.
      *
      * @return A SOAPElement representing this object.
-     * @throws SOAPException
-     *             If an error occurred when trying to construct this element.
+     * @throws SOAPException If an error occurred when trying to construct this element.
      */
     public SOAPElement getSOAPElement() throws SOAPException {
         // Create the parent node

@@ -62,12 +62,10 @@ public class ERxPatientRecordSynchronizer implements PatientRecordSynchronizer {
     /**
      * Send a patient's data to the remote prescription provider.
      *
-     * @param patient
-     *            The patient data to send to the remote prescription provider.
-     * @param providerId
-     *            The OSCAR ID of the provider who the patient is seeing and who
-     *            may prescribe something for the patient using the external
-     *            prescription provider.
+     * @param patient    The patient data to send to the remote prescription provider.
+     * @param providerId The OSCAR ID of the provider who the patient is seeing and who
+     *                   may prescribe something for the patient using the external
+     *                   prescription provider.
      */
     @Override
     public void sendRecord(Demographic patient, String providerId) {

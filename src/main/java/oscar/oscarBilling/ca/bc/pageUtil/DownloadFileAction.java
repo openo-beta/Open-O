@@ -41,11 +41,14 @@ import oscar.OscarProperties;
 
 /**
  * Processes downloading files
+ *
  * @author jay
  */
 public class DownloadFileAction extends DownloadAction {
 
-    /** Creates a new instance of DownloadFileAction */
+    /**
+     * Creates a new instance of DownloadFileAction
+     */
     public DownloadFileAction() {
     }
 

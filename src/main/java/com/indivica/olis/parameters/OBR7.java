@@ -16,8 +16,8 @@ import java.util.List;
 
 /**
  * Earliest and Latest Observation Date/Time
- * @author jen
  *
+ * @author jen
  */
 public class OBR7 implements Parameter {
     private String value;

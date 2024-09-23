@@ -49,12 +49,11 @@ import oscar.oscarBilling.ca.bc.data.BillingFormData.BillingVisit;
  * Company Colcamex Resources
  * Date Jun 4, 2012
  * Revised Jun 6, 2012
- * Comment 
- *     	three actions here
- *  	1. get display
- * 		2. add entry to bean
- *   	3. remove entry from bean
- *
+ * Comment
+ * three actions here
+ * 1. get display
+ * 2. add entry to bean
+ * 3. remove entry from bean
  */
 public class QuickBillingBCAction extends Action {
 

@@ -39,6 +39,7 @@ public class ProgramUtils {
      * by their restrictions.
      * The intent is to allow javascript on a given page to determine if a restriction is being breached
      * or not and to alert the user.
+     *
      * @param request
      */
     public static void addProgramRestrictions(HttpServletRequest request) {

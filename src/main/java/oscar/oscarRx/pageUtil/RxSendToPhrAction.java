@@ -68,7 +68,9 @@ public class RxSendToPhrAction extends Action {
 
     PHRService phrService = null;
 
-    /** Creates a new instance of RxSendToPhr */
+    /**
+     * Creates a new instance of RxSendToPhr
+     */
     public RxSendToPhrAction() {
     }
 

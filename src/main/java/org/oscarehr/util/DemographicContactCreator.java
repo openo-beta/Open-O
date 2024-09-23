@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * this class contains the utility methods for creating generic Contact objects and adds these
  * objects to a DemographicContact object as contact details.
- * This is a little backwards in order to combine several contact systems into one. Eventually 
+ * This is a little backwards in order to combine several contact systems into one. Eventually
  * we could live without this class.
  */
 public class DemographicContactCreator {
@@ -165,6 +165,7 @@ public class DemographicContactCreator {
     /**
      * Return a generic Contact class from any other class of
      * contact.
+     *
      * @return
      */
     public static final Contact buildContact(final Object contactobject) {

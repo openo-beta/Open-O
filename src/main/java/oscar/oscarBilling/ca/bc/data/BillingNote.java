@@ -44,21 +44,24 @@ import oscar.util.ConversionUtils;
 import oscar.util.UtilMisc;
 
 /**
- *+------------------+------------+------+-----+---------+----------------+
- | Field            | Type       | Null | Key | Default | Extra          |
- +------------------+------------+------+-----+---------+----------------+
- | billingnote_no   | int(10)    |      | PRI | NULL    | auto_increment |
- | billingmaster_no | int(10)    |      | MUL | 0       |                |
- | createdate       | datetime   | YES  | MUL | NULL    |                |
- | provider_no      | varchar(6) |      | MUL |         |                |
- | note             | text       | YES  |     | NULL    |                |
- | note_type        | int(2)     | YES  |     | NULL    |                |
- +------------------+------------+------+-----+---------+----------------+
+ * +------------------+------------+------+-----+---------+----------------+
+ * | Field            | Type       | Null | Key | Default | Extra          |
+ * +------------------+------------+------+-----+---------+----------------+
+ * | billingnote_no   | int(10)    |      | PRI | NULL    | auto_increment |
+ * | billingmaster_no | int(10)    |      | MUL | 0       |                |
+ * | createdate       | datetime   | YES  | MUL | NULL    |                |
+ * | provider_no      | varchar(6) |      | MUL |         |                |
+ * | note             | text       | YES  |     | NULL    |                |
+ * | note_type        | int(2)     | YES  |     | NULL    |                |
+ * +------------------+------------+------+-----+---------+----------------+
+ *
  * @author root
  */
 public class BillingNote {
 
-    /** Creates a new instance of BillingNote */
+    /**
+     * Creates a new instance of BillingNote
+     */
     public BillingNote() {
     }
 
@@ -93,7 +96,6 @@ public class BillingNote {
     }
 
     /**
-     *
      * @param billingmaster_no billingmaster_no from billingmaster table to get the full note class
      * @return Returns a Note Class
      */
@@ -147,6 +149,7 @@ public class BillingNote {
 
         /**
          * Getter for property billingnote_no.
+         *
          * @return Value of property billingnote_no.
          */
         public java.lang.String getBillingnote_no() {
@@ -155,6 +158,7 @@ public class BillingNote {
 
         /**
          * Setter for property billingnote_no.
+         *
          * @param billingnote_no New value of property billingnote_no.
          */
         public void setBillingnote_no(java.lang.String billingnote_no) {
@@ -163,6 +167,7 @@ public class BillingNote {
 
         /**
          * Getter for property billingmaster_no.
+         *
          * @return Value of property billingmaster_no.
          */
         public java.lang.String getBillingmaster_no() {
@@ -171,6 +176,7 @@ public class BillingNote {
 
         /**
          * Setter for property billingmaster_no.
+         *
          * @param billingmaster_no New value of property billingmaster_no.
          */
         public void setBillingmaster_no(java.lang.String billingmaster_no) {
@@ -179,6 +185,7 @@ public class BillingNote {
 
         /**
          * Getter for property createdate.
+         *
          * @return Value of property createdate.
          */
         public java.lang.String getCreatedate() {
@@ -187,6 +194,7 @@ public class BillingNote {
 
         /**
          * Setter for property createdate.
+         *
          * @param createdate New value of property createdate.
          */
         public void setCreatedate(java.lang.String createdate) {
@@ -195,6 +203,7 @@ public class BillingNote {
 
         /**
          * Getter for property provider_no.
+         *
          * @return Value of property provider_no.
          */
         public java.lang.String getProviderNo() {
@@ -203,6 +212,7 @@ public class BillingNote {
 
         /**
          * Setter for property provider_no.
+         *
          * @param provider_no New value of property provider_no.
          */
         public void setProviderNo(java.lang.String provider_no) {
@@ -211,6 +221,7 @@ public class BillingNote {
 
         /**
          * Getter for property note.
+         *
          * @return Value of property note.
          */
         public java.lang.String getNote() {
@@ -219,6 +230,7 @@ public class BillingNote {
 
         /**
          * Setter for property note.
+         *
          * @param note New value of property note.
          */
         public void setNote(java.lang.String note) {

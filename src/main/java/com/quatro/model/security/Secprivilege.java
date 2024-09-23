@@ -38,17 +38,23 @@ public class Secprivilege implements java.io.Serializable {
 
     // Constructors
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Secprivilege() {
     }
 
-    /** minimal constructor */
+    /**
+     * minimal constructor
+     */
     public Secprivilege(Integer id, String privilege) {
         this.id = id;
         this.privilege = privilege;
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public Secprivilege(Integer id, String privilege, String description) {
         this.id = id;
         this.privilege = privilege;

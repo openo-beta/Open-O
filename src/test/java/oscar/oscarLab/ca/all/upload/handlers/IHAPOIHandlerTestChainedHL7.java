@@ -40,7 +40,6 @@ import org.xml.sax.SAXException;
  * This test case is used to generate a log analysis during development only.
  * No assertions are used.
  * Uncomment the Test annotations to use.
- *
  */
 public class IHAPOIHandlerTestChainedHL7 extends IHAPOIHandler {
 

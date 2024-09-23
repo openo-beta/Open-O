@@ -31,7 +31,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that a method is dangerous.  
+ * Indicates that a method is dangerous.
  */
 @Documented
 @Retention(RetentionPolicy.SOURCE)

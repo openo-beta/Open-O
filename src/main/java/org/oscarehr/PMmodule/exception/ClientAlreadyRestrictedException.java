@@ -24,6 +24,7 @@
 package org.oscarehr.PMmodule.exception;
 
 /**
+ *
  */
 public class ClientAlreadyRestrictedException extends Exception {
     public ClientAlreadyRestrictedException() {

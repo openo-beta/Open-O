@@ -54,7 +54,6 @@ import org.oscarehr.hospitalReportManager.xsd.TransactionInformation;
 
 
 /**
- *
  * @author ronnie
  */
 public class ReadHRMFile {

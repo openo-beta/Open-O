@@ -66,7 +66,6 @@ import ca.ontario.health.edt.UploadData;
 
 /**
  * Defines utility methods for action classes.
- *
  */
 public class ActionUtils {
     private static Logger logger = MiscUtils.getLogger();

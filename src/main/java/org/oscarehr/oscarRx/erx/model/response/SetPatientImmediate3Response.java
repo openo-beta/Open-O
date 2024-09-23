@@ -35,29 +35,23 @@ import org.w3c.dom.NodeList;
 /**
  * Provides an interface for the the External Prescriber SetPatientImmediate3Response document,
  * which is returned by the External Prescriber's web service after sending patient data to it.
- *
  */
 public class SetPatientImmediate3Response {
     /**
      * Parse a the External Prescriber SetPatientImmediate3Response document, re-throwing errors
      * from the remote web service if necessary.
      *
-     * @param node
-     *            The document [fragment] to parse.
-     * @throws DOMException
-     *             Throws a DOMException if this function is passed a document
-     *             it doesn't recognize.
-     * @throws IllegalArgumentException
-     *             Re-throws an IllegalArgumentException if the remote web
-     *             service reports that it didn't receive data in a format it
-     *             could recognize.
-     * @throws SecurityException
-     *             Re-throws a SecurityException if the remote web service
-     *             reports a security-related error.
-     * @throws Exception
-     *             Re-throws an Exception if the remote web service reports an
-     *             error that wasn't documented enough in the the External Prescriber
-     *             documentation for the programmer to understand what it meant.
+     * @param node The document [fragment] to parse.
+     * @throws DOMException             Throws a DOMException if this function is passed a document
+     *                                  it doesn't recognize.
+     * @throws IllegalArgumentException Re-throws an IllegalArgumentException if the remote web
+     *                                  service reports that it didn't receive data in a format it
+     *                                  could recognize.
+     * @throws SecurityException        Re-throws a SecurityException if the remote web service
+     *                                  reports a security-related error.
+     * @throws Exception                Re-throws an Exception if the remote web service reports an
+     *                                  error that wasn't documented enough in the the External Prescriber
+     *                                  documentation for the programmer to understand what it meant.
      */
     public static void parseSetPatientImmediate3Response(Node node)
             throws DOMException, IllegalArgumentException, SecurityException,

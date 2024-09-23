@@ -40,6 +40,7 @@ import oscar.oscarReport.reportByTemplate.Reporter;
 
 /**
  * Created on December 21, 2006, 10:47 AM
+ *
  * @author apavel (Paul)
  */
 public class GenerateReportAction extends Action {

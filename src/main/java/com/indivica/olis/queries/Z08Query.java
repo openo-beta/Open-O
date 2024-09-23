@@ -16,8 +16,8 @@ import com.indivica.olis.parameters.ZPD1;
 
 /**
  * Z08 - Retrieve Test Results Reportable to Cancer Care Ontario
- * @author jen
  *
+ * @author jen
  */
 public class Z08Query extends Query {
 

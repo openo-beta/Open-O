@@ -56,7 +56,6 @@ import net.sf.json.JSONObject;
 
 /**
  * FOR USE WITH INTEGRATOR MESSAGING ONLY
- *
  */
 @Service
 public class MessengerIntegratorManager {
@@ -277,23 +276,23 @@ public class MessengerIntegratorManager {
      * This method checks against the destination facility for demographic files that are already linked
      * and then prepares a JSONObject of all the demographic numbers and sourceFacility ids
      * that should be attached to a message.
-     *
+     * <p>
      * The demographic number is sent as "unlinked" if the demographic is not found to be linked
      * in the Integrator. It will be up to the reciever to choose to link the demographic file with a local file
      * or to import the demographic file.
-     *
+     * <p>
      * For example:
-     *
+     * <p>
      * This is a demographic that is not linked. The source facility number indicates
      * the facility where the demographic file resides.
-     *
+     * <p>
      * demographicNo : 1234
      * sourceFacility : 4
      * linked : false
-     *
+     * <p>
      * This demographic is linked. The sourcefacility will be 0 or the destination facility id
      * to indicate that the demographic file exists in the destination facility
-     *
+     * <p>
      * demographicNo : 6795
      * sourceFacility : 0 or 2
      * linked : true
@@ -336,6 +335,7 @@ public class MessengerIntegratorManager {
     /**
      * This method gets used because some of the demographics did not get linked. This helps keep a reference
      * to the demographic in a message chain.
+     *
      * @param loggedInInfo
      * @param unlinkedDemoMap
      * @return
@@ -409,6 +409,7 @@ public class MessengerIntegratorManager {
 
     /**
      * Save messages from the Integrator into the Oscar messenger inbox.
+     *
      * @param loggedInInfo
      * @param providerCommunicationList
      * @return

@@ -59,7 +59,7 @@ public enum WSPatientResult3 {
     /**
      * Request is unsuccessful because the clinic specified by the clientNumber
      * parameter is invalid.
-     *
+     * <p>
      * It can also be returned when the clinic is disabled.
      */
     ERROR_UNKNOWN_CLINIC(8),
@@ -78,12 +78,10 @@ public enum WSPatientResult3 {
      * Convert a string (passed in a response) to it's corresponding
      * WSPatientResult3/
      *
-     * @param toParse
-     *            The string to convert.
+     * @param toParse The string to convert.
      * @return The WSPatientResult3 corresponding to the given string.
-     * @throws IllegalArgumentException
-     *             Throws an IllegalArgumentException if the string doesn't
-     *             match a known WSPatientResult3.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the string doesn't
+     *                                  match a known WSPatientResult3.
      */
     public static WSPatientResult3 parseString(String toParse)
             throws IllegalArgumentException {
@@ -118,9 +116,8 @@ public enum WSPatientResult3 {
     /**
      * Create a WSPatientResult3.
      *
-     * @param patientResultId
-     *            An integer value which must be passed in a request or parsed
-     *            in a response.
+     * @param patientResultId An integer value which must be passed in a request or parsed
+     *                        in a response.
      */
     WSPatientResult3(int patientResultId) {
         this.patientResultId = patientResultId;
@@ -130,7 +127,7 @@ public enum WSPatientResult3 {
      * Convert a WSPatientResult3 to a string suitable for sending in a request.
      *
      * @return A string representing this value, suitable for sending in a
-     *         request.
+     * request.
      */
     public String getString() {
         return Integer.toString(this.patientResultId);

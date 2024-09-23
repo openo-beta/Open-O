@@ -42,8 +42,7 @@ public class MiscMappingDao extends AbstractDaoImpl<MiscMapping> {
     /**
      * Finds all misc document mappings in our Data model
      *
-     * @return
-     * list of all MiscMapping objects
+     * @return list of all MiscMapping objects
      */
     public List<MiscMapping> findMiscMappings() {
         String sql = "FROM MiscMapping";

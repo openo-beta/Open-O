@@ -46,7 +46,6 @@ import javax.xml.ws.WebServiceClient;
  * </pre>
  *
  * </p>
- *
  */
 @WebServiceClient(name = "WaitListService", targetNamespace = "http://caisi.org/wl/", wsdlLocation = "http://localhost:8080/wlws/WaitListServicePort?wsdl")
 public class WaitListService_Service extends Service {
@@ -78,7 +77,6 @@ public class WaitListService_Service extends Service {
     }
 
     /**
-     *
      * @return returns WaitListService
      */
     @WebEndpoint(name = "WaitListServicePort")

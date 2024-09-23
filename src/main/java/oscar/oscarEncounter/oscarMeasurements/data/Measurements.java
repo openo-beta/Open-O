@@ -39,7 +39,9 @@ public class Measurements {
     private Date dateObserved;
     private Date dateEntered;
 
-    /** Creates a new instance of Measurements */
+    /**
+     * Creates a new instance of Measurements
+     */
     public Measurements(Long demographicNo) {
         this.setDemographicNo(demographicNo);
     }

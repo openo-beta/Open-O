@@ -45,8 +45,7 @@ public class Appender {
     /**
      * Creates a new instance and sets the specified string as the separator
      *
-     * @param separator
-     *            Separator to be placed between appended strings
+     * @param separator Separator to be placed between appended strings
      */
     public Appender(String separator) {
         setSeparator(separator);
@@ -56,10 +55,8 @@ public class Appender {
      * Creates a new instance and sets the specified string as the separator
      * and the initial string to be appended
      *
-     * @param separator
-     *            Separator to be placed between appended strings
-     * @param initialContent
-     * 			  Content to be appended
+     * @param separator      Separator to be placed between appended strings
+     * @param initialContent Content to be appended
      */
     public Appender(String separator, String initialContent) {
         this(separator);
@@ -92,12 +89,10 @@ public class Appender {
      * null object in the parameter list provided, nothing is
      * appended to this appender.
      *
-     * @param objects
-     * 		Non-null objects to append. In case there is at least one
-     * 		null object, the append process is halted.
-     * @return
-     *        Returns true if content of this appender has been modified
-     * 		and false otherwise.
+     * @param objects Non-null objects to append. In case there is at least one
+     *                null object, the append process is halted.
+     * @return Returns true if content of this appender has been modified
+     * and false otherwise.
      */
     public boolean appendNonEmpty(Object... objects) {
         StringBuilder buf = new StringBuilder();
@@ -115,10 +110,9 @@ public class Appender {
      * Trims and appends the specified string to this instance, inserting the
      * separator, if necessary.
      *
-     * @param string
-     *            String to be appended
+     * @param string String to be appended
      * @return Returns true if the specified string was appended and false
-     *         otherwise.
+     * otherwise.
      */
     public boolean append(String string) {
         if (string == null) {
@@ -158,8 +152,7 @@ public class Appender {
     /**
      * Sets the separator that this appender uses to separate appended strings
      *
-     * @param separator
-     *            separator to set
+     * @param separator separator to set
      */
     public void setSeparator(String separator) {
         this.separator = separator;

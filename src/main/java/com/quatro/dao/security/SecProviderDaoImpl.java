@@ -38,9 +38,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.quatro.model.security.SecProvider;
 
 /**
- *
  * @author JZhang
- *
  */
 
 public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProviderDao {

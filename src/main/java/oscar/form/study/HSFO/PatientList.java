@@ -30,11 +30,12 @@ import java.util.List;
 
 /**
  * Class used by the HSFO Study
- *
  */
 public class PatientList {
 
-    /** Creates a new instance of PatientList */
+    /**
+     * Creates a new instance of PatientList
+     */
     public PatientList() {
     }
 

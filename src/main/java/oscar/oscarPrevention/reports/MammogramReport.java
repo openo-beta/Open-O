@@ -49,13 +49,14 @@ import oscar.oscarPrevention.pageUtil.PreventionReportDisplay;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class MammogramReport implements PreventionReport {
     private static Logger log = MiscUtils.getLogger();
 
-    /** Creates a new instance of MammogramReport */
+    /**
+     * Creates a new instance of MammogramReport
+     */
     public MammogramReport() {
     }
 

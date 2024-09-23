@@ -155,13 +155,10 @@ public class MeasurementMapDaoImpl extends AbstractDaoImpl<MeasurementMap> imple
     /**
      * Finds measurements for the specified lab type and ident code
      *
-     * @param labType
-     *                Lab type to find
-     * @param idCode
-     *                Ident code to find
-     * @return
-     *         Returns a list of triples holding {@link MeasurementMap},
-     *         {@link MeasurementMap}, {@link MeasurementType}
+     * @param labType Lab type to find
+     * @param idCode  Ident code to find
+     * @return Returns a list of triples holding {@link MeasurementMap},
+     * {@link MeasurementMap}, {@link MeasurementType}
      */
     @SuppressWarnings("unchecked")
     @Override

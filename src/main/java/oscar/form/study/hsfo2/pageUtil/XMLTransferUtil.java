@@ -302,8 +302,7 @@ public class XMLTransferUtil {
      *
      * @param site
      * @param pd
-     * @param baseLineVd
-     *          : the baseLine visit data, namely the initial patient data
+     * @param baseLineVd : the baseLine visit data, namely the initial patient data
      * @throws Exception
      */
     public void addPatientToSite(Site site, Hsfo2Patient pd, Hsfo2Visit baseLineVd, Calendar startDate, Calendar endDate) {
@@ -1051,6 +1050,7 @@ public class XMLTransferUtil {
      * this is for follow up: form_HsfHmpFlowsheet
      * only add this flowsheet when all the required field inside were set data
      * maxOccur=unbounded, minOccurs=0
+     *
      * @param patient
      * @param vsd
      */
@@ -2035,7 +2035,6 @@ public class XMLTransferUtil {
 
 
     /**
-     *
      * @param siteCode
      * @param userId
      * @param passwd
@@ -2113,7 +2112,6 @@ public class XMLTransferUtil {
 
 
     /**
-     *
      * @param siteCode
      * @param userId
      * @param passwd

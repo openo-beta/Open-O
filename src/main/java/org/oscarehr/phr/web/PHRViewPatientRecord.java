@@ -58,7 +58,6 @@ import oscar.oscarDemographic.data.DemographicData;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author apavel
  */
 public class PHRViewPatientRecord extends DispatchAction {

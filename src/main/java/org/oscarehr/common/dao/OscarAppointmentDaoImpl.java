@@ -368,12 +368,10 @@ public class OscarAppointmentDaoImpl extends AbstractDaoImpl<Appointment> implem
     /**
      * Finds appointment after current date and time for the specified demographic
      *
-     * @param demographicId
-     *                      Demographic to find appointment for
-     * @return
-     *         Returns the next non-cancelled future appointment or null if there
-     *         are no appointments
-     *         scheduled
+     * @param demographicId Demographic to find appointment for
+     * @return Returns the next non-cancelled future appointment or null if there
+     * are no appointments
+     * scheduled
      */
     @Override
     public Appointment findNextAppointment(Integer demographicId) {

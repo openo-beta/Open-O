@@ -58,12 +58,11 @@ public class TicklerHandler {
 
     /**
      * Expects a map of parameters with keys:
-     * 	String message
-     *	String priority
-     *	String serviceDate
-     *	String taskAssignedTo
-     *	String ticklerCategoryId
-     *
+     * String message
+     * String priority
+     * String serviceDate
+     * String taskAssignedTo
+     * String ticklerCategoryId
      */
     public void createMasterTickler(Map<String, String[]> ticklerParameters) {
 

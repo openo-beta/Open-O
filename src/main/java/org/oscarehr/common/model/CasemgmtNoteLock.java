@@ -39,7 +39,6 @@ import javax.persistence.Transient;
 
 /**
  * The persistent class for the casemgmt_note_lock database table.
- *
  */
 @Entity
 @Table(name = "casemgmt_note_lock")

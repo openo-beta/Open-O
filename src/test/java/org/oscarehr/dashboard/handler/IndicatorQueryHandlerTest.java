@@ -40,10 +40,8 @@ import org.oscarehr.dashboard.query.Parameter;
 import org.oscarehr.dashboard.query.RangeInterface;
 
 /**
- *
- * Cannot automate this test because the EntityManager is called 
+ * Cannot automate this test because the EntityManager is called
  * through spring utils.
- *
  */
 public class IndicatorQueryHandlerTest {
 

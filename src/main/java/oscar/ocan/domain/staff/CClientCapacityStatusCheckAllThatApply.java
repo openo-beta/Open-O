@@ -56,8 +56,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -78,10 +76,8 @@ public class CClientCapacityStatusCheckAllThatApply {
     /**
      * Gets the value of the cDoesTheClientHaveAPowerOfAttorneyForProperty property.
      *
-     * @return
-     *     possible object is
-     *     {@link CDoesTheClientHaveAPowerOfAttorneyForProperty }
-     *
+     * @return possible object is
+     * {@link CDoesTheClientHaveAPowerOfAttorneyForProperty }
      */
     public CDoesTheClientHaveAPowerOfAttorneyForProperty getCDoesTheClientHaveAPowerOfAttorneyForProperty() {
         return cDoesTheClientHaveAPowerOfAttorneyForProperty;
@@ -90,10 +86,8 @@ public class CClientCapacityStatusCheckAllThatApply {
     /**
      * Sets the value of the cDoesTheClientHaveAPowerOfAttorneyForProperty property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CDoesTheClientHaveAPowerOfAttorneyForProperty }
-     *
+     * @param value allowed object is
+     *              {@link CDoesTheClientHaveAPowerOfAttorneyForProperty }
      */
     public void setCDoesTheClientHaveAPowerOfAttorneyForProperty(CDoesTheClientHaveAPowerOfAttorneyForProperty value) {
         this.cDoesTheClientHaveAPowerOfAttorneyForProperty = value;
@@ -102,10 +96,8 @@ public class CClientCapacityStatusCheckAllThatApply {
     /**
      * Gets the value of the cDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare property.
      *
-     * @return
-     *     possible object is
-     *     {@link CDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare }
-     *
+     * @return possible object is
+     * {@link CDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare }
      */
     public CDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare getCDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare() {
         return cDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare;
@@ -114,10 +106,8 @@ public class CClientCapacityStatusCheckAllThatApply {
     /**
      * Sets the value of the cDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare }
-     *
+     * @param value allowed object is
+     *              {@link CDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare }
      */
     public void setCDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare(CDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare value) {
         this.cDoesTheClientHaveAPowerOfAttorneyOrASubstituteDecisionMakerForPersonCare = value;
@@ -126,10 +116,8 @@ public class CClientCapacityStatusCheckAllThatApply {
     /**
      * Gets the value of the cDoesTheClientHaveACourtAppointedGuardian property.
      *
-     * @return
-     *     possible object is
-     *     {@link CDoesTheClientHaveACourtAppointedGuardian }
-     *
+     * @return possible object is
+     * {@link CDoesTheClientHaveACourtAppointedGuardian }
      */
     public CDoesTheClientHaveACourtAppointedGuardian getCDoesTheClientHaveACourtAppointedGuardian() {
         return cDoesTheClientHaveACourtAppointedGuardian;
@@ -138,10 +126,8 @@ public class CClientCapacityStatusCheckAllThatApply {
     /**
      * Sets the value of the cDoesTheClientHaveACourtAppointedGuardian property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CDoesTheClientHaveACourtAppointedGuardian }
-     *
+     * @param value allowed object is
+     *              {@link CDoesTheClientHaveACourtAppointedGuardian }
      */
     public void setCDoesTheClientHaveACourtAppointedGuardian(CDoesTheClientHaveACourtAppointedGuardian value) {
         this.cDoesTheClientHaveACourtAppointedGuardian = value;

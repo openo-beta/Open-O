@@ -32,7 +32,7 @@ import org.oscarehr.integration.fhir.resources.constants.ActorType;
 /**
  * The clinic practitioner whom performs a procedure with a patient.
  * Example: this is the practitioner that administers a vaccine treatment.
- *
+ * <p>
  * ConfigurationManager is required.
  */
 public class PerformingPractitioner extends Practitioner {

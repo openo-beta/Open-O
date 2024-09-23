@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- *
  * retrieves info to display Disease entries for demographic
  */
 public class EctDisplayRxAction extends EctDisplayAction {

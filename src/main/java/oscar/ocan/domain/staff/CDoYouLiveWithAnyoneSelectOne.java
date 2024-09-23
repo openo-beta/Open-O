@@ -62,8 +62,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -102,10 +100,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cSelf property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSelf() {
         return cSelf;
@@ -114,10 +110,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cSelf property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSelf(String value) {
         this.cSelf = value;
@@ -126,10 +120,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cSpousePartner property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSpousePartner() {
         return cSpousePartner;
@@ -138,10 +130,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cSpousePartner property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSpousePartner(String value) {
         this.cSpousePartner = value;
@@ -150,10 +140,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cSpousePartnerAndOthers property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSpousePartnerAndOthers() {
         return cSpousePartnerAndOthers;
@@ -162,10 +150,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cSpousePartnerAndOthers property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSpousePartnerAndOthers(String value) {
         this.cSpousePartnerAndOthers = value;
@@ -174,10 +160,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cChildren property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCChildren() {
         return cChildren;
@@ -186,10 +170,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cChildren property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCChildren(String value) {
         this.cChildren = value;
@@ -198,10 +180,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cParents property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCParents() {
         return cParents;
@@ -210,10 +190,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cParents property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCParents(String value) {
         this.cParents = value;
@@ -222,10 +200,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cRelatives property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCRelatives() {
         return cRelatives;
@@ -234,10 +210,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cRelatives property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCRelatives(String value) {
         this.cRelatives = value;
@@ -246,10 +220,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cNonRelatives property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCNonRelatives() {
         return cNonRelatives;
@@ -258,10 +230,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cNonRelatives property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCNonRelatives(String value) {
         this.cNonRelatives = value;
@@ -270,10 +240,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cUnknown property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -282,10 +250,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cUnknown property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -294,10 +260,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -306,10 +270,8 @@ public class CDoYouLiveWithAnyoneSelectOne {
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

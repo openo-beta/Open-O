@@ -37,7 +37,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Our web services are inherently stateless so we want to prevent excessive session object build up. This is caused because
- * the oscar permissions system sets credentials into the session space upon authentication. 
+ * the oscar permissions system sets credentials into the session space upon authentication.
  */
 // @WebFilter(urlPatterns={"/ws/*"})
 public class WebServiceSessionInvalidatingFilter implements javax.servlet.Filter {

@@ -884,7 +884,7 @@ public class CaseloadContentAction extends DispatchAction {
     }
 
     /**
-     Checks if the schedule day is patients birthday
+     * Checks if the schedule day is patients birthday
      **/
     public boolean isBirthday(String schedDate, String demBday) {
         return schedDate.equals(demBday);

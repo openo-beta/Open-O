@@ -45,6 +45,7 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
 
     /**
      * Find by name.
+     *
      * @param name: property key name
      */
     @Override
@@ -58,6 +59,7 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
     /**
      * Find a property by name where the provider number is null. This identifies a globally set property that is not tied to a specific provider.
      * This is more of a legacy function, since most new global properties should be added to SystemPreferences instead.
+     *
      * @param name property key name
      * @return list of properties found matching criteria
      */

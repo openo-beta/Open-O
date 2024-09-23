@@ -57,8 +57,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -82,10 +80,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Gets the value of the cAboriginal property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAboriginal() {
         return cAboriginal;
@@ -94,10 +90,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Sets the value of the cAboriginal property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAboriginal(String value) {
         this.cAboriginal = value;
@@ -106,10 +100,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Gets the value of the cNonAboriginal property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCNonAboriginal() {
         return cNonAboriginal;
@@ -118,10 +110,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Sets the value of the cNonAboriginal property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCNonAboriginal(String value) {
         this.cNonAboriginal = value;
@@ -130,10 +120,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Gets the value of the cUnknown property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -142,10 +130,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Sets the value of the cUnknown property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -154,10 +140,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -166,10 +150,8 @@ public class CAboriginalOriginSelectOne {
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

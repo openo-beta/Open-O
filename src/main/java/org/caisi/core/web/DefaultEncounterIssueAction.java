@@ -48,7 +48,6 @@ import oscar.log.LogAction;
 
 /**
  * @author Administrator
- *
  */
 public class DefaultEncounterIssueAction extends DispatchAction {
 

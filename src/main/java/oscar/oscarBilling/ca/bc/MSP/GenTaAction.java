@@ -58,7 +58,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author jay
  */
 public class GenTaAction extends Action {
@@ -71,7 +70,9 @@ public class GenTaAction extends Action {
     private TeleplanC12Dao c12Dao = SpringUtils.getBean(TeleplanC12Dao.class);
 
 
-    /** Creates a new instance of GenTaAction */
+    /**
+     * Creates a new instance of GenTaAction
+     */
     public GenTaAction() {
     }
 

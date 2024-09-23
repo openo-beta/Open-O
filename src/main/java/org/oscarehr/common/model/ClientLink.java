@@ -57,11 +57,15 @@ public class ClientLink extends AbstractModel<Integer> {
     private Integer remoteLinkId = null;
     @Temporal(TemporalType.TIMESTAMP)
     private Date linkDate = null;
-    /** this is the provider id who linked the client */
+    /**
+     * this is the provider id who linked the client
+     */
     private String linkProviderNo = null;
     @Temporal(TemporalType.TIMESTAMP)
     private Date unlinkDate = null;
-    /** this is the provider id who unlinked the client */
+    /**
+     * this is the provider id who unlinked the client
+     */
     private String unlinkProviderNo = null;
 
     public Integer getClientId() {

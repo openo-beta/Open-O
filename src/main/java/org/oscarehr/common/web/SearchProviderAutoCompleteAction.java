@@ -45,7 +45,6 @@ import oscar.oscarProvider.data.ProviderData;
 import org.oscarehr.common.dao.ProviderDataDao;
 
 /**
- *
  * @author jackson
  */
 public class SearchProviderAutoCompleteAction extends DispatchAction {

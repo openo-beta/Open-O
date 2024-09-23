@@ -42,8 +42,7 @@ public class EDocMappingDao extends AbstractDaoImpl<EDocMapping> {
     /**
      * Finds all edoc mappings in our Data model
      *
-     * @return
-     * list of all EDocMapping objects
+     * @return list of all EDocMapping objects
      */
     public List<EDocMapping> findEDocMappings() {
         String sql = "FROM EDocMapping";

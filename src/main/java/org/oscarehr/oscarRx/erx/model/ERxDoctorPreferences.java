@@ -38,7 +38,7 @@ import oscar.OscarProperties;
 /**
  * Provides an abstract way to reference the the External Prescriber preferences specific to a
  * single provider (doctor).
- *
+ * <p>
  * FUTURE: org.oscarehr.oscarRx.erx should, in the future, support more than one
  * external prescription service, which may not necessarily need the same doctor
  * preference objects as the External Prescriber. When this support is added, this class should
@@ -54,8 +54,7 @@ public class ERxDoctorPreferences {
     /**
      * Create an instance of an ERxDoctorPreferences object.
      *
-     * @param providerId
-     *            The ID of the doctor whose preferences should be loaded.
+     * @param providerId The ID of the doctor whose preferences should be loaded.
      */
     public static ERxDoctorPreferences getInstance(String providerId)
             throws IllegalArgumentException, MalformedURLException {
@@ -129,21 +128,15 @@ public class ERxDoctorPreferences {
     /**
      * Create an instance of an ERxDoctorPreferences object.
      *
-     * @param providerId
-     *            A unique doctor number, provided by the External Prescriber.
-     * @param connectionURL
-     *            The URL of the web service to connect to.
-     * @param username
-     *            The doctor's username, which will be used to connect to the
-     *            web service.
-     * @param password
-     *            The doctor's password, which will be used to connect to the
-     *            web service.
-     * @param clientNumber
-     *            The unique clinic number that the doctor is associated with,
-     *            provided by the External Prescriber.
-     * @param isInTrainingMode
-     *            Whether or not the doctor has turned on training mode.
+     * @param providerId       A unique doctor number, provided by the External Prescriber.
+     * @param connectionURL    The URL of the web service to connect to.
+     * @param username         The doctor's username, which will be used to connect to the
+     *                         web service.
+     * @param password         The doctor's password, which will be used to connect to the
+     *                         web service.
+     * @param clientNumber     The unique clinic number that the doctor is associated with,
+     *                         provided by the External Prescriber.
+     * @param isInTrainingMode Whether or not the doctor has turned on training mode.
      */
     public ERxDoctorPreferences(String providerId, URL connectionURL,
                                 String username, String password, String clientNumber,
@@ -219,8 +212,7 @@ public class ERxDoctorPreferences {
      * Changes the value of the unique clinic number that the doctor is
      * associated with.
      *
-     * @param clientNumber
-     *            The new clientNumber.
+     * @param clientNumber The new clientNumber.
      */
     public void setClientNumber(String clientNumber) {
         this.clientNumber = clientNumber;
@@ -229,8 +221,7 @@ public class ERxDoctorPreferences {
     /**
      * Changes the value of the URL of the web service to connect to.
      *
-     * @param connectionURL
-     *            The new connectionURL.
+     * @param connectionURL The new connectionURL.
      */
     public void setConnectionURL(URL connectionURL) {
         this.connectionURL = connectionURL;
@@ -239,8 +230,7 @@ public class ERxDoctorPreferences {
     /**
      * Changes whether or not the doctor has turned on training mode.
      *
-     * @param isInTrainingMode
-     *            The new isInTrainingMode.
+     * @param isInTrainingMode The new isInTrainingMode.
      */
     public void setInTrainingMode(boolean isInTrainingMode) {
         this.isInTrainingMode = isInTrainingMode;
@@ -250,8 +240,7 @@ public class ERxDoctorPreferences {
      * Changes the value of the doctor's password, which will be used to connect
      * to the web service.
      *
-     * @param password
-     *            The new password.
+     * @param password The new password.
      */
     public void setPassword(String password) {
         this.password = password;
@@ -261,8 +250,7 @@ public class ERxDoctorPreferences {
      * Changes the value of the unique doctor number, associated with the
      * doctor, provided by the External Prescriber.
      *
-     * @param providerID
-     *            The new providerId.
+     * @param providerID The new providerId.
      */
     public void setProviderId(String providerID) {
         this.providerId = providerID;
@@ -272,8 +260,7 @@ public class ERxDoctorPreferences {
      * Changes the value of the doctor's username, which will be used to connect
      * to the web service.
      *
-     * @param username
-     *            The new username.
+     * @param username The new username.
      */
     public void setUsername(String username) {
         this.username = username;

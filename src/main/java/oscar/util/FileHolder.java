@@ -36,6 +36,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 
 /**
+ *
  */
 public class FileHolder implements Serializable {
     private boolean toMemory;
@@ -53,7 +54,6 @@ public class FileHolder implements Serializable {
     private int fileLength;
 
     /**
-     *
      * Constructor
      * - takes descriptive data (fileName, contentType)
      * - inputstream, coming from servletinputstream - we must read it out _now_
@@ -81,7 +81,6 @@ public class FileHolder implements Serializable {
      * method.
      *
      * @return name of file uploaded or <code>null</code>.
-     *
      */
     public String getFileName() {
         return fileName;

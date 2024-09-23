@@ -90,10 +90,8 @@ public class ParamAppender extends QueryAppender {
     /**
      * Adds all parameters from the specified appended to this appender
      *
-     * @param paramAppender
-     * 		Parameter appender to merge parameters from
-     * @return
-     *        Returns this instance.
+     * @param paramAppender Parameter appender to merge parameters from
+     * @return Returns this instance.
      */
     public ParamAppender mergeParams(ParamAppender paramAppender) {
         getParams().putAll(paramAppender.getParams());

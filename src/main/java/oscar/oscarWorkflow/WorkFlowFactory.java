@@ -27,12 +27,13 @@
 package oscar.oscarWorkflow;
 
 /**
- *
  * @author jay
  */
 public class WorkFlowFactory {
 
-    /** Creates a new instance of WorkflowFactory */
+    /**
+     * Creates a new instance of WorkflowFactory
+     */
     public WorkFlowFactory() {
     }
 

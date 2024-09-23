@@ -48,8 +48,7 @@ public class QueryAppender {
     /**
      * Creates a new instance and sets the specified base query
      *
-     * @param baseQuery
-     *            Base query to set
+     * @param baseQuery Base query to set
      */
     public QueryAppender(String baseQuery) {
         setBaseQuery(baseQuery);
@@ -67,8 +66,7 @@ public class QueryAppender {
     /**
      * Sets base query for this appender
      *
-     * @param baseQuery
-     *            Base query to set
+     * @param baseQuery Base query to set
      */
     public void setBaseQuery(String baseQuery) {
         this.baseQuery = baseQuery;
@@ -78,8 +76,7 @@ public class QueryAppender {
      * Combines current where clause with the specified sub-clause using the
      * logical OR operator
      *
-     * @param clause
-     *            Clause to combine
+     * @param clause Clause to combine
      */
     public void or(String clause) {
         addWhere("OR", clause);
@@ -89,8 +86,7 @@ public class QueryAppender {
      * Combines current where clause with the specified sub-clause using the
      * logical AND operator
      *
-     * @param clause
-     *            Clause to combine
+     * @param clause Clause to combine
      */
     public void and(String clause) {
         addWhere("AND", clause);
@@ -100,8 +96,7 @@ public class QueryAppender {
      * Combines current where clause with the specified sub-clause using the
      * logical AND operator
      *
-     * @param appender
-     * 		Appender to combine
+     * @param appender Appender to combine
      */
     public void and(QueryAppender appender) {
         String clause = appender.getWhereClause();
@@ -115,8 +110,7 @@ public class QueryAppender {
      * Combines current where clause with the specified sub-clause using the
      * logical OR operator
      *
-     * @param appender
-     * 		Appender to combine
+     * @param appender Appender to combine
      */
     public void or(QueryAppender appender) {
         String clause = appender.getWhereClause();
@@ -131,8 +125,7 @@ public class QueryAppender {
      * doesn't insert the proper operator. Use this method only when it's
      * necessary to add a single where sub-clause.
      *
-     * @param clause
-     *            Clause to be added to where clause
+     * @param clause Clause to be added to where clause
      */
     public void addWhere(String clause) {
         getWhereBuffer().append(clause);
@@ -142,11 +135,9 @@ public class QueryAppender {
     /**
      * Adds where clause to the current sub-clause using the operator provided
      *
-     * @param operator
-     *            Operator to use for joining the sub-clause with the current
-     *            where clause. It should be either "or" or "and"
-     * @param clause
-     *            Clause to be added to the current where clause
+     * @param operator Operator to use for joining the sub-clause with the current
+     *                 where clause. It should be either "or" or "and"
+     * @param clause   Clause to be added to the current where clause
      */
     public void addWhere(String operator, String clause) {
         if (isWhereAppended()) {
@@ -205,7 +196,7 @@ public class QueryAppender {
      * Checks if this appender contains a where clause appended.
      *
      * @return Returns true if there is a where clause appended and false
-     *         otherwise
+     * otherwise
      */
     public boolean isAppended() {
         return getWhereBuffer().length() != 0;

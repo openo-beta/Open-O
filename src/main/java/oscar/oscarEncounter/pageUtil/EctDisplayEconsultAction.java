@@ -54,14 +54,10 @@ public class EctDisplayEconsultAction extends EctDisplayAction {
      * Generates the eConsult module in the eChart, making it so that when the user clicks on the title it takes them to the demographic's eConsults, when they click the
      * + in the header then it opens a new eConsult, and listing out the eConsults in the eChart
      *
-     * @param bean
-     * 		Current session information
-     * @param request
-     * 		Current request
-     * @param Dao
-     * 		View DAO responsible for rendering encounter
-     * @param messages
-     * 		i18n message bundle
+     * @param bean     Current session information
+     * @param request  Current request
+     * @param Dao      View DAO responsible for rendering encounter
+     * @param messages i18n message bundle
      * @return Always returns a true boolean
      */
     public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {

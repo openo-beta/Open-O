@@ -35,7 +35,6 @@ import oscar.util.ConversionUtils;
 import java.util.*;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class DemographicRelationship {

@@ -65,6 +65,7 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
 
     /**
      * Gets all HRMDocumentToDemographics where the hrmDocumentId matches the documentNo in ConsultDocs, the requestId equals the given consultationId, and the docType is 'H' for HRM
+     *
      * @param consultationId
      * @return A list of HRMDocumentToDemographic objects, the list is empty if an error occurs or no results
      */

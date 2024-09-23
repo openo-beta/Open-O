@@ -17,8 +17,8 @@ import com.indivica.olis.parameters.ZPD1;
 
 /**
  * Z05 - Retrieve Laboratory Information Updates for Destination Laboratory
- * @author jen
  *
+ * @author jen
  */
 public class Z05Query extends Query {
 

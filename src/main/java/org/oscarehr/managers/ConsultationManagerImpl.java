@@ -465,6 +465,7 @@ public class ConsultationManagerImpl implements ConsultationManager {
 
     /**
      * Import a PDF formatted OTN eConsult.
+     *
      * @throws Exception
      */
     @Override
@@ -498,9 +499,10 @@ public class ConsultationManagerImpl implements ConsultationManager {
 
     /**
      * Gets attachments for use on an eReferral for the provided demographic number. It only gets the oldest prepped attachments within the past hour.
-     * @param loggedInInfo The current user's logged in info
-     * @param request The HttpRequest for printing any forms
-     * @param request The HttpResponse for printing any forms
+     *
+     * @param loggedInInfo  The current user's logged in info
+     * @param request       The HttpRequest for printing any forms
+     * @param request       The HttpResponse for printing any forms
      * @param demographicNo The demographic number to get the attachments for
      * @return List of ConsultationAttachments containing the file name and data and the attachment id and type,
      * @throws PDFGenerationException Thrown if an error occurs while generating pdf
@@ -798,8 +800,9 @@ public class ConsultationManagerImpl implements ConsultationManager {
 
     /**
      * Saves or updates consultation request extras depending on if the key already exists in the table
+     *
      * @param requestId The id of the consultation request the extras are linked to
-     * @param extras A list of extras to save or update
+     * @param extras    A list of extras to save or update
      */
     @Override
     public void saveOrUpdateExts(int requestId, List<ConsultationRequestExt> extras) {

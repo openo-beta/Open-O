@@ -59,6 +59,7 @@ public class XforwardHeaderFilter implements Filter {
         /**
          * Override get remote address in case the remote
          * IP address is stored in the X-FORWARDED-FOR header attribute.
+         *
          * @return Remote IP address
          */
         public String getRemoteAddr() {

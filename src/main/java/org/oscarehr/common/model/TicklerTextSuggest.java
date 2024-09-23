@@ -33,7 +33,6 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- *
  * @author mweston4
  */
 

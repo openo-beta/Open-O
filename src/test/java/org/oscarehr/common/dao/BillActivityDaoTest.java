@@ -62,6 +62,7 @@ public class BillActivityDaoTest extends DaoTestFixtures {
 
     /**
      * Test throws errors with sql query (BillActivityDao.java, line 45)
+     *
      * @throws Exception
      */
     @Test
@@ -150,6 +151,7 @@ public class BillActivityDaoTest extends DaoTestFixtures {
 
     /**
      * Test throws errors with sql query (BillActivityDao.java, line 57)
+     *
      * @throws Exception
      */
     @Test

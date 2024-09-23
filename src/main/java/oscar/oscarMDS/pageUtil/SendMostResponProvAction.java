@@ -51,7 +51,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 
 /**
- *
  * @author jackson
  */
 public class SendMostResponProvAction extends Action {

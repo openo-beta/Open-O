@@ -1,4 +1,3 @@
-//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -46,8 +45,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "clientQuery", propOrder = {"clientID"})
@@ -57,7 +54,6 @@ public class ClientQuery {
 
     /**
      * Gets the value of the clientID property.
-     *
      */
     public int getClientID() {
         return clientID;
@@ -65,7 +61,6 @@ public class ClientQuery {
 
     /**
      * Sets the value of the clientID property.
-     *
      */
     public void setClientID(int value) {
         this.clientID = value;

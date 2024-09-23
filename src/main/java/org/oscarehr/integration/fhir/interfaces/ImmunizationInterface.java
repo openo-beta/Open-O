@@ -29,10 +29,10 @@ import org.oscarehr.common.interfaces.Immunization;
 
 /**
  * An interface to be used with any object model that references data for an immunization.
- *
+ * <p>
  * The getImmunizationProperty method can be used in conjunction with the ImmunizationProperty enum
- * to fetch key:value pairs from an entity class. 
- *
+ * to fetch key:value pairs from an entity class.
+ * <p>
  * This interface is currently being used in FHIR mapping.
  */
 public interface ImmunizationInterface extends Immunization {

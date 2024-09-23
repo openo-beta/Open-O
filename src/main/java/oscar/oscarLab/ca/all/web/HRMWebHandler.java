@@ -24,7 +24,6 @@ import org.oscarehr.util.MiscUtils;
  * UI for managing current system settings
  *
  * @author dritan
- *
  */
 public class HRMWebHandler extends DispatchAction {
 

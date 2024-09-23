@@ -119,9 +119,9 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native"
-     *  column="queue_id"
+     * <p>
+     * generator-class="native"
+     * column="queue_id"
      */
     public Long getId() {
         return _id;
@@ -129,6 +129,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the unique identifier of this class
+     *
      * @param _id the new ID
      */
     public void setId(Long _id) {
@@ -145,6 +146,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: client_id
+     *
      * @param _clientId the client_id value
      */
     public void setClientId(Long _clientId) {
@@ -160,6 +162,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: referral_date
+     *
      * @param _referralDate the referral_date value
      */
     public void setReferralDate(java.util.Date _referralDate) {
@@ -175,6 +178,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: provider_no
+     *
      * @param _providerNo the provider_no value
      */
     public void setProviderNo(Long _providerNo) {
@@ -190,6 +194,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: notes
+     *
      * @param _notes the notes value
      */
     public void setNotes(String _notes) {
@@ -205,6 +210,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: program_id
+     *
      * @param _programId the program_id value
      */
     public void setProgramId(Long _programId) {
@@ -220,6 +226,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: status
+     *
      * @param _status the status value
      */
     public void setStatus(String _status) {
@@ -235,6 +242,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: temporary_admission_flag
+     *
      * @param _temporaryAdmission the temporary_admission_flag value
      */
     public void setTemporaryAdmission(boolean _temporaryAdmission) {
@@ -250,6 +258,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: referral_id
+     *
      * @param _referralId the referral_id value
      */
     public void setReferralId(Long _referralId) {
@@ -265,6 +274,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: ProgramName
+     *
      * @param _programName the ProgramName value
      */
     public void setProgramName(String _programName) {
@@ -280,6 +290,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: ProviderLastName
+     *
      * @param _providerLastName the ProviderLastName value
      */
     public void setProviderLastName(String _providerLastName) {
@@ -295,6 +306,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: ProviderFirstName
+     *
      * @param _providerFirstName the ProviderFirstName value
      */
     public void setProviderFirstName(String _providerFirstName) {
@@ -310,6 +322,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: ClientLastName
+     *
      * @param _clientLastName the ClientLastName value
      */
     public void setClientLastName(String _clientLastName) {
@@ -325,6 +338,7 @@ public class ProgramQueue implements Serializable {
 
     /**
      * Set the value related to the column: ClientFirstName
+     *
      * @param _clientFirstName the ClientFirstName value
      */
     public void setClientFirstName(String _clientFirstName) {

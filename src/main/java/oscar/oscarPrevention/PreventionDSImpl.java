@@ -52,7 +52,6 @@ import org.springframework.stereotype.Component;
 import oscar.OscarProperties;
 
 /**
- *
  * @author Jay Gallagher
  */
 @Component

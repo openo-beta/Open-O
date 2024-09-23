@@ -54,8 +54,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "vacancyDisplayBO", propOrder = {"acceptedCount", "active",
@@ -75,7 +73,6 @@ public class VacancyDisplayBO {
 
     /**
      * Gets the value of the acceptedCount property.
-     *
      */
     public int getAcceptedCount() {
         return acceptedCount;
@@ -83,7 +80,6 @@ public class VacancyDisplayBO {
 
     /**
      * Sets the value of the acceptedCount property.
-     *
      */
     public void setAcceptedCount(int value) {
         this.acceptedCount = value;
@@ -91,7 +87,6 @@ public class VacancyDisplayBO {
 
     /**
      * Gets the value of the active property.
-     *
      */
     public boolean isActive() {
         return active;
@@ -99,7 +94,6 @@ public class VacancyDisplayBO {
 
     /**
      * Sets the value of the active property.
-     *
      */
     public void setActive(boolean value) {
         this.active = value;
@@ -109,7 +103,6 @@ public class VacancyDisplayBO {
      * Gets the value of the created property.
      *
      * @return possible object is {@link XMLGregorianCalendar }
-     *
      */
     public XMLGregorianCalendar getCreated() {
         return created;
@@ -118,9 +111,7 @@ public class VacancyDisplayBO {
     /**
      * Sets the value of the created property.
      *
-     * @param value
-     *            allowed object is {@link XMLGregorianCalendar }
-     *
+     * @param value allowed object is {@link XMLGregorianCalendar }
      */
     public void setCreated(XMLGregorianCalendar value) {
         this.created = value;
@@ -130,7 +121,6 @@ public class VacancyDisplayBO {
      * Gets the value of the criteriaSummary property.
      *
      * @return possible object is {@link String }
-     *
      */
     public String getCriteriaSummary() {
         return criteriaSummary;
@@ -139,9 +129,7 @@ public class VacancyDisplayBO {
     /**
      * Sets the value of the criteriaSummary property.
      *
-     * @param value
-     *            allowed object is {@link String }
-     *
+     * @param value allowed object is {@link String }
      */
     public void setCriteriaSummary(String value) {
         this.criteriaSummary = value;
@@ -149,7 +137,6 @@ public class VacancyDisplayBO {
 
     /**
      * Gets the value of the pendingCount property.
-     *
      */
     public int getPendingCount() {
         return pendingCount;
@@ -157,7 +144,6 @@ public class VacancyDisplayBO {
 
     /**
      * Sets the value of the pendingCount property.
-     *
      */
     public void setPendingCount(int value) {
         this.pendingCount = value;
@@ -165,7 +151,6 @@ public class VacancyDisplayBO {
 
     /**
      * Gets the value of the rejectedCount property.
-     *
      */
     public int getRejectedCount() {
         return rejectedCount;
@@ -173,7 +158,6 @@ public class VacancyDisplayBO {
 
     /**
      * Sets the value of the rejectedCount property.
-     *
      */
     public void setRejectedCount(int value) {
         this.rejectedCount = value;
@@ -181,7 +165,6 @@ public class VacancyDisplayBO {
 
     /**
      * Gets the value of the vacancyID property.
-     *
      */
     public int getVacancyID() {
         return vacancyID;
@@ -189,7 +172,6 @@ public class VacancyDisplayBO {
 
     /**
      * Sets the value of the vacancyID property.
-     *
      */
     public void setVacancyID(int value) {
         this.vacancyID = value;
@@ -199,7 +181,6 @@ public class VacancyDisplayBO {
      * Gets the value of the vacancyTemplateName property.
      *
      * @return possible object is {@link String }
-     *
      */
     public String getVacancyTemplateName() {
         return vacancyTemplateName;
@@ -208,9 +189,7 @@ public class VacancyDisplayBO {
     /**
      * Sets the value of the vacancyTemplateName property.
      *
-     * @param value
-     *            allowed object is {@link String }
-     *
+     * @param value allowed object is {@link String }
      */
     public void setVacancyTemplateName(String value) {
         this.vacancyTemplateName = value;

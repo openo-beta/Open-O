@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Last Name (Z50 Query only)
- * @author jen
  *
+ * @author jen
  */
 public class PID51 implements Parameter {
 

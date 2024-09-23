@@ -56,10 +56,10 @@ public class LoginWs extends AbstractWs {
     private ProviderDao providerDao = null;
 
     /**
-     * @deprecated 2015-01-28
-     *
-     * Returns LoginResultTransfer on valid login, will be provided with a security token too.
      * @throws NotAuthorisedException if password is incorrect
+     * @deprecated 2015-01-28
+     * <p>
+     * Returns LoginResultTransfer on valid login, will be provided with a security token too.
      */
     public LoginResultTransfer login(String userName, String password) throws NotAuthorisedException {
         logger.info("Login attempt : user=" + userName);

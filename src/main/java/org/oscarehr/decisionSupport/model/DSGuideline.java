@@ -53,7 +53,6 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author apavel
  */
 @Entity

@@ -27,7 +27,6 @@ package oscar.oscarDemographic.pageUtil;
 import org.apache.struts.action.ActionForm;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class DemographicExportForm extends ActionForm {
@@ -60,6 +59,7 @@ public class DemographicExportForm extends ActionForm {
 
     /**
      * Getter for properties.
+     *
      * @return Value of properties.
      */
     public String getDemographicNo() {
@@ -136,6 +136,7 @@ public class DemographicExportForm extends ActionForm {
 
     /**
      * Setter for properties
+     *
      * @param demographicNo
      */
     public void setDemographicNo(String demographicNo) {

@@ -41,12 +41,13 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarDB.DBHandler;
 
 /**
- *
  * @author root
  */
 public class PathNetInfo {
 
-    /** Creates a new instance of PathNetInfo */
+    /**
+     * Creates a new instance of PathNetInfo
+     */
     public PathNetInfo() {
     }
 

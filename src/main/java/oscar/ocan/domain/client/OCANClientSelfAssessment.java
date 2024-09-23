@@ -55,8 +55,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -74,10 +72,8 @@ public class OCANClientSelfAssessment {
     /**
      * Gets the value of the cInstructions property.
      *
-     * @return
-     *     possible object is
-     *     {@link CInstructions }
-     *
+     * @return possible object is
+     * {@link CInstructions }
      */
     public CInstructions getCInstructions() {
         return cInstructions;
@@ -86,10 +82,8 @@ public class OCANClientSelfAssessment {
     /**
      * Sets the value of the cInstructions property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CInstructions }
-     *
+     * @param value allowed object is
+     *              {@link CInstructions }
      */
     public void setCInstructions(CInstructions value) {
         this.cInstructions = value;
@@ -98,10 +92,8 @@ public class OCANClientSelfAssessment {
     /**
      * Gets the value of the cQuestions property.
      *
-     * @return
-     *     possible object is
-     *     {@link CQuestions }
-     *
+     * @return possible object is
+     * {@link CQuestions }
      */
     public CQuestions getCQuestions() {
         return cQuestions;
@@ -110,10 +102,8 @@ public class OCANClientSelfAssessment {
     /**
      * Sets the value of the cQuestions property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link CQuestions }
-     *
+     * @param value allowed object is
+     *              {@link CQuestions }
      */
     public void setCQuestions(CQuestions value) {
         this.cQuestions = value;

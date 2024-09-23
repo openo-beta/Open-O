@@ -63,7 +63,6 @@ import oscar.util.DateUtils;
 import oscar.util.StringUtils;
 
 /**
- *
  * @author mweston4
  */
 public class BillingCorrectionAction extends DispatchAction {

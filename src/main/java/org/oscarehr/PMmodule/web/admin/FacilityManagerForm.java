@@ -30,6 +30,7 @@ import org.oscarehr.common.model.Facility;
 import java.util.List;
 
 /**
+ *
  */
 public class FacilityManagerForm extends ActionForm {
     private Facility facility;

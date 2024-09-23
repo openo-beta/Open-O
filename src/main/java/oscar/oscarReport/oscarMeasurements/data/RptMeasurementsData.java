@@ -41,8 +41,7 @@ public class RptMeasurementsData {
     /**
      * Gets the number of Patient seen during aspecific time period
      *
-     * @return
-     *        number or Patients seen in Integer
+     * @return number or Patients seen in Integer
      */
     public int getNbPatientSeen(String startDateA, String endDateA) {
         int nbPatient = 0;
@@ -56,8 +55,7 @@ public class RptMeasurementsData {
     /**
      * get the number of patients during a specific time period
      *
-     * @return
-     *        ArrayList which contain the result in String format
+     * @return ArrayList which contain the result in String format
      */
     public ArrayList getPatientsSeen(String startDate, String endDate) {
         ArrayList patients = new ArrayList();

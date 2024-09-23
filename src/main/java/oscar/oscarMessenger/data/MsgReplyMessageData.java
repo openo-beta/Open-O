@@ -28,7 +28,6 @@ package oscar.oscarMessenger.data;
 
 /**
  * @deprecated not needed
- *
  */
 @Deprecated
 public class MsgReplyMessageData {

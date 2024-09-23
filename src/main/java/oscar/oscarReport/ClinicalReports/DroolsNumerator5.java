@@ -51,7 +51,6 @@ import oscar.oscarEncounter.oscarMeasurements.util.TargetCondition;
 import oscar.util.ConversionUtils;
 
 /**
- *
  * @author jay
  */
 public class DroolsNumerator5 implements Numerator {
@@ -61,7 +60,9 @@ public class DroolsNumerator5 implements Numerator {
     String[] outputfields = null;
     Hashtable outputValues = null;
 
-    /** Creates a new instance of DroolsNumerator */
+    /**
+     * Creates a new instance of DroolsNumerator
+     */
     public DroolsNumerator5() {
     }
 

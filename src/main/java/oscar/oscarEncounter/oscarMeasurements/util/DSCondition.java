@@ -28,6 +28,7 @@ package oscar.oscarEncounter.oscarMeasurements.util;
 
 /**
  * Stores Simple Decision Support Data
+ *
  * @author jaygallagher
  */
 public class DSCondition {

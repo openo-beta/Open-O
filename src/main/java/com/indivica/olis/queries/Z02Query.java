@@ -19,8 +19,8 @@ import com.indivica.olis.parameters.ZRP1;
 
 /**
  * Z02 - Retrieve Laboratory Information for Order ID
- * @author jen
  *
+ * @author jen
  */
 public class Z02Query extends Query {
 

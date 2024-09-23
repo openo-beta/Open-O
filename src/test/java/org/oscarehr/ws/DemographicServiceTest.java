@@ -46,8 +46,7 @@ public class DemographicServiceTest extends BaseRestServiceTest {
     /**
      * Generates a new pre-populated random demographic
      *
-     * @return
-     *        Returns a new demo instance
+     * @return Returns a new demo instance
      */
     protected static DemographicTo1 newRandomDemograpic() {
         DemographicTo1 demo = new DemographicTo1();
@@ -138,12 +137,9 @@ public class DemographicServiceTest extends BaseRestServiceTest {
     /**
      * Searches through demographic records to find record with the specified demographic id
      *
-     * @param demographics
-     * 		Demographics to search through
-     * @param demoId
-     * 		ID of the record to be found
-     * @return
-     *        Returns the demographic record with the specified ID
+     * @param demographics Demographics to search through
+     * @param demoId       ID of the record to be found
+     * @return Returns the demographic record with the specified ID
      */
     private DemographicTo1 findDemographic(OscarSearchResponse<DemographicTo1> demographics, Integer demoId) {
         if (demographics.getContent().isEmpty()) {

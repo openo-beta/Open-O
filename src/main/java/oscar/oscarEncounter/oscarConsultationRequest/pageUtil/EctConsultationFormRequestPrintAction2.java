@@ -62,7 +62,6 @@ import com.sun.xml.messaging.saaj.util.ByteInputStream;
 import com.sun.xml.messaging.saaj.util.ByteOutputStream;
 
 /**
- *
  * Convert submitted preventions into pdf and return file
  */
 public class EctConsultationFormRequestPrintAction2 extends Action {

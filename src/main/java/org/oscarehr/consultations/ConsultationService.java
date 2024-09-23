@@ -44,6 +44,7 @@ public class ConsultationService {
 
     /**
      * Use to get consultation count for pagination display
+     *
      * @param paginationQuery
      * @return
      */
@@ -54,6 +55,7 @@ public class ConsultationService {
 
     /**
      * List consultations
+     *
      * @param paginationQuery
      * @return
      */

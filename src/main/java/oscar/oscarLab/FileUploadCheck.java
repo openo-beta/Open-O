@@ -103,7 +103,7 @@ public final class FileUploadCheck {
     public static final int UNSUCCESSFUL_SAVE = -1;
 
     /**
-     *Used to add a new file to the database, checks to see if it already has been added
+     * Used to add a new file to the database, checks to see if it already has been added
      */
     public static synchronized int addFile(String name, InputStream is, String provider) {
         int fileUploaded = UNSUCCESSFUL_SAVE;

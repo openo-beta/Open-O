@@ -82,6 +82,7 @@ public class MessagingManagerImpl implements MessagingManager {
      * PREFERRED METHOD
      * Get the entire inbox for the logged-in provider only.
      * Results can be reduced by specifying the message status and/or a result limit.
+     *
      * @param loggedInInfo
      * @param providerNo
      * @param messageStatus
@@ -260,6 +261,7 @@ public class MessagingManagerImpl implements MessagingManager {
 
     /**
      * Get the count of all messages attached to the given demographic Id.
+     *
      * @param loggedInInfo
      * @param demographicNo
      * @return
@@ -274,6 +276,7 @@ public class MessagingManagerImpl implements MessagingManager {
 
     /**
      * Change the status of a message (sent, read, del, new)
+     *
      * @param loggedInInfo
      * @param messageId
      * @param status
@@ -362,7 +365,7 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * Use this method for sending messages from the Oscar system to Oscar users. 
+     * Use this method for sending messages from the Oscar system to Oscar users.
      */
     public Integer sendSystemMessage(LoggedInInfo loggedInInfo, MessengerSystemMessage systemMessage) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.WRITE, null)) {
@@ -404,7 +407,8 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * Attach all providers that should receive this message. 
+     * Attach all providers that should receive this message.
+     *
      * @param loggedInInfo
      * @param messageId
      * @param recipients
@@ -467,7 +471,7 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * A combined result of both the local reply recipients and recipients located in remote 
+     * A combined result of both the local reply recipients and recipients located in remote
      * facilities including the original sender.
      */
     public final List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, final MessageTbl messageTbl) {
@@ -493,7 +497,7 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * A combined result of both the local reply recipients and recipients located in remote 
+     * A combined result of both the local reply recipients and recipients located in remote
      * facilities inluding the original sender.
      */
     public List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, int messageId) {
@@ -502,7 +506,8 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * Get the only the sender's identifier for a message reply. 
+     * Get the only the sender's identifier for a message reply.
+     *
      * @param loggedInInfo
      * @param messageId
      * @return
@@ -545,8 +550,8 @@ public class MessagingManagerImpl implements MessagingManager {
 
 
     /**
-     * Recipients that were copied in on the message that have an origin in the client from where 
-     * the reply is originating. 
+     * Recipients that were copied in on the message that have an origin in the client from where
+     * the reply is originating.
      *
      * @param loggedInInfo
      * @param messageId
@@ -572,8 +577,8 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * Recipients that were copied in on the message but have an origin in one of the included 
-     * remote facilities. 
+     * Recipients that were copied in on the message but have an origin in one of the included
+     * remote facilities.
      *
      * @param loggedInInfo
      * @param messageId
@@ -623,7 +628,7 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * Get the current address book location id for this clinic from the oscarcommlocations table. 
+     * Get the current address book location id for this clinic from the oscarcommlocations table.
      *
      * @return
      */
@@ -646,6 +651,7 @@ public class MessagingManagerImpl implements MessagingManager {
 
     /**
      * remove duplicate values from any string array.
+     *
      * @param strarray
      * @return
      */
@@ -668,6 +674,7 @@ public class MessagingManagerImpl implements MessagingManager {
 
     /**
      * Combines the separate date and time columns of a Message into a single object.
+     *
      * @param date
      * @param time
      * @return
@@ -690,7 +697,7 @@ public class MessagingManagerImpl implements MessagingManager {
     }
 
     /**
-     * Checks a list of message recipients for any recipients that are in remote locations. 
+     * Checks a list of message recipients for any recipients that are in remote locations.
      *
      * @param loggedInInfo
      * @param msgProviderDataList

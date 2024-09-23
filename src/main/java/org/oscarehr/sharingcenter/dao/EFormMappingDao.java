@@ -42,8 +42,7 @@ public class EFormMappingDao extends AbstractDaoImpl<EFormMapping> {
     /**
      * Finds all eform mappings in our Data model
      *
-     * @return
-     * list of all EFormMapping objects
+     * @return list of all EFormMapping objects
      */
     public List<EFormMapping> findEFormMappings() {
         String sql = "FROM EFormMapping";

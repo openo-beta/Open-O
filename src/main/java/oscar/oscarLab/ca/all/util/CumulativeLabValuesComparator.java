@@ -42,11 +42,10 @@ import java.util.Hashtable;
 import oscar.util.UtilDateUtilities;
 
 /**
- *  A custom comparator used to compare the Hashtables within an array by the 
- *  date value.
- *
- *  Used by /oscar/lab/CumulativeLabValues3.jsp
- *
+ * A custom comparator used to compare the Hashtables within an array by the
+ * date value.
+ * <p>
+ * Used by /oscar/lab/CumulativeLabValues3.jsp
  *
  * @author wrighd
  */

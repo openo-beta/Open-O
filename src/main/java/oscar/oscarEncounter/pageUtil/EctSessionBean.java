@@ -331,6 +331,7 @@ public class EctSessionBean implements java.io.Serializable {
 
     /**
      * over loaded method sets up the encounter page for print
+     *
      * @param echartid
      * @param demographicNo
      */

@@ -119,6 +119,7 @@ public class SchemaUtils {
 
     /**
      * Intent is to support junit tests.
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      * @throws IllegalAccessException
@@ -140,6 +141,7 @@ public class SchemaUtils {
 
     /**
      * Intent is for new installations.
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      * @throws IllegalAccessException
@@ -444,6 +446,7 @@ public class SchemaUtils {
 
     /**
      * Intent is for junit tests.
+     *
      * @throws IOException
      * @throws ClassNotFoundException
      * @throws IllegalAccessException

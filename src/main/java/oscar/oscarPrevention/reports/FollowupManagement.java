@@ -37,7 +37,6 @@ import oscar.oscarEncounter.oscarMeasurements.util.WriteNewMeasurements;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class FollowupManagement {
@@ -46,19 +45,22 @@ public class FollowupManagement {
     final public String LETTER2 = "L2";
     final public String PHONE1 = "P1";
 
-    /** Creates a new instance of FollowupManagement */
+    /**
+     * Creates a new instance of FollowupManagement
+     */
     public FollowupManagement() {
     }
 
 
     /**
      * Class used to mark prevention follow up procedures
-     *@param followUpType   --  procedure type eg PAPF,FLUF,MAMF,FOBF,CIMF 
-     *@param followUpValue  --  proedure value eg L1,L2,P1 letter 1, letter 2, phone call 1
-     *@param demographicList  --  list of demographic numbers as strings 
-     *@param providerNo            --  provider # generating the list
-     *@param dateObserved          --  date list is generated 
-     *@param comment                -- comment
+     *
+     * @param followUpType    --  procedure type eg PAPF,FLUF,MAMF,FOBF,CIMF
+     * @param followUpValue   --  proedure value eg L1,L2,P1 letter 1, letter 2, phone call 1
+     * @param demographicList --  list of demographic numbers as strings
+     * @param providerNo      --  provider # generating the list
+     * @param dateObserved    --  date list is generated
+     * @param comment         -- comment
      */
     public void markFollowupProcedure(String followUpType, String followUpValue, List demographicList, String providerNo, Date dateObserved, String comment) {
         for (int i = 0; i < demographicList.size(); i++) {
@@ -70,12 +72,13 @@ public class FollowupManagement {
 
     /**
      * Class used to mark prevention follow up procedures
-     *@param followUpType   --  procedure type eg PAPF,FLUF,MAMF,FOBF,CIMF 
-     *@param followUpValue  --  proedure value eg L1,L2,P1 letter 1, letter 2, phone call 1
-     *@param demographicList  --  list of demographic numbers as strings 
-     *@param providerNo            --  provider # generating the list
-     *@param dateObserved          --  date list is generated 
-     *@param comment            -- comment
+     *
+     * @param followUpType    --  procedure type eg PAPF,FLUF,MAMF,FOBF,CIMF
+     * @param followUpValue   --  proedure value eg L1,L2,P1 letter 1, letter 2, phone call 1
+     * @param demographicList --  list of demographic numbers as strings
+     * @param providerNo      --  provider # generating the list
+     * @param dateObserved    --  date list is generated
+     * @param comment         -- comment
      */
     public void markFollowupProcedure(String followUpType, String followUpValue, String[] demographicList, String providerNo, Date dateObserved, String comment) {
         for (int i = 0; i < demographicList.length; i++) {

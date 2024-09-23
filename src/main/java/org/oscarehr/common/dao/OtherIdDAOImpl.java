@@ -37,13 +37,14 @@ import org.oscarehr.common.model.OtherId;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author Jason Gallagher
  */
 @Repository
 public class OtherIdDAOImpl extends AbstractDaoImpl<OtherId> implements OtherIdDAO {
 
-    /** Creates a new instance of UserPropertyDAO */
+    /**
+     * Creates a new instance of UserPropertyDAO
+     */
     public OtherIdDAOImpl() {
         super(OtherId.class);
     }

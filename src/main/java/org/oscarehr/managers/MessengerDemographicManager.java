@@ -54,6 +54,7 @@ public interface MessengerDemographicManager {
     /**
      * Get all the demographic details that are attached to this message.
      * In most cases there is only 1 demographic, but, it is possible for 0 to many to be attached.
+     *
      * @param loggedInInfo
      * @param messageId
      * @return
@@ -62,6 +63,7 @@ public interface MessengerDemographicManager {
 
     /**
      * Use this method if full demographic details are not required.
+     *
      * @param loggedInInfo
      * @param messageId
      * @return
@@ -72,6 +74,7 @@ public interface MessengerDemographicManager {
      * Retreive demographics from a remote Integrated facility that have not been linked with a local demographic.
      * The demographic number exists only in the remote facility until the user chooses to import it.
      * Once imported, the demographic number from the local AND remote facility will be attached.
+     *
      * @param loggedInInfo
      * @param messageId
      * @return
@@ -84,6 +87,7 @@ public interface MessengerDemographicManager {
 
     /**
      * This will extract a string of names and ages for each demographic attached to the given message id.
+     *
      * @param loggedInInfo
      * @param messageId
      * @return
@@ -93,6 +97,7 @@ public interface MessengerDemographicManager {
     /**
      * Returns a Map of a Key: demographic number and Value: demographic name
      * Can be used to display a list of attached demographics.
+     *
      * @param loggedInInfo
      * @param messageId
      * @return
@@ -101,6 +106,7 @@ public interface MessengerDemographicManager {
 
     /**
      * ONLY FOR USE WITH DEMOGRAPHICS THAT ARE REMOTELY ATTACHED TO A MESSAGE - INTEGRATOR ONLY.
+     *
      * @param loggedInInfo
      * @param messageId
      * @param demographicNoArray
@@ -110,6 +116,7 @@ public interface MessengerDemographicManager {
 
     /**
      * ONLY FOR USE WITH DEMOGRAPHICS THAT ARE REMOTELY ATTACHED TO A MESSAGE - INTEGRATOR ONLY.
+     *
      * @param loggedInInfo
      * @param messageId
      * @param demographicNo
@@ -133,6 +140,7 @@ public interface MessengerDemographicManager {
     /**
      * Search for the Integrated demographic entry and then update the associated msgDemoMapId. This helps indicate that the demographic
      * has been imported and attached.
+     *
      * @param loggedInInfo
      * @param messageId
      * @param demographicNo
@@ -142,8 +150,9 @@ public interface MessengerDemographicManager {
     public long updateAttachedIntegratedDemographic(LoggedInInfo loggedInInfo, int messageId, int demographicNo, int facilityId);
 
     /**
-     * Attach an array of local Demographic numbers to the given message id 
+     * Attach an array of local Demographic numbers to the given message id
      * DO NOT USE TO ATTACH DEMOGRAPHICS FROM OUTSIDE FACILITIES.
+     *
      * @param loggedInInfo
      * @param messageId
      * @param demographicNoArray
@@ -152,7 +161,8 @@ public interface MessengerDemographicManager {
     public Long[] attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, Integer[] demographicNoArray);
 
     /**
-     * Attach a demographic number to the give message id. 
+     * Attach a demographic number to the give message id.
+     *
      * @param loggedInInfo
      * @param messageId
      * @param demographicNo
@@ -162,7 +172,7 @@ public interface MessengerDemographicManager {
     public Long attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo);
 
     /**
-     * This method is hard-coded to the most common Integrator patient consent types. 
+     * This method is hard-coded to the most common Integrator patient consent types.
      * UserProperty.INTEGRATOR_PATIENT_CONSENT
      * UserProperty.INTEGRATOR_DEMOGRAPHIC_CONSENT
      *
@@ -174,6 +184,7 @@ public interface MessengerDemographicManager {
 
     /**
      * Gets a list of messages attached to the given demographic number
+     *
      * @param loggedInInfo
      * @param demographicNo
      * @return

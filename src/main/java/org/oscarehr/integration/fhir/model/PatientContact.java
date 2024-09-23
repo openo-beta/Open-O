@@ -42,56 +42,57 @@ import ca.uhn.fhir.model.primitive.StringDt;
 
 /**
  * Converts an Oscar Contact entity into a FHIR Patient.Contact
- *  Patient.
- *  "contact" : [{ // A contact party (e.g. guardian, partner, friend) for the patient
- "relationship" : [{ CodeableConcept }], // The kind of relationship
- "name" : { HumanName }, // A name associated with the contact person
- "telecom" : [{ ContactPoint }], // A contact detail for the person
- "address" : { Address }, // Address for the contact person
- "gender" : "<code>", // male | female | other | unknown
- "organization" : { Reference(Organization) }, // C? Organization that is associated with the contact
- "period" : { Period } // The period during which this contact person or organization is valid to be contacted relating to this patient
- }],
- *
+ * Patient.
+ * "contact" : [{ // A contact party (e.g. guardian, partner, friend) for the patient
+ * "relationship" : [{ CodeableConcept }], // The kind of relationship
+ * "name" : { HumanName }, // A name associated with the contact person
+ * "telecom" : [{ ContactPoint }], // A contact detail for the person
+ * "address" : { Address }, // Address for the contact person
+ * "gender" : "<code>", // male | female | other | unknown
+ * "organization" : { Reference(Organization) }, // C? Organization that is associated with the contact
+ * "period" : { Period } // The period during which this contact person or organization is valid to be contacted relating to this patient
+ * }],
+ * <p>
  * Extracts the Location info from a HealthcareService.
  * {
- "resourceType" : "HealthcareService",
- // from Resource: id, meta, implicitRules, and language
- // from DomainResource: text, contained, extension, and modifierExtension
- "identifier" : [{ Identifier }], // External identifiers for this item
- "providedBy" : { Reference(Organization) }, // Organization that provides this service
- "serviceCategory" : { CodeableConcept }, // Broad category of service being performed or delivered
- "serviceType" : [{ // Specific service delivered or performed
- "type" : { CodeableConcept }, // R!  Type of service delivered or performed
- "specialty" : [{ CodeableConcept }] // Specialties handled by the Service Site
- }],
- "location" : { Reference(Location) }, // R!  Location where service may be provided
- "serviceName" : "<string>", // Description of service as presented to a consumer while searching
- "comment" : "<string>", // Additional description and/or any specific issues not covered elsewhere
- "extraDetails" : "<string>", // Extra details about the service that can't be placed in the other fields
- "photo" : { Attachment }, // Facilitates quick identification of the service
- "telecom" : [{ ContactPoint }], // Contacts related to the healthcare service
- "coverageArea" : [{ Reference(Location) }], // Location(s) service is inteded for/available to
- "serviceProvisionCode" : [{ CodeableConcept }], // Conditions under which service is available/offered
- "eligibility" : { CodeableConcept }, // Specific eligibility requirements required to use the service
- "eligibilityNote" : "<string>", // Describes the eligibility conditions for the service
- "programName" : ["<string>"], // Program Names that categorize the service
- "characteristic" : [{ CodeableConcept }], // Collection of characteristics (attributes)
- "referralMethod" : [{ CodeableConcept }], // Ways that the service accepts referrals
- "publicKey" : "<string>", // PKI Public keys to support secure communications
- "appointmentRequired" : <boolean>, // If an appointment is required for access to this service
- "availableTime" : [{ // Times the Service Site is available
- "daysOfWeek" : ["<code>"], // mon | tue | wed | thu | fri | sat | sun
- "allDay" : <boolean>, // Always available? e.g. 24 hour service
- "availableStartTime" : "<time>", // Opening time of day (ignored if allDay = true)
- "availableEndTime" : "<time>" // Closing time of day (ignored if allDay = true)
- }],
- "notAvailable" : [{ // Not available during this time due to provided reason
- "description" : "<string>", // R!  Reason presented to the user explaining why time not available
- "during" : { Period } // Service not availablefrom this date
- }],
- "availabilityExceptions" : "<string>" // Description of availability exceptions
- }
+ * "resourceType" : "HealthcareService",
+ * // from Resource: id, meta, implicitRules, and language
+ * // from DomainResource: text, contained, extension, and modifierExtension
+ * "identifier" : [{ Identifier }], // External identifiers for this item
+ * "providedBy" : { Reference(Organization) }, // Organization that provides this service
+ * "serviceCategory" : { CodeableConcept }, // Broad category of service being performed or delivered
+ * "serviceType" : [{ // Specific service delivered or performed
+ * "type" : { CodeableConcept }, // R!  Type of service delivered or performed
+ * "specialty" : [{ CodeableConcept }] // Specialties handled by the Service Site
+ * }],
+ * "location" : { Reference(Location) }, // R!  Location where service may be provided
+ * "serviceName" : "<string>", // Description of service as presented to a consumer while searching
+ * "comment" : "<string>", // Additional description and/or any specific issues not covered elsewhere
+ * "extraDetails" : "<string>", // Extra details about the service that can't be placed in the other fields
+ * "photo" : { Attachment }, // Facilitates quick identification of the service
+ * "telecom" : [{ ContactPoint }], // Contacts related to the healthcare service
+ * "coverageArea" : [{ Reference(Location) }], // Location(s) service is inteded for/available to
+ * "serviceProvisionCode" : [{ CodeableConcept }], // Conditions under which service is available/offered
+ * "eligibility" : { CodeableConcept }, // Specific eligibility requirements required to use the service
+ * "eligibilityNote" : "<string>", // Describes the eligibility conditions for the service
+ * "programName" : ["<string>"], // Program Names that categorize the service
+ * "characteristic" : [{ CodeableConcept }], // Collection of characteristics (attributes)
+ * "referralMethod" : [{ CodeableConcept }], // Ways that the service accepts referrals
+ * "publicKey" : "<string>", // PKI Public keys to support secure communications
+ * "appointmentRequired" : <boolean>, // If an appointment is required for access to this service
+ * "availableTime" : [{ // Times the Service Site is available
+ * "daysOfWeek" : ["<code>"], // mon | tue | wed | thu | fri | sat | sun
+ * "allDay" : <boolean>, // Always available? e.g. 24 hour service
+ * "availableStartTime" : "<time>", // Opening time of day (ignored if allDay = true)
+ * "availableEndTime" : "<time>" // Closing time of day (ignored if allDay = true)
+ * }],
+ * "notAvailable" : [{ // Not available during this time due to provided reason
+ * "description" : "<string>", // R!  Reason presented to the user explaining why time not available
+ * "during" : { Period } // Service not availablefrom this date
+ * }],
+ * "availabilityExceptions" : "<string>" // Description of availability exceptions
+ * }
+ *
  * @param <T>
  */
 public class PatientContact extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Patient, Contact> {

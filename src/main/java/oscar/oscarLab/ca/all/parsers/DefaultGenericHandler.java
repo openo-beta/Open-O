@@ -55,7 +55,6 @@ import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
- *
  * @author wrighd
  */
 public class DefaultGenericHandler implements MessageHandler {
@@ -66,7 +65,9 @@ public class DefaultGenericHandler implements MessageHandler {
     protected Terser terser;
     protected ArrayList<ArrayList<Segment>> obrGroups = null;
 
-    /** Creates a new instance of CMLHandler */
+    /**
+     * Creates a new instance of CMLHandler
+     */
     public DefaultGenericHandler() {
     }
 
@@ -183,7 +184,7 @@ public class DefaultGenericHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information about the Observation Request
+     * Methods to get information about the Observation Request
      */
     public int getOBRCount() {
 
@@ -348,7 +349,7 @@ public class DefaultGenericHandler implements MessageHandler {
     }
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
     public ArrayList<String> getHeaders() {
         //  stored in different places for different messages,
@@ -359,7 +360,7 @@ public class DefaultGenericHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBRCommentCount(int i) {
 
@@ -403,7 +404,7 @@ public class DefaultGenericHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
     public int getOBXCommentCount(int i, int j) {
         // jth obx of the ith obr
@@ -452,7 +453,7 @@ public class DefaultGenericHandler implements MessageHandler {
 
 
     /**
-     *  Methods to get information about the patient
+     * Methods to get information about the patient
      */
     public String getPatientName() {
         return (getFirstName() + " " + getLastName());

@@ -61,8 +61,8 @@ public class IntakeAnswerValidation implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native" column="intake_answer_validation_id"
+     * <p>
+     * generator-class="native" column="intake_answer_validation_id"
      */
     public Integer getId() {
         return id;
@@ -71,8 +71,7 @@ public class IntakeAnswerValidation implements Serializable {
     /**
      * Set the unique identifier of this class
      *
-     * @param id
-     *            the new ID
+     * @param id the new ID
      */
     public void setId(Integer id) {
         this.id = id;
@@ -89,8 +88,7 @@ public class IntakeAnswerValidation implements Serializable {
     /**
      * Set the value related to the column: type
      *
-     * @param type
-     *            the type value
+     * @param type the type value
      */
     public void setType(String type) {
         this.type = type;

@@ -123,8 +123,8 @@ public class IntakeNodeType implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native" column="intake_node_type_id"
+     * <p>
+     * generator-class="native" column="intake_node_type_id"
      */
     public Integer getId() {
         return id;
@@ -133,8 +133,7 @@ public class IntakeNodeType implements Serializable {
     /**
      * Set the unique identifier of this class
      *
-     * @param id
-     *            the new ID
+     * @param id the new ID
      */
     public void setId(Integer id) {
         this.id = id;
@@ -151,8 +150,7 @@ public class IntakeNodeType implements Serializable {
     /**
      * Set the value related to the column: type
      *
-     * @param type
-     *            the type value
+     * @param type the type value
      */
     public void setType(String type) {
         this.type = type;

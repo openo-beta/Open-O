@@ -27,7 +27,6 @@ package oscar.entities;
 
 /**
  * Encapsulates data from table hl7_obr
- *
  */
 public class Hl7Obr {
     /**
@@ -89,52 +88,52 @@ public class Hl7Obr {
     /**
      * Full constructor
      *
-     * @param obrId int
-     * @param pidId int
-     * @param setId String
-     * @param placerOrderNumber String
-     * @param fillerOrderNumber String
-     * @param universalServiceId String
-     * @param priority String
-     * @param requestedDateTime String
-     * @param observationDateTime String
-     * @param observationEndDateTime String
-     * @param collectionVolume String
-     * @param collectorIdentifier String
-     * @param specimenActionCode String
-     * @param dangerCode String
-     * @param relevantClinicalInfo String
-     * @param specimenReceivedDateTime String
-     * @param specimenSource String
-     * @param orderingProvider String
-     * @param orderCallbackPhoneNumber String
-     * @param placersField1 String
-     * @param palcersField2 String
-     * @param fillerField1 String
-     * @param fillerField2 String
-     * @param resultsReportStatusChange String
-     * @param chargeToPractice String
-     * @param diagnosticServiceSectId String
-     * @param resultStatus String
-     * @param parentResult String
-     * @param quantityTiming String
-     * @param resultCopiesTo String
-     * @param parentNumber String
-     * @param transportationMode String
-     * @param reasonForStudy String
-     * @param principalResultInterpreter String
-     * @param assistantResultInterpreter String
-     * @param technician String
-     * @param transcriptionist String
-     * @param scheduledDateTime String
-     * @param transportArranged String
-     * @param numberOfSampleContainers String
+     * @param obrId                               int
+     * @param pidId                               int
+     * @param setId                               String
+     * @param placerOrderNumber                   String
+     * @param fillerOrderNumber                   String
+     * @param universalServiceId                  String
+     * @param priority                            String
+     * @param requestedDateTime                   String
+     * @param observationDateTime                 String
+     * @param observationEndDateTime              String
+     * @param collectionVolume                    String
+     * @param collectorIdentifier                 String
+     * @param specimenActionCode                  String
+     * @param dangerCode                          String
+     * @param relevantClinicalInfo                String
+     * @param specimenReceivedDateTime            String
+     * @param specimenSource                      String
+     * @param orderingProvider                    String
+     * @param orderCallbackPhoneNumber            String
+     * @param placersField1                       String
+     * @param palcersField2                       String
+     * @param fillerField1                        String
+     * @param fillerField2                        String
+     * @param resultsReportStatusChange           String
+     * @param chargeToPractice                    String
+     * @param diagnosticServiceSectId             String
+     * @param resultStatus                        String
+     * @param parentResult                        String
+     * @param quantityTiming                      String
+     * @param resultCopiesTo                      String
+     * @param parentNumber                        String
+     * @param transportationMode                  String
+     * @param reasonForStudy                      String
+     * @param principalResultInterpreter          String
+     * @param assistantResultInterpreter          String
+     * @param technician                          String
+     * @param transcriptionist                    String
+     * @param scheduledDateTime                   String
+     * @param transportArranged                   String
+     * @param numberOfSampleContainers            String
      * @param transportLogisticsOfCollectedSample String
-     * @param collectorComment String
-     * @param transportArrangementResponsibility String
-     * @param escortRequired String
-     * @param plannedPatientTransportComment String
-     * @param note String
+     * @param collectorComment                    String
+     * @param transportArrangementResponsibility  String
+     * @param escortRequired                      String
+     * @param plannedPatientTransportComment      String
+     * @param note                                String
      */
     public Hl7Obr(int obrId, int pidId, String setId, String placerOrderNumber,
                   String fillerOrderNumber, String universalServiceId,
@@ -214,6 +213,7 @@ public class Hl7Obr {
 
     /**
      * Gets the obrId
+     *
      * @return int obrId
      */
     public int getObrId() {
@@ -222,6 +222,7 @@ public class Hl7Obr {
 
     /**
      * Gets the pidId
+     *
      * @return int pidId
      */
     public int getPidId() {
@@ -230,6 +231,7 @@ public class Hl7Obr {
 
     /**
      * Gets the setId
+     *
      * @return String setId
      */
     public String getSetId() {
@@ -238,6 +240,7 @@ public class Hl7Obr {
 
     /**
      * Gets the placerOrderNumber
+     *
      * @return String placerOrderNumber
      */
     public String getPlacerOrderNumber() {
@@ -246,6 +249,7 @@ public class Hl7Obr {
 
     /**
      * Gets the fillerOrderNumber
+     *
      * @return String fillerOrderNumber
      */
     public String getFillerOrderNumber() {
@@ -254,6 +258,7 @@ public class Hl7Obr {
 
     /**
      * Gets the universalServiceId
+     *
      * @return String universalServiceId
      */
     public String getUniversalServiceId() {
@@ -262,6 +267,7 @@ public class Hl7Obr {
 
     /**
      * Gets the priority
+     *
      * @return String priority
      */
     public String getPriority() {
@@ -270,6 +276,7 @@ public class Hl7Obr {
 
     /**
      * Gets the requestedDateTime
+     *
      * @return String requestedDateTime
      */
     public String getRequestedDateTime() {
@@ -278,6 +285,7 @@ public class Hl7Obr {
 
     /**
      * Gets the observationDateTime
+     *
      * @return String observationDateTime
      */
     public String getObservationDateTime() {
@@ -286,6 +294,7 @@ public class Hl7Obr {
 
     /**
      * Gets the observationEndDateTime
+     *
      * @return String observationEndDateTime
      */
     public String getObservationEndDateTime() {
@@ -294,6 +303,7 @@ public class Hl7Obr {
 
     /**
      * Gets the collectionVolume
+     *
      * @return String collectionVolume
      */
     public String getCollectionVolume() {
@@ -302,6 +312,7 @@ public class Hl7Obr {
 
     /**
      * Gets the collectorIdentifier
+     *
      * @return String collectorIdentifier
      */
     public String getCollectorIdentifier() {
@@ -310,6 +321,7 @@ public class Hl7Obr {
 
     /**
      * Gets the specimenActionCode
+     *
      * @return String specimenActionCode
      */
     public String getSpecimenActionCode() {
@@ -318,6 +330,7 @@ public class Hl7Obr {
 
     /**
      * Gets the dangerCode
+     *
      * @return String dangerCode
      */
     public String getDangerCode() {
@@ -326,6 +339,7 @@ public class Hl7Obr {
 
     /**
      * Gets the relevantClinicalInfo
+     *
      * @return String relevantClinicalInfo
      */
     public String getRelevantClinicalInfo() {
@@ -334,6 +348,7 @@ public class Hl7Obr {
 
     /**
      * Gets the specimenReceivedDateTime
+     *
      * @return String specimenReceivedDateTime
      */
     public String getSpecimenReceivedDateTime() {
@@ -342,6 +357,7 @@ public class Hl7Obr {
 
     /**
      * Gets the specimenSource
+     *
      * @return String specimenSource
      */
     public String getSpecimenSource() {
@@ -350,6 +366,7 @@ public class Hl7Obr {
 
     /**
      * Gets the orderingProvider
+     *
      * @return String orderingProvider
      */
     public String getOrderingProvider() {
@@ -358,6 +375,7 @@ public class Hl7Obr {
 
     /**
      * Gets the orderCallbackPhoneNumber
+     *
      * @return String orderCallbackPhoneNumber
      */
     public String getOrderCallbackPhoneNumber() {
@@ -366,6 +384,7 @@ public class Hl7Obr {
 
     /**
      * Gets the placersField1
+     *
      * @return String placersField1
      */
     public String getPlacersField1() {
@@ -374,6 +393,7 @@ public class Hl7Obr {
 
     /**
      * Gets the palcersField2
+     *
      * @return String palcersField2
      */
     public String getPalcersField2() {
@@ -382,6 +402,7 @@ public class Hl7Obr {
 
     /**
      * Gets the fillerField1
+     *
      * @return String fillerField1
      */
     public String getFillerField1() {
@@ -390,6 +411,7 @@ public class Hl7Obr {
 
     /**
      * Gets the fillerField2
+     *
      * @return String fillerField2
      */
     public String getFillerField2() {
@@ -398,6 +420,7 @@ public class Hl7Obr {
 
     /**
      * Gets the resultsReportStatusChange
+     *
      * @return String resultsReportStatusChange
      */
     public String getResultsReportStatusChange() {
@@ -406,6 +429,7 @@ public class Hl7Obr {
 
     /**
      * Gets the chargeToPractice
+     *
      * @return String chargeToPractice
      */
     public String getChargeToPractice() {
@@ -414,6 +438,7 @@ public class Hl7Obr {
 
     /**
      * Gets the diagnosticServiceSectId
+     *
      * @return String diagnosticServiceSectId
      */
     public String getDiagnosticServiceSectId() {
@@ -422,6 +447,7 @@ public class Hl7Obr {
 
     /**
      * Gets the resultStatus
+     *
      * @return String resultStatus
      */
     public String getResultStatus() {
@@ -430,6 +456,7 @@ public class Hl7Obr {
 
     /**
      * Gets the parentResult
+     *
      * @return String parentResult
      */
     public String getParentResult() {
@@ -438,6 +465,7 @@ public class Hl7Obr {
 
     /**
      * Gets the quantityTiming
+     *
      * @return String quantityTiming
      */
     public String getQuantityTiming() {
@@ -446,6 +474,7 @@ public class Hl7Obr {
 
     /**
      * Gets the resultCopiesTo
+     *
      * @return String resultCopiesTo
      */
     public String getResultCopiesTo() {
@@ -454,6 +483,7 @@ public class Hl7Obr {
 
     /**
      * Gets the parentNumber
+     *
      * @return String parentNumber
      */
     public String getParentNumber() {
@@ -462,6 +492,7 @@ public class Hl7Obr {
 
     /**
      * Gets the transportationMode
+     *
      * @return String transportationMode
      */
     public String getTransportationMode() {
@@ -470,6 +501,7 @@ public class Hl7Obr {
 
     /**
      * Gets the reasonForStudy
+     *
      * @return String reasonForStudy
      */
     public String getReasonForStudy() {
@@ -478,6 +510,7 @@ public class Hl7Obr {
 
     /**
      * Gets the principalResultInterpreter
+     *
      * @return String principalResultInterpreter
      */
     public String getPrincipalResultInterpreter() {
@@ -487,6 +520,7 @@ public class Hl7Obr {
 
     /**
      * Gets the assistantResultInterpreter
+     *
      * @return String assistantResultInterpreter
      */
     public String getAssistantResultInterpreter() {
@@ -496,6 +530,7 @@ public class Hl7Obr {
 
     /**
      * Gets the technician
+     *
      * @return String technician
      */
     public String getTechnician() {
@@ -504,6 +539,7 @@ public class Hl7Obr {
 
     /**
      * Gets the transcriptionist
+     *
      * @return String transcriptionist
      */
     public String getTranscriptionist() {
@@ -512,6 +548,7 @@ public class Hl7Obr {
 
     /**
      * Gets the scheduledDateTime
+     *
      * @return String scheduledDateTime
      */
     public String getScheduledDateTime() {
@@ -520,6 +557,7 @@ public class Hl7Obr {
 
     /**
      * Gets the transportArranged
+     *
      * @return String transportArranged
      */
     public String getTransportArranged() {
@@ -528,6 +566,7 @@ public class Hl7Obr {
 
     /**
      * Gets the numberOfSampleContainers
+     *
      * @return String numberOfSampleContainers
      */
     public String getNumberOfSampleContainers() {
@@ -536,6 +575,7 @@ public class Hl7Obr {
 
     /**
      * Gets the transportLogisticsOfCollectedSample
+     *
      * @return String transportLogisticsOfCollectedSample
      */
     public String getTransportLogisticsOfCollectedSample() {
@@ -545,6 +585,7 @@ public class Hl7Obr {
 
     /**
      * Gets the collectorComment
+     *
      * @return String collectorComment
      */
     public String getCollectorComment() {
@@ -553,6 +594,7 @@ public class Hl7Obr {
 
     /**
      * Gets the transportArrangementResponsibility
+     *
      * @return String transportArrangementResponsibility
      */
     public String getTransportArrangementResponsibility() {
@@ -562,6 +604,7 @@ public class Hl7Obr {
 
     /**
      * Gets the escortRequired
+     *
      * @return String escortRequired
      */
     public String getEscortRequired() {
@@ -570,6 +613,7 @@ public class Hl7Obr {
 
     /**
      * Gets the plannedPatientTransportComment
+     *
      * @return String plannedPatientTransportComment
      */
     public String getPlannedPatientTransportComment() {
@@ -579,6 +623,7 @@ public class Hl7Obr {
 
     /**
      * Gets the note
+     *
      * @return String note
      */
     public String getNote() {
@@ -587,6 +632,7 @@ public class Hl7Obr {
 
     /**
      * Sets the obrId
+     *
      * @param obrId int
      */
     public void setObrId(int obrId) {
@@ -595,6 +641,7 @@ public class Hl7Obr {
 
     /**
      * Sets the pidId
+     *
      * @param pidId int
      */
     public void setPidId(int pidId) {
@@ -603,6 +650,7 @@ public class Hl7Obr {
 
     /**
      * Sets the setId
+     *
      * @param setId String
      */
     public void setSetId(String setId) {
@@ -611,6 +659,7 @@ public class Hl7Obr {
 
     /**
      * Sets the placerOrderNumber
+     *
      * @param placerOrderNumber String
      */
     public void setPlacerOrderNumber(String placerOrderNumber) {
@@ -619,6 +668,7 @@ public class Hl7Obr {
 
     /**
      * Sets the fillerOrderNumber
+     *
      * @param fillerOrderNumber String
      */
     public void setFillerOrderNumber(String fillerOrderNumber) {
@@ -627,6 +677,7 @@ public class Hl7Obr {
 
     /**
      * Sets the universalServiceId
+     *
      * @param universalServiceId String
      */
     public void setUniversalServiceId(String universalServiceId) {
@@ -635,6 +686,7 @@ public class Hl7Obr {
 
     /**
      * Sets the priority
+     *
      * @param priority String
      */
     public void setPriority(String priority) {
@@ -643,6 +695,7 @@ public class Hl7Obr {
 
     /**
      * Sets the requestedDateTime
+     *
      * @param requestedDateTime String
      */
     public void setRequestedDateTime(String requestedDateTime) {
@@ -651,6 +704,7 @@ public class Hl7Obr {
 
     /**
      * Sets the observationDateTime
+     *
      * @param observationDateTime String
      */
     public void setObservationDateTime(String observationDateTime) {
@@ -659,6 +713,7 @@ public class Hl7Obr {
 
     /**
      * Sets the observationEndDateTime
+     *
      * @param observationEndDateTime String
      */
     public void setObservationEndDateTime(String
@@ -668,6 +723,7 @@ public class Hl7Obr {
 
     /**
      * Sets the collectionVolume
+     *
      * @param collectionVolume String
      */
     public void setCollectionVolume(String collectionVolume) {
@@ -676,6 +732,7 @@ public class Hl7Obr {
 
     /**
      * Sets the collectorIdentifier
+     *
      * @param collectorIdentifier String
      */
     public void setCollectorIdentifier(String collectorIdentifier) {
@@ -684,6 +741,7 @@ public class Hl7Obr {
 
     /**
      * Sets the specimenActionCode
+     *
      * @param specimenActionCode String
      */
     public void setSpecimenActionCode(String specimenActionCode) {
@@ -692,6 +750,7 @@ public class Hl7Obr {
 
     /**
      * Sets the dangerCode
+     *
      * @param dangerCode String
      */
     public void setDangerCode(String dangerCode) {
@@ -700,6 +759,7 @@ public class Hl7Obr {
 
     /**
      * Sets the relevantClinicalInfo
+     *
      * @param relevantClinicalInfo String
      */
     public void setRelevantClinicalInfo(String relevantClinicalInfo) {
@@ -708,6 +768,7 @@ public class Hl7Obr {
 
     /**
      * Sets the specimenReceivedDateTime
+     *
      * @param specimenReceivedDateTime String
      */
     public void setSpecimenReceivedDateTime(String
@@ -717,6 +778,7 @@ public class Hl7Obr {
 
     /**
      * Sets the specimenSource
+     *
      * @param specimenSource String
      */
     public void setSpecimenSource(String specimenSource) {
@@ -725,6 +787,7 @@ public class Hl7Obr {
 
     /**
      * Sets the orderingProvider
+     *
      * @param orderingProvider String
      */
     public void setOrderingProvider(String orderingProvider) {
@@ -733,6 +796,7 @@ public class Hl7Obr {
 
     /**
      * Sets the orderCallbackPhoneNumber
+     *
      * @param orderCallbackPhoneNumber String
      */
     public void setOrderCallbackPhoneNumber(String orderCallbackPhoneNumber) {
@@ -741,6 +805,7 @@ public class Hl7Obr {
 
     /**
      * Sets the placersField1
+     *
      * @param placersField1 String
      */
     public void setPlacersField1(String placersField1) {
@@ -749,6 +814,7 @@ public class Hl7Obr {
 
     /**
      * Sets the palcersField2
+     *
      * @param palcersField2 String
      */
     public void setPalcersField2(String palcersField2) {
@@ -757,6 +823,7 @@ public class Hl7Obr {
 
     /**
      * Sets the fillerField1
+     *
      * @param fillerField1 String
      */
     public void setFillerField1(String fillerField1) {
@@ -765,6 +832,7 @@ public class Hl7Obr {
 
     /**
      * Sets the fillerField2
+     *
      * @param fillerField2 String
      */
     public void setFillerField2(String fillerField2) {
@@ -773,6 +841,7 @@ public class Hl7Obr {
 
     /**
      * Sets the resultsReportStatusChange
+     *
      * @param resultsReportStatusChange String
      */
     public void setResultsReportStatusChange(String
@@ -782,6 +851,7 @@ public class Hl7Obr {
 
     /**
      * Sets the chargeToPractice
+     *
      * @param chargeToPractice String
      */
     public void setChargeToPractice(String chargeToPractice) {
@@ -790,6 +860,7 @@ public class Hl7Obr {
 
     /**
      * Sets the diagnosticServiceSectId
+     *
      * @param diagnosticServiceSectId String
      */
     public void setDiagnosticServiceSectId(String diagnosticServiceSectId) {
@@ -798,6 +869,7 @@ public class Hl7Obr {
 
     /**
      * Sets the resultStatus
+     *
      * @param resultStatus String
      */
     public void setResultStatus(String resultStatus) {
@@ -806,6 +878,7 @@ public class Hl7Obr {
 
     /**
      * Sets the parentResult
+     *
      * @param parentResult String
      */
     public void setParentResult(String parentResult) {
@@ -814,6 +887,7 @@ public class Hl7Obr {
 
     /**
      * Sets the quantityTiming
+     *
      * @param quantityTiming String
      */
     public void setQuantityTiming(String quantityTiming) {
@@ -822,6 +896,7 @@ public class Hl7Obr {
 
     /**
      * Sets the resultCopiesTo
+     *
      * @param resultCopiesTo String
      */
     public void setResultCopiesTo(String resultCopiesTo) {
@@ -830,6 +905,7 @@ public class Hl7Obr {
 
     /**
      * Sets the parentNumber
+     *
      * @param parentNumber String
      */
     public void setParentNumber(String parentNumber) {
@@ -838,6 +914,7 @@ public class Hl7Obr {
 
     /**
      * Sets the transportationMode
+     *
      * @param transportationMode String
      */
     public void setTransportationMode(String transportationMode) {
@@ -846,6 +923,7 @@ public class Hl7Obr {
 
     /**
      * Sets the reasonForStudy
+     *
      * @param reasonForStudy String
      */
     public void setReasonForStudy(String reasonForStudy) {
@@ -854,6 +932,7 @@ public class Hl7Obr {
 
     /**
      * Sets the principalResultInterpreter
+     *
      * @param principalResultInterpreter String
      */
     public void setPrincipalResultInterpreter(String principalResultInterpreter) {
@@ -862,6 +941,7 @@ public class Hl7Obr {
 
     /**
      * Sets the assistantResultInterpreter
+     *
      * @param assistantResultInterpreter String
      */
     public void setAssistantResultInterpreter(String assistantResultInterpreter) {
@@ -870,6 +950,7 @@ public class Hl7Obr {
 
     /**
      * Sets the technician
+     *
      * @param technician String
      */
     public void setTechnician(String technician) {
@@ -878,6 +959,7 @@ public class Hl7Obr {
 
     /**
      * Sets the transcriptionist
+     *
      * @param transcriptionist String
      */
     public void setTranscriptionist(String transcriptionist) {
@@ -886,6 +968,7 @@ public class Hl7Obr {
 
     /**
      * Sets the scheduledDateTime
+     *
      * @param scheduledDateTime String
      */
     public void setScheduledDateTime(String scheduledDateTime) {
@@ -894,6 +977,7 @@ public class Hl7Obr {
 
     /**
      * Sets the transportArranged
+     *
      * @param transportArranged String
      */
     public void setTransportArranged(String transportArranged) {
@@ -902,6 +986,7 @@ public class Hl7Obr {
 
     /**
      * Sets the numberOfSampleContainers
+     *
      * @param numberOfSampleContainers String
      */
     public void setNumberOfSampleContainers(String numberOfSampleContainers) {
@@ -910,6 +995,7 @@ public class Hl7Obr {
 
     /**
      * Sets the transportLogisticsOfCollectedSample
+     *
      * @param transportLogisticsOfCollectedSample String
      */
     public void setTransportLogisticsOfCollectedSample(String
@@ -920,6 +1006,7 @@ public class Hl7Obr {
 
     /**
      * Sets the collectorComment
+     *
      * @param collectorComment String
      */
     public void setCollectorComment(String collectorComment) {
@@ -928,6 +1015,7 @@ public class Hl7Obr {
 
     /**
      * Sets the transportArrangementResponsibility
+     *
      * @param transportArrangementResponsibility String
      */
     public void setTransportArrangementResponsibility(String
@@ -938,6 +1026,7 @@ public class Hl7Obr {
 
     /**
      * Sets the escortRequired
+     *
      * @param escortRequired String
      */
     public void setEscortRequired(String escortRequired) {
@@ -946,6 +1035,7 @@ public class Hl7Obr {
 
     /**
      * Sets the plannedPatientTransportComment
+     *
      * @param plannedPatientTransportComment String
      */
     public void setPlannedPatientTransportComment(String
@@ -955,6 +1045,7 @@ public class Hl7Obr {
 
     /**
      * Sets the note
+     *
      * @param note String
      */
     public void setNote(String note) {

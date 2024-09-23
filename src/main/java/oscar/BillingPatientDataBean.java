@@ -27,7 +27,6 @@
 package oscar;
 
 /**
- *
  * Description - BillingPatientDataBean
  */
 

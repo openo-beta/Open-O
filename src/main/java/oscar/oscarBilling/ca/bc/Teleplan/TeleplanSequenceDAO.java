@@ -35,7 +35,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *  Deals with storing the teleplan sequence #
+ * Deals with storing the teleplan sequence #
+ *
  * @author jay
  */
 public class TeleplanSequenceDAO {
@@ -43,7 +44,9 @@ public class TeleplanSequenceDAO {
     private PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
 
 
-    /** Creates a new instance of TeleplanSequenceDAO */
+    /**
+     * Creates a new instance of TeleplanSequenceDAO
+     */
     public TeleplanSequenceDAO() {
     }
 

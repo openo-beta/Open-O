@@ -240,7 +240,7 @@ public class PDFController {
     /**
      * Read the smart tags off of a pdf document and use them to
      * extract the property values from a POJO Object.
-     *
+     * <p>
      * Assuming that the pdf input path has been preset.
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -312,10 +312,10 @@ public class PDFController {
     /**
      * Write data from an object to a PDF with matching smart tags.
      * PDF should be preset with instantiation of this class.
-     *
+     * <p>
      * This method assumes that pdf path and output path info
      * has been set on instantiation.
-     *
+     * <p>
      * See test class with same name for example.
      *
      * @param fileId : An id, such as demographic number, to identify the file.
@@ -338,8 +338,9 @@ public class PDFController {
     /**
      * Writes data from an object to a PDF with matching smart tags.
      * PDF should be preset with instantiation of this class.
-     *
+     * <p>
      * See test class with same name for example.
+     *
      * @param outPath : outPut path for completed PDF.
      * @param pdfPath : the absolute path to an editable pdf template.
      */
@@ -430,7 +431,7 @@ public class PDFController {
      * This method will recurse through JPA entity beans returned by a method.
      * The following methods could be pulled out and put into their own
      * utility class.
-     *
+     * <p>
      * Credit: http://www.java2s.com/Code/Java/Reflection/GetsthegettersofapojoasamapofStringaskeyandMethodasvalue.htm
      */
     public synchronized static Map<String, Method> getGetterMethods(Object data) {
@@ -565,6 +566,7 @@ public class PDFController {
 
     /**
      * String return values only.
+     *
      * @param methodName
      * @param methodMap
      * @param data
@@ -643,6 +645,7 @@ public class PDFController {
     /**
      * Cast select Objects into a String object.
      * So far only Dates, Integers, and Strings are allowed through
+     *
      * @param object
      * @return
      */
@@ -669,7 +672,8 @@ public class PDFController {
     /**
      * Converts a POJO method signature into the conventional camel-case
      * format.
-     * @param start : starting point of the get or set prepend
+     *
+     * @param start      : starting point of the get or set prepend
      * @param methodName : the method string being formatted.
      * @return
      */
@@ -686,6 +690,7 @@ public class PDFController {
 
     /**
      * Converts a Java array into a comma delimited String
+     *
      * @return
      */
     private static final String arrayToString(final String[] array, final String delimiter) {

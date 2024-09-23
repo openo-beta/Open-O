@@ -77,9 +77,7 @@ public class RxManagerImpl implements RxManager {
      * @param info          details regarding the current user
      * @param demographicNo the demographic to get current drugs for.
      * @param status        the status to filter on the meds, one of {ALL, CURRENT, ARCHIVED}
-     *
      * @return a list of the drugs that are marked as current in the demographics record.
-     *
      * @throws UnsupportedOperationException when a status that is not supported is requested.
      */
     @Override
@@ -136,11 +134,9 @@ public class RxManagerImpl implements RxManager {
     /**
      * Get drug by id,  User is checked to make sure they have permissions to view drug by checking the patient it was prescribed too.
      *
-     * @param info          details regarding the current user
-     * @param drugId        id of the drug to retreive
-     *
+     * @param info   details regarding the current user
+     * @param drugId id of the drug to retreive
      * @return drug
-     *
      * @throws UnsupportedOperationException when a drug is not found.
      */
     @Override
@@ -163,7 +159,8 @@ public class RxManagerImpl implements RxManager {
 
     /**
      * Get a list of formatted medications the demographic has prescribed and are active. The returned list contains the drug's special field, or if one doesn't exist, the medication's name.
-     * @param loggedInInfo Current user's logged in info
+     *
+     * @param loggedInInfo  Current user's logged in info
      * @param demographicNo The demographic number to get the medications for
      * @return List of medication information from the medication's special field
      */
@@ -198,7 +195,6 @@ public class RxManagerImpl implements RxManager {
      *
      * @param info information regarding the logged in user.
      * @param d    the drug object to add to the database.
-     *
      * @return the drug object that was added.
      */
     @Override
@@ -242,7 +238,6 @@ public class RxManagerImpl implements RxManager {
      *
      * @param info information regarding the user making the request.
      * @param d    the drug to replace the old version with.
-     *
      * @return a drug object representing the new version, null otherwise.
      */
     @Override
@@ -306,9 +301,7 @@ public class RxManagerImpl implements RxManager {
      *                      "increasedRiskBenefitRatio", "newScientificEvidence", "noLongerNecessary"
      *                      "ineffectiveTreatment", "other", "cost", "drugInteraction",
      *                      "patientRequest", "unknown", "deleted", "simplifyingTreatment"}
-     *
      * @return true if the drug was successfully discontinued, false otherwise.
-     *
      * @throws UnsupportedOperationException if the reason for discontinuing the drug is not recognized.
      */
     @Override
@@ -425,8 +418,8 @@ public class RxManagerImpl implements RxManager {
      * have write privileges. Marks old drugs as archived ("represcribed") and creates new versions
      * of the listed drugs to associate with the prescription.
      *
-     * @param info the current user's logged in information.
-     * @param drugs a non-empty list of the drugs to prescribe
+     * @param info   the current user's logged in information.
+     * @param drugs  a non-empty list of the drugs to prescribe
      * @param demoNo the demographic to prescribe for.
      * @return a record of the prescription and drugs, null if the prescription could not be created.
      */
@@ -494,11 +487,11 @@ public class RxManagerImpl implements RxManager {
     /**
      * Finds the history of a drug using its ATC code.
      *
-     * @param id the drug id to find the history of
-     * @param info the current users info
+     * @param id            the drug id to find the history of
+     * @param info          the current users info
      * @param demographicNo the identifier for the demographic.
      * @return a list of previously documented drugs that make up the history,
-     *          empty list if no history could be found.
+     * empty list if no history could be found.
      */
     @Override
     public List<Drug> getHistory(Integer id, LoggedInInfo info, Integer demographicNo) {
@@ -627,7 +620,6 @@ public class RxManagerImpl implements RxManager {
      *
      * @param info          information regarding the user making the request.
      * @param demographicNo the identifier for the patient being accessed.
-     *
      * @throws AccessDeniedException if access is denied.
      */
 
@@ -644,7 +636,6 @@ public class RxManagerImpl implements RxManager {
      *
      * @param info          information regarding the user making the request.
      * @param demographicNo the identifier for the patient being accessed.
-     *
      * @throws AccessDeniedException if access is denied.
      */
 

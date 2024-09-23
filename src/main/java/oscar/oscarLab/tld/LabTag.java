@@ -34,7 +34,6 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class LabTag extends TagSupport {

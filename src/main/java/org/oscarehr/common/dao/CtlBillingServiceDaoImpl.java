@@ -53,10 +53,8 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
     /**
      * Gets distinct service type for services with the specific service status
      *
-     * @param serviceStatus
-     * 		Status of the service to be retrieved
-     * @return
-     *        Returns list containing arrays of strings, where the first element represents the service type and the second element is the service type name.
+     * @param serviceStatus Status of the service to be retrieved
+     * @return Returns list containing arrays of strings, where the first element represents the service type and the second element is the service type name.
      */
     public List<Object[]> getUniqueServiceTypes(String serviceStatus) {
         Query query = entityManager.createQuery("SELECT DISTINCT b.serviceType, b.serviceTypeName FROM CtlBillingService b WHERE b.status = :serviceStatus");
@@ -70,8 +68,7 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
     /**
      * Gets distinct service type for services with {@link #DEFAULT_STATUS}
      *
-     * @return
-     *        Returns list containing arrays of strings, where the first element represents the service type code and the second element is the service type name.
+     * @return Returns list containing arrays of strings, where the first element represents the service type code and the second element is the service type name.
      */
     public List<Object[]> getUniqueServiceTypes() {
         return getUniqueServiceTypes(DEFAULT_STATUS);
@@ -126,10 +123,8 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
     /**
      * Gets all {@link CtlBillingService} instance with the specified service group
      *
-     * @param serviceGroup
-     * 		Service group to ge services for
-     * @return
-     *        Returns all persistent services found
+     * @param serviceGroup Service group to ge services for
+     * @return Returns all persistent services found
      */
     public List<CtlBillingService> findByServiceGroup(String serviceGroup) {
         return findByServiceGroupAndServiceType(serviceGroup, null);
@@ -138,10 +133,8 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
     /**
      * Gets all {@link CtlBillingService} instance with the specified service group
      *
-     * @param serviceGroup
-     * 		Service group to ge services for
-     * @return
-     *        Returns all persistent services found
+     * @param serviceGroup Service group to ge services for
+     * @return Returns all persistent services found
      */
 
     public List<CtlBillingService> findByServiceGroupAndServiceType(String serviceGroup, String serviceType) {

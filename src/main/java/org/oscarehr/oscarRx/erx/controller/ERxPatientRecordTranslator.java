@@ -34,7 +34,7 @@ import org.oscarehr.oscarRx.erx.model.ERxPatientData;
 
 /**
  * An object that translates between Patient objects and ERxPatientData objects.
- *
+ * <p>
  * FUTURE: org.oscarehr.oscarRx.erx should, in the future, support more than one
  * external prescription service, which is unlikely to use the current patient
  * data model. When this support is added, this class should be renamed to
@@ -48,8 +48,7 @@ public class ERxPatientRecordTranslator {
     /**
      * Generate an ERxPatientData given a Patient.
      *
-     * @param patient
-     *            The patient data to translate
+     * @param patient The patient data to translate
      * @return The translated patient data
      */
     public static ERxPatientData translateToExternal(Demographic patient)

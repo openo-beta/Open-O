@@ -45,7 +45,6 @@ import org.oscarehr.common.model.RecycleBin;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author wrighd
  */
 public class MeasurementMapConfig {
@@ -219,8 +218,8 @@ public class MeasurementMapConfig {
     }
 
     /**
-     *  Only one identifier per type is allowed to be mapped to a single loinc code
-     *  Return true if there is already an identifier mapped to the loinc code.
+     * Only one identifier per type is allowed to be mapped to a single loinc code
+     * Return true if there is already an identifier mapped to the loinc code.
      */
     public boolean checkLoincMapping(String loinc, String type) {
         List<MeasurementMap> maps = measurementMapDao.findByLoincCodeAndLabType(loinc, type);

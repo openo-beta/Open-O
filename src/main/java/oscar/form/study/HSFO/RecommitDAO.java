@@ -46,8 +46,7 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarDemographic.data.DemographicData;
 
 /**
- *Class used by the HSFO Study
- *
+ * Class used by the HSFO Study
  */
 public class RecommitDAO {
 

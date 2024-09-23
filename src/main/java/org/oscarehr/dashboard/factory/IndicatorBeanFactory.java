@@ -37,10 +37,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * Builds IndicatorBeans with executed query results
  * Also returns a IndicatorBeans grouped by Indicator sub-category by Indicator category
- *
  */
 
 public class IndicatorBeanFactory {

@@ -36,12 +36,15 @@ public final class BillingAddCodeForm extends ActionForm {
     String value;
     String whereTo;
 
-    /** Creates a new instance of BillingEditCodeForm */
+    /**
+     * Creates a new instance of BillingEditCodeForm
+     */
     public BillingAddCodeForm() {
     }
 
     /**
      * Getter for property codeId.
+     *
      * @return Value of property codeId.
      */
     public java.lang.String getCodeId() {
@@ -50,6 +53,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Setter for property codeId.
+     *
      * @param codeId New value of property codeId.
      */
     public void setCodeId(java.lang.String codeId) {
@@ -58,6 +62,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Getter for property code.
+     *
      * @return Value of property code.
      */
     public java.lang.String getCode() {
@@ -66,6 +71,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Setter for property code.
+     *
      * @param code New value of property code.
      */
     public void setCode(java.lang.String code) {
@@ -74,6 +80,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Getter for property desc.
+     *
      * @return Value of property desc.
      */
     public java.lang.String getDesc() {
@@ -82,6 +89,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Setter for property desc.
+     *
      * @param desc New value of property desc.
      */
     public void setDesc(java.lang.String desc) {
@@ -90,6 +98,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Getter for property value.
+     *
      * @return Value of property value.
      */
     public java.lang.String getValue() {
@@ -98,6 +107,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Setter for property value.
+     *
      * @param value New value of property value.
      */
     public void setValue(java.lang.String value) {
@@ -106,6 +116,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Getter for property whereTo.
+     *
      * @return Value of property whereTo.
      */
     public java.lang.String getWhereTo() {
@@ -114,6 +125,7 @@ public final class BillingAddCodeForm extends ActionForm {
 
     /**
      * Setter for property whereTo.
+     *
      * @param whereTo New value of property whereTo.
      */
     public void setWhereTo(java.lang.String whereTo) {

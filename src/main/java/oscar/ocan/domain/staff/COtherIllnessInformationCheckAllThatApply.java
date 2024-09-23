@@ -56,8 +56,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -78,10 +76,8 @@ public class COtherIllnessInformationCheckAllThatApply {
     /**
      * Gets the value of the cConcurrentDisorderSubstanceAbuse property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCConcurrentDisorderSubstanceAbuse() {
         return cConcurrentDisorderSubstanceAbuse;
@@ -90,10 +86,8 @@ public class COtherIllnessInformationCheckAllThatApply {
     /**
      * Sets the value of the cConcurrentDisorderSubstanceAbuse property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCConcurrentDisorderSubstanceAbuse(String value) {
         this.cConcurrentDisorderSubstanceAbuse = value;
@@ -102,10 +96,8 @@ public class COtherIllnessInformationCheckAllThatApply {
     /**
      * Gets the value of the cDualDiagnosisDevelopmentalDisability property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCDualDiagnosisDevelopmentalDisability() {
         return cDualDiagnosisDevelopmentalDisability;
@@ -114,10 +106,8 @@ public class COtherIllnessInformationCheckAllThatApply {
     /**
      * Sets the value of the cDualDiagnosisDevelopmentalDisability property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCDualDiagnosisDevelopmentalDisability(String value) {
         this.cDualDiagnosisDevelopmentalDisability = value;
@@ -126,10 +116,8 @@ public class COtherIllnessInformationCheckAllThatApply {
     /**
      * Gets the value of the cOtherChronicIllnessesAndOrPhysicalDisabilities property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOtherChronicIllnessesAndOrPhysicalDisabilities() {
         return cOtherChronicIllnessesAndOrPhysicalDisabilities;
@@ -138,10 +126,8 @@ public class COtherIllnessInformationCheckAllThatApply {
     /**
      * Sets the value of the cOtherChronicIllnessesAndOrPhysicalDisabilities property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOtherChronicIllnessesAndOrPhysicalDisabilities(String value) {
         this.cOtherChronicIllnessesAndOrPhysicalDisabilities = value;

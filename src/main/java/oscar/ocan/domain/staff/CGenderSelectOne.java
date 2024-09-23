@@ -58,8 +58,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -86,10 +84,8 @@ public class CGenderSelectOne {
     /**
      * Gets the value of the cFemale property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCFemale() {
         return cFemale;
@@ -98,10 +94,8 @@ public class CGenderSelectOne {
     /**
      * Sets the value of the cFemale property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCFemale(String value) {
         this.cFemale = value;
@@ -110,10 +104,8 @@ public class CGenderSelectOne {
     /**
      * Gets the value of the cMale property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCMale() {
         return cMale;
@@ -122,10 +114,8 @@ public class CGenderSelectOne {
     /**
      * Sets the value of the cMale property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCMale(String value) {
         this.cMale = value;
@@ -134,10 +124,8 @@ public class CGenderSelectOne {
     /**
      * Gets the value of the cOther property.
      *
-     * @return
-     *     possible object is
-     *     {@link COther }
-     *
+     * @return possible object is
+     * {@link COther }
      */
     public COther getCOther() {
         return cOther;
@@ -146,10 +134,8 @@ public class CGenderSelectOne {
     /**
      * Sets the value of the cOther property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link COther }
-     *
+     * @param value allowed object is
+     *              {@link COther }
      */
     public void setCOther(COther value) {
         this.cOther = value;
@@ -158,10 +144,8 @@ public class CGenderSelectOne {
     /**
      * Gets the value of the cUnknown property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -170,10 +154,8 @@ public class CGenderSelectOne {
     /**
      * Sets the value of the cUnknown property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -182,10 +164,8 @@ public class CGenderSelectOne {
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -194,10 +174,8 @@ public class CGenderSelectOne {
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;

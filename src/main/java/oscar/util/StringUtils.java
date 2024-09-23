@@ -49,17 +49,18 @@ public class StringUtils {
     /**
      * use to have a maximum string length view
      * ie "hello world !!!" would be "hello wor..."
-     *
-     *  with maxlength 13 and shorted 8 and added "..."
-     *
+     * <p>
+     * with maxlength 13 and shorted 8 and added "..."
+     * <p>
      * BENZOICUM ACIDUM 1CH - 30CH
-     *
-     *  would equal
-     *
+     * <p>
+     * would equal
+     * <p>
      * BENZOIC ...
+     *
      * @param maxlength The maximum string length before truncating the string
-     * @param shorted length the string will be truncated to if maxlength is met
-     * @param added string added to original string if maxlength is met.  ie ...
+     * @param shorted   length the string will be truncated to if maxlength is met
+     * @param added     string added to original string if maxlength is met.  ie ...
      * @return either full description if its less than maxlength or shortened string if its not
      */
     public static String maxLenString(String str, int maxlength, int shorted, String added) {
@@ -204,6 +205,7 @@ public class StringUtils {
 
     /**
      * Returns true if the provided string is a numeral
+     *
      * @param str String
      * @return boolean
      */
@@ -223,6 +225,7 @@ public class StringUtils {
 
     /**
      * Returns true if the provided string is an integer
+     *
      * @param str String
      * @return boolean
      */
@@ -255,7 +258,7 @@ public class StringUtils {
      * Returns true if the specified String represents a valid date
      *
      * @param dateString String
-     * @param format String
+     * @param format     String
      * @return boolean
      */
     public static boolean isValidDate(String dateString, String format) {
@@ -333,7 +336,7 @@ public class StringUtils {
     }
 
     /**
-     *Takes a list of String Objects and returns a String with the all values from the list separated by a comma
+     * Takes a list of String Objects and returns a String with the all values from the list separated by a comma
      */
     public static String getCSV(List l) {
         StringBuilder ret = new StringBuilder();

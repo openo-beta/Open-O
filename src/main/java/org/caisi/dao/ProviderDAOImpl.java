@@ -34,7 +34,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 /**
  * This couldn't possibly work, it's not a spring managed bean according to the xml files.
- * But oh well, some one imports this class and tries to have it injected so I'll 
+ * But oh well, some one imports this class and tries to have it injected so I'll
  * leave the code here so it compiles. what ever...
  */
 public class ProviderDAOImpl extends HibernateDaoSupport implements ProviderDAO {

@@ -42,7 +42,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
 
 /**
- *
  * @author jay
  */
 public class ClinicalReportManager {
@@ -57,7 +56,9 @@ public class ClinicalReportManager {
 
     boolean loaded = false;
 
-    /** Creates a new instance of ClinicalReportManager */
+    /**
+     * Creates a new instance of ClinicalReportManager
+     */
     private ClinicalReportManager() {
 
     }

@@ -37,17 +37,20 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.ConversionUtils;
 
 /**
- create table scratch_pad (
- id int(10) not null auto_increment primary key,
- provider_no varchar(6),
- date_time datetime,
- scratch_text text
- );
+ * create table scratch_pad (
+ * id int(10) not null auto_increment primary key,
+ * provider_no varchar(6),
+ * date_time datetime,
+ * scratch_text text
+ * );
+ *
  * @author jay
  */
 public class ScratchData {
 
-    /** Creates a new instance of ScratchData */
+    /**
+     * Creates a new instance of ScratchData
+     */
     public ScratchData() {
     }
 

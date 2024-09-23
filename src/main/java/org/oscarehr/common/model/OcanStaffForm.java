@@ -37,10 +37,10 @@ import javax.persistence.TemporalType;
 
 /**
  * This entity represents every time a provider fills out or updates a OCAN form.
- * Note that every row / entry represents a change, so as an example if 
+ * Note that every row / entry represents a change, so as an example if
  * one provider answers the first 4 questions, then saves it. It will make a entry.
  * If another provider then updates it to answer another 2 questions, this should
- * make a 2nd row. This allows us to track who changed what on the form and when. 
+ * make a 2nd row. This allows us to track who changed what on the form and when.
  * As a result, these entities are non delete/update able, the expectation is to
  * make a new entity instead of updating an existing one.
  */

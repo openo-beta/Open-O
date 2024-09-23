@@ -41,13 +41,14 @@ import org.oscarehr.util.SpringUtils;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author Victor Weng
  */
 @Repository
 public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
 
-    /** Creates a new instance of UserPropertyDAO */
+    /**
+     * Creates a new instance of UserPropertyDAO
+     */
     public SiteDaoImpl() {
         super(Site.class);
     }

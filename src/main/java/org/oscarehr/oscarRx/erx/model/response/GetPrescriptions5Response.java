@@ -46,23 +46,18 @@ public class GetPrescriptions5Response {
      * from the remote web service if necessary, and returning a list of
      * WSPrescription5 nodes.
      *
-     * @param node
-     *            The document [fragment] to parse.
+     * @param node The document [fragment] to parse.
      * @return A list of WSPrescription5 nodes contained in the document.
-     * @throws DOMException
-     *             Throws a DOMExeption if this function is passed a document
-     *             that it doesn't recognize.
-     * @throws IllegalArgumentException
-     *             Re-throws an IllegalArgumentException if the remote web
-     *             service reports that it didn't receive data in a format it
-     *             could recognize.
-     * @throws SecurityException
-     *             Re-throws a SecurityException if the remote web servcice
-     *             reports a security-related error.
-     * @throws Exception
-     *             Re-throws an Exception if the remote web service reports an
-     *             error that wasn't documented enough in the the External Prescriber
-     *             documentation for the programmer to understand what it meant.
+     * @throws DOMException             Throws a DOMExeption if this function is passed a document
+     *                                  that it doesn't recognize.
+     * @throws IllegalArgumentException Re-throws an IllegalArgumentException if the remote web
+     *                                  service reports that it didn't receive data in a format it
+     *                                  could recognize.
+     * @throws SecurityException        Re-throws a SecurityException if the remote web servcice
+     *                                  reports a security-related error.
+     * @throws Exception                Re-throws an Exception if the remote web service reports an
+     *                                  error that wasn't documented enough in the the External Prescriber
+     *                                  documentation for the programmer to understand what it meant.
      */
     public static List<Node> parseGetPrescriptions5Response(Node node)
             throws DOMException, IllegalArgumentException, SecurityException,

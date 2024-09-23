@@ -39,7 +39,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 /**
- *
  * @author jay
  */
 public interface Denominator {

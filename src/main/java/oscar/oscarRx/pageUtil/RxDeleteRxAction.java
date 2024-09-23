@@ -228,7 +228,7 @@ public final class RxDeleteRxAction extends DispatchAction {
 
     /**
      * The action to discontinue a drug.
-     *
+     * <p>
      * first set discontinued boolean field to true.
      * Grab the end_date and log that this provider is changing (discontinuing) the drug and the old end date is this and the new end date is this.
      * set end_date = today

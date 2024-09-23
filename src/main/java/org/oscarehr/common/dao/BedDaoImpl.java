@@ -64,7 +64,7 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
     /**
      * Use find(bedId)
-     *
+     * <p>
      * Return the bed associated with an id
      *
      * @param bedId bed id to look up
@@ -137,13 +137,11 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
     /**
      * Use remove(bed)
-     *
+     * <p>
      * Delete bed
      *
      * @param bed
-     *
-     * @throws BedReservedException
-     *                              bed is inactive and reserved
+     * @throws BedReservedException bed is inactive and reserved
      */
     @Deprecated
     @Override

@@ -45,11 +45,10 @@ public class FormsDao {
 
     /**
      * Returns:
-     *
-     * 	ID int
-     * 	formCreated date
-     *  patientName string
-     *
+     * <p>
+     * ID int
+     * formCreated date
+     * patientName string
      */
     @NativeSql("formLabReq07")
     public List<Object[]> findIdFormCreatedAndPatientNameFromFormLabReq07() {

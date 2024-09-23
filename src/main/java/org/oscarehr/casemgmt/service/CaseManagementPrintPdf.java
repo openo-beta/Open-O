@@ -53,7 +53,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- *
  * @author rjonasz
  */
 public class CaseManagementPrintPdf {
@@ -75,7 +74,9 @@ public class CaseManagementPrintPdf {
     public final float FONTSIZE = 10;
     public final int NUMCOLS = 2;
 
-    /** Creates a new instance of CaseManagementPrintPdf */
+    /**
+     * Creates a new instance of CaseManagementPrintPdf
+     */
     public CaseManagementPrintPdf(HttpServletRequest request, OutputStream os) {
         this.request = request;
         this.os = os;

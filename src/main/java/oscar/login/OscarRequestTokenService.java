@@ -35,7 +35,7 @@ import org.apache.cxf.rs.security.oauth.services.RequestTokenHandler;
 
 /**
  * This resource issues a temporarily request token to the Client
- * which will be later authorised and exchanged for the access token 
+ * which will be later authorised and exchanged for the access token
  */
 @Path("/initiate")
 public class OscarRequestTokenService extends AbstractOAuthService {

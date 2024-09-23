@@ -27,7 +27,6 @@
 package oscar.oscarWorkflow;
 
 /**
- *
  * @author jay
  */
 public class WFState {
@@ -36,7 +35,9 @@ public class WFState {
     private String name = null;
     private String desc = null;
 
-    /** Creates a new instance of WFState */
+    /**
+     * Creates a new instance of WFState
+     */
     public WFState() {
     }
 

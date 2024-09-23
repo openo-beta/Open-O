@@ -58,8 +58,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -91,8 +89,6 @@ public class SideEffectsDetailList {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     *
-     *
      */
     public List<String> getSideEffectsDetail() {
         if (sideEffectsDetail == null) {
@@ -104,10 +100,8 @@ public class SideEffectsDetailList {
     /**
      * Gets the value of the otherSideEffectsDetail property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOtherSideEffectsDetail() {
         return otherSideEffectsDetail;
@@ -116,10 +110,8 @@ public class SideEffectsDetailList {
     /**
      * Sets the value of the otherSideEffectsDetail property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOtherSideEffectsDetail(String value) {
         this.otherSideEffectsDetail = value;

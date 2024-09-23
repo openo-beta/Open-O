@@ -81,8 +81,8 @@ public class MedicationUtil {
      * This method returns all the Drugs as a List associated with the
      * demographicId given and whether it's been archived or not.
      *
-     * @param demographicId    Not Null
-     * @param archived TRUE = not active, FALSE = active, null = all
+     * @param demographicId Not Null
+     * @param archived      TRUE = not active, FALSE = active, null = all
      * @return
      */
     public static List<Drug> getMedications(int demographicId, boolean archived) {
@@ -94,8 +94,8 @@ public class MedicationUtil {
      * demographicId given, whether it's been archived or not, and in descending
      * order by rxDate.
      *
-     * @param demographicId    Not Null
-     * @param archived TRUE = not active, FALSE = active, null = all
+     * @param demographicId Not Null
+     * @param archived      TRUE = not active, FALSE = active, null = all
      * @return
      */
     public static List<Drug> getMedicationsOrderByDate(int demographicId, boolean archived) {
@@ -156,7 +156,7 @@ public class MedicationUtil {
      * This method returns all the Drugs as a List associated with demographicId
      * given and the region identifier given.
      *
-     * @param demographicId Not Null
+     * @param demographicId      Not Null
      * @param regionalIdentifier
      * @return
      */

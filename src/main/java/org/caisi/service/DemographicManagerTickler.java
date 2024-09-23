@@ -30,6 +30,7 @@ import org.oscarehr.common.model.Demographic;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ *
  */
 @Transactional
 public class DemographicManagerTickler {

@@ -43,9 +43,9 @@ public enum IssueEnum {
     }
 
     /**
+     * @return Returns the issue enum values as a list.
      * @author Nityan Khanna
      * Gets all the issue values for easy iteration and further use.
-     * @return Returns the issue enum values as a list.
      */
     public static List<IssueEnum> getAllIssueValues() {
 

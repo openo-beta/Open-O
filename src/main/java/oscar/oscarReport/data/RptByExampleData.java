@@ -36,7 +36,7 @@ import oscar.oscarDB.DBPreparedHandler;
 
 
 /**
- *This classes main function FluReportGenerate collects a group of patients with flu in the last specified date
+ * This classes main function FluReportGenerate collects a group of patients with flu in the last specified date
  */
 public class RptByExampleData {
 

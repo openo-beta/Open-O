@@ -42,7 +42,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- *
  * @author jay
  */
 public class ImportLogDownloadAction extends Action {

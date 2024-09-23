@@ -42,6 +42,7 @@ public final class MsgCreateMessageForm extends ActionForm {
 
     /**
      * The get method for the subject String
+     *
      * @return String, this is the subject of the message
      */
     public String getSubject() {
@@ -50,6 +51,7 @@ public final class MsgCreateMessageForm extends ActionForm {
 
     /**
      * The set method for the subject String
+     *
      * @param subject String, this is the subject of the message
      */
     public void setSubject(String subject) {
@@ -58,6 +60,7 @@ public final class MsgCreateMessageForm extends ActionForm {
 
     /**
      * The get method for the message String
+     *
      * @return String, this is the text of the message
      */
     public String getMessage() {
@@ -65,7 +68,8 @@ public final class MsgCreateMessageForm extends ActionForm {
     }
 
     /**
-     *The set method for the message String
+     * The set method for the message String
+     *
      * @param msg String, The text of a message
      */
     public void setMessage(String msg) {
@@ -75,6 +79,7 @@ public final class MsgCreateMessageForm extends ActionForm {
 
     /**
      * An Array of Strings thats contains provider numbers
+     *
      * @return String[], the provider numbers that this message will be set to
      */
     public String[] getProvider() {
@@ -86,6 +91,7 @@ public final class MsgCreateMessageForm extends ActionForm {
 
     /**
      * The set method for an Array of Strings that contains provider numbers
+     *
      * @param prov
      */
     public void setProvider(String[] prov) {
@@ -94,6 +100,7 @@ public final class MsgCreateMessageForm extends ActionForm {
 
     /**
      * The get method for the demographic_no String
+     *
      * @return String, this is the text of the demographic_no
      */
     public String getDemographic_no() {
@@ -101,7 +108,8 @@ public final class MsgCreateMessageForm extends ActionForm {
     }
 
     /**
-     *The set method for the demographic no
+     * The set method for the demographic no
+     *
      * @param demographic_no String, The demographic no
      */
     public void setDemographic_no(String demographic_no) {
@@ -110,6 +118,7 @@ public final class MsgCreateMessageForm extends ActionForm {
 
     /**
      * Used to reset everything to a null value
+     *
      * @param mapping
      * @param request
      */

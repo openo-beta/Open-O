@@ -171,6 +171,7 @@ public class BillingONEAReportDaoTest extends DaoTestFixtures {
 
     /**
      * Helper method that creates a new BillingONEAReport and adds data.
+     *
      * @param billNumber (Integer)
      * @return BillingONEAReport
      * @throws Exception

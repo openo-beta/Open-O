@@ -47,7 +47,9 @@ public class HRMDownloadFileAction extends DownloadAction {
     private static HRMDocumentDao hrmDocumentDao = (HRMDocumentDao) SpringUtils.getBean(HRMDocumentDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of DownloadFileAction */
+    /**
+     * Creates a new instance of DownloadFileAction
+     */
     public HRMDownloadFileAction() {
     }
 

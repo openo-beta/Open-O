@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Exclude Reporting Laboratory
- * @author jen
  *
+ * @author jen
  */
 public class ZBE4 implements Parameter {
     private String universalId;

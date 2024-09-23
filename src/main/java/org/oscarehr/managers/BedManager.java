@@ -74,8 +74,7 @@ public class BedManager {
     /**
      * Get bed
      *
-     * @param bedId
-     *            bed identifier
+     * @param bedId bed identifier
      * @return bed
      */
     public Bed getBed(Integer bedId) {
@@ -100,10 +99,8 @@ public class BedManager {
     /**
      * Get beds by program
      *
-     * @param programId
-     *            program identifier
-     * @param reserved
-     *            reserved flag
+     * @param programId program identifier
+     * @param reserved  reserved flag
      * @return array of beds
      */
     public Bed[] getBedsByProgram(Integer programId, boolean reserved) {
@@ -130,10 +127,8 @@ public class BedManager {
      * Get beds by available rooms & assigned program
      *
      * @param availableRooms
-     * @param programId
-     *            program identifier
-     * @param reserved
-     *            reserved flag
+     * @param programId      program identifier
+     * @param reserved       reserved flag
      * @return array of beds
      */
     public Bed[] getBedsByRoomProgram(Room[] availableRooms, Integer programId, boolean reserved) {
@@ -157,10 +152,8 @@ public class BedManager {
     /**
      * Get beds by facility
      *
-     * @param facilityId
-     *            facility identifier
-     * @param reserved
-     *            reserved flag
+     * @param facilityId facility identifier
+     * @param reserved   reserved flag
      * @return array of beds
      */
 	/*
@@ -214,8 +207,7 @@ public class BedManager {
     /**
      * Get beds by facility
      *
-     * @param facilityId
-     *            facility identifier
+     * @param facilityId facility identifier
      * @return array of beds
      */
     public Bed[] getBedsByFacility(Integer facilityId) {
@@ -235,8 +227,7 @@ public class BedManager {
      * Get beds by facility
      *
      * @param facilityId the facility we're looking up
-     * @param reserved
-     *            reserved flag
+     * @param reserved   reserved flag
      * @return array of beds
      */
     public Bed[] getBedsByProgramAndFacility(Integer facilityId, boolean reserved) {
@@ -272,6 +263,7 @@ public class BedManager {
 
     /**
      * Get beds by roomId
+     *
      * @param roomId
      * @return array of beds
      */
@@ -318,6 +310,7 @@ public class BedManager {
 
     /**
      * Get unreserved beds by roomId and clientBedId
+     *
      * @param roomId
      * @param reserved
      * @return array of beds
@@ -338,6 +331,7 @@ public class BedManager {
 
     /**
      * Get unreserved beds by roomId and clientBedId
+     *
      * @param roomId
      * @param clientBedId
      * @return array of beds
@@ -365,6 +359,7 @@ public class BedManager {
     /**
      * Used by AdmissionManager during processDischarge()  to  delete discharged
      * program-related room/bed reservation records
+     *
      * @param demographicNo
      * @param programId
      */
@@ -464,10 +459,8 @@ public class BedManager {
     /**
      * Add new beds
      *
-     * @param numBeds
-     *            number of beds
-     * @throws BedReservedException
-     *             bed is inactive and reserved
+     * @param numBeds number of beds
+     * @throws BedReservedException bed is inactive and reserved
      */
     public void addBeds(Integer facilityId, Integer roomId, int numBeds) throws BedReservedException {
         if (numBeds < 1) {
@@ -484,10 +477,8 @@ public class BedManager {
     /**
      * Save beds
      *
-     * @param beds
-     *            beds to save
-     * @throws BedReservedException
-     *             bed is inactive and reserved
+     * @param beds beds to save
+     * @throws BedReservedException bed is inactive and reserved
      */
     public void saveBeds(Bed[] beds) throws BedReservedException, DuplicateBedNameException {
         if (beds == null) {
@@ -526,10 +517,8 @@ public class BedManager {
     /**
      * Save bed
      *
-     * @param bed
-     *            bed to save
-     * @throws BedReservedException
-     *             bed is inactive and reserved
+     * @param bed bed to save
+     * @throws BedReservedException bed is inactive and reserved
      */
     public void saveBed(Bed bed) throws BedReservedException {
         validate(bed);

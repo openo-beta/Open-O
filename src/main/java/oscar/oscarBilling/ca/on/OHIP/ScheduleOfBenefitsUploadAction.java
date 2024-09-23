@@ -52,7 +52,6 @@ import oscar.oscarLab.ca.bc.PathNet.pageUtil.LabUploadForm;
 
 
 /**
- *
  * @author Jay Gallagher
  */
 public class ScheduleOfBenefitsUploadAction extends Action {
@@ -121,7 +120,6 @@ public class ScheduleOfBenefitsUploadAction extends Action {
 
 
     /**
-     *
      * @param stream
      * @param filename
      * @return boolean

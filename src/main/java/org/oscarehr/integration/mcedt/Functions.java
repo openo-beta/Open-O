@@ -37,7 +37,6 @@ import ca.ontario.health.edt.UpdateRequest;
 
 /**
  * JSTL functions for display of certain JAXB-generated fields
- *
  */
 public class Functions {
 

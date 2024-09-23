@@ -57,10 +57,9 @@ import org.oscarehr.common.model.Clinic;
 /**
  * A class that references a message senders header information.
  * This Object builds a FHIR MessageSourceComponent
- *
- * Future intentions of this class is for it to auto populate specific data 
+ * <p>
+ * Future intentions of this class is for it to auto populate specific data
  * according to its environment. For instance grabbing data from the OscarProperties settings.
- *
  */
 public class Sender {
 

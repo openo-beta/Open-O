@@ -80,11 +80,15 @@ public class Secrole implements java.io.Serializable {
         this.orderByIndex = orderByIndex;
     }
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Secrole() {
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public Secrole(String roleName, String description) {
         this.roleName = roleName;
         this.description = description;

@@ -244,7 +244,9 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     }
 
 
-    /** Creates a new instance of UserProperty */
+    /**
+     * Creates a new instance of UserProperty
+     */
     public UserProperty() {
     }
 

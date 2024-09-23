@@ -41,7 +41,7 @@ public class HL7A04Generator {
 
     /**
      * method generateHL7A04
-     *
+     * <p>
      * Creates an HL7 A04 object, and then saves it to the disk.
      *
      * @param demo The Demographic object used to create the HL7 A04 object.

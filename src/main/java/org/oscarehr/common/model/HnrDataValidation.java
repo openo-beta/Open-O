@@ -68,7 +68,9 @@ public class HnrDataValidation extends AbstractModel<Integer> {
     private Integer clientId = null;
     @Temporal(TemporalType.TIMESTAMP)
     private Date created = null;
-    /** this is the provider id who validated this piece of data */
+    /**
+     * this is the provider id who validated this piece of data
+     */
     private String validatorProviderNo = null;
     private boolean valid = false;
     @Enumerated(EnumType.STRING)

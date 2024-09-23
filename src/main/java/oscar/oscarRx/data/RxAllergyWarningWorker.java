@@ -36,7 +36,6 @@ import org.oscarehr.util.MiscUtils;
 import oscar.oscarRx.pageUtil.RxSessionBean;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class RxAllergyWarningWorker extends Thread {

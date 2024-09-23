@@ -47,8 +47,8 @@ import oscar.log.LogConst;
  * Make use of pipe implementation
  * Produce compressed trace data
  * Pipe it to another process that decorates it and sends to client in form of a binary file
- * @author oscar
  *
+ * @author oscar
  */
 public class GenerateTraceAction extends DispatchAction {
     public static int BUFFER_SIZE = 8192;

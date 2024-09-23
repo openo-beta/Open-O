@@ -52,7 +52,8 @@ public class OscarProperties extends Properties {
 
     /**
      * Override for filtering properties
-     * @param key   the property key.
+     *
+     * @param key the property key.
      */
     public String getProperty(String key) {
         if ("FORMS_PROMOTEXT".equals(key)) {

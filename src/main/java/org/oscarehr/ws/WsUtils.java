@@ -45,7 +45,7 @@ public final class WsUtils {
      * This method will check to see if the person is allowed to login, i.e. it will check username/expiry/password.
      * If the person is allowed it will setup the loggedInInfo data.
      *
-     * @param security can be null, it will return false for null.
+     * @param security      can be null, it will return false for null.
      * @param securityToken can be the SecurityId's password, or a valid securityToken.
      */
     public static boolean checkAuthenticationAndSetLoggedInInfo(HttpServletRequest request, Security security, String securityToken) {

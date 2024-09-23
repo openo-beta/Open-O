@@ -290,20 +290,16 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
     }
 
     /**
-     * @Deprecated
-     *
-     *             Chop-chop. Please don't ask what this spagehtti does, better
-     *             don't use it.
-     *
      * @param module
      * @param moduleid
      * @param docType
      * @param includePublic
      * @param includeDeleted
      * @param includeActive
-     * @return
-     *         Returns a list containing array with CtlDocument and Document pairs
-     *         in the corresponding order.
+     * @return Returns a list containing array with CtlDocument and Document pairs
+     * in the corresponding order.
+     * @Deprecated Chop-chop. Please don't ask what this spagehtti does, better
+     * don't use it.
      */
     @SuppressWarnings("unchecked")
     @Deprecated

@@ -38,12 +38,13 @@ import org.oscarehr.common.model.EncounterWindow;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author root
  */
 public class EctWindowSizes {
 
-    /** Creates a new instance of EctWindowSizes */
+    /**
+     * Creates a new instance of EctWindowSizes
+     */
     public EctWindowSizes() {
     }
 

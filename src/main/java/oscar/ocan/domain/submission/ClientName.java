@@ -67,8 +67,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -83,10 +81,8 @@ public class ClientName {
     /**
      * Gets the value of the last property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLast() {
         return last;
@@ -95,10 +91,8 @@ public class ClientName {
     /**
      * Sets the value of the last property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLast(String value) {
         this.last = value;
@@ -107,10 +101,8 @@ public class ClientName {
     /**
      * Gets the value of the first property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getFirst() {
         return first;
@@ -119,10 +111,8 @@ public class ClientName {
     /**
      * Sets the value of the first property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setFirst(String value) {
         this.first = value;

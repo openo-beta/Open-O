@@ -53,7 +53,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarDemographic.data.DemographicMerged;
 
 /**
- *
  * @author wrighd
  */
 public class DemographicMergeRecordAction extends Action {

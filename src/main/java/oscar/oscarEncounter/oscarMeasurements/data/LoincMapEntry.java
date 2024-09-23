@@ -32,7 +32,6 @@
 package oscar.oscarEncounter.oscarMeasurements.data;
 
 /**
- *
  * @author apavel
  */
 public class LoincMapEntry {

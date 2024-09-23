@@ -42,9 +42,7 @@ import org.oscarehr.dashboard.factory.DashboardBeanFactory;
 
 
 /**
- *
- * A test of the IndicatorTemplateHandler, Dashboard entity and the DashboardBeanFactory. 
- *
+ * A test of the IndicatorTemplateHandler, Dashboard entity and the DashboardBeanFactory.
  */
 public class DashboardBeanFactoryTest {
 

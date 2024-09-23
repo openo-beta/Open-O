@@ -39,7 +39,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
- *
  * @author jaygallagher
  */
 @Entity

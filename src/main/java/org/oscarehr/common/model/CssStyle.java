@@ -38,7 +38,6 @@ import javax.persistence.Table;
 
 /**
  * The persistent class for the cssStyles database table.
- *
  */
 @Entity
 @Table(name = "cssStyles")

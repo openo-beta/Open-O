@@ -35,8 +35,8 @@ import org.springframework.stereotype.Repository;
 
 /**
  * The demographic export DAO to access the document_export table.
- * @author oscar
  *
+ * @author oscar
  */
 @Repository
 public class DemographicExportDao extends AbstractDaoImpl<DemographicExport> {
@@ -50,6 +50,7 @@ public class DemographicExportDao extends AbstractDaoImpl<DemographicExport> {
 
     /**
      * Gets a list of all the demographic exports in the database.
+     *
      * @return Returns a list of DemographicExport objects.
      */
     @SuppressWarnings("unchecked")
@@ -62,6 +63,7 @@ public class DemographicExportDao extends AbstractDaoImpl<DemographicExport> {
 
     /**
      * Gets a list of all the demographic exports for a specific patient.
+     *
      * @param demographicNo The demographic number of the patient.
      * @return Returns a list of DemographicExport objects.
      */
@@ -79,6 +81,7 @@ public class DemographicExportDao extends AbstractDaoImpl<DemographicExport> {
 
     /**
      * Gets a list of all the demographic exports of a specific document type.
+     *
      * @param documentType The document type.
      * @return Returns a list of DemographicExport objects.
      */
@@ -93,6 +96,7 @@ public class DemographicExportDao extends AbstractDaoImpl<DemographicExport> {
 
     /**
      * Gets a document by id.
+     *
      * @param id The id of the document.
      * @return Returns a DemographicExport object.
      */

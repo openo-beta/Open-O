@@ -113,7 +113,6 @@ public class BillingDocumentErrorReportUploadAction extends Action {
     }
 
     /**
-     *
      * Save a Jakarta FormFile to a preconfigured place.
      *
      * @param file
@@ -162,7 +161,6 @@ public class BillingDocumentErrorReportUploadAction extends Action {
 
 
     /**
-     *
      * Get Data from the file.
      *
      * @param file
@@ -224,7 +222,6 @@ public class BillingDocumentErrorReportUploadAction extends Action {
     }
 
     /**
-     *
      * Generate Claims Error Report (E).
      *
      * @param file
@@ -242,7 +239,6 @@ public class BillingDocumentErrorReportUploadAction extends Action {
     }
 
     /**
-     *
      * Generate Claim Batch Acknowledgement Report (B).
      *
      * @param file
@@ -256,7 +252,6 @@ public class BillingDocumentErrorReportUploadAction extends Action {
     }
 
     /**
-     *
      * Generate Claim File Rejection Report (X).
      *
      * @param file
@@ -306,7 +301,6 @@ public class BillingDocumentErrorReportUploadAction extends Action {
     }
 
     /**
-     *
      * Generate EDT OBEC Output Specification (R).
      *
      * @param file

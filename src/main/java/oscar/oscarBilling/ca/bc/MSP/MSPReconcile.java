@@ -112,7 +112,9 @@ public class MSPReconcile {
     public static final String PAYTYPE_DEBIT = "7";
     public static final String PAYTYPE_OTHER = "8";
     public static final String PAYTYPE_NA = "9";
-    /**Not truly a type of payment **/
+    /**
+     * Not truly a type of payment
+     **/
     public static final String PAYTYPE_IA = "10";
 
     public static final String DATE_FORMAT = "yyyyMMdd";
@@ -177,7 +179,6 @@ public class MSPReconcile {
      * P = 7<b/>
      * Q = 8<b/>
      * R = 9<b/>
-     *
      */
     private void initTeleplanMonetarySuffixes() {
         negValues.setProperty("}", "0");
@@ -193,9 +194,9 @@ public class MSPReconcile {
     }
 
     /**
-     * @todo This needs to go , the data is defined in the database
      * @param stat String
      * @return String
+     * @todo This needs to go , the data is defined in the database
      */
     public String getStatusDesc(String stat) {
         String statusDesc = "";
@@ -384,6 +385,7 @@ public class MSPReconcile {
      * teleplan data(solves a performance problem related to joining the teleplanS00 table with the billingmaster table
      * due to the fact that related fields teleplanS00.t_officeno and billingmaster.billingmaster_no are of a different type
      * The resultant map currently returns a key/value pair containing the t_officeno and t_dataseq respectiveley
+     *
      * @return Map
      */
     public Map<String, String> getS00Map() {
@@ -724,11 +726,11 @@ public class MSPReconcile {
     /**
      * Returns the amount paid to a specific line item(billingmaster_no) in a bill
      * Amounts are derived from two potential sources
-     *  1.)teleplanS00 table where msp payments are stored
-     *  2.)billing_history table where internal adjustments are stored
+     * 1.)teleplanS00 table where msp payments are stored
+     * 2.)billing_history table where internal adjustments are stored
      *
      * @param billingmaster_no String
-     * @param billType String
+     * @param billType         String
      * @return double the amount paid
      */
     public double getAmountPaid(String billingmaster_no, String billType) {
@@ -745,6 +747,7 @@ public class MSPReconcile {
     /**
      * Returns the sum total of payments that were received for the specified billingmaster record
      * from the teleplanS00 table.
+     *
      * @param billingmaster_no String
      * @return double
      */
@@ -763,8 +766,9 @@ public class MSPReconcile {
     /**
      * Returns the sum total of payments that were received for the specified billingmaster record
      * from the billinghistory table.
+     *
      * @param billingmaster_no String - The uid of the billingmaster record in question
-     * @param ignoreIA - Flag to ignore Internal Adjustments if set to true
+     * @param ignoreIA         - Flag to ignore Internal Adjustments if set to true
      * @return double
      */
     private double getTotalPaidFromHistory(String billingmaster_no, boolean ignoreIA) {
@@ -889,8 +893,9 @@ public class MSPReconcile {
      * of associated bill parameters including: bill type, payment method
      * e.g if the status of the bill is changed to 'A'(billpatient)
      * the corresponding billingtype is changed to 'Pri' to reflect this update
+     *
      * @param billingNo String
-     * @param stat String
+     * @param stat      String
      */
     public void updateBillingStatus(String billingNo, String stat, String billingMasterNo) {
         updateBillingStatusHlp2(billingMasterNo, stat);
@@ -943,6 +948,7 @@ public class MSPReconcile {
 
     /**
      * Updates the paymentMethod of the specified bill with the supplied paymentMethod code
+     *
      * @param billingMasterNo String - The uid of the bill to be updated
      */
     private void updatePaymentMethodHlp(String billingMasterNo, String paymentMethod) {
@@ -955,8 +961,9 @@ public class MSPReconcile {
 
     /**
      * Updates the specified bill with the
+     *
      * @param billingNo String
-     * @param type String
+     * @param type      String
      */
     public void updateBillType(String billingNo, String type) {
         updateBillTypeHlp(billingNo, type);
@@ -972,8 +979,9 @@ public class MSPReconcile {
 
     /**
      * Updates the billingtype of the specified billing record
+     *
      * @param billingNo String - The uid of the record to be updated
-     * @param billType String - The type of bill
+     * @param billType  String - The type of bill
      */
     private void updateBillTypeHlp(String billingNo, String billType) {
         Billing b = billingDao.find(Integer.parseInt(billingNo));
@@ -985,8 +993,9 @@ public class MSPReconcile {
 
     /**
      * Updates the status of the specified billingmaster record
+     *
      * @param billingMasterNo String
-     * @param stat String
+     * @param stat            String
      */
     public void updateBillingMasterStatus(String billingMasterNo, String stat) {
         log.debug("setting billingmaster_no " + billingMasterNo + " to " + stat);
@@ -1073,17 +1082,16 @@ public class MSPReconcile {
     /**
      * * Returns a BillSearch object containing a list of Bills according to the specified criteria
      *
-     *
-     * @param account String
-     * @param payeeNo String - The Payee responsible for the bill
-     * @param providerNo String - The practitioner whom provided the billable service
-     * @param startDate String - The lower limit of the specified date range
-     * @param endDate String - The upper limit of the specified date range
-     * @param excludeWCB boolean - Indicates whether to search for WCB insurer
-     * @param excludeMSP boolean - Indicates whether to search for MSP insurer
+     * @param account        String
+     * @param payeeNo        String - The Payee responsible for the bill
+     * @param providerNo     String - The practitioner whom provided the billable service
+     * @param startDate      String - The lower limit of the specified date range
+     * @param endDate        String - The upper limit of the specified date range
+     * @param excludeWCB     boolean - Indicates whether to search for WCB insurer
+     * @param excludeMSP     boolean - Indicates whether to search for MSP insurer
      * @param excludePrivate boolean - Indicates whether to search for Private insurer
-     * @param exludeICBC boolean - Indicates whether to search for ICBC insurer
-     * @param type String
+     * @param exludeICBC     boolean - Indicates whether to search for ICBC insurer
+     * @param type           String
      * @return BillSearch
      */
     public MSPReconcile.BillSearch getBillsByType(String account, String payeeNo, String providerNo, String startDate, String endDate, boolean excludeWCB,
@@ -1241,8 +1249,9 @@ public class MSPReconcile {
      * Returns the dollar amount owing on a specific bill number
      * If the specified bill has an explanation code of 'HS'(Already paid) the amount is set to zero
      * If the bill is not private,"Internal Adjustments" are deducted from the total amount owing.
+     *
      * @param billingMasterNo String - The UID of the bill in question
-     * @param amountBilled String - The total amount of the bill
+     * @param amountBilled    String - The total amount of the bill
      * @return String
      */
     public double getAmountOwing(String billingMasterNo, String amountBilled, String billingType) {
@@ -1567,8 +1576,9 @@ public class MSPReconcile {
 
     /**
      * Returns a string description of a billing payment method
-     * @todo This should actually be a cached lookup map to improve performance
+     *
      * @param id String
+     * @todo This should actually be a cached lookup map to improve performance
      */
     private String getPaymentMethodDesc(String id) {
         BillingPaymentTypeDao dao = SpringUtils.getBean(BillingPaymentTypeDao.class);
@@ -1582,16 +1592,17 @@ public class MSPReconcile {
     /**
      * Creates an SQL fragment that is used as the criteria(WHERE Clause) in the retrieval
      * of MSP Bills
-     * @param account String
-     * @param payeeNo String
-     * @param providerNo String
-     * @param startDate String
-     * @param endDate String
-     * @param excludeWCB boolean
-     * @param excludeMSP boolean
-     * @param excludePrivate boolean
-     * @param exludeICBC boolean
-     * @param repType String
+     *
+     * @param account         String
+     * @param payeeNo         String
+     * @param providerNo      String
+     * @param startDate       String
+     * @param endDate         String
+     * @param excludeWCB      boolean
+     * @param excludeMSP      boolean
+     * @param excludePrivate  boolean
+     * @param exludeICBC      boolean
+     * @param repType         String
      * @param dateFieldOption String
      * @return String
      */
@@ -1663,10 +1674,11 @@ public class MSPReconcile {
     /**
      * Returns the count of distinct values for the specified Bill field
      * Really just a convenience method for selecting distinct values without hitting the database multiple times
-     * @todo This method should be generalized to count the fields of a collection of arbitrary beans
-     * @param bills List
+     *
+     * @param bills     List
      * @param fieldName String
      * @return int
+     * @todo This method should be generalized to count the fields of a collection of arbitrary beans
      */
     public int getDistinctFieldCount(List<Object> bills, String fieldName) {
         ArrayList<String> fieldValueList = new ArrayList<String>(); //a lookup list containing all values that have been counted
@@ -1684,7 +1696,8 @@ public class MSPReconcile {
 
     /**
      * Returns the total paid for a specific set of bill types
-     * @param bills List
+     *
+     * @param bills  List
      * @param status String
      * @return Double
      */
@@ -1705,10 +1718,11 @@ public class MSPReconcile {
     /**
      * Returns the count of distinct values for the specified Bill field
      * Really just a convenience method for selecting distinct values without hitting the database multiple times
-     * @todo This method should be generalized to count the fields of a collection of arbitrary beans
-     * @param bills List
+     *
+     * @param bills  List
      * @param status String
      * @return int
+     * @todo This method should be generalized to count the fields of a collection of arbitrary beans
      */
     public Integer getCountByStatus(List<MSPBill> bills, String status) {
         int colSize = bills.size();
@@ -1748,7 +1762,7 @@ public class MSPReconcile {
      * Returns a ResultSet containing remittance information for the specified S21 and payee number (including any adjustments)
      *
      * @param payeeNo String
-     * @param s21Id String
+     * @param s21Id   String
      * @return ResultSet
      */
     public ResultSet getAdjustmentsMSPRemittanceQuery(String payeeNo, String s21Id) {
@@ -1782,8 +1796,8 @@ public class MSPReconcile {
      * Returns a boolean whether there is a record of a teleplan_submission_link matching on billingmaster_no, submission/received date and datacenter_no
      *
      * @param billingmasterNo String
-     * @param receivedDate String
-     * @param dataCenterNo String
+     * @param receivedDate    String
+     * @param dataCenterNo    String
      * @return boolean
      */
     public boolean hasMatchingBillingRecord(String billingmasterNo, String receivedDate, String dataCenterNo) {
@@ -1811,10 +1825,11 @@ public class MSPReconcile {
 
     /**
      * Returns a Provider instance according to the supplied provider number
-     * @todo This method belongs in a ProviderDAO type class
+     *
      * @param providerNo String - The UID of the provider in question
-     * @param criteria int - If criteria == 1, retrieve Provider by ohip_no else by provider_no
+     * @param criteria   int - If criteria == 1, retrieve Provider by ohip_no else by provider_no
      * @return Provider
+     * @todo This method belongs in a ProviderDAO type class
      */
     public oscar.entities.Provider getProvider(String providerNo, int criteria) {
         oscar.entities.Provider prov = new oscar.entities.Provider();
@@ -1851,8 +1866,9 @@ public class MSPReconcile {
 
     /**
      * Returns an ArrayList of all Provider instances with a provider_type == 'doctor'
-     * @todo This belongs in a ProviderDAO class
+     *
      * @return ArrayList
+     * @todo This belongs in a ProviderDAO class
      */
     public List<oscar.entities.Provider> getAllProviders() {
         ArrayList<oscar.entities.Provider> list = new ArrayList<oscar.entities.Provider>();
@@ -1870,6 +1886,7 @@ public class MSPReconcile {
 
     /**
      * Returns a String description of the specified adjustment code
+     *
      * @param code String
      * @return String
      */
@@ -1904,10 +1921,11 @@ public class MSPReconcile {
     /**
      * Returns a properly formed negative numeric value
      * If the supplied value doesn't represent a negative number it is simply returned
+     *
      * @param value String
      * @return String
      * @todo complete documentation
-     *oscar.oscarBilling.ca.bc.MSP.MSPReconcile.convCurValue(
+     * oscar.oscarBilling.ca.bc.MSP.MSPReconcile.convCurValue(
      */
     public static String convCurValue(String value) {
         BigDecimal curValue = new BigDecimal(0.0);
@@ -1941,6 +1959,7 @@ public class MSPReconcile {
 
     /**
      * Returns true if the specified demographic has any private bill where the amount paid is less than the bill amount
+     *
      * @param demographicNo String - The demographic number
      * @return boolean - Tru
      */
@@ -1960,6 +1979,7 @@ public class MSPReconcile {
 
     /**
      * Returns true if the specified bill item(billingmaster record) has an amount owing;
+     *
      * @param billingmaster_no String
      * @return boolean
      */

@@ -38,6 +38,7 @@ import org.oscarehr.util.MiscUtils;
 
 /**
  * Parses xml file, creating DosingRecomendation Objects storing them in a hashtable with the ATC code as the key
+ *
  * @author jay
  */
 public class RenalDosingFactory {
@@ -47,7 +48,9 @@ public class RenalDosingFactory {
     static boolean loaded = false;
 
 
-    /** Creates a new instance of RenalDosingFactory */
+    /**
+     * Creates a new instance of RenalDosingFactory
+     */
     protected RenalDosingFactory() {
     }
 

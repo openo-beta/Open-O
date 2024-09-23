@@ -58,6 +58,7 @@ import oscar.log.LogAction;
 import com.quatro.service.LookupManager;
 
 /**
+ *
  */
 public class FacilityManagerAction extends DispatchAction {
 

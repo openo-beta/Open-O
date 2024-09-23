@@ -46,7 +46,6 @@ import org.oscarehr.util.LoggedInInfo;
 import oscar.oscarReport.reportByTemplate.ReportManager;
 
 /**
- *
  * @author apavel (Paul)
  */
 public class ManageTemplatesAction extends Action {

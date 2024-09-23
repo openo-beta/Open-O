@@ -146,10 +146,8 @@ public class EFormDaoImpl extends AbstractDaoImpl<EForm> implements EFormDao {
     /**
      * Finds all eforms based on the status.
      *
-     * @param status
-     *               Status to be used when looking up forms.
-     * @return
-     *         Returns the list of all forms with the specified status.
+     * @param status Status to be used when looking up forms.
+     * @return Returns the list of all forms with the specified status.
      */
     @Override
     public List<EForm> findByStatus(boolean status) {
@@ -159,14 +157,11 @@ public class EFormDaoImpl extends AbstractDaoImpl<EForm> implements EFormDao {
     /**
      * Finds all eforms based on the status.
      *
-     * @param status
-     *                  Status to be used when looking up forms.
-     * @param sortOrder
-     *                  Order how records should be sorted. Providing no sort order
+     * @param status    Status to be used when looking up forms.
+     * @param sortOrder Order how records should be sorted. Providing no sort order
      *                  delegates to the default sorting order of the persistence
      *                  provider
-     * @return
-     *         Returns the list of all forms with the specified status.
+     * @return Returns the list of all forms with the specified status.
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -201,11 +196,9 @@ public class EFormDaoImpl extends AbstractDaoImpl<EForm> implements EFormDao {
     /**
      * Finds the largest identifier for the specified form name.
      *
-     * @param formName
-     *                 Form name to find the largest identifier for the form with
+     * @param formName Form name to find the largest identifier for the form with
      *                 the specified name and set as enabled (current)
-     * @return
-     *         Returns the largest identifier found.
+     * @return Returns the largest identifier found.
      */
     @Override
     public Integer findMaxIdForActiveForm(String formName) {
@@ -218,13 +211,10 @@ public class EFormDaoImpl extends AbstractDaoImpl<EForm> implements EFormDao {
     /**
      * Counts forms with the specified form name excluding the specified form ID.
      *
-     * @param formName
-     *                 Form name to be counted
-     * @param id
-     *                 ID of the form to exclude from the count results
-     * @return
-     *         Returns the number of all active forms with the forms with the
-     *         specified ID
+     * @param formName Form name to be counted
+     * @param id       ID of the form to exclude from the count results
+     * @return Returns the number of all active forms with the forms with the
+     * specified ID
      */
     @Override
     public Long countFormsOtherThanSpecified(String formName, Integer id) {

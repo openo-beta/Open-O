@@ -193,7 +193,9 @@ public class FrmFormRHPreventionAction extends Action {
         return af;
     }
 
-    /** Creates a new instance of FrmFormRHPreventionAction */
+    /**
+     * Creates a new instance of FrmFormRHPreventionAction
+     */
     public FrmFormRHPreventionAction() {
     }
 

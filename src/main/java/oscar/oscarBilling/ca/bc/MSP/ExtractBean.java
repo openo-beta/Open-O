@@ -294,6 +294,7 @@ public class ExtractBean extends Object implements Serializable {
 
     /**
      * Adds a new entry into the billing_history table
+     *
      * @param newInvNo String
      */
     private void createBillArchive(String newInvNo) {

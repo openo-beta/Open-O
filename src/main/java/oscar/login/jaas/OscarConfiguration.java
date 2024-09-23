@@ -32,14 +32,13 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.security.auth.login.Configuration;
 
 /**
- * Configuration class for providing programmatic configuration options. This class is not intended to be used with enabled security manager 
+ * Configuration class for providing programmatic configuration options. This class is not intended to be used with enabled security manager
  * and is capable of providing configuration for a single login module only, in order to avoid additional external configuration.
- *
+ * <p>
  * <p/>
- *
- * Please consider using proper file-based configuration instead by specifying "java.security.auth.login.config" property with the value 
- * containing the full path to JAAS configuration file. 
- *
+ * <p>
+ * Please consider using proper file-based configuration instead by specifying "java.security.auth.login.config" property with the value
+ * containing the full path to JAAS configuration file.
  */
 public class OscarConfiguration extends Configuration {
 
@@ -50,10 +49,8 @@ public class OscarConfiguration extends Configuration {
     /**
      * Creates a new configuration instance with the specified login context name and login module name
      *
-     * @param contextName
-     * 		Name of the login context
-     * @param moduleName
-     * 		Complete class name of the login module to be used for authentication
+     * @param contextName Name of the login context
+     * @param moduleName  Complete class name of the login module to be used for authentication
      */
     public OscarConfiguration(String contextName, String moduleName) {
         this.contextName = contextName;

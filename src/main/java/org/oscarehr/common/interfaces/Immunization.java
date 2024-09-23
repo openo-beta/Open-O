@@ -140,11 +140,11 @@ public interface Immunization {
     /**
      * This method subtracts the date of immunization from the current date and compares
      * the number of days given in the parameter.
-     *
+     * <p>
      * In some cases it is assumed that an immunization being submitted to an authority after 14
      * days from the date of immunization is (was) completed externally.
-     *
-     *  ie: [submission date] – [immunization date] > 14 days (2 weeks)
+     * <p>
+     * ie: [submission date] – [immunization date] > 14 days (2 weeks)
      */
     public boolean isHistorical(int days);
 }

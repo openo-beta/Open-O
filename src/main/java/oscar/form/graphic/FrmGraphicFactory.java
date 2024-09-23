@@ -30,7 +30,6 @@ import org.oscarehr.util.MiscUtils;
 
 
 /**
- *
  * Creates pdf graphic class passed to it with reflection
  */
 public class FrmGraphicFactory {

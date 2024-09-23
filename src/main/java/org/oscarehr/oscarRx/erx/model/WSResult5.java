@@ -63,7 +63,7 @@ public enum WSResult5 {
     /**
      * Request is unsuccessful because this user profile is restricted from
      * making this request to this clinic specified by the facilityId parameter.
-     *
+     * <p>
      * It can also be returned when the clinic is disabled.
      */
     ERROR_UNAUTHORIZED_CLINIC(7),
@@ -91,12 +91,10 @@ public enum WSResult5 {
     /**
      * Convert a string (passed in a response) to it's corresponding WSResult5.
      *
-     * @param toParse
-     *            The string to convert.
+     * @param toParse The string to convert.
      * @return The WSResult5 corresponding to the given string.
-     * @throws IllegalArgumentException
-     *             Throws an IllegalArgumentException if the string doesn't
-     *             match a known WSResult5.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the string doesn't
+     *                                  match a known WSResult5.
      */
     public static WSResult5 parseString(String toParse)
             throws IllegalArgumentException {
@@ -137,9 +135,8 @@ public enum WSResult5 {
     /**
      * Create a WSResult5.
      *
-     * @param resultId
-     *            An integer value which must be passed in a request or parsed
-     *            in a response.
+     * @param resultId An integer value which must be passed in a request or parsed
+     *                 in a response.
      */
     WSResult5(int resultId) {
         this.resultId = resultId;
@@ -149,7 +146,7 @@ public enum WSResult5 {
      * Convert a localeID to a string suitable for sending in a request.
      *
      * @return A string representing this value, suitable for sending in a
-     *         request.
+     * request.
      */
     public String getString() {
         return Integer.toString(this.resultId);

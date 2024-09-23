@@ -26,14 +26,14 @@
 package oscar.entities;
 
 /**
- *
  * SELECT *
- FROM `prescription`
- where demographic_no = 1;
+ * FROM `prescription`
+ * where demographic_no = 1;
  * <p>Title: </p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Company: </p>
+ *
  * @author not attributable
  * @version 1.0
  */

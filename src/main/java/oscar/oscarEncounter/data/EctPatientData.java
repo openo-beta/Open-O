@@ -39,8 +39,7 @@ import oscar.oscarDB.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 /**
- * @deprecated convert to proper JPA Hibernate 
- *
+ * @deprecated convert to proper JPA Hibernate
  */
 @Deprecated
 public class EctPatientData {

@@ -48,6 +48,7 @@ public class ERxChartUpdater {
 
     /**
      * Update a patient's chart in OSCAR by adding a new Prescription.
+     *
      * @param prescription The prescription to add
      */
     public static void updateChartWithPrescription(Drug prescription) throws IllegalArgumentException {

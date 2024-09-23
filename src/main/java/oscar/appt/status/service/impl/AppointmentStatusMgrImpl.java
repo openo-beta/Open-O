@@ -34,7 +34,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.appt.status.service.AppointmentStatusMgr;
 
 /**
- *
  * @author toby
  */
 

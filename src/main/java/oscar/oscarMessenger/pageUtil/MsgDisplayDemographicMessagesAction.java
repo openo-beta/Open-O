@@ -50,7 +50,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarMessenger.util.MsgDemoMap;
 
 /**
- *
  * @author root
  */
 public class MsgDisplayDemographicMessagesAction extends Action {

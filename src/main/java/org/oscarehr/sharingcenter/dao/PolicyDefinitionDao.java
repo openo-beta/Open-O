@@ -59,9 +59,9 @@ public class PolicyDefinitionDao extends AbstractDaoImpl<PolicyDefinitionDataObj
     /**
      * Finds PolicyDefinition object by code, code_system and domain
      *
-     * @param code Policy Code
+     * @param code       Policy Code
      * @param codeSystem Policy Code System
-     * @param domain Affinity Domain
+     * @param domain     Affinity Domain
      * @return PolicyDefinition
      */
     public PolicyDefinitionDataObject getPolicyDefinitionByCode(String code, String codeSystem, AffinityDomainDataObject domain) {

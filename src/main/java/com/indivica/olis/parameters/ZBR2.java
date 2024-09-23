@@ -12,8 +12,8 @@ package com.indivica.olis.parameters;
 
 /**
  * Test Request Placer
- * @author jen
  *
+ * @author jen
  */
 public class ZBR2 implements Parameter {
 

@@ -35,7 +35,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *  Deals with storing the teleplan response 
+ * Deals with storing the teleplan response
+ *
  * @author jay
  */
 public class TeleplanMessagesDAO {

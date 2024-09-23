@@ -72,7 +72,9 @@ public class ManageLinkedClients {
         public String hin = "";
         public String hinType = "";
         public String imageUrl = ClientImage.imageMissingPlaceholderUrl;
-        /** null means it's changeable */
+        /**
+         * null means it's changeable
+         */
         public String nonChangeableLinkStatus = null;
     }
 

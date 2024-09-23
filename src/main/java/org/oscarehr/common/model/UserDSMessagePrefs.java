@@ -38,7 +38,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
- *
  * @author rjonasz
  */
 @Entity
@@ -77,7 +76,9 @@ public class UserDSMessagePrefs extends AbstractModel<Integer> implements Serial
     }
 
 
-    /** Creates a new instance of UserProperty */
+    /**
+     * Creates a new instance of UserProperty
+     */
     public UserDSMessagePrefs() {
     }
 

@@ -35,6 +35,7 @@ public final class MsgDisplayMessagesForm extends ActionForm {
 
     /**
      * Used to get the MessageNo in the DisplayMessagesAction class
+     *
      * @return String[], these are the messages the will be set to del
      */
     public String[] getMessageNo() {
@@ -46,6 +47,7 @@ public final class MsgDisplayMessagesForm extends ActionForm {
 
     /**
      * Used to set the MessageNo, these are the messageNo that will be set to be deleted
+     *
      * @param mess String[], these are the message No to be deleted
      */
     public void setMessageNo(String[] mess) {

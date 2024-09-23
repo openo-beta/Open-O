@@ -67,6 +67,7 @@ public class OidUtil {
 
     /**
      * Cleans up the oid (by removing all periods from the beginning and end of the oid)
+     *
      * @param oid
      * @return a clean OID
      */

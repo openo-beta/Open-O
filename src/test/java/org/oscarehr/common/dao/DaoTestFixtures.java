@@ -215,8 +215,7 @@ public abstract class DaoTestFixtures {
     /**
      * Gets list of all methods that should be ignored for simple exception test on the DAO.
      *
-     * @return
-     *        Returns a list of methods to be skipped during exception testing.
+     * @return Returns a list of methods to be skipped during exception testing.
      */
     protected List<String> getSimpleExceptionTestExcludes() {
         String[] excludes = {"notify", "notifyAll", "remove", "persist", "merge", "refresh", "saveEntity", "wait", "equals",

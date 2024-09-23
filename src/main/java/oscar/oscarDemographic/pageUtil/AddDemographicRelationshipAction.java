@@ -46,7 +46,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarDemographic.data.DemographicRelationship;
 
 /**
- *
  * @author Jay Gallagher
  */
 public class AddDemographicRelationshipAction extends Action {

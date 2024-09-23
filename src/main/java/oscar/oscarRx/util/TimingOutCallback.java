@@ -71,12 +71,14 @@ import org.oscarehr.util.MiscUtils;
  * </pre>
  */
 public class TimingOutCallback implements AsyncCallback {
-    /** This exception is thrown, if the request times out.
+    /**
+     * This exception is thrown, if the request times out.
      */
     public static class TimeoutException extends XmlRpcException {
         private static final long serialVersionUID = 4875266372372105081L;
 
-        /** Creates a new instance with the given error code and
+        /**
+         * Creates a new instance with the given error code and
          * error message.
          */
         public TimeoutException(int pCode, String message) {
@@ -89,16 +91,19 @@ public class TimingOutCallback implements AsyncCallback {
     private Throwable error;
     private boolean responseSeen;
 
-    /** Waits the specified number of milliseconds for a response.
+    /**
+     * Waits the specified number of milliseconds for a response.
      */
     public TimingOutCallback(long pTimeout) {
         timeout = pTimeout;
     }
 
-    /** Called to wait for the response.
+    /**
+     * Called to wait for the response.
+     *
      * @throws InterruptedException The thread was interrupted.
-     * @throws TimeoutException No response was received after waiting the specified time.
-     * @throws Throwable An error was returned by the server.
+     * @throws TimeoutException     No response was received after waiting the specified time.
+     * @throws Throwable            An error was returned by the server.
      */
     public synchronized Object waitForResponse() throws Throwable {
         if (!responseSeen) {

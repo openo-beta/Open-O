@@ -65,8 +65,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -114,10 +112,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cThreatToOthersAttemptedSuicide property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCThreatToOthersAttemptedSuicide() {
         return cThreatToOthersAttemptedSuicide;
@@ -126,10 +122,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cThreatToOthersAttemptedSuicide property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCThreatToOthersAttemptedSuicide(String value) {
         this.cThreatToOthersAttemptedSuicide = value;
@@ -138,10 +132,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cSpecificSymptomOfSeriousMentalIllness property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSpecificSymptomOfSeriousMentalIllness() {
         return cSpecificSymptomOfSeriousMentalIllness;
@@ -150,10 +142,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cSpecificSymptomOfSeriousMentalIllness property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSpecificSymptomOfSeriousMentalIllness(String value) {
         this.cSpecificSymptomOfSeriousMentalIllness = value;
@@ -162,10 +152,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cPhysicalSexualAbuse property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCPhysicalSexualAbuse() {
         return cPhysicalSexualAbuse;
@@ -174,10 +162,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cPhysicalSexualAbuse property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCPhysicalSexualAbuse(String value) {
         this.cPhysicalSexualAbuse = value;
@@ -186,10 +172,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cEducational property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCEducational() {
         return cEducational;
@@ -198,10 +182,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cEducational property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCEducational(String value) {
         this.cEducational = value;
@@ -210,10 +192,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cOccupationalEmploymentVocational property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOccupationalEmploymentVocational() {
         return cOccupationalEmploymentVocational;
@@ -222,10 +202,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cOccupationalEmploymentVocational property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOccupationalEmploymentVocational(String value) {
         this.cOccupationalEmploymentVocational = value;
@@ -234,10 +212,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cHousing property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCHousing() {
         return cHousing;
@@ -246,10 +222,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cHousing property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCHousing(String value) {
         this.cHousing = value;
@@ -258,10 +232,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cFinancial property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCFinancial() {
         return cFinancial;
@@ -270,10 +242,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cFinancial property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCFinancial(String value) {
         this.cFinancial = value;
@@ -282,10 +252,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cLegal property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCLegal() {
         return cLegal;
@@ -294,10 +262,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cLegal property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCLegal(String value) {
         this.cLegal = value;
@@ -306,10 +272,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cProblemsWithRelationships property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCProblemsWithRelationships() {
         return cProblemsWithRelationships;
@@ -318,10 +282,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cProblemsWithRelationships property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCProblemsWithRelationships(String value) {
         this.cProblemsWithRelationships = value;
@@ -330,10 +292,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cProblemsWithSubstanceAbuseAddictions property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCProblemsWithSubstanceAbuseAddictions() {
         return cProblemsWithSubstanceAbuseAddictions;
@@ -342,10 +302,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cProblemsWithSubstanceAbuseAddictions property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCProblemsWithSubstanceAbuseAddictions(String value) {
         this.cProblemsWithSubstanceAbuseAddictions = value;
@@ -354,10 +312,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cActivitiesOfDailyLiving property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCActivitiesOfDailyLiving() {
         return cActivitiesOfDailyLiving;
@@ -366,10 +322,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cActivitiesOfDailyLiving property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCActivitiesOfDailyLiving(String value) {
         this.cActivitiesOfDailyLiving = value;
@@ -378,10 +332,8 @@ public class CPresentingIssues {
     /**
      * Gets the value of the cOther property.
      *
-     * @return
-     *     possible object is
-     *     {@link COther }
-     *
+     * @return possible object is
+     * {@link COther }
      */
     public COther getCOther() {
         return cOther;
@@ -390,10 +342,8 @@ public class CPresentingIssues {
     /**
      * Sets the value of the cOther property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link COther }
-     *
+     * @param value allowed object is
+     *              {@link COther }
      */
     public void setCOther(COther value) {
         this.cOther = value;

@@ -46,7 +46,6 @@ import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean;
 import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
 
 /**
- *
  * @author jay
  */
 public class MeasurementInfo {
@@ -65,7 +64,9 @@ public class MeasurementInfo {
 
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
 
-    /** Creates a new instance of MeasurementInfo */
+    /**
+     * Creates a new instance of MeasurementInfo
+     */
     public MeasurementInfo(String demographic) {
         demographicNo = demographic;
     }
@@ -113,7 +114,9 @@ public class MeasurementInfo {
         demographicNo = demographic;
     }
 
-    /** Creates a new instance of MeasurementInfo */
+    /**
+     * Creates a new instance of MeasurementInfo
+     */
     public MeasurementInfo() {
     }
 

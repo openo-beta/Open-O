@@ -33,10 +33,10 @@ import javax.servlet.jsp.tagext.TagSupport;
 import oscar.OscarProperties;
 
 
-/** Tag class for evaulating a property from oscar properties.
- *
+/**
+ * Tag class for evaulating a property from oscar properties.
+ * <p>
  * If the value is equal, the jsp code will be included in the page.
- *
  */
 public class OscarPropertiesCheck extends TagSupport {
 
@@ -122,6 +122,7 @@ public class OscarPropertiesCheck extends TagSupport {
 
     /**
      * Getter for property defaultVal.
+     *
      * @return Value of property defaultVal.
      */
     public java.lang.String getDefaultVal() {
@@ -130,6 +131,7 @@ public class OscarPropertiesCheck extends TagSupport {
 
     /**
      * Setter for property defaultVal.
+     *
      * @param defaultVal New value of property defaultVal.
      */
     public void setDefaultVal(java.lang.String defaultVal) {

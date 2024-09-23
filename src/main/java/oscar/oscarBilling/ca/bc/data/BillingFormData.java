@@ -426,6 +426,7 @@ public class BillingFormData {
 
     /**
      * Returns a list of InjuryLocation instances
+     *
      * @return List
      */
     public List<InjuryLocation> getInjuryLocationList() {
@@ -440,6 +441,7 @@ public class BillingFormData {
      * Returns a Properties instance that contains the following key/value pair
      * * key = A Billing Status Type Code
      * * value =  A Billing Status Type Extended Description
+     *
      * @param statusType List
      * @return Properties
      */

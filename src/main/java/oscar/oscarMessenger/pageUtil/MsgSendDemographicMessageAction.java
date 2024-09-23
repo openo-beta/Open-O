@@ -43,7 +43,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarProvider.data.ProviderData;
 
 /**
- *
  * @author jay
  */
 public class MsgSendDemographicMessageAction extends Action {
@@ -51,7 +50,7 @@ public class MsgSendDemographicMessageAction extends Action {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     /**
-     * Creates a new instance of MsgSendDemographicMessageAction 
+     * Creates a new instance of MsgSendDemographicMessageAction
      */
     public MsgSendDemographicMessageAction() {
     }

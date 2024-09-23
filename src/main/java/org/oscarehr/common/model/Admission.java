@@ -51,7 +51,6 @@ import org.oscarehr.PMmodule.model.Program;
 
 /**
  * The persistent class for the admission database table.
- *
  */
 @Entity
 @Table(name = "admission")
@@ -240,6 +239,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: team_id
+     *
      * @param team the team_id value
      */
     public void setTeam(org.oscarehr.PMmodule.model.ProgramTeam team) {
@@ -255,6 +255,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: clientstatus_id
+     *
      * @param clientStatus the clientstatus_id value
      */
     public void setClientStatus(org.oscarehr.PMmodule.model.ProgramClientStatus clientStatus) {
@@ -270,6 +271,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: client_id
+     *
      * @param client the client_id value
      */
     public void setClient(org.oscarehr.common.model.Demographic client) {
@@ -292,6 +294,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: teamName
+     *
      * @param teamName the teamName value
      */
     public void setTeamName(String teamName) {
@@ -314,6 +317,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: temporary_admission_flag
+     *
      * @param temporaryAdmission the temporary_admission_flag value
      */
     public void setTemporaryAdmission(boolean temporaryAdmission) {
@@ -329,6 +333,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: discharge_notes
+     *
      * @param dischargeNotes the discharge_notes value
      */
     public void setDischargeNotes(String dischargeNotes) {
@@ -344,6 +349,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: discharge_date
+     *
      * @param dischargeDate the discharge_date value
      */
     public void setDischargeDate(java.util.Date dischargeDate) {
@@ -361,6 +367,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: team_id
+     *
      * @param teamId the team_id value
      */
     public void setTeamId(Integer teamId) {
@@ -369,6 +376,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: clientstatus_id
+     *
      * @param clientStatusId the clientstatus_id value
      */
     public void setClientStatusId(Integer clientStatusId) {
@@ -384,6 +392,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: programName
+     *
      * @param programName the programName value
      */
     public void setProgramName(String programName) {
@@ -399,6 +408,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: programType
+     *
      * @param programType the programType value
      */
     public void setProgramType(String programType) {
@@ -415,6 +425,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: provider_no
+     *
      * @param providerNo the provider_no value
      */
     public void setProviderNo(String providerNo) {
@@ -430,6 +441,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: admission_status
+     *
      * @param admissionStatus the admission_status value
      */
     public void setAdmissionStatus(String admissionStatus) {
@@ -445,6 +457,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: client_id
+     *
      * @param clientId the client_id value
      */
     public void setClientId(Integer clientId) {
@@ -460,6 +473,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: admission_date
+     *
      * @param admissionDate the admission_date value
      */
     public void setAdmissionDate(java.util.Date admissionDate) {
@@ -475,6 +489,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: admission_notes
+     *
      * @param admissionNotes the admission_notes value
      */
     public void setAdmissionNotes(String admissionNotes) {
@@ -490,6 +505,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: temp_admission
+     *
      * @param tempAdmission the temp_admission value
      */
     public void setTempAdmission(String tempAdmission) {
@@ -505,6 +521,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: program_id
+     *
      * @param programId the program_id value
      */
     public void setProgramId(Integer programId) {
@@ -520,6 +537,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: temp_admit_discharge
+     *
      * @param tempAdmitDischarge the temp_admit_discharge value
      */
     public void setTempAdmitDischarge(String tempAdmitDischarge) {
@@ -535,6 +553,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
 
     /**
      * Set the value related to the column: radioDischargeReason
+     *
      * @param radioDischargeReason the radioDischargeReason value
      */
     public void setRadioDischargeReason(String radioDischargeReason) {

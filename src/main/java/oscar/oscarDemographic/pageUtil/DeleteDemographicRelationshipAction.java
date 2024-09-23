@@ -45,14 +45,15 @@ import oscar.log.LogConst;
 import oscar.oscarDemographic.data.DemographicRelationship;
 
 /**
- *
  * @author jay
  */
 public class DeleteDemographicRelationshipAction extends Action {
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of DeleteDemographicRelationshipAction */
+    /**
+     * Creates a new instance of DeleteDemographicRelationshipAction
+     */
     public DeleteDemographicRelationshipAction() {
     }
 

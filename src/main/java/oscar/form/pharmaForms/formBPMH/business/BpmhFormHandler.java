@@ -135,20 +135,20 @@ public class BpmhFormHandler {
     /**
      * Depends on:
      * (Set these after instantiation or auto-init with BpmhFormHandler(BpmhFormBean bpmhFormBean)):
-     * 	 AllergyDao allergyDao;
-     *   DemographicCustDao demographicCustDao;
-     *   DemographicDao demographicDao;
-     *   DrugDao drugDao;
-     *   DrugReasonDao drugReasonDao;
-     *   ProviderDao providerDao;
-     *   OscarAppointmentDao appointmentDao;
-     *   Icd9Dao icd9Dao;
-     *   DxCodeTranslationsDao dxCodeTranslationsDao;
-     *   FormBPMHDao formBPMHDao;
-     *   ProfessionalSpecialistDao professionalSpecialistDao;
-     *   SpecialtyDao specialtyDao;
-     *   ProfessionalContactDao proContactDao;
-     *   DemographicContactDao demographicContactDao;
+     * AllergyDao allergyDao;
+     * DemographicCustDao demographicCustDao;
+     * DemographicDao demographicDao;
+     * DrugDao drugDao;
+     * DrugReasonDao drugReasonDao;
+     * ProviderDao providerDao;
+     * OscarAppointmentDao appointmentDao;
+     * Icd9Dao icd9Dao;
+     * DxCodeTranslationsDao dxCodeTranslationsDao;
+     * FormBPMHDao formBPMHDao;
+     * ProfessionalSpecialistDao professionalSpecialistDao;
+     * SpecialtyDao specialtyDao;
+     * ProfessionalContactDao proContactDao;
+     * DemographicContactDao demographicContactDao;
      */
     public BpmhFormHandler() {
         // default constructor
@@ -182,9 +182,9 @@ public class BpmhFormHandler {
 
     /**
      * Populates and merges all parameters of a form bean based on directive(s):
-     *  - save form
-     *  - retrieve new form
-     *  - retrieve form history
+     * - save form
+     * - retrieve new form
+     * - retrieve form history
      */
     @SuppressWarnings("unchecked") // json conversion is unchecked.
     public void populateFormBean(BpmhFormBean bpmhFormBean) {
@@ -439,12 +439,12 @@ public class BpmhFormHandler {
 
     /**
      * Set the BpmhFormBean with a list of BpmhDrug beans.
-     *
+     * <p>
      * If sent a null parameter a new list will be built.
-     *
+     * <p>
      * BpmhDrug beans contain data from the database Drugs JPA along
      * with additional transient data.
-     *
+     * <p>
      * Depends on DrugDao, BpmhFormBean, BpmhDrug
      *
      * @param bpmhDrugBeans

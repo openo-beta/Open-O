@@ -96,6 +96,7 @@ public class PanelBeanFactory {
 
     /**
      * IndicatorTemplate Entities contain raw XML template data.
+     *
      * @param indicatorTemplates
      */
     public void setIndicatorTemplates(List<IndicatorTemplate> indicatorTemplates) {
@@ -117,6 +118,7 @@ public class PanelBeanFactory {
     /**
      * Each panel represents an Indicator Category.
      * Each panel holds a List of Indicator sub-categories.
+     *
      * @param indicatorPanelBeans
      */
     private void setIndicatorPanelBeans(List<PanelBean> panelBeans) {

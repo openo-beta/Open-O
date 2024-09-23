@@ -45,22 +45,21 @@ import oscar.log.LogAction;
 /**
  * Manages the various consents required from patients for participation in specific programs
  * or to share health information with other providers.
- *
  */
 public interface PatientConsentManager {
 
     /**
      * Set a patient consent based on the demographic, consent type and boolean consent.
      * The "consented" parameter will not accept NULL.
-     *
+     * <p>
      * True = patient fully consents
      * False = patient has opted out (revoked)
-     *
+     * <p>
      * This method first assumes that a Consent entry already exists for the given patient.
      * If a Consent exists: then the Consent will be set according to the given boolean parameter.
      * If a Consent does not exist: and the consented parameter is true - a new "consented" Consent will be added - a new
      * consent object will not be added if consented parameter is false.
-     *
+     * <p>
      * This method sets the boolean "explicit" ( patient gave direct consent = true; patient consent was implied or assumed = false)
      * to a default TRUE.
      */
@@ -71,13 +70,13 @@ public interface PatientConsentManager {
      * The given consent type id is cross checked in the available consentTypes.
      * This method first assumes that a Consent entry already exists for the given patient and
      * then updates it as required.
-     *
+     * <p>
      * The default state for Consent is FALSE. This means that a patient is assume non-consenting until
      * a Consent is set. Therefore there is no need to set this if a patient has not expressed consent.
-     *
+     * <p>
      * This method sets the boolean "explicit" ( patient gave direct consent = true; patient consent was implied or assumed = false)
      * to a default TRUE.
-     *
+     * <p>
      * Sets default optout to FALSE.
      */
     void addConsent(LoggedInInfo loggedinInfo, int demographic_no, int consentTypeId);
@@ -89,11 +88,11 @@ public interface PatientConsentManager {
      * The given consent type id is cross checked in the available consentTypes.
      * The default state for Consent is FALSE. This means that a patient is assume non-consenting until
      * a Consent is set.
-     *
+     * <p>
      * The extra parameter: explicit can be used to determine if this consent was implied (explicit=false) by the patient
      * or if the consent was explicit (explicit=true).  In most cases the patient will always be required to give
      * a verbal or written explicit consent.
-     *
+     * <p>
      * The Explicit parameter will not accept a null value.
      * EXPLICIT CONSENT: patient gave direct consent. explicit = true;
      * IMPLIED CONSENT: patient consent was implied or assumed. explicit = false
@@ -105,11 +104,11 @@ public interface PatientConsentManager {
      * identified by consentTypeId if one doesn't already exist, or updates
      * the existing demographic consent record if a record already does exist
      *
-     * @param loggedinInfo the user information for the current OSCAR user
+     * @param loggedinInfo   the user information for the current OSCAR user
      * @param demographic_no the demographic number of the patient
-     * @param consentTypeId the unique identifier of the consent form/policy
-     * @param explicit did the patient give explicit consent, or is consent implied?
-     * @param optOut is the patient refusing this consent policy/form or agreeing to it? A null value indicates the absence of a decision
+     * @param consentTypeId  the unique identifier of the consent form/policy
+     * @param explicit       did the patient give explicit consent, or is consent implied?
+     * @param optOut         is the patient refusing this consent policy/form or agreeing to it? A null value indicates the absence of a decision
      * @return true if the consent record was either added or updated, false otherwise
      */
     boolean addEditConsentRecord(LoggedInInfo loggedinInfo, int demographic_no, int consentTypeId, boolean explicit, boolean optOut);
@@ -153,7 +152,6 @@ public interface PatientConsentManager {
     /**
      * Returns a ConsentType by the consent program type. Used to get the id of a ConsentType
      * by its program name.
-     *
      */
     ConsentType getConsentType(String type);
 

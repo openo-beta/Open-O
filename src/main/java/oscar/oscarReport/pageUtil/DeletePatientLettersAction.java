@@ -42,7 +42,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarReport.data.ManageLetters;
 
 /**
- *
  * @author jay
  */
 public class DeletePatientLettersAction extends Action {
@@ -50,7 +49,9 @@ public class DeletePatientLettersAction extends Action {
     private static Logger log = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of DeletePatientLettersAction */
+    /**
+     * Creates a new instance of DeletePatientLettersAction
+     */
     public DeletePatientLettersAction() {
     }
 

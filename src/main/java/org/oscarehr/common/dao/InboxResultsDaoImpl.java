@@ -38,7 +38,9 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
     @PersistenceContext(unitName = "entityManagerFactory")
     protected EntityManager entityManager = null;
 
-    /** Creates a new instance of Hl7textResultsData */
+    /**
+     * Creates a new instance of Hl7textResultsData
+     */
     public InboxResultsDaoImpl() {
     }
 

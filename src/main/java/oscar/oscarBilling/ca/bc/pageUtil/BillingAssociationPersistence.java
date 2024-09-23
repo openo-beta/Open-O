@@ -37,7 +37,6 @@ import org.oscarehr.common.model.DiagnosticCode;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * <p>Title: BillingAssociationPersistence</p>
  *
  * <p>Description:Responsible for performing database CRUD operations on service code/dxcode associations </p>
@@ -63,6 +62,7 @@ public class BillingAssociationPersistence {
 
     /**
      * Saves a ServiceCodeAssociation object to the database
+     *
      * @param assoc ServiceCodeAssociation
      * @param mode
      */
@@ -83,8 +83,9 @@ public class BillingAssociationPersistence {
 
     /**
      * A new service code association is save to the database
+     *
      * @param svc String
-     * @param dx String
+     * @param dx  String
      * @return boolean
      */
     private boolean newServiceCodeAssoc(String svc, String dx) {
@@ -99,6 +100,7 @@ public class BillingAssociationPersistence {
 
     /**
      * Deletes a service code association from the database
+     *
      * @param svcCode String
      * @return boolean
      */
@@ -112,6 +114,7 @@ public class BillingAssociationPersistence {
 
     /**
      * Retrieves a list of ServiceCodeAssociation objects
+     *
      * @return List
      */
     public List<ServiceCodeAssociation> getServiceCodeAssocs() {
@@ -140,6 +143,7 @@ public class BillingAssociationPersistence {
 
     /**
      * Returns true if the provided service code is already associated
+     *
      * @param code String
      * @return boolean
      */
@@ -152,6 +156,7 @@ public class BillingAssociationPersistence {
 
     /**
      * Returns true if the provided dxcode exists in the database
+     *
      * @param code String
      * @return boolean
      */
@@ -166,6 +171,7 @@ public class BillingAssociationPersistence {
 
     /**
      * Returns true if the provided service code exists in the database
+     *
      * @param code String
      * @return boolean
      */

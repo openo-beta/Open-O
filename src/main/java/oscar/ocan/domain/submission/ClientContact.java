@@ -60,8 +60,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -84,10 +82,8 @@ public class ClientContact {
     /**
      * Gets the value of the doctorContact property.
      *
-     * @return
-     *     possible object is
-     *     {@link DoctorContact }
-     *
+     * @return possible object is
+     * {@link DoctorContact }
      */
     public DoctorContact getDoctorContact() {
         return doctorContact;
@@ -96,10 +92,8 @@ public class ClientContact {
     /**
      * Sets the value of the doctorContact property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link DoctorContact }
-     *
+     * @param value allowed object is
+     *              {@link DoctorContact }
      */
     public void setDoctorContact(DoctorContact value) {
         this.doctorContact = value;
@@ -108,10 +102,8 @@ public class ClientContact {
     /**
      * Gets the value of the psychiatristContact property.
      *
-     * @return
-     *     possible object is
-     *     {@link PsychiatristContact }
-     *
+     * @return possible object is
+     * {@link PsychiatristContact }
      */
     public PsychiatristContact getPsychiatristContact() {
         return psychiatristContact;
@@ -120,10 +112,8 @@ public class ClientContact {
     /**
      * Sets the value of the psychiatristContact property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PsychiatristContact }
-     *
+     * @param value allowed object is
+     *              {@link PsychiatristContact }
      */
     public void setPsychiatristContact(PsychiatristContact value) {
         this.psychiatristContact = value;
@@ -148,8 +138,6 @@ public class ClientContact {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link OtherPractitionerContact }
-     *
-     *
      */
     public List<OtherPractitionerContact> getOtherPractitionerContact() {
         if (otherPractitionerContact == null) {
@@ -161,10 +149,8 @@ public class ClientContact {
     /**
      * Gets the value of the otherAgencyContact property.
      *
-     * @return
-     *     possible object is
-     *     {@link OtherAgencyContact }
-     *
+     * @return possible object is
+     * {@link OtherAgencyContact }
      */
     public OtherAgencyContact getOtherAgencyContact() {
         return otherAgencyContact;
@@ -173,10 +159,8 @@ public class ClientContact {
     /**
      * Sets the value of the otherAgencyContact property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link OtherAgencyContact }
-     *
+     * @param value allowed object is
+     *              {@link OtherAgencyContact }
      */
     public void setOtherAgencyContact(OtherAgencyContact value) {
         this.otherAgencyContact = value;

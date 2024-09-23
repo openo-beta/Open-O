@@ -58,7 +58,9 @@ import oscar.util.UtilDateUtilities;
 public class AddEditHtmlAction extends Action {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    /** Creates a new instance of AddLinkAction */
+    /**
+     * Creates a new instance of AddLinkAction
+     */
     public ActionForward execute(ActionMapping mapping, ActionForm form,
                                  HttpServletRequest request, HttpServletResponse response) {
 

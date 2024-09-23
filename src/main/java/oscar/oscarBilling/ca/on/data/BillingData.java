@@ -35,12 +35,13 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.ConversionUtils;
 
 /**
- *
  * @author jay
  */
 public class BillingData {
 
-    /** Creates a new instance of BillingData */
+    /**
+     * Creates a new instance of BillingData
+     */
     public BillingData() {
     }
 

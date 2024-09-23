@@ -68,7 +68,6 @@ import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;
 import oscar.oscarPrevention.pageUtil.PreventionPrintPdf;
 
 /**
- *
  * @author apavel
  */
 public class PHRGenericSendToPhrAction extends DispatchAction {

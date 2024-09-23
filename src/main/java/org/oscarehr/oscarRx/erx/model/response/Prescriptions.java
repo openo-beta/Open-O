@@ -42,8 +42,7 @@ public class Prescriptions {
      * Parse a the External Prescriber Prescriptions document fragment, returning a list of
      * Prescription nodes.
      *
-     * @param node
-     *            The document [fragment] to parse.
+     * @param node The document [fragment] to parse.
      * @return A list of Prescription nodes contained in the node.
      */
     public static List<Node> parsePrescriptions(Node node) {

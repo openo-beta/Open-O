@@ -31,7 +31,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * Used to sort a list of Lab hashtable or map objects 
+ * Used to sort a list of Lab hashtable or map objects
  *
  * @author jay
  */

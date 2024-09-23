@@ -31,7 +31,6 @@ import org.oscarehr.billing.CA.BC.model.TeleplanResponseLog;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * @author jay
  */
 public class TeleplanResponseDAO {

@@ -195,7 +195,6 @@ public class HRMResultsData {
     /**
      * @return true if the currentEntry is deemed to be newer than the previousEntry
      * <Hospital Report Manager Process Date>^<Accession Number>^<Sending Facility>^<Report Class>^<Report Number>^<Message Date>^<Environment Mode>^<Site Instance>^<Report Status>^<Visit Number>
-     *
      */
     public static boolean isNewer(HRMReport currentEntry, HRMReport previousEntry) {
         // try to parse messageUniqueId for date portion to compare, no gurantees it exists or is well formed.

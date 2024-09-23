@@ -37,17 +37,15 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 
 /**
- *
  * Authored by Colcamex Resources Inc.
  * Sponsored by OSCARWest and OSCAR BC
- *
+ * <p>
  * The BC Interior Health Authority uses the Meditech POI (IHAPOI) to distribute labs and hospital reports
  * to medical practices.
- * This class extends the master Meditech Handler and overrides some of the methods that are 
+ * This class extends the master Meditech Handler and overrides some of the methods that are
  * handled differently with the IHAPOI
- *
+ * <p>
  * The Meditech handler should be adapted as much as possible in order to deal with several difference scenarios.
- *
  */
 public class IHAPOIHandler extends MEDITECHHandler implements MessageHandler {
 
@@ -108,7 +106,6 @@ public class IHAPOIHandler extends MEDITECHHandler implements MessageHandler {
     /**
      * If the first OBX segment is presenting a textual report and the lab type is
      * not in the unstructured (PATH or ITS) lab types.
-     *
      */
     @Override
     public boolean isReportData() {
@@ -240,7 +237,6 @@ public class IHAPOIHandler extends MEDITECHHandler implements MessageHandler {
 
     /**
      * Done a little differently with IHA
-     *
      */
     @Override
     public String getDiscipline() {

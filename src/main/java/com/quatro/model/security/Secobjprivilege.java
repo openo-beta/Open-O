@@ -41,11 +41,15 @@ public class Secobjprivilege implements java.io.Serializable {
 
     // Constructors
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Secobjprivilege() {
     }
 
-    /** full constructor */
+    /**
+     * full constructor
+     */
     public Secobjprivilege(String roleusergroup, String objectname,
                            String privilege, Integer priority, String providerNo) {
         this.roleusergroup = roleusergroup;

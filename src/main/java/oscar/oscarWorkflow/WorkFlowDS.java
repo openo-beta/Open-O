@@ -31,14 +31,15 @@ import org.drools.WorkingMemory;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author jay
  */
 public class WorkFlowDS {
 
     RuleBase ruleBase = null;
 
-    /** Creates a new instance of WorkFlowDS */
+    /**
+     * Creates a new instance of WorkFlowDS
+     */
     public WorkFlowDS() {
     }
 
