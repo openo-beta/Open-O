@@ -1,4 +1,4 @@
-jQuery(document).ready(function(){
+jQuery(document).ready(function () {
     jQuery("#ptDemoNo").hide();
     jQuery("#ptGender").hide();
     jQuery("#ptDOB").hide();

@@ -29,7 +29,7 @@ angular.module("rxServices", [])
         return {
             apiPath: '../ws/rs/rx',
             getMedications: function (demographicNo, status) {
-                console.log("Debug: calling getMedications, demo="+demographicNo);
+                console.log("Debug: calling getMedications, demo=" + demographicNo);
                 var deferred = $q.defer();
                 var queryPath = this.apiPath + "/drugs";
                 if (status !== "") {
@@ -38,7 +38,7 @@ angular.module("rxServices", [])
                 queryPath = queryPath + '?demographicNo=' + demographicNo;
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     console.log("error fetching items");
                     deferred.reject("An error occurred while fetching items");
                 });
@@ -56,14 +56,14 @@ angular.module("rxServices", [])
              *  was successful false otherwise.
              *
              */
-            addMedication: function(obj, cb){
+            addMedication: function (obj, cb) {
 
                 // obj needs to be transformed into a transfer object
                 // than can be handled by the API.
 
                 var d = obj.toDrugTransferObject();
 
-                this._addMedicationRequest(obj.demographic, d).then(function(resp){
+                this._addMedicationRequest(obj.demographic, d).then(function (resp) {
                     return cb(resp.success);
                 });
 
@@ -85,7 +85,7 @@ angular.module("rxServices", [])
 
                 $http.post(queryPath, med).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     console.log("Error, could not add Medication.");
                     deferred.reject("An error occurred while attempting to add a medication.");
                 });
@@ -103,7 +103,7 @@ angular.module("rxServices", [])
                 $http.post(queryPath, med).then(function (data) {
                     deferred.resolve(data);
                     console.log(data);
-                },function () {
+                }, function () {
                     console.log("Error, could not update Medication.");
                     deferred.reject("An error occurred while attempting to update a medication.");
                 });
@@ -115,11 +115,11 @@ angular.module("rxServices", [])
             getMedication: function (drugId) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "/drug/"+drugId;
+                var queryPath = this.apiPath + "/drug/" + drugId;
                 $http.post(queryPath).then(function (data) {
                     deferred.resolve(data);
                     console.log(data);
-                },function () {
+                }, function () {
                     console.log("Error, could not update Medication.");
                     deferred.reject("An error occurred while attempting to update a medication.");
                 });
@@ -128,7 +128,7 @@ angular.module("rxServices", [])
 
             },
 
-            discontinueMedication : function(demo, medId, reason){
+            discontinueMedication: function (demo, medId, reason) {
                 reason = reason || "unknown";
 
                 var deferred = $q.defer();
@@ -139,7 +139,7 @@ angular.module("rxServices", [])
 
                 $http.post(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     console.log("Error, could not discontinue Medication.");
                     deferred.reject("An error occurred while attempting to update a medication.");
                 });
@@ -152,18 +152,18 @@ angular.module("rxServices", [])
              * @param demoNo {number}
              * @param drugs {Array<Drug>}
              */
-            prescribe : function(demoNo, drugs, cb){
+            prescribe: function (demoNo, drugs, cb) {
 
                 var toSend = [];
 
                 // transform to transfer objects for the API.
-                for(var m in drugs){
+                for (var m in drugs) {
                     toSend.push(drugs[m].toDrugTransferObject(false));
                 }
 
-               // var obj = {drug : toSend};
+                // var obj = {drug : toSend};
 
-                this._prescribe(demoNo, toSend).then(function(resp){
+                this._prescribe(demoNo, toSend).then(function (resp) {
                     return cb(resp.data);
                 });
             },
@@ -175,7 +175,7 @@ angular.module("rxServices", [])
              * @returns {deferred.promise|{then, catch, finally}}
              * @private
              */
-            _prescribe : function(demo, meds){
+            _prescribe: function (demo, meds) {
 
                 var deferred = $q.defer();
                 var queryPath = this.apiPath + "/prescribe";
@@ -184,52 +184,52 @@ angular.module("rxServices", [])
                 $http.post(queryPath, meds).then(function (data) {
                     deferred.resolve(data);
                     console.log(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to prescribe");
                 });
 
                 return deferred.promise;
 
             },
-            lookup : function(s){
+            lookup: function (s) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "lookup/search?string="+s;
+                var queryPath = this.apiPath + "lookup/search?string=" + s;
 
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
                     console.log(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to search for medication");
                 });
 
                 return deferred.promise;
 
             },
-            search : function(s){
+            search: function (s) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "lookup/fullSearch?string="+s;
+                var queryPath = this.apiPath + "lookup/fullSearch?string=" + s;
 
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
                     console.log(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to search for medication");
                 });
 
                 return deferred.promise;
 
             },
-            searchByElement: function(s){
+            searchByElement: function (s) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "lookup/searchByElement?string="+s;
+                var queryPath = this.apiPath + "lookup/searchByElement?string=" + s;
 
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
                     console.log(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to search for medication");
                 });
 
@@ -237,15 +237,15 @@ angular.module("rxServices", [])
 
             },
 
-            
-            getMedicationDetails : function(s){
+
+            getMedicationDetails: function (s) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "lookup/details?id="+s;
+                var queryPath = this.apiPath + "lookup/details?id=" + s;
 
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to get medication details");
                 });
 
@@ -253,14 +253,14 @@ angular.module("rxServices", [])
 
             },
 
-            parseInstructions  : function (i) {
+            parseInstructions: function (i) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "lookup/parse?input="+i;
+                var queryPath = this.apiPath + "lookup/parse?input=" + i;
 
                 $http.post(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to parse instructions");
                 });
 
@@ -268,26 +268,26 @@ angular.module("rxServices", [])
 
             },
 
-            history : function(drug, demo, cb){
+            history: function (drug, demo, cb) {
 
-                if(!drug){
+                if (!drug) {
                     cb(null);
                 }
 
-                this._history(drug.drugId, demo).then(function(resp){
-                    if(resp && resp.data){
+                this._history(drug.drugId, demo).then(function (resp) {
+                    if (resp && resp.data) {
 
                         var drugList = [];
                         var tempDrug = null;
 
-                        if(resp.data.content instanceof Array){
+                        if (resp.data.content instanceof Array) {
                             // several drugs returned in history
-                            for(var i = 0; i < resp.data.content.length; i++){
+                            for (var i = 0; i < resp.data.content.length; i++) {
                                 tempDrug = new Drug();
                                 tempDrug.fromDrugTransferObject(resp.data.content[i]);
                                 drugList.push(tempDrug);
                             }
-                        }else{
+                        } else {
                             // only one drug
                             tempDrug = new Drug();
                             tempDrug.fromDrugTransferObject(resp.data.content);
@@ -296,8 +296,8 @@ angular.module("rxServices", [])
 
                         cb(drugList);
 
-                    }else{
-                        console.log("error getting history for drug: "+ drug.id +" failed!");
+                    } else {
+                        console.log("error getting history for drug: " + drug.id + " failed!");
                         cb(null);
                     }
 
@@ -305,7 +305,7 @@ angular.module("rxServices", [])
 
             },
 
-            _history : function(id, demo){
+            _history: function (id, demo) {
 
                 var deferred = $q.defer();
                 var queryPath = this.apiPath + "/history";
@@ -314,7 +314,7 @@ angular.module("rxServices", [])
 
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to get history");
                 });
 
@@ -322,29 +322,29 @@ angular.module("rxServices", [])
 
             },
 
-           /* addFavorite : function(fav, cb){
+            /* addFavorite : function(fav, cb){
 
-                var obj =  fav.toTransferObject();
+                 var obj =  fav.toTransferObject();
 
-                this._addFavorite(obj).then(
-                    function(resp){
-                        console.log(resp);
-                        cb(resp);
-                    }
-                );
+                 this._addFavorite(obj).then(
+                     function(resp){
+                         console.log(resp);
+                         cb(resp);
+                     }
+                 );
 
-            },
-            */
-            getPrescriptions : function(demo){
+             },
+             */
+            getPrescriptions: function (demo) {
 
                 var deferred = $q.defer();
                 var queryPath = this.apiPath + "/prescriptions";
                 queryPath += "?demographicNo=" + demo;
-               
+
 
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to get history");
                 });
 
@@ -352,14 +352,14 @@ angular.module("rxServices", [])
 
             },
 
-            recordPrescriptionPrint : function(scriptNo){
+            recordPrescriptionPrint: function (scriptNo) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "/recordPrescriptionPrint/"+scriptNo;
-                
+                var queryPath = this.apiPath + "/recordPrescriptionPrint/" + scriptNo;
+
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to get history");
                 });
 
@@ -367,13 +367,13 @@ angular.module("rxServices", [])
 
             },
 
-            
-            addFavorite : function(fav, cb){
+
+            addFavorite: function (fav, cb) {
 
                 var obj = fav.toTransferObject();
 
                 this._addFavorite(obj).then(
-                    function(resp){
+                    function (resp) {
                         console.log(resp);
                         cb(resp);
                     }
@@ -387,7 +387,7 @@ angular.module("rxServices", [])
              * @param fav the favorite object to add.
              * @returns {deferred.promise|{then, catch, finally}}
              */
-            _addFavorite : function(fav){
+            _addFavorite: function (fav) {
                 var deferred = $q.defer();
                 var queryPath = this.apiPath + "/favorites";
 
@@ -396,30 +396,30 @@ angular.module("rxServices", [])
                 $http.post(queryPath, fav).then(function (data) {
                     deferred.resolve(data);
                     console.log(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to add favorite");
                 });
 
                 return deferred.promise;
             },
 
-            _favorites : function(){
+            _favorites: function () {
 
                 var deferred = $q.defer();
                 var queryPath = this.apiPath + "/favorites";
 
                 $http.get(queryPath).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to get favorites");
                 });
 
                 return deferred.promise;
             },
 
-            favorites : function(demo, provider, cb){
+            favorites: function (demo, provider, cb) {
 
-                this._favorites().then(function(resp){
+                this._favorites().then(function (resp) {
 
                     /*
                      * @property {object} resp
@@ -427,17 +427,17 @@ angular.module("rxServices", [])
                      * @property {object|array} resp.drugs
                      */
 
-                    console.log("favorites:",resp);
+                    console.log("favorites:", resp);
 
-                    if(resp && resp.data.success && resp.data.drugs){
+                    if (resp && resp.data.success && resp.data.drugs) {
 
                         var favs = [];
                         var tmp = null;
 
 
-                        if(resp.data.drugs instanceof Array){
+                        if (resp.data.drugs instanceof Array) {
 
-                            for(var i = 0; i < resp.data.drugs.length; i++){
+                            for (var i = 0; i < resp.data.drugs.length; i++) {
 
                                 tmp = new Favorite();
                                 tmp.fromFavoriteTransferObject(resp.data.drugs[i], demo, provider);
@@ -445,7 +445,7 @@ angular.module("rxServices", [])
 
                             }
 
-                        }else{
+                        } else {
                             tmp = new Favorite();
                             tmp.fromFavoriteTransferObject(resp.data.drugs, demo, provider);
                             favs.push(tmp);
@@ -453,20 +453,20 @@ angular.module("rxServices", [])
 
                         cb(favs);
 
-                    }else{
+                    } else {
                         cb([]);
                     }
                 });
             },
 
-            getDSMessages : function(demographicNo,meds){
+            getDSMessages: function (demographicNo, meds) {
 
                 var deferred = $q.defer();
-                var queryPath = this.apiPath + "lookup/dsMessage/"+demographicNo
-                console.log("MEDS to transfer",meds);
-                $http.post(queryPath,meds).then(function (data) {
+                var queryPath = this.apiPath + "lookup/dsMessage/" + demographicNo
+                console.log("MEDS to transfer", meds);
+                $http.post(queryPath, meds).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to get medication details");
                 });
 
@@ -474,14 +474,14 @@ angular.module("rxServices", [])
 
             },
 
-            hideDSMessages : function(dsMessage){
+            hideDSMessages: function (dsMessage) {
 
                 var deferred = $q.defer();
                 var queryPath = this.apiPath + "lookup/hideWarning";
-                console.log("hideDSMessages",dsMessage);
-                $http.post(queryPath,dsMessage).then(function (data) {
+                console.log("hideDSMessages", dsMessage);
+                $http.post(queryPath, dsMessage).then(function (data) {
                     deferred.resolve(data);
-                },function () {
+                }, function () {
                     deferred.reject("An error occurred while attempting to get medication details");
                 });
 

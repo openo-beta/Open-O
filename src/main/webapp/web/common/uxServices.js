@@ -24,137 +24,137 @@
 
 */
 angular.module("uxServices", [])
-	.service("summaryService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/recordUX',
-        getSummaryHeaders: function (demographicNo,key) {
-        	//
+    .service("summaryService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/recordUX',
+            getSummaryHeaders: function (demographicNo, key) {
+                //
+                console.log("Debug: calling left");
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/summary/' + key).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+
+                return deferred.promise;
+
+            },
+            getFullSummary: function (demographicNo, summaryCode) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/fullSummary/' + summaryCode).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject({"msg": "An error occured while fetching items", "summaryCode": summaryCode});
+                });
+
+                return deferred.promise;
+
+            },
+            getFamilyHistory: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/getFamilyHistory').then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+                return deferred.promise;
+            },
+            getMedicalHistory: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/getMedicalHistory').then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+                return deferred.promise;
+            },
+            getOngoingConcerns: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/getOngoingConcerns').then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+                return deferred.promise;
+            },
+            getOtherMeds: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/getOtherMeds').then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+                return deferred.promise;
+            },
+            getReminders: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/getReminders').then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+                return deferred.promise;
+            },
+            getRiskFactors: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/getRiskFactors').then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+                return deferred.promise;
+            }
+        };
+    }).service("uxService", function ($http, $q, $log) {
+    return {
+        apiPath: '../ws/rs/recordUX',
+        menu: function (demographicNo) {
+            //
             console.log("Debug: calling left");
             var deferred = $q.defer();
-            $http.get(this.apiPath+'/'+demographicNo+'/summary/'+key).then(function (response){
-              console.log(response.data);
-              deferred.resolve(response.data);
-          },function(){
-        	  console.log("error fetching items");
-            deferred.reject("An error occured while fetching items");
-          });
-     
-          return deferred.promise;
-            
-        },
-        getFullSummary: function(demographicNo,summaryCode){
-        	var deferred = $q.defer();
-        	$http.get(this.apiPath+'/'+demographicNo+'/fullSummary/'+summaryCode).then(function (response){
+            $http.get(this.apiPath + '/' + demographicNo + '/recordMenu').then(function (response) {
+                console.log(response.data);
                 deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject({"msg": "An error occured while fetching items", "summaryCode": summaryCode});
+            }, function () {
+                console.log("error fetching items");
+                deferred.reject("An error occured while fetching items");
             });
-       
+
             return deferred.promise;
-        	
+
         },
-        getFamilyHistory: function(demographicNo){
-        	var deferred = $q.defer();
-        	$http.get(this.apiPath+'/'+demographicNo+'/getFamilyHistory').then(function (response){
+        searchTemplates: function (search, startIndex, itemsToReturn) {
+            var deferred = $q.defer();
+            $http.post(this.apiPath + '/searchTemplates?startIndex=' + startIndex + "&itemsToReturn=" + itemsToReturn, search).then(function (response) {
                 deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject("An error occured while fetching items");
+            }, function () {
+                console.log("error fetching items");
+                deferred.reject("An error occured while fetching items");
             });
+
             return deferred.promise;
         },
-        getMedicalHistory: function(demographicNo){
-        	var deferred = $q.defer();
-        	$http.get(this.apiPath+'/'+demographicNo+'/getMedicalHistory').then(function (response){
+        getTemplate: function (name) {
+            var deferred = $q.defer();
+            $http.post(this.apiPath + '/template', name).then(function (response) {
                 deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject("An error occured while fetching items");
+            }, function () {
+                console.log("error fetching items");
+                deferred.reject("An error occured while fetching items");
             });
+
             return deferred.promise;
-        },
-    	getOngoingConcerns: function(demographicNo){
-        	var deferred = $q.defer();
-        	$http.get(this.apiPath+'/'+demographicNo+'/getOngoingConcerns').then(function (response){
-                deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject("An error occured while fetching items");
-            });
-            return deferred.promise;
-    	},
-    	getOtherMeds: function(demographicNo){
-        	var deferred = $q.defer();
-        	$http.get(this.apiPath+'/'+demographicNo+'/getOtherMeds').then(function (response){
-                deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject("An error occured while fetching items");
-            });
-            return deferred.promise;
-    	},
-    	getReminders: function(demographicNo){
-        	var deferred = $q.defer();
-        	$http.get(this.apiPath+'/'+demographicNo+'/getReminders').then(function (response){
-                deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject("An error occured while fetching items");
-            });
-            return deferred.promise;
-    	},
-    	getRiskFactors: function(demographicNo){
-        	var deferred = $q.defer();
-        	$http.get(this.apiPath+'/'+demographicNo+'/getRiskFactors').then(function (response){
-                deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject("An error occured while fetching items");
-            });
-            return deferred.promise;
-    	}
+        }
+
     };
-}).service("uxService", function($http,$q,$log){
-   return {
-	 apiPath:'../ws/rs/recordUX',
-     menu: function (demographicNo) {
-     	//
-         console.log("Debug: calling left");
-         var deferred = $q.defer();
-         $http.get(this.apiPath+'/'+demographicNo+'/recordMenu').then(function (response){
-           console.log(response.data);
-           deferred.resolve(response.data);
-       },function(){
-     	  console.log("error fetching items");
-         deferred.reject("An error occured while fetching items");
-       });
-  
-       return deferred.promise;
-         
-     },
- 	searchTemplates: function(search,startIndex,itemsToReturn){
-    	var deferred = $q.defer();
-    	$http.post(this.apiPath+'/searchTemplates?startIndex='+startIndex + "&itemsToReturn="+itemsToReturn,search).then(function (response){
-    		deferred.resolve(response.data);
-        },function(){
-      	  console.log("error fetching items");
-          deferred.reject("An error occured while fetching items");
-        });
-   
-        return deferred.promise;
-    },
- 	getTemplate: function(name){
-    	var deferred = $q.defer();
-    	$http.post(this.apiPath+'/template',name).then(function (response){
-    		deferred.resolve(response.data);
-        },function(){
-      	  console.log("error fetching items");
-          deferred.reject("An error occured while fetching items");
-        });
-   
-        return deferred.promise;
-    }
-     
-   };
 });

@@ -23,336 +23,349 @@
     Ontario, Canada
 
 */
-oscarApp.controller('DashboardCtrl', function ($scope,providerService,ticklerService,messageService, inboxService, k2aService, $uibModal,noteService, securityService, personaService) {
-	
-	//header	
-	$scope.displayDate= function() {return new Date();}
-	
-	$scope.me = null;
+oscarApp.controller('DashboardCtrl', function ($scope, providerService, ticklerService, messageService, inboxService, k2aService, $uibModal, noteService, securityService, personaService) {
 
-	$scope.busyLoadingData = false;
-	
-	personaService.getDashboardPreferences().then(function(data){
-		$scope.prefs = data.dashboardPreferences;
-	});
-	
-	securityService.hasRights({items:[{objectName:'_tickler',privilege:'w'},{objectName:'_tickler',privilege:'r'}]}).then(function(result){
-		if(result.content != null && result.content.length == 2) {
-			$scope.ticklerWriteAccess = result.content[0];
-			$scope.ticklerReadAccess = result.content[1];
-		}
-	});
-		
-	$scope.openInbox = function() {
-		 newwindow=window.open('../documentManager/inboxManage.do?method=prepareForIndexPage','inbox','height=700,width=1000');
-		 if (window.focus) {
-			 newwindow.focus();
-		 }	
-	}
+    //header
+    $scope.displayDate = function () {
+        return new Date();
+    }
 
-	$scope.loadMoreK2aFeed = function() {
-		$scope.updateFeed($scope.k2afeed.length,10);
-	}
+    $scope.me = null;
 
-	$scope.authenticateK2A = function(id){
-	    window.open('../apps/oauth1.jsp?id='+id,'appAuth','width=700,height=450');
-	}
+    $scope.busyLoadingData = false;
 
-	$scope.agreeWithK2aPost = function(item) {
-		if(item.agree) {
-			k2aService.removeK2AComment(item.agreeId).then(function(response){
-				item.agree = false;
-				item.agreeCount--;
-				item.agreeId = '';			
-			},function(reason){
-				alert(reason);
-			});
-		} else if(!(item.agree || item.disagree)) {
-			if(typeof item.newComment === 'undefined') {
-				item.newComment = {};		
-			}
-			item.newComment.agree = true;
-			item.newComment.body = '';
+    personaService.getDashboardPreferences().then(function (data) {
+        $scope.prefs = data.dashboardPreferences;
+    });
 
-			$scope.commentOnK2aPost(item);
-		}
-	}
+    securityService.hasRights({
+        items: [{objectName: '_tickler', privilege: 'w'}, {
+            objectName: '_tickler',
+            privilege: 'r'
+        }]
+    }).then(function (result) {
+        if (result.content != null && result.content.length == 2) {
+            $scope.ticklerWriteAccess = result.content[0];
+            $scope.ticklerReadAccess = result.content[1];
+        }
+    });
 
-	$scope.disagreeWithK2aPost = function(item) {
-		if(item.disagree) {
-			k2aService.removeK2AComment(item.agreeId).then(function(response){
-				item.disagree = false;
-				item.disagreeCount--;
-				item.agreeId = '';			
-			},function(reason){
-				alert(reason);
-			});
-		} if(!(item.agree || item.disagree)) {		
-			if(typeof item.newComment === 'undefined') {
-				item.newComment = {};		
-			}
-			item.newComment.agree = false;
-			item.newComment.body = '';
+    $scope.openInbox = function () {
+        newwindow = window.open('../documentManager/inboxManage.do?method=prepareForIndexPage', 'inbox', 'height=700,width=1000');
+        if (window.focus) {
+            newwindow.focus();
+        }
+    }
 
-			$scope.commentOnK2aPost(item);
-		}
-	}
+    $scope.loadMoreK2aFeed = function () {
+        $scope.updateFeed($scope.k2afeed.length, 10);
+    }
 
-	$scope.commentOnK2aPost = function(item) {
-		item.newComment.postId = item.id;
-		k2aService.postK2AComment(item.newComment).then(function(response){
-			item.newComment.body = '';
-			item.newComment.agree = '';
-			item.agreeId = response.agreeId;
-			if(!(typeof response.post[0].agree === 'undefined')) {			
-				if(response.post[0].agree) {
-					item.agree = true;
-					item.agreeId = response.post[0].agreeId;
-					item.agreeCount++;
-				} else {
-					item.disagree = true;
-					item.agreeId = response.post[0].agreeId;
-					item.disagreeCount++;
-				}
-			} else {
-				item.commentCount++;
-				item.comments.unshift(response.post[0]);
-			}
-		},function(reason){
-			alert(reason);
-		});
-	}
-	
-	$scope.updateTicklers = function() {
-		//consider the option to have overdue only or not
-		ticklerService.search({priority:'',status:'A',assignee:$scope.me.providerNo,overdueOnly:'property'},0,6).then(function(response){
-			$scope.totalTicklers = response.total;
-			if(response.tickler == null) {
-				return;
-			}
-				
-			if (response.tickler instanceof Array) {
-				$scope.ticklers = response.tickler;
-			} else {
-				var arr = new Array();
-				arr[0] = response.tickler;
-				$scope.ticklers = arr;
-			}	
-		},function(reason){
-			alert(reason);
-		});
-	}
-	
-	$scope.updateMessages = function() {
-		messageService.getUnread(6).then(function(response){
-			$scope.totalMessages = response.total;
-			
-			if(response.message == null) {
-				return;
-			}
-			
-			if (response.message instanceof Array) {
-				$scope.messages = response.message;
-			} else {
-				var arr = new Array();
-				arr[0] = response.message;
-				$scope.messages = arr;
-			}			
-		},function(reason){
-			alert(reason);
-		});
-		
-	}
-	
-	$scope.updateReports = function() {
+    $scope.authenticateK2A = function (id) {
+        window.open('../apps/oauth1.jsp?id=' + id, 'appAuth', 'width=700,height=450');
+    }
+
+    $scope.agreeWithK2aPost = function (item) {
+        if (item.agree) {
+            k2aService.removeK2AComment(item.agreeId).then(function (response) {
+                item.agree = false;
+                item.agreeCount--;
+                item.agreeId = '';
+            }, function (reason) {
+                alert(reason);
+            });
+        } else if (!(item.agree || item.disagree)) {
+            if (typeof item.newComment === 'undefined') {
+                item.newComment = {};
+            }
+            item.newComment.agree = true;
+            item.newComment.body = '';
+
+            $scope.commentOnK2aPost(item);
+        }
+    }
+
+    $scope.disagreeWithK2aPost = function (item) {
+        if (item.disagree) {
+            k2aService.removeK2AComment(item.agreeId).then(function (response) {
+                item.disagree = false;
+                item.disagreeCount--;
+                item.agreeId = '';
+            }, function (reason) {
+                alert(reason);
+            });
+        }
+        if (!(item.agree || item.disagree)) {
+            if (typeof item.newComment === 'undefined') {
+                item.newComment = {};
+            }
+            item.newComment.agree = false;
+            item.newComment.body = '';
+
+            $scope.commentOnK2aPost(item);
+        }
+    }
+
+    $scope.commentOnK2aPost = function (item) {
+        item.newComment.postId = item.id;
+        k2aService.postK2AComment(item.newComment).then(function (response) {
+            item.newComment.body = '';
+            item.newComment.agree = '';
+            item.agreeId = response.agreeId;
+            if (!(typeof response.post[0].agree === 'undefined')) {
+                if (response.post[0].agree) {
+                    item.agree = true;
+                    item.agreeId = response.post[0].agreeId;
+                    item.agreeCount++;
+                } else {
+                    item.disagree = true;
+                    item.agreeId = response.post[0].agreeId;
+                    item.disagreeCount++;
+                }
+            } else {
+                item.commentCount++;
+                item.comments.unshift(response.post[0]);
+            }
+        }, function (reason) {
+            alert(reason);
+        });
+    }
+
+    $scope.updateTicklers = function () {
+        //consider the option to have overdue only or not
+        ticklerService.search({
+            priority: '',
+            status: 'A',
+            assignee: $scope.me.providerNo,
+            overdueOnly: 'property'
+        }, 0, 6).then(function (response) {
+            $scope.totalTicklers = response.total;
+            if (response.tickler == null) {
+                return;
+            }
+
+            if (response.tickler instanceof Array) {
+                $scope.ticklers = response.tickler;
+            } else {
+                var arr = new Array();
+                arr[0] = response.tickler;
+                $scope.ticklers = arr;
+            }
+        }, function (reason) {
+            alert(reason);
+        });
+    }
+
+    $scope.updateMessages = function () {
+        messageService.getUnread(6).then(function (response) {
+            $scope.totalMessages = response.total;
+
+            if (response.message == null) {
+                return;
+            }
+
+            if (response.message instanceof Array) {
+                $scope.messages = response.message;
+            } else {
+                var arr = new Array();
+                arr[0] = response.message;
+                $scope.messages = arr;
+            }
+        }, function (reason) {
+            alert(reason);
+        });
+
+    }
+
+    $scope.updateReports = function () {
 //TODO: changed to return 5 since that is all we are using at the moment
-		inboxService.getDashboardItems(5).then(function(response){
-			if(response.inbox == null) {
-				return;
-			}
-						
-			if (response.inbox instanceof Array) {
-				$scope.inbox = response.inbox;
-			} else {
-				var arr = new Array();
-				arr[0] = response.inbox;
-				$scope.inbox = arr;
-			}
-			$scope.totalInbox = response.total;
-		},function(reason){
-			alert(reason);
-		});
-	}
-	
-	$scope.updateFeed = function(startPoint,numberOfRows) {
-		if ($scope.busyLoadingData) return;
-  		$scope.busyLoadingData = true;
-		k2aService.getK2aFeed(startPoint,numberOfRows).then(function(response){
-			if(response.content == null) {
-				return;
-			}
-			
-			if (response.content instanceof Array) {
-				for(var i=0; i < response.content.length; i++) {
-					if(!Array.isArray(response.content[i].comments)) {
-						var arr = new Array();
-						arr[0] = response.content[i].comments;
-						response.content[i].comments = arr;						
-					}					
-				}
-				if(typeof $scope.k2afeed === 'undefined') {
-					$scope.k2afeed = response.content;
-				} else {
-					$scope.k2afeed = $scope.k2afeed.concat(response.content);
-				}
-				$scope.busyLoadingData = false;	
-			} else {
-				if(response.content.authenticatek2a) {
-					$scope.authenticatek2a = response.content.description;
-				} else {
-					var arr = new Array();
-					arr[0] = response.content;
-					$scope.k2afeed = arr;
-				}
-			}	
-		},function(reason){
-			alert(reason);
-			$scope.busyLoadingData = false;	
-		});
-	}
-	
-	$scope.updateDashboard = function() {
-		$scope.updateTicklers();
-		$scope.updateMessages();
-		$scope.updateReports();
-		$scope.updateFeed(0,10);
-		
-	}
-	
-	$scope.$watch(function() {
-		  return securityService.getUser();
-		}, function(newVal) {
-			$scope.me = newVal;
-			
-			if(newVal != null) {
-				$scope.updateDashboard();
-			}
-		}, true);
-	
-	
-	$scope.isTicklerExpiredOrHighPriority = function(tickler) {
-		var ticklerDate = Date.parse(tickler.serviceDate);
-		var now = new Date();
-		var result = false;
-		if(ticklerDate < now) {
-			result=true;
-		}
-		if(tickler.priority == 'High') {
-			result=true;
-		}
-			
-		return result;
-	}
-	
-	$scope.isTicklerHighPriority = function(tickler) {
-		var ticklerDate = Date.parse(tickler.serviceDate);
-		var now = new Date();
-		var result = false;
-		
-		if(tickler.priority == 'High') {
-			result=true;
-		}
-			
-		return result;
-	}
-	
-	$scope.openClassicMessenger = function() {
-		if($scope.me != null) {
-			window.open('../oscarMessenger/DisplayMessages.do?providerNo='+$scope.me.providerNo,'msgs','height=700,width=1024,scrollbars=1');
-		}
-	}	
-	
-	$scope.viewMessage = function(message) {
-		window.open('../oscarMessenger/ViewMessage.do?messageID='+message.id+'&boxType=0','msg'+message.id,'height=700,width=1024,scrollbars=1');
-	}
+        inboxService.getDashboardItems(5).then(function (response) {
+            if (response.inbox == null) {
+                return;
+            }
 
-	$scope.viewTickler = function(tickler) {
+            if (response.inbox instanceof Array) {
+                $scope.inbox = response.inbox;
+            } else {
+                var arr = new Array();
+                arr[0] = response.inbox;
+                $scope.inbox = arr;
+            }
+            $scope.totalInbox = response.total;
+        }, function (reason) {
+            alert(reason);
+        });
+    }
+
+    $scope.updateFeed = function (startPoint, numberOfRows) {
+        if ($scope.busyLoadingData) return;
+        $scope.busyLoadingData = true;
+        k2aService.getK2aFeed(startPoint, numberOfRows).then(function (response) {
+            if (response.content == null) {
+                return;
+            }
+
+            if (response.content instanceof Array) {
+                for (var i = 0; i < response.content.length; i++) {
+                    if (!Array.isArray(response.content[i].comments)) {
+                        var arr = new Array();
+                        arr[0] = response.content[i].comments;
+                        response.content[i].comments = arr;
+                    }
+                }
+                if (typeof $scope.k2afeed === 'undefined') {
+                    $scope.k2afeed = response.content;
+                } else {
+                    $scope.k2afeed = $scope.k2afeed.concat(response.content);
+                }
+                $scope.busyLoadingData = false;
+            } else {
+                if (response.content.authenticatek2a) {
+                    $scope.authenticatek2a = response.content.description;
+                } else {
+                    var arr = new Array();
+                    arr[0] = response.content;
+                    $scope.k2afeed = arr;
+                }
+            }
+        }, function (reason) {
+            alert(reason);
+            $scope.busyLoadingData = false;
+        });
+    }
+
+    $scope.updateDashboard = function () {
+        $scope.updateTicklers();
+        $scope.updateMessages();
+        $scope.updateReports();
+        $scope.updateFeed(0, 10);
+
+    }
+
+    $scope.$watch(function () {
+        return securityService.getUser();
+    }, function (newVal) {
+        $scope.me = newVal;
+
+        if (newVal != null) {
+            $scope.updateDashboard();
+        }
+    }, true);
+
+
+    $scope.isTicklerExpiredOrHighPriority = function (tickler) {
+        var ticklerDate = Date.parse(tickler.serviceDate);
+        var now = new Date();
+        var result = false;
+        if (ticklerDate < now) {
+            result = true;
+        }
+        if (tickler.priority == 'High') {
+            result = true;
+        }
+
+        return result;
+    }
+
+    $scope.isTicklerHighPriority = function (tickler) {
+        var ticklerDate = Date.parse(tickler.serviceDate);
+        var now = new Date();
+        var result = false;
+
+        if (tickler.priority == 'High') {
+            result = true;
+        }
+
+        return result;
+    }
+
+    $scope.openClassicMessenger = function () {
+        if ($scope.me != null) {
+            window.open('../oscarMessenger/DisplayMessages.do?providerNo=' + $scope.me.providerNo, 'msgs', 'height=700,width=1024,scrollbars=1');
+        }
+    }
+
+    $scope.viewMessage = function (message) {
+        window.open('../oscarMessenger/ViewMessage.do?messageID=' + message.id + '&boxType=0', 'msg' + message.id, 'height=700,width=1024,scrollbars=1');
+    }
+
+    $scope.viewTickler = function (tickler) {
         var modalInstance = $uibModal.open({
-        	templateUrl: 'tickler/ticklerView.jsp',
+            templateUrl: 'tickler/ticklerView.jsp',
             controller: 'TicklerViewController',
             backdrop: false,
             size: 'lg',
             resolve: {
                 tickler: function () {
-                	return tickler;
+                    return tickler;
                 },
-                ticklerNote: function() {
-                	return noteService.getTicklerNote(tickler.id);
+                ticklerNote: function () {
+                    return noteService.getTicklerNote(tickler.id);
                 },
-                ticklerWriteAccess: function() {
-                	return  $scope.ticklerWriteAccess;
+                ticklerWriteAccess: function () {
+                    return $scope.ticklerWriteAccess;
                 },
-                me: function() {
-                	return $scope.me;
+                me: function () {
+                    return $scope.me;
                 }
             }
         });
-        
-        modalInstance.result.then(function(data){
-        	//console.log('data from modalInstance '+data);
-        	if(data != null && data == true) {
-        		$scope.updateTicklers();
-        	}
-        },function(reason){
-        	alert(reason);
+
+        modalInstance.result.then(function (data) {
+            //console.log('data from modalInstance '+data);
+            if (data != null && data == true) {
+                $scope.updateTicklers();
+            }
+        }, function (reason) {
+            alert(reason);
         });
-        
-	}
-	
-	$scope.configureTicklers = function() {
+
+    }
+
+    $scope.configureTicklers = function () {
         var modalInstance = $uibModal.open({
-        	templateUrl: 'tickler/configureDashboard.jsp',
+            templateUrl: 'tickler/configureDashboard.jsp',
             controller: 'TicklerConfigureController',
             backdrop: false,
             size: 'lg',
             resolve: {
-            	prefs: function() {
-                	return personaService.getDashboardPreferences();
+                prefs: function () {
+                    return personaService.getDashboardPreferences();
                 }
             }
         });
-        
-        modalInstance.result.then(function(data){
-        	if(data == true ) {
-        		$scope.updateTicklers();
-        		personaService.getDashboardPreferences().then(function(data){
-    				$scope.prefs = data.dashboardPreferences;
-    			});
-        	}
-        },function(reason){
-        	alert(reason);
+
+        modalInstance.result.then(function (data) {
+            if (data == true) {
+                $scope.updateTicklers();
+                personaService.getDashboardPreferences().then(function (data) {
+                    $scope.prefs = data.dashboardPreferences;
+                });
+            }
+        }, function (reason) {
+            alert(reason);
         });
-        
-	}
+
+    }
 });
 
 
-oscarApp.controller('TicklerConfigureController',function($scope,$uibModalInstance,personaService,prefs) {
-	
-	$scope.prefs = prefs.dashboardPreferences;
-	
-	    $scope.close = function () {
-		   $uibModalInstance.close(false);		
-	    }
-	    $scope.save = function () {
-	    	
-	    	personaService.updateDashboardPreferences($scope.prefs).then(function(data){
-    			$uibModalInstance.close(true);
-    			
-    			
-    		}, function(reason){
-    			$uibModalInstance.close(false);
-    		});
-	    	
-	    }
+oscarApp.controller('TicklerConfigureController', function ($scope, $uibModalInstance, personaService, prefs) {
+
+    $scope.prefs = prefs.dashboardPreferences;
+
+    $scope.close = function () {
+        $uibModalInstance.close(false);
+    }
+    $scope.save = function () {
+
+        personaService.updateDashboardPreferences($scope.prefs).then(function (data) {
+            $uibModalInstance.close(true);
+
+
+        }, function (reason) {
+            $uibModalInstance.close(false);
+        });
+
+    }
 });

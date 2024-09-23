@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"JPY","symbol":"¥"})
+({"displayName": "JPY", "symbol": "¥"})

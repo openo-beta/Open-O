@@ -24,57 +24,60 @@
 
 */
 angular.module("diseaseRegistryServices", [])
-	.service("diseaseRegistryServices", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/dxRegisty/',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-		
-        getQuickLists: function () {
-            var deferred = $q.defer();
-            $http.get(this.apiPath+'quickLists/',this.configHeadersWithCache).then(function (response){
-            	console.log(response.data);
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching demographic");
-            	deferred.reject("An error occured while fetching items");
-            });
-     
-          return deferred.promise;
-            
-        },
-        
-        addToDxRegistry: function (demgraphicNo,disease) {
-        	var deferred = $q.defer();
-        	var issueToSend = {};
-        	issueToSend.id = disease.id;
-        	issueToSend.type = disease.type;
-        	issueToSend.code = disease.code;
-        	issueToSend.description = disease.description;
-        	
-            $http.post(this.apiPath+demgraphicNo+'/add',issueToSend).then(function (response){
-            	console.log(response.data);
-            	deferred.resolve(response.data);
-          },function(){
-        	  	console.log("error fetching items");
-        	  	deferred.reject("An error occured while fetching items");
-          });
-     
-          return deferred.promise;
-        },
-        
-        findLikeIssue: function(diagnosis){
-        	var deferred = $q.defer();
-        	$http.post(this.apiPath+'findLikeIssue',diagnosis).then(function (response){
-            	console.log(response.data);
-                deferred.resolve(response.data);
-            },function(){
-          	  console.log("error fetching items");
-              deferred.reject("An error occured while fetching items");
-            });
-       
-            return deferred.promise;
-        	
-        }
-    };
-});
+    .service("diseaseRegistryServices", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/dxRegisty/',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+
+            getQuickLists: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + 'quickLists/', this.configHeadersWithCache).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching demographic");
+                    deferred.reject("An error occured while fetching items");
+                });
+
+                return deferred.promise;
+
+            },
+
+            addToDxRegistry: function (demgraphicNo, disease) {
+                var deferred = $q.defer();
+                var issueToSend = {};
+                issueToSend.id = disease.id;
+                issueToSend.type = disease.type;
+                issueToSend.code = disease.code;
+                issueToSend.description = disease.description;
+
+                $http.post(this.apiPath + demgraphicNo + '/add', issueToSend).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+
+                return deferred.promise;
+            },
+
+            findLikeIssue: function (diagnosis) {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + 'findLikeIssue', diagnosis).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching items");
+                    deferred.reject("An error occured while fetching items");
+                });
+
+                return deferred.promise;
+
+            }
+        };
+    });

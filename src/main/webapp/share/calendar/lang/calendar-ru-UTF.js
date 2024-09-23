@@ -8,13 +8,13 @@
 // full day names
 Calendar._DN = new Array
 ("Воскресенье",
- "Понедельник",
- "Вторник",
- "Среда",
- "Четверг",
- "Пятница",
- "Суббота",
- "Восресение");
+    "Понедельник",
+    "Вторник",
+    "Среда",
+    "Четверг",
+    "Пятница",
+    "Суббота",
+    "Восресение");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -31,13 +31,13 @@ Calendar._DN = new Array
 // short day names
 Calendar._SDN = new Array
 ("Вск",
- "Пнд",
- "Втр",
- "Срд",
- "Чтв",
- "Птн",
- "Сбт",
- "Вск");
+    "Пнд",
+    "Втр",
+    "Срд",
+    "Чтв",
+    "Птн",
+    "Сбт",
+    "Вск");
 // First day of the week. "0" means display Sunday first, "1" means display
 // Monday first, etc.
 Calendar._FD = 1;
@@ -45,52 +45,52 @@ Calendar._FD = 1;
 // full month names
 Calendar._MN = new Array
 ("Январь",
- "Февраль",
- "Март",
- "Апрель",
- "Май",
- "Июнь",
- "Июль",
- "Август",
- "Сентябрь",
- "Октябрь",
- "Ноябрь",
- "Декабрь");
+    "Февраль",
+    "Март",
+    "Апрель",
+    "Май",
+    "Июнь",
+    "Июль",
+    "Август",
+    "Сентябрь",
+    "Октябрь",
+    "Ноябрь",
+    "Декабрь");
 
 // short month names
 Calendar._SMN = new Array
 ("Янв",
- "Фев",
- "Мар",
- "Апр",
- "Май",
- "Июн",
- "Июл",
- "Авг",
- "Сен",
- "Окт",
- "Ноя",
- "Дек");
+    "Фев",
+    "Мар",
+    "Апр",
+    "Май",
+    "Июн",
+    "Июл",
+    "Авг",
+    "Сен",
+    "Окт",
+    "Ноя",
+    "Дек");
 
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "Об календаре";
 
 Calendar._TT["ABOUT"] =
-"DHTML Date/Time Selector\n" +
-"(c) dynarch.com 2002-2003\n" + // don't translate this this ;-)
-"For latest version visit: http://dynarch.com/mishoo/calendar.epl\n" +
-"Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
-"\n\n" +
-"Как выбрать дату:\n" +
-"- При помощи кнопок \xab, \xbb можно выбрать год\n" +
-"- При помощи кнопок " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " можно выбрать месяц\n" +
-"- Подержите эти кнопки нажатыми, чтобы появилось меню быстрого выбора.";
+    "DHTML Date/Time Selector\n" +
+    "(c) dynarch.com 2002-2003\n" + // don't translate this this ;-)
+    "For latest version visit: http://dynarch.com/mishoo/calendar.epl\n" +
+    "Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
+    "\n\n" +
+    "Как выбрать дату:\n" +
+    "- При помощи кнопок \xab, \xbb можно выбрать год\n" +
+    "- При помощи кнопок " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " можно выбрать месяц\n" +
+    "- Подержите эти кнопки нажатыми, чтобы появилось меню быстрого выбора.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
-"Как выбрать время:\n" +
-"- При клике на часах или минутах они увеличиваются\n" +
-"- При клике с нажатой клавишей Shift они уменьшаются.\n" +
-"- Если нажать и двигать мышкой влево/вправо, они будут меняться быстрее.";
+    "Как выбрать время:\n" +
+    "- При клике на часах или минутах они увеличиваются\n" +
+    "- При клике с нажатой клавишей Shift они уменьшаются.\n" +
+    "- Если нажать и двигать мышкой влево/вправо, они будут меняться быстрее.";
 
 Calendar._TT["PREV_YEAR"] = "Пред. год";
 Calendar._TT["PREV_MONTH"] = "Пред. месяц";

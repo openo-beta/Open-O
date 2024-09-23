@@ -24,24 +24,27 @@
 
 */
 angular.module("messageServices", [])
-	.service("messageService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/messaging',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-	      
-        getUnread: function (limit) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/unread?startIndex=0&limit='+limit,
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function (response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting messages");
+    .service("messageService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/messaging',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+
+            getUnread: function (limit) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/unread?startIndex=0&limit=' + limit,
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting messages");
                 });
-           return deferred.promise;
-        }
-    };
-});
+                return deferred.promise;
+            }
+        };
+    });

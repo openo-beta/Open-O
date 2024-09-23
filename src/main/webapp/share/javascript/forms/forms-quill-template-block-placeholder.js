@@ -1,12 +1,13 @@
 let QuillBlockEmbed = Quill.import('blots/block/embed');
+
 class TemplateBlockPlaceholder extends QuillBlockEmbed {
     static blotName = 'TemplateBlockPlaceholder';
     static tagName = 'div';
     static className = 'quill-placeholder-block';
-    
+
     static create(value) {
         let node = super.create(value);
-        
+
         // Set node classes
         node.classList.add('quill-placeholder');
         node.classList.add('quill-placeholder-' + value.subject);
@@ -20,7 +21,7 @@ class TemplateBlockPlaceholder extends QuillBlockEmbed {
 
         return node;
     }
-    
+
     static value(node) {
         return {
             subject: node.getAttribute('data-subject'),
@@ -29,6 +30,7 @@ class TemplateBlockPlaceholder extends QuillBlockEmbed {
         };
     }
 }
+
 Quill.register({
     'formats/TemplateBlockPlaceholder': TemplateBlockPlaceholder
 });

@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"Euro","symbol":"€"})
+({"displayName": "Euro", "symbol": "€"})

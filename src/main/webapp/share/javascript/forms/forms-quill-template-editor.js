@@ -1,27 +1,31 @@
 let QuillParchment = Quill.import('parchment');
 let Delta = Quill.import('delta');
+
 class TemplatePlaceholderQuill {
     constructor(formId, shortCodes, demographicPlaceholderValues, options) {
         let quillElement = document.getElementById(formId);
         if (!quillElement) {
             console.error(`TemplatePlaceholderQuill: element \'${formId}\' does not exist`)
         }
-        
+
         if (options) {
             this.setWebServiceParameters(options);
         }
         this.quillElement = quillElement;
         let noToolbar = (options != null && options['noToolBar']);
-        this.quill = new Quill(this.quillElement, {theme: 'snow', modules : { toolbar: noToolbar ? !noToolbar : this.getDefaultToolbarOptions()}});
-        
+        this.quill = new Quill(this.quillElement, {
+            theme: 'snow',
+            modules: {toolbar: noToolbar ? !noToolbar : this.getDefaultToolbarOptions()}
+        });
+
         this.setShortCodes(shortCodes);
         this.setResolvedPlaceHolderValues(demographicPlaceholderValues, false);
-        
+
         let boundFillInKeyHandler = this.fillInKeyHandler.bind(this);
         this.quill.keyboard.addBinding({key: 115}, boundFillInKeyHandler); // bind F4 key
         let boundPreviousFillInKeyHandler = this.previousFillInKeyHandler.bind(this);
         this.quill.keyboard.addBinding({key: 115, shiftKey: true}, boundPreviousFillInKeyHandler); // bind shift + F4 key
-        
+
         // // Bind # to placeholder lookup
         // let addPlaceholderKeyHandler = this.addPlaceholderKeyHandler.bind(this);
         // this.quill.keyboard.addBinding({key: '3', shiftKey: true}, addPlaceholderKeyHandler); // bind # key
@@ -29,12 +33,12 @@ class TemplatePlaceholderQuill {
         if (!noToolbar) {
             // remove tab indices from toolbar since shortcuts already exist
             this.removeTabindexForToolbar();
-            
+
             let boundImageHandler = this.imageHandler.bind(this);
             this.quill.getModule('toolbar').addHandler('image', boundImageHandler);
         }
     }
-    
+
     setShortCodes(shortCodes) {
         this.shortCodes = shortCodes || [];
         if (this.shortCodes.size > 0) {
@@ -42,6 +46,7 @@ class TemplatePlaceholderQuill {
             this.quill.keyboard.addBinding({key: 220}, boundShortCodeHandler); // bind slash character '\'
         }
     }
+
     setResolvedPlaceHolderValues(demographicPlaceholderValues, showMissingValuePopup = false) {
         this.demographicPlaceholderValues = demographicPlaceholderValues || [];
         this.updateDomWithResolvedPlaceHolderValues(showMissingValuePopup);
@@ -113,46 +118,59 @@ class TemplatePlaceholderQuill {
             }
         }
     }
-    
+
     setContents(newContent) {
         this.quill.setContents(newContent);
     }
+
     getContents() {
         return this.quill.getContents();
     }
+
     getContentsWithImagePlaceholders() {
         let delta = this.quill.getContents();
-        let deltaWithImagePlaceholders = { ops: [] };
+        let deltaWithImagePlaceholders = {ops: []};
         for (let i = 0; i < delta.ops.length; i++) {
             let richTextItem = delta.ops[i];
             if (richTextItem.insert['ImagePlaceholder'] != null) {
                 let imagePlaceholder = richTextItem.insert.ImagePlaceholder;
                 // imagePlaceholder.data = '\$\{' + richTextItem.insert.ImagePlaceholder.identifier + '\}';
-                deltaWithImagePlaceholders.ops.push({'insert': { 'ImagePlaceholder': { 'identifier' : imagePlaceholder.identifier, 'data' : '\$\{' + imagePlaceholder.identifier + '\}'}}});
+                deltaWithImagePlaceholders.ops.push({
+                    'insert': {
+                        'ImagePlaceholder': {
+                            'identifier': imagePlaceholder.identifier,
+                            'data': '\$\{' + imagePlaceholder.identifier + '\}'
+                        }
+                    }
+                });
             } else { // no template or image, just add to formatted delta
                 deltaWithImagePlaceholders.ops.push(richTextItem);
             }
         }
         return deltaWithImagePlaceholders;
     }
+
     getText() {
         return this.quill.getText().trim();
     }
+
     getTextWithTemplatePlaceholderIndexes() {
         return this.getContents().map(function (op) {
             return typeof op.insert === 'string' ? op.insert : '#'
         }).join('');
     }
+
     getHtml() {
         return this.quill.root.innerHTML;
     }
-    
+
     getTemplatePlaceholders() {
         let delta = this.quill.getContents();
         return delta.ops.filter(item => (item.insert.TemplatePlaceholder != null || item.insert.TemplateBlockPlaceholder != null));
     }
+
     getTemplatePlaceholderMarkers() {
-        let placeholders =  this.getTemplatePlaceholders();
+        let placeholders = this.getTemplatePlaceholders();
         let placeholderMarkers = [];
         for (let i = 0; i < placeholders.length; i++) {
             if (placeholders[i].insert['TemplatePlaceholder']) {
@@ -163,10 +181,12 @@ class TemplatePlaceholderQuill {
         }
         return placeholderMarkers;
     }
+
     getDocumentImages() {
         let delta = this.quill.getContents();
         return delta.ops.filter(item => item.insert.ImagePlaceholder != null);
     }
+
     fetchAndApplyTemplatePlaceHoldersWithFilledValues(placeholdersToResolve, callback) {
         // Check if needed parameters are set
         if (typeof this.demographicNo === 'undefined' || typeof this.csrfToken === 'undefined' || typeof this.oscarContext === 'undefined') {
@@ -179,7 +199,7 @@ class TemplatePlaceholderQuill {
             } else {
                 templatePlaceholderMarkers = placeholdersToResolve;
             }
-    
+
             // Ajax request to fetch data using keys
             const httpRequest = new XMLHttpRequest();
             const formData = new FormData();
@@ -187,13 +207,13 @@ class TemplatePlaceholderQuill {
             formData.append('appointmentNo', this.appointmentNo);
             formData.append('fieldsToPullListString', templatePlaceholderMarkers.join(';'));
             formData.append(this.csrfToken['name'], this.csrfToken['value']);
-    
+
             // bind events
             let onSendRequestSuccessEvent = this.onSendRequestSuccess.bind(this, callback);
             httpRequest.addEventListener('load', onSendRequestSuccessEvent);
             let onSendRequestErrorEvent = this.onSendRequestError.bind(this);
             httpRequest.addEventListener('error', onSendRequestErrorEvent);
-    
+
             httpRequest.open('POST', this.oscarContext + '/form/FormSmartEncounterAction.do?method=getTemplatePlaceHolderValues');
             httpRequest.send(formData);
         }
@@ -209,13 +229,14 @@ class TemplatePlaceholderQuill {
             }
         }
     }
+
     onSendRequestError(event) {
         console.log(event);
     }
-    
+
     getFormattedHtmlAndText(headerHtml, footerHtml) {
         let delta = this.quill.getContents();
-        let richTextDeltaFormatted = { ops: [] };
+        let richTextDeltaFormatted = {ops: []};
         for (let i = 0; i < delta.ops.length; i++) {
             let richTextItem = delta.ops[i];
             if (richTextItem.insert['TemplatePlaceholder'] != null) { // replace value and add as standard delta input
@@ -236,12 +257,16 @@ class TemplatePlaceholderQuill {
         }
         this.quill.setContents(richTextDeltaFormatted);
 
-        if (headerHtml === null) { headerHtml = ''; }
-        if (footerHtml === null) { footerHtml = ''; }
+        if (headerHtml === null) {
+            headerHtml = '';
+        }
+        if (footerHtml === null) {
+            footerHtml = '';
+        }
         let contentHtml = this.getHtml();
         let css = 'body { font-family: sans-serif; tab-size: 4; font-size: 13px; } p, ol, ul, pre, blockquote, h1, h2, h3, h4, h5, h6 { margin: 0; padding: 0; } @page { @top-center { content: element(header); } } #pageHeader{ position: running(header); span.tab { display: inline-block; } }';
         let formattedHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Smart Encounter Printout</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><style type="text/css">${css}</style></head><body><div class="header">${headerHtml}</div><div class="content">${contentHtml}</div><div class="footer">${footerHtml}</div></body></html>`;
-        
+
         let formattedText = this.getText();
         this.quill.setContents(delta);
 
@@ -255,7 +280,7 @@ class TemplatePlaceholderQuill {
 
     insertPlaceholderAtCaret(placeholderToInsert) {
         let caretPosition = this.quill.getSelection(true);
-        
+
         this.quill.insertEmbed(caretPosition.index, placeholderToInsert, Quill.sources.USER);
         if ('DIV' === placeholderToInsert.nodeName) {
             this.quill.setSelection(caretPosition.index + 1, Quill.sources.USER);
@@ -275,7 +300,7 @@ class TemplatePlaceholderQuill {
         if (shortCode) {
             // create new delta that retains all data prior to the short code name and deletes entered name
             let changes = new Delta().retain(range.index - shortCodeString.length).delete(shortCodeString.length);
-            
+
             let placeholderNamesToResolve = [];
             // iterate over shortcode delta ops and add to end of new delta
             for (let i = 0; i < shortCode.ops.length; i++) {
@@ -287,10 +312,10 @@ class TemplatePlaceholderQuill {
                     placeholderNamesToResolve.push(embed.insert['TemplateBlockPlaceholder'].marker);
                 }
             }
-            
+
             // all data after short code ops will be retained
             this.quill.updateContents(changes, Quill.sources.USER);
-            
+
             // call service to fill in placeholders if demographic is used (aka not in settings screen)
             if (this.demographicNo) {
                 this.fetchAndApplyTemplatePlaceHoldersWithFilledValues(placeholderNamesToResolve);
@@ -299,10 +324,10 @@ class TemplatePlaceholderQuill {
             this.quill.insertText(range.index, '\\');
         }
     };
-    
+
     fillInKeyHandler(range, context) {
         let text = this.getTextWithTemplatePlaceholderIndexes();
-        
+
         // get index of next fill in marker
         let indexToSelect = text.indexOf('«»', range.index);
         if (indexToSelect === range.index) {
@@ -349,7 +374,10 @@ class TemplatePlaceholderQuill {
                     let reader = new FileReader();
                     reader.onload = function (e) {
                         let range = thisQuill.getSelection(true);
-                        let imageBlot = ImagePlaceholder.create({ data: e.target.result, identifier: 'image_' + thisCreateUuid() });
+                        let imageBlot = ImagePlaceholder.create({
+                            data: e.target.result,
+                            identifier: 'image_' + thisCreateUuid()
+                        });
                         thisQuill.insertEmbed(range.index, imageBlot, Quill.sources.USER);
                         thisQuill.setSelection(range.index + 1, Quill.sources.USER);
                         fileInput.value = '';
@@ -361,15 +389,16 @@ class TemplatePlaceholderQuill {
         }
         fileInput.click();
     };
-    
+
     getDefaultToolbarOptions() {
         return [
-            ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'script': 'sub'}, { 'script': 'super' }],
-            [{ 'direction': 'rtl' }], [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            [{ 'color': [] }, { 'background': [] }], [{ 'font': [] }], [{ 'align': [] }], ['image'], ['clean']
+            ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{'header': 1}, {'header': 2}],
+            [{'list': 'ordered'}, {'list': 'bullet'}], [{'script': 'sub'}, {'script': 'super'}],
+            [{'direction': 'rtl'}], [{'header': [1, 2, 3, 4, 5, 6, false]}],
+            [{'color': []}, {'background': []}], [{'font': []}], [{'align': []}], ['image'], ['clean']
         ];
     }
+
     removeTabindexForToolbar() {
         let toolbarElements = document.querySelector('.ql-toolbar');
         for (let i = 0; i < toolbarElements.children.length; i++) {
@@ -388,7 +417,7 @@ class TemplatePlaceholderQuill {
     }
 
     createUuid() {
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
     }

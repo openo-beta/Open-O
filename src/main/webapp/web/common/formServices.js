@@ -24,114 +24,117 @@
 
 */
 angular.module("formServices", [])
-	.service("formService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/forms',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-        getAllFormsByHeading: function(demographicNo,heading){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/'+demographicNo+'/all?heading='+heading,this.configHeaders).then(function (response){
-            	console.log(response.data);
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching forms");
-            	deferred.reject("An error occured while fetching items");
-            });
-     
-          return deferred.promise;
-        },
-        getAllEncounterForms: function(){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/allEncounterForms',this.configHeaders).then(function (response){
-            	deferred.resolve(response.data.content);
-            },function(){
-            	console.log("error fetching encounter");
-            	deferred.reject("An error occured while fetching encounter forms");
-            });
-     
-          return deferred.promise;
-        },
-        getSelectedEncounterForms: function(){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/selectedEncounterForms',this.configHeaders).then(function (response){
-            	deferred.resolve(response.data.content);
-            },function(){
-            	console.log("error fetching selected encounter");
-            	deferred.reject("An error occured while fetching selected encounter forms");
-            });
-     
-          return deferred.promise;
-        },
-        getCompletedEncounterForms: function(demographicNo){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/'+demographicNo+'/completedEncounterForms',this.configHeaders).then(function (response){
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching completed encounter forms");
-            	deferred.reject("An error occured while fetching completed encounter forms");
-            });
-     
-          return deferred.promise;
-        },        
-        getAllEForms: function(){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/allEForms',this.configHeaders).then(function (response){
-            	deferred.resolve(response.data.content);
-            },function(){
-            	console.log("error fetching eforms");
-            	deferred.reject("An error occured while fetching eforms");
-            });
-     
-          return deferred.promise;
-        },
-        getGroupNames: function(){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/groupNames',this.configHeaders).then(function (response){
-        		 //console.log('got group names !' + data.toSource());
-            	deferred.resolve(response.data.content);
-            },function(){
-            	console.log("error fetching eforms");
-            	deferred.reject("An error occured while fetching group names");
-            });
-     
-          return deferred.promise;
-        },
-        getFormGroups: function(){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/getFormGroups',this.configHeaders).then(function (response){
-        		 console.log(response.data);
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching eforms");
-            	deferred.reject("An error occured while fetching group names");
-            });
-     
-          return deferred.promise;
-        },
-        getFavouriteFormGroup: function(){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/getFavouriteFormGroup',this.configHeaders).then(function (response){
-        		 console.log(response.data);
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching eforms");
-            	deferred.reject("An error occured while fetching group names");
-            });
-     
-          return deferred.promise;
-        },
-        getFormOptions: function(demographicNo){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/'+demographicNo+'/formOptions',this.configHeaders).then(function (response){
-        		 //console.log('got group names !' + data.toSource());
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching eforms");
-            	deferred.reject("An error occured while fetching group names");
-            });
-     
-          return deferred.promise;
-        }
-    };
-});
+    .service("formService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/forms',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+            getAllFormsByHeading: function (demographicNo, heading) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/all?heading=' + heading, this.configHeaders).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching forms");
+                    deferred.reject("An error occured while fetching items");
+                });
+
+                return deferred.promise;
+            },
+            getAllEncounterForms: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/allEncounterForms', this.configHeaders).then(function (response) {
+                    deferred.resolve(response.data.content);
+                }, function () {
+                    console.log("error fetching encounter");
+                    deferred.reject("An error occured while fetching encounter forms");
+                });
+
+                return deferred.promise;
+            },
+            getSelectedEncounterForms: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/selectedEncounterForms', this.configHeaders).then(function (response) {
+                    deferred.resolve(response.data.content);
+                }, function () {
+                    console.log("error fetching selected encounter");
+                    deferred.reject("An error occured while fetching selected encounter forms");
+                });
+
+                return deferred.promise;
+            },
+            getCompletedEncounterForms: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/completedEncounterForms', this.configHeaders).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching completed encounter forms");
+                    deferred.reject("An error occured while fetching completed encounter forms");
+                });
+
+                return deferred.promise;
+            },
+            getAllEForms: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/allEForms', this.configHeaders).then(function (response) {
+                    deferred.resolve(response.data.content);
+                }, function () {
+                    console.log("error fetching eforms");
+                    deferred.reject("An error occured while fetching eforms");
+                });
+
+                return deferred.promise;
+            },
+            getGroupNames: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/groupNames', this.configHeaders).then(function (response) {
+                    //console.log('got group names !' + data.toSource());
+                    deferred.resolve(response.data.content);
+                }, function () {
+                    console.log("error fetching eforms");
+                    deferred.reject("An error occured while fetching group names");
+                });
+
+                return deferred.promise;
+            },
+            getFormGroups: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/getFormGroups', this.configHeaders).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching eforms");
+                    deferred.reject("An error occured while fetching group names");
+                });
+
+                return deferred.promise;
+            },
+            getFavouriteFormGroup: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/getFavouriteFormGroup', this.configHeaders).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching eforms");
+                    deferred.reject("An error occured while fetching group names");
+                });
+
+                return deferred.promise;
+            },
+            getFormOptions: function (demographicNo) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/' + demographicNo + '/formOptions', this.configHeaders).then(function (response) {
+                    //console.log('got group names !' + data.toSource());
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching eforms");
+                    deferred.reject("An error occured while fetching group names");
+                });
+
+                return deferred.promise;
+            }
+        };
+    });

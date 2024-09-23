@@ -14,13 +14,13 @@
 // full day names
 Calendar._DN = new Array
 ("Igandea",
- "Astelehena",
- "Asteartea",
- "Asteazkena",
- "Osteguna",
- "Ostirala",
- "Larunbata",
- "Igandea");
+    "Astelehena",
+    "Asteartea",
+    "Asteazkena",
+    "Osteguna",
+    "Ostirala",
+    "Larunbata",
+    "Igandea");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -37,13 +37,13 @@ Calendar._DN = new Array
 // short day names
 Calendar._SDN = new Array
 ("Ig",
- "Al",
- "Ar",
- "Az",
- "Os",
- "Ol",
- "La",
- "Ig");
+    "Al",
+    "Ar",
+    "Az",
+    "Os",
+    "Ol",
+    "La",
+    "Ig");
 
 // First day of the week. "0" means display Sunday first, "1" means display
 // Monday first, etc.
@@ -52,52 +52,52 @@ Calendar._FD = 1;
 // full month names
 Calendar._MN = new Array
 ("Urtarrila",
- "Otsaila",
- "Martxoa",
- "Apirila",
- "Maiatza",
- "Ekaina",
- "Uztaila",
- "Abuztua",
- "Iraila",
- "Urria",
- "Azaroa",
- "Abendua");
+    "Otsaila",
+    "Martxoa",
+    "Apirila",
+    "Maiatza",
+    "Ekaina",
+    "Uztaila",
+    "Abuztua",
+    "Iraila",
+    "Urria",
+    "Azaroa",
+    "Abendua");
 
 // short month names
 Calendar._SMN = new Array
 ("Urt",
- "Ots",
- "Mar",
- "Apr",
- "Mai",
- "Eka",
- "Uzt",
- "Abu",
- "Ira",
- "Urr",
- "Aza",
- "Abe");
+    "Ots",
+    "Mar",
+    "Apr",
+    "Mai",
+    "Eka",
+    "Uzt",
+    "Abu",
+    "Ira",
+    "Urr",
+    "Aza",
+    "Abe");
 
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "Egutegiari buruz";
 
 Calendar._TT["ABOUT"] =
-"Data/ordua DHTML hautatzailea\n" +
-"(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
-"Bertsio berriena eskuratzeko: http://www.dynarch.com/projects/calendar/\n" +
-"GNU LGPL baimenpean banatua. http://gnu.org/licenses/lgpl.html orrira joan zehaztasun gehiagotarako." +
-"\n\n" +
-"Data nola aukeratu:\n" +
-"- \xab, \xbb botoiak erabili urtea aukeratzeko\n" +
-"- " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " botoiak erabili hilabetea aukeratzeko\n" +
-"- Aukera azkar burutzeko saguaren botoia sakatuta mantendu.";
+    "Data/ordua DHTML hautatzailea\n" +
+    "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
+    "Bertsio berriena eskuratzeko: http://www.dynarch.com/projects/calendar/\n" +
+    "GNU LGPL baimenpean banatua. http://gnu.org/licenses/lgpl.html orrira joan zehaztasun gehiagotarako." +
+    "\n\n" +
+    "Data nola aukeratu:\n" +
+    "- \xab, \xbb botoiak erabili urtea aukeratzeko\n" +
+    "- " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " botoiak erabili hilabetea aukeratzeko\n" +
+    "- Aukera azkar burutzeko saguaren botoia sakatuta mantendu.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
-"Ordua nola aukeratu:\n" +
-"- Orduan sakatu gehitzeko\n" +
-"- Maiuskula sakatuta ordu kopurua gutxituko da\n" +
-"- Saguaren botoia sakatu eta arrastatuz arinago burutuko da.";
+    "Ordua nola aukeratu:\n" +
+    "- Orduan sakatu gehitzeko\n" +
+    "- Maiuskula sakatuta ordu kopurua gutxituko da\n" +
+    "- Saguaren botoia sakatu eta arrastatuz arinago burutuko da.";
 
 Calendar._TT["PREV_YEAR"] = "Aurreko urtea (Menurako mantendu)";
 Calendar._TT["PREV_MONTH"] = "Aurreko hilabetea (Menurako mantendu)";

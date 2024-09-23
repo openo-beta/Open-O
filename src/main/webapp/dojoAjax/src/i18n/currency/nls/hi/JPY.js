@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"जापानी येन","symbol":"¥"})
+({"displayName": "जापानी येन", "symbol": "¥"})

@@ -9,74 +9,74 @@
 // full day names
 Calendar._DN = new Array
 ("Nedelja",
- "Ponedeljak",
- "Utorak",
- "Sreda",
- "Četvrtak",
- "Petak",
- "Subota",
- "Nedelja");
+    "Ponedeljak",
+    "Utorak",
+    "Sreda",
+    "Četvrtak",
+    "Petak",
+    "Subota",
+    "Nedelja");
 
 // short day names
 Calendar._SDN = new Array
 ("Ned",
- "Pon",
- "Uto",
- "Sre",
- "Čet",
- "Pet",
- "Sub",
- "Ned");
+    "Pon",
+    "Uto",
+    "Sre",
+    "Čet",
+    "Pet",
+    "Sub",
+    "Ned");
 
 // full month names
 Calendar._MN = new Array
 ("Januar",
- "Februar",
- "Mart",
- "April",
- "Maj",
- "Jun",
- "Jul",
- "Avgust",
- "Septembar",
- "Oktobar",
- "Novembar",
- "Decembar");
+    "Februar",
+    "Mart",
+    "April",
+    "Maj",
+    "Jun",
+    "Jul",
+    "Avgust",
+    "Septembar",
+    "Oktobar",
+    "Novembar",
+    "Decembar");
 
 // short month names
 Calendar._SMN = new Array
 ("Jan",
- "Feb",
- "Mar",
- "Apr",
- "Maj",
- "Jun",
- "Jul",
- "Avg",
- "Sep",
- "Okt",
- "Nov",
- "Dec");
+    "Feb",
+    "Mar",
+    "Apr",
+    "Maj",
+    "Jun",
+    "Jul",
+    "Avg",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Dec");
 
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "O kalendaru";
 
 Calendar._TT["ABOUT"] =
-"DHTML Kalendar\n" +
-"(c) dynarch.com 2002-2003\n" + // don't translate this this ;-)
-"Najnovija verzija kontrole nalazi se http://dynarch.com/mishoo/calendar.epl\n" +
-"Distribuirano po GNU LGPL licencom.  Za detalje pogledaj http://gnu.org/licenses/lgpl.html." +
-"\n\n" +
-"Izbor datuma:\n" +
-"- Koristi dugmiće \xab, \xbb za izbor godine\n" +
-"- Koristi dugmiće " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " za izbor meseca\n" +
-"- Za brži izbor, držati pritisnut taster miša iznad bilo kog od pomenutih dugmića";
+    "DHTML Kalendar\n" +
+    "(c) dynarch.com 2002-2003\n" + // don't translate this this ;-)
+    "Najnovija verzija kontrole nalazi se http://dynarch.com/mishoo/calendar.epl\n" +
+    "Distribuirano po GNU LGPL licencom.  Za detalje pogledaj http://gnu.org/licenses/lgpl.html." +
+    "\n\n" +
+    "Izbor datuma:\n" +
+    "- Koristi dugmiće \xab, \xbb za izbor godine\n" +
+    "- Koristi dugmiće " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " za izbor meseca\n" +
+    "- Za brži izbor, držati pritisnut taster miša iznad bilo kog od pomenutih dugmića";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
-"Izbor vremena:\n" +
-"- Kliktaj na sate ili minute povećava njihove vrednosti\n" +
-"- Shift-klik smanjuje njihove vrednosti\n" +
-"- klikni i vuci za brži izbor.";
+    "Izbor vremena:\n" +
+    "- Kliktaj na sate ili minute povećava njihove vrednosti\n" +
+    "- Shift-klik smanjuje njihove vrednosti\n" +
+    "- klikni i vuci za brži izbor.";
 
 Calendar._TT["PREV_YEAR"] = "Prethodna godina (dugi pritisak za meni)";
 Calendar._TT["PREV_MONTH"] = "Prethodni mesec (dugi pritisak za meni)";
@@ -88,7 +88,7 @@ Calendar._TT["DRAG_TO_MOVE"] = "Pritisni i vuci za promenu pozicije";
 Calendar._TT["PART_TODAY"] = " (danas)";
 
 // Choose first day of week.
-Calendar._TT["DAY_FIRST"] = "%s kao prvi dan u nedelji"; 
+Calendar._TT["DAY_FIRST"] = "%s kao prvi dan u nedelji";
 Calendar._TT["MON_FIRST"] = "Prikaži ponedeljak kao prvi dan nedelje";
 Calendar._TT["SUN_FIRST"] = "Prikaži nedelju kao prvi dan nedelje";
 

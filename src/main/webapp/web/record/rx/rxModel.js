@@ -87,7 +87,7 @@ function Drug(demo, provider) {
     // an array of drug objects that represent
     // the history of this drug.
     this.history = null;
-    
+
 }
 
 /**
@@ -96,9 +96,9 @@ function Drug(demo, provider) {
  *
  * @param d {Drug} - drug to copy.
  */
-Drug.prototype.copy = function(d){
+Drug.prototype.copy = function (d) {
 
-    if(!d) return;
+    if (!d) return;
 
     this.id = d.id;
     this.brandName = d.brandName;
@@ -144,7 +144,7 @@ Drug.prototype.copy = function(d){
 Drug.prototype.toDrugTransferObject = function (drugKey) {
 
     // default behaviour drugKey = true.
-    if(drugKey === undefined){
+    if (drugKey === undefined) {
         drugKey = true;
     }
 
@@ -155,9 +155,9 @@ Drug.prototype.toDrugTransferObject = function (drugKey) {
 
     // We need to switch on the possible source of the date.
     // if it is already a date just assign it.
-    if(this.rxDate instanceof Date){
+    if (this.rxDate instanceof Date) {
         tempStartDate = new Date();
-    }else if (typeof this.rxDate === "string"){
+    } else if (typeof this.rxDate === "string") {
 
         // if it is a string then we need to make a date out of it.
 
@@ -172,7 +172,7 @@ Drug.prototype.toDrugTransferObject = function (drugKey) {
         tempStartDate.setMinutes(0);
         tempStartDate.setSeconds(0);
 
-    }else{
+    } else {
         tempStartDate = new Date();
     }
 
@@ -184,13 +184,13 @@ Drug.prototype.toDrugTransferObject = function (drugKey) {
 
         if (this.strength && this.strengthUnit) {
 
-            var s = " "+this.strength + " " + this.strengthUnit;
+            var s = " " + this.strength + " " + this.strengthUnit;
 
             // check to make sure the strength is not already included in the
             // generic name, removing this check will cause the
             // strength to continually be appended to the generic name
             // field the the DB.
-            if(generic.indexOf(s) <= -1) {
+            if (generic.indexOf(s) <= -1) {
                 generic += s;
             }
         }
@@ -200,49 +200,49 @@ Drug.prototype.toDrugTransferObject = function (drugKey) {
     var tempInstructions = this.getInstructionLine2();
 
     var obj = {
-            drugId : this.id,
-            brandName: this.name || this.brandName,
-            genericName: generic,
-            customName: this.customName,
-            atc: this.atc,
-            regionalIdentifier: this.regionalIdentifier,
+        drugId: this.id,
+        brandName: this.name || this.brandName,
+        genericName: generic,
+        customName: this.customName,
+        atc: this.atc,
+        regionalIdentifier: this.regionalIdentifier,
 
-            strength: this.strength,
-            strengthUnit: this.strengthUnit,
+        strength: this.strength,
+        strengthUnit: this.strengthUnit,
 
-            demographicNo: this.demographic,
-            providerNo: this.provider,
-            externalProvider: this.externalProvider,
+        demographicNo: this.demographic,
+        providerNo: this.provider,
+        externalProvider: this.externalProvider,
 
-            instructions: tempInstructions,
-            takeMin: this.takeMin,
-            takeMax: this.takeMax,
-            route: this.route,
-            form: this.form,
-            frequency: this.frequency,
-            method: this.method,
-            duration: this.duration,
-            durationUnit: this.durationUnit,
-            prn: this.prn || false,
-            repeats: this.repeats,
-            additionalInstructions: this.additionalInstructions,
-            quantity:this.quantity,
-            endDate: tempEndDate.toISOString(),
-            rxDate: tempStartDate.toISOString(),
-            writtenDate: this.writtenDate,
+        instructions: tempInstructions,
+        takeMin: this.takeMin,
+        takeMax: this.takeMax,
+        route: this.route,
+        form: this.form,
+        frequency: this.frequency,
+        method: this.method,
+        duration: this.duration,
+        durationUnit: this.durationUnit,
+        prn: this.prn || false,
+        repeats: this.repeats,
+        additionalInstructions: this.additionalInstructions,
+        quantity: this.quantity,
+        endDate: tempEndDate.toISOString(),
+        rxDate: tempStartDate.toISOString(),
+        writtenDate: this.writtenDate,
 
-            longTerm: this.longTerm || false,
-            noSubstitutions: this.noSubs || false,
+        longTerm: this.longTerm || false,
+        noSubstitutions: this.noSubs || false,
 
-            archived: false,
-            archivedReason: this.archivedReason,
-            archivedDate: this.archivedDate
+        archived: false,
+        archivedReason: this.archivedReason,
+        archivedDate: this.archivedDate
     };
 
-    
-    console.log("drugKEy? ",obj);
-    
-    return drugKey ? {drug : obj} : obj ;
+
+    console.log("drugKEy? ", obj);
+
+    return drugKey ? {drug: obj} : obj;
 
 };
 
@@ -296,7 +296,7 @@ Drug.prototype.fromDrugTransferObject = function (obj) {
     } else {
         this.rxDate = null;
     }
-    
+
     if (obj.writtenDate) {
         this.writtenDate = new Date(obj.writtenDate);
     } else {
@@ -327,7 +327,7 @@ Drug.prototype.fromDrugTransferObject = function (obj) {
  *      }
  */
 Drug.prototype.populateFromDrugSearchDetails = function (t) {
-    console.log("populateFromDrugSearchDetails",t);
+    console.log("populateFromDrugSearchDetails", t);
     this.brandName = t.name;
     this.gn = t.genericName;
     this.form = t.form;
@@ -353,7 +353,6 @@ Drug.prototype.getName = function (t) {
 };
 
 
-
 /**
  * Updates the current drug's instructions to reflect
  * the instructions in the input object. Used for
@@ -373,17 +372,17 @@ Drug.prototype.getName = function (t) {
  *      }
  */
 Drug.prototype.applyInstructions = function (x) {
-    if (!x || !x.drug){
-    		console.log("no drug found returning");
-    		return;
+    if (!x || !x.drug) {
+        console.log("no drug found returning");
+        return;
     }
 
     if (x.drug.takeMin) this.takeMin = x.drug.takeMin;
 
     if (x.drug.takeMax) this.takeMax = x.drug.takeMax;
-    
+
     if (x.drug.duration != null) this.duration = x.drug.duration;
-    
+
     if (x.drug.durationUnit) this.durationUnit = x.drug.durationUnit;
 
     if (x.drug.frequency) this.frequency = x.drug.frequency.toUpperCase();
@@ -393,11 +392,11 @@ Drug.prototype.applyInstructions = function (x) {
     this.prn = x.drug.prn || this.prn;
 
     if (x.drug.route) this.route = x.drug.route.toUpperCase();
-    
-    console.log("x.drug.duration",x.drug.duration, this.duration);
-    
-    if(x.drug.duration === null){
-    		console.log("x.drug.duration is null");
+
+    console.log("x.drug.duration", x.drug.duration, this.duration);
+
+    if (x.drug.duration === null) {
+        console.log("x.drug.duration is null");
     }
 
     // Call this to update the instruction field to reflect
@@ -452,71 +451,69 @@ Drug.prototype.updateInstructionField = function () {
  * - Displaying drug info in "ReadyToPrescribe" field.
  * - Sending to database's "special" field
  */
-Drug.prototype.getInstructionLine = function(){
+Drug.prototype.getInstructionLine = function () {
 
     var s = "";
 
-    console.log("getInstructionLine ",this.name,this.brandName,this.customName);
-    s += (this.name || this.brandName || this.customName) +  " - ";
+    console.log("getInstructionLine ", this.name, this.brandName, this.customName);
+    s += (this.name || this.brandName || this.customName) + " - ";
 
-    if(this.method) s += this.method + " ";
-    
-    if(this.takeMin !== null && this.takeMax !== null){
-        s += this.takeMin + "-"+this.takeMax + " ";
-    }else if(this.takeMin !== null && this.takeMax === null){
+    if (this.method) s += this.method + " ";
+
+    if (this.takeMin !== null && this.takeMax !== null) {
+        s += this.takeMin + "-" + this.takeMax + " ";
+    } else if (this.takeMin !== null && this.takeMax === null) {
         s += this.takeMin + " ";
-    }else if(this.takeMin === null && this.takeMax !== null){
+    } else if (this.takeMin === null && this.takeMax !== null) {
         s += this.takeMax + " ";
     }
 
-    if(this.route) s+= this.route + " ";
+    if (this.route) s += this.route + " ";
 
-    if(this.frequency) s+= this.frequency + " ";
+    if (this.frequency) s += this.frequency + " ";
 
-    if(this.prn) s+= "PRN ";
+    if (this.prn) s += "PRN ";
 
-    if(this.duration !== null && this.duration !== undefined && this.durationUnit){
-        s += "- Duration:"+ this.duration +this.durationUnit+" ";
+    if (this.duration !== null && this.duration !== undefined && this.durationUnit) {
+        s += "- Duration:" + this.duration + this.durationUnit + " ";
     }
 
-    if(this.quantity !== null && this.quantity !== undefined){
-        s += "- Qty:" + this.quantity+" ";
+    if (this.quantity !== null && this.quantity !== undefined) {
+        s += "- Qty:" + this.quantity + " ";
     }
 
-    if(this.repeats !== null && this.repeats !== undefined){
-        s += "- Repeats:" + this.repeats+" ";
+    if (this.repeats !== null && this.repeats !== undefined) {
+        s += "- Repeats:" + this.repeats + " ";
     }
 
     return s;
-    
+
 };
 
 
-Drug.prototype.getInstructionLine2 = function(){
+Drug.prototype.getInstructionLine2 = function () {
 
     var s = "";
 
-    console.log("getInstructionLine ",this.name,this.brandName,this.customName);
-    s += (this.name || this.brandName || this.customName) +  " \n";
-    
-    console.log("getInstructionLine 2",this);
-    
-    
+    console.log("getInstructionLine ", this.name, this.brandName, this.customName);
+    s += (this.name || this.brandName || this.customName) + " \n";
+
+    console.log("getInstructionLine 2", this);
+
+
     s += this.instructions + "\n"
 
-    if(this.quantity !== null && this.quantity !== undefined){
-        s += " Qty:" + this.quantity+" ";
+    if (this.quantity !== null && this.quantity !== undefined) {
+        s += " Qty:" + this.quantity + " ";
     }
 
-    if(this.repeats !== null && this.repeats !== undefined){
-        s += " Repeats:" + this.repeats+" ";
+    if (this.repeats !== null && this.repeats !== undefined) {
+        s += " Repeats:" + this.repeats + " ";
     }
-    console.log("double check ",s);
+    console.log("double check ", s);
     return s;
-    
+
 };
-
-
 
 
 Drug.prototype.resetInstructions = function () {
@@ -570,17 +567,17 @@ Drug.prototype.checkValid = function () {
  *
  * @param f {Favorite} the favorite to apply
  */
-Drug.prototype.applyFavorite = function(f){
+Drug.prototype.applyFavorite = function (f) {
 
     this.copy(f.drug);
 
     this.rxDate = new Date();
     this.endDate = calculateEndDate(
         {
-            start : this.rxDate,
-            duration : this.duration,
-            durationUnit : this.durationUnit,
-            repeats : this.repeats
+            start: this.rxDate,
+            duration: this.duration,
+            durationUnit: this.durationUnit,
+            repeats: this.repeats
         }
     );
 
@@ -590,37 +587,37 @@ Drug.prototype.applyFavorite = function(f){
 
 };
 
-Drug.prototype.refreshEndDate = function(){
-	if(this.rxDate == null){
-		this.rxDate = new Date();
-	}
-	
+Drug.prototype.refreshEndDate = function () {
+    if (this.rxDate == null) {
+        this.rxDate = new Date();
+    }
+
     this.endDate = calculateEndDate(
         {
-            start : this.rxDate,
-            duration : this.duration,
-            durationUnit : this.durationUnit,
-            repeats : this.repeats
+            start: this.rxDate,
+            duration: this.duration,
+            durationUnit: this.durationUnit,
+            repeats: this.repeats
         }
     );
 }
 
 
-Drug.prototype.rxDurationInDays = function(){
-	//console.log("rxDur",this.endDate,this.rxDate,(this.endDate-this.rxDate), ((this.endDate-this.rxDate)/(1000*60*60*24)),(Math.round((this.endDate-this.rxDate)/(1000*60*60*24))));
-	return Math.round((this.endDate-this.rxDate)/(1000*60*60*24));
+Drug.prototype.rxDurationInDays = function () {
+    //console.log("rxDur",this.endDate,this.rxDate,(this.endDate-this.rxDate), ((this.endDate-this.rxDate)/(1000*60*60*24)),(Math.round((this.endDate-this.rxDate)/(1000*60*60*24))));
+    return Math.round((this.endDate - this.rxDate) / (1000 * 60 * 60 * 24));
 };
 
 
-Drug.prototype.setQuantity = function(){
-	this.quantity = calculateQuantity(this.frequency, this.duration, this.durationUnit, this.takeMax || this.takeMin);
-	if(this.quantity === null){
-		console.log("setting quantity null",this);
-		this.quantityNULL = true;
-	}else if(this.quantity != null && this.quantityNULL){
-		console.log("quantityNull true but quantity is not null");
-		delete this.quantityNULL;
-	}
+Drug.prototype.setQuantity = function () {
+    this.quantity = calculateQuantity(this.frequency, this.duration, this.durationUnit, this.takeMax || this.takeMin);
+    if (this.quantity === null) {
+        console.log("setting quantity null", this);
+        this.quantityNULL = true;
+    } else if (this.quantity != null && this.quantityNULL) {
+        console.log("quantityNull true but quantity is not null");
+        delete this.quantityNULL;
+    }
 }
 
 /**
@@ -631,7 +628,7 @@ Drug.prototype.setQuantity = function(){
  *  { duration : number, durationUnit : 'D'|'M'|'W',
  *      repeats : number, start : Date, end : Date, ... }
  */
-Drug.prototype.applyPrescriptionInformation = function(rx){
+Drug.prototype.applyPrescriptionInformation = function (rx) {
 
     this.duration = rx.duration;
     this.durationUnit = rx.durationUnit;
@@ -645,11 +642,11 @@ Drug.prototype.applyPrescriptionInformation = function(rx){
 
     // if the quantity field is set then use that
     // otherwise auto-calculate the quanity.
-    if(rx.quantity){
+    if (rx.quantity) {
 
         this.quantity = rx.quantity;
 
-    }else{
+    } else {
         // get the quantity
         this.quantity = calculateQuantity(this.frequency, this.duration, this.durationUnit, this.takeMax)
 
@@ -664,21 +661,21 @@ Drug.prototype.applyPrescriptionInformation = function(rx){
 // - Denominator is always a time unit
 // Example: TID == 3 per Day
 frequencyLookupTable = {
-    'OD'    : {num: 1, den: 'D'},
-    'QAM'   : {num: 1, den: 'D'},
-    'QPM'   : {num: 1, den: 'D'},
-    'QHS'   : {num: 1, den: 'D'},
-    'BID'   : {num: 2, den: 'D'},
-    'TID'   : {num: 3, den: 'D'},
-    'QID'   : {num: 4, den: 'D'},
-    'Q1H'   : {num: 24, den: 'D'},
-    'Q2H'   : {num: 12, den: 'D'},
-    'Q1-2H' : {num: 24, den: 'D'},
-    'Q4H'   : {num: 1, den: 'D'},
-    'Q4-6H' : {num: 6, den: 'D'},
-    'Q6H'   : {num: 4, den: 'D'},
-    'Q8H'   : {num: 3, den: 'D'},
-    'Q12H'  : {num: 2, den: 'D'},
+    'OD': {num: 1, den: 'D'},
+    'QAM': {num: 1, den: 'D'},
+    'QPM': {num: 1, den: 'D'},
+    'QHS': {num: 1, den: 'D'},
+    'BID': {num: 2, den: 'D'},
+    'TID': {num: 3, den: 'D'},
+    'QID': {num: 4, den: 'D'},
+    'Q1H': {num: 24, den: 'D'},
+    'Q2H': {num: 12, den: 'D'},
+    'Q1-2H': {num: 24, den: 'D'},
+    'Q4H': {num: 1, den: 'D'},
+    'Q4-6H': {num: 6, den: 'D'},
+    'Q6H': {num: 4, den: 'D'},
+    'Q8H': {num: 3, den: 'D'},
+    'Q12H': {num: 2, den: 'D'},
     'Q1WEEK': {num: 1, den: 'W'},
     'Q2WEEK': {num: 2, den: 'W'},
     'Q1MONTH': {num: 1, den: 'M'},
@@ -688,9 +685,9 @@ frequencyLookupTable = {
 // Conversion table that contains ratios for
 // translating between time units.
 timeUnitConversionTable = {
-    'D': {  'D': 1,       'W': 7,      'M': 30 },
-    'W': {  'D': 1 / 7,   'W': 1,      'M': 4  },
-    'M': {  'D': 1 / 30,  'W': 4 / 30, 'M': 1  }
+    'D': {'D': 1, 'W': 7, 'M': 30},
+    'W': {'D': 1 / 7, 'W': 1, 'M': 4},
+    'M': {'D': 1 / 30, 'W': 4 / 30, 'M': 1}
 };
 
 /**
@@ -704,19 +701,19 @@ timeUnitConversionTable = {
  *
  * @return {number|null} the calculated number of pills, null if there was an error.
  */
-function calculateQuantity(freq, dur, durUnit, numPerDose){
+function calculateQuantity(freq, dur, durUnit, numPerDose) {
 
     numPerDose = numPerDose || 1;
 
     // sanity checks.
-    if(!freq || !dur || !durUnit) return null;
+    if (!freq || !dur || !durUnit) return null;
 
     // cast things to uppercase to handle lookups
     freq = freq.toUpperCase();
     durUnit = durUnit.toUpperCase();
 
     // sanity check
-    if(!frequencyLookupTable[freq] || !timeUnitConversionTable[durUnit]) return null;
+    if (!frequencyLookupTable[freq] || !timeUnitConversionTable[durUnit]) return null;
 
     // 0) get the numerator and denominator for the frequency code given
     //    freq now has structure { num : number, den : 'D'|'W'|'M' }
@@ -737,25 +734,25 @@ function calculateQuantity(freq, dur, durUnit, numPerDose){
  * @param obj {object} has structure like:
  *  { start : Date, duration : number, durationUnit : 'D'|'W'|'M', repeats : number ... }
  */
-function calculateEndDate(obj){
+function calculateEndDate(obj) {
 
-    if(!obj.start || !obj.durationUnit){
-    		console.log("End Date was not calculated");
+    if (!obj.start || !obj.durationUnit) {
+        console.log("End Date was not calculated");
         return null;
     }
 
     var d = new Date(obj.start);
 
-    var repeatMultiplier  = obj.repeats;
-    if (isNaN(repeatMultiplier) || repeatMultiplier < 0){
-    		obj.repeats = 0 
-    		repeatMultiplier = 0;
-	}
+    var repeatMultiplier = obj.repeats;
+    if (isNaN(repeatMultiplier) || repeatMultiplier < 0) {
+        obj.repeats = 0
+        repeatMultiplier = 0;
+    }
     repeatMultiplier++;
-    
-    switch(obj.durationUnit){
+
+    switch (obj.durationUnit) {
         case 'D':
-            d.setDate(d.getDate() + obj.duration * (repeatMultiplier <= 0 ? 1 : repeatMultiplier) );
+            d.setDate(d.getDate() + obj.duration * (repeatMultiplier <= 0 ? 1 : repeatMultiplier));
             break;
         case 'W':
             d.setDate(d.getDate() + 7 * obj.duration * (repeatMultiplier <= 0 ? 1 : repeatMultiplier));
@@ -772,7 +769,7 @@ function calculateEndDate(obj){
 }
 
 
-function Favorite(drug, name){
+function Favorite(drug, name) {
     this.drug = drug || null;
     this.name = name || null;
 }
@@ -785,7 +782,7 @@ function Favorite(drug, name){
  * @param demo
  * @param provider
  */
-Favorite.prototype.fromFavoriteTransferObject = function(t, demo, provider){
+Favorite.prototype.fromFavoriteTransferObject = function (t, demo, provider) {
 
     this.drug = new Drug(demo, provider);
 
@@ -815,36 +812,36 @@ Favorite.prototype.fromFavoriteTransferObject = function(t, demo, provider){
 
 };
 
-Favorite.prototype.toTransferObject = function(){
+Favorite.prototype.toTransferObject = function () {
 
     return {
-        favoriteName : this.name,
-        favoriteId : 0,
-        brandName : this.drug.brandName || null,
-        genericName : this.drug.genericName || null,
-        atc : this.drug.atc || null,
-        regionalIdentifier : this.drug.regionalIdentifier || null,
-        form : this.drug.form || null,
-        frequency : this.drug.frequency || null,
-        method : this.drug.method || null,
-        instructions : this.drug.instructions || null,
-        route : this.drug.route || null,
-        prn : this.drug.prn || false,
-        takeMin : this.drug.takeMin || null,
-        takeMax : this.drug.takeMax || null,
-        repeats : this.drug.repeats || 0,
-        quantity : this.drug.quantity || null,
+        favoriteName: this.name,
+        favoriteId: 0,
+        brandName: this.drug.brandName || null,
+        genericName: this.drug.genericName || null,
+        atc: this.drug.atc || null,
+        regionalIdentifier: this.drug.regionalIdentifier || null,
+        form: this.drug.form || null,
+        frequency: this.drug.frequency || null,
+        method: this.drug.method || null,
+        instructions: this.drug.instructions || null,
+        route: this.drug.route || null,
+        prn: this.drug.prn || false,
+        takeMin: this.drug.takeMin || null,
+        takeMax: this.drug.takeMax || null,
+        repeats: this.drug.repeats || 0,
+        quantity: this.drug.quantity || null,
 
-        duration : this.drug.duration || null,
-        durationUnit : this.drug.durationUnit || null
+        duration: this.drug.duration || null,
+        durationUnit: this.drug.durationUnit || null
 
     };
 
 };
 
-Favorite.prototype.fromDrug = function(d, name){
+Favorite.prototype.fromDrug = function (d, name) {
 
-    if(!this.drug) this.drug = new Drug();
+    if (!this.drug) this.drug = new Drug();
 
     this.drug.brandName = d.brandName;
     this.drug.genericName = d.genericName;

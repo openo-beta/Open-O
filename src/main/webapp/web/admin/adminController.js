@@ -1,3 +1,3 @@
-oscarApp.controller('AdminCtrl', function ($scope,$http) {
+oscarApp.controller('AdminCtrl', function ($scope, $http) {
 
 });

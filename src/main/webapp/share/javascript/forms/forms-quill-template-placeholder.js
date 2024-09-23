@@ -1,9 +1,10 @@
 let QuillEmbed = Quill.import('blots/embed');
+
 class TemplatePlaceholder extends QuillEmbed {
     static blotName = 'TemplatePlaceholder';
     static tagName = 'span';
     static className = 'quill-placeholder';
-    
+
     static create(value) {
         let node = super.create(value);
 
@@ -18,7 +19,7 @@ class TemplatePlaceholder extends QuillEmbed {
 
         return node;
     }
-    
+
     static value(node) {
         return {
             subject: node.getAttribute('data-subject'),
@@ -27,6 +28,7 @@ class TemplatePlaceholder extends QuillEmbed {
         };
     }
 }
+
 Quill.register({
     'formats/TemplatePlaceholder': TemplatePlaceholder
 });
