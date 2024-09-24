@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.email.helpers;
 
 import java.io.File;

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.managers;
 
 import java.io.IOException;

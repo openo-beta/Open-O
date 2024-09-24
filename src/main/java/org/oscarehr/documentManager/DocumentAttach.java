@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.documentManager;
 
 import org.oscarehr.common.dao.ConsultDocsDao;

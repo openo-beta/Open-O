@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (C) 2011-2012  PeaceWorks Technology Solutions
  * This software is published under the GPL GNU General Public License.

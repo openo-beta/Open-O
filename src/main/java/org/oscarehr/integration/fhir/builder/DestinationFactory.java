@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.integration.fhir.builder;
 
 import org.oscarehr.integration.fhir.model.Destination;

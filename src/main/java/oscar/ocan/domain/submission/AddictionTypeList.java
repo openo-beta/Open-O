@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.

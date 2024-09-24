@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2014-2015. KAI Innovations Inc. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.

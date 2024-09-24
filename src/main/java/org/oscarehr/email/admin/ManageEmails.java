@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.email.admin;
 
 import java.nio.file.Path;

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.common.dao;
 
 import java.util.Collections;

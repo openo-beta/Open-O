@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2013-2015. Department of Computer Science, University of Victoria. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.

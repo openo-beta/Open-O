@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.Measurement;

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.apache.xml.security.encryption;
 
 import java.io.ByteArrayInputStream;

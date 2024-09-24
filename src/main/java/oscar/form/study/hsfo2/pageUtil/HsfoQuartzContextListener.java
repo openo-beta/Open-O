@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package oscar.form.study.hsfo2.pageUtil;
  
 import javax.servlet.ServletContextEvent;

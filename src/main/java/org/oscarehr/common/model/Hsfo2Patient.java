@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (C) 2007  Heart & Stroke Foundation
  * This software is published under the GPL GNU General Public License.

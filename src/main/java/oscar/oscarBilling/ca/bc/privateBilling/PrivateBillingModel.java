@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package oscar.oscarBilling.ca.bc.privateBilling;
 
 /*

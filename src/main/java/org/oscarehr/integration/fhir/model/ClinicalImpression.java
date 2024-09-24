@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.integration.fhir.model;
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.

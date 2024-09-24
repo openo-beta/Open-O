@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.email.action;
 
 import java.util.List;

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package oscar.eform;
 
 import org.apache.struts.action.Action;

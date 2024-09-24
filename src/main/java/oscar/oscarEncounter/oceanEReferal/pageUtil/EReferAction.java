@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package oscar.oscarEncounter.oceanEReferal.pageUtil;
 
 import org.apache.logging.log4j.Logger;

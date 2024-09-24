@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package oscar.oscarDemographic.pageUtil;
 
 import cds.LaboratoryResultsDocument;

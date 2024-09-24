@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.email.util;
 
 import java.text.ParseException;

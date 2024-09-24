@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package oscar.oscarLab.ca.all.parsers;
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.

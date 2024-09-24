@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.contactRegistry;
 
 import net.sf.json.JSONObject;

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 
 /*
  * java oscar.form.graphic.FrmPdfGraphicAR

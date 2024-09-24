@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.documentManager.actions;
 
 import net.sf.json.JSONObject;

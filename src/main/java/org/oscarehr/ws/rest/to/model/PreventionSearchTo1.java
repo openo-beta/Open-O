@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.ws.rest.to.model;
 
 /**

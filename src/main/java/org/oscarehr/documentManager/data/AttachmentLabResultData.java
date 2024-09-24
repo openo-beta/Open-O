@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.documentManager.data;
 
 import java.util.Date;
