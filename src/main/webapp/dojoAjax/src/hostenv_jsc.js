@@ -25,7 +25,6 @@ if ((typeof ScriptEngineMajorVersion != 'function') || (ScriptEngineMajorVersion
 // for more than you wanted to know about why this import is required even if
 // we fully qualify all symbols, see
 // http://groups.google.com/groups?th=f050c7aeefdcbde2&rnum=12
-import System;
 
 dojo.hostenv.getText = function (uri) {
     if (!System.IO.File.Exists(uri)) {
@@ -33,7 +32,7 @@ dojo.hostenv.getText = function (uri) {
         return 0;
     }
     var reader = new System.IO.StreamReader(uri);
-    var contents: String = reader.ReadToEnd();
+    var contents = reader.ReadToEnd();
     return contents;
 }
 
