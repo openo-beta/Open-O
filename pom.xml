@@ -1284,21 +1284,6 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- <dependency>
-            <groupId>org.oscarehr.integration.ebs</groupId>
-            <artifactId>ebs-client</artifactId>
-            <version>0.0.6</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bouncycastle</groupId>
-                    <artifactId>bcprov-jdk16</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency> -->
         <dependency>
             <groupId>org.oscarehr.integration.ebs</groupId>
             <artifactId>edt-stubs</artifactId>
