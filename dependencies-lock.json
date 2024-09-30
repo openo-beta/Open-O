@@ -690,11 +690,11 @@
   }, {
     "groupId" : "commons-chain",
     "artifactId" : "commons-chain",
-    "version" : "1.1",
+    "version" : "1.2",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:RsjhphBkvmYr/OeoAjifUR+d/q+A5Ghk7/Ox0CzGXFTIPkY5wgrDPUKOHlXf1i1EFMNWivaPy1eZiEnbxhyOLQ=="
+    "integrity" : "sha512:qMWEn7gD/k4hQMzgc9bMX/Kv0s2c6Z9BLly4dIcPD73zLjiR53jjRQ8ucYPJLiNFydhDKZTuOmy9RUNdWKElpg=="
   }, {
     "groupId" : "commons-cli",
     "artifactId" : "commons-cli",
@@ -1987,27 +1987,27 @@
   }, {
     "groupId" : "org.apache.struts",
     "artifactId" : "struts-core",
-    "version" : "1.3.8",
+    "version" : "1.3.10",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:TIHzMq1OnhhAyEb8nU/FBWczDBtVURn+WSAhhlDftgmeAu6N+H2/YX+3W/YDjvqsB2GR+7ERO+39XHSLPPyAGQ=="
+    "integrity" : "sha512:4NCcpWXv44RfH4b9zc0x0xEoeXCGW/L5bgIUqZzLwpBHn67QFHysAJFVrkNGwwuMdj8N4yBDIHwnzNs8Zw8vMA=="
   }, {
     "groupId" : "org.apache.struts",
     "artifactId" : "struts-el",
-    "version" : "1.3.8",
+    "version" : "1.3.10",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:xhxBh9xNCr3p6B7Ft43e4UNJLv87UspH8f8+K0cDnkuTVu4tOckci7jjpqPtul2/SEXLYnudgDqYSwZR26QTnQ=="
+    "integrity" : "sha512:NljEk7ICdkEjtbbR3jNz9mO/sftsMvsv/OUB+LtNz0n4otL3QKeWTMrS+ctF8UmsYO9V+XZqOVQeMXJKr+lZIA=="
   }, {
     "groupId" : "org.apache.struts",
     "artifactId" : "struts-extras",
-    "version" : "1.3.8",
+    "version" : "1.3.10",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:goMEd81mQJXtDqFvDd0bwPf5/1/zSZAnC2/qtIPlN/p+kd1gdxj29v3NIllFSWTe8YvBAMqTLtUS4K+twnI1Tw=="
+    "integrity" : "sha512:Cijvx95zWkBrPwMRFpVnRZbhnIu99bSqq+9L5cuIekYUYfTkRsqk9BMVOC9JVW5jyc50h1/wa0zbSJyuiBnBOg=="
   }, {
     "groupId" : "org.apache.struts",
     "artifactId" : "struts-menu",
@@ -2019,19 +2019,19 @@
   }, {
     "groupId" : "org.apache.struts",
     "artifactId" : "struts-taglib",
-    "version" : "1.3.8",
+    "version" : "1.3.10",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:yE9Wg9IC/9Q+6WTvxayf/HA4qi9ROoEyg7lgTi5POYdC0KbKc+SoeqJaEuwS7ffjyIwFf49kP58URCxEL2/MUw=="
+    "integrity" : "sha512:YwSwArJRxjc3pKa/MLM/2+BUe+RAu3/LhlH5FCntOwavNd1ck31lN3Y8/SWSyHMhaXxq+K3LK4yCeuq2RxxxRw=="
   }, {
     "groupId" : "org.apache.struts",
     "artifactId" : "struts-tiles",
-    "version" : "1.3.8",
+    "version" : "1.3.10",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:2YRRopNGb92YU9HjnUf9fqADz5EEqcBeZ/Yq2xnnkq9jJU5mIVka/L7ZJaC+o6ZsASRPczgQTxnqrXG3GeT6DQ=="
+    "integrity" : "sha512:N72nAoeeLzS/Ln3AWGalcEp5tXh06ttGRqpVkAewia7vRWDkTI+QzeK1VbXXx+6c4JKvmiLtuDYN5y7TATw3sg=="
   }, {
     "groupId" : "org.apache.tika",
     "artifactId" : "tika-core",
