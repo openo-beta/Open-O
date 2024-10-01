@@ -48,8 +48,8 @@ public class BedDemographicStatusDaoImpl extends AbstractDaoImpl<BedDemographicS
 
     @Override
     public boolean bedDemographicStatusExists(Integer bedDemographicStatusId) {
-        Query query = entityManager.createQuery("select count(*) from BedDemographicStatus b where b.id = ?");
-        query.setParameter(0, bedDemographicStatusId);
+        Query query = entityManager.createQuery("select count(*) from BedDemographicStatus b where b.id = ?1");
+        query.setParameter(1, bedDemographicStatusId);
 
         Long result = (Long) query.getSingleResult();
 
@@ -70,7 +70,9 @@ public class BedDemographicStatusDaoImpl extends AbstractDaoImpl<BedDemographicS
 
     @Override
     public BedDemographicStatus getBedDemographicStatus(Integer bedDemographicStatusId) {
-        BedDemographicStatus bedDemographicStatus = find(bedDemographicStatusId);
+        Query query = entityManager.createQuery("SELECT bds FROM BedDemographicStatus bds WHERE bds.id = ?1");
+        query.setParameter(1, bedDemographicStatusId);
+        BedDemographicStatus bedDemographicStatus = (BedDemographicStatus) query.getSingleResult();
 
         log.debug(
                 "getBedDemographicStatus: id: " + (bedDemographicStatus != null ? bedDemographicStatus.getId() : null));
