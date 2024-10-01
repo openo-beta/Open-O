@@ -50,8 +50,8 @@ public class ContactSpecialtyDaoImpl extends AbstractDaoImpl<ContactSpecialty> i
 
     @Override
     public ContactSpecialty findBySpecialty(String specialtyName) {
-        Query query = entityManager.createQuery("SELECT s FROM ContactSpecialty s WHERE s.specialty LIKE :SPECIALTY");
-        query.setParameter("SPECIALTY", specialtyName);
+        Query query = entityManager.createQuery("SELECT s FROM ContactSpecialty s WHERE s.specialty LIKE ?1");
+        query.setParameter(1, specialtyName);
         ContactSpecialty contactSpecialty = getSingleResultOrNull(query);
         return contactSpecialty;
     }
