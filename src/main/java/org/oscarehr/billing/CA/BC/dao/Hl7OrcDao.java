@@ -45,17 +45,17 @@ public class Hl7OrcDao extends AbstractDaoImpl<Hl7Orc> {
                 "FROM Hl7Orc orc, Hl7Pid pid, Hl7Obr obr " +
                 "WHERE obr.pidId = pid.id " +
                 "AND orc.pidId = pid.id " +
-                "AND pid.messageId = :messageId " +
+                "AND pid.messageId = ?1 " +
                 "GROUP BY pid.messageId";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("messageId", messageId);
+        query.setParameter(1, messageId);
         return query.getResultList();
     }
 
     public List<Object[]> findOrcAndPidByMessageId(Integer messageId) {
-        String sql = "FROM Hl7Orc orc, Hl7Pid pid WHERE orc.pidId = pid.id AND pid.messageId = :messageId";
+        String sql = "FROM Hl7Orc orc, Hl7Pid pid WHERE orc.pidId = pid.id AND pid.messageId = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("messageId", messageId);
+        query.setParameter(1, messageId);
         return query.getResultList();
     }
 }
