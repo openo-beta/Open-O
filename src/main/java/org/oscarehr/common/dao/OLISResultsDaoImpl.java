@@ -42,10 +42,10 @@ public class OLISResultsDaoImpl extends AbstractDaoImpl<OLISResults> implements 
 
     @Override
     public boolean hasExistingResult(String requestingHICProviderNo, String queryType, String hash) {
-        Query query = entityManager.createQuery("select x from OLISResults x where x.requestingHICProviderNo=? and x.queryType=? and x.hash = ?");
-        query.setParameter(0, requestingHICProviderNo);
-        query.setParameter(1, queryType);
-        query.setParameter(2, hash);
+        Query query = entityManager.createQuery("select x from OLISResults x where x.requestingHICProviderNo=?1 and x.queryType=?2 and x.hash = ?3");
+        query.setParameter(1, requestingHICProviderNo);
+        query.setParameter(2, queryType);
+        query.setParameter(3, hash);
 
         if (!query.getResultList().isEmpty()) {
             return true;
@@ -56,9 +56,9 @@ public class OLISResultsDaoImpl extends AbstractDaoImpl<OLISResults> implements 
 
     @Override
     public List<OLISResults> getResultList(String requestingHICProviderNo, String queryType) {
-        Query query = entityManager.createQuery("select x from OLISResults x where x.requestingHICProviderNo=? and x.queryType=? and status IS NULL");
-        query.setParameter(0, requestingHICProviderNo);
-        query.setParameter(1, queryType);
+        Query query = entityManager.createQuery("select x from OLISResults x where x.requestingHICProviderNo=?1 and x.queryType=?2 and status IS NULL");
+        query.setParameter(1, requestingHICProviderNo);
+        query.setParameter(2, queryType);
 
         @SuppressWarnings("unchecked")
         List<OLISResults> results = query.getResultList();
@@ -68,8 +68,8 @@ public class OLISResultsDaoImpl extends AbstractDaoImpl<OLISResults> implements 
 
     @Override
     public OLISResults findByUUID(String uuid) {
-        Query query = entityManager.createQuery("select x from OLISResults x where x.uuid=?");
-        query.setParameter(0, uuid);
+        Query query = entityManager.createQuery("select x from OLISResults x where x.uuid=?1");
+        query.setParameter(1, uuid);
 
         return this.getSingleResultOrNull(query);
     }
