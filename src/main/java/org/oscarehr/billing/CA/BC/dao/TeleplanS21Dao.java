@@ -42,10 +42,10 @@ public class TeleplanS21Dao extends AbstractDaoImpl<TeleplanS21> {
     }
 
     public List<TeleplanS21> findByFilenamePaymentPayeeNo(String filename, String payment, String payeeNo) {
-        Query q = entityManager.createQuery("SELECT t from TeleplanS21 t WHERE t.fileName=? AND t.payment=? AND t.payeeNo=? ORDER BY t.payment");
-        q.setParameter(0, filename);
-        q.setParameter(1, payment);
-        q.setParameter(2, payeeNo);
+        Query q = entityManager.createQuery("SELECT t from TeleplanS21 t WHERE t.fileName=?1 AND t.payment=?2 AND t.payeeNo=?3 ORDER BY t.payment");
+        q.setParameter(1, filename);
+        q.setParameter(2, payment);
+        q.setParameter(3, payeeNo);
 
         @SuppressWarnings("unchecked")
         List<TeleplanS21> results = q.getResultList();
@@ -54,8 +54,8 @@ public class TeleplanS21Dao extends AbstractDaoImpl<TeleplanS21> {
     }
 
     public List<TeleplanS21> search_all_tahd(String excludeStatus) {
-        Query q = entityManager.createQuery("SELECT t from TeleplanS21 t WHERE t.status <> ? ORDER BY t.payment desc");
-        q.setParameter(0, excludeStatus);
+        Query q = entityManager.createQuery("SELECT t from TeleplanS21 t WHERE t.status <> ?1 ORDER BY t.payment desc");
+        q.setParameter(1, excludeStatus);
 
 
         @SuppressWarnings("unchecked")
