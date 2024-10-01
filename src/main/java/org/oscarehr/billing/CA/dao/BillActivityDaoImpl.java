@@ -47,10 +47,10 @@ public class BillActivityDaoImpl extends AbstractDaoImpl<BillActivity> implement
     @Override
     public List<BillActivity> findCurrentByMonthCodeAndGroupNo(String monthCode, String groupNo, Date updateDateTime) {
         Query q = entityManager.createQuery(
-                "SELECT b FROM BillActivity b WHERE b.monthCode=? AND b.groupNo=? AND b.updateDateTime > ? AND b.status != 'D' ORDER BY b.batchCount");
-        q.setParameter(0, monthCode);
-        q.setParameter(1, groupNo);
-        q.setParameter(2, updateDateTime);
+                "SELECT b FROM BillActivity b WHERE b.monthCode=?1 AND b.groupNo=?2 AND b.updateDateTime > ?3 AND b.status != 'D' ORDER BY b.batchCount");
+        q.setParameter(1, monthCode);
+        q.setParameter(2, groupNo);
+        q.setParameter(3, updateDateTime);
 
         @SuppressWarnings("unchecked")
         List<BillActivity> results = q.getResultList();
@@ -61,9 +61,9 @@ public class BillActivityDaoImpl extends AbstractDaoImpl<BillActivity> implement
     @Override
     public List<BillActivity> findCurrentByDateRange(Date startDate, Date endDate) {
         Query q = entityManager.createQuery(
-                "SELECT b FROM BillActivity b WHERE b.updateDateTime >= ? AND  b.updateDateTime <= ? AND b.status != 'D' ORDER BY b.id DESC");
-        q.setParameter(0, startDate);
-        q.setParameter(1, endDate);
+                "SELECT b FROM BillActivity b WHERE b.updateDateTime >= ?1 AND  b.updateDateTime <= ?2 AND b.status != 'D' ORDER BY b.id DESC");
+        q.setParameter(1, startDate);
+        q.setParameter(2, endDate);
 
         @SuppressWarnings("unchecked")
         List<BillActivity> results = q.getResultList();
