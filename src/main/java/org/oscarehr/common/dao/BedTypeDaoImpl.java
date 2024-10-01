@@ -53,8 +53,8 @@ public class BedTypeDaoImpl extends AbstractDaoImpl<BedType> implements BedTypeD
      */
     @Override
     public boolean bedTypeExists(Integer bedTypeId) {
-        Query query = entityManager.createQuery("select count(*) from BedType b where b.id = ?");
-        query.setParameter(0, bedTypeId);
+        Query query = entityManager.createQuery("select count(*) from BedType b where b.id = ?1");
+        query.setParameter(1, bedTypeId);
 
         Long result = (Long) query.getSingleResult();
 
