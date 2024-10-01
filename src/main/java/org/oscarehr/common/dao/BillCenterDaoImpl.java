@@ -49,8 +49,8 @@ public class BillCenterDaoImpl extends AbstractDaoImpl<BillCenter> implements Bi
     }
 
     public List<BillCenter> findByBillCenterDesc(String descr) {
-        Query query = entityManager.createQuery("SELECT b FROM BillCenter b WHERE b.billCenterDesc like ?");
-        query.setParameter(0, descr);
+        Query query = entityManager.createQuery("SELECT b FROM BillCenter b WHERE b.billCenterDesc like ?1");
+        query.setParameter(1, descr);
         @SuppressWarnings("unchecked")
         List<BillCenter> results = query.getResultList();
         return results;
