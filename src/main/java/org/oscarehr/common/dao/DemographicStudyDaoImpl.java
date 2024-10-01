@@ -50,8 +50,8 @@ public class DemographicStudyDaoImpl extends AbstractDaoImpl<DemographicStudy> i
 
     @Override
     public int removeByDemographicNo(Integer demographicNo) {
-        Query query = entityManager.createQuery("delete from DemographicStudy x where x.id.demographicNo=?");
-        query.setParameter(0, demographicNo);
+        Query query = entityManager.createQuery("delete from DemographicStudy x where x.id.demographicNo=?1");
+        query.setParameter(1, demographicNo);
         return query.executeUpdate();
     }
 
@@ -66,15 +66,15 @@ public class DemographicStudyDaoImpl extends AbstractDaoImpl<DemographicStudy> i
 
     @Override
     public List<DemographicStudy> findByStudyNo(int studyNo) {
-        Query query = entityManager.createQuery("select x from DemographicStudy x where x.id.studyNo=?");
-        query.setParameter(0, studyNo);
+        Query query = entityManager.createQuery("select x from DemographicStudy x where x.id.studyNo=?1");
+        query.setParameter(1, studyNo);
         return query.getResultList();
     }
 
     @Override
     public List<DemographicStudy> findByDemographicNo(int demographicNo) {
-        Query query = entityManager.createQuery("select x from DemographicStudy x where x.id.demographicNo=?");
-        query.setParameter(0, demographicNo);
+        Query query = entityManager.createQuery("select x from DemographicStudy x where x.id.demographicNo=?1");
+        query.setParameter(1, demographicNo);
         return query.getResultList();
     }
 }
