@@ -40,8 +40,8 @@ public class BillingONFavouriteDao extends AbstractDaoImpl<BillingONFavourite> {
     }
 
     public List<BillingONFavourite> findByName(String name) {
-        Query q = entityManager.createQuery("SELECT b FROM BillingONFavourite b WHERE b.name = ?");
-        q.setParameter(0, name);
+        Query q = entityManager.createQuery("SELECT b FROM BillingONFavourite b WHERE b.name = ?1");
+        q.setParameter(1, name);
 
         @SuppressWarnings("unchecked")
         List<BillingONFavourite> results = q.getResultList();
@@ -50,9 +50,9 @@ public class BillingONFavouriteDao extends AbstractDaoImpl<BillingONFavourite> {
     }
 
     public List<BillingONFavourite> findByNameAndProviderNo(String name, String providerNo) {
-        Query q = entityManager.createQuery("SELECT b FROM BillingONFavourite b WHERE b.name = ? AND b.providerNo = ?");
-        q.setParameter(0, name);
-        q.setParameter(1, providerNo);
+        Query q = entityManager.createQuery("SELECT b FROM BillingONFavourite b WHERE b.name = ?1 AND b.providerNo = ?2");
+        q.setParameter(1, name);
+        q.setParameter(2, providerNo);
 
         @SuppressWarnings("unchecked")
         List<BillingONFavourite> results = q.getResultList();
