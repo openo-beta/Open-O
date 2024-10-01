@@ -39,8 +39,8 @@ public class TeleplanRefusalCodeDao extends AbstractDaoImpl<TeleplanRefusalCode>
 
     @SuppressWarnings("unchecked")
     public List<TeleplanRefusalCode> findByCode(String code) {
-        javax.persistence.Query q = createQuery("c", "c.code = :code");
-        q.setParameter("code", code);
+        javax.persistence.Query q = createQuery("c", "c.code = ?1");
+        q.setParameter(1, code);
         return q.getResultList();
     }
 
