@@ -39,8 +39,8 @@ public class WcbDao extends AbstractDaoImpl<Wcb> {
     }
 
     public List<Wcb> findByBillingNo(int billingNo) {
-        Query q = entityManager.createQuery("SELECT x FROM Wcb x WHERE x.billingNo=?");
-        q.setParameter(0, billingNo);
+        Query q = entityManager.createQuery("SELECT x FROM Wcb x WHERE x.billingNo=?1");
+        q.setParameter(1, billingNo);
 
         @SuppressWarnings("unchecked")
         List<Wcb> results = q.getResultList();
