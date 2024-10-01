@@ -41,8 +41,8 @@ public class TeleplanAdjCodesDao extends AbstractDaoImpl<TeleplanAdjCodes> {
 
     @SuppressWarnings("unchecked")
     public List<TeleplanAdjCodes> findByCode(String code) {
-        Query q = createQuery("t", "t.adjCode = :c");
-        q.setParameter("c", code);
+        Query q = createQuery("t", "t.adjCode = ?1");
+        q.setParameter(1, code);
         return q.getResultList();
     }
 
