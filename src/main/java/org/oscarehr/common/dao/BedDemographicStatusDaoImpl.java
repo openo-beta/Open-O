@@ -70,9 +70,7 @@ public class BedDemographicStatusDaoImpl extends AbstractDaoImpl<BedDemographicS
 
     @Override
     public BedDemographicStatus getBedDemographicStatus(Integer bedDemographicStatusId) {
-        Query query = entityManager.createQuery("SELECT bds FROM BedDemographicStatus bds WHERE bds.id = ?1");
-        query.setParameter(1, bedDemographicStatusId);
-        BedDemographicStatus bedDemographicStatus = (BedDemographicStatus) query.getSingleResult();
+		BedDemographicStatus bedDemographicStatus = find(bedDemographicStatusId);
 
         log.debug(
                 "getBedDemographicStatus: id: " + (bedDemographicStatus != null ? bedDemographicStatus.getId() : null));
