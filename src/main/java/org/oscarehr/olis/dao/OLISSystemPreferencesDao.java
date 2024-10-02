@@ -25,8 +25,8 @@ public class OLISSystemPreferencesDao extends AbstractDaoImpl<OLISSystemPreferen
 
     public OLISSystemPreferences getPreferences() {
         try {
-            String sql = "select x from " + this.modelClass.getName() + " x";
-            Query query = entityManager.createQuery(sql);
+            String sql = "select x from " + this.modelClass.getName() + " x where x.id = ?1";
+            Query query = entityManager.createQuery(sql).setParameter(1, someParameter);
             return (OLISSystemPreferences) query.getSingleResult();
         } catch (javax.persistence.NoResultException nre) {
             return new OLISSystemPreferences();
