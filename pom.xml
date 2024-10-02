@@ -1445,7 +1445,7 @@
         <!--    <version>2.3.0</version>-->
         <!--    <type>pom</type>-->
         <!--</dependency>-->
-	</dependencies>
+    </dependencies>
 
     <build>
         <resources>
