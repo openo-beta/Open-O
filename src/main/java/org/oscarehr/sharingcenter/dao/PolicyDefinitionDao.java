@@ -48,9 +48,9 @@ public class PolicyDefinitionDao extends AbstractDaoImpl<PolicyDefinitionDataObj
      * @return PolicyDefinition
      */
     public PolicyDefinitionDataObject getPolicyDefinition(int id) {
-        String sql = "FROM PolicyDefinitionDataObject a where a.id = ?";
+        String sql = "FROM PolicyDefinitionDataObject a where a.id = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, id);
+        query.setParameter(1, id);
 
         PolicyDefinitionDataObject retVal = getSingleResultOrNull(query);
         return retVal;
@@ -65,11 +65,11 @@ public class PolicyDefinitionDao extends AbstractDaoImpl<PolicyDefinitionDataObj
      * @return PolicyDefinition
      */
     public PolicyDefinitionDataObject getPolicyDefinitionByCode(String code, String codeSystem, AffinityDomainDataObject domain) {
-        String sql = "FROM PolicyDefinitionDataObject a where a.code = ? and a.codeSystem = ? and a.affinityDomain = ?";
+        String sql = "FROM PolicyDefinitionDataObject a where a.code = ?1 and a.codeSystem = ?2 and a.affinityDomain = ?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, code);
-        query.setParameter(1, codeSystem);
-        query.setParameter(2, domain);
+        query.setParameter(1, code);
+        query.setParameter(2, codeSystem);
+        query.setParameter(3, domain);
 
         query.setMaxResults(1);
         PolicyDefinitionDataObject retVal = getSingleResultOrNull(query);
@@ -83,9 +83,9 @@ public class PolicyDefinitionDao extends AbstractDaoImpl<PolicyDefinitionDataObj
      * @return PolicyDefinition
      */
     public List<PolicyDefinitionDataObject> getPolicyDefinitionByDomain(AffinityDomainDataObject domain) {
-        String sql = "FROM PolicyDefinitionDataObject a where a.affinityDomain = ?";
+        String sql = "FROM PolicyDefinitionDataObject a where a.affinityDomain = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, domain);
+        query.setParameter(1, domain);
 
         @SuppressWarnings("unchecked")
         List<PolicyDefinitionDataObject> retVal = query.getResultList();
