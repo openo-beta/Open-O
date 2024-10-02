@@ -47,19 +47,19 @@ public class PatientPolicyConsentDao extends AbstractDaoImpl<PatientPolicyConsen
     }
 
     public List<PatientPolicyConsent> findByDemographicId(int demographicId) {
-        String sql = "FROM PatientPolicyConsent e where e.demographicNo = ?";
+        String sql = "FROM PatientPolicyConsent e where e.demographicNo = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicId);
+        query.setParameter(1, demographicId);
 
         return query.getResultList();
     }
 
     public boolean isPatientConsentedToPolicy(int demographicId, int policyId) {
-        String sql = "SELECT count(*) FROM PatientPolicyConsent e where e.demographicNo = ? and e.policyId = ?";
+        String sql = "SELECT count(*) FROM PatientPolicyConsent e where e.demographicNo = ?1 and e.policyId = ?2";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicId);
-        query.setParameter(1, policyId);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, policyId);
 
         int retVal = ((Long) query.getSingleResult()).intValue();
         return retVal > 0;
