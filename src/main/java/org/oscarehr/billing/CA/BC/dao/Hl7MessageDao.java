@@ -45,13 +45,13 @@ public class Hl7MessageDao extends AbstractDaoImpl<Hl7Message> {
         String sql =
                 "FROM Hl7Message m, " + PatientLabRouting.class.getSimpleName() + " patientLabRouting " +
                         "WHERE patientLabRouting.labNo = m.id " +
-                        "AND patientLabRouting.labType = :labType " +
-                        "AND patientLabRouting.demographicNo = :demographicNo " +
+                        "AND patientLabRouting.labType = ?1 " +
+                        "AND patientLabRouting.demographicNo = ?2 " +
                         "GROUP BY m.id";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("labType", labType);
+        query.setParameter(1, labType);
+        query.setParameter(2, demographicNo);
         return query.getResultList();
     }
 }
