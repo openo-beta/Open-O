@@ -62,12 +62,12 @@ public class EFormMappingDao extends AbstractDaoImpl<EFormMapping> {
     }
 
     public EFormMapping findEFormMapping(int affinityDomain, int eformId, String source) {
-        String sql = "FROM EFormMapping e where e.affinityDomain = ? and e.eformId = ? and e.source = ?";
+        String sql = "FROM EFormMapping e where e.affinityDomain = ?1 and e.eformId = ?2 and e.source = ?3";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, affinityDomain);
-        query.setParameter(1, eformId);
-        query.setParameter(2, source);
+        query.setParameter(1, affinityDomain);
+        query.setParameter(2, eformId);
+        query.setParameter(3, source);
 
         query.setMaxResults(1);
         EFormMapping retVal = getSingleResultOrNull(query);
@@ -75,11 +75,11 @@ public class EFormMappingDao extends AbstractDaoImpl<EFormMapping> {
     }
 
     public EFormMapping findEFormMapping(int affinityDomain, int eformId) {
-        String sql = "FROM EFormMapping e where e.affinityDomain = ? and e.eformId = ?";
+        String sql = "FROM EFormMapping e where e.affinityDomain = ?1 and e.eformId = ?2";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, affinityDomain);
-        query.setParameter(1, eformId);
+        query.setParameter(1, affinityDomain);
+        query.setParameter(2, eformId);
 
         query.setMaxResults(1);
         EFormMapping retVal = getSingleResultOrNull(query);
