@@ -49,7 +49,7 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
     public List<ProgramAccess> getAccessListByProgramId(Long programId) {
         List<ProgramAccess> results = programAccessListByProgramIdCache.get(programId);
         if (results == null) {
-            String q = "select pp from ProgramAccess pp where pp.ProgramId=?";
+            String q = "select pp from ProgramAccess pp where pp.ProgramId=?0";
             results = (List<ProgramAccess>) getHibernateTemplate().find(q, new Object[]{programId});
             if (results != null)
                 programAccessListByProgramIdCache.put(programId, results);

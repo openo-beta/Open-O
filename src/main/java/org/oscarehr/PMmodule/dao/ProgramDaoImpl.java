@@ -623,7 +623,7 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         Program result = null;
 
         @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) getHibernateTemplate().find("from Program p where p.name = ?",
+        List<Program> results = (List<Program>) getHibernateTemplate().find("from Program p where p.name = ?0",
                 new Object[]{value});
 
         if (!results.isEmpty()) {
