@@ -362,11 +362,11 @@
   }, {
     "groupId" : "com.fasterxml",
     "artifactId" : "classmate",
-    "version" : "1.3.0",
+    "version" : "1.5.1",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:UOk3BuH4w0SSzCCFDpHaU5JcAjWYk1ne92Me0+9/V9nhf9ZwNPgHgm/b5UXlP/zaiLAzUCCnLR6qXk0HAL0TiQ=="
+    "integrity" : "sha512:f8R2TrZSJ/W6YUaYpc8vlDATP0LsbirlO0xyTuU/JYVBoBCf4GWeC55FcptGyVwAIn5pa40a3c13LIX4d2WMmg=="
   }, {
     "groupId" : "com.github.jtidy",
     "artifactId" : "jtidy",
@@ -535,6 +535,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:ViQ9QtC0V5ro3Ouzu5wIB9VPaON68aQ8E3nZh4/ajPLTn0/frLSA3B1YuuNXyYldpqGd1dAbRRSwHyqp+HAafA=="
+  }, {
+    "groupId" : "com.sun.istack",
+    "artifactId" : "istack-commons-runtime",
+    "version" : "3.0.7",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:H7tNiDclMZAo/TtVgIain/0P0ABrVuymJ93aI7EVXih68phgA42S1MR1l19NH0rIJJrFW4iFKGliNIUXGTSzGg=="
   }, {
     "groupId" : "com.sun.mail",
     "artifactId" : "jakarta.mail",
@@ -864,6 +872,14 @@
     "optional" : false,
     "integrity" : "sha512:Nbz5vwfz78HQTeyzjFriFafFXZkGDhKud54STVyjhPijxFJrcWKxE9+Edvy9pDQLbwTb3DkdlSr6O3jlN9NdeQ=="
   }, {
+    "groupId" : "javax.activation",
+    "artifactId" : "javax.activation-api",
+    "version" : "1.2.0",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:juDbQ65ALwB5qDbvK/9dFRYOP/nVhcMoP0z0dL5O3S/MhxTY8DLv1yyud+xfbTBPwk+glNnNulz3KWbMlkr2yQ=="
+  }, {
     "groupId" : "javax.annotation",
     "artifactId" : "javax.annotation-api",
     "version" : "1.3",
@@ -879,6 +895,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:4Sa3zPPkL9GYSgvu8QBKcmmjN8IC5Z4E6OKvcUKA0vLY0rpeb1lIG43NNKrzXJZqaI0LSOx+lvECwnTcDTs4Hg=="
+  }, {
+    "groupId" : "javax.persistence",
+    "artifactId" : "javax.persistence-api",
+    "version" : "2.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:AT5ODv5ksc9nRNzkTtcWtNhROyrVtqATGvZjt5GOtlcFvQnU33Y/9KgQgp9Pa2wZjKdnDOQ5lAvleu0JFLUT+A=="
   }, {
     "groupId" : "javax.servlet",
     "artifactId" : "javax.servlet-api",
@@ -919,6 +943,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:MexgXTIV6i7LAF9uF5RGQavLqIlMncZM9qcW/0UaF5SC7XRqwWA9o1HuA9WDYjVQfLCSQ276oTOlCBEGQ6jriA=="
+  }, {
+    "groupId" : "javax.xml.bind",
+    "artifactId" : "jaxb-api",
+    "version" : "2.3.1",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:k6R7JFq4MNZkpIydFOhhmKOICc6U9yymaz1odGrh17kC9v7y0awaksAXAVSa6AoH22m9gi/9gxqV2Nv/rUNXkA=="
   }, {
     "groupId" : "javax.xml.stream",
     "artifactId" : "stax-api",
@@ -991,6 +1023,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:i4YJcxOiePsgrr0UhJ3WT3LrrnvrgMxb6OPlBjh3MqI5cPySJT5pA0kZjOXVKkoPY2OHqL9mRH/O7QheekwFPg=="
+  }, {
+    "groupId" : "net.bytebuddy",
+    "artifactId" : "byte-buddy",
+    "version" : "1.12.18",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:VcR19CgIPWVt2e1aCHK7802j7wPlZ9xd/6kAqDUw0WPC4FnNYwQIxz90B3Ag59/mLVeKD1gmPu7wHJwwfgRDCQ=="
   }, {
     "groupId" : "net.java.dev.jna",
     "artifactId" : "jna",
@@ -2363,11 +2403,11 @@
   }, {
     "groupId" : "org.dom4j",
     "artifactId" : "dom4j",
-    "version" : "2.1.1",
+    "version" : "2.1.4",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:VH2gdS/7Es5AgARJN28vfiDwU/gW3krorfGk+tWjuHzk6Y6VZQZxpsnNy798IKS2HnEeWujTJMkj1Qi8sH4C4Q=="
+    "integrity" : "sha512:tkehycvY6OCoVRYLhSL/+OHU35XlThFqHP5m0XCD/4uMpv5wbWrupufT4BFiEq+aX2x/reZChpoz/HqXHRFq+Q=="
   }, {
     "groupId" : "org.eclipse.jdt",
     "artifactId" : "ecj",
@@ -2433,6 +2473,22 @@
     "optional" : false,
     "integrity" : "sha512:OWlmrfPoy6Cf91KXkV1Bump8YMMnV13/8VP2YXobyv/0oawLqhnZO03cq1EcXiOm/ZWq30XlXiBXcA2juJka8A=="
   }, {
+    "groupId" : "org.glassfish.jaxb",
+    "artifactId" : "jaxb-runtime",
+    "version" : "2.3.1",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:Qud432jevLbPG0KYXnxgBn58C1v1du62MOlyiNj7zNws8f+iOr5lG0SvHvTNNsUisGoZq1hqtnd+8Dl53hrJUQ=="
+  }, {
+    "groupId" : "org.glassfish.jaxb",
+    "artifactId" : "txw2",
+    "version" : "2.3.1",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:7VViFUQ+mxkNmhgghzW1dvlLWWXeYx87KRr3rWCUVBS64boOpBMNawoEUwUhYvedG7z4IjcPWNYarO/ra3GFIw=="
+  }, {
     "groupId" : "org.hamcrest",
     "artifactId" : "hamcrest-core",
     "version" : "1.3",
@@ -2443,27 +2499,19 @@
   }, {
     "groupId" : "org.hibernate.common",
     "artifactId" : "hibernate-commons-annotations",
-    "version" : "5.0.1.Final",
+    "version" : "5.1.2.Final",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:VxRpK++GI1XPf5/PgqpmMyHaGTkgrfS1hP5p9VlTVVXExThYokZUEP+5kKrXhHEk2+oo7ZXc7F31JaEWQoh5Hw=="
-  }, {
-    "groupId" : "org.hibernate.javax.persistence",
-    "artifactId" : "hibernate-jpa-2.1-api",
-    "version" : "1.0.0.Final",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:aW3RVIUEyeqNhSZBHoG+6LdS8Shhl52icH0QWbNajMs/AYodTi0SQ258na7I5juX/PmA4DAymBhnzqY9QwHz2g=="
+    "integrity" : "sha512:nOafGbLggAcaaaL6qZK+cLLBU9lIYsMG94TR+R/mbgETnBOjtPFW7he9xY6pyTth4tvfxDFS1DiWYQJRSIxuJA=="
   }, {
     "groupId" : "org.hibernate",
     "artifactId" : "hibernate-core",
-    "version" : "5.2.18.Final",
+    "version" : "5.6.15.Final",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:G4wfDWTsJ+ja+LS5sb6VEdCl6ZVzg2xSfHnwJgSMWs/hCu2jSlsMd78w/G69kpdoOOtDoGXxkumHFTERbWhrNw=="
+    "integrity" : "sha512:8mHTu29DGmV3jLdG55JJ6EwMlf8g0FqmOvW4zv5XUz4Je09xMOLntKokziRzWrrhaf8mnN43JZXuO0NODWnjHA=="
   }, {
     "groupId" : "org.indivo",
     "artifactId" : "indivo-core",
@@ -2499,35 +2547,35 @@
   }, {
     "groupId" : "org.javassist",
     "artifactId" : "javassist",
-    "version" : "3.22.0-GA",
+    "version" : "3.16.1-GA",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:sgXFwb1JGTXPwzNboFTK/BNdLHMgVDK0y0+ltOSIfW8arSlmYn0Hj6rMrdRbFXiFAiOWWwiB1P+DcQgP7qIoxw=="
+    "integrity" : "sha512:vHFYJ79Uc/dJpSro0Snn4ULjHFlrCYX83z9pKja6dXq3yy/dDnK3yrSUlVzrX3nPLGR/kwix7xKSvHyNCRFmTw=="
   }, {
     "groupId" : "org.jboss.logging",
     "artifactId" : "jboss-logging",
-    "version" : "3.3.1.Final",
+    "version" : "3.4.3.Final",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:6Ie6e8W9DMywrY+p1s7SnyCXkUeXREyOpc6z0KkrB5M9N8TnFK88hwab9YWPtS7U/dDafeBVmnTxrYKrwJOF+Q=="
+    "integrity" : "sha512:YHWcQ0Cnwa8PEKXCJS4CgVBBPSQ3VH9CAYqUqDjcSiuyQlZBFJCn5fEJt2MF4nUuzzfe+F5jHX57foRh4LVN2g=="
   }, {
     "groupId" : "org.jboss.spec.javax.transaction",
     "artifactId" : "jboss-transaction-api_1.2_spec",
-    "version" : "1.0.1.Final",
+    "version" : "1.1.1.Final",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:+3UTYiI70vWNQDJgGLdC7Li7SeI2K4urv6ZZLhD7C9TFIZKFl3HVtMZ5VL84dr2jhYF5XVSlZr/KZvP9sL/U+w=="
+    "integrity" : "sha512:o4hwdxMT69FszYNzlWb3e30tnFYhAWbGNKI/FSMFlSKHygn7F6LcGfFI/kmuinCukENiKkKPYvn1iPvVagZfqg=="
   }, {
     "groupId" : "org.jboss",
     "artifactId" : "jandex",
-    "version" : "2.0.3.Final",
+    "version" : "2.4.2.Final",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:rVVyKEFPsddXUPRJXO1pUX3qwNJr6uuB4yM/4hJU47fjzO/jgZcf+427DZ4MHnCXNiOUj/7DHvrZkpjxEHgw7Q=="
+    "integrity" : "sha512:Y1ZCWCcB9q4m35HjnVv9k0XEwhnac+caJ/R0CkwMeXD1LO9me7nMTdCMJtmwRH7gA8nlbV7eaIcJdjVsL8xKXA=="
   }, {
     "groupId" : "org.jdom",
     "artifactId" : "jdom",
@@ -2616,6 +2664,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:KJFsxU1Qr3spP3QaNMUCdvuBNOZ0Ba7MmJXY6oqmW+nIoqm3fuuOl3GDrSS3xkM38rOOeS7V1qvZwrzejEKrpg=="
+  }, {
+    "groupId" : "org.jvnet.staxex",
+    "artifactId" : "stax-ex",
+    "version" : "1.8",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:66vTMKLXwQkQX6VcQjb8Ly1SZo5wsXuPw2uKyfUkqixnBA51NxJn2OlSPZTe4M4GTnZYTJ8gZofom587Kjh/Aw=="
   }, {
     "groupId" : "org.marc.everest",
     "artifactId" : "everest-core",
