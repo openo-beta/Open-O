@@ -24,9 +24,9 @@ public class HRMProviderConfidentialityStatementDao extends AbstractDaoImpl<HRMP
     }
 
     public String getConfidentialityStatementForProvider(String providerNo) {
-        String sql = "select x.statement from " + this.modelClass.getName() + " x where x.providerNo=?";
+        String sql = "select x.statement from " + this.modelClass.getName() + " x where x.providerNo=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, providerNo);
+        query.setParameter(1, providerNo);
         try {
             return (String) query.getSingleResult();
         } catch (Exception e) {
@@ -36,9 +36,9 @@ public class HRMProviderConfidentialityStatementDao extends AbstractDaoImpl<HRMP
     }
 
     public HRMProviderConfidentialityStatement findByProvider(String providerNo) {
-        String sql = "select x from " + this.modelClass.getName() + " x where x.providerNo=?";
+        String sql = "select x from " + this.modelClass.getName() + " x where x.providerNo=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, providerNo);
+        query.setParameter(1, providerNo);
         return this.getSingleResultOrNull(query);
     }
 
