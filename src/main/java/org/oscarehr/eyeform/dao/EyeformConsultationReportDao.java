@@ -70,7 +70,7 @@ public class EyeformConsultationReportDao extends AbstractDaoImpl<EyeformConsult
                 sql += " AND ";
                 pos++;
             }
-            sql += "x.status = ?";
+            sql += "x.status = ?" + pos;
             params.put(pos, queryBean.getStatus());
         }
         if (queryBean.getProviderNo() != null) {
@@ -81,7 +81,7 @@ public class EyeformConsultationReportDao extends AbstractDaoImpl<EyeformConsult
                 sql += " AND ";
                 pos++;
             }
-            sql += "x.providerNo = ?";
+            sql += "x.providerNo = ?" + pos;
             params.put(pos, queryBean.getProviderNo());
         }
         if (queryBean.getDemographicNo() > 0) {
@@ -92,7 +92,7 @@ public class EyeformConsultationReportDao extends AbstractDaoImpl<EyeformConsult
                 sql += " AND ";
                 pos++;
             }
-            sql += "x.demographicNo = ?";
+            sql += "x.demographicNo = ?" + pos;
             params.put(pos, queryBean.getDemographicNo());
         }
 
@@ -104,7 +104,7 @@ public class EyeformConsultationReportDao extends AbstractDaoImpl<EyeformConsult
                 sql += " AND ";
                 pos++;
             }
-            sql += "x.date >=?";
+            sql += "x.date >=?" + pos;
             params.put(pos, startDate);
         }
 
@@ -116,7 +116,7 @@ public class EyeformConsultationReportDao extends AbstractDaoImpl<EyeformConsult
                 sql += " AND ";
                 pos++;
             }
-            sql += "x.date <=?";
+            sql += "x.date <=?" + pos;
             params.put(pos, endDate);
         }
 
