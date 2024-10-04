@@ -85,12 +85,12 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
                         + "FROM " + this.modelClass.getName() + " hdtd "
                         + "WHERE hdtd.hrmDocumentId IN (SELECT cd.documentNo "
                         + "FROM " + ConsultDocs.class.getName() + " cd "
-                        + "WHERE cd.requestId = ? AND cd.docType = 'H' AND cd.deleted IS NULL)";
+                        + "WHERE cd.requestId = ?1 AND cd.docType = 'H' AND cd.deleted IS NULL)";
 
                 //Creates the query using the SQL
                 Query query = entityManager.createQuery(sql);
                 //Sets the query parameters
-                query.setParameter(0, parsedConsultationId);
+                query.setParameter(1, parsedConsultationId);
                 //Gets the query results and converts them to ConsultDocs
                 attachedHRMDocumentToDemographics = query.getResultList();
             } catch (NumberFormatException nfe) {
@@ -129,12 +129,12 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
                         + "FROM " + this.modelClass.getName() + " hdtd "
                         + "WHERE hdtd.hrmDocumentId IN (SELECT cd.documentNo "
                         + "FROM " + EFormDocs.class.getName() + " cd "
-                        + "WHERE cd.fdid = ? AND cd.docType = 'H' AND cd.deleted IS NULL)";
+                        + "WHERE cd.fdid = ?1 AND cd.docType = 'H' AND cd.deleted IS NULL)";
 
                 //Creates the query using the SQL
                 Query query = entityManager.createQuery(sql);
                 //Sets the query parameters
-                query.setParameter(0, parsedFdid);
+                query.setParameter(1, parsedFdid);
                 //Gets the query results and converts them to EFormDocs
                 attachedHRMDocumentToDemographics = query.getResultList();
             } catch (NumberFormatException nfe) {
