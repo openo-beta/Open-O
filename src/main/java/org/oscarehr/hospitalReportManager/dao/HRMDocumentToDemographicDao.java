@@ -32,10 +32,10 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
 
 
     public List<HRMDocumentToDemographic> findByDemographicNo(String demographicNo) {
-        String sql = "select x from " + this.modelClass.getName() + " x, HRMDocument h where x.hrmDocumentId = h.id and  x.demographicNo=? order by h.reportDate DESC";
+        String sql = "select x from " + this.modelClass.getName() + " x, HRMDocument h where x.hrmDocumentId = h.id and  x.demographicNo=?1 order by h.reportDate DESC";
         Query query = entityManager.createQuery(sql);
         Integer demographicNoInteger = Integer.parseInt(demographicNo);
-        query.setParameter(0, demographicNoInteger);
+        query.setParameter(1, demographicNoInteger);
         @SuppressWarnings("unchecked")
         List<HRMDocumentToDemographic> documentToDemographics = query.getResultList();
         return documentToDemographics;
@@ -46,9 +46,9 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
      */
     @Deprecated
     public List<HRMDocumentToDemographic> findByHrmDocumentId(String hrmDocumentId) {
-        String sql = "select x from " + this.modelClass.getName() + " x where x.hrmDocumentId=?";
+        String sql = "select x from " + this.modelClass.getName() + " x where x.hrmDocumentId=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, hrmDocumentId);
+        query.setParameter(1, hrmDocumentId);
         @SuppressWarnings("unchecked")
         List<HRMDocumentToDemographic> documentToDemographics = query.getResultList();
         return documentToDemographics;
