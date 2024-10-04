@@ -84,9 +84,9 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         List<Integer> matches = query.getResultList();
 
         if (matches != null && matches.size() == 1 && matches.get(0) == null) {
-            sql = "select distinct id from " + this.modelClass.getName() + " x where x.reportLessDemographicInfoHash=?";
+            sql = "select distinct id from " + this.modelClass.getName() + " x where x.reportLessDemographicInfoHash=?1";
             query = entityManager.createQuery(sql);
-            query.setParameter(0, hash);
+            query.setParameter(1, hash);
             matches = query.getResultList();
         }
         return matches;
@@ -102,23 +102,23 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
             Query query = null;
             if (firstDocument.getParentReport() != null && !firstDocument.getParentReport().equals(docId)) {
                 // This is a child report; get the parent and all siblings of this report (which includes itself)
-                sql = "select x from " + this.modelClass.getName() + " x where x.id = ? order by x.id asc";
+                sql = "select x from " + this.modelClass.getName() + " x where x.id = ?1 order by x.id asc";
                 query = entityManager.createQuery(sql);
-                query.setParameter(0, firstDocument.getParentReport());
+                query.setParameter(1, firstDocument.getParentReport());
                 documentsWithRelationship.addAll(query.getResultList());
 
-                sql = "select x from " + this.modelClass.getName() + " x where x.parentReport = ? order by x.id asc";
+                sql = "select x from " + this.modelClass.getName() + " x where x.parentReport = ?1 order by x.id asc";
                 query = entityManager.createQuery(sql);
-                query.setParameter(0, firstDocument.getParentReport());
+                query.setParameter(1, firstDocument.getParentReport());
                 documentsWithRelationship.addAll(query.getResultList());
 
 
             } else {
                 // This is a parent report; get all the children of this report as well as itself
-                sql = "select x from " + this.modelClass.getName() + " x where x.parentReport = ? or x.id = ?  order by x.id asc";
+                sql = "select x from " + this.modelClass.getName() + " x where x.parentReport = ?1 or x.id = ?2  order by x.id asc";
                 query = entityManager.createQuery(sql);
-                query.setParameter(0, firstDocument.getId());
                 query.setParameter(1, firstDocument.getId());
+                query.setParameter(2, firstDocument.getId());
                 documentsWithRelationship = query.getResultList();
             }
 
