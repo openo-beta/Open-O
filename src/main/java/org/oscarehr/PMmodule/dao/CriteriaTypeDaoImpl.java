@@ -53,8 +53,8 @@ public class CriteriaTypeDaoImpl extends AbstractDaoImpl<CriteriaType> implement
     }
 
     public CriteriaType findByName(String fieldName) {
-        Query query = entityManager.createQuery("select x from CriteriaType x where x.fieldName=?");
-        query.setParameter(0, fieldName);
+        Query query = entityManager.createQuery("select x from CriteriaType x where x.fieldName=?1");
+        query.setParameter(1, fieldName);
 
         @SuppressWarnings("unchecked")
         List<CriteriaType> results = query.getResultList();
@@ -66,8 +66,8 @@ public class CriteriaTypeDaoImpl extends AbstractDaoImpl<CriteriaType> implement
     }
 
     public List<CriteriaType> getAllCriteriaTypes() {
-        Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=? order by x.fieldType DESC");
-        query.setParameter(0, 1);
+        Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=?1 order by x.fieldType DESC");
+        query.setParameter(1, 1);
 
         @SuppressWarnings("unchecked")
         List<CriteriaType> results = query.getResultList();
@@ -76,8 +76,8 @@ public class CriteriaTypeDaoImpl extends AbstractDaoImpl<CriteriaType> implement
     }
 
     public List<CriteriaType> getAllCriteriaTypesByWlProgramId(Integer wlProgramId) {
-        Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=? order by x.fieldType DESC");
-        query.setParameter(0, wlProgramId);
+        Query query = entityManager.createQuery("select x from CriteriaType x where x.wlProgramId=?1 order by x.fieldType DESC");
+        query.setParameter(1, wlProgramId);
 
         @SuppressWarnings("unchecked")
         List<CriteriaType> results = query.getResultList();
