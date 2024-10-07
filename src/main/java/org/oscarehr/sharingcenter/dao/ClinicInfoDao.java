@@ -46,7 +46,6 @@ public class ClinicInfoDao extends AbstractDaoImpl<ClinicInfoDataObject> {
      */
     public ClinicInfoDataObject getClinic() {
         Query query = entityManager.createQuery("FROM ClinicInfoDataObject c");
-        query.setMaxResults(1);
 
         query.setMaxResults(1);
         ClinicInfoDataObject retVal = getSingleResultOrNull(query);
