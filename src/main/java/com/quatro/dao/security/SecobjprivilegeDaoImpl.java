@@ -117,7 +117,7 @@ public class SecobjprivilegeDaoImpl extends HibernateDaoSupport implements Secob
         logger.debug("deleting Secobjprivilege by roleName");
         try {
 
-            return getHibernateTemplate().bulkUpdate("delete Secobjprivilege as model where model.roleusergroup =?",
+            return getHibernateTemplate().bulkUpdate("delete Secobjprivilege as model where model.roleusergroup =?0",
                     roleName);
 
         } catch (RuntimeException re) {
@@ -192,9 +192,9 @@ public class SecobjprivilegeDaoImpl extends HibernateDaoSupport implements Secob
         Session session = sessionFactory.getCurrentSession();
         try {
             String queryString = "from Secobjprivilege as model where model."
-                    + propertyName + "= ? order by objectname_code";
+                    + propertyName + "= ?1 order by objectname_code";
             Query queryObject = session.createQuery(queryString);
-            queryObject.setParameter(0, value);
+            queryObject.setParameter(1, value);
             return queryObject.list();
         } catch (RuntimeException re) {
             logger.error("find by property name failed", re);
@@ -223,13 +223,13 @@ public class SecobjprivilegeDaoImpl extends HibernateDaoSupport implements Secob
 
     @Override
     public List<Secobjprivilege> getByRoles(List<String> roles) {
-        String queryString = "from Secobjprivilege obj where obj.roleusergroup IN (:roles)";
+        String queryString = "from Secobjprivilege obj where obj.roleusergroup IN (?1)";
         List<Secobjprivilege> results = new ArrayList<Secobjprivilege>();
 
         Session session = sessionFactory.getCurrentSession();
         Query q = session.createQuery(queryString);
 
-        q.setParameterList("roles", roles);
+        q.setParameterList(1, roles);
 
         results = q.list();
 
