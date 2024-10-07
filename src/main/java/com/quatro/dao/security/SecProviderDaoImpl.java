@@ -98,7 +98,7 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     public SecProvider findById(java.lang.String id, String status) {
         logger.debug("getting Provider instance with id: " + id);
         try {
-            String sql = "from SecProvider where id=? and status=?";
+            String sql = "from SecProvider where id=?0 and status=?1";
             List lst = this.getHibernateTemplate().find(sql, new Object[]{id, status});
             if (lst.size() == 0)
                 return null;
@@ -138,9 +138,9 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         Session session = getSession();
         try {
             String queryString = "from Provider as model where model."
-                    + propertyName + "= ?";
+                    + propertyName + "= ?1";
             Query queryObject = session.createQuery(queryString);
-            queryObject.setParameter(0, value);
+            queryObject.setParameter(1, value);
             return queryObject.list();
         } catch (RuntimeException re) {
             logger.error("find by property name failed", re);
