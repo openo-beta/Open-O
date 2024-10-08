@@ -111,8 +111,8 @@ public class SupServiceCodeAssocDAO extends AbstractDaoImpl<BillingTrayFee> {
         String primaryCodeId = getBillingServiceValue(primaryCode, SupServiceCodeAssocDAO.VALUE_BY_CODE);
         String secondaryCodeId = getBillingServiceValue(secondaryCode, SupServiceCodeAssocDAO.VALUE_BY_CODE);
 
-        Query query = createQuery("btf", "btf.billingServiceNo = :billingServiceNo");
-        query.setParameter("billingServiceNo", primaryCodeId);
+        Query query = createQuery("btf", "btf.billingServiceNo = ?1");
+        query.setParameter(1, primaryCodeId);
 
         BillingTrayFee btf = null;
         for (BillingTrayFee b : (List<BillingTrayFee>) query.getResultList()) {
@@ -152,7 +152,7 @@ public class SupServiceCodeAssocDAO extends AbstractDaoImpl<BillingTrayFee> {
         }
 
         Query query = entityManager.createQuery(queryString);
-        query.setParameter("param", queryParam);
+        query.setParameter(1, queryParam);
 
         List<BillingService> billingServices = query.getResultList();
         if (billingServices.isEmpty()) return "";
