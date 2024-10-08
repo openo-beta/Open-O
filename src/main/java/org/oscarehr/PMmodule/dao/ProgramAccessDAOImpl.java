@@ -83,9 +83,8 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
         }
         String accessTypeIdString = accessTypeId.toString();
         ProgramAccess result = null;
-        List results = this.getHibernateTemplate().find(
-                "from ProgramAccess pa where pa.ProgramId = ? and pa.AccessTypeId = ?",
-                new Object[]{programId, accessTypeIdString});
+        String sSQL = "from ProgramAccess pa where pa.ProgramId = ?0 and pa.AccessTypeId = ?1";
+        List results = this.getHibernateTemplate().find(sSQL, new Object[]{programId, accessTypeIdString});
         if (results.size() > 0) {
             result = (ProgramAccess) results.get(0);
         }
@@ -101,7 +100,7 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
     @SuppressWarnings("unchecked")
     @Override
     public List<ProgramAccess> getProgramAccessListByType(Long programId, String accessType) {
-        String q = "from ProgramAccess pa where pa.ProgramId = ? and pa.AccessType.Name like ?";
+        String q = "from ProgramAccess pa where pa.ProgramId = ?0 and pa.AccessType.Name like ?1";
         return (List<ProgramAccess>) this.getHibernateTemplate().find(q, new Object[]{programId, accessType});
     }
 
