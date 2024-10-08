@@ -66,12 +66,12 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
 
     private static final Logger LOG = MiscUtils.getLogger();
 
+    String sSQL = "from Intake i, IntakeNode n, IntakeNodeLabel l where " +
+    "i.createdOn > ?0 and i.node.id = n.id and n.label.id = l.id and " +
+    "(l.label like '%OCAN Staff Assessment%' or l.label like '%OCAN Client Self Assessment%') order by i.createdOn desc";
     @SuppressWarnings("unchecked")
     public List<Object[]> getOcanIntakesAfterDate(Calendar after) {
-        return (List<Object[]>) getHibernateTemplate().find("from Intake i, IntakeNode n, IntakeNodeLabel l where " +
-                        "i.createdOn > ? and i.node.id = n.id and n.label.id = l.id and " +
-                        "(l.label like '%OCAN Staff Assessment%' or l.label like '%OCAN Client Self Assessment%') order by i.createdOn desc",
-                new Object[]{after});
+        return (List<Object[]>) getHibernateTemplate().find(sSQL, new Object[]{after});
     }
 
     public Intake getLatestIntakeByFacility(IntakeNode node, Integer clientId, Integer programId, Integer facilityId) {
@@ -104,8 +104,8 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
             throw new IllegalArgumentException("Parameter facilityId must be non-null");
         }
 
-        List<Integer> clientIds = (List<Integer>) getHibernateTemplate().find("select distinct i.clientId from Intake i where i.facilityId = ? order by i.clientId",
-                new Object[]{facilityId});
+        String sSQL = "select distinct i.clientId from Intake i where i.facilityId = ?0 order by i.clientId";
+        List<Integer> clientIds = (List<Integer>) getHibernateTemplate().find(sSQL, new Object[]{facilityId});
 
         return clientIds;
     }
@@ -122,8 +122,8 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
             throw new IllegalArgumentException("Parameters node and clientId must be non-null");
         }
 
-        List<?> results = getHibernateTemplate().find("from Intake i where i.node = ? and i.clientId = ? and (i.facilityId=? or i.facilityId is null) order by i.createdOn desc",
-                new Object[]{node, clientId, facilityId});
+        String sSQL = "from Intake i where i.node = ?0 and i.clientId = ?1 and (i.facilityId=?2 or i.facilityId is null) order by i.createdOn desc";
+        List<?> results = getHibernateTemplate().find(sSQL, new Object[]{node, clientId, facilityId});
         List<Intake> intakes = convertToIntakes(results, programId);
 
         LOG.info("get intakes: " + intakes.size());
@@ -144,8 +144,8 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
         List<IntakeNode> nodes = this.getIntakeNodesByType(formType);
 
         for (IntakeNode node : nodes) {
-            List<?> results = getHibernateTemplate().find("from Intake i where i.node = ? and i.clientId = ? and (i.facilityId=? or i.facilityId is null) order by i.createdOn desc",
-                    new Object[]{node, clientId, facilityId});
+            String sSQL = "from Intake i where i.node = ?0 and i.clientId = ?1 and (i.facilityId=?2 or i.facilityId is null) order by i.createdOn desc";
+            List<?> results = getHibernateTemplate().find(sSQL, new Object[]{node, clientId, facilityId});
             List<Intake> intakes = convertToIntakes(results, programId);
             intake_results.addAll(intakes);
         }
@@ -159,8 +159,8 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
             throw new IllegalArgumentException("Parameters node and clientId must be non-null");
         }
 
-        List<?> results = getHibernateTemplate().find("from Intake i where i.node = ? and i.clientId = ? and i.facilityId =? order by i.createdOn desc",
-                new Object[]{node, clientId, facilityId});
+        String sSQL = "from Intake i where i.node = ?0 and i.clientId = ?1 and i.facilityId =?2 order by i.createdOn desc";
+        List<?> results = getHibernateTemplate().find(sSQL, new Object[]{node, clientId, facilityId});
         List<Intake> intakes = convertToIntakes(results, programId);
 
         LOG.info("get intakes: " + intakes.size());
@@ -173,13 +173,13 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
             throw new IllegalArgumentException("Parameters nodes and clientId must be non-null");
         }
 
-        List<?> results = getHibernateTemplate().find("from Intake i where i.node = ? and i.clientId = ? and (i.facilityId=? or i.facilityId is null) order by i.createdOn desc",
-                new Object[]{nodes.get(0), clientId, facilityId});
+        String resultQuery = "from Intake i where i.node = ?0 and i.clientId = ?1 and (i.facilityId=?2 or i.facilityId is null) order by i.createdOn desc";
+        List<?> results = getHibernateTemplate().find(resultQuery, new Object[]{nodes.get(0), clientId, facilityId});
         List<Intake> intakes = convertToIntakes(results, programId);
 
         for (int i = 1; i < nodes.size(); i++) {
-            results = getHibernateTemplate().find("from Intake i where i.node = ? and i.clientId = ? and (i.facilityId=? or i.facilityId is null) order by i.createdOn desc",
-                    new Object[]{nodes.get(i), clientId, facilityId});
+            String sSQL = "from Intake i where i.node = ?0 and i.clientId = ?1 and (i.facilityId=?2 or i.facilityId is null) order by i.createdOn desc";
+            results = getHibernateTemplate().find(sSQL, new Object[]{nodes.get(i), clientId, facilityId});
             intakes.addAll(convertToIntakes(results, programId));
         }
 
@@ -192,8 +192,8 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
             throw new IllegalArgumentException("Parameters node and intakeId must be non-null");
         }
 
-        List<?> results = getHibernateTemplate().find("from Intake i where i.node = ? and i.id = ? and (i.facilityId=? or i.facilityId is null) order by i.createdOn desc",
-                new Object[]{node, intakeId, facilityId});
+        String sSQL = "from Intake i where i.node = ?0 and i.id = ?1 and (i.facilityId=?2 or i.facilityId is null) order by i.createdOn desc";
+        List<?> results = getHibernateTemplate().find(sSQL, new Object[]{node, intakeId, facilityId});
         List<Intake> intakes = convertToIntakes(results, programId);
         LOG.info("get intakes: " + intakes.size());
         Intake intake = !intakes.isEmpty() ? intakes.get(0) : null;
@@ -206,8 +206,8 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
             throw new IllegalArgumentException("Parameters intakeId must be non-null");
         }
 
-        List<?> results = getHibernateTemplate().find("from Intake i where i.id = ? order by i.createdOn desc",
-                new Object[]{intakeId});
+        String sSQL = "from Intake i where i.id = ?0 order by i.createdOn desc";
+        List<?> results = getHibernateTemplate().find(sSQL, new Object[]{intakeId});
         List<Intake> intakes = convertToIntakes(results, null);
         LOG.info("get intakes: " + intakes.size());
         Integer intakeNodeId = !intakes.isEmpty() ? intakes.get(0).getNode().getId() : null;
@@ -224,8 +224,8 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
             throw new IllegalArgumentException("Parameters intakeId must be non-null");
         }
 
-        List<?> results = getHibernateTemplate().find("from Intake i where i.clientId = ? order by i.createdOn desc",
-                new Object[]{clientId});
+        String sSQL = "from Intake i where i.clientId = ?0 order by i.createdOn desc";
+        List<?> results = getHibernateTemplate().find(sSQL, new Object[]{clientId});
         List<Intake> intakes = convertToIntakes(results, null);
         LOG.info("get intakes: " + intakes.size());
 
@@ -305,17 +305,9 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
         Calendar startCal = new GregorianCalendar();
         startCal.setTime(startDate);
 
-        // wrong, only got the oldest first record: List<?> results = getHibernateTemplate().find("select i.id, max(i.createdOn) from Intake i where i.node.id =
-        // ? and i.createdOn between ? and ? group by i.clientId", new Object[] { nodeId, startDate, endDate });
-        //List<?> results = getHibernateTemplate()
-        //		.find(
-        //				"select i.id, max(i.createdOn) from Intake i where i.node.id = ? and i.createdOn between ? and ? and i.createdOn = (select max(ii.createdOn) from Intake ii where ii.clientId = i.clientId) group by i.clientId",
-        //				new Object[] { nodeId, startCal.getTime(), endCal.getTime() });
-
-        List<?> results = getHibernateTemplate()
-                .find(
-                        "select i.id, i.createdOn from Intake i where i.node.id = ? and i.createdOn between ? and ? and i.createdOn = (select max(ii.createdOn) from Intake ii where ii.clientId = i.clientId group by ii.clientId)",
-                        new Object[]{nodeId, startCal, endCal});
+        String sSQL = "select i.id, i.createdOn from Intake i where i.node.id = ?0 and i.createdOn between ?1 and ?2" + 
+        "and i.createdOn = (select max(ii.createdOn) from Intake ii where ii.clientId = i.clientId group by ii.clientId)";
+        List<?> results = getHibernateTemplate().find(sSQL, new Object[]{nodeId, startCal, endCal});
 
 
         SortedSet<Integer> intakeIds = convertToIntegers(results);
@@ -333,9 +325,13 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
         SortedMap<Integer, SortedMap<String, ReportStatistic>> reportStatistics = new TreeMap<Integer, SortedMap<String, ReportStatistic>>();
 
         if (!intakeIds.isEmpty() && !answerIds.isEmpty()) {
-            List<?> results = getHibernateTemplate().find(
-                    "select ia.node.id, ia.value, count(ia.value) from IntakeAnswer ia where ia.node.id in (" + convertToString(answerIds.keySet())
-                            + ") and ia.intake.id in (" + convertToString(intakeIds) + ") group by ia.node.id, ia.value");
+            String sSQL = "select ia.node.id, ia.value, count(ia.value) from IntakeAnswer ia where ia.node.id in (?0)" +
+            "and ia.intake.id in (?1) group by ia.node.id, ia.value";
+            Object[] params = new Object[] {
+                convertToString(answerIds.keySet()),
+                convertToString(intakeIds)
+            };
+            List<?> results = getHibernateTemplate().find(sSQL, params);
             convertToReportStatistics(results, intakeIds.size(), reportStatistics, answerIds);
         }
         LOG.info("get reportStatistics: " + reportStatistics.size());
@@ -454,6 +450,7 @@ public class GenericIntakeDAOImpl extends HibernateDaoSupport implements Generic
 
 
     public List<IntakeNode> getIntakeNodesByType(Integer formType) {
-        return (List<IntakeNode>) this.getHibernateTemplate().find("From IntakeNode n where n.formType = ? and n.publish_by is not null", new Object[]{formType});
+        String sSQL = "From IntakeNode n where n.formType = ?0 and n.publish_by is not null";
+        return (List<IntakeNode>) this.getHibernateTemplate().find(sSQL, new Object[]{formType});
     }
 }
