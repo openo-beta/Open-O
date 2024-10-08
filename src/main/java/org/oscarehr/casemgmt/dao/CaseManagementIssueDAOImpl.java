@@ -51,7 +51,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     @Override
     public List<CaseManagementIssue> getIssuesByDemographic(String demographic_no) {
         return (List<CaseManagementIssue>) this.getHibernateTemplate().find(
-                "from CaseManagementIssue cmi where cmi.demographic_no = ?",
+                "from CaseManagementIssue cmi where cmi.demographic_no = ?0",
                 new Object[]{Integer.valueOf(demographic_no)});
     }
 
@@ -59,7 +59,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     @Override
     public List<CaseManagementIssue> getIssuesByDemographicOrderActive(Integer demographic_no, Boolean resolved) {
         return (List<CaseManagementIssue>) getHibernateTemplate().find(
-                "from CaseManagementIssue cmi where cmi.demographic_no = ? "
+                "from CaseManagementIssue cmi where cmi.demographic_no = ?0 "
                         + (resolved != null ? " and cmi.resolved=" + resolved : "") + " order by cmi.resolved",
                 new Object[]{demographic_no});
     }
@@ -68,7 +68,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     @Override
     public List<CaseManagementIssue> getIssuesByNote(Integer noteId, Boolean resolved) {
         return (List<CaseManagementIssue>) getHibernateTemplate().find(
-                "from CaseManagementIssue cmi where cmi.notes.id = ? "
+                "from CaseManagementIssue cmi where cmi.notes.id = ?0 "
                         + (resolved != null ? " and cmi.resolved=" + resolved : "") + " order by cmi.resolved",
                 new Object[]{noteId});
     }
@@ -77,7 +77,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     @Override
     public Issue getIssueByCmnId(Integer cmnIssueId) {
         List<Issue> result = (List<Issue>) getHibernateTemplate().find(
-                "select issue from CaseManagementIssue cmi where cmi.id = ?",
+                "select issue from CaseManagementIssue cmi where cmi.id = ?0",
                 new Object[]{Long.valueOf(cmnIssueId)});
         if (result.size() > 0)
             return result.get(0);
@@ -88,7 +88,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     public CaseManagementIssue getIssuebyId(String demo, String id) {
         @SuppressWarnings("unchecked")
         List<CaseManagementIssue> list = (List<CaseManagementIssue>) this.getHibernateTemplate().find(
-                "from CaseManagementIssue cmi where cmi.issue_id = ? and demographic_no = ?",
+                "from CaseManagementIssue cmi where cmi.issue_id = ?0 and demographic_no = ?1",
                 new Object[]{Long.parseLong(id), Integer.valueOf(demo)});
         if (list != null && list.size() == 1)
             return list.get(0);
@@ -100,7 +100,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     public CaseManagementIssue getIssuebyIssueCode(String demo, String issueCode) {
         @SuppressWarnings("unchecked")
         List<CaseManagementIssue> list = (List<CaseManagementIssue>) this.getHibernateTemplate().find(
-                "select cmi from CaseManagementIssue cmi, Issue issue where cmi.issue_id=issue.id and issue.code = ? and cmi.demographic_no = ?",
+                "select cmi from CaseManagementIssue cmi, Issue issue where cmi.issue_id=issue.id and issue.code = ?0 and cmi.demographic_no = ?1",
                 new Object[]{issueCode, Integer.valueOf(demo)});
 
         if (list.size() > 1) {
@@ -159,7 +159,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
             sb.append(p.getId());
         }
         List<Integer> results = (List<Integer>) this.getHibernateTemplate().find(
-                "select distinct cmi.demographic_no from CaseManagementIssue cmi where cmi.update_date > ? and program_id in ("
+                "select distinct cmi.demographic_no from CaseManagementIssue cmi where cmi.update_date > ?0 and program_id in ("
                         + sb.toString() + ")",
                 new Object[]{date});
 
@@ -170,7 +170,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     @Override
     public List<CaseManagementIssue> getIssuesByDemographicSince(String demographic_no, Date date) {
         return (List<CaseManagementIssue>) this.getHibernateTemplate().find(
-                "from CaseManagementIssue cmi where cmi.demographic_no = ? and cmi.update_date > ?",
+                "from CaseManagementIssue cmi where cmi.demographic_no = ?0 and cmi.update_date > ?1",
                 new Object[]{Integer.valueOf(demographic_no), date});
     }
 
@@ -179,7 +179,7 @@ public class CaseManagementIssueDAOImpl extends HibernateDaoSupport implements C
     public List<FacilityIdDemographicIssueCompositePk> getIssueIdsForIntegrator(Integer facilityId,
                                                                                 Integer demographicNo) {
         List<Object[]> rs = (List<Object[]>) this.getHibernateTemplate().find(
-                "select i.code,i.type from CaseManagementIssue cmi, Issue i where cmi.issue_id = i.id and cmi.demographic_no = ?",
+                "select i.code,i.type from CaseManagementIssue cmi, Issue i where cmi.issue_id = i.id and cmi.demographic_no = ?0",
                 new Object[]{demographicNo});
         List<FacilityIdDemographicIssueCompositePk> results = new ArrayList<FacilityIdDemographicIssueCompositePk>();
         for (Object[] item : rs) {
