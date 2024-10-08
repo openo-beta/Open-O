@@ -54,9 +54,8 @@ public class PrivateBillTransactionsDAO extends AbstractDaoImpl<BillingPrivateTr
     @SuppressWarnings("unchecked")
     // TODO Annotate with @NativeSql({"billing_private_transactions", "billing_payment_type"}) query when the commit is merged into the main codebase
     public List<PrivateBillTransaction> getPrivateBillTransactions(String billingmaster_no) {
-        Query query = entityManager.createNativeQuery("select bp.id, billingmaster_no, amount_received, creation_date, payment_type_id, bt.payment_type as 'payment_type_desc'" + " from billing_private_transactions bp,billing_payment_type bt where bp.billingmaster_no = ?1 and bp.payment_type_id = ?2");
-        query.setParameter(1, ConversionUtils.fromIntString(billingmaster_no));
-        query.setParameter(2, ConversionUtils.fromIntString(billingmaster_no));
+       Query query = entityManager.createNativeQuery("select bp.id, billingmaster_no, amount_received, creation_date, payment_type_id, bt.payment_type as 'payment_type_desc'" + " from billing_private_transactions bp,billing_payment_type bt where bp.billingmaster_no = :billingmasterNo and bp.payment_type_id = bt.id");
+        query.setParameter("billingmasterNo", ConversionUtils.fromIntString(billingmaster_no));
         List<Object[]> resultList = query.getResultList();
         List<PrivateBillTransaction> result = new ArrayList<PrivateBillTransaction>();
         for (Object[] res : resultList) {
