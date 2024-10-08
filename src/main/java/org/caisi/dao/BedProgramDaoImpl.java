@@ -56,7 +56,7 @@ public class BedProgramDaoImpl extends HibernateDaoSupport implements BedProgram
     }
 
     public List getAllBedProgram() {
-        String qr = "FROM Program p where p.type = ?";
+        String qr = "FROM Program p where p.type = ?0";
         List rs = getProgramResultList(qr, bedType);
         return rs;
     }
@@ -80,7 +80,7 @@ public class BedProgramDaoImpl extends HibernateDaoSupport implements BedProgram
     }
 
     public List getProgramIdByName(String name) {
-        String q = "SELECT p.id FROM Program p WHERE p.name = ?";
+        String q = "SELECT p.id FROM Program p WHERE p.name = ?0";
         List rs = getProgramResultList(q, name);
         return rs;
     }
