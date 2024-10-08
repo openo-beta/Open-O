@@ -56,7 +56,7 @@ public class PHRActionDAO extends HibernateDaoSupport {
     }
 
     public List<PHRAction> getActionByPhrIndex(String phrIndex) {
-        String sql = "from PHRAction a where a.phrIndex=?1";
+        String sql = "from PHRAction a where a.phrIndex=?";
         List<PHRAction> list = (List<PHRAction>) getHibernateTemplate().find(sql, new String(phrIndex));
         if (list == null || list.isEmpty()) {
             return null;
@@ -84,7 +84,7 @@ public class PHRActionDAO extends HibernateDaoSupport {
 
     // actionType = -1 for all actions
     public List<PHRAction> getPendingActionsByProvider(String classification, int actionType, String providerNo) {
-        String sql = "FROM PHRAction a WHERE a.phrClassification = ? AND a.senderOscar = ?2 AND a.status != " + PHRAction.STATUS_SENT + " AND a.status != " + PHRAction.STATUS_NOT_SENT_DELETED;
+        String sql = "FROM PHRAction a WHERE a.phrClassification = ? AND a.senderOscar = ? AND a.status != " + PHRAction.STATUS_SENT + " AND a.status != " + PHRAction.STATUS_NOT_SENT_DELETED;
         if (actionType != -1) {
             sql = sql + " AND a.actionType = " + actionType;
         }
