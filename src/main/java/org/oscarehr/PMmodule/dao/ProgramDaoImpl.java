@@ -109,7 +109,7 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
             return null;
         }
         Program result = null;
-        String queryStr = "FROM Program p WHERE p.id = ? AND p.exclusiveView = 'appointment'";
+        String queryStr = "FROM Program p WHERE p.id = ?0 AND p.exclusiveView = 'appointment'";
         List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, programId);
 
         if (log.isDebugEnabled()) {
@@ -138,7 +138,7 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
 
         @SuppressWarnings("unchecked")
         List<Program> programs = (List<Program>) getHibernateTemplate()
-                .find("FROM Program p WHERE p.name = ? ORDER BY p.id ", programName);
+                .find("FROM Program p WHERE p.name = ?0 ORDER BY p.id ", programName);
         if (!programs.isEmpty()) {
             return programs.get(0).getId();
         } else {
@@ -161,9 +161,9 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getAllPrograms() {
+        String sSQL = "FROM Program p WHERE p.type != ?0 ORDER BY p.name ";
         @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate()
-                .find("FROM Program p WHERE p.type != ? ORDER BY p.name ", Program.COMMUNITY_TYPE);
+        List<Program> rs = (List<Program>) getHibernateTemplate().find(sSQL, Program.COMMUNITY_TYPE);
 
         if (log.isDebugEnabled()) {
             log.debug("getAllPrograms: # of programs: " + rs.size());
@@ -216,10 +216,9 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getPrograms() {
-        String queryStr = "FROM Program p WHERE p.type != '" + Program.COMMUNITY_TYPE + "' ORDER BY p.name";
-
+        String queryStr = "FROM Program p WHERE p.type != '?0' ORDER BY p.name";
         @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr);
+        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, Program.COMMUNITY_TYPE);
 
         return rs;
     }
@@ -232,11 +231,10 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getActivePrograms() {
-        String queryStr = "FROM Program p WHERE p.type <> '" + Program.COMMUNITY_TYPE + "' and p.programStatus = '"
-                + Program.PROGRAM_STATUS_ACTIVE + "'";
-
+        String queryStr = "FROM Program p WHERE p.type <> '?0' and p.programStatus = '?1'";
+        Object[] params = new Object[] {Program.COMMUNITY_TYPE, Program.PROGRAM_STATUS_ACTIVE};
         @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr);
+        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, params);
 
         return rs;
     }
@@ -248,22 +246,20 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getProgramsByFacilityId(Integer facilityId) {
-        String queryStr = "FROM Program p WHERE (p.facilityId = " + facilityId
-                + " or p.facilityId is null) ORDER BY p.name";
+        String queryStr = "FROM Program p WHERE (p.facilityId = ?0 or p.facilityId is null) ORDER BY p.name";
 
         @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr);
+        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, facilityId);
 
         return rs;
     }
 
     @Override
     public List<Program> getProgramsByFacilityIdAndFunctionalCentreId(Integer facilityId, String functionalCentreId) {
-        String queryStr = "FROM Program p WHERE p.facilityId = " + facilityId + " and p.functionalCentreId = '"
-                + functionalCentreId + '\'';
-
+        String queryStr = "FROM Program p WHERE p.facilityId = ?0 and p.functionalCentreId = '?1'\'";
+        Object[] params = new Object[]{facilityId, functionalCentreId};
         @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr);
+        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, params);
 
         return rs;
     }
@@ -275,11 +271,11 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getCommunityProgramsByFacilityId(Integer facilityId) {
-        String queryStr = "FROM Program p WHERE (p.facilityId = " + facilityId
-                + " or p.facilityId is null) AND p.type != '" + Program.COMMUNITY_TYPE + "' ORDER BY p.name";
-
+        String queryStr = "FROM Program p WHERE (p.facilityId = ?0 or p.facilityId is null) " +
+        "AND p.type != '?1' ORDER BY p.name";
+        Object[] params = new Object[]{facilityId, Program.COMMUNITY_TYPE};
         @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr);
+        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, params);
 
         return rs;
     }
@@ -313,9 +309,9 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         // inefficient, but unless I fix all the hibernate calls I'm following
         // convention of
         // using the hibernate templates and just inserting random strings for now.
+        String sSQL = "FROM Program p WHERE p.manOrWoman = '?0'";
         @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate()
-                .find("FROM Program p WHERE p.manOrWoman = '" + genderType + "'");
+        List<Program> rs = (List<Program>) getHibernateTemplate().find(sSQL, genderType);
         return rs;
     }
 
@@ -554,9 +550,9 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
     public Program getHoldingTankProgram() {
         Program result = null;
 
+        String sSQL = "from Program p where p.holdingTank = true";
         @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) getHibernateTemplate()
-                .find("from Program p where p.holdingTank = true");
+        List<Program> results = (List<Program>) getHibernateTemplate().find(sSQL);
 
         if (!results.isEmpty()) {
             result = results.get(0);
@@ -576,11 +572,11 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
     }
 
     public List<Program> getLinkedServicePrograms(Integer bedProgramId, Integer clientId) {
+        String sSQL = "select p from Admission a,Program p where a.programId = p.id and p.type='?0'" + 
+        " and  p.bedProgramLinkId = ?1 and a.clientId=?2";
+        Object[] params = new Object[]{Program.SERVICE_TYPE, bedProgramId, clientId};
         @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) this.getHibernateTemplate().find(
-                "select p from Admission a,Program p where a.programId = p.id and p.type='" + Program.SERVICE_TYPE
-                        + "' and  p.bedProgramLinkId = ? and a.clientId=?",
-                new Object[]{bedProgramId, clientId});
+        List<Program> results = (List<Program>) this.getHibernateTemplate().find(sSQL, params);
         return results;
     }
 
@@ -607,9 +603,9 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
     public Program getProgramBySiteSpecificField(String value) {
         Program result = null;
 
+        String sSQL = "from Program p where p.siteSpecificField = ?0";
         @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) getHibernateTemplate()
-                .find("from Program p where p.siteSpecificField = ?", new Object[]{value});
+        List<Program> results = (List<Program>) getHibernateTemplate().find(sSQL, new Object[]{value});
 
         if (!results.isEmpty()) {
             result = results.get(0);
@@ -622,9 +618,9 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
     public Program getProgramByName(String value) {
         Program result = null;
 
+        String sSQL = "from Program p where p.name = ?0";
         @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) getHibernateTemplate().find("from Program p where p.name = ?0",
-                new Object[]{value});
+        List<Program> results = (List<Program>) getHibernateTemplate().find(sSQL, new Object[]{value});
 
         if (!results.isEmpty()) {
             result = results.get(0);
@@ -635,28 +631,28 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
 
     @Override
     public List<Integer> getRecordsAddedAndUpdatedSinceTime(Integer facilityId, Date date) {
+        String sSQL = "select distinct p.id From Program p where p.facilityId = ?0 and p.lastUpdateDate > ?1  ";
+        Object[] params = new Object[]{facilityId, date};
         @SuppressWarnings("unchecked")
-        List<Integer> programs = (List<Integer>) getHibernateTemplate().find(
-                "select distinct p.id From Program p where p.facilityId = ? and p.lastUpdateDate > ?  ", facilityId,
-                date);
+        List<Integer> programs = (List<Integer>) getHibernateTemplate().find(sSQL, params);
 
         return programs;
     }
 
     @Override
     public List<Integer> getRecordsByFacilityId(Integer facilityId) {
+        String sSQL = "select distinct p.id From Program p where p.facilityId = ?0 ";
         @SuppressWarnings("unchecked")
-        List<Integer> programs = (List<Integer>) getHibernateTemplate()
-                .find("select distinct p.id From Program p where p.facilityId = ? ", facilityId);
+        List<Integer> programs = (List<Integer>) getHibernateTemplate().find(sSQL, facilityId);
 
         return programs;
     }
 
     @Override
     public List<String> getRecordsAddedAndUpdatedSinceTime(Date date) {
+        String sSQL = "select distinct p.ProviderNo From Provider p where p.lastUpdateDate > ?0 ";
         @SuppressWarnings("unchecked")
-        List<String> providers = (List<String>) getHibernateTemplate()
-                .find("select distinct p.ProviderNo From Provider p where p.lastUpdateDate > ? ", date);
+        List<String> providers = (List<String>) getHibernateTemplate().find(sSQL, date);
 
         return providers;
     }
