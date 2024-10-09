@@ -43,11 +43,11 @@ public class ConsultResponseDocDaoImpl extends AbstractDaoImpl<ConsultResponseDo
     }
 
     public ConsultResponseDoc findByResponseIdDocNoDocType(Integer responseId, Integer documentNo, String docType) {
-        String sql = "select x from ConsultResponseDoc x where x.responseId=? and x.documentNo=? and x.docType=? and x.deleted IS NULL";
+        String sql = "select x from ConsultResponseDoc x where x.responseId=?1 and x.documentNo=?2 and x.docType=?3 and x.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, responseId);
-        query.setParameter(1, documentNo);
-        query.setParameter(2, docType);
+        query.setParameter(1, responseId);
+        query.setParameter(2, documentNo);
+        query.setParameter(3, docType);
 
         List<ConsultResponseDoc> results = query.getResultList();
         if (results != null && results.size() > 0) return results.get(0);
@@ -55,9 +55,9 @@ public class ConsultResponseDocDaoImpl extends AbstractDaoImpl<ConsultResponseDo
     }
 
     public List<ConsultResponseDoc> findByResponseId(Integer responseId) {
-        String sql = "select x from ConsultResponseDoc x where x.responseId=? and x.deleted IS NULL";
+        String sql = "select x from ConsultResponseDoc x where x.responseId=?1 and x.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, responseId);
+        query.setParameter(1, responseId);
 
         List<ConsultResponseDoc> results = query.getResultList();
         return results;
