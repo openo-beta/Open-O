@@ -63,10 +63,10 @@ public class AdmissionDaoImpl extends AbstractDaoImpl<Admission> implements Admi
             throw new IllegalArgumentException();
         }
 
-        String queryStr = "select a FROM Admission a WHERE a.admissionStatus='discharged' and a.programId=? AND a.clientId=? order by a.id DESC";
+        String queryStr = "select a FROM Admission a WHERE a.admissionStatus='discharged' and a.programId=?1 AND a.clientId=?2 order by a.id DESC";
         Query query = entityManager.createQuery(queryStr);
-        query.setParameter(0, programId);
-        query.setParameter(1, demographicNo);
+        query.setParameter(1, programId);
+        query.setParameter(2, demographicNo);
         @SuppressWarnings("unchecked")
         List<Admission> rs = query.getResultList();
         /*
