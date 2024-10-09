@@ -1,4 +1,3 @@
-//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * <p>
@@ -24,7 +23,6 @@
  * <p>
  * Modifications made by Magenta Health in 2024.
  */
-
 package org.oscarehr.PMmodule.dao;
 
 import java.util.ArrayList;
@@ -33,33 +31,36 @@ import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.FlushMode;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.oscarehr.PMmodule.model.Program;
+import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.oscarehr.util.MiscUtils;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.hibernate.SessionFactory;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import oscar.OscarProperties;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 
+/**
+ * Implementation of ProgramDao interface for database access to Program model objects.
+ */
 @Transactional
-public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
+public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramDao {
 
     private static final Logger log = MiscUtils.getLogger();
-    // public SessionFactory sessionFactory;
 
-    @Autowired
-    public void setSessionFactoryOverride(SessionFactory sessionFactory) {
-        super.setSessionFactory(sessionFactory);
+    /**
+     * Default constructor.
+     * Calls the parent constructor with Program model class.
+     */
+    public ProgramDaoImpl() {
+        super(Program.class);
     }
 
+    /**
+     * Checks if the specified program is a bed program.
+     *
+     * @param programId the ID of the program to check
+     * @return true if the program is a bed program, false otherwise
+     */
     @Override
     public boolean isBedProgram(Integer programId) {
         Program result = getProgram(programId);
@@ -68,6 +69,12 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return (result.isBed());
     }
 
+    /**
+     * Checks if the specified program is a service program.
+     *
+     * @param programId the ID of the program to check
+     * @return true if the program is a service program, false otherwise
+     */
     @Override
     public boolean isServiceProgram(Integer programId) {
         Program result = getProgram(programId);
@@ -76,6 +83,12 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return (result.isService());
     }
 
+    /**
+     * Checks if the specified program is a community program.
+     *
+     * @param programId the ID of the program to check
+     * @return true if the program is a community program, false otherwise
+     */
     @Override
     public boolean isCommunityProgram(Integer programId) {
         Program result = getProgram(programId);
@@ -84,6 +97,12 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return (result.isCommunity());
     }
 
+    /**
+     * Checks if the specified program is an external program.
+     *
+     * @param programId the ID of the program to check
+     * @return true if the program is an external program, false otherwise
+     */
     @Override
     public boolean isExternalProgram(Integer programId) {
         Program result = getProgram(programId);
@@ -92,36 +111,52 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return (result.isExternal());
     }
 
+    /**
+     * Retrieves a program by its ID.
+     *
+     * @param programId the ID of the program to retrieve
+     * @return the Program object if found, null otherwise
+     */
     @Override
     public Program getProgram(Integer programId) {
         if (programId == null || programId.intValue() <= 0) {
             return null;
         }
 
-        Program program = getHibernateTemplate().get(Program.class, programId);
-
-        return program;
+        return entityManager.find(Program.class, programId);
     }
 
+    /**
+     * Retrieves a program by its ID for appointment view.
+     *
+     * @param programId the ID of the program to retrieve
+     * @return the Program object if found and has exclusive view set to 'appointment', null otherwise
+     */
     @Override
     public Program getProgramForApptView(Integer programId) {
         if (programId == null || programId <= 0) {
             return null;
         }
-        Program result = null;
-        String queryStr = "FROM Program p WHERE p.id = ?0 AND p.exclusiveView = 'appointment'";
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, programId);
+
+        String queryStr = "FROM Program p WHERE p.id = ?1 AND p.exclusiveView = 'appointment'";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, programId);
+
+        List<Program> resultList = query.getResultList();
 
         if (log.isDebugEnabled()) {
             log.debug("isCommunityProgram: id=" + programId);
         }
-        if (!rs.isEmpty()) {
-            result = rs.get(0);
-        }
 
-        return result;
+        return resultList.isEmpty() ? null : resultList.get(0);
     }
 
+    /**
+     * Retrieves the name of a program by its ID.
+     *
+     * @param programId the ID of the program
+     * @return the name of the program if found, null otherwise
+     */
     @Override
     public String getProgramName(Integer programId) {
         Program result = getProgram(programId);
@@ -130,27 +165,36 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return (result.getName());
     }
 
+    /**
+     * Retrieves the ID of a program by its name.
+     *
+     * @param programName the name of the program
+     * @return the ID of the program if found, null otherwise
+     */
     @Override
     public Integer getProgramIdByProgramName(String programName) {
 
         if (programName == null)
             return null;
 
-        @SuppressWarnings("unchecked")
-        List<Program> programs = (List<Program>) getHibernateTemplate()
-                .find("FROM Program p WHERE p.name = ?0 ORDER BY p.id ", programName);
-        if (!programs.isEmpty()) {
-            return programs.get(0).getId();
-        } else {
-            return null;
-        }
+        String queryStr = "FROM Program p WHERE p.name = ?1 ORDER BY p.id";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, programName);
+
+        List<Program> programs = query.getResultList();
+        return programs.isEmpty() ? null : programs.get(0).getId();
     }
 
+    /**
+     * Retrieves all programs.
+     *
+     * @return a list of all Program objects
+     */
     @Override
     public List<Program> findAll() {
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find("FROM Program p");
-        return rs;
+        String queryStr = "FROM Program p";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        return query.getResultList();
     }
 
     /**
@@ -161,49 +205,70 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getAllPrograms() {
-        String sSQL = "FROM Program p WHERE p.type != ?0 ORDER BY p.name ";
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(sSQL, Program.COMMUNITY_TYPE);
+        String queryStr = "FROM Program p WHERE p.type != ?1 ORDER BY p.name";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, Program.COMMUNITY_TYPE);
 
         if (log.isDebugEnabled()) {
-            log.debug("getAllPrograms: # of programs: " + rs.size());
+            log.debug("getAllPrograms: # of programs: " + query.getResultList().size());
         }
 
-        return rs;
+        return query.getResultList();
     }
 
+    /**
+     * Retrieves all active programs.
+     *
+     * @return a list of all active Program objects
+     */
     @Override
     public List<Program> getAllActivePrograms() {
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate()
-                .find("FROM Program p WHERE p.programStatus = '" + Program.PROGRAM_STATUS_ACTIVE + "'");
-        return rs;
+        String queryStr = "FROM Program p WHERE p.programStatus = ?1";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, Program.PROGRAM_STATUS_ACTIVE);
+
+        return query.getResultList();
     }
 
     /**
      * @deprecated 2013-12-09 don't use this anymore use getProgramByType, reason is
      * parameters should never have been "Any"
      */
+    /**
+     * Retrieves programs based on program status, type, and facility ID.
+     *
+     * @param programStatus the program status filter (can be "Any")
+     * @param type the program type filter (can be "Any")
+     * @param facilityId the facility ID filter (0 for any facility)
+     * @return a list of Program objects matching the specified criteria
+     */
     @Override
     public List<Program> getAllPrograms(String programStatus, String type, int facilityId) {
-        // Session session = getSession();
-        Session session = currentSession();
         try {
-            @SuppressWarnings("unchecked")
-            Criteria c = session.createCriteria(Program.class);
+            StringBuilder queryStr = new StringBuilder("FROM Program p WHERE 1=1");
             if (!"Any".equals(programStatus)) {
-                c.add(Restrictions.eq("programStatus", programStatus));
+                queryStr.append(" AND p.programStatus = :programStatus");
             }
             if (!"Any".equals(type)) {
-                c.add(Restrictions.eq("type", type));
+                queryStr.append(" AND p.type = :type");
             }
             if (facilityId > 0) {
-                c.add(Restrictions.eq("facilityId", facilityId));
+                queryStr.append(" AND p.facilityId = :facilityId");
             }
-            return c.list();
+            TypedQuery<Program> query = entityManager.createQuery(queryStr.toString(), Program.class);
+
+            if (!"Any".equals(programStatus)) {
+                query.setParameter("programStatus", programStatus);
+            }
+            if (!"Any".equals(type)) {
+                query.setParameter("type", type);
+            }
+            if (facilityId > 0) {
+                query.setParameter("facilityId", facilityId);
+            }
+
+            return query.getResultList();
         } finally {
-            // releaseSession(session);
-            //session.close();
 
         }
     }
@@ -216,11 +281,11 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getPrograms() {
-        String queryStr = "FROM Program p WHERE p.type != '?0' ORDER BY p.name";
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, Program.COMMUNITY_TYPE);
+        String queryStr = "FROM Program p WHERE p.type != ?1 ORDER BY p.name";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, Program.COMMUNITY_TYPE);
 
-        return rs;
+        return query.getResultList();
     }
 
     /**
@@ -231,90 +296,118 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
      */
     @Override
     public List<Program> getActivePrograms() {
-        String queryStr = "FROM Program p WHERE p.type <> '?0' and p.programStatus = '?1'";
-        Object[] params = new Object[] {Program.COMMUNITY_TYPE, Program.PROGRAM_STATUS_ACTIVE};
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, params);
+        String queryStr = "FROM Program p WHERE p.type <> ?1 AND p.programStatus = ?2";
 
-        return rs;
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, Program.COMMUNITY_TYPE);
+        query.setParameter(2, Program.PROGRAM_STATUS_ACTIVE);
+
+        return query.getResultList();
     }
 
     /**
-     * @param facilityId is allowed to be null
-     * @return a list of programs in the facility and any programs with no facility
-     * associated
+     * Retrieves programs by facility ID.
+     *
+     * @param facilityId the ID of the facility (can be null for programs with no associated facility)
+     * @return a list of Program objects associated with the specified facility ID or with no facility
      */
     @Override
     public List<Program> getProgramsByFacilityId(Integer facilityId) {
-        String queryStr = "FROM Program p WHERE (p.facilityId = ?0 or p.facilityId is null) ORDER BY p.name";
+        String queryStr = "FROM Program p WHERE (p.facilityId = ?1 OR p.facilityId IS NULL) ORDER BY p.name";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, facilityId);
 
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, facilityId);
-
-        return rs;
-    }
-
-    @Override
-    public List<Program> getProgramsByFacilityIdAndFunctionalCentreId(Integer facilityId, String functionalCentreId) {
-        String queryStr = "FROM Program p WHERE p.facilityId = ?0 and p.functionalCentreId = '?1'\'";
-        Object[] params = new Object[]{facilityId, functionalCentreId};
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, params);
-
-        return rs;
+        return query.getResultList();
     }
 
     /**
-     * @param facilityId is allowed to be null
-     * @return a list of community programs in the facility and any programs with no
-     * facility associated
+     * Retrieves programs by facility ID and functional centre ID.
+     *
+     * @param facilityId the ID of the facility
+     * @param functionalCentreId the functional centre ID
+     * @return a list of Program objects matching the specified facility ID and functional centre ID
+     */
+    @Override
+    public List<Program> getProgramsByFacilityIdAndFunctionalCentreId(Integer facilityId, String functionalCentreId) {
+        String queryStr = "FROM Program p WHERE p.facilityId = ?1 AND p.functionalCentreId = ?2";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, facilityId);
+        query.setParameter(2, functionalCentreId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * Retrieves community programs by facility ID.
+     *
+     * @param facilityId the ID of the facility (can be null for programs with no associated facility)
+     * @return a list of community Program objects associated with the specified facility ID or with no facility
      */
     @Override
     public List<Program> getCommunityProgramsByFacilityId(Integer facilityId) {
-        String queryStr = "FROM Program p WHERE (p.facilityId = ?0 or p.facilityId is null) " +
-        "AND p.type != '?1' ORDER BY p.name";
-        Object[] params = new Object[]{facilityId, Program.COMMUNITY_TYPE};
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(queryStr, params);
+        String queryStr = "FROM Program p WHERE (p.facilityId = ?1 OR p.facilityId IS NULL) " +
+                      "AND p.type != ?2 ORDER BY p.name";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, facilityId);
+        query.setParameter(2, Program.COMMUNITY_TYPE);
 
-        return rs;
+        return query.getResultList();
     }
 
     /**
-     * results are ordered by name
+     * Retrieves programs by facility ID, type, and active status.
      *
-     * @param facilityId can be null for all, but generally shouldn't be
-     * @param active     can be null for both
+     * @param facilityId the ID of the facility (can be null for any facility)
+     * @param type the program type
+     * @param active the active status (can be null for both active and inactive)
+     * @return a list of Program objects matching the specified criteria, ordered by name
      */
     @Override
     public List<Program> getProgramsByType(Integer facilityId, String type, Boolean active) {
-        StringBuilder sqlCommand = new StringBuilder("FROM Program p WHERE p.type = '" + type + "'");
+        StringBuilder sqlCommand = new StringBuilder("FROM Program p WHERE p.type = :type");
 
-        if (facilityId != null)
-            sqlCommand.append(" and p.facilityId = " + facilityId);
-        if (active != null)
-            sqlCommand.append(" and p.programStatus='"
-                    + (active ? Program.PROGRAM_STATUS_ACTIVE : Program.PROGRAM_STATUS_INACTIVE) + "'");
+        if (facilityId != null) {
+            sqlCommand.append(" AND p.facilityId = :facilityId");
+        }
+        if (active != null) {
+            sqlCommand.append(" AND p.programStatus = :programStatus");
+        }
 
         sqlCommand.append(" ORDER BY p.name");
 
-        @SuppressWarnings("unchecked")
-        List<Program> list = (List<Program>) getHibernateTemplate().find(sqlCommand.toString());
-        return (list);
+        TypedQuery<Program> query = entityManager.createQuery(sqlCommand.toString(), Program.class);
+        query.setParameter("type", type);
+
+        if (facilityId != null) {
+            query.setParameter("facilityId", facilityId);
+        }
+        if (active != null) {
+            query.setParameter("programStatus", active ? Program.PROGRAM_STATUS_ACTIVE : Program.PROGRAM_STATUS_INACTIVE);
+        }
+
+        return query.getResultList();
     }
 
+    /**
+     * Retrieves programs by gender type.
+     *
+     * @param genderType the gender type
+     * @return a list of Program objects matching the specified gender type
+     */
     @Override
     public List<Program> getProgramByGenderType(String genderType) {
-        // yeah I know, it's not safe to insert random strings and it's also
-        // inefficient, but unless I fix all the hibernate calls I'm following
-        // convention of
-        // using the hibernate templates and just inserting random strings for now.
-        String sSQL = "FROM Program p WHERE p.manOrWoman = '?0'";
-        @SuppressWarnings("unchecked")
-        List<Program> rs = (List<Program>) getHibernateTemplate().find(sSQL, genderType);
-        return rs;
+        TypedQuery<Program> query = entityManager.createQuery(
+            "FROM Program p WHERE p.manOrWoman = ?1", Program.class);
+        query.setParameter(1, genderType);
+        return query.getResultList();
     }
 
+    /**
+     * Saves a program.
+     *
+     * @param program the Program object to save
+     * @throws IllegalArgumentException if the program is null
+     */
     @Override
     public void saveProgram(Program program) {
         if (program == null) {
@@ -322,111 +415,129 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         }
         program.setLastUpdateDate(new Date());
 
-        // Adjusting flush mode
-        Session session = currentSession();
-        FlushMode previousFlushMode = session.getHibernateFlushMode();
-        session.setHibernateFlushMode(FlushMode.COMMIT);
-
-        try {
-            getHibernateTemplate().saveOrUpdate(program);
-        } finally {
-            session.setHibernateFlushMode(previousFlushMode); // Restore the original flush mode
-        }
-        getHibernateTemplate().saveOrUpdate(program);
-
+        entityManager.merge(program); // Use merge to save or update
         if (log.isDebugEnabled()) {
             log.debug("saveProgram: " + program.getId());
         }
     }
 
+    /**
+     * Removes a program by its ID.
+     *
+     * @param programId the ID of the program to remove
+     * @throws IllegalArgumentException if the programId is null or less than or equal to 0
+     */
     @Override
     public void removeProgram(Integer programId) {
         if (programId == null || programId <= 0) {
             throw new IllegalArgumentException();
         }
-        try {
-            Object program = getHibernateTemplate().load(Program.class, programId);
 
-            getHibernateTemplate().delete(program);
+        Program program = entityManager.find(Program.class, programId);
+        if (program != null) {
+            entityManager.remove(program);
 
             if (log.isDebugEnabled()) {
                 log.debug("deleteProgram: " + programId);
             }
-        } catch (Exception e) {
+        } else {
             MiscUtils.getLogger().warn("Unable to delete program " + programId);
         }
     }
 
+    /**
+     * Searches for programs based on the provided Program object.
+     *
+     * @param program the Program object containing the search criteria
+     * @return a list of Program objects matching the search criteria
+     * @throws IllegalArgumentException if the program is null
+     */
     @Override
     public List<Program> search(Program program) {
         if (program == null) {
             throw new IllegalArgumentException();
         }
-        // Session session = getSession();
-        Session session = currentSession();
-        Criteria criteria = session.createCriteria(Program.class);
 
-        if (program.getName() != null && program.getName().length() > 0) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Program> query = cb.createQuery(Program.class);
+        Root<Program> root = query.from(Program.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (program.getName() != null && !program.getName().isEmpty()) {
             String programName = StringEscapeUtils.escapeSql(program.getName());
-            String sql = "";
-            sql = "((LEFT(SOUNDEX(name),4) = LEFT(SOUNDEX('" + programName + "'),4))" + " " + "OR (name like '" + "%"
-                    + programName + "%'))";
-            criteria.add(Restrictions.sqlRestriction(sql));
+
+            // Create SOUNDEX expression for the program name
+            Expression<String> soundexProgramName = cb.function("SOUNDEX", String.class, cb.literal(programName));
+            Expression<String> soundexName = cb.function("SOUNDEX", String.class, root.get("name"));
+
+            Predicate namePredicate = cb.or(
+                cb.like(root.get("name"), "%" + programName + "%"),
+                cb.equal(cb.function("LEFT", String.class, soundexName),
+                         cb.function("LEFT", String.class, soundexProgramName))
+            );
+            predicates.add(namePredicate);
         }
 
-        if (program.getType() != null && program.getType().length() > 0) {
-            criteria.add(Expression.eq("type", program.getType()));
+        // Filter by type
+        if (program.getType() != null && !program.getType().isEmpty()) {
+            predicates.add(cb.equal(root.get("type"), program.getType()));
         }
 
-        if (program.getType() == null || program.getType().equals("") || !program.getType().equals("community")) {
-            criteria.add(Expression.ne("type", "community"));
+        if (program.getType() == null || program.getType().isEmpty() || !program.getType().equals("community")) {
+            predicates.add(cb.notEqual(root.get("type"), "community"));
         }
 
-        criteria.add(Expression.eq("programStatus", Program.PROGRAM_STATUS_ACTIVE));
+        predicates.add(cb.equal(root.get("programStatus"), Program.PROGRAM_STATUS_ACTIVE));
 
-        if (program.getManOrWoman() != null && program.getManOrWoman().length() > 0) {
-            criteria.add(Expression.eq("manOrWoman", program.getManOrWoman()));
+        // Filter by manOrWoman
+        if (program.getManOrWoman() != null && !program.getManOrWoman().isEmpty()) {
+            predicates.add(cb.equal(root.get("manOrWoman"), program.getManOrWoman()));
         }
 
+        // Other filters
         if (program.isTransgender()) {
-            criteria.add(Expression.eq("transgender", true));
+            predicates.add(cb.isTrue(root.get("transgender")));
         }
 
         if (program.isFirstNation()) {
-            criteria.add(Expression.eq("firstNation", true));
+            predicates.add(cb.isTrue(root.get("firstNation")));
         }
 
         if (program.isBedProgramAffiliated()) {
-            criteria.add(Expression.eq("bedProgramAffiliated", true));
+            predicates.add(cb.isTrue(root.get("bedProgramAffiliated")));
         }
 
         if (program.isAlcohol()) {
-            criteria.add(Expression.eq("alcohol", true));
+            predicates.add(cb.isTrue(root.get("alcohol")));
         }
 
-        if (program.getAbstinenceSupport() != null && program.getAbstinenceSupport().length() > 0) {
-            criteria.add(Expression.eq("abstinenceSupport", program.getAbstinenceSupport()));
+        if (program.getAbstinenceSupport() != null && !program.getAbstinenceSupport().isEmpty()) {
+            predicates.add(cb.equal(root.get("abstinenceSupport"), program.getAbstinenceSupport()));
         }
 
         if (program.isPhysicalHealth()) {
-            criteria.add(Expression.eq("physicalHealth", true));
+            predicates.add(cb.isTrue(root.get("physicalHealth")));
         }
 
         if (program.isHousing()) {
-            criteria.add(Expression.eq("housing", true));
+            predicates.add(cb.isTrue(root.get("housing")));
         }
 
         if (program.isMentalHealth()) {
-            criteria.add(Expression.eq("mentalHealth", true));
+            predicates.add(cb.isTrue(root.get("mentalHealth")));
         }
-        criteria.addOrder(Order.asc("name"));
 
-        List results = new ArrayList();
+        // Combine all predicates into the query
+        query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("name")));
+
+        // Create the query and get the results
+        TypedQuery<Program> typedQuery = entityManager.createQuery(query);
+        List<Program> results = new ArrayList<>();
         try {
-            results = criteria.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+            results = typedQuery.getResultList();
+        } catch (Exception e) {
+            log.error("Error while searching programs", e);
         }
 
         if (log.isDebugEnabled()) {
@@ -436,6 +547,14 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return results;
     }
 
+    /**
+     * Searches for programs based on the provided Program object and facility ID.
+     *
+     * @param program the Program object containing the search criteria
+     * @param facilityId the ID of the facility to search within
+     * @return a list of Program objects matching the search criteria and facility ID
+     * @throws IllegalArgumentException if the program or facilityId is null
+     */
     @Override
     public List<Program> searchByFacility(Program program, Integer facilityId) {
         if (program == null) {
@@ -445,91 +564,101 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
             throw new IllegalArgumentException();
         }
 
-        boolean isOracle = OscarProperties.getInstance().getDbType().equals("oracle");
-        // Session session = getSession();
-        Session session = currentSession();
-        Criteria criteria = session.createCriteria(Program.class);
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Program> query = cb.createQuery(Program.class);
+        Root<Program> root = query.from(Program.class);
 
-        if (program.getName() != null && program.getName().length() > 0) {
+        List<Predicate> predicates = new ArrayList<>();
+
+        // Filter by name
+        if (program.getName() != null && !program.getName().isEmpty()) {
             String programName = StringEscapeUtils.escapeSql(program.getName());
-            String sql = "";
-            if (isOracle) {
-                sql = "((LEFT(SOUNDEX(name),4) = LEFT(SOUNDEX('" + programName + "'),4)))";
-                criteria.add(Restrictions.or(Restrictions.ilike("name", "%" + programName + "%"),
-                        Restrictions.sqlRestriction(sql)));
-            } else {
-                sql = "((LEFT(SOUNDEX(name),4) = LEFT(SOUNDEX('" + programName + "'),4))" + " " + "OR (name like '"
-                        + "%" + programName + "%'))";
-                criteria.add(Restrictions.sqlRestriction(sql));
-            }
+            // Create SOUNDEX expression for the program name
+            Expression<String> soundexProgramName = cb.function("SOUNDEX", String.class, cb.literal(programName));
+            Expression<String> soundexName = cb.function("SOUNDEX", String.class, root.get("name"));
+
+            Predicate namePredicate = cb.or(
+                cb.like(root.get("name"), "%" + programName + "%"),
+                cb.equal(cb.function("LEFT", String.class, soundexName),
+                        cb.function("LEFT", String.class, soundexProgramName))
+            );
+            predicates.add(namePredicate);
         }
 
-        if (program.getType() != null && program.getType().length() > 0) {
-            criteria.add(Expression.eq("type", program.getType()));
+        // Filter by type
+        if (program.getType() != null && !program.getType().isEmpty()) {
+            predicates.add(cb.equal(root.get("type"), program.getType()));
         }
 
-        if (program.getType() == null || program.getType().equals("")
-                || !program.getType().equals(Program.COMMUNITY_TYPE)) {
-            criteria.add(Expression.ne("type", Program.COMMUNITY_TYPE));
+        if (program.getType() == null || program.getType().isEmpty() || !program.getType().equals(Program.COMMUNITY_TYPE)) {
+            predicates.add(cb.notEqual(root.get("type"), Program.COMMUNITY_TYPE));
         }
 
-        criteria.add(Expression.eq("programStatus", Program.PROGRAM_STATUS_ACTIVE));
+        predicates.add(cb.equal(root.get("programStatus"), Program.PROGRAM_STATUS_ACTIVE));
 
-        if (program.getManOrWoman() != null && program.getManOrWoman().length() > 0) {
-            criteria.add(Expression.eq("manOrWoman", program.getManOrWoman()));
+        // Filter by manOrWoman
+        if (program.getManOrWoman() != null && !program.getManOrWoman().isEmpty()) {
+            predicates.add(cb.equal(root.get("manOrWoman"), program.getManOrWoman()));
         }
 
+        // Other filters
         if (program.isTransgender()) {
-            criteria.add(Expression.eq("transgender", true));
+            predicates.add(cb.isTrue(root.get("transgender")));
         }
 
         if (program.isFirstNation()) {
-            criteria.add(Expression.eq("firstNation", true));
+            predicates.add(cb.isTrue(root.get("firstNation")));
         }
 
         if (program.isBedProgramAffiliated()) {
-            criteria.add(Expression.eq("bedProgramAffiliated", true));
+            predicates.add(cb.isTrue(root.get("bedProgramAffiliated")));
         }
 
         if (program.isAlcohol()) {
-            criteria.add(Expression.eq("alcohol", true));
+            predicates.add(cb.isTrue(root.get("alcohol")));
         }
 
-        if (program.getAbstinenceSupport() != null && program.getAbstinenceSupport().length() > 0) {
-            criteria.add(Expression.eq("abstinenceSupport", program.getAbstinenceSupport()));
+        if (program.getAbstinenceSupport() != null && !program.getAbstinenceSupport().isEmpty()) {
+            predicates.add(cb.equal(root.get("abstinenceSupport"), program.getAbstinenceSupport()));
         }
 
         if (program.isPhysicalHealth()) {
-            criteria.add(Expression.eq("physicalHealth", true));
+            predicates.add(cb.isTrue(root.get("physicalHealth")));
         }
 
         if (program.isHousing()) {
-            criteria.add(Expression.eq("housing", true));
+            predicates.add(cb.isTrue(root.get("housing")));
         }
 
         if (program.isMentalHealth()) {
-            criteria.add(Expression.eq("mentalHealth", true));
+            predicates.add(cb.isTrue(root.get("mentalHealth")));
         }
 
-        criteria.add(Expression.eq("facilityId", facilityId));
+        // Filter by facilityId
+        predicates.add(cb.equal(root.get("facilityId"), facilityId));
 
-        criteria.addOrder(Order.asc("name"));
+        // Combine all predicates into the query
+        query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("name")));
 
-        List results = new ArrayList();
+        // Create the query and get the results
+        TypedQuery<Program> typedQuery = entityManager.createQuery(query);
+        List<Program> results = new ArrayList<>();
         try {
-            results = criteria.list();
-        } finally {
-            // releaseSession(session);
-            //session.close();
+            results = typedQuery.getResultList();
+        } catch (Exception e) {
+            log.error("Error while searching programs by facility", e);
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("search: # results: " + results.size());
+            log.debug("searchByFacility: # results: " + results.size());
         }
 
         return results;
     }
 
+    /**
+     * Resets the holding tank by setting the holdingTank flag to false for all programs.
+     */
     @Override
     public void resetHoldingTank() {
         List<Program> programs = this.getAllPrograms();
@@ -546,13 +675,17 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         }
     }
 
+    /**
+     * Retrieves the holding tank program.
+     *
+     * @return the Program object representing the holding tank program, or null if not found
+     */
     @Override
     public Program getHoldingTankProgram() {
         Program result = null;
 
-        String sSQL = "from Program p where p.holdingTank = true";
-        @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) getHibernateTemplate().find(sSQL);
+        TypedQuery<Program> query = entityManager.createQuery("SELECT p FROM Program p WHERE p.holdingTank = true", Program.class);
+        List<Program> results = query.getResultList();
 
         if (!results.isEmpty()) {
             result = results.get(0);
@@ -566,20 +699,43 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return result;
     }
 
+    /**
+     * Checks if a program exists by its ID.
+     *
+     * @param programId the ID of the program to check
+     * @return true if the program exists, false otherwise
+     */
     @Override
     public boolean programExists(Integer programId) {
         return (getProgram(programId) != null);
     }
 
+    /**
+     * Retrieves the linked service programs for a bed program and client.
+     *
+     * @param bedProgramId the ID of the bed program
+     * @param clientId the ID of the client
+     * @return a list of Program objects representing the linked service programs
+     */
     public List<Program> getLinkedServicePrograms(Integer bedProgramId, Integer clientId) {
-        String sSQL = "select p from Admission a,Program p where a.programId = p.id and p.type='?0'" + 
-        " and  p.bedProgramLinkId = ?1 and a.clientId=?2";
-        Object[] params = new Object[]{Program.SERVICE_TYPE, bedProgramId, clientId};
-        @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) this.getHibernateTemplate().find(sSQL, params);
-        return results;
+        String queryStr = "SELECT p FROM Admission a JOIN Program p ON a.programId = p.id "
+                 + "WHERE p.type = ?1 AND p.bedProgramLinkId = ?2 AND a.clientId = ?3";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, Program.SERVICE_TYPE);
+        query.setParameter(2, bedProgramId);
+        query.setParameter(3, clientId);
+
+        return query.getResultList();
     }
 
+    /**
+     * Checks if two programs are in the same facility.
+     *
+     * @param programId1 the ID of the first program
+     * @param programId2 the ID of the second program
+     * @return true if the programs are in the same facility, false otherwise
+     * @throws IllegalArgumentException if either programId is null or less than or equal to 0
+     */
     @Override
     public boolean isInSameFacility(Integer programId1, Integer programId2) {
         if (programId1 == null || programId1 <= 0) {
@@ -599,14 +755,21 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return (p1.getFacilityId() == p2.getFacilityId());
     }
 
+    /**
+     * Retrieves a program by its site-specific field value.
+     *
+     * @param value the value of the site-specific field
+     * @return the Program object if found, null otherwise
+     */
     @Override
     public Program getProgramBySiteSpecificField(String value) {
         Program result = null;
 
-        String sSQL = "from Program p where p.siteSpecificField = ?0";
-        @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) getHibernateTemplate().find(sSQL, new Object[]{value});
+        String queryStr = "SELECT p FROM Program p WHERE p.siteSpecificField = ?1";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, value);
 
+        List<Program> results = query.getResultList();
         if (!results.isEmpty()) {
             result = results.get(0);
         }
@@ -614,14 +777,21 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return result;
     }
 
+    /**
+     * Retrieves a program by its name.
+     *
+     * @param value the name of the program
+     * @return the Program object if found, null otherwise
+     */
     @Override
     public Program getProgramByName(String value) {
         Program result = null;
 
-        String sSQL = "from Program p where p.name = ?0";
-        @SuppressWarnings("unchecked")
-        List<Program> results = (List<Program>) getHibernateTemplate().find(sSQL, new Object[]{value});
+        String queryStr = "SELECT p FROM Program p WHERE p.name = ?1";
+        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
+        query.setParameter(1, value);
 
+        List<Program> results = query.getResultList();
         if (!results.isEmpty()) {
             result = results.get(0);
         }
@@ -629,31 +799,50 @@ public class ProgramDaoImpl extends HibernateDaoSupport implements ProgramDao {
         return result;
     }
 
+    /**
+     * Retrieves the IDs of programs added or updated since a specific time for a given facility.
+     *
+     * @param facilityId the ID of the facility
+     * @param date the reference date
+     * @return a list of program IDs added or updated since the specified time
+     */
     @Override
     public List<Integer> getRecordsAddedAndUpdatedSinceTime(Integer facilityId, Date date) {
-        String sSQL = "select distinct p.id From Program p where p.facilityId = ?0 and p.lastUpdateDate > ?1  ";
-        Object[] params = new Object[]{facilityId, date};
-        @SuppressWarnings("unchecked")
-        List<Integer> programs = (List<Integer>) getHibernateTemplate().find(sSQL, params);
+        String queryStr = "SELECT DISTINCT p.id FROM Program p WHERE p.facilityId = ?1 AND p.lastUpdateDate > ?2";
+        TypedQuery<Integer> query = entityManager.createQuery(queryStr, Integer.class);
+        query.setParameter(1, facilityId);
+        query.setParameter(2, date);
 
-        return programs;
+        return query.getResultList();
     }
 
+    /**
+     * Retrieves the IDs of programs associated with a specific facility.
+     *
+     * @param facilityId the ID of the facility
+     * @return a list of program IDs associated with the specified facility
+     */
     @Override
     public List<Integer> getRecordsByFacilityId(Integer facilityId) {
-        String sSQL = "select distinct p.id From Program p where p.facilityId = ?0 ";
-        @SuppressWarnings("unchecked")
-        List<Integer> programs = (List<Integer>) getHibernateTemplate().find(sSQL, facilityId);
+        String queryStr = "SELECT DISTINCT p.id FROM Program p WHERE p.facilityId = ?1";
+        TypedQuery<Integer> query = entityManager.createQuery(queryStr, Integer.class);
+        query.setParameter(1, facilityId);
 
-        return programs;
+        return query.getResultList();
     }
 
+    /**
+     * Retrieves the provider numbers of providers added or updated since a specific time.
+     *
+     * @param date the reference date
+     * @return a list of provider numbers added or updated since the specified time
+     */
     @Override
     public List<String> getRecordsAddedAndUpdatedSinceTime(Date date) {
-        String sSQL = "select distinct p.ProviderNo From Provider p where p.lastUpdateDate > ?0 ";
-        @SuppressWarnings("unchecked")
-        List<String> providers = (List<String>) getHibernateTemplate().find(sSQL, date);
+        String queryStr = "SELECT DISTINCT p.providerNo FROM Provider p WHERE p.lastUpdateDate > ?1";
+        TypedQuery<String> query = entityManager.createQuery(queryStr, String.class);
+        query.setParameter(1, date);
 
-        return providers;
+        return query.getResultList();
     }
 }

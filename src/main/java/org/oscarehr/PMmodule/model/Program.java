@@ -1,4 +1,3 @@
-//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -23,16 +22,24 @@
 
 package org.oscarehr.PMmodule.model;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+import java.util.Date;
 import com.quatro.model.LookupCodeValue;
+import org.oscarehr.common.model.AbstractModel;
 
 /**
  * This is the object class that relates to the program table. Any customizations belong here.
+ * 
+ * Entity implementation class for Entity: Program
+ * Represents a program in the system.
  */
-public class Program implements Serializable {
+@Entity
+@Table(name = "program")
+public class Program extends AbstractModel<Integer> {
     public static final Integer DEFAULT_COMMUNITY_PROGRAM_ID = new Integer(10010);
 
     public static final String EXTERNAL_TYPE = "external";
@@ -49,6 +56,8 @@ public class Program implements Serializable {
 
     private int hashCode = Integer.MIN_VALUE;// primary key
 
+    @Id
+    @Column(name = "id")
     private Integer id;
 
     private boolean userDefined = true;
@@ -117,7 +126,20 @@ public class Program implements Serializable {
     private String vacancyTemplateName;
 
     /**
-     * Constructor for required fields
+     * Constructor for required fields.
+     * 
+     * @param id the program ID
+     * @param isUserDefined flag indicating if program is user defined
+     * @param maxAllowed maximum number of clients allowed in the program
+     * @param address the program address
+     * @param phone the program phone number
+     * @param fax the program fax number
+     * @param url the program URL
+     * @param email the program email
+     * @param emergencyNumber the program emergency contact number
+     * @param name the program name
+     * @param holdingTank flag indicating if this is a holding tank program
+     * @param programStatus the status of the program (active/inactive)
      */
     public Program(Integer id, boolean isUserDefined, Integer maxAllowed, String address, String phone, String fax, String url, String email, String emergencyNumber, String name, boolean holdingTank, String programStatus) {
 
@@ -192,7 +214,10 @@ public class Program implements Serializable {
         this.capacity_space = capacity_space;
     }
 
-    // constructors
+    /**
+     * Default no-arg constructor.
+     * Required by JPA.
+     */
     public Program() {
         // no arg constructor for JPA
     }
@@ -222,342 +247,551 @@ public class Program implements Serializable {
     }
 
     /**
-     * Constructor for primary key
+     * Constructor for primary key.
+     * 
+     * @param id the program ID
      */
     public Program(Integer id) {
         this.setId(id);
     }
 
+    /**
+     * Checks if this program is user defined.
+     * 
+     * @return true if user defined, false otherwise
+     */
     public boolean isUserDefined() {
         return userDefined;
     }
 
+    /**
+     * Sets whether this program is user defined.
+     * 
+     * @param userDefined true if user defined, false otherwise
+     */
     public void setUserDefined(boolean userDefined) {
         this.userDefined = userDefined;
     }
 
+    /**
+     * Checks if this program is active.
+     * 
+     * @return true if the program status is active, false otherwise
+     */
     public boolean isActive() {
         return PROGRAM_STATUS_ACTIVE.equals(programStatus);
     }
 
+    /**
+     * Checks if this program is full (number of members equals or exceeds the maximum allowed).
+     * 
+     * @return true if the program is full, false otherwise
+     */
     public boolean isFull() {
         return getNumOfMembers().intValue() >= getMaxAllowed().intValue();
     }
 
+    /**
+     * Checks if this is an external program.
+     * 
+     * @return true if the program type is "external", false otherwise
+     */
     public boolean isExternal() {
         return EXTERNAL_TYPE.equalsIgnoreCase(getType());
     }
 
+    /**
+     * Checks if this is a bed program.
+     * 
+     * @return true if the program type is "Bed", false otherwise
+     */
     public boolean isBed() {
         return BED_TYPE.equalsIgnoreCase(getType());
     }
 
+    /**
+     * Checks if this is a community program.
+     * 
+     * @return true if the program type is "community", false otherwise
+     */
     public boolean isCommunity() {
         return COMMUNITY_TYPE.equalsIgnoreCase(getType());
     }
 
+    /**
+     * Checks if this is a service program.
+     * 
+     * @return true if the program type is "Service", false otherwise
+     */
     public boolean isService() {
         return SERVICE_TYPE.equalsIgnoreCase(getType());
     }
 
+    /**
+     * Checks if this is a holding tank program.
+     * 
+     * @return true if this is a holding tank program, false otherwise
+     */
     public boolean getHoldingTank() {
         return isHoldingTank();
     }
 
+    /**
+     * Gets the ID of this program.
+     * 
+     * @return the program ID
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Sets the ID of this program.
+     * 
+     * @param id the program ID to set
+     */
     public void setId(Integer id) {
         this.id = id;
         this.hashCode = Integer.MIN_VALUE;
     }
 
     /**
-     * Return the value associated with the column: numOfMembers
+     * Gets the number of members in this program.
+     * 
+     * @return the number of members
      */
     public Integer getNumOfMembers() {
         return numOfMembers;
     }
 
     /**
-     * Set the value related to the column: numOfMembers
-     *
-     * @param numOfMembers the numOfMembers value
+     * Sets the number of members in this program.
+     * 
+     * @param numOfMembers the number of members to set
      */
     public void setNumOfMembers(Integer numOfMembers) {
         this.numOfMembers = numOfMembers;
     }
 
     /**
-     * Return the value associated with the column: queueSize
+     * Gets the queue size for this program.
+     * 
+     * @return the queue size
      */
     public Integer getQueueSize() {
         return queueSize;
     }
 
     /**
-     * Set the value related to the column: queueSize
-     *
-     * @param queueSize the queueSize value
+     * Sets the queue size for this program.
+     * 
+     * @param queueSize the queue size to set
      */
     public void setQueueSize(Integer queueSize) {
         this.queueSize = queueSize;
     }
 
+    /**
+     * Gets the maximum number of clients allowed in this program.
+     * 
+     * @return the maximum allowed
+     */
     public Integer getMaxAllowed() {
         return maxAllowed;
     }
 
+    /**
+     * Sets the maximum number of clients allowed in this program.
+     * 
+     * @param maxAllowed the maximum allowed to set
+     */
     public void setMaxAllowed(Integer maxAllowed) {
         this.maxAllowed = maxAllowed;
     }
 
     /**
-     * Return the value associated with the column: type
+     * Gets the type of this program.
+     * 
+     * @return the program type
      */
     public String getType() {
         return type;
     }
 
     /**
-     * Set the value related to the column: type
-     *
-     * @param type the type value
+     * Sets the type of this program.
+     * 
+     * @param type the program type to set
      */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Gets the description of this program.
+     * 
+     * @return the program description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description of this program.
+     * 
+     * @param description the program description to set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * Return the value associated with the column: address
+     * Gets the address of this program.
+     * 
+     * @return the program address
      */
     public String getAddress() {
         return address;
     }
 
     /**
-     * Set the value related to the column: address
-     *
-     * @param address the address value
+     * Sets the address of this program.
+     * 
+     * @param address the program address to set
      */
     public void setAddress(String address) {
         this.address = address;
     }
 
     /**
-     * Return the value associated with the column: phone
+     * Gets the phone number of this program.
+     * 
+     * @return the program phone number
      */
     public String getPhone() {
         return phone;
     }
 
     /**
-     * Set the value related to the column: phone
-     *
-     * @param phone the phone value
+     * Sets the phone number of this program.
+     * 
+     * @param phone the program phone number to set
      */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
     /**
-     * Return the value associated with the column: fax
+     * Gets the fax number of this program.
+     * 
+     * @return the program fax number
      */
     public String getFax() {
         return fax;
     }
 
     /**
-     * Set the value related to the column: fax
-     *
-     * @param fax the fax value
+     * Sets the fax number of this program.
+     * 
+     * @param fax the program fax number to set
      */
     public void setFax(String fax) {
         this.fax = fax;
     }
 
     /**
-     * Return the value associated with the column: url
+     * Gets the URL of this program.
+     * 
+     * @return the program URL
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * Set the value related to the column: url
-     *
-     * @param url the url value
+     * Sets the URL of this program.
+     * 
+     * @param url the program URL to set
      */
     public void setUrl(String url) {
         this.url = url;
     }
 
     /**
-     * Return the value associated with the column: email
+     * Gets the email address of this program.
+     * 
+     * @return the program email address
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Set the value related to the column: email
-     *
-     * @param email the email value
+     * Sets the email address of this program.
+     * 
+     * @param email the program email address to set
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets the emergency contact number of this program.
+     * 
+     * @return the program emergency contact number
+     */
     public String getEmergencyNumber() {
         return emergencyNumber;
     }
 
+    /**
+     * Sets the emergency contact number of this program.
+     * 
+     * @param emergencyNumber the program emergency contact number to set
+     */
     public void setEmergencyNumber(String emergencyNumber) {
         this.emergencyNumber = emergencyNumber;
     }
 
     /**
-     * Return the value associated with the column: location
+     * Gets the location of this program.
+     * 
+     * @return the program location
      */
     public String getLocation() {
         return location;
     }
 
     /**
-     * Set the value related to the column: location
-     *
-     * @param location the location value
+     * Sets the location of this program.
+     * 
+     * @param location the program location to set
      */
     public void setLocation(String location) {
         this.location = location;
     }
 
     /**
-     * Return the value associated with the column: name
+     * Gets the name of this program.
+     * 
+     * @return the program name
      */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the JavaScript-escaped name of this program.
+     * 
+     * @return the JavaScript-escaped program name
+     */
     public String getNameJs() {
         return oscar.Misc.getStringJs(name);
     }
 
     /**
-     * Set the value related to the column: name
-     *
-     * @param name the name value
+     * Sets the name of this program.
+     * 
+     * @param name the program name to set
      */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Checks if this is a holding tank program.
+     * 
+     * @return true if this is a holding tank program, false otherwise
+     */
     public boolean isHoldingTank() {
         return holdingTank;
     }
 
+    /**
+     * Sets whether this is a holding tank program.
+     * 
+     * @param holdingTank true if this is a holding tank program, false otherwise
+     */
     public void setHoldingTank(boolean holdingTank) {
         this.holdingTank = holdingTank;
     }
 
+    /**
+     * Checks if batch admission is allowed for this program.
+     * 
+     * @return true if batch admission is allowed, false otherwise
+     */
     public boolean isAllowBatchAdmission() {
         return allowBatchAdmission;
     }
 
+    /**
+     * Sets whether batch admission is allowed for this program.
+     * 
+     * @param allowBatchAdmission true if batch admission is allowed, false otherwise
+     */
     public void setAllowBatchAdmission(boolean allowBatchAdmission) {
         this.allowBatchAdmission = allowBatchAdmission;
     }
 
+    /**
+     * Checks if batch discharge is allowed for this program.
+     * 
+     * @return true if batch discharge is allowed, false otherwise
+     */
     public boolean isAllowBatchDischarge() {
         return allowBatchDischarge;
     }
 
+    /**
+     * Sets whether batch discharge is allowed for this program.
+     * 
+     * @param allowBatchDischarge true if batch discharge is allowed, false otherwise
+     */
     public void setAllowBatchDischarge(boolean allowBatchDischarge) {
         this.allowBatchDischarge = allowBatchDischarge;
     }
 
     /**
-     * Return the value associated with the column: hic
+     * Checks if this program requires a health insurance card (HIC).
+     * 
+     * @return true if a HIC is required, false otherwise
      */
     public boolean isHic() {
         return hic;
     }
 
     /**
-     * Set the value related to the column: hic
-     *
-     * @param hic the hic value
+     * Sets whether this program requires a health insurance card (HIC).
+     * 
+     * @param hic true if a HIC is required, false otherwise
      */
     public void setHic(boolean hic) {
         this.hic = hic;
     }
 
+    /**
+     * Gets the status of this program.
+     * 
+     * @return the program status
+     */
     public String getProgramStatus() {
         return programStatus;
     }
 
     /**
-     * Set the value related to the column: program_status
-     *
-     * @param programStatus the program_status value
+     * Sets the status of this program.
+     * 
+     * @param programStatus the program status to set
      */
     public void setProgramStatus(String programStatus) {
         this.programStatus = programStatus;
     }
 
+    /**
+     * Gets the intake program associated with this program.
+     * 
+     * @return the intake program ID
+     */
     public Integer getIntakeProgram() {
         return intakeProgram;
     }
 
+    /**
+     * Sets the intake program associated with this program.
+     * 
+     * @param intakeProgram the intake program ID to set
+     */
     public void setIntakeProgram(Integer intakeProgram) {
         this.intakeProgram = intakeProgram;
     }
 
+    /**
+     * Gets the ID of the bed program linked to this program.
+     * 
+     * @return the bed program link ID
+     */
     public Integer getBedProgramLinkId() {
         return bedProgramLinkId;
     }
 
+    /**
+     * Sets the ID of the bed program linked to this program.
+     * 
+     * @param bedProgramLinkId the bed program link ID to set
+     */
     public void setBedProgramLinkId(Integer bedProgramLinkId) {
         this.bedProgramLinkId = bedProgramLinkId;
     }
 
+    /**
+     * Gets the abstinence support offered by this program.
+     * 
+     * @return the abstinence support description
+     */
     public String getAbstinenceSupport() {
         return abstinenceSupport;
     }
 
+    /**
+     * Sets the abstinence support offered by this program.
+     * 
+     * @param abstinenceSupport the abstinence support description to set
+     */
     public void setAbstinenceSupport(String abstinenceSupport) {
         this.abstinenceSupport = abstinenceSupport;
     }
 
+    /**
+     * Checks if this program addresses alcohol addiction.
+     * 
+     * @return true if the program addresses alcohol addiction, false otherwise
+     */
     public boolean isAlcohol() {
         return alcohol;
     }
 
+    /**
+     * Sets whether this program addresses alcohol addiction.
+     * 
+     * @param alcohol true if the program addresses alcohol addiction, false otherwise
+     */
     public void setAlcohol(boolean alcohol) {
         this.alcohol = alcohol;
     }
 
+    /**
+     * Checks if this program is affiliated with a bed program.
+     * 
+     * @return true if affiliated with a bed program, false otherwise
+     */
     public boolean isBedProgramAffiliated() {
         return bedProgramAffiliated;
     }
 
+    /**
+     * Sets whether this program is affiliated with a bed program.
+     * 
+     * @param bedProgramAffiliated true if affiliated with a bed program, false otherwise
+     */
     public void setBedProgramAffiliated(boolean bedProgramAffiliated) {
         this.bedProgramAffiliated = bedProgramAffiliated;
     }
 
+    /**
+     * Checks if this program serves First Nations communities.
+     * 
+     * @return true if the program serves First Nations, false otherwise
+     */
     public boolean isFirstNation() {
         return firstNation;
     }
 
+    /**
+     * Sets whether this program serves First Nations communities.
+     * 
+     * @param firstNation true if the program serves First Nations, false otherwise
+     */
     public void setFirstNation(boolean firstNation) {
         this.firstNation = firstNation;
     }
@@ -570,54 +804,119 @@ public class Program implements Serializable {
         this.hashCode = hashCode;
     }
 
+    /**
+     * Checks if this program provides housing support.
+     * 
+     * @return true if the program provides housing support, false otherwise
+     */
     public boolean isHousing() {
         return housing;
     }
 
+    /**
+     * Sets whether this program provides housing support.
+     * 
+     * @param housing true if the program provides housing support, false otherwise
+     */
     public void setHousing(boolean housing) {
         this.housing = housing;
     }
 
+    /**
+     * Gets the gender served by this program (man, woman, or both).
+     * 
+     * @return the gender served by the program
+     */
     public String getManOrWoman() {
         return manOrWoman;
     }
 
+    /**
+     * Sets the gender served by this program (man, woman, or both).
+     * 
+     * @param manOrWoman the gender served by the program
+     */
     public void setManOrWoman(String manOrWoman) {
         this.manOrWoman = manOrWoman;
     }
 
+    /**
+     * Checks if this program addresses mental health.
+     * 
+     * @return true if the program addresses mental health, false otherwise
+     */
     public boolean isMentalHealth() {
         return mentalHealth;
     }
 
+    /**
+     * Sets whether this program addresses mental health.
+     * 
+     * @param mentalHealth true if the program addresses mental health, false otherwise
+     */
     public void setMentalHealth(boolean mentalHealth) {
         this.mentalHealth = mentalHealth;
     }
 
+    /**
+     * Checks if this program addresses physical health.
+     * 
+     * @return true if the program addresses physical health, false otherwise
+     */
     public boolean isPhysicalHealth() {
         return physicalHealth;
     }
 
+    /**
+     * Sets whether this program addresses physical health.
+     * 
+     * @param physicalHealth true if the program addresses physical health, false otherwise
+     */
     public void setPhysicalHealth(boolean physicalHealth) {
         this.physicalHealth = physicalHealth;
     }
 
+    /**
+     * Checks if this program serves transgender individuals.
+     * 
+     * @return true if the program serves transgender individuals, false otherwise
+     */
     public boolean isTransgender() {
         return transgender;
     }
 
+    /**
+     * Sets whether this program serves transgender individuals.
+     * 
+     * @param transgender true if the program serves transgender individuals, false otherwise
+     */
     public void setTransgender(boolean transgender) {
         this.transgender = transgender;
     }
 
+    /**
+     * Gets the exclusive view setting for this program.
+     * 
+     * @return the exclusive view setting
+     */
     public String getExclusiveView() {
         return exclusiveView;
     }
 
+    /**
+     * Sets the exclusive view setting for this program.
+     * 
+     * @param exclusiveView the exclusive view setting to set
+     */
     public void setExclusiveView(String exclusiveView) {
         this.exclusiveView = exclusiveView;
     }
 
+    /**
+     * Gets the minimum age for this program.
+     * 
+     * @return the minimum age, or the default minimum age if not set
+     */
     public Integer getAgeMin() {
         if (this.ageMin != null) {
             return ageMin;
@@ -626,10 +925,20 @@ public class Program implements Serializable {
         return this.MIN_AGE;
     }
 
+    /**
+     * Sets the minimum age for this program.
+     * 
+     * @param ageMin the minimum age to set
+     */
     public void setAgeMin(Integer ageMin) {
         this.ageMin = ageMin;
     }
 
+    /**
+     * Gets the maximum age for this program.
+     * 
+     * @return the maximum age, or the default maximum age if not set
+     */
     public Integer getAgeMax() {
         if (this.ageMax != null) {
             return ageMax;
@@ -637,18 +946,38 @@ public class Program implements Serializable {
         return this.MAX_AGE;
     }
 
+    /**
+     * Sets the maximum age for this program.
+     * 
+     * @param ageMax the maximum age to set
+     */
     public void setAgeMax(Integer ageMax) {
         this.ageMax = ageMax;
     }
 
+    /**
+     * Gets the maximum number of service restriction days for this program.
+     * 
+     * @return the maximum service restriction days
+     */
     public Integer getMaximumServiceRestrictionDays() {
         return maximumServiceRestrictionDays;
     }
 
+    /**
+     * Sets the maximum number of service restriction days for this program.
+     * 
+     * @param maximumServiceRestrictionDays the maximum service restriction days to set
+     */
     public void setMaximumServiceRestrictionDays(Integer maximumServiceRestrictionDays) {
         this.maximumServiceRestrictionDays = maximumServiceRestrictionDays;
     }
 
+    /**
+     * Gets the default number of service restriction days for this program.
+     * 
+     * @return the default service restriction days, or the program default if not set or invalid
+     */
     public Integer getDefaultServiceRestrictionDays() {
         if ((this.defaultServiceRestrictionDays != null) && (this.defaultServiceRestrictionDays > 0)) {
             return defaultServiceRestrictionDays;
@@ -657,10 +986,16 @@ public class Program implements Serializable {
         return this.DEFAULT_SERVICE_RESTRICTION_DAYS;
     }
 
+    /**
+     * Sets the default number of service restriction days for this program.
+     * 
+     * @param defaultServiceRestrictionDays the default service restriction days to set
+     */
     public void setDefaultServiceRestrictionDays(Integer defaultServiceRestrictionDays) {
         this.defaultServiceRestrictionDays = defaultServiceRestrictionDays;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (null == obj) return false;
         if (!(obj instanceof Program)) return false;
@@ -671,6 +1006,7 @@ public class Program implements Serializable {
         }
     }
 
+    @Override
     public int hashCode() {
         if (Integer.MIN_VALUE == this.hashCode) {
             if (null == this.getId()) return super.hashCode();
@@ -686,152 +1022,310 @@ public class Program implements Serializable {
         return super.toString();
     }
 
+    /**
+     * Gets the description of the facility associated with this program.
+     * 
+     * @return the facility description
+     */
     public String getFacilityDesc() {
         return facilityDesc;
     }
 
+    /**
+     * Sets the description of the facility associated with this program.
+     * 
+     * @param facilityDesc the facility description to set
+     */
     public void setFacilityDesc(String facilityDesc) {
         this.facilityDesc = facilityDesc;
     }
 
+    /**
+     * Gets the total number of rooms used in this program.
+     * 
+     * @return the total used rooms
+     */
     public Integer getTotalUsedRoom() {
         return totalUsedRoom;
     }
 
+    /**
+     * Sets the total number of rooms used in this program.
+     * 
+     * @param totalUsedRoom the total used rooms to set
+     */
     public void setTotalUsedRoom(Integer totalUsedRoom) {
         this.totalUsedRoom = totalUsedRoom;
     }
 
+    /**
+     * Gets the number of intake appointments for this program.
+     * 
+     * @return the number of intakes
+     */
     public Integer getNumOfIntakes() {
         return numOfIntakes;
     }
 
+    /**
+     * Sets the number of intake appointments for this program.
+     * 
+     * @param numOfIntakes the number of intakes to set
+     */
     public void setNumOfIntakes(Integer numOfIntakes) {
         this.numOfIntakes = numOfIntakes;
     }
 
+    /**
+     * Gets the description of the genders served by this program.
+     * 
+     * @return the gender description
+     */
     public String getGenderDesc() {
         return genderDesc;
     }
 
+    /**
+     * Sets the description of the genders served by this program.
+     * 
+     * @param genderDesc the gender description to set
+     */
     public void setGenderDesc(String genderDesc) {
         this.genderDesc = genderDesc;
     }
 
+    /**
+     * Gets the shelter associated with this program.
+     * 
+     * @return the shelter
+     */
     public LookupCodeValue getShelter() {
         return shelter;
     }
 
+    /**
+     * Sets the shelter associated with this program.
+     * 
+     * @param shelter the shelter to set
+     */
     public void setShelter(LookupCodeValue shelter) {
         this.shelter = shelter;
     }
 
+    /**
+     * Checks if encounter time tracking is enabled for this program.
+     * 
+     * @return true if encounter time tracking is enabled, false otherwise
+     */
     public Boolean isEnableEncounterTime() {
         return enableEncounterTime;
     }
 
+    /**
+     * Gets the flag indicating if encounter time tracking is enabled for this program.
+     * 
+     * @return the enableEncounterTime flag
+     */
     public Boolean getEnableEncounterTime() {
         return enableEncounterTime;
     }
 
+    /**
+     * Sets the flag indicating if encounter time tracking is enabled for this program.
+     * 
+     * @param enableEncounterTime the enableEncounterTime flag to set
+     */
     public void setEnableEncounterTime(Boolean enableEncounterTime) {
         this.enableEncounterTime = enableEncounterTime;
     }
-
+    
+    /**
+     * Checks if encounter transportation time tracking is enabled for this program.
+     * 
+     * @return true if encounter transportation time tracking is enabled, false otherwise
+     */
     public Boolean isEnableEncounterTransportationTime() {
         return enableEncounterTransportationTime;
     }
 
+    /**
+     * Gets the flag indicating if encounter transportation time tracking is enabled for this program.
+     * 
+     * @return the enableEncounterTransportationTime flag
+     */
     public Boolean getEnableEncounterTransportationTime() {
         return enableEncounterTransportationTime;
     }
 
+    /**
+     * Sets the flag indicating if encounter transportation time tracking is enabled for this program.
+     * 
+     * @param enableEncounterTransportationTime the enableEncounterTransportationTime flag to set
+     */
     public void setEnableEncounterTransportationTime(Boolean enableEncounterTransportationTime) {
         this.enableEncounterTransportationTime = enableEncounterTransportationTime;
     }
 
+    /**
+     * Gets the comma-separated list of email addresses for notifications related to this program.
+     * 
+     * @return the email notification addresses CSV
+     */
     public String getEmailNotificationAddressesCsv() {
         return emailNotificationAddressesCsv;
     }
 
+    /**
+     * Sets the comma-separated list of email addresses for notifications related to this program.
+     * 
+     * @param emailNotificationAddressesCsv the email notification addresses CSV to set
+     */
     public void setEmailNotificationAddressesCsv(String emailNotificationAddressesCsv) {
         this.emailNotificationAddressesCsv = emailNotificationAddressesCsv;
     }
 
+    /**
+     * Gets the date of the last referral notification for this program.
+     * 
+     * @return the last referral notification date
+     */
     public Date getLastReferralNotification() {
         return lastReferralNotification;
     }
 
+    /**
+     * Sets the date of the last referral notification for this program.
+     * 
+     * @param lastReferralNotification the last referral notification date to set
+     */
     public void setLastReferralNotification(Date lastReferralNotification) {
         this.lastReferralNotification = lastReferralNotification;
     }
 
+    /**
+     * Gets the number of vacancies in this program.
+     * 
+     * @return the number of vacancies
+     */
     public Integer getNoOfVacancy() {
         return noOfVacancy;
     }
 
+    /**
+     * Sets the number of vacancies in this program.
+     * 
+     * @param noOfVacancy the number of vacancies to set
+     */
     public void setNoOfVacancy(Integer noOfVacancy) {
         this.noOfVacancy = noOfVacancy;
     }
 
+    /**
+     * Gets the name of the vacancy in this program.
+     * 
+     * @return the vacancy name
+     */
     public String getVacancyName() {
         return vacancyName;
     }
 
+    /**
+     * Sets the name of the vacancy in this program.
+     * 
+     * @param vacancyName the vacancy name to set
+     */
     public void setVacancyName(String vacancyName) {
         this.vacancyName = vacancyName;
     }
 
+    /**
+     * Gets the date this program was created.
+     * 
+     * @return the date created
+     */
     public String getDateCreated() {
         return dateCreated;
     }
 
+    /**
+     * Sets the date this program was created.
+     * 
+     * @param dateCreated the date created to set
+     */
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
+    /**
+     * Gets the number of matches for this program.
+     * 
+     * @return the number of matches
+     */
     public double getMatches() {
         return matches;
     }
 
+    /**
+     * Sets the number of matches for this program.
+     * 
+     * @param matches the number of matches to set
+     */
     public void setMatches(double matches) {
         this.matches = matches;
     }
 
+    /**
+     * Gets the ID of the vacancy in this program.
+     * 
+     * @return the vacancy ID
+     */
     public Integer getVacancyId() {
         return vacancyId;
     }
 
+    /**
+     * Sets the ID of the vacancy in this program.
+     * 
+     * @param vacancyId the vacancy ID to set
+     */
     public void setVacancyId(Integer vacancyId) {
         this.vacancyId = vacancyId;
     }
 
+    /**
+     * Gets the name of the vacancy template used by this program.
+     * 
+     * @return the vacancy template name
+     */
     public String getVacancyTemplateName() {
         return vacancyTemplateName;
     }
 
+    /**
+     * Sets the name of the vacancy template used by this program.
+     * 
+     * @param vacancyTemplateName the vacancy template name to set
+     */
     public void setVacancyTemplateName(String vacancyTemplateName) {
         this.vacancyTemplateName = vacancyTemplateName;
     }
 
-    public static String getIdsAsStringList(List<Program> results) {
-        StringBuilder sb = new StringBuilder();
-
-        for (Program model : results) {
-            sb.append(model.getId().toString());
-            sb.append(',');
-        }
-
-        return (sb.toString());
-    }
-
+    /**
+     * Checks if OCAN (Ontario Common Assessment of Need) is enabled for this program.
+     * 
+     * @return true if OCAN is enabled, false otherwise
+     */
     public boolean isEnableOCAN() {
         return enableOCAN;
     }
 
+    /**
+     * Sets whether OCAN (Ontario Common Assessment of Need) is enabled for this program.
+     * 
+     * @param enableOCAN true if OCAN is enabled, false otherwise
+     */
     public void setEnableOCAN(boolean enableOCAN) {
         this.enableOCAN = enableOCAN;
     }
-
 
 }
