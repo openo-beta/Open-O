@@ -49,9 +49,9 @@ public class StudyLoginDaoImpl extends AbstractDaoImpl<StudyLogin> implements St
     @SuppressWarnings("unchecked")
     @Override
     public List<StudyLogin> find(String providerNo, Integer studyId) {
-        Query query = entityManager.createQuery("FROM StudyLogin s WHERE s.providerNo = :providerNo and s.studyNo = :studyNo and s.current1 = 1");
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("studyNo", studyId);
+        Query query = entityManager.createQuery("FROM StudyLogin s WHERE s.providerNo = ?1 and s.studyNo = ?2 and s.current1 = 1");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, studyId);
         return query.getResultList();
     }
 }
