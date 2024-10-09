@@ -41,8 +41,8 @@ public class CaisiFormDataDaoImpl extends AbstractDaoImpl<CaisiFormData> impleme
     }
 
     public List<CaisiFormData> findByInstanceId(Integer instanceId) {
-        Query query = entityManager.createQuery("SELECT f FROM CaisiFormData f where f.instanceId = ?");
-        query.setParameter(0, instanceId);
+        Query query = entityManager.createQuery("SELECT f FROM CaisiFormData f where f.instanceId = ?1");
+        query.setParameter(1, instanceId);
 
         @SuppressWarnings("unchecked")
         List<CaisiFormData> result = query.getResultList();
@@ -51,11 +51,11 @@ public class CaisiFormDataDaoImpl extends AbstractDaoImpl<CaisiFormData> impleme
     }
 
     public List<CaisiFormData> find(Integer instanceId, Integer pageNumber, Integer sectionId, Integer questionId) {
-        Query query = entityManager.createQuery("SELECT f FROM CaisiFormData f where f.instanceId = ? and f.pageNumber = ? and f.sectionId = ? and f.questionId = ?");
-        query.setParameter(0, instanceId);
-        query.setParameter(1, pageNumber);
-        query.setParameter(2, sectionId);
-        query.setParameter(3, questionId);
+        Query query = entityManager.createQuery("SELECT f FROM CaisiFormData f where f.instanceId = ?1 and f.pageNumber = ?2 and f.sectionId = ?3 and f.questionId = ?4");
+        query.setParameter(1, instanceId);
+        query.setParameter(2, pageNumber);
+        query.setParameter(3, sectionId);
+        query.setParameter(4, questionId);
 
         @SuppressWarnings("unchecked")
         List<CaisiFormData> result = query.getResultList();
