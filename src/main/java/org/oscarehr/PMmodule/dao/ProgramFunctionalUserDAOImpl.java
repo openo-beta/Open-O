@@ -52,8 +52,8 @@ public class ProgramFunctionalUserDAOImpl extends HibernateDaoSupport implements
 
     @Override
     public List<FunctionalUserType> getFunctionalUserTypes() {
-        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate()
-                .find("from FunctionalUserType");
+        String sSQL = "from FunctionalUserType";
+        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate().find(sSQL);
 
         if (log.isDebugEnabled()) {
             log.debug("getFunctionalUserTypes: # of results=" + results.size());
@@ -108,8 +108,8 @@ public class ProgramFunctionalUserDAOImpl extends HibernateDaoSupport implements
             throw new IllegalArgumentException();
         }
 
-        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate()
-                .find("from ProgramFunctionalUser pfu where pfu.ProgramId = ?", programId);
+        String sSQL = "from ProgramFunctionalUser pfu where pfu.ProgramId = ?0";
+        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate().find(sSQL, programId);
 
         if (log.isDebugEnabled()) {
             log.debug("getFunctionalUsers: programId=" + programId + ",# of results=" + results.size());
@@ -169,12 +169,11 @@ public class ProgramFunctionalUserDAOImpl extends HibernateDaoSupport implements
 
         Long result = null;
 
-        // Session session = getSession();
+        String query = "select pfu.ProgramId from ProgramFunctionalUser pfu where pfu.ProgramId = ?0 and pfu.UserTypeId = ?1";
         Session session = sessionFactory.getCurrentSession();
-        Query q = session.createQuery(
-                "select pfu.ProgramId from ProgramFunctionalUser pfu where pfu.ProgramId = ? and pfu.UserTypeId = ?");
-        q.setLong(0, programId.longValue());
-        q.setLong(1, userTypeId.longValue());
+        Query q = session.createQuery();
+        q.setLong(1, programId.longValue());
+        q.setLong(2, userTypeId.longValue());
         List results = new ArrayList();
         try {
             results = q.list();
