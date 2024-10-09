@@ -29,28 +29,50 @@ package org.oscarehr.PMmodule.dao;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.AccessType;
 import org.oscarehr.PMmodule.model.ProgramAccess;
+import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.QueueCache;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
-public class ProgramAccessDAOImpl extends HibernateDaoSupport implements ProgramAccessDAO {
+/**
+ * Implementation of ProgramAccessDAO interface for database access to ProgramAccess model objects.
+ */
+@Repository
+public class ProgramAccessDAOImpl extends AbstractDaoImpl<ProgramAccess> implements ProgramAccessDAO {
 
     private static Logger log = MiscUtils.getLogger();
 
     private static QueueCache<Long, List<ProgramAccess>> programAccessListByProgramIdCache = new QueueCache<Long, List<ProgramAccess>>(
             4, 100, DateUtils.MILLIS_PER_HOUR, null);
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Default constructor.
+     * Calls the parent constructor with ProgramAccess model class.
+     */
+    public ProgramAccessDAOImpl() {
+        super(ProgramAccess.class);
+    }
+
+    /**
+     * Retrieves the list of ProgramAccess objects associated with a specific program ID.
+     *
+     * @param programId the ID of the program
+     * @return a list of ProgramAccess objects associated with the specified program ID
+     */
     @Override
     public List<ProgramAccess> getAccessListByProgramId(Long programId) {
         List<ProgramAccess> results = programAccessListByProgramIdCache.get(programId);
         if (results == null) {
-            String q = "select pp from ProgramAccess pp where pp.ProgramId=?0";
-            results = (List<ProgramAccess>) getHibernateTemplate().find(q, new Object[]{programId});
+            String q = "select pp from ProgramAccess pp where pp.ProgramId=?1";
+            TypedQuery<ProgramAccess> query = entityManager.createQuery(q, ProgramAccess.class);
+            query.setParameter(1, programId);
+            results = query.getResultList();
             if (results != null)
                 programAccessListByProgramIdCache.put(programId, results);
         }
@@ -58,6 +80,13 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
         return results;
     }
 
+    /**
+     * Retrieves a ProgramAccess object by its ID.
+     *
+     * @param id the ID of the ProgramAccess object to retrieve
+     * @return the ProgramAccess object if found, null otherwise
+     * @throws IllegalArgumentException if the ID is null or less than or equal to 0
+     */
     @Override
     public ProgramAccess getProgramAccess(Long id) {
 
@@ -65,7 +94,7 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
             throw new IllegalArgumentException();
         }
 
-        ProgramAccess result = this.getHibernateTemplate().get(ProgramAccess.class, id);
+        ProgramAccess result = entityManager.find(ProgramAccess.class, id);
 
         if (log.isDebugEnabled()) {
             log.debug("getProgramAccess: id=" + id + ",found=" + (result != null));
@@ -73,6 +102,14 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
         return result;
     }
 
+    /**
+     * Retrieves a ProgramAccess object by program ID and access type ID.
+     *
+     * @param programId the ID of the program
+     * @param accessTypeId the ID of the access type
+     * @return the ProgramAccess object if found, null otherwise
+     * @throws IllegalArgumentException if either programId or accessTypeId is null or less than or equal to 0
+     */
     @Override
     public ProgramAccess getProgramAccess(Long programId, Long accessTypeId) {
         if (programId == null || programId.intValue() <= 0) {
@@ -83,10 +120,13 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
         }
         String accessTypeIdString = accessTypeId.toString();
         ProgramAccess result = null;
-        String sSQL = "from ProgramAccess pa where pa.ProgramId = ?0 and pa.AccessTypeId = ?1";
-        List results = this.getHibernateTemplate().find(sSQL, new Object[]{programId, accessTypeIdString});
-        if (results.size() > 0) {
-            result = (ProgramAccess) results.get(0);
+        String q = "from ProgramAccess pa where pa.ProgramId = ?1 and pa.AccessTypeId = ?2";
+        TypedQuery<ProgramAccess> query = entityManager.createQuery(q, ProgramAccess.class);
+        query.setParameter(1, programId);
+        query.setParameter(2, accessTypeIdString);
+        List<ProgramAccess> results = query.getResultList();
+        if (!results.isEmpty()) {
+            result = results.get(0);
         }
 
         if (log.isDebugEnabled()) {
@@ -97,20 +137,35 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
         return result;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Retrieves a list of ProgramAccess objects by program ID and access type name.
+     *
+     * @param programId the ID of the program
+     * @param accessType the name of the access type
+     * @return a list of ProgramAccess objects matching the specified program ID and access type name
+     */
     @Override
     public List<ProgramAccess> getProgramAccessListByType(Long programId, String accessType) {
-        String q = "from ProgramAccess pa where pa.ProgramId = ?0 and pa.AccessType.Name like ?1";
-        return (List<ProgramAccess>) this.getHibernateTemplate().find(q, new Object[]{programId, accessType});
+        String q = "from ProgramAccess pa where pa.ProgramId = ?1 and pa.AccessType.Name like ?2";
+        TypedQuery<ProgramAccess> query = entityManager.createQuery(q, ProgramAccess.class);
+        query.setParameter(1, programId);
+        query.setParameter(2, accessType);
+        return query.getResultList();
     }
 
+    /**
+     * Saves a ProgramAccess object.
+     *
+     * @param pa the ProgramAccess object to save
+     * @throws IllegalArgumentException if the ProgramAccess object is null
+     */
     @Override
     public void saveProgramAccess(ProgramAccess pa) {
         if (pa == null) {
             throw new IllegalArgumentException();
         }
 
-        getHibernateTemplate().saveOrUpdate(pa);
+        entityManager.merge(pa);
         programAccessListByProgramIdCache.remove(pa.getProgramId());
 
         if (log.isDebugEnabled()) {
@@ -118,15 +173,23 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
         }
     }
 
+    /**
+     * Deletes a ProgramAccess object by its ID.
+     *
+     * @param id the ID of the ProgramAccess object to delete
+     * @throws IllegalArgumentException if the ID is null or less than or equal to 0
+     */
     @Override
     public void deleteProgramAccess(Long id) {
         if (id == null || id.intValue() <= 0) {
             throw new IllegalArgumentException();
         }
 
-        ProgramAccess pa = getProgramAccess(id);
-        programAccessListByProgramIdCache.remove(pa.getProgramId());
-        this.getHibernateTemplate().delete(pa);
+        ProgramAccess pa = entityManager.find(ProgramAccess.class, id);
+        if (pa != null) {
+            programAccessListByProgramIdCache.remove(pa.getProgramId());
+            entityManager.remove(pa);
+        }
 
         if (log.isDebugEnabled()) {
             log.debug("deleteProgramAccess:" + id);
@@ -134,9 +197,14 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
 
     }
 
+    /**
+     * Retrieves a list of all AccessType objects.
+     *
+     * @return a list of AccessType objects
+     */
     @Override
     public List<AccessType> getAccessTypes() {
-        List<AccessType> results = (List<AccessType>) this.getHibernateTemplate().find("from AccessType at");
+        List<AccessType> results = entityManager.createQuery("from AccessType at", AccessType.class).getResultList();
 
         if (log.isDebugEnabled()) {
             log.debug("getAccessTypes: # of results=" + results.size());
@@ -144,13 +212,20 @@ public class ProgramAccessDAOImpl extends HibernateDaoSupport implements Program
         return results;
     }
 
+    /**
+     * Retrieves an AccessType object by its ID.
+     *
+     * @param id the ID of the AccessType object to retrieve
+     * @return the AccessType object if found, null otherwise
+     * @throws IllegalArgumentException if the ID is null or less than or equal to 0
+     */
     @Override
     public AccessType getAccessType(Long id) {
         if (id == null || id.intValue() <= 0) {
             throw new IllegalArgumentException();
         }
 
-        AccessType result = this.getHibernateTemplate().get(AccessType.class, id);
+        AccessType result = entityManager.find(AccessType.class, id);
 
         if (log.isDebugEnabled()) {
             log.debug("getAccessType: id=" + id + ",found=" + (result != null));
