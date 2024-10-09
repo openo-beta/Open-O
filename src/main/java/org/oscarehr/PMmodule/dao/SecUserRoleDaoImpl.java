@@ -47,9 +47,9 @@ public class SecUserRoleDaoImpl extends HibernateDaoSupport implements SecUserRo
             throw new IllegalArgumentException();
         }
 
+        String sSQL = "from SecUserRole s where s.ProviderNo = ?0";
         @SuppressWarnings("unchecked")
-        List<SecUserRole> results = (List<SecUserRole>) getHibernateTemplate()
-                .find("from SecUserRole s where s.ProviderNo = ?", providerNo);
+        List<SecUserRole> results = (List<SecUserRole>) getHibernateTemplate().find(sSQL, providerNo);
 
         if (log.isDebugEnabled()) {
             log.debug("getUserRoles: providerNo=" + providerNo + ",# of results=" + results.size());
@@ -60,18 +60,18 @@ public class SecUserRoleDaoImpl extends HibernateDaoSupport implements SecUserRo
 
     @Override
     public List<SecUserRole> getSecUserRolesByRoleName(String roleName) {
+        String sSQL = "from SecUserRole s where s.RoleName = ?0";
         @SuppressWarnings("unchecked")
-        List<SecUserRole> results = (List<SecUserRole>) getHibernateTemplate()
-                .find("from SecUserRole s where s.RoleName = ?", roleName);
+        List<SecUserRole> results = (List<SecUserRole>) getHibernateTemplate().find(sSQL, roleName);
 
         return results;
     }
 
     @Override
     public List<SecUserRole> findByRoleNameAndProviderNo(String roleName, String providerNo) {
+        String sSQL = "from SecUserRole s where s.RoleName = ?0 and s.ProviderNo=?1";
         @SuppressWarnings("unchecked")
-        List<SecUserRole> results = (List<SecUserRole>) getHibernateTemplate().find(
-                "from SecUserRole s where s.RoleName = ? and s.ProviderNo=?", new Object[]{roleName, providerNo});
+        List<SecUserRole> results = (List<SecUserRole>) getHibernateTemplate().find(sSQL, new Object[]{roleName, providerNo});
 
         return results;
     }
@@ -83,9 +83,9 @@ public class SecUserRoleDaoImpl extends HibernateDaoSupport implements SecUserRo
         }
 
         boolean result = false;
+        String sSQL = "from SecUserRole s where s.ProviderNo = ?0 and s.RoleName = 'admin'";
         @SuppressWarnings("unchecked")
-        List<SecUserRole> results = (List<SecUserRole>) this.getHibernateTemplate()
-                .find("from SecUserRole s where s.ProviderNo = ? and s.RoleName = 'admin'", providerNo);
+        List<SecUserRole> results = (List<SecUserRole>) this.getHibernateTemplate().find(sSQL, providerNo);
         if (!results.isEmpty()) {
             result = true;
         }
@@ -110,9 +110,9 @@ public class SecUserRoleDaoImpl extends HibernateDaoSupport implements SecUserRo
 
     @Override
     public List<String> getRecordsAddedAndUpdatedSinceTime(Date date) {
+        String sSQL = "select p.ProviderNo From SecUserRole p WHERE p.lastUpdateDate > ?0";
         @SuppressWarnings("unchecked")
-        List<String> records = (List<String>) getHibernateTemplate()
-                .find("select p.ProviderNo From SecUserRole p WHERE p.lastUpdateDate > ?", date);
+        List<String> records = (List<String>) getHibernateTemplate().find(sSQL, date);
 
         return records;
     }
