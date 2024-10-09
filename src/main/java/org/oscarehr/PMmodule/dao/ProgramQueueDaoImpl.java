@@ -59,7 +59,7 @@ public class ProgramQueueDaoImpl extends HibernateDaoSupport implements ProgramQ
             throw new IllegalArgumentException();
         }
 
-        String queryStr = " FROM ProgramQueue q WHERE q.ProgramId=? ORDER BY  q.Id  ";
+        String queryStr = " FROM ProgramQueue q WHERE q.ProgramId=?0 ORDER BY  q.Id  ";
         List results = getHibernateTemplate().find(queryStr, programId);
 
         if (log.isDebugEnabled()) {
@@ -76,7 +76,7 @@ public class ProgramQueueDaoImpl extends HibernateDaoSupport implements ProgramQ
         }
 
         List results = this.getHibernateTemplate().find(
-                "from ProgramQueue pq where pq.ProgramId = ? and pq.Status = 'active' order by pq.ReferralDate",
+                "from ProgramQueue pq where pq.ProgramId = ?0 and pq.Status = 'active' order by pq.ReferralDate",
                 Long.valueOf(programId));
 
         if (log.isDebugEnabled()) {
@@ -110,9 +110,9 @@ public class ProgramQueueDaoImpl extends HibernateDaoSupport implements ProgramQ
         }
 
         ProgramQueue result = null;
-        List results = this.getHibernateTemplate().find(
-                "from ProgramQueue pq where pq.ProgramId = ? and pq.ClientId = ?",
-                new Object[]{Long.valueOf(programId), Long.valueOf(clientId)});
+        String sSQL = "from ProgramQueue pq where pq.ProgramId = ?0 and pq.ClientId = ?1";
+        Object[] params = new Object[]{Long.valueOf(programId), Long.valueOf(clientId)};
+        List results = this.getHibernateTemplate().find(sSQL,params);
 
         if (!results.isEmpty()) {
             result = (ProgramQueue) results.get(0);
@@ -136,9 +136,9 @@ public class ProgramQueueDaoImpl extends HibernateDaoSupport implements ProgramQ
 
         ProgramQueue result = null;
 
-        List results = this.getHibernateTemplate().find(
-                "from ProgramQueue pq where pq.ProgramId = ? and pq.ClientId = ? and pq.Status='active'",
-                new Object[]{programId, demographicNo});
+        String sSQL = "from ProgramQueue pq where pq.ProgramId = ?0 and pq.ClientId = ?1 and pq.Status='active'";
+        Object[] params = new Object[]{programId, demographicNo};
+        List results = this.getHibernateTemplate().find(sSQL, params);
         if (!results.isEmpty()) {
             result = (ProgramQueue) results.get(0);
         }
