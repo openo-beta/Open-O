@@ -51,15 +51,15 @@ public class ServiceClientDaoImpl extends AbstractDaoImpl<ServiceClient> impleme
 
     @Override
     public ServiceClient findByName(String name) {
-        Query query = entityManager.createQuery("SELECT x FROM ServiceClient x WHERE x.name=?");
-        query.setParameter(0, name);
+        Query query = entityManager.createQuery("SELECT x FROM ServiceClient x WHERE x.name=?1");
+        query.setParameter(1, name);
         return this.getSingleResultOrNull(query);
     }
 
     @Override
     public ServiceClient findByKey(String key) {
-        Query query = entityManager.createQuery("SELECT x FROM ServiceClient x WHERE x.key=?");
-        query.setParameter(0, key);
+        Query query = entityManager.createQuery("SELECT x FROM ServiceClient x WHERE x.key=?1");
+        query.setParameter(1, key);
         return this.getSingleResultOrNull(query);
     }
 
