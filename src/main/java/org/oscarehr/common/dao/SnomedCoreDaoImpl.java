@@ -44,8 +44,8 @@ public class SnomedCoreDaoImpl extends AbstractCodeSystemDaoImpl<SnomedCore> imp
 
     @Override
     public List<SnomedCore> getSnomedCoreCode(String snomedCoreCode) {
-        Query query = entityManager.createQuery("select i from SnomedCore i where i.snomedCore=?");
-        query.setParameter(0, snomedCoreCode);
+        Query query = entityManager.createQuery("select i from SnomedCore i where i.snomedCore=?1");
+        query.setParameter(1, snomedCoreCode);
 
         @SuppressWarnings("unchecked")
         List<SnomedCore> results = query.getResultList();
@@ -55,9 +55,9 @@ public class SnomedCoreDaoImpl extends AbstractCodeSystemDaoImpl<SnomedCore> imp
 
     @Override
     public List<SnomedCore> getSnomedCore(String query) {
-        Query q = entityManager.createQuery("select i from SnomedCore i where i.snomedCore like ? or i.description like ? order by i.description");
-        q.setParameter(0, "%" + query + "%");
+        Query q = entityManager.createQuery("select i from SnomedCore i where i.snomedCore like ?1 or i.description like ?2 order by i.description");
         q.setParameter(1, "%" + query + "%");
+        q.setParameter(2, "%" + query + "%");
 
         @SuppressWarnings("unchecked")
         List<SnomedCore> results = q.getResultList();
@@ -80,8 +80,8 @@ public class SnomedCoreDaoImpl extends AbstractCodeSystemDaoImpl<SnomedCore> imp
 
     @Override
     public AbstractCodeSystemModel<?> findByCodingSystem(String codingSystem) {
-        Query query = entityManager.createQuery("FROM SnomedCore s WHERE s.snomedCore like :cs");
-        query.setParameter("cs", codingSystem);
+        Query query = entityManager.createQuery("FROM SnomedCore s WHERE s.snomedCore like ?1");
+        query.setParameter(1, codingSystem);
         query.setMaxResults(1);
         return getSingleResultOrNull(query);
     }
