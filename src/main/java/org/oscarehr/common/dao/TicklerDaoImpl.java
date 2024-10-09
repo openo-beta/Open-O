@@ -61,9 +61,9 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
         if (demographicNos.isEmpty())
             demographicNos.add(0);
 
-        Query query = entityManager.createQuery("select t from Tickler t where t.demographicNo in (:demographicNos) and t.status = 'A' and t.message like :msg");
-        query.setParameter("demographicNos", demographicNos);
-        query.setParameter("msg", "%" + remString + "%");
+        Query query = entityManager.createQuery("select t from Tickler t where t.demographicNo in (?1) and t.status = 'A' and t.message like ?2");
+        query.setParameter(1, demographicNos);
+        query.setParameter(2, "%" + remString + "%");
 
         @SuppressWarnings("unchecked")
         List<Tickler> results = query.getResultList();
@@ -263,6 +263,7 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
 //		String tickler_date_order = filter.getSort_order();
 
         String query = selectQuery + " FROM Tickler t WHERE 1=1 ";
+        int paramIndex = 1;
         boolean includeMRPClause = true;
         boolean includeProviderClause = true;
         boolean includeAssigneeClause = true;
@@ -311,16 +312,17 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
         }
 
         if (includeMRPClause) {
-            query = selectQuery + " FROM Tickler t, Demographic d where d.DemographicNo = t.demographicNo and d.ProviderNo = '" + filter.getMrp() + "' ";
+            query = selectQuery + " FROM Tickler t, Demographic d where d.DemographicNo = t.demographicNo and d.ProviderNo = ?" + paramIndex++;
+            paramList.add(filter.getMrp());
         }
 
         if (includeServiceStartDateClause) {
-            query = query + " and t.serviceDate >= ?";
+            query = query + " and t.serviceDate >= ?" + paramIndex++;
             paramList.add(filter.getStartDate());
         }
 
         if (includeServiceEndDateClause) {
-            query = query + " and t.serviceDate <= ?";
+            query = query + " and t.serviceDate <= ?" + paramIndex++;
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(filter.getEndDate());
@@ -341,7 +343,7 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
                 if (x > 0) {
                     query += ",";
                 }
-                query += "?";
+                query += "?" + paramIndex++;
                 paramList.add(providers[x].getProviderNo());
             }
             query += ")";
@@ -356,41 +358,39 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
                 if (x > 0) {
                     query += ",";
                 }
-                query += "?";
+                query += "?" + paramIndex++;
                 paramList.add(providers[x].getProviderNo());
             }
             query += ")";
         }
 
         if (includeProgramClause) {
-            query = query + " and t.programId = ?";
+            query = query + " and t.programId = ?" + paramIndex++;
             paramList.add(Integer.valueOf(filter.getProgramId()));
         }
         if (includeStatusClause) {
-            query = query + " and t.status = ?";
+            query = query + " and t.status = ?" + paramIndex++;
             paramList.add(convertStatus(filter.getStatus()));
         }
 
         if (includePriorityClause) {
-            query = query + " and t.priority = ?";
+            query = query + " and t.priority = ?" + paramIndex++;
             paramList.add(convertPriority(filter.getPriority()));
         }
 
         if (includeClientClause) {
-            query = query + " and t.demographicNo = ?";
+            query = query + " and t.demographicNo = ?" + paramIndex++;
             paramList.add(Integer.parseInt(filter.getClient()));
         }
         if (includeDemographicClause) {
-            query = query + " and t.demographicNo = ?";
+            query = query + " and t.demographicNo = ?" + paramIndex++;
             paramList.add(Integer.parseInt(filter.getDemographicNo()));
         }
         if (includeMessage) {
-            query = query + " and t.message = ? ";
+            query = query + " and t.message = ? " + paramIndex++;
             paramList.add(filter.getMessage());
         }
 
-//		query = query + " order by t.serviceDate " + tickler_date_order;
-//
         return query;
     }
 
