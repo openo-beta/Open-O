@@ -142,10 +142,10 @@ public class SupServiceCodeAssocDAO extends AbstractDaoImpl<BillingTrayFee> {
         Object queryParam = null;
 
         if (type == SupServiceCodeAssocDAO.VALUE_BY_CODE) {
-            queryString = "FROM BillingService bs WHERE bs.serviceCode = :param";
+            queryString = "FROM BillingService bs WHERE bs.serviceCode = ?1";
             queryParam = code;
         } else if (type == SupServiceCodeAssocDAO.VALUE_BY_ID) {
-            queryString = "FROM BillingService bs WHERE bs.billingserviceNo = :param";
+            queryString = "FROM BillingService bs WHERE bs.billingserviceNo = ?1";
             queryParam = ConversionUtils.fromIntString(code);
         } else {
             throw new IllegalArgumentException("Unsupported type" + type);
