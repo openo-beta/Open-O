@@ -49,8 +49,8 @@ public class SystemPreferencesDaoImpl extends AbstractDaoImpl<SystemPreferences>
      * DEPRECATED: use enumerator
      */
     private SystemPreferences findPreferenceByName(String name) {
-        Query query = entityManager.createQuery("FROM SystemPreferences sp WHERE sp.name = :name");
-        query.setParameter("name", name);
+        Query query = entityManager.createQuery("FROM SystemPreferences sp WHERE sp.name = ?1");
+        query.setParameter(1, name);
 
         List<SystemPreferences> results = query.getResultList();
         if (!results.isEmpty()) {
@@ -61,8 +61,8 @@ public class SystemPreferencesDaoImpl extends AbstractDaoImpl<SystemPreferences>
     }
 
     private List<SystemPreferences> findPreferencesByNames(List<String> names) {
-        Query query = entityManager.createQuery("FROM SystemPreferences sp WHERE sp.name IN (:names)");
-        query.setParameter("names", names);
+        Query query = entityManager.createQuery("FROM SystemPreferences sp WHERE sp.name IN (?1)");
+        query.setParameter(1, names);
 
         List<SystemPreferences> results = query.getResultList();
         return results;
