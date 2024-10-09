@@ -79,8 +79,8 @@ public class AppointmentSearchDaoImpl extends AbstractDaoImpl<AppointmentSearch>
         }
 
         Query q = entityManager.createQuery(
-                "select a from AppointmentSearch a where a.providerNo = ? and a.active = true order by a.updateDate desc");
-        q.setParameter(0, providerNo);
+                "select a from AppointmentSearch a where a.providerNo = ?1 and a.active = true order by a.updateDate desc");
+        q.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<AppointmentSearch> results = q.getResultList();
