@@ -45,7 +45,8 @@ public class ProgramSignatureDaoImpl extends HibernateDaoSupport implements Prog
         if (programId == null || programId.intValue() <= 0) {
             return null;
         }
-        List ps = getHibernateTemplate().find("FROM ProgramSignature ps where ps.programId = ? ORDER BY ps.updateDate ASC", programId);
+        String sSQL = "FROM ProgramSignature ps where ps.programId = ?0 ORDER BY ps.updateDate ASC";
+        List ps = getHibernateTemplate().find(sSQL, programId);
 
         if (!ps.isEmpty()) {
             programSignature = (ProgramSignature) ps.get(0);
@@ -63,7 +64,8 @@ public class ProgramSignatureDaoImpl extends HibernateDaoSupport implements Prog
             return null;
         }
 
-        List rs = getHibernateTemplate().find("FROM ProgramSignature ps WHERE ps.programId = ? ORDER BY ps.updateDate ASC", programId);
+        String sSQL = "FROM ProgramSignature ps WHERE ps.programId = ?0 ORDER BY ps.updateDate ASC";
+        List rs = getHibernateTemplate().find(sSQL, programId);
 
         if (log.isDebugEnabled()) {
             log.debug("getProgramSignatures: # of programs: " + rs.size());
