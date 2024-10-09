@@ -66,8 +66,8 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
             return null;
         }
 
-        Query q = entityManager.createQuery("select a from AppointmentStatus a where a.status like ?");
-        q.setParameter(0, status.substring(0, 1) + "%");
+        Query q = entityManager.createQuery("select a from AppointmentStatus a where a.status like ?1");
+        q.setParameter(1, status.substring(0, 1) + "%");
 
         @SuppressWarnings("unchecked")
         List<AppointmentStatus> results = q.getResultList();
@@ -113,7 +113,7 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
             apptStatus = allStatus.get(i);
             if (apptStatus.getActive() == 1)
                 continue;
-            sql = "select count(*) as total from appointment a where a.status like ? ";
+            sql = "select count(*) as total from appointment a where a.status like ?1 ";
             // sql = sql + "collate latin1_general_cs";
 
             Query q = entityManager.createNativeQuery(sql);
