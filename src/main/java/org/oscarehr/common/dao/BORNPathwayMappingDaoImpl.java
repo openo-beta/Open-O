@@ -52,7 +52,7 @@ public class BORNPathwayMappingDaoImpl extends AbstractDaoImpl<BORNPathwayMappin
 
 
     public BORNPathwayMapping findRecord(String bornPathway, int serviceId) {
-        Query query = entityManager.createQuery("SELECT x FROM " + modelClass.getSimpleName() + " x WHERE x.bornPathway = ? and x.serviceId = ?");
+        Query query = entityManager.createQuery("SELECT x FROM " + modelClass.getSimpleName() + " x WHERE x.bornPathway = ?1 and x.serviceId = ?2");
         query.setParameter(1, bornPathway);
         query.setParameter(2, serviceId);
 
@@ -61,7 +61,7 @@ public class BORNPathwayMappingDaoImpl extends AbstractDaoImpl<BORNPathwayMappin
 
     @SuppressWarnings("unchecked")
     public List<BORNPathwayMapping> findByBornPathway(String bornPathway) {
-        Query query = entityManager.createQuery("SELECT x FROM " + modelClass.getSimpleName() + " x WHERE x.bornPathway = ?");
+        Query query = entityManager.createQuery("SELECT x FROM " + modelClass.getSimpleName() + " x WHERE x.bornPathway = ?1");
         query.setParameter(1, bornPathway);
 
         List<BORNPathwayMapping> results = query.getResultList();
