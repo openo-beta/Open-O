@@ -50,7 +50,8 @@ public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements P
     }
 
     public List<ProgramClientStatus> getProgramClientStatuses(Integer programId) {
-        return (List<ProgramClientStatus>) this.getHibernateTemplate().find("from ProgramClientStatus pcs where pcs.programId=?", programId);
+        String sSQL = "from ProgramClientStatus pcs where pcs.programId=?0";
+        return (List<ProgramClientStatus>) this.getHibernateTemplate().find(sSQL, programId);
     }
 
     public void saveProgramClientStatus(ProgramClientStatus status) {
@@ -85,9 +86,9 @@ public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements P
         Session session = sessionFactory.getCurrentSession();
         List teams = new ArrayList();
         try {
-            Query query = session.createQuery("select pt.id from ProgramClientStatus pt where pt.programId = ? and pt.name = ?");
-            query.setLong(0, programId.longValue());
-            query.setString(1, statusName);
+            Query query = session.createQuery("select pt.id from ProgramClientStatus pt where pt.programId = ?1 and pt.name = ?2");
+            query.setLong(1, programId.longValue());
+            query.setString(2, statusName);
 
             teams = query.list();
 
@@ -110,7 +111,8 @@ public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements P
             throw new IllegalArgumentException();
         }
 
-        List<Admission> results = (List<Admission>) this.getHibernateTemplate().find("from Admission a where a.ProgramId = ? and a.TeamId = ? and a.AdmissionStatus='current'", new Object[]{programId, statusId});
+        String sSQL = "from Admission a where a.ProgramId = ?0 and a.TeamId = ?1 and a.AdmissionStatus='current'";
+        List<Admission> results = (List<Admission>) this.getHibernateTemplate().find(sSQL, new Object[]{programId, statusId});
 
         if (log.isDebugEnabled()) {
             log.debug("getAdmissionsInTeam: programId= " + programId + ",statusId=" + statusId + ",# results=" + results.size());
