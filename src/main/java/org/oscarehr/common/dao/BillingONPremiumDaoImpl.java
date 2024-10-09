@@ -59,11 +59,11 @@ public class BillingONPremiumDaoImpl extends AbstractDaoImpl<BillingONPremium> i
     }
 
     public List<BillingONPremium> getActiveRAPremiumsByPayDate(Date startDate, Date endDate, Locale locale) {
-        String sql = "select bPrem from BillingONPremium bPrem where payDate >= ? and payDate < ? and status=?";
+        String sql = "select bPrem from BillingONPremium bPrem where payDate >= ?1 and payDate < ?2 and status=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, startDate);
-        query.setParameter(1, endDate);
-        query.setParameter(2, true);
+        query.setParameter(1, startDate);
+        query.setParameter(2, endDate);
+        query.setParameter(3, true);
 
         @SuppressWarnings("unchecked")
         List<BillingONPremium> results = query.getResultList();
@@ -71,12 +71,12 @@ public class BillingONPremiumDaoImpl extends AbstractDaoImpl<BillingONPremium> i
     }
 
     public List<BillingONPremium> getActiveRAPremiumsByProvider(Provider p, Date startDate, Date endDate, Locale locale) {
-        String sql = "select bPrem from BillingONPremium bPrem where payDate >= ? and payDate < ? and status=? and providerNo=?";
+        String sql = "select bPrem from BillingONPremium bPrem where payDate >= ?1 and payDate < ?2 and status=?3 and providerNo=?4";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, startDate);
-        query.setParameter(1, endDate);
-        query.setParameter(2, true);
-        query.setParameter(3, p.getProviderNo());
+        query.setParameter(1, startDate);
+        query.setParameter(2, endDate);
+        query.setParameter(3, true);
+        query.setParameter(4, p.getProviderNo());
 
         @SuppressWarnings("unchecked")
         List<BillingONPremium> results = query.getResultList();
@@ -84,9 +84,9 @@ public class BillingONPremiumDaoImpl extends AbstractDaoImpl<BillingONPremium> i
     }
 
     public List<BillingONPremium> getRAPremiumsByRaHeaderNo(Integer raHeaderNo) {
-        String sql = "select bPrem from BillingONPremium bPrem where raHeaderNo=?";
+        String sql = "select bPrem from BillingONPremium bPrem where raHeaderNo=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, raHeaderNo);
+        query.setParameter(1, raHeaderNo);
 
         @SuppressWarnings("unchecked")
         List<BillingONPremium> results = query.getResultList();
