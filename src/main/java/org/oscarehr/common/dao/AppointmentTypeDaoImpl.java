@@ -54,7 +54,7 @@ public class AppointmentTypeDaoImpl extends AbstractDaoImpl<AppointmentType> imp
 
     @Override
     public AppointmentType findByAppointmentTypeByName(String name) {
-        Query query = entityManager.createQuery("from AppointmentType atype where atype.name = :_name").setParameter("_name", name);
+        Query query = entityManager.createQuery("from AppointmentType atype where atype.name = ?1").setParameter(1, name);
         return this.getSingleResultOrNull(query);
     }
 
