@@ -81,7 +81,7 @@ public class CaseManagementTmpSaveDaoImpl extends AbstractDaoImpl<CaseManagement
 
     @Override
     public boolean noteHasContent(Integer id) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM casemgmt_tmpsave x WHERE x.id = ? and x.note  NOT REGEXP ? order by x.update_date DESC", CaseManagementTmpSave.class);
+        Query query = entityManager.createNativeQuery("SELECT * FROM casemgmt_tmpsave x WHERE x.id = ?1 and x.note  NOT REGEXP ?2 order by x.update_date DESC", CaseManagementTmpSave.class);
 
         query.setParameter(1, id);
         query.setParameter(2, NOTE_TAG_REGEXP);
