@@ -45,9 +45,9 @@ public class SecurityTokenDaoImpl extends AbstractDaoImpl<SecurityToken> impleme
 
     @Override
     public SecurityToken getByTokenAndExpiry(String token, Date expiry) {
-        Query query = entityManager.createQuery("select t from SecurityToken t where t.token=? and t.expiry >= ?");
-        query.setParameter(0, token);
-        query.setParameter(1, expiry);
+        Query query = entityManager.createQuery("select t from SecurityToken t where t.token=?1 and t.expiry >= ?2 ");
+        query.setParameter(1, token);
+        query.setParameter(2, expiry);
 
         @SuppressWarnings("unchecked")
         List<SecurityToken> results = query.getResultList();

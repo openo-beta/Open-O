@@ -44,11 +44,11 @@ public class SecObjPrivilegeDaoImpl extends AbstractDaoImpl<SecObjPrivilege> imp
 
     @Override
     public List<SecObjPrivilege> findByRoleUserGroupAndObjectName(String roleUserGroup, String objectName) {
-        String sql = "select s FROM SecObjPrivilege s WHERE s.id.roleUserGroup = :rug AND  s.id.objectName = :obj";
+        String sql = "select s FROM SecObjPrivilege s WHERE s.id.roleUserGroup = ?1 AND  s.id.objectName = ?2";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("obj", objectName);
-        query.setParameter("rug", roleUserGroup);
+        query.setParameter(1, objectName);
+        query.setParameter(2, roleUserGroup);
 
 
         List<SecObjPrivilege> result = query.getResultList();
@@ -58,10 +58,10 @@ public class SecObjPrivilegeDaoImpl extends AbstractDaoImpl<SecObjPrivilege> imp
 
     @Override
     public List<SecObjPrivilege> findByObjectNames(Collection<String> objectNames) {
-        String sql = "select s FROM SecObjPrivilege s WHERE s.id.objectName IN (:obj) order by s.priority desc";
+        String sql = "select s FROM SecObjPrivilege s WHERE s.id.objectName IN (?1) order by s.priority desc";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("obj", objectNames);
+        query.setParameter(1, objectNames);
 
 
         List<SecObjPrivilege> result = query.getResultList();
@@ -71,10 +71,10 @@ public class SecObjPrivilegeDaoImpl extends AbstractDaoImpl<SecObjPrivilege> imp
 
     @Override
     public List<SecObjPrivilege> findByRoleUserGroup(String roleUserGroup) {
-        String sql = "select s FROM SecObjPrivilege s WHERE s.id.roleUserGroup like ? order by s.id.roleUserGroup, s.id.objectName";
+        String sql = "select s FROM SecObjPrivilege s WHERE s.id.roleUserGroup like ?1 order by s.id.roleUserGroup, s.id.objectName";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, roleUserGroup);
+        query.setParameter(1, roleUserGroup);
 
         List<SecObjPrivilege> result = query.getResultList();
 
@@ -83,10 +83,10 @@ public class SecObjPrivilegeDaoImpl extends AbstractDaoImpl<SecObjPrivilege> imp
 
     @Override
     public List<SecObjPrivilege> findByObjectName(String objectName) {
-        String sql = "select s FROM SecObjPrivilege s WHERE s.id.objectName like ? order by s.id.objectName, s.id.roleUserGroup";
+        String sql = "select s FROM SecObjPrivilege s WHERE s.id.objectName like ?1 order by s.id.objectName, s.id.roleUserGroup";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, objectName);
+        query.setParameter(1, objectName);
 
         List<SecObjPrivilege> result = query.getResultList();
 
@@ -95,9 +95,9 @@ public class SecObjPrivilegeDaoImpl extends AbstractDaoImpl<SecObjPrivilege> imp
 
     @Override
     public int countObjectsByName(String objName) {
-        String sql = "SELECT COUNT(*) FROM SecObjPrivilege p WHERE p.id.objectName = :objName";
+        String sql = "SELECT COUNT(*) FROM SecObjPrivilege p WHERE p.id.objectName = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("objName", objName);
+        query.setParameter(1, objName);
         List<Object> resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return 0;
@@ -109,13 +109,13 @@ public class SecObjPrivilegeDaoImpl extends AbstractDaoImpl<SecObjPrivilege> imp
     public List<Object[]> findByFormNamePrivilegeAndProviderNo(String formName, String privilege, String providerNo) {
         String sql = "FROM SecObjPrivilege p, SecUserRole r " +
                 "WHERE p.id.roleUserGroup = r.RoleName " +
-                "AND p.id.objectName = :formName " +
-                "AND p.privilege = :privilege " +
-                "AND r.ProviderNo = :providerNo";
+                "AND p.id.objectName = ?1 " +
+                "AND p.privilege = ?2 " +
+                "AND r.ProviderNo = ?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("formName", formName);
-        query.setParameter("privilege", privilege);
-        query.setParameter("providerNo", providerNo);
+        query.setParameter(1, formName);
+        query.setParameter(2, privilege);
+        query.setParameter(3, providerNo);
         return query.getResultList();
     }
 }

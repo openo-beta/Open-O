@@ -74,9 +74,9 @@ public class SecRoleDaoImpl extends AbstractDaoImpl<SecRole> implements SecRoleD
 
     @Override
     public SecRole findByName(String name) {
-        Query q = entityManager.createQuery("select x from SecRole x where x.name=?");
+        Query q = entityManager.createQuery("select x from SecRole x where x.name=?1");
 
-        q.setParameter(0, name);
+        q.setParameter(1, name);
 
         return this.getSingleResultOrNull(q);
     }

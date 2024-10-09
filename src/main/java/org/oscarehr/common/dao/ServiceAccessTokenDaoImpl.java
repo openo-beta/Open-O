@@ -67,8 +67,8 @@ public class ServiceAccessTokenDaoImpl extends AbstractDaoImpl<ServiceAccessToke
 
     @Override
     public ServiceAccessToken findByTokenId(String token) {
-        Query query = entityManager.createQuery("SELECT x FROM ServiceAccessToken x WHERE x.tokenId=?");
-        query.setParameter(0, token);
+        Query query = entityManager.createQuery("SELECT x FROM ServiceAccessToken x WHERE x.tokenId=?1");
+        query.setParameter(1, token);
 
         return this.getSingleResultOrNull(query);
     }

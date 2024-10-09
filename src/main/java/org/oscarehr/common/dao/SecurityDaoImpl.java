@@ -50,8 +50,8 @@ public class SecurityDaoImpl extends AbstractDaoImpl<Security> implements Securi
 
     @Override
     public List<Security> findByProviderNo(String providerNo) {
-        Query query = entityManager.createQuery("select x from Security x where x.providerNo=?");
-        query.setParameter(0, providerNo);
+        Query query = entityManager.createQuery("select x from Security x where x.providerNo=?1");
+        query.setParameter(1, providerNo);
         @SuppressWarnings("unchecked")
         List<Security> secList = query.getResultList();
         return secList;
@@ -59,8 +59,8 @@ public class SecurityDaoImpl extends AbstractDaoImpl<Security> implements Securi
 
     @Override
     public List<Security> findByLikeProviderNo(String providerNo) {
-        Query query = entityManager.createQuery("select x from Security x where x.providerNo like ?");
-        query.setParameter(0, providerNo);
+        Query query = entityManager.createQuery("select x from Security x where x.providerNo like ?1");
+        query.setParameter(1, providerNo);
         @SuppressWarnings("unchecked")
         List<Security> secList = query.getResultList();
         return secList;
@@ -68,8 +68,8 @@ public class SecurityDaoImpl extends AbstractDaoImpl<Security> implements Securi
 
     @Override
     public List<Security> findByUserName(String userName) {
-        Query query = entityManager.createQuery("select x from Security x where x.userName=?");
-        query.setParameter(0, userName);
+        Query query = entityManager.createQuery("select x from Security x where x.userName=?1");
+        query.setParameter(1, userName);
         @SuppressWarnings("unchecked")
         List<Security> secList = query.getResultList();
         return secList;
@@ -77,8 +77,8 @@ public class SecurityDaoImpl extends AbstractDaoImpl<Security> implements Securi
 
     @Override
     public List<Security> findByOneIdKey(String ssoKey) {
-        Query query = entityManager.createQuery("SELECT x FROM Security x WHERE x.oneIdKey = ?");
-        query.setParameter(0, ssoKey);
+        Query query = entityManager.createQuery("SELECT x FROM Security x WHERE x.oneIdKey = ?1");
+        query.setParameter(1, ssoKey);
         @SuppressWarnings("unchecked")
         List<Security> securityList = query.getResultList();
         return securityList;
@@ -91,8 +91,8 @@ public class SecurityDaoImpl extends AbstractDaoImpl<Security> implements Securi
 
     @Override
     public List<Security> findByLikeUserName(String userName) {
-        Query query = entityManager.createQuery("select x from Security x where x.userName like ?");
-        query.setParameter(0, userName);
+        Query query = entityManager.createQuery("select x from Security x where x.userName like ?1");
+        query.setParameter(1, userName);
         @SuppressWarnings("unchecked")
         List<Security> secList = query.getResultList();
         return secList;
@@ -116,7 +116,7 @@ public class SecurityDaoImpl extends AbstractDaoImpl<Security> implements Securi
     @Override
     public List<Security> findByProviderSite(String providerNo) {
         String queryStr = "select * from security s inner join providersite p on s.provider_no = p.provider_no " +
-                "where p.site_id in(select site_id from providersite where provider_no=?)";
+                "where p.site_id in(select site_id from providersite where provider_no=?1)";
         Query query = entityManager.createNativeQuery(queryStr, modelClass);
         query.setParameter(1, providerNo);
         @SuppressWarnings("unchecked")
