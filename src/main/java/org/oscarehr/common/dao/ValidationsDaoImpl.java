@@ -83,8 +83,8 @@ public class ValidationsDaoImpl extends AbstractDaoImpl<Validations> implements 
 
     @SuppressWarnings("unchecked")
     public List<Validations> findByName(String name) {
-        Query query = createQuery("v", "v.name = :name");
-        query.setParameter("name", name);
+        Query query = createQuery("v", "v.name = ?1");
+        query.setParameter(1, name);
         return query.getResultList();
     }
 
@@ -92,15 +92,15 @@ public class ValidationsDaoImpl extends AbstractDaoImpl<Validations> implements 
     public List<Object[]> findValidationsBy(Integer demo, String type, Integer validationId) {
         String sql = "FROM Validations v, Measurement m " +
                 "WHERE " +
-                "m.demographicId = :demoNo " +
-                "AND m.type = :type " +
-                "AND v.id = :validation " +
+                "m.demographicId = ?1 " +
+                "AND m.type = ?2 " +
+                "AND v.id = ?3 " +
                 "GROUP BY m.id " +
                 "ORDER BY m.dateObserved DESC, m.createDate DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demoNo", demo);
-        query.setParameter("type", type);
-        query.setParameter("validation", validationId);
+        query.setParameter(1, demo);
+        query.setParameter(2, type);
+        query.setParameter(3, validationId);
         return query.getResultList();
 
     }
