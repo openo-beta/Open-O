@@ -62,9 +62,9 @@ public class ConsultationServiceDaoImpl extends AbstractDaoImpl<ConsultationServ
     }
 
     public List<ConsultationServices> findActive() {
-        String sql = "select x from ConsultationServices x where x.active=? order by x.serviceDesc";
+        String sql = "select x from ConsultationServices x where x.active=?1 order by x.serviceDesc";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, "1");
+        query.setParameter(1, "1");
 
         @SuppressWarnings("unchecked")
         List<ConsultationServices> results = query.getResultList();
@@ -72,9 +72,9 @@ public class ConsultationServiceDaoImpl extends AbstractDaoImpl<ConsultationServ
     }
 
     public List<ConsultationServices> findActiveNames() {
-        String sql = "select x.serviceId,x.serviceDesc from ConsultationServices x where x.active=? order by x.serviceDesc";
+        String sql = "select x.serviceId,x.serviceDesc from ConsultationServices x where x.active=?1 order by x.serviceDesc";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, "1");
+        query.setParameter(1, "1");
 
         @SuppressWarnings("unchecked")
         List<ConsultationServices> results = query.getResultList();
@@ -83,21 +83,21 @@ public class ConsultationServiceDaoImpl extends AbstractDaoImpl<ConsultationServ
 
 
     public ConsultationServices findByDescription(String description) {
-        String sql = "select x from ConsultationServices x where x.active=? and x.serviceDesc = ?";
+        String sql = "select x from ConsultationServices x where x.active=?1 and x.serviceDesc = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, "1");
-        query.setParameter(1, description);
+        query.setParameter(1, "1");
+        query.setParameter(2, description);
 
         return this.getSingleResultOrNull(query);
     }
 
     public ConsultationServices findReferringDoctorService(boolean activeOnly) {
-        String sql = "select x from ConsultationServices x where x.serviceDesc=?";
-        if (activeOnly) sql += " and x.active=?";
+        String sql = "select x from ConsultationServices x where x.serviceDesc=?1";
+        if (activeOnly) sql += " and x.active=?2";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, REFERRING_DOCTOR);
-        if (activeOnly) query.setParameter(1, ACTIVE);
+        query.setParameter(1, REFERRING_DOCTOR);
+        if (activeOnly) query.setParameter(2, ACTIVE);
 
         @SuppressWarnings("unchecked")
         List<ConsultationServices> results = query.getResultList();
