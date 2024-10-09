@@ -51,8 +51,8 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
     }
 
     public List<CaisiFormInstance> findByFormId(Integer formId) {
-        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.formId = ? order by f.clientId, f.dateCreated");
-        query.setParameter(0, formId);
+        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.formId = ?1 order by f.clientId, f.dateCreated");
+        query.setParameter(1, formId);
 
         @SuppressWarnings("unchecked")
         List<CaisiFormInstance> result = query.getResultList();
@@ -61,9 +61,9 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
     }
 
     public List<CaisiFormInstance> getForms(Integer formId, Integer clientId) {
-        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.formId = ? and f.clientId = ? order by f.dateCreated DESC");
-        query.setParameter(0, formId);
-        query.setParameter(1, clientId);
+        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.formId = ?1 and f.clientId = ?2 order by f.dateCreated DESC");
+        query.setParameter(1, formId);
+        query.setParameter(2, clientId);
         @SuppressWarnings("unchecked")
         List<CaisiFormInstance> result = query.getResultList();
 
@@ -109,8 +109,8 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
     }
 
     public List<CaisiFormInstance> getForms(Long clientId) {
-        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.clientId = ? order by f.dateCreated DESC");
-        query.setParameter(0, clientId);
+        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.clientId = ?1 order by f.dateCreated DESC");
+        query.setParameter(1, clientId);
         @SuppressWarnings("unchecked")
         List<CaisiFormInstance> result = query.getResultList();
 
@@ -119,14 +119,14 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
 
 
     public Integer countAnswersByQuestions(String value, Integer formId, Date startDate, Date endDate, Integer pageNumber, Integer sectionId, Integer questionId) {
-        Query query = entityManager.createQuery("select count(d.value) from CaisiFormInstance i, CaisiFormData d where d.value=? and i.formId=? and i.dateCreated>=? and i.dateCreated<=? and i.id=d.instanceId and d.pageNumber=? and d.sectionId=? and d.questionId= ?");
-        query.setParameter(0, value);
-        query.setParameter(1, formId);
-        query.setParameter(2, startDate);
-        query.setParameter(3, endDate);
-        query.setParameter(4, pageNumber);
-        query.setParameter(5, sectionId);
-        query.setParameter(6, questionId);
+        Query query = entityManager.createQuery("select count(d.value) from CaisiFormInstance i, CaisiFormData d where d.value=?1 and i.formId=?2 and i.dateCreated>=?3 and i.dateCreated<=?4 and i.id=d.instanceId and d.pageNumber=?5 and d.sectionId=?6 and d.questionId= ?7");
+        query.setParameter(1, value);
+        query.setParameter(2, formId);
+        query.setParameter(3, startDate);
+        query.setParameter(4, endDate);
+        query.setParameter(5, pageNumber);
+        query.setParameter(6, sectionId);
+        query.setParameter(7, questionId);
 
         BigInteger result = (BigInteger) query.getSingleResult();
 
@@ -135,13 +135,13 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
 
 
     public List<CaisiFormData> query1(Integer formId, Date startDate, Date endDate, int pageNumber, int sectionId, int questionId) {
-        Query query = entityManager.createQuery("select distinct d from CaisiFormInstance i, CaisiFormData d where i.formId=? and i.dateCreated>=? and i.dateCreated<=? and i.id=d.instanceId and d.pageNumber=? and d.sectionId=? and d.questionId= ? group by d.key, d.value");
-        query.setParameter(0, formId);
-        query.setParameter(1, startDate);
-        query.setParameter(2, endDate);
-        query.setParameter(3, pageNumber);
-        query.setParameter(4, sectionId);
-        query.setParameter(5, questionId);
+        Query query = entityManager.createQuery("select distinct d from CaisiFormInstance i, CaisiFormData d where i.formId=?1 and i.dateCreated>=?2 and i.dateCreated<=?3 and i.id=d.instanceId and d.pageNumber=?4 and d.sectionId=?5 and d.questionId= ?6 group by d.key, d.value");
+        query.setParameter(1, formId);
+        query.setParameter(2, startDate);
+        query.setParameter(3, endDate);
+        query.setParameter(4, pageNumber);
+        query.setParameter(5, sectionId);
+        query.setParameter(6, questionId);
 
         @SuppressWarnings("unchecked")
         List<CaisiFormData> result = query.getResultList();
@@ -150,7 +150,7 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
     }
 
     public List<CaisiFormData> query2(Integer formId, Date startDate, Date endDate, int pageNumber, int sectionId, int questionId) {
-        Query query = entityManager.createQuery("elect distinct d from CaisiFormInstance i, CaisiFormData d where i.formId=? and i.dateCreated>=? and i.dateCreated<=? and i.id=d.instanceId and d.pageNumber=? and d.sectionId=? and d.questionId= ? group by d.value");
+        Query query = entityManager.createQuery("select distinct d from CaisiFormInstance i, CaisiFormData d where i.formId=?1 and i.dateCreated>=?2 and i.dateCreated<=?3 and i.id=d.instanceId and d.pageNumber=?4 and d.sectionId=?5 and d.questionId= ?6 group by d.value");
         query.setParameter(1, formId);
         query.setParameter(2, startDate);
         query.setParameter(3, endDate);
