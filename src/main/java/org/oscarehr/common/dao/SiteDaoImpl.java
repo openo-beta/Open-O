@@ -62,24 +62,24 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
                 // site name changed, need to update all references as it serves as PK
                 // so we need to update the tables that references to the site
 
-                Query query = entityManager.createNativeQuery("update rschedule set avail_hour = replace(avail_hour, :oldname, :newname) ");
-                query.setParameter("oldname", ">" + old.getName() + "<");
-                query.setParameter("newname", ">" + s.getName() + "<");
+                Query query = entityManager.createNativeQuery("update rschedule set avail_hour = replace(avail_hour, ?1, ?2) ");
+                query.setParameter(1, ">" + old.getName() + "<");
+                query.setParameter(2, ">" + s.getName() + "<");
                 query.executeUpdate();
 
-                query = entityManager.createNativeQuery("update scheduledate set reason = :newname where reason = :oldname");
-                query.setParameter("oldname", old.getName());
-                query.setParameter("newname", s.getName());
+                query = entityManager.createNativeQuery("update scheduledate set reason = ?1 where reason = ?2");
+                query.setParameter(1, old.getName());
+                query.setParameter(2, s.getName());
                 query.executeUpdate();
 
-                query = entityManager.createNativeQuery("update appointment set location = :newname where location = :oldname");
-                query.setParameter("oldname", old.getName());
-                query.setParameter("newname", s.getName());
+                query = entityManager.createNativeQuery("update appointment set location = ?1 where location = ?2");
+                query.setParameter(1, old.getName());
+                query.setParameter(2, s.getName());
                 query.executeUpdate();
 
-                query = entityManager.createNativeQuery("update billing_on_cheader1 set clinic = :newname where clinic = :oldname");
-                query.setParameter("oldname", old.getName());
-                query.setParameter("newname", s.getName());
+                query = entityManager.createNativeQuery("update billing_on_cheader1 set clinic = ?1 where clinic = ?2");
+                query.setParameter(1, old.getName());
+                query.setParameter(2, s.getName());
                 query.executeUpdate();
 
 
@@ -174,8 +174,8 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
                         " inner join provider p on p.provider_no = g.provider_no and p.status = 1 " +
                         " inner join providersite ps on ps.provider_no = g.provider_no " +
                         " inner join site s on s.site_id = ps.site_id " +
-                        " where  s.name = :sitename ");
-        query.setParameter("sitename", location);
+                        " where  s.name = ?1 ");
+        query.setParameter(1, location);
 
         @SuppressWarnings("unchecked")
         List<String> groupList = query.getResultList();
@@ -192,9 +192,8 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
                         " from provider p " +
                         " inner join providersite ps on ps.provider_no = p.provider_no " +
                         " inner join site s on s.site_id = ps.site_id " +
-                        " where  s.name = :sitename ");
-
-        query.setParameter("sitename", location);
+                        " where  s.name = ?1 ");
+        query.setParameter(1, location);
 
         @SuppressWarnings("unchecked")
         List<String> pList = query.getResultList();
@@ -210,8 +209,8 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
                 "select distinct p.provider_no	" +
                         " from provider p " +
                         " inner join providersite ps on ps.provider_no = p.provider_no and p.status = 1" +
-                        " where ps.site_id in (select site_id from providersite where provider_no = :providerno)");
-        query.setParameter("providerno", providerNo);
+                        " where ps.site_id in (select site_id from providersite where provider_no = ?1)");
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<String> pList = query.getResultList();
@@ -226,8 +225,8 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
                 "select distinct g.mygroup_no from mygroup g	" +
                         " inner join provider p on p.provider_no = g.provider_no and p.status = 1 " +
                         " inner join providersite ps on ps.provider_no = g.provider_no " +
-                        " where ps.site_id in (select site_id from providersite where provider_no = :providerno)");
-        query.setParameter("providerno", providerNo);
+                        " where ps.site_id in (select site_id from providersite where provider_no = ?1)");
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<String> groupList = query.getResultList();
@@ -239,8 +238,8 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
     @Override
     public Long site_searchmygroupcount(String myGroupNo, String siteName) {
         Query query = entityManager.createNativeQuery("select count(provider_no) from mygroup where mygroup_no=:groupno  and provider_no in (select ps.provider_no from providersite ps inner join site s on ps.site_id = s.site_id where s.name = :sitename)");
-        query.setParameter("groupno", myGroupNo);
-        query.setParameter("sitename", siteName);
+        query.setParameter(1, myGroupNo);
+        query.setParameter(2, siteName);
 
         Long result = ((BigInteger) query.getSingleResult()).longValue();
         return result;
@@ -249,8 +248,8 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
     @Override
     public String getSiteNameByAppointmentNo(String appointmentNo) {
 
-        Query query = entityManager.createNativeQuery("select location from appointment where appointment_no = :appointmentno");
-        query.setParameter("appointmentno", appointmentNo);
+        Query query = entityManager.createNativeQuery("select location from appointment where appointment_no = ?1");
+        query.setParameter(1, appointmentNo);
 
         @SuppressWarnings("unchecked")
         List<String> list = query.getResultList();
@@ -268,8 +267,8 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
                 "select distinct g.mygroup_no from mygroup g	" +
                         " inner join provider p on p.provider_no = g.provider_no and p.status = 1 " +
                         " inner join providersite ps on ps.provider_no = g.provider_no " +
-                        " where ps.site_id in (select site_id from providersite where provider_no = :providerno)");
-        query.setParameter("providerno", groupNo);
+                        " where ps.site_id in (select site_id from providersite where provider_no = ?1)");
+        query.setParameter(1, groupNo);
 
         groupList = query.getResultList();
         return groupList;
