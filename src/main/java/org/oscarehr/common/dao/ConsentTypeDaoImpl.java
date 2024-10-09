@@ -44,9 +44,10 @@ public class ConsentTypeDaoImpl extends AbstractDaoImpl<ConsentType> implements 
 
     @Override
     public ConsentType findConsentType(String type) {
-        String sql = "select x from " + modelClass.getSimpleName() + " x where x.type=?1 and x.active=1";
+        String sql = "select x from " + modelClass.getSimpleName() + " x where x.type=?1 and x.active=?2";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, type);
+        query.setParameter(2, 1);
 
         ConsentType consentType = getSingleResultOrNull(query);
 
@@ -56,10 +57,11 @@ public class ConsentTypeDaoImpl extends AbstractDaoImpl<ConsentType> implements 
     @Override
     public ConsentType findConsentTypeForProvider(String type, String providerNo) {
         String sql = "select x from " + modelClass.getSimpleName()
-                + " x where x.type=?1 and x.active=1 and x.providerNo = ?2";
+                + " x where x.type=?1 and x.active=?2 and x.providerNo = ?3";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, type);
-        query.setParameter(2, providerNo);
+        query.setParameter(2, 1);
+        query.setParameter(3, providerNo);
         ConsentType consentType = getSingleResultOrNull(query);
 
         return consentType;
