@@ -49,8 +49,8 @@ public class ServiceRequestTokenDaoImpl extends AbstractDaoImpl<ServiceRequestTo
 
     @Override
     public ServiceRequestToken findByTokenId(String token) {
-        Query query = this.entityManager.createQuery("SELECT x FROM ServiceRequestToken x WHERE x.tokenId = :token", ServiceRequestToken.class);
-        query.setParameter("token", token);
+        Query query = this.entityManager.createQuery("SELECT x FROM ServiceRequestToken x WHERE x.tokenId = ?1", ServiceRequestToken.class);
+        query.setParameter(1, token);
         return this.getSingleResultOrNull(query);
     }
 }
