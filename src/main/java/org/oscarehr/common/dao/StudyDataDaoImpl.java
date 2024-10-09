@@ -45,23 +45,23 @@ public class StudyDataDaoImpl extends AbstractDaoImpl<StudyData> implements Stud
     @SuppressWarnings("unchecked")
     @Override
     public List<StudyData> findByContent(String content) {
-        Query query = createQuery("s", "s.content LIKE :content AND s.deleted = false");
-        query.setParameter("content", content);
+        Query query = createQuery("s", "s.content LIKE ?1 AND s.deleted = false");
+        query.setParameter(1, content);
         return query.getResultList();
     }
 
     @Override
     public StudyData findSingleByContent(String content) {
-        Query query = createQuery("s", "s.content LIKE :content AND s.deleted = false");
-        query.setParameter("content", content);
+        Query query = createQuery("s", "s.content LIKE ?1 AND s.deleted = false");
+        query.setParameter(1, content);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public int removeByDemoAndStudy(Integer demographicNo, Integer studyId) {
-        Query query = entityManager.createQuery("from StudyData s where s.demographicNo = :demoNo and s.studyNo = :studyId");
-        query.setParameter("demoNo", demographicNo);
-        query.setParameter("studyId", studyId);
+        Query query = entityManager.createQuery("from StudyData s where s.demographicNo = ?1 and s.studyNo = ?2");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, studyId);
 
         @SuppressWarnings("unchecked")
         List<StudyData> resultList = query.getResultList();
@@ -76,10 +76,10 @@ public class StudyDataDaoImpl extends AbstractDaoImpl<StudyData> implements Stud
 
     @Override
     public List<StudyData> findByDemoAndStudy(Integer demographicNo, Integer studyId) {
-        Query query = entityManager.createQuery("select s from StudyData s where s.demographicNo = :demoNo and s.studyNo = :studyId and s.deleted = false");
+        Query query = entityManager.createQuery("select s from StudyData s where s.demographicNo = ?1 and s.studyNo = ?2 and s.deleted = false");
 
-        query.setParameter("demoNo", demographicNo);
-        query.setParameter("studyId", studyId);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, studyId);
 
         @SuppressWarnings("unchecked")
         List<StudyData> studyDataList = query.getResultList();
