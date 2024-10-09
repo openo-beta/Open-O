@@ -106,11 +106,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public BigDecimal getPayment(BillingONPayment paymentRecord) {
 
-        String sql = "select bExt from BillingONExt bExt where billingNo=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where billingNo=?1 and keyVal=?2";
         Query query = entityManager.createQuery(sql);
 
-        query.setParameter(0, paymentRecord.getBillingNo());
-        query.setParameter(1, "payment");
+        query.setParameter(1, paymentRecord.getBillingNo());
+        query.setParameter(2, "payment");
 
         List<BillingONExt> results = query.getResultList();
 
