@@ -136,9 +136,9 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
 
 
     public List<ConsultationRequest> getConsultationsByStatus(Integer demographicNo, String status) {
-        Query query = entityManager.createQuery("SELECT c FROM ConsultationRequest c where c.demographicId = ? and c.status = ?");
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, status);
+        Query query = entityManager.createQuery("SELECT c FROM ConsultationRequest c where c.demographicId = ?1 and c.status = ?2");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, status);
 
 
         List<ConsultationRequest> results = query.getResultList();
@@ -202,7 +202,7 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
     @NativeSql("consultationRequests")
     public List<Integer> findNewConsultationsSinceDemoKey(String keyName) {
 
-        String sql = "select distinct dr.demographicNo from consultationRequests dr,demographic d,demographicExt e where dr.demographicNo = d.demographic_no and d.demographic_no = e.demographic_no and e.key_val=? and dr.lastUpdateDate > e.value";
+        String sql = "select distinct dr.demographicNo from consultationRequests dr,demographic d,demographicExt e where dr.demographicNo = d.demographic_no and d.demographic_no = e.demographic_no and e.key_val=?1 and dr.lastUpdateDate > e.value";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, keyName);
         return query.getResultList();
