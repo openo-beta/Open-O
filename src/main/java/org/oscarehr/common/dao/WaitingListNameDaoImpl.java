@@ -50,10 +50,10 @@ public class WaitingListNameDaoImpl extends AbstractDaoImpl<WaitingListName> imp
     }
 
     public List<WaitingListName> findCurrentByNameAndGroup(String name, String group) {
-        String sql = "select x from WaitingListName x where x.name = ? AND x.groupNo = ? and x.isHistory='N'";
+        String sql = "select x from WaitingListName x where x.name = ?1 AND x.groupNo = ?2 and x.isHistory='N'";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, name);
-        query.setParameter(1, group);
+        query.setParameter(1, name);
+        query.setParameter(2, group);
 
         @SuppressWarnings("unchecked")
         List<WaitingListName> results = query.getResultList();
@@ -70,9 +70,9 @@ public class WaitingListNameDaoImpl extends AbstractDaoImpl<WaitingListName> imp
         }
         groupIds.add(".default");
 
-        String sql = "select x from WaitingListName x where x.groupNo IN (:groupNo) and x.isHistory='N' order by x.name ASC";
+        String sql = "select x from WaitingListName x where x.groupNo IN (?1) and x.isHistory='N' order by x.name ASC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("groupNo", groupIds);
+        query.setParameter(1, groupIds);
 
         @SuppressWarnings("unchecked")
         List<WaitingListName> results = query.getResultList();
@@ -80,9 +80,9 @@ public class WaitingListNameDaoImpl extends AbstractDaoImpl<WaitingListName> imp
     }
 
     public List<WaitingListName> findCurrentByGroup(String group) {
-        String sql = "select x from WaitingListName x where x.groupNo = ? and x.isHistory='N' order by x.name";
+        String sql = "select x from WaitingListName x where x.groupNo = ?1 and x.isHistory='N' order by x.name";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, group);
+        query.setParameter(1, group);
 
         @SuppressWarnings("unchecked")
         List<WaitingListName> results = query.getResultList();
