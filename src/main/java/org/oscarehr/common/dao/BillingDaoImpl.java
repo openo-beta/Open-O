@@ -49,9 +49,9 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
 
     @Override
     public List<Billing> findActive(int billingNo) {
-        Query q = entityManager.createQuery("select x from Billing x where x.id=? and x.status <> ?");
-        q.setParameter(0, billingNo);
-        q.setParameter(1, "D");
+        Query q = entityManager.createQuery("select x from Billing x where x.id=?1 and x.status <> ?2");
+        q.setParameter(1, billingNo);
+        q.setParameter(2, "D");
 
 
         List<Billing> results = q.getResultList();
@@ -61,8 +61,8 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
 
     @Override
     public List<Billing> findByBillingType(String type) {
-        Query q = entityManager.createQuery("select x from Billing x where x.billingtype=?");
-        q.setParameter(0, type);
+        Query q = entityManager.createQuery("select x from Billing x where x.billingtype=?1");
+        q.setParameter(1, type);
 
 
         List<Billing> results = q.getResultList();
@@ -72,8 +72,8 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
 
     @Override
     public List<Billing> findByAppointmentNo(int apptNo) {
-        Query q = entityManager.createQuery("select x from Billing x where x.appointmentNo=?");
-        q.setParameter(0, apptNo);
+        Query q = entityManager.createQuery("select x from Billing x where x.appointmentNo=?1");
+        q.setParameter(1, apptNo);
 
 
         List<Billing> results = q.getResultList();
@@ -437,10 +437,10 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
 
     @Override
     public Integer search_billing_no_by_appt(int demographicNo, int appointmentNo) {
-        Query q = entityManager.createQuery("select x from Billing x where x.demographicNo=? and x.appointmentNo = ? and x.status <> ? order by x.updateDate desc, x.updateTime desc");
-        q.setParameter(0, demographicNo);
-        q.setParameter(1, appointmentNo);
-        q.setParameter(2, "D");
+        Query q = entityManager.createQuery("select x from Billing x where x.demographicNo=?1 and x.appointmentNo = ?2 and x.status <> ?3 order by x.updateDate desc, x.updateTime desc");
+        q.setParameter(1, demographicNo);
+        q.setParameter(2, appointmentNo);
+        q.setParameter(3, "D");
 
 
         List<Billing> results = q.getResultList();
@@ -453,8 +453,8 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
 
     @Override
     public Integer search_billing_no(int demographicNo) {
-        Query q = entityManager.createQuery("select x from Billing x where x.demographicNo=? order by x.updateDate desc, x.updateTime desc");
-        q.setParameter(0, demographicNo);
+        Query q = entityManager.createQuery("select x from Billing x where x.demographicNo=?1 order by x.updateDate desc, x.updateTime desc");
+        q.setParameter(1, demographicNo);
 
 
         List<Billing> results = q.getResultList();
@@ -487,10 +487,10 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
 
     @Override
     public List<Billing> search_bill_history_daterange(String providerNo, Date startBillingDate, Date endBillingDate) {
-        Query q = entityManager.createQuery("select b from Billing b where b.providerNo like ? and b.billingDate >=? and b.billingDate<=? and b.status<>'D' and b.status<>'S' and b.status<>'B' and b.demographicNo <> 0 order by b.billingDate desc, b.billingTime desc");
-        q.setParameter(0, providerNo);
-        q.setParameter(1, startBillingDate);
-        q.setParameter(2, endBillingDate);
+        Query q = entityManager.createQuery("select b from Billing b where b.providerNo like ?1 and b.billingDate >=?2 and b.billingDate<=?3 and b.status<>'D' and b.status<>'S' and b.status<>'B' and b.demographicNo <> 0 order by b.billingDate desc, b.billingTime desc");
+        q.setParameter(1, providerNo);
+        q.setParameter(2, startBillingDate);
+        q.setParameter(3, endBillingDate);
 
         @SuppressWarnings("unchecked")
         List<Billing> results = q.getResultList();
