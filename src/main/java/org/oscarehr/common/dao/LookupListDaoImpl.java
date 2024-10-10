@@ -43,8 +43,8 @@ public class LookupListDaoImpl extends AbstractDaoImpl<LookupList> implements Lo
 
     @Override
     public List<LookupList> findAllActive() {
-        Query q = entityManager.createQuery("select l from LookupList l where l.active=? order by l.name asc");
-        q.setParameter(0, true);
+        Query q = entityManager.createQuery("select l from LookupList l where l.active=?1 order by l.name asc");
+        q.setParameter(1, true);
 
         @SuppressWarnings("unchecked")
         List<LookupList> result = q.getResultList();
@@ -54,8 +54,8 @@ public class LookupListDaoImpl extends AbstractDaoImpl<LookupList> implements Lo
 
     @Override
     public LookupList findByName(String name) {
-        Query q = entityManager.createQuery("select l from LookupList l where l.name=?");
-        q.setParameter(0, name);
+        Query q = entityManager.createQuery("select l from LookupList l where l.name=?1");
+        q.setParameter(1, name);
 
         LookupList ll = this.getSingleResultOrNull(q);
 
