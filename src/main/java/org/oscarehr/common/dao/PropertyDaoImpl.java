@@ -50,9 +50,10 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
      */
     @Override
     public List<Property> findByName(String name) {
-        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?1";
+        String sqlCommand = "select x from ?1 x where x.name=?2";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, name);
+        query.setParameter(1, modelClass.getSimpleName();
+        query.setParameter(2, name);
         return query.getResultList();
     }
 
@@ -65,9 +66,10 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
      */
     @Override
     public List<Property> findGlobalByName(String name) {
-        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?1 and x.providerNo is null";
+        String sqlCommand = "select x from ?1 x where x.name=?2 and x.providerNo is null";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, name);
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, name);
         return query.getResultList();
     }
 
@@ -81,24 +83,26 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
     @Deprecated
     @Override
     public List<Property> findByNameAndProvider(String propertyName, String providerNo) {
-        Query query = createQuery("p", "p.name = :name AND p.providerNo = :pno");
-        query.setParameter("name", propertyName);
-        query.setParameter("pno", providerNo);
+        Query query = createQuery("p", "p.name = ?1 AND p.providerNo = ?2");
+        query.setParameter(1, propertyName);
+        query.setParameter(2, providerNo);
         return query.getResultList();
     }
 
     @Override
     public List<Property> findByProvider(String providerNo) {
-        Query query = createQuery("p", "p.providerNo = :pno");
-        query.setParameter("pno", providerNo);
+        Query query = createQuery("p", "p.providerNo = ?1");
+        query.setParameter(1, providerNo);
         return query.getResultList();
     }
 
     @Override
     public Property checkByName(String name) {
 
-        String sql = " select x from " + this.modelClass.getName() + " x where x.name='" + name + "'";
+        String sql = " select x from ?1 x where x.name=?2";
         Query query = entityManager.createQuery(sql);
+        query.setParameter(1, this.modelClass.getSimpleName());
+        query.setParameter(2, name);
 
         try {
             return (Property) query.getSingleResult();
@@ -129,9 +133,10 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
 
     @Override
     public void removeByName(String name) {
-        String sqlCommand = "delete from " + modelClass.getSimpleName() + " where name=?1";
+        String sqlCommand = "delete from ?1 where name=?2";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, name);
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, name);
         query.executeUpdate();
     }
 

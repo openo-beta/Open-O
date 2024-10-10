@@ -87,20 +87,19 @@ public class PharmacyInfoDaoImpl extends AbstractDaoImpl<PharmacyInfo> implement
 
     @Override
     public void deletePharmacy(Integer ID) {
-        String sql = "update PharmacyInfo set status = ? where id = ?";
+        String sql = "update PharmacyInfo set status = ?1 where id = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, PharmacyInfo.DELETED);
-        query.setParameter(1, ID);
+        query.setParameter(1, PharmacyInfo.DELETED);
+        query.setParameter(2, ID);
         query.executeUpdate();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<PharmacyInfo> getPharmacies(List<Integer> idList) {
-        String sql = "select x from PharmacyInfo x where x.id in (:list)";
+        String sql = "select x from PharmacyInfo x where x.id in (?1)";
         Query query = entityManager.createQuery(sql);
-
-        query.setParameter("list", idList);
+        query.setParameter(1, idList);
 
         return query.getResultList();
     }
@@ -112,9 +111,9 @@ public class PharmacyInfoDaoImpl extends AbstractDaoImpl<PharmacyInfo> implement
 
     @Override
     public PharmacyInfo getPharmacyByRecordID(Integer recordID) {
-        String sql = "SELECT x FROM  PharmacyInfo x where x.id = ?";
+        String sql = "SELECT x FROM  PharmacyInfo x where x.id = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, recordID);
+        query.setParameter(1, recordID);
         @SuppressWarnings("unchecked")
         List<PharmacyInfo> results = query.getResultList();
         if (results.size() > 0) {
@@ -127,10 +126,10 @@ public class PharmacyInfoDaoImpl extends AbstractDaoImpl<PharmacyInfo> implement
     @SuppressWarnings("unchecked")
     public List<PharmacyInfo> getAllPharmacies() {
         List<PharmacyInfo> pharmacyList = new ArrayList<PharmacyInfo>();
-        String sql = "select x from PharmacyInfo x where x.status = :status order by name";
+        String sql = "select x from PharmacyInfo x where x.status = ?1 order by name";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("status", PharmacyInfo.ACTIVE);
+        query.setParameter(1, PharmacyInfo.ACTIVE);
 
         pharmacyList = query.getResultList();
 
@@ -141,12 +140,12 @@ public class PharmacyInfoDaoImpl extends AbstractDaoImpl<PharmacyInfo> implement
     @SuppressWarnings("unchecked")
     public List<PharmacyInfo> searchPharmacyByNameAddressCity(String name, String city) {
 
-        String sql = "select x from PharmacyInfo x where x.status = :status and (x.name like :name or x.address like :address) and x.city like :city order by x.name, x.address";
+        String sql = "select x from PharmacyInfo x where x.status = ?1 and (x.name like ?2 or x.address like ?3) and x.city like ?4 order by x.name, x.address";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("status", PharmacyInfo.ACTIVE);
-        query.setParameter("name", "%" + name + "%");
-        query.setParameter("address", "%" + name + "%");
-        query.setParameter("city", "%" + city + "%");
+        query.setParameter(1, PharmacyInfo.ACTIVE);
+        query.setParameter(2, "%" + name + "%");
+        query.setParameter(3, "%" + name + "%");
+        query.setParameter(4, "%" + city + "%");
 
         return query.getResultList();
     }
@@ -155,10 +154,10 @@ public class PharmacyInfoDaoImpl extends AbstractDaoImpl<PharmacyInfo> implement
     @SuppressWarnings("unchecked")
     public List<String> searchPharmacyByCity(String city) {
 
-        String sql = "select distinct x.city from PharmacyInfo x where x.status = :status and x.city like :city";
+        String sql = "select distinct x.city from PharmacyInfo x where x.status = ?1 and x.city like ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("status", PharmacyInfo.ACTIVE);
-        query.setParameter("city", "%" + city + "%");
+        query.setParameter(1, PharmacyInfo.ACTIVE);
+        query.setParameter(2, "%" + city + "%");
 
         return query.getResultList();
 

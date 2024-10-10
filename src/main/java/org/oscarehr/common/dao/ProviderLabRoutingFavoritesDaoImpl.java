@@ -46,9 +46,9 @@ public class ProviderLabRoutingFavoritesDaoImpl extends AbstractDaoImpl<Provider
     @SuppressWarnings("unchecked")
     @Override
     public List<ProviderLabRoutingFavorite> findFavorites(String provider_no) {
-        String sql = "select fav from ProviderLabRoutingFavorite fav where fav.provider_no = :provider";
+        String sql = "select fav from ProviderLabRoutingFavorite fav where fav.provider_no = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("provider", provider_no);
+        query.setParameter(1, provider_no);
         return query.getResultList();
     }
 }

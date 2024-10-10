@@ -44,12 +44,12 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     private List<ProviderLabRoutingModel> getProviderLabRoutings(Integer labNo, String labType, String providerNo,
                                                                  String status) {
-        Query q = entityManager.createQuery("select x from " + modelClass.getName()
-                + " x where x.labNo LIKE ? and x.labType LIKE ? and x.providerNo LIKE ? and x.status LIKE ?");
-        q.setParameter(0, labNo != null ? labNo : "%");
-        q.setParameter(1, labType != null ? labType : "%");
-        q.setParameter(2, providerNo != null ? providerNo : "%");
-        q.setParameter(3, status != null ? status : "%");
+        Query q = entityManager.createQuery("select x from ?1 x where x.labNo LIKE ?2 and x.labType LIKE ?3 and x.providerNo LIKE ?4 and x.status LIKE ?5");
+        q.setParameter(1, modelClass.getName());
+        q.setParameter(2, labNo != null ? labNo : "%");
+        q.setParameter(3, labType != null ? labType : "%");
+        q.setParameter(4, providerNo != null ? providerNo : "%");
+        q.setParameter(5, status != null ? status : "%");
 
         return q.getResultList();
     }
@@ -58,10 +58,11 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     public List<ProviderLabRoutingModel> findByLabNoAndLabTypeAndProviderNo(int labNo, String labType,
                                                                             String providerNo) {
         Query q = entityManager.createQuery(
-                "select x from " + modelClass.getName() + " x where x.labNo=? and x.labType=? and x.providerNo=?");
-        q.setParameter(0, labNo);
-        q.setParameter(1, labType);
-        q.setParameter(2, providerNo);
+                "select x from ?1 x where x.labNo=?2 and x.labType=?3 and x.providerNo=?4");
+        q.setParameter(1, modelClass.getName());
+        q.setParameter(2, labNo);
+        q.setParameter(3, labType);
+        q.setParameter(4, providerNo);
 
         return q.getResultList();
     }
@@ -89,19 +90,21 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     @Override
     public void updateStatus(Integer labNo, String labType) {
-        String updateString = "UPDATE " + modelClass.getName() + " x set x.status='N' WHERE x.labNo=? AND x.labType=?";
+        String updateString = "UPDATE ?1 x set x.status='N' WHERE x.labNo=?2 AND x.labType=?3";
 
         Query query = entityManager.createQuery(updateString);
-        query.setParameter(0, labNo);
-        query.setParameter(1, labType);
+        query.setParameter(1, modelClass.getName());
+        query.setParameter(2, labNo);
+        query.setParameter(3, labType);
 
         query.executeUpdate();
     }
 
     @Override
     public ProviderLabRoutingModel findByLabNo(int labNo) {
-        Query query = entityManager.createQuery("select x from " + modelClass.getName() + " x where x.labNo=?");
-        query.setParameter(0, labNo);
+        Query query = entityManager.createQuery("select x from ?1 x where x.labNo=?2");
+        query.setParameter(1, modelClass.getName());
+        query.setParameter(2, labNo);
 
         return this.getSingleResultOrNull(query);
     }
@@ -109,8 +112,9 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     // this is written for the clean()method to fix OSCAREMR-6161.
     @Override
     public List<ProviderLabRoutingModel> findByLabNoIncludingPotentialDuplicates(int labNo) {
-        Query query = entityManager.createQuery("select x from " + modelClass.getName() + " x where x.labNo=?");
-        query.setParameter(0, labNo);
+        Query query = entityManager.createQuery("select x from ?1 x where x.labNo=?2");
+        query.setParameter(1, modelClass.getName());
+        query.setParameter(2, labNo);
 
         return query.getResultList();
     }
@@ -118,9 +122,10 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     @Override
     public ProviderLabRoutingModel findByLabNoAndLabType(int labNo, String labType) {
         Query query = entityManager
-                .createQuery("select x from " + modelClass.getName() + " x where x.labNo=? and x.labType = ?");
-        query.setParameter(0, labNo);
-        query.setParameter(1, labType);
+                .createQuery("select x from ?1 x where x.labNo=?2 and x.labType=?3");
+        query.setParameter(1, modelClass.getName());
+        query.setParameter(2, labNo);
+        query.setParameter(3, labType);
 
         return this.getSingleResultOrNull(query);
     }
@@ -135,44 +140,46 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
      */
     @Override
     public List<Object[]> getProviderLabRoutings(Integer labNo, String labType) {
-        Query query = entityManager.createQuery("FROM " + Provider.class.getSimpleName()
-                + " p, ProviderLabRoutingModel r WHERE p.id = r.providerNo AND r.labNo = :labNo AND r.labType = :labType");
-        query.setParameter("labNo", labNo);
-        query.setParameter("labType", labType);
+        Query query = entityManager.createQuery("FROM ?1 p, ?2 r WHERE p.id = r.providerNo AND r.labNo = ?3 AND r.labType = ?4");
+        query.setParameter(1, Provider.class.getSimpleName());
+        query.setParameter(2, modelClass.getName());
+        query.setParameter(3, labNo);
+        query.setParameter(4, labType);
         return query.getResultList();
     }
 
     @Override
     public List<ProviderLabRoutingModel> findByStatusANDLabNoType(Integer labNo, String labType, String status) {
-        Query query = createQuery("r", "r.labNo = :labNo and r.labType = :labType and r.status = :status");
-        query.setParameter("labNo", labNo);
-        query.setParameter("labType", labType);
-        query.setParameter("status", status);
+        Query query = createQuery("r", "r.labNo = ?1 and r.labType = ?2 and r.status = ?3");
+        query.setParameter(1, labNo);
+        query.setParameter(2, labType);
+        query.setParameter(3, status);
         return query.getResultList();
     }
 
     @Override
     public List<ProviderLabRoutingModel> findByProviderNo(String providerNo, String status) {
-        Query query = createQuery("p", "p.providerNo = :pNo AND p.status = :sts");
-        query.setParameter("pNo", providerNo);
-        query.setParameter("sts", status);
+        Query query = createQuery("p", "p.providerNo = ?1 AND p.status = ?2");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, status);
         return query.getResultList();
     }
 
     @Override
     public List<ProviderLabRoutingModel> findByLabNoTypeAndStatus(int labId, String labType, String status) {
-        Query query = createQuery("p", "p.labNo = :lNo AND p.status = :sts AND p.labType = :lType");
-        query.setParameter("lNo", labId);
-        query.setParameter("sts", status);
-        query.setParameter("lType", labType);
+        Query query = createQuery("p", "p.labNo = ?1 AND p.status = ?2 AND p.labType = ?3");
+        query.setParameter(1, labId);
+        query.setParameter(2, status);
+        query.setParameter(3, labType);
         return query.getResultList();
     }
 
     @Override
     public List<Integer> findLastRoutingIdGroupedByProviderAndCreatedByDocCreator(String docCreator) {
-        Query query = entityManager.createQuery("SELECT max(r.id) FROM ProviderLabRoutingModel r, Document d "
-                + "WHERE d.documentNo=r.labNo AND d.doccreator= :docCreator AND r.providerNo!=0 AND r.providerNo!=-1 AND r.providerNo IS NOT NULL group by r.providerNo");
-        query.setParameter("docCreator", docCreator);
+        Query query = entityManager.createQuery("SELECT max(r.id) FROM ProviderLabRoutingModel r, Document d "+
+        "WHERE d.documentNo=r.labNo AND d.doccreator= ?1 AND r.providerNo!=0 AND r.providerNo!=-1 " +
+                "AND r.providerNo IS NOT NULL group by r.providerNo");
+        query.setParameter(1, docCreator);
         return query.getResultList();
     }
 
@@ -180,9 +187,9 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     public List<Object[]> findProviderAndLabRoutingById(Integer id) {
         String sql = "FROM Provider provider, ProviderLabRoutingModel providerLabRouting "
                 + "WHERE provider.ProviderNo = providerLabRouting.providerNo "
-                + "AND providerLabRouting.id = :id ";
+                + "AND providerLabRouting.id = ?1 ";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("id", id);
+        query.setParameter(1, id);
         return query.getResultList();
     }
 
@@ -195,10 +202,8 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
         // for the provider number if unable to find correct provider
         String sql;
         sql = "SELECT mdsMSH.segmentID, mdsMSH.messageConID AS accessionNum, providerLabRouting.status, mdsPID.patientName, mdsPID.healthNumber, "
-                +
-                "mdsPID.sex, max(mdsZFR.abnormalFlag) as abnormalFlag, mdsMSH.dateTime, mdsOBR.quantityTiming, mdsPV1.refDoctor, "
-                +
-                "min(mdsZFR.reportFormStatus) as reportFormStatus, mdsZRG.reportGroupDesc " +
+                + "mdsPID.sex, max(mdsZFR.abnormalFlag) as abnormalFlag, mdsMSH.dateTime, mdsOBR.quantityTiming, mdsPV1.refDoctor, "
+                + "min(mdsZFR.reportFormStatus) as reportFormStatus, mdsZRG.reportGroupDesc " +
                 "FROM " +
                 "providerLabRouting " +
                 "LEFT JOIN mdsMSH on providerLabRouting.lab_no = mdsMSH.segmentID " +
@@ -209,13 +214,26 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
                 "LEFT JOIN mdsZRG on providerLabRouting.lab_no = mdsZRG.segmentID " +
                 "WHERE " +
                 "providerLabRouting.lab_type = 'MDS' " +
-                "AND providerLabRouting.status like '%" + status + "%' AND providerLabRouting.provider_no like '"
-                + (providerNo.equals("") ? "%" : providerNo) + "' " +
-                "AND mdsPID.patientName like '" + patientLastName + "%^" + patientFirstName
-                + "%^%' AND mdsPID.healthNumber like '%" + patientHealthNumber + "%' group by mdsMSH.segmentID";
-        Query query = entityManager.createNativeQuery(sql);
-        return query.getResultList();
+                "AND providerLabRouting.status LIKE ?1 " +
+                "AND providerLabRouting.provider_no LIKE ?2 " +
+                "AND mdsPID.patientName LIKE ?3 " +
+                "AND mdsPID.healthNumber LIKE ?4 " +
+                "GROUP BY mdsMSH.segmentID";
 
+        // Prepare parameters
+        String statusParam = "%" + status + "%";
+        String providerNoParam = providerNo.equals("") ? "%" : providerNo;
+        String patientNameParam = patientLastName + "%^" + patientFirstName + "%^%";
+        String healthNumberParam = "%" + patientHealthNumber + "%";
+
+        // Create query and set parameters
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, statusParam);
+        query.setParameter(2, providerNoParam);
+        query.setParameter(3, patientNameParam);
+        query.setParameter(4, healthNumberParam);
+
+        return query.getResultList();
     }
 
     @NativeSql({"providerLabRouting", "mdsMSH", "mdsPID", "mdsPV1", "mdsZFR", "mdsOBR", "mdsZRG"})
@@ -239,9 +257,10 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
                 "LEFT JOIN mdsZRG on patientLabRouting.lab_no = mdsZRG.segmentID " +
                 "WHERE " +
                 "patientLabRouting.lab_type = 'MDS' " +
-                "AND patientLabRouting.demographic_no =  " + demographicNo + " and mdsMSH.segmentID = " + labNo
-                + " group by mdsMSH.segmentID";
+                "AND patientLabRouting.demographic_no = ?1 and mdsMSH.segmentID = ?2 group by mdsMSH.segmentID";
         Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, labNo);
         return query.getResultList();
 
     }
@@ -263,8 +282,9 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
                 "LEFT JOIN mdsZRG on patientLabRouting.lab_no = mdsZRG.segmentID " +
                 "WHERE " +
                 "patientLabRouting.lab_type = 'MDS' " +
-                "AND patientLabRouting.demographic_no='" + demographicNo + "' group by mdsMSH.segmentID";
+                "AND patientLabRouting.demographic_no=?1 group by mdsMSH.segmentID";
         Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, demographicNo);
         return query.getResultList();
     }
 
@@ -272,11 +292,11 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     public List<Object[]> findProviderAndLabRoutingByIdAndLabType(Integer id, String labType) {
         String sql = "FROM Provider provider, ProviderLabRoutingModel providerLabRouting " +
                 "WHERE provider.ProviderNo = providerLabRouting.providerNo " +
-                "AND providerLabRouting.labNo = :id " +
-                "AND providerLabRouting.labType = :labType";
+                "AND providerLabRouting.labNo = ?1 " +
+                "AND providerLabRouting.labType = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("id", id);
-        query.setParameter("labType", labType);
+        query.setParameter(1, id);
+        query.setParameter(2, labType);
         return query.getResultList();
     }
 

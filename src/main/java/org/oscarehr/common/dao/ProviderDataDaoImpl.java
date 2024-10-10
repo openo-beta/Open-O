@@ -27,7 +27,7 @@
 
 package org.oscarehr.common.dao;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -53,10 +53,10 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     public ProviderData findByOhipNumber(String ohipNumber) {
         Query query;
         List<ProviderData> results;
-        String sqlCommand = "SELECT x FROM ProviderData x WHERE x.ohipNo=?";
+        String sqlCommand = "SELECT x FROM ProviderData x WHERE x.ohipNo=?1";
 
         query = this.entityManager.createQuery(sqlCommand);
-        query.setParameter(0, ohipNumber);
+        query.setParameter(1, ohipNumber);
 
         results = query.getResultList();
         if (results.size() > 0) {
@@ -84,17 +84,17 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     @Override
     public List<ProviderData> findByProviderNo(String providerNo, String status, int limit, int offset) {
 
-        String sqlCommand = "From ProviderData p where p.id like ?";
+        String sqlCommand = "From ProviderData p where p.id like ?1";
 
         if (status != null)
-            sqlCommand += " and p.status = :status ";
+            sqlCommand += " and p.status = ?2 ";
 
         Query query = entityManager.createQuery(sqlCommand);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
-        query.setParameter(0, providerNo + "%");
+        query.setParameter(1, providerNo + "%");
         if (status != null)
-            query.setParameter("status", status);
+            query.setParameter(2, status);
 
         @SuppressWarnings("unchecked")
         List<ProviderData> results = query.getResultList();
@@ -105,25 +105,25 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     @Override
     public List<ProviderData> findByProviderName(String searchStr, String status, int limit, int offset) {
 
-        String queryString = "From ProviderData p where p.lastName like :lastName ";
+        String queryString = "From ProviderData p where p.lastName like ?1 ";
 
 
         String[] name = searchStr.split(",");
         if (name.length == 2)
-            queryString += " and p.firstName like :firstName ";
+            queryString += " and p.firstName like ?2 ";
 
         if (status != null)
-            queryString += " and p.status = :status ";
+            queryString += " and p.status = ?3 ";
 
         Query query = entityManager.createQuery(queryString);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
 
-        query.setParameter("lastName", name[0].trim() + "%");
+        query.setParameter(1, name[0].trim() + "%");
         if (name.length == 2)
-            query.setParameter("firstName", name[1].trim() + "%");
+            query.setParameter(2, name[1].trim() + "%");
         if (status != null)
-            query.setParameter("status", status);
+            query.setParameter(3, status);
 
         List list = query.getResultList();
         return list;
@@ -146,7 +146,7 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     public List<ProviderData> findByProviderSite(String providerNo) {
 
         String queryStr = "select * from provider p inner join providersite s on s.provider_no = p.provider_no "
-                + " where s.site_id in (select site_id from providersite where provider_no=?)";
+                + " where s.site_id in (select site_id from providersite where provider_no=?1)";
 
 
         Query query = entityManager.createNativeQuery(queryStr, modelClass);
@@ -162,9 +162,11 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     public List<Object[]> findProviderSecUserRoles(String lastName, String firstName) {
 
         String queryStr = "select u.id, u.role_name, p.provider_no, p.first_name, p.last_name from provider p LEFT JOIN secUserRole u ON  p.provider_no=u.provider_no "
-                + " where p.last_name like '" + lastName + "' and p.first_name like '" + firstName + "' and p.status='1' order by p.first_name, p.last_name, u.role_name";
+                + " where p.last_name like ?1 and p.first_name like ?2 and p.status='1' order by p.first_name, p.last_name, u.role_name";
 
         Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, lastName);
+        query.setParameter(2, firstName);
 
         @SuppressWarnings("unchecked")
         List<Object[]> proList = query.getResultList();
@@ -176,7 +178,7 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     public List<ProviderData> findByProviderTeam(String providerNo) {
 
         String queryStr = "select * from provider p  " +
-                "where team in (select team from provider where team is not null and team <> '' and provider_no=?)";
+                "where team in (select team from provider where team is not null and team <> '' and provider_no=?1)";
 
         Query query = entityManager.createNativeQuery(queryStr, modelClass);
         query.setParameter(1, providerNo);
@@ -189,8 +191,8 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
 
     @Override
     public List<ProviderData> findAllBilling(String active) {
-        Query query = createQuery("p", "p.ohipNo is not null and p.ohipNo != '' and p.status = :active order by p.lastName");
-        query.setParameter("active", active);
+        Query query = createQuery("p", "p.ohipNo is not null and p.ohipNo != '' and p.status = ?1 order by p.lastName");
+        query.setParameter(1, active);
         return query.getResultList();
     }
 
@@ -205,9 +207,9 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     @SuppressWarnings("unchecked")
     @Override
     public List<ProviderData> findByTypeAndOhip(String providerType, String insuranceNo) {
-        Query query = createQuery("p", "p.providerType = :pt and p.ohipNo like :in order by p.lastName");
-        query.setParameter("pt", providerType);
-        query.setParameter("in", insuranceNo);
+        Query query = createQuery("p", "p.providerType = ?1 and p.ohipNo like ?2 order by p.lastName");
+        query.setParameter(1, providerType);
+        query.setParameter(2, insuranceNo);
         return query.getResultList();
     }
 
@@ -220,8 +222,8 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     @SuppressWarnings("unchecked")
     @Override
     public List<ProviderData> findByType(String providerType) {
-        Query query = createQuery("p", "p.providerType = :pt and p.status = '1' order by p.lastName, p.firstName");
-        query.setParameter("pt", providerType);
+        Query query = createQuery("p", "p.providerType = ?1 and p.status = '1' order by p.lastName, p.firstName");
+        query.setParameter(1, providerType);
         return query.getResultList();
     }
 
@@ -230,10 +232,11 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     public List<ProviderData> findByName(String firstName, String lastName, boolean onlyActive) {
         StringBuilder buf = createQueryString("p", "");
         boolean isAppended = false;
-        Map<String, Object> params = new HashMap<String, Object>();
+        List<Object> params = new ArrayList<>();
+        int paramIndex = 1;
         if (firstName != null && !firstName.trim().equals("")) {
-            buf.append("WHERE p.firstName like :fn");
-            params.put("fn", firstName + "%");
+            buf.append("WHERE p.firstName like ?" + paramIndex++);
+            params.add(firstName + "%");
             isAppended = true;
         }
 
@@ -243,8 +246,8 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
             } else {
                 buf.append(" WHERE ");
             }
-            buf.append(" p.lastName like :ln");
-            params.put("ln", lastName + "%");
+            buf.append(" p.lastName like ?" + paramIndex++);
+            params.add(lastName + "%");
             isAppended = true;
         }
 
@@ -260,8 +263,8 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
         buf.append(" ORDER BY p.lastName, p.firstName");
 
         Query query = entityManager.createQuery(buf.toString());
-        for (Entry<String, Object> param : params.entrySet()) {
-            query.setParameter(param.getKey(), param.getValue());
+        for (int i = 0; i < params.size(); i++) {
+            query.setParameter(i + 1 , params.get(i));
         }
 
         return query.getResultList();
@@ -270,7 +273,8 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     @SuppressWarnings("unchecked")
     @Override
     public List<ProviderData> findAll() {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName());
+        Query query = entityManager.createQuery("FROM ?1");
+        query.setParameter(1, modelClass);
         return query.getResultList();
     }
 

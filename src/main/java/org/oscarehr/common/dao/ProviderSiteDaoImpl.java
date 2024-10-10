@@ -44,9 +44,9 @@ public class ProviderSiteDaoImpl extends AbstractDaoImpl<ProviderSite> implement
 
     @Override
     public List<ProviderSite> findByProviderNo(String providerNo) {
-        String sql = "select x from ProviderSite x where x.id.providerNo=?";
+        String sql = "select x from ProviderSite x where x.id.providerNo=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, providerNo);
+        query.setParameter(1, providerNo);
 
         List<ProviderSite> results = query.getResultList();
         return results;
@@ -58,20 +58,20 @@ public class ProviderSiteDaoImpl extends AbstractDaoImpl<ProviderSite> implement
                 "AND EXISTS( " +
                 "   FROM ProviderSite s WHERE p.ProviderNo = s.id.providerNo " +
                 "   AND s.id.siteId IN ( " +
-                "       SELECT ss.id.siteId FROM ProviderSite ss WHERE ss.id.providerNo = :pNo " +
+                "       SELECT ss.id.siteId FROM ProviderSite ss WHERE ss.id.providerNo = ?1 " +
                 "   )" +
                 ")" +
                 "ORDER BY p.LastName, p.FirstName";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("pNo", provider_no);
+        query.setParameter(1, provider_no);
         return query.getResultList();
     }
 
     @Override
     public List<String> findByProviderNoBySiteName(String siteName) {
-        String sql = "select x.id.providerNo from ProviderSite x, Site s where x.id.siteId=s.siteId and s.name=?";
+        String sql = "select x.id.providerNo from ProviderSite x, Site s where x.id.siteId=s.siteId and s.name=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, siteName);
+        query.setParameter(1, siteName);
 
         @SuppressWarnings("unchecked")
         List<String> results = query.getResultList();
@@ -80,9 +80,9 @@ public class ProviderSiteDaoImpl extends AbstractDaoImpl<ProviderSite> implement
 
     @Override
     public List<ProviderSite> findBySiteId(Integer siteId) {
-        String sql = "select x from ProviderSite x where x.id.siteId=?";
+        String sql = "select x from ProviderSite x where x.id.siteId=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, siteId);
+        query.setParameter(1, siteId);
 
         @SuppressWarnings("unchecked")
         List<ProviderSite> results = query.getResultList();

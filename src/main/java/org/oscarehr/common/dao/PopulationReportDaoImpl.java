@@ -60,17 +60,35 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    private static final String HQL_CURRENT_POP_SIZE = "select count(distinct a.clientId) from Admission a where " + "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " + "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " + "a.dischargeDate is null";
+    private static final String HQL_CURRENT_POP_SIZE = "select count(distinct a.clientId) from Admission a where " +
+    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " +
+    "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " +
+    "a.dischargeDate is null";
 
-    private static final String HQL_CURRENT_HISTORICAL_POP_SIZE = "select count(distinct a.clientId) from Admission a where " + "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " + "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " + "(a.dischargeDate is null or a.dischargeDate > ?)";
+    private static final String HQL_CURRENT_HISTORICAL_POP_SIZE = "select count(distinct a.clientId) from Admission a where " +
+    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " +
+    "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " +
+    "(a.dischargeDate is null or a.dischargeDate > ?1)";
 
-    private static final String HQL_GET_USAGES = "select a.clientId, a.admissionDate, a.dischargeDate from Admission a where " + "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " + "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " + "(a.dischargeDate is null or a.dischargeDate > ?) " + "order by a.clientId, a.admissionDate";
+    private static final String HQL_GET_USAGES = "select a.clientId, a.admissionDate, a.dischargeDate from ?1 a where " +
+    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " +
+    "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " +
+    "(a.dischargeDate is null or a.dischargeDate > ?2) " +
+    "order by a.clientId, a.admissionDate";
 
-    private static final String HQL_GET_MORTALITIES = "select count(distinct a.clientId) from Admission a where " + "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'community' and lower(p.name) = 'deceased') and " + "a.admissionDate > ? and a.dischargeDate is null";
+    private static final String HQL_GET_MORTALITIES = "select count(distinct a.clientId) from Admission a where " +
+     "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'community' and lower(p.name) = 'deceased') and " +
+     "a.admissionDate > ?1 and a.dischargeDate is null";
 
-    private static final String HQL_GET_PREVALENCE = "select count(cmi) from CaseManagementIssue cmi where " + "cmi.resolved = false and " + "cmi.demographic_no in (select distinct a.clientId from Admission a where a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and a.dischargeDate is null) and " + "cmi.issue.code in ";
+    private static final String HQL_GET_PREVALENCE = "select count(cmi) from CaseManagementIssue cmi where cmi.resolved = false and " +
+    "cmi.demographic_no in (select distinct a.clientId from Admission a where a.programId in (select p.id from Program p where " +
+    "lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and a.clientId in (select d.DemographicNo from Demographic d where " +
+    "lower(d.PatientStatus) = 'ac') and a.dischargeDate is null) and cmi.issue.code in ";
 
-    private static final String HQL_GET_INCIDENCE = "select count(cmi) from CaseManagementIssue cmi where " + "cmi.demographic_no in (select distinct a.clientId from Admission a where a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and a.dischargeDate is null) and " + "cmi.issue.code in ";
+    private static final String HQL_GET_INCIDENCE = "select count(cmi) from CaseManagementIssue cmi where " +
+    "cmi.demographic_no in (select distinct a.clientId from Admission a where a.programId in (select p.id from Program p where " +
+    "lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and a.clientId in (select d.DemographicNo from Demographic d where " +
+    "lower(d.PatientStatus) = 'ac') and a.dischargeDate is null) and cmi.issue.code in ";
 
     public int getCurrentPopulationSize() {
 
@@ -183,9 +201,21 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            String sqlCommand = "select issueGroupId,count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id " + (encounterType == null ? "" : "and casemgmt_note.encounter_type=? ") + "and casemgmt_note.program_no=? " + (roleId == null ? "" : "and casemgmt_note.reporter_caisi_role=? ") + "and casemgmt_note.observation_date>=? and casemgmt_note.observation_date<=? group by issueGroupId";
-            ps = c.prepareStatement(sqlCommand);
             int counter = 1;
+            String sqlCommand = "select issueGroupId,count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes," +
+            "casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and " +
+            "casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            if (encounterType != null) {
+                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            if (roleId == null) {
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
+             } 
+            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ +
+            " and casemgmt_note.observation_date<=?" + counter++ + " group by issueGroupId";
+            ps = c.prepareStatement(sqlCommand);
+            counter = 1;
             if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
             ps.setInt(counter++, programId);
             if (roleId != null) ps.setInt(counter++, roleId);
@@ -212,13 +242,20 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            String sqlCommand = "select issueGroupId,count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id and casemgmt_note.encounter_type=? and casemgmt_note.program_no=? and casemgmt_note.provider_no=? and casemgmt_note.observation_date>=? and casemgmt_note.observation_date<=? group by issueGroupId";
+            int counter = 1;
+            String sqlCommand = "select issueGroupId,count(distinct casemgmt_note.note_id) from IssueGroupIssues," +
+            "casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id" +
+            "and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id and " +
+            "casemgmt_note.encounter_type=?" + counter++ + " and casemgmt_note.program_no=?" + counter++ +
+            " and casemgmt_note.provider_no=?" + counter++ + " and casemgmt_note.observation_date>=?" + counter++ + 
+            " and casemgmt_note.observation_date<=?" + counter++ + " group by issueGroupId";
             ps = c.prepareStatement(sqlCommand);
-            ps.setString(1, encounterType.getOldDbValue());
-            ps.setInt(2, programId);
-            ps.setString(3, provider.getProviderNo());
-            ps.setTimestamp(4, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(5, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+            counter = 1;
+            ps.setString(counter++, encounterType.getOldDbValue());
+            ps.setInt(counter++, programId);
+            ps.setString(counter++, provider.getProviderNo());
+            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
             rs = ps.executeQuery();
             HashMap<Integer, Integer> results = new HashMap<Integer, Integer>();
@@ -240,8 +277,20 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            ps = c.prepareStatement("select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id " + (encounterType == null ? "" : "and casemgmt_note.encounter_type=? ") + "and casemgmt_note.program_no=? " + (roleId == null ? "" : "and casemgmt_note.reporter_caisi_role=? ") + "and casemgmt_note.observation_date>=? and casemgmt_note.observation_date<=?");
             int counter = 1;
+            String sqlCommand = "select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue," +
+            "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
+            "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            if (encounterType != null) {
+                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            if (roleId != null) {
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
+            ps = c.prepareStatement(sqlCommand);
+            counter = 1;
             if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
             ps.setInt(counter++, programId);
             if (roleId != null) ps.setInt(counter++, roleId);
@@ -266,12 +315,19 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            ps = c.prepareStatement("select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id and casemgmt_note.encounter_type=? and casemgmt_note.program_no=? and casemgmt_note.provider_no=? and casemgmt_note.observation_date>=? and casemgmt_note.observation_date<=?");
-            ps.setString(1, encounterType.getOldDbValue());
-            ps.setInt(2, programId);
-            ps.setString(3, provider.getProviderNo());
-            ps.setTimestamp(4, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(5, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+            int counter = 1;
+            ps = c.prepareStatement("select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue," +
+            "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
+            "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id and " +
+            "casemgmt_note.encounter_type=?" + counter++ + " and casemgmt_note.program_no=?" + counter++ + " and " +
+            "casemgmt_note.provider_no=?" + counter++ + " and casemgmt_note.observation_date>=?" + counter++ +
+            " and casemgmt_note.observation_date<=?" + counter++);
+            counter = 1;
+            ps.setString(counter++, encounterType.getOldDbValue());
+            ps.setInt(counter++, programId);
+            ps.setString(counter++, provider.getProviderNo());
+            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
             rs = ps.executeQuery();
             rs.next();
@@ -291,8 +347,20 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            ps = c.prepareStatement("select count(distinct casemgmt_note.demographic_no) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id " + (encounterType == null ? "" : "and casemgmt_note.encounter_type=? ") + "and casemgmt_note.program_no=? " + (roleId == null ? "" : "and casemgmt_note.reporter_caisi_role=? ") + "and casemgmt_note.observation_date>=? and casemgmt_note.observation_date<=?");
             int counter = 1;
+            String sqlCommand = "select count(distinct casemgmt_note.demographic_no) from IssueGroupIssues,casemgmt_issue," +
+            "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
+            "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            if (encounterType != null) {
+                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            if (roleId != null) {
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
+            ps = c.prepareStatement(sqlCommand);
+            counter = 1;
             if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
             ps.setInt(counter++, programId);
             if (roleId != null) ps.setInt(counter++, roleId);
@@ -317,8 +385,20 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            ps = c.prepareStatement("select count(distinct casemgmt_note.demographic_no) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id " + (encounterType == null ? "" : "and casemgmt_note.encounter_type=? ") + "and casemgmt_note.program_no=? " + (provider == null ? "" : "and casemgmt_note.provider_no=? ") + "and casemgmt_note.observation_date>=? and casemgmt_note.observation_date<=?");
             int counter = 1;
+            String sqlCommand = "select count(distinct casemgmt_note.demographic_no) from IssueGroupIssues,casemgmt_issue," +
+            "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
+            "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            if (encounterType != null) {
+                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            if (provider != null) {
+                sqlCommand += "and casemgmt_note.provider_no=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
+            ps = c.prepareStatement(sqlCommand);
+            counter = 1;
             if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
             ps.setInt(counter++, programId);
             if (provider != null) ps.setString(counter++, provider.getProviderNo());
@@ -343,8 +423,22 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            ps = c.prepareStatement("select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id " + (issueGroupId == null ? "" : "and IssueGroupIssues.issueGroupId=? ") + "and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id " + (encounterType == null ? "" : "and casemgmt_note.encounter_type=? ") + "and casemgmt_note.program_no=? " + (roleId == null ? "" : "and casemgmt_note.reporter_caisi_role=? ") + "and casemgmt_note.observation_date>=? and casemgmt_note.observation_date<=?");
             int counter = 1;
+            String sqlCommand = "select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id ";
+            if (issueGroupId != null) {
+                sqlCommand += "and IssueGroupIssues.issueGroupId=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            if (encounterType != null) {
+                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            if (roleId != null) {
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
+            }
+            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
+            ps = c.prepareStatement(sqlCommand);
+            counter = 1;
             if (issueGroupId != null) ps.setInt(counter++, issueGroupId);
             if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
             ps.setInt(counter++, programId);
