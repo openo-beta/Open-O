@@ -43,8 +43,8 @@ public class CtlBillingServiceAgeRulesDaoImpl extends AbstractDaoImpl<CtlBilling
 
     @Override
     public List<CtlBillingServiceAgeRules> findByServiceCode(String serviceCode) {
-        Query query = createQuery("r", "r.serviceCode = :serviceCode");
-        query.setParameter("serviceCode", serviceCode);
+        Query query = createQuery("r", "r.serviceCode = ?1");
+        query.setParameter(1, serviceCode);
         return query.getResultList();
     }
 }
