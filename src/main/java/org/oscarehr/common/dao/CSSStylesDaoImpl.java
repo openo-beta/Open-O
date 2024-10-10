@@ -42,9 +42,9 @@ public class CSSStylesDaoImpl extends AbstractDaoImpl<CssStyle> implements CSSSt
 
     @SuppressWarnings("unchecked")
     public List<CssStyle> findAll() {
-        String sql = "select css from CssStyle css where css.status = (:status) order by css.name";
+        String sql = "select css from CssStyle css where css.status = ?1 order by css.name";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("status", CssStyle.ACTIVE);
+        q.setParameter(1, CssStyle.ACTIVE);
 
         return q.getResultList();
     }
