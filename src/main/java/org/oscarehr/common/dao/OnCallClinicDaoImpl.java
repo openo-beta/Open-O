@@ -42,8 +42,8 @@ public class OnCallClinicDaoImpl extends AbstractDaoImpl<OnCallClinic> implement
 
     @Override
     public OnCallClinic findByDate(Date date) {
-        Query query = entityManager.createQuery("select x from OnCallClinic x where x.startDate = :date");
-        query.setParameter("date", date);
+        Query query = entityManager.createQuery("select x from OnCallClinic x where x.startDate = ?1");
+        query.setParameter(1, date);
 
         return this.getSingleResultOrNull(query);
     }
