@@ -45,27 +45,27 @@ public class MdsZMNDaoImpl extends AbstractDaoImpl<MdsZMN> implements MdsZMNDao 
 
     @Override
     public MdsZMN findBySegmentIdAndReportName(Integer id, String reportName) {
-        Query query = createQuery("z", "z.id = :id AND z.reportName = :reportName");
-        query.setParameter("id", id);
-        query.setParameter("reportName", reportName);
+        Query query = createQuery("z", "z.id = ?1 AND z.reportName = ?2");
+        query.setParameter(1, id);
+        query.setParameter(2, reportName);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public MdsZMN findBySegmentIdAndResultMnemonic(Integer id, String rm) {
-        Query query = createQuery("z", "z.id = :id and z.resultMnemonic = :rm");
-        query.setParameter("id", id);
-        query.setParameter("rm", rm);
+        Query query = createQuery("z", "z.id = ?1 and z.resultMnemonic = ?2");
+        query.setParameter(1, id);
+        query.setParameter(2, rm);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public List<String> findResultCodes(Integer id, String reportSequence) {
-        String sql = "SELECT zmn.resultCode FROM MdsZMN zmn WHERE zmn.id = :id " +
-                "AND zmn.reportGroup = :reportSequence ";
+        String sql = "SELECT zmn.resultCode FROM MdsZMN zmn WHERE zmn.id = ?1 " +
+                "AND zmn.reportGroup = ?2 ";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("id", id);
-        query.setParameter("reportSequence", reportSequence);
+        query.setParameter(1, id);
+        query.setParameter(2, reportSequence);
         List<Object[]> resultCodes = query.getResultList();
         List<String> result = new ArrayList<String>(resultCodes.size());
         for (Object[] o : resultCodes) {
