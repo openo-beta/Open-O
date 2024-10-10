@@ -47,9 +47,9 @@ public class IndivoDocsDaoImpl extends AbstractDaoImpl<IndivoDocs> implements In
 
     @Override
     public IndivoDocs findByOscarDocNo(Integer id, String docType) {
-        Query query = createQuery("i", "i.oscarDocNo = :docNo AND i.docType = :docType");
-        query.setParameter("docNo", id);
-        query.setParameter("docType", docType);
+        Query query = createQuery("i", "i.oscarDocNo = ?1 AND i.docType = ?2");
+        query.setParameter(1, id);
+        query.setParameter(2, docType);
         return getSingleResultOrNull(query);
     }
 }
