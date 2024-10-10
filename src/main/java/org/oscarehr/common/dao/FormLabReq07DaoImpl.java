@@ -41,8 +41,8 @@ public class FormLabReq07DaoImpl extends AbstractDaoImpl<FormLabReq07> implement
     }
 
     public List<FormLabReq07> findCreatinine() {
-        Query q = entityManager.createQuery("select f from FormLabReq07 f where f.creatinine=?");
-        q.setParameter(0, true);
+        Query q = entityManager.createQuery("select f from FormLabReq07 f where f.creatinine=?1");
+        q.setParameter(1, true);
 
         @SuppressWarnings("unchecked")
         List<FormLabReq07> results = q.getResultList();
@@ -51,8 +51,8 @@ public class FormLabReq07DaoImpl extends AbstractDaoImpl<FormLabReq07> implement
     }
 
     public List<FormLabReq07> findAcr() {
-        Query q = entityManager.createQuery("select f from FormLabReq07 f where f.acr=?");
-        q.setParameter(0, true);
+        Query q = entityManager.createQuery("select f from FormLabReq07 f where f.acr=?1");
+        q.setParameter(1, true);
 
         @SuppressWarnings("unchecked")
         List<FormLabReq07> results = q.getResultList();
