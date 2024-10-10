@@ -50,17 +50,17 @@ public class Hsfo2VisitDaoImpl extends AbstractDaoImpl<Hsfo2Visit> implements Hs
 
     public Hsfo2Visit getHsfoVisitById(int id) {
 
-        String sqlCommand = "select x from Hsfo2Visit x where x.id=?";
+        String sqlCommand = "select x from Hsfo2Visit x where x.id=?1";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, id);
+        query.setParameter(1, id);
 
         return getSingleResultOrNull(query);
     }
 
     public List<Hsfo2Visit> getHsfoVisitByDemographicNo(Integer demographic_no) {
-        String sqlCommand = "select x from Hsfo2Visit x where x.demographic_no=? order by x.VisitDate_Id";
+        String sqlCommand = "select x from Hsfo2Visit x where x.demographic_no=?1 order by x.VisitDate_Id";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, demographic_no);
+        query.setParameter(1, demographic_no);
 
         @SuppressWarnings("unchecked")
         List<Hsfo2Visit> results = query.getResultList();
@@ -70,9 +70,9 @@ public class Hsfo2VisitDaoImpl extends AbstractDaoImpl<Hsfo2Visit> implements Hs
 
 
     public List<Hsfo2Visit> getLockedVisitByDemographicNo(String demographic_no) {
-        String sqlCommand = "select x from Hsfo2Visit x where x.locked=true and x.demographic_no=? order by x.VisitDate_Id";
+        String sqlCommand = "select x from Hsfo2Visit x where x.locked=true and x.demographic_no=?1 order by x.VisitDate_Id";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, demographic_no);
+        query.setParameter(1, demographic_no);
 
         @SuppressWarnings("unchecked")
         List<Hsfo2Visit> results = query.getResultList();
@@ -82,9 +82,9 @@ public class Hsfo2VisitDaoImpl extends AbstractDaoImpl<Hsfo2Visit> implements Hs
 
 
     public List<Hsfo2Visit> getVisitRecordByPatientId(String patientId) {
-        String sqlCommand = "select x FROM Hsfo2Visit x where x.id in (SELECT max(y.id) FROM Hsfo2Visit y WHERE y.Patient_Id = ? group by y.VisitDate_Id)";
+        String sqlCommand = "select x FROM Hsfo2Visit x where x.id in (SELECT max(y.id) FROM Hsfo2Visit y WHERE y.Patient_Id = ?1 group by y.VisitDate_Id)";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, patientId);
+        query.setParameter(1, patientId);
 
         @SuppressWarnings("unchecked")
         List<Hsfo2Visit> results = query.getResultList();
@@ -132,16 +132,16 @@ public class Hsfo2VisitDaoImpl extends AbstractDaoImpl<Hsfo2Visit> implements Hs
     }
 
     public Hsfo2Visit getFirstVisitRecordForThePatient(String patientId) {
-        String sqlCommand = "select * FROM form_hsfo2_visit x WHERE x.Patient_Id=? order by x.id ASC";
+        String sqlCommand = "select * FROM form_hsfo2_visit x WHERE x.Patient_Id=?1 order by x.id ASC";
         Query query = entityManager.createNativeQuery(sqlCommand, modelClass);
         query.setParameter(1, patientId);
         return getSingleResultOrNull(query);
     }
 
     public Hsfo2Visit getPatientBaseLineVisitData(String patientId) {
-        String sqlCommand = "select x FROM Hsfo2Visit x WHERE x.Patient_Id = ? and x.lastBaseLineRecord = 1";
+        String sqlCommand = "select x FROM Hsfo2Visit x WHERE x.Patient_Id = ?1 and x.lastBaseLineRecord = 1";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, patientId);
+        query.setParameter(1, patientId);
         return getSingleResultOrNull(query);
     }
 
