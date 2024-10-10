@@ -45,29 +45,29 @@ public class DiagnosticCodeDaoImpl extends AbstractDaoImpl<DiagnosticCode> imple
 
 
     public List<DiagnosticCode> findByDiagnosticCode(String diagnosticCode) {
-        String sql = "select x from DiagnosticCode x where x.diagnosticCode=?";
+        String sql = "select x from DiagnosticCode x where x.diagnosticCode=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, diagnosticCode);
+        query.setParameter(1, diagnosticCode);
 
         List<DiagnosticCode> results = query.getResultList();
         return results;
     }
 
     public List<DiagnosticCode> findByDiagnosticCodeAndRegion(String diagnosticCode, String region) {
-        String sql = "select x from DiagnosticCode x where x.diagnosticCode=? and x.region=?";
+        String sql = "select x from DiagnosticCode x where x.diagnosticCode=?1 and x.region=?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, diagnosticCode);
-        query.setParameter(1, region);
+        query.setParameter(1, diagnosticCode);
+        query.setParameter(2, region);
 
         List<DiagnosticCode> results = query.getResultList();
         return results;
     }
 
     public List<DiagnosticCode> search(String searchString) {
-        String sql = "select x from DiagnosticCode x where x.status like 'A' and x.diagnosticCode like ? or x.description like ? order by x.diagnosticCode";
+        String sql = "select x from DiagnosticCode x where x.status like 'A' and x.diagnosticCode like ?1 or x.description like ?2 order by x.diagnosticCode";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, "%" + searchString + "%");
         query.setParameter(1, "%" + searchString + "%");
+        query.setParameter(2, "%" + searchString + "%");
 
         List<DiagnosticCode> results = query.getResultList();
         if (results == null) {
@@ -78,14 +78,14 @@ public class DiagnosticCodeDaoImpl extends AbstractDaoImpl<DiagnosticCode> imple
     }
 
     public List<DiagnosticCode> newSearch(String a, String b, String c, String d, String e, String f) {
-        String sql = "select x from DiagnosticCode x where x.diagnosticCode like ? or x.diagnosticCode like ? or x.diagnosticCode like ? or x.description like ? or x.description like ? or x.description like ?";
+        String sql = "select x from DiagnosticCode x where x.diagnosticCode like ?1 or x.diagnosticCode like ?2 or x.diagnosticCode like ?3 or x.description like ?4 or x.description like ?5 or x.description like ?6";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, a);
-        query.setParameter(1, b);
-        query.setParameter(2, c);
-        query.setParameter(3, d);
-        query.setParameter(4, e);
-        query.setParameter(5, f);
+        query.setParameter(1, a);
+        query.setParameter(2, b);
+        query.setParameter(3, c);
+        query.setParameter(4, d);
+        query.setParameter(5, e);
+        query.setParameter(6, f);
 
 
         List<DiagnosticCode> results = query.getResultList();
@@ -93,9 +93,9 @@ public class DiagnosticCodeDaoImpl extends AbstractDaoImpl<DiagnosticCode> imple
     }
 
     public List<DiagnosticCode> searchCode(String code) {
-        String sql = "select x from DiagnosticCode x where x.diagnosticCode like ?";
+        String sql = "select x from DiagnosticCode x where x.diagnosticCode like ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, code);
+        query.setParameter(1, code);
 
 
         List<DiagnosticCode> results = query.getResultList();
@@ -103,17 +103,17 @@ public class DiagnosticCodeDaoImpl extends AbstractDaoImpl<DiagnosticCode> imple
     }
 
     public List<DiagnosticCode> searchText(String description) {
-        String sql = "select x from DiagnosticCode x where x.description like ?";
+        String sql = "select x from DiagnosticCode x where x.description like ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, "%" + description + "%");
+        query.setParameter(1, "%" + description + "%");
 
         List<DiagnosticCode> results = query.getResultList();
         return results;
     }
 
     public List<DiagnosticCode> getByDxCode(String dxCode) {
-        Query query = entityManager.createQuery("select bdx from DiagnosticCode bdx where bdx.diagnosticCode = ?");
-        query.setParameter(0, dxCode);
+        Query query = entityManager.createQuery("select bdx from DiagnosticCode bdx where bdx.diagnosticCode = ?1");
+        query.setParameter(1, dxCode);
 
         List<DiagnosticCode> results = query.getResultList();
         return results;
