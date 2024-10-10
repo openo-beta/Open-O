@@ -43,8 +43,8 @@ public class CtlBillingTypeDaoImpl extends AbstractDaoImpl<CtlBillingType> imple
 
     @Override
     public List<CtlBillingType> findByServiceType(String serviceType) {
-        Query query = entityManager.createQuery("select b from CtlBillingType b where b.id like ?");
-        query.setParameter(0, serviceType);
+        Query query = entityManager.createQuery("select b from CtlBillingType b where b.id like ?1");
+        query.setParameter(1, serviceType);
 
         @SuppressWarnings("unchecked")
         List<CtlBillingType> results = query.getResultList();
