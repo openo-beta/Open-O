@@ -43,16 +43,16 @@ public class JointAdmissionDaoImpl extends AbstractDaoImpl<JointAdmission> imple
     }
 
     public List<JointAdmission> getSpouseAndDependents(Integer clientId) {
-        Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.headClientId=?");
-        query.setParameter(0, clientId);
+        Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.headClientId=?1");
+        query.setParameter(1, clientId);
         @SuppressWarnings("unchecked")
         List<JointAdmission> results = query.getResultList();
         return results;
     }
 
     public JointAdmission getJointAdmission(Integer clientId) {
-        Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.clientId=?");
-        query.setParameter(0, clientId);
+        Query query = entityManager.createQuery("SELECT x FROM JointAdmission x WHERE x.archived=0 and x.clientId=?1");
+        query.setParameter(1, clientId);
         @SuppressWarnings("unchecked")
         List<JointAdmission> results = query.getResultList();
 
