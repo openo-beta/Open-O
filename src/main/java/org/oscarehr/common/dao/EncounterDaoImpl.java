@@ -42,8 +42,8 @@ public class EncounterDaoImpl extends AbstractDaoImpl<Encounter> implements Enco
     }
 
     public List<Encounter> findByDemographicNo(Integer demographicNo) {
-        Query q = entityManager.createQuery("select e from Encounter e where e.demographicNo = ? order by e.encounterDate desc, e.encounterTime desc");
-        q.setParameter(0, demographicNo);
+        Query q = entityManager.createQuery("select e from Encounter e where e.demographicNo = ?1 order by e.encounterDate desc, e.encounterTime desc");
+        q.setParameter(1, demographicNo);
 
         @SuppressWarnings("unchecked")
         List<Encounter> results = q.getResultList();
