@@ -43,8 +43,8 @@ public class CtlDocumentDaoImpl extends AbstractDaoImpl<CtlDocument> implements 
 
     @Override
     public CtlDocument getCtrlDocument(Integer docId) {
-        Query query = entityManager.createQuery("select x from CtlDocument x where x.id.documentNo=?");
-        query.setParameter(0, docId);
+        Query query = entityManager.createQuery("select x from CtlDocument x where x.id.documentNo=?1");
+        query.setParameter(1, docId);
 
         return (getSingleResultOrNull(query));
     }
@@ -52,9 +52,9 @@ public class CtlDocumentDaoImpl extends AbstractDaoImpl<CtlDocument> implements 
     @Override
     public List<CtlDocument> findByDocumentNoAndModule(Integer ctlDocNo, String module) {
         Query query = entityManager
-                .createQuery("select x from CtlDocument x where x.id.documentNo=? and x.id.module = ?");
-        query.setParameter(0, ctlDocNo);
-        query.setParameter(1, module);
+                .createQuery("select x from CtlDocument x where x.id.documentNo=?1 and x.id.module = ?2");
+        query.setParameter(1, ctlDocNo);
+        query.setParameter(2, module);
 
         @SuppressWarnings("unchecked")
         List<CtlDocument> cList = query.getResultList();
