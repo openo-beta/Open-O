@@ -43,8 +43,8 @@ public class FileUploadCheckDaoImpl extends AbstractDaoImpl<FileUploadCheck> imp
 
     @SuppressWarnings("unchecked")
     public List<FileUploadCheck> findByMd5Sum(String md5sum) {
-        Query query = createQuery("c", "c.md5sum = :md5sum");
-        query.setParameter("md5sum", md5sum);
+        Query query = createQuery("c", "c.md5sum = ?1");
+        query.setParameter(1, md5sum);
         return query.getResultList();
     }
 }
