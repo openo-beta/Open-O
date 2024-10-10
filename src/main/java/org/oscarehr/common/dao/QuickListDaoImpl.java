@@ -62,10 +62,10 @@ public class QuickListDaoImpl extends AbstractDaoImpl<QuickList> implements Quic
     @SuppressWarnings("unchecked")
     @Override
     public List<QuickList> findByNameResearchCodeAndCodingSystem(String quickListName, String researchCode, String codingSystem) {
-        Query query = entityManager.createQuery("from QuickList q where q.quickListName = :qlName AND q.dxResearchCode = :rc AND q.codingSystem = :cs");
-        query.setParameter("qlName", quickListName);
-        query.setParameter("rc", researchCode);
-        query.setParameter("cs", codingSystem);
+        Query query = entityManager.createQuery("from QuickList q where q.quickListName = ?1 AND q.dxResearchCode = ?2 AND q.codingSystem = ?3");
+        query.setParameter(1, quickListName);
+        query.setParameter(2, researchCode);
+        query.setParameter(3, codingSystem);
         return query.getResultList();
     }
 
@@ -74,11 +74,11 @@ public class QuickListDaoImpl extends AbstractDaoImpl<QuickList> implements Quic
     public List<QuickList> findByCodingSystem(String codingSystem) {
         String csQuery = "";
         if (codingSystem != null) {
-            csQuery = " WHERE ql.codingSystem = :cs";
+            csQuery = " WHERE ql.codingSystem = ?1";
         }
         Query query = entityManager.createQuery("select ql from QuickList ql " + csQuery + " GROUP BY ql.quickListName");
         if (codingSystem != null) {
-            query.setParameter("cs", codingSystem);
+            query.setParameter(1, codingSystem);
         }
         return query.getResultList();
     }
@@ -88,10 +88,13 @@ public class QuickListDaoImpl extends AbstractDaoImpl<QuickList> implements Quic
     @Override
     public List<Object[]> findResearchCodeAndCodingSystemDescriptionByCodingSystem(String codingSystem, String quickListName) {
         try {
-            String sql = "Select q.dxResearchCode, c.description FROM quickList q, " + codingSystem
-                    + " c where codingSystem = '" + codingSystem + "' and quickListName='" + quickListName + "' AND c." + codingSystem
+            // Cannot set parameter to table column name ("c."+ codingSystem).
+            String sql = "Select q.dxResearchCode, c.description FROM quickList q, ?1 c where codingSystem = ?2 and quickListName=?3 AND c." + codingSystem
                     + " = q.dxResearchCode order by c.description";
             Query query = entityManager.createNativeQuery(sql);
+            query.setParameter(1, codingSystem);
+            query.setParameter(2, codingSystem);
+            query.setParameter(3, quickListName);
             return query.getResultList();
         } catch (Exception e) {
             // TODO replace when test ignores are merged

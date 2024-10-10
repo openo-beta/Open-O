@@ -58,8 +58,8 @@ public class QueueDocumentLinkDaoImpl extends AbstractDaoImpl<QueueDocumentLink>
 
     @Override
     public List<QueueDocumentLink> getActiveQueueDocLink() {
-        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where q.status=?");
-        query.setParameter(0, "A");
+        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where q.status=?1");
+        query.setParameter(1, "A");
 
         @SuppressWarnings("unchecked")
         List<QueueDocumentLink> queues = query.getResultList();
@@ -69,8 +69,8 @@ public class QueueDocumentLinkDaoImpl extends AbstractDaoImpl<QueueDocumentLink>
 
     @Override
     public List<QueueDocumentLink> getQueueFromDocument(Integer docId) {
-        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where q.docId=?");
-        query.setParameter(0, docId);
+        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where q.docId=?1");
+        query.setParameter(1, docId);
 
         @SuppressWarnings("unchecked")
         List<QueueDocumentLink> queues = query.getResultList();
@@ -80,8 +80,8 @@ public class QueueDocumentLinkDaoImpl extends AbstractDaoImpl<QueueDocumentLink>
 
     @Override
     public List<QueueDocumentLink> getDocumentFromQueue(Integer qId) {
-        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where queueId=?");
-        query.setParameter(0, qId);
+        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where queueId=?1");
+        query.setParameter(1, qId);
 
         @SuppressWarnings("unchecked")
         List<QueueDocumentLink> queues = query.getResultList();
@@ -91,9 +91,9 @@ public class QueueDocumentLinkDaoImpl extends AbstractDaoImpl<QueueDocumentLink>
 
     @Override
     public boolean hasQueueBeenLinkedWithDocument(Integer dId, Integer qId) {
-        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where q.docId=? and q.queueId=?");
-        query.setParameter(0, dId);
-        query.setParameter(1, qId);
+        Query query = entityManager.createQuery("SELECT q from QueueDocumentLink q where q.docId=?1 and q.queueId=?2");
+        query.setParameter(1, dId);
+        query.setParameter(2, qId);
         @SuppressWarnings("unchecked")
         List<QueueDocumentLink> queues = query.getResultList();
 
