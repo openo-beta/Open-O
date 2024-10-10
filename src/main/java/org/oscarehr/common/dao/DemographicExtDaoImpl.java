@@ -55,8 +55,8 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
         }
 
         Query query = entityManager
-                .createQuery("SELECT d from DemographicExt d where d.demographicNo=? order by d.dateCreated DESC");
-        query.setParameter(0, demographicNo);
+                .createQuery("SELECT d from DemographicExt d where d.demographicNo=?1 order by d.dateCreated");
+        query.setParameter(1, demographicNo);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> results = query.getResultList();
@@ -85,9 +85,9 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
         }
 
         Query query = entityManager.createQuery(
-                "SELECT d from DemographicExt d where d.demographicNo=? and d.key = ? order by d.dateCreated DESC");
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, key);
+                "SELECT d from DemographicExt d where d.demographicNo=?1 and d.key = ?2 order by d.dateCreated DESC");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, key);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> results = query.getResultList();
@@ -112,9 +112,9 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
     public List<DemographicExt> getDemographicExtByKeyAndValue(String key, String value) {
 
         Query query = entityManager.createQuery(
-                "SELECT d from DemographicExt d where d.key = ? and d.value=? order by d.dateCreated DESC");
-        query.setParameter(0, key);
-        query.setParameter(1, value);
+                "SELECT d from DemographicExt d where d.key = ?1 and d.value=?2 order by d.dateCreated DESC");
+        query.setParameter(1, key);
+        query.setParameter(2, value);
         return query.getResultList();
     }
 
@@ -130,9 +130,9 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
         }
 
         Query query = entityManager.createQuery(
-                "SELECT d from DemographicExt d where d.demographicNo=? and d.key = ? order by d.dateCreated DESC, d.id DESC");
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, key);
+                "SELECT d from DemographicExt d where d.demographicNo=?1 and d.key = ?2 order by d.dateCreated DESC, d.id DESC");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, key);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> results = query.getResultList();
@@ -217,8 +217,8 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
     public Map<String, String> getAllValuesForDemo(Integer demo) {
         Map<String, String> retval = new HashMap<String, String>();
         Query query = entityManager
-                .createQuery("SELECT d from DemographicExt d where d.demographicNo=? order by d.dateCreated");
-        query.setParameter(0, demo);
+                .createQuery("SELECT d from DemographicExt d where d.demographicNo=?1 order by d.dateCreated");
+        query.setParameter(1, demo);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> demographicExts = query.getResultList();
@@ -309,9 +309,9 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
     @Override
     public List<Integer> findDemographicIdsByKeyVal(String key, String val) {
         Query query = entityManager
-                .createQuery("SELECT distinct d.demographicNo from DemographicExt d where d.key=? and d.value=?");
-        query.setParameter(0, key);
-        query.setParameter(1, val);
+                .createQuery("SELECT distinct d.demographicNo from DemographicExt d where d.key=?1 and d.value=?2");
+        query.setParameter(1, key);
+        query.setParameter(2, val);
 
         return query.getResultList();
     }
@@ -338,10 +338,10 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
             final String providerNumber,
             final String lastNameRegex) {
         String sql = "select d.demographic_no from demographic d, demographicExt e "
-                + "where e.key_val = ? "
-                + "and e.value = ? "
+                + "where e.key_val = ?1 "
+                + "and e.value = ?2 "
                 + "and d.demographic_no = e.demographic_no "
-                + "and d.last_name REGEXP ?";
+                + "and d.last_name REGEXP ?3";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, key.getKey());
         query.setParameter(2, providerNumber);
