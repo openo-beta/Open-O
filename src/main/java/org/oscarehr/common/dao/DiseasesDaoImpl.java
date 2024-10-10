@@ -42,9 +42,9 @@ public class DiseasesDaoImpl extends AbstractDaoImpl<Diseases> implements Diseas
 
     @Override
     public List<Diseases> findByDemographicNo(int demographicNo) {
-        String sql = "select x from Diseases x where x.demographicNo=?";
+        String sql = "select x from Diseases x where x.demographicNo=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicNo);
+        query.setParameter(1, demographicNo);
         @SuppressWarnings("unchecked")
         List<Diseases> results = query.getResultList();
         return results;
@@ -52,9 +52,9 @@ public class DiseasesDaoImpl extends AbstractDaoImpl<Diseases> implements Diseas
 
     @Override
     public List<Diseases> findByIcd9(String icd9) {
-        String sql = "select x from Diseases x where x.icd9Entry=?";
+        String sql = "select x from Diseases x where x.icd9Entry=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, icd9);
+        query.setParameter(1, icd9);
         @SuppressWarnings("unchecked")
         List<Diseases> results = query.getResultList();
         return results;
