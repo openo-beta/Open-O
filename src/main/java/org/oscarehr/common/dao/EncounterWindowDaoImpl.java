@@ -41,8 +41,8 @@ public class EncounterWindowDaoImpl extends AbstractDaoImpl<EncounterWindow> imp
 
     @Override
     public EncounterWindow findByProvider(String providerNo) {
-        Query query = createQuery("ew", "ew.providerNo = :providerNo");
-        query.setParameter("providerNo", providerNo);
+        Query query = createQuery("ew", "ew.providerNo = ?1");
+        query.setParameter(1, providerNo);
         return getSingleResultOrNull(query);
     }
 }
