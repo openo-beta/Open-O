@@ -43,11 +43,11 @@ public class EFormDocsDaoImpl extends AbstractDaoImpl<EFormDocs> implements EFor
     }
 
     public List<EFormDocs> findByFdidIdDocNoDocType(Integer fdid, Integer documentNo, String docType) {
-        String sql = "select x from EFormDocs x where x.fdid=? and x.documentNo=? and x.docType=? and x.deleted is NULL";
+        String sql = "select x from EFormDocs x where x.fdid=?1 and x.documentNo=?2 and x.docType=?3 and x.deleted is NULL";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, fdid);
-        query.setParameter(1, documentNo);
-        query.setParameter(2, docType);
+        query.setParameter(1, fdid);
+        query.setParameter(2, documentNo);
+        query.setParameter(3, docType);
 
         List<EFormDocs> results = query.getResultList();
         return results;
@@ -63,9 +63,9 @@ public class EFormDocsDaoImpl extends AbstractDaoImpl<EFormDocs> implements EFor
     }
 
     public List<EFormDocs> findByFdid(Integer fdid) {
-        String sql = "select x from EFormDocs x where x.fdid=? and x.deleted is NULL";
+        String sql = "select x from EFormDocs x where x.fdid=?1 and x.deleted is NULL";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, fdid);
+        query.setParameter(1, fdid);
 
         List<EFormDocs> results = query.getResultList();
         return results;
