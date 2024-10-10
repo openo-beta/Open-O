@@ -136,12 +136,12 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
     @Override
     public List<FaxJob> getReadyToSendFaxes(String number) {
         Query query = entityManager.createQuery(
-                "select job from FaxJob job where job.status = :status and job.fax_line = :number and job.jobId is null");
+                "select job from FaxJob job where job.status = ?1 and job.fax_line = ?2 and job.jobId is null");
 
         // these faxes are "waiting" to be sent
         // they become "sent" after they clear the api
-        query.setParameter("status", FaxJob.STATUS.WAITING);
-        query.setParameter("number", number);
+        query.setParameter(1, FaxJob.STATUS.WAITING);
+        query.setParameter(2, number);
 
         return query.getResultList();
     }
@@ -150,10 +150,10 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
     @Override
     public List<FaxJob> getInprogressFaxesByJobId() {
         Query query = entityManager.createQuery(
-                "select job from FaxJob job where (job.status = :status or job.status = :status2) and job.jobId is not null");
+                "select job from FaxJob job where (job.status = ?1 or job.status = ?2) and job.jobId is not null");
 
-        query.setParameter("status", FaxJob.STATUS.SENT);
-        query.setParameter("status2", FaxJob.STATUS.WAITING);
+        query.setParameter(1, FaxJob.STATUS.SENT);
+        query.setParameter(2, FaxJob.STATUS.WAITING);
 
         List<FaxJob> faxJobList = query.getResultList();
 
