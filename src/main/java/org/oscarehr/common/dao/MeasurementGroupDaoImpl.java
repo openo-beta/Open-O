@@ -83,10 +83,10 @@ public class MeasurementGroupDaoImpl extends AbstractDaoImpl<MeasurementGroup> i
         if (orderById) {
             orderBy = " ORDER BY x.id ASC";
         }
-        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?1";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, name);
+        query.setParameter(1, name);
 
         List<MeasurementGroup> results = query.getResultList();
 
