@@ -41,9 +41,9 @@ public class Hsfo2PatientDaoImpl extends AbstractDaoImpl<Hsfo2Patient> implement
     }
 
     public Hsfo2Patient getHsfoPatientByPatientId(String patientId) {
-        String sqlCommand = "select x from Hsfo2Patient x where x.Patient_Id=? order by x.id desc ";
+        String sqlCommand = "select x from Hsfo2Patient x where x.Patient_Id=?1 order by x.id desc ";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, patientId);
+        query.setParameter(1, patientId);
         List<Hsfo2Patient> results = query.getResultList();
         if (results != null && results.size() > 0)
             return results.get(0);
