@@ -46,8 +46,8 @@ public class Icd9DaoImpl extends AbstractCodeSystemDaoImpl<Icd9> implements Icd9
     }
 
     public List<Icd9> getIcd9Code(String icdCode) {
-        Query query = entityManager.createQuery("select i from Icd9 i where i.icd9=?");
-        query.setParameter(0, icdCode);
+        Query query = entityManager.createQuery("select i from Icd9 i where i.icd9=?1");
+        query.setParameter(1, icdCode);
 
         @SuppressWarnings("unchecked")
         List<Icd9> results = query.getResultList();
@@ -57,9 +57,9 @@ public class Icd9DaoImpl extends AbstractCodeSystemDaoImpl<Icd9> implements Icd9
 
 
     public List<Icd9> getIcd9(String query) {
-        Query q = entityManager.createQuery("select i from Icd9 i where i.icd9 like ? or i.description like ? order by i.description");
-        q.setParameter(0, "%" + query + "%");
+        Query q = entityManager.createQuery("select i from Icd9 i where i.icd9 like ?1 or i.description like ?2 order by i.description");
         q.setParameter(1, "%" + query + "%");
+        q.setParameter(2, "%" + query + "%");
 
         @SuppressWarnings("unchecked")
         List<Icd9> results = q.getResultList();
