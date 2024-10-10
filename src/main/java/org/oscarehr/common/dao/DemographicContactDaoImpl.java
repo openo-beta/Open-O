@@ -46,9 +46,9 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
 
     @Override
     public List<DemographicContact> findByDemographicNo(int demographicNo) {
-        String sql = "select x from " + this.modelClass.getName() + " x where x.demographicNo=? and x.deleted=false";
+        String sql = "select x from " + this.modelClass.getName() + " x where x.demographicNo=?1 and x.deleted=false";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicNo);
+        query.setParameter(1, demographicNo);
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
         return dContacts;
@@ -57,9 +57,9 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
     @Override
     public List<DemographicContact> findActiveByDemographicNo(int demographicNo) {
         String sql = "select x from " + this.modelClass.getName()
-                + " x where x.demographicNo=? and x.deleted=false and x.active=1";
+                + " x where x.demographicNo=?1 and x.deleted=false and x.active=1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicNo);
+        query.setParameter(1, demographicNo);
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
         return dContacts;
@@ -68,10 +68,10 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
     @Override
     public List<DemographicContact> findByDemographicNoAndCategory(int demographicNo, String category) {
         String sql = "select x from " + this.modelClass.getName()
-                + " x where x.demographicNo=? and x.category=? and x.deleted=false";
+                + " x where x.demographicNo=?1 and x.category=?2 and x.deleted=false";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, category);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, category);
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
         return dContacts;
@@ -80,10 +80,10 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
     @Override
     public List<DemographicContact> find(int demographicNo, int contactId) {
         String sql = "select x from " + this.modelClass.getName()
-                + " x where x.demographicNo=? and x.contactId = ? and x.deleted=false";
+                + " x where x.demographicNo=?1 and x.contactId = ?2 and x.deleted=false";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, new Integer(contactId).toString());
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, new Integer(contactId).toString());
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
         return dContacts;
@@ -92,11 +92,11 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
     @Override
     public List<DemographicContact> findAllByContactIdAndCategoryAndType(int contactId, String category, int type) {
         String sql = "select x from " + this.modelClass.getName()
-                + " x where x.contactId = ? and x.category = ? and x.type = ?";
+                + " x where x.contactId = ?1 and x.category = ?2 and x.type = ?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, new Integer(contactId).toString());
-        query.setParameter(1, category);
-        query.setParameter(2, type);
+        query.setParameter(1, new Integer(contactId).toString());
+        query.setParameter(2, category);
+        query.setParameter(3, type);
 
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
@@ -107,11 +107,11 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
     public List<DemographicContact> findAllByDemographicNoAndCategoryAndType(int demographicNo, String category,
                                                                              int type) {
         String sql = "select x from " + this.modelClass.getName()
-                + " x where x.demographicNo = ? and x.category = ? and x.type = ? and x.active=1 and deleted=false";
+                + " x where x.demographicNo = ?1 and x.category = ?2 and x.type = ?3 and x.active=1 and deleted=false";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, category);
-        query.setParameter(2, type);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, category);
+        query.setParameter(3, type);
 
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
@@ -124,9 +124,9 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
     @Override
     public List<DemographicContact> findSDMByDemographicNo(int demographicNo) {
         String sql = "select x from " + this.modelClass.getName()
-                + " x where x.demographicNo = ? and x.sdm = 'true'  and x.active=1 and deleted=false";
+                + " x where x.demographicNo = ?1 and x.sdm = 'true'  and x.active=1 and deleted=false";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicNo);
+        query.setParameter(1, demographicNo);
 
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
