@@ -19,10 +19,10 @@ public class EReferAttachmentDaoImpl extends AbstractDaoImpl<EReferAttachment> i
     public EReferAttachment getRecentByDemographic(Integer demographicNo, Date expiry) {
         EReferAttachment eReferAttachment = null;
 
-        String sql = "SELECT e FROM " + modelClass.getSimpleName() + " e WHERE e.archived = FALSE AND e.demographicNo = :demographicNo AND e.created > :expiry";
+        String sql = "SELECT e FROM " + modelClass.getSimpleName() + " e WHERE e.archived = FALSE AND e.demographicNo = ?1 AND e.created > ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("expiry", expiry);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, expiry);
 
         List<EReferAttachment> eReferAttachments = query.getResultList();
 
