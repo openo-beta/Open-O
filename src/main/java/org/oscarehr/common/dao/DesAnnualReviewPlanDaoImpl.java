@@ -45,11 +45,11 @@ public class DesAnnualReviewPlanDaoImpl extends AbstractDaoImpl<DesAnnualReviewP
     @Override
     public DesAnnualReviewPlan search(Integer formNo, Integer demographicNo) {
 
-        String sqlCommand = "select x from DesAnnualReviewPlan x where x.formNo <= ? and x.demographicNo=? order by x.formNo DESC, x.desDate DESC, x.desTime DESC";
+        String sqlCommand = "select x from DesAnnualReviewPlan x where x.formNo <= ?1 and x.demographicNo=?2 order by x.formNo DESC, x.desDate DESC, x.desTime DESC";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(0, formNo);
-        query.setParameter(1, demographicNo);
+        query.setParameter(1, formNo);
+        query.setParameter(2, demographicNo);
 
         @SuppressWarnings("unchecked")
         List<DesAnnualReviewPlan> results = query.getResultList();
