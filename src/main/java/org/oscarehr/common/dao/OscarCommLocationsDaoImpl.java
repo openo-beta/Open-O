@@ -45,8 +45,8 @@ public class OscarCommLocationsDaoImpl extends AbstractDaoImpl<OscarCommLocation
 
     @Override
     public List<OscarCommLocations> findByCurrent1(int current1) {
-        Query q = entityManager.createQuery("SELECT x FROM OscarCommLocations x WHERE x.current1=?");
-        q.setParameter(0, current1);
+        Query q = entityManager.createQuery("SELECT x FROM OscarCommLocations x WHERE x.current1=?1");
+        q.setParameter(1, current1);
 
         @SuppressWarnings("unchecked")
         List<OscarCommLocations> results = q.getResultList();
@@ -58,9 +58,10 @@ public class OscarCommLocationsDaoImpl extends AbstractDaoImpl<OscarCommLocation
     @NativeSql({"messagetbl", "oscarcommlocations"})
     @Override
     public List<Object[]> findFormLocationByMesssageId(String messId) {
-        String sql = "select ocl.locationDesc, mess.thesubject from messagetbl mess, oscarcommlocations ocl where mess.sentByLocation = ocl.locationId and mess.messageid = '"
-                + messId + "' ";
+        String sql = "select ocl.locationDesc, mess.thesubject from messagetbl mess, oscarcommlocations ocl where"
+                + "mess.sentByLocation = ocl.locationId and mess.messageid = ?1 ";
         Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, messId);
         return query.getResultList();
     }
 
@@ -69,8 +70,9 @@ public class OscarCommLocationsDaoImpl extends AbstractDaoImpl<OscarCommLocation
     public List<Object[]> findAttachmentsByMessageId(String messageId) {
         String sql = "SELECT m.thesubject, m.theime, m.thedate, m.attachment, m.themessage, m.sentBy, ocl.locationDesc  "
                 + "FROM messagetbl m, oscarcommlocations ocl where m.sentByLocation = ocl.locationId and "
-                + " messageid = '" + messageId + "'";
+                + " messageid = ?1";
         Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, messageId);
         return query.getResultList();
     }
 }

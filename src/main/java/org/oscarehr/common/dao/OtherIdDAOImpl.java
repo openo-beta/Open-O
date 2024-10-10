@@ -56,11 +56,11 @@ public class OtherIdDAOImpl extends AbstractDaoImpl<OtherId> implements OtherIdD
 
     @Override
     public OtherId getOtherId(Integer tableName, String tableId, String otherKey) {
-        Query query = entityManager.createQuery("select o from OtherId o where o.tableName=? and o.tableId=? and o.otherKey=? and o.deleted=? order by o.id desc");
-        query.setParameter(0, tableName);
-        query.setParameter(1, tableId);
-        query.setParameter(2, otherKey);
-        query.setParameter(3, false);
+        Query query = entityManager.createQuery("select o from OtherId o where o.tableName=?1 and o.tableId=?2 and o.otherKey=?3 and o.deleted=?4 order by o.id desc");
+        query.setParameter(1, tableName);
+        query.setParameter(2, tableId);
+        query.setParameter(3, otherKey);
+        query.setParameter(4, false);
 
         @SuppressWarnings("unchecked")
         List<OtherId> otherIdList = query.getResultList();
@@ -70,11 +70,11 @@ public class OtherIdDAOImpl extends AbstractDaoImpl<OtherId> implements OtherIdD
 
     @Override
     public OtherId searchTable(Integer tableName, String otherKey, String otherValue) {
-        Query query = entityManager.createQuery("select o from OtherId o where o.tableName=? and o.otherKey=? and o.otherId=? and o.deleted=? order by o.id desc");
-        query.setParameter(0, tableName);
-        query.setParameter(1, otherKey);
-        query.setParameter(2, otherValue);
-        query.setParameter(3, false);
+        Query query = entityManager.createQuery("select o from OtherId o where o.tableName=?1 and o.otherKey=?2 and o.otherId=?3 and o.deleted=?4 order by o.id desc");
+        query.setParameter(1, tableName);
+        query.setParameter(2, otherKey);
+        query.setParameter(3, otherValue);
+        query.setParameter(4, false);
 
         @SuppressWarnings("unchecked")
         List<OtherId> otherIdList = query.getResultList();

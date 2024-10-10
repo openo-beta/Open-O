@@ -44,10 +44,10 @@ public class OscarAnnotationDaoImpl extends AbstractDaoImpl<OscarAnnotation> imp
 
     @Override
     public OscarAnnotation getAnnotations(String demoNo, String tableName, Long tableId) {
-        Query query = entityManager.createQuery("select a from OscarAnnotation a where a.demographicNo=? and a.tableName=? and a.tableId=?");
-        query.setParameter(0, demoNo);
-        query.setParameter(1, tableName);
-        query.setParameter(2, tableId);
+        Query query = entityManager.createQuery("select a from OscarAnnotation a where a.demographicNo=?1 and a.tableName=?2 and a.tableId=?3");
+        query.setParameter(1, demoNo);
+        query.setParameter(2, tableName);
+        query.setParameter(3, tableId);
         @SuppressWarnings("unchecked")
         List<OscarAnnotation> codeList = query.getResultList();
         if (codeList.size() > 0) {
@@ -67,10 +67,10 @@ public class OscarAnnotationDaoImpl extends AbstractDaoImpl<OscarAnnotation> imp
 
     @Override
     public int getNumberOfNotes(String demoNo, String tableName, Long tableId) {
-        Query query = entityManager.createQuery("select a from OscarAnnotation a where a.demographicNo=? and a.tableName=? and a.tableId=?");
-        query.setParameter(0, demoNo);
-        query.setParameter(1, tableName);
-        query.setParameter(2, tableId);
+        Query query = entityManager.createQuery("select a from OscarAnnotation a where a.demographicNo=?1 and a.tableName=?2 and a.tableId=?3");
+        query.setParameter(1, demoNo);
+        query.setParameter(2, tableName);
+        query.setParameter(3, tableId);
 
         @SuppressWarnings("unchecked")
         List<OscarAnnotation> codeList = query.getResultList();
