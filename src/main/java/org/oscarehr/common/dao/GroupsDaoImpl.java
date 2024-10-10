@@ -45,8 +45,8 @@ public class GroupsDaoImpl extends AbstractDaoImpl<Groups> implements GroupsDao 
     @SuppressWarnings("unchecked")
     @Override
     public List<Groups> findByParentId(int groupId) {
-        Query query = createQuery("g", "g.parentId = :id");
-        query.setParameter("id", groupId);
+        Query query = createQuery("g", "g.parentId = ?1");
+        query.setParameter(1, groupId);
         return query.getResultList();
     }
 
