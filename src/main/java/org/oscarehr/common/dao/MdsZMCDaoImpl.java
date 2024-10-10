@@ -42,11 +42,11 @@ public class MdsZMCDaoImpl extends AbstractDaoImpl<MdsZMC> implements MdsZMCDao 
 
     @Override
     public MdsZMC findByIdAndSetId(Integer id, String setId) {
-        String sql = "FROM MdsZMC zmc WHERE zmc.id = :id " +
-                "AND zmc.setId like :setId";
+        String sql = "FROM MdsZMC zmc WHERE zmc.id = ?1 " +
+                "AND zmc.setId like ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("id", id);
-        query.setParameter("setId", setId);
+        query.setParameter(1, id);
+        query.setParameter(2, setId);
         return getSingleResultOrNull(query);
     }
 }
