@@ -45,10 +45,10 @@ public class LabReportInformationDaoImpl extends AbstractDaoImpl<LabReportInform
     @SuppressWarnings("unchecked")
     public List<Object[]> findReportsByPhysicianId(Integer physicianId) {
         String sql = "FROM LabReportInformation lri, LabPatientPhysicianInfo lpp "
-                + "WHERE lpp.id = :physicianId "
+                + "WHERE lpp.id = ?1 "
                 + "AND lri.id = lpp.labReportInfoId";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("physicianId", physicianId);
+        q.setParameter(1, physicianId);
         return q.getResultList();
     }
 }
