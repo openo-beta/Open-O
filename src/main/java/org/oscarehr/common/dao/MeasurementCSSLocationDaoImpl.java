@@ -50,8 +50,8 @@ public class MeasurementCSSLocationDaoImpl extends AbstractDaoImpl<MeasurementCS
 
     @Override
     public List<MeasurementCSSLocation> findByLocation(String location) {
-        Query q = entityManager.createQuery("select m from MeasurementCSSLocation m where m.location=?");
-        q.setParameter(0, location);
+        Query q = entityManager.createQuery("select m from MeasurementCSSLocation m where m.location=?1");
+        q.setParameter(1, location);
 
         @SuppressWarnings("unchecked")
         List<MeasurementCSSLocation> results = q.getResultList();
