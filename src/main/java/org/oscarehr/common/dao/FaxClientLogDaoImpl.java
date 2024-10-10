@@ -45,10 +45,10 @@ public class FaxClientLogDaoImpl extends AbstractDaoImpl<FaxClientLog> implement
 
     @Override
     public FaxClientLog findClientLogbyFaxId(int faxId) {
-        Query query = entityManager.createQuery("select log from FaxClientLog log where log.faxId = :id");
+        Query query = entityManager.createQuery("select log from FaxClientLog log where log.faxId = ?1");
 
         // faxId is the id for an entry in the Faxes table.
-        query.setParameter("id", faxId);
+        query.setParameter(1, faxId);
 
         return super.getSingleResultOrNull(query);
     }
@@ -72,10 +72,10 @@ public class FaxClientLogDaoImpl extends AbstractDaoImpl<FaxClientLog> implement
 
         // only the most recent entries
         Query query = entityManager.createQuery(
-                "select log from FaxClientLog log where log.requestId = :requestId order by log.startTime desc");
+                "select log from FaxClientLog log where log.requestId = ?1 order by log.startTime desc");
 
         // faxId is the id for an entry in the Faxes table.
-        query.setParameter("requestId", requestId);
+        query.setParameter(1, requestId);
         List<FaxClientLog> results = query.getResultList();
         if (results == null) {
             results = Collections.emptyList();
