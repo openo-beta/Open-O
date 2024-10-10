@@ -44,10 +44,10 @@ public class FrmLabReqPreSetDaoImpl extends AbstractDaoImpl<FrmLabReqPreSet> imp
 
     @Override
     public Properties fillPropertiesByLabType(String labType, Properties prop) {
-        String sql = "select frmPreset from FrmLabReqPreSet frmPreset where labType=? and status=?";
+        String sql = "select frmPreset from FrmLabReqPreSet frmPreset where labType=?1 and status=?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, labType);
-        query.setParameter(1, 1);
+        query.setParameter(1, labType);
+        query.setParameter(2, 1);
 
         @SuppressWarnings("unchecked")
         List<FrmLabReqPreSet> results = query.getResultList();
