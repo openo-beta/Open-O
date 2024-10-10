@@ -42,10 +42,10 @@ public class DSGuidelineDaoImpl extends AbstractDaoImpl<DSGuideline> implements 
 
     @Override
     public DSGuideline findByUUID(String uuid) {
-        String sql = "select c from DSGuideline c where c.uuid = ? and c.status = 'A' order by c.dateStart desc";
+        String sql = "select c from DSGuideline c where c.uuid = ?1 and c.status = 'A' order by c.dateStart desc";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, uuid);
+        query.setParameter(1, uuid);
 
         @SuppressWarnings("unchecked")
         List<DSGuideline> list = query.getResultList();
@@ -59,10 +59,10 @@ public class DSGuidelineDaoImpl extends AbstractDaoImpl<DSGuideline> implements 
 
     @Override
     public List<DSGuideline> getDSGuidelinesByProvider(String providerNo) {
-        String sql = "select c from DSGuideline c, DSGuidelineProviderMapping m where c.uuid = m.guidelineUUID and m.providerNo = ? and c.status = 'A'";
+        String sql = "select c from DSGuideline c, DSGuidelineProviderMapping m where c.uuid = m.guidelineUUID and m.providerNo = ?1 and c.status = 'A'";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, providerNo);
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<DSGuideline> list = query.getResultList();
