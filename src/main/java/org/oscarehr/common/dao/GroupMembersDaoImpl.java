@@ -52,8 +52,8 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
      */
     @Override
     public List<GroupMembers> findRemoteByGroupId(int groupId) {
-        Query q = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.facilityId > 0 AND x.groupId=?");
-        q.setParameter(0, groupId);
+        Query q = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.facilityId > 0 AND x.groupId=?1");
+        q.setParameter(1, groupId);
 
         @SuppressWarnings("unchecked")
         List<GroupMembers> results = q.getResultList();
@@ -69,8 +69,8 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
      */
     @Override
     public List<GroupMembers> findLocalByGroupId(int groupId) {
-        Query q = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.facilityId = 0 AND x.groupId=?");
-        q.setParameter(0, groupId);
+        Query q = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.facilityId = 0 AND x.groupId=?1");
+        q.setParameter(1, groupId);
 
         @SuppressWarnings("unchecked")
         List<GroupMembers> results = q.getResultList();
@@ -80,8 +80,8 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
 
     @Override
     public List<GroupMembers> findByGroupId(int groupId) {
-        Query q = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.groupId=?");
-        q.setParameter(0, groupId);
+        Query q = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.groupId=?1");
+        q.setParameter(1, groupId);
 
         @SuppressWarnings("unchecked")
         List<GroupMembers> results = q.getResultList();
@@ -104,9 +104,9 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
     @Override
     public List<GroupMembers> findByProviderNumberAndFacilityId(String providerNo, Integer facilityId) {
         Query query = entityManager
-                .createQuery("SELECT x FROM GroupMembers x WHERE x.providerNo LIKE ? AND x.facilityId=?");
-        query.setParameter(0, providerNo);
-        query.setParameter(1, facilityId);
+                .createQuery("SELECT x FROM GroupMembers x WHERE x.providerNo LIKE ?1 AND x.facilityId=?2");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, facilityId);
 
         @SuppressWarnings("unchecked")
         List<GroupMembers> results = query.getResultList();
@@ -120,7 +120,7 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
 
     @Override
     public List<GroupMembers> findGroupMember(String providerNo, int groupId) {
-        Query query = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.providerNo LIKE ? AND x.groupId = ?");
+        Query query = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.providerNo LIKE ?1 AND x.groupId = ?2");
         query.setParameter(1, providerNo);
         query.setParameter(2, groupId);
         @SuppressWarnings("unchecked")
@@ -133,8 +133,8 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
 
     @Override
     public List<GroupMembers> findByFacilityId(Integer facilityId) {
-        Query query = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.facilityId=?");
-        query.setParameter(0, facilityId);
+        Query query = entityManager.createQuery("SELECT x FROM GroupMembers x WHERE x.facilityId=?1");
+        query.setParameter(1, facilityId);
 
         @SuppressWarnings("unchecked")
         List<GroupMembers> results = query.getResultList();
@@ -149,7 +149,7 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
     @Override
     public GroupMembers findByIdentity(ContactIdentifier contactIdentifier) {
         Query query = entityManager.createQuery("SELECT x FROM GroupMembers x " +
-                "WHERE x.facilityId=? AND x.providerNo=? AND x.groupId=?");
+                "WHERE x.facilityId=?1 AND x.providerNo=?2 AND x.groupId=?3");
         query.setParameter(1, contactIdentifier.getFacilityId());
         query.setParameter(2, contactIdentifier.getContactId());
         query.setParameter(3, contactIdentifier.getGroupId());
