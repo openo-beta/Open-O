@@ -540,7 +540,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     @Override
     public Integer getLatestFdid(Integer fid, Integer demographicNo) {
         Query query = entityManager.createQuery("select max(x.id) from " + modelClass.getSimpleName()
-                + " x where x.current=1 and x.formId = ? and x.demographicId = ?");
+                + " x where x.current=1 and x.formId = ?1 and x.demographicId = ?2");
         query.setParameter(1, fid);
         query.setParameter(2, demographicNo);
 
@@ -568,7 +568,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     public List<Integer> getDemographicNosMissingVarName(int fid, String varName) {
 
         Query query = entityManager.createNativeQuery(
-                "select distinct d.demographic_no from eform e,eform_data d,eform_values v where e.fid = ? and e.fid = d.fid and d.fdid = v.fdid and d.fdid not in (select distinct d.fdid from eform e,eform_data d,eform_values v where e.fid = d.fid and d.fdid = v.fdid and e.fid=? and v.var_name=?)");
+                "select distinct d.demographic_no from eform e,eform_data d,eform_values v where e.fid = ?1 and e.fid = d.fid and d.fdid = v.fdid and d.fdid not in (select distinct d.fdid from eform e,eform_data d,eform_values v where e.fid = d.fid and d.fdid = v.fdid and e.fid=?2 and v.var_name=?3)");
         query.setParameter(1, fid);
         query.setParameter(2, fid);
         query.setParameter(3, varName);
