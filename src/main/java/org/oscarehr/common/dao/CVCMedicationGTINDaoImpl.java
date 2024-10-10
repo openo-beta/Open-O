@@ -49,8 +49,8 @@ public class CVCMedicationGTINDaoImpl extends AbstractDaoImpl<CVCMedicationGTIN>
 
     @Override
     public List<CVCMedicationGTIN> query(String term) {
-        Query query = entityManager.createQuery("SELECT x FROM CVCMedicationGTIN x WHERE x.gtin = :term");
-        query.setParameter("term", term);
+        Query query = entityManager.createQuery("SELECT x FROM CVCMedicationGTIN x WHERE x.gtin = ?1");
+        query.setParameter(1, term);
         List<CVCMedicationGTIN> results = query.getResultList();
         return results;
     }
