@@ -50,8 +50,8 @@ public class DataExportDaoImpl extends AbstractDaoImpl<DataExport> implements Da
     }
 
     public List<DataExport> findAllByType(String type) {
-        Query query = entityManager.createQuery("select de from DataExport de where de.type = :type order by de.daterun");
-        query = query.setParameter("type", type);
+        Query query = entityManager.createQuery("select de from DataExport de where de.type = ?1 order by de.daterun");
+        query = query.setParameter(1, type);
         @SuppressWarnings("unchecked")
         List<DataExport> list = query.getResultList();
         return list;
