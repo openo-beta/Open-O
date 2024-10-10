@@ -43,9 +43,9 @@ public class DemographicQueryFavouritesDaoImpl extends AbstractDaoImpl<Demograph
 
     @Override
     public List<DemographicQueryFavourite> findByArchived(String archived) {
-        String sql = "select x from DemographicQueryFavourite x where x.archived=? order by x.queryName";
+        String sql = "select x from DemographicQueryFavourite x where x.archived=?1 order by x.queryName";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, archived);
+        query.setParameter(1, archived);
         @SuppressWarnings("unchecked")
         List<DemographicQueryFavourite> results = query.getResultList();
         return results;
