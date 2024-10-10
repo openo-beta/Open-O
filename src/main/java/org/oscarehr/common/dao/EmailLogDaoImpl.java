@@ -33,18 +33,18 @@ public class EmailLogDaoImpl extends AbstractDaoImpl<EmailLog> implements EmailL
     public List<EmailLog> getEmailStatusByDateDemographicSenderStatus(Date dateBegin, Date dateEnd, String demographicNo, String senderEmailAddress, String emailStatus) {
         String hql = "SELECT el FROM EmailLog el JOIN el.emailConfig ec JOIN el.demographic d JOIN el.provider p " +
                 "WHERE 1=1 " +
-                "AND el.demographic.DemographicNo = IFNULL(:demo, el.demographic.DemographicNo) " +
-                "AND el.status = IFNULL(:emailStatus, el.status) " +
-                "AND el.fromEmail = IFNULL(:senderEmailAddress, el.fromEmail) " +
-                "AND DATE(el.timestamp) BETWEEN DATE(:beginDate) AND DATE(:endDate) " +
+                "AND el.demographic.DemographicNo = IFNULL(?1, el.demographic.DemographicNo) " +
+                "AND el.status = IFNULL(?2, el.status) " +
+                "AND el.fromEmail = IFNULL(?3, el.fromEmail) " +
+                "AND DATE(el.timestamp) BETWEEN DATE(?4) AND DATE(?5) " +
                 "ORDER BY el.timestamp DESC";
 
         Query query = entityManager.createQuery(hql);
-        query.setParameter("beginDate", dateBegin);
-        query.setParameter("endDate", dateEnd);
-        query.setParameter("demo", demographicNo);
-        query.setParameter("emailStatus", emailStatus);
-        query.setParameter("senderEmailAddress", senderEmailAddress);
+        query.setParameter(4, dateBegin);
+        query.setParameter(5, dateEnd);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, emailStatus);
+        query.setParameter(3, senderEmailAddress);
 
         return query.getResultList();
     }
