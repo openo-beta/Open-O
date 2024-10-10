@@ -46,9 +46,9 @@ public class FlowSheetDrugDaoImpl extends AbstractDaoImpl<FlowSheetDrug> impleme
     }
 
     public List<FlowSheetDrug> getFlowSheetDrugs(String flowsheet, Integer demographic) {
-        Query query = entityManager.createQuery("SELECT fd FROM FlowSheetDrug fd WHERE fd.flowsheet=? and fd.archived=0 and fd.demographicNo=?");
-        query.setParameter(0, flowsheet);
-        query.setParameter(1, demographic);
+        Query query = entityManager.createQuery("SELECT fd FROM FlowSheetDrug fd WHERE fd.flowsheet=?1 and fd.archived=0 and fd.demographicNo=?2");
+        query.setParameter(1, flowsheet);
+        query.setParameter(2, demographic);
 
         @SuppressWarnings("unchecked")
         List<FlowSheetDrug> list = query.getResultList();
