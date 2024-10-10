@@ -44,12 +44,12 @@ public class ReadLabDaoImpl extends AbstractDaoImpl<ReadLab> implements ReadLabD
 
     @Override
     public ReadLab getByProviderNoAndLabTypeAndLabId(String providerNo, String labType, Integer labId) {
-        String sql = "SELECT x FROM ReadLab x WHERE x.id.providerNo = :providerNo " +
-                "AND x.id.labType = :labType AND x.id.labId = :labId";
+        String sql = "SELECT x FROM ReadLab x WHERE x.id.providerNo = ?1 " +
+                "AND x.id.labType = ?2 AND x.id.labId = ?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("labType", labType);
-        query.setParameter("labId", labId);
+        query.setParameter(1, providerNo);
+        query.setParameter(2, labType);
+        query.setParameter(3, labId);
 
         @SuppressWarnings("unchecked")
         List<ReadLab> results = query.getResultList();

@@ -52,31 +52,35 @@ public class RelationshipsDaoImpl extends AbstractDaoImpl<Relationships> impleme
 
     @Override
     public Relationships findActive(Integer id) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.id = :id AND (r.deleted IS NULL OR r.deleted = '0')");
-        query.setParameter("id", id);
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.id = ?2 AND (r.deleted IS NULL OR r.deleted = '0')");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, id);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public List<Relationships> findByDemographicNumber(Integer demographicNumber) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.demographicNo = :dN AND (r.deleted IS NULL OR r.deleted = '0')");
-        query.setParameter("dN", demographicNumber);
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.demographicNo = ?2 AND (r.deleted IS NULL OR r.deleted = '0')");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, demographicNumber);
         return query.getResultList();
     }
 
     @Override
     public List<Relationships> findActiveSubDecisionMaker(Integer demographicNumber) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.demographicNo = :dN AND r.subDecisionMaker = :sdm AND (r.deleted IS NULL OR r.deleted = '0')");
-        query.setParameter("dN", demographicNumber);
-        query.setParameter("sdm", ConversionUtils.toBoolString(Boolean.TRUE));
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.demographicNo = ?2 AND r.subDecisionMaker = ?3 AND (r.deleted IS NULL OR r.deleted = '0')");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, demographicNumber);
+        query.setParameter(3, ConversionUtils.toBoolString(Boolean.TRUE));
         return query.getResultList();
     }
 
     @Override
     public List<Relationships> findActiveByDemographicNumberAndFacility(Integer demographicNumber, Integer facilityId) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.demographicNo = :dN AND r.facilityId = :facilityId AND (r.deleted IS NULL OR r.deleted = '0')");
-        query.setParameter("dN", demographicNumber);
-        query.setParameter("facilityId", facilityId);
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.demographicNo = ?2 AND r.facilityId = ?3 AND (r.deleted IS NULL OR r.deleted = '0')");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, demographicNumber);
+        query.setParameter(3, facilityId);
         return query.getResultList();
     }
 }

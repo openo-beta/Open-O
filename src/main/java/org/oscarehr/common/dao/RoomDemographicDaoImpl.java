@@ -49,8 +49,8 @@ public class RoomDemographicDaoImpl extends AbstractDaoImpl<RoomDemographic> imp
     @Override
     public boolean roomDemographicExists(Integer demographicNo) {
         Query query = entityManager
-                .createQuery("select count(*) from RoomDemographic rd where rd.id.demographicNo = ?");
-        query.setParameter(0, demographicNo);
+                .createQuery("select count(*) from RoomDemographic rd where rd.id.demographicNo = ?1");
+        query.setParameter(1, demographicNo);
 
         Long result = (Long) query.getSingleResult();
 

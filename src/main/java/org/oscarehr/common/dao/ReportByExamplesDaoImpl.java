@@ -57,12 +57,12 @@ public class ReportByExamplesDaoImpl extends AbstractDaoImpl<ReportByExamples> i
     public List<Object[]> findReportsAndProviders(Date startDate, Date endDate) {
         String sql = "FROM ReportByExamples r, Provider p "
                 + "WHERE r.providerNo = p.ProviderNo "
-                + "AND r.date >= :startDate "
-                + "AND r.date <= :endDate "
+                + "AND r.date >= ?1 "
+                + "AND r.date <= ?2 "
                 + "ORDER BY r.date DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("startDate", startDate);
-        query.setParameter("endDate", endDate);
+        query.setParameter(1, startDate);
+        query.setParameter(2, endDate);
         return query.getResultList();
     }
 }

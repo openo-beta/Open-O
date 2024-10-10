@@ -47,8 +47,8 @@ public class RoomBedDaoImpl extends AbstractDaoImpl<RoomBed> implements RoomBedD
 
     @Override
     public boolean bedExists(Integer roomId) {
-        Query query = entityManager.createQuery("select count(*) from RoomBed rb where rb.id.roomId = ?");
-        query.setParameter(0, roomId);
+        Query query = entityManager.createQuery("select count(*) from RoomBed rb where rb.id.roomId = ?1");
+        query.setParameter(1, roomId);
 
         Long result = (Long) query.getSingleResult();
 
@@ -57,8 +57,8 @@ public class RoomBedDaoImpl extends AbstractDaoImpl<RoomBed> implements RoomBedD
 
     @Override
     public boolean roomExists(Integer bedId) {
-        Query query = entityManager.createQuery("select count(*) from RoomBed rb where rb.id.bedId = ?");
-        query.setParameter(0, bedId);
+        Query query = entityManager.createQuery("select count(*) from RoomBed rb where rb.id.bedId = ?1");
+        query.setParameter(1, bedId);
 
         Long result = (Long) query.getSingleResult();
 
@@ -67,8 +67,8 @@ public class RoomBedDaoImpl extends AbstractDaoImpl<RoomBed> implements RoomBedD
 
     @Override
     public RoomBed getRoomBedByRoom(Integer roomId) {
-        Query query = entityManager.createQuery("select bd from RoomBed bd where bd.id.roomId = ?");
-        query.setParameter(0, roomId);
+        Query query = entityManager.createQuery("select bd from RoomBed bd where bd.id.roomId = ?1");
+        query.setParameter(1, roomId);
 
         @SuppressWarnings("unchecked")
         List<RoomBed> roomBeds = query.getResultList();
@@ -86,8 +86,8 @@ public class RoomBedDaoImpl extends AbstractDaoImpl<RoomBed> implements RoomBedD
 
     @Override
     public RoomBed getRoomBedByBed(Integer bedId) {
-        Query query = entityManager.createQuery("select bd from RoomBed bd where bd.id.bedId = ?");
-        query.setParameter(0, bedId);
+        Query query = entityManager.createQuery("select bd from RoomBed bd where bd.id.bedId = ?1");
+        query.setParameter(1, bedId);
 
         @SuppressWarnings("unchecked")
         List<RoomBed> roomBeds = query.getResultList();
@@ -128,9 +128,9 @@ public class RoomBedDaoImpl extends AbstractDaoImpl<RoomBed> implements RoomBedD
 
     @Override
     public boolean roomBedExists(RoomBedPK id) {
-        Query query = entityManager.createQuery("select count(*) from RoomBed rb where rb.id.roomId = ? and rb.id.bedId = ?");
+        Query query = entityManager.createQuery("select count(*) from RoomBed rb where rb.id.roomId = ?1 and rb.id.bedId = ?2");
         query.setParameter(1, id.getRoomId());
-        query.setParameter(1, id.getBedId());
+        query.setParameter(2, id.getBedId());
 
         Long result = (Long) query.getSingleResult();
 

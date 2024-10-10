@@ -44,29 +44,33 @@ public class ResourceStorageDaoImpl extends AbstractDaoImpl<ResourceStorage> imp
 
     @Override
     public ResourceStorage findActive(String resourceType) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.resourceType = :resourceType AND r.active = true");
-        query.setParameter("resourceType", resourceType);
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.resourceType = ?2 AND r.active = true");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, resourceType);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public List<ResourceStorage> findActiveAll(String resourceType) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.resourceType = :resourceType AND r.active = true");
-        query.setParameter("resourceType", resourceType);
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.resourceType = ?2 AND r.active = true");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, resourceType);
         return query.getResultList();
     }
 
     @Override
     public List<ResourceStorage> findAll(String resourceType) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.resourceType = :resourceType ");
-        query.setParameter("resourceType", resourceType);
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.resourceType = ?2");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, resourceType);
         return query.getResultList();
     }
 
     @Override
     public List<ResourceStorage> findByUUID(String uuid) {
-        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.uuid = :uuid ");
-        query.setParameter("uuid", uuid);
+        Query query = entityManager.createQuery("FROM ?1 r WHERE r.uuid = ?2");
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, uuid);
         return query.getResultList();
     }
 

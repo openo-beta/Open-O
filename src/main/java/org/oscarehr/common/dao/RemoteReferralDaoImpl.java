@@ -42,10 +42,11 @@ public class RemoteReferralDaoImpl extends AbstractDaoImpl<RemoteReferral> imple
 
     @Override
     public List<RemoteReferral> findByFacilityIdDemogprahicId(Integer facilityId, Integer demographicId) {
-        String sql = "select x from " + modelClass.getSimpleName() + " x where x.facilityId=?1 and x.demographicId=?2";
+        String sql = "select x from ?1 x where x.facilityId=?2 and x.demographicId=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1, facilityId);
-        query.setParameter(2, demographicId);
+        query.setParameter(1, modelClass.getSimpleName());
+        query.setParameter(2, facilityId);
+        query.setParameter(3, demographicId);
 
         @SuppressWarnings("unchecked")
         List<RemoteReferral> results = query.getResultList();

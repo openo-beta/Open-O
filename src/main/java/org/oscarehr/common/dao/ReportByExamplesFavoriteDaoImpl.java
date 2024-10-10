@@ -43,24 +43,24 @@ public class ReportByExamplesFavoriteDaoImpl extends AbstractDaoImpl<ReportByExa
 
     @Override
     public List<ReportByExamplesFavorite> findByQuery(String query) {
-        Query q = createQuery("ex", "ex.query LIKE :query");
-        q.setParameter("query", query);
+        Query q = createQuery("ex", "ex.query LIKE ?1");
+        q.setParameter(1, query);
         return q.getResultList();
     }
 
     @Override
     public List<ReportByExamplesFavorite> findByEverything(String providerNo, String favoriteName, String queryString) {
-        Query query = createQuery("ex", "ex.providerNo = :providerNo AND ex.name LIKE :name OR ex.query LIKE :query");
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("name", favoriteName);
-        query.setParameter("query", queryString);
+        Query query = createQuery("ex", "ex.providerNo = ?1 AND ex.name LIKE ?2 OR ex.query LIKE ?3");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, favoriteName);
+        query.setParameter(3, queryString);
         return query.getResultList();
     }
 
     @Override
     public List<ReportByExamplesFavorite> findByProvider(String providerNo) {
-        Query query = createQuery("ex", "ex.providerNo = :providerNo");
-        query.setParameter("providerNo", providerNo);
+        Query query = createQuery("ex", "ex.providerNo = ?1");
+        query.setParameter(1, providerNo);
         return query.getResultList();
     }
 }

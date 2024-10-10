@@ -44,16 +44,16 @@ public class RemoteAttachmentsDaoImpl extends AbstractDaoImpl<RemoteAttachments>
 
     @Override
     public List<RemoteAttachments> findByDemoNo(Integer demoNo) {
-        Query query = createQuery("ra", "ra.demographicNo = :demoNo ORDER BY ra.date");
-        query.setParameter("demoNo", demoNo);
+        Query query = createQuery("ra", "ra.demographicNo = ?1 ORDER BY ra.date");
+        query.setParameter(1, demoNo);
         return query.getResultList();
     }
 
     @Override
     public List<RemoteAttachments> findByDemoNoAndMessageId(Integer demographicNo, Integer messageId) {
-        Query query = createQuery("a", "a.demographicNo = :demographicNo and a.messageId = :messageId");
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("messageId", messageId);
+        Query query = createQuery("a", "a.demographicNo = ?1 and a.messageId = ?2");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, messageId);
         return query.getResultList();
     }
 }
