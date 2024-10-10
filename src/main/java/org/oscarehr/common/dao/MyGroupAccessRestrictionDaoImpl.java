@@ -42,8 +42,8 @@ public class MyGroupAccessRestrictionDaoImpl extends AbstractDaoImpl<MyGroupAcce
 
     @Override
     public List<MyGroupAccessRestriction> findByGroupId(String myGroupNo) {
-        Query query = entityManager.createQuery("select x from MyGroupAccessRestriction x where x.myGroupNo=?");
-        query.setParameter(0, myGroupNo);
+        Query query = entityManager.createQuery("select x from MyGroupAccessRestriction x where x.myGroupNo=?1");
+        query.setParameter(1, myGroupNo);
 
         @SuppressWarnings("unchecked")
         List<MyGroupAccessRestriction> results = query.getResultList();
@@ -53,8 +53,8 @@ public class MyGroupAccessRestrictionDaoImpl extends AbstractDaoImpl<MyGroupAcce
 
     @Override
     public List<MyGroupAccessRestriction> findByProviderNo(String providerNo) {
-        Query query = entityManager.createQuery("select x from MyGroupAccessRestriction x where x.providerNo=?");
-        query.setParameter(0, providerNo);
+        Query query = entityManager.createQuery("select x from MyGroupAccessRestriction x where x.providerNo=?1");
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<MyGroupAccessRestriction> results = query.getResultList();
@@ -64,9 +64,9 @@ public class MyGroupAccessRestrictionDaoImpl extends AbstractDaoImpl<MyGroupAcce
 
     @Override
     public MyGroupAccessRestriction findByGroupNoAndProvider(String myGroupNo, String providerNo) {
-        Query query = entityManager.createQuery("select x from MyGroupAccessRestriction x where x.myGroupNo=? and x.providerNo=?");
-        query.setParameter(0, myGroupNo);
-        query.setParameter(1, providerNo);
+        Query query = entityManager.createQuery("select x from MyGroupAccessRestriction x where x.myGroupNo=?1 and x.providerNo=?2");
+        query.setParameter(1, myGroupNo);
+        query.setParameter(2, providerNo);
 
         @SuppressWarnings("unchecked")
         List<MyGroupAccessRestriction> results = query.getResultList();
