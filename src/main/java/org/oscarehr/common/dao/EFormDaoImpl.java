@@ -45,9 +45,9 @@ public class EFormDaoImpl extends AbstractDaoImpl<EForm> implements EFormDao {
 
     @Override
     public EForm findByName(String name) {
-        Query query = entityManager.createQuery("SELECT e from EForm e where e.formName = ? and e.current=?");
-        query.setParameter(0, name);
-        query.setParameter(1, true);
+        Query query = entityManager.createQuery("SELECT e from EForm e where e.formName = ?1 and e.current=?2");
+        query.setParameter(1, name);
+        query.setParameter(2, true);
 
         @SuppressWarnings("unchecked")
         List<EForm> results = query.getResultList();
@@ -62,9 +62,9 @@ public class EFormDaoImpl extends AbstractDaoImpl<EForm> implements EFormDao {
             return new ArrayList<EForm>();
         }
 
-        Query query = entityManager.createQuery("SELECT e from EForm e where e.formName like ? and e.current=?");
-        query.setParameter(0, "%" + name + "%");
-        query.setParameter(1, true);
+        Query query = entityManager.createQuery("SELECT e from EForm e where e.formName like ?1 and e.current=?2");
+        query.setParameter(1, "%" + name + "%");
+        query.setParameter(2, true);
 
         @SuppressWarnings("unchecked")
         List<EForm> results = query.getResultList();
