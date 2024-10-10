@@ -2025,14 +2025,6 @@
     "optional" : false,
     "integrity" : "sha512:loXaP0A5OffRgdAviZVK60a5EfeJrOZDSPn7OPV6FVaq61F2e42cFw09Q6hubh7QiGWFAXw3TrU40V4c4d7u3g=="
   }, {
-    "groupId" : "org.apache.struts",
-    "artifactId" : "struts-menu",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:oyCmfodC+9sGvrRYvySNSeVf0MkRrd+xbIpHeFLe4HkD3td3F7aYNP1lFEaMBxP4upV7VgXJdTnZkNB0bEiFtw=="
-  }, {
     "groupId" : "org.apache.tika",
     "artifactId" : "tika-core",
     "version" : "1.5",

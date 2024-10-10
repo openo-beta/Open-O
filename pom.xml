@@ -366,11 +366,6 @@
         </dependency>
 
         <!-- struts -->
-        <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts-menu</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
         <!-- Struts Core Library -->
         <dependency>
             <groupId>io.github.weblegacy</groupId>
