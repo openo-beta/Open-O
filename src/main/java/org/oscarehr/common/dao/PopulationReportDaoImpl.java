@@ -201,27 +201,42 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         ResultSet rs = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            int counter = 1;
+            int paramIndex = 1;
+            
+            // Start building the SQL query
             String sqlCommand = "select issueGroupId,count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes," +
             "casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and casemgmt_issue_notes.id=casemgmt_issue.id and " +
             "casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            
+            // Add encounter type condition if provided
             if (encounterType != null) {
-                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+                sqlCommand += "and casemgmt_note.encounter_type=?" + paramIndex++ + " ";
             }
-            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
-            if (roleId == null) {
-                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
-             } 
-            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ +
-            " and casemgmt_note.observation_date<=?" + counter++ + " group by issueGroupId";
+            
+            // Add program number condition
+            sqlCommand += "and casemgmt_note.program_no=?" + paramIndex++ + " ";
+            
+            // Add role condition if provided
+            if (roleId != null) {
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + paramIndex++ + " ";
+            } 
+            
+            // Add date range conditions and group by clause
+            sqlCommand += "and casemgmt_note.observation_date>=?" + paramIndex++ +
+            " and casemgmt_note.observation_date<=?" + paramIndex++ + " group by issueGroupId";
+            
+            // Prepare the statement
             ps = c.prepareStatement(sqlCommand);
-            counter = 1;
-            if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
-            ps.setInt(counter++, programId);
-            if (roleId != null) ps.setInt(counter++, roleId);
-            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+            paramIndex = 1;
+            
+            // Set parameters for the prepared statement
+            if (encounterType != null) ps.setString(paramIndex++, encounterType.getOldDbValue());
+            ps.setInt(paramIndex++, programId);
+            if (roleId != null) ps.setInt(paramIndex++, roleId);
+            ps.setTimestamp(paramIndex++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(paramIndex++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
+            // Execute the query and process results
             rs = ps.executeQuery();
             HashMap<Integer, Integer> results = new HashMap<Integer, Integer>();
             while (rs.next())
@@ -241,22 +256,30 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            // Get database connection
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            int counter = 1;
+            int paramIndex = 1;
+            
+            // Build SQL query
             String sqlCommand = "select issueGroupId,count(distinct casemgmt_note.note_id) from IssueGroupIssues," +
             "casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id" +
             "and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id and " +
-            "casemgmt_note.encounter_type=?" + counter++ + " and casemgmt_note.program_no=?" + counter++ +
-            " and casemgmt_note.provider_no=?" + counter++ + " and casemgmt_note.observation_date>=?" + counter++ + 
-            " and casemgmt_note.observation_date<=?" + counter++ + " group by issueGroupId";
+            "casemgmt_note.encounter_type=?" + paramIndex++ + " and casemgmt_note.program_no=?" + paramIndex++ +
+            " and casemgmt_note.provider_no=?" + paramIndex++ + " and casemgmt_note.observation_date>=?" + paramIndex++ + 
+            " and casemgmt_note.observation_date<=?" + paramIndex++ + " group by issueGroupId";
+            
+            // Prepare statement
             ps = c.prepareStatement(sqlCommand);
-            counter = 1;
-            ps.setString(counter++, encounterType.getOldDbValue());
-            ps.setInt(counter++, programId);
-            ps.setString(counter++, provider.getProviderNo());
-            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+            
+            // Set query parameters
+            paramIndex = 1;
+            ps.setString(paramIndex++, encounterType.getOldDbValue());
+            ps.setInt(paramIndex++, programId);
+            ps.setString(paramIndex++, provider.getProviderNo());
+            ps.setTimestamp(paramIndex++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(paramIndex++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
+            // Execute query and process results
             rs = ps.executeQuery();
             HashMap<Integer, Integer> results = new HashMap<Integer, Integer>();
             while (rs.next())
@@ -266,6 +289,7 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         } catch (SQLException e) {
             throw (new HibernateException(e));
         } finally {
+            // Close database resources
             SqlUtils.closeResources(c, ps, rs);
         }
     }
@@ -276,27 +300,39 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            // Get database connection
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            int counter = 1;
+            int paramIndex = 1;
+            
+            // Build SQL query
             String sqlCommand = "select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue," +
             "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
             "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            
+            // Add encounter type if specified
             if (encounterType != null) {
-                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+                sqlCommand += "and casemgmt_note.encounter_type=?" + paramIndex++ + " ";
             }
-            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            sqlCommand += "and casemgmt_note.program_no=?" + paramIndex++ + " ";
+            
+            // Add caisi role if specified
             if (roleId != null) {
-                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + paramIndex++ + " ";
             }
-            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
+            sqlCommand += "and casemgmt_note.observation_date>=?" + paramIndex++ + " and casemgmt_note.observation_date<=?" + paramIndex++;
+            
+            // Prepare statement
             ps = c.prepareStatement(sqlCommand);
-            counter = 1;
-            if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
-            ps.setInt(counter++, programId);
-            if (roleId != null) ps.setInt(counter++, roleId);
-            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+            
+            // Set query parameters
+            paramIndex = 1;
+            if (encounterType != null) ps.setString(paramIndex++, encounterType.getOldDbValue());
+            ps.setInt(paramIndex++, programId);
+            if (roleId != null) ps.setInt(paramIndex++, roleId);
+            ps.setTimestamp(paramIndex++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(paramIndex++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
+            // Execute query and process results
             rs = ps.executeQuery();
             rs.next();
 
@@ -304,6 +340,7 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         } catch (SQLException e) {
             throw (new HibernateException(e));
         } finally {
+            // Close database resources
             SqlUtils.closeResources(c, ps, rs);
         }
     }
@@ -314,21 +351,27 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            // Get database connection
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            int counter = 1;
+            int paramIndex = 1;
+            
+            // Build SQL query
             ps = c.prepareStatement("select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue," +
             "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
             "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id and " +
-            "casemgmt_note.encounter_type=?" + counter++ + " and casemgmt_note.program_no=?" + counter++ + " and " +
-            "casemgmt_note.provider_no=?" + counter++ + " and casemgmt_note.observation_date>=?" + counter++ +
-            " and casemgmt_note.observation_date<=?" + counter++);
-            counter = 1;
-            ps.setString(counter++, encounterType.getOldDbValue());
-            ps.setInt(counter++, programId);
-            ps.setString(counter++, provider.getProviderNo());
-            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+            "casemgmt_note.encounter_type=?" + paramIndex++ + " and casemgmt_note.program_no=?" + paramIndex++ + " and " +
+            "casemgmt_note.provider_no=?" + paramIndex++ + " and casemgmt_note.observation_date>=?" + paramIndex++ +
+            " and casemgmt_note.observation_date<=?" + paramIndex++);
+            
+            // Set query parameters
+            paramIndex = 1;
+            ps.setString(paramIndex++, encounterType.getOldDbValue());
+            ps.setInt(paramIndex++, programId);
+            ps.setString(paramIndex++, provider.getProviderNo());
+            ps.setTimestamp(paramIndex++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(paramIndex++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
+            // Execute query and process results
             rs = ps.executeQuery();
             rs.next();
 
@@ -336,6 +379,7 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         } catch (SQLException e) {
             throw (new HibernateException(e));
         } finally {
+            // Close database resources
             SqlUtils.closeResources(c, ps, rs);
         }
     }
@@ -346,27 +390,43 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            // Get database connection
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            int counter = 1;
+            int paramIndex = 1;
+            
+            // Build SQL query
             String sqlCommand = "select count(distinct casemgmt_note.demographic_no) from IssueGroupIssues,casemgmt_issue," +
             "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
             "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            
+            // Add encounter type condition if provided
             if (encounterType != null) {
-                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
+                sqlCommand += "and casemgmt_note.encounter_type=?" + paramIndex++ + " ";
             }
-            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            
+            // Add program number condition
+            sqlCommand += "and casemgmt_note.program_no=?" + paramIndex++ + " ";
+            
+            // Add role condition if provided
             if (roleId != null) {
-                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + paramIndex++ + " ";
             }
-            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
+            
+            // Add observation date range conditions
+            sqlCommand += "and casemgmt_note.observation_date>=?" + paramIndex++ + " and casemgmt_note.observation_date<=?" + paramIndex++;
+            
+            // Prepare the statement
             ps = c.prepareStatement(sqlCommand);
-            counter = 1;
-            if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
-            ps.setInt(counter++, programId);
-            if (roleId != null) ps.setInt(counter++, roleId);
-            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+            
+            // Set parameters for the prepared statement
+            paramIndex = 1;
+            if (encounterType != null) ps.setString(paramIndex++, encounterType.getOldDbValue());
+            ps.setInt(paramIndex++, programId);
+            if (roleId != null) ps.setInt(paramIndex++, roleId);
+            ps.setTimestamp(paramIndex++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(paramIndex++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
+            // Execute query and process results
             rs = ps.executeQuery();
             rs.next();
 
@@ -374,6 +434,7 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         } catch (SQLException e) {
             throw (new HibernateException(e));
         } finally {
+            // Close database resources
             SqlUtils.closeResources(c, ps, rs);
         }
     }
@@ -384,20 +445,35 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            // Get database connection
             c = DbConnectionFilter.getThreadLocalDbConnection();
             int counter = 1;
+            
+            // Build SQL query
             String sqlCommand = "select count(distinct casemgmt_note.demographic_no) from IssueGroupIssues,casemgmt_issue," +
             "casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id and " +
             "casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            
+            // Add encounter type condition if provided
             if (encounterType != null) {
                 sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
             }
+            
+            // Add program number condition
             sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
+            
+            // Add provider condition if provided
             if (provider != null) {
                 sqlCommand += "and casemgmt_note.provider_no=?" + counter++ + " ";
             }
+            
+            // Add observation date range conditions
             sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
+            
+            // Prepare the statement
             ps = c.prepareStatement(sqlCommand);
+            
+            // Set parameters for the prepared statement
             counter = 1;
             if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
             ps.setInt(counter++, programId);
@@ -405,6 +481,7 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
             ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
             ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
+            // Execute query and process results
             rs = ps.executeQuery();
             rs.next();
 
@@ -412,6 +489,7 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         } catch (SQLException e) {
             throw (new HibernateException(e));
         } finally {
+            // Close database resources
             SqlUtils.closeResources(c, ps, rs);
         }
     }
@@ -422,30 +500,50 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            // Get database connection
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            int counter = 1;
+            int paramIndex = 1;
+            
+            // Build SQL query
             String sqlCommand = "select count(distinct casemgmt_note.note_id) from IssueGroupIssues,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where IssueGroupIssues.issue_id=casemgmt_issue.issue_id ";
+            
+            // Add issue group condition if provided
             if (issueGroupId != null) {
-                sqlCommand += "and IssueGroupIssues.issueGroupId=?" + counter++ + " ";
+                sqlCommand += "and IssueGroupIssues.issueGroupId=?" + paramIndex++ + " ";
             }
-            sqlCommand += "and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
-            if (encounterType != null) {
-                sqlCommand += "and casemgmt_note.encounter_type=?" + counter++ + " ";
-            }
-            sqlCommand += "and casemgmt_note.program_no=?" + counter++ + " ";
-            if (roleId != null) {
-                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + counter++ + " ";
-            }
-            sqlCommand += "and casemgmt_note.observation_date>=?" + counter++ + " and casemgmt_note.observation_date<=?" + counter++;
-            ps = c.prepareStatement(sqlCommand);
-            counter = 1;
-            if (issueGroupId != null) ps.setInt(counter++, issueGroupId);
-            if (encounterType != null) ps.setString(counter++, encounterType.getOldDbValue());
-            ps.setInt(counter++, programId);
-            if (roleId != null) ps.setInt(counter++, roleId);
-            ps.setTimestamp(counter++, new Timestamp(startDate != null ? startDate.getTime() : 0));
-            ps.setTimestamp(counter++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
 
+            // Add issue id and note id conditions
+            sqlCommand += "and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_note.note_id=casemgmt_issue_notes.note_id ";
+            
+            // Add encounter type condition if provided
+            if (encounterType != null) {
+                sqlCommand += "and casemgmt_note.encounter_type=?" + paramIndex++ + " ";
+            }
+            
+            // Add program number condition
+            sqlCommand += "and casemgmt_note.program_no=?" + paramIndex++ + " ";
+            
+            // Add role condition if provided
+            if (roleId != null) {
+                sqlCommand += "and casemgmt_note.reporter_caisi_role=?" + paramIndex++ + " ";
+            }
+            
+            // Add observation date range conditions
+            sqlCommand += "and casemgmt_note.observation_date>=?" + paramIndex++ + " and casemgmt_note.observation_date<=?" + paramIndex++;
+            
+            // Prepare the statement
+            ps = c.prepareStatement(sqlCommand);
+            
+            // Set parameters for the prepared statement
+            paramIndex = 1;
+            if (issueGroupId != null) ps.setInt(paramIndex++, issueGroupId);
+            if (encounterType != null) ps.setString(paramIndex++, encounterType.getOldDbValue());
+            ps.setInt(paramIndex++, programId);
+            if (roleId != null) ps.setInt(paramIndex++, roleId);
+            ps.setTimestamp(paramIndex++, new Timestamp(startDate != null ? startDate.getTime() : 0));
+            ps.setTimestamp(paramIndex++, new Timestamp(endDate != null ? endDate.getTime() : System.currentTimeMillis()));
+
+            // Execute query and process results
             rs = ps.executeQuery();
             rs.next();
 
@@ -453,6 +551,7 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         } catch (SQLException e) {
             throw (new HibernateException(e));
         } finally {
+            // Close database resources
             SqlUtils.closeResources(c, ps, rs);
         }
     }
