@@ -47,8 +47,8 @@ public class SecObjPrivilegeDaoImpl extends AbstractDaoImpl<SecObjPrivilege> imp
         String sql = "select s FROM SecObjPrivilege s WHERE s.id.roleUserGroup = ?1 AND  s.id.objectName = ?2";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1, objectName);
-        query.setParameter(2, roleUserGroup);
+        query.setParameter(1, roleUserGroup);
+        query.setParameter(2, objectName);
 
 
         List<SecObjPrivilege> result = query.getResultList();
