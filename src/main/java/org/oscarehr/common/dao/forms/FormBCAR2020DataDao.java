@@ -37,28 +37,28 @@ public class FormBCAR2020DataDao extends AbstractDaoImpl<FormBCAR2020Data> {
 
     public List<FormBCAR2020Data> findFields(Integer formId) {
         String sql = "select f from FormBCAR2020Data f " +
-                "where f.formId = :formId";
+                "where f.formId = ?1";
         Query query = entityManager.createQuery(sql);
-        query = query.setParameter("formId", formId);
+        query = query.setParameter(1, formId);
         return query.getResultList();
     }
 
     public List<FormBCAR2020Data> findFieldsForPage(Integer formId, Integer pageNo) {
         String sql = "select f from FormBCAR2020Data f " +
-                "where f.formId = :formId and (f.pageNo = :pageNo OR f.pageNo = 0)";
+                "where f.formId = ?1 and (f.pageNo = ?2 OR f.pageNo = 0)";
         Query query = entityManager.createQuery(sql);
-        query = query.setParameter("formId", formId);
-        query = query.setParameter("pageNo", pageNo);
+        query = query.setParameter(1, formId);
+        query = query.setParameter(2, pageNo);
         return query.getResultList();
     }
 
     public FormBCAR2020Data findFieldForPage(Integer formId, Integer pageNo, String fieldName) {
         String sql = "SELECT f FROM FormBCAR2020Data f " +
-                "WHERE f.formId = :formId AND (f.pageNo = :pageNo OR f.pageNo = 0) AND f.field = :fieldName";
+                "WHERE f.formId = ?1 AND (f.pageNo = ?2 OR f.pageNo = 0) AND f.field = ?3";
         Query query = entityManager.createQuery(sql);
-        query = query.setParameter("formId", formId);
-        query = query.setParameter("pageNo", pageNo);
-        query = query.setParameter("fieldName", fieldName);
+        query = query.setParameter(1, formId);
+        query = query.setParameter(2, pageNo);
+        query = query.setParameter(3, fieldName);
 
         FormBCAR2020Data record = null;
 
