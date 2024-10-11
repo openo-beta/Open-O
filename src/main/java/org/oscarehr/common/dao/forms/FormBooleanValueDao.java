@@ -42,10 +42,10 @@ public class FormBooleanValueDao extends AbstractDaoImpl<FormBooleanValue> {
     }
 
     public HashMap<String, FormBooleanValue> findAllForForm(BooleanValueForm form) {
-        String sql = "SELECT value FROM FormBooleanValue value WHERE value.id.formName = :formName AND value.id.formId = :formId";
+        String sql = "SELECT value FROM FormBooleanValue value WHERE value.id.formName = ?1 AND value.id.formId = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("formName", form.getFormTable());
-        query.setParameter("formId", form.getId());
+        query.setParameter(1, form.getFormTable());
+        query.setParameter(2, form.getId());
 
         HashMap<String, FormBooleanValue> results = new HashMap<String, FormBooleanValue>();
         for (Object o : query.getResultList()) {
