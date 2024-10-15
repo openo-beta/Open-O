@@ -47,9 +47,9 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
 
     @Override
     public List<MessageList> findByProviderNoAndMessageNo(String providerNo, Long messageNo) {
-        Query query = createQuery("msg", "msg.providerNo = :pno AND msg.message = :msgNo");
-        query.setParameter("pno", providerNo);
-        query.setParameter("msgNo", messageNo);
+        Query query = createQuery("msg", "msg.providerNo = ?1 AND msg.message = ?2");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, messageNo);
         return query.getResultList();
     }
 
@@ -59,9 +59,9 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
     @Override
     public List<MessageList> findByProviderNoAndLocationNo(String providerNo, Integer locationNo) {
         Query query = createQuery("ml",
-                "ml.providerNo = :providerNo and ml.status not like 'del' and ml.remoteLocation = :remoteLocation order by ml.message");
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("remoteLocation", locationNo);
+                "ml.providerNo = ?1 and ml.status not like 'del' and ml.remoteLocation = ?2 order by ml.message");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, locationNo);
         return query.getResultList();
     }
 
@@ -75,9 +75,9 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
     @Override
     public List<MessageList> findAllByMessageNoAndLocationNo(Long messageNo, Integer locationNo) {
         Query query = createQuery("ml",
-                "ml.message = :messageNo and ml.remoteLocation = :remoteLocation order by ml.message");
-        query.setParameter("messageNo", messageNo);
-        query.setParameter("remoteLocation", locationNo);
+                "ml.message = ?1 and ml.remoteLocation = ?2 order by ml.message");
+        query.setParameter(1, messageNo);
+        query.setParameter(2, locationNo);
         return query.getResultList();
     }
 
@@ -91,40 +91,40 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
     @Override
     public List<MessageList> findByMessageNoAndLocationNo(Long messageNo, Integer locationNo) {
         Query query = createQuery("ml",
-                "ml.message = :messageNo and ml.status not like 'del' and ml.remoteLocation = :remoteLocation order by ml.message");
-        query.setParameter("messageNo", messageNo);
-        query.setParameter("remoteLocation", locationNo);
+                "ml.message = ?1 and ml.status not like 'del' and ml.remoteLocation = ?2 order by ml.message");
+        query.setParameter(1, messageNo);
+        query.setParameter(2, locationNo);
         return query.getResultList();
     }
 
     @Override
     public List<MessageList> findByMessage(Long messageNo) {
-        Query query = createQuery("ml", "ml.message = :messageNo");
-        query.setParameter("messageNo", messageNo);
+        Query query = createQuery("ml", "ml.message = ?1");
+        query.setParameter(1, messageNo);
         return query.getResultList();
     }
 
     @Override
     public List<MessageList> findByProviderAndStatus(String providerNo, String status) {
-        Query query = createQuery("ml", "ml.providerNo = :providerNo and ml.status = :status");
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("status", status);
+        Query query = createQuery("ml", "ml.providerNo = ?1 and ml.status = ?2");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, status);
         return query.getResultList();
     }
 
     @Override
     public List<MessageList> findUnreadByProvider(String providerNo) {
-        Query query = createQuery("ml", "ml.providerNo = :providerNo and ml.status ='new'");
-        query.setParameter("providerNo", providerNo);
+        Query query = createQuery("ml", "ml.providerNo = ?1 and ml.status ='new'");
+        query.setParameter(1, providerNo);
         return query.getResultList();
     }
 
     @Override
     public int findUnreadByProviderAndAttachedCount(String providerNo) {
         Query query = entityManager.createQuery(
-                "select count(l) from MessageList l, MsgDemoMap m where l.providerNo= :providerNo and l.status='new' and l.message=m.messageID");
+                "select count(l) from MessageList l, MsgDemoMap m where l.providerNo= ?1 and l.status='new' and l.message=m.messageID");
 
-        query.setParameter("providerNo", providerNo);
+        query.setParameter(1, providerNo);
         return getCountResult(query).intValue();
 
     }
@@ -132,19 +132,19 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
     @Override
     public int countUnreadByProviderAndFromIntegratedFacility(String providerNo) {
         Query query = entityManager.createQuery(
-                "SELECT count(l) FROM MessageList l, MessageTbl mt WHERE l.message = mt.id AND l.providerNo= :providerNo AND l.status='new' AND mt.type = :type");
+                "SELECT count(l) FROM MessageList l, MessageTbl mt WHERE l.message = mt.id AND l.providerNo= ?1 AND l.status='new' AND mt.type = ?2");
 
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("type", OscarMsgType.INTEGRATOR_TYPE);
+        query.setParameter(1, providerNo);
+        query.setParameter(2, OscarMsgType.INTEGRATOR_TYPE);
         return getCountResult(query).intValue();
     }
 
     @Override
     public int countUnreadByProvider(String providerNo) {
         Query query = entityManager.createQuery(
-                "select count(l) from MessageList l where l.providerNo= :providerNo and l.status='new' and l.sourceFacilityId > 0");
+                "select count(l) from MessageList l where l.providerNo= ?1 and l.status='new' and l.sourceFacilityId > 0");
 
-        query.setParameter("providerNo", providerNo);
+        query.setParameter(1, providerNo);
         return getCountResult(query).intValue();
     }
 
@@ -155,10 +155,10 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
         sql.append("select ml from MessageList ml, MessageTbl mt where ml.message = mt.id");
 
         if (providerNo != null && !providerNo.isEmpty()) {
-            sql.append(" AND ml.providerNo= :providerNo ");
+            sql.append(" AND ml.providerNo= ?1 ");
         }
         if (status != null && !status.isEmpty()) {
-            sql.append(" AND ml.status = :status ");
+            sql.append(" AND ml.status = ?2 ");
         }
 
         sql.append(" ORDER BY mt.date DESC, mt.time DESC");
@@ -166,10 +166,10 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
         Query query = entityManager.createQuery(sql.toString());
 
         if (providerNo != null && !providerNo.isEmpty()) {
-            query.setParameter("providerNo", providerNo);
+            query.setParameter(1, providerNo);
         }
         if (status != null && !status.isEmpty()) {
-            query.setParameter("status", status);
+            query.setParameter(2, status);
         }
         query.setFirstResult(start);
         setLimit(query, max);
@@ -185,19 +185,19 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
         sql.append("select count(ml) from MessageList ml, MessageTbl mt where ml.message = mt.id");
 
         if (providerNo != null && !providerNo.isEmpty()) {
-            sql.append(" AND ml.providerNo= :providerNo ");
+            sql.append(" AND ml.providerNo= ?1 ");
         }
         if (status != null && !status.isEmpty()) {
-            sql.append(" AND ml.status = :status ");
+            sql.append(" AND ml.status = ?2 ");
         }
 
         Query query = entityManager.createQuery(sql.toString());
 
         if (providerNo != null && !providerNo.isEmpty()) {
-            query.setParameter("providerNo", providerNo);
+            query.setParameter(1, providerNo);
         }
         if (status != null && !status.isEmpty()) {
-            query.setParameter("status", status);
+            query.setParameter(2, status);
         }
 
         Integer result = ((Long) query.getSingleResult()).intValue();
@@ -216,40 +216,40 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
         switch (type) {
             case 1:
                 // sent
-                sql.append("MessageTbl mt where mt.sentByNo= :providerNo AND mt.sentByLocation = :remoteLocation ");
+                sql.append("MessageTbl mt where mt.sentByNo= ?1 AND mt.sentByLocation = ?2 ");
                 break;
             case 2:
                 // deleted
                 sql.append(
-                        "MessageList ml, MessageTbl mt where ml.status LIKE 'del' AND ml.message = mt.id AND ml.providerNo= :providerNo AND ml.remoteLocation = :remoteLocation ");
+                        "MessageList ml, MessageTbl mt where ml.status LIKE 'del' AND ml.message = mt.id AND ml.providerNo= ?1 AND ml.remoteLocation = ?2 ");
                 break;
             default:
                 // inbox
                 sql.append(
-                        "MessageList ml, MessageTbl mt where ml.status !='del' AND ml.message = mt.id AND ml.providerNo= :providerNo AND ml.remoteLocation = :remoteLocation ");
+                        "MessageList ml, MessageTbl mt where ml.status !='del' AND ml.message = mt.id AND ml.providerNo= ?1 AND ml.remoteLocation = ?2 ");
                 break;
         }
 
         if (searchFilter != null && !searchFilter.isEmpty()) {
             sql.append(
-                    " AND (mt.subject Like :filter1 OR mt.message Like :filter2 OR mt.sentBy Like :filter3 OR mt.sentTo Like :filter4)");
+                    " AND (mt.subject Like ?1 OR mt.message Like ?2 OR mt.sentBy Like ?3 OR mt.sentTo Like ?4)");
         }
 
         Query query = entityManager.createQuery(sql.toString());
 
         if (providerNo != null && !providerNo.isEmpty()) {
-            query.setParameter("providerNo", providerNo);
+            query.setParameter(1, providerNo);
         }
 
         if (remoteLocation != null) {
-            query.setParameter("remoteLocation", remoteLocation);
+            query.setParameter(2, remoteLocation);
         }
 
         if (searchFilter != null && !searchFilter.isEmpty()) {
-            query.setParameter("filter1", searchFilter);
-            query.setParameter("filter2", searchFilter);
-            query.setParameter("filter3", searchFilter);
-            query.setParameter("filter4", searchFilter);
+            query.setParameter(1, searchFilter);
+            query.setParameter(2, searchFilter);
+            query.setParameter(3, searchFilter);
+            query.setParameter(4, searchFilter);
         }
 
         Integer result = ((Long) query.getSingleResult()).intValue();
@@ -260,9 +260,9 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
     @Override
     public List<MessageList> findByIntegratedFacility(int facilityId, String status) {
         Query query = createQuery("ml",
-                "ml.status like :status and ml.destinationFacilityId = :destinationFacilityId order by ml.id");
-        query.setParameter("destinationFacilityId", facilityId);
-        query.setParameter("status", status);
+                "ml.status like ?1 and ml.destinationFacilityId = ?2 order by ml.id");
+        query.setParameter(1, facilityId);
+        query.setParameter(2, status);
         List<MessageList> results = query.getResultList();
         if (results == null) {
             results = Collections.emptyList();
@@ -273,9 +273,9 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
     @Override
     public List<MessageList> findByMessageAndIntegratedFacility(Long messageNo, int facilityId) {
         Query query = createQuery("ml",
-                "ml.message = :messageNo and ml.destinationFacilityId = :destinationFacilityId order by ml.id");
-        query.setParameter("messageNo", messageNo);
-        query.setParameter("destinationFacilityId", facilityId);
+                "ml.message = ?1 and ml.destinationFacilityId = ?2 order by ml.id");
+        query.setParameter(1, messageNo);
+        query.setParameter(2, facilityId);
         List<MessageList> results = query.getResultList();
         if (results == null) {
             results = Collections.emptyList();
