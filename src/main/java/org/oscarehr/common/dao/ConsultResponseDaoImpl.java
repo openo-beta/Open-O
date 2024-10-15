@@ -55,6 +55,7 @@ public class ConsultResponseDaoImpl extends AbstractDaoImpl<ConsultationResponse
         logger.debug("sql=" + sql);
 
         Query query = entityManager.createQuery(sql);
+        
         Long count = this.getCountResult(query);
 
 
@@ -67,6 +68,7 @@ public class ConsultResponseDaoImpl extends AbstractDaoImpl<ConsultationResponse
         logger.debug("sql=" + sql);
 
         Query query = entityManager.createQuery(sql);
+        
         query.setFirstResult(filter.getStartIndex());
         query.setMaxResults(filter.getNumToReturn());
         return query.getResultList();
