@@ -66,28 +66,28 @@ public class BillingONItemDaoImpl extends AbstractDaoImpl<BillingONItem> impleme
     }
 
     public List<BillingONItem> findByCh1Id(Integer id) {
-        Query query = createQuery("bi", "bi.ch1Id = :ch1Id AND bi.status <> 'D' AND bi.status <> 'S'");
-        query.setParameter("ch1Id", id);
+        Query query = createQuery("bi", "bi.ch1Id = ?1 AND bi.status <> 'D' AND bi.status <> 'S'");
+        query.setParameter(1, id);
         return query.getResultList();
     }
 
     public List<BillingONItem> findByCh1IdAndStatusNotEqual(Integer chId, String string) {
-        Query query = createQuery("i", "i.ch1Id= :chId AND i.status != 'D'");
-        query.setParameter("chId", chId);
+        Query query = createQuery("i", "i.ch1Id= ?1 AND i.status != 'D'");
+        query.setParameter(1, chId);
         return query.getResultList();
     }
 
     public List<BillingONCHeader1> getCh1ByDemographicNoSince(Integer demographic_no, Date lastUpdateDate) {
-        String queryStr = "FROM BillingONCHeader1 b WHERE b.demographicNo = " + demographic_no + " and b.timestamp > ? ORDER BY b.id";
+        String queryStr = "FROM BillingONCHeader1 b WHERE b.demographicNo = " + demographic_no + " and b.timestamp > ?1 ORDER BY b.id";
         Query q = entityManager.createQuery(queryStr);
         q.setParameter(1, lastUpdateDate);
         return q.getResultList();
     }
 
     public List<Integer> getDemographicNoSince(Date lastUpdateDate) {
-        String queryStr = "select b.demographicNo FROM BillingONCHeader1 b WHERE b.timestamp > ? ORDER BY b.id";
+        String queryStr = "select b.demographicNo FROM BillingONCHeader1 b WHERE b.timestamp > ?1 ORDER BY b.id";
         Query q = entityManager.createQuery(queryStr);
-        q.setParameter(0, lastUpdateDate);
+        q.setParameter(1, lastUpdateDate);
         return q.getResultList();
     }
 }
