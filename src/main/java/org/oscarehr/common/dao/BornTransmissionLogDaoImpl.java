@@ -55,8 +55,8 @@ public class BornTransmissionLogDaoImpl extends AbstractDaoImpl<BornTransmission
         String tomorrow = UtilDateUtilities.DateToString(cal.getTime(), "yyyy-MM-dd");
 
         String sql = "select count(*) from BornTransmissionLog b" +
-                " where b.filename like '" + filenameStart + "%' and b.id < " + id +
-                " and b.submitDateTime >= '" + today + "' and b.submitDateTime < '" + tomorrow + "'";
+            " where b.filename like '" + filenameStart + "%' and b.id < " + id +
+            " and b.submitDateTime >= '" + today + "' and b.submitDateTime < '" + tomorrow + "'";
         Query query = entityManager.createQuery(sql);
 
         return (Long) query.getSingleResult() + 1;
