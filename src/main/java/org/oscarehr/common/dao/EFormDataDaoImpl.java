@@ -163,7 +163,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         int counter = 2;
 
         if (current != null) {
-            sb.append(" and x.current=?");
+            sb.append(" and x.current=?2");
             sb.append(counter);
             counter++;
         }
@@ -196,7 +196,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         counter = 2;
 
         if (current != null) {
-            query.setParameter(counter, current);
+            query.setParameter(2, current);
             counter++;
         }
 
@@ -223,7 +223,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         int counter = 2;
 
         if (current != null) {
-            sb.append(" and x.current=?");
+            sb.append(" and x.current=?2");
             sb.append(counter);
             counter++;
         }
@@ -238,7 +238,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         counter = 2;
 
         if (current != null) {
-            query.setParameter(counter, current);
+            query.setParameter(2, current);
             counter++;
         }
 
@@ -367,20 +367,20 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     @SuppressWarnings("unchecked")
     @Override
     public List<EFormData> findByDemographicIdAndFormName(Integer demographicNo, String formName) {
-        String queryString = "FROM EFormData e WHERE e.demographicId = :demographicNo AND e.formName LIKE :formName and status = '1' ORDER BY e.formDate, e.formTime DESC";
+        String queryString = "FROM EFormData e WHERE e.demographicId = ?1 AND e.formName LIKE ?2 and status = '1' ORDER BY e.formDate, e.formTime DESC";
         Query query = entityManager.createQuery(queryString);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("formName", formName);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, formName);
         return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<EFormData> findByDemographicIdAndFormId(Integer demographicNo, Integer fid) {
-        String queryString = "FROM EFormData e WHERE e.demographicId = :demographicNo AND e.formId = :formId and status = '1' ORDER BY e.formDate DESC, e.formTime DESC";
+        String queryString = "FROM EFormData e WHERE e.demographicId = ?1 AND e.formId = ?2 and status = '1' ORDER BY e.formDate DESC, e.formTime DESC";
         Query query = entityManager.createQuery(queryString);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("formId", fid);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, fid);
         return query.getResultList();
     }
 
@@ -407,8 +407,8 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
             return new ArrayList<EFormData>();
 
         Query query = entityManager
-                .createQuery("select x from " + modelClass.getSimpleName() + " x where x.id in (:ids)");
-        query.setParameter("ids", ids);
+                .createQuery("select x from " + modelClass.getSimpleName() + " x where x.id in (?1)");
+        query.setParameter(1, ids);
 
         @SuppressWarnings("unchecked")
         List<EFormData> results = query.getResultList();
@@ -497,15 +497,15 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     public List<EFormData> findInGroups(Boolean status, int demographicNo, String groupName, String sortBy, int offset,
                                         int numToReturn, List<String> eformPerms) {
         StringBuilder sb = new StringBuilder(
-                "SELECT e FROM EFormData e, EFormGroup g WHERE e.demographicId = :demographicNo AND e.patientIndependent = false AND e.formId = g.formId AND g.groupName = :groupName");
+                "SELECT e FROM EFormData e, EFormGroup g WHERE e.demographicId = ?1 AND e.patientIndependent = false AND e.formId = g.formId AND g.groupName = ?2");
 
         if (status != null) {
-            sb.append(" AND e.current = :status");
+            sb.append(" AND e.current = ?3");
         }
 
         // get list of _eform.???? permissions the caller has
         if (eformPerms != null && eformPerms.size() > 0) {
-            sb.append(" AND (e.roleType in (:perms) OR e.roleType IS NULL OR e.roleType = '' OR e.roleType = 'null')");
+            sb.append(" AND (e.roleType in (?4 OR e.roleType IS NULL OR e.roleType = '' OR e.roleType = 'null')");
         }
 
         sb.append(" ORDER BY ");
@@ -522,13 +522,13 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         }
 
         Query query = entityManager.createQuery(sb.toString());
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("groupName", groupName);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, groupName);
         if (status != null) {
-            query.setParameter("status", status);
+            query.setParameter(3, status);
         }
         if (eformPerms != null && eformPerms.size() > 0) {
-            query.setParameter("perms", eformPerms);
+            query.setParameter(4, eformPerms);
         }
         query.setFirstResult(offset);
 
@@ -582,8 +582,8 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     public List<String> getProvidersForEforms(Collection<Integer> fdidList) {
 
         Query query = entityManager.createQuery(
-                "select distinct x.providerNo from " + modelClass.getSimpleName() + " x where x.id in (:ids)");
-        query.setParameter("ids", fdidList);
+                "select distinct x.providerNo from " + modelClass.getSimpleName() + " x where x.id in (?1)");
+        query.setParameter(1, fdidList);
 
         List<String> results = query.getResultList();
 
@@ -594,8 +594,8 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
     public Date getLatestFormDateAndTimeForEforms(Collection<Integer> fdidList) {
 
         Query query = entityManager.createQuery("select distinct x.formDate,x.formTime from "
-                + modelClass.getSimpleName() + " x where x.id in (:ids) order by x.formDate DESC, x.formTime DESC");
-        query.setParameter("ids", fdidList);
+                + modelClass.getSimpleName() + " x where x.id in (?1) order by x.formDate DESC, x.formTime DESC");
+        query.setParameter(1, fdidList);
 
         List<Object[]> results = query.getResultList();
 
