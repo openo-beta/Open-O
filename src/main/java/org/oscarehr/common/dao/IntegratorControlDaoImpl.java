@@ -43,6 +43,7 @@ public class IntegratorControlDaoImpl extends AbstractDaoImpl<IntegratorControl>
     }
 
     public List<IntegratorControl> getAllByFacilityId(Integer facilityId) {
+
         String queryStr = "FROM IntegratorControl c WHERE c.facilityId = " + facilityId + " ORDER BY c.control";
 
         @SuppressWarnings("unchecked")
