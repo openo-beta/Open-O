@@ -10,7 +10,7 @@
  * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See thes
  * GNU General Public License for more details.
  * <p>
  * You should have received a copy of the GNU General Public License
@@ -82,9 +82,9 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
     @SuppressWarnings("unchecked")
     @Override
     public List<Hl7TextInfo> findByHealthCardNo(String hin) {
-        String sql = "select hl7 from Hl7TextInfo hl7 where hl7.healthNumber = :hin";
+        String sql = "select hl7 from Hl7TextInfo hl7 where hl7.healthNumber = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("hin", hin);
+        query.setParameter(1, hin);
         List<Hl7TextInfo> list = query.getResultList();
         return list;
     }
@@ -120,9 +120,9 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
 
     @Override
     public List<Hl7TextInfo> searchByAccessionNumberOrderByObrDate(String accessionNumber) {
-        String queryString = "SELECT h from Hl7TextInfo h where h.accessionNumber = :accessionNumber ORDER BY h.obrDate DESC";
+        String queryString = "SELECT h from Hl7TextInfo h where h.accessionNumber = ?1 ORDER BY h.obrDate DESC";
         Query query = entityManager.createQuery(queryString);
-        query.setParameter("accessionNumber", accessionNumber);
+        query.setParameter(1, accessionNumber);
         return query.getResultList();
     }
 
@@ -132,7 +132,7 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
     public Hl7TextInfo findLatestVersionByAccessionNumberOrFillerNumber(
             String acc, String fillerNumber) {
 
-        String sqlCommand = "select x from Hl7TextInfo x where x.accessionNumber = ?1 " +
+            String sqlCommand = "select x from Hl7TextInfo x where x.accessionNumber = ?1 " +
                 "OR x.fillerOrderNum = ?2 order by lab_no DESC";
 
         Query query = entityManager.createQuery(sqlCommand);
@@ -153,15 +153,13 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
         List<Hl7TextInfo> lab = query.getResultList();
 
         return lab;
-
-
     }
 
     @Override
     public void updateReportStatusByLabId(String reportStatus, int labNumber) {
-        Query query = entityManager.createQuery("update " + modelClass.getName() + " x set x.reportStatus = :reportStatus where x.labNumber = :labNumber");
-        query.setParameter("reportStatus", reportStatus);
-        query.setParameter("labNumber", labNumber);
+        Query query = entityManager.createQuery("update " + modelClass.getName() + " x set x.reportStatus = ?1 where x.labNumber = ?2");
+        query.setParameter(1, reportStatus);
+        query.setParameter(2, labNumber);
         query.executeUpdate();
     }
 
@@ -185,7 +183,7 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
     @Override
     public List<Hl7TextMessageInfo2> getMatchingLabsByAccessionNo(String accession) {
         if (accession != null) {
-            String sql = "SELECT a.lab_no as id,  m2.message,  a.lab_no AS lab_no_A,  a.obr_date as labDate_A  FROM hl7TextInfo a, hl7TextMessage m2  WHERE  m2.lab_id = a.lab_no AND  a.accessionNum = ? ORDER BY a.obr_date, a.lab_no";
+            String sql = "SELECT a.lab_no as id,  m2.message,  a.lab_no AS lab_no_A,  a.obr_date as labDate_A  FROM hl7TextInfo a, hl7TextMessage m2  WHERE  m2.lab_id = a.lab_no AND  a.accessionNum = ?1 ORDER BY a.obr_date, a.lab_no";
             Query query = entityManager.createNativeQuery(sql, Hl7TextMessageInfo2.class);
 
             query.setParameter(1, accession);
@@ -210,9 +208,9 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
 
     @Override
     public void updateResultStatusByLabId(String resultStatus, int labNumber) {
-        Query query = entityManager.createQuery("update " + modelClass.getName() + " x set x.resultStatus = :resultStatus where x.labNumber = :labNumber");
-        query.setParameter("resultStatus", resultStatus);
-        query.setParameter("labNumber", labNumber);
+        Query query = entityManager.createQuery("update " + modelClass.getName() + " x set x.resultStatus = ?1 where x.labNumber = ?2");
+        query.setParameter(1, resultStatus);
+        query.setParameter(2, labNumber);
         query.executeUpdate();
     }
 
@@ -228,8 +226,8 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
     @SuppressWarnings("unchecked")
     @Override
     public List<Hl7TextInfo> findByLabId(Integer labNo) {
-        Query query = createQuery("h", "h.labNumber = :labNo ORDER BY h.obrDate DESC");
-        query.setParameter("labNo", labNo);
+        Query query = createQuery("h", "h.labNumber = ?1 ORDER BY h.obrDate DESC");
+        query.setParameter(1, labNo);
         return query.getResultList();
     }
 
@@ -239,10 +237,10 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
         String sql = "FROM Hl7TextInfo a, Hl7TextInfo b " +
                 "WHERE a.accessionNumber <> '' " +
                 "AND a.accessionNumber = b.accessionNumber " +
-                "AND b.labNumber = :labNo " +
+                "AND b.labNumber = ?1 " +
                 "ORDER BY a.finalResultCount, a.obrDate, a.labNumber";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("labNo", labNo);
+        q.setParameter(1, labNo);
         return q.getResultList();
     }
 
@@ -253,7 +251,7 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
                 "FROM Hl7TextInfo hl7, PatientLabRouting p " +
                         "WHERE p.labNo = hl7.labNumber " +
                         "AND p.labType = 'HL7' " +
-                        "AND p.demographicNo = :dNo " +
+                        "AND p.demographicNo = ?1 " +
                         "GROUP BY hl7.labNumber ";
         if (OscarProperties.getInstance().isPropertyActive("abnormal_labs_first")) {
             sql += "ORDER BY hl7.resultStatus DESC, hl7.obrDate DESC";
@@ -261,7 +259,7 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
             sql += "ORDER BY hl7.labNumber DESC";
         }
         Query q = entityManager.createQuery(sql);
-        q.setParameter("dNo", demographicNo);
+        q.setParameter(1, demographicNo);
         return q.getResultList();
     }
 
@@ -287,13 +285,13 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
     public List<Object[]> findLabsViaMagic(String status, String providerNo, String patientFirstName, String patientLastName, String patientHealthNumber) {
         String sql = "FROM Hl7TextInfo info, ProviderLabRoutingModel p " +
                 "WHERE info.labNumber = p.labNo " +
-                "AND p.status like :status " +
-                "AND p.providerNo like :providerNo " +
+                "AND p.status like ?1 " +
+                "AND p.providerNo like ?2 " +
                 "AND p.labType = 'HL7' " +
-                "AND info.firstName like :fName " +
-                "AND info.lastName like :lName";
+                "AND info.firstName like ?3 " +
+                "AND info.lastName like ?4";
         if (patientHealthNumber != null) {
-            sql = sql + " AND info.healthNumber like :hNum ";
+            sql = sql + " AND info.healthNumber like ?5 ";
         }
         if (OscarProperties.getInstance().isPropertyActive("abnormal_labs_first")) {
             sql += "ORDER BY hl7.resultStatus DESC, hl7.obrDate DESC";
@@ -302,12 +300,12 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
         }
 
         Query q = entityManager.createQuery(sql);
-        q.setParameter("status", "%" + status + "%");
-        q.setParameter("providerNo", providerNo.equals("") ? "%" : providerNo);
-        q.setParameter("fName", patientFirstName + "%");
-        q.setParameter("lName", patientLastName + "%");
+        q.setParameter(1, "%" + status + "%");
+        q.setParameter(2, providerNo.equals("") ? "%" : providerNo);
+        q.setParameter(3, patientFirstName + "%");
+        q.setParameter(4, patientLastName + "%");
         if (patientHealthNumber != null) {
-            q.setParameter("hNum", "%" + patientHealthNumber + "%");
+            q.setParameter(5, "%" + patientHealthNumber + "%");
         }
         return null;
     }
@@ -535,9 +533,9 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
 
     @Override
     public List<Object> findDisciplines(Integer labid) {
-        String sql = "SELECT DISTINCT i.discipline FROM " + modelClass.getName() + " i WHERE i.discipline <> '' AND i.labNumber = :labid";
+        String sql = "SELECT DISTINCT i.discipline FROM " + modelClass.getName() + " i WHERE i.discipline <> '' AND i.labNumber = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("labid", labid);
+        query.setParameter(1, labid);
         return query.getResultList();
 
     }
