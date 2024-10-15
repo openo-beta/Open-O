@@ -349,6 +349,7 @@ public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements
                 sql = "select d from Document d, ProviderInboxItem p where d.documentNo=p.labNo and p.status like '%" + status + "%' and (p.providerNo like '" +
                         (providerNo.equals("") ? "%" : providerNo) + "'" + " or p.providerNo='" + CommonLabResultData.NOT_ASSIGNED_PROVIDER_NO + "' ) " +
                         " and p.labType='DOC' order by d.documentNo DESC";
+                        
             } else {
                 return labResults;
             }
