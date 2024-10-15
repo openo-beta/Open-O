@@ -83,4 +83,5 @@ public interface DemographicExtDao extends AbstractDao<DemographicExt> {
             final DemographicExtKey key,
             final String providerNumber,
             final String lastNameRegex);
+
 }
