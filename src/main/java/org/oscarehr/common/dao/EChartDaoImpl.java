@@ -53,8 +53,8 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
 
     public EChart getLatestChart(int demographicNo) {
 
-        Query q = entityManager.createQuery("from EChart c where c.demographicNo = ? order by c.timestamp desc");
-        q.setParameter(0, demographicNo);
+        Query q = entityManager.createQuery("from EChart c where c.demographicNo = ?1 order by c.timestamp desc");
+        q.setParameter(1, demographicNo);
         @SuppressWarnings("unchecked")
         List<EChart> results = q.getResultList();
         if (results.size() > 0) {
@@ -65,9 +65,9 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
 
     public String saveEchart(CaseManagementNote note, CaseManagementCPP cpp, String userName, String lastStr) {
         String demoNo = note.getDemographic_no();
-        String sql = "select e from EChart e where e.demographicNo=? order by e.id";
+        String sql = "select e from EChart e where e.demographicNo=?1 order by e.id";
         Query q = entityManager.createQuery(sql);
-        q.setParameter(0, new Integer(demoNo));
+        q.setParameter(1, new Integer(demoNo));
         @SuppressWarnings("unchecked")
         List<EChart> list = q.getResultList();
         EChart oldec;
@@ -134,9 +134,9 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
 
     public void updateEchartOngoing(CaseManagementCPP cpp) {
         String demoNo = cpp.getDemographic_no();
-        String sql = "select e from EChart e where e.demographicNo=? order by e.id";
+        String sql = "select e from EChart e where e.demographicNo=?1 order by e.id";
         Query q = entityManager.createQuery(sql);
-        q.setParameter(0, new Integer(demoNo));
+        q.setParameter(1, new Integer(demoNo));
         List<EChart> list = q.getResultList();
         EChart oldec;
         if (list.size() != 0) oldec = list.get(list.size() - 1);
@@ -151,9 +151,9 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
     public void saveCPPIntoEchart(CaseManagementCPP cpp, String providerNo) {
 
         String demoNo = cpp.getDemographic_no();
-        String sql = "select e from EChart e where e.demographicNo=? order by e.id";
+        String sql = "select e from EChart e where e.demographicNo=?1 order by e.id";
         Query q = entityManager.createQuery(sql);
-        q.setParameter(0, Integer.parseInt(demoNo));
+        q.setParameter(1, Integer.parseInt(demoNo));
         @SuppressWarnings("unchecked")
         List<EChart> list = q.getResultList();
 
@@ -181,23 +181,23 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
     }
 
     public Integer getMaxIdForDemographic(Integer demoNo) {
-        Query query = entityManager.createQuery("SELECT MAX(e.id) FROM EChart e WHERE e.demographicNo = :demoNo");
-        query.setParameter("demoNo", demoNo);
+        Query query = entityManager.createQuery("SELECT MAX(e.id) FROM EChart e WHERE e.demographicNo = ?1");
+        query.setParameter(1, demoNo);
         return (Integer) query.getSingleResult();
     }
 
     @SuppressWarnings("unchecked")
     public List<EChart> getChartsForDemographic(Integer demoNo) {
-        Query query = createQuery("e", "e.demographicNo = :dNo ORDER BY e.id DESC");
-        query.setParameter("dNo", demoNo);
+        Query query = createQuery("e", "e.demographicNo = ?1 ORDER BY e.id DESC");
+        query.setParameter(1, demoNo);
         return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
     public List<EChart> findByDemoIdAndSubject(Integer demoNo, String subj) {
-        Query query = createQuery("e", "e.demographicNo = :demoNo and e.subject = :subj ORDER BY e.timestamp");
-        query.setParameter("demoNo", demoNo);
-        query.setParameter("subj", subj);
+        Query query = createQuery("e", "e.demographicNo = ?1 and e.subject = ?2 ORDER BY e.timestamp");
+        query.setParameter(1, demoNo);
+        query.setParameter(2, subj);
         return query.getResultList();
     }
 
