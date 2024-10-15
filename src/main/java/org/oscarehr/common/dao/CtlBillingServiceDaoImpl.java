@@ -57,8 +57,8 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
      * @return Returns list containing arrays of strings, where the first element represents the service type and the second element is the service type name.
      */
     public List<Object[]> getUniqueServiceTypes(String serviceStatus) {
-        Query query = entityManager.createQuery("SELECT DISTINCT b.serviceType, b.serviceTypeName FROM CtlBillingService b WHERE b.status = :serviceStatus");
-        query.setParameter("serviceStatus", serviceStatus);
+        Query query = entityManager.createQuery("SELECT DISTINCT b.serviceType, b.serviceTypeName FROM CtlBillingService b WHERE b.status = ?1");
+        query.setParameter(1, serviceStatus);
 
 
         List<Object[]> results = query.getResultList();
@@ -75,18 +75,7 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
     }
 
     public List<CtlBillingService> findByServiceTypeId(String serviceTypeId) {
-        Query query = entityManager.createQuery("select b from CtlBillingService b where b.status='A' and b.serviceType like ?");
-        query.setParameter(0, serviceTypeId);
-
-
-        List<CtlBillingService> results = query.getResultList();
-
-        return results;
-    }
-
-    public List<CtlBillingService> findByServiceGroupAndServiceTypeId(String serviceGroup, String serviceTypeId) {
-        Query query = entityManager.createQuery("select b from CtlBillingService b where b.status='A' and b.serviceGroup = ? and b.serviceType like ?");
-        query.setParameter(0, serviceGroup);
+        Query query = entityManager.createQuery("select b from CtlBillingService b where b.status='A' and b.serviceType like ?1");
         query.setParameter(1, serviceTypeId);
 
 
@@ -95,9 +84,20 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
         return results;
     }
 
+    public List<CtlBillingService> findByServiceGroupAndServiceTypeId(String serviceGroup, String serviceTypeId) {
+        Query query = entityManager.createQuery("select b from CtlBillingService b where b.status='A' and b.serviceGroup = ?1 and b.serviceType like ?2");
+        query.setParameter(1, serviceGroup);
+        query.setParameter(2, serviceTypeId);
+
+
+        List<CtlBillingService> results = query.getResultList();
+
+        return results;
+    }
+
     public List<CtlBillingService> findByServiceType(String serviceTypeId) {
-        Query query = entityManager.createQuery("select b from CtlBillingService b where b.serviceType like ?");
-        query.setParameter(0, serviceTypeId);
+        Query query = entityManager.createQuery("select b from CtlBillingService b where b.serviceType like ?1");
+        query.setParameter(1, serviceTypeId);
 
 
         List<CtlBillingService> results = query.getResultList();
@@ -138,14 +138,14 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
      */
 
     public List<CtlBillingService> findByServiceGroupAndServiceType(String serviceGroup, String serviceType) {
-        StringBuilder buf = new StringBuilder("FROM " + modelClass.getSimpleName() + " bs WHERE bs.serviceGroup = :serviceGroup");
+        StringBuilder buf = new StringBuilder("FROM " + modelClass.getSimpleName() + " bs WHERE bs.serviceGroup = ?1");
         boolean isServiceTypeSpecified = serviceType != null;
         if (isServiceTypeSpecified)
-            buf.append(" AND bs.serviceType = :serviceType");
+            buf.append(" AND bs.serviceType = ?2");
         Query query = entityManager.createQuery(buf.toString());
-        query.setParameter("serviceGroup", serviceGroup);
+        query.setParameter(1, serviceGroup);
         if (isServiceTypeSpecified)
-            query.setParameter("serviceType", serviceType);
+            query.setParameter(2, serviceType);
         return query.getResultList();
     }
 
@@ -153,9 +153,9 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
     public List<Object[]> findUniqueServiceTypesByCode(String serviceCode) {
         String sql = "SELECT DISTINCT s.serviceTypeName, s.serviceType from CtlBillingService s " +
                 "WHERE s.status='A' " +
-                "AND s.serviceCode = :serviceCode";
+                "AND s.serviceCode = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("serviceCode", serviceCode);
+        query.setParameter(1, serviceCode);
         return query.getResultList();
     }
 
@@ -171,18 +171,18 @@ public class CtlBillingServiceDaoImpl extends AbstractDaoImpl<CtlBillingService>
     public List<Object[]> findServiceTypesByStatus(String status) {
         String sql = "SELECT DISTINCT s.serviceTypeName, s.serviceType " +
                 "FROM CtlBillingService s " +
-                "WHERE s.status = :status";
+                "WHERE s.status = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("status", status);
+        query.setParameter(1, status);
         return query.getResultList();
     }
 
     public List<Object> findServiceCodesByType(String serviceType) {
         String sql = "SELECT DISTINCT bs.serviceCode FROM CtlBillingService bs " +
                 "WHERE bs.status <> 'D' " +
-                "AND bs.serviceType = :serviceType";
+                "AND bs.serviceType = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("serviceType", serviceType);
+        query.setParameter(1, serviceType);
         return query.getResultList();
     }
 
