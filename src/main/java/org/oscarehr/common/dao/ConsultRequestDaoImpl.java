@@ -79,6 +79,7 @@ public class ConsultRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> 
                         " from ConsultationRequest cr left outer join cr.professionalSpecialist specialist, ConsultationServices cs, Demographic d"
                         +
                         " left outer join d.provider p where d.DemographicNo = cr.demographicId and cs.id = cr.serviceId ");
+        
         if (StringUtils.isNotBlank(consultationQuery.getProviderNo())) {
             sql.append("and cr.providerNo = '" + StringEscapeUtils.escapeSql(consultationQuery.getProviderNo()) + "' ");
         }
