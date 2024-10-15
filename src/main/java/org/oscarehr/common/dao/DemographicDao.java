@@ -487,5 +487,4 @@ public interface DemographicDao {
     public List<Demographic> findByPhone(String phone, String start, int numToReturn);
 
     public List<Demographic> findByHin(String hin, String start, int numToReturn);
-
 }
