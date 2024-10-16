@@ -156,11 +156,12 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
         StringBuilder queryBuilder = new StringBuilder("select b from Bed b");
 
         queryBuilder.append(" where ");
-  
+
+        int paramIndex = 1;
         boolean andClause = false;
-        
+
         if (facilityId != null) {
-            queryBuilder.append("b.facilityId = ?1");
+            queryBuilder.append("b.facilityId = ?" + paramIndex++);
             andClause = true;
         }
 
@@ -169,13 +170,13 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
                 queryBuilder.append(" and ");
             else
                 andClause = true;
-            queryBuilder.append("b.roomId = ?2");
+            queryBuilder.append("b.roomId = ?" + paramIndex++);
         }
 
         if (active != null) {
             if (andClause)
                 queryBuilder.append(" and ");
-            queryBuilder.append("b.active = ?3");
+            queryBuilder.append("b.active = ?" + paramIndex++);
         }
 
         return queryBuilder.toString();
