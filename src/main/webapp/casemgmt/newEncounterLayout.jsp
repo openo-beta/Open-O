@@ -585,20 +585,20 @@
     <body id="body">
     <jsp:include page="../images/spinner.jsp" flush="true"/>
     <div id="header">
-        <tiles:insert attribute="header"/>
+        <jsp:include page="newEncounterHeader.jsp"/>
     </div>
 
     <div id="navigation-layout">
         <div id="rightNavBar">
-            <tiles:insert attribute="rightNavigation"/>
+            <jsp:include page="rightColumn.jsp"/>
         </div>
 
         <div id="leftNavBar">
-            <tiles:insert attribute="leftNavigation"/>
+            <jsp:include page="newNavigation.jsp"/>
         </div>
 
         <div id="content">
-            <tiles:insert attribute="body"/>
+            <jsp:include page="newCaseManagementView.jsp"/>
         </div>
     </div>
     <!-- hovering divs -->

@@ -387,13 +387,6 @@
             <version>${struts.version}</version>
         </dependency>
 
-        <!-- Struts Tiles Library -->
-        <dependency>
-            <groupId>io.github.weblegacy</groupId>
-            <artifactId>struts-tiles</artifactId>
-            <version>${struts.version}</version>
-        </dependency>
-
         <!-- Struts Extras Library -->
         <dependency>
             <groupId>io.github.weblegacy</groupId>

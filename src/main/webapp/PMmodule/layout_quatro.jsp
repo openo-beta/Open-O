@@ -97,19 +97,18 @@
     <table border="0" cellspacing="0" cellpadding="0" width="100%"
            height="100%">
         <tr height="60px">
-            <td><tiles:insert name="Header_quatro.jsp">
-            </tiles:insert></td>
+            <td><jsp:include page="Header_quatro.jsp"/></td>
         </tr>
         <tr valign="top" height="100%">
             <td>
                 <table width="100%" height="100%">
                     <tr>
-                        <td id="leftcol" width="200px"><tiles:insert
-                                attribute="leftNav"/></td>
+                        <td id="leftcol" width="200px"><<jsp:include
+                                page="navigation_blank.jsp"/></td>
                         <td valign="top" width="3px"><img
                                 src='<html:rewrite page="/images/1x1.gif" />' width="3px"/></td>
                         <td align="left"><!--  div class="body" align="left"  this is the layout-->
-                            <tiles:insert attribute="body"/> <!--  /div --></td>
+                            <jsp:include page="Home.jsp"/> <!--  /div --></td>
                     </tr>
                 </table>
             </td>

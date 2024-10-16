@@ -779,7 +779,7 @@
 		</action>
 
 		<action path="/Home" type="org.oscarehr.PMmodule.web.HomeAction" parameter="method" scope="request" validate="false">
-			<forward name="home" path="page.home" />
+			<forward name="home" path="/PMmodule/layout_quatro.jsp" />
 		</action>
 
 		<!-- caisi core action -->
@@ -2404,12 +2404,12 @@
 		-->
 				
 		<action path="/SurveyManager" type="org.oscarehr.survey.web.SurveyManagerAction" parameter="method" name="surveyForm" scope="session">
-			<forward name="edit" path=".view.survey.form" />
-			<forward name="list" path=".view.survey.manager" redirect="true" />
-			<forward name="new_survey" path=".view.survey.new_survey" />
+			<forward name="edit" path="/survey/surveyManager/edit.jsp" />
+			<forward name="list" path="/survey/surveyManager/list.jsp" redirect="true" />
+			<forward name="new_survey" path="/survey/surveyManager/new_survey.jsp" />
 			<forward name="question_editor" path="/survey/surveyManager/questionForm.jsp" />
 			<forward name="execute" path="/SurveyTest.do" redirect="false" />
-			<forward name="import" path=".view.survey.import" />
+			<forward name="import" path="/survey/surveyManager/import.jsp" />
 			<forward name="redirect" path="/SurveyManager.do" redirect="true" />
 			<forward name="reportForm" path="/PMmodule/reports/UcfReportForm.jsp" />
 			<forward name="report" path="/PMmodule/reports/UcfReport.jsp" />
@@ -2426,8 +2426,8 @@
 			<forward name="view" path="/casemgmt/CaseManagementView.jsp" />
 			<forward name="ajaxView" path="/casemgmt/ChartNotes.jsp" />
 			<forward name="ajaxDisplayNotes" path="/casemgmt/ChartNotesAjax.jsp" />
-			<forward name="page.casemgmt.view" path="page.casemgmt.view" />
-			<forward name="page.newcasemgmt.view" path="page.newcasemgmt.view" />
+			<forward name="page.casemgmt.view" path="/casemgmt/encounterLayout.jsp" />
+			<forward name="page.newcasemgmt.view" path="/casemgmt/newEncounterLayout.jsp" />
 			<forward name="domain-error" path="/casemgmt/domain-error.jsp" />
 			<forward name="clientNeverInTheProgramError" path="/casemgmt/clientNeverInTheProgramError.jsp" />
 			<forward name="unlockForm" path="/casemgmt/unlockNoteForm.jsp" />
@@ -2440,7 +2440,7 @@
 			<forward name="clientHistoryPrintPreview" path="/casemgmt/client_history_printPreview.jsp" />
 		</action>
 		<action path="/CaseManagementEntry" type="org.springframework.web.struts.DelegatingActionProxy" parameter="method" scope="request" input="/casemgmt/CaseManagementEntry.jsp" name="caseManagementEntryForm">
-			<forward name="setUpMainEncounterPage" path="page.newcasemgmt.view" />
+			<forward name="setUpMainEncounterPage" path="/casemgmt/newEncounterLayout.jsp" />
 			<forward name="view" path="/casemgmt/CaseManagementEntry.jsp" />
 			<forward name="list" path="/CaseManagementView.do?method=view" redirect="true" />
 			<forward name="listCPPNotes" path="/CaseManagementView.do" redirect="true" />
@@ -3110,7 +3110,7 @@
 		
 		
 	</action-mappings>
-	<controller processorClass="org.apache.struts.tiles.TilesRequestProcessor" maxFileSize="500M" />
+	<controller maxFileSize="500M" />
 	<message-resources parameter="oscarResources" null="false" />
 	<message-resources parameter="HelpResources" key="help" null="false" />
 	<message-resources parameter="MessageResources_program" key="pmm" null="false" />
@@ -3119,12 +3119,6 @@
 	<message-resources parameter="MessageResources_mcedt" key="mcedt" null="false" />
 	<message-resources parameter="uiResources" key="ui" null="false" />
 	
-	<plug-in className="org.apache.struts.tiles.TilesPlugin">
-		<!-- Path to XML definition file -->
-		<set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
-		<!-- Set Module-awareness to true -->
-		<set-property property="moduleAware" value="true" />
-	</plug-in>
 	<plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
 		<set-property property="contextConfigLocation" value="/WEB-INF/action-servlet.xml" />
 	</plug-in>

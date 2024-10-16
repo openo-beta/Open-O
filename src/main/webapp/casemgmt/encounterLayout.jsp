@@ -52,8 +52,8 @@
     <table border="0" width="100%" cellspacing="5">
         <tbody>
         <tr>
-            <td width="22%" valign="top"><tiles:insert attribute="navigation"/></td>
-            <td width="78%" valign="top"><tiles:insert attribute="body"/></td>
+            <td width="22%" valign="top"><jsp:include page="navigation.jsp"/></td>
+            <td width="78%" valign="top"><jsp:include page="CaseManagementView.jsp"/></td>
         </tr>
         </tbody>
     </table>

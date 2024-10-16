@@ -22,20 +22,32 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@ page errorPage="/common/error.jsp" %>
+<%@ include file="/taglibs.jsp" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean-el" prefix="bean-el" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el" %>
-<%@ taglib uri="http://struts.apache.org/tags-nested" prefix="nested" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el" %>
-<%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
-<%@ taglib uri="/WEB-INF/caisirole-tag.tld" prefix="caisirole" %>
-<%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<html:html>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title>eForm Manager</title>
+        <jsp:include page="/survey/meta.jsp"/>
+        <jsp:include page="/survey/stylesheet.jsp" />
+        <jsp:include page="/survey/javascript.jsp" />
+    </head>
+    <body bgcolor="#FFFFFF" text="#000000" onLoad="BodyOnLoad();"
+          onClick="BodyOnClick();">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%"
+           height="5%">
+        <tr>
+            <td align="center" valign="top" height="1%"><jsp:include page="/survey/header.jsp" /></td>
+        </tr>
+    </table>
+    <br/>
+    <jsp:include page="/survey/surveyManager/surveyManager.jsp" />
+    <br/>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%"
+           height="5%">
+        <tr>
+            <td align="center" valign="bottom" height="1%"><jsp:include page="/survey/footer.jsp" /></td>
+        </tr>
+    </table>
+    </body>
+</html:html>
