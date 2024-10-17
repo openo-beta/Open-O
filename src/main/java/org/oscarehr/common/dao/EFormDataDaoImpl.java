@@ -163,7 +163,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         int counter = 2;
 
         if (current != null) {
-            sb.append(" and x.current=?2");
+            sb.append(" and x.current=?");
             sb.append(counter);
             counter++;
         }
@@ -196,7 +196,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         counter = 2;
 
         if (current != null) {
-            query.setParameter(2, current);
+            query.setParameter(counter, current);
             counter++;
         }
 
@@ -223,7 +223,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         int counter = 2;
 
         if (current != null) {
-            sb.append(" and x.current=?2");
+            sb.append(" and x.current=?");
             sb.append(counter);
             counter++;
         }
@@ -238,7 +238,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         counter = 2;
 
         if (current != null) {
-            query.setParameter(2, current);
+            query.setParameter(counter, current);
             counter++;
         }
 
@@ -505,7 +505,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
 
         // get list of _eform.???? permissions the caller has
         if (eformPerms != null && eformPerms.size() > 0) {
-            sb.append(" AND (e.roleType in (?4 OR e.roleType IS NULL OR e.roleType = '' OR e.roleType = 'null')");
+            sb.append(" AND (e.roleType in (?4) OR e.roleType IS NULL OR e.roleType = '' OR e.roleType = 'null')");
         }
 
         sb.append(" ORDER BY ");
