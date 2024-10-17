@@ -599,27 +599,27 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     public List<BillingONCHeader1> findBillingsByManyThings(String status, String providerNo, Date startDate,
                                                             Date endDate, Integer demoNo) {
         Map<String, Object> params = new HashMap<String, Object>();
-        StringBuilder buf = getBaseQueryBuf(null, "b").append("WHERE b.status = ?1 ");
-        params.put(1, status);
+        StringBuilder buf = getBaseQueryBuf(null, "b").append("WHERE b.status = :status ");
+        params.put("status", status);
 
         if (providerNo != null) {
-            buf.append("AND b.providerNo = ?2");
-            params.put(2, providerNo);
+            buf.append("AND b.providerNo = :providerNo ");
+            params.put("providerNo", providerNo);
         }
 
         if (startDate != null) {
-            buf.append("AND b.billingDate >= ?3 ");
-            params.put(3, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
+            buf.append("AND b.billingDate >= :startDate ");
+            params.put("startDate", (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
         }
 
         if (endDate != null) {
-            buf.append("AND b.billingDate <= ?4 ");
-            params.put(4, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
+            buf.append("AND b.billingDate <= :endDate ");
+            params.put("endDate", (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
         }
 
         if (demoNo != null) {
-            buf.append("AND b.demographicNo = ?5 ");
-            params.put(5, demoNo);
+            buf.append("AND b.demographicNo = :demoNo ");
+            params.put("demoNo", demoNo);
         }
 
         Query query = entityManager.createQuery(buf.toString());
@@ -670,19 +670,19 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
                                                Date paymentEndDate) {
         ParamAppender app = new ParamAppender("FROM BillingONCHeader1 h, BillingONPayment bp ");
         app.and("h.id = bp.billingNo");
-        app.and("h.payProgram in (?1)", 1, payPrograms);
-        app.and("h.status = ?2", 2, statusType);
-        app.and("h.providerNo = ?3", 3, providerNo);
-        app.and("h.billingDate >= ?4", 4, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
-        app.and("h.billingDate <= ?5", 5, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
+        app.and("h.payProgram in (:payPrograms)", "payPrograms", payPrograms);
+        app.and("h.status = :status", "status", statusType);
+        app.and("h.providerNo = :providerNo", "providerNo", providerNo);
+        app.and("h.billingDate >= :startDate", "startDate", (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
+        app.and("h.billingDate <= :endDate", "endDate", (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
         if (visitLocation != null) {
-            app.and("h.facilityNum = ?6", 6, visitLocation);
+            app.and("h.facilityNum = :facilityNum", "facilityNum", visitLocation);
         }
         if (demoNo != null) {
-            app.and("h.demographicNo = ?7", 7, demoNo);
+            app.and("h.demographicNo = :demographicNo", "demographicNo", demoNo);
         }
         if (paymentStartDate != null) {
-            app.and("bp.paymentdate >= ?8", 8, paymentStartDate);
+            app.and("bp.paymentdate >= :paymentStartDate", "paymentStartDate", paymentStartDate);
         }
         if (paymentEndDate != null) {
             Calendar cal = Calendar.getInstance();
@@ -691,7 +691,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
-            app.and("bp.paymentdate < ?9", 9, cal.getTime());
+            app.and("bp.paymentdate < :paymentEndDate", "paymentEndDate", cal.getTime());
         }
 
         app.addOrder("h.billingDate, h.billingTime");
@@ -745,25 +745,25 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
                 // in this scenario, there is no need to filter on claimNo because % means match
                 // all claim numbers
             } else {
-                app.and("rd.claimNo = ?1", 1, claimNo);
+                app.and("rd.claimNo = :claimNo", "claimNo", claimNo);
             }
         }
 
         app.and("bi.status != 'D'");
 
-        app.and("ch1.payProgram in (?1)", 1, payPrograms);
-        app.and("ch1.status = ?2", 2, statusType);
-        app.and("ch1.providerNo = ?3", 3, providerNo);
+        app.and("ch1.payProgram in (:payPrograms)", "payPrograms", payPrograms);
+        app.and("ch1.status = :status", "status", statusType);
+        app.and("ch1.providerNo = :providerNo", "providerNo", providerNo);
         if (startDate != null) {
-            app.and("ch1.billingDate >= ?4", 4,
+            app.and("ch1.billingDate >= :startDate", "startDate",
                     (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
         }
         if (endDate != null) {
-            app.and("ch1.billingDate <= ?5", 5, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
+            app.and("ch1.billingDate <= :endDate", "endDate", (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
         }
 
         if (paymentStartDate != null) {
-            app.and("bp.paymentdate >= ?6", 6, paymentStartDate);
+            app.and("bp.paymentdate >= :paymentStartDate", "paymentStartDate", paymentStartDate);
         }
         if (paymentEndDate != null) {
             Calendar cal = Calendar.getInstance();
@@ -772,21 +772,21 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
-            app.and("bp.paymentdate < ?7", 7, cal.getTime());
+            app.and("bp.paymentdate < :paymentEndDate", "paymentEndDate", cal.getTime());
         }
 
         if (visitLocation != null && !BillingStatusPrep.ANY_VISIT_LOCATION.equals(visitLocation)) {
-            app.and("ch1.faciltyNum = ?8", 8, visitLocation);
+            app.and("ch1.faciltyNum = :facilityNum", "facilityNum", visitLocation);
         }
         if (demoNo != null && demoNo > 0) {
-            app.and("ch1.demographicNo = ?9", 9, demoNo);
+            app.and("ch1.demographicNo = :demographicNo", "demographicNo", demoNo);
         }
 
         app.and("bi.dx = ?10", 10, dx);
-        app.and("ch1.visitType = ?11", 11, visitType);
+        app.and("ch1.visitType = :visitType", "visitType", visitType);
 
         if (serviceCodes != null && !serviceCodes.isEmpty()) {
-            app.and("bi.serviceCode in (?12)", 12, serviceCodes);
+            app.and("bi.serviceCode in (:serviceCodes)", "serviceCodes", serviceCodes);
         }
 
         app.addOrder("ch1.billingDate, ch1.billingTime");
@@ -830,10 +830,10 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
                                                                       Date toDate) {
         ParamAppender app = new ParamAppender("FROM BillingONCHeader1 bch, Demographic d");
         app.and("bch.demographicNo = d.DemographicNo");
-        app.and("bch.demographicNo = ?1", 1, demoNo);
-        app.and("bch.payProgram = ?2", 2, payProgram);
-        app.and("bch.billingDate >= ?3", 3, (new SimpleDateFormat("yyyy-MM-dd")).format(fromDate));
-        app.and("bch.billingDate <= ?4", 4, (new SimpleDateFormat("yyyy-MM-dd")).format(toDate));
+        app.and("bch.demographicNo = :demoNo", "demoNo", demoNo);
+        app.and("bch.payProgram = :payProgram", "payProgram", payProgram);
+        app.and("bch.billingDate >= :fromDate", "fromDate", (new SimpleDateFormat("yyyy-MM-dd")).format(fromDate));
+        app.and("bch.billingDate <= :toDate", "toDate", (new SimpleDateFormat("yyyy-MM-dd")).format(toDate));
         app.addOrder("bch.id");
 
         Query query = entityManager.createQuery(app.toString());
