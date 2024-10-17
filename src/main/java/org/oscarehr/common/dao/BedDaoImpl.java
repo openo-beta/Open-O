@@ -157,9 +157,9 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
         queryBuilder.append(" where ");
 
-        int paramIndex = 1;
+        int paramIndex = 1;  
         boolean andClause = false;
-
+        
         if (facilityId != null) {
             queryBuilder.append("b.facilityId = ?" + paramIndex++);
             andClause = true;
