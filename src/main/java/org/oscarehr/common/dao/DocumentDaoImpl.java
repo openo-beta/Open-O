@@ -249,8 +249,8 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
         Query query = entityManager.createNativeQuery(
                 "select count(*) from ctl_document c, demographic d,document doc where c.module_id = d.demographic_no and c.document_no = doc.document_no   and d.provider_no = ?1 and doc.observationdate >= ?2 and doc.observationdate <= ?3 ");
         query.setParameter(1, providerNo);
-        query.setParameter(2, startDate);
-        query.setParameter(3, endDate);
+        query.setParameter(2, new Timestamp(startDate.getTime()));
+        query.setParameter(3, new Timestamp(endDate.getTime()));
         BigInteger result = (BigInteger) query.getSingleResult();
         if (result == null)
             return 0;
@@ -310,8 +310,8 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
         StringBuilder buf = new StringBuilder("SELECT DISTINCT c, d " +
                 "FROM Document d, CtlDocument c " +
-                "WHERE c.id.documentNo = d.id AND c.id.module = ?1");
-        params.put(1, module);
+                "WHERE c.id.documentNo = d.id AND c.id.module = :module");
+        params.put("module", module);
 
         boolean isShowingAllDocuments = docType == null || docType.equals("all") || docType.length() == 0;
 
@@ -319,17 +319,17 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
             if (isShowingAllDocuments) {
                 buf.append(" AND d.public1 = 1");
             } else {
-                buf.append(" AND d.public1 = 1 AND d.doctype = ?1");
-                params.put(1, docType);
+                buf.append(" AND d.public1 = 1 AND d.doctype = :doctype");
+                params.put("doctype", docType);
             }
         } else {
             if (isShowingAllDocuments) {
-                buf.append(" AND c.id.moduleId = ?2 AND d.public1 = 0");
-                params.put(2, ConversionUtils.fromIntString(moduleid));
+                buf.append(" AND c.id.moduleId = :moduleId AND d.public1 = 0");
+                params.put("moduleId", ConversionUtils.fromIntString(moduleid));
             } else {
-                buf.append(" AND c.id.moduleId = ?2 AND d.public1 = 0 AND d.doctype = ?1");
-                params.put(1, docType);
-                params.put(2,moduleid);
+                buf.append(" AND c.id.moduleId = :moduleId AND d.public1 = 0 AND d.doctype = :doctype");
+                params.put("doctype", docType);
+                params.put("moduleId",moduleid);
             }
         }
 
@@ -340,8 +340,8 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
         }
 
         if (since != null) {
-            buf.append(" AND d.updatedatetime > ?1 ");
-            params.put(1, since);
+            buf.append(" AND d.updatedatetime > :updatedatetime ");
+            params.put("updatedatetime", since);
         }
 
         buf.append(" ORDER BY ").append(sort.getValue());
