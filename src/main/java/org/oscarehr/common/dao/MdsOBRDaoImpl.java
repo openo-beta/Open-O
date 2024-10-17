@@ -50,7 +50,7 @@ public class MdsOBRDaoImpl extends AbstractDaoImpl<MdsOBR> implements MdsOBRDao 
                 "FROM MdsOBX mdsOBX, MdsOBR mdsOBR");
         pa.and("mdsOBX.id = mdsOBR.id");
         pa.and("mdsOBX.associatedOBR = mdsOBR.ObrId");
-        pa.and("mdsOBX.id = ?1", 1, id);
+        pa.and("mdsOBX.id = :id", "id", id);
 
         if (!resultCodes.isEmpty()) {
             ParamAppender codesPa = new ParamAppender();
