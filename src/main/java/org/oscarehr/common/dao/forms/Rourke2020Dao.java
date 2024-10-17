@@ -46,11 +46,11 @@ public class Rourke2020Dao extends AbstractDaoImpl<FormRourke2020> {
 
     @SuppressWarnings("unchecked")
     public List<FormRourke2020> findAllDistinctForms(Integer demographicNo) {
-        String sql = "select frm from FormRourke2020 frm where frm.demographicNo = :demo and frm.id "
+        String sql = "select frm from FormRourke2020 frm where frm.demographicNo = ?1 and frm.id "
                 + "= (select max(frm2.id) from FormRourke2020 frm2 where frm2.formCreated "
                 + "= frm.formCreated and frm2.demographicNo = frm.demographicNo)";
         Query query = entityManager.createQuery(sql);
-        query = query.setParameter("demo", demographicNo);
+        query = query.setParameter(1, demographicNo);
         return query.getResultList();
     }
 
