@@ -782,7 +782,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
             app.and("ch1.demographicNo = :demographicNo", "demographicNo", demoNo);
         }
 
-        app.and("bi.dx = ?10", 10, dx);
+        app.and("bi.dx = :dx", "dx", dx);
         app.and("ch1.visitType = :visitType", "visitType", visitType);
 
         if (serviceCodes != null && !serviceCodes.isEmpty()) {
