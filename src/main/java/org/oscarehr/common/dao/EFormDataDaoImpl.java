@@ -34,9 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
-
 import javax.persistence.Query;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.EFormData;
@@ -45,7 +43,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFormDataDao {
-
+    
     private static final Logger logger = MiscUtils.getLogger();
 
     public EFormDataDaoImpl() {
@@ -186,10 +184,8 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         String sqlCommand = sb.toString();
 
         logger.debug("SqlCommand=" + sqlCommand);
-
         Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
-
         query.setFirstResult(startIndex);
         query.setMaxResults(numToReturn);
 
@@ -225,7 +221,6 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         }
 
         String sqlCommand = sb.toString();
-
         logger.debug("SqlCommand=" + sqlCommand);
 
         Query query = entityManager.createQuery(sqlCommand);
@@ -495,7 +490,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         if (status != null) {
             sb.append(" AND e.current = ?3");
         }
-
+        
         // get list of _eform.???? permissions the caller has
         if (eformPerms != null && eformPerms.size() > 0) {
             sb.append(" AND (e.roleType in (?4) OR e.roleType IS NULL OR e.roleType = '' OR e.roleType = 'null')");
@@ -524,7 +519,6 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
             query.setParameter(4, eformPerms);
         }
         query.setFirstResult(offset);
-
         this.setLimit(query, numToReturn);
 
         return query.getResultList();
@@ -577,7 +571,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         Query query = entityManager.createQuery(
                 "select distinct x.providerNo from " + modelClass.getSimpleName() + " x where x.id in (?1)");
         query.setParameter(1, fdidList);
-
+        
         List<String> results = query.getResultList();
 
         return results;
@@ -609,8 +603,6 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
             Date d = new Date(date.getTime() + timeComponentInMillis);
             return d;
         }
-
         return null;
     }
-
 }
