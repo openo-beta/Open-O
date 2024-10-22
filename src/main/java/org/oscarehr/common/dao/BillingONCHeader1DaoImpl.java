@@ -630,28 +630,35 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     }
 
     @Override
-    public List<BillingONCHeader1> findByProviderStatusAndDateRange(String providerNo, List<String> statuses,
-                                                                    DateRange dateRange) {
+    public List<BillingONCHeader1> findByProviderStatusAndDateRange(String providerNo, List<String> statuses, DateRange dateRange) {
+        int counter = 1;
+
+        // Set date range lower/upper bounds (if date range is provided)
         String dateRangeSubquery = "";
         if (dateRange.getTo() != null && dateRange.getFrom() != null) {
-            dateRangeSubquery = " AND h.billingDate > ?1 AND h.billingDate <= ?2 ";
+            dateRangeSubquery = " AND h.billingDate > ?" + counter++ + " AND h.billingDate <= ?" + counter++ + " ";
         } else if (dateRange.getTo() != null) {
-            dateRangeSubquery = " AND h.billingDate <= ?2 ";
+            dateRangeSubquery = " AND h.billingDate <= ?" + counter++ + " ";
         }
 
-        Query query = createQuery("h", "h.providerNo = ?3 AND h.status IN (?4) "
-                + dateRangeSubquery + " AND h.payProgram IN (?5) ORDER BY h.billingDate, h.billingTime");
+        // Build query
+        String sqlCommand = "h.providerNo = ?" + counter++ + " AND h.status IN (?" + counter++ +") " + dateRangeSubquery +
+                " AND h.payProgram IN (?" + counter++ + ") ORDER BY h.billingDate, h.billingTime";
+        Query query = entityManager.createQuery(sqlCommand);
 
-        query.setParameter(3, providerNo);
-        query.setParameter(4, statuses);
-        query.setParameter(5, Arrays.asList(new String[]{"HCP", "WCB", "RMB"}));
-
+        // Set date range parameters
+        counter = 1;
         if (dateRange.getTo() != null && dateRange.getFrom() != null) {
-            query.setParameter(1, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getFrom()));
-            query.setParameter(2, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
+            query.setParameter(counter++, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getFrom()));
+            query.setParameter(counter++, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
         } else if (dateRange.getTo() != null) {
-            query.setParameter(2, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
+            query.setParameter(counter++, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
         }
+
+        // Set providerNo, statuses, and payPrograms parameters
+        query.setParameter(counter++, providerNo);
+        query.setParameter(counter++, statuses);
+        query.setParameter(counter++, Arrays.asList(new String[]{"HCP", "WCB", "RMB"}));
 
         return query.getResultList();
     }
