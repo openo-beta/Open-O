@@ -155,15 +155,10 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         StringBuilder sb = new StringBuilder();
         sb.append("select x from ");
         sb.append(modelClass.getSimpleName());
-        sb.append(" x where x.demographicId=?1");
-        sb.append(" and x.patientIndependent=false");
-
-        int counter = 2;
+        sb.append(" x where x.demographicId=?1 and x.patientIndependent=false");
 
         if (current != null) {
-            sb.append(" and x.current=?");
-            sb.append(counter);
-            counter++;
+            sb.append(" and x.current=?2");
         }
 
         sb.append(" order by ");
@@ -189,11 +184,8 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         query.setFirstResult(startIndex);
         query.setMaxResults(numToReturn);
 
-        counter = 2;
-
         if (current != null) {
-            query.setParameter(counter, current);
-            counter++;
+            query.setParameter(2, current);
         }
 
         @SuppressWarnings("unchecked")
