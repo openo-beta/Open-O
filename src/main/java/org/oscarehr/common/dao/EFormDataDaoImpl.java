@@ -220,12 +220,8 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         sb.append(" x where x.demographicId=?1");
         sb.append(" and x.patientIndependent=false");
 
-        int counter = 2;
-
         if (current != null) {
-            sb.append(" and x.current=?");
-            sb.append(counter);
-            counter++;
+            sb.append(" and x.current=?2");
         }
 
         String sqlCommand = sb.toString();
@@ -235,11 +231,8 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
 
-        counter = 2;
-
         if (current != null) {
-            query.setParameter(counter, current);
-            counter++;
+            query.setParameter(2, current);
         }
 
         @SuppressWarnings("unchecked")
@@ -271,7 +264,7 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         @SuppressWarnings("unchecked")
         List<EFormData> results = query.getResultList();
 
-        return (results);
+        return results;
     }
 
     @Override
