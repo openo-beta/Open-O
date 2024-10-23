@@ -56,18 +56,19 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
         }
 
         boolean firstclause = false;
+        int counter = 1;
 
         if (demographic_no != null) {
             firstclause = true;
-            sql.append(" job.demographicNo = :demo");
+            sql.append(" job.demographicNo = :demo" + counter++);
         }
 
         if (status != null) {
             if (firstclause) {
-                sql.append(" and job.status = :status");
+                sql.append(" and job.status = :status" + counter++);
             } else {
                 firstclause = true;
-                sql.append(" job.status = :status");
+                sql.append(" job.status = :status" + counter++);
             }
 
         }
@@ -83,19 +84,19 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
 
         if (beginDate != null) {
             if (firstclause) {
-                sql.append(" and job.stamp >= :beginDate");
+                sql.append(" and job.stamp >= :beginDate" + counter++);
             } else {
                 firstclause = true;
-                sql.append(" job.stamp >= :beginDate");
+                sql.append(" job.stamp >= :beginDate" + counter++);
             }
         }
 
         if (endDate != null) {
             if (firstclause) {
-                sql.append(" and job.stamp <= :endDate");
+                sql.append(" and job.stamp <= :endDate" + counter++);
             } else {
                 firstclause = true;
-                sql.append(" job.stamp <= :endDate");
+                sql.append(" job.stamp <= :endDate" + counter++);
             }
         }
 
@@ -109,20 +110,22 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
 
         Query query = entityManager.createQuery(sql.toString());
 
+        counter = 1;
+
         if (beginDate != null) {
-            query.setParameter("beginDate", beginDate);
+            query.setParameter(counter++, beginDate);
         }
 
         if (endDate != null) {
-            query.setParameter("endDate", endDate);
+            query.setParameter(counter++, endDate);
         }
 
         if (status != null) {
-            query.setParameter("status", FaxJob.STATUS.valueOf(status));
+            query.setParameter(counter++, FaxJob.STATUS.valueOf(status));
         }
 
         if (demographic_no != null) {
-            query.setParameter("demo", Integer.parseInt(demographic_no));
+            query.setParameter(counter++, Integer.parseInt(demographic_no));
         }
 
         List<FaxJob> faxJobList = query.getResultList();
