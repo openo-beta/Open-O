@@ -53,12 +53,12 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
 
     public List<BillingService> getBillingCodeAttr(String serviceCode) {
 
-        String sql = "SELECT b FROM BillingService b where b.serviceCode=:serviceCode" +
+        String sql = "SELECT b FROM BillingService b where b.serviceCode=?1" +
                 " AND b.billingserviceNo = (SELECT MAX(b2.billingserviceNo) from BillingService b2" +
-                " where b.serviceCode = b2.serviceCode and b2.billingserviceDate <= :now)";
+                " where b.serviceCode = b2.serviceCode and b2.billingserviceDate <= ?2)";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("serviceCode", serviceCode);
-        q.setParameter("now", new Date());
+        q.setParameter(1, serviceCode);
+        q.setParameter(2, new Date());
 
 
         List<BillingService> results = q.getResultList();
@@ -67,8 +67,8 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
     }
 
     public boolean codeRequiresSLI(String code) {
-        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.serviceCode like (:code) and sliFlag = TRUE");
-        query.setParameter("code", code + "%");
+        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.serviceCode like (?1) and sliFlag = TRUE");
+        query.setParameter(1, code + "%");
 
 
         List<BillingService> list = query.getResultList();
@@ -76,9 +76,9 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
     }
 
     public List<BillingService> findBillingCodesByCode(String code, String region) {
-        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.serviceCode like (:code) and region = (:region) order by bs.billingserviceDate");
-        query.setParameter("code", code + "%");
-        query.setParameter("region", region);
+        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.serviceCode like (?1) and region = (?2) order by bs.billingserviceDate");
+        query.setParameter(1, code + "%");
+        query.setParameter(2, region);
 
 
         List<BillingService> list = query.getResultList();
@@ -106,8 +106,8 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
 
 
     public List<BillingService> findByServiceCodes(List<String> codes) {
-        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.serviceCode IN (:codes) order by bs.billingserviceDate desc");
-        query.setParameter("codes", codes);
+        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.serviceCode IN (?1) order by bs.billingserviceDate desc");
+        query.setParameter(1, codes);
 
 
         List<BillingService> list = query.getResultList();
@@ -115,8 +115,8 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
     }
 
     public List<BillingService> finAllPrivateCodes() {
-        Query query = entityManager.createQuery("select bs from BillingService bs where bs.serviceCode LIKE :serviceCode");
-        query.setParameter("serviceCode", "\\_%");
+        Query query = entityManager.createQuery("select bs from BillingService bs where bs.serviceCode LIKE ?1");
+        query.setParameter(1, "\\_%");
 
 
         List<BillingService> list = query.getResultList();
@@ -131,11 +131,11 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
     public List<BillingService> findBillingCodesByCode(String code, String region, Date billingDate, int order) {
         String orderByClause = order == 1 ? "desc" : "";
         Query query = entityManager
-                .createQuery("select bs  from BillingService bs where bs.region = (:region) and bs.serviceCode like (:code) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (:billDate))  order by bs.serviceCode "
+                .createQuery("select bs  from BillingService bs where bs.region = (?1) and bs.serviceCode like (?2) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (?3))  order by bs.serviceCode "
                         + orderByClause);// (:order) ");
-        query.setParameter("region", region);
-        query.setParameter("code", code + "%");
-        query.setParameter("billDate", billingDate);
+        query.setParameter(1, region);
+        query.setParameter(2, code + "%");
+        query.setParameter(3, billingDate);
         // query.setParameter("order", orderByClause);
 
 
@@ -146,10 +146,10 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
 
     public String searchDescBillingCode(String code, String region) {
 
-        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.description <> '' AND bs.description <> '----' AND bs.region = (:region) and bs.serviceCode like (:code) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (:billDate))  order by bs.billingserviceDate desc");
-        query.setParameter("region", region);
-        query.setParameter("code", code + "%");
-        query.setParameter("billDate", Calendar.getInstance().getTime());
+        Query query = entityManager.createQuery("select bs  from BillingService bs where bs.description <> '' AND bs.description <> '----' AND bs.region = (?1) and bs.serviceCode like (?2) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (?3))  order by bs.billingserviceDate desc");
+        query.setParameter(1, region);
+        query.setParameter(2, code + "%");
+        query.setParameter(3, Calendar.getInstance().getTime());
 
 
         List<BillingService> list = query.getResultList();
@@ -161,10 +161,10 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
 
     public List<BillingService> search(String str, String region, Date billingDate) {
 
-        Query query = entityManager.createQuery("select bs from BillingService bs where bs.region = (:region) and (bs.serviceCode like (:searchString) or bs.description like (:searchString)) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (:billDate))");
-        query.setParameter("region", region);
-        query.setParameter("searchString", str);
-        query.setParameter("billDate", billingDate);
+        Query query = entityManager.createQuery("select bs from BillingService bs where bs.region = (?1) and (bs.serviceCode like (?2) or bs.description like (?2)) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (?3))");
+        query.setParameter(1, region);
+        query.setParameter(2, str);
+        query.setParameter(3, billingDate);
         // String sql = "select * from billingservice where service_code like '"+str+"' or description like '%"+str+"%' ";
 
 
@@ -177,11 +177,11 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
     }
 
     public BillingService searchBillingCode(String str, String region, Date billingDate) {
-        Query query = entityManager.createQuery("select bs from BillingService bs where bs.region = (:region) and bs.serviceCode like (:searchStr) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (:billDate))");
+        Query query = entityManager.createQuery("select bs from BillingService bs where bs.region = (?1) and bs.serviceCode like (?2) and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (?3))");
 
-        query.setParameter("region", region);
-        query.setParameter("searchStr", str + "%");
-        query.setParameter("billDate", billingDate);
+        query.setParameter(1, region);
+        query.setParameter(2, str + "%");
+        query.setParameter(3, billingDate);
 
 
         List<BillingService> list = query.getResultList();
@@ -194,10 +194,10 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
 
     public BillingService searchPrivateBillingCode(String privateCode, Date billingDate) {
 
-        Query query = entityManager.createQuery("select bs from BillingService bs where bs.region is null and bs.serviceCode = :searchStr and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (:billDate))");
+        Query query = entityManager.createQuery("select bs from BillingService bs where bs.region is null and bs.serviceCode = ?1 and bs.billingserviceDate = (select max(b2.billingserviceDate) from BillingService b2 where b2.serviceCode = bs.serviceCode and b2.billingserviceDate <= (?2))");
 
-        query.setParameter("searchStr", privateCode);
-        query.setParameter("billDate", billingDate);
+        query.setParameter(1, privateCode);
+        query.setParameter(2, billingDate);
 
         return getSingleResultOrNull(query);
     }
@@ -259,10 +259,10 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
     }
 
     public String getUnitPercentage(String bcode, Date date) {
-        String sql = "select bs from BillingService bs where bs.serviceCode = ? and bs.billingserviceDate = ?";
+        String sql = "select bs from BillingService bs where bs.serviceCode = ?1 and bs.billingserviceDate = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, bcode);
-        query.setParameter(1, getLatestServiceDate(date, bcode));
+        query.setParameter(1, bcode);
+        query.setParameter(2, getLatestServiceDate(date, bcode));
 
 
         List<BillingService> results = query.getResultList();
@@ -276,9 +276,9 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
 
 
     public List<BillingService> findBillingCodesByFontStyle(Integer styleId) {
-        String sql = "select bs from BillingService bs where bs.displayStyle = ?";
+        String sql = "select bs from BillingService bs where bs.displayStyle = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, styleId);
+        query.setParameter(1, styleId);
 
         return query.getResultList();
     }
@@ -286,26 +286,26 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
 
     public List<BillingService> findByRegionGroupAndType(String billRegion, String serviceGroup, String serviceType) {
         Query query = entityManager.createQuery("SELECT b FROM BillingService b, CtlBillingService c" +
-                " WHERE b.serviceCode= c.serviceCode and b.region= :region and c.serviceGroup= :serviceGroup " +
-                " AND c.serviceType = :serviceType order by c.serviceOrder");
-        query.setParameter("region", billRegion);
-        query.setParameter("serviceGroup", serviceGroup);
-        query.setParameter("serviceType", serviceType);
+                " WHERE b.serviceCode= c.serviceCode and b.region= ?1 and c.serviceGroup= ?2" +
+                " AND c.serviceType = ?3 order by c.serviceOrder");
+        query.setParameter(1, billRegion);
+        query.setParameter(2, serviceGroup);
+        query.setParameter(3, serviceType);
         return query.getResultList();
     }
 
     public List<BillingService> findByServiceCodeOrDescription(String serviceCode) {
-        Query query = createQuery("bs", "bs.serviceCode like :sc or bs.description like :ds");
-        query.setParameter("sc", serviceCode);
-        query.setParameter("ds", "%" + serviceCode + "%");
+        Query query = createQuery("bs", "bs.serviceCode like ?1 or bs.description like ?2");
+        query.setParameter(1, serviceCode);
+        query.setParameter(2, "%" + serviceCode + "%");
         return query.getResultList();
     }
 
     @NativeSql("billingservice")
     public List<BillingService> findMostRecentByServiceCode(String serviceCode) {
-        Query query = entityManager.createNativeQuery("select * from billingservice b where b.service_code like :serviceCode and b.billingservice_date = " +
+        Query query = entityManager.createNativeQuery("select * from billingservice b where b.service_code like ?1 and b.billingservice_date = " +
                 "(select max(b2.billingservice_date) from billingservice b2 where b2.service_code = b.service_code and b2.billingservice_date <= now())", BillingService.class);
-        query.setParameter("serviceCode", serviceCode + "%");
+        query.setParameter(1, serviceCode + "%");
         return query.getResultList();
     }
 
@@ -318,55 +318,55 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
     public List<Object[]> findSomethingByBillingId(Integer billingNo) {
         String sql = "FROM BillingService bs, Wcb w, Billing b " +
                 "WHERE w.billingNo = b.id " +
-                "AND w.billingNo = :bNo " +
+                "AND w.billingNo = ?1 " +
                 "AND w.status = 'O' " +
                 "AND b.status IN ('O', 'W') " +
                 "AND bs.serviceCode = w.feeItem";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("bNo", billingNo);
+        query.setParameter(1, billingNo);
         return query.getResultList();
 
     }
 
     public List<BillingService> findGst(String code, Date date) {
         String sql = "FROM BillingService b " +
-                "WHERE b.serviceCode = :code " +
+                "WHERE b.serviceCode = ?1 " +
                 "AND b.billingserviceDate = " +
                 "(" +
                 "SELECT MAX(b2.billingserviceDate) FROM BillingService b2 " +
-                "	WHERE b2.serviceCode = :code " +
-                "	AND b2.billingserviceDate <= :date" +
+                "	WHERE b2.serviceCode = ?1 " +
+                "	AND b2.billingserviceDate <= ?2" +
                 ")";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("code", code);
-        query.setParameter("date", date);
+        query.setParameter(1, code);
+        query.setParameter(2, date);
         return query.getResultList();
     }
 
     public List<BillingService> search_service_code(String code, String code1, String code2, String desc, String desc1, String desc2) {
-        String sql = "select b from BillingService b where (b.serviceCode like ? or b.serviceCode like ? or b.serviceCode like ? or b.description like ? or b.description like ? or b.description like ?) and b.id = (select max(b2.id) from BillingService b2 where b2.serviceCode = b.serviceCode)";
+        String sql = "select b from BillingService b where (b.serviceCode like ?1 or b.serviceCode like ?2 or b.serviceCode like ?3 or b.description like ?4 or b.description like ?5 or b.description like ?6) and b.id = (select max(b2.id) from BillingService b2 where b2.serviceCode = b.serviceCode)";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, code);
-        query.setParameter(1, code1);
-        query.setParameter(2, code2);
-        query.setParameter(3, desc);
-        query.setParameter(4, desc1);
-        query.setParameter(5, desc2);
+        query.setParameter(1, code);
+        query.setParameter(2, code1);
+        query.setParameter(3, code2);
+        query.setParameter(4, desc);
+        query.setParameter(5, desc1);
+        query.setParameter(6, desc2);
 
         return query.getResultList();
     }
 
     public List<BillingService> findByServiceCodeAndLatestDate(String serviceCode, Date date) {
         String sql =
-                "FROM BillingService bs WHERE bs.serviceCode = :serviceCode " +
+                "FROM BillingService bs WHERE bs.serviceCode = ?1" +
                         "AND bs.billingserviceDate = (" +
                         "	SELECT MAX(bss.billingserviceDate) FROM BillingService bss " +
-                        "	WHERE bss.billingserviceDate <= :date " +
+                        "	WHERE bss.billingserviceDate <= ?2" +
                         "	AND bss.serviceCode = :serviceCode" +
                         ")";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("serviceCode", serviceCode);
-        query.setParameter("date", date);
+        query.setParameter(1, serviceCode);
+        query.setParameter(2, date);
         return query.getResultList();
     }
 
@@ -374,11 +374,11 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
         String sql = "FROM BillingService b, CtlBillingService c " +
                 "WHERE c.serviceCode = b.serviceCode " +
                 "AND c.status='A' " +
-                "AND c.serviceType = :serviceType " +
-                "AND c.serviceGroup = :serviceGroup " +
+                "AND c.serviceType = ?1" +
+                "AND c.serviceGroup = ?2" +
                 "AND b.billingserviceDate in (" +
                 "	SELECT MAX(b2.billingserviceDate) FROM BillingService b2 " +
-                "	WHERE b2.billingserviceDate <= :billReferenceDate " +
+                "	WHERE b2.billingserviceDate <= ?3 " +
                 "	AND b2.serviceCode = b.serviceCode " +
                 ") " +
                 "AND b.billingserviceNo = (" +
@@ -388,17 +388,17 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
                 ") ORDER BY c.serviceOrder";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("serviceType", serviceType);
-        query.setParameter("serviceGroup", serviceGroup);
-        query.setParameter("billReferenceDate", billReferenceDate);
+        query.setParameter(1, serviceType);
+        query.setParameter(2, serviceGroup);
+        query.setParameter(3, billReferenceDate);
         return query.getResultList();
     }
 
     public List<Object> findBillingCodesByCodeAndTerminationDate(String serviceCode, Date terminationDate) {
-        String sql = "SELECT DISTINCT(bs.serviceCode) FROM BillingService bs WHERE bs.serviceCode = :serviceCode AND bs.terminationDate > :terminationDate";
+        String sql = "SELECT DISTINCT(bs.serviceCode) FROM BillingService bs WHERE bs.serviceCode = ?1 AND bs.terminationDate > ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("serviceCode", serviceCode);
-        query.setParameter("terminationDate", terminationDate);
+        query.setParameter(1, serviceCode);
+        query.setParameter(2, terminationDate);
         return query.getResultList();
     }
 
