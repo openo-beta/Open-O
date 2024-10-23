@@ -160,8 +160,8 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
     @SuppressWarnings("unchecked")
     @Override
     public List<DemographicPharmacy> findAllByDemographicId(Integer demographicNo) {
-        Query query = createQuery("dp", "dp.demographicNo = :demoNo AND dp.status = 1");
-        query.setParameter("demoNo", demographicNo);
+        Query query = createQuery("dp", "dp.demographicNo = ?1 AND dp.status = 1");
+        query.setParameter(1, demographicNo);
         return query.getResultList();
     }
 
@@ -179,9 +179,9 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
 
     @Override
     public Long getTotalDemographicsPreferedToPharmacyByPharmacyId(Integer pharmacyId) {
-        String sql = "SELECT COUNT(*) FROM DemographicPharmacy x WHERE x.pharmacyId = :pharmacyId AND x.status = 1";
+        String sql = "SELECT COUNT(*) FROM DemographicPharmacy x WHERE x.pharmacyId = ?1 AND x.status = 1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("pharmacyId", pharmacyId);
+        query.setParameter(1, pharmacyId);
 
         return (Long) query.getSingleResult();
     }
