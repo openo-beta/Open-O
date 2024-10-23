@@ -46,7 +46,7 @@ public class Hl7TextMessageDaoImpl extends AbstractDaoImpl<Hl7TextMessage> imple
     @Override
     public void updateIfFillerOrderNumberMatches(String base64EncodedeMessage, int fileUploadCheckId, Integer id) {
         Query query = entityManager.createQuery("update " + modelClass.getName()
-                + " x set x.base64EncodedeMessage=?, fileUploadCheckId=? where x.type='TDIS' and x.id=?");
+                + " x set x.base64EncodedeMessage=?1, fileUploadCheckId=?2 where x.type='TDIS' and x.id=?3");
         query.setParameter(1, base64EncodedeMessage);
         query.setParameter(2, fileUploadCheckId);
         query.setParameter(3, id);
