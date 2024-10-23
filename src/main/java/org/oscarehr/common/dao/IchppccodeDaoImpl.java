@@ -85,8 +85,8 @@ public class IchppccodeDaoImpl extends AbstractDaoImpl<Ichppccode> implements Ic
 
     @Override
     public AbstractCodeSystemModel<?> findByCodingSystem(String codingSystem) {
-        Query query = entityManager.createQuery("FROM Ichppccode i WHERE i.id like :cs");
-        query.setParameter("cs", codingSystem);
+        Query query = entityManager.createQuery("FROM Ichppccode i WHERE i.id like ?1");
+        query.setParameter(1, codingSystem);
         query.setMaxResults(1);
 
         return find(codingSystem);
