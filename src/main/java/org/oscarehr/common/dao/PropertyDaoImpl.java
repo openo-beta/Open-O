@@ -52,7 +52,7 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
     public List<Property> findByName(String name) {
         String sqlCommand = "select x from ?1 x where x.name=?2";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName();
+        query.setParameter(1, modelClass.getSimpleName());
         query.setParameter(2, name);
         return query.getResultList();
     }
