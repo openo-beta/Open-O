@@ -48,8 +48,8 @@ public class IndicatorTemplateDaoImpl extends AbstractDaoImpl<IndicatorTemplate>
     @SuppressWarnings("unchecked")
     @Override
     public List<IndicatorTemplate> getIndicatorTemplatesByStatus(boolean status) {
-        Query query = entityManager.createQuery("SELECT x FROM IndicatorTemplate x WHERE x.active = :status");
-        query.setParameter("status", status);
+        Query query = entityManager.createQuery("SELECT x FROM IndicatorTemplate x WHERE x.active = ?1");
+        query.setParameter(1, status);
         List<IndicatorTemplate> result = query.getResultList();
         return result;
     }
@@ -94,9 +94,9 @@ public class IndicatorTemplateDaoImpl extends AbstractDaoImpl<IndicatorTemplate>
     @Override
     public List<IndicatorTemplate> getIndicatorTemplatesByDashboardId(int id) {
         Query query = entityManager
-                .createQuery("SELECT x FROM IndicatorTemplate x WHERE x.dashboardId = :id AND x.active = :status");
-        query.setParameter("id", id);
-        query.setParameter("status", Boolean.TRUE);
+                .createQuery("SELECT x FROM IndicatorTemplate x WHERE x.dashboardId = ?1 AND x.active = ?2");
+        query.setParameter(1, id);
+        query.setParameter(2, Boolean.TRUE);
         List<IndicatorTemplate> result = query.getResultList();
         return result;
     }
@@ -131,9 +131,9 @@ public class IndicatorTemplateDaoImpl extends AbstractDaoImpl<IndicatorTemplate>
     @Override
     public List<IndicatorTemplate> getIndicatorTemplatesByCategory(String category) {
         Query query = entityManager
-                .createQuery("SELECT x FROM IndicatorTemplate x WHERE x.category = :category AND x.active = :status");
-        query.setParameter("category", category);
-        query.setParameter("status", Boolean.TRUE);
+                .createQuery("SELECT x FROM IndicatorTemplate x WHERE x.category = ?1 AND x.active = ?1");
+        query.setParameter(1, category);
+        query.setParameter(2, Boolean.TRUE);
         List<IndicatorTemplate> result = query.getResultList();
         return result;
     }
@@ -142,9 +142,9 @@ public class IndicatorTemplateDaoImpl extends AbstractDaoImpl<IndicatorTemplate>
     @Override
     public List<IndicatorTemplate> getIndicatorTemplatesBySubcategory(String subCategory) {
         Query query = entityManager.createQuery(
-                "SELECT x FROM IndicatorTemplate x WHERE x.subCategory = :subCategory AND x.active = :status");
-        query.setParameter("subCategory", subCategory);
-        query.setParameter("status", Boolean.TRUE);
+                "SELECT x FROM IndicatorTemplate x WHERE x.subCategory = ?1 AND x.active = ?2");
+        query.setParameter(1, subCategory);
+        query.setParameter(2, Boolean.TRUE);
         List<IndicatorTemplate> result = query.getResultList();
         return result;
     }
