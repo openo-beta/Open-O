@@ -131,7 +131,7 @@ public class IndicatorTemplateDaoImpl extends AbstractDaoImpl<IndicatorTemplate>
     @Override
     public List<IndicatorTemplate> getIndicatorTemplatesByCategory(String category) {
         Query query = entityManager
-                .createQuery("SELECT x FROM IndicatorTemplate x WHERE x.category = ?1 AND x.active = ?1");
+                .createQuery("SELECT x FROM IndicatorTemplate x WHERE x.category = ?1 AND x.active = ?2");
         query.setParameter(1, category);
         query.setParameter(2, Boolean.TRUE);
         List<IndicatorTemplate> result = query.getResultList();
