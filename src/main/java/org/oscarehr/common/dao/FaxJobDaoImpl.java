@@ -108,9 +108,8 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
             }
         }
 
-        Query query = entityManager.createQuery(sql.toString());
-
         counter = 1;
+        Query query = entityManager.createQuery(sql.toString());
 
         if (beginDate != null) {
             query.setParameter(counter++, beginDate);
