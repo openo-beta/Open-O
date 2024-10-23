@@ -343,19 +343,21 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
 
     @Override
     public List<Object[]> findOutstandingBills(Integer demographicNo, String billingType, List<String> statuses) {
+        int counter = 1;
         String q = "FROM Billingmaster bm, Billing b " +
                 "WHERE bm.billingNo = b.id " +
-                "AND b.demographicNo = ?1 " +
-                (statuses.isEmpty() ? "" : "AND bm.billingstatus NOT IN ( ?2 ) ") +
-                "AND b.billingtype = ?3";
-        Query query = entityManager.createQuery(q);
-        if (!statuses.isEmpty()) {
-            query.setParameter(2, statuses);
-        }
-        query.setParameter(1, demographicNo);
-        query.setParameter(3, billingType);
-        return query.getResultList();
+                "AND b.demographicNo = ?" + counter++ +
+                (statuses.isEmpty() ? "" : "AND bm.billingstatus NOT IN ( ? ) " + counter++) +
+                "AND b.billingtype = ?" + counter++;
 
+        counter = 1;
+        Query query = entityManager.createQuery(q);
+        query.setParameter(counter++, demographicNo);
+        if (!statuses.isEmpty()) {
+            query.setParameter(counter++, statuses);
+        }
+        query.setParameter(counter++, billingType);
+        return query.getResultList();
     }
 
     @Override
