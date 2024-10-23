@@ -56,10 +56,10 @@ public class DemographicSetsDaoImpl extends AbstractDaoImpl<DemographicSets> imp
 
     @Override
     public List<DemographicSets> findBySetNames(Collection<String> setNameList) {
-        String sql = "select x from DemographicSets x where x.archive != :archive and x.name in (:nameList)";
+        String sql = "select x from DemographicSets x where x.archive != ?1 and x.name in (?2)";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("archive", "1");
-        query.setParameter("nameList", setNameList);
+        query.setParameter(1, "1");
+        query.setParameter(2, setNameList);
         @SuppressWarnings("unchecked")
         List<DemographicSets> results = query.getResultList();
         return results;
