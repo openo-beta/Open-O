@@ -171,7 +171,7 @@ public class ProgramFunctionalUserDAOImpl extends HibernateDaoSupport implements
 
         String query = "select pfu.ProgramId from ProgramFunctionalUser pfu where pfu.ProgramId = ?0 and pfu.UserTypeId = ?1";
         Session session = sessionFactory.getCurrentSession();
-        Query q = session.createQuery();
+        Query q = session.createQuery(query);
         q.setLong(1, programId.longValue());
         q.setLong(2, userTypeId.longValue());
         List results = new ArrayList();
