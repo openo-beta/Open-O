@@ -71,9 +71,9 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
     }
 
     public CaisiFormInstance getLatestForm(Integer formId, Integer clientId) {
-        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.formId = ? and f.clientId = ? order by f.dateCreated DESC");
-        query.setParameter(0, formId);
-        query.setParameter(1, clientId);
+        Query query = entityManager.createQuery("SELECT f FROM CaisiFormInstance f where f.formId = ?1 and f.clientId = ?2 order by f.dateCreated DESC");
+        query.setParameter(1, formId);
+        query.setParameter(2, clientId);
         @SuppressWarnings("unchecked")
         List<CaisiFormInstance> result = query.getResultList();
         if (result.size() > 0) {
@@ -83,8 +83,8 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
     }
 
     public List<CaisiFormInstance> getFormsByFacility(Integer clientId, Integer facilityId) {
-        String sSQL = "from CaisiFormInstance f where f.clientId = ? and f.formId in " +
-                "(select s.formId from CaisiForm s where s.facilityId =?) order by f.dateCreated DESC";
+        String sSQL = "from CaisiFormInstance f where f.clientId = ?1 and f.formId in " +
+                "(select s.formId from CaisiForm s where s.facilityId =?2) order by f.dateCreated DESC";
 
         Query query = entityManager.createNativeQuery(sSQL);
         query.setParameter(1, clientId);
