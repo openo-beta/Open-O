@@ -143,9 +143,9 @@ public class MeasurementMapDaoImpl extends AbstractDaoImpl<MeasurementMap> imple
 
     @Override
     public List<String> findDistinctLoincCodesByLabType(MeasurementMap.LAB_TYPE lab_type) {
-        String queryStr = "select distinct(m.loincCode) FROM MeasurementMap m WHERE m.labType LIKE :labType";
+        String queryStr = "select distinct(m.loincCode) FROM MeasurementMap m WHERE m.labType LIKE ?1";
         Query q = entityManager.createQuery(queryStr);
-        q.setParameter("labType", lab_type.name());
+        q.setParameter(1, lab_type.name());
         @SuppressWarnings("unchecked")
         List<String> rs = q.getResultList();
 
@@ -164,15 +164,15 @@ public class MeasurementMapDaoImpl extends AbstractDaoImpl<MeasurementMap> imple
     @Override
     public List<Object[]> findMeasurements(String labType, String idCode, String name) {
         String sql = "FROM MeasurementMap a, MeasurementMap b, " + MeasurementType.class.getSimpleName() + " type " +
-                "WHERE b.labType = :labType " +
-                "AND a.identCode = :idCode " +
-                "AND a.name LIKE :name " +
+                "WHERE b.labType = ?1" +
+                "AND a.identCode = ?2" +
+                "AND a.name LIKE ?3" +
                 "AND a.loincCode = b.loincCode " +
                 "AND type.type = b.identCode";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("labType", labType);
-        q.setParameter("idCode", idCode);
-        q.setParameter("name", name);
+        q.setParameter(1, labType);
+        q.setParameter(2, idCode);
+        q.setParameter(3, name);
         return q.getResultList();
     }
 
