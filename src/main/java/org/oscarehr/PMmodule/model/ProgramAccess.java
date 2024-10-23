@@ -30,8 +30,6 @@
  import java.util.Set;
  import com.quatro.model.security.Secrole;
 
-import lombok.EqualsAndHashCode;
-
 import org.oscarehr.common.model.AbstractModel;
  
  /**
