@@ -339,10 +339,10 @@ public class DxresearchDAOImpl extends AbstractDaoImpl<Dxresearch> implements Dx
 
     @SuppressWarnings("unchecked")
     public List<Dxresearch> findByDemographicNoResearchCodeAndCodingSystem(Integer demographicNo, String dxresearchCode, String codingSystem) {
-        Query query = entityManager.createQuery("FROM Dxresearch d WHERE d.demographicNo = :dn AND d.dxresearchCode = :dxrc and (d.status = 'A' or d.status = 'C') and d.codingSystem = :cs");
-        query.setParameter("dn", demographicNo);
-        query.setParameter("dxrc", dxresearchCode);
-        query.setParameter("cs", codingSystem);
+        Query query = entityManager.createQuery("FROM Dxresearch d WHERE d.demographicNo = ?1 AND d.dxresearchCode = ?2 and (d.status = 'A' or d.status = 'C') and d.codingSystem = ?3");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, dxresearchCode);
+        query.setParameter(3, codingSystem);
         return query.getResultList();
     }
 
@@ -357,26 +357,26 @@ public class DxresearchDAOImpl extends AbstractDaoImpl<Dxresearch> implements Dx
                 "	OR dx.dxresearchCode = 'V1251'" +
                 ") AND m.demographicId = d.DemographicNo " +
                 "AND m.type = 'INR' " +
-                "AND m.dateObserved >= :fromDate " +
-                "AND m.dateObserved <= :toDate " +
+                "AND m.dateObserved >= ?1" +
+                "AND m.dateObserved <= ?2" +
                 "ORDER BY d.LastName, d.FirstName, m.dateObserved";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("fromDate", fromDate);
-        q.setParameter("toDate", toDate);
+        q.setParameter(1, fromDate);
+        q.setParameter(2, toDate);
         return q.getResultList();
     }
 
     public Integer countResearches(String researchCode, Date sdate, Date edate) {
         String sql = "SELECT DISTINCT x.demographicNo FROM Dxresearch x, Demographic d " +
-                "WHERE x.dxresearchCode = :researchCode " +
+                "WHERE x.dxresearchCode = ?1" +
                 "AND x.demographicNo = d.id " +
-                "AND x.updateDate >= :sdate " +
-                "AND x.updateDate <= :edate " +
+                "AND x.updateDate >= ?2" +
+                "AND x.updateDate <= ?3" +
                 "AND x.status <> 'D'";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("researchCode", researchCode);
-        query.setParameter("sdate", sdate);
-        query.setParameter("edate", edate);
+        query.setParameter(1, researchCode);
+        query.setParameter(2, sdate);
+        query.setParameter(3, edate);
 
         List<Integer> ids = query.getResultList();
         return ids.size();
@@ -385,22 +385,22 @@ public class DxresearchDAOImpl extends AbstractDaoImpl<Dxresearch> implements Dx
     public Integer countBillingResearches(String researchCode, String diagCode, String creator, Date sdate, Date edate) {
         String sql = "SELECT DISTINCT x.demographicNo FROM Dxresearch x, Billing b, BillingDetail bd " +
                 "WHERE x.status <> 'D' " +
-                "AND x.dxresearchCode= :researchCode " +
+                "AND x.dxresearchCode= ?1" +
                 "AND x.demographicNo = b.demographicNo " +
                 "AND b.id = bd.billingNo " +
-                "AND bd.diagnosticCode = :diagCode " +
-                "AND b.creator = :creator " +
-                "AND b.billingDate >= :sdate " +
-                "AND b.billingDate <= :edate " +
+                "AND bd.diagnosticCode = ?2" +
+                "AND b.creator = ?3" +
+                "AND b.billingDate >= ?4" +
+                "AND b.billingDate <= ?5" +
                 "AND b.status != 'D' " +
                 "AND bd.status != 'D'";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("researchCode", researchCode);
-        query.setParameter("diagCode", diagCode);
-        query.setParameter("creator", creator);
-        query.setParameter("sdate", sdate);
-        query.setParameter("edate", edate);
+        query.setParameter(1, researchCode);
+        query.setParameter(2, diagCode);
+        query.setParameter(3, creator);
+        query.setParameter(4, sdate);
+        query.setParameter(5, edate);
 
         List<Integer> ids = query.getResultList();
         return ids.size();
@@ -454,8 +454,8 @@ public class DxresearchDAOImpl extends AbstractDaoImpl<Dxresearch> implements Dx
 
     @SuppressWarnings("unchecked")
     public List<Dxresearch> findNonDeletedByDemographicNo(Integer demographicNo) {
-        Query query = entityManager.createQuery("FROM Dxresearch d WHERE d.demographicNo = :dn and (d.status = 'A' or d.status = 'C')");
-        query.setParameter("dn", demographicNo);
+        Query query = entityManager.createQuery("FROM Dxresearch d WHERE d.demographicNo = ?1 and (d.status = 'A' or d.status = 'C')");
+        query.setParameter(1, demographicNo);
 
         return query.getResultList();
     }
@@ -463,7 +463,7 @@ public class DxresearchDAOImpl extends AbstractDaoImpl<Dxresearch> implements Dx
     @NativeSql("dxresearch")
     public List<Integer> findNewProblemsSinceDemokey(String keyName) {
 
-        String sql = "select distinct dx.demographic_no from dxresearch dx,demographic d,demographicExt e where dx.demographic_no = d.demographic_no and d.demographic_no = e.demographic_no and e.key_val=? and dx.status != 'D' and dx.update_date > e.value";
+        String sql = "select distinct dx.demographic_no from dxresearch dx,demographic d,demographicExt e where dx.demographic_no = d.demographic_no and d.demographic_no = e.demographic_no and e.key_val=?1 and dx.status != 'D' and dx.update_date > e.value";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, keyName);
 
