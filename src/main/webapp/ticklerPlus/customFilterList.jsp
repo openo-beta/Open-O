@@ -30,9 +30,8 @@
 </table>
 
 <br/>
-<table width="30%" border="0" cellpadding="0" cellspacing="1"
-bgcolor="#C0C0C0">
-<html:form action="/CustomFilter">
+<table width="30%" border="0" cellpadding="0" cellspacing="1" bgcolor="#C0C0C0">
+<form action="../CustomFilter.do">
     <input type="hidden" name="method" value="custom_filter"/>
     <tr class="title">
         <th width="10%"></th>
@@ -61,8 +60,7 @@ bgcolor="#C0C0C0">
                     href="../CustomFilter.do?method=edit&id=<c:out value="${filter.id}"/>"><img
                     border="0" src="images/edit.jpg"/></a></td>
             <td><c:out value="${filter.name}"/></td>
-            <td><html-el:link
-                    action="/CustomFilter?method=changeShortCutStatus&id=${filter.id}">
+            <td><a href="../CustomFilter.do?method=changeShortCutStatus&id=${filter.id}">
                 <c:choose>
                     <c:when test="${filter.shortcut == true}">
                         Remove
@@ -71,7 +69,7 @@ bgcolor="#C0C0C0">
                         Add
                     </c:otherwise>
                 </c:choose>
-            </html-el:link></td>
+            </a></td>
         </tr>
     </c:forEach>
     </table>
@@ -84,17 +82,17 @@ bgcolor="#C0C0C0">
     -->
     <tr>
         <td><input type="button" value="New"
-                   onclick="location.href='<html:rewrite action="/CustomFilter"/>?method=edit'"/></td>
+                   onclick="location.href='../CustomFilter.do?method=edit'"/></td>
         <td><input type="button" value="Delete"
                    onclick="this.form.method.value='delete';this.form.submit();"/></td>
     </tr>
-</html:form>
+</form>
 </table>
 
 <br/>
 <table width="100%">
     <tr>
-        <td><html:link action="/Tickler.do?method=filter">Back to Ticklers</html:link></td>
+        <td><a href="../Tickler.do?method=filter">Back to Ticklers</a></td>
     </tr>
 </table>
 </body>

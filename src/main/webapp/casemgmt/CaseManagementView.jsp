@@ -396,14 +396,14 @@
                             onchange="filter(this.options[this.selectedIndex].text, 'test', 2);">
                         <html:option value="">All</html:option>
                         <html:options collection="providers" property="value" labelProperty="label"/>
-                    </html:select> &nbsp; &nbsp; &nbsp; Sort: <html-el:select property="note_sort"
+                    </html:select> &nbsp; &nbsp; &nbsp; Sort: <select name="note_sort"
                                                                               onchange="document.caseManagementViewForm.method.value='view';document.caseManagementViewForm.note_view.value='${param.note_view}';document.caseManagementViewForm.submit()">
                         <html:option value="observation_date_desc">Observation Date - Desc</html:option>
                         <html:option value="observation_date_asc">Observation Date - Asc</html:option>
                         <html:option value="providerName">Provider</html:option>
                         <html:option value="programName">Program</html:option>
                         <html:option value="roleName">Role</html:option>
-                    </html-el:select></td>
+                    </select></td>
                 </tr>
             </table>
             <c:if

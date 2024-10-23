@@ -199,14 +199,14 @@
                 </tr>
                 <tr>
                     <th>Gender</th>
-                    <td><html-el:select property="criteria.gender">
-                        <html-el:option value="">Any</html-el:option>
+                    <td><select name="criteria.gender">
+                        <option value="">Any</option>
                         <c:forEach var="gen" items="${genders}">
-                            <html-el:option value="${gen.code}">
+                            <option value="${gen.code}">
                                 <c:out value="${gen.description}"/>
-                            </html-el:option>
+                            </option>
                         </c:forEach>
-                    </html-el:select></td>
+                    </select></td>
                 </tr>
             </table>
             <table>

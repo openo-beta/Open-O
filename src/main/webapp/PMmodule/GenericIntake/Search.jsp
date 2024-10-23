@@ -79,12 +79,12 @@
         <tr>
             <th> Gender</th>
             <td>
-                <html-el:select property="gender">
-                    <html-el:option value="">Any</html-el:option>
+                <select property="gender">
+                    <option value="">Any</option>
                     <c:forEach var="gen" items="${genders}">
-                        <html-el:option value="${gen.code}"><c:out value="${gen.description}"/></html-el:option>
+                        <option value="${gen.code}"><c:out value="${gen.description}"/></option>
                     </c:forEach>
-                </html-el:select>
+                </select>
             </td>
         </tr>
         <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
@@ -118,7 +118,7 @@
 
             <display-el:column style="width: 10%">
 
-                <html-el:submit onclick="updateLocal('${client.demographicNo}')">Update Local</html-el:submit>
+                <input type="submit" onclick="updateLocal('${client.demographicNo}')" value="Update Local" />
 
 
             </display-el:column>

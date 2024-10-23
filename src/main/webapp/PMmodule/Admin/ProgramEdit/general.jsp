@@ -126,13 +126,13 @@
     </tr>
     <tr class="b">
         <td width="20%">Facility</td>
-        <td><html-el:select property="program.facilityId">
+        <td><select name="program.facilityId">
             <c:forEach var="facility" items="${facilities}">
-                <html-el:option value="${facility.id}">
+                <option value="${facility.id}">
                     <c:out value="${facility.name}"/>
-                </html-el:option>
+                </option>
             </c:forEach>
-        </html-el:select></td>
+        </select></td>
     </tr>
     <tr class="b">
         <td width="20%">Description:</td>
@@ -227,14 +227,14 @@
     <!--
 	<tr class="b">
 		<td width="20%">Link to Bed Program:</td>
-		<td><html-el:select property="program.bedProgramLinkId">
-			<html:option value="0">&nbsp;</html:option>
+		<td><select name="program.bedProgramLinkId">
+			<option value="0">&nbsp;</option>
 			<c:forEach var="bp" items="${bed_programs}">
-				<html-el:option value="${bp.id}">
+				<option value="${bp.id}">
 					<c:out value="${bp.name}" />
-				</html-el:option>
+				</option>
 			</c:forEach>
-		</html-el:select></td>
+		</select></td>
 	</tr>
 	-->
     <tr class="b">

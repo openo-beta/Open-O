@@ -70,14 +70,14 @@
                     <html:option value="community">Community</html:option>
                 </caisi:isModuleLoad>
             </html:select></td>
-            <td><html-el:select property="searchFacilityId">
-                <html-el:option value="0">Any</html-el:option>
+            <td><select property="searchFacilityId">
+                <option value="0">Any</option>
                 <c:forEach var="facility" items="${facilities}">
-                    <html-el:option value="${facility.id}">
+                    <option value="${facility.id}">
                         <c:out value="${facility.name}"/>
-                    </html-el:option>
+                    </option>
                 </c:forEach>
-            </html-el:select></td>
+            </select></td>
             <td><input type="button" name="search" value="Search"
                        onclick="javascript:submitForm('list')" ;/></td>
         </tr>

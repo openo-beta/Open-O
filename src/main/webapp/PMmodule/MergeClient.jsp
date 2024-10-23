@@ -260,14 +260,14 @@
                         </tr>
                         <tr>
                             <th align="right" width="20%"><bean-el:message key="ClientSearch.gender" bundle="pmm"/></th>
-                            <td align="left" width="80%"><html-el:select property="criteria.gender">
-                                <html-el:option value="">Any</html-el:option>
+                            <td align="left" width="80%"><select property="criteria.gender">
+                                <option value="">Any</option>
                                 <c:forEach var="gen" items="${genders}">
-                                    <html-el:option value="${gen.code}">
+                                    <option value="${gen.code}">
                                         <c:out value="${gen.description}"/>
-                                    </html-el:option>
+                                    </option>
                                 </c:forEach>
-                            </html-el:select></td>
+                            </select></td>
                         </tr>
                         <tr>
                             <th align="right" width="20%"><bean-el:message key="ClientSearch.assignedTo"

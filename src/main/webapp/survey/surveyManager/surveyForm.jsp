@@ -393,14 +393,14 @@
 
                                         </tr>
                                         <tr>
-                                            <td colspan="3"><html-el:select
-                                                    property="web.questionType"
+                                            <td colspan="3"><select
+                                                    name="web.questionType"
                                                     onchange="addQuestionType('${section.id}', this.options[this.selectedIndex].value);"
                                                     styleClass="formElement">
                                                 <html:option value="">Add New Question:</html:option>
                                                 <html:options collection="QuestionTypes" property="value"
                                                               labelProperty="label"/>
-                                            </html-el:select></td>
+                                            </select></td>
                                         </tr>
                                         <!--  loop through questions at this level -->
                                         <c:forEach var="question" items="${section.questionArray}">

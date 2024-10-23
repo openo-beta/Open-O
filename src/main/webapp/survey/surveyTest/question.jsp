@@ -87,8 +87,8 @@
                             </c:if> <c:if test="${question.italics eq 'true'}">
                                 </i>
                             </c:if></td>
-                            <td><html-el:text
-                                    property="data.value(${pageNumber}_${sectionId}_${question.id})"
+                            <td><input type="text"
+                                    name="data.value(${pageNumber}_${sectionId}_${question.id})"
                                     size="${question.type.openEnded.cols}"/>&nbsp;<c:out
                                     value="${question.unit}"/></td>
                         </c:when>
@@ -119,10 +119,10 @@
                             </c:if> <c:if test="${question.italics eq 'true'}">
                                 </i>
                             </c:if> <br/>
-                                <html-el:textarea
-                                        property="data.value(${pageNumber}_${sectionId}_${question.id})"
+                                <textarea
+                                        name="data.value(${pageNumber}_${sectionId}_${question.id})"
                                         rows="${question.type.openEnded.rows}"
-                                        cols="${question.type.openEnded.cols}"></html-el:textarea> &nbsp;<c:out
+                                        cols="${question.type.openEnded.cols}"></textarea> &nbsp;<c:out
                                     value="${question.unit}"/></td>
                         </c:otherwise>
                     </c:choose>
@@ -157,8 +157,8 @@
                         </i>
                     </c:if> &nbsp;(<c:out value="${question.type.date}"/>)
                     </td>
-                    <td><html-el:text
-                            property="data.value(${pageNumber}_${sectionId}_${question.id})"
+                    <td><input type="text"
+                            name="data.value(${pageNumber}_${sectionId}_${question.id})"
                             styleId="${pageNumber}_${sectionId}_${question.id}"/> &nbsp; <img
                             src="images/calendar.jpg"
                             id="<c:out value="${pageNumber}"/>_<c:out value="${sectionId}"/>_<c:out value="${question.id}"/>_trigger"
@@ -208,15 +208,15 @@
                     </c:if></td>
                     <td><c:choose>
                         <c:when test="${question.type.select.renderType eq 'select'}">
-                            <html-el:select
+                            <select
                                     property="data.value(${pageNumber}_${sectionId}_${question.id})">
                                 <c:forEach var="answer"
                                            items="${question.type.select.possibleAnswers.answerArray}">
-                                    <html-el:option value="${answer}">
+                                    <option value="${answer}">
                                         <c:out value="${answer}"/>
-                                    </html-el:option>
+                                    </option>
                                 </c:forEach>
-                            </html-el:select>
+                            </select>
                             &nbsp;<c:out value="${question.unit}"/>
                         </c:when>
                         <c:when test="${question.type.select.renderType eq 'radio'}">
@@ -227,16 +227,16 @@
                                         <tr>
                                             <c:forEach var="answer"
                                                        items="${question.type.select.possibleAnswers.answerArray}">
-                                                <td><html-el:radio
-                                                        property="data.value(${pageNumber}_${sectionId}_${question.id})"
+                                                <td><input type="radio"
+                                                        name="data.value(${pageNumber}_${sectionId}_${question.id})"
                                                         value="${answer}"/>&nbsp;<c:out value="${answer}"/>&nbsp;<c:out
                                                         value="${question.unit}"/></td>
                                             </c:forEach>
                                             <c:if test="${question.type.select.otherAnswer eq true}">
-                                                <td><html-el:radio
-                                                        property="data.value(${pageNumber}_${sectionId}_${question.id})"
-                                                        value="other"/>&nbsp;Other&nbsp;<html-el:text
-                                                        property="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
+                                                <td><input type="radio"
+                                                        name="data.value(${pageNumber}_${sectionId}_${question.id})"
+                                                        value="other"/>&nbsp;Other&nbsp;<input type="text"
+                                                        name="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
                                                         value="${question.unit}"/></td>
                                             </c:if>
                                         </tr>
@@ -245,18 +245,18 @@
                                         <c:forEach var="answer"
                                                    items="${question.type.select.possibleAnswers.answerArray}">
                                             <tr>
-                                                <td><html-el:radio
-                                                        property="data.value(${pageNumber}_${sectionId}_${question.id})"
+                                                <td><input type="radio"
+                                                        name="data.value(${pageNumber}_${sectionId}_${question.id})"
                                                         value="${answer}"/>&nbsp;<c:out value="${answer}"/>&nbsp;<c:out
                                                         value="${question.unit}"/></td>
                                             </tr>
                                         </c:forEach>
                                         <c:if test="${question.type.select.otherAnswer eq true}">
                                             <tr>
-                                                <td><html-el:radio
-                                                        property="data.value(${pageNumber}_${sectionId}_${question.id})"
-                                                        value="other"/>&nbsp;Other&nbsp;<html-el:text
-                                                        property="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
+                                                <td><input type="radio"
+                                                        name="data.value(${pageNumber}_${sectionId}_${question.id})"
+                                                        value="other"/>&nbsp;Other&nbsp;<input type="text"
+                                                        name="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
                                                         value="${question.unit}"/></td>
                                             </tr>
                                         </c:if>
@@ -272,10 +272,10 @@
                                         <tr>
                                             <c:forEach var="answer"
                                                        items="${question.type.select.possibleAnswers.answerArray}">
-                                                <td><html-el:hidden
-                                                        property="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_${answer})"/>
-                                                    <html-el:checkbox
-                                                            property="data.value(${pageNumber}_${sectionId}_${question.id}_${answer})"
+                                                <td><input type="hidden"
+                                                        name="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_${answer})"/>
+                                                    <input type="checkbox"
+                                                            name="data.value(${pageNumber}_${sectionId}_${question.id}_${answer})"
                                                             value="${answer}"
                                                             onclick="select_checkbox('${pageNumber}_${sectionId}_${question.id}_${answer}')"/>&nbsp;<c:out
                                                             value="${answer}"/>&nbsp;<c:out value="${question.unit}"/>
@@ -283,13 +283,13 @@
                                             </c:forEach>
 
                                             <c:if test="${question.type.select.otherAnswer eq true}">
-                                                <td><html-el:hidden
-                                                        property="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_other)"/>
-                                                    <html-el:checkbox
-                                                            property="data.value(${pageNumber}_${sectionId}_${question.id}_other)"
+                                                <td><input type="hidden"
+                                                        name="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_other)"/>
+                                                    <input type="checkbox"
+                                                            name="data.value(${pageNumber}_${sectionId}_${question.id}_other)"
                                                             value="other"
-                                                            onclick="select_checkbox('${pageNumber}_${sectionId}_${question.id}_other')"/>&nbsp;Other&nbsp;<html-el:text
-                                                            property="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
+                                                            onclick="select_checkbox('${pageNumber}_${sectionId}_${question.id}_other')"/>&nbsp;Other&nbsp;<input type="text"
+                                                            name="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
                                                             value="${question.unit}"/></td>
                                             </c:if>
                                         </tr>
@@ -298,10 +298,10 @@
                                         <c:forEach var="answer"
                                                    items="${question.type.select.possibleAnswers.answerArray}">
                                             <tr>
-                                                <td><html-el:hidden
-                                                        property="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_${answer})"/>
-                                                    <html-el:checkbox
-                                                            property="data.value(${pageNumber}_${sectionId}_${question.id}_${answer})"
+                                                <td><input type="hidden"
+                                                        name="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_${answer})"/>
+                                                    <input type="checkbox"
+                                                            name="data.value(${pageNumber}_${sectionId}_${question.id}_${answer})"
                                                             value="${answer}"
                                                             onclick="select_checkbox('${pageNumber}_${sectionId}_${question.id}_${answer}')"/>&nbsp;<c:out
                                                             value="${answer}"/>&nbsp;<c:out value="${question.unit}"/>
@@ -311,13 +311,13 @@
 
                                         <c:if test="${question.type.select.otherAnswer eq true}">
                                             <tr>
-                                                <td><html-el:hidden
-                                                        property="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_other)"/>
-                                                    <html-el:checkbox
-                                                            property="data.value(${pageNumber}_${sectionId}_${question.id}_other)"
+                                                <td><input type="hidden"
+                                                        name="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_other)"/>
+                                                    <input type="checkbox"
+                                                            name="data.value(${pageNumber}_${sectionId}_${question.id}_other)"
                                                             value="other"
-                                                            onclick="select_checkbox('${pageNumber}_${sectionId}_${question.id}_other')"/>&nbsp;Other&nbsp;<html-el:text
-                                                            property="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
+                                                            onclick="select_checkbox('${pageNumber}_${sectionId}_${question.id}_other')"/>&nbsp;Other&nbsp;<input type="text"
+                                                            name="data.value(${pageNumber}_${sectionId}_${question.id}_other_value)"/>&nbsp;<c:out
                                                             value="${question.unit}"/></td>
                                             </tr>
                                         </c:if>

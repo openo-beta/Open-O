@@ -49,7 +49,6 @@
         import="java.util.*, java.sql.*, oscar.util.*,oscar.oscarProvider.data.ProviderData,oscar.oscarBilling.ca.bc.data.*,oscar.entities.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
@@ -220,21 +219,21 @@
             <td><c:out value="${billAct.claimrecord}"/>&nbsp;</td>
             <td><c:choose>
                 <c:when test="${billAct.status == 'A'}">
-                    <html-el:link action="/billing/CA/BC/ManageTeleplan?id=${billAct.id}&method=sendFile">
+                    <a href="<%= request.getContextPath() %>/billing/CA/BC/ManageTeleplan.do?id=${billAct.id}&method=sendFile">
                         Send
-                    </html-el:link>
+                    </a>
                 </c:when>
                 <c:otherwise>
                     Sent
                 </c:otherwise>
             </c:choose></td>
 
-            <td><html-el:link action="/billing/CA/BC/DownloadBilling?filename=${billAct.ohipfilename}">
+            <td><a href="<%= request.getContextPath() %>/billing/CA/BC/DownloadBilling.do?filename=${billAct.ohipfilename}">
                 <c:out value="${billAct.ohipfilename}"/>
-            </html-el:link></td>
-            <td><html-el:link action="/billing/CA/BC/DownloadBilling?filename=${billAct.htmlfilename}">
+            </a></td>
+            <td><a href="<%= request.getContextPath() %>/billing/CA/BC/DownloadBilling.do?filename=${billAct.htmlfilename}">
                 <c:out value="${billAct.htmlfilename}"/>
-            </html-el:link></td>
+            </a></td>
             </tr>
         </c:forEach>
         </tbody>

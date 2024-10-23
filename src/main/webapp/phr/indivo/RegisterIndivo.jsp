@@ -45,7 +45,6 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
 <%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
 <%@ page import="oscar.oscarDemographic.data.DemographicData" %>
 <%@ page import="org.oscarehr.common.model.DemographicExt" %>
@@ -222,9 +221,9 @@
 
 %>
 
-<html-el:form styleClass="form form-horizontal" action="/phr/UserManagement" styleId="registrationForm" method="POST">
-    <html-el:hidden property="method" value="registerUser"/>
-    <html-el:hidden property="demographicNo" value="<%=demographicNo%>"/>
+<form style="form form-horizontal" action="<%= request.getContextPath() %>/phr/UserManagement.do" styleId="registrationForm" method="POST">
+    <input type="hidden" name="method" value="registerUser"/>
+    <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
     <div class="page-header">
         <h3>PHR Patient Registration</h3>
     </div>
@@ -267,7 +266,7 @@
             <div class="control-group <%if(usernameNotUnique){%>error <%}%> " id="username-group">
                 <label class="control-label" for="username">Username</label>
                 <div class="controls">
-                    <html-el:text styleId="username" property="username" value="<%=ulist.get(0)%>"/>
+                    <input type="text" styleId="username" name="username" value="<%=ulist.get(0)%>"/>
                     <div class="help-block" id="username-required" style="display:none">Username is required</div>
                     <div class="help-block" id="username-invalid" style="display:none">Username is invalid</div>
                     <%
@@ -293,7 +292,7 @@
             <div class="control-group" id="password-group">
                 <label class="control-label" for="password">Password (generated)</label>
                 <div class="controls">
-                    <html-el:text styleId="password" property="password" value="<%=password%>"/>
+                    <input type="text" styleId="password" name="password" value="<%=password%>"/>
                     <div class="help-block" id="pwd-help" style="display:none">Password must be at least 8 characters
                         long
                     </div>
@@ -303,7 +302,7 @@
             <div class="control-group <%if(emailEmpty){%> warning <%}%>">
                 <label class="control-label" for="email">E-mail</label>
                 <div class="controls">
-                    <html-el:text property="email" value="${demographic.email}"/>
+                    <input type="text" name="email" value="${demographic.email}"/>
                     <%if (emailEmpty) {%>
                     <div class="help-block" id="email-help">Please enter email address</div>
                     <%} %>
@@ -328,15 +327,15 @@
     </div>
 
 
-    <html-el:hidden property="address" value="${demographic.address}"/>
-    <html-el:hidden property="city" value="${demographic.city}"/>
-    <html-el:hidden property="province" value="${demographic.province}"/>
-    <html-el:hidden property="postal" value="${demographic.postal}"/>
-    <html-el:hidden property="phone" value="${demographic.phone}${demographicHomeExt}"/>
-    <html-el:hidden property="phone2" value="${demographic.phone2}${demographicWorkExt}"/>
-    <html-el:hidden property="dob" value="<%=DemographicData.getDob(demographic,\"/\")%>"/>
-    <html-el:hidden property="firstName" value="${demographic.firstName}"/>
-    <html-el:hidden property="lastName" value="${demographic.lastName}"/>
+    <input type="hidden" name="address" value="${demographic.address}"/>
+    <input type="hidden" name="city" value="${demographic.city}"/>
+    <input type="hidden" name="province" value="${demographic.province}"/>
+    <input type="hidden" name="postal" value="${demographic.postal}"/>
+    <input type="hidden" name="phone" value="${demographic.phone}${demographicHomeExt}"/>
+    <input type="hidden" name="phone2" value="${demographic.phone2}${demographicWorkExt}"/>
+    <input type="hidden" name="dob" value="<%=DemographicData.getDob(demographic,\"/\")%>"/>
+    <input type="hidden" name="firstName" value="${demographic.firstName}"/>
+    <input type="hidden" name="lastName" value="${demographic.lastName}"/>
 
 
     <h4>Relationships</h4>
@@ -431,17 +430,17 @@
     <div class="controls-row">
         <div class="control-group">
 						<span class="controls span1">
-							<html-el:button styleClass="btn btn-primary" onclick="validateNSubmit();"
-                                            property="submitButton" styleId="submitButton" value="Submit"/>
+							<input style="btn btn-primary" onclick="validateNSubmit();"
+                                            type="submit" styleId="submitButton" value="Submit"/>
 						 </span>
             <span class="controls span1">
-							<html-el:button styleClass="btn" property="closeButton" styleId="closeButton" value="Close"
+							<input type="button" style="btn" property="closeButton" styleId="closeButton" value="Close"
                                             onclick="window.close();"/>
 						</span>
         </div>
     </div>
 
-</html-el:form>
+</form>
 <script type="text/javascript" language="JavaScript">
     enableSubmit();
 </script>

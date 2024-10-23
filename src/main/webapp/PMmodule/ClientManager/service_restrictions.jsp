@@ -241,7 +241,7 @@
                     <td>
                         <html:select property="serviceRestriction.commentId">
                             <c:forEach var="restriction" items="${serviceRestrictionList}">
-                                <html-el:option value="${restriction.code}"><c:out value="${restriction.description}"/></html-el:option>
+                                <option value="${restriction.code}"><c:out value="${restriction.description}"/></option>
                             </c:forEach>
                         </html:select>
                     </td>

@@ -44,7 +44,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
 <%@ taglib uri="http://struts.apache.org/tags-nested" prefix="nested" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -494,9 +493,9 @@
                         &nbsp;
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage.do?orderby=0&method=${pageMethod}">
+                        <a href="../phr/PhrMessage.do?orderby=0&method=${pageMethod}">
                             <bean:message key="oscarMessenger.DisplayMessages.msgStatus"/>
-                        </html-el:link>
+                        </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
                         <bean:message key="oscarMessenger.DisplayMessages.msgFrom"/>

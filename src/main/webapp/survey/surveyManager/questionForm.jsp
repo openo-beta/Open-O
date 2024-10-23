@@ -65,14 +65,14 @@
                                                value="true"/>Bold&nbsp;&nbsp; <html:checkbox
                         property="questionModel.underline" value="true"/>Underline&nbsp;&nbsp;
                     <html:checkbox property="questionModel.italics" value="true"/>Italics&nbsp;&nbsp;
-                    <html-el:select property="questionModel.color">
-                        <html-el:option value="">&nbsp;</html-el:option>
+                    <select name="questionModel.color">
+                        <option value="">&nbsp;</option>
                         <c:forEach var="color" items="${colors}">
-                            <html-el:option value="${color}">
+                            <option value="${color}">
                                 <c:out value="${color}"/>
-                            </html-el:option>
+                            </option>
                         </c:forEach>
-                    </html-el:select></td>
+                    </select></td>
             </tr>
             <tr>
                 <td colspan="2"><br/>
@@ -84,32 +84,32 @@
             </tr>
             <tr>
                 <td>Orientation</td>
-                <td><html:select property="questionModel.orientation">
-                    <html:option value="vertical">vertical</html:option>
-                    <html:option value="horizontal">horizontal</html:option>
-                </html:select></td>
+                <td><select property="questionModel.orientation">
+                    <option value="vertical">vertical</option>
+                    <option value="horizontal">horizontal</option>
+                </select></td>
             </tr>
             <tr>
                 <td>Data Link</td>
-                <td><html-el:select property="questionModel.dataLink">
-                    <html-el:option value="">&nbsp;</html-el:option>
+                <td><select name="questionModel.dataLink">
+                    <option value="">&nbsp;</option>
                     <c:forEach var="obj" items="${oscarVars}">
-                        <html-el:option value="${obj.value}">
+                        <option value="${obj.value}">
                             <c:out value="${obj.label}"/>
-                        </html-el:option>
+                        </option>
                     </c:forEach>
-                </html-el:select></td>
+                </select></td>
             </tr>
             <tr>
                 <td>Pre-filled Data</td>
-                <td><html-el:select property="questionModel.caisiObject">
-                    <html-el:option value="">&nbsp;</html-el:option>
+                <td><select name="questionModel.caisiObject">
+                    <option value="">&nbsp;</option>
                     <c:forEach var="obj" items="${caisiobjects}">
-                        <html-el:option value="${obj}">
+                        <option value="${obj}">
                             <c:out value="${obj}"/>
-                        </html-el:option>
+                        </option>
                     </c:forEach>
-                </html-el:select></td>
+                </select></td>
             </tr>
             <tr>
                 <td colspan="2"><br/>

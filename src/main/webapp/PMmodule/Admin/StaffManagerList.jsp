@@ -107,27 +107,25 @@
             <tr>
                 <td width="35%" style="font-weight: bold">Facilities</td>
                 <td width="55%" style="font-weight: bold">Programs</td>
-                <td width="10%"><html-el:hidden property="method" value=""/></td>
+                <td width="10%"><input type="hidden" name="method" value=""/></td>
             </tr>
             <tr>
-                <td><html-el:select property="facilityId"
-                                    onchange="select_facility(this);">
-                    <html-el:option value="0">Any</html-el:option>
+                <td><select name="facilityId" onchange="select_facility(this);">
+                    <option value="0">Any</option>
                     <c:forEach var="facility" items="${facilities}">
-                        <html-el:option value="${facility.id}">
+                        <option value="${facility.id}">
                             <c:out value="${facility.name}"/>
-                        </html-el:option>
+                        </option>
                     </c:forEach>
-                </html-el:select></td>
-                <td><html-el:select property="programId"
-                                    onchange="select_program(this);">
-                    <html-el:option value="0">Any</html-el:option>
+                </select></td>
+                <td><select name="programId" onchange="select_program(this);">
+                    <option value="0">Any</option>
                     <c:forEach var="program" items="${programs}">
-                        <html-el:option value="${program.id}">
+                        <option value="${program.id}">
                             <c:out value="${program.name}"/>
-                        </html-el:option>
+                        </option>
                     </c:forEach>
-                </html-el:select></td>
+                </select></td>
                 <td></td>
             </tr>
         </table>

@@ -106,13 +106,13 @@
                         style="text-decoration: underline; cursor: pointer; color: blue"
                         onclick="document.caseManagementViewForm.note_view.value='detailed';document.caseManagementViewForm.method.value='search';document.caseManagementViewForm.submit();return false;">Detailed</span>
             </td>
-            <td align="right">Sort: <html-el:select property="note_sort"
+            <td align="right">Sort: <select name="note_sort"
                                                     onchange="document.caseManagementViewForm.method.value='search';document.caseManagementViewForm.note_view.value='${param.note_view}';document.caseManagementViewForm.submit()">
                 <html:option value="update_date">Date</html:option>
                 <html:option value="providerName">Provider</html:option>
                 <html:option value="programName">Program</html:option>
                 <html:option value="roleName">Role</html:option>
-            </html-el:select></td>
+            </select></td>
         </tr>
     </table>
     <c:choose>

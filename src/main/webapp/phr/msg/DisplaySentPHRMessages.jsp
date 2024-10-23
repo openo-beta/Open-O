@@ -31,7 +31,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -261,25 +260,25 @@
                         &nbsp;
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=0">
+                        <a href="<%= request.getContextPath() %>/phr/PhrMessage?orderby=0">
 
                             <bean:message key="oscarMessenger.DisplayMessages.msgStatus"/>
-                        </html-el:link>
+                        </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=1">
+                        <a href="<%= request.getContextPath() %>/phr/PhrMessage?orderby=1">
                             <bean:message key="oscarMessenger.DisplayMessages.msgFrom"/>
-                        </html-el:link>
+                        </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=2">
+                        <a action="<%= request.getContextPath() %>/phr/PhrMessage?orderby=2">
                             <bean:message key="oscarMessenger.DisplayMessages.msgSubject"/>
-                        </html-el:link>
+                        </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=3">
+                        <a action="<%= request.getContextPath() %>/phr/PhrMessage?orderby=3">
                             <bean:message key="oscarMessenger.DisplayMessages.msgDate"/>
-                        </html-el:link>
+                        </a>
                     </th>
                 </tr>
                 <c:forEach var="iMessage" items="${indivoMessages}">
@@ -299,9 +298,9 @@
                             <c:out value="${iMessage.senderPhr}"/></td>
                         <td bgcolor="#EEEEFF">
 
-                            <html-el:link action="/phr/PhrMessage?&method=read&id=${iMessage.id}">
+                            <a href="<%= request.getContextPath() %>/phr/PhrMessage?&method=read&id=${iMessage.id}">
                                 <c:out value="${iMessage.docSubject}"/>
-                            </html-el:link>
+                            </a>
 
                         </td>
                         <td bgcolor="#EEEEFF">
