@@ -77,9 +77,9 @@ public class DemographicMergedDaoImpl extends AbstractDaoImpl<DemographicMerged>
     @Override
     @SuppressWarnings("unchecked")
     public List<DemographicMerged> findByParentAndChildIds(Integer parentId, Integer childId) {
-        Query q = createQuery("d", "d.demographicNo = :childId AND d.mergedTo = :parentId");
-        q.setParameter("parentId", parentId);
-        q.setParameter("childId", childId);
+        Query q = createQuery("d", "d.demographicNo = ?1 AND d.mergedTo = ?2");
+        q.setParameter(1, parentId);
+        q.setParameter(2, childId);
         return q.getResultList();
     }
 }
