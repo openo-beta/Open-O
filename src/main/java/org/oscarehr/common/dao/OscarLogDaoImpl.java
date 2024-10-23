@@ -49,11 +49,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     @Override
     public List<OscarLog> findByDemographicId(Integer demographicId) {
 
-        String sqlCommand = "select x from ?1 x where x.demographicId=?2";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.demographicId=?1";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, demographicId);
+        query.setParameter(1, demographicId);
 
         @SuppressWarnings("unchecked")
         List<OscarLog> results = query.getResultList();
@@ -64,11 +63,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     @Override
     public List<OscarLog> findByProviderNo(String providerNo) {
 
-        String sqlCommand = "select x from ?1 x where x.providerNo=?2 order by x.created";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.providerNo=?1 order by x.created";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, providerNo);
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<OscarLog> results = query.getResultList();
@@ -78,12 +76,11 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
 
     @Override
     public boolean hasRead(String providerNo, String content, String contentId) {
-        String sqlCommand = "select x from ?1 x where x.action = 'read' and  x.providerNo=?2 and x.content = ?3 and x.contentId = ?4";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.action = 'read' and  x.providerNo=?1 and x.content = ?2 and x.contentId = ?3";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, providerNo);
-        query.setParameter(3, content);
-        query.setParameter(4, contentId);
+        query.setParameter(1, providerNo);
+        query.setParameter(2, content);
+        query.setParameter(3, contentId);
 
         @SuppressWarnings("unchecked")
         List<OscarLog> results = query.getResultList();
@@ -96,11 +93,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
 
     @Override
     public List<OscarLog> findByActionAndData(String action, String data) {
-        String sqlCommand = "select x from ?1 x where x.action = ?2 and x.data = ?3 order by x.created DESC";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.action = ?1 and x.data = ?2 order by x.created DESC";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, action);
-        query.setParameter(3, data);
+        query.setParameter(1, action);
+        query.setParameter(2, data);
 
         @SuppressWarnings("unchecked")
         List<OscarLog> results = query.getResultList();
@@ -120,11 +116,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
             return new ArrayList<OscarLog>();
         }
 
-        String sqlCommand = "select x from ?1 x where x.action = ?2 order by x."
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.action = ?1 order by x."
                 + orderBy + " " + orderByDirection;
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, action);
+        query.setParameter(1, action);
         query.setFirstResult(start);
         query.setMaxResults(length);
 
@@ -137,13 +132,12 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     @Override
     public List<OscarLog> findByActionContentAndDemographicId(String action, String content, Integer demographicId) {
 
-        String sqlCommand = "select x from ?1 x where x.action=?2 and x.content = ?3 and x.demographicId=?4 order by x.created desc";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.action=?1 and x.content = ?2 and x.demographicId=?3 order by x.created desc";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, action);
-        query.setParameter(3, content);
-        query.setParameter(4, demographicId);
+        query.setParameter(1, action);
+        query.setParameter(2, content);
+        query.setParameter(3, demographicId);
 
         @SuppressWarnings("unchecked")
         List<OscarLog> results = query.getResultList();
@@ -153,11 +147,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
 
     @Override
     public List<Integer> getDemographicIdsOpenedSinceTime(Date value) {
-        String sqlCommand = "select distinct demographicId from ?1 where dateTime >= ?2";
+        String sqlCommand = "select distinct demographicId from " + modelClass.getSimpleName() + " where dateTime >= ?1";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, value);
+        query.setParameter(1, value);
 
         @SuppressWarnings("unchecked")
         List<Integer> results = query.getResultList();
@@ -169,11 +162,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     @Override
     public List<Integer> getRecentDemographicsAccessedByProvider(String providerNo, int startPosition,
                                                                  int itemsToReturn) {
-        String sqlCommand = "select distinct demographicId from ?1 l where l.providerNo = ?2 and l.demographicId is not null and l.demographicId != '-1' order by dateTime desc";
+        String sqlCommand = "select distinct demographicId from " + modelClass.getSimpleName() + " l where l.providerNo = ?1 and l.demographicId is not null and l.demographicId != '-1' order by dateTime desc";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, providerNo);
+        query.setParameter(1, providerNo);
         query.setFirstResult(startPosition);
         setLimit(query, itemsToReturn);
 
@@ -192,11 +184,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     @Override
     public List<Object[]> getRecentDemographicsViewedByProvider(String providerNo, int startPosition,
                                                                 int itemsToReturn) {
-        String sqlCommand = "select l.demographicId,MAX(l.created) as dt from ?1 l where l.providerNo = ?2 and l.demographicId is not null and l.demographicId != '-1' group by l.demographicId order by MAX(l.created) desc";
+        String sqlCommand = "select l.demographicId,MAX(l.created) as dt from " + modelClass.getSimpleName() + " l where l.providerNo = ?1 and l.demographicId is not null and l.demographicId != '-1' group by l.demographicId order by MAX(l.created) desc";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, providerNo);
+        query.setParameter(1, providerNo);
         query.setFirstResult(startPosition);
         setLimit(query, itemsToReturn);
 
@@ -215,12 +206,11 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     @Override
     public List<Object[]> getRecentDemographicsViewedByProviderAfterDateIncluded(String providerNo, Date date,
                                                                                  int startPosition, int itemsToReturn) {
-        String sqlCommand = "select l.demographicId,MAX(l.created) as dt from ?1 l where l.providerNo = ?2 and l.created >= ?3 and l.demographicId is not null and l.demographicId != '-1' group by l.demographicId order by MAX(l.created) desc";
+        String sqlCommand = "select l.demographicId,MAX(l.created) as dt from " + modelClass.getSimpleName() + " l where l.providerNo = ?1 and l.created >= ?2 and l.demographicId is not null and l.demographicId != '-1' group by l.demographicId order by MAX(l.created) desc";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, providerNo);
-        query.setParameter(3, date);
+        query.setParameter(1, providerNo);
+        query.setParameter(2, date);
         query.setFirstResult(startPosition);
         setLimit(query, itemsToReturn);
 
@@ -237,11 +227,10 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     public int purgeLogEntries(Date maxDateToRemove) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String sqlCommand = "delete from ?1 WHERE dateTime <= ?2";
+        String sqlCommand = "delete from " + modelClass.getSimpleName() + " WHERE dateTime <= ?1";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, formatter.format(maxDateToRemove));
+        query.setParameter(1, formatter.format(maxDateToRemove));
         int ret = query.executeUpdate();
 
         return ret;

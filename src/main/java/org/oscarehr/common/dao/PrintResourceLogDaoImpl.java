@@ -42,10 +42,9 @@ public class PrintResourceLogDaoImpl extends AbstractDaoImpl<PrintResourceLog> i
 
     @Override
     public List<PrintResourceLog> findByResource(String resourceName, String resourceId) {
-        Query query = entityManager.createQuery("select x from ?1 x WHERE x.resourceName=?2 and x.resourceId = ?3 order by x.dateTime DESC");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, resourceName);
-        query.setParameter(3, resourceId);
+        Query query = entityManager.createQuery("select x from " + modelClass.getSimpleName() + " x WHERE x.resourceName=?1 and x.resourceId = ?2 order by x.dateTime DESC");
+        query.setParameter(1, resourceName);
+        query.setParameter(2, resourceId);
 
         @SuppressWarnings("unchecked")
         List<PrintResourceLog> results = query.getResultList();

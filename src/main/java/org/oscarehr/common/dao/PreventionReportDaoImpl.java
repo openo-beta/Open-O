@@ -43,9 +43,8 @@ public class PreventionReportDaoImpl extends AbstractDaoImpl<PreventionReport> i
 
     @Override
     public List<PreventionReport> getPreventionReports() {
-        String sql = "select x from ?1 x where x.active = true order by x.createDate desc";
+        String sql = "select x from " + modelClass.getSimpleName() + " x where x.active = true order by x.createDate desc";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1, modelClass.getSimpleName());
 
         @SuppressWarnings("unchecked")
         List<PreventionReport> allergies = query.getResultList();

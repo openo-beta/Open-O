@@ -43,17 +43,15 @@ public class SurveillanceDataDaoImpl extends AbstractDaoImpl<SurveillanceData> i
 
     @Override
     public List<SurveillanceData> findExportDataBySurveyId(String surveyId) {
-        Query query = entityManager.createQuery("FROM ?1 r WHERE r.surveyId = ?2 order by r.createDate desc");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, surveyId);
+        Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName() + " r WHERE r.surveyId = ?1 order by r.createDate desc");
+        query.setParameter(1, surveyId);
         return query.getResultList();
     }
 
     @Override
     public List<SurveillanceData> findUnSentBySurveyId(String surveyId) {
         Query query = entityManager.createQuery("FROM ?1 r WHERE r.surveyId = ?2 and r.sent = false");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, surveyId);
+        query.setParameter(1, surveyId);
         return query.getResultList();
     }
 }

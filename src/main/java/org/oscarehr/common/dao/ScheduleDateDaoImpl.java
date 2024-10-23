@@ -44,7 +44,7 @@ public class ScheduleDateDaoImpl extends AbstractDaoImpl<ScheduleDate> implement
 
     @Override
     public ScheduleDate findByProviderNoAndDate(String providerNo, Date date) {
-        Query query = entityManager.createQuery("select s from ScheduleDate s where s.providerNo=?1 and s.date=?2 and s.status=?");
+        Query query = entityManager.createQuery("select s from ScheduleDate s where s.providerNo=?1 and s.date=?2 and s.status=?3");
         query.setParameter(1, providerNo);
         query.setParameter(2, date);
         query.setParameter(3, 'A');

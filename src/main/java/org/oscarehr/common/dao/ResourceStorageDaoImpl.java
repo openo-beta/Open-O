@@ -44,33 +44,33 @@ public class ResourceStorageDaoImpl extends AbstractDaoImpl<ResourceStorage> imp
 
     @Override
     public ResourceStorage findActive(String resourceType) {
-        Query query = entityManager.createQuery("FROM ?1 r WHERE r.resourceType = ?2 AND r.active = true");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, resourceType);
+        String sqlCommand = "FROM " + modelClass.getSimpleName() + " r WHERE r.resourceType = ?1 AND r.active = true";
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, resourceType);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public List<ResourceStorage> findActiveAll(String resourceType) {
-        Query query = entityManager.createQuery("FROM ?1 r WHERE r.resourceType = ?2 AND r.active = true");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, resourceType);
+        String sqlCommand = "FROM " + modelClass.getSimpleName() + " r WHERE r.resourceType = ?1 AND r.active = true";
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, resourceType);
         return query.getResultList();
     }
 
     @Override
     public List<ResourceStorage> findAll(String resourceType) {
-        Query query = entityManager.createQuery("FROM ?1 r WHERE r.resourceType = ?2");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, resourceType);
+        String sqlCommand = "FROM " + modelClass.getSimpleName() + " r WHERE r.resourceType = ?1";
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, resourceType);
         return query.getResultList();
     }
 
     @Override
     public List<ResourceStorage> findByUUID(String uuid) {
-        Query query = entityManager.createQuery("FROM ?1 r WHERE r.uuid = ?2");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, uuid);
+        String sqlCommand = "FROM " + modelClass.getSimpleName() + " r WHERE r.uuid = ?1";
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, uuid);
         return query.getResultList();
     }
 

@@ -42,9 +42,9 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findByDemographicId(Integer demographicId) {
-        Query query = entityManager.createQuery("select x from ?1 x where demographicId=?2");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, demographicId);
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where demographicId=?1";
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, demographicId);
 
         List<Prevention> results = query.getResultList();
 
@@ -56,11 +56,10 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
      */
     @Override
     public List<Prevention> findByUpdateDate(Date updatedAfterThisDateExclusive, int itemsToReturn) {
-        String sqlCommand = "select x from ?1 x where x.lastUpdateDate>?2 order by x.lastUpdateDate";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.lastUpdateDate>?1 order by x.lastUpdateDate";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, updatedAfterThisDateExclusive);
+        query.setParameter(1, updatedAfterThisDateExclusive);
         setLimit(query, itemsToReturn);
 
         @SuppressWarnings("unchecked")
@@ -70,7 +69,9 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findByDemographicIdAfterDatetime(Integer demographicId, Date dateTime) {
-        Query query = entityManager.createQuery("select x from Prevention x where demographicId=?1 and lastUpdateDate>=?2 and deleted='0'");
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where demographicId=?1 and lastUpdateDate>=?2 and deleted='0'";
+
+        Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
         query.setParameter(2, dateTime);
 
@@ -82,7 +83,9 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findByDemographicIdAfterDatetimeExclusive(Integer demographicId, Date dateTime) {
-        Query query = entityManager.createQuery("select x from Prevention x where demographicId=?1 and lastUpdateDate>?2 and deleted='0'");
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where demographicId=?1 and lastUpdateDate>?2 and deleted='0'";
+
+        Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
         query.setParameter(2, dateTime);
 
@@ -97,7 +100,9 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
      */
     @Override
     public List<Integer> findDemographicIdsAfterDatetime(Date dateTime) {
-        Query query = entityManager.createQuery("select x.demographicId from Prevention x where x.lastUpdateDate > ?1");
+        String sqlCommand = "select x.demographicId from " + modelClass.getSimpleName() + " x where x.lastUpdateDate > ?1";
+
+        Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, dateTime);
 
         @SuppressWarnings("unchecked")
@@ -108,13 +113,12 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findByProviderDemographicLastUpdateDate(String providerNo, Integer demographicId, Date updatedAfterThisDateExclusive, int itemsToReturn) {
-        String sqlCommand = "select x from ?1 x where x.demographicId=?2 and x.providerNo=?3 and x.lastUpdateDate>?4 order by x.lastUpdateDate";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.demographicId=?1 and x.providerNo=?2 and x.lastUpdateDate>?3 order by x.lastUpdateDate";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, demographicId);
-        query.setParameter(3, providerNo);
-        query.setParameter(4, updatedAfterThisDateExclusive);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, providerNo);
+        query.setParameter(3, updatedAfterThisDateExclusive);
         setLimit(query, itemsToReturn);
 
         @SuppressWarnings("unchecked")
@@ -124,7 +128,9 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findNotDeletedByDemographicIdAfterDatetime(Integer demographicId, Date dateTime) {
-        Query query = entityManager.createQuery("select x from Prevention x where demographicId=?1 and lastUpdateDate> ?2");
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where demographicId=?1 and lastUpdateDate> ?2";
+
+        Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
         query.setParameter(2, dateTime);
 
@@ -136,7 +142,9 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Integer> findNonDeletedIdsByDemographic(Integer demographicId) {
-        Query query = entityManager.createQuery("select x.id from Prevention x where demographicId=?1 and deleted='0'");
+        String sqlCommand = "select x.id from " + modelClass.getSimpleName() + " x where demographicId=?1 and deleted='0'";
+
+        Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
 
         @SuppressWarnings("unchecked")
@@ -147,10 +155,11 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findNotDeletedByDemographicId(Integer demographicId) {
-        Query query = entityManager.createQuery("select x from ?1 x where demographicId=?2 and deleted=?3");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, demographicId);
-        query.setParameter(3, '0');
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where demographicId=?1 and deleted=?2";
+
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, '0');
 
         @SuppressWarnings("unchecked")
         List<Prevention> results = query.getResultList();
@@ -160,11 +169,12 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findByTypeAndDate(String preventionType, Date startDate, Date endDate) {
-        Query query = entityManager.createQuery("select x from ?1 x where preventionType=?2 and preventionDate>=?3 and preventionDate<=?4 and deleted='0' and refused='0' order by preventionDate");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, preventionType);
-        query.setParameter(3, startDate);
-        query.setParameter(4, endDate);
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where preventionType=?1 and preventionDate>=?2 and preventionDate<=?3 and deleted='0' and refused='0' order by preventionDate";
+
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, preventionType);
+        query.setParameter(2, startDate);
+        query.setParameter(3, endDate);
 
         @SuppressWarnings("unchecked")
         List<Prevention> results = query.getResultList();
@@ -174,10 +184,11 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findByTypeAndDemoNo(String preventionType, Integer demoNo) {
-        Query query = entityManager.createQuery("select x from ?1 x where preventionType=?2 and demographicId=?3 and deleted='0' order by preventionDate");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, preventionType);
-        query.setParameter(3, demoNo);
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where preventionType=?1 and demographicId=?2 and deleted='0' order by preventionDate";
+
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, preventionType);
+        query.setParameter(2, demoNo);
 
         @SuppressWarnings("unchecked")
         List<Prevention> results = query.getResultList();
@@ -194,9 +205,9 @@ public class PreventionDaoImpl extends AbstractDaoImpl<Prevention> implements Pr
 
     @Override
     public List<Prevention> findUniqueByDemographicId(Integer demographicId) {
-        Query query = entityManager.createQuery("select x from ?1 x where demographicId=?2 and deleted='0' GROUP BY preventionType ORDER BY preventionDate DESC");
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, demographicId);
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where demographicId=?1 and deleted='0' GROUP BY preventionType ORDER BY preventionDate DESC";
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, demographicId);
 
         @SuppressWarnings("unchecked")
         List<Prevention> results = query.getResultList();

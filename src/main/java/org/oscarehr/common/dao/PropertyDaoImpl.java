@@ -50,9 +50,9 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
      */
     @Override
     public List<Property> findByName(String name) {
-        String sqlCommand = "select x from ?1 x where x.name=?2";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?2";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
+        //query.setParameter(1, );
         query.setParameter(2, name);
         return query.getResultList();
     }
@@ -66,10 +66,9 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
      */
     @Override
     public List<Property> findGlobalByName(String name) {
-        String sqlCommand = "select x from ?1 x where x.name=?2 and x.providerNo is null";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?1 and x.providerNo is null";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, name);
+        query.setParameter(1, name);
         return query.getResultList();
     }
 
@@ -99,10 +98,9 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
     @Override
     public Property checkByName(String name) {
 
-        String sql = " select x from ?1 x where x.name=?2";
+        String sql = " select x from " + modelClass.getSimpleName() + " x where x.name=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1, this.modelClass.getSimpleName());
-        query.setParameter(2, name);
+        query.setParameter(1, name);
 
         try {
             return (Property) query.getSingleResult();
@@ -133,10 +131,9 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
 
     @Override
     public void removeByName(String name) {
-        String sqlCommand = "delete from ?1 where name=?2";
+        String sqlCommand = "delete from " + modelClass.getSimpleName() + " where name=?1";
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter(1, modelClass.getSimpleName());
-        query.setParameter(2, name);
+        query.setParameter(1, name);
         query.executeUpdate();
     }
 
