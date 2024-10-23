@@ -62,8 +62,8 @@ public class MeasurementGroupStyleDaoImpl extends AbstractDaoImpl<MeasurementGro
     @SuppressWarnings("unchecked")
     @Override
     public List<MeasurementGroupStyle> findByCssId(Integer cssId) {
-        Query query = createQuery("m", "m.cssId = :cssId");
-        query.setParameter("cssId", cssId);
+        Query query = createQuery("m", "m.cssId = ?1");
+        query.setParameter(1, cssId);
         return query.getResultList();
     }
 }
