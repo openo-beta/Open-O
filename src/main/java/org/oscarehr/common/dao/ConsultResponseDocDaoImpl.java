@@ -66,13 +66,13 @@ public class ConsultResponseDocDaoImpl extends AbstractDaoImpl<ConsultResponseDo
     public List<Object[]> findLabs(Integer consultResponseId) {
         String sql = "FROM ConsultResponseDoc crd, PatientLabRouting plr " +
                 "WHERE plr.labNo = crd.documentNo " +
-                "AND crd.responseId = :consultResponseId " +
-                "AND crd.docType = :docType " +
+                "AND crd.responseId = ?1" +
+                "AND crd.docType = ?2" +
                 "AND crd.deleted IS NULL " +
                 "ORDER BY crd.documentNo";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("consultResponseId", consultResponseId);
-        q.setParameter("docType", ConsultResponseDoc.DOCTYPE_LAB);
+        q.setParameter(1, consultResponseId);
+        q.setParameter(2, ConsultResponseDoc.DOCTYPE_LAB);
         return q.getResultList();
     }
 }
