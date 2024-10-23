@@ -66,8 +66,8 @@ public class Icd10DaoImpl extends AbstractDaoImpl<Icd10> implements Icd10Dao {
 
     @Override
     public AbstractCodeSystemModel<?> findByCodingSystem(String codingSystem) {
-        Query query = entityManager.createQuery("FROM Icd10 i WHERE i.icd10 like :cs");
-        query.setParameter("cs", codingSystem);
+        Query query = entityManager.createQuery("FROM Icd10 i WHERE i.icd10 like ?1");
+        query.setParameter(1, codingSystem);
         query.setMaxResults(1);
 
         return getSingleResultOrNull(query);
