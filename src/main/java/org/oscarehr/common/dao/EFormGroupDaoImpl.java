@@ -54,14 +54,14 @@ public class EFormGroupDaoImpl extends AbstractDaoImpl<EFormGroup> implements EF
     @Override
     public int deleteByNameAndFormId(String groupName, Integer formId) {
         StringBuilder buf = new StringBuilder(
-                "DELETE FROM " + modelClass.getSimpleName() + " g WHERE g.groupName = :groupName");
+                "DELETE FROM " + modelClass.getSimpleName() + " g WHERE g.groupName = ?1");
         if (formId != null)
-            buf.append(" AND g.formId = :formId");
+            buf.append(" AND g.formId = ?2");
 
         Query query = entityManager.createQuery(buf.toString());
-        query.setParameter("groupName", groupName);
+        query.setParameter(1, groupName);
         if (formId != null)
-            query.setParameter("formId", formId);
+            query.setParameter(2, formId);
 
         return query.executeUpdate();
     }
