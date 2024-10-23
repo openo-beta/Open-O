@@ -58,20 +58,20 @@ public class EpisodeDaoImpl extends AbstractDaoImpl<Episode> implements EpisodeD
     }
 
     public List<Episode> findCurrentByCodeTypeAndCodes(Integer demographicNo, String codeType, Collection<String> codes) {
-        Query query = entityManager.createQuery("SELECT e FROM Episode e WHERE e.status='Current' AND e.demographicNo=:demographicNo AND e.codingSystem=:codingSystem AND e.code IN (:codes) ORDER BY e.startDate DESC");
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("codingSystem", codeType);
-        query.setParameter("codes", codes);
+        Query query = entityManager.createQuery("SELECT e FROM Episode e WHERE e.status='Current' AND e.demographicNo=?1 AND e.codingSystem=?2 AND e.code IN (?3) ORDER BY e.startDate DESC");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, codeType);
+        query.setParameter(3, codes);
         @SuppressWarnings("unchecked")
         List<Episode> results = query.getResultList();
         return results;
     }
 
     public List<Episode> findCompletedByCodeTypeAndCodes(Integer demographicNo, String codeType, Collection<String> codes) {
-        Query query = entityManager.createQuery("SELECT e FROM Episode e WHERE e.status='Complete' AND e.demographicNo=:demographicNo AND e.codingSystem=:codingSystem AND e.code IN (:codes) ORDER BY e.startDate DESC");
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("codingSystem", codeType);
-        query.setParameter("codes", codes);
+        Query query = entityManager.createQuery("SELECT e FROM Episode e WHERE e.status='Complete' AND e.demographicNo=?1 AND e.codingSystem=?2 AND e.code IN (?3) ORDER BY e.startDate DESC");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, codeType);
+        query.setParameter(3, codes);
         @SuppressWarnings("unchecked")
         List<Episode> results = query.getResultList();
         return results;
