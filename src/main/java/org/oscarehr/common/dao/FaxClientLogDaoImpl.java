@@ -60,9 +60,9 @@ public class FaxClientLogDaoImpl extends AbstractDaoImpl<FaxClientLog> implement
             return Collections.emptyList();
         }
 
-        Query query = entityManager.createNativeQuery("SELECT * FROM FaxClientLog WHERE faxId IN (:faxIds)",
+        Query query = entityManager.createNativeQuery("SELECT * FROM FaxClientLog WHERE faxId IN (?1)",
                 FaxClientLog.class);
-        query.setParameter("faxIds", faxIds);
+        query.setParameter(1, faxIds);
         return query.getResultList();
     }
 
