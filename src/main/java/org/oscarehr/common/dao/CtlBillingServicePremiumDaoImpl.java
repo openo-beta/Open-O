@@ -73,8 +73,8 @@ public class CtlBillingServicePremiumDaoImpl extends AbstractDaoImpl<CtlBillingS
     }
 
     public List<CtlBillingServicePremium> findByServceCodes(List<String> serviceCodes) {
-        Query query = createQuery("p", "p.serviceCode in (:serviceCodes)");
-        query.setParameter("serviceCodes", serviceCodes);
+        Query query = createQuery("p", "p.serviceCode in (?1)");
+        query.setParameter(1, serviceCodes);
         return query.getResultList();
     }
 }
