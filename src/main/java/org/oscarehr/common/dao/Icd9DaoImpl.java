@@ -82,8 +82,8 @@ public class Icd9DaoImpl extends AbstractCodeSystemDaoImpl<Icd9> implements Icd9
 
     @Override
     public AbstractCodeSystemModel<?> findByCodingSystem(String codingSystem) {
-        Query query = entityManager.createQuery("FROM Icd9 i WHERE i.icd9 like :cs");
-        query.setParameter("cs", codingSystem);
+        Query query = entityManager.createQuery("FROM Icd9 i WHERE i.icd9 like ?1");
+        query.setParameter(1, codingSystem);
         query.setMaxResults(1);
 
         return getSingleResultOrNull(query);
