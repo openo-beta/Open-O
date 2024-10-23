@@ -95,9 +95,9 @@ public class MeasurementGroupDaoImpl extends AbstractDaoImpl<MeasurementGroup> i
 
     @Override
     public List<Object> findUniqueTypeDisplayNamesByGroupName(String groupName) {
-        String sql = "SELECT DISTINCT mg.typeDisplayName FROM MeasurementGroup mg WHERE mg.name = :groupName";
+        String sql = "SELECT DISTINCT mg.typeDisplayName FROM MeasurementGroup mg WHERE mg.name = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("groupName", groupName);
+        query.setParameter(1, groupName);
         return query.getResultList();
     }
 }
