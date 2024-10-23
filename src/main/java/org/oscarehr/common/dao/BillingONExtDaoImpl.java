@@ -65,9 +65,9 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
 
     @Override
     public List<BillingONExt> find(String key, String value) {
-        Query q = createQuery("q", "q.keyVal = :key AND q.value = :value");
-        q.setParameter("key", key);
-        q.setParameter("value", value);
+        Query q = createQuery("q", "q.keyVal = ?1 AND q.value = ?2");
+        q.setParameter(1, key);
+        q.setParameter(2, value);
         return q.getResultList();
     }
 
@@ -276,11 +276,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public List<BillingONExt> find(Integer billingNo, String key, Date start, Date end) {
         Query q = createQuery("b",
-                "b.billingNo = :bNo AND b.keyVal = :key AND b.dateTime >= :start AND b.dateTime <= :end");
-        q.setParameter("bNo", billingNo);
-        q.setParameter("key", key);
-        q.setParameter("start", start);
-        q.setParameter("end", end);
+                "b.billingNo = ?1 AND b.keyVal = ?2 AND b.dateTime >= ?3 AND b.dateTime <= ?4");
+        q.setParameter(1, billingNo);
+        q.setParameter(2, key);
+        q.setParameter(3, start);
+        q.setParameter(4, end);
         return q.getResultList();
     }
 
@@ -299,17 +299,17 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
 
     @Override
     public List<BillingONExt> getClaimExtItems(int billingNo) {
-        Query query = entityManager.createQuery("select ext from BillingONExt ext where ext.billingNo = :billingNo");
-        query.setParameter("billingNo", billingNo);
+        Query query = entityManager.createQuery("select ext from BillingONExt ext where ext.billingNo = ?1");
+        query.setParameter(1, billingNo);
         return query.getResultList();
     }
 
     @Override
     public List<BillingONExt> getBillingExtItems(String billingNo) {
         Query query = entityManager
-                .createQuery("select ext from BillingONExt ext where ext.billingNo = :billingNo and ext.status='1' ");
+                .createQuery("select ext from BillingONExt ext where ext.billingNo = ?1 and ext.status='1' ");
         try {
-            query.setParameter("billingNo", Integer.parseInt(billingNo));
+            query.setParameter(1, Integer.parseInt(billingNo));
             return query.getResultList();
         } catch (Exception e) {
             return null;
@@ -319,9 +319,9 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public List<BillingONExt> getInactiveBillingExtItems(String billingNo) {
         Query query = entityManager
-                .createQuery("select ext from BillingONExt ext where ext.billingNo = :billingNo and ext.status='0' ");
+                .createQuery("select ext from BillingONExt ext where ext.billingNo = ?1 and ext.status='0' ");
         try {
-            query.setParameter("billingNo", Integer.parseInt(billingNo));
+            query.setParameter(1, Integer.parseInt(billingNo));
             return query.getResultList();
         } catch (Exception e) {
             return null;
@@ -353,38 +353,38 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public BillingONExt getClaimExtItem(Integer billingNo, Integer demographicNo, String keyVal)
             throws NonUniqueResultException {
-        String filter1 = (billingNo == null ? "" : "ext.billingNo = :billingNo");
-        String filter2 = (demographicNo == null ? "" : "ext.demographicNo = :demographicNo");
-        String filter3 = (keyVal == null ? "" : "ext.keyVal = :keyVal");
+        String filter1 = (billingNo == null ? "" : "ext.billingNo = ?1");
+        String filter2 = (demographicNo == null ? "" : "ext.demographicNo = ?2");
+        String filter3 = (keyVal == null ? "" : "ext.keyVal = ?3");
         String sql = "select ext from BillingONExt ext";
         boolean isWhere = false;
         if (filter1 != null) {
-            sql += " where ext.billingNo = :billingNo";
+            sql += " where ext.billingNo = ?1";
             isWhere = true;
         }
         if (filter2 != null) {
             if (isWhere)
-                sql += " and demographicNo = :demographicNo";
+                sql += " and demographicNo = ?2";
             else {
-                sql += "where demographicNo = :demographicNo";
+                sql += "where demographicNo = ?2";
                 isWhere = true;
             }
         }
         if (filter3 != null) {
             if (isWhere)
-                sql += " and keyVal = :keyVal";
+                sql += " and keyVal = ?3";
             else {
-                sql += "where keyVal = :keyVal";
+                sql += "where keyVal = ?3";
                 isWhere = true;
             }
         }
         Query query = entityManager.createQuery(sql);
         if (filter1 != null)
-            query.setParameter("billingNo", billingNo);
+            query.setParameter(1, billingNo);
         if (filter1 != null)
-            query.setParameter("demographicNo", demographicNo);
+            query.setParameter(2, demographicNo);
         if (filter3 != null)
-            query.setParameter("keyVal", keyVal);
+            query.setParameter(3, keyVal);
         BillingONExt res = null;
         try {
             res = (BillingONExt) query.getSingleResult();
