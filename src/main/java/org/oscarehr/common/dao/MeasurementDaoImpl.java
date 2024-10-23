@@ -360,11 +360,11 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @Override
     public List<Measurement> findByIdTypeAndInstruction(Integer demographicId, String type, String instructions) {
         Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName()
-                + " m WHERE m.demographicId = :demographicNo " + "AND m.type = :type "
-                + "AND m.measuringInstruction = :measuringInstruction ORDER BY m.createDate DESC");
-        query.setParameter("demographicNo", demographicId);
-        query.setParameter("type", type);
-        query.setParameter("measuringInstruction", instructions);
+                + " m WHERE m.demographicId = ?1" + "AND m.type = ?2"
+                + "AND m.measuringInstruction = ?3 ORDER BY m.createDate DESC");
+        query.setParameter(1, demographicId);
+        query.setParameter(2, type);
+        query.setParameter(3, instructions);
         query.setMaxResults(1);
         return query.getResultList();
     }
@@ -372,14 +372,14 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @Override
     public HashMap<String, Measurement> getMeasurements(Integer demographicNo, String[] types) {
         HashMap<String, Measurement> map = new HashMap<String, Measurement>();
-        String queryStr = "select m from Measurement m WHERE m.demographicId = :demographicNo AND m.type IN (:types) ORDER BY m.type,m.dateObserved";
+        String queryStr = "select m from Measurement m WHERE m.demographicId = ?1 AND m.type IN (?2) ORDER BY m.type,m.dateObserved";
         Query query = entityManager.createQuery(queryStr);
-        query.setParameter("demographicNo", demographicNo);
+        query.setParameter(1, demographicNo);
         List<String> lst = new ArrayList<String>();
         for (int x = 0; x < types.length; x++) {
             lst.add(types[x]);
         }
-        query.setParameter("types", lst);
+        query.setParameter(2, lst);
 
         List<Measurement> results = query.getResultList();
 
@@ -435,11 +435,11 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
             lst.add(type);
         }
 
-        String queryStr = "SELECT DISTINCT m.dateObserved FROM Measurement m WHERE m.demographicId = :demographicNo AND m.type IN (:types) ORDER BY m.dateObserved DESC";
+        String queryStr = "SELECT DISTINCT m.dateObserved FROM Measurement m WHERE m.demographicId = ?1 AND m.type IN (?2) ORDER BY m.dateObserved DESC";
 
         Query query = entityManager.createQuery(queryStr);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("types", lst);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, lst);
 
         List<Date> results = query.getResultList();
 
@@ -461,11 +461,11 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
                 + "FROM Measurement m, MeasurementsExt e1, MeasurementsExt e2, MeasurementsExt e3, MeasurementMap mm "
                 + "WHERE m.id = e1.measurementId " + "AND e1.keyVal = 'lab_no' " + "AND m.id = e2.measurementId "
                 + "AND e2.keyVal = 'identifier' " + "AND m.id = e3.measurementId " + "AND e3.keyVal = 'abnormal' "
-                + "AND e2.val = mm.identCode " + "AND mm.loincCode = :loincCode " + "AND m.demographicId = :demoNo "
+                + "AND e2.val = mm.identCode " + "AND mm.loincCode = ?1" + "AND m.demographicId = ?2"
                 + "ORDER BY m.dateObserved DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demoNo", demoNo);
-        query.setParameter("loincCode", loincCode);
+        query.setParameter(1, loincCode);
+        query.setParameter(2, demoNo);
         return query.getResultList();
     }
 
@@ -477,11 +477,11 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
                 + "WHERE m.id = e1.measurementId " + "AND e1.keyVal = 'lab_no' " + "AND m.id = e2.measurementId "
                 + "AND e2.keyVal='identifier'" + "AND m.id = e4.measurementId " + "AND e4.keyVal='identifier' "
                 + "AND m.id = e3.measurementId " + "AND e3.keyVal='abnormal' " + "AND e2.val = mm.identCode "
-                + "AND mm.loincCode = :loincCode " + "AND m.demographicId = :demoNo " + "ORDER BY m.dateObserved DESC";
+                + "AND mm.loincCode = ?1" + "AND m.demographicId = ?2" + "ORDER BY m.dateObserved DESC";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demoNo", demoNo);
-        query.setParameter("loincCode", loincCode);
+        query.setParameter(1, loincCode);
+        query.setParameter(2, demoNo);
         return query.getResultList();
 
     }
@@ -490,10 +490,10 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     public List<Object> findLabNumbers(Integer demoNo, String identCode) {
         String sql = "SELECT DISTINCT e2.val FROM Measurement m, MeasurementsExt e1, MeasurementsExt e2 "
                 + "WHERE m.id = e1.measurementId " + "AND e1.keyVal = 'identifier' " + "AND m.id = e2.measurementId "
-                + "AND e2.keyVal = 'lab_no' " + "AND e1.val= :identCode " + "AND m.demographicId = :demoNo";
+                + "AND e2.keyVal = 'lab_no' " + "AND e1.val= ?1" + "AND m.demographicId = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("identCode", identCode);
-        query.setParameter("demoNo", demoNo);
+        query.setParameter(1, identCode);
+        query.setParameter(2, demoNo);
         return query.getResultList();
     }
 
@@ -501,57 +501,57 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     public List<Object> findLabNumbersOrderByObserved(Integer demoNo, String identCode) {
         String sql = "SELECT DISTINCT e2.val FROM Measurement m, MeasurementsExt e1, MeasurementsExt e2 "
                 + "WHERE m.id = e1.measurementId " + "AND e1.keyVal = 'identifier' " + "AND m.id = e2.measurementId "
-                + "AND e2.keyVal = 'lab_no' " + "AND e1.val= :identCode "
-                + "AND m.demographicId = :demoNo ORDER BY m.dateObserved";
+                + "AND e2.keyVal = 'lab_no' " + "AND e1.val= ?1"
+                + "AND m.demographicId = ?2 ORDER BY m.dateObserved";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("identCode", identCode);
-        query.setParameter("demoNo", demoNo);
+        query.setParameter(1, identCode);
+        query.setParameter(2, demoNo);
         return query.getResultList();
     }
 
     @Override
     public Measurement findLastEntered(Integer demo, String type) {
-        Query query = createQuery("ms", "ms.demographicId = :demoNo AND ms.type = :type ORDER BY ms.createDate DESC");
-        query.setParameter("demoNo", demo);
-        query.setParameter("type", type);
+        Query query = createQuery("ms", "ms.demographicId = ?1 AND ms.type = ?2 ORDER BY ms.createDate DESC");
+        query.setParameter(1, demo);
+        query.setParameter(2, type);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public List<MeasurementType> findMeasurementsTypes(Integer demoNo) {
-        String sql = "select mt.* from measurementType AS mt LEFT JOIN measurementType AS mt2 on (mt.type = mt2.type AND mt.id < mt2.id) LEFT JOIN measurements as m ON m.type = mt.type WHERE mt2.id is null and m.demographicNo = :demoNo group by mt.type order by mt.id DESC";
+        String sql = "select mt.* from measurementType AS mt LEFT JOIN measurementType AS mt2 on (mt.type = mt2.type AND mt.id < mt2.id) LEFT JOIN measurements as m ON m.type = mt.type WHERE mt2.id is null and m.demographicNo = ?1 group by mt.type order by mt.id DESC";
         Query query = entityManager.createNativeQuery(sql, MeasurementType.class);
-        query.setParameter("demoNo", demoNo);
+        query.setParameter(1, demoNo);
         return query.getResultList();
     }
 
     @Override
     public List<Object[]> findMeasurementsAndProviders(Integer measurementId) {
         String sql = "FROM Measurement m, MeasurementType mt, Provider p " + "WHERE m.providerNo = p.ProviderNo "
-                + "AND m.id = :mrId " + "AND m.type = mt.type";
+                + "AND m.id = ?1" + "AND m.type = mt.type";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("mrId", measurementId);
+        query.setParameter(1, measurementId);
         return query.getResultList();
     }
 
     @Override
     public List<Object[]> findMeasurementsAndProvidersByType(String type, Integer demographicNo) {
         String sql = "FROM Measurement m, Provider p, MeasurementType mt " + "WHERE m.providerNo = p.ProviderNo "
-                + "AND m.type = mt.type " + "AND m.type = :type " + "AND m.demographicId = :demoNo";
+                + "AND m.type = mt.type " + "AND m.type = ?1" + "AND m.demographicId = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("type", type);
-        query.setParameter("demoNo", demographicNo);
+        query.setParameter(1, type);
+        query.setParameter(2, demographicNo);
         return query.getResultList();
     }
 
     @Override
     public Object[] findMeasurementsAndProvidersByDemoAndType(Integer demographicNo, String type) {
-        String sql = "FROM Measurement m, Provider p, MeasurementType mt " + "WHERE m.demographicId = :demoNo "
-                + "AND m.type = :type " + "AND (" + "	m.providerNo = p.ProviderNo " + "	OR m.providerNo = '0'"
+        String sql = "FROM Measurement m, Provider p, MeasurementType mt " + "WHERE m.demographicId = ?1"
+                + "AND m.type = ?2" + "AND (" + "	m.providerNo = p.ProviderNo " + "	OR m.providerNo = '0'"
                 + ") " + "AND m.type = mt.type " + "GROUP BY m.id " + "ORDER BY m.dateObserved DESC, m.createDate DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("type", type);
-        query.setParameter("demoNo", demographicNo);
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, type);
         query.setMaxResults(1);
 
         List<Object[]> result = query.getResultList();
@@ -564,82 +564,82 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @Override
     public List<Measurement> findByValue(String key, String value) {
         Query q = entityManager.createQuery("SELECT m FROM Measurement m, MeasurementsExt e "
-                + "WHERE m.id = e.measurementId " + "AND e.keyVal = :key " + "AND e.val = :val");
-        q.setParameter("key", key);
-        q.setParameter("val", value);
+                + "WHERE m.id = e.measurementId " + "AND e.keyVal = ?1" + "AND e.val = ?2");
+        q.setParameter(1, key);
+        q.setParameter(2, value);
         return q.getResultList();
     }
 
     @Override
     public List<Object> findObservationDatesByDemographicNoTypeAndMeasuringInstruction(Integer demo, String type,
                                                                                        String mInstrc) {
-        String sql = "SELECT DISTINCT m.dateObserved FROM Measurement m " + "WHERE m.demographicId = :demo "
-                + "AND m.type = :type " + "AND m.measuringInstruction = :mInstrc " + "ORDER BY m.dateObserved";
+        String sql = "SELECT DISTINCT m.dateObserved FROM Measurement m " + "WHERE m.demographicId = ?1"
+                + "AND m.type = ?2" + "AND m.measuringInstruction = ?3" + "ORDER BY m.dateObserved";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demo", demo);
-        query.setParameter("type", type);
-        query.setParameter("mInstrc", mInstrc);
+        query.setParameter(1, demo);
+        query.setParameter(2, type);
+        query.setParameter(3, mInstrc);
         return query.getResultList();
     }
 
     @Override
     public List<Date> findByDemographicNoTypeAndMeasuringInstruction(Integer demo, String type, String mInstrc) {
-        String sql = "SELECT m.dateObserved FROM Measurement m " + "WHERE m.demographicId = :demo "
-                + "AND m.type = :type " + "AND m.measuringInstruction = :mInstrc " + "ORDER BY m.dateObserved";
+        String sql = "SELECT m.dateObserved FROM Measurement m " + "WHERE m.demographicId = ?1"
+                + "AND m.type = ?2" + "AND m.measuringInstruction = ?3" + "ORDER BY m.dateObserved";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demo", demo);
-        query.setParameter("type", type);
-        query.setParameter("mInstrc", mInstrc);
+        query.setParameter(1, demo);
+        query.setParameter(2, type);
+        query.setParameter(3, mInstrc);
         return query.getResultList();
     }
 
     @Override
     public Measurement findByDemographicNoTypeAndDate(Integer demo, String type, java.util.Date date) {
-        String sql = "FROM Measurement m WHERE m.demographicId = :demo " + "AND m.type = :type "
-                + "AND m.dateObserved = :date " + "ORDER BY m.createDate DESC";
+        String sql = "FROM Measurement m WHERE m.demographicId = ?1" + "AND m.type = ?2"
+                + "AND m.dateObserved = ?3" + "ORDER BY m.createDate DESC";
         Query query = entityManager.createQuery(sql);
         query.setMaxResults(1);
-        query.setParameter("demo", demo);
-        query.setParameter("type", type);
-        query.setParameter("date", date);
+        query.setParameter(1, demo);
+        query.setParameter(2, type);
+        query.setParameter(3, date);
         return getSingleResultOrNull(query);
     }
 
     @Override
     public List<Measurement> findByDemoNoTypeDateAndMeasuringInstruction(Integer demoNo, Date from, Date to,
                                                                          String type, String instruction) {
-        Query query = createQuery("m", "m.dateObserved >= :from AND m.dateObserved <= :to AND m.type = :type "
-                + "AND m.measuringInstruction = :instruction AND m.demographicId = :demoNo");
-        query.setParameter("demoNo", demoNo);
-        query.setParameter("from", from);
-        query.setParameter("to", to);
-        query.setParameter("type", type);
-        query.setParameter("instruction", instruction);
+        Query query = createQuery("m", "m.dateObserved >= ?1 AND m.dateObserved <= ?2 AND m.type = ?3"
+                + "AND m.measuringInstruction = ?4 AND m.demographicId = ?5");
+        query.setParameter(1, from);
+        query.setParameter(2, to);
+        query.setParameter(3, type);
+        query.setParameter(4, instruction);
+        query.setParameter(5, demoNo);
         return query.getResultList();
     }
 
     @Override
     public List<Object[]> findLastEntered(Date from, Date to, String measurementType, String mInstrc) {
         Query query = createQuery("SELECT m.demographicId, max(m.createDate)", "m",
-                "m.dateObserved >= :from AND m.dateObserved <= :to AND m.type = :measurementType AND m.measuringInstruction = :mInstrc group by m.demographicId");
-        query.setParameter("from", from);
-        query.setParameter("to", to);
-        query.setParameter("measurementType", measurementType);
-        query.setParameter("mInstrc", mInstrc);
+                "m.dateObserved >= ?1 AND m.dateObserved <= ?2 AND m.type = ?3 AND m.measuringInstruction = ?4 group by m.demographicId");
+        query.setParameter(1, from);
+        query.setParameter(2, to);
+        query.setParameter(3, measurementType);
+        query.setParameter(4, mInstrc);
         return query.getResultList();
     }
 
     @Override
     public List<Measurement> findByDemographicNoTypeAndDate(Integer demographicNo, Date createDate,
                                                             String measurementType, String mInstrc) {
-        String sql = "FROM Measurement m " + "WHERE m.createDate = :createDate "
-                + "AND m.demographicId = :demographicNo " + "AND m.type = :measurementType "
-                + "AND m.measuringInstruction = :mInstrc";
+        String sql = "FROM Measurement m " + "WHERE m.createDate = ?1"
+                + "AND m.demographicId = ?2" + "AND m.type = ?3"
+                + "AND m.measuringInstruction = ?4";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("createDate", createDate);
-        query.setParameter("measurementType", measurementType);
-        query.setParameter("mInstrc", mInstrc);
+        query.setParameter(1, createDate);
+        query.setParameter(2, demographicNo);
+        query.setParameter(3, measurementType);
+        query.setParameter(4, mInstrc);
         return query.getResultList();
     }
 
@@ -647,35 +647,35 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @Override
     public List<Object[]> findByDemoNoDateTypeMeasuringInstrAndDataField(Integer demographicNo, Date dateEntered,
                                                                          String measurementType, String mInstrc, String upper, String lower) {
-        String sql = "SELECT dataField FROM measurements " + "WHERE dateEntered = :dateEntered "
-                + "AND demographicNo = :demographicNo " + "AND type = :measurementType "
-                + "AND measuringInstruction = :mInstrc " + "AND dataField < :upper " + "AND dataField > :lower";
+        String sql = "SELECT dataField FROM measurements " + "WHERE dateEntered = ?1"
+                + "AND demographicNo = ?2" + "AND type = ?3"
+                + "AND measuringInstruction = ?4" + "AND dataField < ?5" + "AND dataField > ?6";
         Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("dateEntered", dateEntered);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("measurementType", measurementType);
-        query.setParameter("mInstrc", mInstrc);
-        query.setParameter("upper", upper);
-        query.setParameter("lower", lower);
+        query.setParameter(1, dateEntered);
+        query.setParameter(2, demographicNo);
+        query.setParameter(3, measurementType);
+        query.setParameter(4, mInstrc);
+        query.setParameter(5, upper);
+        query.setParameter(6, lower);
         return query.getResultList();
     }
 
     @Override
     public List<Object[]> findLastEntered(Date from, Date to, String measurementType) {
         Query query = createQuery("SELECT m.demographicId, MAX(m.createDate)", "m",
-                "m.dateObserved >= :from AND m.dateObserved <= :to AND m.type = :measurementType GROUP BY m.demographicId");
-        query.setParameter("from", from);
-        query.setParameter("to", to);
-        query.setParameter("measurementType", measurementType);
+                "m.dateObserved >= ?1 AND m.dateObserved <= ?2 AND m.type = ?3 GROUP BY m.demographicId");
+        query.setParameter(1, from);
+        query.setParameter(2, to);
+        query.setParameter(3, measurementType);
         return query.getResultList();
     }
 
     @Override
     public List<Measurement> findByDemoNoDateAndType(Integer demoNo, Date createDate, String type) {
-        Query query = createQuery("m", "m.createDate = :createDate AND m.demographicId = :demoNo AND m.type = :type");
-        query.setParameter("createDate", createDate);
-        query.setParameter("demoNo", demoNo);
-        query.setParameter("type", type);
+        Query query = createQuery("m", "m.createDate = ?1 AND m.demographicId = ?2 AND m.type = ?3");
+        query.setParameter(1, createDate);
+        query.setParameter(2, demoNo);
+        query.setParameter(3, type);
         return query.getResultList();
     }
 
@@ -683,31 +683,31 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @Override
     public List<Object[]> findByDemoNoDateTypeAndDataField(Integer demographicNo, Date dateEntered, String type,
                                                            String upper, String lower) {
-        String sql = "SELECT dataField FROM measurements WHERE dateEntered = :dateEntered "
-                + "AND demographicNo = :demographicNo " + "AND type = :type " + "AND dataField < :upper "
-                + "AND dataField > :lower";
+        String sql = "SELECT dataField FROM measurements WHERE dateEntered = ?1"
+                + "AND demographicNo = ?2" + "AND type = ?3" + "AND dataField < ?4"
+                + "AND dataField > ?5";
         Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("dateEntered", dateEntered);
-        query.setParameter("demographicNo", demographicNo);
-        query.setParameter("type", type);
-        query.setParameter("upper", upper);
-        query.setParameter("lower", lower);
+        query.setParameter(1, dateEntered);
+        query.setParameter(2, demographicNo);
+        query.setParameter(3, type);
+        query.setParameter(4, upper);
+        query.setParameter(5, lower);
         return query.getResultList();
     }
 
     @Override
     public List<Object[]> findTypesAndMeasuringInstructionByDemographicId(Integer demoNo) {
-        Query query = createQuery("SELECT DISTINCT m.type, m.measuringInstruction", "m", "m.demographicId = :demoNo");
-        query.setParameter("demoNo", demoNo);
+        Query query = createQuery("SELECT DISTINCT m.type, m.measuringInstruction", "m", "m.demographicId = ?1");
+        query.setParameter(1, demoNo);
         return query.getResultList();
     }
 
     @Override
     public List<Object[]> findByCreateDate(Date from, Date to) {
         Query query = createQuery("SELECT DISTINCT m.demographicId", "m",
-                "m.createDate >= :from AND m.createDate <= :to");
-        query.setParameter("from", from);
-        query.setParameter("to", to);
+                "m.createDate >= ?1 AND m.createDate <= ?2");
+        query.setParameter(1, from);
+        query.setParameter(2, to);
         return query.getResultList();
     }
 
@@ -742,11 +742,11 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Measurement> findByType(Integer demographicId, List<String> types) {
-        String sqlCommand = "select x from Measurement x where x.demographicId = :demographicNo and x.type IN (:types) order by x.dateObserved desc";
+        String sqlCommand = "select x from Measurement x where x.demographicId = ?1 and x.type IN (?2) order by x.dateObserved desc";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter("demographicNo", demographicId);
-        query.setParameter("types", types);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, types);
 
         @SuppressWarnings("unchecked")
         List<Measurement> results = query.getResultList();
@@ -756,12 +756,12 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Measurement> findByType(Integer demographicId, List<String> types, Date after) {
-        String sqlCommand = "select x from Measurement x where x.demographicId = :demographicNo and x.type IN (:types) and x.dateObserved >= :after order by x.dateObserved desc";
+        String sqlCommand = "select x from Measurement x where x.demographicId = ?1 and x.type IN (?2) and x.dateObserved >= ?3 order by x.dateObserved desc";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter("demographicNo", demographicId);
-        query.setParameter("types", types);
-        query.setParameter("after", after);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, types);
+        query.setParameter(3, after);
 
         @SuppressWarnings("unchecked")
         List<Measurement> results = query.getResultList();
@@ -784,10 +784,10 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Measurement> findByType(List<String> types) {
-        String sqlCommand = "select x from Measurement x where x.type in (:type) order by x.demographicId, x.dateObserved desc";
+        String sqlCommand = "select x from Measurement x where x.type in (?1) order by x.demographicId, x.dateObserved desc";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter("type", types);
+        query.setParameter(1, types);
 
         @SuppressWarnings("unchecked")
         List<Measurement> results = query.getResultList();
@@ -797,10 +797,10 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
 
     @Override
     public List<Integer> findDemographicIdsByType(List<String> types) {
-        String sqlCommand = "select distinct x.demographicId from Measurement x where x.type in (:types)";
+        String sqlCommand = "select distinct x.demographicId from Measurement x where x.type in (?1)";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter("types", types);
+        query.setParameter(1, types);
 
         @SuppressWarnings("unchecked")
         List<Integer> results = query.getResultList();
@@ -827,12 +827,12 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     public List<Measurement> findByProviderDemographicLastUpdateDate(String providerNo, Integer demographicId,
                                                                      Date updatedAfterThisDateExclusive, int itemsToReturn) {
         String sql = "select x from " + modelClass.getSimpleName()
-                + " x where x.providerNo=:providerNo and x.demographicId=:demographicId and x.createDate>:updatedAfterThisDateExclusive order by x.createDate";
+                + " x where x.providerNo=?1 and x.demographicId=?2 and x.createDate>?3 order by x.createDate";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("demographicId", demographicId);
-        query.setParameter("updatedAfterThisDateExclusive", updatedAfterThisDateExclusive);
+        query.setParameter(1, providerNo);
+        query.setParameter(2, demographicId);
+        query.setParameter(3, updatedAfterThisDateExclusive);
 
         setLimit(query, itemsToReturn);
 
@@ -845,11 +845,11 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     public List<Measurement> findByDemographicLastUpdateAfterDate(Integer demographicId,
                                                                   Date updatedAfterThisDateExclusive) {
         String sql = "select x from " + modelClass.getSimpleName()
-                + " x where x.demographicId=:demographicId and x.createDate>:updatedAfterThisDateExclusive order by x.createDate";
+                + " x where x.demographicId=?1 and x.createDate>?2 order by x.createDate";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demographicId", demographicId);
-        query.setParameter("updatedAfterThisDateExclusive", updatedAfterThisDateExclusive);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, updatedAfterThisDateExclusive);
 
         @SuppressWarnings("unchecked")
         List<Measurement> results = query.getResultList();
@@ -860,10 +860,10 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @Override
     public List<Measurement> findLatestByDemographicObservedAfterDate(Integer demographicId,
                                                                       Date observedAfterDateExclusive) {
-        String sql = "SELECT x.* FROM measurements x LEFT JOIN measurements y ON x.dateObserved < y.dateObserved AND x.type = y.type AND x.demographicNo = y.demographicNo WHERE y.id IS NULL AND x.demographicNo = :demographicId AND x.dateObserved > :dateObserved GROUP BY x.type, x.dateObserved ORDER BY x.dateObserved DESC";
+        String sql = "SELECT x.* FROM measurements x LEFT JOIN measurements y ON x.dateObserved < y.dateObserved AND x.type = y.type AND x.demographicNo = y.demographicNo WHERE y.id IS NULL AND x.demographicNo = ?1 AND x.dateObserved > ?2 GROUP BY x.type, x.dateObserved ORDER BY x.dateObserved DESC";
         Query query = entityManager.createNativeQuery(sql, Measurement.class);
-        query.setParameter("demographicId", demographicId);
-        query.setParameter("dateObserved", observedAfterDateExclusive);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, observedAfterDateExclusive);
         @SuppressWarnings("unchecked")
         List<Measurement> results = query.getResultList();
         return results;
@@ -873,7 +873,7 @@ public class MeasurementDaoImpl extends AbstractDaoImpl<Measurement> implements 
     @Override
     public List<Integer> findNewMeasurementsSinceDemoKey(String keyName) {
 
-        String sql = "select distinct m.demographicNo from measurements m,demographic d,demographicExt e where m.demographicNo = d.demographic_no and d.demographic_no = e.demographic_no and e.key_val=? and m.type in ('HT','WT') and m.dateEntered > e.value";
+        String sql = "select distinct m.demographicNo from measurements m,demographic d,demographicExt e where m.demographicNo = d.demographic_no and d.demographic_no = e.demographic_no and e.key_val=?1 and m.type in ('HT','WT') and m.dateEntered > e.value";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, keyName);
 
