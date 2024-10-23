@@ -123,21 +123,21 @@ public class DiagnosticCodeDaoImpl extends AbstractDaoImpl<DiagnosticCode> imple
     public List<DiagnosticCode> findByRegionAndType(String billRegion, String serviceType) {
         Query query = entityManager.createQuery("FROM DiagnosticCode d, CtlDiagCode c " +
                 "WHERE d.id = c.diagnosticCode " +
-                "AND d.region = :billRegion " +
-                "AND c.serviceType = :serviceType");
-        query.setParameter("billRegion", billRegion);
-        query.setParameter("serviceType", serviceType);
+                "AND d.region = ?1" +
+                "AND c.serviceType = ?2");
+        query.setParameter(1, billRegion);
+        query.setParameter(2, serviceType);
         return query.getResultList();
     }
 
     public List<Object[]> findDiagnosictsAndCtlDiagCodesByServiceType(String serviceType) {
         String sql = "FROM DiagnosticCode d, CtlDiagCode c " +
                 "WHERE c.diagnosticCode = d.diagnosticCode " +
-                "AND c.serviceType = :serviceType " +
+                "AND c.serviceType = ?1" +
                 "ORDER BY d.description";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("serviceType", serviceType);
+        query.setParameter(1, serviceType);
         return query.getResultList();
     }
 
@@ -152,9 +152,9 @@ public class DiagnosticCodeDaoImpl extends AbstractDaoImpl<DiagnosticCode> imple
 
     @Override
     public AbstractCodeSystemModel<?> findByCodingSystem(String codingSystem) {
-        Query query = entityManager.createQuery("FROM DiagnosticCode d WHERE d.diagnosticCode like :cs");
+        Query query = entityManager.createQuery("FROM DiagnosticCode d WHERE d.diagnosticCode like ?1");
 
-        query.setParameter("cs", codingSystem);
+        query.setParameter(1, codingSystem);
         query.setMaxResults(1);
 
         return getSingleResultOrNull(query);
