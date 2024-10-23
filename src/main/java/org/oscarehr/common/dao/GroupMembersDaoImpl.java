@@ -94,10 +94,10 @@ public class GroupMembersDaoImpl extends AbstractDaoImpl<GroupMembers> implement
     public List<Object[]> findMembersByGroupId(int groupId) {
         String sql = "FROM GroupMembers g, Provider p "
                 + "WHERE g.providerNo = p.ProviderNo "
-                + "AND g.groupId = :id "
+                + "AND g.groupId = ?1"
                 + "ORDER BY p.LastName, p.FirstName";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("id", groupId);
+        query.setParameter(1, groupId);
         return query.getResultList();
     }
 
