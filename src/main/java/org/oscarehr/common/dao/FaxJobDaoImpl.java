@@ -60,15 +60,15 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
 
         if (demographic_no != null) {
             firstclause = true;
-            sql.append(" job.demographicNo = :demo" + counter++);
+            sql.append(" job.demographicNo = ?" + counter++);
         }
 
         if (status != null) {
             if (firstclause) {
-                sql.append(" and job.status = :status" + counter++);
+                sql.append(" and job.status = ?" + counter++);
             } else {
                 firstclause = true;
-                sql.append(" job.status = :status" + counter++);
+                sql.append(" job.status = ?" + counter++);
             }
 
         }
@@ -84,19 +84,19 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
 
         if (beginDate != null) {
             if (firstclause) {
-                sql.append(" and job.stamp >= :beginDate" + counter++);
+                sql.append(" and job.stamp >= ?" + counter++);
             } else {
                 firstclause = true;
-                sql.append(" job.stamp >= :beginDate" + counter++);
+                sql.append(" job.stamp >= ?" + counter++);
             }
         }
 
         if (endDate != null) {
             if (firstclause) {
-                sql.append(" and job.stamp <= :endDate" + counter++);
+                sql.append(" and job.stamp <= ?" + counter++);
             } else {
                 firstclause = true;
-                sql.append(" job.stamp <= :endDate" + counter++);
+                sql.append(" job.stamp <= ?" + counter++);
             }
         }
 
