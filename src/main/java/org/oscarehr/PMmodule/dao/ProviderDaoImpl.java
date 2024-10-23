@@ -337,7 +337,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
                     " where sr.orgcd in (select o.code from LstOrgcd o, Secuserrole srb " +
                     " where o.codecsv  like '%' || srb.orgcd || ',%' and srb.providerNo =?0))" +
                     " ORDER BY p.LastName";
-            paramList.add(providerNo)
+            paramList.add(providerNo);
         } else {
             sql = "FROM  Provider p where p.Status='1'" +
                     " and p.ProviderNo in (select sr.providerNo from Secuserrole sr " +
