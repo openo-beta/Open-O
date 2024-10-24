@@ -26,6 +26,7 @@
 <%@page language="java" import="java.util.*" %>
 <%@page import="org.oscarehr.PMmodule.wlmatch.MatchBO" %>
 <%@ include file="/taglibs.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 <table height="100%" width="100%" border="1" class="simple" cellpadding="3" cellspacing="2">
@@ -61,11 +62,13 @@
                     <th> Criteria</th>
                 </tr>
                 </thead>
-                <logic:iterate id="criteria" property="criteriaList" name="vacancyClientMatchForm" type="String">
-                    <tr>
-                        <td><c:out value="${criteria}"/></td>
-                    </tr>
-                </logic:iterate>
+                <c:if test="${not empty vacancyClientMatchForm.criteriaList}">
+                    <c:forEach var="criteria" items="${vacancyClientMatchForm.criteriaList}">
+                        <tr>
+                            <td><c:out value="${criteria}"/></td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
             </table>
         </td>
 
@@ -97,7 +100,7 @@
 <table cellpadding="3" cellspacing="2"></td></tr>
     <td>
 
-        <c:if test="${requestScope.clientList != null}">
+        <c:if test="${not empty requestScope.clientList}">
             <display:table class="simple" cellspacing="2" cellpadding="3"
                            id="client" name="clientList" export="false" pagesize="50"
                            requestURI="/PMmodule/VacancyClientMatch.do">

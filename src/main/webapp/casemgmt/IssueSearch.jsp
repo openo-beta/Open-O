@@ -113,24 +113,28 @@
                 <tr bgcolor="<%= (ind.intValue()%2==0)?"#EEEEFF":"white" %>" align="center">
                     <td><nested:checkbox indexed="true" name="newIssueCheckList" property="checked"></nested:checkbox>
                     <td>
-                        <logic:equal name="newIssueCheckList" property="communityString" value="false">
+                        <c:if test="${newIssueCheckList.communityString == 'false'}">
                             Local
-                        </logic:equal>
-                        <logic:notEqual name="newIssueCheckList" property="communityString" value="false">
-                            Community
-                        </logic:notEqual>
+                        </c:if>
+                        <c:choose>
+                            <c:when test="${newIssueCheckList.communityString != 'false'}">
+                                Community
+                            </c:when>
+                        </c:choose>
                     </td>
                     <td><nested:write name="newIssueCheckList" property="issue.code"/></td>
-                    <logic:equal name="newIssueCheckList" property="issue.priority" value="allergy">
+                    <c:if test="${newIssueCheckList.issue.priority == 'allergy'}">
                         <td bgcolor="yellow">
                             <nested:write name="newIssueCheckList" property="issue.description"/>
                         </td>
-                    </logic:equal>
-                    <logic:notEqual name="newIssueCheckList" property="issue.priority" value="allergy">
-                        <td>
-                            <nested:write name="newIssueCheckList" property="issue.description"/>
-                        </td>
-                    </logic:notEqual>
+                    </c:if>
+                    <c:choose>
+                        <c:when test="${newIssueCheckList.issue.priority != 'allergy'}">
+                            <td>
+                                <nested:write name="newIssueCheckList" property="issue.description"/>
+                            </td>
+                        </c:when>
+                    </c:choose>
                     <td><nested:write name="newIssueCheckList" property="issue.role"/></td>
                 </tr>
             </nested:iterate>
@@ -142,13 +146,15 @@
                onclick="this.form.method.value='issueAdd'; this.disabled = true; this.className='processing' ;this.form.submit();"/>
     </nested:equal>
 
-    <logic:equal name="from" value="casemgmt" scope="request">
+    <c:if test="${from == 'casemgmt'}">
         <nested:submit value="back to notes"
                        onclick="this.form.method.value='edit';backToNote('casemgmt');return false;"/>
-    </logic:equal>
-    <logic:notEqual name="from" value="casemgmt" scope="request">
-        <nested:submit value="back to notes" onclick="this.form.method.value='edit';backToNote(); return false;"/>
-    </logic:notEqual>
+    </c:if>
+    <c:choose>
+        <c:when test="${from != 'casemgmt'}">
+            <nested:submit value="back to notes" onclick="this.form.method.value='edit';backToNote(); return false;"/>
+        </c:when>
+    </c:choose>
 
 </nested:form>
 </body>

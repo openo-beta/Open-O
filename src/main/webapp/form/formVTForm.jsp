@@ -41,10 +41,6 @@
 
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ page import="oscar.oscarEncounter.pageUtil.*" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
-<%@ page import="java.util.Vector" %>
 
 <html:html lang="en">
 
@@ -737,13 +733,14 @@
 
                                             <table width="100%" border="0" cellspacing="0" cellpadding="1">
                                                 <tr>
-                                                    <td valign="top" width="22%"><logic:present
-                                                            name="EctSessionBean">
-                                                        <bean:write name="EctSessionBean" property="patientLastName"/>
-                                                        <bean:write name="EctSessionBean" property="patientFirstName"/>
-                                                        <bean:write name="EctSessionBean" property="patientSex"/>
-                                                        <bean:write name="EctSessionBean" property="patientAge"/>
-                                                    </logic:present>
+                                                    <td valign="top" width="22%">
+                                                        <c:if test="${not empty EctSessionBean}">
+                                                            ${EctSessionBean.patientLastName}
+                                                            ${EctSessionBean.patientFirstName}
+                                                            ${EctSessionBean.patientSex}
+                                                            ${EctSessionBean.patientAge}
+                                                        </c:if>
+
                                                         <table width="100%" id="showDetailTitle">
                                                             <tr>
                                                                 <th><a href="javascript: showHideDetail();">Show
@@ -1325,21 +1322,18 @@
                                                         <br>
                                                         <font class="eightyPercent"><%=request.getAttribute("WHRBMeasuringInstrc")%>
                                                         </font></td>
-                                                    <td class="dataEntryTable" align="center"><logic:present
-                                                            name="WHRBLastData">
-                                                        <table cellpadding='0' cellspacing='0'>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("WHRBLDDate")%>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("WHRBLastData")%>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </logic:present></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <c:if test="${not empty WHRBLastData}">
+                                                            <table cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="left">${WHRBLDDate}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="right">${WHRBLastData}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </c:if>
+                                                    </td>
                                                     <td class="dataEntryTable" align="center"><html:radio
                                                             property="value(WHRBValue)" value="yes"/>Yes <html:radio
                                                             property="value(WHRBValue)" value="no"/>No <a
@@ -1352,39 +1346,25 @@
                                                             tabindex="9999"/></td>
                                                     </tr-->
 
-                                                    <!--tr>
-                                                <td class="dataEntryTable"><%=request.getAttribute("WHRDisplay")%><br><font class="eightyPercent"><%=request.getAttribute("WHRMeasuringInstrc")%></font></td>
-                                                <td class="dataEntryTable" align="center">
-                                                    logic:present name="WHRLastData">
-                                                    <table cellpadding='0' cellspacing='0'>                                                            
-                                                    <tr><td class="eightyPercent" align="left"><%=request.getAttribute("WHRLDDate")%></td></tr>
-                                                    <tr><td class="eightyPercent" align="right"><%=request.getAttribute("WHRLastData")%></td></tr>
-                                                    </table>
-                                                    /logic:present>
-                                                </td>
-                                                <td class="dataEntryTable" align="center"><html:text property="value(WHRValue)" size="5%" onchange="javascript: updateWaistHip();"/></td>                                                    
-                                                <td class="dataEntryTable" align="center"><html:text property="value(WHRComments)" size="30%" tabindex="9999"/></td>
-                                            </tr-->
+
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("WCDisplay")%>
                                                         <br>
                                                         <font class="eightyPercent"><%=request.getAttribute("WCMeasuringInstrc")%>
                                                         </font></td>
-                                                    <td class="dataEntryTable" align="center"><logic:present
-                                                            name="WCLastData">
-                                                        <table cellpadding='0' cellspacing='0'>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("WCLDDate")%>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("WCLastData")%>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </logic:present></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <c:if test="${not empty WCLastData}">
+                                                            <table cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="left">${WCLDDate}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="right">${WCLastData}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </c:if>
+
+                                                    </td>
                                                     <td class="dataEntryTable" align="center"><html:text
                                                             property="value(WCValue)" size="5%"
                                                             onchange="javascript: updateHipAndRatio();"/></td>
@@ -1399,21 +1379,18 @@
                                                         <br>
                                                         <font class="eightyPercent"><%=request.getAttribute("HCMeasuringInstrc")%>
                                                         </font></td>
-                                                    <td width="16%" class="dataEntryTable" align="center"><logic:present
-                                                            name="HCLastData">
-                                                        <table cellpadding='0' cellspacing='0'>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("HCLDDate")%>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("HCLastData")%>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </logic:present></td>
+                                                    <td width="16%" class="dataEntryTable" align="center">
+                                                        <c:if test="${not empty HCLastData}">
+                                                            <table cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="left">${HCLDDate}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="right">${HCLastData}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </c:if>
+                                                    </td>
                                                     <td width="18%" class="dataEntryTable" align="center"><html:text
                                                             property="value(HCValue)" size="5%"
                                                             onchange="javascript: updateWaistAndRatio();"/></td>
@@ -1485,21 +1462,18 @@
                                                         <br>
                                                         <font class="eightyPercent"><%=request.getAttribute("WTMeasuringInstrc")%>
                                                         </font></td>
-                                                    <td class="dataEntryTable" align="center"><logic:present
-                                                            name="WTLastData">
-                                                        <table cellpadding='0' cellspacing='0'>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("WTLDDate")%>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("WTLastData")%>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </logic:present></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <c:if test="${not empty WTLastData}">
+                                                            <table cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="left">${WTLDDate}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="eightyPercent" align="right">${WTLastData}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </c:if>
+                                                    </td>
                                                     <td class="dataEntryTable" align="center"><html:text
                                                             property="value(WTValue)" size="5%"/></td>
                                                     <td class="dataEntryTable" align="center"><html:text
@@ -1543,9 +1517,11 @@
                                                     <td class="dataEntryTable" rowspan="8" valign="top"
                                                         align="center"><textarea name="FTComments" wrap="hard"
                                                                                  cols="24" style="height: 80"
-                                                                                 tabindex="9999"><logic:present
-                                                            name="FTExComments"><%=request.getAttribute("FTExComments")%>
-                                                    </logic:present></textarea>
+                                                                                 tabindex="9999">
+                                                        <c:if test="${not empty FTExComments}">
+                                                            ${FTExComments}
+                                                        </c:if>
+                                                    </textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1779,9 +1755,11 @@
                                                     <td class="dataEntryTable" rowspan="8" valign="top"
                                                         align="center"><textarea name="iComments" wrap="hard"
                                                                                  cols="24"
-                                                                                 style="height: 80"><logic:present
-                                                            name="iExComments"><%=request.getAttribute("iExComments")%>
-                                                    </logic:present></textarea>
+                                                                                 style="height: 80">
+                                                        <c:if test="${not empty iExComments}">
+                                                        ${iExComments}
+                                                        </c:if>
+                                                        </textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -2222,14 +2200,16 @@
                                             <table cellpadding='1' cellspacing='0' id="medications"
                                                    style="display: none;">
                                                 <tr>
-                                                    <td><logic:present name="drugs">
-                                                        <logic:iterate id="drg" name="drugs">
-                                                            <bean:write name="drg"/>
-                                                            <br>
-                                                        </logic:iterate>
-                                                    </logic:present> <logic:notPresent name="drugs">
-                                                        No Drug in the current drug profile
-                                                    </logic:notPresent></td>
+                                                    <td>
+                                                        <c:if test="${not empty drugs}">
+                                                            <c:forEach var="drg" items="${drugs}">
+                                                                ${drg}<br>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                        <c:if test="${empty drugs}">
+                                                            No Drug in the current drug profile
+                                                        </c:if>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -2247,14 +2227,16 @@
                                             <table cellpadding='1' cellspacing='0' id="medicationAllergies"
                                                    style="display: none;">
                                                 <tr>
-                                                    <td><logic:present name="allergies">
-                                                        <logic:iterate id="alg" name="allergies">
-                                                            <bean:write name="alg"/>
-                                                            <br>
-                                                        </logic:iterate>
-                                                    </logic:present> <logic:notPresent name="allergies">
-                                                        No Allergies in the current drug profile
-                                                    </logic:notPresent></td>
+                                                    <td>
+                                                        <c:if test="${not empty allergies}">
+                                                            <c:forEach var="alg" items="${allergies}">
+                                                                ${alg}<br>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                        <c:if test="${empty allergies}">
+                                                            No Allergies in the current drug profile
+                                                        </c:if>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </td>

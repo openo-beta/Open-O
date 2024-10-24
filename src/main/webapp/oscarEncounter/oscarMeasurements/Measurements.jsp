@@ -29,13 +29,9 @@
 %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ page import="oscar.oscarEncounter.pageUtil.*" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
 <%@ page
         import="oscar.oscarEncounter.oscarMeasurements.bean.EctMeasuringInstructionBeanHandler, oscar.oscarEncounter.oscarMeasurements.bean.EctMeasuringInstructionBean" %>
-<%@ page import="java.util.Vector" %>
 <%@ page import="org.oscarehr.managers.MeasurementManager" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%
@@ -49,9 +45,9 @@
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><logic:present name="groupName">
-            <bean:write name="groupName"/>
-        </logic:present> <bean:message key="oscarEncounter.Index.measurements"/></title>
+        <title><c:if test="${not empty groupName}">
+            <c:out value="${groupName}"/>
+        </c:if> <bean:message key="oscarEncounter.Index.measurements"/></title>
 
         <html:base/>
 
@@ -146,20 +142,20 @@
     </head>
     <body class="BodyStyle" onload="window.focus();">
     <html:form action="/oscarEncounter/Measurements" styleId="theForm">
-        <logic:present name="css">
-            <link rel="stylesheet" type="text/css" href="<bean:write name="css" />">
-        </logic:present>
-        <logic:notPresent name="css">
+        <c:if test="${not empty css}">
+            <link rel="stylesheet" type="text/css" href="${css}">
+        </c:if>
+        <c:if test="${empty css}">
             <!--<link rel="stylesheet" type="text/css" href="styles/measurementStyle.css">-->
-        </logic:notPresent>
+        </c:if>
 
         <table class="MainTable" id="scrollNumber1">
             <tr class="MainTableTopRow">
                 <td class="MainTableTopRowLeftColumn"><h4>
-                    <logic:present
-                            name="groupName">
-                    <bean:write name="groupName"/></h4>
-                    </logic:present></td>
+                    <c:if test="${not empty groupName}">
+                    <h4>${groupName}</h4>
+                    </c:if>
+                </td>
                 <td class="MainTableTopRowRightColumn" style="padding:0px">
                     <table class="TopStatusBar" style="width:100%; height:100%;">
                         <tr>
@@ -213,111 +209,76 @@
                                                         <th style="width:10px"></th>
                                                     </tr>
                                                     <% int i = 0;%>
-                                                    <logic:iterate id="measurementType" name="measurementTypes"
-                                                                   property="measurementTypeVector" indexId="ctr">
-                                                        <tr class="data"
-                                                            id="row-<bean:write name="measurementType" property="type" />">
+                                                    <c:forEach var="measurementType" items="${measurementTypes.measurementTypeVector}" varStatus="ctr">
+                                                        <tr class="data" id="row-${measurementType.type}">
                                                             <td>
-											<span title="<bean:write name="measurementType" property="typeDesc" />"><bean:write
-                                                    name="measurementType" property="typeDisplayName"/></span></td>
-                                                            <td><logic:iterate id="mInstrc"
-                                                                               name="<%=\"mInstrcs\"+ ctr%>"
-                                                                               property="measuringInstructionList">
-                                                                <input type="radio"
-                                                                       name='<%= "value(inputMInstrc-" + ctr + ")" %>'
-                                                                       value="<bean:write name="mInstrc" property="measuringInstrc"/>"
-                                                                       checked/>
-                                                                <bean:write name="mInstrc" property="measuringInstrc"/>
-                                                                <br>
-                                                            </logic:iterate></td>
-                                                            <%
-                                                                EctMeasuringInstructionBeanHandler mInstrh = (EctMeasuringInstructionBeanHandler) session.getAttribute("mInstrcs" + i);
-                                                                EctMeasuringInstructionBean mInstrBean = mInstrh.getMeasuringInstructionList().get(0);
-                                                                Integer index;
-                                                                String[] options;
-                                                                String measuringInstruction = mInstrBean.getMeasuringInstrc();
-                                                                if (measuringInstruction.startsWith("Choose radio")) {
-                                                                    index = 12;
-                                                                    measuringInstruction = measuringInstruction.substring(index);
-                                                                    options = measuringInstruction.split(",");
-                                                            %>
-                                                            <td>
-                                                                <%
-                                                                    for (int idx = 0; idx < options.length; ++idx) {
-                                                                %>
-                                                                <html:radio
-                                                                        property='<%= "value(inputValue-" + ctr + ")" %>'
-                                                                        value="<%=options[idx].trim()%>"></html:radio><%=options[idx]%>&nbsp;
-
-                                                                <%}%>
+                                                                <span title="${measurementType.typeDesc}">${measurementType.typeDisplayName}</span>
                                                             </td>
-                                                            <%} else { %>
-
-                                                            <td><input type="text" class="input-small"
-                                                                       name='<%= "value(inputValue-" + ctr + ")" %>'
-                                                                       id='<%= "inputValue-" + ctr  %>'/></td>
-                                                            <%} %>
-                                                            <td><input type="text" class="input-medium"
-                                                                       name='<%= "value(date-" + ctr + ")" %>'
-                                                                       id='<%= "date-" + ctr  %>'/></td>
-                                                            <script>Calendar.setup({
-                                                                inputField: "<%= "date-" + ctr %>",
-                                                                ifFormat: "%Y-%m-%d",
-                                                                button: "<%= "date-" + ctr %>"
-                                                            });</script>
-                                                            <td><input type="text" class="input-large"
-                                                                       name='<%= "value(comments-" + ctr + ")" %>'
-                                                                       id='<%= "comments-" + ctr  %>'/></td>
                                                             <td>
-                                                                <input type="hidden"
-                                                                       name='<%= "value(inputType-" + ctr + ")" %>'
-                                                                       value="<bean:write name="measurementType" property="type" />"/>
-                                                                <input type="hidden"
-                                                                       name='<%= "value(inputTypeDisplayName-" + ctr + ")" %>'
-                                                                       value="<bean:write name="measurementType" property="typeDisplayName" />"/>
-                                                                <input type="hidden"
-                                                                       name='<%= "value(validation-" + ctr + ")" %>'
-                                                                       value="<bean:write name="measurementType" property="validation" />"/>
+                                                                <c:forEach var="mInstrc" items="${pageContext.request.getAttribute('mInstrcs' + ctr.index).measuringInstructionList}">
+                                                                    <input type="radio" name="value(inputMInstrc-${ctr.index})" value="${mInstrc.measuringInstrc}" checked />
+                                                                    ${mInstrc.measuringInstrc}<br>
+                                                                </c:forEach>
                                                             </td>
-                                                            <% i++; %>
+
+                                                            <c:choose>
+                                                                <c:when test="${measurementType.measuringInstrc.startsWith('Choose radio')}">
+                                                                    <td>
+                                                                        <c:forEach var="option" items="${fn:split(measurementType.measuringInstrc.substring(12), ',')}">
+                                                                            <input type="radio" name="value(inputValue-${ctr.index})" value="${fn:trim(option)}"> ${fn:trim(option)}&nbsp;
+                                                                        </c:forEach>
+                                                                    </td>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <td><input type="text" class="input-small" name="value(inputValue-${ctr.index})" id="inputValue-${ctr.index}"/></td>
+                                                                </c:otherwise>
+                                                            </c:choose>
+
+                                                            <td><input type="text" class="input-medium" name="value(date-${ctr.index})" id="date-${ctr.index}"/></td>
+                                                            <script>
+                                                                Calendar.setup({
+                                                                    inputField: "date-${ctr.index}",
+                                                                    ifFormat: "%Y-%m-%d",
+                                                                    button: "date-${ctr.index}"
+                                                                });
+                                                            </script>
+
+                                                            <td><input type="text" class="input-large" name="value(comments-${ctr.index})" id="comments-${ctr.index}"/></td>
+                                                            <td>
+                                                                <input type="hidden" name="value(inputType-${ctr.index})" value="${measurementType.type}"/>
+                                                                <input type="hidden" name="value(inputTypeDisplayName-${ctr.index})" value="${measurementType.typeDisplayName}"/>
+                                                                <input type="hidden" name="value(validation-${ctr.index})" value="${measurementType.validation}"/>
+                                                            </td>
                                                         </tr>
-                                                        <logic:present name='measurementType' property='lastMInstrc'>
+
+                                                        <c:if test="${not empty measurementType.lastMInstrc}">
                                                             <tr class="note">
-                                                                <td><bean:message
-                                                                        key="oscarEncoutner.oscarMeasurements.msgTheLastValue"/>:
-                                                                </td>
-                                                                <td>&nbsp;<bean:write name='measurementType'
-                                                                                      property='lastMInstrc'/></td>
-                                                                <td>&nbsp;<bean:write name='measurementType'
-                                                                                      property='lastData'/></td>
-                                                                <td>&nbsp;<bean:write name='measurementType'
-                                                                                      property='lastDateEntered'/></td>
-                                                                <td>&nbsp;<bean:write name='measurementType'
-                                                                                      property='lastComments'/></td>
-                                                                <td><i class="icon-time icon-large"
-                                                                       title='<bean:message key="oscarEncounter.Index.oldMeasurements"/>'
-                                                                       onClick="popupPage(300,800,'SetupDisplayHistory.do?type=
-                                                                           <bean:write name="measurementType"
-                                                                                       property="type"/>'); return false;"></i>
+                                                                <td><fmt:message key="oscarEncoutner.oscarMeasurements.msgTheLastValue"/>:</td>
+                                                                <td>&nbsp;${measurementType.lastMInstrc}</td>
+                                                                <td>&nbsp;${measurementType.lastData}</td>
+                                                                <td>&nbsp;${measurementType.lastDateEntered}</td>
+                                                                <td>&nbsp;${measurementType.lastComments}</td>
+                                                                <td>
+                                                                    <i class="icon-time icon-large" title="<fmt:message key='oscarEncounter.Index.oldMeasurements'/>"
+                                                                       onclick="popupPage(300,800,'SetupDisplayHistory.do?type=${measurementType.type}'); return false;">
+                                                                    </i>
                                                                 </td>
                                                             </tr>
-                                                        </logic:present>
-                                                    </logic:iterate>
-                                                    <input type="hidden" name="value(numType)"
-                                                           value="<%=String.valueOf(i)%>"/>
-                                                    <input type="hidden" name="value(groupName)"
-                                                           value="<bean:write name="groupName"/>"/>
+                                                        </c:if>
+                                                    </c:forEach>
+
+                                                    <input type="hidden" name="value(numType)" value="${fn:length(measurementTypes.measurementTypeVector)}"/>
+                                                    <input type="hidden" name="value(groupName)" value="${groupName}"/>
                                                     <input type="hidden" name="value(parentChanged)" value="false"/>
-                                                    <input type="hidden" name="value(demographicNo)"
-                                                           value="<%=demo%>"/>
-                                                    <input type="hidden" name="demographic_no" value="<%=demo%>"/>
-                                                    <logic:present name="css">
-                                                        <input type="hidden" name="value(css)"
-                                                               value="<bean:write name="css"/>"/>
-                                                    </logic:present>
-                                                    <logic:notPresent name="css">
+                                                    <input type="hidden" name="value(demographicNo)" value="${demo}"/>
+                                                    <input type="hidden" name="demographic_no" value="${demo}"/>
+
+                                                    <c:if test="${not empty css}">
+                                                        <input type="hidden" name="value(css)" value="${css}"/>
+                                                    </c:if>
+                                                    <c:if test="${empty css}">
                                                         <input type="hidden" name="value(css)" value=""/>
-                                                    </logic:notPresent>
+                                                    </c:if>
 
                                                 </table>
                                             </div> <!-- well -->

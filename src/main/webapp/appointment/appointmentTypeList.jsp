@@ -21,7 +21,6 @@
         import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*, oscar.appt.*, org.oscarehr.common.dao.AppointmentTypeDao, org.oscarehr.common.model.AppointmentType, org.oscarehr.util.SpringUtils" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ include file="../admin/dbconnection.jsp" %>
 <%--RJ 07/07/2006 --%>
@@ -196,25 +195,23 @@
                                                 <tr valign="middle" BGCOLOR="#EEEEFF">
                                                     <td align="right"><font face="arial">Location:</font></td>
                                                     <td>
-                                                        <logic:notEmpty name="locationsList">
-                                                            <html:select property="location">
-                                                                <html:option value="0">Select Location</html:option>
-                                                                <logic:iterate id="location" name="locationsList">
-                                                                    <bean:define id="locValue"><bean:write
-                                                                            name='location'
-                                                                            property='label'/></bean:define>
-                                                                    <html:option value="<%= locValue %>">
-                                                                        <bean:write name="location" property="label"/>
-                                                                    </html:option>
-                                                                </logic:iterate>
-                                                            </html:select>
-                                                        </logic:notEmpty>
-                                                        <logic:empty name="locationsList">
-                                                            <INPUT TYPE="TEXT" NAME="location"
-                                                                   VALUE="<bean:write name="AppointmentTypeForm" property="location"/>"
-                                                                   WIDTH="30" HEIGHT="20" border="0" hspace="2"
-                                                                   maxlength="30">
-                                                        </logic:empty>
+                                                        <c:if test="${not empty locationsList}">
+                                                            <select name="location">
+                                                                <option value="0">Select Location</option>
+                                                                <c:forEach var="location" items="${locationsList}">
+                                                                    <c:set var="locValue" value="${location.label}" />
+                                                                    <option value="${locValue}">
+                                                                        <c:out value="${location.label}" />
+                                                                    </option>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </c:if>
+
+                                                        <c:if test="${empty locationsList}">
+                                                            <input type="text" name="location"
+                                                                   value="${AppointmentTypeForm.location}"
+                                                                   width="30" height="20" border="0" hspace="2" maxlength="30"/>
+                                                        </c:if>
                                                     </td>
                                                     <td>
                                                         <div align="right"><font face="arial">Resources:</font></div>

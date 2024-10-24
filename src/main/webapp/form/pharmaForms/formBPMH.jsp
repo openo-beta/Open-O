@@ -35,7 +35,6 @@
 
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -101,7 +100,7 @@
 
             <div id="bpmhId">
 
-                <logic:empty name="bpmh" property="provider">
+                <c:if test="${empty bpmh.provider}">
 
                 <span class="red">
 						<bean:message key="colcamex.formBPMH.preparedby"/>
@@ -126,8 +125,8 @@
 				
 				<logic:empty name="bpmh" property="formDateFormatted">
 					<span class="red">
-				</logic:empty>
-				<logic:notEmpty name="bpmh" property="formDateFormatted">
+				</c:if>
+				<c:if test="${not empty bpmh.formDateFormatted}">
 					<span>
 				</logic:notEmpty>
 					<bean:message key="colcamex.formBPMH.preparedon"/>
@@ -202,8 +201,8 @@
                     <td>
                         <logic:empty name="bpmh" property="familyDrName">
                             <span class="red">	Unknown	</span>
-                        </logic:empty>
-                        <logic:notEmpty name="bpmh" property="familyDrName">
+                        </c:if>
+                        <c:if test="${not empty bpmh.familyDrName}">
                             <bean:write name="bpmh" property="familyDrName"/>
                         </logic:notEmpty>
                     </td>
@@ -212,8 +211,8 @@
                     <td>
                         <logic:empty name="bpmh" property="familyDrPhone">
                             <span class="red">	Unknown	</span>
-                        </logic:empty>
-                        <logic:notEmpty name="bpmh" property="familyDrPhone">
+                        </c:if>
+                        <c:if test="${not empty bpmh.familyDrPhone}">
                             <bean:write name="bpmh" property="familyDrPhone"/>
                         </logic:notEmpty>
                     </td>
@@ -222,12 +221,12 @@
                     <td>
                         <logic:empty name="bpmh" property="familyDrFax">
                             <span class="red">	Unknown	</span>
-                        </logic:empty>
-                        <logic:notEmpty name="bpmh" property="familyDrFax">
+                        </c:if>
+                        <c:if test="${not empty bpmh.familyDrFax}">
                             <bean:write name="bpmh" property="familyDrFax"/>
                         </logic:notEmpty>
                     </td>
-                    <logic:equal name="bpmh" property="formId" value="0">
+                    <c:if test="${bpmh.formId == 0}">
                         <logic:notEmpty name="bpmh" property="familyDrContactId">
                             <td class="columnTitle"
                                 style="text-align:center;background-color:#CCC;border-top:#ccc thin solid;">
@@ -285,27 +284,27 @@
                                 <!-- WHAT -->
                                 <bean:write name="drugs" property="what"/>
                             </td>
-                            <logic:empty name="drugs" property="how">
+                            <c:if test="${empty drugs.how}">
                                 <c:set value="${ true }" var="missingDrugData"/>
                                 <td style="border:red medium solid;">
                                     <!-- HOW ERROR -->
                                     &nbsp;
                                 </td>
-                            </logic:empty>
-                            <logic:notEmpty name="drugs" property="how">
+                            </c:if>
+                            <c:if test="${not empty drugs.how}">
                                 <td>
                                     <!-- HOW -->
                                     <bean:write name="drugs" property="how"/>
                                 </td>
-                            </logic:notEmpty>
-                            <logic:empty name="drugs" property="why">
+                            </c:if>
+                            <c:if test="${empty drugs.why}">
                                 <c:set value="${ true }" var="missingDrugData"/>
                                 <td style="border:red medium solid;">
                                     <!-- WHY ERROR -->
                                     &nbsp;
                                 </td>
-                            </logic:empty>
-                            <logic:notEmpty name="drugs" property="why">
+                            </c:if>
+                            <c:if test="${not empty drugs.why}">
                                 <td>
                                     <!-- WHY -->
                                     <bean:write name="drugs" property="why"/>
@@ -399,7 +398,7 @@
                                     </div>
                                 </logic:present>
                             </html:messages>
-                        </logic:messagesPresent>
+                        </c:if>
                     </td>
                 </tr>
             </table>

@@ -28,9 +28,9 @@
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
 <html:html lang="en">
@@ -61,8 +61,11 @@
             <td class="MainTableTopRowRightColumn" width="400">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><logic:present name="demoInfo">
-                            <bean:write name="demoInfo"/> years</logic:present></td>
+                        <td>
+                            <c:if test="${not empty demoInfo}">
+                                <c:out value="${demoInfo}"/> years
+                            </c:if>
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -87,8 +90,7 @@
                                     </td>
                                     <td align="left" class="Header" width="100"></td>
                                 </tr>
-                                <logic:iterate id="waitingListBean" name="patientWaitingList"
-                                               property="patientWaitingList">
+                                <c:forEach var="waitingListBean" items="${patientWaitingList.patientWaitingList}">
                                 <tr class="data">
                                     <td width="100"><bean:write name="waitingListBean"
                                                                 property="waitingList"/></td>
@@ -104,7 +106,7 @@
                                                    name="waitingListBean" property="waitingListID"/>');">Remove</a>
                                     </td>
                                 </tr>
-                                </logic:iterate>
+                                </c:forEach>
                         </td>
                     </tr>
                 </table>

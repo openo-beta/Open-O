@@ -658,15 +658,15 @@
                     <div id="admissionsTable" dojoType="TitlePane" label="Program Admissions"
                          labelNodeClass="intakeSectionLabel"
                          containerNodeClass="intakeSectionContainer">
-                        <logic:messagesPresent>
+                        <c:if test="${not empty requestScope['org.apache.struts.action.ERROR']}">
                             <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#C0C0C0">
-                                <html:messages id="error" bundle="pmm">
+                                <c:forEach var="error" items="${requestScope['org.apache.struts.action.ERROR']}">
                                     <tr>
                                         <td class="error"><c:out value="${error}"/></td>
                                     </tr>
-                                </html:messages>
+                                </c:forEach>
                             </table>
-                        </logic:messagesPresent>
+                        </c:if>
                         <table class="intakeTable">
                             <tr>
                                 <c:if test="${not empty sessionScope.genericIntakeEditForm.bedPrograms}">
@@ -838,20 +838,20 @@
             </div>
             <div id="bottomPane" dojoType="ContentPane" layoutAlign="bottom" class="intakeBottomPane">
                 <table class="intakeTable">
-                    <logic:messagesPresent>
-                        <html:messages id="error" bundle="pmm">
+                    <c:if test="${not empty requestScope['org.apache.struts.action.ERROR']}">
+                        <c:forEach var="error" items="${requestScope['org.apache.struts.action.ERROR']}">
                             <tr>
                                 <td class="error"><c:out value="${error}"/></td>
                             </tr>
-                        </html:messages>
-                    </logic:messagesPresent>
-                    <logic:messagesPresent message="true">
-                        <html:messages id="message" message="true" bundle="pmm">
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${not empty requestScope['org.apache.struts.action.MESSAGE']}">
+                        <c:forEach var="message" items="${requestScope['org.apache.struts.action.MESSAGE']}">
                             <tr>
                                 <td class="message"><c:out value="${message}"/></td>
                             </tr>
-                        </html:messages>
-                    </logic:messagesPresent>
+                        </c:forEach>
+                    </c:if>
                     <tr>
                         <td>
                             <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
@@ -878,12 +878,12 @@
                                 <html:submit
                                         onclick="return save_notAdmit()">Intake Without Admission, Sign And Save</html:submit>
                             </caisi:isModuleLoad>
-                            <html:reset>Reset</html:reset>
+                            <input type="reset" value="Reset">
                         </td>
                         <td align="right">
                             <c:choose>
                                 <c:when test="${not empty sessionScope.genericIntakeEditForm.client.demographicNo}">
-                                    <html:submit onclick="clientEdit()">Close</html:submit>
+                                    <input type="submit" value="Close" onclick="clientEdit();">
                                     <input type="button" value="Back to Search" onclick="history.go(-1)"/>
                                 </c:when>
                                 <c:otherwise>

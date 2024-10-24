@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -30,8 +30,7 @@
     <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 </head>
 <body>
-<logic:equal name="receivePaymentActionForm" property="paymentReceived"
-             value="true">
+<c:if test="${receivePaymentActionForm.paymentReceived}">
     <fieldset>
         <legend><bean:message
                 key="oscar.billing.CA.BC.received"/></legend>
@@ -50,9 +49,8 @@
             </button>
         </div>
     </fieldset>
-</logic:equal>
-<logic:notEqual name="receivePaymentActionForm"
-                property="paymentReceived" value="true">
+</c:if>
+<c:if test="${not receivePaymentActionForm.paymentReceived}">
     <html:form action="/billing/CA/BC/receivePaymentAction">
         <html:hidden property="billingmasterNo"/>
         <html:hidden property="billNo"/>
@@ -80,6 +78,6 @@
             <p><input type="submit" value="Submit"/></p>
         </fieldset>
     </html:form>
-</logic:notEqual>
+</c:if>
 </body>
 </html>

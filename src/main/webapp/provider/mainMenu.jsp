@@ -23,10 +23,10 @@
     Ontario, Canada
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib prefix="logic" uri="http://struts.apache.org/tags-logic" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
@@ -79,7 +79,7 @@
         </td>
         <td id="firstMenu">
             <ul id="navlist">
-                <logic:notEqual name="infirmaryView_isOscar" value="false">
+                <c:if test="${infirmaryView_isOscar ne 'false'}">
                     <% if (request.getParameter("viewall") != null && request.getParameter("viewall").equals("1")) { %>
                     <li>
                         <a href=# onClick="review('0')"
@@ -95,7 +95,7 @@
                     </li>
 
                     <% } %>
-                </logic:notEqual>
+                </c:if>
 
                 <li>
                     <a href='providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&caseload=1&clProv=<%=curUser_no%>'><bean:message

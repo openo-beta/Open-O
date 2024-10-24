@@ -30,7 +30,7 @@
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
 <html:html lang="en">
     <head>
@@ -76,9 +76,9 @@
                                     <tr>
                                         <td align="left"><bean:message
                                                 key="oscarEncounter.oscarMeasurements.SelectMeasurementGroup.msgCurrentStyleSheet"/>
-                                            <bean:write name='groupName'/>: <logic:present name="css">
-                                                <bean:write name="css"/>
-                                            </logic:present></td>
+                                            <bean:write name='groupName'/>: <c:if test="${not empty css}">
+                                                <c:out value="${css}"/>
+                                            </c:if></td>
                                     <tr>
                                         <td><bean:message
                                                 key="oscarEncounter.oscarMeasurements.SelectMeasurementGroup.msgChangeTo"/>:

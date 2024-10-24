@@ -154,27 +154,27 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         Status: <b>Logged in
         as <%=myOscarLoggedInInfo.getLoggedInPerson().getFirstName() + ' ' + myOscarLoggedInInfo.getLoggedInPerson().getLastName()%>
     </b> (<%=myOscarLoggedInInfo.getLoggedInPerson().getUserName()%>)<br/>
-        <logic:notPresent name="forwardToOnSuccess">
+        <c:if test="${empty forwardToOnSuccess}">
             <center>Closing Window... <a href="javascript:;" onclick="closeWindow()">close</a></center>
             <%-- if no errors and logged in, close window--%>
             <%if (!errors) {%>
             <script type="text/javascript" language="JavaScript">startCloseWindowTimeout()</script>
             <%}%>
-        </logic:notPresent>
-        <logic:present name="forwardToOnSuccess">
+        </c:if>
+        <c:if test="${not empty forwardToOnSuccess}">
             <center>Redirecting ... <a href="javascript:;"
-                                       onclick="redirect('<bean:write name="forwardToOnSuccess"/>');">redirect now</a>
+                                       onclick="redirect('${forwardToOnSuccess}');">redirect now</a>
             </center>
             <%-- if no errors and logged in, close window--%>
             <%if (!errors) {%>
             <script type="text/javascript" language="JavaScript">
                 if (window.opener.popColumn) {
-                    window.opener.popColumn('<c:out value="${ctx}"/>/oscarEncounter/displayMyOscar.do?hC=', 'myoscar', 'myoscar', '', '');
+                    window.opener.popColumn('${ctx}/oscarEncounter/displayMyOscar.do?hC=', 'myoscar', 'myoscar', '', '');
                 }
-                startRedirectTimeout('<%=request.getAttribute("forwardToOnSuccess")%>');
+                startRedirectTimeout('${forwardToOnSuccess}');
             </script>
             <%}%>
-        </logic:present>
+        </c:if>
 
     </div>
     <%
@@ -183,14 +183,14 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
     <div class="myoscarLoginElementNoAuth">
         <form action="<%=request.getContextPath()%>/phr/Login.do" name="phrLogin" method="POST"
               style="margin-bottom: 0px;">
-            <logic:present name="phrUserLoginErrorMsg">
-                <div class="phrLoginErrorMsg"><font color="red"><bean:write name="phrUserLoginErrorMsg"/></font>
-                <logic:present name="phrTechLoginErrorMsg">
+            <c:if test="${not empty phrUserLoginErrorMsg}">
+                <div class="phrLoginErrorMsg"><font color="red">${phrUserLoginErrorMsg}</font>
+                <c:if test="${not empty phrTechLoginErrorMsg}">
                     <a href="javascript:;"
-                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More
+                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[${phrTechLoginErrorMsg} </br>]">More
                         Info</a></div>
-                </logic:present>
-            </logic:present>
+                </c:if>
+            </c:if>
             Status: <b>Not logged in</b><br/>
             <%=providerName%> password: <input type="password" id="phrPassword" name="phrPassword"
                                                style="font-size: 8px; width: 40px;"><br/>

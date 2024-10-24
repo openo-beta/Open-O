@@ -25,9 +25,10 @@
 --%>
 
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page import="oscar.oscarReport.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.*, java.sql.*, java.text.*, java.net.*" %>
 <%
@@ -148,12 +149,12 @@
                             <td>
                                 <table>
                                     <tr>
-                                        <logic:present name="messages">
-                                            <logic:iterate id="msg" name="messages">
+                                        <c:if test="${not empty messages}">
+                                            <c:forEach var="msg" items="${messages}">
                                                 <bean:write name="msg"/>
                                                 <br>
-                                            </logic:iterate>
-                                        </logic:present>
+                                            <% } %>
+                                        </c:if>
                                     </tr>
                                     <tr>
                                         <td>
@@ -179,8 +180,8 @@
                                         <th align="left" class="subTitles" width="120"><bean:message
                                                 key="oscarReport.CDMReport.msgEndDate"/></th>
                                     </tr>
-                                    <logic:iterate id="measurementType" name="measurementTypes"
-                                                   property="measurementTypeVector" indexId="ctr">
+                                    <% for (int i = 0; i < measurementTypes.measurementTypeVector.size(); i++) {
+                                        MeasurementType measurementType = measurementTypes.measurementTypeVector.get(i); %>
                                     <tr>
                                         <td width="2" class="fieldBox" bgcolor="#ddddff"><input
                                                 type="checkbox" name="guidelineCheckbox" value="<%=ctr%>"/></td>
@@ -226,8 +227,8 @@
                                         <td width="200" class="fieldBox" bgcolor="#ddddff">
                                             <table>
                                                 <%int i = 0;%>
-                                                <logic:iterate id="mInstrc" name='<%="mInstrcs" + ctr%>'
-                                                               property="measuringInstrcVector" indexId="index">
+                                                <% for (int j = 0; j < mInstrcs[i].measuringInstrcVector.size(); j++) {
+                                                    MeasuringInstrc mInstrc = mInstrcs[i].measuringInstrcVector.get(j); %>
                                                     <tr>
                                                         <td><input type="checkbox"
                                                                    name='<%="value(mInstrcsCheckbox"+ctr+index+")"%>'
@@ -236,7 +237,7 @@
                                                                 name="mInstrc" property="measuringInstrc"/></td>
                                                     </tr>
                                                     <%i++;%>
-                                                </logic:iterate>
+                                                <% } %>
                                             </table>
                                         </td>
                                         <input type="hidden" name='<%= "value(mNbInstrcs" + ctr + ")" %>'
@@ -246,7 +247,7 @@
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"></td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"></td>
                                     </tr>
-                                    </logic:iterate>
+                                    </c:forEach>
                                     <tr>
                                     </tr>
 

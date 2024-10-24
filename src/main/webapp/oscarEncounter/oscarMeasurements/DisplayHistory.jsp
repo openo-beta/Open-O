@@ -30,13 +30,6 @@
 %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ page import="oscar.oscarEncounter.pageUtil.*" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.bean.*" %>
-<%@ page import="java.util.Vector" %>
-
-
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
@@ -86,17 +79,17 @@
     <html:form action="/oscarEncounter/oscarMeasurements/DeleteData">
 
         <table style="border-width: 2px; width: 100%; border-spacing: 0px; ">
-            <logic:present name="messages">
+            <c:if test="${not empty messages}">
                 <tr>
                     <td>
-                        <logic:iterate id="msg" name="messages">
+                        <c:forEach var="msg" items="${messages}">
                             <div class="alert">
-                                <bean:write name="msg"/>
+                                ${msg}
                             </div>
-                        </logic:iterate>
+                        </c:forEach>
                     </td>
                 </tr>
-            </logic:present>
+            </c:if>
             <tr>
                 <td>
 
@@ -179,48 +172,49 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <logic:iterate id="data" name="measurementsData" property="measurementsDataVector"
-                                       indexId="ctr">
-                            <logic:present name="data" property="remoteFacility">
-                                <tr class="data" style="background-color:#ffcccc" >
-                            </logic:present>
-                            <logic:notPresent name="data" property="remoteFacility">
-                                <tr class="data" >
-                            </logic:notPresent>
-                            <td><a title="<bean:write name="data" property="typeDescription" />"><bean:write name="data"
-                                                                                                             property="type"/></a>
-                            </td>
+                        <c:forEach var="data" items="${measurementsData.measurementsDataVector}" varStatus="ctr">
+                            <c:choose>
+                                <c:when test="${not empty data.remoteFacility}">
+                                    <tr class="data" style="background-color:#ffcccc">
+                                </c:when>
+                                <c:otherwise>
+                                    <tr class="data">
+                                </c:otherwise>
+                            </c:choose>
+
                             <td>
-                                <bean:write name="data" property="providerFirstName"/>
-                                <bean:write name="data" property="providerLastName"/>
-                                <logic:present name="data" property="remoteFacility">
-                                <br/><span style="color:#990000"> @: <bean:write name="data" property="remoteFacility"/><span>
-                                </logic:present>
+                                <a title="${data.typeDescription}">${data.type}</a>
                             </td>
+
                             <td>
-                                <logic:match name="data" property="measuringInstrc" value="NULL">&nbsp;</logic:match>
-                                <logic:notMatch name="data" property="measuringInstrc" value="NULL"><bean:write
-                                        name="data" property="measuringInstrc"/></logic:notMatch>
+                                    ${data.providerFirstName} ${data.providerLastName}
+                                <c:if test="${not empty data.remoteFacility}">
+                                    <br/><span style="color:#990000"> @: ${data.remoteFacility}</span>
+                                </c:if>
                             </td>
-                            <td title="data"><bean:write name="data" property="dataField"/></td>
-                            <td title="comments"><bean:write name="data" property="comments"/></td>
-                            <td title="observed date"><bean:write name="data" property="dateObservedAsDate"
-                                                                  format="yyyy-MM-dd"/></td>
-                            <td title="entered date"><bean:write name="data" property="dateEnteredAsDate"
-                                                                 format="yyyy-MM-dd"/></td>
-                            <security:oscarSec roleName="<%=roleName$%>" objectName="_flowsheet" rights="w">
+
+                            <td>
+                                <c:choose>
+                                    <c:when test="${data.measuringInstrc == 'NULL'}">&nbsp;</c:when>
+                                    <c:otherwise>${data.measuringInstrc}</c:otherwise>
+                                </c:choose>
+                            </td>
+
+                            <td title="data">${data.dataField}</td>
+                            <td title="comments">${data.comments}</td>
+                            <td title="observed date"><fmt:formatDate value="${data.dateObservedAsDate}" pattern="yyyy-MM-dd"/></td>
+                            <td title="entered date"><fmt:formatDate value="${data.dateEnteredAsDate}" pattern="yyyy-MM-dd"/></td>
+
+                            <security:oscarSec roleName="${roleName$}" objectName="_flowsheet" rights="w">
                                 <td class="DoNotPrint">
-                                    <logic:present name="data" property="remoteFacility">
-                                        &nbsp;
-                                    </logic:present>
-                                    <logic:notPresent name="data" property="remoteFacility">
-                                        <input type="checkbox" name="deleteCheckbox"
-                                               value="<bean:write name="data" property="id" />">
-                                    </logic:notPresent>
+                                    <c:if test="${empty data.remoteFacility}">
+                                        <input type="checkbox" name="deleteCheckbox" value="${data.id}">
+                                    </c:if>
                                 </td>
                             </security:oscarSec>
                             </tr>
-                        </logic:iterate>
+                        </c:forEach>
+
                         </tbody>
                     </table>
             <tr>
@@ -241,13 +235,13 @@
                                            value="<bean:message key="oscarEncounter.oscarMeasurements.displayHistory.headingDelete"/>"
                                            onclick="submit();"></td>
                             </security:oscarSec>
-                            <logic:present name="data" property="canPlot">
+                            <c:if test="${not empty data.canPlot}">
                                 <td><input type="button" name="Button" class="btn DoNotPrint"
                                            value="<bean:message key="oscarEncounter.oscarMeasurements.displayHistory.plot"/>"
                                            onClick="javascript: popupPage(600,1000,'../../oscarEncounter/GraphMeasurements.do?demographic_no=<%=demo%>&type=
-                                               <bean:write name="type"/>')">
+                                               ${type}')">
                                 </td>
-                            </logic:present>
+                            </c:if>
                         </tr>
                     </table>
 
@@ -255,10 +249,9 @@
             </tr>
             </tbody>
         </table>
-        <logic:present name="type">
-            <input type="hidden" name="type"
-                   value="<bean:write name="type" />">
-        </logic:present>
+        <c:if test="${not empty type}">
+            <input type="hidden" name="type" value="${type}">
+        </c:if>
     </html:form>
     </body>
 </html:html>

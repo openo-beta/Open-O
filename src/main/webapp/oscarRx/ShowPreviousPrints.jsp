@@ -23,9 +23,9 @@
     Ontario, Canada
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ page import="oscar.oscarRx.data.*" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -46,16 +46,15 @@
     }
 %>
 
-<logic:notPresent name="RxSessionBean" scope="session">
-    <logic:redirect href="error.html"/>
-</logic:notPresent>
-<logic:present name="RxSessionBean" scope="session">
-    <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                 name="RxSessionBean" scope="session"/>
-    <logic:equal name="bean" property="valid" value="false">
-        <logic:redirect href="error.html"/>
-    </logic:equal>
-</logic:present>
+<c:if test="${empty RxSessionBean}">
+    <c:redirect url="error.html"/>
+</c:if>
+<c:if test="${not empty RxSessionBean}">
+    <c:set var="bean" value="${RxSessionBean}" scope="page"/>
+    <c:if test="${bean.valid == false}">
+        <c:redirect url="error.html"/>
+    </c:if>
+</c:if>
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
 %>

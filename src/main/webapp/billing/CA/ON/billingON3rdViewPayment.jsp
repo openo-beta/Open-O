@@ -17,8 +17,8 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@page import="org.oscarehr.common.model.BillingOnItemPayment" %>
 <%@page import="org.oscarehr.common.model.BillingONPayment" %>
 <%@page import="org.oscarehr.common.model.BillingPaymentType" %>
@@ -54,8 +54,8 @@
         <th>Refund Credit / Overpayment</th>
         <th>Refund / Write off</th>
     </tr>
-    <logic:present name="itemDataList" scope="request">
-        <logic:iterate id="itemData" name="itemDataList" indexId="idx">
+    <c:if test="${not empty itemDataList}">
+        <c:forEach var="itemData" items="${itemDataList}" varStatus="idx">
             <tr align="center">
                 <td><bean:write name="itemData" property="patientName"/></td>
                 <td><bean:write name="itemData" property="ch1_id"/></td>
@@ -65,8 +65,8 @@
                 <td><bean:write name="itemData" property="credit"/></td>
                 <td><bean:write name="itemData" property="refund"/></td>
             </tr>
-        </logic:iterate>
-    </logic:present>
+        </c:forEach>
+    </c:if>
     </tbody>
 </table>
 <hr/>

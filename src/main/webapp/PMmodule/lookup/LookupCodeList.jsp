@@ -20,6 +20,8 @@
         <Quatro Group Software Systems inc.>  <OSCAR Team>
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/taglibs.jsp" %>
 
 <%@page import="com.quatro.common.KeyConstants" %>
@@ -32,17 +34,16 @@
     </tr>
     <tr>
         <td align="left" class="buttonBar2">
-            <logic:notEqual value="true" name="lookupCodeListForm" property="tableDef.readonly">
+            <c:if test="${lookupCodeListForm.tableDef.readonly ne 'true'}">
                 <%
                     String securityRole = "" + session.getAttribute("userrole") + "," + session.getAttribute("user");
                 %>
-                <security:oscarSec roleName="<%=securityRole%>" objectName="<%=KeyConstants.FUN_ADMIN_LOOKUP %>"
-                                   rights="<%=KeyConstants.ACCESS_WRITE%>">
+                <c:if test="${sessionScope.userrole == 'admin' && sessionScope.user == 'admin'}">
                     <html:link action="/Lookup/LookupCodeEdit.do" paramName="lookupCodeListForm"
                                paramProperty="tableDef.tableId" paramId="id">
                         <img src="../images/New16.png" border="0"/> Add</html:link>&nbsp;|&nbsp;
-                </security:oscarSec>
-            </logic:notEqual>
+                </c:if>
+            </c:if>
             <html:link action="/Lookup/LookupTableList.do"> <img src="../images/Back16.png"
                                                                  border="0"/> Back to Lookup Fields</html:link>
         </td>
@@ -73,15 +74,15 @@
                     <tr>
                         <th>ID</th>
                         <th>Description</th>
-                        <logic:equal name="lookupCodeListForm" property="tableDef.hasActive" value="true">
+                        <c:if test="${lookupCodeListForm.tableDef.hasActive eq 'true'}">
                             <th>Active</th>
-                        </logic:equal>
-                        <logic:equal name="lookupCodeListForm" property="tableDef.hasDisplayOrder" value="true">
+                        </c:if>
+                        <c:if test="${lookupCodeListForm.tableDef.hasDisplayOrder eq 'true'}">
                             <th>Display Order</th>
-                        </logic:equal>
+                        </c:if>
                     </tr>
 
-                    <logic:iterate id="lkCode" name="lookupCodeListForm" property="codes">
+                    <c:forEach var="lkCode" items="${lookupCodeListForm.codes}">
                         <tr>
                             <td>
                                 <html:link action="/Lookup/LookupCodeEdit.do" paramId="id" paramProperty="codeId"
@@ -95,23 +96,25 @@
                                     <bean:write name="lkCode" property="description"/>
                                 </html:link>
                             </td>
-                            <logic:equal name="lookupCodeListForm" property="tableDef.hasActive" value="true">
+                            <c:if test="${lookupCodeListForm.tableDef.hasActive eq 'true'}">
                                 <td>
-                                    <logic:equal value="true" name="lkCode" property="active">
-                                        Yes
-                                    </logic:equal>
-                                    <logic:equal value="false" name="lkCode" property="active">
-                                        No
-                                    </logic:equal>
+                                    <c:choose>
+                                        <c:when test="${lkCode.active eq 'true'}">
+                                            Yes
+                                        </c:when>
+                                        <c:otherwise>
+                                            No
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
-                            </logic:equal>
-                            <logic:equal name="lookupCodeListForm" property="tableDef.hasDisplayOrder" value="true">
+                            </c:if>
+                            <c:if test="${lookupCodeListForm.tableDef.hasDisplayOrder eq 'true'}">
                                 <td>
                                     <bean:write name="lkCode" property="orderByIndex"/>
                                 </td>
-                            </logic:equal>
+                            </c:if>
                         </tr>
-                    </logic:iterate>
+                    </c:forEach>
 
                     <tr>
                         <td colspan="2">

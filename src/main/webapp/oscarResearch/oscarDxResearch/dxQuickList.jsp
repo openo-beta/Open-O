@@ -34,7 +34,7 @@ Required Parameters to plug-in:
  --%>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 <table id="dxCodeQuicklist">
@@ -57,14 +57,14 @@ Required Parameters to plug-in:
         <td class="quickList">
             <html:select styleClass="form-control" style="overflow:auto" property="quickList"
                          onchange="javascript:changeList(this,'${ demographicNo }','${ providerNo }');">
-                <logic:iterate id="quickLists" name="allQuickLists" property="dxQuickListBeanVector">
+                <c:forEach var="quickLists" items="${allQuickLists.dxQuickListBeanVector}">
                     <option value="${ quickLists.quickListName }" ${ quickLists.quickListName eq param.quickList || quickLists.lastUsed eq 'Selected' ? 'selected' : '' } >
                         <bean:write name="quickLists" property="quickListName"/>
                     </option>
-                </logic:iterate>
+                </c:forEach>
             </html:select>
             <ul class="list-group">
-                <logic:iterate id="item" name="allQuickListItems" property="dxQuickListItemsVector">
+                <c:forEach var="item" items="${allQuickListItems.dxQuickListItemsVector}">
                     <li class="list-group-item">
   					<span class="pull-right">
  						<html:link href="#" title="${ item.dxSearchCode }"
@@ -75,7 +75,7 @@ Required Parameters to plug-in:
                         <bean:write name="item" property="type"/>:
                         <bean:write name="item" property="description"/>
                     </li>
-                </logic:iterate>
+                </c:forEach>
             </ul>
         </td>
     </tr>

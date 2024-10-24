@@ -50,7 +50,6 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -69,10 +68,9 @@
 </head>
 <body>
 <div style="font-size: 16px; font-weight: bold;"><bean:message key="oscarencounter.guidelinelist.youcurrently"/></div>
-<logic:present name="demographic_no">
-    <div style="font-size: 10px;"><bean:message key="oscarencounter.guidelinelist.demographicno"/> <bean:write
-            name="demographic_no"/></div>
-</logic:present>
+<c:if test="${not empty demographic_no}">
+    <div style="font-size: 10px;"><bean:message key="oscarencounter.guidelinelist.demographicno"/> <bean:write name="demographic_no"/></div>
+</c:if>
 <br>
 <table class="dsTable">
     <tr>
@@ -81,47 +79,52 @@
         <th><bean:message key="oscarencounter.guidelinelist.author"/></th>
         <th><bean:message key="oscarencounter.guidelinelist.dateimported"/></th>
         <th><bean:message key="oscarrx.showallergies.status"/></th>
-        <logic:present name="demographic_no">
+        <c:if test="${not empty demographic_no}">
             <th><bean:message key="oscarencounter.guidelinelist.evaluated"/></th>
-        </logic:present>
+        </c:if>
 
     </tr>
-    <logic:iterate name="guidelines" id="guideline" type="org.oscarehr.decisionSupport.model.DSGuideline"
-                   indexId="index">
-        <%
-            String cssClass = "even";
-            if (index % 2 == 1) cssClass = "odd";%>
-        <tr class="<%=cssClass%>">
-            <td><bean:write name="guideline" property="version"/></td>
-            <td><bean:write name="guideline" property="title"/></td>
-            <td><bean:write name="guideline" property="author"/></td>
-            <td><bean:write name="guideline" property="dateStart" format="MMM d, yyyy"/></td>
-            <td><logic:equal name="guideline" property="status" value="A"><span class="good"><bean:message
-                    key="oscarencounter.guidelinelist.active"/> </span></logic:equal>
-                <logic:equal name="guideline" property="status" value="F"><span class="bad"><bean:message
-                        key="oscarencounter.guidelinelist.failedon"/> <bean:write name="guideline"
-                                                                                  property="dateDecomissioned"
-                                                                                  format="MMM d, yyyy"/> <bean:message
-                        key="oscarencounter.guidelinelist.invalid"/></span></logic:equal>
-            </td>
-            <%
-                if (request.getParameter("demographic_no") != null) {
-                    DSGuideline dsGuideline = (DSGuideline) pageContext.getAttribute("guideline");
-                    boolean passed = dsGuideline.evaluate(loggedInInfo, request.getParameter("demographic_no")) != null;
-                    pageContext.setAttribute("passed", passed);
-            %>
+    <c:forEach var="guideline" items="${guidelines}" varStatus="index" >
+        <c:set var="cssClass" value="${index.index % 2 == 0 ? 'even' : 'odd'}"/>
+        <tr class="${cssClass}">
+            <td>${guideline.version}</td>
+            <td>${guideline.title}</td>
+            <td>${guideline.author}</td>
+            <td><fmt:formatDate value="${guideline.dateStart}" pattern="MMM d, yyyy"/></td>
             <td>
-                <logic:equal name="passed" value="true"><span class="good"><bean:message
-                        key="oscarencounter.guidelinelist.passed"/></span></logic:equal>
-                <logic:equal name="passed" value="false"><span class="bad"><bean:message
-                        key="oscarencounter.guidelinelist.failed"/></span></logic:equal>
-                - <a
-                    href="<%=request.getContextPath()%>/oscarEncounter/decisionSupport/guidelineAction.do?method=detail&guidelineId=<bean:write name="guideline" property="id"/>&provider_no=<bean:write name="provider_no"/>&demographic_no=<bean:write name="demographic_no"/>"><bean:message
-                    key="oscarencounter.guidelinelist.moreinfo"/></a>
+                <c:choose>
+                    <c:when test="${guideline.status == 'A'}">
+                        <span class="good"><fmt:message key="oscarencounter.guidelinelist.active"/></span>
+                    </c:when>
+                    <c:when test="${guideline.status == 'F'}">
+                    <span class="bad">
+                        <fmt:message key="oscarencounter.guidelinelist.failedon"/>
+                        <fmt:formatDate value="${guideline.dateDecomissioned}" pattern="MMM d, yyyy"/>
+                        <fmt:message key="oscarencounter.guidelinelist.invalid"/>
+                    </span>
+                    </c:when>
+                </c:choose>
             </td>
-            <%}%>
+
+            <c:if test="${not empty param.demographic_no}">
+                <c:set var="dsGuideline" value="${guideline}"/>
+                <c:set var="passed" value="${dsGuideline.evaluate(loggedInInfo, param.demographic_no) != null}"/>
+                <td>
+                    <c:choose>
+                        <c:when test="${passed}">
+                            <span class="good"><fmt:message key="oscarencounter.guidelinelist.passed"/></span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="bad"><fmt:message key="oscarencounter.guidelinelist.failed"/></span>
+                        </c:otherwise>
+                    </c:choose>
+                    - <a href="${pageContext.request.contextPath}/oscarEncounter/decisionSupport/guidelineAction.do?method=detail&guidelineId=${guideline.id}&provider_no=${provider_no}&demographic_no=${demographic_no}">
+                    <fmt:message key="oscarencounter.guidelinelist.moreinfo"/>
+                </a>
+                </td>
+            </c:if>
         </tr>
-    </logic:iterate>
+    </c:forEach>
 </table>
 </body>
 </html>

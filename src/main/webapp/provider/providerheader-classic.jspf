@@ -34,6 +34,7 @@
 <%@ page import="java.util.*" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
@@ -149,7 +150,7 @@ function popupPage2(varpage) {
 </td>
 <td id="firstMenu">
 <ul id="navlist">
-<logic:notEqual name="infirmaryView_isOscar" value="false">
+<c:if test="${infirmaryView_isOscar != false}">
 <% if(request.getParameter("viewall")!=null && request.getParameter("viewall").equals("1") ) { %>
          <li>
          <a href=# onClick = "review('0')" title="<bean:message key="provider.appointmentProviderAdminDay.viewProvAval"/>">Schedule <!--<bean:message key="provider.appointmentProviderAdminDay.schedView"/>--></a>
@@ -164,7 +165,7 @@ function popupPage2(varpage) {
          <a href=# onClick = "review('1')" title="<bean:message key="provider.appointmentProviderAdminDay.viewAllProv"/>"><bean:message key="provider.appointmentProviderAdminDay.viewAll"/></a>
          </li>
 <% } %>
-</logic:notEqual>
+</c:if>
 
  <li>
  <a href='<%=request.getContextPath()%>/provider/providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&caseload=1&clProv=<%=curUser_no%>'>Caseload</a>

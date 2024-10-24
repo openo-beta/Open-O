@@ -67,8 +67,8 @@
 </table>
 <html:submit value="save"
              onclick="this.form.method.value='patientCPPSave'"/>
-<logic:messagesPresent message="true">
-    <html:messages id="message" message="true" bundle="casemgmt">
+<c:if test="${not empty messages}">
+    <c:forEach var="message" items="${messages}">
         <div style="color: blue"><I><c:out value="${message}"/></I></div>
-    </html:messages>
-</logic:messagesPresent>
+    </c:forEach>
+</c:if>

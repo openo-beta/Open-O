@@ -258,8 +258,15 @@
     </caisi:isModuleLoad>
     <tr>
         <th width="20%">Active?</th>
-        <td colspan="2"><logic:equal value="0" property="activeCount" name="client">No</logic:equal>
-            <logic:notEqual value="0" property="activeCount" name="client">Yes</logic:notEqual>
+        <td colspan="2">
+            <c:choose>
+                <c:when test="${client.activeCount == 0}">
+                    No
+                </c:when>
+                <c:otherwise>
+                    Yes
+                </c:otherwise>
+            </c:choose>
         </td>
     </tr>
 
@@ -871,13 +878,13 @@
                 if (ppd.isThisProgramInProgramDomain(curUser_no, tempAdmission.getProgramId())) {
                     String eURL = "../oscarEncounter/IncomingEncounter.do?programId=" + tempAdmission.getProgramId() + "&providerNo=" + curUser_no + "&appointmentNo=" + rsAppointNO + "&demographicNo=" + demographic_no + "&curProviderNo=" + curUser_no + "&reason=" + java.net.URLEncoder.encode(reason) + "&encType=" + java.net.URLEncoder.encode("face to face encounter with client", "UTF-8") + "&userName=" + java.net.URLEncoder.encode(userfirstname + " " + userlastname) + "&curDate=null&appointmentDate=null&startTime=0:0" + "&status=" + status + "&source=cm";
         %>
-        <logic:notEqual value="community" property="programType" name="admission">
+        <c:if test="${admission.programType != 'community'}">
             <a href=#
                onClick="popupPage(710, 1024,'../oscarSurveillance/CheckSurveillance.do?programId=<%=tempAdmission.getProgramId()%>&demographicNo=<%=demographic_no%>&proceed=<%=java.net.URLEncoder.encode(eURL)%>');return false;"
                title="<bean:message key="global.encounter"/>">
                 <bean:message key="provider.appointmentProviderAdminDay.btnEncounter"/>
             </a>
-        </logic:notEqual>
+        </c:if>
         <%
                     }
                 }

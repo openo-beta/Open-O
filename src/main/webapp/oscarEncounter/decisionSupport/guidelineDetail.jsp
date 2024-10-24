@@ -72,13 +72,13 @@
 <div style="font-size: 16px; font-weight: bold;"><bean:message
         key="oscarencounter.guidelinedetail.guidelineassessment"/> <c:out value="${patientName}"/></div>
 <br>
-<logic:present name="consequences">
+<c:if test="${not empty consequences}">
     <c:forEach items="${consequences}" var="consequence">
                     <span class="good" style="font-size: 12px; font-weight: bold;">
                     GUIDELINE PASSED: <c:out value="${consequence.text}"/><br/>
                     </span>
     </c:forEach>
-</logic:present>
+</c:if>
 <table style="font-size: 10px;  border-top: 1px solid black; border-collapse: collapse; margin-top: 15px;">
     <tr>
         <th><bean:message key="oscarencounter.guidelinelist.title"/></th>
@@ -102,19 +102,18 @@ Conditions:
         <th><bean:message key="oscarrx.showallergies.actual"/></th>
         <th><bean:message key="oscarrx.showallergies.evaluate"/></th>
     </tr>
-    <logic:iterate name="conditionResults" id="conditionResult"
-                   type="org.oscarehr.decisionSupport.web.DSGuidelineAction.ConditionResult" indexId="index">
-        <bean:define name="conditionResult" property="condition" id="condition"/>
+    <c:forEach var="conditionResult" items="${conditionResults}" varStatus="status">
+        <bean:define id="condition" name="conditionResult" property="condition"/>
         <%
             String cssClass = "even";
-            if (index % 2 == 1) cssClass = "odd";%>
+            if (status.index % 2 == 1) cssClass = "odd";%>
         <tr class="<%=cssClass%>">
             <td><c:out value="${conditionResult.condition.conditionType}"/></td>
             <td><c:out value="${conditionResult.condition.listOperator}"/></td>
             <td><c:out value="${conditionResult.condition.values}"/></td>
             <td>
                 <c:choose>
-                    <c:when test="${conditionResult.actualValues == null}"><span class="bad"><bean:message
+                    <c:when test="${empty conditionResult.actualValues}"><span class="bad"><bean:message
                             key="oscarencounter.guidelinedetail.error"/></span></c:when>
                     <c:otherwise><c:out value="${conditionResult.actualValues}"/></c:otherwise>
                 </c:choose>
@@ -130,7 +129,7 @@ Conditions:
                 </c:choose>
             </td>
         </tr>
-    </logic:iterate>
+    </c:forEach>
 </table>
 <input type="button" value="<bean:message key="oscarencounter.guidelinedetail.btnlistguideline" />"
        onclick="document.location='guidelineAction.do?method=list&demographic_no=<c:out

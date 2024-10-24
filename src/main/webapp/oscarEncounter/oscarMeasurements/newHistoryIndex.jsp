@@ -77,11 +77,11 @@
                             <th align="left" class="Header" style="color:white">
                                 Type Description
                             </th>
-                            <logic:iterate id="date" name="measurementsDates" type="java.util.Date" indexId="count">
+                            <c:forEach var="date" items="${measurementsDates}" varStatus="count">
                                 <th align="left" class="Header" style="width:50px;color:white">
                                     <%=sf.format(date)%>
                                 </th>
-                            </logic:iterate>
+                            </c:forEach>
                             <th align="left" class="Header" style="color:white" width="50">
 
                             </th>
@@ -137,9 +137,9 @@
                                        onClick="window.print()"></td>
                             <td><input type="button" name="Button" value="<bean:message key="global.btnClose"/>"
                                        onClick="window.close()"></td>
-                            <logic:present name="type">
-                                <input type="hidden" name="type" value="<bean:write name="type" />"/>
-                            </logic:present>
+                            <c:if test="${not empty type}">
+                                <input type="hidden" name="type" value="${type}"/>
+                            </c:if>
                         </tr>
                     </table>
                 </td>

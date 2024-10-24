@@ -56,25 +56,28 @@
 <br>
 <br>
 Client name:
-<I> <logic:notEmpty name="demoName" scope="request">
+<I> <c:if test="${not empty requestScope.demoName}">
     <c:out value="${requestScope.demoName}"/>
-</logic:notEmpty> <logic:empty name="demoName" scope="request">
+</c:if>
+<c:if test="${empty requestScope.demoName}">
     <c:out value="${param.demoName}"/>
-</logic:empty> </I>
+</c:if> </I>
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Age:
-<I> <logic:notEmpty name="demoName" scope="request">
+<I> <c:if test="${not empty requestScope.demoName}">
     <c:out value="${requestScope.demoAge}"/>
-</logic:notEmpty> <logic:empty name="demoName" scope="request">
+</c:if>
+<c:if test="${empty requestScope.demoName}">
     <c:out value="${param.demoAge}"/>
-</logic:empty> </I>
+</c:if> </I>
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DOB:
-<I> <logic:notEmpty name="demoName" scope="request">
+<I> <c:if test="${not empty requestScope.demoName}">
     <c:out value="${requestScope.demoDOB}"/>
-</logic:notEmpty> <logic:empty name="demoName" scope="request">
+</c:if>
+<c:if test="${empty requestScope.demoName}">
     <c:out value="${param.demoDOB}"/>
-</logic:empty> </I>
+</c:if> </I>
 <br>
 <br>
 

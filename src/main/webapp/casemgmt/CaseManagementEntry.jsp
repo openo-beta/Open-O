@@ -243,32 +243,32 @@
 
         <b><bean:message key="casemanagementEntry.clientname"/>
             <I>
-                <logic:notEmpty name="demoName" scope="request">
+                <c:if test="${not empty requestScope.demoName}">
                     <c:out value="${requestScope.demoName}"/>
-                </logic:notEmpty>
-                <logic:empty name="demoName" scope="request">
+                </c:if>
+                <c:if test="${empty requestScope.demoName}">
                     <c:out value="${param.demoName}"/>
-                </logic:empty>
+                </c:if>
             </I>
             <br>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Age:
             <I>
-                <logic:notEmpty name="demoName" scope="request">
+                <c:if test="${not empty requestScope.demoName}">
                     <c:out value="${requestScope.demoAge}"/>
-                </logic:notEmpty>
-                <logic:empty name="demoName" scope="request">
+                </c:if>
+                <c:if test="${empty requestScope.demoName}">
                     <c:out value="${param.demoAge}"/>
-                </logic:empty>
+                </c:if>
             </I>
             <br>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DOB:
             <I>
-                <logic:notEmpty name="demoName" scope="request">
+                <c:if test="${not empty requestScope.demoName}">
                     <c:out value="${requestScope.demoDOB}"/>
-                </logic:notEmpty>
-                <logic:empty name="demoName" scope="request">
+                </c:if>
+                <c:if test="${empty requestScope.demoName}">
                     <c:out value="${param.demoDOB}"/>
-                </logic:empty>
+                </c:if>
             </I></b>
         <br><br>
 
@@ -406,12 +406,12 @@
         <span id="spanMsg" style="color:red"><bean:message key="casemanagementEntry.notenotsavedyet"/></span>
         <%} else {%>
         <span id="spanMsg" style="color:blue">
-	<logic:messagesPresent message="true">
-        <html:messages id="message" message="true" bundle="casemgmt">
-            <I><c:out value="${message}"/></I>
-        </html:messages>
-    </logic:messagesPresent>
-	</span>
+            <c:if test="${not empty casemgmt}">
+                <c:forEach var="message" items="${casemgmt}">
+                    <i><c:out value="${message}" /></i>
+                </c:forEach>
+            </c:if>
+	    </span>
         <%} %>
 
         <p>

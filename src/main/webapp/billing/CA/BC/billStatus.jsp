@@ -43,6 +43,7 @@
 <%@ page import="java.math.*,java.util.*,oscar.oscarBilling.ca.bc.MSP.*,oscar.util.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ReportProviderDao" %>
@@ -629,9 +630,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <logic:notEqual parameter="filterPatient" value="true">
+                <c:if test="${param.filterPatient ne 'true'}">
                     <td></td>
-                </logic:notEqual>
+                </c:if>
                 <td>Count:</td>
                 <td><%=bSearch.list.size()%>
                 </td>

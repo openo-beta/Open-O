@@ -35,7 +35,6 @@
         import="java.util.*,oscar.util.*, oscar.oscarWaitingList.bean.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%
     String wlid = (String) request.getAttribute("WLId");
     if (wlid == null) {
@@ -175,9 +174,9 @@
                 <td class="MainTableTopRowRightColumn" colspan="2" width="85%">
                     <table class="TopStatusBar">
                         <tr>
-                            <td>Current List: <logic:present name="waitingListName">
-                                <bean:write name="waitingListName"/>
-                            </logic:present></td>
+                            <td>Current List: <c:if test="${not empty waitingListName}">
+                                <c:out value="${waitingListName}"/>
+                            </c:if></td>
                             <td align="right"></td>
 
                             <td align="left">Please Select a Waiting List:</td>
@@ -243,74 +242,55 @@
                                         <td align="center" class="Header" width="300">Provider</td>
                                         <td align="left" class="Header" width="50"></td>
                                     </tr>
-                                    <logic:iterate id="waitingListBean" name="waitingList"
-                                                   property="waitingList" indexId="ctr">
-                                        <html:hidden name="waitingListBean" property="demographicNo"
-                                                     indexed="true"/>
-                                            <%
-											if( ((ctr.intValue()+1) % 2) == 0  ){
-												styleClass = "data5";
-											}else{
-												styleClass = "data2";
-											}
-									%>
+                                    <c:forEach var="waitingListBean" items="${waitingList.waitingList}" varStatus="ctr">
+                                        <html:hidden name="waitingListBean" property="demographicNo" indexed="true"/>
+
+                                        <c:set var="styleClass" value="${(ctr.index % 2 == 0) ? 'data5' : 'data2'}"/>
+
                                     <tr>
-                                        <td><a name="anchor_<%=ctr%>"></td>
+                                        <td><a name="anchor_${ctr.index}"></a></td>
                                     </tr>
                                     <tr>
-                                        <td class="<%=styleClass%>"><bean:write
-                                                name="waitingListBean" property="position"/></td>
-                                        <td class="<%=styleClass%>"><a href=#
-                                                                       onclick="popupDemographicPage('../demographic/demographiccontrol.jsp?demographic_no=
-                                                                           <bean:write name="waitingListBean"
-                                                                                       property="demographicNo"/>&displaymode=edit&dboperation=search_detail');return false;">
-                                            <bean:write name="waitingListBean" property="patientName"/> </a> <input
-                                                type="button" value="Update" name="update_<%=ctr%>"
-                                                style="font-size: 7pt;"
-                                                onClick="updateWaitingList('<bean:write name="waitingListBean"
-                                                                                        property="waitingListID"/>',<%=ctr%>);"/>
+                                        <td class="${styleClass}">
+                                            <c:out value="${waitingListBean.position}"/>
                                         </td>
-                                        <td class="<%=styleClass%>"><html:textarea cols="45"
-                                                                                   name="waitingListBean"
-                                                                                   property="note" indexed="true"
-                                                                                   styleClass="data3"
-                                                                                   onblur="setParameters(this);"/></td>
-                                        <td class="<%=styleClass%>"><html:text
-                                                name="waitingListBean" property="onListSince" indexed="true"
-                                                styleClass="data3" onblur="setParameters(this);"
-                                                onchange="setParameters(this);"/> <img
-                                                src="../images/cal.gif" id="referral_date_cal_<%=ctr%>">
+                                        <td class="${styleClass}">
+                                            <a href="#" onclick="popupDemographicPage('../demographic/demographiccontrol.jsp?demographic_no=${waitingListBean.demographicNo}&displaymode=edit&dboperation=search_detail'); return false;">
+                                                <c:out value="${waitingListBean.patientName}"/>
+                                            </a>
+                                            <input type="button" value="Update" name="update_${ctr.index}" style="font-size: 7pt;"
+                                                   onClick="updateWaitingList('${waitingListBean.waitingListID}', ${ctr.index});"/>
                                         </td>
-                                        <script type="text/javascript">
-                                            Calendar.setup({
-                                                inputField: "waitingListBean[<%=ctr%>].onListSince",
-                                                ifFormat: "%Y-%m-%d",
-                                                showsTime: false,
-                                                button: "referral_date_cal_<%=ctr%>",
-                                                singleClick: true,
-                                                step: 1
-                                            });
-                                        </script>
-                                        <td class="<%=styleClass%>"><html:select
-                                                property="selectedProvider" styleClass="data3">
-                                            <html:options collection="allProviders" property="providerID"
-                                                          labelProperty="providerName"/>
-                                        </html:select> <a href=#
-                                                          onClick="popupPage(<%=ctr%>,'<bean:write
-                                                                  name="waitingListBean" property="patientName"/>',
-                                                                  '<bean:write name="waitingListBean"
-                                                                               property="demographicNo"/>',
-                                                                  '<bean:write name="today"/>',400,780,
-                                                                  '../schedule/scheduleflipview.jsp?originalpage=../oscarWaitingList/DisplayWaitingList.jsp');return false;">
-                                            make_appt </a></td>
-                                        <td class="<%=styleClass%>"><a href=#
-                                                                       onClick="removePatient('<bean:write
-                                                                               name="waitingListBean"
-                                                                               property="demographicNo"/>', '<bean:write
-                                                                               name="WLId"/>');">remove</a>
+                                        <td class="${styleClass}">
+                                            <html:textarea cols="45" name="waitingListBean" property="note" indexed="true" styleClass="data3" onblur="setParameters(this);"/>
+                                        </td>
+                                        <td class="${styleClass}">
+                                            <html:text name="waitingListBean" property="onListSince" indexed="true" styleClass="data3" onblur="setParameters(this);" onchange="setParameters(this);"/>
+                                            <img src="../images/cal.gif" id="referral_date_cal_${ctr.index}">
+                                            <script type="text/javascript">
+                                                Calendar.setup({
+                                                    inputField: "waitingListBean[${ctr.index}].onListSince",
+                                                    ifFormat: "%Y-%m-%d",
+                                                    showsTime: false,
+                                                    button: "referral_date_cal_${ctr.index}",
+                                                    singleClick: true,
+                                                    step: 1
+                                                });
+                                            </script>
+                                        </td>
+                                        <td class="${styleClass}">
+                                            <html:select property="selectedProvider" styleClass="data3">
+                                                <html:options collection="allProviders" property="providerID" labelProperty="providerName"/>
+                                            </html:select>
+                                            <a href="#" onClick="popupPage(${ctr.index}, '${waitingListBean.patientName}', '${waitingListBean.demographicNo}', '${today}', 400, 780, '../schedule/scheduleflipview.jsp?originalpage=../oscarWaitingList/DisplayWaitingList.jsp'); return false;">
+                                                make_appt
+                                            </a>
+                                        </td>
+                                        <td class="${styleClass}">
+                                            <a href="#" onClick="removePatient('${waitingListBean.demographicNo}', '${WLId}');">remove</a>
                                         </td>
                                     </tr>
-                                    </logic:iterate>
+                                    </c:forEach>
                             </td>
                         </tr>
                     </table>

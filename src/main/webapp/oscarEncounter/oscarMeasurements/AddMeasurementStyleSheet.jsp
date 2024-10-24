@@ -30,7 +30,6 @@
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
 
 <html:html lang="en">
@@ -80,13 +79,15 @@
                             <td>
                                 <table>
                                     <tr>
-                                        <td><logic:present name="messages">
-                                    <tr>
-                                        <logic:iterate id="msg" name="messages">
-                                            <td><bean:write name="msg"/></td>
-                                        </logic:iterate>
-                                    </tr>
-                                    </logic:present>
+                                        <td>
+                                            <c:if test="${not empty messages}">
+                                                <tr>
+                                                <c:forEach var="msg" items="${messages}">
+                                                    <td><c:out value="${msg}"/></td>
+                                                    </c:forEach>
+                                                </tr>
+                                            </c:if>
+                                        </td>
                                     <tr>
                                         <td align="left"><bean:message
                                                 key="oscarEncounter.oscarMeasurements.createNewMeasurementStyleSheet"/>

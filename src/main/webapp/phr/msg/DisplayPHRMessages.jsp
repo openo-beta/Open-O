@@ -43,7 +43,7 @@
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-nested" prefix="nested" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -84,22 +84,27 @@
     pageContext.setAttribute("TYPE_MEDICATION", MedicalDataType.MEDICATION.name());
     pageContext.setAttribute("TYPE_ACCESSPOLICIES", "RELATIONSHIP");
 
-    String pageMethod = request.getParameter("method");
-    if (pageMethod == null) pageMethod = "viewMessages";
+    <c:set var="pageMethod" value="${param.method}" />
+    <c:choose>
+        <c:when test="${empty pageMethod}">
+            <c:set var="pageMethod" value="viewMessages" />
+        </c:when>
+        <c:when test="${pageMethod eq 'delete' or pageMethod eq 'resend'}">
+            <c:set var="pageMethod" value="viewSentMessages" />
+        </c:when>
+        <c:when test="${pageMethod eq 'archive'}">
+            <c:set var="pageMethod" value="viewMessages" />
+        </c:when>
+        <c:when test="${pageMethod eq 'unarchive'}">
+            <c:set var="pageMethod" value="viewArchivedMessages" />
+        </c:when>
+    </c:choose>
+    <c:set var="pageMethod" value="${pageMethod}" scope="request" />
 
-    if (pageMethod.equals("delete") || pageMethod.equals("resend"))
-        pageMethod = "viewSentMessages";
-    if (pageMethod.equals("archive"))
-        pageMethod = "viewMessages";
-    if (pageMethod.equals("unarchive"))
-        pageMethod = "viewArchivedMessages";
-
-    request.setAttribute("pageMethod", pageMethod);
-
-    GregorianCalendar now = new GregorianCalendar();
-    int curYear = now.get(Calendar.YEAR);
-    int curMonth = (now.get(Calendar.MONTH) + 1);
-    int curDay = now.get(Calendar.DAY_OF_MONTH);
+    <c:set var="now" value="<%= new GregorianCalendar() %>" />
+    <c:set var="curYear" value="${now.get(Calendar.YEAR)}" />
+    <c:set var="curMonth" value="${now.get(Calendar.MONTH) + 1}" />
+    <c:set var="curDay" value="${now.get(Calendar.DAY_OF_MONTH)}" />
     String dateString = curYear + "-" + curMonth + "-" + curDay;
 
     //get Actions Pending Approval
@@ -401,15 +406,14 @@
                                     <div>
                                         <form action="../../phr/Login.do" name="phrLogin" method="POST"
                                               style="margin-bottom: 0px;">
-                                            <logic:present name="phrUserLoginErrorMsg">
-                                                <div class="phrLoginErrorMsg"><font color="red"><bean:write
-                                                    name="phrUserLoginErrorMsg"/>.</font>
-                                                <logic:present name="phrTechLoginErrorMsg">
+                                            <c:if test="${not empty phrUserLoginErrorMsg}">
+                                                <div class="phrLoginErrorMsg"><font color="red">${phrUserLoginErrorMsg}.</font>
+                                                <c:if test="${not empty phrTechLoginErrorMsg}">
                                                     <a href="javascript:;"
-                                                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More
+                                                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[${phrTechLoginErrorMsg} </br>]">More
                                                         Info</a></div>
-                                                </logic:present>
-                                            </logic:present>
+                                                </c:if>
+                                            </c:if>
                                             Status: <b>Not logged in</b><br/>
                                             <%=providerName%> password: <input type="password" id="phrPassword"
                                                                                name="phrPassword"

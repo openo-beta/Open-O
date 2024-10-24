@@ -21,7 +21,6 @@
 <%@ page language="java" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <html>
 <head>
@@ -147,7 +146,7 @@
                        onclick="return validateFields();">
 
                 <input class="btn" type="submit" name="pdf" value="Print PDF"
-                       <logic:empty name="result">disabled="disabled"</logic:empty> >
+                       <c:if test="${empty result}">disabled="disabled"</c:if> >
             </div>
         </html:form>
     </div>
@@ -157,8 +156,8 @@
         <div style="color" red
         "><html:errors/></div>
 
-    <logic:notEmpty name="summary">
-        <table class="table table-striped  table-condensed">
+    <c:if test="${not empty summary}">
+        <table class="table table-striped table-condensed">
             <tr>
                 <td width="50px">&nbsp;</td>
                 <td align="left" colspan="2">Patient Information</td>
@@ -167,71 +166,72 @@
                 <td width="50px">&nbsp;</td>
                 <td width="100px">Patient:</td>
                 <td>
-                    <bean:write name="summary" property="patientNo"/>&nbsp;&nbsp;
-                    <bean:write name="summary" property="patientName"/>&nbsp;&nbsp;
-                    <bean:write name="summary" property="hin"/>&nbsp;&nbsp;
+                    <c:out value="${summary.patientNo}"/>&nbsp;&nbsp;
+                    <c:out value="${summary.patientName}"/>&nbsp;&nbsp;
+                    <c:out value="${summary.hin}"/>&nbsp;&nbsp;
                 </td>
             </tr>
             <tr>
                 <td width="50px">&nbsp;</td>
                 <td width="100px">Address :</td>
                 <td>
-                    <bean:write name="summary" property="address"/>
+                    <c:out value="${summary.address}"/>
                 </td>
             </tr>
             <tr>
                 <td width="50px">&nbsp;</td>
                 <td width="100px">Phone :</td>
                 <td>
-                    <bean:write name="summary" property="phone"/>
+                    <c:out value="${summary.phone}"/>
                 </td>
             </tr>
         </table>
-    </logic:notEmpty>
+    </c:if>
 
     <br/>
 
-    <logic:notEmpty name="result">
-        <table class="table table-striped  table-condensed">
-            <tr bgcolor=#ccffcc>
+    <c:if test="${not empty result}">
+        <table class="table table-striped table-condensed">
+            <tr bgcolor="#ccffcc">
                 <th>INVOICE NUMBER</th>
                 <th>INVOICE DATE</th>
                 <th>SERVICE CODE</th>
                 <th>INVOICED</th>
                 <th>PAID</th>
             </tr>
-            <logic:iterate id="row" name="result" indexId="counter">
+            <c:forEach var="row" items="${result}" varStatus="counter">
                 <tr bgcolor="#CEF6CE">
-                    <td><bean:write name="row" property="invoiceNo"/></td>
-                    <td><bean:write name="row" property="invoiceDate"/></td>
+                    <td><c:out value="${row.invoiceNo}"/></td>
+                    <td><c:out value="${row.invoiceDate}"/></td>
                     <td>&nbsp;</td>
-                    <td><bean:write name="row" property="invoiced"/></td>
-                    <td><bean:write name="row" property="paid"/></td>
+                    <td><c:out value="${row.invoiced}"/></td>
+                    <td><c:out value="${row.paid}"/></td>
                 </tr>
-                <logic:iterate id="service" name="row" property="services" indexId="counterService">
-                    <tr bgcolor="<%= counterService.intValue()%2 == 0 ? "ivory" : "#EEEEFF" %>">
+                <c:forEach var="service" items="${row.services}" varStatus="counterService">
+                    <tr bgcolor="${counterService.index % 2 == 0 ? 'ivory' : '#EEEEFF'}">
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td><bean:write name="service" property="code"/></td>
-                        <td><bean:write name="service" property="fee"/></td>
+                        <td><c:out value="${service.code}"/></td>
+                        <td><c:out value="${service.fee}"/></td>
                         <td>&nbsp;</td>
                     </tr>
-                </logic:iterate>
-            </logic:iterate>
+                </c:forEach>
+            </c:forEach>
             <tr height="10">
                 <td colspan="5" style="border:collapse">&nbsp;</td>
             </tr>
             <tr bgcolor="#99FF66">
-                <td>Count: &nbsp;&nbsp;&nbsp; <logic:notEmpty name="summary"><bean:write name="summary"
-                                                                                         property="count"/></logic:notEmpty></td>
+                <td>Count: &nbsp;&nbsp;&nbsp;
+                    <c:if test="${not empty summary}"><c:out value="${summary.count}"/></c:if>
+                </td>
                 <td>&nbsp;</td>
                 <td align="center">Total:</td>
-                <td><logic:notEmpty name="summary"><bean:write name="summary"
-                                                               property="invoiced"/></logic:notEmpty></td>
-                <td><logic:notEmpty name="summary"><bean:write name="summary" property="paid"/></logic:notEmpty></td>
+                <td><c:if test="${not empty summary}"><c:out value="${summary.invoiced}"/></c:if></td>
+                <td><c:if test="${not empty summary}"><c:out value="${summary.paid}"/></c:if></td>
             </tr>
         </table>
-    </logic:notEmpty>
+    </c:if>
+
 </div><!--row-->
 
 

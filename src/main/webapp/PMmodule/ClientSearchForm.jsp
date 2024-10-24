@@ -22,6 +22,7 @@
     Toronto, Ontario, Canada
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ include file="/common/messages.jsp" %>
 <%@page import="oscar.OscarProperties" %>
@@ -88,8 +89,8 @@
                     <th>Date of Birth</th>
                     <td><html:text property="criteria.dob" size="15"/><br/><font size="1">yyyy/mm/dd</font></td>
                 </tr>
-                <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
-                    <caisi:isModuleLoad moduleName="GET_OHIP_INFO" reverse="false">
+                <c:if test="${!moduleLoaded['TORONTO_RFQ']}">
+                    <c:if test="${moduleLoaded['GET_OHIP_INFO']}">
                         <tr>
                             <th>Health Card Number</th>
                             <td><html:text property="criteria.healthCardNumber" size="15"/>
@@ -105,12 +106,11 @@
                     <!-- <th>Search outside of domain <a href="javascript:void(0)" onclick="popupHelp('domain')">?</a></th>
                     -->
                     <tr>
-                        <caisi:isModuleLoad
-                                moduleName="pmm.client.search.outside.of.domain.enabled">
+                        <c:if test="${moduleLoaded['pmm.client.search.outside.of.domain.enabled']}">
                             <th>Search all clients <a href="javascript:void(0)"
                                                       onclick="popupHelp('domain')">?</a></th>
                             <td><html:checkbox property="criteria.searchOutsideDomain"/></td>
-                        </caisi:isModuleLoad>
+                        </c:if>
                     </tr>
 
                     <tr>
@@ -203,12 +203,16 @@
                 <c:out value="${client.chartNo}"/>
             </display:column>
             <display:column sortable="true" title="Admitted to Bed Program">
-                <logic:equal value="0" property="activeCount" name="client">No</logic:equal>
-                <logic:notEqual value="0" property="activeCount" name="client">Yes</logic:notEqual>
+                <c:choose>
+                    <c:when test="${client.activeCount == 0}">No</c:when>
+                    <c:otherwise>Yes</c:otherwise>
+                </c:choose>
             </display:column>
             <display:column sortable="true" title="H&S Alert">
-                <logic:equal value="0" property="hsAlertCount" name="client">No</logic:equal>
-                <logic:notEqual value="0" property="hsAlertCount" name="client">Yes</logic:notEqual>
+                <c:choose>
+                    <c:when test="${client.hsAlertCount == 0}">No</c:when>
+                    <c:otherwise>Yes</c:otherwise>
+                </c:choose>
             </display:column>
 
             <security:oscarSec roleName="<%=roleName$%>" objectName="_merge"

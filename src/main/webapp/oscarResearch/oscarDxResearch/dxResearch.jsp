@@ -27,9 +27,9 @@
 <%@ page import="oscar.oscarResearch.oscarDxResearch.util.dxResearchCodingSystem" %>
 <%@ page import="com.quatro.service.security.SecurityManager" %>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -224,11 +224,11 @@
 
                                                 <html:select styleClass="form-control" property="selectedCodingSystem"
                                                              disabled="<%=disable%>">
-                                                    <logic:iterate id="codingSys" name="codingSystem"
-                                                                   property="codingSystems">
-                                                        <option value="<bean:write name="codingSys"/>"><bean:write
-                                                                name="codingSys"/></option>
-                                                    </logic:iterate>
+                                                    <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
+                                                        <option value="${codingSys}">
+                                                            <c:out value="${codingSys}"/>
+                                                        </option>
+                                                    </c:forEach>
                                                 </html:select>
                                             </div>
                                         </td>
@@ -284,7 +284,7 @@
                                     </tr>
 
                                         <%-- DX QUICK LIST - returns a table --%>
-                                    <logic:equal name="showQuicklist" value="true" scope="page">
+                                    <c:if test="${showQuicklist == true}">
                                         <tr>
                                             <td>
                                                 <jsp:include page="dxQuickList.jsp">
@@ -295,7 +295,7 @@
                                                 </jsp:include>
                                             </td>
                                         </tr>
-                                    </logic:equal>
+                                    </c:if>
                                         <%-- DX QUICK LIST --%>
 
                                 </table>
@@ -319,68 +319,60 @@
                                                 key="oscarResearch.oscarDxResearch.dxResearch.msgAction"/></th>
                                         <%} %>
                                     </tr>
-                                    <logic:iterate id="diagnotics" name="allDiagnostics" property="dxResearchBeanVector"
-                                                   indexId="ctr">
+                                    <c:forEach var="diagnotics" items="${allDiagnostics.dxResearchBeanVector}" varStatus="ctr">
+                                        <c:choose>
+                                            <c:when test="${diagnotics.status == 'A'}">
+                                                <tr>
+                                                    <td><c:out value="${diagnotics.type}"/></td>
+                                                    <td class="notResolved"><c:out value="${diagnotics.dxSearchCode}"/></td>
+                                                    <td class="notResolved"><c:out value="${diagnotics.description}"/></td>
+                                                    <td class="notResolved">
+                                                        <a href="#" onclick="showdatebox(${diagnotics.dxResearchNo});">
+                                                            <div id="startdate1st${diagnotics.dxResearchNo}">
+                                                                <c:out value="${diagnotics.start_date}"/>
+                                                            </div>
+                                                            <input class="form-control" id="startdatenew${diagnotics.dxResearchNo}"
+                                                                   type="text" name="start_date" size="8"
+                                                                   value="${diagnotics.start_date}" style="display:none"/>
+                                                        </a>
+                                                    </td>
+                                                    <td class="notResolved"><c:out value="${diagnotics.end_date}"/></td>
+                                                    <c:if test="${not disable}">
+                                                        <td class="notResolved">
+                                                            <a href="dxResearchUpdate.do?status=C&did=${diagnotics.dxResearchNo}&demographicNo=${demographicNo}&providerNo=${providerNo}">
+                                                                <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnResolve"/>
+                                                            </a>
+                                                            <a href="dxResearchUpdate.do?status=D&did=${diagnotics.dxResearchNo}&demographicNo=${demographicNo}&providerNo=${providerNo}"
+                                                               onclick="javascript: return confirm('Are you sure you would like to delete: ${diagnotics.description} ?')">
+                                                                <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnDelete"/>
+                                                            </a>
+                                                            <a href="#" onclick="update_date(${diagnotics.dxResearchNo}, ${demographicNo}, ${providerNo});">
+                                                                <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnUpdate"/>
+                                                            </a>
+                                                        </td>
+                                                    </c:if>
+                                                </tr>
+                                            </c:when>
+                                            <c:when test="${diagnotics.status == 'C'}">
+                                                <tr>
+                                                    <td><c:out value="${diagnotics.dxSearchCode}"/></td>
+                                                    <td><c:out value="${diagnotics.description}"/></td>
+                                                    <td><c:out value="${diagnotics.start_date}"/></td>
+                                                    <td><c:out value="${diagnotics.end_date}"/></td>
+                                                    <c:if test="${not disable}">
+                                                        <td>
+                                                            <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnResolve"/> |
+                                                            <a href="dxResearchUpdate.do?status=D&did=${diagnotics.dxResearchNo}&demographicNo=${demographicNo}&providerNo=${providerNo}"
+                                                               onclick="javascript: return confirm('Are you sure you would like to delete this?')">
+                                                                <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnDelete"/>
+                                                            </a>
+                                                        </td>
+                                                    </c:if>
+                                                </tr>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:forEach>
 
-                                        <logic:equal name="diagnotics" property="status" value="A">
-                                            <tr>
-                                                <td>
-                                                    <bean:write name="diagnotics" property="type"/>
-                                                </td>
-                                                <td class="notResolved"><bean:write name="diagnotics"
-                                                                                    property="dxSearchCode"/></td>
-                                                <td class="notResolved"><bean:write name="diagnotics"
-                                                                                    property="description"/></td>
-                                                <td class="notResolved">
-                                                    <a href="#" onclick="showdatebox(<bean:write name="diagnotics"
-                                                                                                 property="dxResearchNo"/>);">
-                                                        <div id="startdate1st<bean:write name="diagnotics" property="dxResearchNo" />">
-                                                            <bean:write name="diagnotics" property="start_date"/></div>
-                                                        <input class="form-control"
-                                                               id="startdatenew<bean:write name="diagnotics" property="dxResearchNo" />"
-                                                               type="text" name="start_date" size="8"
-                                                               value="<bean:write name="diagnotics" property="start_date" />"
-                                                               style="display:none"/>
-                                                    </a>
-                                                </td>
-                                                <td class="notResolved">
-                                                    <bean:write name="diagnotics" property="end_date"/>
-                                                </td>
-                                                <% if (!disable) { %>
-                                                <td class="notResolved">
-                                                    <a href='dxResearchUpdate.do?status=C&did=<bean:write name="diagnotics" property="dxResearchNo" />&demographicNo=<bean:write name="demographicNo" />&providerNo=<bean:write name="providerNo" />'><bean:message
-                                                            key="oscarResearch.oscarDxResearch.dxResearch.btnResolve"/></a>
-                                                    <a href='dxResearchUpdate.do?status=D&did=<bean:write name="diagnotics" property="dxResearchNo" />&demographicNo=<bean:write name="demographicNo" />&providerNo=<bean:write name="providerNo" />'
-                                                       onClick="javascript: return confirm('Are you sure you would like to delete:
-                                                           <bean:write name="diagnotics"
-                                                                       property="description"/> ?')"><bean:message
-                                                            key="oscarResearch.oscarDxResearch.dxResearch.btnDelete"/></a>
-                                                    <a href='#' onclick="update_date(<bean:write name="diagnotics"
-                                                                                                 property="dxResearchNo"/>,
-                                                        <bean:write name="demographicNo"/>,<bean:write
-                                                            name="providerNo"/>);"><bean:message
-                                                            key="oscarResearch.oscarDxResearch.dxResearch.btnUpdate"/></a>
-                                                </td>
-                                                <%} %>
-                                            </tr>
-                                        </logic:equal>
-                                        <logic:equal name="diagnotics" property="status" value="C">
-                                            <tr>
-                                                <td><bean:write name="diagnotics" property="dxSearchCode"/></td>
-                                                <td><bean:write name="diagnotics" property="description"/></td>
-                                                <td><bean:write name="diagnotics" property="start_date"/></td>
-                                                <td><bean:write name="diagnotics" property="end_date"/></td>
-                                                <% if (!disable) { %>
-                                                <td><bean:message
-                                                        key="oscarResearch.oscarDxResearch.dxResearch.btnResolve"/> |
-                                                    <a href='dxResearchUpdate.do?status=D&did=<bean:write name="diagnotics" property="dxResearchNo" />&demographicNo=<bean:write name="demographicNo" />&providerNo=<bean:write name="providerNo" />'
-                                                       onClick="javascript: return confirm('Are you sure you would like to delete this?')"><bean:message
-                                                            key="oscarResearch.oscarDxResearch.dxResearch.btnDelete"/></a>
-                                                </td>
-                                                <%} %>
-                                            </tr>
-                                        </logic:equal>
-                                    </logic:iterate>
                                 </table>
 
                             </td>

@@ -30,7 +30,7 @@
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -220,15 +220,14 @@
                                                 request.setAttribute("phrUserLoginErrorMsg", request.getParameter("phrUserLoginErrorMsg"));
                                                 request.setAttribute("phrTechLoginErrorMsg", request.getParameter("phrTechLoginErrorMsg"));
                                             %>
-                                            <logic:present name="phrUserLoginErrorMsg">
-                                                <div class="phrLoginErrorMsg"><font color="red"><bean:write
-                                                    name="phrUserLoginErrorMsg"/>.</font>
-                                                <logic:present name="phrTechLoginErrorMsg">
+                                            <c:if test="${not empty phrUserLoginErrorMsg}">
+                                                <div class="phrLoginErrorMsg"><font color="red">${phrUserLoginErrorMsg}.</font>
+                                                <c:if test="${not empty phrTechLoginErrorMsg}">
                                                     <a href="javascript:;"
-                                                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More
+                                                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[${phrTechLoginErrorMsg} </br>]">More
                                                         Info</a></div>
-                                                </logic:present>
-                                            </logic:present>
+                                                </c:if>
+                                            </c:if>
                                             Status: <b>Not logged in</b><br/>
                                             <%=providerName%> password: <input type="password" id="phrPassword"
                                                                                name="phrPassword"

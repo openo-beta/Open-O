@@ -24,6 +24,7 @@
 --%>
 
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.PMmodule.model.*" %>
@@ -193,14 +194,14 @@
             if (ppd.isThisProgramInProgramDomain(curUser_no, programId)) {
                 String eURL = "../oscarEncounter/IncomingEncounter.do?programId=" + programId + "&providerNo=" + curUser_no + "&appointmentNo=" + rsAppointNO + "&demographicNo=" + demographic_no + "&curProviderNo=" + curUser_no + "&reason=" + java.net.URLEncoder.encode(reason) + "&encType=" + java.net.URLEncoder.encode("face to face encounter with client", "UTF-8") + "&userName=" + java.net.URLEncoder.encode(userfirstname + " " + userlastname) + "&curDate=null&appointmentDate=null&startTime=0:0" + "&status=" + status + "&source=cm";
         %>
-        <logic:notEqual value="community" property="programType" name="admission">
+        <c:if test="${admission.programType ne 'community'}">
 
             <a href=#
                onClick="popupPage(710, 1024,'../oscarSurveillance/CheckSurveillance.do?programId=<%=programId%>&demographicNo=<%=demographic_no%>&proceed=<%=java.net.URLEncoder.encode(eURL)%>');return false;"
                title="<bean:message key="global.encounter"/>"> <bean:message
                     key="provider.appointmentProviderAdminDay.btnE"/></a>
 
-        </logic:notEqual>
+        </c:if>
         <% }
         }
         %>

@@ -24,9 +24,10 @@
 
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page import="oscar.oscarReport.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.*, java.sql.*, java.text.*, java.net.*" %>
 <%
@@ -151,12 +152,12 @@
                             <td>
                                 <table>
                                     <tr>
-                                        <logic:present name="messages">
-                                            <logic:iterate id="msg" name="messages">
+                                        <c:if test="${not empty messages}">
+                                            <c:forEach var="msg" items="${messages}">
                                                 <bean:write name="msg"/>
                                                 <br>
-                                            </logic:iterate>
-                                        </logic:present>
+                                            </c:forEach>
+                                        </c:if>
                                     </tr>
                                     <tr>
                                         <td>
@@ -184,11 +185,10 @@
                                         <th align="left" class="subTitles" width="120"><bean:message
                                                 key="oscarReport.CDMReport.msgEndDate"/></th>
                                     </tr>
-                                    <logic:iterate id="measurementType" name="measurementTypes"
-                                                   property="measurementTypeVector" indexId="ctr">
+                                    <c:forEach var="measurementType" items="${measurementTypes.measurementTypeVector}" varStatus="ctr">
                                     <tr>
                                         <td width="2" class="fieldBox" bgcolor="#ddddff"><input
-                                                type="checkbox" name="frequencyCheckbox" value="<%=ctr%>"/></td>
+                                                type="checkbox" name="frequencyCheckbox" value="${ctr.index}"/></td>
                                         <td width="4" class="fieldBox" bgcolor="#ddddff"><bean:write
                                                 name="measurementType" property="typeDisplayName"/></td>
                                         <td width="200" class="fieldBox" bgcolor="#ddddff"><bean:write
@@ -204,15 +204,15 @@
                                                 type="text" name="startDateD"
                                                 value='<bean:write name="lastYear"/>' size="10"> <img
                                                 src="../img/calendar.gif" border="0"
-                                                onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=<%="startDateD[" + ctr + "]"%>&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
+                                                onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=startDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
                                         </td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input
                                                 type="text" name="endDateD" value='<bean:write name="today"/>'
                                                 size="10"> <img src="../img/calendar.gif" border="0"
-                                                                onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=<%="endDateD[" + ctr + "]"%>&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
+                                                                onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=endDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
                                         </td>
                                         <input type="hidden"
-                                               name='<%="value(measurementTypeD"+ctr+")"%>'
+                                               name='value(measurementTypeD${ctr.index})'
                                                value="<bean:write name="measurementType" property="type" />"/>
                                     </tr>
                                     <tr>
@@ -222,28 +222,27 @@
                                         <td width="200" class="fieldBox" bgcolor="#ddddff">
                                             <table>
                                                 <%int k = 0;%>
-                                                <logic:iterate id="mInstrc" name='<%="mInstrcs" + ctr%>'
-                                                               property="measuringInstrcVector" indexId="index">
+                                                <c:forEach var="mInstrc" items="${mInstrcs[ctr.index].measuringInstrcVector}" varStatus="index">
                                                     <tr>
                                                         <td><input type="checkbox"
-                                                                   name='<%="value(mInstrcsCheckboxD"+ctr+index+")"%>'
+                                                                   name='value(mInstrcsCheckboxD${ctr.index}${index.index})'
                                                                    checked="checked"
                                                                    value='<bean:write name="mInstrc" property="measuringInstrc" />'/><bean:write
                                                                 name="mInstrc" property="measuringInstrc"/></td>
                                                     </tr>
                                                     <%k++;%>
-                                                </logic:iterate>
+                                                </c:forEach>
                                             </table>
                                         </td>
                                         <input type="hidden"
-                                               name='<%= "value(mNbInstrcsD" + ctr+ ")" %>' value='<%=k%>'/>
+                                               name='value(mNbInstrcsD${ctr.index})' value='<%=k%>'/>
                                         <td width="80" class="fieldBox" bgcolor="#ddddff"></td>
                                         <td width="80" class="fieldBox" bgcolor="#ddddff"></td>
                                         <td width="80" class="fieldBox" bgcolor="#ddddff"></td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"></td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"></td>
                                     </tr>
-                                    </logic:iterate>
+                                    </c:forEach>
                                     <tr>
                                     </tr>
 

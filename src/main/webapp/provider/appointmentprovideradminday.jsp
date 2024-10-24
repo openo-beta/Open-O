@@ -68,7 +68,6 @@
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="myoscar" %>
@@ -837,23 +836,24 @@
                     <img alt="OSCAR EMR" src="<%=request.getContextPath()%>/images/oscar_logo_small.png" width="19px">
                 </div>
                 <ul id="navlist">
-                    <logic:notEqual name="infirmaryView_isOscar" value="false">
-                        <% if (request.getParameter("viewall") != null && request.getParameter("viewall").equals("1")) { %>
-                        <li>
-                            <a href=# onClick="review('0')"
-                               title="<bean:message key="provider.appointmentProviderAdminDay.viewProvAval"/>">
-                                <bean:message key="provider.appointmentProviderAdminDay.schedView"/>
-                            </a>
-                        </li>
-                        <% } else { %>
-                        <li>
-                            <a href='providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1'>
-                                <bean:message key="provider.appointmentProviderAdminDay.schedView"/>
-                            </a>
-                        </li>
-
-                        <% } %>
-                    </logic:notEqual>
+                    <c:if test="${infirmaryView_isOscar != 'false'}">
+                        <c:choose>
+                            <c:when test="${param.viewall == '1'}">
+                                <li>
+                                    <a href="#" onclick="review('0')" title="<bean:message key='provider.appointmentProviderAdminDay.viewProvAval' />">
+                                        <bean:message key="provider.appointmentProviderAdminDay.schedView" />
+                                    </a>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li>
+                                    <a href="providercontrol.jsp?year=${curYear}&month=${curMonth}&day=${curDay}&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1">
+                                        <bean:message key="provider.appointmentProviderAdminDay.schedView" />
+                                    </a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
 
                     <li>
                         <a href='providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&caseload=1&clProv=<%=loggedInInfo1.getLoggedInProviderNo()%>'><bean:message
@@ -1236,18 +1236,24 @@
                            <%=isWeekView?URLEncoder.encode("&provider_no="+provNum, "UTF-8"):""%>')"><bean:message
                         key="global.calendar"/></a>
 
-                <logic:notEqual name="infirmaryView_isOscar" value="false">
-                    <% if (request.getParameter("viewall") != null && request.getParameter("viewall").equals("1")) { %>
-                    <u><a href=# onClick="review('0')"
-                          title="<bean:message key="provider.appointmentProviderAdminDay.viewAllProv"/>"><bean:message
-                            key="provider.appointmentProviderAdminDay.schedView"/></a></u>
-
-                    <%} else {%>
-                    <u><a href=# onClick="review('1')"
-                          title="<bean:message key="provider.appointmentProviderAdminDay.viewAllProv"/>"><bean:message
-                            key="provider.appointmentProviderAdminDay.viewAll"/></a></u>
-                    <%}%>
-                </logic:notEqual>
+                <c:if test="${infirmaryView_isOscar != 'false'}">
+                    <c:choose>
+                        <c:when test="${param.viewall == '1'}">
+                            <u>
+                                <a href="#" onclick="review('0')" title="<bean:message key='provider.appointmentProviderAdminDay.viewAllProv' />">
+                                    <bean:message key="provider.appointmentProviderAdminDay.schedView" />
+                                </a>
+                            </u>
+                        </c:when>
+                        <c:otherwise>
+                            <u>
+                                <a href="#" onclick="review('1')" title="<bean:message key='provider.appointmentProviderAdminDay.viewAllProv' />">
+                                    <bean:message key="provider.appointmentProviderAdminDay.viewAll" />
+                                </a>
+                            </u>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
 
                 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_day" rights="r">
@@ -1391,112 +1397,73 @@
                                     <!-- caisi infirmary view extension add end ffffffffffffff-->
 
 
-                                    <logic:notEqual name="infirmaryView_isOscar" value="false">
-
-                                        <%
-                                            //session.setAttribute("case_program_id", null);
-                                        %>
-                                        <!-- multi-site , add site dropdown list -->
-                                        <%
-                                            if (bMultisites) {
-                                        %>
-                                        <script>
-                                            function changeSite(sel) {
-                                                sel.style.backgroundColor = sel.options[sel.selectedIndex].style.backgroundColor;
-                                                var siteName = sel.options[sel.selectedIndex].value;
-                                                var newGroupNo = "<%=(mygroupno == null ? ".default" : mygroupno)%>";
-                                                <%if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()){%>
-                                                popupPage(10, 10, "providercontrol.jsp?provider_no=<%=loggedInInfo1.getLoggedInProviderNo()%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&new_tickler_warning_window=<%=newticklerwarningwindow%>&default_pmm=<%=default_pmm%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "&site=" + siteName);
-                                                <%}else {%>
-                                                popupPage(10, 10, "providercontrol.jsp?provider_no=<%=loggedInInfo1.getLoggedInProviderNo()%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "&site=" + siteName);
-                                                <%}%>
-                                            }
-                                        </script>
-
-                                        <select id="site" name="site" onchange="changeSite(this)"
-                                                style="background-color: <%=( selectedSite == null || siteBgColor.get(selectedSite) == null ? "#FFFFFF" : siteBgColor.get(selectedSite))%>">
-                                            <option value="none" style="background-color:white">all clinics</option>
-                                            <%
-                                                for (int i = 0; i < curUserSites.size(); i++) {
-                                            %>
-                                            <option value="<%=curUserSites.get(i).getName()%>"
-                                                    style="background-color:<%=curUserSites.get(i).getBgColor()%>"
-                                                    <%=(curUserSites.get(i).getName().equals(selectedSite)) ? " selected " : ""%> >
-                                                <%=curUserSites.get(i).getName()%>
-                                            </option>
-                                            <%
+                                    <c:if test="${infirmaryView_isOscar != 'false'}">
+                                        <!-- Multi-site: 添加站点下拉列表 -->
+                                        <c:if test="${bMultisites}">
+                                            <script>
+                                                function changeSite(sel) {
+                                                    sel.style.backgroundColor = sel.options[sel.selectedIndex].style.backgroundColor;
+                                                    var siteName = sel.options[sel.selectedIndex].value;
+                                                    var newGroupNo = "${empty mygroupno ? '.default' : mygroupno}";
+                                                    <c:if test="${org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()}">
+                                                    popupPage(10, 10, "providercontrol.jsp?provider_no=${loggedInInfo1.loggedInProviderNo}&start_hour=${startHour}&end_hour=${endHour}&every_min=${everyMin}&new_tickler_warning_window=${newticklerwarningwindow}&default_pmm=${default_pmm}&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "&site=" + siteName);
+                                                    </c:if>
+                                                    <c:if test="${!org.oscarehr.common.IsPropertiesOn.isCaisiEnable() || !org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()}">
+                                                    popupPage(10, 10, "providercontrol.jsp?provider_no=${loggedInInfo1.loggedInProviderNo}&start_hour=${startHour}&end_hour=${endHour}&every_min=${everyMin}&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "&site=" + siteName);
+                                                    </c:if>
                                                 }
-                                            %>
-                                        </select>
-                                        <%
-                                            }
-                                        %>
-                                        <span><bean:message key="global.group"/>:</span>
+                                            </script>
 
-                                        <%
-                                            List<MyGroupAccessRestriction> restrictions = myGroupAccessRestrictionDao.findByProviderNo(loggedInInfo1.getLoggedInProviderNo());
-                                        %>
-                                        <select id="mygroup_no" name="mygroup_no" onChange="changeGroup(this)">
-                                            <option value='.<bean:message key="global.default"/>'>.<bean:message
-                                                    key="global.default"/></option>
+                                            <select id="site" name="site" onchange="changeSite(this)"
+                                                    style="background-color: ${empty siteBgColor[selectedSite] ? '#FFFFFF' : siteBgColor[selectedSite]}">
+                                                <option value="none" style="background-color:white">all clinics</option>
+                                                <c:forEach var="site" items="${curUserSites}">
+                                                    <option value="${site.name}" style="background-color:${site.bgColor}"
+                                                        ${site.name == selectedSite ? 'selected' : ''}>
+                                                            ${site.name}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                        </c:if>
 
+                                        <span><bean:message key="global.group"/></span>
+                                        <c:set var="restrictions" value="${myGroupAccessRestrictionDao.findByProviderNo(loggedInInfo1.loggedInProviderNo)}" />
 
-                                            <security:oscarSec roleName="<%=roleName$%>"
-                                                               objectName="_team_schedule_only"
-                                                               rights="r" reverse="false">
-                                                <%
-                                                    //                                                String provider_no = loggedInInfo1.getLoggedInProviderNo();
-                                                    for (Provider p : providerDao.getActiveProviders()) {
-                                                        boolean skip = checkRestriction(restrictions, p.getProviderNo());
-                                                        if (!skip) {
-                                                %>
-                                                <option value='<%=p.getProviderNo()%>'<%=mygroupno.equals(p.getProviderNo()) ? " selected" : ""%> >
-                                                    <c:out value="<%=p.getFormattedName()%>"/>
-                                                </option>
-                                                <%
-                                                        }
-                                                    }
-                                                %>
+                                        <select id="mygroup_no" name="mygroup_no" onchange="changeGroup(this)">
+                                            <option value=".${global.default}">.${global.default}</option>
 
+                                            <security:oscarSec roleName="${roleName}" objectName="_team_schedule_only" rights="r" reverse="false">
+                                                <c:forEach var="provider" items="${providerDao.activeProviders}">
+                                                    <c:if test="${!checkRestriction(restrictions, provider.providerNo)}">
+                                                        <option value="${provider.providerNo}" ${mygroupno == provider.providerNo ? 'selected' : ''}>
+                                                            <c:out value="${provider.formattedName}" />
+                                                        </option>
+                                                    </c:if>
+                                                </c:forEach>
                                             </security:oscarSec>
-                                            <security:oscarSec roleName="<%=roleName$%>"
-                                                               objectName="_team_schedule_only" rights="r"
-                                                               reverse="true">
-                                                <%
-                                                    request.getSession().setAttribute("archiveView", "false");
-                                                    for (MyGroup g : myGroupDao.searchmygroupno()) {
 
-                                                        boolean skip = checkRestriction(restrictions, g.getId().getMyGroupNo());
+                                            <security:oscarSec roleName="${roleName}" objectName="_team_schedule_only" rights="r" reverse="true">
+                                                <c:set var="archiveView" value="false" scope="session" />
+                                                <c:forEach var="group" items="${myGroupDao.searchmygroupno()}">
+                                                    <c:if test="${!checkRestriction(restrictions, group.id.myGroupNo)
+                    && (!bMultisites || empty siteGroups || siteGroups.contains(group.id.myGroupNo))}">
+                                                        <option value="_grp_${group.id.myGroupNo}" ${mygroupno == group.id.myGroupNo ? 'selected' : ''}>
+                                                            <c:out value="${group.id.myGroupNo}" />
+                                                        </option>
+                                                    </c:if>
+                                                </c:forEach>
 
-                                                        if (!skip && (!bMultisites || siteGroups == null || siteGroups.size() == 0 || siteGroups.contains(g.getId().getMyGroupNo()))) {
-                                                %>
-                                                <option value='<%="_grp_"+g.getId().getMyGroupNo()%>' <%=mygroupno.equals(g.getId().getMyGroupNo()) ? "selected" : ""%>>
-                                                    <c:out value="<%=g.getId().getMyGroupNo()%>"/>
-                                                </option>
-                                                <%
-                                                        }
-                                                    }
-
-                                                    for (Provider p : providerDao.getActiveProviders()) {
-                                                        boolean skip = checkRestriction(restrictions, p.getProviderNo());
-
-                                                        if (!skip && (!bMultisites || siteProviderNos == null || siteProviderNos.size() == 0 || siteProviderNos.contains(p.getProviderNo()))) {
-                                                %>
-                                                <option value='<%=p.getProviderNo()%>' <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>>
-                                                    <c:out value="<%=p.getFormattedName()%>"/>
-                                                </option>
-                                                <%
-                                                        }
-                                                    }
-                                                %>
+                                                <c:forEach var="provider" items="${providerDao.activeProviders}">
+                                                    <c:if test="${!checkRestriction(restrictions, provider.providerNo)
+                    && (!bMultisites || empty siteProviderNos || siteProviderNos.contains(provider.providerNo))}">
+                                                        <option value="${provider.providerNo}" ${mygroupno == provider.providerNo ? 'selected' : ''}>
+                                                            <c:out value="${provider.formattedName}" />
+                                                        </option>
+                                                    </c:if>
+                                                </c:forEach>
                                             </security:oscarSec>
                                         </select>
-
-                                    </logic:notEqual>
-
-                                        <%--                                <logic:equal name="infirmaryView_isOscar" value="false">--%>
-                                        <%--                                    &nbsp;&nbsp;&nbsp;&nbsp;--%>
-                                        <%--                                </logic:equal>--%>
+                                    </c:if>
 
                                     <%
                                         }
@@ -1660,76 +1627,73 @@
                                     <td class="infirmaryView" NOWRAP ALIGN="center"
                                         BGCOLOR="<%=bColor?"#bfefff":"silver"%>">
                                         <!-- caisi infirmary view extension modify ffffffffffff-->
-                                        <logic:notEqual name="infirmaryView_isOscar" value="false">
+                                        <c:if test="${infirmaryView_isOscar != 'false'}">
+                                            <c:choose>
+                                                <c:when test="${isWeekView}">
+                                                    <b>
+                                                        <a href="providercontrol.jsp?year=${year}&month=${month}&day=${day}&view=0&displaymode=day&dboperation=searchappointmentday">
+                                                                ${formatDate}
+                                                        </a>
+                                                    </b>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="button"
+                                                           value="<bean:message key='provider.appointmentProviderAdminDay.weekLetter'/>"
+                                                           name="weekview"
+                                                           onclick="goWeekView('${curProvider_no[nProvider]}')"
+                                                           title="<bean:message key='provider.appointmentProviderAdminDay.weekView'/>"
+                                                           style="color:black" class="noprint" />
 
-                                            <%
-                                                if (isWeekView) {
-                                            %>
-                                            <b><a href="providercontrol.jsp?year=<%=year%>&month=<%=month%>&day=<%=day%>&view=0&displaymode=day&dboperation=searchappointmentday"><%=formatDate%>
-                                            </a></b>
-                                            <%
-                                            } else {
-                                            %>
-                                            <input type='button'
-                                                   value="<bean:message key="provider.appointmentProviderAdminDay.weekLetter"/>"
-                                                   name='weekview'
-                                                   onClick="goWeekView('<%=curProvider_no[nProvider]%>')"
-                                                   title="<bean:message key="provider.appointmentProviderAdminDay.weekView"/>"
-                                                   style="color:black" class="noprint">
-                                            <% if (OscarProperties.getInstance().isPropertyActive("view.appointmentdaysheetbutton")) { %>
-                                            <input type='button' value="DS" name='daysheetview'
-                                                   onClick=goDaySheet('<%=curProvider_no[nProvider]%>')
-                                                   title="Day Sheet" style="color:black">
-                                            <% } %>
-                                            <input type='button'
-                                                   value="<bean:message key="provider.appointmentProviderAdminDay.searchLetter"/>"
-                                                   name='searchview'
-                                                   onClick="goSearchView('<%=curProvider_no[nProvider]%>')"
-                                                   title="<bean:message key="provider.appointmentProviderAdminDay.searchView"/>"
-                                                   style="color:black" class="noprint">
-                                            <input type='radio' name='flipview' class="noprint"
-                                                   onClick="goFilpView('<%=curProvider_no[nProvider]%>')"
-                                                   title="Flip view">
-                                            <a href=#
-                                               onClick="goZoomView('<%=curProvider_no[nProvider]%>','<%= Encode.forJavaScript(curProviderName[nProvider])%>')"
-                                               onDblClick="goFilpView('<%=curProvider_no[nProvider]%>')"
-                                               title='<bean:message key="provider.appointmentProviderAdminDay.zoomView"/>'>
-                                                <c:out value='<%=curProviderName[nProvider]  + " (" + appointmentCount + ") " %>'/>
-                                            </a>
-                                            <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER"
-                                                                        defaultVal="yes">
-                                                <a id="expandReason" href="#"
-                                                   onclick="return toggleReason('<%=curProvider_no[nProvider]%>');"
-                                                   title="<bean:message key="provider.appointmentProviderAdminDay.expandreason"/>">*</a>
-                                            </oscar:oscarPropertiesCheck>
+                                                    <c:if test="${OscarProperties.getInstance().isPropertyActive('view.appointmentdaysheetbutton')}">
+                                                        <input type="button" value="DS" name="daysheetview"
+                                                               onclick="goDaySheet('${curProvider_no[nProvider]}')"
+                                                               title="Day Sheet" style="color:black" />
+                                                    </c:if>
 
-                                            <% } %>
+                                                    <input type="button"
+                                                           value="<bean:message key='provider.appointmentProviderAdminDay.searchLetter'/>"
+                                                           name="searchview"
+                                                           onclick="goSearchView('${curProvider_no[nProvider]}')"
+                                                           title="<bean:message key='provider.appointmentProviderAdminDay.searchView'/>"
+                                                           style="color:black" class="noprint" />
 
-                                            <%
-                                                if (!userAvail) {
-                                            %>
-                                            [<bean:message key="provider.appointmentProviderAdminDay.msgNotOnSched"/>]
-                                            <%
-                                                }
-                                            %>
-                                        </logic:notEqual>
-                                        <logic:equal name="infirmaryView_isOscar" value="false">
-                                            <%String prID = "1";%>
-                                            <logic:present name="infirmaryView_programId">
-                                                <% prID = (String) session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID);%>
-                                            </logic:present>
-                                            <logic:iterate id="pb" name="infirmaryView_programBeans"
-                                                           type="org.apache.struts.util.LabelValueBean">
-                                                <%
-                                                    if (pb.getValue().equals(prID)) {
-                                                %>
-                                                <b><label><%=pb.getLabel()%>
-                                                </label></b>
-                                                <%
-                                                    }
-                                                %>
-                                            </logic:iterate>
-                                        </logic:equal>
+                                                    <input type="radio" name="flipview" class="noprint"
+                                                           onclick="goFilpView('${curProvider_no[nProvider]}')"
+                                                           title="Flip view" />
+
+                                                    <a href="#"
+                                                       onclick="goZoomView('${curProvider_no[nProvider]}', '${fn:escapeXml(curProviderName[nProvider])}')"
+                                                       ondblclick="goFilpView('${curProvider_no[nProvider]}')"
+                                                       title="<bean:message key='provider.appointmentProviderAdminDay.zoomView'/>">
+                                                        <c:out value="${curProviderName[nProvider]} (${appointmentCount}) " />
+                                                    </a>
+
+                                                    <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER" defaultVal="yes">
+                                                        <a id="expandReason" href="#"
+                                                           onclick="return toggleReason('${curProvider_no[nProvider]}');"
+                                                           title="<bean:message key='provider.appointmentProviderAdminDay.expandreason'/>">*</a>
+                                                    </oscar:oscarPropertiesCheck>
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                            <c:if test="${!userAvail}">
+                                                [<bean:message key="provider.appointmentProviderAdminDay.msgNotOnSched"/>]
+                                            </c:if>
+                                        </c:if>
+
+                                        <c:if test="${infirmaryView_isOscar == 'false'}">
+                                            <c:set var="prID" value="1" scope="page" />
+
+                                            <c:if test="${not empty infirmaryView_programId}">
+                                                <c:set var="prID" value="${sessionScope[SessionConstants.CURRENT_PROGRAM_ID]}" />
+                                            </c:if>
+
+                                            <c:forEach var="pb" items="${infirmaryView_programBeans}">
+                                                <c:if test="${pb.value == prID}">
+                                                    <b><label>${pb.label}</label></b>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:if>
                                         <!-- caisi infirmary view extension modify end ffffffffffffffff-->
                                     </td>
                                 </tr>
@@ -1744,8 +1708,8 @@
                                             <jsp:include page="infirmarydemographiclist.jspf"/>
                                         </caisi:isModuleLoad>
 
-                                        <logic:notEqual name="infirmaryView_isOscar" value="false">
-                                            <!-- caisi infirmary view exteion add end ffffffffffffffffff-->
+                                        <c:if test="${infirmaryView_isOscar != 'false'}">
+                                        <!-- caisi infirmary view exteion add end ffffffffffffffffff-->
                                             <!-- =============== following block is the original oscar code. -->
                                             <!-- table for hours of day start -->
                                             <table id="providerSchedule" bgcolor="<%=userAvail?"#486ebd":"silver"%>">
@@ -2396,7 +2360,7 @@
                                             </table>
                                             <!-- end table for each provider schedule display -->
                                             <!-- caisi infirmary view extension add fffffffffff-->
-                                        </logic:notEqual>
+                                        </c:if>
                                         <!-- caisi infirmary view extension add end fffffffffffffff-->
 
                                     </td>

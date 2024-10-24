@@ -81,28 +81,24 @@
                         key="oscarEncounter.oscarMeasurements.typedescription"/></th>
                 <th align="left" class="Header" width="50"></th>
             </tr>
-            <logic:present name="measurementsData">
-                <logic:iterate id="data" name="measurementsData"
-                               property="measurementsDataVector"
-                               type="oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean" indexId="ctr">
+            <c:if test="${not empty measurementsData}">
+                <c:forEach var="data" items="${measurementsData.measurementsDataVector}" varStatus="ctr">
                     <tr class="data">
-                        <td width="20"><bean:write name="data" property="type"/></td>
-                        <td width="200"><bean:write name="data"
-                                                    property="typeDescription"/></td>
+                        <td width="20">${data.type}</td>
+                        <td width="200">${data.typeDescription}</td>
                         <td width="50"><a href="#"
                                           name='<bean:message key="oscarEncounter.Index.oldMeasurements"/>'
-                                          onClick="popupPage(300,800,'SetupDisplayHistory.do?type=<bean:write
-                                                  name="data" property="type"/>'); return false;">more...</a></td>
+                                          onClick="popupPage(300,800,'SetupDisplayHistory.do?type=${data.type}'); return false;">more...</a></td>
                     </tr>
-                </logic:iterate>
-            </logic:present>
+                </c:forEach>
+            </c:if>
         </table>
 
         <input type="button" name="Button" value="<bean:message key="global.btnPrint"/>" onClick="window.print()">
         <input type="button" name="Button" value="<bean:message key="global.btnClose"/>" onClick="window.close()">
-        <logic:present name="type">
-            <input type="hidden" name="type" value="<bean:write name="type" />"/>
-        </logic:present>
+        <c:if test="${not empty type}">
+            <input type="hidden" name="type" value="${type}"/>
+        </c:if>
 
         <%
             if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {

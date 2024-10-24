@@ -40,12 +40,12 @@
 %>
 
 <%@ page import="java.util.*,oscar.oscarReport.data.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
-<html:html lang="en">
+<html lang="en">
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -76,7 +76,7 @@
     </script>
     <body vlink="#0000FF" class="BodyStyle">
 
-    <html:form action="/oscarReport/RptByExamplesFavorite.do">
+    <form action="/oscarReport/RptByExamplesFavorite.do">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
                 <td class="MainTableTopRowLeftColumn"><bean:message
@@ -106,25 +106,20 @@
                         <input type="hidden" name="newQuery"/>
                         <input type="hidden" name="toDelete" value="false"/>
                         <input type="hidden" name="id" value="error"/>
-                        <logic:iterate id="favorite" name="allFavorites"
-                                       property="favoriteVector">
+                        <c:forEach var="favorite" items="${allFavorites.favoriteVector}">
                         <tr class="data">
-                            <td><bean:write name="favorite" property="queryName"/></td>
-                            <td><bean:write name="favorite" property="query"/></td>
+                            <td><c:out value="${favorite.queryName}"/></td>
+                            <td><c:out value="${favorite.query}"/></td>
                             <td><input type="button" name="editButton"
                                        value="<bean:message key='oscarReport.RptByExample.MsgEdit'/>"
-                                       onClick="javascript:set('<bean:write name="favorite"
-                                                                            property="queryWithEscapeChar"/>','
-                                           <bean:write name="favorite"
-                                                       property="queryName"/>'); submit(); return false;"/><input
+                                       onClick="javascript:set('${favorite.queryWithEscapeChar}','${favorite.queryName}'); submit(); return false;"/><input
                                     type="button" name="deleteButton"
                                     value="<bean:message key='oscarReport.RptByExample.MsgDelete'/>"
-                                    onClick="javascript:confirmDelete('<bean:write name="favorite"
-                                                                                   property="id"/>'); return false;"/>
+                                    onClick="javascript:confirmDelete('${favorite.id}'); return false;"/>
                             </td>
                 </td>
             </tr>
-            </logic:iterate>
+            </c:forEach>
             <tr>
                 <td><input type="button"
                            value="<bean:message key='global.btnClose'/>"

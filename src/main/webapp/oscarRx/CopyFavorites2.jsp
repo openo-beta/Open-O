@@ -23,9 +23,9 @@
     Ontario, Canada
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.FavoritesDao" %>
@@ -45,19 +45,18 @@
         <title><bean:message key="SearchDrug.title.CopyFavorites"/></title>
         <html:base/>
 
-        <logic:notPresent name="RxSessionBean" scope="session">
-            <logic:redirect href="error.html"/>
-        </logic:notPresent>
-        <logic:present name="RxSessionBean" scope="session">
-            <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                         name="RxSessionBean" scope="session"/>
-            <logic:equal name="bean" property="valid" value="false">
-                <logic:redirect href="error.html"/>
-            </logic:equal>
-        </logic:present>
-        <%
-            oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
-        %>
+        <c:choose>
+            <c:when test="${empty RxSessionBean}">
+                <c:redirect url="error.html"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="bean" value="${RxSessionBean}" scope="page"/>
+                <c:if test="${not bean.valid}">
+                    <c:redirect url="error.html"/>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+        <c:set var="bean" value="${RxSessionBean}" scope="page"/>
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
 
@@ -68,17 +67,18 @@
 
         int i, j;
 
-        String providerNo = bean.getProviderNo();
-        boolean share = false;
-        FavoritesPrivilege fp = favoritesPrivilegeDao.findByProviderNo(providerNo);
-        if (fp != null) {
-            share = fp.isOpenToPublic();
-        }
+        <c:set var="providerNo" value="${bean.providerNo}" />
+        <c:set var="share" value="false" />
+        <c:set var="fp" value="${favoritesPrivilegeDao.findByProviderNo(providerNo)}" />
+        <c:if test="${not empty fp}">
+            <c:set var="share" value="${fp.openToPublic}" />
+        </c:if>
 
-        List<String> allProviders = favoritesPrivilegeDao.getProviders();
-        String copyProviderNo = "";
-        if (request.getAttribute("copyProviderNo") != null)
-            copyProviderNo = request.getAttribute("copyProviderNo").toString();
+        <c:set var="allProviders" value="${favoritesPrivilegeDao.getProviders()}" />
+        <c:set var="copyProviderNo" value="" />
+        <c:if test="${not empty requestScope.copyProviderNo}">
+            <c:set var="copyProviderNo" value="${requestScope.copyProviderNo}" />
+        </c:if>
     %>
 
 
@@ -169,14 +169,11 @@
 
                                             </td>
                                         </tr>
-                                        <%
-                                            String style;
-                                            int count = (favoritesDao.findByProviderNo((String) request.getAttribute("copyProviderNo"))).size();
-                                            for (i = 0; i < count; i++) {
-                                                Favorites fav = favoritesDao.findByProviderNo(copyProviderNo).get(i);
-                                                boolean isCustom = fav.getGcnSeqNo() == 0;
-                                                style = "style='background-color:#F5F5F5'";
-                                        %>
+                                        <c:set var="count" value="${favoritesDao.findByProviderNo(copyProviderNo).size()}" />
+                                        <c:forEach var="i" begin="0" end="${count - 1}">
+                                            <c:set var="fav" value="${favoritesDao.findByProviderNo(copyProviderNo).get(i)}" />
+                                            <c:set var="isCustom" value="${fav.gcnSeqNo == 0}" />
+                                            <c:set var="style" value="style='background-color:#F5F5F5'" />
                                         <tr>
                                             <td>
                                                 <input type="hidden" name="countFavorites" value="<%=count%>"/>

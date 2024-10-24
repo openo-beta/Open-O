@@ -48,22 +48,20 @@
                     height: 100%; width: 100%; overflow: auto;" id="scrollBar">
 
 
-                <logic:iterate id="module" property="modules" name="lookupTableListForm"
-                               type="com.quatro.model.LookupCodeValue">
+                <c:forEach var="module" items="${lookupTableListForm.modules}">
                     <UL>
                         <li>
                             <c:out value="${module.description}"></c:out>
                             <ul>
-                                <logic:iterate id="lkTable" property="associates" name="module"
-                                               type="com.quatro.model.LookupCodeValue">
+                                <c:forEach var="lkTable" items="${module.associates}">
                                     <li><html:link action="/Lookup/LookupCodeList.do" paramName="lkTable"
                                                    paramProperty="code" paramId="id">
                                         <bean:write name="lkTable" property="description"/></html:link></li>
-                                </logic:iterate>
+                                </c:forEach>
                             </ul>
                         </li>
                     </UL>
-                </logic:iterate>
+                </c:forEach>
 
 
             </div>

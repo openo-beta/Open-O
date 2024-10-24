@@ -149,19 +149,18 @@
                     <input type="hidden" name="action" value="NA"/>
                     <html:select property="quicklistname" styleClass="sel">
                         <option value="">Add Dx QuickList</option>
-                        <logic:iterate id="quickLists" name="allQuickLists" property="dxQuickListBeanVector">
-                            <option value="<bean:write name="quickLists" property="quickListName"/>" <bean:write
-                                    name="quickLists" property="lastUsed"/>>
-                                <bean:write name="quickLists" property="quickListName"/>
+                        <c:forEach var="quickLists" items="${allQuickLists.dxQuickListBeanVector}">
+                            <option value="${quickLists.quickListName}" ${quickLists.lastUsed}>
+                                ${quickLists.quickListName}
                             </option>
-                        </logic:iterate>
+                        </c:forEach>
                     </html:select>
                     OR
                     <html:select property="codesystem" styleClass="sel" styleId="codingSystem">
                         <option value="">Select Coding System</option>
-                        <logic:iterate id="codingSys" name="codingSystem" property="codingSystems">
-                            <option value="<bean:write name="codingSys"/>"><bean:write name="codingSys"/></option>
-                        </logic:iterate>
+                        <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
+                            <option value="${codingSys}">${codingSys}</option>
+                        </c:forEach>
                     </html:select>
                     <input type="text" id="codesearch" placeholder="search description" name="codesearch"
                            class="span4 jsonDxSearch"/>
@@ -190,27 +189,27 @@
             <div class="row-fluid">
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_0" <%="patientRegistedDistincted".equals(radiostatus)?"checked":""%>
+                           id="SearchBy_0" <c:if test="${radiostatus == 'patientRegistedDistincted'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDistincted'">
                     ALL(distincted)</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_1" <%="patientRegistedAll".equals(radiostatus)?"checked":""%>
+                           id="SearchBy_1" <c:if test="${radiostatus == 'patientRegistedAll'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedAll'">
                     ALL</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_0" <%="patientRegistedActive".equals(radiostatus)?"checked":""%>
+                           id="SearchBy_0" <c:if test="${radiostatus == 'patientRegistedActive'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedActive'">
                     Active</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_0" <%="patientRegistedDeleted".equals(radiostatus)?"checked":""%>
+                           id="SearchBy_0" <c:if test="${radiostatus == 'patientRegistedDeleted'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDeleted'">
                     Deleted</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_1" <%="patientRegistedResolve".equals(radiostatus)?"checked":""%>
+                           id="SearchBy_1" <c:if test="${radiostatus == 'patientRegistedResolve'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedResolve'">
                     Resolved</label>
 

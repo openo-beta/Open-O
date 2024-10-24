@@ -26,7 +26,7 @@
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
@@ -42,7 +42,7 @@
 <%@ page import="java.util.*,oscar.oscarReport.data.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
 <html:html lang="en">
@@ -98,20 +98,18 @@
 
                     <html:form action="/oscarReport/RptByExamplesFavorite.do">
                         <input type="hidden" name="newQuery" value="error"/>
-                        <logic:iterate id="queryInfo" name="allQueries"
-                                       property="queryVector">
+                        <c:forEach var="queryInfo" items="${allQueries.queryVector}">
                             <tr class="data">
-                                <td><bean:write name="queryInfo" property="date"/></td>
-                                <td><bean:write name="queryInfo" property="query"/></td>
-                                <td><bean:write name="queryInfo" property="providerLastName"/>,
-                                    <bean:write name="queryInfo" property="providerFirstName"/></td>
-                                <td><input type="button"
-                                           value="<bean:message key='oscarReport.RptByExample.MsgAddToFavorite'/>"
-                                           onclick="javascript:set('<bean:write name="queryInfo"
-                                                                                property="queryWithEscapeChar"/>'); submit();"/>
+                                <td><c:out value="${queryInfo.date}"/></td>
+                                <td><c:out value="${queryInfo.query}"/></td>
+                                <td><c:out value="${queryInfo.providerLastName}"/>, <c:out value="${queryInfo.providerFirstName}"/></td>
+                                <td>
+                                    <input type="button"
+                                           value="${msg['oscarReport.RptByExample.MsgAddToFavorite']}"
+                                           onclick="javascript:set('${fn:escapeXml(queryInfo.queryWithEscapeChar)}'); submit();"/>
                                 </td>
                             </tr>
-                        </logic:iterate>
+                        </c:forEach>
                     </html:form>
                 </table>
             </td>

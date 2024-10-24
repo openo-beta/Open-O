@@ -23,9 +23,9 @@
     Ontario, Canada
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page
         import="oscar.oscarRx.data.*,java.util.*,org.oscarehr.common.dao.DrugReasonDao,org.oscarehr.common.model.DrugReason" %>
@@ -196,7 +196,7 @@
                     <legend>Dx Quick List</legend>
 
                         <%-- DX QUICK LIST - returns a table
-                            <logic:equal name="showQuicklist" value="true" scope="page">
+                            <c:if test="${showQuicklist}">
                             <tr>
                                 <td>
                                 <jsp:include page="dxQuickList.jsp" >
@@ -207,7 +207,7 @@
                                 </jsp:include>
                                 </td>
                             </tr>
-                            </logic:equal>--%>
+                            </c:if>--%>
                         <%-- DX QUICK LIST --%>
                 </fieldset>
 

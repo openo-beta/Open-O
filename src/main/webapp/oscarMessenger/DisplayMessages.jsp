@@ -25,9 +25,9 @@
 --%>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="oscar.oscarDemographic.data.DemographicData" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -86,15 +86,15 @@
     int pageNum = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
 %>
 
-<logic:notPresent name="msgSessionBean" scope="session">
-    <logic:redirect href="index.jsp"/>
-</logic:notPresent>
-<logic:present name="msgSessionBean" scope="session">
+<c:if test="${empty msgSessionBean}">
+    <c:redirect url="index.jsp"/>
+</c:if>
+<c:if test="${not empty msgSessionBean}">
     <bean:define id="bean" type="oscar.oscarMessenger.pageUtil.MsgSessionBean" name="msgSessionBean" scope="session"/>
-    <logic:equal name="bean" property="valid" value="false">
-        <logic:redirect href="index.jsp"/>
-    </logic:equal>
-</logic:present>
+    <c:if test="${bean.valid == 'false'}">
+        <c:redirect url="index.jsp"/>
+    </c:if>
+</c:if>
 <%
     oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) pageContext.findAttribute("bean");
 %>

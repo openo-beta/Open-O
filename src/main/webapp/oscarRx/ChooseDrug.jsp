@@ -45,15 +45,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*, oscar.OscarProperties" %>
-<logic:notPresent name="RxSessionBean" scope="session">
-    <logic:redirect href="error.html"/>
-</logic:notPresent>
-<logic:present name="RxSessionBean" scope="session">
+<c:if test="${empty RxSessionBean}">
+    <% response.sendRedirect("error.html"); %>
+</c:if>
+<c:if test="${not empty RxSessionBean}">
     <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean" name="RxSessionBean" scope="session"/>
-    <logic:equal name="bean" property="valid" value="false">
-        <logic:redirect href="error.html"/>
-    </logic:equal>
-</logic:present>
+    <c:if test="${bean.valid == false}">
+        <% response.sendRedirect("error.html"); %>
+    </c:if>
+</c:if>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html:html lang="en">
     <head>

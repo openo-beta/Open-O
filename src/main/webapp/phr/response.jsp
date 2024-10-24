@@ -29,9 +29,7 @@ The taglib directive below imports the JSTL library. If you uncomment it,
 you must also add the JSTL library to the project. The Add Library... action
 on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 --%>
-<%--
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
---%>
 
 <%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
@@ -157,14 +155,14 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
     <div class="myoscarLoginElementNoAuth">
         <form action="<%=request.getContextPath()%>/phr/Login.do" name="phrLogin" method="POST"
               style="margin-bottom: 0px;">
-            <logic:present name="phrUserLoginErrorMsg">
-                <div class="phrLoginErrorMsg"><font color="red"><bean:write name="phrUserLoginErrorMsg"/></font>
-                <logic:present name="phrTechLoginErrorMsg">
+            <c:if test="${not empty phrUserLoginErrorMsg}">
+                <div class="phrLoginErrorMsg"><font color="red">${phrUserLoginErrorMsg}</font>
+                <c:if test="${not empty phrTechLoginErrorMsg}">
                     <a href="javascript:;"
-                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More
+                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[${phrTechLoginErrorMsg} </br>]">More
                         Info</a></div>
-                </logic:present>
-            </logic:present>
+                </c:if>
+            </c:if>
             Status: <b>Not logged in</b><br/>
             <%=providerName%> password: <input type="password" id="phrPassword" name="phrPassword"
                                                style="font-size: 8px; width: 40px;"><br/>

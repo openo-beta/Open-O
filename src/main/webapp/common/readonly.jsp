@@ -120,22 +120,22 @@
         hashVal0 = getHash();
     }
 </script>
-<logic:notPresent name="isReadOnly">
+<c:if test="${empty isReadOnly}">
     <script type="text/javascript">
         readOnly = false;
         needToConfirm = true;
         window.onbeforeunload = confirmClose;
     </script>
 </logic:notPresent>
-<logic:present name="isReadOnly">
-    <logic:equal name="isReadOnly" value="true">
+<c:if test="${not empty isReadOnly}">
+    <c:if test="${isReadOnly eq 'true'}">
         <script type="text/javascript">
             readOnly = true;
             needToConfirm = false;
             setReadOnly();
         </script>
     </logic:equal>
-    <logic:equal name="isReadOnly" value="false">
+    <c:if test="${isReadOnly eq 'false'}">
         <script type="text/javascript">
             readOnly = false;
             needToConfirm = true;

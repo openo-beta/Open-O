@@ -104,13 +104,13 @@
 <body>
 <div style="font-size: 16px; font-weight: bold;">Guideline assessment: <c:out value="${patientName}"/></div>
 <br>
-<logic:present name="reasons">
+<c:if test="${not empty reasons}">
     <c:forEach items="${reasons}" var="reason">
                     <span class="good" style="font-size: 12px; font-weight: bold;">
                     <c:out value="${reason}"/><br/>
                     </span>
     </c:forEach>
-</logic:present>
+</c:if>
 <table style="font-size: 10px;  border-top: 1px solid black; border-collapse: collapse; margin-top: 15px;">
     <tr>
         <th>Title:</th>

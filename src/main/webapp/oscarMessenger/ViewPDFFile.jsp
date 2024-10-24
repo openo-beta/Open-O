@@ -27,9 +27,9 @@
 <%@ page
         import="oscar.oscarMessenger.docxfer.send.*, oscar.oscarMessenger.docxfer.util.*, oscar.util.*" %>
 <%@ page import="java.util.*, org.w3c.dom.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -45,17 +45,17 @@
     }
 %>
 
-<logic:notPresent name="msgSessionBean" scope="session">
-    <logic:redirect href="index.jsp"/>
-</logic:notPresent>
-<logic:present name="msgSessionBean" scope="session">
+<c:if test="${empty sessionScope.msgSessionBean}">
+    <% response.sendRedirect("index.jsp"); %>
+</c:if>
+<c:if test="${not empty sessionScope.msgSessionBean}">
     <bean:define id="bean"
                  type="oscar.oscarMessenger.pageUtil.MsgSessionBean"
                  name="msgSessionBean" scope="session"/>
-    <logic:equal name="bean" property="valid" value="false">
-        <logic:redirect href="index.jsp"/>
-    </logic:equal>
-</logic:present>
+    <c:if test="${bean.valid == false}">
+        <% response.sendRedirect("index.jsp"); %>
+    </c:if>
+</c:if>
 <%
     String pdfAttch = (String) request.getAttribute("PDFAttachment");
     String id = request.getParameter("id");

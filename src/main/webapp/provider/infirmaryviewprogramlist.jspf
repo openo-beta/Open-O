@@ -41,7 +41,7 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 }
 </script>
 
-<logic:notEqual name="infirmaryView_isOscar" value="true">
+<c:if test="${infirmaryView_isOscar != 'true'}">
 	<br>
 	<b>Program:</b>
 	<select id="bedprogram_no" name="bedprogram_no"
@@ -51,21 +51,18 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 	if (programBean.size()==0 || programId.equalsIgnoreCase("0")){%>
 		<option value="0" selected>-No assigned program-</option>
 		<%}else{ %>
-		<logic:iterate id="pb" name="infirmaryView_programBeans"
-			type="org.apache.struts.util.LabelValueBean">
-			<logic:equal name="infirmaryView_programId"
-				value="<%=pb.getValue()%>">
+		<c:forEach var="pb" items="${infirmaryView_programBeans}">
+			<c:if test="${infirmaryView_programId == pb.value}">
 				<option value="<%=pb.getValue()%>" selected><%= pb.getLabel() %></option>
-			</logic:equal>
-			<logic:notEqual name="infirmaryView_programId"
-				value="<%=pb.getValue()%>">
+			</c:if>
+			<c:if test="${infirmaryView_programId != pb.value}">
 				<option value="<%=pb.getValue()%>"><%= pb.getLabel() %></option>
-			</logic:notEqual>
-		</logic:iterate>
+			</c:if>
+		</c:forEach>
 		<%} %>
 	</select>
-</logic:notEqual>
-<logic:notEqual name="infirmaryView_isOscar" value="false">
+</c:if>
+<c:if test="${infirmaryView_isOscar != 'false'}">
 	<br>
 		<b>Program:</b>
 		<select id="bedprogram_no" name="bedprogram_no"
@@ -75,22 +72,19 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 	if (programBean.size()==0 || programId.equalsIgnoreCase("0")){%>
 			<option value="0" selected>-No assigned program-</option>
 			<%}else{ %>
-			<logic:iterate id="pb" name="infirmaryView_programBeans"
-				type="org.apache.struts.util.LabelValueBean">
-				<logic:equal name="infirmaryView_programId"
-					value="<%=pb.getValue()%>">
+			<c:forEach var="pb" items="${infirmaryView_programBeans}">
+				<c:if test="${infirmaryView_programId == pb.value}">
 					<option value="<%=pb.getValue()%>" selected><%= pb.getLabel() %></option>
-				</logic:equal>
-				<logic:notEqual name="infirmaryView_programId"
-					value="<%=pb.getValue()%>">
+				</c:if>
+				<c:if test="${infirmaryView_programId != pb.value}">
 					<option value="<%=pb.getValue()%>"><%= pb.getLabel() %></option>
-				</logic:notEqual>
-			</logic:iterate>
+				</c:if>
+			</c:forEach>
 			<%} %>
 		</select>
-</logic:notEqual>
+</c:if>
 
-<logic:notEqual name="infirmaryView_isOscar" value="true">
+<c:if test="${infirmaryView_isOscar != 'true'}">
   &nbsp;
   <select id="program_clientstatus" name="program_clientstatus"
 		onchange="submitStatus(this)">
@@ -124,9 +118,9 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 			Oscar View</a>
 		</caisi:ProgramExclusiveView>
 	</caisi:isModuleLoad>
-</logic:notEqual>
+</c:if>
 
-<logic:equal name="infirmaryView_isOscar" value="true">
+<c:if test="${infirmaryView_isOscar == 'true'}">
 	<caisi:ProgramExclusiveView providerNo="<%=((LoggedInInfo)LoggedInInfo.getLoggedInInfoFromSession(request)).getLoggedInProviderNo()%>" value="no">
 		<caisi:isModuleLoad moduleName="oscarClinic" reverse="true">
 		<div align="right"><a
@@ -134,7 +128,7 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 		Case Management View</a></div>
 		</caisi:isModuleLoad>
 	</caisi:ProgramExclusiveView>
-</logic:equal>
+</c:if>
 </td>
 </tr>
 </table>

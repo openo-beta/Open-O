@@ -172,13 +172,15 @@
     <body bgproperties="fixed">
     <div id="maincontent" class="flex-container">
 
-        <logic:equal value="history" parameter="warning">
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+        <c:if test="${param.warning eq 'history'}">
             <script type="text/javascript">
                 if (!confirm("Warning: older version.\n\nContents of this form will overwrite newer versions if saved.\n\nSelect 'OK' to continue.")) {
                     window.close();
                 }
             </script>
-        </logic:equal>
+        </c:if>
 
         <div id="content_bar" class="innertube">
             <html:form action="/form/BCAR2020">

@@ -38,9 +38,9 @@
     }
 %>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.common.model.Allergy" %>
 <html:html lang="en">
@@ -55,16 +55,15 @@
         <title><bean:message key="ChooseAllergy.title"/></title>
         <html:base/>
 
-        <logic:notPresent name="RxSessionBean" scope="session">
-            <logic:redirect href="error.html"/>
-        </logic:notPresent>
-        <logic:present name="RxSessionBean" scope="session">
-            <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                         name="RxSessionBean" scope="session"/>
-            <logic:equal name="bean" property="valid" value="false">
-                <logic:redirect href="error.html"/>
-            </logic:equal>
-        </logic:present>
+        <c:if test="${empty RxSessionBean}">
+            <jsp:forward page="error.html"/>
+        </c:if>
+        <c:if test="${not empty RxSessionBean}">
+            <c:set var="bean" value="${RxSessionBean}" scope="page"/>
+            <c:if test="${bean.valid == 'false'}">
+                <jsp:forward page="error.html"/>
+            </c:if>
+        </c:if>
 
         <%
             oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
@@ -220,9 +219,8 @@
                                 Hashtable drugClassHash = (Hashtable) request.getAttribute("drugClasses");
                             %>
                             <div class="LeftMargin">
-                                <logic:notPresent
-                                        name="allergies">Search returned no results. Revise your search and try again.</logic:notPresent>
-                                <logic:present name="allergies">
+                                <c:if test="${empty allergies}">Search returned no results. Revise your search and try again.</c:if>
+                                <c:if test="${not empty allergies}">
 
 
                                     <%

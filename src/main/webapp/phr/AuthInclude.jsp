@@ -33,13 +33,10 @@ The taglib directive below imports the JSTL library. If you uncomment it,
 you must also add the JSTL library to the project. The Add Library... action
 on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 --%>
-<%--
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
---%>
 <%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%@ page import="oscar.oscarProvider.data.ProviderData" %>
 
@@ -50,10 +47,8 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
     ProviderData providerData = new ProviderData();
     providerData.setProviderNo(providerNo);
     String providerPhrId = providerData.getMyOscarId();
-//this particular <logic:present statement does not search parameters in request scope for some reason
     pageContext.setAttribute("phrUserLoginErrorMsg", request.getAttribute("phrUserLoginErrorMsg"));
     pageContext.setAttribute("phrTechLoginErrorMsg", request.getAttribute("phrTechLoginErrorMsg"));
-
 %>
 
 <style type="text/css">
@@ -94,9 +89,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         color: red;
     }
 </style>
-<%
-    if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {
-%>
+<c:if test="${MyOscarUtils.isMyOscarEnabled(sessionScope.user)}">
 <div class="myoscarLoginElementAuth">
     Status: <b>Logged in as <%=providerName%>
 </b><br/>
@@ -105,27 +98,26 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         <center><a href="javascript:;" onclick="document.forms['phrLogout'].submit();">Logout</a></center>
     </form>
 </div>
-<%
-} else {
-%>
+</c:if>
+<c:if test="${!MyOscarUtils.isMyOscarEnabled(sessionScope.user)}">
 <div class="myoscarLoginElementNoAuth">
     <form action="<%=request.getContextPath()%>/phr/Login.do" name="phrLogin" method="POST">
         <%
             request.setAttribute("phrUserLoginErrorMsg", request.getParameter("phrUserLoginErrorMsg"));
-            request.setAttribute("phrTeAttributechLoginErrorMsg", request.getParameter("phrTechLoginErrorMsg"));
+            request.setAttribute("phrTechLoginErrorMsg", request.getParameter("phrTechLoginErrorMsg"));
         %>
-        <logic:present name="phrUserLoginErrorMsg">
-            <div class="phrLoginErrorMsg" style="color: red;"><bean:write name="phrUserLoginErrorMsg"/>
-                <logic:present name="phrTechLoginErrorMsg">
+        <c:if test="${!empty phrUserLoginErrorMsg}">
+            <div class="phrLoginErrorMsg" style="color: red;">${phrUserLoginErrorMsg}
+                <c:if test="${not empty phrTechLoginErrorMsg}">
                     <a href="javascript:;"
-                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More
+                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[${phrTechLoginErrorMsg} </br>]">More
                         Info</a>
-                </logic:present>
+                </c:if>
             </div>
-        </logic:present>
-        <logic:notPresent name="phrUserLoginErrorMsg">
+        </c:if>
+        <c:if test="${empty phrUserLoginErrorMsg}">
             Login Required.
-        </logic:notPresent>
+        </c:if>
         Status: <b>Not logged in</b><br/>
         <%=providerName%> password: <input type="password" id="phrPassword" name="phrPassword"
                                            style="font-size: 8px; width: 40px;"> <a
@@ -135,7 +127,5 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
     </form>
 </div>
 <script type="text/javascript" src="<%=request.getContextPath()%>/share/javascript/boxover.js"></script>
-<%
-    }
-%>
+</c:if>
         

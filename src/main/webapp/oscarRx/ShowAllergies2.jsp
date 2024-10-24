@@ -63,15 +63,15 @@
     PartialDateDao partialDateDao = (PartialDateDao) SpringUtils.getBean(PartialDateDao.class);
 %>
 
-<logic:notPresent name="RxSessionBean" scope="session">
-    <logic:redirect href="error.html"/>
-</logic:notPresent>
-<logic:present name="RxSessionBean" scope="session">
+<c:if test="${empty RxSessionBean}">
+    <% response.sendRedirect("error.html"); %>
+</c:if>
+<c:if test="${not empty RxSessionBean}">
     <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean" name="RxSessionBean" scope="session"/>
-    <logic:equal name="bean" property="valid" value="false">
-        <logic:redirect href="error.html"/>
-    </logic:equal>
-</logic:present>
+    <c:if test="${bean.valid == 'false'}">
+        <% response.sendRedirect("error.html"); %>
+    </c:if>
+</c:if>
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_ALLERGY;

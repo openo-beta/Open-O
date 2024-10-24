@@ -24,7 +24,9 @@
 
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -131,16 +133,16 @@
     %>
     <h3><bean:message key="demographic.demographiccohort.currentpatientset"/></h3>
     <ul>
-        <logic:iterate id="set" name="curSets">
+        <c:forEach var="set" items="${curSets}">
             <li><c:out value="${set}"/></li>
-        </logic:iterate>
+        </c:forEach>
     </ul>
     <h3><bean:message key="demographic.demographiccohort.addtopatientset"/></h3>
     <ul>
-        <logic:iterate id="set" name="arrDemoSets">
+        <c:forEach var="set" items="${arrDemoSets}">
             <li><a href="demographicCohort.jsp?demographic_no=<%=demoNo%>&setName=<c:out value="${set}"/>"><c:out
                     value="${set}"/></a></li>
-        </logic:iterate>
+        </c:forEach>
     </ul>
     <br>
     <form method="get" action="demographicCohort.jsp">

@@ -132,8 +132,8 @@
     </tr>
 </table>
 
-<logic:messagesPresent message="true">
-    <html:messages id="message" message="true" bundle="casemgmt">
+<c:if test="${not empty requestScope.messages}">
+    <c:forEach var="message" items="${requestScope.messages}">
         <div style="color: blue"><I><c:out value="${message}"/></I></div>
-    </html:messages>
-</logic:messagesPresent>
+    </c:forEach>
+</c:if>

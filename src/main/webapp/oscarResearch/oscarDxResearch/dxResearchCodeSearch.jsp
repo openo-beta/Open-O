@@ -24,9 +24,9 @@
 
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <%
     String user_no;
@@ -107,26 +107,17 @@
                 String color = "#EEEEFF";
                 int Count = 0;
             %>
-            <logic:iterate id="code" name="allMatchedCodes"
-                           property="dxCodeSearchBeanVector">
-                <%
-                    if (Count == 0) {
-                        Count = 1;
-                        color = "#FFFFFF";
-                    } else {
-                        Count = 0;
-                        color = "#EEEEFF";
-                    }
-                %>
-                <tr bgcolor="<%=color%>">
-                    <td><input type="checkbox" name="searchCodes"
-                               value="<bean:write name='code' property='dxSearchCode'/>"
-                            <bean:write name='code' property='exactMatch'/> /><bean:write
-                            name='code' property='dxSearchCode'/></td>
-                    <td><bean:write name='code' property='description'/></td>
+            <c:forEach var="code" items="${allMatchedCodes.dxCodeSearchBeanVector}" varStatus="loopStatus">
+                <c:set var="color" value="${loopStatus.index % 2 == 0 ? '#FFFFFF' : '#EEEEFF'}"/>
+                <tr bgcolor="${color}">
+                    <td>
+                        <input type="checkbox" name="searchCodes" value="${code.dxSearchCode}"
+                            ${code.exactMatch == 'true' ? 'checked' : ''} />
+                        <c:out value="${code.dxSearchCode}"/>
+                    </td>
+                    <td><c:out value="${code.description}"/></td>
                 </tr>
-                <% intCount++; %>
-            </logic:iterate>
+            </c:forEach>
             <% if (intCount == 0) { %>
             <tr bgcolor="<%=color%>">
                 <td colspan="2"><bean:message
@@ -137,15 +128,6 @@
             </tr>
             <% }%>
 
-                <%--
-              <% if (intCount == 1) { %>
-              <logic:iterate id="code" name="allMatchedCodes" property="dxCodeSearchBeanVector">
-                  <script LANGUAGE="JavaScript">
-                    CodeAttach('<bean:write name='code' property='dxSearchCode'/>');
-                  </script>
-              </logic:iterate>
-            <% } %>
-            --%>
         </table>
         <input type="button" name="confirm" value="Confirm"
                onclick="javascript:CodesAttach();"><input type="button"

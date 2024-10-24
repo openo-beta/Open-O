@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%--
 
 
@@ -29,21 +31,21 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="1"
        bgcolor="#C0C0C0">
 
-    <logic:messagesPresent>
+    <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.ERROR')}">
         <html:messages id="error" bundle="casemgmt">
             <tr>
                 <td class="error"><c:out value="${error}"/></td>
             </tr>
         </html:messages>
-    </logic:messagesPresent>
+    </c:if>
 
     <%-- Success Messages --%>
-    <logic:messagesPresent message="true">
+    <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.MESSAGE')}">
         <html:messages id="message" message="true" bundle="casemgmt">
             <tr>
                 <td class="message"><c:out value="${message}"/></td>
             </tr>
         </html:messages>
-    </logic:messagesPresent>
+    </c:if>
 
 </table>

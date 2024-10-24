@@ -23,9 +23,11 @@
 
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName2$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_tickler" rights="r" reverse="<%=true%>">
@@ -113,42 +115,48 @@
         </tr>
         <tr>
             <td class="fieldTitle">Consultation Requests</td>
-            <td class="fieldValue"><logic:present name="consultations">
-                <!-- Show Consultations here -->
-                <%
-                    int consultationSize = ((java.util.List) request.getAttribute("consultations")).size();
-                    if (consultationSize > 0) {
-                %>
-                <table border="1" cellspacing="2" cellpadding="1">
-                    <tr>
+            <td class="fieldValue">
+                <c:if test="${not empty consultations}">
+                    <!-- Show Consultations here -->
+                    <c:set var="consultationSize" value="${fn:length(consultations)}"/>
+                    <c:choose>
+                        <c:when test="${consultationSize > 0}">
+                            <table border="1" cellspacing="2" cellpadding="1">
+                                <tr>
+                                    <td align="left" class="fieldTitle">Referral Date</td>
+                                    <td align="left" class="fieldTitle">Name</td>
+                                    <td align="left" class="fieldTitle">Reason</td>
+                                </tr>
+                                <c:forEach var="current" items="${consultations}">
+                                    <tr>
+                                        <td>
+                                            <input type="radio" name="current_consultation" value="${current.requestId}"/>
+                                            <fmt:formatDate value="${current.referalDate}" dateStyle="short"/>
+                                        </td>
+                                        <td>
+                                            <c:out value="${current.professionalSpecialist.firstName}"/>&nbsp;
+                                            <c:out value="${current.professionalSpecialist.lastName}"/>
+                                        </td>
+                                        <td><c:out value="${current.reason}"/></td>
+                                    </tr>
+                                </c:forEach>
+                                <tr>
+                                    <td colspan="2">
+                                        <input type="button" value="Generate Tickler" onclick="javascript:generate_tickler()"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </c:when>
+                        <c:otherwise>
+                            No consultation requests were found for this Patient
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+                <c:if test="${empty consultations}">
+                    <input type="button" value="Populate" onclick="populate_consultation_requests()"/>
+                </c:if>
 
-                        <td align="left" class="fieldTitle">Referral Date</td>
-                        <td align="left" class="fieldTitle">Name</td>
-                        <td align="left" class="fieldTitle">Reason</td>
-                    </tr>
-                    <c:forEach var="current" items="${consultations}">
-                        <tr>
-                            <td><input type="radio" name="current_consultation"
-                                       value="<c:out value="${current.requestId}"/>"/> <fmt:formatDate
-                                    dateStyle="short" value="${current.referalDate}"/></td>
-                            <td><c:out
-                                    value="${current.professionalSpecialist.firstName}"/>&nbsp;<c:out
-                                    value="${current.professionalSpecialist.lastName}"/></td>
-                            <td><c:out value="${current.reason}"/></td>
-                        </tr>
-                    </c:forEach>
-                    <tr>
-                        <td colspan="2"><input type="button" value="Generate Tickler"
-                                               onclick="javascript:generate_tickler()"/></td>
-                    </tr>
-                </table>
-                <%} else { %>
-                No consultation requests were found for this Patient
-                <%} %>
-            </logic:present> <logic:notPresent name="consultations">
-                <input type="button" value="Populate"
-                       onclick="populate_consultation_requests()"/>
-            </logic:notPresent></td>
+            </td>
         </tr>
         <tr>
             <td class="fieldValue" colspan="3" align="left"><input

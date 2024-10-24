@@ -25,6 +25,7 @@
 --%>
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.*" %>
 <%@ page import="java.util.ResourceBundle"%>
 <%
@@ -116,12 +117,12 @@
                 <%=bundle.getString(providermsgEdit)%>
                 <html:form action="/setProviderStaleDate.do">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                    <logic:iterate name="viewChoices" id="viewChoice">
+                    <c:forEach var="viewChoice" items="${viewChoices}">
                         <html:multibox property="rxProfileViewProperty.valueArray">
                             <bean:write name="viewChoice" property="value"/>
                         </html:multibox>
                         <bean:write name="viewChoice" property="label"/>
-                    </logic:iterate>
+                    </c:forEach>
                     <br/>
                     <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
                 </html:form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>

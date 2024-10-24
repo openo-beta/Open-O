@@ -24,31 +24,28 @@
 --%>
 
 
-<%
-    boolean showMfhExport = false;
-    oscar.OscarProperties pros = oscar.OscarProperties.getInstance();
-    String mfhExport = pros.getProperty("MFH_UFC_EXPORT");
-    if (mfhExport != null && mfhExport.equalsIgnoreCase("true")) {
-        showMfhExport = true;
-    }
-%>
+<c:set var="showMfhExport" value="false"/>
+<c:set var="mfhExport" value="${oscar.OscarProperties.getInstance().getProperty('MFH_UFC_EXPORT')}"/>
+<c:if test="${not empty mfhExport and mfhExport.equalsIgnoreCase('true')}">
+    <c:set var="showMfhExport" value="true"/>
+</c:if>
 <%@ include file="/survey/taglibs.jsp" %>
 <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 <table width="100%">
-    <logic:messagesPresent message="true">
-        <html:messages id="message" message="true" bundle="survey">
+    <c:if test="${not empty messages}">
+        <c:forEach var="message" items="${messages}">
             <tr>
                 <td colspan="3" class="message"><c:out value="${message}"/></td>
             </tr>
-        </html:messages>
-    </logic:messagesPresent>
-    <logic:messagesPresent>
-        <html:messages id="error" bundle="survey">
+        </c:forEach>
+    </c:if>
+    <c:if test="${not empty errors}">
+        <c:forEach var="error" items="${errors}">
             <tr>
                 <td colspan="3" class="error"><c:out value="${error}"/></td>
             </tr>
-        </html:messages>
-    </logic:messagesPresent>
+        </c:forEach>
+    </c:if>
 </table>
 <br/>
 <display:table cellspacing="2" cellpadding="3" id="entry" name="surveys"
@@ -183,7 +180,7 @@ Export Form Data:&nbsp;
     </c:forEach>
 </select>
 
-<%if (showMfhExport) { %>
+<c:if test="${showMfhExport}">
 <br/><br/>
 Export Form Data (MFH):&nbsp;
 <select onchange="export_inverse_csv(this);">
@@ -192,7 +189,7 @@ Export Form Data (MFH):&nbsp;
         <option value="<c:out value="${f.id}"/>"><c:out value="${f.description}"/></option>
     </c:forEach>
 </select>
-<% } %>
+</c:if>
 
 <br/>
 <br/>

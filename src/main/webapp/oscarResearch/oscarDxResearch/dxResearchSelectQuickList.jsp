@@ -28,7 +28,7 @@
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="dxResearch.css">
 <html:html lang="en">
     <head>
@@ -71,13 +71,11 @@
                             <td align="left"><bean:message
                                     key="oscarResearch.oscarDxResearch.dxCustomization.pleaseSelectAQuickList"/>
                                 <html:select property="quickListName" style="width:200px">
-                                    <logic:iterate id="quickLists" name="allQuickLists"
-                                                   property="dxQuickListBeanVector">
-                                        <option
-                                                value="<bean:write name="quickLists" property="quickListName" />"
-                                                <bean:write name="quickLists" property="lastUsed"/>><bean:write
-                                                name="quickLists" property="quickListName"/></option>
-                                    </logic:iterate>
+                                    <c:forEach var="quickLists" items="${allQuickLists.dxQuickListBeanVector}">
+                                        <option value="${quickLists.quickListName}" ${quickLists.lastUsed == 'true' ? 'selected' : ''}>
+                                            <c:out value="${quickLists.quickListName}"/>
+                                        </option>
+                                    </c:forEach>
                                 </html:select></td>
                         </tr>
                         <tr>

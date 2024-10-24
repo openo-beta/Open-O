@@ -20,6 +20,8 @@
         <Quatro Group Software Systems inc.>  <OSCAR Team>
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/taglibs.jsp" %>
 <script type="text/javascript">
     function submitForm() {
@@ -69,11 +71,11 @@
         </tr>
         <tr>
             <td align="left" class="message">
-                <logic:messagesPresent message="true">
-                    <html:messages id="message" message="true" bundle="pmm">
+                <c:if test="${not empty message}">
+                    <c:forEach var="message" items="${message}">
                         <c:out escapeXml="false" value="${message}"/></br>
-                    </html:messages>
-                </logic:messagesPresent></td>
+                    </c:forEach>
+                </c:if></td>
         </tr>
         <tr>
             <td height="100%">
@@ -82,74 +84,72 @@
                     height: 100%; width: 100%; overflow: auto;" id="scrollBar">
                     <table width="100%">
 
-                        <logic:iterate id="field" name="lookupCodeEditForm" property="codeFields" indexId="fIndex"
-                                       type="com.quatro.model.FieldDefValue">
+                        <c:forEach var="field" items="${lookupCodeEditForm.codeFields}" varStatus="fIndex">
                             <tr>
                                 <td width="30%"><bean:write name="field" property="fieldDesc"/></td>
                                 <td>
-                                    <logic:equal name="field" property="fieldType" value="S">
-                                        <logic:equal name="field" property="editable" value="false">
+                                    <c:if test="${field.fieldType == 'S'}">
+                                        <c:if test="${field.editable == 'false'}">
                                             <bean:write name="field" property="val"/>
-                                            <logic:notEmpty name="field" property="valDesc">
+                                            <c:if test="${not empty field.valDesc}">
                                                 - <bean:write name="field" property="valDesc"/>
-                                            </logic:notEmpty>
+                                            </c:if>
                                             <html:hidden name="field" property="val" indexed="true"/>
-                                        </logic:equal>
-                                        <logic:equal name="field" property="editable" value="true">
-                                            <logic:empty name="field" property="lookupTable">
+                                        </c:if>
+                                        <c:if test="${field.editable == 'true'}">
+                                            <c:if test="${empty field.lookupTable}">
                                                 <html:text name="field" property="val" indexed="true"
                                                            style="{width:100%}"
                                                            maxlength="<%=field.getFieldLengthStr()%>"/>
                                             </logic:empty>
-                                            <logic:notEmpty name="field" property="lookupTable">
+                                            <c:if test="${not empty field.lookupTable}">
                                                 <html:hidden name="field" property="lookupTable" indexed="true"/>
                                                 <quatro:lookupTag name="field" tableName="<%=field.getLookupTable()%>"
                                                                   indexed="true" formProperty="lookupCodeEditForm"
                                                                   codeWidth="10%"
                                                                   codeProperty="val"
                                                                   bodyProperty="valDesc"></quatro:lookupTag>
-                                            </logic:notEmpty>
+                                            </c:if>
                                         </logic:equal>
                                     </logic:equal>
-                                    <logic:equal name="field" property="fieldType" value="D">
+                                    <c:if test="${field.fieldType == 'D'}">
                                         <bean:define id="dateVal" name="field" property="val"></bean:define>
-                                        <logic:equal name="field" property="editable" value="true">
+                                        <c:if test="${field.editable == 'true'}">
                                             <quatro:datePickerTag name="field" property="val" indexed="true"
                                                                   openerForm="lookupCodeEditForm" width="200px">
                                             </quatro:datePickerTag>
-                                        </logic:equal>
-                                        <logic:equal name="field" property="editable" value="false">
+                                        </c:if>
+                                        <c:if test="${field.editable == 'false'}">
                                             <bean:write name="field" property="val"/>
                                             <html:hidden name="field" property="val" indexed="true"/>
-                                        </logic:equal>
-                                    </logic:equal>
-                                    <logic:equal name="field" property="fieldType" value="N">
-                                        <logic:equal name="field" property="editable" value="true">
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${field.fieldType == 'N'}">
+                                        <c:if test="${field.editable == 'true'}">
                                             <html:text name="field" property="val" indexed="true" maxlength="10"/>
-                                        </logic:equal>
-                                        <logic:equal name="field" property="editable" value="false">
+                                        </c:if>
+                                        <c:if test="${field.editable == 'false'}">
                                             <bean:write name="field" property="val"/>
                                             <html:hidden name="field" property="val" indexed="true"/>
-                                        </logic:equal>
-                                    </logic:equal>
-                                    <logic:equal name="field" property="fieldType" value="B">
-                                        <logic:equal name="field" property="editable" value="true">
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${field.fieldType == 'B'}">
+                                        <c:if test="${field.editable == 'true'}">
                                             <html:select name="field" property="val" indexed="true">
                                                 <html:option value="1">Yes</html:option>
                                                 <html:option value="0">No</html:option>
                                             </html:select>
-                                        </logic:equal>
-                                        <logic:equal name="field" property="editable" value="false">
+                                        </c:if>
+                                        <c:if test="${field.editable == 'false'}">
                                             <html:select name="field" property="val" indexed="true" disabled="true">
                                                 <html:option value="1">Yes</html:option>
                                                 <html:option value="0">No</html:option>
                                             </html:select>
-                                        </logic:equal>
-
-                                    </logic:equal>
+                                        </c:if>
+                                    </c:if>
                                 </td>
                             </tr>
-                        </logic:iterate>
+                        </c:forEach>
                     </table>
                 </div>
             </td>

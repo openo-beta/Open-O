@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
     Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
@@ -26,21 +27,21 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="1"
        bgcolor="#C0C0C0">
 
-    <logic:messagesPresent>
-        <html:messages id="error">
+    <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.ERROR')}">
+        <c:forEach var="error" items="${pageContext.request.getAttribute('org.apache.struts.action.ERROR')}">
             <tr>
                 <td class="error"><c:out value="${error}"/></td>
             </tr>
-        </html:messages>
-    </logic:messagesPresent>
+        </c:forEach>
+    </c:if>
 
     <%-- Success Messages --%>
-    <logic:messagesPresent message="true">
-        <html:messages id="message" message="true">
+    <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.MESSAGE')}">
+        <c:forEach var="message" items="${pageContext.request.getAttribute('org.apache.struts.action.MESSAGE')}">
             <tr>
                 <td class="message"><c:out value="${message}"/></td>
             </tr>
-        </html:messages>
-    </logic:messagesPresent>
+        </c:forEach>
+    </c:if>
 
 </table>

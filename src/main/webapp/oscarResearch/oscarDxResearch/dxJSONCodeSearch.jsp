@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style type="text/css">
     .ui-autocomplete-loading {
         background: white url('../../images/ui-anim_basic_16x16.gif') right center no-repeat;
@@ -58,7 +58,7 @@
 <script type="text/javascript" src="${ oscar_context_path }/js/dxJSONCodeSearch.js"></script>
 
 <table>
-    <logic:equal value="true" parameter="enableCodeSystemSelect">
+    <c:if test="${param.enableCodeSystemSelect == 'true'}">
         <tr>
             <td class="label"><label for="codingSystem">Disease Code System</label></td>
             <td>
@@ -68,11 +68,11 @@
                 </select>
             </td>
         </tr>
-    </logic:equal>
-    <logic:equal value="false" parameter="enableCodeSystemSelect">
+    </c:if>
+    <c:if test="${param.enableCodeSystemSelect == 'false'}">
         <%-- default is icd9 --%>
         <input type="hidden" name="codingSystem" id="codingSystem" value="icd9"/>
-    </logic:equal>
+    </c:if>
     <tr>
         <td><label for="jsonDxSearch">Indication</label></td>
         <td>

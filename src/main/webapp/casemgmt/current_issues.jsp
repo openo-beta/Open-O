@@ -129,16 +129,16 @@
         </tr>
     </c:forEach>
 </table>
-<logic:equal name="caseManagementViewForm" property="hideActiveIssue"
-             value="true">
+<c:if test="${caseManagementViewForm.hideActiveIssue eq 'true'}">
 	<span style="text-decoration: underline; cursor: pointer; color: blue"
           onclick="document.caseManagementViewForm.hideActiveIssue.value='false';document.caseManagementViewForm.method.value='setHideActiveIssues';document.caseManagementViewForm.submit(); return false;">show
 	resolved issues</span>
-</logic:equal>
-<logic:notEqual name="caseManagementViewForm" property="hideActiveIssue"
-                value="true">
+</c:if>
+<c:choose>
+    <c:when test="${caseManagementViewForm.hideActiveIssue ne 'true'}">
 	<span style="text-decoration: underline; cursor: pointer; color: blue"
           onclick="document.caseManagementViewForm.hideActiveIssue.value='true';document.caseManagementViewForm.method.value='setHideActiveIssues';document.caseManagementViewForm.submit(); return false;">hide
 	resolved issues</span>
-</logic:notEqual>
+    </c:when>
+</c:choose>
 

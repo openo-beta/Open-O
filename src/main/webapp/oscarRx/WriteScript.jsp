@@ -26,7 +26,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*,oscar.oscarRx.util.*" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
@@ -60,20 +59,21 @@
         <script type="text/javascript" src="../share/javascript/prototype.js"></script>
         <html:base/>
 
-        <logic:notPresent name="RxSessionBean" scope="session">
-            <logic:redirect href="error.html"/>
-        </logic:notPresent>
-        <logic:present name="RxSessionBean" scope="session">
-            <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                         name="RxSessionBean" scope="session"/>
-            <logic:equal name="bean" property="valid" value="false">
-                <logic:redirect href="error.html"/>
-            </logic:equal>
-        </logic:present>
+        <c:if test="${sessionScope.RxSessionBean == null}">
+            <c:redirect url="error.html"/>
+        </c:if>
 
-        <logic:equal name="bean" property="stashIndex" value="-1">
-            <logic:redirect href="SearchDrug.jsp"/>
-        </logic:equal>
+        <c:if test="${not empty sessionScope.RxSessionBean}">
+            <c:set var="bean" value="${sessionScope.RxSessionBean}" scope="page"/>
+
+            <c:if test="${bean.valid == false}">
+                <c:redirect url="error.html"/>
+            </c:if>
+
+            <c:if test="${bean.stashIndex == -1}">
+                <c:redirect url="SearchDrug.jsp"/>
+            </c:if>
+        </c:if>
 
         <%
             RxSessionBean bean = (RxSessionBean) pageContext.findAttribute("bean");
@@ -1515,40 +1515,44 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                     <td width="60%" valign="top">
                                         <table cellspacing=0 cellpadding=5 width="100%">
                                             <% int i = 0; %>
-                                            <logic:iterate id="rx" name="bean" property="stash"
-                                                           length="stashSize">
-                                                <%
-                                                    RxPrescriptionData.Prescription rx2
-                                                            = ((RxPrescriptionData.Prescription) rx);
-
-                                                    if (i == bean.getStashIndex()) {
-                                                %>
-                                                <tr class=tblRowSelected>
-                                                            <%
-                            }else{
-                                %>
-
-                                                <tr>
-                                                    <%
-                                                        }
-                                                    %>
-                                                    <td>
-                                                        <a href="javascript:submitPending(<%= i%>, 'edit');"><bean:message
-                                                                key="WriteScript.msgEdit"/></a></td>
-                                                    <td>
-                                                        <a href="javascript:submitPending(<%= i%>, 'delete');"><bean:message
-                                                                key="WriteScript.msgDelete"/></a></td>
-                                                    <td><a href="javascript:submitPending(<%= i%>, 'edit');"><bean:write
-                                                            name="rx" property="rxDisplay"/> </a></td>
-                                                    <td>
-                                                        <a href="javascript:ShowDrugInfo('<%= rx2.getGenericName() %>');"><bean:message
-                                                                key="WriteScript.msgInfo"/></a></td>
-                                                    <td>
-                                                        <a href="javascript:addFavorite(<%= String.valueOf(i) %>, '<%= rx2.isCustom() ? StringEscapeUtils.escapeJavaScript(rx2.getCustomName()) :  StringEscapeUtils.escapeJavaScript(rx2.getBrandName()) %>');"><bean:message
-                                                                key="WriteScript.msgAddtoFavorites"/></a></td>
+                                            <c:forEach var="rx" items="${bean.stash}" varStatus="loopStatus" end="${stashSize - 1}">
+                                                <c:set var="rx2" value="${rx}" />
+                                                <c:choose>
+                                                    <c:when test="${loopStatus.index == bean.stashIndex}">
+                                                        <tr class="tblRowSelected">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <tr>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td>
+                                                    <a href="javascript:submitPending(${loopStatus.index}, 'edit');">
+                                                        <fmt:message key="WriteScript.msgEdit"/>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:submitPending(${loopStatus.index}, 'delete');">
+                                                        <fmt:message key="WriteScript.msgDelete"/>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:submitPending(${loopStatus.index}, 'edit');">
+                                                        <c:out value="${rx.rxDisplay}"/>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:ShowDrugInfo('${rx2.genericName}');">
+                                                        <fmt:message key="WriteScript.msgInfo"/>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:addFavorite(${loopStatus.index}, '${rx2.custom ? fn:escapeXml(rx2.customName) : fn:escapeXml(rx2.brandName)}');">
+                                                        <fmt:message key="WriteScript.msgAddtoFavorites"/>
+                                                    </a>
+                                                </td>
                                                 </tr>
-                                                <% i++; %>
-                                            </logic:iterate>
+                                            </c:forEach>
+
                                         </table>
                                     </td>
                                     <td width="40%"><%--

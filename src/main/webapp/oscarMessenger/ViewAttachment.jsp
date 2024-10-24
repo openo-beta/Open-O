@@ -46,17 +46,17 @@
 %>
 
 
-<logic:notPresent name="msgSessionBean" scope="session">
-    <logic:redirect href="index.jsp"/>
-</logic:notPresent>
-<logic:present name="msgSessionBean" scope="session">
-    <bean:define id="bean"
-                 type="oscar.oscarMessenger.pageUtil.MsgSessionBean"
-                 name="msgSessionBean" scope="session"/>
-    <logic:equal name="bean" property="valid" value="false">
-        <logic:redirect href="index.jsp"/>
-    </logic:equal>
-</logic:present>
+<c:if test="${empty sessionScope.msgSessionBean}">
+    <% response.sendRedirect("index.jsp"); %>
+</c:if>
+<c:choose>
+    <c:when test="${not empty sessionScope.msgSessionBean}">
+        <c:set var="bean" value="${sessionScope.msgSessionBean}" scope="page"/>
+        <c:if test="${bean.valid == false}">
+            <% response.sendRedirect("index.jsp"); %>
+        </c:if>
+    </c:when>
+</c:choose>
 
 <link rel="stylesheet" type="text/css" href="encounterStyles.css">
 <html>

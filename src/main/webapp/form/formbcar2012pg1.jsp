@@ -690,13 +690,13 @@
     <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1">
     <div ID="Langdiv" class="demo">
 
-        <logic:equal value="history" parameter="warning">
+        <c:if test="${param.warning == 'history'}">
             <script type="text/javascript">
                 if (!confirm("\bWarning: older version.\b\n\nContents of this form will overwrite newer versions if saved.\n\nSelect 'OK' to continue.")) {
                     window.close();
                 }
             </script>
-        </logic:equal>
+        </c:if>
 
         <table bgcolor='silver' width='100%'>
             <tr>

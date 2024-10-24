@@ -30,7 +30,7 @@
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
 <html:html lang="en">
     <head>
@@ -66,12 +66,12 @@
                             <td>
                                 <table>
                                     <tr>
-                                        <logic:present name="messages">
-                                            <logic:iterate id="msg" name="messages">
-                                                <bean:write name="msg"/>
+                                        <c:if test="${not empty messages}">
+                                            <c:forEach var="msg" items="${messages}">
+                                                ${msg}
                                                 <br>
-                                            </logic:iterate>
-                                        </logic:present>
+                                            </c:forEach>
+                                        </c:if>
                                     </tr>
                                     <tr>
                                         <td>
@@ -83,16 +83,14 @@
                                                 key="oscarEncounter.oscarMeasurements.MeasurementAction.headingDelete"/>
                                         </td>
                                     </tr>
-                                    <logic:iterate id="styleSheet" name="styleSheets"
-                                                   property="styleSheetNameVector" indexId="ctr">
+                                    <c:forEach var="styleSheet" items="${styleSheets.styleSheetNameVector}" varStatus="ctr">
                                     <tr class="data">
-                                        <td width="300"><bean:write name="styleSheet"
-                                                                    property="styleSheetName"/></td>
-                                        <td width="10"><input type="checkbox" name="deleteCheckbox"
-                                                              value="<bean:write name="styleSheet" property="cssId" />"
+                                        <td width="300"><c:out value="${styleSheet.styleSheetName}"/></td>
+                                        <td width="10">
+                                            <input type="checkbox" name="deleteCheckbox" value="${styleSheet.cssId}"/>
                                         </td>
                                     </tr>
-                                    </logic:iterate>
+                                    </c:forEach>
                             </td>
                         </tr>
                     </table>

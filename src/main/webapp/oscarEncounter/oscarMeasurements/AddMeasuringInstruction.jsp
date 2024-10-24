@@ -30,7 +30,6 @@
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
 <html:html lang="en">
     <head>
@@ -75,12 +74,14 @@
                                     <tr>
                                         <td>
                                     <tr>
-                                        <td colspan="2"><logic:present name="messages">
-                                            <logic:iterate id="msg" name="messages">
-                                                <bean:write name="msg"/>
-                                                <br>
-                                            </logic:iterate>
-                                        </logic:present></td>
+                                        <td colspan="2">
+                                            <c:if test="${not empty messages}">
+                                                <c:forEach var="msg" items="${messages}">
+                                                    <c:out value="${msg}"/>
+                                                    <br>
+                                                </c:forEach>
+                                            </c:if>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th align="left" class="td.tite"><bean:message

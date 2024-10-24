@@ -24,9 +24,9 @@
 
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%
 
     String user_no = (String) session.getAttribute("user");
@@ -124,11 +124,9 @@
                         <td class="heading"><bean:message
                                 key="oscarResearch.oscarDxResearch.codingSystem"/>: <%-- <bean:write name="codingSystem"/> --%>
                             <html:select property="selectedCodingSystem">
-                                <logic:iterate id="codingSys" name="codingSystem"
-                                               property="codingSystems">
-                                    <option value="<bean:write name="codingSys"/>"><bean:write
-                                            name="codingSys"/></option>
-                                </logic:iterate>
+                                <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
+                                    <option value="${codingSys}">${codingSys}</option>
+                                </c:forEach>
                             </html:select></td>
                         <td class="heading"></td>
                         <td class="heading"><bean:message
@@ -186,13 +184,9 @@
                                 <tr>
                                     <td><html:select property="quickListItems"
                                                      style="width:200px" size="10" multiple="true">
-                                        <logic:iterate id="qlItems" name="allQuickListItems"
-                                                       property="dxQuickListItemsVector">
-                                            <option
-                                                    value="<bean:write name="qlItems" property="type" />,<bean:write name="qlItems" property="dxSearchCode" />">
-                                                <bean:write
-                                                        name="qlItems" property="description"/></option>
-                                        </logic:iterate>
+                                        <c:forEach var="qlItems" items="${allQuickListItems.dxQuickListItemsVector}">
+                                            <option value="${qlItems.type},${qlItems.dxSearchCode}">${qlItems.description}</option>
+                                        </c:forEach>
                                     </html:select></td>
                                 </tr>
                             </table>

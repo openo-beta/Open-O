@@ -48,16 +48,15 @@
         <title><bean:message key="AddReaction.title"/></title>
         <html:base/>
 
-        <logic:notPresent name="RxSessionBean" scope="session">
-            <logic:redirect href="error.html"/>
-        </logic:notPresent>
-        <logic:present name="RxSessionBean" scope="session">
-            <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                         name="RxSessionBean" scope="session"/>
-            <logic:equal name="bean" property="valid" value="false">
-                <logic:redirect href="error.html"/>
-            </logic:equal>
-        </logic:present>
+        <c:if test="${empty RxSessionBean}">
+            <c:redirect url="error.html"/>
+        </c:if>
+        <c:if test="${not empty RxSessionBean}">
+            <c:set var="bean" value="${RxSessionBean}" scope="session"/>
+            <c:if test="${bean.valid == false}">
+                <c:redirect url="error.html"/>
+            </c:if>
+        </c:if>
 
         <%
             oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
