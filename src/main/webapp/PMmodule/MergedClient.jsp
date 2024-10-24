@@ -204,21 +204,21 @@
                 <div class="axial">
                     <table border="0" cellspacing="2" cellpadding="3">
                         <tr>
-                            <th><bean-el:message key="ClientSearch.clientNo" bundle="pmm"/></th>
+                            <th><bean:message key="ClientSearch.clientNo" bundle="pmm"/></th>
                             <td><html:text property="criteria.demographicNo" size="15"/></td>
                         </tr>
                         <tr>
-                            <th><bean-el:message key="ClientSearch.firstName" bundle="pmm"/></th>
+                            <th><bean:message key="ClientSearch.firstName" bundle="pmm"/></th>
                             <td><html:text property="criteria.firstName" size="15"/></td>
                         </tr>
                         <tr>
-                            <th><bean-el:message key="ClientSearch.lastName" bundle="pmm"/>
+                            <th><bean:message key="ClientSearch.lastName" bundle="pmm"/>
                             </th>
                             <td><html:text property="criteria.lastName" size="15"/></td>
                         </tr>
 
                         <tr>
-                            <th width="20%" align="right"><bean-el:message key="ClientSearch.dateOfBirth" bundle="pmm"/>
+                            <th width="20%" align="right"><bean:message key="ClientSearch.dateOfBirth" bundle="pmm"/>
                                 <br>
                                 (yyyy/mm/dd)
                             </th>
@@ -228,7 +228,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th><bean-el:message key="ClientSearch.active" bundle="pmm"/></th>
+                            <th><bean:message key="ClientSearch.active" bundle="pmm"/></th>
                             <td><html:select property="criteria.active">
                                 <html:option value="">Any</html:option>
                                 <html:option value="1">Yes</html:option>
@@ -236,7 +236,7 @@
                             </html:select></td>
                         </tr>
                         <tr>
-                            <th><bean-el:message key="ClientSearch.gender" bundle="pmm"/></th>
+                            <th><bean:message key="ClientSearch.gender" bundle="pmm"/></th>
                             <td><select name="criteria.gender">
                                 <option value="">Any</option>
                                 <c:forEach var="gen" items="${genders}">

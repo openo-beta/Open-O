@@ -25,6 +25,7 @@
 --%>
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<%@ page import="java.util.ResourceBundle"%>
 
 <%
     if (session.getValue("user") == null)
@@ -33,6 +34,15 @@
     curUser_no = (String) session.getAttribute("user");
     String tite = (String) request.getAttribute("provider.title");
 
+    ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
+
+    String providertitle = (String) request.getAttribute("providertitle");
+    String providermsgPrefs = (String) request.getAttribute("providermsgPrefs");
+    String providermsgProvider = (String) request.getAttribute("providermsgProvider");
+    String providermsgEditFromExisting = (String) request.getAttribute("providermsgEditFromExisting");
+    String providermsgEditSaveNew = (String) request.getAttribute("providermsgEditSaveNew");
+    String providerbtnSubmit = (String) request.getAttribute("providerbtnSubmit");
+    String providermsgSuccess = (String) request.getAttribute("providermsgSuccess");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -42,7 +52,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <html:base/>
-        <title><bean-el:message key="${providertitle}"/></title>
+        <title><%=bundle.getString(providertitle)%></title>
 
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
@@ -111,18 +121,15 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean-el:message
-                    key="${providermsgPrefs}"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean-el:message
-                    key="${providermsgProvider}"/></td>
+            <td class="MainTableTopRowLeftColumn"><%=bundle.getString(providermsgPrefs)%></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td>
         </tr>
         <%if (request.getAttribute("status") == null) {%>
         <html:form action="/setProviderStaleDate.do">
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
-                    <a href="javascript:void(0);" onclick="showhide();"> <bean-el:message
-                            key="${providermsgEditFromExisting}"/></a>
+                    <a href="javascript:void(0);" onclick="showhide();"> <%=bundle.getString(providermsgEditFromExisting)%></a>
                 </td>
             </tr>
             <tr>
@@ -140,8 +147,7 @@
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
-                    <a href="javascript:void(0);" onclick="showhide();"> <bean-el:message
-                            key="${providermsgEditSaveNew}"/></a>
+                    <a href="javascript:void(0);" onclick="showhide();"> <%=bundle.getString(providermsgEditSaveNew)%></a>
                 </td>
             </tr>
             <tr>
@@ -157,14 +163,14 @@
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
                     <input id="chooseMode" name="chooseMode" type="hidden" value="existing"/>
-                    <input type="submit" value="<bean-el:message key="${providerbtnSubmit}" />"/>
+                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
                 </td>
             </tr>
         </html:form>
         <%} else {%>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
-            <td><bean-el:message key="${providermsgSuccess}"/></td>
+            <td><%=bundle.getString(providermsgSuccess)%></td>
         </tr>
         <%}%>
         <tr>

@@ -27,16 +27,25 @@
 <%@page contentType="text/html" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="java.util.*" %>
+<%@ page import="java.util.ResourceBundle"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
+<%
+    ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
+    String providertitle = (String) request.getAttribute("providertitle");
+    String providermsgPrefs = (String) request.getAttribute("providermsgPrefs");
+    String providerbtnCancel = (String) request.getAttribute("providerbtnCancel");
+    String providerbtnSubmit = (String) request.getAttribute("providerbtnSubmit");
+    String providerbtnClose = (String) request.getAttribute("providerbtnClose");
+%>
 <html:html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <html:base/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><bean-el:message key="${providertitle}"/></title>
+        <title><%=bundle.getString(providertitle)%></title>
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
     </head>
 
@@ -44,7 +53,7 @@
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRowLeftColumn">
-                <bean-el:message key="${providermsgPrefs}"/>
+                <%=bundle.getString(providermsgPrefs)%>
             </td>
             <td style="color: white" class="MainTableTopRowRightColumn"></td>
         </tr>
@@ -63,14 +72,14 @@
                     <html:checkbox property="preventionNonISPAWarningProperty.checked">
                         Hide Warning when Patient has not consented to send Non-ISPA data to DHIR.</html:checkbox>
                     <br/><br/>
-                    <input type="submit" value="<bean-el:message key="${providerbtnSubmit}"/>"/>
-                    <input type="button" value="<bean-el:message key="${providerbtnCancel}"/>"
+                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
+                    <input type="button" value="<%=bundle.getString(providerbtnCancel)%>"
                            onclick="window.close();"/>
                 </html:form>
                 <%} else {%>
                 Configuration has been saved.
                 <br/><br/>
-                <input type="button" value="<bean-el:message key="${providerbtnClose}"/>" onclick="window.close();"/>
+                <input type="button" value="<%=bundle.getString(providerbtnClose)%>" onclick="window.close();"/>
                 <%}%>
             </td>
         </tr>

@@ -225,23 +225,21 @@
                 <div class="axial">
                     <table border="0" cellspacing="1" cellpadding="1" width="100%">
                         <tr>
-                            <th align="right" width="20%"><bean-el:message key="ClientSearch.clientNo"
-                                                                           bundle="pmm"/></th>
+                            <th align="right" width="20%"><bean:message key="ClientSearch.clientNo" bundle="pmm"/></th>
                             <td align="left" width="80%"><html:text property="criteria.demographicNo" size="15"/></td>
                         </tr>
                         <tr>
-                            <th align="right" width="20%"><bean-el:message key="ClientSearch.firstName"
-                                                                           bundle="pmm"/></th>
+                            <th align="right" width="20%"><bean:message key="ClientSearch.firstName" bundle="pmm"/></th>
                             <td align="left" width="80%"><html:text property="criteria.firstName" size="15"/></td>
                         </tr>
                         <tr>
-                            <th align="right" width="20%"><bean-el:message key="ClientSearch.lastName" bundle="pmm"/>
+                            <th align="right" width="20%"><bean:message key="ClientSearch.lastName" bundle="pmm"/>
                             </th>
                             <td align="left" width="80%"><html:text property="criteria.lastName" size="15"/></td>
                         </tr>
 
                         <tr>
-                            <th width="20%" align="right"><bean-el:message key="ClientSearch.dateOfBirth" bundle="pmm"/>
+                            <th width="20%" align="right"><bean:message key="ClientSearch.dateOfBirth" bundle="pmm"/>
                                 <br>
                                 (yyyy/mm/dd)
                             </th>
@@ -251,7 +249,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th align="right" width="20%"><bean-el:message key="ClientSearch.active" bundle="pmm"/></th>
+                            <th align="right" width="20%"><bean:message key="ClientSearch.active" bundle="pmm"/></th>
                             <td align="left" width="80%"><html:select property="criteria.active">
                                 <html:option value="">Any</html:option>
                                 <html:option value="1">Yes</html:option>
@@ -259,7 +257,7 @@
                             </html:select></td>
                         </tr>
                         <tr>
-                            <th align="right" width="20%"><bean-el:message key="ClientSearch.gender" bundle="pmm"/></th>
+                            <th align="right" width="20%"><bean:message key="ClientSearch.gender" bundle="pmm"/></th>
                             <td align="left" width="80%"><select property="criteria.gender">
                                 <option value="">Any</option>
                                 <c:forEach var="gen" items="${genders}">
@@ -270,8 +268,7 @@
                             </select></td>
                         </tr>
                         <tr>
-                            <th align="right" width="20%"><bean-el:message key="ClientSearch.assignedTo"
-                                                                           bundle="pmm"/></th>
+                            <th align="right" width="20%"><bean:message key="ClientSearch.assignedTo" bundle="pmm"/></th>
                             <th align="left" width="80%">
                                 <html:select property="criteria.assignedToProviderNo">
                                     <html:option value="">
@@ -282,8 +279,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th align="right" width="20%"><bean-el:message key="ClientSearch.program"
-                                                                           bundle="pmm"/></th>
+                            <th align="right" width="20%"><bean:message key="ClientSearch.program" bundle="pmm"/></th>
                             <th align="left" width="80%">
                                 <html:select property="criteria.bedProgramId">
                                     <html:option value="">

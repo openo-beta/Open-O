@@ -25,6 +25,7 @@
 --%>
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<%@ page import="java.util.ResourceBundle"%>
 
 <%
     if (session.getValue("user") == null)
@@ -33,13 +34,21 @@
     curUser_no = (String) session.getAttribute("user");
     String tite = (String) request.getAttribute("provider.title");
 
+    ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
+
+    String providertitle = (String) request.getAttribute("providertitle");
+    String providermsgPrefs = (String) request.getAttribute("providermsgPrefs");
+    String providermsgProvider = (String) request.getAttribute("providermsgProvider");
+    String providermsgEdit = (String) request.getAttribute("providermsgEdit");
+    String providerbtnSubmit = (String) request.getAttribute("providerbtnSubmit");
+    String providermsgSuccess = (String) request.getAttribute("providermsgSuccess");
 %>
 <!DOCTYPE html>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <html:html>
     <head>
         <html:base/>
-        <title><bean-el:message key="${providertitle}"/></title>
+        <title><%=bundle.getString(providertitle)%></title>
 
         <script src="<c:out value="${ctx}"/>/js/global.js"></script>
         <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
@@ -51,16 +60,13 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><h4><bean-el:message
-                    key="${providermsgPrefs}"/></h4></td>
-            <td class="MainTableTopRowRightColumn"><h4>&nbsp;&nbsp;<bean-el:message
-                    key="${providermsgProvider}"/></h4></td>
+            <td class="MainTableTopRowLeftColumn"><h4><%=bundle.getString(providermsgPrefs)%></h4></td>
+            <td class="MainTableTopRowRightColumn"><h4>&nbsp;&nbsp;<%=bundle.getString(providermsgProvider)%></h4></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
-                <%if (request.getAttribute("status") == null) {%> <bean-el:message
-                    key="${providermsgEdit}"/> <!--c:out value="${rxDefaultQuantityProperty.value}" /-->
+                <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%> <!--c:out value="${rxDefaultQuantityProperty.value}" /-->
                 <html:form styleId="providerForm" action="/setProviderStaleDate.do">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <html:text styleId="numericFormField" property="rxDefaultQuantityProperty.value"/>
@@ -68,9 +74,9 @@
                         Invalid input.
                     </p>
                     <br>
-                    <input type="submit" value="<bean-el:message key="${providerbtnSubmit}" />"/>
+                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
                 </html:form> <%} else {%>
-                <div class="alert alert-success"><bean-el:message key="${providermsgSuccess}"/></div>
+                <div class="alert alert-success"><%=bundle.getString(providermsgSuccess)%></div>
                 <br>
                 <%}%>
             </td>

@@ -26,12 +26,21 @@
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="java.util.*" %>
+<%@ page import="java.util.ResourceBundle"%>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.htm");
     String curUser_no;
     curUser_no = (String) session.getAttribute("user");
     String tite = (String) request.getAttribute("provider.title");
+
+    ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
+
+    String providertitle = (String) request.getAttribute("providertitle");
+    String providermsgPrefs = (String) request.getAttribute("providermsgPrefs");
+    String providermsgProvider = (String) request.getAttribute("providermsgProvider");
+    String providermsgEdit = (String) request.getAttribute("providermsgEdit");
+    String providermsgSuccess = (String) request.getAttribute("providermsgSuccess");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -41,7 +50,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <html:base/>
-        <title><bean-el:message key="${providertitle}"/></title>
+        <title><%=bundle.getString(providertitle)%></title>
 
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
@@ -96,23 +105,20 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean-el:message
-                    key="${providermsgPrefs}"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean-el:message
-                    key="${providermsgProvider}"/></td>
+            <td class="MainTableTopRowLeftColumn"><%=bundle.getString(providermsgPrefs)%></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
-                <%if (request.getAttribute("status") == null) {%> <bean-el:message
-                    key="${providermsgEdit}"/> <c:out value="${rxPageSizeProperty.value}"/>
+                <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%> <c:out value="${rxPageSizeProperty.value}"/>
                 <html:form action="/setProviderStaleDate.do">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <html:checkbox
                             property="rxShowPatientDOBProperty.checked">Show patient's date of birth</html:checkbox>
                     <br/>
                     <html:submit property="btnApply"/>
-                </html:form> <%} else {%> <bean-el:message key="${providermsgSuccess}"/> <br>
+                </html:form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
                 <%}%>
             </td>
         </tr>

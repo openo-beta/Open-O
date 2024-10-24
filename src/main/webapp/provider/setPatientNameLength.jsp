@@ -27,9 +27,18 @@
 <%@page contentType="text/html" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="java.util.*" %>
+<%@ page import="java.util.ResourceBundle"%>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.htm");
+
+    ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
+
+    String providertitle = (String) request.getAttribute("providertitle");
+    String providermsgPrefs = (String) request.getAttribute("providermsgPrefs");
+    String providermsgProvider = (String) request.getAttribute("providermsgProvider");
+    String providermsgEdit = (String) request.getAttribute("providermsgEdit");
+    String providermsgSuccess = (String) request.getAttribute("providermsgSuccess");
 %>
 
 <!DOCTYPE html>
@@ -38,7 +47,7 @@
     <head>
         <html:base/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><bean-el:message key="${providertitle}"/></title>
+        <title><%=bundle.getString(providertitle)%></title>
         <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
         <script src="<c:out value="${ctx}"/>/js/global.js"></script>
         <link href="<c:out value="${ctx}"/>/css/bootstrap.css" rel="stylesheet"> <!-- Bootstrap 2.3.1 -->
@@ -50,17 +59,17 @@
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRowLeftColumn">
-                <h4><bean-el:message key="${providermsgPrefs}"/></h4>
+                <h4><%=bundle.getString(providermsgPrefs)%></h4>
             </td>
             <td class="MainTableTopRowRightColumn">
-                <h4>&nbsp;&nbsp;<bean-el:message key="${providermsgProvider}"/></h4>
+                <h4>&nbsp;&nbsp;<%=bundle.getString(providermsgProvider)%></h4>
             </td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
-                <bean-el:message key="${providermsgEdit}"/>
+                <%=bundle.getString(providermsgEdit)%>
 
                 <html:form styleId="providerForm" action="/setProviderStaleDate.do">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
@@ -74,7 +83,7 @@
                 </html:form>
 
                 <%} else {%>
-                <div class="alert alert-success" style="width:100%"><bean-el:message key="${providermsgSuccess}"/></div>
+                <div class="alert alert-success" style="width:100%"><%=bundle.getString(providermsgSuccess)%></div>
                 <br>
                 <%}%>
             </td>

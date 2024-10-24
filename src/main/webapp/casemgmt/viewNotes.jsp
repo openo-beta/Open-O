@@ -40,6 +40,7 @@
 <%@page import="org.oscarehr.common.model.PartialDate" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="java.util.ResourceBundle"%>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -52,6 +53,9 @@
     if (!authed) {
         return;
     }
+    ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
+    String titleParam = request.getParameter("title");
+    String titleMsg = bundle.getString(titleParam);
 %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"
@@ -65,8 +69,7 @@
                 com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
                 if (securityManager.hasWriteAccess("_" + request.getParameter("issue_code"), roleName$)) {
             %>
-            <a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<bean-el:message
-                    key="${param.title}"/>','',0,'','','','<%=request.getAttribute("addUrl")%>0', '<c:out
+            <a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<%=titleMsg%>','',0,'','','','<%=request.getAttribute("addUrl")%>0', '<c:out
                     value="${param.cmd}"/>','<%=request.getAttribute("identUrl")%>','<%=request.getAttribute("cppIssue")%>','','
             <c:out value="${param.demographicNo}"/>');">+</a>
             <% } else { %>
@@ -77,8 +80,7 @@
     <div class="nav-menu-title">
         <h3>
             <a href="javascript:void(0)" onclick="return showIssueHistory('<c:out
-                    value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><bean-el:message
-                    key="${param.title}"/></a>
+                    value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><%=titleMsg%></a>
         </h3>
     </div>
 </div>
@@ -155,7 +157,7 @@
                 <a class="links" onmouseover="this.className='linkhover'" onmouseout="this.className='links'"
                    title="Rev:<nested:write name="note" property="revision"/> - Last update:<nested:write name="note" property="update_date" format="dd-MMM-yyyy"/>"
                    id="listNote<nested:write name="note" property="id"/>" href="javascript:void(0)"
-                   onclick="showEdit(event,'<bean-el:message key="${param.title}"/>','<nested:write name="note"
+                   onclick="showEdit(event,'<%=titleMsg%>','<nested:write name="note"
                                                                                                     property="id"/>','<%=StringEscapeUtils.escapeJavaScript(editors.toString())%>','
                        <nested:write name="note" property="observation_date" format="dd-MMM-yyyy"/>','<nested:write
                            name="note" property="revision"/>','<%=noteTxt%>', '<%=request.getAttribute("addUrl")%>
@@ -167,7 +169,7 @@
                 <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
                    title="Rev:<nested:write name="note" property="revision"/> - Last update:<nested:write name="note" property="update_date" format="dd-MMM-yyyy"/>"
                    id="listNote<nested:write name="note" property="id"/>" href="javascript:void(0)"
-                   onclick="showEdit(event,'<bean-el:message key="${param.title}"/>','<nested:write name="note"
+                   onclick="showEdit(event,'<%=titleMsg%>','<nested:write name="note"
                                                                                                     property="id"/>','<%=StringEscapeUtils.escapeJavaScript(editors.toString())%>','
                        <nested:write name="note" property="observation_date" format="dd-MMM-yyyy"/>','<nested:write
                            name="note" property="revision"/>','<%=noteTxt%>', '<%=request.getAttribute("addUrl")%>
@@ -201,8 +203,7 @@
         %>
         <a class="links" onmouseover="this.className='linkhover'" onmouseout="this.className='links'"
            title="<%=remoteNote.getLocation()%> by <%=remoteNote.getProviderName()%> on <%=ConversionUtils.toTimestampString(remoteNote.getObservationDate())%>"
-           href="javascript:void(0)" onclick="showIntegratedNote('<bean-el:message
-                key="${param.title}"/>',<%=htmlText%>,<%=remoteNote.getLocation()%>, <%=remoteNote.getProviderName()%>, <%=ConversionUtils.toTimestampString(remoteNote.getObservationDate())%>);">
+           href="javascript:void(0)" onclick="showIntegratedNote('<%=titleMsg%>',<%=htmlText%>,<%=remoteNote.getLocation()%>, <%=remoteNote.getProviderName()%>, <%=ConversionUtils.toTimestampString(remoteNote.getObservationDate())%>);">
             <%=htmlText%>
         </a>
     </li>
