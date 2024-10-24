@@ -387,7 +387,7 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
             paramList.add(Integer.parseInt(filter.getDemographicNo()));
         }
         if (includeMessage) {
-            query = query + " and t.message = ? " + paramIndex++;
+            query = query + " and t.message = ?" + paramIndex++;
             paramList.add(filter.getMessage());
         }
 
