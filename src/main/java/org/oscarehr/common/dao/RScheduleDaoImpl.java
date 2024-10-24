@@ -44,10 +44,10 @@ public class RScheduleDaoImpl extends AbstractDaoImpl<RSchedule> implements RSch
 
     @Override
     public List<RSchedule> findByProviderAvailableAndDate(String providerNo, String available, Date sdate) {
-        Query query = entityManager.createQuery("select s from RSchedule s where s.providerNo=? and s.available=? and s.sDate=?");
-        query.setParameter(0, providerNo);
-        query.setParameter(1, available);
-        query.setParameter(2, sdate);
+        Query query = entityManager.createQuery("select s from RSchedule s where s.providerNo=?1 and s.available=?2 and s.sDate=?3");
+        query.setParameter(1, providerNo);
+        query.setParameter(2, available);
+        query.setParameter(3, sdate);
 
         List<RSchedule> results = query.getResultList();
         return results;
