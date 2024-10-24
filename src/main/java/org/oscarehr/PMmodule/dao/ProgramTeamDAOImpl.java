@@ -78,9 +78,9 @@ public class ProgramTeamDAOImpl extends HibernateDaoSupport implements ProgramTe
         }
         // Session session = getSession();
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select pt.id from ProgramTeam pt where pt.programId = ? and pt.name = ?" );
-        query.setLong(0, programId.longValue());
-        query.setString(1, teamName);
+        Query query = session.createQuery("select pt.id from ProgramTeam pt where pt.programId = ?1 and pt.name = ?2" );
+        query.setParameter(1, programId.longValue());
+        query.setParameter(2, teamName);
 
         List teams = new ArrayList();
         try {
