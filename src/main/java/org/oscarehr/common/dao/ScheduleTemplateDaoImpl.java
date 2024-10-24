@@ -45,8 +45,8 @@ public class ScheduleTemplateDaoImpl extends AbstractDaoImpl<ScheduleTemplate> i
 
     @Override
     public List<ScheduleTemplate> findBySummary(String summary) {
-        Query query = entityManager.createQuery("SELECT e FROM ScheduleTemplate e WHERE e.summary=? ");
-        query.setParameter(0, summary);
+        Query query = entityManager.createQuery("SELECT e FROM ScheduleTemplate e WHERE e.summary=?1");
+        query.setParameter(1, summary);
 
         List<ScheduleTemplate> results = query.getResultList();
         return results;
