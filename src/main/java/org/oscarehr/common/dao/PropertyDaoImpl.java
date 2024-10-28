@@ -50,10 +50,9 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
      */
     @Override
     public List<Property> findByName(String name) {
-        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?2";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.name=?1";
         Query query = entityManager.createQuery(sqlCommand);
-        //query.setParameter(1, );
-        query.setParameter(2, name);
+        query.setParameter(1, name);
         return query.getResultList();
     }
 
