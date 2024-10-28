@@ -33,7 +33,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.oscarehr.util.MiscUtils;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.quatro.model.security.SecProvider;
 
@@ -114,7 +114,7 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     @Override
     public List findByExample(SecProviderDao instance) {
         logger.debug("finding Provider instance by example");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             List results = session.createCriteria(
                             "com.quatro.model.security.SecProvider").add(
@@ -126,8 +126,6 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         } catch (RuntimeException re) {
             logger.error("find by example failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
@@ -135,7 +133,7 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     public List findByProperty(String propertyName, Object value) {
         logger.debug("finding Provider instance with property: " + propertyName
                 + ", value: " + value);
-        Session session = getSession();
+        Session session = currentSession();
         try {
             String queryString = "from Provider as model where model."
                     + propertyName + "= ?1";
@@ -145,8 +143,6 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         } catch (RuntimeException re) {
             logger.error("find by property name failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
@@ -233,7 +229,7 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     @Override
     public List findAll() {
         logger.debug("finding all Provider instances");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             String queryString = "from Provider";
             Query queryObject = session.createQuery(queryString);
@@ -241,15 +237,13 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         } catch (RuntimeException re) {
             logger.error("find all failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
     @Override
     public SecProviderDao merge(SecProviderDao detachedInstance) {
         logger.debug("merging Provider instance");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             SecProviderDao result = (SecProviderDao) session.merge(detachedInstance);
             logger.debug("merge successful");
@@ -257,38 +251,32 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         } catch (RuntimeException re) {
             logger.error("merge failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
     @Override
     public void attachDirty(SecProviderDao instance) {
         logger.debug("attaching dirty Provider instance");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             session.saveOrUpdate(instance);
             logger.debug("attach successful");
         } catch (RuntimeException re) {
             logger.error("attach failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
     @Override
     public void attachClean(SecProviderDao instance) {
         logger.debug("attaching clean Provider instance");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             session.lock(instance, LockMode.NONE);
             logger.debug("attach successful");
         } catch (RuntimeException re) {
             logger.error("attach failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 }

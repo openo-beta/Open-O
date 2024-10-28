@@ -51,7 +51,7 @@ import org.oscarehr.common.model.Stay;
 import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.EncounterUtil.EncounterType;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import oscar.util.SqlUtils;
 
