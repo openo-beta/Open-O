@@ -20,8 +20,6 @@
         <Quatro Group Software Systems inc.>  <OSCAR Team>
 
 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/taglibs.jsp" %>
 <script type="text/javascript">
     function submitForm() {
@@ -71,85 +69,100 @@
         </tr>
         <tr>
             <td align="left" class="message">
-                <c:if test="${not empty message}">
-                    <c:forEach var="message" items="${message}">
-                        <c:out escapeXml="false" value="${message}"/></br>
+                <c:if test="${not empty pmm}">
+                    <c:forEach var="message" items="${pmm}">
+                        <c:out escapeXml="false" value="${message}"/><br/>
                     </c:forEach>
-                </c:if></td>
+                </c:if>
+            </td>
         </tr>
         <tr>
             <td height="100%">
-                <div
-                        style="color: Black; background-color: White; border-width: 1px; border-style: Ridge;
+                <div style="color: Black; background-color: White; border-width: 1px; border-style: Ridge;
                     height: 100%; width: 100%; overflow: auto;" id="scrollBar">
                     <table width="100%">
 
-                        <c:forEach var="field" items="${lookupCodeEditForm.codeFields}" varStatus="fIndex">
+                        <c:forEach var="field" items="${lookupCodeEditForm.codeFields}" varStatus="status">
                             <tr>
-                                <td width="30%"><bean:write name="field" property="fieldDesc"/></td>
+                                <td width="30%">${field.fieldDesc}</td>
                                 <td>
-                                    <c:if test="${field.fieldType == 'S'}">
-                                        <c:if test="${field.editable == 'false'}">
-                                            <bean:write name="field" property="val"/>
-                                            <c:if test="${not empty field.valDesc}">
-                                                - <bean:write name="field" property="valDesc"/>
-                                            </c:if>
-                                            <html:hidden name="field" property="val" indexed="true"/>
-                                        </c:if>
-                                        <c:if test="${field.editable == 'true'}">
-                                            <c:if test="${empty field.lookupTable}">
-                                                <html:text name="field" property="val" indexed="true"
-                                                           style="{width:100%}"
-                                                           maxlength="<%=field.getFieldLengthStr()%>"/>
-                                            </logic:empty>
-                                            <c:if test="${not empty field.lookupTable}">
-                                                <html:hidden name="field" property="lookupTable" indexed="true"/>
-                                                <quatro:lookupTag name="field" tableName="<%=field.getLookupTable()%>"
-                                                                  indexed="true" formProperty="lookupCodeEditForm"
-                                                                  codeWidth="10%"
-                                                                  codeProperty="val"
-                                                                  bodyProperty="valDesc"></quatro:lookupTag>
-                                            </c:if>
-                                        </logic:equal>
-                                    </logic:equal>
-                                    <c:if test="${field.fieldType == 'D'}">
-                                        <bean:define id="dateVal" name="field" property="val"></bean:define>
-                                        <c:if test="${field.editable == 'true'}">
-                                            <quatro:datePickerTag name="field" property="val" indexed="true"
-                                                                  openerForm="lookupCodeEditForm" width="200px">
-                                            </quatro:datePickerTag>
-                                        </c:if>
-                                        <c:if test="${field.editable == 'false'}">
-                                            <bean:write name="field" property="val"/>
-                                            <html:hidden name="field" property="val" indexed="true"/>
-                                        </c:if>
-                                    </c:if>
-                                    <c:if test="${field.fieldType == 'N'}">
-                                        <c:if test="${field.editable == 'true'}">
-                                            <html:text name="field" property="val" indexed="true" maxlength="10"/>
-                                        </c:if>
-                                        <c:if test="${field.editable == 'false'}">
-                                            <bean:write name="field" property="val"/>
-                                            <html:hidden name="field" property="val" indexed="true"/>
-                                        </c:if>
-                                    </c:if>
-                                    <c:if test="${field.fieldType == 'B'}">
-                                        <c:if test="${field.editable == 'true'}">
-                                            <html:select name="field" property="val" indexed="true">
-                                                <html:option value="1">Yes</html:option>
-                                                <html:option value="0">No</html:option>
-                                            </html:select>
-                                        </c:if>
-                                        <c:if test="${field.editable == 'false'}">
-                                            <html:select name="field" property="val" indexed="true" disabled="true">
-                                                <html:option value="1">Yes</html:option>
-                                                <html:option value="0">No</html:option>
-                                            </html:select>
-                                        </c:if>
-                                    </c:if>
+                                    <c:choose>
+                                        <!-- String Field Type (S) -->
+                                        <c:when test="${field.fieldType == 'S'}">
+                                            <c:choose>
+                                                <c:when test="${not field.editable}">
+                                                    ${field.val}
+                                                    <c:if test="${not empty field.valDesc}">
+                                                        - ${field.valDesc}
+                                                    </c:if>
+                                                    <input type="hidden" name="field[${status.index}].val" value="${field.val}"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:choose>
+                                                        <c:when test="${empty field.lookupTable}">
+                                                            <input type="text" name="field[${status.index}].val" value="${field.val}"
+                                                                   style="width:100%" maxlength="${field.fieldLengthStr}"/>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <input type="hidden" name="field[${status.index}].lookupTable" value="${field.lookupTable}"/>
+                                                            <quatro:lookupTag name="field" tableName="${field.lookupTable}" indexed="true"
+                                                                              formProperty="lookupCodeEditForm" codeWidth="10%"
+                                                                              codeProperty="val" bodyProperty="valDesc"/>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+
+                                        <!-- Date Field Type (D) -->
+                                        <c:when test="${field.fieldType == 'D'}">
+                                            <c:choose>
+                                                <c:when test="${field.editable}">
+                                                    <quatro:datePickerTag name="field" property="val" indexed="true"
+                                                                          openerForm="lookupCodeEditForm" width="200px"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${field.val}
+                                                    <input type="hidden" name="field[${status.index}].val" value="${field.val}"/>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+
+                                        <!-- Number Field Type (N) -->
+                                        <c:when test="${field.fieldType == 'N'}">
+                                            <c:choose>
+                                                <c:when test="${field.editable}">
+                                                    <input type="text" name="field[${status.index}].val" value="${field.val}" maxlength="10"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${field.val}
+                                                    <input type="hidden" name="field[${status.index}].val" value="${field.val}"/>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+
+                                        <!-- Boolean Field Type (B) -->
+                                        <c:when test="${field.fieldType == 'B'}">
+                                            <c:choose>
+                                                <c:when test="${field.editable}">
+                                                    <select name="field[${status.index}].val">
+                                                        <option value="1" ${field.val == '1' ? 'selected' : ''}>Yes</option>
+                                                        <option value="0" ${field.val == '0' ? 'selected' : ''}>No</option>
+                                                    </select>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <select name="field[${status.index}].val" disabled>
+                                                        <option value="1" ${field.val == '1' ? 'selected' : ''}>Yes</option>
+                                                        <option value="0" ${field.val == '0' ? 'selected' : ''}>No</option>
+                                                    </select>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:forEach>
+
                     </table>
                 </div>
             </td>

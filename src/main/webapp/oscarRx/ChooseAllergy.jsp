@@ -38,7 +38,6 @@
     }
 %>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@page import="java.util.*" %>
@@ -55,13 +54,15 @@
         <title><bean:message key="ChooseAllergy.title"/></title>
         <html:base/>
 
-        <c:if test="${empty RxSessionBean}">
-            <jsp:forward page="error.html"/>
+        <c:if test="${empty sessionScope.RxSessionBean}">
+            <c:redirect url="error.html"/>
         </c:if>
-        <c:if test="${not empty RxSessionBean}">
-            <c:set var="bean" value="${RxSessionBean}" scope="page"/>
-            <c:if test="${bean.valid == 'false'}">
-                <jsp:forward page="error.html"/>
+
+        <c:if test="${not empty sessionScope.RxSessionBean}">
+            <c:set var="bean" value="${sessionScope.RxSessionBean}" scope="page"/>
+
+            <c:if test="${bean.valid == false}">
+                <c:redirect url="error.html"/>
             </c:if>
         </c:if>
 
@@ -219,186 +220,45 @@
                                 Hashtable drugClassHash = (Hashtable) request.getAttribute("drugClasses");
                             %>
                             <div class="LeftMargin">
-                                <c:if test="${empty allergies}">Search returned no results. Revise your search and try again.</c:if>
+                                <c:if test="${empty allergies}">
+                                    Search returned no results. Revise your search and try again.
+                                </c:if>
                                 <c:if test="${not empty allergies}">
+                                    <c:choose>
+                                        <c:when test="${flatResults}">
+                                            <c:forEach var="allergy" items="${flatMap}">
+                                                <a href="addReaction.do?ID=${allergy.value.drugrefId}&name=${fn:escapeXml(allergy.value.description)}&type=${allergy.value.typeCode}">
+                                                        ${allergy.value.description}
+                                                </a>
+                                                <c:forEach var="drugClassPair" items="${drugClassHash[allergy.value.drugrefId]}">
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <a style="color: orange" href="addReaction.do?ID=${drugClassPair[0]}&name=${fn:escapeXml(drugClassPair[1])}&type=10">
+                                                            ${drugClassPair[1]}
+                                                    </a>
+                                                </c:forEach>
+                                                <br/>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:if test="${not empty allergyResults[8]}">
+                                                <div class="DivContentSectionHead">
+                                                    <a href="javascript:void(0)" onclick="toggleSection('8');return false;">
+                                                        <img border="0" id="8_img" src="../images/collapser.png"/> ATC Class
+                                                    </a>
+                                                </div>
+                                                <div id="8_content">
+                                                    <c:forEach var="allergy" items="${allergyResults[8]}">
+                                                        <a href="addReaction.do?ID=${allergy.drugrefId}&name=${fn:escapeXml(allergy.description)}&type=${allergy.typeCode}">
+                                                                ${allergy.description}
+                                                        </a>
+                                                        <br/>
+                                                    </c:forEach>
+                                                </div>
+                                            </c:if>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:if>
 
-
-                                    <%
-                                        boolean flatResults = Boolean.valueOf(oscar.OscarProperties.getInstance().getProperty("allergies.flat_results", "false"));
-                                        if (flatResults) {
-                                            TreeMap<String, Allergy> flatMap = (TreeMap<String, Allergy>) request.getAttribute("flatMap");
-                                            if (flatMap.size() > 0) {
-
-                                                for (String key : flatMap.keySet()) {
-                                                    Allergy allergy = flatMap.get(key);
-                                    %>
-                                    <a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription()%>
-                                    </a>
-                                    <%
-                                        java.util.Vector vect = (Vector) drugClassHash.get("" + allergy.getDrugrefId());
-                                        if (vect != null) {
-                                            for (int k = 0; k < vect.size(); k++) {
-                                                String[] drugClassPair = (String[]) vect.get(k);
-                                    %>
-                                    &nbsp;&nbsp;&nbsp;
-                                    <a style="color: orange"
-                                       href="addReaction.do?ID=<%=drugClassPair[0] %>&name=<%=java.net.URLEncoder.encode(drugClassPair[1])%>&type=10"><%=drugClassPair[1] %>
-                                    </a>
-                                    <%
-                                            }
-                                        }
-                                    %>
-                                    <br/>
-                                    <%
-                                            }
-
-                                        }
-                                    %>
-
-
-                                    <% } else { //not flat results %>
-
-                                    <%
-                                        Map<Integer, List<Allergy>> allergyResults = (Map<Integer, List<Allergy>>) request.getAttribute("allergyResults");
-                                        if (allergyResults.get(8).size() > 0) {
-                                    %>
-                                    <div class="DivContentSectionHead"><a href="javascript:void(0)"
-                                                                          onclick="toggleSection('8');return false;"><img
-                                            border="0" id="8_img" src="../images/collapser.png"/></a>ATC Class
-                                    </div>
-                                    <%
-                                    %>
-                                    <div id="8_content"><%
-                                        for (Allergy allergy : allergyResults.get(8)) {
-                                    %>
-                                        <a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription()%>
-                                        </a>
-                                        <br/>
-                                        <%
-                                            }
-                                        %></div>
-                                    <%
-                                        }
-
-                                        if (allergyResults.get(10).size() > 0) {
-                                    %>
-                                    <div class="DivContentSectionHead"><a href="javascript:void(0)"
-                                                                          onclick="toggleSection('10');return false;"><img
-                                            border="0" id="10_img" src="../images/collapser.png"/></a>AHFS Class
-                                    </div>
-                                    <%
-                                    %>
-                                    <div id="10_content"><%
-                                        for (Allergy allergy : allergyResults.get(10)) {
-                                    %>
-                                        <a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription()%>
-                                        </a>
-                                        <br/>
-                                        <%
-                                            }
-                                        %></div>
-                                    <%
-                                        }
-
-                                        if (allergyResults.get(13).size() > 0) {
-                                    %>
-                                    <div class="DivContentSectionHead"><a href="javascript:void(0)"
-                                                                          onclick="toggleSection('13');return false;"><img
-                                            border="0" id="13_img" src="../images/collapser.png"/></a>Brand Name
-                                    </div>
-                                    <%
-                                    %>
-                                    <div id="13_content"><%
-                                        for (Allergy allergy : allergyResults.get(13)) {
-                                    %>
-                                        <a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription() %>
-                                        </a>
-                                        <%
-                                            java.util.Vector vect = (Vector) drugClassHash.get("" + allergy.getDrugrefId());
-                                            if (vect != null) {
-                                                for (int k = 0; k < vect.size(); k++) {
-                                                    String[] drugClassPair = (String[]) vect.get(k);
-                                        %>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <a style="color: orange"
-                                           href="addReaction.do?ID=<%=drugClassPair[0] %>&name=<%=java.net.URLEncoder.encode(drugClassPair[1])%>&type=10"><%=drugClassPair[1] %>
-                                        </a>
-                                        <%
-                                                }
-                                            }
-                                        %>
-                                        <br/>
-                                        <%
-                                            }
-                                        %></div>
-                                    <%
-                                        }
-
-
-                                        if (allergyResults.get(11).size() > 0) {
-                                    %>
-                                    <div class="DivContentSectionHead"><a href="javascript:void(0)"
-                                                                          onclick="toggleSection('11');return false;"><img
-                                            border="0" id="11_img" src="../images/expander.png"/></a>Generic Name
-                                    </div>
-                                    <%
-                                    %>
-                                    <div id="11_content" style="display:none"><%
-                                        for (Allergy allergy : allergyResults.get(11)) {
-                                    %>
-                                        <a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription() %>
-                                        </a>
-                                        <br/>
-                                        <%
-                                            }
-                                        %></div>
-                                    <%
-                                        }
-
-                                        if (allergyResults.get(12).size() > 0) {
-                                    %>
-                                    <div class="DivContentSectionHead"><a href="javascript:void(0)"
-                                                                          onclick="toggleSection('12');return false;"><img
-                                            border="0" id="12_img" src="../images/expander.png"/></a>Compound
-                                    </div>
-                                    <%
-                                    %>
-                                    <div id="12_content" style="display:none"><%
-                                        for (Allergy allergy : allergyResults.get(12)) {
-                                    %>
-                                        <a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription() %>
-                                        </a>
-                                        <br/>
-                                        <%
-                                            }
-                                        %></div>
-                                    <%
-                                        }
-
-
-                                        if (allergyResults.get(14).size() > 0) {
-                                    %>
-                                    <div class="DivContentSectionHead"><a href="javascript:void(0)"
-                                                                          onclick="toggleSection('14');return false;"><img
-                                            border="0" id="14_img" src="../images/collapser.png"/></a>Ingredient
-                                    </div>
-                                    <%
-                                    %>
-                                    <div id="14_content"><%
-                                        for (Allergy allergy : allergyResults.get(14)) {
-                                    %>
-                                        <a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription() %>
-                                        </a>
-                                        <br/>
-                                        <%
-                                            }
-                                        %></div>
-                                    <%
-                                        }
-                                    %>
-
-                                    <% } %>
-                                </logic:present>
                             </div>
 
                             <br>

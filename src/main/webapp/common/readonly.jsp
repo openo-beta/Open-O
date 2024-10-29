@@ -126,21 +126,24 @@
         needToConfirm = true;
         window.onbeforeunload = confirmClose;
     </script>
-</logic:notPresent>
+</c:if>
+
 <c:if test="${not empty isReadOnly}">
-    <c:if test="${isReadOnly eq 'true'}">
-        <script type="text/javascript">
-            readOnly = true;
-            needToConfirm = false;
-            setReadOnly();
-        </script>
-    </logic:equal>
-    <c:if test="${isReadOnly eq 'false'}">
-        <script type="text/javascript">
-            readOnly = false;
-            needToConfirm = true;
-            window.onbeforeunload = confirmClose;
-        </script>
-    </logic:equal>
-</logic:present>
+    <c:choose>
+        <c:when test="${isReadOnly == 'true'}">
+            <script type="text/javascript">
+                readOnly = true;
+                needToConfirm = false;
+                setReadOnly();
+            </script>
+        </c:when>
+        <c:when test="${isReadOnly == 'false'}">
+            <script type="text/javascript">
+                readOnly = false;
+                needToConfirm = true;
+                window.onbeforeunload = confirmClose;
+            </script>
+        </c:when>
+    </c:choose>
+</c:if>
 <input type="hidden" name="token" value="<c:out value="${token}"/>"/>

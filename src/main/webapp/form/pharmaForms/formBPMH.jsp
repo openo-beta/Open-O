@@ -37,8 +37,9 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
-    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName2$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_form" rights="r" reverse="<%=true%>">
@@ -101,34 +102,36 @@
             <div id="bpmhId">
 
                 <c:if test="${empty bpmh.provider}">
+                    <span class="red">
+                        <fmt:message key="colcamex.formBPMH.preparedby"/>
+                        <fmt:message key="colcamex.formBPMH.error.unknown"/>
+                    </span>
+                </c:if>
 
-                <span class="red">
-						<bean:message key="colcamex.formBPMH.preparedby"/>
-						<bean:message key="colcamex.formBPMH.error.unknown"/>
-					</logic:empty>
-					
-					<logic:notEmpty name="bpmh" property="provider">
-		
-				<span>	
-						<bean:message key="colcamex.formBPMH.preparedby"/>
-						<bean:write name="bpmh" property="provider.formattedName"/>
-						<logic:notEmpty name="bpmh" property="provider.ohipNo">
-                            &#40;<bean:write name="bpmh" property="provider.ohipNo"/>&#41;
-                        </logic:notEmpty>
-						<logic:empty name="bpmh" property="provider.ohipNo">
-                            &#40;<bean:message key="colcamex.formBPMH.error.unknown"/>&#41;
-                        </logic:empty>
-								
-					</logic:notEmpty>					
-				</span>
-					
-				
-				<logic:empty name="bpmh" property="formDateFormatted">
-					<span class="red">
-				</c:if>
-				<c:if test="${not empty bpmh.formDateFormatted}">
-					<span>
-				</logic:notEmpty>
+                <c:if test="${not empty bpmh.provider}">
+                    <span>
+                        <fmt:message key="colcamex.formBPMH.preparedby"/>
+                        <c:out value="${bpmh.provider.formattedName}"/>
+                        <c:choose>
+                            <c:when test="${not empty bpmh.provider.ohipNo}">
+                                &#40;<c:out value="${bpmh.provider.ohipNo}"/>&#41;
+                            </c:when>
+                            <c:otherwise>
+                                &#40;<fmt:message key="colcamex.formBPMH.error.unknown"/>&#41;
+                            </c:otherwise>
+                        </c:choose>
+                    </span>
+                </c:if>
+
+                <c:choose>
+                    <c:when test="${empty bpmh.formDateFormatted}">
+                        <span class="red">
+                    </c:when>
+                    <c:otherwise>
+                        <span>
+                    </c:otherwise>
+                </c:choose>
+
 					<bean:message key="colcamex.formBPMH.preparedon"/>
 					<bean:write name="bpmh" property="formDateFormatted"/>
 				</span>
@@ -181,9 +184,9 @@
                         <bean:message key="colcamex.formBPMH.patient.allergies"/>
                     </td>
                     <td>
-                        <logic:notEmpty name="bpmh" property="allergiesString">
-                            <bean:write name="bpmh" property="allergiesString"/>
-                        </logic:notEmpty>
+                        <c:if test="${not empty bpmh.allergiesString}">
+                            <c:out value="${bpmh.allergiesString}"/>
+                        </c:if>
                     </td>
                 </tr>
             </table>
@@ -197,44 +200,47 @@
                     <th colspan="7"><bean:message key="colcamex.formBPMH.familyDr"/></th>
                 </tr>
                 <tr>
-                    <td class="columnTitle"><bean:message key="colcamex.formBPMH.familyDr.name"/></td>
+                    <td class="columnTitle"><fmt:message key="colcamex.formBPMH.familyDr.name"/></td>
                     <td>
-                        <logic:empty name="bpmh" property="familyDrName">
-                            <span class="red">	Unknown	</span>
-                        </c:if>
-                        <c:if test="${not empty bpmh.familyDrName}">
-                            <bean:write name="bpmh" property="familyDrName"/>
-                        </logic:notEmpty>
+                        <c:choose>
+                            <c:when test="${empty bpmh.familyDrName}">
+                                <span class="red">Unknown</span>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${bpmh.familyDrName}"/>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
 
-                    <td class="columnTitle"><bean:message key="colcamex.formBPMH.familyDr.phone"/></td>
+                    <td class="columnTitle"><fmt:message key="colcamex.formBPMH.familyDr.phone"/></td>
                     <td>
-                        <logic:empty name="bpmh" property="familyDrPhone">
-                            <span class="red">	Unknown	</span>
-                        </c:if>
-                        <c:if test="${not empty bpmh.familyDrPhone}">
-                            <bean:write name="bpmh" property="familyDrPhone"/>
-                        </logic:notEmpty>
+                        <c:choose>
+                            <c:when test="${empty bpmh.familyDrPhone}">
+                                <span class="red">Unknown</span>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${bpmh.familyDrPhone}"/>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
 
-                    <td class="columnTitle"><bean:message key="colcamex.formBPMH.familyDr.fax"/></td>
+                    <td class="columnTitle"><fmt:message key="colcamex.formBPMH.familyDr.fax"/></td>
                     <td>
-                        <logic:empty name="bpmh" property="familyDrFax">
-                            <span class="red">	Unknown	</span>
-                        </c:if>
-                        <c:if test="${not empty bpmh.familyDrFax}">
-                            <bean:write name="bpmh" property="familyDrFax"/>
-                        </logic:notEmpty>
+                        <c:choose>
+                            <c:when test="${empty bpmh.familyDrFax}">
+                                <span class="red">Unknown</span>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${bpmh.familyDrFax}"/>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
-                    <c:if test="${bpmh.formId == 0}">
-                        <logic:notEmpty name="bpmh" property="familyDrContactId">
-                            <td class="columnTitle"
-                                style="text-align:center;background-color:#CCC;border-top:#ccc thin solid;">
-                                <input type="button" id="editFamilyDr" value="edit"/>
-                            </td>
-                        </logic:notEmpty>
-                    </logic:equal>
 
+                    <c:if test="${bpmh.formId == 0 && not empty bpmh.familyDrContactId}">
+                        <td class="columnTitle" style="text-align:center;background-color:#CCC;border-top:#ccc thin solid;">
+                            <input type="button" id="editFamilyDr" value="edit"/>
+                        </td>
+                    </c:if>
                 </tr>
 
             </table>
@@ -275,56 +281,52 @@
                     </td>
                 </tr>
                 <c:set value="missingDrugData" var="false"/>
-                <logic:notEmpty name="bpmh" property="drugs">
-                    <logic:iterate name="bpmh" property="drugs" id="drugs" indexId="status">
+                <c:if test="${not empty bpmh.drugs}">
+                    <c:forEach var="drugs" items="${bpmh.drugs}" varStatus="status">
                         <tr>
                             <html:hidden name="drugs" property="id" indexed="true"/>
 
                             <td>
                                 <!-- WHAT -->
-                                <bean:write name="drugs" property="what"/>
+                                <c:out value="${drugs.what}"/>
                             </td>
-                            <c:if test="${empty drugs.how}">
-                                <c:set value="${ true }" var="missingDrugData"/>
-                                <td style="border:red medium solid;">
-                                    <!-- HOW ERROR -->
-                                    &nbsp;
-                                </td>
-                            </c:if>
-                            <c:if test="${not empty drugs.how}">
-                                <td>
-                                    <!-- HOW -->
-                                    <bean:write name="drugs" property="how"/>
-                                </td>
-                            </c:if>
-                            <c:if test="${empty drugs.why}">
-                                <c:set value="${ true }" var="missingDrugData"/>
-                                <td style="border:red medium solid;">
-                                    <!-- WHY ERROR -->
-                                    &nbsp;
-                                </td>
-                            </c:if>
-                            <c:if test="${not empty drugs.why}">
-                                <td>
-                                    <!-- WHY -->
-                                    <bean:write name="drugs" property="why"/>
-                                </td>
-                            </logic:notEmpty>
-                            <td>
-                                <!-- INSTRUCTION -->
-                                <logic:notEmpty name="drugs" property="instruction">
-                                    <bean:write name="drugs" property="instruction"/>
-                                </logic:notEmpty>
 
-                                <logic:empty name="drugs" property="instruction">
-                                    <html:textarea name="drugs" indexed="true"
-                                                   property="instruction">&nbsp;</html:textarea>
-                                </logic:empty>
+                            <!-- HOW -->
+                            <c:choose>
+                                <c:when test="${empty drugs.how}">
+                                    <c:set var="missingDrugData" value="true"/>
+                                    <td style="border:red medium solid;">&nbsp;</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td><c:out value="${drugs.how}"/></td>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <!-- WHY -->
+                            <c:choose>
+                                <c:when test="${empty drugs.why}">
+                                    <c:set var="missingDrugData" value="true"/>
+                                    <td style="border:red medium solid;">&nbsp;</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td><c:out value="${drugs.why}"/></td>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <!-- INSTRUCTION -->
+                            <td>
+                                <c:choose>
+                                    <c:when test="${not empty drugs.instruction}">
+                                        <c:out value="${drugs.instruction}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <html:textarea name="drugs" indexed="true" property="instruction">&nbsp;</html:textarea>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
-                    </logic:iterate>
-                </logic:notEmpty>
-
+                    </c:forEach>
+                </c:if>
             </table>
         </section>
         <section id="declaration">
@@ -346,12 +348,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <logic:notEmpty name="bpmh" property="note">
-                            <bean:write name="bpmh" property="note"/>&nbsp;
-                        </logic:notEmpty>
-                        <logic:empty name="bpmh" property="note">
-                            <html:textarea property="note"> &nbsp;</html:textarea>
-                        </logic:empty>
+                        <c:choose>
+                            <c:when test="${not empty bpmh.note}">
+                                <c:out value="${bpmh.note}"/>&nbsp;
+                            </c:when>
+                            <c:otherwise>
+                                <html:textarea property="note"> &nbsp;</html:textarea>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
             </table>
@@ -365,16 +369,22 @@
                             <c:set var="controls" value="off" scope="page"/>
                             <span style="color:red;">Missing Medication Data</span>
                         </c:if>
-                        <logic:empty name="bpmh" property="allergiesString">
-                            <c:set var="controls" value="off" scope="page"/>
-                            <span style="color:red;">Allergy Notation is Required (ie: NKDA)</span>
-                        </logic:empty>
-                        <logic:empty name="bpmh" property="provider">
-                            <c:set var="controls" value="off" scope="page"/>
-                            <span class="red">
-							<bean:message key="colcamex.formBPMH.error.missing.provider"/>
-						</span>
-                        </logic:empty>
+                        <c:choose>
+                            <c:when test="${empty bpmh.allergiesString}">
+                                <c:set var="controls" value="off" scope="page"/>
+                                <span style="color:red;">Allergy Notation is Required (ie: NKDA)</span>
+                            </c:when>
+                        </c:choose>
+
+                        <c:choose>
+                            <c:when test="${empty bpmh.provider}">
+                                <c:set var="controls" value="off" scope="page"/>
+                                <span class="red">
+                                    <fmt:message key="colcamex.formBPMH.error.missing.provider"/>
+                                </span>
+                            </c:when>
+                        </c:choose>
+
 
                         <c:if test="${ controls eq 'on' }">
 
@@ -382,23 +392,23 @@
                                 <bean:message key="colcamex.formBPMH.print"/>
                             </html:submit>
 
-                            <logic:equal name="bpmh" property="formId" value="0">
-                                <html:submit property="method">
-                                    <bean:message key="colcamex.formBPMH.save"/>
-                                </html:submit>
-                            </logic:equal>
+                            <c:if test="${bpmh.formId == 0}">
+                                <button type="submit" name="method">
+                                    <fmt:message key="colcamex.formBPMH.save"/>
+                                </button>
+                            </c:if>
+
 
                         </c:if>
 
-                        <logic:messagesPresent message="true">
-                            <html:messages id="saved" message="true">
-                                <logic:present name="saved">
-                                    <div class="messages">
-                                        <bean:write name="saved" filter="false"/>
-                                    </div>
-                                </logic:present>
-                            </html:messages>
+                        <c:if test="${not empty saved}">
+                            <c:forEach var="message" items="${saved}">
+                                <div class="messages">
+                                    <c:out value="${message}" escapeXml="false"/>
+                                </div>
+                            </c:forEach>
                         </c:if>
+
                     </td>
                 </tr>
             </table>
