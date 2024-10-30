@@ -55,9 +55,9 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
     }
 
     public List<HRMDocumentToDemographic> findByHrmDocumentId(Integer hrmDocumentId) {
-        String sql = "select x from " + this.modelClass.getName() + " x where x.hrmDocumentId=?";
+        String sql = "select x from " + this.modelClass.getName() + " x where x.hrmDocumentId=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, hrmDocumentId);
+        query.setParameter(1, hrmDocumentId);
         @SuppressWarnings("unchecked")
         List<HRMDocumentToDemographic> documentToDemographics = query.getResultList();
         return documentToDemographics;
