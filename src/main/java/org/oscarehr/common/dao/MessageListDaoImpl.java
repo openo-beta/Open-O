@@ -232,24 +232,24 @@ public class MessageListDaoImpl extends AbstractDaoImpl<MessageList> implements 
 
         if (searchFilter != null && !searchFilter.isEmpty()) {
             sql.append(
-                    " AND (mt.subject Like ?1 OR mt.message Like ?2 OR mt.sentBy Like ?3 OR mt.sentTo Like ?4)");
+                    " AND (mt.subject Like ?3 OR mt.message Like ?4 OR mt.sentBy Like ?5 OR mt.sentTo Like ?6)");
         }
 
         Query query = entityManager.createQuery(sql.toString());
 
-        if (providerNo != null && !providerNo.isEmpty()) {
+        // Else statement should never be reached, but added just to be safe
+        if (providerNo != null && !providerNo.isEmpty() && remoteLocation != null) {
             query.setParameter(1, providerNo);
-        }
-
-        if (remoteLocation != null) {
             query.setParameter(2, remoteLocation);
+        } else {
+            return 0;
         }
 
         if (searchFilter != null && !searchFilter.isEmpty()) {
-            query.setParameter(1, searchFilter);
-            query.setParameter(2, searchFilter);
             query.setParameter(3, searchFilter);
             query.setParameter(4, searchFilter);
+            query.setParameter(5, searchFilter);
+            query.setParameter(6, searchFilter);
         }
 
         Integer result = ((Long) query.getSingleResult()).intValue();
