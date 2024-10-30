@@ -214,7 +214,7 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
 
         Query query = entityManager.createQuery(sql);
         for (int x = 0; x < paramList.size(); x++) {
-            query.setParameter(x, paramList.get(x));
+            query.setParameter(x + 1, paramList.get(x));
         }
         query.setFirstResult(offset);
         setLimit(query, limit);
