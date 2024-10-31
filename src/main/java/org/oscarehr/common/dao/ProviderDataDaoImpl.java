@@ -273,8 +273,7 @@ public class ProviderDataDaoImpl extends AbstractDaoImpl<ProviderData> implement
     @SuppressWarnings("unchecked")
     @Override
     public List<ProviderData> findAll() {
-        Query query = entityManager.createQuery("FROM ?1");
-        query.setParameter(1, modelClass);
+        Query query = entityManager.createQuery("FROM " + modelClass.getName());
         return query.getResultList();
     }
 
