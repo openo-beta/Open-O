@@ -56,7 +56,7 @@ public class DemographicRelationship {
 		relationships.setNotes(notes);
 		relationships.setCreator(providerNo);
 		relationships.setCreationDate(new Date());
-		relationships.setDeleted(Boolean.FALSE);
+        relationships.setDeleted(Boolean.FALSE);
 
         RelationshipsDao dao = SpringUtils.getBean(RelationshipsDao.class);
         dao.persist(relationships);
@@ -65,9 +65,9 @@ public class DemographicRelationship {
     public void deleteDemographicRelationship(String id) {
         RelationshipsDao dao = SpringUtils.getBean(RelationshipsDao.class);
         Relationships relationships = dao.find(ConversionUtils.fromIntString(id));
-        if (relationships == null) MiscUtils.getLogger().error("Unable to find demographic relationship to delete");
-
-		if(relationships != null) {
+        if (relationships == null) {
+            MiscUtils.getLogger().error("Unable to find demographic relationship to delete");
+        } else {
 			relationships.setDeleted(Boolean.TRUE);
 			dao.merge(relationships);
 		}

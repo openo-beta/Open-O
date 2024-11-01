@@ -67,7 +67,7 @@ public class Relationships extends AbstractModel<Integer> {
 
     private String notes;
 
-    private String deleted;
+    private boolean deleted;
 
     private String creator;
 
@@ -143,11 +143,11 @@ public class Relationships extends AbstractModel<Integer> {
         this.notes = notes;
     }
 
-    public String getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(String deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
