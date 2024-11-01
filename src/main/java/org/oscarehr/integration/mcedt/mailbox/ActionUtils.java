@@ -361,6 +361,12 @@ public class ActionUtils {
         }
     }
 
+    public static void createOnEDTOutboxDir() {
+        OscarProperties props = OscarProperties.getInstance();
+        File dateDir = new File(props.getProperty("ONEDT_OUTBOX", ""));
+        if (!dateDir.exists()) dateDir.mkdirs();
+    }
+
     public static Date getOutboxTimestamp() {
         Date startDate = new Date();
         try {

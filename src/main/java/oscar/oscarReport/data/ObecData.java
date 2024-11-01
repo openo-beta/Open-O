@@ -104,28 +104,28 @@ public class ObecData {
         return outputString;
     }
 
-	public String writeFile(String value1, Properties pp) {
-		String obecFilename = "";
-		try {
-			String oscarHome = pp.getProperty("DOCUMENT_DIR");
+    public String writeFile(String value1, Properties pp) {
+        String obecFilename = "";
+        try {
+            String oscarHome = pp.getProperty("DOCUMENT_DIR");
 
-			String outbox = pp.getProperty("ONEDT_OUTBOX", "");
-			Path outboxPath = Paths.get(outbox);
-			File outboxFile = outboxPath.toFile();
+            String outbox = pp.getProperty("ONEDT_OUTBOX", "");
+            Path outboxPath = Paths.get(outbox);
+            File outboxFile = outboxPath.toFile();
 
-			// Construct the filename
-			obecFilename = "OBECE" + System.currentTimeMillis() + ".TXT";
-			File srcFile = Paths.get(oscarHome, obecFilename).toFile();
+            // Construct the filename
+            obecFilename = "OBECE" + System.currentTimeMillis() + ".TXT";
+            File srcFile = Paths.get(oscarHome, obecFilename).toFile();
 
-			// Write the content to the file
-			Files.write(srcFile.toPath(), value1.getBytes(), StandardOpenOption.CREATE);
+            // Write the content to the file
+            Files.write(srcFile.toPath(), value1.getBytes(), StandardOpenOption.CREATE);
 
-			// Copy the file to the EDT outbox directory
-			if (!outboxFile.exists()) { ActionUtils.createOnEDTOutboxDir(); }
-			ActionUtils.copyFileToDirectory(srcFile, outboxFile, false, true);
-		} catch (Exception e) {
-			logger.error("Error writing or copying file", e);
-		}
-		return obecFilename;
-	}
+            // Copy the file to the EDT outbox directory
+            if (!outboxFile.exists()) { ActionUtils.createOnEDTOutboxDir(); }
+            ActionUtils.copyFileToDirectory(srcFile, outboxFile, false, true);
+        } catch (Exception e) {
+            logger.error("Error writing or copying file", e);
+        }
+        return obecFilename;
+    }
 };
