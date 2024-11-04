@@ -51,7 +51,7 @@ public class MigrateRelationshipsToContactsHelper {
 
             dc.setCreated(relationship.getCreationDate());
             dc.setCreator(relationship.getCreator());
-            dc.setDeleted(relationship.getDeleted() != null && "1".equals(relationship.getDeleted()) ? true : false);
+            dc.setDeleted(relationship.getDeleted());
             dc.setDemographicNo(relationship.getDemographicNo());
             dc.setRole(relationship.getRelation());
             dc.setContactId(String.valueOf(relationship.getRelationDemographicNo()));
