@@ -363,22 +363,22 @@
   			<version>lgpl</version>
 		</dependency>
 
-		<!--  pdfbox -->
-		 <dependency>
-	      <groupId>org.apache.pdfbox</groupId>
-	      <artifactId>pdfbox</artifactId>
-			<version>2.0.27</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.pdfbox</groupId>
-			<artifactId>jbig2-imageio</artifactId>
-			<version>3.0.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.twelvemonkeys.imageio</groupId>
-			<artifactId>imageio-jpeg</artifactId>
-			<version>3.3.1</version>
-	    </dependency>
+        <!--  pdfbox -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>jbig2-imageio</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-jpeg</artifactId>
+            <version>3.7.1</version>
+        </dependency>
 
 		<!-- struts -->
 <!--		<dependency>-->
