@@ -70,6 +70,7 @@
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="myoscar" %>
 <%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
 
@@ -1430,7 +1431,7 @@
                                         <c:set var="restrictions" value="${myGroupAccessRestrictionDao.findByProviderNo(loggedInInfo1.loggedInProviderNo)}" />
 
                                         <select id="mygroup_no" name="mygroup_no" onchange="changeGroup(this)">
-                                            <option value=".${global.default}">.${global.default}</option>
+                                            <option value='.<fmt:setBundle basename="oscarResources"/><fmt:message key="global.default"/>'>.<fmt:setBundle basename="oscarResources"/><fmt:message key="global.default"/></option>
 
                                             <security:oscarSec roleName="${roleName}" objectName="_team_schedule_only" rights="r" reverse="false">
                                                 <c:forEach var="provider" items="${providerDao.activeProviders}">
