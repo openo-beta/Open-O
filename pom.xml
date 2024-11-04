@@ -1371,31 +1371,30 @@
 		<version>20171101</version>
 	</dependency>
 
+    <dependency>
+        <groupId>com.medseek</groupId>
+        <artifactId>PatientService</artifactId>
+        <version>20161213</version>
+    </dependency>
+    <dependency>
+        <groupId>org.jasypt</groupId>
+        <artifactId>jasypt</artifactId>
+        <version>1.9.3</version>
+    </dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.xhtmlrenderer/flying-saucer-core -->
 	<dependency>
-		<groupId>com.medseek</groupId>
-		<artifactId>PatientService</artifactId>
-		<version>20161213</version>
+		<groupId>org.xhtmlrenderer</groupId>
+		<artifactId>flying-saucer-core</artifactId>
+		<version>9.4.1</version>
 	</dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.xhtmlrenderer/flying-saucer-pdf -->
 	<dependency>
-	    <groupId>org.jasypt</groupId>
-	    <artifactId>jasypt</artifactId>
-	    <version>1.8</version>
+		<groupId>org.xhtmlrenderer</groupId>
+		<artifactId>flying-saucer-pdf</artifactId>
+		<version>9.4.1</version>
 	</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.xhtmlrenderer/flying-saucer-core -->
-		<dependency>
-			<groupId>org.xhtmlrenderer</groupId>
-			<artifactId>flying-saucer-core</artifactId>
-			<version>9.4.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.xhtmlrenderer/flying-saucer-pdf -->
-		<dependency>
-			<groupId>org.xhtmlrenderer</groupId>
-			<artifactId>flying-saucer-pdf</artifactId>
-			<version>9.4.1</version>
-		</dependency>
 
 		<!-- Caisi Integrator -->
 	<dependency>
