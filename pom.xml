@@ -1,49 +1,34 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.oscarehr</groupId>
-	<artifactId>oscar</artifactId>
-	<packaging>war</packaging>
-	<version>0-SNAPSHOT</version>
-	<name>OpenO</name>
-	<description>OSCAR McMaster is a web-based electronic medical record (EMR) system initially developed for academic primary care clinics. It has grown into a comprehensive EMR and billing system used by many doctor's offices and private medical clinics in Canada and other parts of the world. The name is derived from where it was created and an acronym; OSCAR stands for Open Source Clinical Application and Resource and McMaster refers to McMaster University, where it was developed. It enables the delivery of evidence resources at the point of care.</description>
-	<issueManagement>
-		<system>SourceForge Tracker</system>
-		<url>https://sourceforge.net/tracker/?group_id=66701</url>
-	</issueManagement>
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>https://jenkins.openosp.ca</url>
-	</ciManagement>
-	<inceptionYear>2001</inceptionYear>
-	<mailingLists>
-		<mailingList>
-			<name>oscarmcmaster-devel</name>
-			<subscribe>https://lists.sourceforge.net/lists/listinfo/oscarmcmaster-devel</subscribe>
-			<post>oscarmcmaster-devel@lists.sourceforge.net</post>
-			<archive>https://sourceforge.net/mailarchive/forum.php?forum_name=oscarmcmaster-devel</archive>
-		</mailingList>
-	</mailingLists>
-	<licenses>
-		<license>
-			<name>GPLv2</name>
-			<url>https://www.gnu.org/licenses/gpl-2.0.txt</url>
-		</license>
-	</licenses>
-	<url>https://www.oscarcanada.org</url>
-	<scm>
-		<url>https://bitbucket.org/openoscar/oscar/wiki/Home</url>
-		<connection>scm:git:https://bitbucket.org/openoscar/oscar/branch/master</connection>
-		<developerConnection>scm:git:ssh:git@bitbucket.org:openoscar/oscar.git</developerConnection>
-		<tag>master</tag>
-	</scm>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<log4j2.version>2.17.0</log4j2.version>
-		<slf4j.version>1.7.32</slf4j.version>
-		<hapifhir.version>5.4.0</hapifhir.version>
-		<struts.version>1.3.11</struts.version>
-	</properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.oscarehr</groupId>
+    <artifactId>oscar</artifactId>
+    <packaging>war</packaging>
+    <version>0-SNAPSHOT</version>
+    <name>OpenO</name>
+    <description>OpenOSP EMR is a web-based electronic medical record (EMR) system.</description>
+    <inceptionYear>2018</inceptionYear>
+    <licenses>
+        <license>
+            <name>GPLv2</name>
+            <url>https://www.gnu.org/licenses/gpl-2.0.txt</url>
+        </license>
+    </licenses>
+    <url>https://www.openosp.ca</url>
+    <scm>
+        <url>https://bitbucket.org/openoscar/oscar/wiki/Home</url>
+        <connection>scm:git:https://bitbucket.org/openoscar/oscar/branch/master</connection>
+        <developerConnection>scm:git:ssh:git@bitbucket.org:openoscar/oscar.git</developerConnection>
+        <tag>master</tag>
+    </scm>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <log4j2.version>2.24.1</log4j2.version>
+        <slf4j.version>1.7.32</slf4j.version>
+        <hapifhir.version>5.4.0</hapifhir.version>
+        <struts.version>1.3.11</struts.version>
+    </properties>
 
 	<repositories>
 		<repository>
