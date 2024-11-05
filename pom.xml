@@ -1497,195 +1497,197 @@
 			</executions>
 		</plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.3.1</version>
-        <configuration>
-	        <propertiesEncoding>ISO-8859-1</propertiesEncoding>
-          <nonFilteredFileExtensions>
-            <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
-            <nonFilteredFileExtension>jar</nonFilteredFileExtension>
-            <nonFilteredFileExtension>xls</nonFilteredFileExtension>
-            <nonFilteredFileExtension>dat</nonFilteredFileExtension>
-            <nonFilteredFileExtension>xsd</nonFilteredFileExtension>
-            <nonFilteredFileExtension>jasper</nonFilteredFileExtension>
-            <nonFilteredFileExtension>doc</nonFilteredFileExtension>
-          </nonFilteredFileExtensions>
-        </configuration>
-      </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.3.1</version>
+            <configuration>
+                <propertiesEncoding>ISO-8859-1</propertiesEncoding>
+            <nonFilteredFileExtensions>
+                <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                <nonFilteredFileExtension>jar</nonFilteredFileExtension>
+                <nonFilteredFileExtension>xls</nonFilteredFileExtension>
+                <nonFilteredFileExtension>dat</nonFilteredFileExtension>
+                <nonFilteredFileExtension>xsd</nonFilteredFileExtension>
+                <nonFilteredFileExtension>jasper</nonFilteredFileExtension>
+                <nonFilteredFileExtension>doc</nonFilteredFileExtension>
+            </nonFilteredFileExtensions>
+            </configuration>
+        </plugin>
 
-		 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>buildnumber-maven-plugin</artifactId>
-                    <version>3.2.0</version>
-                      <executions>
-                        <execution>
-                          <phase>validate</phase>
-                            <goals>
-                              <goal>create</goal>
-                            </goals>
-                        </execution>
-                     </executions>
-                 </plugin>
-	<plugin>
-       		<groupId>org.apache.maven.plugins</groupId>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>buildnumber-maven-plugin</artifactId>
+            <version>3.2.0</version>
+                <executions>
+                <execution>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>create</goal>
+                    </goals>
+                </execution>
+                </executions>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>4.0.0-M13</version>
                 <dependencies>
-					<dependency>
-							<groupId>org.apache.maven.doxia</groupId>
-							<artifactId>doxia-module-markdown</artifactId>
-							<version>2.0.0-M9</version>
-					</dependency>
-				</dependencies>
-				<configuration>
-						<inputEncoding>UTF-8</inputEncoding>
-						<outputEncoding>UTF-8</outputEncoding>
-				</configuration>
+                    <dependency>
+                            <groupId>org.apache.maven.doxia</groupId>
+                            <artifactId>doxia-module-markdown</artifactId>
+                            <version>2.0.0-M9</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                        <inputEncoding>UTF-8</inputEncoding>
+                        <outputEncoding>UTF-8</outputEncoding>
+                </configuration>
         </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<tstamp>
-									<format property="build.dateTime.value" pattern="yyyy-MM-dd hh:mm aa" />
-								</tstamp>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+            </configuration>
+        </plugin>
 
-								<echo message="build time : ${build.dateTime.value}" />
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+                <execution>
+                    <phase>process-classes</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <target>
+                            <tstamp>
+                                <format property="build.dateTime.value" pattern="yyyy-MM-dd hh:mm aa" />
+                            </tstamp>
 
-								<replace file="target/classes/oscar_mcmaster.properties" token="${build.dateTime}" value="${build.dateTime.value}" />
+                            <echo message="build time : ${build.dateTime.value}" />
 
-								<property environment="env" />
-								<echo message="JOB_NAME - BUILD_NUMBER : ${env.JOB_NAME}-${env.BUILD_NUMBER}" />
-								<replace file="target/classes/oscar_mcmaster.properties" token="${build.JOB_NAME}" value="${env.JOB_NAME}" />
-								<replace file="target/classes/oscar_mcmaster.properties" token="${build.BUILD_NUMBER}" value="${env.BUILD_NUMBER}" />
-							</target>
-						</configuration>
-					</execution>
+                            <replace file="target/classes/oscar_mcmaster.properties" token="${build.dateTime}" value="${build.dateTime.value}" />
 
-					<execution>
-						<!-- We're doing jspc this way because the codehaus jspc seems to be abandonded,
-						it doesn't go beyond jdk 1.5 and the documentation is sparse, and the source
-						code links to a broken page and I can't find the goals it supports. -->
-						<id>jspc</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<property name="build.compiler" value="extJavac" />
-								<property name='jspc_target' value="${project.artifactId}-${project.version}" />
-								<ant antfile="jspc.xml" target="jspc" />
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+                            <property environment="env" />
+                            <echo message="JOB_NAME - BUILD_NUMBER : ${env.JOB_NAME}-${env.BUILD_NUMBER}" />
+                            <replace file="target/classes/oscar_mcmaster.properties" token="${build.JOB_NAME}" value="${env.JOB_NAME}" />
+                            <replace file="target/classes/oscar_mcmaster.properties" token="${build.BUILD_NUMBER}" value="${env.BUILD_NUMBER}" />
+                        </target>
+                    </configuration>
+                </execution>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.1.2</version>
-				<configuration>
-					<configLocation>utils/checkstyle.xml</configLocation>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<failsOnError>true</failsOnError>
-					<consoleOutput>true</consoleOutput>
-					<linkXRef>false</linkXRef>
-					<includes>src/main/**/*,database/**/*.sql</includes>
-					<excludes>**/*.jar, **/*.txt, **/*.rpt, **/*.fla, **/*.xml, **/*.dtd, **/*.xslt, **/*.doc, **/*.bak, **/*.tld, **/*.jpg, **/*.png, **/*.gif, **/*.pdf, **/*.swf, **/*.js, **/*.css, src/main/webapp/share/calendar/**, **/*svg.jsp, src/main/webapp/casemgmt/Index2.jsp, database/mysql/updates/update-2016-06-06.sql, src/main/java/oscar/oscarMessenger/util/MsgDemoMap.java, src/main/java/oscar/oscarEncounter/pageUtil/EctDisplayMsgAction.java, database/mysql/oscarinit.sql, src/main/webapp/oscarEncounter/Index.jsp, database/mysql/oscarinit_on.sql, database/mysql/oscardata.sql, database/mysql/oscarinit_bc.sql, src/main/java/oscar/oscarEncounter/data/EctPatientData.java</excludes>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>9.2.1</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>process-sources</id>
-						<phase>process-sources</phase>
-						<goals>
-							<goal>checkstyle</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                <execution>
+                    <!-- We're doing jspc this way because the codehaus jspc seems to be abandonded,
+                    it doesn't go beyond jdk 1.5 and the documentation is sparse, and the source
+                    code links to a broken page and I can't find the goals it supports. -->
+                    <id>jspc</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <target>
+                            <property name="build.compiler" value="extJavac" />
+                            <property name='jspc_target' value="${project.artifactId}-${project.version}" />
+                            <ant antfile="jspc.xml" target="jspc" />
+                        </target>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.21.2</version>
-				<!--
-				DO NOT execute until these tests actually pass
-				<executions>
-					<execution>
-						<phase>process-sources</phase>
-						<goals>
-							<goal>pmd</goal>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				 -->
-				<configuration>
-					<targetJdk>1.8</targetJdk>
-					<rulesets>
-						<ruleset>utils/pmd_rules.xml</ruleset>
-					</rulesets>
-				</configuration>
-			</plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.1.2</version>
+            <configuration>
+                <configLocation>utils/checkstyle.xml</configLocation>
+                <encoding>${project.build.sourceEncoding}</encoding>
+                <failsOnError>true</failsOnError>
+                <consoleOutput>true</consoleOutput>
+                <linkXRef>false</linkXRef>
+                <includes>src/main/**/*,database/**/*.sql</includes>
+                <excludes>**/*.jar, **/*.txt, **/*.rpt, **/*.fla, **/*.xml, **/*.dtd, **/*.xslt, **/*.doc, **/*.bak, **/*.tld, **/*.jpg, **/*.png, **/*.gif, **/*.pdf, **/*.swf, **/*.js, **/*.css, src/main/webapp/share/calendar/**, **/*svg.jsp, src/main/webapp/casemgmt/Index2.jsp, database/mysql/updates/update-2016-06-06.sql, src/main/java/oscar/oscarMessenger/util/MsgDemoMap.java, src/main/java/oscar/oscarEncounter/pageUtil/EctDisplayMsgAction.java, database/mysql/oscarinit.sql, src/main/webapp/oscarEncounter/Index.jsp, database/mysql/oscarinit_on.sql, database/mysql/oscardata.sql, database/mysql/oscarinit_bc.sql, src/main/java/oscar/oscarEncounter/data/EctPatientData.java</excludes>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>com.puppycrawl.tools</groupId>
+                    <artifactId>checkstyle</artifactId>
+                    <version>9.2.1</version>
+                </dependency>
+            </dependencies>
+            <executions>
+                <execution>
+                    <id>process-sources</id>
+                    <phase>process-sources</phase>
+                    <goals>
+                        <goal>checkstyle</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
 
-		     <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-surefire-plugin</artifactId>
-			     <version>3.2.5</version>
-		        <configuration>
-		          <skipTests>false</skipTests>
-						<!--Required to comment out the following line to run Jacoco reporting-->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>3.21.2</version>
+            <!--
+            DO NOT execute until these tests actually pass
+            <executions>
+                <execution>
+                    <phase>process-sources</phase>
+                    <goals>
+                        <goal>pmd</goal>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>
+                -->
+            <configuration>
+                <targetJdk>1.8</targetJdk>
+                <rulesets>
+                    <ruleset>utils/pmd_rules.xml</ruleset>
+                </rulesets>
+            </configuration>
+        </plugin>
+
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version>
+        <configuration>
+            <skipTests>false</skipTests>
+                <!--Required to comment out the following line to run Jacoco reporting-->
 <!--		          <argLine>${surefireArgLine} -Xms4096m -Xmx4096m -Xss2048k -XX:MaxNewSize=256m -XX:MaxPermSize=512m</argLine>-->
-					<excludes>
-						<exclude>**/*EDTTest.java</exclude>
-						<exclude>**/HinValidatorTest.java</exclude>
-						<exclude>**/AR2005*.java</exclude>
-						<exclude>**/OntarioMDSpec4DataTest.java</exclude>
-						<exclude>**/ONAREnhancedBornConnectorTest.java</exclude>
-						<exclude>org/oscarehr/e2e/**/*.java</exclude>
-					</excludes>
-				  <systemPropertyVariables>
-						 <oscar.dbinit.skip>${oscar.dbinit.skip}</oscar.dbinit.skip>
-						 <buildDirectory>${project.build.directory}</buildDirectory>
-				  </systemPropertyVariables>
-		        </configuration>
+            <excludes>
+                <exclude>**/*EDTTest.java</exclude>
+                <exclude>**/HinValidatorTest.java</exclude>
+                <exclude>**/AR2005*.java</exclude>
+                <exclude>**/OntarioMDSpec4DataTest.java</exclude>
+                <exclude>**/ONAREnhancedBornConnectorTest.java</exclude>
+                <exclude>org/oscarehr/e2e/**/*.java</exclude>
+            </excludes>
+            <systemPropertyVariables>
+                    <oscar.dbinit.skip>${oscar.dbinit.skip}</oscar.dbinit.skip>
+                    <buildDirectory>${project.build.directory}</buildDirectory>
+            </systemPropertyVariables>
+        </configuration>
 
-		      </plugin>
+        </plugin>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin -->
 		<plugin>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-maven-plugin</artifactId>
-			<version>11.0.20</version>
+			<version>11.0.24</version>
 		</plugin>
 <!--
 Comming soon. After spring and java upgrades
@@ -1727,55 +1729,55 @@ Comming soon. After spring and java upgrades
 		</configuration>
 	</plugin>
 -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>timestamp-property</id>
-						<goals>
-							<goal>timestamp-property</goal>
-						</goals>
-						<configuration>
-							<name>build.time</name>
-							<pattern>yy.MM.dd-HHmmss</pattern>
-							<locale>en_US</locale>
-							<timeZone>Canada/Eastern</timeZone>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+                <execution>
+                    <id>timestamp-property</id>
+                    <goals>
+                        <goal>timestamp-property</goal>
+                    </goals>
+                    <configuration>
+                        <name>build.time</name>
+                        <pattern>yy.MM.dd-HHmmss</pattern>
+                        <locale>en_US</locale>
+                        <timeZone>Canada/Eastern</timeZone>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 
-			<!-- Update lockfile - mvn se.vandmo:dependency-lock-maven-plugin:lock -->
-			<plugin>
-            	<groupId>se.vandmo</groupId>
-            	<artifactId>dependency-lock-maven-plugin</artifactId>
-            	<version>1.1.0</version>
-				<executions>
-					<execution>
-						<id>check</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-        	</plugin>
+        <!-- Update lockfile - mvn se.vandmo:dependency-lock-maven-plugin:lock -->
+        <plugin>
+            <groupId>se.vandmo</groupId>
+            <artifactId>dependency-lock-maven-plugin</artifactId>
+            <version>1.1.0</version>
+            <executions>
+                <execution>
+                    <id>check</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
 
-			<plugin>
-			<groupId>org.owasp</groupId>
-			<artifactId>dependency-check-maven</artifactId>
-			<version>9.2.0</version> <!-- Use the latest version -->
-			<executions>
-				<execution>
-					<goals>
-						<goal>check</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-		</plugins>
+        <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>9.2.0</version> <!-- Use the latest version -->
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
 
 			<!--     Maybe one day when the header licences are used again.
 			<plugin>-->
@@ -1878,12 +1880,6 @@ Comming soon. After spring and java upgrades
 			<!--			<exclude>src/main/webapp/report/reportonedblist.jsp</exclude>-->
 			<!--			<exclude>src/main/webapp/report/reportResult.jsp</exclude>-->
             <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin -->
-            
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.24</version>
-            </plugin>
 
             <!--Comming soon. After spring and java upgrades
             <plugin>
