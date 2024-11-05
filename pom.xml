@@ -1879,6 +1879,31 @@ Comming soon. After spring and java upgrades
 			<!--			<exclude>src/main/webapp/report/reportonbilledvisitprovider.jsp</exclude>-->
 			<!--			<exclude>src/main/webapp/report/reportonedblist.jsp</exclude>-->
 			<!--			<exclude>src/main/webapp/report/reportResult.jsp</exclude>-->
+            <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin -->
+            
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>11.0.24</version>
+            </plugin>
+
+            <!--Comming soon. After spring and java upgrades
+            <plugin>
+                <groupId>org.apache.axis2</groupId>
+                <artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+                <version>1.5.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsdl2code</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>test</packageName>
+                            <wsdlFile>src/main/resources/olis.wsdl</wsdlFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> -->
 
 			<!--			<exclude>src/main/webapp/billing/billingBrazil.jsp</exclude>-->
 			<!--			<exclude>src/main/webapp/billing/billingBrazilSuccess.jsp</exclude>-->
