@@ -982,7 +982,7 @@
         return object;
     }
 
-    /*
+/*
  * Create a callback list using the following parameters:
  *
  *	options: an optional list of space-separated options that will change how
@@ -2713,7 +2713,7 @@
         return false;
     }
 
-    /*
+/*
  * Helper functions for managing events -- not part of the public interface.
  * Props to Dean Edwards' addEvent library for many of the ideas.
  */
@@ -3691,7 +3691,7 @@
             }
         }
     });
-    /*!
+/*!
  * Sizzle CSS Selector Engine
  * Copyright 2012 jQuery Foundation and other contributors
  * Released under the MIT license
@@ -4578,7 +4578,7 @@
                 },
 
                 "CHILD": function (match) {
-                    /* matches from matchExpr["CHILD"]
+                /* matches from matchExpr["CHILD"]
 				1 type (only|nth|...)
 				2 what (child|of-type)
 				3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
@@ -7443,7 +7443,7 @@
         // Keep a copy of the old load method
         _load = jQuery.fn.load,
 
-        /* Prefilters
+    /* Prefilters
 	 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
 	 * 2) These are called:
 	 *    - BEFORE asking for a transport
@@ -7454,7 +7454,7 @@
 	 */
         prefilters = {},
 
-        /* Transports bindings
+    /* Transports bindings
 	 * 1) key is the dataType
 	 * 2) the catchall symbol "*" can be used
 	 * 3) selection will start with transport dataType and THEN go to "*" if needed
@@ -7655,17 +7655,6 @@
             processData: true,
             async: true,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            /*
-		timeout: 0,
-		data: null,
-		dataType: null,
-		username: null,
-		password: null,
-		cache: null,
-		throws: false,
-		traditional: false,
-		headers: {},
-		*/
 
             accepts: {
                 "*": allTypes,
@@ -8126,7 +8115,7 @@
         }
     });
 
-    /* Handles responses to an ajax request:
+/* Handles responses to an ajax request:
  * - sets all responseXXX fields accordingly
  * - finds the right dataType (mediates between content-type and expected dataType)
  * - returns the corresponding response
@@ -8474,7 +8463,7 @@
 // Create the request object
 // (This is still attached to ajaxSettings for backward compatibility)
     jQuery.ajaxSettings.xhr = window.ActiveXObject ?
-        /* Microsoft failed to properly
+    /* Microsoft failed to properly
 	 * implement the XMLHttpRequest in IE7 (can't request local files),
 	 * so we use the ActiveXObject when it is available
 	 * Additionally XMLHttpRequest can be disabled in IE7/IE8 so

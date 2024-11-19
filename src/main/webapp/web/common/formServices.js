@@ -91,7 +91,6 @@ angular.module("formServices", [])
             getGroupNames: function () {
                 var deferred = $q.defer();
                 $http.get(this.apiPath + '/groupNames', this.configHeaders).then(function (response) {
-                    //console.log('got group names !' + data.toSource());
                     deferred.resolve(response.data.content);
                 }, function () {
                     console.log("error fetching eforms");
@@ -127,7 +126,6 @@ angular.module("formServices", [])
             getFormOptions: function (demographicNo) {
                 var deferred = $q.defer();
                 $http.get(this.apiPath + '/' + demographicNo + '/formOptions', this.configHeaders).then(function (response) {
-                    //console.log('got group names !' + data.toSource());
                     deferred.resolve(response.data);
                 }, function () {
                     console.log("error fetching eforms");

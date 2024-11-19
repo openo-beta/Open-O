@@ -111,12 +111,6 @@
 //  //Because plugins are minified together with jSignature, multiple defines per (minified) file blow up and dont make sense
 //	//Need to revisit this later.
 
-//	if ( typeof define === "function" && define.amd != null) {
-//		// AMD-loader compatible resource declaration
-//		// you need to call this one with jQuery as argument.
-//		define(function(){return Initializer} )
-//	} else {
     ExtensionAttacher()
-//	}
 
 })();

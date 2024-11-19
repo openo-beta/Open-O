@@ -371,7 +371,6 @@ function renderGraph() {
 }
 
 $(document).ready(function ($) {
-    // audit();
     handleFallsNumber();
     const contextPath = $("#contextPath").html();
     const formId = $('input[name="formId"]').val();

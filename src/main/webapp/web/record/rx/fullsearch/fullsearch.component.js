@@ -12,14 +12,10 @@ const FullSearchComponent = {
         fullSearchComp.$onInit = function () {
             console.log("oninit drugHistoryComp component", this);
 
-            //drugHistoryComp.drug = this.resolve.drug;
             fullSearchComp.druglist = [];
             fullSearchComp.brand = [];
             fullSearchComp.gen = [];
             fullSearchComp.afhcClass = [];
-
-            //rxService.history(drugHistoryComp.drug, drugHistoryComp.drug.demographicNo, drugHistoryComp.fillMeds);
-
 
         };
 

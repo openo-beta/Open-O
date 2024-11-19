@@ -268,7 +268,6 @@ function xmlhttpPost(requestURL, changeFunc, queryString) {
     // Mozilla/Safari
     if (window.XMLHttpRequest) {
         self.xmlHttpReq = new XMLHttpRequest();
-        //self.xmlHttpReq.overrideMimeType("text/xml");
     }
     // IE
     else if (window.ActiveXObject) {

@@ -27,7 +27,6 @@ Refresh.Web.ColorPicker.prototype = {
         this._redRadio = $(this.id + '_RedRadio');
         this._greenRadio = $(this.id + '_GreenRadio');
         this._blueRadio = $(this.id + '_BlueRadio');
-        //this._webSafeCheck = $(this.id + '_WebSafeCheck');
 
         this._hueRadio.value = 'h';
         this._saturationRadio.value = 's';
@@ -48,9 +47,6 @@ Refresh.Web.ColorPicker.prototype = {
         Event.observe(this._redRadio, 'click', this._event_onRadioClicked);
         Event.observe(this._greenRadio, 'click', this._event_onRadioClicked);
         Event.observe(this._blueRadio, 'click', this._event_onRadioClicked);
-
-        //this._event_webSafeClicked = this._onWebSafeClicked.bindAsEventListener(this);
-        //Event.observe( this._webSafeCheck, 'click', this._event_webSafeClicked);
 
 
         // attach simple properties
@@ -313,8 +309,6 @@ Refresh.Web.ColorPicker.prototype = {
                 this.setImg(this._barL3, this.settings.clientFilesPath + 'bar-blue-tr.png');
                 this.setImg(this._barL2, this.settings.clientFilesPath + 'bar-blue-br.png');
                 this.setImg(this._barL1, this.settings.clientFilesPath + 'bar-blue-bl.png');
-
-                //this.setImg(this._barL4, this.settings.clientFilesPath + 'bar-hue.png');
 
                 break;
 

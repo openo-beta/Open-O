@@ -39,15 +39,6 @@ jQuery(document).ready(function () {
             width: 'auto',
             height: 'auto',
             resizable: true
-            /* ,
-            show: {
-              effect: "blind",
-              duration: 1000
-            },
-            hide: {
-              effect: "explode",
-              duration: 1000
-            } */
         });
 
         jQuery(".oscar-dialog-link").on("click", function (event) {

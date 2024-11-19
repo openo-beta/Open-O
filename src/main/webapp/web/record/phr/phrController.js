@@ -63,16 +63,6 @@ oscarApp.controller('PHRCtrl', function ($scope, $http, $location, $stateParams,
         type: 'window'
     }];
 
-
-    /*$scope.page.formlists.forEach(function (item, index) {
-        console.log('What is the item ',item);
-        formService.getAllFormsByHeading($stateParams.demographicNo,item.label).then(function(data) {
-            console.debug('whats the index'+index,data);
-            $scope.page.currentFormList[index] = data.list;
-        });
-    });
-    */
-
     $scope.changeTo = function (listId) {
         $scope.page.currentlistId = listId;
         console.log('set currentlist to ' + listId);

@@ -22,8 +22,6 @@ function popup(vheight, vwidth, varpage, windowname) {
 
 function resizeUl() {
     var sum = 0;
-    //$("#picker li").each(function() { sum += $(this).width(); } );
-    //$("#picker").width(sum+3);
 
     sum = 0;
     $("#builder li").each(function () {
@@ -100,23 +98,7 @@ function _remove(r) {
 }
 
 function _resetsortable() {
-    /*
-    $("#picker li").sortable("destroy");
 
-    $("#picker li").sortable({
-        helper: 'clone',
-        connectWith: '#builder',
-        revert: 'invalid',
-        receive: function(e, ui) {
-            resizeUl();
-        },
-        distance: 15,
-        stop: function(e, ui) {
-            if ($(ui.sender).parent().attr("id") == "picker")
-                $(ui.sender).sortable("cancel");
-        }
-    });
-    */
 }
 
 var selectionMode = "single";
@@ -126,11 +108,6 @@ $(document).ready(function () {
     $(document).disableSelection();
 
     $("#picker img").wrap("<div rotate=0 />");
-    //$("#picker img").mouseover(function() {
-    //	this.style.height = "400px";
-    //}).mouseout(function() {
-    //	this.style.height = "";
-    //});
 
     $("#picker div").append(function (index, html) {
         return "<span class='num'>" + ++index + "</span>" +
@@ -142,8 +119,6 @@ $(document).ready(function () {
             "-moz-box-shadow: none' src='../images/icons/114.png' /></span>";
     });
 
-    //$("#picker div span.rotate_r").click(function() { _rotater(this) });
-
     $(document).bind("contextmenu", function (e) {
         return false;
     });
@@ -153,7 +128,6 @@ $(document).ready(function () {
     });
 
     _resizeui();
-    //_resetsortable();
 
     $("#picker div").click(function (e) {
         $(this).addClass("selected");
@@ -175,32 +149,6 @@ $(document).ready(function () {
     $("#picker div").dblclick(function (e) {
         _zoom(this);
     });
-
-
-    /*$("#builder").sortable({
-        helper: 'clone',
-        revert: 'invalid',
-        receive: function(e, ui) {
-            $("#builder").children('div').wrap("<li />");
-            resizeUl();
-        },
-        start: function(e, ui) {
-            if (ui.offset) {
-            ui.originalPosition.left = 0;
-            ui.offset.left = 0;
-            ui.position.left = 0;
-            }
-        },
-        sort: function(e, ui) {
-            var curposition = $(ui.helper).position;
-            temp = ui;
-            ui.offset.left = 20;
-            ui.position.left = -80;
-            $(ui.helper).css('left', curposition-800);
-        }
-    }).droppable({
-        activeClass: 'accept-drop'
-    });*/
 
     $("#tool_add").click(function (e) {
         if ($(selected).length > 0) {

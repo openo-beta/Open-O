@@ -52,7 +52,7 @@ function num(value) {
     var theString = new String(value);
     var st = new String(theString.substring(0, theString.length - 2));
     var numberSt = new Number(st);
-    //alert('value: '+numberSt.toString());
+
     return numberSt;
 }
 
@@ -123,7 +123,7 @@ function shrinkTable(textarea) {
                 textarea.style.height = (ht - dheight);
             else
                 textarea.style.height = lht;
-            // this changes sh and fh size
+            // This changes sh and fh size
             var shHeight = num(document.encForm.shTextarea.style.height);
             var fhHeight = num(document.encForm.fhTextarea.style.height);
             if (((shHeight - dheight / 2) > sht) && ((fhHeight - dheight / 2) > sht)) {
@@ -319,12 +319,4 @@ function hotkeySize(name, evnt) {
         expandTable(name);
     if (evnt.which == 45)
         shrinkTable(name);
-
-    /*alert('You have depressed a key');
-    alert('event.which: '+evnt.which);
-    alert('Event: '+evnt.modifiers);
-    //alert('event.C_M: '+event.modifiers);
-    if(evnt.modifiers == evnt.CONTROL_MASK)
-        alert('you pressed Ctrl');
-        */
 }

@@ -100,9 +100,6 @@ oscarApp.controller('RecordCtrl', function ($rootScope, $scope, $http, $location
 
     $scope.fillMenu();
 
-    //var transitionP = $state.transitionTo($scope.recordtabs2[0].path,$stateParams,{location:'replace',notify:true});
-    //console.log("transition ",transitionP);
-
     $scope.changeTab = function (temp) {
         $scope.currenttab2 = $scope.recordtabs2[temp.id];
 
@@ -129,10 +126,6 @@ oscarApp.controller('RecordCtrl', function ($rootScope, $scope, $http, $location
     }
 
     $scope.isTabActive = function (tab) {
-        //console.log('current state '+$state.current.name.substring(0,tab.path.length)+" -- "+($state.current.name.substring(0,tab.path.length) == tab.path),$state.current.name,tab);
-        //console.log('ddd '+$state.current.name.length+"  eee "+tab.path.length);
-        //if($state.current.name.length < tab.path.length) return "";
-
         if (tab.dropdown) {
             return "dropdown";
         }
@@ -151,7 +144,7 @@ oscarApp.controller('RecordCtrl', function ($rootScope, $scope, $http, $location
 
     });
 
-    //////AutoSave
+    //AutoSave
     var saveIntervalSeconds = 2;
 
     var timeout = null;
@@ -183,7 +176,7 @@ oscarApp.controller('RecordCtrl', function ($rootScope, $scope, $http, $location
 
     //////
 
-    //////Timer
+    //Timer
     var d = new Date();  //the start
 
     var totalSeconds = 0;

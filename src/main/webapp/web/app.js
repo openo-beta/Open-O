@@ -70,7 +70,6 @@ oscarApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvide
         .state('reports', {
             url: '/reports',
             templateUrl: 'report/reports.jsp',
-            //templateUrl: 'report/reports_classic.jsp',
             controller: 'ReportsCtrl'
         })
         .state('documents', {
@@ -269,7 +268,6 @@ $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState,
 oscarApp.filter('startFrom', function () {
     return function (input, start) {
         start = +start; //parse to int
-        // return input.slice(start);
         return input;
     }
 });

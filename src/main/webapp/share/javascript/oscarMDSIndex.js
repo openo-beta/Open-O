@@ -310,34 +310,6 @@ function sendMRP(ele) {
     }
 }
 
-/*
-function forwardDocument(docId) {
-	var frm = "#reassignForm_" + docId;
-	var query = jQuery(frm).serialize();
-	alert(docId);
-	jQuery.ajax({
-		type: "POST",
-		url:  contextpath + "/oscarMDS/ReportReassign.do",
-		data: query,
-		success: function (data) {
-			frm = "#frmDocumentDisplay_" + docId;
-			query = jQuery(frm).serialize();
-			jQuery.ajax({
-				type: "POST",
-				url: contextpath + "/documentManager/showDocument.jsp",
-				data: query,
-				success: function(data) {
-					jQuery("#document_"+docId).html(data);
-				}
-			});
-		},
-		error: function(jqXHR, err, exception) {
-			alert(jqXHR.status);
-		}
-	});
-}
-*/
-
 function rotate180(id) {
     jQuery("#rotate180btn_" + id).attr('disabled', 'disabled');
     var displayDocumentAs = $('displayDocumentAs_' + id).value;
@@ -846,84 +818,6 @@ function checkBox() {
     }
     window.location.search = replaceQueryString(window.location.search, "view", view);
 
-    /*
-	//oscarLog("in checkBox");
-	var checkedArray=new Array();
-	if($('documentCB').checked==1){
-		checkedArray.push('document');
-	}
-	if($('hl7CB').checked==1){
-		checkedArray.push('hl7');
-	}
-	if($('normalCB').checked==1){
-		checkedArray.push('normal');
-	}
-	if($('abnormalCB').checked==1){
-		checkedArray.push('abnormal');
-	}
-	if($('unassignedCB').checked==1){
-		checkedArray.push('unassigned');
-	}
-	if(checkedArray.length==0||checkedArray.length==4){
-		var endindex= number_of_row_per_page-1;
-		if(endindex>=total_rows.length)
-			endindex=total_rows.length-1;
-
-		//show all
-		for(var i=0;i<endindex+1;i++){
-			var id=total_rows[i];
-			if($(id)){
-				$(id).show();
-			}
-		}
-		for(var i=endindex+1;i<total_rows.length;i++){
-			var id=total_rows[i];
-			if($(id)){
-				$(id).hide();
-			}
-		}
-		current_numberofpages=Math.ceil(total_rows.length/number_of_row_per_page);
-		initializeNavigation();
-		current_category=new Array();
-		current_category[0]=document.getElementsByName('scannedDoc');
-		current_category[1]=document.getElementsByName('HL7lab');
-		current_category[2]=document.getElementsByClassName('NormalRes');
-		current_category[3]=document.getElementsByClassName('AbnormalRes');
-		current_category[4]=document.getElementsByClassName('UnassignedRes');
-	}
-	else{
-		//oscarLog('checkedArray='+checkedArray);
-		var eles=new Array();
-		for(var i=0;i<checkedArray.length;i++){
-			var type=checkedArray[i];
-
-			if(type=='document'){
-				var docs=document.getElementsByName('scannedDoc');
-				eles.push(docs);
-			}
-			else if(type=='hl7'){
-				var labs=document.getElementsByName('HL7lab');
-				eles.push(labs);
-			}
-			else if(type=='normal'){
-				var norm=document.getElementsByClassName('NormalRes');
-				eles.push(norm);
-
-			}
-			else if(type=='abnormal'){
-				var abn=document.getElementsByClassName('AbnormalRes');
-				eles.push(abn);
-			}
-			else if (type=='unassigned') {
-				var un=document.getElementsByClassName('UnassignedRes');
-				eles.push(un);
-			}
-		}
-		current_category=eles;
-		displayCategoryPage(1);
-		initializeNavigation();
-	}
-	*/
 }
 
 function displayCategoryPage(page) {
@@ -2257,4 +2151,3 @@ function getDocComment(docId, providerNo, inQueueB) {
     }
 
 }
-

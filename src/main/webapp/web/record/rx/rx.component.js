@@ -263,9 +263,6 @@ const RxComponent = {
             d.rxDate = new Date();
             d.custom = true;
             d.repeats = 0;
-            // if(angular.isDefined(d.id)){
-            // delete d.id;
-            // }
             rxComp.toRxList.push(d);
         }
 
@@ -321,9 +318,6 @@ const RxComponent = {
                 var d = new Drug();
                 d.applyFavorite(m);
                 d.writtenDate = new Date();
-                // if(angular.isDefined(d.id)){
-                // delete d.id;
-                // }
                 rxComp.toRxList.push(d);
             } else {
                 console.log("calling getMEd details ", med);
@@ -337,14 +331,10 @@ const RxComponent = {
                             newMed.newMed = true;
                             newMed.repeats = 0;
                             newMed.writtenDate = new Date();
-                            // if(angular.isDefined(newMed.id)){
-                            // delete newMed.id;
-                            // }
                             newMed.populateFromDrugSearchDetails(d.data.drugs[0]);
 
                             rxComp.toRxList.push(newMed);
                             rxComp.shortDSMessage();
-                            // updateStrengthUnits(d.drugs);
                         },
                         function (errorMessage) {
                             console.log("getMedicationDetails " + errorMessage);

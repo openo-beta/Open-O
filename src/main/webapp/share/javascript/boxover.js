@@ -186,7 +186,6 @@ function SHW() {
 var ID = null;
 
 function moveMouse(e) {
-    //boxMove=true;
     e ? evt = e : evt = event;
 
     CSE = evt.target ? evt.target : evt.srcElement;

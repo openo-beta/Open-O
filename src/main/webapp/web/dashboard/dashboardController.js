@@ -312,7 +312,6 @@ oscarApp.controller('DashboardCtrl', function ($scope, providerService, ticklerS
         });
 
         modalInstance.result.then(function (data) {
-            //console.log('data from modalInstance '+data);
             if (data != null && data == true) {
                 $scope.updateTicklers();
             }

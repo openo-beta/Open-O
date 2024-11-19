@@ -305,7 +305,6 @@ oscarApp.controller('ConsultRequestCtrl', function ($scope, $http, $resource, $l
         var demographicNo = consult.demographicId;
         var letterheadFax = noNull(consult.letterheadFax);
         var fax = noNull(consult.professionalSpecialist.faxNumber);
-//		var faxRecipients = *additional fax recipients (can be >1)*
 
         window.open("../fax/CoverPage.jsp?reqId=" + reqId + "&demographicNo=" + demographicNo + "&letterheadFax=" + letterheadFax + "&fax=" + fax);
     }

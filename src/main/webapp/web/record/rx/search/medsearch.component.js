@@ -75,7 +75,6 @@ const MedsearchComponent = {
         rxSearchComp.lookupMeds = function (val) {
             var urlStr = "../ws/rs/rxlookup/search?string=" + val;
 
-            //return $http.get(urlStr).then(function (response) {
             return rxService.lookup(val).then(function (response) {
 
                 console.log("lookupMeds return ", response, rxSearchComp.favouriteMeds, val);

@@ -42,7 +42,5 @@ function resizeIframe(iframe) {
     var h = iframe.contentWindow.document.body.scrollHeight;
     if (h > 0) {
         iframe.height = h + "px";
-        //alert("h > 0");
     }
-    //alert("h" + h);
 }

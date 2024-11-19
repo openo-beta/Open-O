@@ -165,7 +165,6 @@ function updateProviderFilter() {
 
     $("#libraryTable").DataTable().ajax.reload();
 
-    //alert(providerNoVal + "\n" + providerUnmatchedVal);
 }
 
 function reloadTable() {

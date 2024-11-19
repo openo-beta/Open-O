@@ -119,7 +119,7 @@ function buildIndicatorPanel(html, target, id) {
         indicatorGraph.destroy();
     }
 
-    let panel = $("#" + target + "_" + id).html(html); //.append("<h3>" +id+ "</h3>");
+    let panel = $("#" + target + "_" + id).html(html);
     let data = "[" + panel.find("#graphPlots_" + id).val() + "]";
     data = data.replace(/'/g, '"');
     data = JSON.parse(data)

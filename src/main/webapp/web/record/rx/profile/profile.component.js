@@ -30,7 +30,7 @@ const RxProfileComponent = {
             if (angular.isDefined(changesObj.fulldrugs)) {
                 console.log("was defined");
                 drugList = changesObj.fulldrugs.currentValue;
-                fullDrugList = drugList;//$filter('orderBy')(drugList, 'rxDate', true);
+                fullDrugList = drugList;
                 rxProfileComp.processList(fullDrugList);
             }
 
@@ -52,7 +52,6 @@ const RxProfileComponent = {
         }
 
         rxProfileComp.daysToExp = function (drug) {
-            //console.log("drug--",drug);
             var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
             var endDate = Date.parse(drug.endDate);
             var now = new Date();
@@ -68,7 +67,6 @@ const RxProfileComponent = {
             profileObject.profileHash = {};
             profileObject.profileList = [];
             for (i = 0; i < drugList.length; i++) {
-                //console.log("here1."+i+" ",drugList[i]);
                 if (angular.isDefined(profileObject.profileHash[drugList[i].atc])) {
                     profileObject.profileHash[drugList[i].atc].push(drugList[i]);
                 } else {
@@ -368,17 +366,6 @@ const RxProfileComponent = {
         }
         rxProfileComp.hideFromCPP = function (drug) {
             alert("Not Implemented Yet");
-            /*
-             function(event) {
-            var val = $('hidecpp_242').checked;
-            new Ajax.Request('/oscar/oscarRx/hideCpp.do?method=update&prescriptId=242&value=' + val, {
-              method: 'get',
-              onSuccess: function(transport) {}
-            });
-
-          }
-
-             */
             console.log("Not Implemented Yet", drug);
         }
         rxProfileComp.moveUpInList = function (drug) {

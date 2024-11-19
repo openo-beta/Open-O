@@ -28,7 +28,6 @@ angular.module("uxServices", [])
         return {
             apiPath: '../ws/rs/recordUX',
             getSummaryHeaders: function (demographicNo, key) {
-                //
                 console.log("Debug: calling left");
                 var deferred = $q.defer();
                 $http.get(this.apiPath + '/' + demographicNo + '/summary/' + key).then(function (response) {
@@ -119,7 +118,6 @@ angular.module("uxServices", [])
     return {
         apiPath: '../ws/rs/recordUX',
         menu: function (demographicNo) {
-            //
             console.log("Debug: calling left");
             var deferred = $q.defer();
             $http.get(this.apiPath + '/' + demographicNo + '/recordMenu').then(function (response) {

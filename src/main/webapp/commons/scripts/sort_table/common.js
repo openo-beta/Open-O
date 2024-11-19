@@ -102,4 +102,3 @@ function getEventTarget(e) {
 
     return targ;
 }
-

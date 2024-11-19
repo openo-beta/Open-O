@@ -270,5 +270,3 @@ Refresh.Web.Slider.prototype = {
     }
 
 }
-
-

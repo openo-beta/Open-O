@@ -34,4 +34,3 @@ dojo.widget.defineWidget(
             return dojo.validate.isText(this.textbox.value, this.flags) && this.textbox.value.match('[^0-9]');
         }
     })
-

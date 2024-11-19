@@ -28,7 +28,6 @@ jQuery(document).ready(function () {
             return;
         }
 
-        // init();
         // rather than highjacking a <div> lets put OCEAN where the OSCAR instance has allowance
         jQuery("#ocean_placeholder").show();
         jQuery("#ocean_placeholder").append("<div id='ocean_div' style='width: 100%; display: none; font-size: 11px;'>Sorry, the Ocean toolbar is currently unavailable.</div>");

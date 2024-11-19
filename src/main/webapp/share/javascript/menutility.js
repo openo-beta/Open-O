@@ -50,5 +50,3 @@ function moveObject(objectId, newXCoordinate, newYCoordinate) {
         return false;
     }
 } // moveObject
-
-

@@ -34,7 +34,6 @@ angular.module("demographicServices", [])
             },
 
             getDemographic: function (demographicNo) {
-                //$log.error("2Debug: calling getDemographic");
                 var deferred = $q.defer();
                 $http.get(this.apiPath + 'demographics/' + demographicNo, this.configHeadersWithCache).then(function (response) {
                     console.log(response.data);

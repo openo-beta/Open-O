@@ -228,7 +228,6 @@
                     });
                     words[wordAt] = v;
                     // TODO this should set the cursor to the right position, but it gets overriden somewhere
-                    //$.Autocompleter.Selection(input, progress + seperator, progress + seperator);
                     v = words.join(options.multipleSeparator);
                 }
                 v += options.multipleSeparator;

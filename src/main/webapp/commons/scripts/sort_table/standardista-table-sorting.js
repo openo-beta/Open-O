@@ -119,7 +119,6 @@ var standardistaTableSorting = {
 
         // the column we want is indicated by td.cellIndex
         var column = linkEl.getAttribute('columnId') || td.cellIndex;
-        //var column = td.cellIndex;
 
         // find out what the current sort order of this column is
         var arrows = css.getElementsByClass(td, 'tableSortArrow', 'span');

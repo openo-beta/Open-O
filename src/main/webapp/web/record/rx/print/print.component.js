@@ -66,9 +66,3 @@ const RxPrintComponent = {
     }
     ]
 };
-
-
-
-
-
-  

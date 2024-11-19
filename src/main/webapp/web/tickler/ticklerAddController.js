@@ -126,4 +126,3 @@ oscarApp.controller('TicklerAddController', function ($scope, $uibModalInstance,
         }
     }
 });
-

@@ -202,12 +202,6 @@ oscarApp.controller('SettingsCtrl', function ($scope, $http, $state, providerLis
 
 
     $scope.openChangePasswordModal = function () {
-        /*
-        var modalInstance = $uibModal.open({
-        	templateUrl: 'settings/changePassword.jsp',
-            controller: 'ChangePasswordCtrl'
-        });
-     */
         window.open('../provider/providerchangepassword.jsp', 'change_password', 'width=750,height=500');
     }
 
@@ -264,7 +258,6 @@ oscarApp.controller('SettingsCtrl', function ($scope, $http, $state, providerLis
                 console.log("applist:" + errorMessage);
             }
         );
-        ///
         console.log("refresh", $scope.loadedApps);
     }
 
@@ -293,7 +286,6 @@ oscarApp.controller('QuickLinkCtrl', function ($scope, $uibModalInstance) {
 
     $scope.addQuickLink = function (qlForm) {
         if (qlForm.$valid) {
-            //	alert($scope.qll.toSource());
             $uibModalInstance.close($scope.qll);
         }
     }

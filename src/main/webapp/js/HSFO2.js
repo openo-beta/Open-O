@@ -9,7 +9,6 @@ function confirmReset(form1) {
 }
 
 function confirmExit(frm) {
-    //if (window.confirm("Are you SURE you want to exit without saving? Click OK to continue, Cancel to return to the form and save."))
     if (window.confirm("Any UNSAVED changes will be lost. Click OK to exit the form, or CANCEL to return to the form.")) {
         // closing script
         window.close();
@@ -41,14 +40,6 @@ function checkform(registrationForm) {
             form1.FName.focus();
             return false;
         }
-
-//  if (!/^\d\d\d\d$/.test(form1.consentDate_year.value) || form1.consentDate_year.value == "")
-//  {
-//    alert("Please enter patient's year of consent.");
-//    form1.consentDate_year.focus();
-//    return false;
-//  }
-
         if (!/^\d\d\d\d$/.test(form1.BirthDate_year.value) || form1.BirthDate_year.value == "") {
             alert("Please enter patient's year of birth.");
             form1.BirthDate_year.focus();
@@ -78,18 +69,6 @@ function checkform(registrationForm) {
             alert("Please select patient's sex.");
             return false;
         }
-//  if (form1.PharmacyName.value == "")
-//  {
-//    alert("Please enter patient's pharmacy name.");
-//    form1.PharmacyName.focus();
-//    return false;
-//  }
-//  if (form1.PharmacyLocation.value == "")
-//  {
-//    alert("Please enter patient's pharmacy address.");
-//    form1.PharmacyLocation.focus();
-//    return false;
-//  }
         if (!form1.Ethnic_White.checked && !form1.Ethnic_Black.checked && !form1.Ethnic_EIndian.checked && !form1.Ethnic_Pakistani.checked
             && !form1.Ethnic_SriLankan.checked && !form1.Ethnic_Bangladeshi.checked && !form1.Ethnic_Chinese.checked
             && !form1.Ethnic_Japanese.checked && !form1.Ethnic_Korean.checked && !form1.Ethnic_FirstNation.checked
@@ -125,12 +104,6 @@ function checkform(registrationForm) {
             return false;
         }
     }
-//  if (form1.consentDate_year.value < 2007)
-//  {
-//    alert("Please check that the year of consent is greater than 2006");
-//    form1.consentDate_year.focus();
-//    return false;
-//  }
 
     if (!form1.Height_unit[0].checked && !form1.Height_unit[1].checked) {
         alert("Please select patient's height measurement.");
@@ -172,18 +145,6 @@ function checkform(registrationForm) {
         form1.DBP.focus();
         return false;
     }
-//  if (!form1.SBP_goal.value == "" && (form1.SBP_goal.value < 40 || form1.SBP_goal.value > 300 || isNaN(parseFloat(form1.SBP_goal.value))))
-//  {
-//    alert("Please check that SBP goal is between 40 and 300");
-//    form1.SBP_goal.focus();
-//    return false;
-//  }
-//  if (!form1.DBP_goal.value == "" && (form1.DBP_goal.value < 0 || form1.DBP_goal.value > 140 || isNaN(parseFloat(form1.DBP_goal.value))))
-//  {
-//    alert("Please check that DBP goal is between 0 and 140");
-//    form1.DBP_goal.focus();
-//    return false;
-//  }
     if (!form1.WeightP1.value == "" && (form1.WeightP1.value < 35 || form1.WeightP1.value > 250 || isNaN(form1.WeightP1.value)) && form1.Weight_unit[0].checked) {
         alert("Please check that weight is between 35 and 250 kg");
         form1.WeightP1.focus();
@@ -332,27 +293,6 @@ function checkform(registrationForm) {
         form1.nextVisitInWeeks.focus();
         return false;
     }
-//  if (!form1.exercise_minPerWk.value == ""
-//          && (form1.exercise_minPerWk.value < 0 || form1.exercise_minPerWk.value > 999 || isNaN(parseFloat(form1.exercise_minPerWk.value))))
-//  {
-//    alert("Please check that exercise per week is between 0 and 999");
-//    form1.exercise_minPerWk.focus();
-//    return false;
-//  }
-//  if (!form1.smoking_cigsPerDay.value == ""
-//          && (form1.smoking_cigsPerDay.value < 0 || form1.smoking_cigsPerDay.value > 99 || isNaN(parseFloat(form1.smoking_cigsPerDay.value))))
-//  {
-//    alert("Please check that smoking per day is between 0 and 99");
-//    form1.smoking_cigsPerDay.focus();
-//    return false;
-//  }
-//  if (!form1.alcohol_drinksPerWk.value == ""
-//          && (form1.alcohol_drinksPerWk.value < 0 || form1.alcohol_drinksPerWk.value > 99 || isNaN(parseFloat(form1.alcohol_drinksPerWk.value))))
-//  {
-//    alert("Please check that alcohol per week is between 0 and 99");
-//    form1.alcohol_drinksPerWk.focus();
-//    return false;
-//  }
 
     if (!form1.assessActivity.value == ""
         && (form1.assessActivity.value < 0 || form1.assessActivity.value > 999 || isNaN(form1.assessActivity.value))) {
@@ -510,18 +450,14 @@ function popupXmlMsg(path) {
 function flipview() {
     var regtable = document.getElementById('registartiontable');
     var formtable = document.getElementById('graphtable');
-    //alert(formtable.style.display);
-    //alert(regtable.style.display);
 
     if (regtable.style.display == "none") {
-        //alert("regtable");
         regtable.style.display = "";
         formtable.style.display = "none";
         return false;
     }
 
     if (formtable.style.display == "none") {
-        //alert("formtable");
         formtable.style.display = "";
         regtable.style.display = "none";
         return false;

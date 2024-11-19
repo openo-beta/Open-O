@@ -245,11 +245,7 @@ jQuery(document).ready(function () {
     removeNavDiv('OMeds');
     removeNavDiv('allergies');
     removeNavDiv('FamHistory');
-    /*
-           var ocularMedsLabel = "oscarEncounter.NavBar.OcularMeds";
-           addRightNavDiv("OcularMedication");
-           popColumn(ctx + "/CaseManagementView.do?hc=CCDDAA&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=OcularMedication&title="+ocularMedsLabel+"&cmd=OcularMedication&appointment_no="+appointmentNo +"&noheight=true","OcularMedication","OcularMedication", "rightNavBar", this);
-    */
+
     addRightNavDiv("macro");
     popColumn(ctx + "/oscarEncounter/displayMacro.do?hC=009999&appointment_no=" + appointmentNo, "macro", "macro", "rightNavBar", this);
 

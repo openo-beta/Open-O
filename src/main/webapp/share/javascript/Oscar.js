@@ -117,7 +117,6 @@ function validDateText(completeRawDate) {
     year = (dateArray[0] - 0);
     month = (dateArray[1] - 1);
     day = (dateArray[2] - 0);
-    //alert("year: " + year + ", " + month + ", " + day);
     dateObject = new Date(year, month, day);
     return ((day == dateObject.getDate()) && (month == dateObject.getMonth()) && (year == dateObject.getFullYear()));
 }

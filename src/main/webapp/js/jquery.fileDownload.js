@@ -12,7 +12,6 @@
 var $ = jQuery.noConflict();
 
 $.extend({
-    //
     //$.fileDownload('/path/to/url/', options)
     //  see directly below for possible 'options'
     fileDownload: function (fileUrl, options) {
@@ -409,4 +408,3 @@ $.extend({
         }
     }
 });
-

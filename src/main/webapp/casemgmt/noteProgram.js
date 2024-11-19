@@ -294,8 +294,6 @@ var _setupProgramList = function () {
             jQuery(programList).empty();
             for (var p = 0; p < data.programs.length; p++) {
                 _programRoleMap[data.programs[p].programNo] = data.programs[p].roleAccess;
-                //if (data.programs[p].programName.endsWith("(discharged)"))
-                //	data.programs[p].programName = data.programs[p].programName.substring(0, data.programs[p].programName.indexOf("(discharged)") - 1)
                 jQuery(programList).append(
                     jQuery("<option></option>")
                         .attr("value", data.programs[p].programNo)

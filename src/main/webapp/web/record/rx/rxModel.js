@@ -604,7 +604,6 @@ Drug.prototype.refreshEndDate = function () {
 
 
 Drug.prototype.rxDurationInDays = function () {
-    //console.log("rxDur",this.endDate,this.rxDate,(this.endDate-this.rxDate), ((this.endDate-this.rxDate)/(1000*60*60*24)),(Math.round((this.endDate-this.rxDate)/(1000*60*60*24))));
     return Math.round((this.endDate - this.rxDate) / (1000 * 60 * 60 * 24));
 };
 

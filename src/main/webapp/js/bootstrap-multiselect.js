@@ -8,7 +8,7 @@
  */
 !function ($) {
 
-    "use strict";// jshint ;_;
+    "use strict";
 
     if (typeof ko !== 'undefined' && ko.bindingHandlers && !ko.bindingHandlers.multiselect) {
         ko.bindingHandlers.multiselect = {
@@ -163,7 +163,6 @@
             enableFiltering: false,
             enableCaseInsensitiveFiltering: false,
             filterPlaceholder: 'Search',
-            // possible options: 'text', 'value', 'both'
             filterBehavior: 'text',
             preventInputChangeEvent: false,
             nonSelectedText: 'None selected',

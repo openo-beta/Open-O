@@ -931,4 +931,3 @@ function _mkLinVirt(aLin, x1, y1, x2, y2) {
 function _CompInt(x, y) {
     return (x - y);
 }
-

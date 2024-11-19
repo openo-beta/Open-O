@@ -83,7 +83,6 @@ oscarApp.controller('SummaryCtrl', function ($rootScope, $scope, $http, $locatio
 
 
     $scope.openRevisionHistory = function (note) {
-        //var rnd = Math.round(Math.random() * 1000);
         win = "revision";
         var url = "../CaseManagementEntry.do?method=notehistory&noteId=" + note.noteId;
         window.open(url, win, "scrollbars=yes, location=no, width=647, height=600", "");
@@ -111,7 +110,6 @@ oscarApp.controller('SummaryCtrl', function ($rootScope, $scope, $http, $locatio
 
 
     $scope.isCurrentStatus = function (stat) {
-        //console.log("stat",stat);
         if (stat == $scope.page.currentFilter) {
             return "active";
         } else {
@@ -149,7 +147,6 @@ oscarApp.controller('SummaryCtrl', function ($rootScope, $scope, $http, $locatio
         noteService.getNotesFrom($stateParams.demographicNo, $scope.index, 20, $scope.page.noteFilter).then(function (data) {
                 console.debug('whats the data', angular.isUndefined(data.notelist), data.notelist);
                 if (angular.isDefined(data.notelist)) {
-                    //$scope.page.notes = data;
                     if (data.notelist instanceof Array) {
                         console.log("ok its in an array", $scope.busy);
                         for (var i = 0; i < data.notelist.length; i++) {
@@ -170,8 +167,6 @@ oscarApp.controller('SummaryCtrl', function ($rootScope, $scope, $http, $locatio
         );
 
     };
-
-    //$scope.addMoreItems();
 
     $scope.editNote = function (note) {
         $rootScope.$emit('loadNoteForEdit', note);
@@ -258,7 +253,6 @@ oscarApp.controller('SummaryCtrl', function ($rootScope, $scope, $http, $locatio
         var firstL = note.note.trim().split('\n')[0];
         var dateStr = $filter('date')(note.observationDate, 'dd-MMM-yyyy');
         dateStr = "[" + dateStr;
-        //console.log(firstL + " --"+dateStr+"-- " + firstL.indexOf(dateStr));
         if (firstL.indexOf(dateStr) == 0) {
             firstL = firstL.substring(dateStr.length);
         }
@@ -428,8 +422,6 @@ oscarApp.controller('SummaryCtrl', function ($rootScope, $scope, $http, $locatio
             } else if (item.type == 'prevention') {
                 win = "prevention" + $stateParams.demographicNo;
             } else {
-                //item.type == 'lab' || item.type == 'document'
-                //var rnd = Math.round(Math.random() * 1000);
                 win = "win_item.type_";
             }
 
@@ -485,7 +477,6 @@ GroupNotesCtrl = function ($scope, $uibModal, $uibModalInstance, mod, action, us
     $scope.page.items = mod.summaryItem;
     $scope.page.quickLists = [];
 
-    //$scope.action = action;
     $scope.page.code = mod.summaryCode;
 
     $scope.groupNotesForm = {assignedCMIssues: []};
@@ -551,7 +542,6 @@ GroupNotesCtrl = function ($scope, $uibModal, $uibModalInstance, mod, action, us
     displayGroupNote = function (item, itemId) {
         if ($scope.page.items[itemId].noteId != null) {
             noteService.getIssueNote($scope.page.items[itemId].noteId).then(function (iNote) {
-                //$scope.master = angular.copy( "iNote----" +  JSON.stringify(iNote) );
                 $scope.groupNotesForm.encounterNote = iNote.encounterNote;
                 $scope.groupNotesForm.groupNoteExt = iNote.groupNoteExt;
                 $scope.groupNotesForm.assignedCMIssues = iNote.assignedCMIssues;
@@ -706,7 +696,6 @@ GroupNotesCtrl = function ($scope, $uibModal, $uibModalInstance, mod, action, us
     }
 
     $scope.archiveGroupNotes = function () {
-        //$scope.master = angular.copy($scope.groupNotesForm);
         $scope.groupNotesForm.encounterNote.archived = true;
         $scope.saveGroupNotes();
     }
@@ -870,7 +859,6 @@ RecordPrintCtrl = function ($scope, $uibModal, $uibModalInstance, mod, action, $
     }
 
     $scope.print = function () {
-        //console.log('processList',mod);
         console.log($scope.pageOptions);
         var selectedList = [];
         for (var i = 0; i < mod.length; i++) {

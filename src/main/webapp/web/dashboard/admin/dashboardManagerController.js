@@ -168,11 +168,3 @@ function sendData(path, param, target) {
         }
     });
 }
-
-
-
-	
-
-
-
-

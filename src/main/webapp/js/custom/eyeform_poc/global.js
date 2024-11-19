@@ -133,7 +133,6 @@ function sendConRequestTickler(ctx, demographicNo) {
             req += '&frontFlag=true&providerNo=';
             req += document.EctConsultationFormRequestForm.providerl.value;
         }
-        //alert(req);
         jQuery.ajax({url: req, dataType: 'script'});
     } else {
         alert("Please check the checkbox before click this button!");
@@ -144,7 +143,6 @@ function sendConReportTickler(ctx, demographicNo) {
     var req = ctx + "/eyeform/Eyeform.do?method=specialRepTickler&demographicNo=" + demographicNo;
     if (document.eyeForm.ack.checked == true) {
         req += '&docFlag=true';
-        //alert(req);
         jQuery.ajax({url: req, dataType: 'script'});
     } else {
         alert("Please check the checkbox before click this button!");
@@ -166,8 +164,6 @@ function addExam(ctx, listId, whereTo, appointmentNo) {
 }
 
 function addSection(fromList, toList) {
-    //alert(fromList);
-    //alert(toList);
     for (var x = 0; x < fromList.options.length; x++) {
         if (fromList.options[x].selected) {
             selectHeaderFromSection(fromList.options[x].value, toList);
@@ -190,7 +186,6 @@ function selectHeaderFromSection(section, toList) {
         selectOption(toList, 'Manifest distance');
         selectOption(toList, 'Manifest near');
         selectOption(toList, 'Cycloplegic refraction');
-        //selectOption(toList,'Best corrected distance vision');
 
     }
     if (section == 'INTRAOCULAR PRESSURE') {

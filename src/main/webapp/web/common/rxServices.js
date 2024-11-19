@@ -161,8 +161,6 @@ angular.module("rxServices", [])
                     toSend.push(drugs[m].toDrugTransferObject(false));
                 }
 
-                // var obj = {drug : toSend};
-
                 this._prescribe(demoNo, toSend).then(function (resp) {
                     return cb(resp.data);
                 });
@@ -322,19 +320,6 @@ angular.module("rxServices", [])
 
             },
 
-            /* addFavorite : function(fav, cb){
-
-                 var obj =  fav.toTransferObject();
-
-                 this._addFavorite(obj).then(
-                     function(resp){
-                         console.log(resp);
-                         cb(resp);
-                     }
-                 );
-
-             },
-             */
             getPrescriptions: function (demo) {
 
                 var deferred = $q.defer();

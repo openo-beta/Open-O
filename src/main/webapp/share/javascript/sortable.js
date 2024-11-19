@@ -217,7 +217,6 @@ function sort_date(date) {
             case "dec":
                 var mt = "12";
                 break;
-            // default: var mt = "00";
         }
         dt = date.substr(7, 4) + mt + date.substr(0, 2);
         return dt;

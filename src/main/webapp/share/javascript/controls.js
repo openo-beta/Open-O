@@ -438,18 +438,12 @@ Autocompleter.Local.prototype = Object.extend(new Autocompleter.Base(), {
                     }
                     while (foundPos != -1) {
                         if (foundPos == 0 && elem.length != entry.length) {
-                            /*ret.push("<li><strong>" + elem.substr(0, entry.length) + "</strong>" +
-                              elem.substr(entry.length) + "</li>"); */
-
                             ret.push("<li style=\"" + colour + "\"><span style=\"color:000000;\">" + elem.substr(0, entry.length) +
                                 elem.substr(entry.length) + "</span></li>");
                             break;
                         } else if (entry.length >= instance.options.partialChars &&
                             instance.options.partialSearch && foundPos != -1) {
                             if (instance.options.fullSearch || /\s/.test(elem.substr(foundPos - 1, 1))) {
-                                /*partial.push("<li>" + elem.substr(0, foundPos) + "<strong>" +
-                                  elem.substr(foundPos, entry.length) + "</strong>" + elem.substr(
-                                  foundPos + entry.length) + "</li>"); */
 
                                 partial.push("<li style=\"" + colour + "\"><span style=\"color:000000;\">" + elem.substr(0, foundPos) + "<strong>" +
                                     elem.substr(foundPos, entry.length) + "</strong>" + elem.substr(

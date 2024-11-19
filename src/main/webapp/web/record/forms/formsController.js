@@ -123,9 +123,6 @@ oscarApp.controller('FormCtrl', function ($scope, $http, $location, $stateParams
             arr[0] = data.list;
             $scope.page.encounterFormlist[0] = arr;
         }
-
-        //$scope.page.encounterFormlist[0] = data.list;
-        //console.log("completed list as is:" + JSON.stringify($scope.page.encounterFormlist[0]) );
     });
 
     formService.getSelectedEncounterForms().then(function (data) {
@@ -161,7 +158,6 @@ oscarApp.controller('FormCtrl', function ($scope, $http, $location, $stateParams
 
         if (item.type == 'eform') {
             if (item.id != null) {
-                //if(angular.isDefined(item.id)){
                 console.log('id is defined - ' + item.id);
                 addOrShow = '../eform/efmshowform_data.jsp?fdid=' + item.id;
             } else {
@@ -222,10 +218,6 @@ oscarApp.controller('FormCtrl', function ($scope, $http, $location, $stateParams
         $scope.page.currentForm = item;
         var pymParent = new pym.Parent('formInViewFrame', url, {});
         $scope.pymParent = pymParent;
-
-        /*if(item.type != 'eform' && view==1){
-            document.getElementById('formInViewFrame').firstChild.style.height = "1600px"; //temp hack for the forms
-        }*/
 
         //resize iframe for both form and eforms
         $('iframe').load(function () {

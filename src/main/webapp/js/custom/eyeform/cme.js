@@ -284,7 +284,6 @@ function notifyDivLoaded(divId) {
 }
 
 function messagesLoaded(savedId) {
-    //alert('messagesLoaded() - savedNoteId=' + savedId);
     var noteAddonUrl = ctx + "/eyeform/NoteData.do?method=getCurrentNoteData&demographicNo=" + demographicNo + "&noteId=" + savedId + "&appointmentNo=" + appointmentNo;
     jQuery.ajax({
         url: noteAddonUrl, dataType: "html", success: function (data) {

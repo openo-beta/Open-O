@@ -106,4 +106,3 @@ function bindDxJSONEvents() {
 jQuery(document).ready(function () {
     bindDxJSONEvents();
 })
-

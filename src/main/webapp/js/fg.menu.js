@@ -126,7 +126,6 @@ function Menu(caller, options) {
         ;
         caller
             .addClass('fg-menu-open');
-        //	.addClass(options.callerOnState);
         container.parent().show().click(function () {
             menu.kill();
             return false;

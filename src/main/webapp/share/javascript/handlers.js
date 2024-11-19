@@ -89,7 +89,6 @@ function uploadStart(file) {
 }
 
 function uploadProgress(file, bytesLoaded, bytesTotal) {
-    //console.log("INHERE");
     try {
         var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
 
@@ -97,7 +96,6 @@ function uploadProgress(file, bytesLoaded, bytesTotal) {
         progress.setProgress(percent);
         progress.setStatus("Uploading...");
     } catch (ex) {
-        //console.log("aND IN HERE");
         this.debug(ex);
     }
 }

@@ -408,7 +408,6 @@
         //see http://stackoverflow.com/questions/20221461/hidpi-retina-plot-drawing
         var cw = parseInt(ctx.canvas.style.width);
         var ch = parseInt(ctx.canvas.style.height);
-        //
 
         var w = cw - offx - 2 * this.padding;
         var h = ch - offy - 2 * this.padding;
@@ -525,7 +524,6 @@
     // dummy objects with properties so the plot will render.
     // called with scope of axis object.
     $.jqplot.PieAxisRenderer.prototype.init = function (options) {
-        //
         this.tickRenderer = $.jqplot.PieTickRenderer;
         $.extend(true, this, options);
         // I don't think I'm going to need _dataBounds here.
@@ -916,5 +914,3 @@
     $.jqplot.PieTickRenderer.prototype.constructor = $.jqplot.PieTickRenderer;
 
 })(jQuery);
-    
-    

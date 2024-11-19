@@ -1211,8 +1211,6 @@ $("document").ready(function () {
 
 
     $("#1_where_live").change(function () {
-        //var version = $().jquery;
-        //alert("jquery version="+version);
         if ($("#1_where_live").val() == "OTH") {
             $("#1_where_live_other").attr("disabled", "");
             $("#1_where_live_other").val("");
@@ -2850,8 +2848,6 @@ $("document").ready(function () {
 
     });
 
-
-    //$("#serviceUseRecord_orgLHIN")
 });
 
 $("document").ready(function () {
@@ -3184,8 +3180,6 @@ function submitOcanForm() {
         }
     }
 
-
-    //medication_1_se_description
     var medicationFailed = false;
     $("input[value='410515003']").each(function () {
         if (medicationFailed) {

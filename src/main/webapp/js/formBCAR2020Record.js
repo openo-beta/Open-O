@@ -703,7 +703,6 @@ function valDate(dateBox, ds = dtCh) {
         try {
             var dateString = dateBox.value;
             if (dateString === "") {
-                //            alert('dateString'+dateString);
                 return true;
             }
             var dt = dateString.split(ds);
@@ -1223,11 +1222,3 @@ const wtEnglish2Metric = function (obj) {
         }
     }
 }
-
-
-
-
-
-
-
-

@@ -28,7 +28,6 @@
             .appendTo('body')
             .on({
                 click: $.proxy(this.click, this)//,
-                //mousedown: $.proxy(this.mousedown, this)
             });
         this.isInput = this.element.is('input');
         this.component = this.element.is('.date') ? this.element.find('.add-on') : false;
@@ -36,7 +35,6 @@
         if (this.isInput) {
             this.element.on({
                 focus: $.proxy(this.show, this),
-                //blur: $.proxy(this.hide, this),
                 keyup: $.proxy(this.update, this)
             });
         } else {
@@ -119,7 +117,6 @@
             if (!this.isInput) {
                 $(document).off('mousedown', this.hide);
             }
-            //this.set();
             this.element.trigger({
                 type: 'hide',
                 date: this.date

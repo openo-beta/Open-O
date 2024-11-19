@@ -58,4 +58,3 @@ function setupDemoAutoCompletion(docId, contextPath) {
 		});
 	}
 }
-

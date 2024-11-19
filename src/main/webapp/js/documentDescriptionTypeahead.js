@@ -9,7 +9,6 @@ var highlightMatch = function (full, snippet, matchIndex) {
 };
 
 var formatDocumentDescriptionResults = function (oResultData, sQuery, sResultMatch) {
-    //console.log(oResultData);
     var query = sQuery.toLowerCase(),
         fname = oResultData[1],
         lname = oResultData[2],

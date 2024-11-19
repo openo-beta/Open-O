@@ -115,7 +115,6 @@ oscarApp.controller('TicklerListCtrl', function ($scope, $timeout, $resource, ng
 
     $scope.addTickler = function () {
         var windowProps = "height=400,width=600,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
-        //window.open('../tickler/ticklerAdd.jsp','ticklerAdd',windowProps);
 
         var modalInstance = $uibModal.open({
             templateUrl: 'tickler/ticklerAdd.jsp',
@@ -251,4 +250,3 @@ oscarApp.controller('TicklerCommentController', function ($scope, $uibModalInsta
         $uibModalInstance.close("Someone Closed Me");
     };
 });
-

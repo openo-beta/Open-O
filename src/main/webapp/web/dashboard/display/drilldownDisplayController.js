@@ -84,8 +84,6 @@ $.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
     var datofini = filterDate(aData[iStartDateCol]);
     var datoffin = filterDate(aData[iEndDateCol]);
 
-    // alert("In Low: " + inputLow + ', Low Filter: ' + iFini + ", In High: " + inputHigh + ", High Filter: " + iFfin + ", Condition: " + condition + ", Data: " + datofini);
-
     if (condition === 'equal'
         && iFini !== iFini
         && new RegExp('^' + inputLow + '\.*$', 'i').test(datofini)) {

@@ -18,8 +18,6 @@ function initializeMenu(menuId, actuatorId) {
 
     if (menu == null || actuator == null) return;
 
-    //if (window.opera) return; // I'm too tired
-
     actuator.parentNode.style.backgroundImage = "url(../images/plus.gif)";
 
     //expand all nodes at init

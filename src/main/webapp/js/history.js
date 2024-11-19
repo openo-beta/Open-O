@@ -720,7 +720,6 @@
             }
 
             if (!api) {
-                //
                 document[_a](eventPrefix + "click", function (e) {
                     var
                         event = e || window.event,

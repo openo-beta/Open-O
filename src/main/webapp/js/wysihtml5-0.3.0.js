@@ -365,11 +365,7 @@ rangy.createModule("DomUtil", function (api, module) {
     // Removed use of indexOf because of a bizarre bug in Opera that is thrown in one of the Acid3 tests. I haven't been
     // able to replicate it outside of the test. The bug is that indexOf returns -1 when called on an Array that
     // contains just the document as a single element and the value searched for is the document.
-    var arrayContains = /*Array.prototype.indexOf ?
-        function(arr, val) {
-            return arr.indexOf(val) > -1;
-        }:*/
-
+    var arrayContains = 
         function (arr, val) {
             var i = arr.length;
             while (i--) {
@@ -775,7 +771,6 @@ rangy.createModule("DomRange", function (api, module) {
         var it, n;
         iteratorState = iteratorState || {stop: false};
         for (var node, subRangeIterator; node = rangeIterator.next();) {
-            //log.debug("iterateSubtree, partially selected: " + rangeIterator.isPartiallySelectedSubtree(), nodeToString(node));
             if (rangeIterator.isPartiallySelectedSubtree()) {
                 // The node is partially selected by the Range, so we can use a new RangeIterator on the portion of the
                 // node selected by the Range.
@@ -839,7 +834,6 @@ rangy.createModule("DomRange", function (api, module) {
     }
 
     function getNodesInRange(range, nodeTypes, filter) {
-        //log.info("getNodesInRange, " + nodeTypes.join(","));
         var filterNodeTypes = !!(nodeTypes && nodeTypes.length), regex;
         var filterExists = !!filter;
         if (filterNodeTypes) {
@@ -2180,12 +2174,6 @@ rangy.createModule("WrappedRange", function (api, module) {
             // present in 3.6.8) that throws "Index or size is negative or greater than the allowed amount" for
             // insertNode in some circumstances, all browsers will have to use the Rangy's own implementation of
             // insertNode, which works but is almost certainly slower than the native implementation.
-            /*
-            rangeProto.insertNode = function(node) {
-                this.nativeRange.insertNode(node);
-                updateRangeProperties(this);
-            };
-*/
 
             rangeProto.surroundContents = function (node) {
                 this.nativeRange.surroundContents(node);
@@ -2412,7 +2400,6 @@ rangy.createModule("WrappedRange", function (api, module) {
 
                 return tr;
 
-                //return createBoundaryTextRange(new DomPosition(range.startContainer, range.startOffset), true);
             } else {
                 var startRange = createBoundaryTextRange(new DomPosition(range.startContainer, range.startOffset), true);
                 var endRange = createBoundaryTextRange(new DomPosition(range.endContainer, range.endOffset), false);
@@ -3270,7 +3257,6 @@ Base.extend = function (_instance, _static) { // subclass
     delete Base._prototyping;
 
     // create the wrapper for the constructor function
-    //var constructor = proto.constructor.valueOf(); //-dean
     var constructor = proto.constructor;
     var klass = proto.constructor = function () {
         if (!Base._prototyping) {
@@ -3292,7 +3278,6 @@ Base.extend = function (_instance, _static) { // subclass
     klass.prototype = proto;
     klass.toString = this.toString;
     klass.valueOf = function (type) {
-        //return (type == "object") ? klass : constructor; //-dean
         return (type == "object") ? klass : constructor.valueOf();
     };
     extend.call(klass, _static);
@@ -6349,7 +6334,6 @@ wysihtml5.quirks.cleanPastedHTML = (function () {
                 }
 
                 // Investigate the following in order to handle multi line selections
-                // rangeBottom = rangeTop + (rangeHeight ? (rangeHeight - 1) : 0);
                 rangeBottom = rangeTop;
                 rangeEnd = this.doc.selection.createRange();
                 for (j = scrollWidth; j >= 0; j--) {

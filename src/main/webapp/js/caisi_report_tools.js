@@ -51,7 +51,6 @@ function createStreetHealthReport() {
 
     alert('Generating report for date ' + startDate);
 
-    //popupPage2('<html:rewrite action="/PMmodule/StreetHealthIntakeReportAction.do"/>?startDate=' + startDate, "StreetHealthReport");
     popupPage2("../PMmodule/StreetHealthIntakeReportAction.do?startDate=" + startDate, "StreetHealthReport");
 }
 
@@ -67,5 +66,3 @@ function popupPage2(varpage, windowname) {
         popup.focus();
     }
 }
-
-

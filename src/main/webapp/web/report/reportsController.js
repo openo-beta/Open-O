@@ -446,4 +446,3 @@ oscarApp.controller('ReportSHMentalHealthCtrl', function ($scope, $log, $filter)
 
     }
 });
-

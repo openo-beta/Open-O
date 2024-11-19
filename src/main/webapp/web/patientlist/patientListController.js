@@ -117,12 +117,6 @@ oscarApp.controller('PatientListCtrl', function ($scope, $http, $state, Navigati
 
     }
 
-
-    //  $scope.$watch("currentPage", function(newValue, oldValue) {
-    //     console.log('currentPage changes from ' + oldValue + ' to ' + newValue);
-    //   });
-
-
     $scope.$on('togglePatientListFilter', function (event, data) {
         console.log("received a togglePatientListFilter event:" + data);
         $scope.showFilter = data;

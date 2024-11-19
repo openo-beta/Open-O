@@ -61,7 +61,6 @@ function validBedCommunityProgram() {
     var programId = Number(programIdStr);
 
     if (programIdStr == "") {
-        //alert( "Bed program is mandatory");
         return false;
     } else {
         return true;
@@ -84,8 +83,6 @@ function validateEdit() {
     if (document.getElementById('skip_validate').value == 'true') {
         return true;
     }
-
-    //$("form").validate({meta: "validate"});
 
     var programIdEl = getElement('bedCommunityProgramId');
     var programId = 0;
