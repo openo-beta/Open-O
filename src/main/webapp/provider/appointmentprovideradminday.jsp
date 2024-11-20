@@ -386,9 +386,26 @@
     int curMonth = (cal.get(Calendar.MONTH) + 1);
     int curDay = cal.get(Calendar.DAY_OF_MONTH);
 
-    int year = Integer.parseInt(request.getParameter("year"));
-    int month = Integer.parseInt(request.getParameter("month"));
-    int day = Integer.parseInt(request.getParameter("day"));
+    // Retrieve the 'year' parameter from the request and parse it into an integer
+    // If the parameter is null or empty, default to the current year
+    int year = Optional.ofNullable(request.getParameter("year"))
+                   .filter(param -> !param.isEmpty())
+                   .map(Integer::parseInt)
+                   .orElse(curYear);
+
+    // Retrieve the 'month' parameter from the request and parse it into an integer
+    // If the parameter is null or empty, default to the current month               
+    int month = Optional.ofNullable(request.getParameter("month"))
+                        .filter(param -> !param.isEmpty())
+                        .map(Integer::parseInt)
+                        .orElse(curMonth);
+
+    // Retrieve the 'day' parameter from the request and parse it into an integer
+    // If the parameter is null or empty, default to the current day
+    int day = Optional.ofNullable(request.getParameter("day"))
+                    .filter(param -> !param.isEmpty())
+                    .map(Integer::parseInt)
+                    .orElse(curDay);
 
     //verify the input date is really existed
     cal = new GregorianCalendar(year, (month - 1), day);
