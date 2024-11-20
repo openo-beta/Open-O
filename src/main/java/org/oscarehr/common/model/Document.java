@@ -57,6 +57,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.io.FileUtils;
+import org.oscarehr.util.MiscUtils;
 
 /**
  *
@@ -230,7 +231,7 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     }
 
     public void setDocfilename(String docfilename) {
-        this.docfilename = docfilename;
+        this.docfilename = MiscUtils.sanitizeFileName(docfilename);
     }
 
     public String getDoccreator() {
