@@ -281,8 +281,8 @@ public class PatientLabRoutingDaoImpl extends AbstractDaoImpl<PatientLabRouting>
                 "AND r.id = x.id " +
                 "ORDER BY r.oberservationDateTime";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1, demoNo);
-        query.setParameter(2, labType);
+        query.setParameter(1, labType);
+        query.setParameter(2, demoNo);
         query.setParameter(3, testName);
         return query.getResultList();
     }

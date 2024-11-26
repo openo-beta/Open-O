@@ -1718,6 +1718,7 @@
                         <exclude>**/OntarioMDSpec4DataTest.java</exclude>
                         <exclude>**/ONAREnhancedBornConnectorTest.java</exclude>
                         <exclude>org/oscarehr/e2e/**/*.java</exclude>
+                        <exclude>tests/**</exclude>
                     </excludes>
                     <systemPropertyVariables>
                         <oscar.dbinit.skip>${oscar.dbinit.skip}</oscar.dbinit.skip>

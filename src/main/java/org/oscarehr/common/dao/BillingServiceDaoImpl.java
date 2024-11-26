@@ -362,11 +362,12 @@ public class BillingServiceDaoImpl extends AbstractDaoImpl<BillingService> imple
                         "AND bs.billingserviceDate = (" +
                         "	SELECT MAX(bss.billingserviceDate) FROM BillingService bss " +
                         "	WHERE bss.billingserviceDate <= ?2" +
-                        "	AND bss.serviceCode = :serviceCode" +
+                        "	AND bss.serviceCode = ?3" +
                         ")";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, serviceCode);
         query.setParameter(2, date);
+        query.setParameter(3, serviceCode);
         return query.getResultList();
     }
 

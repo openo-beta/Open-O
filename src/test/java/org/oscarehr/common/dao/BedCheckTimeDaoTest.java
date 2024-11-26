@@ -156,7 +156,7 @@ public class BedCheckTimeDaoTest extends DaoTestFixtures {
         Logger logger = MiscUtils.getLogger();
         logger.warn(result);
         // Expected result would be a query as GetBedCheckTimesQuery() return a query to get record by programId, not a result of query. - Refer BedCheckTimeDaoImpl - getBedCheckTimesQuery()
-        String expectedResult = "select bct from BedCheckTime bct where bct.programId = ? order by bct.time asc";
+        String expectedResult = "select bct from BedCheckTime bct where bct.programId = ?1 order by bct.time asc";
 
         assertEquals(expectedResult, result);
     }

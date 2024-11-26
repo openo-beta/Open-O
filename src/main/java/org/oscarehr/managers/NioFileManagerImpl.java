@@ -60,7 +60,7 @@ import oscar.OscarProperties;
 @Service
 public class NioFileManagerImpl implements NioFileManager {
 
-    @Autowired
+    @Autowired(required=false)
     private ServletContext context;
 
     @Autowired

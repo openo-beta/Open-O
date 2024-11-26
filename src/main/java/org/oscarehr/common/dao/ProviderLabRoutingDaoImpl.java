@@ -44,12 +44,12 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     private List<ProviderLabRoutingModel> getProviderLabRoutings(Integer labNo, String labType, String providerNo,
                                                                  String status) {
-        Query q = entityManager.createQuery("select x from ?1 x where x.labNo LIKE ?2 and x.labType LIKE ?3 and x.providerNo LIKE ?4 and x.status LIKE ?5");
-        q.setParameter(1, modelClass.getName());
-        q.setParameter(2, labNo != null ? labNo : "%");
-        q.setParameter(3, labType != null ? labType : "%");
-        q.setParameter(4, providerNo != null ? providerNo : "%");
-        q.setParameter(5, status != null ? status : "%");
+        Query q = entityManager.createQuery("select x from " + modelClass.getName() + " x "
+                    + "where x.labNo LIKE ?1 and x.labType LIKE ?2 and x.providerNo LIKE ?3 and x.status LIKE ?4");
+        q.setParameter(1, labNo != null ? labNo : "%");
+        q.setParameter(2, labType != null ? labType : "%");
+        q.setParameter(3, providerNo != null ? providerNo : "%");
+        q.setParameter(4, status != null ? status : "%");
 
         return q.getResultList();
     }
@@ -58,11 +58,10 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     public List<ProviderLabRoutingModel> findByLabNoAndLabTypeAndProviderNo(int labNo, String labType,
                                                                             String providerNo) {
         Query q = entityManager.createQuery(
-                "select x from ?1 x where x.labNo=?2 and x.labType=?3 and x.providerNo=?4");
-        q.setParameter(1, modelClass.getName());
-        q.setParameter(2, labNo);
-        q.setParameter(3, labType);
-        q.setParameter(4, providerNo);
+                "select x from " + modelClass.getName() + " x where x.labNo=?1 and x.labType=?2 and x.providerNo=?3");
+        q.setParameter(1, labNo);
+        q.setParameter(2, labType);
+        q.setParameter(3, providerNo);
 
         return q.getResultList();
     }
@@ -90,21 +89,18 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
 
     @Override
     public void updateStatus(Integer labNo, String labType) {
-        String updateString = "UPDATE ?1 x set x.status='N' WHERE x.labNo=?2 AND x.labType=?3";
-
+        String updateString = "UPDATE " + modelClass.getName() + " x set x.status='N' WHERE x.labNo=?1 AND x.labType=?2";
         Query query = entityManager.createQuery(updateString);
-        query.setParameter(1, modelClass.getName());
-        query.setParameter(2, labNo);
-        query.setParameter(3, labType);
+        query.setParameter(1, labNo);
+        query.setParameter(2, labType);
 
         query.executeUpdate();
     }
 
     @Override
     public ProviderLabRoutingModel findByLabNo(int labNo) {
-        Query query = entityManager.createQuery("select x from ?1 x where x.labNo=?2");
-        query.setParameter(1, modelClass.getName());
-        query.setParameter(2, labNo);
+        Query query = entityManager.createQuery("select x from " + modelClass.getName() + " x where x.labNo=?1");
+        query.setParameter(1, labNo);
 
         return this.getSingleResultOrNull(query);
     }
@@ -112,9 +108,8 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     // this is written for the clean()method to fix OSCAREMR-6161.
     @Override
     public List<ProviderLabRoutingModel> findByLabNoIncludingPotentialDuplicates(int labNo) {
-        Query query = entityManager.createQuery("select x from ?1 x where x.labNo=?2");
-        query.setParameter(1, modelClass.getName());
-        query.setParameter(2, labNo);
+        Query query = entityManager.createQuery("select x from " + modelClass.getName() + " x where x.labNo=?1");
+        query.setParameter(1, labNo);
 
         return query.getResultList();
     }
@@ -122,10 +117,9 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
     @Override
     public ProviderLabRoutingModel findByLabNoAndLabType(int labNo, String labType) {
         Query query = entityManager
-                .createQuery("select x from ?1 x where x.labNo=?2 and x.labType=?3");
-        query.setParameter(1, modelClass.getName());
-        query.setParameter(2, labNo);
-        query.setParameter(3, labType);
+                .createQuery("select x from " + modelClass.getName() + " x where x.labNo=?1 and x.labType=?2");
+        query.setParameter(1, labNo);
+        query.setParameter(2, labType);
 
         return this.getSingleResultOrNull(query);
     }
@@ -140,11 +134,10 @@ public class ProviderLabRoutingDaoImpl extends AbstractDaoImpl<ProviderLabRoutin
      */
     @Override
     public List<Object[]> getProviderLabRoutings(Integer labNo, String labType) {
-        Query query = entityManager.createQuery("FROM ?1 p, ?2 r WHERE p.id = r.providerNo AND r.labNo = ?3 AND r.labType = ?4");
-        query.setParameter(1, Provider.class.getSimpleName());
-        query.setParameter(2, modelClass.getName());
-        query.setParameter(3, labNo);
-        query.setParameter(4, labType);
+        Query query = entityManager.createQuery("FROM " + Provider.class.getSimpleName() + " p, " + modelClass.getName() 
+                    + " r WHERE p.id = r.providerNo AND r.labNo = ?1 AND r.labType = ?2");
+        query.setParameter(1, labNo);
+        query.setParameter(2, labType);
         return query.getResultList();
     }
 

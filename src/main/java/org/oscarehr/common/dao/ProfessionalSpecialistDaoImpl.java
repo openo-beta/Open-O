@@ -112,7 +112,7 @@ public class ProfessionalSpecialistDaoImpl extends AbstractDaoImpl<ProfessionalS
         }
 
         // referral numbers often have zeros prepended and are stored as varchar.
-        Query query = entityManager.createQuery("select x from ?1 x WHERE x.referralNo LIKE ?2 order by x.lastName");
+        Query query = entityManager.createQuery("select x from " + modelClass.getSimpleName() + " x WHERE x.referralNo LIKE ?1 order by x.lastName");
         query.setParameter(1, referralNo);
 
         @SuppressWarnings("unchecked")

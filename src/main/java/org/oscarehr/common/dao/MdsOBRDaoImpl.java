@@ -56,7 +56,7 @@ public class MdsOBRDaoImpl extends AbstractDaoImpl<MdsOBR> implements MdsOBRDao 
             ParamAppender codesPa = new ParamAppender();
             for (int i = 0; i < resultCodes.size(); i++) {
                 String paramName = "observationSubId" + i;
-                codesPa.or("mdsOBX.observationSubId like ?2", paramName, "%" + resultCodes.get(i) + "%");
+                codesPa.or("mdsOBX.observationSubId like :" + paramName, paramName, "%" + resultCodes.get(i) + "%");
             }
             pa.and(codesPa);
         }

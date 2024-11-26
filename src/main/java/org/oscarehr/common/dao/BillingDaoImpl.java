@@ -346,8 +346,8 @@ public class BillingDaoImpl extends AbstractDaoImpl<Billing> implements BillingD
         int counter = 1;
         String q = "FROM Billingmaster bm, Billing b " +
                 "WHERE bm.billingNo = b.id " +
-                "AND b.demographicNo = ?" + counter++ +
-                (statuses.isEmpty() ? "" : "AND bm.billingstatus NOT IN ( ? ) " + counter++) +
+                "AND b.demographicNo = ?" + counter++ + " " + 
+                (statuses.isEmpty() ? "" : ("AND bm.billingstatus NOT IN ( ?" + counter++) + " ) ") +
                 "AND b.billingtype = ?" + counter++;
 
         counter = 1;
