@@ -234,8 +234,11 @@ public class BaseLoginModule implements LoginModule {
     @Override
     public boolean logout() throws LoginException {
         Set<Principal> principals = getSubject().getPrincipals();
-        for (Principal principal : getPrincipals())
-            principals.remove(principal);
+        for (Principal principal : getPrincipals()) {
+            if (principal != null) {
+                principals.remove(principal);
+            }
+        }
 
         if (logger.isDebugEnabled()) {
             logger.debug("Completed logout for " + this);
