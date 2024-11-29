@@ -34,7 +34,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.oscarehr.common.dao.AbstractDao;
 
 import org.oscarehr.common.model.AbstractModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,6 +173,13 @@ public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements Abs
 	@Override
 	public T find(int id) {
 		return (entityManager.find(modelClass, id));
+	}
+
+	@Override
+	public T findDetached(Object id) {
+		T t = entityManager.find(modelClass, id);
+		entityManager.detach(t);
+		return t;
 	}
 
 	/**

@@ -56,6 +56,8 @@ public interface AbstractDao<T extends AbstractModel<?>> {
 
     T find(int id);
 
+    T findDetached(Object id);
+
     boolean contains(AbstractModel<?> o);
 
     List<T> findAll(Integer offset, Integer limit);
