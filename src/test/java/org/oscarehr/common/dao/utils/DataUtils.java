@@ -221,20 +221,12 @@ public class DataUtils {
 		}
 	}
 
-	/**
-	 * A SAX handler for parsing test data
-	 *
-	 */
-	private static class LoadingHandler extends DefaultHandler {
-
-<<<<<<< HEAD
-		private EntityManager entityManager;
-=======
     /**
      * A SAX handler for parsing test data
      */
     private static class LoadingHandler extends DefaultHandler {
->>>>>>> f32a2beb09 (chore: rest of .java files formatted not in original scope.)
+
+        private EntityManager entityManager;
 
 		public LoadingHandler(EntityManager entityManager) {
 			this.entityManager = entityManager;
@@ -287,44 +279,22 @@ public class DataUtils {
 	 */
 	private interface EntityManager {
 
-<<<<<<< HEAD
 		void addDemographic(Attributes attributes);
 
 		void addProvider(Attributes attributes);
 	}
-=======
-    /**
-     * Enumeration of the supported types of entities
-     */
-    private enum EntityKind {
-        DEMO, PROVIDER;
-    }
-
-    /**
-     * Interface to add test data entities
-     */
-    private interface EntityManager {
->>>>>>> f32a2beb09 (chore: rest of .java files formatted not in original scope.)
-
-	/**
-	 * Implementing an interface to add test data entities
-	 *
-	 */
-	private static class EntityManagerImpl implements EntityManager {
-
-		private static DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
-		private static ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-
-<<<<<<< HEAD
-		@Override
-		public void addDemographic(Attributes attributes) {
-			Demographic demograhic = new Demographic();
-=======
+        
     /**
      * Implementing an interface to add test data entities
      */
     private static class EntityManagerImpl implements EntityManager {
->>>>>>> f32a2beb09 (chore: rest of .java files formatted not in original scope.)
+
+        private static DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
+        private static ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+
+        @Override
+        public void addDemographic(Attributes attributes) {
+            Demographic demograhic = new Demographic();
 
 			String gender = attributes.getValue("gender");
 			if (gender != null) {
