@@ -26,11 +26,8 @@
 package org.oscarehr.common.dao;
 
 import org.oscarehr.common.model.AbstractModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import oscar.util.ParamAppender;
 
-import javax.persistence.*;
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public interface AbstractDao<T extends AbstractModel<?>> {
@@ -58,6 +55,8 @@ public interface AbstractDao<T extends AbstractModel<?>> {
 
     T findDetached(Object id);
 
+    void detach(@Nonnull T t);
+
     boolean contains(AbstractModel<?> o);
 
     List<T> findAll(Integer offset, Integer limit);
@@ -71,4 +70,7 @@ public interface AbstractDao<T extends AbstractModel<?>> {
     T saveEntity(T entity);
 
     Class<T> getModelClass();
+
+    void flush();
+
 }

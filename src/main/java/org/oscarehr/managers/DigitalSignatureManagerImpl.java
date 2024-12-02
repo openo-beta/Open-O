@@ -52,8 +52,8 @@ public class DigitalSignatureManagerImpl implements DigitalSignatureManager {
     public DigitalSignature getDigitalSignature(int id) {
         DigitalSignature digitalSignature = this.digitalSignatureDao.findDetached(id);
 
-        if (Objects.isNull(digitalSignature.getSignatureImage())) {
-            return null;
+        if (Objects.isNull(digitalSignature) || Objects.isNull(digitalSignature.getSignatureImage())) {
+            return digitalSignature;
         }
 
         try {
@@ -62,10 +62,12 @@ public class DigitalSignatureManagerImpl implements DigitalSignatureManager {
 
             // the data is not encrypted, fetching attached entity, encrypt and save it for future use
             try {
-                digitalSignature = this.digitalSignatureDao.find(id);
                 digitalSignature.setSignatureImage(EncryptionUtils.encrypt(digitalSignature.getSignatureImage()));
-                digitalSignatureDao.merge(digitalSignature);
-                return this.getDigitalSignature(id);
+                this.digitalSignatureDao.merge(digitalSignature);
+                this.digitalSignatureDao.flush();
+
+                this.digitalSignatureDao.detach(digitalSignature);
+                digitalSignature.setSignatureImage(EncryptionUtils.decrypt(digitalSignature.getSignatureImage()));
             } catch (Exception ex) {
                 return digitalSignature;
             }
@@ -88,7 +90,7 @@ public class DigitalSignatureManagerImpl implements DigitalSignatureManager {
             throw new RuntimeException("Error while encrypting and saving digital signature.", e);
         }
 
-        digitalSignatureDao.persist(digitalSignature);
+        this.digitalSignatureDao.persist(digitalSignature);
         logger.debug("Signature saved to database with ID: {}", digitalSignature.getId());
 
         return digitalSignature;
