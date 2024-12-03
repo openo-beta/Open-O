@@ -24,6 +24,7 @@ package org.oscarehr.managers;
 
 import org.oscarehr.common.dao.DigitalSignatureDao;
 import org.oscarehr.common.model.DigitalSignature;
+import org.oscarehr.common.model.enumerator.ModuleType;
 import org.oscarehr.util.DigitalSignatureUtils;
 import org.oscarehr.util.EncryptionUtils;
 import org.oscarehr.util.LoggedInInfo;
@@ -77,12 +78,13 @@ public class DigitalSignatureManagerImpl implements DigitalSignatureManager {
     }
 
     @Override
-    public DigitalSignature saveDigitalSignature(Integer facilityId, String providerNo, Integer demographicNo, byte[] imageData) {
+    public DigitalSignature saveDigitalSignature(Integer facilityId, String providerNo, Integer demographicNo, byte[] imageData, ModuleType moduleType) {
         DigitalSignature digitalSignature = new DigitalSignature();
         digitalSignature.setDateSigned(new Date());
         digitalSignature.setDemographicId(demographicNo);
         digitalSignature.setFacilityId(facilityId);
         digitalSignature.setProviderNo(providerNo);
+        digitalSignature.setModuleType(moduleType);
 
         try {
             digitalSignature.setSignatureImage(EncryptionUtils.encrypt(imageData));
@@ -97,7 +99,7 @@ public class DigitalSignatureManagerImpl implements DigitalSignatureManager {
     }
 
     @Override
-    public DigitalSignature processAndSaveDigitalSignature(LoggedInInfo loggedInInfo, String signatureRequestId, Integer demographicNo) {
+    public DigitalSignature processAndSaveDigitalSignature(LoggedInInfo loggedInInfo, String signatureRequestId, Integer demographicNo, ModuleType moduleType) {
 
         if (loggedInInfo.getCurrentFacility().isEnableDigitalSignatures()) {
             String filename = DigitalSignatureUtils.getTempFilePath(signatureRequestId);
@@ -109,7 +111,7 @@ public class DigitalSignatureManagerImpl implements DigitalSignatureManager {
                 fileInputStream.read(image);
 
                 return this.saveDigitalSignature(loggedInInfo.getCurrentFacility().getId(),
-                        loggedInInfo.getLoggedInProviderNo(), demographicNo, image);
+                        loggedInInfo.getLoggedInProviderNo(), demographicNo, image, moduleType);
             } catch (FileNotFoundException e) {
                 logger.debug("Signature file not found. User probably didn't collect a signature.", e);
             } catch (Exception e) {

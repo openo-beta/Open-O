@@ -23,6 +23,7 @@
 package org.oscarehr.managers;
 
 import org.oscarehr.common.model.DigitalSignature;
+import org.oscarehr.common.model.enumerator.ModuleType;
 import org.oscarehr.util.LoggedInInfo;
 
 public interface DigitalSignatureManager extends OscarManagerBase {
@@ -48,15 +49,16 @@ public interface DigitalSignatureManager extends OscarManagerBase {
      * before being stored. The digital signature is associated with the specified `facilityId`, `providerNo`,
      * and `demographicNo`.
      *
-     * @param facilityId The ID of the facility associated with the signature.
-     * @param providerNo The provider's number associated with the signature.
+     * @param facilityId    The ID of the facility associated with the signature.
+     * @param providerNo    The provider's number associated with the signature.
      * @param demographicNo The ID of the demographic entity associated with the signature.
-     * @param imageData The byte array representing the signature image.
+     * @param imageData     The byte array representing the signature image.
+     * @param moduleType    {@link ModuleType} The module from which the signature originated.
      * @return The saved `DigitalSignature` object, including the generated ID.
-     *      <p>Note, Encrypted imageData will be populated in the object returned.
+     * <p>Note, Encrypted imageData will be populated in the object returned.
      * @throws RuntimeException If an error occurs during encryption or saving the signature.
      */
-    DigitalSignature saveDigitalSignature(Integer facilityId, String providerNo, Integer demographicNo, byte[] imageData);
+    DigitalSignature saveDigitalSignature(Integer facilityId, String providerNo, Integer demographicNo, byte[] imageData, ModuleType moduleType);
 
 
     /**
@@ -71,13 +73,15 @@ public interface DigitalSignatureManager extends OscarManagerBase {
      * If not enabled, the method returns `null`. It also handles the case where the
      * temporary signature file is not found, logging a debug message and returning `null`.
      *
-     * @param loggedInInfo    Information about the currently logged-in user, used to
-     *                       determine facility and provider details.
-     * @param signatureRequestId The ID used to locate the temporary signature image file.
-     * @param demographicNo  The ID of the demographic entity associated with the signature.
+     * @param loggedInInfo          Information about the currently logged-in user, used to
+     *                              determine facility and provider details.
+     * @param signatureRequestId    The ID used to locate the temporary signature image file.
+     * @param demographicNo         The ID of the demographic entity associated with the signature.
+     * @param moduleType            {@link ModuleType} The module from which the signature originated.
      * @return The saved `DigitalSignature` object, or `null` if digital signatures are
      *         disabled, the file is not found, or an error occurs during processing.
      */
-    DigitalSignature processAndSaveDigitalSignature(LoggedInInfo loggedInInfo, String signatureRequestId, Integer demographicNo);
+    DigitalSignature processAndSaveDigitalSignature(LoggedInInfo loggedInInfo, String signatureRequestId, Integer demographicNo, ModuleType moduleType);
+
 }
 
