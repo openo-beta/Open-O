@@ -32,9 +32,6 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.Hsfo2RecommitScheduleDao;
 import org.oscarehr.common.model.Hsfo2RecommitSchedule;
 import org.oscarehr.util.SpringUtils;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
 import oscar.OscarProperties;
 
 import oscar.form.study.hsfo2.pageUtil.RecommitHSFOAction.ResubmitJob;
@@ -45,6 +42,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 public class HsfoQuartzServlet implements Servlet {
@@ -81,21 +79,27 @@ public class HsfoQuartzServlet implements Servlet {
 
         logger.info("quartz schedule cron expression:" + cronExpression);
 
-        CronTrigger trigger = new CronTrigger(RESUBMIT_TRIGGER, Scheduler.DEFAULT_GROUP, cronExpression);
-
+        JobKey jobKey = JobKey.jobKey(RESUBMIT_JOB, Scheduler.DEFAULT_GROUP);
+        TriggerKey triggerKey = TriggerKey.triggerKey(RESUBMIT_TRIGGER, Scheduler.DEFAULT_GROUP);
+ 
         //trigger.setCronExpression("0 42 10 * * ?"); //Build a trigger that will fire daily at 10:42 am
 
-        JobDetail jobDetail = new JobDetail(RESUBMIT_JOB, Scheduler.DEFAULT_GROUP, ResubmitJob.class);
+        JobDetail jobDetail = JobBuilder.newJob(ResubmitJob.class)
+                .withIdentity(jobKey)
+                .build();
+
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(triggerKey)
+                .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+                .build();
 
         //Delete old job.
-        JobDetail job = scheduler.getJobDetail(RESUBMIT_JOB, Scheduler.DEFAULT_GROUP);
-        if (job != null) {
-            logger.info("Reschedule quartz cron trigger.......");
-            //scheduler.rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
-            scheduler.deleteJob(RESUBMIT_JOB, Scheduler.DEFAULT_GROUP);
-            scheduler.scheduleJob(jobDetail, trigger);
+        if (scheduler.checkExists(jobKey)) {
+            logger.info("Deleting old job...");
+            scheduler.deleteJob(jobKey);
         } else {
             //Start new job.
+            logger.info("Scheduling new job...");
             scheduler.scheduleJob(jobDetail, trigger);
         }
 

@@ -37,10 +37,7 @@ import javax.servlet.ServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import oscar.OscarProperties;
@@ -72,19 +69,23 @@ public class HsfoQuartzServlet implements Servlet {
 
         scheduler.start();
 
-        JobDetail job = scheduler.getJobDetail(RESUBMIT_JOB,
-                Scheduler.DEFAULT_GROUP);
+        JobKey jobKey = JobKey.jobKey(RESUBMIT_JOB, Scheduler.DEFAULT_GROUP);
+        JobDetail job = scheduler.getJobDetail(jobKey); 
         if (job != null) {
             logger.info("Delete old job.");
-            scheduler.deleteJob(RESUBMIT_JOB, Scheduler.DEFAULT_GROUP);
+            scheduler.deleteJob(jobKey);
         }
         logger.info("new schedule job at " + startTime);
-        Trigger trigger = new SimpleTrigger(RESUBMIT_TRIGGER,
-                Scheduler.DEFAULT_GROUP, startTime);
-        JobDetail jobDetail = new JobDetail(RESUBMIT_JOB,
-                Scheduler.DEFAULT_GROUP, ResubmitJob.class);
-        scheduler.scheduleJob(jobDetail, trigger);
+        Trigger trigger = TriggerBuilder.newTrigger()
+            .withIdentity(RESUBMIT_TRIGGER, Scheduler.DEFAULT_GROUP)
+            .startAt(startTime)
+            .withSchedule(SimpleScheduleBuilder.simpleSchedule())
+            .build();
+        JobDetail jobDetail = JobBuilder.newJob(ResubmitJob.class)
+            .withIdentity(RESUBMIT_JOB, Scheduler.DEFAULT_GROUP)
+            .build();
 
+        scheduler.scheduleJob(jobDetail, trigger);
     }
 
     public ServletConfig getServletConfig() {
