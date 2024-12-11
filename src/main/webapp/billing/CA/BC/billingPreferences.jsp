@@ -1,5 +1,3 @@
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib prefix="oscar" uri="/oscarPropertiestag" %>
 <%@page import="java.util.*,oscar.util.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -26,11 +24,11 @@
 
 %>
 <!DOCTYPE HTML>
-<html:html>
+<html>
     <head>
         <title></title>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"
                 type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/library/bootstrap/3.0.0/js/bootstrap.min.js"
@@ -49,8 +47,8 @@
     </head>
     <body class="BodyStyle">
     <div class="container">
-        <html:form action="/billing/CA/BC/saveBillingPreferencesAction.do" method="POST">
-            <html:hidden property="providerNo"/>
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/saveBillingPreferencesAction.do" method="POST">
+            <input type="hidden" name="providerNo" id="providerNo"/>
             <h2>Billing Preferences</h2>
             <table class="table-condensed" id="scrollNumber1">
 
@@ -58,11 +56,14 @@
                     <td class="MainTableRightColumn">
                         <div class="form-group">
                             <label for="defaultBillingProvider">Select Default Billing Provider:</label>
-                            <html:select property="defaultBillingProvider" styleClass="form-control"
-                                         styleId="defaultBillingProvider">
-                                <html:options collection="billingProviderList" property="providerNo"
-                                              labelProperty="fullName"/>
-                            </html:select>
+                            <select name="defaultBillingProvider" class="form-control"
+                                         id="defaultBillingProvider">
+                                <c:forEach var="billing" items="${billingProviderList}">
+                                    <option value="${billing.providerNo}">
+                                            ${billing.fullName}
+                                    </option>
+                                </c:forEach>
+                            </select>
                             <div id="default-provider-alert" class="alert alert-warning" style="display:none;">Warning:
                                 all remaining billing preferences are now overridden by the preferences of this selected
                                 Default Billing Provider. Select "Clinic Default" to use your own Billing Preference
@@ -74,12 +75,11 @@
                 <tr>
                     <td class="MainTableRightColumn">
                         <label for="referral"> Select Default Referral Type:</label>
-                        <html:select
-                                styleId="referral" styleClass="form-control" property="referral">
-                        <html:option value="1">Refer To</html:option>
-                        <html:option value="2">Refer By</html:option>
-                        <html:option value="3">Neither</html:option>
-                        </html:select>
+                        <select id="referral" class="form-control" name="referral">
+                        <option value="1">Refer To</option>
+                        <option value="2">Refer By</option>
+                        <option value="3">Neither</option>
+                        </select>
                 </tr>
                 <tr>
 
@@ -98,8 +98,7 @@
                     %>
                     <td class="MainTableRightColumn">
                         <label for="autoPopulateRefer" class="checkbox-inline">
-                            <html:checkbox styleId="autoPopulateRefer" property="autoPopulateRefer"
-                                           disabled="<%=globalAutoPopulateRefer%>"/>
+                            <input type="checkbox" id="autoPopulateRefer" name="autoPopulateRefer" disabled="<%=globalAutoPopulateRefer%>"/>
                             Auto-populate Referring Physician on Billing Form</label>
                         <% if (globalAutoPopulateRefer) { %>
                         <p class="text-warning">Note: The Auto-Populate option above cannot be changed per provider,
@@ -112,44 +111,53 @@
 
                     <td class="MainTableRightColumn">
                         <label for="defaultBillingForm">Select Default Billing Form:</label>
-                        <html:select property="defaultBillingForm" styleClass="form-control"
-                                     styleId="defaultBillingForm">
-                            <html:options collection="billingFormList" property="formCode"
-                                          labelProperty="description"/>
-                        </html:select>
+                        <select name="defaultBillingForm" class="form-control"
+                                     id="defaultBillingForm">
+                            <c:forEach var="billing" items="${billingFormList}">
+                                <option value="${billing.formCode}">
+                                        ${billing.description}
+                                </option>
+                            </c:forEach>
+                        </select>
                     </td>
                 </tr>
                 <tr>
 
                     <td class="MainTableRightColumn"><label for="defaultServiceLocation">Select Default Service
                         Location:</label>
-                        <html:select property="defaultServiceLocation" styleClass="form-control"
-                                     styleId="defaultServiceLocation">
-                            <html:options collection="serviceLocationList" property="visitType"
-                                          labelProperty="description"/>
-                        </html:select></td>
+                        <select name="defaultServiceLocation" class="form-control"
+                                     id="defaultServiceLocation">
+                            <c:forEach var="serviceLocation" items="${serviceLocationList}">
+                                <option value="${serviceLocation.visitType}">
+                                        ${serviceLocation.description}
+                                </option>
+                            </c:forEach>
+                        </select></td>
                 </tr>
                 <tr>
                     <td class="MainTableRightColumn">
                         <label for="payeeProviderNo">Select Default Payee (select "Custom" to set a custom
                             payee):</label>
-                        <html:select property="payeeProviderNo" styleClass="form-control" styleId="payeeProviderNo"
+                        <select name="payeeProviderNo" class="form-control" id="payeeProviderNo"
                                      onchange="defaultPayeeSelect()">
-                            <html:options collection="providerList" property="providerNo" labelProperty="fullName"/>
-                        </html:select></td>
+                            <c:forEach var="provider" items="${providerList}">
+                                <option value="${provider.providerNo}">
+                                        ${provider.fullName}
+                                </option>
+                            </c:forEach>
+                        </select></td>
                 </tr>
                 <tr>
                     <td class="MainTableRightColumn">
                         <label for="invoicePayeeInfo">Set Your Payee Information:</label>
-                        <html:textarea rows="4" cols="35" styleClass="form-control" styleId="invoicePayeeInfo"
-                                       property="invoicePayeeInfo">&amp;</html:textarea>
+                        <textarea rows="4" cols="35" class="form-control" id="invoicePayeeInfo"
+                                       name="invoicePayeeInfo">&amp;</textarea>
                     </td>
                 </tr>
                 <tr>
                     <td class="MainTableRightColumn">
                         <label for="invoicePayeeDisplayClinicInfo" class="checkbox-inline">
-                            <html:checkbox styleId="invoicePayeeDisplayClinicInfo"
-                                           property="invoicePayeeDisplayClinicInfo"/>
+                            <checkbox id="invoicePayeeDisplayClinicInfo" name="invoicePayeeDisplayClinicInfo"></checkbox>
                             Display Clinic Information Under Payee</label>
                     </td>
                 </tr>
@@ -244,10 +252,10 @@
                 </tr>
                 <tr>
                     <td class="MainTableBottomRowRightColumn">
-                        <html:submit property="submit" styleClass="btn btn-primary pull-right" value="Save"/></td>
+                        <input type="submit" name="submit" class="btn btn-primary pull-right" value="Save"/></td>
                 </tr>
             </table>
-        </html:form>
+        </form>
     </div>
 
     <script type="text/javascript">
@@ -313,4 +321,4 @@
         })
     </script>
     </body>
-</html:html>
+</html>

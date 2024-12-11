@@ -58,8 +58,8 @@
 <%@ include file="reportMainBeanConn.jspf" %>
 <% } %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
@@ -86,10 +86,10 @@
     %>
 
 </security:oscarSec>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="report.reportindex.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.title"/></title>
         <link rel="stylesheet" href="../web.css"/>
 
         <link rel="stylesheet" type="text/css" media="all"
@@ -174,7 +174,7 @@
                 if (r == 'tab') {
                     popupPage(600, 750, y2);
                 } else if (r == 'new') {
-                    if (confirm("<bean:message key="report.reportindex.msgGoConfirm"/>")) {
+                    if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgGoConfirm"/>")) {
                         popupPage(600, 750, w);
                     }
                 } else if (ro == true) {
@@ -203,7 +203,7 @@
                 if (r == 'tab') {
                     popupPage(600, 750, y2);
                 } else if (r == 'new') {
-                    if (confirm("<bean:message key="report.reportindex.msgGoConfirm"/>")) {
+                    if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgGoConfirm"/>")) {
                         popupPage(600, 750, w);
                     }
                 } else if (ro == true) {
@@ -263,15 +263,13 @@
     <form name='report'>
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
-                <td align=LEFT><font face="Helvetica" color="#FFFFFF"><bean:message key="report.reportindex.msgTitle"/>
+                <td align=LEFT><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgTitle"/>
                 </td>
                 <td align=RIGHT>
 		<span class="HelpAboutLogout">
-			<oscar:help keywords="&Title=Report+Tab&portal_type%3Alist=Document" key="app.top1"
-                        style="color:white; font-size:10px;font-style:normal;"/>&nbsp;
+
         		<a style="color:white; font-size:10px;font-style:normal;"
-                   href="<%=request.getContextPath()%>/oscarEncounter/About.jsp" target="_new"><bean:message
-                        key="global.about"/></a>
+                   href="<%=request.getContextPath()%>/oscarEncounter/About.jsp" target="_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
 		</span> </font>
                 </td>
             </tr>
@@ -287,26 +285,24 @@
                 </td>
                 <td width="1"></td>
                 <td width="300">
-                    <% if (billingRegion.equals("BC")) { %> <a HREF="#" ONCLICK="ogo()"><bean:message
-                        key="report.reportindex.btnEDDList"/></a> &nbsp;<a HREF="#"
+                    <% if (billingRegion.equals("BC")) { %> <a HREF="#" ONCLICK="ogo()"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnEDDList"/></a> &nbsp;<a HREF="#"
                                                                            ONCLICK="ogo2()">07</a> <% } else { %> <a
-                        HREF="#" ONCLICK="ogo()"><bean:message
-                        key="report.reportindex.btnEDBList"/></a> &nbsp;<a HREF="#"
+                        HREF="#" ONCLICK="ogo()"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnEDBList"/></a> &nbsp;<a HREF="#"
                                                                            ONCLICK="ogo2()">05</a> <% } %>
                 </td>
                 <td><a HREF="#"
                        onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('startDate')[0].value")%>')">
-                    <bean:message key="report.reportindex.formFrom"/></a>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a>
                         <%-- any early default start date should suffice for reporting all --%>
                     <INPUT TYPE="text" NAME="startDate" VALUE="<%=today%>" size='10'>
                 </td>
                 <td><a HREF="#"
                        onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('endDate')[0].value")%>')">
-                    <bean:message key="report.reportindex.formTo"/></a> <INPUT TYPE="text"
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/></a> <INPUT TYPE="text"
                                                                                NAME="endDate" VALUE="<%=today%>"
                                                                                size='10'></td>
                 <td><INPUT TYPE="button" NAME="button"
-                           VALUE="<bean:message key="report.reportindex.btnCreateReport"/>"
+                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnCreateReport"/>"
                            onClick="ogo()"></td>
                 <td></td>
             </tr>
@@ -317,8 +313,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a HREF="#"
-                                   ONCLICK="popupPage(600,750,'reportactivepatientlist.jsp')"><bean:message
-                        key="report.reportindex.btnActivePList"/></a></td>
+                                   ONCLICK="popupPage(600,750,'reportactivepatientlist.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnActivePList"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -330,8 +325,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><bean:message
-                        key="report.reportindex.formDaySheet"/></td>
+                <td width="300"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formDaySheet"/></td>
                 <td><select name="provider_no">
                     <%
                         ResultSet rsgroup = reportMainBean.queryResults(mygroup_dboperation);
@@ -355,8 +349,7 @@
                     <%
                         }
                     %>
-                    <option value="*"><bean:message
-                            key="report.reportindex.formAllProviders"/></option>
+                    <option value="*"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/></option>
                 </select></td>
                 <td></td>
                 <td></td>
@@ -369,17 +362,13 @@
                     <oscar:oscarPropertiesCheck property="NEW_DAY_SHEET_STYLE" value="yes">
                         <sup>*</sup><a HREF="#" ONCLICK="gonew('all')">Hospital Appointment</a><br>
                     </oscar:oscarPropertiesCheck>
-                    <sup>*</sup><a HREF="#" ONCLICK="go('all')"><bean:message
-                        key="report.reportindex.btnAllAppt"/></a><br>&nbsp;&nbsp; <bean:message
-                        key="report.reportindex.chkRostered"/> <input type="checkbox" id="rosteredOnly" value="true">
+                    <sup>*</sup><a HREF="#" ONCLICK="go('all')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnAllAppt"/></a><br>&nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chkRostered"/> <input type="checkbox" id="rosteredOnly" value="true">
                 </td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('asdate')[0].value")%>')"><bean:message
-                        key="report.reportindex.formFrom"/></a> <input type='text' name="asdate"
+                       onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('asdate')[0].value")%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a> <input type='text' name="asdate"
                                                                        VALUE="<%=today%>" size=10></td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('aedate')[0].value")%>')"><bean:message
-                        key="report.reportindex.formTo"/> </a> <input type='text' name="aedate"
+                       onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('aedate')[0].value")%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/> </a> <input type='text' name="aedate"
                                                                       VALUE="<%=today%>" size=10></td>
                 <td><select name="sTime">
                     <%
@@ -404,8 +393,7 @@
                 <td width="2"></td>
                 <td width="1">&nbsp;</td>
                 <td width="300"><sup>*</sup><a HREF="#" ONCLICK="go('new')"
-                                               title="<bean:message key="report.reportindex.msgNewApptsOld"/>"><bean:message
-                        key="report.reportindex.btnPrintDaySheet"/></a></td>
+                                               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgNewApptsOld"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnPrintDaySheet"/></a></td>
                 <td><select name="sdate">
                     <%
                         cal.add(cal.DATE, -1);
@@ -496,8 +484,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a href="#" ONCLICK="go('tab')"><bean:message
-                        key="report.reportindex.btnDaySheetTable"/></a></td>
+                <td width="300"><a href="#" ONCLICK="go('tab')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDaySheetTable"/></a></td>
                 <td><input type='text' name="tabDay" VALUE="<%=today%>" size=10></td>
                 <td></td>
                 <td></td>
@@ -507,8 +494,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a HREF="#" ONCLICK="ggo('all')"><bean:message
-                        key="report.reportindex.formBadAppt"/></a></td>
+                <td width="300"><a HREF="#" ONCLICK="ggo('all')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formBadAppt"/></a></td>
                 <td><select name="pprovider_no">
                     <%
                         rsgroup = reportMainBean.queryResults(mygroup_dboperation);
@@ -532,8 +518,7 @@
                     <%
                         }
                     %>
-                    <option value="*"><bean:message
-                            key="report.reportindex.formAllProviders"/></option>
+                    <option value="*"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/></option>
                 </select></td>
                 <td><select name="ssdate">
                     <%
@@ -556,8 +541,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a HREF="#" ONCLICK="pcgo()"><bean:message
-                        key="report.reportindex.btnPatientChartList"/></a></td>
+                <td width="300"><a HREF="#" ONCLICK="pcgo()"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnPatientChartList"/></a></td>
                 <td><select name="pcprovider_no">
                     <%
                         rsgroup = reportMainBean.queryResults(mygroup_dboperation);
@@ -591,8 +575,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a HREF="#" ONCLICK="opcgo()"><bean:message
-                        key="report.reportindex.btnOldPatient"/></a></td>
+                <td width="300"><a HREF="#" ONCLICK="opcgo()"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnOldPatient"/></a></td>
                 <td><select name="opcprovider_no">
                     <%
                         rsgroup = reportMainBean.queryResults(mygroup_dboperation);
@@ -617,7 +600,7 @@
                         }
                     %>
                 </select></td>
-                <td><bean:message key="report.reportindex.btnOldPatientAge"/><input
+                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnOldPatientAge"/><input
                         type=text name=age value='65'></td>
                 <td></td>
                 <td></td>
@@ -627,8 +610,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a HREF="#" ONCLICK="nsgo()"><bean:message
-                        key="report.reportindex.btnNoShowAppointmentList"/></a></td>
+                <td width="300"><a HREF="#" ONCLICK="nsgo()"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnNoShowAppointmentList"/></a></td>
                 <td><select name="nsprovider_no">
                     <%
                         rsgroup = reportMainBean.queryResults(mygroup_dboperation);
@@ -657,7 +639,7 @@
                     <%
                         cal.add(cal.DATE, 0);
                         String NoShowEDate = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
-                    %> <bean:message key="report.reportindex.msgStart"/>: <input name="nsdate" type="input" size="8"
+                    %> <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgStart"/>: <input name="nsdate" type="input" size="8"
                                                                                  id="NoShowDate" <%=NoShowEDate%>> <a
                         HREF="#"
                         onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('nsdate')[0].value")%>')"><img
@@ -688,8 +670,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a href="../oscarReport/ConsultationReport.jsp"
-                                   target="_blank"><bean:message
-                        key="report.reportindex.btnConsultationReport"/></a></td>
+                                   target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnConsultationReport"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -702,8 +683,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a href="../oscarReport/LabReqReport.jsp"
-                                   target="_blank"><bean:message
-                        key="report.reportindex.btnLaboratoryRequisition"/></a></td>
+                                   target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnLaboratoryRequisition"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -715,8 +695,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href="../oscarReport/ReportDemographicReport.jsp" target="_blank"><bean:message
-                        key="report.reportindex.btnDemographicReportTool"/></a></td>
+                        href="../oscarReport/ReportDemographicReport.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDemographicReportTool"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -728,8 +707,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href="PreventionReport.jsp" target="_blank"><bean:message
-                        key="report.reportindex.btnReport18n"/> 2019</a></td>
+                        href="PreventionReport.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnReport18n"/> 2019</a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -741,7 +719,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a href="../oscarReport/demographicSetEdit.jsp"
-                                   target="_blank"><bean:message key="report.reportindex.btnDemoSetEdit"/></a></td>
+                                   target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDemoSetEdit"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -755,8 +733,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href="../oscarPrevention/PreventionReporting.jsp" target="_blank"><bean:message
-                        key="report.reportindex.btnReport18n"/></a></td>
+                        href="../oscarPrevention/PreventionReporting.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnReport18n"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -768,8 +745,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a href=#
-                                   onClick="popupPage(600,750,'demographicstudyreport.jsp')"><bean:message
-                        key="report.reportindex.btnDemographicStudyList"/></a></td>
+                                   onClick="popupPage(600,750,'demographicstudyreport.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDemographicStudyList"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -782,8 +758,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href='../oscarReport/oscarMeasurements/SetupSelectCDMReport.do'><bean:message
-                        key="report.reportindex.chronicDiseaseManagement"/></a></td>
+                        href='../oscarReport/oscarMeasurements/SetupSelectCDMReport.do'><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chronicDiseaseManagement"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -794,8 +769,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href="../oscarWaitingList/SetupDisplayWaitingList.do?waitingListId="><bean:message
-                        key="report.reportindex.btnWaiting"/></a></td>
+                        href="../oscarWaitingList/SetupDisplayWaitingList.do?waitingListId="><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnWaiting"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -805,8 +779,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a href="reportFormRecord.jsp"><bean:message
-                        key="report.reportindex.btnFormReport"/></a></td>
+                <td width="300"><a href="reportFormRecord.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnFormReport"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -819,8 +792,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a href="reportBCARDemo.jsp"><bean:message
-                        key="report.reportindex.btnSCBPDemoRept"/></a></td>
+                <td width="300"><a href="reportBCARDemo.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnSCBPDemoRept"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -832,8 +804,7 @@
             <tr>
                 <td width="2"><%=j%><%j++;%></td>
                 <td width="1"></td>
-                <td width="300"><a href="ClinicalReports.jsp"><bean:message
-                        key="report.reportindex.btnClinicalReport"/> </a></td>
+                <td width="300"><a href="ClinicalReports.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnClinicalReport"/> </a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -842,8 +813,7 @@
             <tr>
                 <td width="2"><%=j%><%j++;%></td>
                 <td width="1"></td>
-                <td width="300"><a href="../oscarReport/InjectionReport2.jsp" target="_blank"><bean:message
-                        key="report.reportindex.btnInjectionReport"/></a></td>
+                <td width="300"><a href="../oscarReport/InjectionReport2.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnInjectionReport"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -855,7 +825,7 @@
                 <td width="1"></td>
                 <td width="300"><a href="../oscarReport/OSISReport.jsp"
                                    title="Off Streets into Shelters (OSIS) is a report based off of a Hamilton Public Health eForm"
-                                   target="_blank"><bean:message key="report.reportindex.btnOSISReport"/></a></td>
+                                   target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnOSISReport"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -866,8 +836,7 @@
                 <td width="1"></td>
                 <td width="300"><a
                         title="Report that is based off of a Hamilton Public Health eForm for One Time Consults"
-                        href="../oscarReport/CDSOneTimeConsultReport.jsp" target="_blank"><bean:message
-                        key="report.reportindex.btnCDSOneTimeConsultReport"/></a></td>
+                        href="../oscarReport/CDSOneTimeConsultReport.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnCDSOneTimeConsultReport"/></a></td>
 
             </tr>
             <tr></tr>
@@ -889,12 +858,12 @@
                                 <div><a href="javascript:void(0);"
                                         onclick="javascript:getIntakeReport('indepth');return false;">Follow-up Intake
                                     Report</a></div>
-                                <div><html:link
-                                        action="/PMmodule/Reports/ProgramActivityReport.do">Activity Report</html:link></div>
-                                <div><html:link
-                                        action="/SurveyManager.do?method=reportForm">User Created Form Report</html:link></div>
-                                <div><html:link
-                                        action="QuatroReport/ReportList.do">Quatro Report Runner</html:link></div>
+                                <div><a
+                                        href="${pageContext.request.contextPath}/PMmodule/Reports/ProgramActivityReport.do">Activity Report</a></div>
+                                <div><a
+                                        href="${pageContext.request.contextPath}/SurveyManager.do?method=reportForm">User Created Form Report</a></div>
+                                <div><a
+                                        href="${pageContext.request.contextPath}/QuatroReport/ReportList.do">Quatro Report Runner</a></div>
                                 <div><a href="javascript:void(0);"
                                         onclick="javascript:createStreetHealthReport();return false;">Street Health
                                     Mental Health Report</a></div>
@@ -911,8 +880,7 @@
                     <td width="2"><%=j%><%j++;%></td>
                     <td width="1"></td>
                     <td width="300"><a href="javascript:void(0);"
-                                       onclick="popupPage(600,800,'../oscarReport/reportByTemplate/homePage.jsp')"><bean:message
-                            key="admin.admin.rptbyTemplate"/></a></td>
+                                       onclick="popupPage(600,800,'../oscarReport/reportByTemplate/homePage.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.rptbyTemplate"/></a></td>
 
                 </tr>
             </security:oscarSec>
@@ -922,7 +890,7 @@
             </tr>
             <tr>
                 <td colspan='3' align="left"><input type="button" name="Button"
-                                                    value="<bean:message key="report.reportindex.btnCancel"/>"
+                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnCancel"/>"
                                                     onClick="window.close()"></td>
                 <td></td>
                 <td></td>
@@ -931,4 +899,4 @@
         </table>
     </body>
     </form>
-</html:html>
+</html>

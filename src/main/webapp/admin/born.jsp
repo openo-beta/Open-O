@@ -40,12 +40,12 @@
         return;
     }
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 
-<html:html lang="en">
+<html>
     <head>
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>BORN Mappings</title>
@@ -222,4 +222,4 @@
     </div>
 
     </body>
-</html:html>
+</html>

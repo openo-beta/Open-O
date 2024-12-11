@@ -47,13 +47,13 @@
 */
 -->
 <%@page import="oscar.oscarProvider.data.*,java.util.*,oscar.oscarLab.ca.on.CommonLabResultData,org.oscarehr.util.SpringUtils,org.oscarehr.common.dao.QueueDao" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
-    <title><bean:message key="inboxmanager.document.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.title"/></title>
     <script type="text/javascript" src="../share/javascript/prototype.js"></script>
     <script type="text/javascript" src="../share/javascript/scriptaculous.js"></script>
     <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css"/>
@@ -326,7 +326,7 @@
 <body>
 <div class="maindiv">
     <div class="maindivheading">
-        &nbsp;&nbsp;&nbsp; <bean:message key="inboxmanager.document.addMultipleDocuments"/>
+        &nbsp;&nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.addMultipleDocuments"/>
     </div>
     <div>
         <input type="hidden" id="queue" value="<%=queueId%>"/>

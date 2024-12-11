@@ -24,9 +24,9 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -62,15 +62,14 @@
 
 
 <%@page import="org.oscarehr.util.MiscUtils" %>
-<html:html lang="en">
+<html>
 
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.immunization.config.createImmunizationSetConfig.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     </head>
     <script language="javascript">
@@ -89,7 +88,18 @@
     <link rel="stylesheet" type="text/css" href="../styles.css">
     <body topmargin="0" leftmargin="0" vlink="#0000FF"
           onload="window.focus();">
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <table border="0" cellpadding="0" cellspacing="0"
            style="border-collapse: collapse" bordercolor="#111111" width="100%"
            id="AutoNumber1" height="100%">
@@ -104,8 +114,7 @@
             <td width="10%" height="37" bgcolor="#000000">&nbsp;</td>
             <td width="100%" bgcolor="#000000"
                 style="border-left: 2px solid #A9A9A9; padding-left: 5" height="0%">
-                <p class="ScreenTitle"><bean:message
-                        key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgCreateNew"/></p>
+                <p class="ScreenTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgCreateNew"/></p>
             </td>
         </tr>
         <tr>
@@ -120,28 +129,23 @@
                     <tr>
                         <td>
                             <div class="DivContentTitle"><br>
-                                <bean:message
-                                        key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgStep4"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgStep4"/>
                                 <br>
-                                <bean:message
-                                        key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgStep5"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgStep5"/>
                                 <br>
-                                <bean:message
-                                        key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgStep6"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgStep6"/>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td><bean:message
-                                key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgSetName"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgSetName"/>:
                             <%=setName%>
                         </td>
                     </tr>
                     <tr>
-                        <td><html:form
-                                action="/oscarEncounter/immunization/config/CreateImmunizationSetConfig">
+                        <td><form action="${pageContext.request.contextPath}/oscarEncounter/immunization/config/CreateImmunizationSetConfig.do" method="post">
 
-                            <html:hidden property="name" value="<%=setName%>"/>
+                            <input type="hidden" name="name" id="name" value="<%=setName%>"/>
                             <table border=1>
                                 <%for (int i = 0; i < rows; i++) { %>
                                 <tr>
@@ -176,11 +180,11 @@
                                 <%}%>
                                 <tr>
                                     <td colspan=<%=cols%>><input type="submit"
-                                                                 value="<bean:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.btnRender"/>"/>
+                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.btnRender"/>"/>
                                     </td>
                                 </tr>
                             </table>
-                        </html:form></td>
+                        </form></td>
 
                     </tr>
 
@@ -209,4 +213,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

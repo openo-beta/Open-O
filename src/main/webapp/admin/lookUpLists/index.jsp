@@ -26,7 +26,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -226,7 +226,7 @@
 <body id="lookUpListManager">
 <header>
     <h1 class="pageTitle">
-        <bean:message key="admin.admin.lookuplists.title"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.lookuplists.title"/>
     </h1>
 </header>
 

@@ -24,9 +24,9 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page
         import="java.util.*, oscar.oscarEncounter.oscarMeasurements.data.MeasurementMapConfig, oscar.OscarProperties" %>
 <%@ page import="org.oscarehr.common.model.MeasurementMap" %>
@@ -103,13 +103,11 @@
                 <table width="100%">
                     <tr>
                         <td align="left"><input type="button"
-                                                value=" <bean:message key="global.btnClose"/> "
+                                                value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                                 onClick="window.close()"></td>
-                        <td align="right"><oscar:help keywords="measurement" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'../About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'../License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td align="right"><a
+                                href="javascript:popupStart(300,400,'../About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'../License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>

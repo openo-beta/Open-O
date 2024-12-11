@@ -51,8 +51,8 @@
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:useBean id="patientBean" class="oscar.AppointmentMainBean" scope="page"/>
 <jsp:useBean id="myGroupBean" class="java.util.Vector" scope="page"/>
@@ -106,10 +106,10 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="report.reportpatientchartlistspecial.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.title"/></title>
         <link rel="stylesheet" href="../web.css">
         <script language="JavaScript">
             <!--
@@ -141,12 +141,11 @@
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr bgcolor="#CCCCFF">
-            <th align=CENTER NOWRAP><font face="Helvetica"><bean:message
-                    key="report.reportpatientchartlistspecial.msgTitle"/></font></th>
+            <th align=CENTER NOWRAP><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.msgTitle"/></font></th>
             <th width="10%" nowrap><input type="button" name="Button"
-                                          value="<bean:message key="global.btnPrint" />"
+                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                                           onClick="window.print()"><input type="button" name="Button"
-                                                                          value="<bean:message key="global.btnExit" />"
+                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>"
                                                                           onClick="window.close()"></th>
         </tr>
     </table>
@@ -191,35 +190,25 @@
     <table width="100%" border="0" bgcolor="#ffffff" cellspacing="1" cellpadding="2">
         <tr bgcolor="#CCCCFF" align="center">
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=last_name"><bean:message
-                    key="report.reportpatientchartlistspecial.btnLastName"/></a></b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=last_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnLastName"/></a></b></TH>
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=first_name"><bean:message
-                    key="report.reportpatientchartlistspecial.btnFisrtName"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=first_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnFisrtName"/></a> </b></TH>
             <TH width="2%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=sex"><bean:message
-                    key="report.reportpatientchartlistspecial.btnSex"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=sex"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnSex"/></a> </b></TH>
             <TH width="5%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=chart_no"><bean:message
-                    key="report.reportpatientchartlistspecial.btnChart"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=chart_no"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnChart"/></a> </b></TH>
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=appointment_date"><bean:message
-                    key="report.reportpatientchartlistspecial.btnApptDate"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnApptDate"/></a> </b></TH>
             <TH width="20%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=address"><bean:message
-                    key="report.reportpatientchartlistspecial.btnAddress"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=address"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnAddress"/></a> </b></TH>
             <TH width="10%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=city"><bean:message
-                    key="report.reportpatientchartlistspecial.btnCity"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=city"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnCity"/></a> </b></TH>
             <TH width="10%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=postal"><bean:message
-                    key="report.reportpatientchartlistspecial.btnPostal"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=postal"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnPostal"/></a> </b></TH>
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=dob"><bean:message
-                    key="report.reportpatientchartlistspecial.btnDOB"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=dob"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnDOB"/></a> </b></TH>
             <TH width="2%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=patient_status"><bean:message
-                    key="report.reportpatientchartlistspecial.btnStatus"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=patient_status"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlistspecial.btnStatus"/></a> </b></TH>
         </tr>
         <%
             }
@@ -253,4 +242,4 @@
 
     </table>
     </body>
-</html:html>
+</html>

@@ -30,9 +30,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.math.BigInteger,java.util.*,org.oscarehr.integration.mcedt.mailbox.DetailDataCustom" %>
 
 <%
@@ -42,7 +42,7 @@
 %>
 
 
-<html:html>
+<html>
     <head>
         <jsp:include page="head-includes.jsp"/>
         <link href="mailbox/css/mcedt.css" rel="stylesheet" type="text/css">
@@ -120,7 +120,7 @@
 
         <title>Downloading Claims from MCEDT to Oscar</title>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     </head>
 
@@ -130,11 +130,11 @@
             <h1>MCEDT Documents to Download</h1>
 
             <div>
-                <html:form action="/mcedt/kaiautodl" method="post" styleId="form">
+                <form action="${pageContext.request.contextPath}/mcedt/kaiautodl.do" method="post" styleId="form">
 
                     <input id="method" name="method" type="hidden" value=""/>
 
-                    <html:hidden styleId="resourceId" property="resourceId" value=''/>
+                    <input type="hidden" id="resourceId" name="resourceId" value=''/>
 
                     <div style="visibility:hidden">
                         <button id="downloadBut" class="noBorder greenBox flatLink font12"
@@ -142,7 +142,7 @@
                         </button>
                     </div>
 
-                </html:form>
+                </form>
                 <%
                     if (resourceList != null) {
                 %>
@@ -199,4 +199,4 @@
         </div>
     </div>
     </body>
-</html:html>
+</html>

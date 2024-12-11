@@ -31,11 +31,8 @@
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
-
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Provider List</title>
@@ -66,9 +63,9 @@
         </tr>
         <tr>
             <td align="right">
-                <!--input type="button" name="Button" value="<bean:message key="global.btnPrint"/>" onClick="window.print()"-->
+                <!--input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>" onClick="window.print()"-->
                 <input type="button" name="Button"
-                       value="<bean:message key="global.btnCancel" />"
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
                        onClick="window.close()">
                 </th>
         </tr>
@@ -113,4 +110,4 @@
 
 
     </body>
-</html:html>
+</html>

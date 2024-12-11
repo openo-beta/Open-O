@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page
         import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*" %>
@@ -42,11 +42,10 @@
     month = now.get(Calendar.MONTH) + 1;
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="OscarEncounter.oscarConsultationRequest.CalendarPopUp.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="OscarEncounter.oscarConsultationRequest.CalendarPopUp.title"/></title>
         <script language="JavaScript">
             <!--
 
@@ -76,14 +75,13 @@
             <td BGCOLOR="#bbbbff" width="50%" align="center">
                 <a href="CalendarPopup.jsp?year=<%=year%>&month=<%=month%>&delta=-1&type=<%=type%>">
                     <img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                         ALT="<bean:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgVLastMonth"/>"
-                         vspace="2"> <bean:message
-                        key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgLastMonth"/>&nbsp;&nbsp;</a>
+                         ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgVLastMonth"/>"
+                         vspace="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgLastMonth"/>&nbsp;&nbsp;</a>
                 <b><span CLASS=title><%=year%>-<%=month%></span></b>
                 <a href="CalendarPopup.jsp?year=<%=year%>&month=<%=month%>&delta=1&type=<%=type%>">
-                    &nbsp;&nbsp;<bean:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgNextMonth"/>
+                    &nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgNextMonth"/>
                     <img src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                         ALT="<bean:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgVNextMonth"/>"
+                         ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgVNextMonth"/>"
                          vspace="2"></a>
             </td>
         </tr>
@@ -93,21 +91,14 @@
            bgcolor="silver">
         <tr bgcolor="#ccccff" align="center">
             <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"
-                                    color="red"><bean:message
-                    key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgSun"/></font></td>
-            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                    key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgMon"/></font></td>
-            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                    key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgTue"/></font></td>
-            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                    key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgWed"/></font></td>
-            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                    key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgThu"/></font></td>
-            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                    key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgFri"/></font></td>
+                                    color="red"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgSun"/></font></td>
+            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgMon"/></font></td>
+            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgTue"/></font></td>
+            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgWed"/></font></td>
+            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgThu"/></font></td>
+            <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgFri"/></font></td>
             <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"
-                                    color="green"><bean:message
-                    key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgSat"/></font></td>
+                                    color="green"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.CalendarPopUp.msgSat"/></font></td>
         </tr>
 
         <%
@@ -148,11 +139,11 @@
         <tr>
             <td bgcolor="#bbbbff">
                 <div align="center"><input type="button" name="Cancel"
-                                           value="<bean:message key="global.btnClose"/>"
+                                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
                                            onClick="window.close()"></div>
             </td>
         </tr>
     </table>
 
     </body>
-</html:html>
+</html>

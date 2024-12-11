@@ -25,12 +25,12 @@
 --%>
 
 <%@ include file="/taglibs.jsp" %>
-<%@page import="org.oscarehr.eyeform.web.EyeformAction" %>
+<%@page import="org.oscarehr.eyeform.web.Eyeform2Action" %>
 
 <%
-    request.setAttribute("sections", EyeformAction.getMeasurementSections());
-    request.setAttribute("headers", EyeformAction.getMeasurementHeaders());
-    request.setAttribute("providers", EyeformAction.getActiveProviders());
+    request.setAttribute("sections", Eyeform2Action.getMeasurementSections());
+    request.setAttribute("headers", Eyeform2Action.getMeasurementHeaders());
+    request.setAttribute("providers", Eyeform2Action.getActiveProviders());
 %>
 <html>
 <head>

@@ -24,8 +24,8 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.FavoritesDao" %>
@@ -39,46 +39,47 @@
     FavoritesPrivilegeDao favoritesPrivilegeDao = SpringUtils.getBean(FavoritesPrivilegeDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
-<html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
-        <title><bean:message key="SearchDrug.title.CopyFavorites"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title.CopyFavorites"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
-        <c:if test="${empty sessionScope.RxSessionBean}">
-            <c:redirect url="error.html" />
-        </c:if>
-
-        <c:if test="${not empty sessionScope.RxSessionBean}">
-            <c:if test="${sessionScope.RxSessionBean.valid == false}">
-                <c:redirect url="error.html" />
-            </c:if>
-        </c:if>
-        <%
-            oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
-        %>
+        <c:choose>
+            <c:when test="${empty RxSessionBean}">
+                <c:redirect url="error.html"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="bean" value="${RxSessionBean}" scope="page"/>
+                <c:if test="${not bean.valid}">
+                    <c:redirect url="error.html"/>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+        <c:set var="bean" value="${RxSessionBean}" scope="page"/>
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
 
 
-<%
+    <%
 
-    oscar.oscarRx.data.RxCodesData.FrequencyCode[] freq = new oscar.oscarRx.data.RxCodesData().getFrequencyCodes();
+        oscar.oscarRx.data.RxCodesData.FrequencyCode[] freq = new oscar.oscarRx.data.RxCodesData().getFrequencyCodes();
 
-    int i, j;
+        int i, j;
 
-    String providerNo = bean.getProviderNo();
-    boolean share = false;
-    FavoritesPrivilege fp = favoritesPrivilegeDao.findByProviderNo(providerNo);
-    if (fp != null) {
-        share = fp.isOpenToPublic();
-    }
+        <c:set var="providerNo" value="${bean.providerNo}" />
+        <c:set var="share" value="false" />
+        <c:set var="fp" value="${favoritesPrivilegeDao.findByProviderNo(providerNo)}" />
+        <c:if test="${not empty fp}">
+            <c:set var="share" value="${fp.openToPublic}" />
+        </c:if>
 
-    List<String> allProviders = favoritesPrivilegeDao.getProviders();
-    String copyProviderNo = "";
-    if (request.getAttribute("copyProviderNo") != null)
-        copyProviderNo = request.getAttribute("copyProviderNo").toString();
-%>
+        <c:set var="allProviders" value="${favoritesPrivilegeDao.getProviders()}" />
+        <c:set var="copyProviderNo" value="" />
+        <c:if test="${not empty requestScope.copyProviderNo}">
+            <c:set var="copyProviderNo" value="${requestScope.copyProviderNo}" />
+        </c:if>
+    %>
 
 
     <script language=javascript>
@@ -94,8 +95,8 @@
 
 
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
-    <html:form action="/oscarRx/copyFavorite2">
-            <input type="hidden" name="dispatch" value="refresh"/>
+    <form action="/oscarRx/copyFavorite2.do">
+        <input type="hidden" name="dispatch" value="refresh"/>
         <input type="hidden" name="userProviderNo" value=<%=providerNo%>/>
         <input type="hidden" name="copyProviderNo" value=""/>
         <table border="0" cellpadding="0" cellspacing="0"
@@ -110,9 +111,7 @@
                            width="100%" height="100%">
                         <tr>
                             <td width="0%" valign="top">
-                                <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <bean:message
-                                        key="SearchDrug.title"/></a> > <b><bean:message
-                                        key="SearchDrug.title.CopyFavorites"/></b></div>
+                                <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> > <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title.CopyFavorites"/></b></div>
                             </td>
                         </tr>
 
@@ -168,14 +167,11 @@
 
                                             </td>
                                         </tr>
-                                        <%
-                                            String style;
-                                            int count = (favoritesDao.findByProviderNo((String) request.getAttribute("copyProviderNo"))).size();
-                                            for (i = 0; i < count; i++) {
-                                                Favorites fav = favoritesDao.findByProviderNo(copyProviderNo).get(i);
-                                                boolean isCustom = fav.getGcnSeqNo() == 0;
-                                                style = "style='background-color:#F5F5F5'";
-                                        %>
+                                        <c:set var="count" value="${favoritesDao.findByProviderNo(copyProviderNo).size()}" />
+                                        <c:forEach var="i" begin="0" end="${count - 1}">
+                                            <c:set var="fav" value="${favoritesDao.findByProviderNo(copyProviderNo).get(i)}" />
+                                            <c:set var="isCustom" value="${fav.gcnSeqNo == 0}" />
+                                            <c:set var="style" value="style='background-color:#F5F5F5'" />
                                         <tr>
                                             <td>
                                                 <input type="hidden" name="countFavorites" value="<%=count%>"/>
@@ -343,9 +339,8 @@
                         <tr>
                             <td width="0%" valign="top">
                                 <div class="DivCCBreadCrumbs">
-                                    <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <bean:message
-                                            key="SearchDrug.title"/></a> > <b>
-                                            <bean:message key="SearchDrug.title.CopyFavorites"/> > <b>Setting</b></div>
+                                    <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> > <b>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title.CopyFavorites"/> > <b>Setting</b></div>
                             </td>
                         </tr>
 
@@ -403,7 +398,6 @@
                     colspan="2"></td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
 </html>
-

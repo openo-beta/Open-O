@@ -32,7 +32,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.util.MessageResources;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.OscarAppointmentDao;
 import org.oscarehr.common.model.Appointment;
@@ -47,7 +46,7 @@ public class EctDisplayAppointmentHistoryAction extends EctDisplayAction {
     private static final String cmd = "appointmentHistory";
 
 
-    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_appointment", "r", null)) {
             throw new SecurityException("missing required security object (_appointment)");
@@ -69,7 +68,7 @@ public class EctDisplayAppointmentHistoryAction extends EctDisplayAction {
 
 
             String url = "popupPage(500,900,'" + winName + "','" + pathview + "')";
-            Dao.setLeftHeading(messages.getMessage(request.getLocale(), "global.viewAppointmentHistory"));
+            Dao.setLeftHeading(getText("global.viewAppointmentHistory"));
             Dao.setLeftURL(url);
 
             //set right hand heading link

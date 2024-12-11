@@ -72,11 +72,11 @@
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
@@ -130,7 +130,7 @@
 %>
 
 
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -145,7 +145,7 @@
 
         <oscar:customInterface section="appthistory"/>
 
-        <title><bean:message key="demographic.demographicappthistory.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.title"/></title>
         <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
         <script type="text/javascript">
 
@@ -228,20 +228,19 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="demographic.demographicappthistory.msgHistory"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgHistory"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><bean:message key="demographic.demographicappthistory.msgResults"/>: <%=demolastname%>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgResults"/>: <%=demolastname%>
                             ,<%=demofirstname%>(<%=request.getParameter("demographic_no")%>)
                         </td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="appointment history" key="app.top1"/> | <a
+                        <td style="text-align: right"><a
                                 href="javascript:popupStart(300,400,'About.jsp')">
-                            <bean:message key="global.about"/></a> | <a
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
                                 href="javascript:popupStart(300,400,'License.jsp')">
-                            <bean:message key="global.license"/></a>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>
@@ -251,23 +250,22 @@
             <td class="MainTableLeftColumn" valign="top"><a
                     href="<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=request.getParameter("demographic_no")%>&apptProvider=<%=session.getAttribute("user") %>&displaymode=edit&dboperation=search_detail"
                     onMouseOver="self.status=document.referrer;return true">
-                <bean:message key="global.btnBack"/></a>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/></a>
                 <br/>
-                <input type="checkbox" name="showDeleted" id="showDeleted" onChange="toggleShowDeleted(this.checked);"/><bean:message
-                        key="demographic.demographicappthistory.msgShowDeleted"/>
+                <input type="checkbox" name="showDeleted" id="showDeleted" onChange="toggleShowDeleted(this.checked);"/><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgShowDeleted"/>
                 <br/>
             </td>
             <td class="MainTableRightColumn">
                 <table width="95%" border="0" bgcolor="#ffffff" id="apptHistoryTbl">
                     <tr bgcolor="<%=deepColor%>">
-                        <TH width="10%"><b><bean:message key="demographic.demographicappthistory.msgApptDate"/></b></TH>
-                        <TH width="10%"><b><bean:message key="demographic.demographicappthistory.msgFrom"/></b></TH>
-                        <TH width="10%"><b><bean:message key="demographic.demographicappthistory.msgTo"/></b></TH>
-                        <TH width="10%"><b><bean:message key="demographic.demographicappthistory.msgStatus"/></b></TH>
-                        <TH width="10%"><b><bean:message key="demographic.demographicappthistory.msgType"/></b></TH>
-                        <TH width="15%"><b><bean:message key="demographic.demographicappthistory.msgReason"/></b></TH>
-                        <TH width="15%"><b><bean:message key="demographic.demographicappthistory.msgProvider"/></b></TH>
-                        <TH><b><bean:message key="demographic.demographicappthistory.msgComments"/></b></TH>
+                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgApptDate"/></b></TH>
+                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgFrom"/></b></TH>
+                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgTo"/></b></TH>
+                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgStatus"/></b></TH>
+                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgType"/></b></TH>
+                        <TH width="15%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgReason"/></b></TH>
+                        <TH width="15%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgProvider"/></b></TH>
+                        <TH><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgComments"/></b></TH>
 
                         <% if (org.oscarehr.common.IsPropertiesOn.isMultisitesEnable()) { %>
                         <TH width="5%">Location</TH>
@@ -477,14 +475,14 @@
                         }
                 %>
                 <a href="demographiccontrol.jsp?demographic_no=<%=request.getParameter("demographic_no")%>&last_name=<%=URLEncoder.encode(demolastname,"UTF-8")%>&first_name=<%=URLEncoder.encode(demofirstname,"UTF-8")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nPrevPage%>&limit2=<%=strLimit2%>&showRemote=<%=showRemoteStr%>">
-                    <bean:message key="demographic.demographicappthistory.btnPrevPage"/></a>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.btnPrevPage"/></a>
                 <%
                     }
 
                     if (nItems >= Integer.parseInt(strLimit2)) {
                 %>
                 <a href="demographiccontrol.jsp?demographic_no=<%=request.getParameter("demographic_no")%>&last_name=<%=URLEncoder.encode(demolastname,"UTF-8")%>&first_name=<%=URLEncoder.encode(demofirstname,"UTF-8")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>&showRemote=<%=showRemote%>">
-                    <bean:message key="demographic.demographicappthistory.btnNextPage"/></a>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.btnNextPage"/></a>
                 <%
                     }
                 %>
@@ -510,4 +508,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

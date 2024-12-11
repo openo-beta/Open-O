@@ -32,20 +32,20 @@
        bgcolor="#C0C0C0">
 
     <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.ERROR')}">
-        <html:messages id="error" bundle="casemgmt">
+        <c:if test="${not empty savedMessage}">
             <tr>
-                <td class="error"><c:out value="${error}"/></td>
+                <td class="error"><c:out value="${savedMessage}"/></td>
             </tr>
-        </html:messages>
+        </c:if>
     </c:if>
 
     <%-- Success Messages --%>
     <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.MESSAGE')}">
-        <html:messages id="message" message="true" bundle="casemgmt">
+        <c:if test="${not empty savedMessage}">
             <tr>
-                <td class="message"><c:out value="${message}"/></td>
+                <td class="message"><c:out value="${savedMessage}"/></td>
             </tr>
-        </html:messages>
+        </c:if>
     </c:if>
 
 </table>

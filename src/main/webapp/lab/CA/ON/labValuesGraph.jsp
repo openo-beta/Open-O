@@ -42,9 +42,7 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page
         import="java.util.*,oscar.oscarLab.ca.on.*,oscar.oscarDemographic.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
 
     String labType = request.getParameter("labType");
@@ -79,9 +77,8 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
-    <html:base/>
-    <title><%=""/*lab.pLastName*/%>, <%=""/*lab.pFirstName*/%> <bean:message
-            key="oscarMDS.segmentDisplay.title"/></title>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+    <title><%=""/*lab.pLastName*/%>, <%=""/*lab.pFirstName*/%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.title"/></title>
     <link rel="stylesheet" type="text/css"
           href="../../../share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -89,7 +86,7 @@
 
 <script language="JavaScript">
     function getComment() {
-        var commentVal = prompt('<bean:message key="oscarMDS.segmentDisplay.msgComment"/>', '');
+        var commentVal = prompt('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.msgComment"/>', '');
         document.acknowledgeForm.comment.value = commentVal;
         return true;
     }
@@ -111,8 +108,7 @@
                    bgcolor="#9999CC" bordercolordark="#bfcbe3">
                 <tr>
                     <td width="66%" align="middle" class="Cell">
-                        <div class="Field2"><bean:message
-                                key="oscarMDS.segmentDisplay.formDetailResults"/></div>
+                        <div class="Field2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDetailResults"/></div>
                     </td>
                 </tr>
                 <tr>
@@ -127,28 +123,24 @@
                                                        width="50%">
                                                     <tr>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData"><strong><bean:message
-                                                                    key="oscarMDS.segmentDisplay.formPatientName"/>: </strong> <%=demographic.getLastName()%>
+                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formPatientName"/>: </strong> <%=demographic.getLastName()%>
                                                                 ,
                                                                 <%=demographic.getFirstName()%>
                                                             </div>
 
                                                         </td>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData" nowrap="nowrap"><strong><bean:message
-                                                                    key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=demographic.getSex()%>
+                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=demographic.getSex()%>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData"><strong><bean:message
-                                                                    key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=DemographicData.getDob(demographic, "-")%>
+                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=DemographicData.getDob(demographic, "-")%>
                                                             </div>
                                                         </td>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData" nowrap="nowrap"><strong><bean:message
-                                                                    key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=demographic.getAge()%>
+                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=demographic.getAge()%>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -211,9 +203,9 @@
                    class="MainTableBottomRowRightColumn" bgcolor="#003399">
                 <tr>
                     <td align="left"><input type="button"
-                                            value=" <bean:message key="global.btnClose"/> "
+                                            value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                             onClick="window.close()"> <input type="button"
-                                                                             value=" <bean:message key="global.btnPrint"/> "
+                                                                             value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                                                              onClick="window.print()">
 
                     </td>

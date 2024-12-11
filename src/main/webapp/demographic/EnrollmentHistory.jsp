@@ -39,9 +39,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
@@ -55,7 +55,7 @@
 <%@page import="oscar.util.DateUtils" %>
 <%@page import="oscar.util.StringUtils" %>
 <%@page import="oscar.oscarDemographic.pageUtil.Util" %>
-<html:html lang="en">
+<html>
     <head>
         <title>Enrollment History</title>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -68,7 +68,7 @@
             var ctx = '<%=request.getContextPath()%>';
         </script>
 
-        <title><bean:message key="demographic.demographicappthistory.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.title"/></title>
         <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -262,7 +262,7 @@
 
     </table>
     </body>
-</html:html>
+</html>
 
 
 <%!

@@ -101,11 +101,11 @@
 <br/>
 <br/>
 
-<html:hidden property="program.id"/>
-<html:hidden property="referral.remoteFacilityId"/>
-<html:hidden property="referral.remoteProgramId"/>
-<html:hidden property="program.name"/>
-<html:hidden property="vacancyId" value="<%=vacancyId%>"/>
+<input type="hidden" name="id" id="id"/>
+<input type="hidden" name="remoteFacilityId" id="remoteFacilityId"/>
+<input type="hidden" name="remoteProgramId" id="remoteProgramId"/>
+<input type="hidden" name="name" id="name"/>
+<input type="hidden" name="vacancyId" id="vacancyId" value="<%=vacancyId%>"/>
 <br/>
 <c:if test="${requestScope.do_refer != null}">
     <table class="b" border="0" width="100%">
@@ -133,12 +133,12 @@
     <table width="100%" border="1" cellspacing="2" cellpadding="3">
         <tr class="b">
             <td width="20%">Reason for referral:</td>
-            <td><html:textarea cols="50" rows="7" property="referral.notes"/></td>
+            <td><textarea cols="50" rows="7" name="notes"></textarea></td>
         </tr>
         <tr class="b">
             <td width="20%">Presenting Problems:</td>
-            <td><html:textarea cols="50" rows="7"
-                               property="referral.presentProblems"/></td>
+            <td><textarea cols="50" rows="7"
+                          name="presentProblems"></textarea></td>
         </tr>
 
         <c:if test="${program.type eq 'Bed' }">
@@ -146,7 +146,7 @@
             <caisi:isModuleLoad moduleName="pmm.refer.temporaryAdmission.enabled">
                 <tr class="b">
                     <td width="20%">Request Temporary Admission:</td>
-                    <td><html:checkbox property="referral.temporaryAdmission"/></td>
+                    <td><<input type="checkbox" name="temporaryAdmission"/></td>
                 </tr>
             </caisi:isModuleLoad>
             <!-- </c:if> -->

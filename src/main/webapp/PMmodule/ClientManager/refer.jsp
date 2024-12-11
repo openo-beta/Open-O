@@ -61,7 +61,7 @@
         var mentalHealth = form.elements['program.mentalHealth'].checked;
         var housing = form.elements['program.housing'].checked;
 
-        var url = '<html:rewrite action="/PMmodule/ClientManager.do"/>';
+        var url = '<%=request.getContextPath() %>/PMmodule/ClientManager.do';
         url += '?method=search_programs&program.name=' + programName + '&program.type=' + programType;
         url += '&program.manOrWoman=' + manOrWoman + '&program.transgender=' + transgender + '&program.firstNation=' + firstNation + '&program.bedProgramAffiliated=' + bedProgramAffiliated + '&program.alcohol=' + alcohol + '&program.abstinenceSupport=' + abstinenceSupport + '&program.physicalHealth=' + physicalHealth + '&program.mentalHealth=' + mentalHealth + '&program.housing=' + housing;
         //url += '&program.manOrWoman='+manOrWoman;
@@ -191,68 +191,68 @@
         </tr>
     </table>
 </div>
-<html:hidden property="program.id"/>
-<html:hidden property="referral.remoteFacilityId"/>
-<html:hidden property="referral.remoteProgramId"/>
+<input type="hidden" name="id" id="id"/>
+<input type="hidden" name="remoteFacilityId" id="remoteFacilityId"/>
+<input type="hidden" name="remoteProgramId" id="remoteProgramId"/>
 <table width="100%" border="1" cellspacing="2" cellpadding="3">
     <tr class="b">
         <td width="20%">Program Name</td>
-        <td><html:text property="program.name"/></td>
+        <td><input type="text" name="program.name" id="program.name" /></td>
     </tr>
     <tr class="b">
         <td width="20%">Program Type</td>
-        <td><html:select property="program.type">
-            <html:option value="">&nbsp;</html:option>
-            <html:option value="Bed">Bed</html:option>
-            <html:option value="Service">Service</html:option>
-        </html:select></td>
+        <td><select name="program.type" id="program.type">
+            <option value="">&nbsp;</option>
+            <option value="Bed">Bed</option>
+            <option value="Service">Service</option>
+        </select></td>
     </tr>
 
     <tr class="b">
         <td width="20%">Man or Woman:</td>
-        <td><html:select property="program.manOrWoman">
-            <html:option value="">&nbsp;</html:option>
-            <html:option value="Man">Man</html:option>
-            <html:option value="Woman">Woman</html:option>
-        </html:select></td>
+        <td><select name="program.manOrWoman" id="program.manOrWoman">
+            <option value="">&nbsp;</option>
+            <option value="Man">Man</option>
+            <option value="Woman">Woman</option>
+        </select></td>
     </tr>
 
     <tr class="b">
         <td width="20%">Transgender:</td>
-        <td><html:checkbox property="program.transgender"/></td>
+        <td><input type="checkbox" name="program.transgender"/></td>
     </tr>
     <tr class="b">
         <td width="20%">First Nation:</td>
-        <td><html:checkbox property="program.firstNation"/></td>
+        <td><input type="checkbox" name="program.firstNation"/></td>
     </tr>
     <tr class="b">
         <td width="20%">Bed Program Affiliated:</td>
-        <td><html:checkbox property="program.bedProgramAffiliated"/></td>
+        <td><input type="checkbox" name="program.bedProgramAffiliated"/></td>
     </tr>
     <tr class="b">
         <td width="20%">Alcohol:</td>
-        <td><html:checkbox property="program.alcohol"/></td>
+        <td><input type="checkbox" name="program.alcohol"/></td>
     </tr>
     <tr class="b">
         <td width="20%">Abstinence Support?</td>
-        <td><html:select property="program.abstinenceSupport">
-            <html:option value="">&nbsp;</html:option>
-            <html:option value="Harm Reduction"/>
-            <html:option value="Abstinence Support"/>
-            <html:option value="Not Applicable"/>
-        </html:select></td>
+        <td><select name="program.abstinenceSupport" id="program.abstinenceSupport">
+            <option value="">&nbsp;</option>
+            <option value="Harm Reduction"/>
+            <option value="Abstinence Support"/>
+            <option value="Not Applicable"/>
+        </select></td>
     </tr>
     <tr class="b">
         <td width="20%">Physical Health:</td>
-        <td><html:checkbox property="program.physicalHealth"/></td>
+        <td><input type="checkbox" name="program.physicalHealth"/></td>
     </tr>
     <tr class="b">
         <td width="20%">Mental Health:</td>
-        <td><html:checkbox property="program.mentalHealth"/></td>
+        <td><input type="checkbox" name="program.mentalHealth"/></td>
     </tr>
     <tr class="b">
         <td width="20%">Housing:</td>
-        <td><html:checkbox property="program.housing"/></td>
+        <td><input type="checkbox" name="program.housing"/></td>
     </tr>
 
 
@@ -292,12 +292,11 @@
     <table width="100%" border="1" cellspacing="2" cellpadding="3">
         <tr class="b">
             <td width="20%">Reason for referral:</td>
-            <td><html:textarea cols="50" rows="7" property="referral.notes"/></td>
+            <td><textarea cols="50" rows="7" name="notes"></textarea></td>
         </tr>
         <tr class="b">
             <td width="20%">Presenting Problems:</td>
-            <td><html:textarea cols="50" rows="7"
-                               property="referral.presentProblems"/></td>
+            <td><textarea cols="50" rows="7" name="presentProblems"></textarea></td>
         </tr>
         <tr>
             <td>Referral Date:</td>
@@ -323,7 +322,7 @@
             <caisi:isModuleLoad moduleName="pmm.refer.temporaryAdmission.enabled">
                 <tr class="b">
                     <td width="20%">Request Temporary Admission:</td>
-                    <td><html:checkbox property="referral.temporaryAdmission"/></td>
+                    <td><input type="checkbox" name="referral.temporaryAdmission"/></td>
                 </tr>
             </caisi:isModuleLoad>
             <!-- </c:if> -->

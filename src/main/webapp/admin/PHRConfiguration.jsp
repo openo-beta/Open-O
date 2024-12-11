@@ -42,11 +42,11 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html ng-app="phrConfig">
 <head ng-cloak>
-    <title><bean:message key="admin.admin.phrconfig"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.phrconfig"/></title>
     <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
     <script src="<%=request.getContextPath() %>/js/jquery-1.9.1.js"></script>
@@ -65,8 +65,7 @@
 <body vlink="#0000FF" class="BodyStyle" ng-cloak>
 <div ng-controller="phrConfig" ng-cloak>
     <div class="page-header">
-        <h4><bean:message key="admin.admin.phrconfig"/> <small data-ng-show="phrActive"> <bean:message
-                key="admin.phr.active"/></small><small data-ng-show="serverOffline"> Connector Offline</small></h4>
+        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.phrconfig"/> <small data-ng-show="phrActive"> <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.phr.active"/></small><small data-ng-show="serverOffline"> Connector Offline</small></h4>
     </div>
 
     <%--  div class="container"> --%>
@@ -94,13 +93,13 @@
                     <fieldset>
                         <h4>Enter your PHR Clinic Credentials provided by your PHR Provider</h4>
                         <div class="form-group col-xs-10">
-                            <label><bean:message key="admin.phr.clinicUsername"/><small> (This will be supplied by the
+                            <label><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.phr.clinicUsername"/><small> (This will be supplied by the
                                 PHR)</small></label>
                             <div class="controls">
                                 <input class="form-control" name="clinicUsername" ng-model="clinicUsername" type="text"
                                        maxlength="255"/> <br/>
                             </div>
-                            <label><bean:message key="admin.phr.clinicPassword"/><small> (This will be supplied by the
+                            <label><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.phr.clinicPassword"/><small> (This will be supplied by the
                                 PHR)</small></label>
                             <div class="controls">
                                 <input class="form-control" name="clinicPassword" ng-model="clinicPassword"

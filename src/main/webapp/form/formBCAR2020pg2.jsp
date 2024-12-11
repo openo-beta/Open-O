@@ -45,9 +45,9 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="oscar.util.UtilMisc" %>
 <%@ page import="oscar.OscarProperties" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 <%
     String formClass = "BCAR2020";
@@ -65,14 +65,14 @@
     Properties props = rec.getFormRecord(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo, formId, pageNo);
 %>
 <!DOCTYPE HTML>
-<html:html lang="en">
+<html>
     <head>
         <title>BC Antenatal Record 2020 Part 2 Page 1</title>
 
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%=request.getContextPath() %>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="<%=request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/formBCAR2020Record.js"></script>
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-1.12.0.min.js"
@@ -148,14 +148,14 @@
                 $('form').trigger('checkform.areYouSure');
             }
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     </head>
 
     <body bgproperties="fixed">
     <div id="maincontent">
         <div id="content_bar" class="innertube">
-            <html:form action="/form/BCAR2020">
+            <form action="${pageContext.request.contextPath}/form/BCAR2020.do" method="post">
                 <input type="hidden" id="demographicNo" name="demographicNo" value="<%=demoNo%>"/>
                 <input type="hidden" id="formId" name="formId" value="<%=formId%>"/>
                 <input type="hidden" name="provider_no" value=<%=Encode.forHtmlAttribute(providerNo)%>/>
@@ -1392,7 +1392,7 @@
                         </td>
                     </tr>
                 </table>
-            </html:form>
+            </form>
         </div>
     </div>
 
@@ -1431,4 +1431,4 @@
     </body>
 
 
-</html:html>
+</html>

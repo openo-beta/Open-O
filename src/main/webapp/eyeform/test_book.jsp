@@ -23,15 +23,10 @@
     Ontario, Canada
 
 --%>
-
-<%@page import="org.oscarehr.eyeform.model.EyeformTestBook" %>
-<%@page import="org.oscarehr.eyeform.web.TestBookAction" %>
-
-
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="w" reverse="<%=true%>">
@@ -48,13 +43,13 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />'/>
+    <link rel="stylesheet" type="text/css" href='${request.contextPath}/jsCalendar/skins/aqua/theme.css'/>
 
     <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css"
           title="win2k-cold-1"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="<%=request.getContextPath()%>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
 
 </head>
@@ -62,19 +57,19 @@
 Book Test
 <br/>
 
-<html:form action="/eyeform/TestBook.do">
+<form action="${pageContext.request.contextPath}/eyeform/TestBook.do" method="post">
     <table style="margin-left:auto;margin-right:auto;background-color:#f0f0f0;border-collapse:collapse">
         <input type="hidden" name="method" value="save"/>
 
-        <html:hidden property="data.id"/>
-        <html:hidden property="data.demographicNo"/>
-        <html:hidden property="data.appointmentNo"/>
+        <input type="hidden" name="id" id="id"/>
+        <input type="hidden" name="demographicNo" id="demographicNo"/>
+        <input type="hidden" name="appointmentNo" id="appointmentNo"/>
 
 
         <tr>
             <td class="genericTableHeader">Test name</td>
             <td class="genericTableData">
-                <html:text property="data.testname" size="50"/>
+                <input type="checkbox" name="data.testname" size="50" />
             </td>
         </tr>
 
@@ -82,30 +77,30 @@ Book Test
         <tr>
             <td class="genericTableHeader">Eye</td>
             <td class="genericTableData">
-                <html:select property="data.eye">
-                    <html:option value="OU">OU</html:option>
-                    <html:option value="OD">OD</html:option>
-                    <html:option value="OS">OS</html:option>
-                    <html:option value="n/a">n/a</html:option>
-                </html:select>
+                <select name="eye">
+                    <option value="OU">OU</option>
+                    <option value="OD">OD</option>
+                    <option value="OS">OS</option>
+                    <option value="n/a">n/a</option>
+                </select>
             </td>
         </tr>
 
         <tr>
             <td class="genericTableHeader">Comment</td>
             <td class="genericTableData">
-                <html:textarea rows="5" cols="40" property="data.comment"></html:textarea>
+                <textarea rows="5" cols="40" name="comment" id="comment"></textarea>
             </td>
         </tr>
 
         <tr>
             <td class="genericTableHeader">Urgency</td>
             <td class="genericTableData">
-                <html:select property="data.urgency">
-                    <html:option value="routine">routine</html:option>
-                    <html:option value="ASAP">ASAP</html:option>
-                    <html:option value="PTNV">PTNV</html:option>
-                </html:select>
+                <select name="urgency">
+                    <option value="routine">routine</option>
+                    <option value="ASAP">ASAP</option>
+                    <option value="PTNV">PTNV</option>
+                </select>
             </td>
         </tr>
 
@@ -115,7 +110,7 @@ Book Test
 
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <html:submit value="Book Procedure"/>
+                <input type="submit" value="Book Procedure" />
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" name="cancel" value="Cancel" onclick="window.close()"/>
@@ -124,7 +119,7 @@ Book Test
         </tr>
     </table>
 
-</html:form>
+</form>
 
 </body>
 </html>

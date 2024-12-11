@@ -29,11 +29,11 @@
 %>
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Waiting List</title>
@@ -72,8 +72,7 @@
         </tr>
         <tr>
             <td class="MainTableLeftColumn"><a
-                    href="../demographic/demographiccontrol.jsp?demographic_no=<bean:write name="demographicNo"/>&displaymode=edit&dboperation=search_detail"><bean:message
-                    key="global.btnBack"/>&nbsp;</a></td>
+                    href="../demographic/demographiccontrol.jsp?demographic_no=<c:out value="${demographicNo}"/>&displaymode=edit&dboperation=search_detail"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/>&nbsp;</a></td>
             <td class="MainTableRightColumn">
                 <table border=0 cellspacing=4 width=700>
                     <tr>
@@ -92,18 +91,13 @@
                                 </tr>
                                 <c:forEach var="waitingListBean" items="${patientWaitingList.patientWaitingList}">
                                 <tr class="data">
-                                    <td width="100"><bean:write name="waitingListBean"
-                                                                property="waitingList"/></td>
-                                    <td width="50"><bean:write name="waitingListBean"
-                                                               property="position"/></td>
-                                    <td width="100"><bean:write name="waitingListBean"
-                                                                property="note"/></td>
-                                    <td width="100"><bean:write name="waitingListBean"
-                                                                property="onListSince"/></td>
+                                    <td width="100"><c:out value="${waitingListBean.waitingList}"/></td>
+                                    <td width="50"><c:out value="${waitingListBean.position}"/></td>
+                                    <td width="100"><c:out value="${waitingListBean.note}"/></td>
+                                    <td width="100"><c:out value="${waitingListBean.onListSince}"/></td>
                                     <td><a href=#
-                                           onClick="removePatient('<bean:write name="waitingListBean"
-                                                                               property="demographicNo"/>', '<bean:write
-                                                   name="waitingListBean" property="waitingListID"/>');">Remove</a>
+                                           onClick="removePatient('<c:out value="${waitingListBean.demographicNo}"/>', 
+                                           '<c:out value="${waitingListBean.waitingListID}"/>');">Remove</a>
                                     </td>
                                 </tr>
                                 </c:forEach>
@@ -113,7 +107,7 @@
                 <table>
                     <tr>
                         <td><input type="button" name="Button"
-                                   value="<bean:message key="global.btnClose"/>"
+                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
                                    onClick="window.close()"></td>
                     </tr>
                 </table>
@@ -128,4 +122,4 @@
     </tr>
     </table>
     </body>
-</html:html>
+</html>

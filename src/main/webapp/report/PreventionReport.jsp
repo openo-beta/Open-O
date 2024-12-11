@@ -41,12 +41,12 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <html ng-app="preventionReport">
 <head>
-    <title><bean:message key="oscarprevention.index.oscarpreventiontitre"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/></title>
     <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
     <script type="text/javascript" src="<%=request.getContextPath() %>/library/angular.min.js"></script>
@@ -59,7 +59,7 @@
 <body vlink="#0000FF" class="BodyStyle">
 <div ng-controller="preventionReport">
     <div class="page-header">
-        <h4><bean:message key="oscarprevention.index.oscarpreventiontitre"/> <small><a
+        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/> <small><a
                 ng-click="manageReportShowHide()">Manage reports</a></small></h4>
     </div>
     <div class="container-fluid" style="margin-left:15px;margin-right:15px;" ng-if="showManageReport">

@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@ page import="java.util.*,java.sql.*,java.util.ResourceBundle" errorPage="../provider/errorpage.jsp" %>
@@ -51,10 +51,10 @@
 </security:oscarSec>
 
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
 
-        <title><bean:message key="admin.adminnewgroup.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.adminnewgroup.title"/></title>
 
         <script>
 
@@ -68,7 +68,7 @@
                 group = document.UPDATEPRE.mygroup_no.value;
 
                 if (group.length <= 0 || group <= " ") {
-                    alert("<bean:message key="admin.adminNewGroup.msgGroupIsRequired"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.adminNewGroup.msgGroupIsRequired"/>");
 
                     return false;
                 } else {
@@ -125,14 +125,14 @@
 
         <a href="admindisplaymygroup.jsp" class="btn btn-primary">View Group List</a>
 
-        <a href="adminnewgroup.jsp" class="btn"><bean:message key="admin.admindisplaymygroup.btnSubmit2"/></a>
+        <a href="adminnewgroup.jsp" class="btn"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admindisplaymygroup.btnSubmit2"/></a>
         <%} else {%>
 
-        <h3><bean:message key="admin.adminnewgroup.description"/></h3>
+        <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.adminnewgroup.description"/></h3>
 
 
         <input type="text" name="mygroup_no" size="10" maxlength="10"
-               placeholder="<bean:message key="admin.adminmygroup.formGroupNo" />"
+               placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.adminmygroup.formGroupNo"/>"
                title="Enter an existing or new group name.">
         <small>(Max. 10 chars.)</small>
 
@@ -141,7 +141,7 @@
             <tr class="btn-inverse">
                 <th></th>
                 <th>
-                    <bean:message key="admin.admindisplaymygroup.formProviderName"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admindisplaymygroup.formProviderName"/>
                 </th>
             </tr>
             </thead>
@@ -175,7 +175,7 @@
 
 
         <input type="submit" name="Submit" class="btn btn-primary"
-               value="<bean:message key="admin.adminnewgroup.btnSubmit"/>">
+               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.adminnewgroup.btnSubmit"/>">
 
         <a href="admindisplaymygroup.jsp" class="btn btn-default">Cancel</a>
 
@@ -193,4 +193,4 @@
         });
     </script>
     </body>
-</html:html>
+</html>

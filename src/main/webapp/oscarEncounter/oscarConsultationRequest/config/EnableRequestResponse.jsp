@@ -44,9 +44,9 @@
 <%@ page import="org.oscarehr.common.dao.PropertyDao, org.oscarehr.common.model.Property" %>
 <%@ page import="org.oscarehr.managers.ConsultationManager" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%
     PropertyDao dao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
     ConsultationManager manager = (ConsultationManager) SpringUtils.getBean(ConsultationManager.class);
@@ -61,15 +61,14 @@
 
     if (!consultRequestEnabled && !consultResponseEnabled) consultRequestEnabled = true;
 %>
-<html:html lang="en">
+<html>
 
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
 
@@ -82,8 +81,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td class="Header"><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
+                        <td class="Header"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
                         </td>
                         <td></td>
                     </tr>
@@ -109,26 +107,23 @@
                         String updated = (String) request.getAttribute("ENABLE_REQUEST_RESPONSE_UPDATED");
                         if (updated != null) { %>
                     <tr>
-                        <td><font color="red"><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.msgUpdated"/></font>
+                        <td><font color="red"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.msgUpdated"/></font>
                         </td>
                     </tr>
                     <%}%>
                     <tr>
                         <td>
                             <table>
-                                <html:form action="/oscarEncounter/EnableConRequestResponse">
+                                <form action="${pageContext.request.contextPath}/oscarEncounter/EnableConRequestResponse.do" method="post">
                                     <tr>
                                         <td>
                                             <input type="checkbox"
                                                    name="consultRequestEnabled" <%=consultRequestEnabled ? "checked" : "" %>/>
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableRequest"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableRequest"/>
                                             <br/>
                                             <input type="checkbox"
                                                    name="consultResponseEnabled" <%=consultResponseEnabled ? "checked" : "" %>/>
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableResponse"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableResponse"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -136,10 +131,10 @@
                                     </tr>
                                     <tr>
                                         <td><input type="submit"
-                                                   value="<bean:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.btnUpdate"/>"/>
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.btnUpdate"/>"/>
                                         </td>
                                     </tr>
-                                </html:form>
+                                </form>
                             </table>
                         </td>
                     </tr>
@@ -156,4 +151,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

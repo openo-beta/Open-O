@@ -143,8 +143,8 @@
     String xml_vdate = request.getParameter("xml_vdate") == null ? "" : request.getParameter("xml_vdate");
     String xml_appointment_date = request.getParameter("xml_appointment_date") == null ? MyDateFormat.getMysqlStandardDate(curYear, curMonth, curDay) : request.getParameter("xml_appointment_date");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
@@ -160,9 +160,9 @@
 <%@ page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="tickler.ticklerAdd.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.title"/></title>
 
         <script language="JavaScript">
 
@@ -277,7 +277,7 @@
 
             function validateSelectedProgram() {
                 if (document.serviceform.program_assigned_to.value === "none") {
-                    document.getElementById("error").insertAdjacentText("beforeend", "<bean:message key="tickler.ticklerAdd.msgNoProgramSelected"/>");
+                    document.getElementById("error").insertAdjacentText("beforeend", "<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgNoProgramSelected"/>");
                     document.getElementById("error").style.display = 'block';
                     return false;
                 }
@@ -291,12 +291,12 @@
 
             function validateDemoNo() {
                 if (document.serviceform.demographic_no.value == "") {
-                    document.getElementById("error").insertAdjacentText("beforeend", "<bean:message key="tickler.ticklerAdd.msgInvalidDemographic"/>");
+                    document.getElementById("error").insertAdjacentText("beforeend", "<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgInvalidDemographic"/>");
                     document.getElementById("error").style.display = 'block';
                     return false;
                 } else {
                     if (document.serviceform.xml_appointment_date.value == "" || !IsDate(document.serviceform.xml_appointment_date.value)) {
-                        document.getElementById("error").insertAdjacentText("beforeend", "<bean:message key="tickler.ticklerAdd.msgMissingDate"/>");
+                        document.getElementById("error").insertAdjacentText("beforeend", "<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgMissingDate"/>");
                         document.getElementById("error").style.display = 'block';
                         return false;
                     }
@@ -380,7 +380,7 @@
         <tr style="background-color: black">
             <td class="table-condensed"
                 style="text-align:left; padding:10px; font-weight: 900; height:40px;font-size:large;font-family:arial,sans-serif;color:white">
-                Add <bean:message key="tickler.ticklerAdd.msgTickler"/></td>
+                Add <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgTickler"/></td>
         </tr>
     </table>
 
@@ -393,7 +393,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="35%" class="tickler-label"><bean:message key="tickler.ticklerAdd.formDemoName"/>:</td>
+                    <td width="35%" class="tickler-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formDemoName"/>:</td>
                     <td width="65%">
 
                         <div class="input-group">
@@ -401,7 +401,7 @@
                                    size="25" value="<%=Encode.forHtmlAttribute(demoName)%>">
                             <span class="input-group-btn">
                             <input type="submit" name="Submit" class="btn btn-default"
-                                   value="<bean:message key="tickler.ticklerAdd.btnSearch"/>">
+                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnSearch"/>">
                         </span>
                         </div>
 
@@ -458,14 +458,14 @@
                 <input type="hidden" name="updateParent" value="<%=updateParent%>"/>
 
                 <tr>
-                    <td width="35%" class="tickler-label"><bean:message key="tickler.ticklerAdd.formChartNo"/>:</td>
+                    <td width="35%" class="tickler-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formChartNo"/>:</td>
                     <td width="65%"><span><INPUT TYPE="hidden" name="demographic_no"
                                                  VALUE="<%=bFirstDisp?"":request.getParameter("demographic_no").equals("")?"":request.getParameter("demographic_no")%>"><%=ChartNo%></span>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="tickler-label"><bean:message key="tickler.ticklerAdd.formServiceDate"/></td>
+                    <td class="tickler-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formServiceDate"/></td>
                     <td><input type="date" class="form-control" name="xml_appointment_date"
                                value="<%=xml_appointment_date%>">
                         <font color="#003366" size="1" face="Verdana, Arial, Helvetica, sans-serif">
@@ -477,21 +477,18 @@
                         </font></td>
                 </tr>
                 <tr>
-                    <td class="tickler-label"><bean:message key="tickler.ticklerMain.Priority"/>:</td>
+                    <td class="tickler-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.Priority"/>:</td>
                     <td>
                         <select name="priority" class="form-control">
-                            <option value="<bean:message key="tickler.ticklerMain.priority.high"/>" <%=priority.equals("High")?"selected":""%>><bean:message
-                                    key="tickler.ticklerMain.priority.high"/>
-                            <option value="<bean:message key="tickler.ticklerMain.priority.normal"/>" <%=priority.equals("Normal")?"selected":""%>><bean:message
-                                    key="tickler.ticklerMain.priority.normal"/>
-                            <option value="<bean:message key="tickler.ticklerMain.priority.low"/>" <%=priority.equals("Low")?"selected":""%>><bean:message
-                                    key="tickler.ticklerMain.priority.low"/>
+                            <option value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.high"/>" <%=priority.equals("High")?"selected":""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.high"/>
+                            <option value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.normal"/>" <%=priority.equals("Normal")?"selected":""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.normal"/>
+                            <option value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.low"/>" <%=priority.equals("Low")?"selected":""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.low"/>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="tickler-label"><bean:message key="tickler.ticklerAdd.assignTaskTo"/>:</td>
+                    <td class="tickler-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.assignTaskTo"/>:</td>
                     <td>
                         <% if (org.oscarehr.common.IsPropertiesOn.isMultisitesEnable()) { // multisite start ==========================================
                             SiteDao siteDao = (SiteDao) WebApplicationContextUtils.getWebApplicationContext(application).getBean(SiteDao.class);
@@ -629,7 +626,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="tickler-label"><bean:message key="tickler.ticklerAdd.formReminder"/>:</td>
+                    <td class="tickler-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formReminder"/>:</td>
                     <td><textarea name="ticklerMessage" id="ticklerMessage" class="form-control"></textarea></td>
                 </tr>
                 <INPUT TYPE="hidden" name="user_no" VALUE="<%=user_no%>">
@@ -637,11 +634,11 @@
                 <tr>
 
                     <td><input type="button" name="Button" class="btn btn-primary"
-                               value="<bean:message key="tickler.ticklerAdd.btnSubmit"/>"
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnSubmit"/>"
                                onClick="event.preventDefault();validate(this.form);">
 
                         <input type="button" name="Button" class="btn btn-danger"
-                               value="<bean:message key="tickler.ticklerAdd.btnCancel"/>" onClick="window.close()">
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnCancel"/>" onClick="window.close()">
                     </td>
                 </tr>
 
@@ -649,4 +646,4 @@
         </form>
     </div>
     </body>
-</html:html>
+</html>

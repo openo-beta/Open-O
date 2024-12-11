@@ -25,8 +25,8 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
 
     String user_no = (String) session.getAttribute("user");
@@ -35,11 +35,10 @@
 %>
 
 <link rel="stylesheet" type="text/css" href="dxResearch.css">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarResearch.oscarDxResearch.dxResearch.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.title"/></title>
         <script language="JavaScript">
             <!--
             function setfocus() {
@@ -94,7 +93,7 @@
             function openNewPage(vheight, vwidth, varpage) {
                 var page = varpage;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=no,menubars=no,toolbars=no,resizable=no,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<bean:message key="oscarEncounter.Index.msgOscarConsultation"/>", windowprops);
+                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOscarConsultation"/>", windowprops);
                 popup.focus();
             }
 
@@ -109,56 +108,63 @@
             <td>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr bgcolor="#000000">
-                        <td class="subject" colspan="2">&nbsp;&nbsp;&nbsp;<bean:message
-                                key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
+                        <td class="subject" colspan="2">&nbsp;&nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td><html:form
-                    action="/oscarResearch/oscarDxResearch/dxResearchUpdateQuickList.do">
+            <td><form action="${pageContext.request.contextPath}/oscarResearch/oscarDxResearch/dxResearchUpdateQuickList.do" method="post">
                 <table width="100%" border="0" cellpadding="0" cellspacing="0"
                        bgcolor="#EEEEFF" height="200">
                     <tr>
-                        <td class="heading"><bean:message
-                                key="oscarResearch.oscarDxResearch.codingSystem"/>: <%-- <bean:write name="codingSystem"/> --%>
-                            <html:select property="selectedCodingSystem">
+                        <td class="heading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.codingSystem"/>: <%-- <c:out value="${codingSystem}"/> --%>
+                            <select name="selectedCodingSystem" id="selectedCodingSystem">
                                 <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
                                     <option value="${codingSys}">${codingSys}</option>
                                 </c:forEach>
-                            </html:select></td>
+                            </select></td>
                         <td class="heading"></td>
-                        <td class="heading"><bean:message
-                                key="oscarResearch.oscarDxResearch.quickListItemsOf"/> <bean:write
-                                name="quickListName"/> <input type="hidden" name="quickListName"
-                                                              value="<bean:write name="quickListName"/>"/></td>
+                        <td class="heading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.quickListItemsOf"/> 
+                            <c:out value="${quickListName}"/> 
+                            <input type="hidden" name="quickListName" value="<c:out value="${quickListName}"/>"/></td>
                     </tr>
                     <tr>
-                        <td colspan="3"><html:errors/></td>
+                        <td colspan="3"><% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %></td>
                     </tr>
                     <tr>
                         <td width="40%" valign="top">
                             <table width="100%" border="0" cellspacing="0" cellpadding="2"
                                    height="200">
                                 <tr>
-                                    <td><html:text property="xml_research1" size="30"/></td>
+                                    <td><input type="checkbox" name="xml_research1" size="30" /></td>
                                 </tr>
                                 <tr>
-                                    <td><html:text property="xml_research2" size="30"/></td>
+                                    <td><input type="checkbox" name="xml_research2" size="30" /></td>
                                 </tr>
                                 <tr>
-                                    <td><html:text property="xml_research3" size="30"/></td>
+                                    <td><input type="checkbox" name="xml_research3" size="30" /></td>
                                 </tr>
                                 <tr>
-                                    <td><html:text property="xml_research4" size="30"/></td>
+                                    <td><input type="checkbox" name="xml_research4" size="30" /></td>
                                 </tr>
                                 <tr>
-                                    <td><html:text property="xml_research5" size="30"/></td>
+                                    <td><input type="checkbox" name="xml_research5" size="30" /></td>
                                 </tr>
                                 <tr>
                                     <td><input type="button" name="button" class=mbttn
-                                               value="<bean:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
                                                onClick="javascript: ResearchScriptAttach();" )></td>
                                 </tr>
                             </table>
@@ -168,13 +174,13 @@
                                 <tr>
                                     <td><input type="hidden" name="forward" value="none"/> <input
                                             type="button" name="button" class=mbttn style="width: 80"
-                                            value="<bean:message key="ADD"/> >>"
+                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/> >>"
                                             onClick="javascript: submitform('add');"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="button" name="button" class=mbttn
                                                style="width: 80"
-                                               value="<< <bean:message key="REMOVE"/>"
+                                               value="<< <fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
                                                onClick="javascript: submitform('remove');"></td>
                                 </tr>
                             </table>
@@ -182,12 +188,12 @@
                         <td valign="top">
                             <table>
                                 <tr>
-                                    <td><html:select property="quickListItems"
+                                    <td><select name="quickListItems"
                                                      style="width:200px" size="10" multiple="true">
                                         <c:forEach var="qlItems" items="${allQuickListItems.dxQuickListItemsVector}">
                                             <option value="${qlItems.type},${qlItems.dxSearchCode}">${qlItems.description}</option>
                                         </c:forEach>
-                                    </html:select></td>
+                                    </select></td>
                                 </tr>
                             </table>
                         </td>
@@ -197,15 +203,15 @@
                     </tr>
                     <tr>
                         <td><input type="button" class="mbttn" name="Button"
-                                   value="<bean:message key="global.btnClose"/>"
+                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
                                    onClick="window.close()"></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                     </tr>
                 </table>
-            </html:form></td>
+            </form></td>
         </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -33,10 +33,8 @@
 <%@ page import="org.oscarehr.phr.util.MyOscarServerRelationManager,org.oscarehr.phr.util.MyOscarUtils" %>
 
 <%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
@@ -79,7 +77,7 @@
 
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<c:out value="${ctx}"/>/js/jquery.js"></script>
@@ -92,7 +90,7 @@
                 return true;
             }
         </script>
-        <title><bean:message key="phr.verification.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.title"/></title>
         <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
 
         <script type="text/javascript" language="JavaScript" src="../share/javascript/Oscar.js"></script>
@@ -185,10 +183,9 @@
                 <table class="TopStatusBar" style="width: 100%;">
                     <tr>
                         <td>
-                            <bean:message key="phr.verification.title"/> &nbsp; <oscar:nameage
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.title"/> &nbsp; <oscar:nameage
                                 demographicNo="<%=demographicNo%>"/> &nbsp; <oscar:phrverification
-                                demographicNo="<%=demographicNo%>"><bean:message
-                                key="phr.verification.link"/></oscar:phrverification>
+                                demographicNo="<%=demographicNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.link"/></oscar:phrverification>
                             &nbsp;
 
                             <%if (demographicNo != null) {%>
@@ -257,7 +254,7 @@
         <tr>
             <td class="MainTableRightColumn" valign="top">
                 <fieldset>
-                    <legend><bean:message key="phr.verification.add.fieldset.legend"/></legend>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.add.fieldset.legend"/></legend>
                     <%if (consent != null && consent.getPatientConsented()) { %>
                     <h2>This person (PHR username: <span style="color:blue;"><%=myOscarUserName%></span>) was confirmed
                         on <%=consent.getConsentDate()%> by <%=providerName%>
@@ -276,4 +273,4 @@
             <td class="MainTableBottomRowRightColumn">&nbsp;</td>
         </tr>
     </table>
-</html:html>
+</html>

@@ -40,13 +40,7 @@
 
 <%@ page
         import="oscar.util.*, oscar.form.*, oscar.form.data.*, org.oscarehr.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ page
-        import="org.springframework.context.*,org.springframework.web.context.support.*" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "DischargeSummary";
     String formLink = "formDischargeSummary.jsp";
@@ -92,12 +86,12 @@
 * Ontario, Canada
 */
 -->
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>MULTI-DISCIPLINARY TEAM DISCHARGE SUMMARY</title>
         <link rel="stylesheet" type="text/css" href="arStyle.css">
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
 
@@ -315,8 +309,8 @@
     <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1">
     <c:set var="ctx" value="${pageContext.request.contextPath}"
            scope="request"/>
-    <html:form action="/form/formname">
-        <input type="hidden" name="demographic_no"
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
+    <input type="hidden" name="demographic_no"
                value="<%= props.getProperty("demographic_no", "0") %>"/>
         <input type="hidden" name="formCreated"
                value="<%= props.getProperty("formCreated", "") %>"/>
@@ -796,6 +790,6 @@
         </table>
 
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

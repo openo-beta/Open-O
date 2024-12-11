@@ -1,5 +1,3 @@
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -17,11 +15,10 @@
 
 <%@page
         import="java.util.*,oscar.oscarBilling.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.title"/></title>
         <link rel="stylesheet" type="text/css"
               href="../../../oscarEncounter/encounterStyles.css">
         <script type="text/javascript">
@@ -31,7 +28,18 @@
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
     <body class="BodyStyle" vlink="#0000FF">
-    <h2><html:errors/></h2>
+    <h2><% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %></h2>
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr>
@@ -39,24 +47,17 @@
                 <table width="100%" border="1" cellspacing="0" cellpadding="0">
                     <tr class="TopStatusBar">
                         <td>
-                            <h3><bean:message
-                                    key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.title"/></h3>
+                            <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.title"/></h3>
                         </td>
                         <td style="text-align: right" colspan="2"><a
-                                href="javascript:popupStart(300,400,'Help.jsp')"> <bean:message
-                                key="global.help"/> </a> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"> <bean:message
-                                key="global.about"/> </a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"> <bean:message
-                                key="global.license"/> </a></td>
+                                href="javascript:popupStart(300,400,'Help.jsp')"> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/> </a> | <a
+                                href="javascript:popupStart(300,400,'About.jsp')"> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/> </a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/> </a></td>
                     </tr>
                     <tr bgcolor="CCCCFF">
-                        <th><bean:message
-                                key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.svc"/></th>
-                        <th><bean:message
-                                key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.dx"/></th>
-                        <th><bean:message
-                                key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.options"/></th>
+                        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.svc"/></th>
+                        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.dx"/></th>
+                        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.billingBC.manageSVCDXAssoc.options"/></th>
                     </tr>
                     <%
                         ArrayList lst = (ArrayList) request.getAttribute("assocs");
@@ -98,4 +99,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -26,18 +26,15 @@
 
 <%@page
         import="oscar.OscarProperties" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String errormsg = request.getParameter("errormsg");
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>Login Failure</title>
     </head>
     <body>
@@ -46,4 +43,4 @@
     <p><%=errormsg%>
     <p>Please correct and try again.
     </body>
-</html:html>
+</html>

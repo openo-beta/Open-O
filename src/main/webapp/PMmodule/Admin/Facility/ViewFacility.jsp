@@ -37,11 +37,7 @@
         </tr>
     </table>
 </div>
-
-<bean:define id="facility" name="facilityManagerForm"
-             property="facility"/>
-
-<html:form action="/PMmodule/FacilityManager.do">
+<form action="${pageContext.request.contextPath}/PMmodule/FacilityManager.do" method="post">
     <input type="hidden" name="method" value="save"/>
     <table width="100%" border="1" cellspacing="2" cellpadding="3">
         <tr class="b">
@@ -50,8 +46,7 @@
         </tr>
         <tr class="b">
             <td width="20%">Name:</td>
-            <td><c:out
-                    value="${requestScope.facilityManagerForm.facility.name}"/></td>
+            <td><c:out value="${requestScope.facilityManagerForm.facility.name}"/></td>
         </tr>
         <tr class="b">
             <td width="20%">Description:</td>
@@ -183,4 +178,4 @@
 
     <br>
     Automatic discharges in the past 24 hours appear red.
-</html:form>
+</form>

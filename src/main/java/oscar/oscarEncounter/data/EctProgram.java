@@ -24,14 +24,13 @@
 
 package oscar.oscarEncounter.data;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
-import org.apache.struts.util.LabelValueBean;
 import org.caisi.service.InfirmBedProgramManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import oscar.util.LabelValueBean;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author rjonasz

@@ -65,7 +65,7 @@
 
 <html>
 <head>
-    <title><bean:message key="admin.admin.ocanReporting"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ocanReporting"/></title>
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
     <script>

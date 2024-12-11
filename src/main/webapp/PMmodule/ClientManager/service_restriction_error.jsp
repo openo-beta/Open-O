@@ -27,14 +27,12 @@
 <%@page import="org.oscarehr.PMmodule.web.formbean.*" %>
 <%@page import="org.oscarehr.PMmodule.web.utils.UserRoleUtils" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
-<%@page
-        import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.PMmodule.service.ClientManager" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.model.DemographicExt" %>
 
-
-<html:form action="/PMmodule/ClientManager.do">
+<form action="${pageContext.request.contextPath}/PMmodule/ClientManager.do" method="post">
 
     <%@ include file="/common/messages.jsp" %>
 
@@ -57,49 +55,43 @@
     <table width="100%" border="1" cellspacing="2" cellpadding="3">
         <tr class="b">
             <td width="20%">Client name:</td>
-            <td><bean:write name="clientManagerForm"
-                            property="serviceRestriction.client.formattedName"/></td>
+            <td><c:out value="${clientManagerForm.serviceRestriction.client.formattedName}"/></td>
         </tr>
         <tr class="b">
             <td width="20%">Restricted program:</td>
-            <td><bean:write name="clientManagerForm"
-                            property="serviceRestriction.program.name"/></td>
+            <td><c:out value="${clientManagerForm.serviceRestriction.program.name}"/></td>
         </tr>
         <tr class="b">
             <td width="20%">Service restriction creator:</td>
-            <td><bean:write name="clientManagerForm"
-                            property="serviceRestriction.provider.formattedName"/></td>
+            <td><c:out value="${clientManagerForm.serviceRestriction.provider.formattedName}"/></td>
         </tr>
         <tr class="b">
             <td width="20%">Comments:</td>
-            <td><bean:write name="clientManagerForm"
-                            property="serviceRestriction.comments"/></td>
+            <td><c:out value="${clientManagerForm.serviceRestriction.comments}"/></td>
         </tr>
 
         <tr class="b">
             <td width="20%">Start date:</td>
-            <td><bean:write name="clientManagerForm"
-                            property="serviceRestriction.startDate"/></td>
+            <td><c:out value="${clientManagerForm.serviceRestriction.startDate}"/></td>
         </tr>
 
         <tr class="b">
             <td width="20%">End date:</td>
-            <td><bean:write name="clientManagerForm"
-                            property="serviceRestriction.endDate"/></td>
+            <td><c:out value="${clientManagerForm.serviceRestriction.endDate}"/></td>
         </tr>
 
         <tr class="b">
             <td width="20%">Days remaining:</td>
-            <td><bean:write name="clientManagerForm"
-                            property="serviceRestriction.daysRemaining"/></td>
+            <td><c:out value="${clientManagerForm.serviceRestriction.daysRemaining}"/></td>
         </tr>
 
         <tr>
             <td colspan="2"><c:if
                     test="${requestScope.hasOverridePermission}">
-                <html:submit property="submit.override">Override</html:submit>
-            </c:if> <html:cancel>Cancel</html:cancel></td>
+                <input type="submit" name="submit" value="Override“/>
+            </c:if> <button type="button" onclick="window.history.back();">Cancel</button>
+        </td>
         </tr>
 
     </table>
-</html:form>
+</form>

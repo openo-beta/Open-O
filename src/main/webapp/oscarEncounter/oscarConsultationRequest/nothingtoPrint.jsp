@@ -24,19 +24,18 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<html:html lang="en">
+
+
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     </head>
     <script language="javascript">
@@ -65,18 +64,15 @@
             <td class="MainTableRightColumn">
                 <table width="100%" height="100%">
                     <tr>
-                        <td><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.msgNothingPrinted"/>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.msgNothingPrinted"/>
                         </td>
                     </tr>
                     <tr>
-                        <td><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgClose5Sec"/>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgClose5Sec"/>
                         </td>
                     </tr>
                     <tr>
-                        <td><a href="javascript: BackToOscar();"> <bean:message
-                                key="global.btnClose"/> </a></td>
+                        <td><a href="javascript: BackToOscar();"> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> </a></td>
                     </tr>
                 </table>
             </td>
@@ -87,4 +83,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

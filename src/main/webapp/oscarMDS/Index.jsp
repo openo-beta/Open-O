@@ -10,10 +10,10 @@
 --%>
 
 <%@ page import="oscar.OscarProperties" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -68,9 +68,9 @@
 <html>
 <head>
     <title>
-        <bean:message key="oscarMDS.index.title"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.title"/>
     </title>
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <link rel="stylesheet" type="text/css" media="all"
           href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
     <link rel="stylesheet" type="text/css" media="all"
@@ -142,59 +142,54 @@
                                 <input type="hidden" name="favorites" value=""/>
                                 <input type="hidden" name="isListView" value=""/>
                                 <input id="listSwitcher" type="button" style="display:none;" class="smallButton"
-                                       value="<bean:message key="inboxmanager.document.listView"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.listView"/>"
                                        onClick="switchView();"/>
                                 <input id="readerSwitcher" type="button" class="smallButton"
-                                       value="<bean:message key="inboxmanager.document.readerView"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.readerView"/>"
                                        onClick="switchView();"/>
                                 <% if (demographicNo == null) { %>
                                 <input type="button" class="smallButton"
-                                       value="<bean:message key="oscarMDS.index.btnSearch"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnSearch"/>"
                                        onClick="window.location='${pageContext.servletContext.contextPath}/oscarMDS/Search.jsp?providerNo=<%= providerNo %>'"/>
                                 <% } %>
                                 <input type="button" class="smallButton"
-                                       value="<bean:message key="oscarMDS.index.btnLoadAll"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnLoadAll"/>"
                                        onClick="showAllInbox()"/>
                                 <input type="button" class="smallButton"
-                                       value="<bean:message key="oscarMDS.index.btnClose"/>" onClick="wrapUp()"/>
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnClose"/>" onClick="wrapUp()"/>
                             </td>
 
                             <td align="right" valign="top">
                                 <a href="javascript:parent.reportWindow('${pageContext.servletContext.contextPath}/oscarMDS/ForwardingRules.jsp?providerNo=<%= providerNo %>');"
                                    style="color: #FFFFFF;">Forwarding Rules</a>
                                 <a href="javascript:popupStart(800,1000,'${pageContext.servletContext.contextPath}/lab/CA/ALL/testUploader.jsp')"
-                                   style="color: #FFFFFF; "><bean:message key="admin.admin.hl7LabUpload"/></a>
+                                   style="color: #FFFFFF; "><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.hl7LabUpload"/></a>
                                 <% if (OscarProperties.getInstance().getBooleanProperty("legacy_document_upload_enabled", "true")) { %>
                                 <a href="javascript:popupStart(600,500,'${pageContext.servletContext.contextPath}/documentManager/html5AddDocuments.jsp')"
-                                   style="color: #FFFFFF; "><bean:message key="inboxmanager.document.uploadDoc"/></a>
+                                   style="color: #FFFFFF; "><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.uploadDoc"/></a>
                                 <% } else { %>
                                 <a href="javascript:popupStart(800,1000,'${pageContext.servletContext.contextPath}/documentManager/documentUploader.jsp')"
-                                   style="color: #FFFFFF; "><bean:message key="inboxmanager.document.uploadDoc"/></a>
+                                   style="color: #FFFFFF; "><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.uploadDoc"/></a>
 
                                 <%--    Soon:         	<a href="javascript:void(0)" style="color:white;" class="dialog-link" id="/documentManager/documentUploader.jsp" >
-                                                    <bean:message key="inboxmanager.document.uploadDoc" />
+                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.uploadDoc"/>
                                                 </a> --%>
                                 <% } %>
 
                                 <a href="javascript:popupStart(700,1100,'../documentManager/inboxManage.do?method=getDocumentsInQueues')"
-                                   style="color: #FFFFFF;"><bean:message key="inboxmanager.document.pendingDocs"/></a>
+                                   style="color: #FFFFFF;"><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.pendingDocs"/></a>
 
                                 <a href="javascript:popupStart(800,1200,'${pageContext.servletContext.contextPath}/documentManager/incomingDocs.jsp')"
-                                   style="color: #FFFFFF;"><bean:message key="inboxmanager.document.incomingDocs"/></a>
+                                   style="color: #FFFFFF;"><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.incomingDocs"/></a>
 
                                 <% if (!OscarProperties.getInstance().isBritishColumbiaBillingRegion()) { %>
                                 <a href="javascript:popupStart(800,1000, '${pageContext.servletContext.contextPath}/oscarMDS/CreateLab.jsp')"
-                                   style="color: #FFFFFF;"><bean:message key="global.createLab"/></a>
+                                   style="color: #FFFFFF;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.createLab"/></a>
                                 <a href="javascript:popupStart(800,1000, '${pageContext.servletContext.contextPath}/olis/Search.jsp')"
-                                   style="color: #FFFFFF;"><bean:message key="olis.olisSearch"/></a>
-                                <a href="javascript:popupPage(400, 1050,'<html:rewrite page="/hospitalReportManager/hospitalReportManager.jsp"/>')"
+                                   style="color: #FFFFFF;"><fmt:setBundle basename="oscarResources"/><fmt:message key="olis.olisSearch"/></a>
+                                <a href="javascript:popupPage(400, 1050,'${request.contextPath}/hospitalReportManager/hospitalReportManager.jsp')"
                                    style="color: #FFFFFF;">HRM Status/Upload</a>
                                 <% } %>
-
-                                <%--								<span class="HelpAboutLogout">--%>
-                                <%--									<oscar:help keywords="&Title=Inbox&portal_type%3Alist=Document" key="app.top1" style="color: #FFFFFF"/>--%>
-                                <%--                                	<a href="javascript:popupStart(300,400,'${pageContext.servletContext.contextPath}/oscarEncounter/About.jsp')" style="color: #FFFFFF;" ><bean:message key="global.about"/></a>--%>
-                                <%--								</span>--%>
                             </td>
                         </tr>
                     </table>
@@ -382,7 +377,7 @@
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/share/calendar/calendar.js"></script>
     <!-- language for the calendar -->
     <script type="text/javascript"
-            src="${pageContext.servletContext.contextPath}/share/calendar/lang/<bean:message key='global.javascript.calendar'/>"></script>
+            src="${pageContext.servletContext.contextPath}/share/calendar/lang/<fmt:setBundle basename='oscarResources'/><fmt:message key='global.javascript.calendar'/>"></script>
     <!-- the following script defines the Calendar.setup helper function, which makes
            adding a calendar a matter of 1 or 2 lines of code. -->
     <script type="text/javascript"

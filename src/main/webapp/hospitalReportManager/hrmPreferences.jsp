@@ -70,10 +70,10 @@
 %>
 
 <%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+<html>
     <head>
         <title>HRM Preferences</title>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -126,8 +126,7 @@
                 <div class="controls">
                     <a href="../<%=privateKey%>" id="pkeyLink">View Private Key</a>
                     <input type="button" class="btn" name="privateKey" value="Upload Private Key"
-                           onClick='popupPage(600,900,&quot;<html:rewrite
-                                   page="/hospitalReportManager/hrmKeyUploader.jsp"/>&quot;);return false;'/>
+                           onClick='popupPage(600,900,"<%=request.getContextPath() %>/hospitalReportManager/hrmKeyUploader.jsp");return false;'/>
                 </div>
             </div>
             <div class="control-group">
@@ -135,8 +134,7 @@
                 <div class="controls">
                     <a href="../<%=decryptionKey%>" id="dkeyLink">View Decryption Key</a>
                     <input type="button" class="btn" name="decryptionKey" value="Upload Decryption Key"
-                           onClick='popupPage(600,900,&quot;<html:rewrite
-                                   page="/hospitalReportManager/hrmKeyUploader.jsp"/>&quot;);return false;'/>
+                           onClick='popupPage(600,900,"<%=request.getContextPath() %>/hospitalReportManager/hrmKeyUploader.jsp");return false;'/>
                 </div>
             </div>
             <div class="control-group">
@@ -150,4 +148,4 @@
             </div>
             </table>
     </form>
-</html:html>
+</html>

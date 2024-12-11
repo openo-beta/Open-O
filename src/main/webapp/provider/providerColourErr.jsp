@@ -24,17 +24,17 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html lang="en">
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
 
-        <title><bean:message key="provider.editRxFax.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.title"/></title>
 
     </head>
 
@@ -42,15 +42,12 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="provider.setColour.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-                    key="provider.setColour.msgProviderColour"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setColour.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setColour.msgProviderColour"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
-            <td style="color: red" class="MainTableRightColumn"><bean:message
-                    key="provider.setColour.msgError"/></td>
+            <td style="color: red" class="MainTableRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setColour.msgError"/></td>
         </tr>
         <tr>
             <td class="MainTableBottomRowLeftColumn"></td>
@@ -58,4 +55,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

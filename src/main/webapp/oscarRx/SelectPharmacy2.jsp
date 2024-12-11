@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page import="oscar.oscarRx.data.*,java.util.*" %>
@@ -46,10 +46,10 @@
     }
 %>
 <!DOCTYPE HTML>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="SelectPharmacy.title"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <jsp:include page="../images/spinner.jsp" flush="true"/>
 
         <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"
@@ -67,26 +67,22 @@
                 src="<%= request.getContextPath() %>/share/lightwindow/javascript/lightwindow.js"></script>
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/share/lightwindow/css/lightwindow.css">
-        <%
-            // Check if RxSessionBean is missing in the session
-            if (session.getAttribute("RxSessionBean") == null) {
-                response.sendRedirect("error.html");
-            } else {
-                // Check if RxSessionBean is present but not valid
-                oscar.oscarRx.pageUtil.RxSessionBean rxBean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
-                if (!rxBean.isValid()) {
+
+
+        <c:if test="${empty RxSessionBean}">
+            <% response.sendRedirect("error.html"); %>
+        </c:if>
+        <c:if test="${not empty sessionScope.RxSessionBean}">
+            <%
+                // Directly access the RxSessionBean from the session
+                oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+                if (bean != null && !bean.isValid()) {
                     response.sendRedirect("error.html");
+                    return; // Ensure no further JSP processing
                 }
-            }
-        %>
-        <%
-            oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
-        %>
-
-        <bean:define id="patient" type="oscar.oscarRx.data.RxPatientData.Patient" name="Patient"/>
-
-            <%--		<link rel="stylesheet" type="text/css" href="styles.css">--%>
-
+                oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+            %>
+        </c:if>
         <script type="text/javascript">
             ShowSpin(true);
             (function ($) {
@@ -475,13 +471,11 @@
             <table id="AutoNumber1">
                 <tr>
                     <th class="DivContentTitle">
-                        <h2><bean:message key="SelectPharmacy.title"/>
+                        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.title"/>
                             <span style="font-size: small;">
-						<bean:message key="SearchDrug.nameText"/>
-						<jsp:getProperty name="patient" property="surname"/>
-						,
-						<jsp:getProperty name="patient" property="firstName"/>
-							</span>
+						<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/>
+                        ${patient.surname}, ${patient.firstName}
+                    </span>
                             <input type=button class="btn btn-default pull-right" onclick="returnToRx();"
                                    value="Return to RX"/>
                         </h2>
@@ -550,12 +544,12 @@
                                     <table id="pharmacyList" class="table-condensed table-striped"
                                            style="margin-top:5px;width:100%">
                                         <tr class="sticky-heading">
-                                            <th><bean:message key="SelectPharmacy.table.pharmacyName"/></th>
-                                            <th><bean:message key="SelectPharmacy.table.address"/></th>
-                                            <th><bean:message key="SelectPharmacy.table.city"/></th>
-                                            <th><bean:message key="SelectPharmacy.table.postalCode"/></th>
-                                            <th><bean:message key="SelectPharmacy.table.phone"/></th>
-                                            <th><bean:message key="SelectPharmacy.table.fax"/></th>
+                                            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.pharmacyName"/></th>
+                                            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.address"/></th>
+                                            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.city"/></th>
+                                            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.postalCode"/></th>
+                                            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.phone"/></th>
+                                            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.fax"/></th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -584,11 +578,9 @@
                                                                rights="w" reverse="false">
 
                                                 <td onclick="event.stopPropagation()"><a href="javascript:void(0)"
-                                                                                         onclick="editPharmacy(<%=ph.getId()%>);"><bean:message
-                                                        key="SelectPharmacy.editLink"/></a></td>
+                                                                                         onclick="editPharmacy(<%=ph.getId()%>);"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
                                                 <td onclick="event.stopPropagation()"><a href="javascript:void(0)"
-                                                                                         class="deletePharm"><bean:message
-                                                        key="SelectPharmacy.deleteLink"/></a></td>
+                                                                                         class="deletePharm"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.deleteLink"/></a></td>
 
                                             </security:oscarSec>
                                         </tr>
@@ -605,4 +597,4 @@
     </div>
     </body>
 
-</html:html>
+</html>

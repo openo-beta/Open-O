@@ -67,8 +67,8 @@
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%!
@@ -89,7 +89,7 @@
 
 %>
 
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -112,7 +112,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="demographic.demographicaddarecord.title"/></font></th>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.title"/></font></th>
             </tr>
         </table>
         <form method="post" name="addappt">
@@ -255,9 +255,8 @@
                     List<Demographic> demographics = demographicDao.searchByHealthCard(paramNameHin);
                     if (demographics.size() > 0) {
             %>
-            ***<font color='red'><bean:message
-                key="demographic.demographicaddarecord.msgDuplicatedHIN"/></font>***<br><br>
-            <a href=# onClick="history.go(-1);return false;"><b>&lt;-<bean:message key="global.btnBack"/></b></a>
+            ***<font color='red'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.msgDuplicatedHIN"/></font>***<br><br>
+            <a href=# onClick="history.go(-1);return false;"><b>&lt;-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/></b></a>
             <%
                         return;
                     }
@@ -268,8 +267,8 @@
                     if (myoscarDemographic != null) {
 
             %>
-            ***<font color='red'><bean:message key="demographic.demographicaddarecord.msgDuplicatedPHR"/></font>
-            ***<br><br><a href=# onClick="history.go(-1);return false;"><b>&lt;-<bean:message key="global.btnBack"/></b></a>
+            ***<font color='red'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.msgDuplicatedPHR"/></font>
+            ***<br><br><a href=# onClick="history.go(-1);return false;"><b>&lt;-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/></b></a>
             <%
                         return;
                     }
@@ -434,15 +433,13 @@
 
 
         <p>
-        <h2><bean:message key="demographic.demographicaddarecord.msgSuccessful"/></h2>
+        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.msgSuccessful"/></h2>
 
-        <a href="demographiccontrol.jsp?demographic_no=<%=dem%>&displaymode=edit&dboperation=search_detail"><bean:message
-                key="demographic.demographicaddarecord.goToRecord"/></a>
+        <a href="demographiccontrol.jsp?demographic_no=<%=dem%>&displaymode=edit&dboperation=search_detail"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.goToRecord"/></a>
 
         <caisi:isModuleLoad moduleName="caisi">
             <br/>
-            <a href="../PMmodule/ClientManager.do?id=<%=dem%>"><bean:message
-                    key="demographic.demographicaddarecord.goToCaisiRecord"/> (<a href="#"
+            <a href="../PMmodule/ClientManager.do?id=<%=dem%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.goToCaisiRecord"/> (<a href="#"
                                                                                   onclick="popup(700,1027,'demographiccontrol.jsp?demographic_no=<%=dem%>&displaymode=edit&dboperation=search_detail')">New
                 Window</a>)</a>
         </caisi:isModuleLoad>
@@ -450,8 +447,7 @@
 
         <caisi:isModuleLoad moduleName="caisi">
             <br/>
-            <a href="../PMmodule/ClientManager.do?id=<%=dem%>"><bean:message
-                    key="demographic.demographicaddarecord.goToCaisiRecord"/></a>
+            <a href="../PMmodule/ClientManager.do?id=<%=dem%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.goToCaisiRecord"/></a>
         </caisi:isModuleLoad>
 
 
@@ -459,4 +455,4 @@
         <%@ include file="footer.jsp" %>
     </div>
     </body>
-</html:html>
+</html>

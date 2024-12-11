@@ -39,9 +39,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -137,7 +137,7 @@
     pageContext.setAttribute("clinicData", new ClinicData());
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <title>Billing Settings</title>
         <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
@@ -260,4 +260,4 @@
             ${ success ? "<span style=\'color:green;\'>Settings Saved</span>" : "<span style=\'color:red;\'></span>" }
     </form>
     </body>
-</html:html>
+</html>

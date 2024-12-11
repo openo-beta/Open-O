@@ -48,8 +48,8 @@
 %>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -67,20 +67,20 @@
     <link rel="stylesheet" href="decisionSupport.css" type="text/css"></link>
 </head>
 <body>
-<div style="font-size: 16px; font-weight: bold;"><bean:message key="oscarencounter.guidelinelist.youcurrently"/></div>
+<div style="font-size: 16px; font-weight: bold;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.youcurrently"/></div>
 <c:if test="${not empty demographic_no}">
-    <div style="font-size: 10px;"><bean:message key="oscarencounter.guidelinelist.demographicno"/> <bean:write name="demographic_no"/></div>
+    <div style="font-size: 10px;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.demographicno"/> <c:out value="${demographic_no}"/></div>
 </c:if>
 <br>
 <table class="dsTable">
     <tr>
         <th>Version</th>
-        <th><bean:message key="oscarencounter.guidelinelist.title"/></th>
-        <th><bean:message key="oscarencounter.guidelinelist.author"/></th>
-        <th><bean:message key="oscarencounter.guidelinelist.dateimported"/></th>
-        <th><bean:message key="oscarrx.showallergies.status"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.title"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.author"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.dateimported"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarrx.showallergies.status"/></th>
         <c:if test="${not empty demographic_no}">
-            <th><bean:message key="oscarencounter.guidelinelist.evaluated"/></th>
+            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.evaluated"/></th>
         </c:if>
 
     </tr>

@@ -26,19 +26,19 @@
 --%>
 
 <%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarBilling.ca.bc.Teleplan.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <% TeleplanUserPassDAO dao = new TeleplanUserPassDAO();
     String superUser = (String) session.getAttribute("user");
 %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
 
     <head>
-        <title><bean:message key="admin.admin.manageTeleplan"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageTeleplan"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
         <style type="text/css">
@@ -50,7 +50,7 @@
     </head>
 
     <body>
-    <h3><bean:message key="admin.admin.manageTeleplan"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageTeleplan"/></h3>
 
     <div class="container-fluid well well-small">
 
@@ -74,76 +74,76 @@
 
         <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=superUser%>">
             <h4>Manually Set Sequence #</h4>
-            <html:form action="/billing/CA/BC/ManageTeleplan">
+            <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
                 <input type="hidden" name="method" value="setSequenceNumber"/>
                 Sequence #: <input type="text" name="num"/>
                 <input class="btn" type="submit" value="save"/>
-            </html:form>
+            </form>
         </oscar:oscarPropertiesCheck>
 
         <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=superUser%>">
             <h4>Set Teleplan UserName Password</h4>
-            <html:form action="/billing/CA/BC/ManageTeleplan">
+            <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
                 <input type="hidden" name="method" value="setUserName"/>
                 Username: <input type="text" name="user"/>
                 Password: <input type="password" name="pass"/>
                 <input class="btn" type="submit" value="save"/>
-            </html:form>
+            </form>
         </oscar:oscarPropertiesCheck>
 
         <% if (dao.hasUsernamePassword()) { %>
 
         <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=superUser%>">
             <h4>Get Teleplan Sequence #</h4>
-            <html:form action="/billing/CA/BC/ManageTeleplan">
+            <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
                 <input type="hidden" name="method" value="getSequenceNumber"/>
                 <input class="btn" type="submit" value="Get Teleplan Sequence #"/>
-            </html:form>
+            </form>
         </oscar:oscarPropertiesCheck>
 
         <h4>Update Billing Codes</h4>
-        <html:form action="/billing/CA/BC/ManageTeleplan">
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
             <input type="hidden" name="method" value="updateBillingCodes"/>
             <input class="btn" type="submit" value="update"/>
-        </html:form>
+        </form>
 
         <h4>Update Explanatory Codes</h4>
-        <html:form action="/billing/CA/BC/ManageTeleplan">
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
             <input type="hidden" name="method" value="updateExplanatoryCodesList"/>
             <input class="btn" type="submit" value="update"/>
-        </html:form>
+        </form>
 
         <h4>Update MSP ICD9 Codes</h4>
-        <html:form action="/billing/CA/BC/ManageTeleplan">
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
             <input type="hidden" name="method" value="updateteleplanICDCodesList"/>
             <input class="btn" type="submit" value="update"/>
-        </html:form>
+        </form>
 
         <h4>Change Teleplan Password</h4>
-        <html:form action="/billing/CA/BC/ManageTeleplan">
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
             <input type="hidden" name="method" value="changePass"/>
             Current Password: <input type="password" name="oldpass"/>
             <br>
             New Password: <input type="password" name="newpass"/>
             Confirm Password: <input type="password" name="confpass"/>
             <input class="btn" type="submit" value="save"/>
-        </html:form>
+        </form>
 
         <h4>Set Teleplan Password</h4>
-        <html:form action="/billing/CA/BC/ManageTeleplan">
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
             <input type="hidden" name="method" value="setPass"/>
             New Password: <input type="password" name="newpass"/>
             <input class="btn" type="submit" value="save"/>
-        </html:form>
+        </form>
 
         <h4>Get Remittance</h4>
-        <html:form action="/billing/CA/BC/ManageTeleplan">
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
             <input type="hidden" name="method" value="remit"/>
             <input class="btn" type="submit" value="Get Remittance"/>
-        </html:form>
+        </form>
         <%}%>
 
         </form>
     </div>
     </body>
-</html:html>
+</html>

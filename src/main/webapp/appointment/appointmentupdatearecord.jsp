@@ -42,8 +42,8 @@
 
 <%@ page import="java.sql.*, java.util.*, oscar.*, oscar.util.*, org.oscarehr.common.OtherIdManager" %>
 <%@ page import="org.oscarehr.event.EventService" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
@@ -54,7 +54,7 @@
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
     String changedStatus = null;
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     </head>
@@ -64,7 +64,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="90%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="appointment.appointmentupdatearecord.msgMainLabel"/></font></th>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgMainLabel"/></font></th>
             </tr>
         </table>
         <%
@@ -125,8 +125,7 @@
             if (rowsAffected == 1) {
         %>
         <p>
-        <h1><bean:message
-                key="appointment.appointmentupdatearecord.msgUpdateSuccess"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgUpdateSuccess"/></h1>
 
         <script LANGUAGE="JavaScript">
             <%
@@ -150,8 +149,7 @@
         } else {
         %>
         <p>
-        <h1><bean:message
-                key="appointment.appointmentupdatearecord.msgUpdateFailure"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgUpdateFailure"/></h1>
 
         <%
             }
@@ -159,8 +157,8 @@
         <p></p>
         <hr width="90%"/>
         <form>
-            <input type="button" value="<bean:message key="global.btnClose"/>" onClick="closeit()">
+            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="closeit()">
         </form>
     </center>
     </body>
-</html:html>
+</html>

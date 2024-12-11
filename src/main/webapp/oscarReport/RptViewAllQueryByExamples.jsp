@@ -40,20 +40,18 @@
 %>
 
 <%@ page import="java.util.*,oscar.oscarReport.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarReport.RptByExample.MsgQueryByExamples"/> - <bean:message
-                key="oscarReport.RptByExample.MsgAllQueriesExecuted"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/> - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgAllQueriesExecuted"/></title>
 
         <script type="text/javascript">
             function set(text) {
@@ -67,20 +65,18 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarReport.CDMReport.msgReport"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgReport"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
-                    <html:form action="/oscarReport/RptViewAllQueryByExamples.do">
+                    <form action="${pageContext.request.contextPath}/oscarReport/RptViewAllQueryByExamples.do" method="post">
                         <tr>
-                            <td><bean:message
-                                    key="oscarReport.RptByExample.MsgAllQueriesExecutedFrom"/>: <html:text
-                                    property="startDate" size="8"/> <bean:message
-                                    key="oscarReport.RptByExample.MsgTo"/> <html:text
-                                    property="endDate" size="8"/> <input type="submit"
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgAllQueriesExecutedFrom"/>:
+                                <input type="text" name="startDate" size="8"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgTo"/>
+                                <input type="text" name="endDate" size="8"/> <input type="submit"
                                                                          value="Refresh"/></td>
                         </tr>
-                    </html:form>
+                    </form>
                 </table>
             </td>
         </tr>
@@ -89,16 +85,13 @@
             <td class="MainTableRightColumn">
                 <table>
                     <tr class="Header">
-                        <td align="left" width="140"><bean:message
-                                key="oscarReport.RptByExample.MsgDate"/></td>
-                        <td align="left" width="400"><bean:message
-                                key="oscarReport.RptByExample.MsgQuery"/></td>
-                        <td align="left" width="100"><bean:message
-                                key="oscarReport.RptByExample.MsgProvider"/></td>
+                        <td align="left" width="140"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgDate"/></td>
+                        <td align="left" width="400"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQuery"/></td>
+                        <td align="left" width="100"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgProvider"/></td>
                         <td></td>
                     </tr>
 
-                    <html:form action="/oscarReport/RptByExamplesFavorite.do">
+                    <form action="${pageContext.request.contextPath}/oscarReport/RptByExamplesFavorite.do" method="post">
                         <input type="hidden" name="newQuery" value="error"/>
                         <c:forEach var="queryInfo" items="${allQueries.queryVector}">
                             <tr class="data">
@@ -112,7 +105,7 @@
                                 </td>
                             </tr>
                         </c:forEach>
-                    </html:form>
+                    </form>
                 </table>
             </td>
         </tr>
@@ -123,4 +116,4 @@
     </table>
 
     </body>
-</html:html>
+</html>

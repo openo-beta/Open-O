@@ -24,12 +24,7 @@
  */
 package oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-
-public class EctConAddInstitutionForm extends ActionForm {
+public class EctConAddInstitutionForm {
     private String id;
 
     private String name;
@@ -148,29 +143,4 @@ public class EctConAddInstitutionForm extends ActionForm {
     public void setAnnotation(String annotation) {
         this.annotation = annotation;
     }
-
-
-    @Override
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-        resetForm();
-    }
-
-
-    public void resetForm() {
-        name = null;
-
-        address = null;
-        phone = null;
-        fax = null;
-        website = null;
-        email = null;
-        city = null;
-        province = null;
-        country = null;
-        postal = null;
-
-        whichType = 0;
-    }
-
-
 }

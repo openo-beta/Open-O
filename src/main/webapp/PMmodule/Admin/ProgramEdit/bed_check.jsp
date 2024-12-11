@@ -24,8 +24,8 @@
 --%>
 <%@ include file="/taglibs.jsp" %>
 
-<html:hidden property="addTime"/>
-<html:hidden property="removeId"/>
+<input type="hidden" name="addTime" id="addTime"/>
+<input type="hidden" name="removeId" id="removeId"/>
 
 <script type="text/javascript">
     function addBedCheckTime(id) {

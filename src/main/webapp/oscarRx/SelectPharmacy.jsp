@@ -23,11 +23,9 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="oscar.oscarRx.data.*,java.util.*" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -44,31 +42,26 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="SelectPharmacy.title"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
             <c:redirect url="error.html"/>
         </c:if>
-        <c:if test="${not empty RxSessionBean}">
-            <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                         name="RxSessionBean" scope="session"/>
-            <c:if test="${bean.valid == false}">
-                <c:redirect url="error.html"/>
-            </c:if>
+        <c:if test="${not empty sessionScope.RxSessionBean}">
+    <%
+        // Directly access the RxSessionBean from the session
+        oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        if (bean != null && !bean.isValid()) {
+            response.sendRedirect("error.html");
+            return; // Ensure no further JSP processing
+        }
+        oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+    %>
         </c:if>
-
-        <%
-            oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
-
-        %>
-
-        <bean:define id="patient"
-                     type="oscar.oscarRx.data.RxPatientData.Patient" name="Patient"/>
-
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
@@ -86,29 +79,24 @@
                        height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <bean:message
-                                    key="SearchDrug.title"/></a> > <bean:message key="SelectPharmacy.title"/></div>
+                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> > <fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.title"/></div>
                         </td>
                     </tr>
                     <!----Start new rows here-->
                     <tr>
                         <td>
-                            <div class="DivContentTitle"><b><bean:message
-                                    key="SearchDrug.nameText"/></b>
-                                <jsp:getProperty name="patient"
-                                                 property="surname"/>
+                            <div class="DivContentTitle"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
+                                ${patient.surname}
                                 ,
-                                <jsp:getProperty name="patient"
-                                                 property="firstName"/>
+                                ${patient.firstName}
                             </div>
                             <br/>
-                            &nbsp; <bean:message key="SelectPharmacy.instructions"/></td>
+                            &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.instructions"/></td>
                     </tr>
                     <tr>
                         <td>
                             <div class="DivContentSectionHead"><a
-                                    href="ManagePharmacy.jsp?type=Add"><bean:message
-                                    key="SelectPharmacy.addLink"/></a></div>
+                                    href="ManagePharmacy.jsp?type=Add"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.addLink"/></a></div>
                         </td>
                     </tr>
                     <tr>
@@ -120,11 +108,11 @@
                             <div style=" width:860px; height:460px; overflow:auto;">
                                 <table>
                                     <tr>
-                                        <td><bean:message key="SelectPharmacy.table.pharmacyName"/></td>
-                                        <td><bean:message key="SelectPharmacy.table.address"/></td>
-                                        <td><bean:message key="SelectPharmacy.table.city"/></td>
-                                        <td><bean:message key="SelectPharmacy.table.phone"/></td>
-                                        <td><bean:message key="SelectPharmacy.table.fax"/></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.pharmacyName"/></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.address"/></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.city"/></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.phone"/></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.table.fax"/></td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                     </tr>
@@ -133,7 +121,7 @@
                                     %>
                                     <tr>
                                         <td><a
-                                                href="LinkPharmacy.do?ID=<%=ph.getId()%>&DemoId=<jsp:getProperty name="patient" property="demographicNo"/>"><%=ph.getName()%>
+                                                href="LinkPharmacy.do?ID=<%=ph.getId()%>&DemoId=<%=patient.getDemographicNo()%>"><%=ph.getName()%>
                                         </a></td>
                                         <td><%=ph.getAddress()%>
                                         </td>
@@ -143,10 +131,8 @@
                                         </td>
                                         <td><%=ph.getFax()%>
                                         </td>
-                                        <td><a href="ManagePharmacy.jsp?type=Edit&ID=<%=ph.getId()%>"><bean:message
-                                                key="SelectPharmacy.editLink"/></a></td>
-                                        <td><a href="ManagePharmacy.jsp?type=Delete&ID=<%=ph.getId()%>"><bean:message
-                                                key="SelectPharmacy.deleteLink"/></a></td>
+                                        <td><a href="ManagePharmacy.jsp?type=Edit&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
+                                        <td><a href="ManagePharmacy.jsp?type=Delete&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.deleteLink"/></a></td>
                                     </tr>
                                     <% } %>
                                 </table>
@@ -187,4 +173,4 @@
 
     </body>
 
-</html:html>
+</html>

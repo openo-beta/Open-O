@@ -43,8 +43,8 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@page
         import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.data.*,oscar.oscarPrevention.pageUtil.*,java.net.*,oscar.eform.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <jsp:useBean id="providerBean" class="java.util.Properties"
              scope="session"/>
@@ -57,11 +57,11 @@
 
 %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>manage Letters</title>
         <!-- i18n -->
 
@@ -73,7 +73,7 @@
 
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
         <script type="text/javascript" src="../share/javascript/prototype.js"></script>
 
@@ -184,24 +184,22 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="letter report" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td style="text-align: right"><a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn" valign="top">&nbsp;</td>
-            <td valign="top" class="MainTableRightColumn"><html:form
-                    action="/report/ManageLetters" enctype="multipart/form-data">
+            <td valign="top" class="MainTableRightColumn"><form method="post"
+                    action="${pageContext.request.contextPath}/report/ManageLetters.do" enctype="multipart/form-data">
                 <input type="hidden" name="goto"
                        value="<%=request.getParameter("goto")%>"/>
                 <div>Select Letter: <input type="file" name="reportFile"
                                            value="upload"/>
-                    <span title="<bean:message key="global.uploadWarningBody"/>"
+                    <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                           style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                             border="0" src="../images/icon_alertsml.gif"/></span></span>
 
@@ -212,7 +210,7 @@
                 <input type="submit"/>
 
 
-            </html:form> <%
+            </form> <%
                 ManageLetters mLetter = new ManageLetters();
                 ArrayList list = mLetter.getActiveReportList();
 
@@ -252,7 +250,7 @@
     </script>
 
     </body>
-</html:html>
+</html>
 
 <%!
     String getUrlParamList(ArrayList list, String paramName) {

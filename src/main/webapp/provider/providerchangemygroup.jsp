@@ -39,13 +39,13 @@
     MyGroupDao dao = SpringUtils.getBean(MyGroupDao.class);
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="provider.providerchangemygroup.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.title"/></title>
         <script language="javascript">
             <!--
             start
@@ -70,16 +70,14 @@
     <FORM NAME="UPDATEPRE" METHOD="post" ACTION="providercontrol.jsp">
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
-                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><bean:message
-                        key="provider.providerchangemygroup.msgTitle"/></font></th>
+                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.msgTitle"/></font></th>
             </tr>
         </table>
 
         <center>
             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                    <td><bean:message
-                            key="provider.providerchangemygroup.msgChangeGroup"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.msgChangeGroup"/>:
                     </TD>
                     <TD align="right"><select name="mygroup_no">
                         <%
@@ -94,9 +92,9 @@
                             }
                         %>
                     </select> &nbsp;<INPUT TYPE="submit"
-                                           VALUE="<bean:message key="provider.providerchangemygroup.btnChange"/>">
+                                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.btnChange"/>">
                         <INPUT TYPE="RESET"
-                               VALUE="<bean:message key="provider.providerchangemygroup.btnCancel"/>"
+                               VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.btnCancel"/>"
                                onClick="window.close();"></td>
                 </tr>
             </TABLE>
@@ -107,10 +105,8 @@
                         <table BORDER="0" CELLPADDING="0" CELLSPACING="1" WIDTH="100%"
                                BGCOLOR="#C0C0C0">
                             <tr BGCOLOR="#C4D9E7">
-                                <td ALIGN="center"><font face="arial"> <bean:message
-                                        key="provider.providerchangemygroup.msgGroup"/></font></td>
-                                <td ALIGN="center"><font face="arial"> <bean:message
-                                        key="provider.providerchangemygroup.msgName"/></font></td>
+                                <td ALIGN="center"><font face="arial"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.msgGroup"/></font></td>
+                                <td ALIGN="center"><font face="arial"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.msgName"/></font></td>
                             </tr>
                             <%
                                 boolean bNewNo = false;
@@ -161,7 +157,7 @@
         <table width="100%" BGCOLOR="#486ebd">
             <tr>
                 <TD align="center"><INPUT TYPE="button"
-                                          VALUE="<bean:message key="provider.providerchangemygroup.btnCancel"/>"
+                                          VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangemygroup.btnCancel"/>"
                                           onClick="window.close();"></TD>
             </tr>
         </TABLE>
@@ -171,4 +167,4 @@
 
 
     </body>
-</html:html>
+</html>

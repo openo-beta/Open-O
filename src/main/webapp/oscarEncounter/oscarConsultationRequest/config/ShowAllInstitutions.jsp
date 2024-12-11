@@ -41,27 +41,38 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.InstitutionDao" %>
 <%@page import="org.oscarehr.common.model.Institution" %>
 <%
     InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
 %>
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Show All Institutions</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
 
     <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
     <body class="BodyStyle" vlink="#0000FF">
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
@@ -91,7 +102,7 @@
                         <td>
 
                             <table>
-                                <html:form action="/oscarEncounter/AddService">
+                                <form action="${pageContext.request.contextPath}/oscarEncounter/AddService.do" method="post">
                                     <tr>
                                         <td>Institutions</td>
                                     </tr>
@@ -114,7 +125,7 @@
                                             </table>
                                         </td>
                                     </tr>
-                                </html:form>
+                                </form>
                             </table>
                         </td>
                     </tr>
@@ -132,4 +143,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

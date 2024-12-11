@@ -53,8 +53,8 @@
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:useBean id="patientBean" class="oscar.AppointmentMainBean" scope="page"/>
 <jsp:useBean id="myGroupBean" class="java.util.Vector" scope="page"/>
@@ -105,10 +105,10 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="report.reportpatientchartlist.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.title"/></title>
         <link rel="stylesheet" href="../web.css">
 
         <script language="JavaScript">
@@ -143,12 +143,11 @@
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr bgcolor="#CCCCFF">
-            <th align=CENTER NOWRAP><font face="Helvetica"><bean:message
-                    key="report.reportpatientchartlist.msgTitle"/></font></th>
+            <th align=CENTER NOWRAP><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgTitle"/></font></th>
             <th width="10%" nowrap>
-                <input type="button" name="Button" value="<bean:message key="global.btnPrint"/>"
+                <input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                        onClick="window.print()">
-                <input type="button" name="Button" value="<bean:message key="global.btnExit" />"
+                <input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>"
                        onClick="window.close()">
             </th>
         </tr>
@@ -194,14 +193,11 @@
            cellpadding="0">
         <tr bgcolor="#CCCCFF" align="center">
             <TH width="40%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=last_name"><bean:message
-                    key="report.reportpatientchartlist.msgLastName"/></a></b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=last_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgLastName"/></a></b></TH>
             <TH width="40%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=first_name"><bean:message
-                    key="report.reportpatientchartlist.msgFirstName"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=first_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgFirstName"/></a> </b></TH>
             <TH width="20%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=chart_no"><bean:message
-                    key="report.reportpatientchartlist.msgChart"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=chart_no"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgChart"/></a> </b></TH>
         </tr>
         <%
             }
@@ -221,4 +217,4 @@
 
     </table>
     </body>
-</html:html>
+</html>

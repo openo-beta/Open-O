@@ -41,7 +41,7 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html ng-app="k2aReportByTemplate">
 
@@ -81,19 +81,19 @@
         <div>
             <h5>{{message}} {{K2A_URL}}</h5>
         </div>
-        <h4><bean:message key="oscarReport.oscarReportByTemplate.msgDownloadFromK2A"/></h4>
-        <input type="button" value="<bean:message key="oscarReport.oscarReportByTemplate.msgK2ABrowse" />"
+        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgDownloadFromK2A"/></h4>
+        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgK2ABrowse"/>"
                class="btn btn-primary upload" ng-click="openK2AUrl()"/>
-        <input type="button" value="<bean:message key="oscarReport.oscarReportByTemplate.msgRefresh" />"
+        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgRefresh"/>"
                class="btn btn-primary upload" onclick="location.reload();"/>
         <br/>
         <table class="table table-condensed table-striped" id="k2aReportTbl" datatable="ng" dt-options="dtOptions">
             <thead>
             <tr>
                 <th>&nbsp;</th>
-                <th><bean:message key="oscarReport.oscarReportByTemplate.msgName"/></th>
-                <th><bean:message key="oscarReport.oscarReportByTemplate.msgAuthor"/></th>
-                <th><bean:message key="oscarReport.oscarReportByTemplate.msgCreated"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgName"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgAuthor"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgCreated"/></th>
             </tr>
             </thead>
 
@@ -101,7 +101,7 @@
             <tr ng-repeat-start="k2aReport in k2aReports">
                 <td valign="middle">
                     <button ng-if="!k2aReport.postVersions" ng-click="saveK2AReport(k2aReport.id)"
-                            title="<bean:message key="oscarReport.oscarReportByTemplate.msgDownload"/>"><i
+                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgDownload"/>"><i
                             class="icon-download-alt"></i></button>
                 </td>
                 <td>{{k2aReport.name}} <a ng-if="k2aReport.postVersions" data-toggle="collapse"
@@ -116,15 +116,15 @@
                             <thead>
                             <tr>
                                 <th>&nbsp;</th>
-                                <th><bean:message key="oscarReport.oscarReportByTemplate.msgName"/></th>
-                                <th><bean:message key="oscarReport.oscarReportByTemplate.msgAuthor"/></th>
-                                <th><bean:message key="oscarReport.oscarReportByTemplate.msgUpdated"/></th>
+                                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgName"/></th>
+                                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgAuthor"/></th>
+                                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgUpdated"/></th>
                             </tr>
                             </thead>
                             <tr ng-repeat="k2aReportVersion in k2aReport.postVersions">
                                 <td valign="middle">
                                     <button ng-click="saveK2AReport(k2aReportVersion.id)"
-                                            title="<bean:message key="oscarReport.oscarReportByTemplate.msgDownload"/>">
+                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportByTemplate.msgDownload"/>">
                                         <i class="icon-download-alt"></i></button>
                                 </td>
                                 <td>{{k2aReportVersion.name}}</td>

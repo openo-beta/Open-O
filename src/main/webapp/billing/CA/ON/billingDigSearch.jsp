@@ -40,11 +40,11 @@
 
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
-        <title><bean:message key="billing.billingDigSearch.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.title"/></title>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"> <!-- Bootstrap 2.3.1 -->
         <script>
@@ -71,9 +71,7 @@
     <body onLoad="setfocus()">
     <table style="width:100%">
         <tr>
-            <th style="text-align:center; background-color:silver;"><bean:message
-                    key="billing.billingDigSearch.msgDiagnostic"/><bean:message
-                    key="billing.billingDigSearch.msgMaxSelections"/></th>
+            <th style="text-align:center; background-color:silver;"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgDiagnostic"/><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgMaxSelections"/></th>
         </tr>
     </table>
     <% String coderange = request.getParameter("coderange");
@@ -94,9 +92,8 @@
         <input type="hidden" name="name2"
                value="<%=request.getParameter("name2")%>"/>
         <%}%>
-        <p><b><bean:message
-                key="billing.billingDigSearch.msgRefine"/></b><br>
-            <bean:message key="billing.billingDigSearch.msgCodeRange"/>: <select
+        <p><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgRefine"/></b><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgCodeRange"/>: <select
                     name="coderange">
                 <option value="0" selected>000-099</option>
                 <option value="1">100-199</option>
@@ -108,14 +105,14 @@
                 <option value="7">700-799</option>
                 <option value="8">800-899</option>
                 <option value="9">900-999</option>
-            </select> <bean:message key="billing.billingDigSearch.msgOR"/> <br/>
-            <bean:message key="billing.billingDigSearch.msgDescription"/>: <input
+            </select> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgOR"/> <br/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgDescription"/>: <input
                     type="text" name="codedesc" value=""> <input type="submit" class="btn"
                                                                  name="search1"
-                                                                 value="<bean:message key="billing.billingDigSearch.btnSearch"/>"/>
+                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnSearch"/>"/>
         </p>
         <input type="hidden" name="search"
-               value="<bean:message key="billing.billingDigSearch.btnSearch"/>"/>
+               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnSearch"/>"/>
     </form>
 
     <form name="diagcode" id="diagcode" method="post"
@@ -123,9 +120,8 @@
         <table style="width:800px; margin:auto" class="table-striped table-condensed">
             <thead>
             <tr>
-                <th style="width:12%"><b><bean:message key="billing.billingDigSearch.formCode"/></b></th>
-                <th style="width:88%"><b><bean:message
-                        key="billing.billingDigSearch.formDescription"/></b></th>
+                <th style="width:12%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.formCode"/></b></th>
+                <th style="width:88%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.formDescription"/></b></th>
             </tr>
             </thead>
             <tbody>
@@ -215,7 +211,7 @@
                                              name="<%=Dcode%>"
                                              value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
                                                                                  name="update"
-                                                                                 value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
+                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
                 </td>
             </tr>
             <%
@@ -243,7 +239,7 @@
                                              name="<%=Dcode%>"
                                              value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
                                                                                  name="update"
-                                                                                 value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
+                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
                 </td>
             </tr>
             <%
@@ -270,7 +266,7 @@
                                              name="<%=Dcode2%>"
                                              value="<%=DcodeDesc2%>">&nbsp;<input type="submit" class="btn"
                                                                                   name="update"
-                                                                                  value="<bean:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode2%>">
+                                                                                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode2%>">
                 </td>
             </tr>
             <%
@@ -280,8 +276,7 @@
 
             <% if (intCount == 0) { %>
             <tr>
-                <td colspan="2"><bean:message
-                        key="billing.billingDigSearch.msgNoMatch"/>. <%// =i%></td>
+                <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgNoMatch"/>. <%// =i%></td>
 
             </tr>
             <% }%>
@@ -301,4 +296,4 @@
     <p>&nbsp;</p>
     <h3>&nbsp;</h3>
     </body>
-</html:html>
+</html>

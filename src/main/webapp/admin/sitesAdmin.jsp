@@ -38,7 +38,7 @@
 %>
 
 <%@page import="org.oscarehr.common.model.Site" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Clinic</title>
@@ -49,7 +49,7 @@
                 src="../share/javascript/prototype.js"></script>
         <script type="text/javascript" language="JavaScript"
                 src="../share/javascript/Oscar.js"></script>
-        <link href="<html:rewrite page='/css/displaytag.css'/>" rel="stylesheet"></link>
+        <link href="${request.contextPath}/css/displaytag.css" rel="stylesheet"></link>
     </head>
 
     <body vlink="#0000FF" class="BodyStyle">
@@ -106,4 +106,4 @@
         </tr>
     </table>
 
-</html:html>
+</html>

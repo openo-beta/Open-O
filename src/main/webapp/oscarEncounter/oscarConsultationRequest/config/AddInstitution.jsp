@@ -26,9 +26,9 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -46,7 +46,7 @@
 
 <%@page import="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConAddInstitutionForm" %>
 
-<html:html lang="en">
+<html>
 
     <%
         ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
@@ -63,7 +63,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><%=transactionType%>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
     <script language="javascript">
@@ -75,7 +75,18 @@
     <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
     <body class="BodyStyle" vlink="#0000FF">
 
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
@@ -106,15 +117,18 @@
                         String added = (String) request.getAttribute("Added");
                         if (added != null) { %>
                     <tr>
-                        <td><font color="red"> <bean:message
-                                key="oscarEncounter.oscarConsultationRequest.config.AddInstitution.msgInstitutionAdded"
-                                arg0="<%=added%>"/> </font></td>
+                        <td style="color: red;">
+                            <fmt:setBundle basename="oscarResources"/>
+                            <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddInstitution.msgInstitutionAdded">
+                                <fmt:param value="${added}" />
+                            </fmt:message>
+                        </td>
                     </tr>
                     <%}%>
                     <tr>
                         <td>
 
-                            <html:form action="/oscarEncounter/AddInstitution">
+                            <form action="${pageContext.request.contextPath}/oscarEncounter/AddInstitution.do" method="post">
                                 <table>
                                     <%
                                         if (request.getAttribute("id") != null) {
@@ -133,43 +147,41 @@
                                             thisForm.setAnnotation((String) request.getAttribute("annotation"));
                                         }
                                     %>
-                                    <html:hidden name="EctConAddInstitutionForm" property="id"/>
+                                    <input type="hidden" name="id" id="id"/>
                                     <tr>
                                         <td>Name</td>
-                                        <td><html:text name="EctConAddInstitutionForm" property="name"/></td>
+                                        <td><input type="text" name="name"/></td>
 
                                     </tr>
                                     <tr>
                                         <td>Address</td>
-                                        <td><html:text name="EctConAddInstitutionForm" property="address"/></td>
+                                        <td><input type="text" name="address"/></td>
                                         <td>City</td>
-                                        <td><html:text name="EctConAddInstitutionForm" property="city"/></td>
+                                        <td><input type="text" name="city"/></td>
                                     </tr>
                                     <tr>
                                         <td>Province</td>
-                                        <td><html:text name="EctConAddInstitutionForm" property="province"/></td>
+                                        <td><input type="text" name="province"/></td>
                                         <td>Postal Code</td>
-                                        <td><html:text name="EctConAddInstitutionForm" property="postal"/></td>
+                                        <td><input type="text" name="postal"/></td>
                                     </tr>
                                     <tr>
                                         <td>Phone</td>
-                                        <td><html:text name="EctConAddInstitutionForm" property="phone"/></td>
+                                        <td><input type="text" name="phone"/></td>
                                         <td>Fax</td>
-                                        <td colspan="4"><html:text name="EctConAddInstitutionForm" property="fax"/></td>
+                                        <td colspan="4"><input type="text" name="fax"/></td>
                                     </tr>
                                     <tr>
                                         <td>Website</td>
-                                        <td><html:text name="EctConAddInstitutionForm" property="website"/></td>
+                                        <td><input type="text" name="website"/></td>
                                         <td>Email</td>
-                                        <td colspan="4"><html:text name="EctConAddInstitutionForm"
-                                                                   property="email"/></td>
+                                        <td colspan="4"><input type="text" name="email"/></td>
                                     </tr>
 
                                     <tr>
                                         <td>Annotation
                                         </td>
-                                        <td colspan="4"><html:textarea name="EctConAddInstitutionForm"
-                                                                       property="annotation" cols="30" rows="3"/>
+                                        <td colspan="4"><textarea name="annotation" cols="30" rows="3"></textarea>
                                         </td>
                                     </tr>
 
@@ -180,7 +192,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </html:form>
+                            </form>
                         </td>
                     </tr>
                     <!----End new rows here-->
@@ -197,4 +209,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

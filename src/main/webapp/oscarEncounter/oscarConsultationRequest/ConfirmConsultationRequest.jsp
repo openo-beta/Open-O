@@ -25,9 +25,9 @@
 --%>
 
 <%@page import="org.oscarehr.util.WebUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -46,14 +46,13 @@
 
 
 <%@page import="org.oscarehr.util.WebUtils" %>
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     </head>
     <script language="javascript">
@@ -109,16 +108,12 @@
                         <td>
                             <c:choose>
                                 <c:when test="${not empty requestScope.transType and requestScope.transType eq '1'}">
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgUpdated"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgUpdated"/>
                                 </c:when>
                                 <c:when test="${not empty requestScope.transType and requestScope.transType eq '2'}">
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgCreated"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgCreated"/>
                                 </c:when>
                                 <c:otherwise>
                                 </c:otherwise>
@@ -133,13 +128,11 @@
                         </c:if>
                     </tr>
                     <tr>
-                        <td><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgClose5Sec"/>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgClose5Sec"/>
                         </td>
                     </tr>
                     <tr>
-                        <td><a href="javascript: BackToOscar();"> <bean:message
-                                key="global.btnClose"/> </a></td>
+                        <td><a href="javascript: BackToOscar();"> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> </a></td>
                     </tr>
                 </table>
             </td>
@@ -150,4 +143,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -38,7 +38,7 @@
 <%
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Oops. Not Found</title>
 
@@ -62,4 +62,4 @@
     <br/>
 
     <span class="alert alert-warning">Please let your System Administrator know so that this functionality can be correctly configured.</span>
-</html:html>
+</html>

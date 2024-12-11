@@ -41,17 +41,17 @@
 
 <%@ page import="oscar.form.*, java.util.*" %>
 <%@ page import="java.io.FileInputStream" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Mental Health Referral</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="screen"
               href="mhStyles.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css">
@@ -258,7 +258,7 @@
 
     <body bgproperties="fixed" topmargin="0" leftmargin="0" rightmargin="0"
           onload="getMainAction()">
-    <html:form action="/form/formname" onsubmit="return numvalidate()">
+    <form action="${pageContext.request.contextPath}/form/formname.do" onsubmit="return numvalidate()">
 
         <input type="hidden" name="demographic_no"
                value="<%= props.getProperty("demographic_no", "0") %>"/>
@@ -513,6 +513,6 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

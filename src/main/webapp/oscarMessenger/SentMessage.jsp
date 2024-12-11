@@ -25,8 +25,8 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
@@ -42,7 +42,7 @@
         return;
     }
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
@@ -50,18 +50,11 @@
             <c:redirect url="index.jsp"/>
         </c:if>
         <c:if test="${not empty msgSessionBean}">
-            <bean:define id="bean"
-                         type="oscar.oscarMessenger.pageUtil.MsgSessionBean"
-                         name="msgSessionBean" scope="session"/>
-            <c:if test="${bean.valid == false}">
+            <c:if test="${msgSessionBean.valid == false}">
                 <c:redirect url="index.jsp"/>
             </c:if>
         </c:if>
-        <%
-            oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) pageContext.findAttribute("bean");
-        %>
-
-        <title><bean:message key="oscarMessenger.SentMessage.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.SentMessage.title"/></title>
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
@@ -89,19 +82,15 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarMessenger.SentMessage.msgMessenger"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.SentMessage.msgMessenger"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><h2><bean:message
-                                key="oscarMessenger.SentMessage.msgMessageSent"/></h2></td>
+                        <td><h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.SentMessage.msgMessageSent"/></h2></td>
                         <td></td>
                         <td style="text-align: right">
-                            <oscar:help keywords="message" key="app.top1"/> |
                             <a href="javascript:void(0)"
-                               onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><bean:message
-                                    key="global.about"/></a>
+                               onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                         </td>
                     </tr>
                 </table>
@@ -121,22 +110,22 @@
                                     <td>
                                         <table class=messButtonsA cellspacing=0 cellpadding=3>
                                             <tr>
-                                                <td class="messengerButtonsA"><html:link
-                                                        page="/oscarMessenger/CreateMessage.jsp"
+                                                <td class="messengerButtonsA"><a
+                                                        href="${pageContext.request.contextPath}/oscarMessenger/CreateMessage.jsp"
                                                         styleClass="messengerButtons">
-                                                    <bean:message key="oscarMessenger.SentMessage.btnCompose"/>
-                                                </html:link></td>
+                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.SentMessage.btnCompose"/>
+                                                </a></td>
                                             </tr>
                                         </table>
                                     </td>
                                     <td>
                                         <table class=messButtonsA cellspacing=0 cellpadding=3>
                                             <tr>
-                                                <td class="messengerButtonsA"><html:link
-                                                        page="/oscarMessenger/DisplayMessages.jsp"
+                                                <td class="messengerButtonsA"><a
+                                                        href="${pageContext.request.contextPath}/oscarMessenger/DisplayMessages.jsp"
                                                         styleClass="messengerButtons">
-                                                    <bean:message key="oscarMessenger.SentMessagebtnBack"/>
-                                                </html:link></td>
+                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.SentMessagebtnBack"/>
+                                                </a></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -145,8 +134,7 @@
                                             <tr>
                                                 <td class="messengerButtonsA"><a
                                                         href="javascript:BackToOscar()"
-                                                        class="messengerButtons"><bean:message
-                                                        key="oscarMessenger.SentMessage.btnExit"/></a></td>
+                                                        class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.SentMessage.btnExit"/></a></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -155,8 +143,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><bean:message
-                                key="oscarMessenger.SentMessage.msgMessageSentTo"/> <%= request.getAttribute("SentMessageProvs") %>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.SentMessage.msgMessageSentTo"/> <%= request.getAttribute("SentMessageProvs") %>
                         </td>
                     </tr>
                 </table>
@@ -168,4 +155,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

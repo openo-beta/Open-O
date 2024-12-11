@@ -29,20 +29,13 @@ The taglib directive below imports the JSTL library. If you uncomment it,
 you must also add the JSTL library to the project. The Add Library... action
 on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 --%>
-<%--
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
---%>
-
 <%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
+
+<%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <%
     String errorMsg = (String) request.getAttribute("error_msg");
     boolean errors = false;
@@ -199,7 +192,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
                 <a href="javascript:;" onclick="closeWindow()">Send Later</a>
             </center>
             <input type="hidden" name="forwardto" value="<%=request.getServletPath()%>">
-            <input type="hidden" name="forwardToOnSuccess" value="<bean:write name="forwardToOnSuccess"/>">
+            <input type="hidden" name="forwardToOnSuccess" value="<c:out value="${forwardToOnSuccess}"/>">
         </form>
     </div>
     <%

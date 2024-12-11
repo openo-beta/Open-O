@@ -38,9 +38,9 @@
     </tr>
     <!--
 	<tr>
-		<td align="left" class="buttonBar"><html:link action="/Home.do"
+		<td align="left" class="buttonBar"><a href="${pageContext.request.contextPath}/Home.do"
 			style="color:Navy;text-decoration:none">
-			<img style="vertical-align: middle" border=0 src=<html:rewrite page="/images/home16.png"/> />&nbsp;Home&nbsp;&nbsp;|</html:link>
+			<img style="vertical-align: middle" border=0 src="${pageContext.request.contextPath}/images/home16.png"/> />&nbsp;Home&nbsp;&nbsp;|</a>
 		</td>
 	</tr>
 -->
@@ -68,10 +68,10 @@
                             style="font-style: italic; vertical-align: middle">
                             <h2 style="color:#1E90FF; vertical-align: middle">System Administration</h2>
                         </td>
-                        <td width="10%" align="right" style="vertical-align: middle"><html:link action="/Home.do"
+                        <td width="10%" align="right" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/Home.do"
                                                                                                 style="color:Navy;text-decoration:none; font-size: 12px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <img align="right" style="vertical-align: middle" border=0 src=
-                                    <html:rewrite page="/images/home16.png"/>/>Home</html:link>
+                                    "${pageContext.request.contextPath}/images/home16.png"/>Home</a>
                         </td>
                         <td width="10%">&nbsp;</td>
                     </tr>

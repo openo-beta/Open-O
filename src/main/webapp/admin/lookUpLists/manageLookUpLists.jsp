@@ -24,7 +24,7 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <c:choose>
@@ -39,6 +39,6 @@
         <c:import url="./lookupList.jsp"/>
     </c:when>
     <c:otherwise>
-        <bean:message key="admin.admin.lookuplists.nonfound"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.lookuplists.nonfound"/>
     </c:otherwise>
 </c:choose>

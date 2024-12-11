@@ -40,10 +40,10 @@
     String providermsgEdit = (String) request.getAttribute("providermsgEdit");
     String providermsgSuccess = (String) request.getAttribute("providermsgSuccess");
 %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
         <link rel="stylesheet" type="text/css"
@@ -61,13 +61,12 @@
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%>
-                <html:form action="/setProviderStaleDate.do">
+                <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                    <html:checkbox property="cobaltProperty.checked"><bean:message
-                            key="provider.btnSetCobalt"/></html:checkbox>
+                    <input type="checkbox" name="cobaltProperty.checked" value="true" /><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetCobalt"/>
                     <br/>
-                    <html:submit property="btnApply"/>
-                </html:form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                    <input type="submit" name="btnApply" value="Apply" />
+                </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
                 <%}%>
             </td>
         </tr>
@@ -77,4 +76,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

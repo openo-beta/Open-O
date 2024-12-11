@@ -46,8 +46,8 @@
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.FlowSheetCustomization" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 
@@ -105,7 +105,7 @@ if(scope != null && "clinic".equals(scope)) {
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html:html lang="en">
+<html>
 
     <head>
         <title>Update Flowsheet <%=flowsheet%> <oscar:nameage demographicNo="<%=demographic%>"/></title><!--I18n-->
@@ -565,7 +565,7 @@ function validateCondition(value) {
 </script>
 
     </body>
-</html:html>
+</html>
 <%!
     String refused(Object re) {
         String ret = "Given";

@@ -23,9 +23,9 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page
         import="oscar.oscarRx.pageUtil.*,oscar.oscarRx.data.*,java.util.*" %>
 
@@ -45,11 +45,11 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="ManagePharmacy.title"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <%
             // Check if RxSessionBean is missing in the session
             if (session.getAttribute("RxSessionBean") == null) {
@@ -63,8 +63,6 @@
             }
         %>
         <%
-            oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
-
             if (request.getParameter("ID") != null && request.getParameter("type") != null && request.getParameter("type").equals("Delete")) {
                 RxPharmacyData rxp = new RxPharmacyData();
                 rxp.deletePharmacy(request.getParameter("ID"));
@@ -90,121 +88,95 @@
                        height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <bean:message
-                                    key="SearchDrug.title"/></a></div>
+                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a></div>
                         </td>
                     </tr>
                     <!----Start new rows here-->
                     <tr>
                         <td>
-                            <div class="DivContentTitle"><bean:message
-                                    key="ManagePharmacy.title"/></div>
+                            <div class="DivContentTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.title"/></div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <div class="DivContentSectionHead" style="height:8px; text-indent: 10px">
-                                <% if (request.getParameter("ID") == null) { %> <bean:message
-                                    key="ManagePharmacy.subTitle.add"/> <%} else {%> <bean:message
-                                    key="ManagePharmacy.subTitle.update"/> <%}%>
+                                <% if (request.getParameter("ID") == null) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.subTitle.add"/> <%} else {%> <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.subTitle.update"/> <%}%>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td><html:form action="/oscarRx/managePharmacy">
-                            <%
-                                if (request.getParameter("ID") != null) {
-                                    RxManagePharmacyForm frm = (RxManagePharmacyForm) request.getAttribute("RxManagePharmacyForm");
-                                    String ID = request.getParameter("ID");
-                                    RxPharmacyData pharmacy = new RxPharmacyData();
-                                    org.oscarehr.common.model.PharmacyInfo ph = pharmacy.getPharmacy(ID);
-                                    frm.setID(ID);
-                                    frm.setAddress(ph.getAddress());
-                                    frm.setCity(ph.getCity());
-                                    frm.setEmail(ph.getEmail());
-                                    frm.setFax(ph.getFax());
-                                    frm.setName(ph.getName());
-                                    frm.setNotes(ph.getNotes());
-                                    frm.setPhone1(ph.getPhone1());
-                                    frm.setPhone2(ph.getPhone2());
-                                    frm.setPostalCode(ph.getPostalCode());
-                                    frm.setProvince(ph.getProvince());
-                                }%>
+                        <td><form action="${pageContext.request.contextPath}/oscarRx/managePharmacy.do" method="post">
                             <table>
                                 <tr>
                                     <td>
                                         <%String type = request.getParameter("type"); %>
-                                        <html:hidden property="pharmacyAction" value="<%=type%>"/>
-                                        <html:hidden property="pharmacyAction" value="<%=type%>"/>
-                                        <html:hidden property="ID"/> <bean:message
-                                            key="ManagePharmacy.txtfld.label.pharmacyName"/> :
+                                        <input type="hidden" name="pharmacyAction" id="pharmacyAction" value="<%=type%>"/>
+                                        <input type="hidden" name="ID" id="ID"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
                                     </td>
-                                    <td><html:text property="name"/></td>
+                                    <td><input type="text" name="name" id="name" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="ManagePharmacy.txtfld.label.address"/>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.address"/>
                                         :
                                     </td>
-                                    <td><html:text property="address"/></td>
+                                    <td><input type="text" name="address" id="address" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="ManagePharmacy.txtfld.label.city"/>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.city"/>
                                         :
                                     </td>
-                                    <td><html:text property="city"/></td>
+                                    <td><input type="text" name="city" id="city" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="ManagePharmacy.txtfld.label.province"/>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.province"/>
                                         :
                                     </td>
-                                    <td><html:text property="province"/></td>
+                                    <td><input type="text" name="province" id="province" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message
-                                            key="ManagePharmacy.txtfld.label.postalCode"/> :
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.postalCode"/> :
                                     </td>
-                                    <td><html:text property="postalCode"/></td>
+                                    <td><input type="text" name="postalCode" id="postalCode" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="ManagePharmacy.txtfld.label.phone1"/>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.phone1"/>
                                         :
                                     </td>
-                                    <td><html:text property="phone1"/></td>
+                                    <td><input type="text" name="phone1" id="phone1" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="ManagePharmacy.txtfld.label.phone2"/>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.phone2"/>
                                         :
                                     </td>
-                                    <td><html:text property="phone2"/></td>
+                                    <td><input type="text" name="phone2" id="phone2" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="ManagePharmacy.txtfld.label.fax"/> :
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.fax"/> :
                                     </td>
-                                    <td><html:text property="fax"/></td>
+                                    <td><input type="text" name="fax" id="fax" /></td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="ManagePharmacy.txtfld.label.email"/>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.email"/>
                                         :
                                     </td>
-                                    <td><html:text property="email"/></td>
+                                    <td><input type="text" name="email" id="email" /></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><bean:message
-                                            key="ManagePharmacy.txtfld.label.notes"/> :
+                                    <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.notes"/> :
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>&nbsp;</td>
-                                    <td><html:textarea property="notes"/></td>
+                                    <td><textarea name="notes"></textarea></td>
                                 </tr>
 
                                 <tr>
                                     <td><input type="submit"
-                                               value="<bean:message key="ManagePharmacy.submitBtn.label.submit"/>"/>
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.submitBtn.label.submit"/>"/>
                                     </td>
                                 </tr>
                             </table>
-                        </html:form></td>
+                        </form></td>
                     </tr>
 
                     <tr>
@@ -239,4 +211,4 @@
 
     </body>
 
-</html:html>
+</html>

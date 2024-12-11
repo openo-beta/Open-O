@@ -40,10 +40,10 @@
     String providerbtnSubmit = (String) request.getAttribute("providerbtnSubmit");
     String providerbtnClose = (String) request.getAttribute("providerbtnClose");
 %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
@@ -61,21 +61,21 @@
             <td class="MainTableLeftColumn"></td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
-                <html:form action="/setProviderStaleDate.do">
+                <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                    <html:checkbox property="preventionSSOWarningProperty.checked">
-                        Hide Warning when not logged into OneID Single Sign On.</html:checkbox>
+                    <input type="checkbox" name="preventionSSOWarningProperty.checked" />
+                        Hide Warning when not logged into OneID Single Sign On.
                     <br/>
-                    <html:checkbox property="preventionISPAWarningProperty.checked">
-                        Hide Warning when Patient has not consented to send ISPA data to DHIR.</html:checkbox>
+                    <input type="checkbox" name="preventionISPAWarningProperty.checked" />
+                        Hide Warning when Patient has not consented to send ISPA data to DHIR.
                     <br/>
-                    <html:checkbox property="preventionNonISPAWarningProperty.checked">
-                        Hide Warning when Patient has not consented to send Non-ISPA data to DHIR.</html:checkbox>
+                    <input type="checkbox" name="preventionNonISPAWarningProperty.checked" />
+                        Hide Warning when Patient has not consented to send Non-ISPA data to DHIR.
                     <br/><br/>
                     <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
                     <input type="button" value="<%=bundle.getString(providerbtnCancel)%>"
                            onclick="window.close();"/>
-                </html:form>
+                </form>
                 <%} else {%>
                 Configuration has been saved.
                 <br/><br/>
@@ -89,4 +89,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

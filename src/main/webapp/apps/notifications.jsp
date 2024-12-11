@@ -26,11 +26,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html ng-app="k2aConfig">
 <head>
-    <title><bean:message key="admin.admin.Know2ActNotifications"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.Know2ActNotifications"/></title>
     <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
     <script type="text/javascript" src="<%=request.getContextPath() %>/library/angular.min.js"></script>
@@ -39,17 +39,15 @@
 
 <body>
 <div ng-controller="k2aConfig">
-    <h2 style="margin-left:5px"><bean:message key="admin.admin.Know2ActNotifications"/></h2>
+    <h2 style="margin-left:5px"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.Know2ActNotifications"/></h2>
     <div>
         <blockquote ng-repeat="notif in page.notifications" class="">
             <h4><a href="#">{{notif.summary}}</a></h4>
             <pre>{{notif.body}}</pre>
 
             <small>{{notif.author}} -- {{notif.createdAt | date }}</small>
-            <a class="btn btn-default" ng-click="readmore(notif)" role="button"><bean:message
-                    key="admin.admin.Know2ActNotifications.readmore"/></a>
-            <a class="btn btn-default" ng-click="archive(notif)" role="button"><bean:message
-                    key="admin.admin.Know2ActNotifications.archive"/></a>
+            <a class="btn btn-default" ng-click="readmore(notif)" role="button"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.Know2ActNotifications.readmore"/></a>
+            <a class="btn btn-default" ng-click="archive(notif)" role="button"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.Know2ActNotifications.archive"/></a>
         </blockquote>
     </div>
 </div>

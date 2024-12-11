@@ -28,16 +28,12 @@ package oscar.oscarEncounter.oscarConsultationRequest.pageUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.oscarehr.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
-public final class EctConsultationFormRequestForm extends ActionForm {
+public final class EctConsultationFormRequestForm {
 
     String allergies;
 
@@ -368,44 +364,6 @@ public final class EctConsultationFormRequestForm extends ActionForm {
 
     public void setUrgency(String str) {
         urgency = str;
-    }
-
-    @Override
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-
-        ActionErrors errors = new ActionErrors();
-
-        if (this.patientWillBook == null || !this.patientWillBook.equals("1")) {
-            this.patientWillBook = "0";
-        }
-
-        if (service == null || service.length() == 0) {
-
-            errors.add("service", new ActionMessage("Errors.service.null"));
-
-        }
-        try {
-
-            int temp = Integer.parseInt(service);
-
-            if (temp < 0) {
-
-                errors.add("service", new ActionMessage("Errors.service.noServiceSelected"));
-
-            }
-        } catch (Exception e) {
-
-            errors.add("fName", new ActionMessage("Errors.service.notNum"));
-
-        }
-
-        if (!errors.isEmpty()) {
-
-            request.setAttribute("validateError", "blah");
-
-        }
-        return errors;
-
     }
 
     public String getPatientName() {

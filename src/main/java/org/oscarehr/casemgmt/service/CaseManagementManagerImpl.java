@@ -31,7 +31,6 @@ import com.quatro.model.security.Secrole;
 import com.quatro.service.security.RolesManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.util.LabelValueBean;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
@@ -62,6 +61,7 @@ import oscar.log.LogAction;
 import oscar.log.LogConst;
 import oscar.util.ConversionUtils;
 import oscar.util.DateUtils;
+import oscar.util.LabelValueBean;
 
 import java.net.MalformedURLException;
 import java.nio.file.ProviderNotFoundException;
@@ -2124,8 +2124,8 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
      * to be i18n compliant). If nothing is found in the resource bundle the value
      * is added as a blank in the returned formatted string. This is the default
      * signing line.
-     * ECHART_SIGN_LINE=[${oscarEncounter.class.EctSaveEncounterAction.msgSigned}
-     * ${DATE} ${oscarEncounter.class.EctSaveEncounterAction.msgSigBy}
+     * ECHART_SIGN_LINE=[${oscarEncounter.class.EctSaveEncounter2Action.msgSigned}
+     * ${DATE} ${oscarEncounter.class.EctSaveEncounter2Action.msgSigBy}
      * ${USERSIGNATURE}]\n
      *
      * @param template string with template values used to create the String that is

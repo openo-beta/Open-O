@@ -28,8 +28,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="oscar.login.*, oscar.oscarDB.*, oscar.MyDateFormat" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -92,7 +92,7 @@
 
 <%@page import="oscar.Misc" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
 
@@ -314,4 +314,4 @@ for (int i = 0; i < vec.size(); i++) {
             });
         </script>
     </body>
-</html:html>
+</html>

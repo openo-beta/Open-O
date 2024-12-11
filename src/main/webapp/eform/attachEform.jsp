@@ -46,8 +46,8 @@
     String userlastname = (String) session.getAttribute("userlastname");
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <jsp:useBean id="oscarVariables" class="java.util.Properties"
              scope="page"/>
 <%@ page
@@ -94,15 +94,14 @@
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery_oscar_defaults.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.colorbox-min.js"></script>
 
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.title"/></title>
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
@@ -227,7 +226,7 @@
                     window.opener.document.forms[0].selectDocs.value = saved;
 
                     if (list.childNodes.length == 0)
-                        paragraph.innerHTML = "<bean:message key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/>";
+                        paragraph.innerHTML = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/>";
 
                     ret = false;
                 } else {
@@ -268,26 +267,23 @@
     </head>
     <body style="font-family: Verdana, Tahoma, Arial, sans-serif; background-color: #ddddff" onload="init()">
 
-    <h3 style="text-align: left"><bean:message
-            key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.header"/>
+    <h3 style="text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.header"/>
         <%=patientName%>
     </h3>
-    <html:form action="/eform/attachDoc">
-        <html:hidden property="requestId" value="<%=requestId%>"/>
-        <html:hidden property="demoNo" value="<%=demoNo%>"/>
-        <html:hidden property="providerNo" value="<%=providerNo%>"/>
+    <form action="<%=request.getContextPath() %>/eform/attachDoc.do">
+        <input type="hidden" name="requestId" id="requestId" value="<%=requestId%>"/>
+        <input type="hidden" name="demoNo" id="demoNo" value="<%=demoNo%>"/>
+        <input type="hidden" name="providerNo" id="providerNo" value="<%=providerNo%>"/>
         <table style="width:1080px; border: solid 1px blue; font-size: x-small; background-color:white;">
             <tr>
-                <th style="text-align: center"><bean:message
-                        key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.available"/></th>
-                <th style="text-align: center"><bean:message
-                        key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.preview"/></th>
+                <th style="text-align: center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.available"/></th>
+                <th style="text-align: center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.preview"/></th>
             </tr>
             <tr valign="top" style="border-top:thin dotted blue;">
                 <td style="width: 225px; text-align: left; background-color: white; border-right:thin dotted blue; position:absolute; height:600px;">
                     <input type="submit" class="btn" style="position: absolute; left: 35px; top: 5px;"
                            name="submit"
-                           value="<bean:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
                            onclick="return save();"/>
                     <ul id="documentList"
                         style="list-style:none; padding:5px; margin-top:35px; height:515px; overflow:auto;">
@@ -473,8 +469,7 @@
                             printAlt = PRINTABLE_ALT;
 
                             if (hrmDocumentToDemographicList.size() > 0) { %>
-                        <h2><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.hrmDocuments"/></h2>
+                        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.hrmDocuments"/></h2>
                         <% }
 
                             List<HRMDocument> docs = new ArrayList<HRMDocument>();
@@ -594,7 +589,7 @@
                     </ul>
                     <input type="submit" class="btn" style="position: absolute; left: 35px; bottom: 5px;"
                            name="submit"
-                           value="<bean:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
                            onclick="return save();"/>
                 </td>
                 <td style="background-color:white; position:relative; width: 850px;">
@@ -602,6 +597,6 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

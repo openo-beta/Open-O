@@ -27,12 +27,12 @@
 <%@ include file="/taglibs.jsp" %>
 
 <script type="text/javascript"
-        src="<html:rewrite page="/share/calendar/calendar.js" />"/>
+        src="${request.contextPath}/share/calendar/calendar.js"/>
 </script>
 <script type="text/javascript"
-        src="<html:rewrite page="/share/calendar/lang/calendar-en.js" />"></script>
+        src="${request.contextPath}/share/calendar/lang/calendar-en.js"></script>
 <script type="text/javascript"
-        src="<html:rewrite page="/share/calendar/calendar-setup.js" />"></script>
+        src="${request.contextPath}/share/calendar/calendar-setup.js"></script>
 
 <script type="text/javascript">
     var djConfig = {
@@ -43,7 +43,7 @@
 </script>
 
 <script type="text/javascript"
-        src="<html:rewrite page="/dojoAjax/dojo.js" />">
+        src="${request.contextPath}/dojoAjax/dojo.js">
 </script>
 
 <script type="text/javascript" language="JavaScript">
@@ -101,7 +101,7 @@
 
         alert("Generating report from " + startDate + " to " + endDate + ". Please note: it is normal for the generation process to take up to a few minutes to complete, be patient.");
 
-        var url = '<html:rewrite action="/PMmodule/GenericIntake/Report"/>?' + 'nodeId=' + nodeId + '&method=report' + '&type=&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
+        var url = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Report.do?' + 'nodeId=' + nodeId + '&method=report' + '&type=&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
 
         popupPage2(url, "IntakeReport" + nodeId);
     }

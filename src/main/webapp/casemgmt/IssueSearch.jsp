@@ -77,8 +77,8 @@
         }
 
     </script>
-    <html:hidden property="demographicNo"/>
-    <html:hidden property="providerNo"/>
+    <input type="hidden" name="demographicNo" id="demographicNo"/>
+    <input type="hidden" name="providerNo" id="providerNo"/>
     <input type="hidden" name="method" value="issueSearch"/>
     <input type="hidden" name="lastPage" value="true"/>
     <input type="hidden" name="change_diagnosis" value="<c:out value="${change_diagnosis}"/>"/>

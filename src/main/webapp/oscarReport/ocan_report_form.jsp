@@ -63,7 +63,7 @@
 
     <fieldset>
         <h4>
-            <bean:message key="admin.admin.ocanRpt"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ocanRpt"/>
             <br> <small>Please select the OCAN type and assessment
             start date from &amp; to.</small>
         </h4>

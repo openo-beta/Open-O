@@ -49,12 +49,12 @@
 %>
 
 
-<html:form action="/CaseManagementView" method="get">
-    <html:hidden property="demographicNo"/>
-    <html:hidden property="providerNo"/>
-    <html:hidden property="tab"/>
-    <html:hidden property="cpp.id"/>
-    <html:hidden property="hideActiveIssue"/>
+<form action="${pageContext.request.contextPath}/CaseManagementView.do" method="get">
+    <input type="hidden" name="demographicNo" id="demographicNo"/>
+    <input type="hidden" name="providerNo" id="providerNo"/>
+    <input type="hidden" name="tab" id="tab"/>
+    <input type="hidden" name="id" id="id"/>
+    <input type="hidden" name="hideActiveIssue" id="hideActiveIssue"/>
     <input type="hidden" name="issue_code" value=""/>
     <input type="hidden" name="method" value="view"/>
 
@@ -317,8 +317,7 @@
                          OnMouseOver="document.getElementById('ci').src='../imageRenderingServlet?source=local_client&clientId=
                              <c:out value="${clientId}"/>'"
                          OnMouseOut="delay(5000)" window.status='Click to upload new photo' ; return true;"
-                    onClick="popupUploadPage('<html:rewrite
-                        page="/casemgmt/uploadimage.jsp"/>',<%=demo%>);return false;" />
+                    onClick="popupUploadPage('<%=request.getContextPath() %>/casemgmt/uploadimage.jsp',<%=demo%>);return false;" />
                 </c:when>
                 <c:otherwise>
                     <img style="cursor: pointer;"
@@ -340,19 +339,19 @@
 
     <c:if
             test="${sessionScope.caseManagementViewForm.note_view!='detailed'}">
-        <html:hidden property="note_view" value="summary"/>
+        <input type="hidden" name="note_view" id="note_view" value="summary"/>
     </c:if>
     <c:if
             test="${sessionScope.caseManagementViewForm.note_view=='detailed'}">
-        <html:hidden property="note_view" value="detailed"/>
+        <input type="hidden" name="note_view" id="note_view" value="detailed"/>
     </c:if>
     <c:if
             test="${sessionScope.caseManagementViewForm.prescipt_view!='all'}">
-        <html:hidden property="prescipt_view" value="current"/>
+        <input type="hidden" name="prescipt_view" id="prescipt_view" value="current"/>
     </c:if>
     <c:if
             test="${sessionScope.caseManagementViewForm.prescipt_view=='all'}">
-        <html:hidden property="prescipt_view" value="all"/>
+        <input type="hidden" name="prescipt_view" id="prescipt_view" value="all"/>
     </c:if>
 
     <br/>
@@ -391,18 +390,22 @@
                                   onclick="popupNotePage('<c:out value="${noteURL}" escapeXml="false"/>')">Restore
 					Lost Note</span>
                         </c:if></td>
-                    <td align="right">Provider: <html:select
-                            property="filter_provider"
+                    <td align="right">Provider: <select
+                            name="filter_provider"
                             onchange="filter(this.options[this.selectedIndex].text, 'test', 2);">
-                        <html:option value="">All</html:option>
-                        <html:options collection="providers" property="value" labelProperty="label"/>
-                    </html:select> &nbsp; &nbsp; &nbsp; Sort: <select name="note_sort"
-                                                                              onchange="document.caseManagementViewForm.method.value='view';document.caseManagementViewForm.note_view.value='${param.note_view}';document.caseManagementViewForm.submit()">
-                        <html:option value="observation_date_desc">Observation Date - Desc</html:option>
-                        <html:option value="observation_date_asc">Observation Date - Asc</html:option>
-                        <html:option value="providerName">Provider</html:option>
-                        <html:option value="programName">Program</html:option>
-                        <html:option value="roleName">Role</html:option>
+                        <option value="">All</option>
+                        <c:forEach var="provider" items="${providers}">
+                            <option value="${provider.value}">
+                                    ${provider.label}
+                            </option>
+                        </c:forEach>
+                    </select> &nbsp; &nbsp; &nbsp; Sort: <select name="note_sort"
+                                                                 onchange="document.caseManagementViewForm.method.value='view';document.caseManagementViewForm.note_view.value='${param.note_view}';document.caseManagementViewForm.submit()">
+                        <option value="observation_date_desc">Observation Date - Desc</option>
+                        <option value="observation_date_asc">Observation Date - Asc</option>
+                        <option value="providerName">Provider</option>
+                        <option value="programName">Program</option>
+                        <option value="roleName">Role</option>
                     </select></td>
                 </tr>
             </table>
@@ -645,4 +648,4 @@
         </c:if>
     </security:oscarSec>
 
-</html:form>
+</form>

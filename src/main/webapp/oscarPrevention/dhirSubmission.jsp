@@ -134,7 +134,7 @@
 %>
 
 
-<html:html lang="en">
+<html>
 
     <head>
         <title>OSCAR Prevention Review Screen</title><!--I18n-->
@@ -144,7 +144,7 @@
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
 
         <style type="text/css">
@@ -312,10 +312,9 @@
 
                         </td>
                         <td style="text-align:right">
-                            <oscar:help keywords="prevention" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message key="global.about"/></a>
-                            | <a href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a>
+                            <a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                            | <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>
@@ -495,7 +494,7 @@
     </table>
 
     </body>
-</html:html>
+</html>
 
 
 <%!

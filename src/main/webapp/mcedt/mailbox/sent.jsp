@@ -34,12 +34,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ page
-        import="java.math.BigInteger,java.util.*,org.oscarehr.integration.mcedt.mailbox.DetailDataCustom,ca.ontario.health.edt.TypeListData, org.oscarehr.integration.mcedt.mailbox.ActionUtils" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -255,7 +250,7 @@
 <c:set var="resourceListSent" value="${sessionScope.resourceListSent}"/>
 <c:set var="resultSize" value="${sessionScope.resultSize}"/>
 
-<html:form action="/mcedt/resourceInfo" method="post" styleId="formSent">
+<form action="${pageContext.request.contextPath}/mcedt/resourceInfo" method="post" styleId="formSent">
     <jsp:include page="../messages.jsp"/>
     <input id="methodSent" name="method" type="hidden" value=""/>
     <div>
@@ -263,45 +258,44 @@
         <div>
 
             Billing Number:
-            <html:select property="serviceIdSent" styleId="serviceIdSent"
-                         styleClass="serviceIdSent">
+            <select name="serviceIdSent" id="serviceIdSent"
+                         class="serviceIdSent">
                 <c:forEach var="r" items="${serviceIds}">
-                    <html:option value="${r}">
+                    <option value="${r}">
                         <c:out value="${r}"/>
-                    </html:option>
+                    </option>
                 </c:forEach>
-            </html:select>
+            </select>
             Resource Type:
-            <html:select property="resourceType" styleId="resourceType"
-                         styleClass="input-xxlarge">
-                <html:option value=""> - All - </html:option>
+            <select name="resourceType" id="resourceType"
+                         class="input-xxlarge">
+                <option value=""> - All - </option>
                 <c:forEach var="r" items="${mcedtTypeList.data}">
-                    <html:option value="${r.resourceType}">
+                    <option value="${r.resourceType}">
                         <c:out value="${r.resourceType}"/> -
                         <c:out value="${r.access}"/> -
                         <c:out value="${r.descriptionEn}"/>
-                    </html:option>
+                    </option>
                 </c:forEach>
-            </html:select>
+            </select>
 
             Status:
-            <html:select property="status" styleId="status"> <!-- onchange="setPageNumber(1)" -->
-                <html:option value=""> - All - </html:option>
-                <c:forEach var="i"
-                           items="${mcedtResourceForm.resourceStatusValues}">
-                    <html:option value="${i}"/>
+            <select name="status" id="status"> <!-- onchange="setPageNumber(1)" -->
+                <option value=""> - All - </option>
+                <c:forEach var="i" items="${mcedtResourceForm.resourceStatusValues}">
+                    <option value="${i}"></option>
                 </c:forEach>
-            </html:select>
+            </select>
 
             Page #:
-            <html:select property="pageNo" styleId="pageNo">
+            <select name="pageNo" id="pageNo">
                 <c:forEach var="i" begin="1"
                            end="${resultSize}">
-                    <html:option value="${i}">
+                    <option value="${i}">
                         <c:out value="${i}"/>
-                    </html:option>
+                    </option>
                 </c:forEach>
-            </html:select>
+            </select>
             <button class="noBorder blackBox flatLink font12 small" onclick="ShowSpin(true); return changeDisplay();">
                 Load Page
             </button>
@@ -371,7 +365,7 @@
             Delete Selected
         </button>
     </div>
-</html:form>
+</form>
 
 <!-- -----------------------dialog box start---------------------------------------------- -->
 

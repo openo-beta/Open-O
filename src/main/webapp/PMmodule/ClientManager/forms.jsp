@@ -55,15 +55,15 @@
 
 <script>
     function updateQuickIntake(clientId) {
-        location.href = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=update&type=quick&clientId=" + clientId;
+        location.href = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=update&type=quick&clientId=" + clientId;
     }
 
     function updateIndepthIntake(clientId) {
-        location.href = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=update&type=indepth&clientId=" + clientId;
+        location.href = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=update&type=indepth&clientId=" + clientId;
     }
 
     function updateProgramIntake(clientId, programId) {
-        location.href = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=update&type=program&clientId=" + clientId + "&programId=" + programId;
+        location.href = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=update&type=program&clientId=" + clientId + "&programId=" + programId;
     }
 
     function updateProgramIntake(clientId) {
@@ -71,7 +71,7 @@
         var programId = selectBox.options[selectBox.selectedIndex].value;
 
         if (programId != null) {
-            location.href = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=update&type=program&clientId=" + clientId + "&programId=" + programId;
+            location.href = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=update&type=program&clientId=" + clientId + "&programId=" + programId;
             return true;
         }
 
@@ -79,22 +79,22 @@
     }
 
     function printQuickIntake(clientId, intakeId) {
-        url = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=print&type=quick&intakeId=" + intakeId + "&clientId=" + clientId;
+        url = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=print&type=quick&intakeId=" + intakeId + "&clientId=" + clientId;
         window.open(url, 'quickIntakePrint', 'width=1024,height=768,scrollbars=1');
     }
 
     function printIndepthIntake(clientId) {
-        url = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=print&type=indepth&intakeId=-1&clientId=" + clientId;
+        url = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=print&type=indepth&intakeId=-1&clientId=" + clientId;
         window.open(url, 'indepthIntakePrint', 'width=1024,height=768,scrollbars=1');
     }
 
     function printIntake(clientId, intakeId) {
-        url = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=print&type=quick&intakeId=" + intakeId + "&clientId=" + clientId;
+        url = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=print&type=quick&intakeId=" + intakeId + "&clientId=" + clientId;
         window.open(url, 'indepthIntakePrint', 'width=1024,height=768,scrollbars=1');
     }
 
     function printProgramIntake(clientId, programId) {
-        url = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=print&type=program&intakeId=-1&clientId=" + clientId + "&programId=" + programId;
+        url = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=print&type=program&intakeId=-1&clientId=" + clientId + "&programId=" + programId;
         window.open(url, 'programIntakePrint', 'width=1024,height=768,scrollbars=1');
     }
 
@@ -109,14 +109,14 @@
         else
             methodName = "printPreview_survey";
 
-        location.href = '<html:rewrite action="/PMmodule/Forms/SurveyExecute.do"/>' + "?method=" + methodName + "&formId=" + formId + "&formInstanceId=" + id + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
+        location.href = "<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=" + methodName + "&formId=" + formId + "&formInstanceId=" + id + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
     }
 
     function createIntake(clientId, nodeId) {
         if (nodeId == '') {
             return;
         }
-        location.href = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=update&type=none&nodeId=" + nodeId + "&clientId=" + clientId;
+        location.href = "<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=update&type=none&nodeId=" + nodeId + "&clientId=" + clientId;
 
     }
 
@@ -152,7 +152,7 @@
 
         alert("Generating report from " + startDate + " to " + endDate + ". Please note: it is normal for the generation process to take up to a few minutes to complete, be patient.");
 
-        var url = '<html:rewrite action="/PMmodule/GenericIntake/Report"/>?' + 'nodeId=' + nodeId + '&method=report' + '&type=&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
+        var url = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Report.do?nodeId=' + nodeId + '&method=report' + '&type=&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
 
         popupPage2(url, "IntakeReport" + nodeId);
     }
@@ -305,9 +305,13 @@ New General Form:&nbsp;
 </c:forEach>
 <tr>
 <td colspan="3">
-<html:select property="programWithIntakeId">
-    <html:options collection="programsWithIntake" property="id" labelProperty="name"/>
-</html:select>
+<select name="programWithIntakeId" id="programWithIntakeId">
+<c:forEach var="program" items="${programsWithIntake}">
+    <option value="${program.id}">
+    ${program.name}
+    </option>
+</c:forEach>
+</select>
 <input type="button" value="Update" onclick="updateProgramIntake('<c:out value="${client.demographicNo}"/>')" />
 </td>
 </tr>
@@ -349,10 +353,14 @@ New General Form:&nbsp;
     </c:forEach>
 </table>
 New User Created Form:&nbsp;
-<html:select property="form.formId" onchange="openSurvey(0)">
-    <html:option value="0">&nbsp;</html:option>
-    <html:options collection="survey_list" property="id" labelProperty="description"/>
-</html:select>
+<select name="formId" onchange="openSurvey(0)">
+    <option value="0">&nbsp;</option>
+    <c:forEach var="survey" items="${survey_list}">
+        <option value="${survey.id}">
+                ${survey.description}
+        </option>
+    </c:forEach>
+</select>
 <br/>
 <br/>
 

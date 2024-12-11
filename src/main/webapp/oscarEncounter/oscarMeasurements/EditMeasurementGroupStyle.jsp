@@ -28,15 +28,14 @@
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.Measurements.msgSelectMeasurementGroup"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgSelectMeasurementGroup"/></title>
 
         <script type="text/javascript">
             function set(target) {
@@ -48,18 +47,26 @@
 
     <body class="BodyStyle" vlink="#0000FF">
     <!--  -->
-    <html:errors/>
-    <html:form
-            action="/oscarEncounter/oscarMeasurements/EditMeasurementStyle.do">
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
+    <form action="${pageContext.request.contextPath}/oscarEncounter/oscarMeasurements/EditMeasurementStyle.do" method="post">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><bean:message
-                        key="oscarEncounter.Measurements.msgMeasurements"/></td>
+                <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgMeasurements"/></td>
                 <td class="MainTableTopRowRightColumn" width="400">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><bean:message
-                                    key="oscarEncounter.oscarMeasurements.MeasurementsAction.modifyMeasurementStyleBtn"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.modifyMeasurementStyleBtn"/></td>
                         </tr>
                     </table>
                 </td>
@@ -74,18 +81,19 @@
                                     <tr>
                                         <td>
                                     <tr>
-                                        <td align="left"><bean:message
-                                                key="oscarEncounter.oscarMeasurements.SelectMeasurementGroup.msgCurrentStyleSheet"/>
-                                            <bean:write name='groupName'/>: <c:if test="${not empty css}">
+                                        <td align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.SelectMeasurementGroup.msgCurrentStyleSheet"/>
+                                            <c:out name='${groupName}'/>: <c:if test="${not empty css}">
                                                 <c:out value="${css}"/>
                                             </c:if></td>
                                     <tr>
-                                        <td><bean:message
-                                                key="oscarEncounter.oscarMeasurements.SelectMeasurementGroup.msgChangeTo"/>:
-                                            <html:select property="styleSheet" style="width:250">
-                                                <html:options collection="allStyleSheets" property="cssId"
-                                                              labelProperty="styleSheetName"/>
-                                            </html:select></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.SelectMeasurementGroup.msgChangeTo"/>:
+                                            <select name="styleSheet" style="width:250">
+                                                <c:forEach var="allStyleSheet" items="${allStyleSheets}">
+                                                    <option value="${allStyleSheet.cssId}">
+                                                            ${allStyleSheet.styleSheetName}
+                                                    </option>
+                                                </c:forEach>
+                                            </select></td>
                                     </tr>
                         </tr>
                         <tr>
@@ -94,13 +102,13 @@
                                     <tr>
                                         <input type="hidden" name="forward" value="error"/>
                                         <td><input type="button" name="Button"
-                                                   value="<bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.okBtn"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.okBtn"/>"
                                                    onclick="set('type');submit();"/></td>
                                         <td><input type="button" name="Button"
-                                                   value="<bean:message key="global.btnCancel"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
                                                    onClick="window.close()"></td>
                                         <input type="hidden" name="groupName"
-                                               value="<bean:write name='groupName'/>"/>
+                                               value="<c:out name='${groupName}'/>"/>
                                     </tr>
                                 </table>
                             </td>
@@ -118,6 +126,6 @@
             <td class="MainTableBottomRowRightColumn"></td>
         </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

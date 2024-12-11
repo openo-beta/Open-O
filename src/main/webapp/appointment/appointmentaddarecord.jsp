@@ -52,9 +52,9 @@
 <%@page import="oscar.util.UtilDateUtilities" %>
 <%@ page import="org.oscarehr.event.EventService" %>
 <%@page import="org.oscarehr.managers.DemographicManager" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     </head>
@@ -63,7 +63,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="90%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="appointment.addappointment.msgMainLabel"/></font></th>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabel"/></font></th>
             </tr>
         </table>
         <%
@@ -224,7 +224,7 @@
             }
         %>
         <p>
-        <h1><bean:message key="appointment.addappointment.msgAddSuccess"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddSuccess"/></h1>
 
         <script LANGUAGE="JavaScript">
             <%
@@ -259,7 +259,7 @@
         } else {
         %>
         <p>
-        <h1><bean:message key="appointment.addappointment.msgAddFailure"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddFailure"/></h1>
 
         <%
             }
@@ -267,8 +267,8 @@
         <p></p>
         <hr width="90%"/>
         <form>
-            <input type="button" value="<bean:message key="global.btnClose"/>" onClick="closeit()">
+            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="closeit()">
         </form>
     </center>
     </body>
-</html:html>
+</html>

@@ -24,18 +24,18 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <security:oscarSec roleName="${ sessionScope.userrole }" objectName="_admin" rights="r" reverse="${ false }">
 
         <head>
-            <title><bean:message key="oscarMessenger.config.MessengerAdmin.title"/></title>
+            <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.config.MessengerAdmin.title"/></title>
 
             <script type="text/javascript"
                     src="${pageContext.request.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
@@ -358,4 +358,4 @@
         </div>
         </body>
     </security:oscarSec>
-</html:html>
+</html>

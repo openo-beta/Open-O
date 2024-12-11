@@ -23,11 +23,9 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -43,11 +41,11 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Print Preview</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
             <c:redirect url="error.html"/>
@@ -78,41 +76,36 @@
                     <tr>
                         <td width="0%" valign="top">
                             <div class="DivCCBreadCrumbs"><a href="SearchPatient.jsp">
-                                <bean:message key="SearchPatient.title"/></a> > <b><bean:message
-                                    key="ChoosePatient.title"/></b></div>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchPatient.title"/></a> > <b><fmt:setBundle basename="oscarResources"/><fmt:message key="ChoosePatient.title"/></b></div>
                         </td>
                     </tr>
 
                     <!----Start new rows here-->
                     <tr>
                         <td>
-                            <div class="DivContentTitle"><bean:message
-                                    key="ChoosePatient.title"/></div>
+                            <div class="DivContentTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChoosePatient.title"/></div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="ChoosePatient.searchAgain"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChoosePatient.searchAgain"/></div>
                         </td>
                     </tr>
                     <tr>
-                        <td><html:form action="/oscarRx/searchPatient" focus="surname">
+                        <td><form action="${pageContext.request.contextPath}/oscarRx/searchPatient.do" method="post" focus="surname">
                             <table>
                                 <tr>
-                                    <td><bean:message key="ChoosePatient.textBox"/></td>
-                                    <td><html:text property="surname" size="16" maxlength="16"/>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="ChoosePatient.textBox"/></td>
+                                    <td><input type="checkbox" name="surname" size="16" maxlength="16" />
                                     </td>
-                                    <td><html:submit property="submit" value="Search"
-                                                     styleClass="ControlPushButton"/></td>
+                                    <td><input type="submit" name="submit" value="Search" class="ControlPushButton"/></td>
                                 </tr>
                             </table>
-                        </html:form></td>
+                        </form></td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="ChoosePatient.choose"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChoosePatient.choose"/></div>
                         </td>
                     </tr>
 
@@ -143,4 +136,4 @@
 
     </body>
 
-</html:html>
+</html>

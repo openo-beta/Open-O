@@ -23,8 +23,8 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <style>
     .flag-column {
         width: 10px
@@ -49,7 +49,7 @@
 
 <div ng-if="me != null">
 
-    <p class="lead"><bean:message key="dashboard.welcome" bundle="ui"/> {{me.firstName}} <span
+    <p class="lead"><fmt:message bundle="${uiBundle}" key="dashboard.welcome"fmt:message bundle="${uiBundle}" /> {{me.firstName}} <span
             class="pull-right">{{displayDate() | date:'MMMM d, y'}}</span>
     </p>
     <hr>
@@ -69,11 +69,11 @@
                     <thead>
                     <tr>
                         <th class="flag-column"></th>
-                        <th><bean:message key="dashboard.inbox.header.patient" bundle="ui"/></th>
-                        <th><bean:message key="dashboard.inbox.header.category" bundle="ui"/></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.inbox.header.patient"fmt:message bundle="${uiBundle}" /></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.inbox.header.category"fmt:message bundle="${uiBundle}" /></th>
                         <!--  <th>Source</th> -->
-                        <th><bean:message key="dashboard.inbox.header.date" bundle="ui"/></th>
-                        <th><bean:message key="dashboard.inbox.header.status" bundle="ui"/></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.inbox.header.date"fmt:message bundle="${uiBundle}" /></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.inbox.header.status"fmt:message bundle="${uiBundle}" /></th>
                     </tr>
                     </thead>
 
@@ -91,8 +91,8 @@
                     <tfoot>
                     <tr ng-if="inbox.length > 5">
                         <td colspan="6">
-                            <span class="label label-success hand-hover" ui-sref="inbox"><bean:message
-                                    key="dashboard.inbox.more" bundle="ui"/></span>
+                            <span class="label label-success hand-hover" ui-sref="inbox"><fmt:message
+                                    key="dashboard.inbox.more" bundle="${uiBundle}" /></span>
                         </td>
                     </tr>
                     </tfoot>
@@ -112,10 +112,10 @@
                     <thead>
                     <tr>
                         <!-- 	<th class="flag-column"></th> -->
-                        <th><bean:message key="dashboard.messages.header.from" bundle="ui"/></th>
-                        <th><bean:message key="dashboard.messages.header.subject" bundle="ui"/></th>
-                        <th><bean:message key="dashboard.messages.header.date" bundle="ui"/></th>
-                        <th><bean:message key="dashboard.messages.header.patient" bundle="ui"/></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.messages.header.from"fmt:message bundle="${uiBundle}" /></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.messages.header.subject"fmt:message bundle="${uiBundle}" /></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.messages.header.date"fmt:message bundle="${uiBundle}" /></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.messages.header.patient"fmt:message bundle="${uiBundle}" /></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -132,8 +132,8 @@
                     <tfoot>
                     <tr ng-if="totalMessages > 5">
                         <td colspan="6">
-                            <span class="label label-success hand-hover" ng-click="openClassicMessenger()"><bean:message
-                                    key="dashboard.messages.more" bundle="ui"/></span>
+                            <span class="label label-success hand-hover" ng-click="openClassicMessenger()"><fmt:message
+                                    key="dashboard.messages.more" bundle="${uiBundle}" /></span>
                         </td>
                     </tr>
                     </tfoot>
@@ -190,9 +190,9 @@
                         <th class="flag-column">
                             <span class="glyphicon glyphicon-cog hand-hover" ng-click="configureTicklers()"></span>
                         </th>
-                        <th><bean:message key="dashboard.tickler.header.demographicName" bundle="ui"/></th>
-                        <th><bean:message key="dashboard.tickler.header.due" bundle="ui"/></th>
-                        <th><bean:message key="dashboard.tickler.header.message" bundle="ui"/></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.tickler.header.demographicName"fmt:message bundle="${uiBundle}" /></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.tickler.header.due"fmt:message bundle="${uiBundle}" /></th>
+                        <th><fmt:message bundle="${uiBundle}" key="dashboard.tickler.header.message"fmt:message bundle="${uiBundle}" /></th>
 
                     </tr>
                     </thead>
@@ -211,8 +211,8 @@
                     <tfoot>
                     <tr ng-if="totalTicklers > 5">
                         <td colspan="6">
-                            <span class="label label-success hand-hover" ui-sref="ticklers"><bean:message
-                                    key="dashboard.tickler.more" bundle="ui"/></span>
+                            <span class="label label-success hand-hover" ui-sref="ticklers"><fmt:message
+                                    key="dashboard.tickler.more" bundle="${uiBundle}" /></span>
                         </td>
                     </tr>
                     </tfoot>
@@ -222,7 +222,7 @@
 
         </div>
 
-        <p class="lead"><bean:message key="dashboard.k2a.header" bundle="ui"/></p>
+        <p class="lead"><fmt:message bundle="${uiBundle}" key="dashboard.k2a.header"fmt:message bundle="${uiBundle}" /></p>
         <div id="rightColumn" class="col-md-3 hidden-xs" ng-hide="!k2afeed && !authenticatek2a"
              style="height:80vh;overflow-y:scroll">
             <div infinite-scroll="updateFeed(k2afeed.length,10)" infinite-scroll-parent="true">

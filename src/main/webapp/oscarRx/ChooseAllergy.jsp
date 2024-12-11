@@ -25,7 +25,7 @@
 --%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName2$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_allergy" rights="r" reverse="<%=true%>">
@@ -38,13 +38,11 @@
     }
 %>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@page import="java.util.*" %>
-<%@page import="org.oscarehr.common.model.Allergy" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
@@ -53,8 +51,8 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/scriptaculous.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/effects.js"></script>
 
-        <title><bean:message key="ChooseAllergy.title"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseAllergy.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty sessionScope.RxSessionBean}">
             <c:redirect url="error.html"/>
@@ -122,38 +120,34 @@
                        height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <bean:message
-                                    key="SearchDrug.title"/></a>&nbsp;&gt;&nbsp; <a
-                                    href="ShowAllergies.jsp"> <bean:message
-                                    key="EditAllergies.title"/></a>&nbsp;&gt;&nbsp; <b><bean:message
-                                    key="ChooseAllergy.title"/></b></div>
+                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a>&nbsp;&gt;&nbsp; <a
+                                    href="ShowAllergies.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.title"/></a>&nbsp;&gt;&nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseAllergy.title"/></b></div>
                         </td>
                     </tr>
                     <!----Start new rows here-->
                     <tr>
                         <td>
-                            <div class="DivContentTitle"><bean:message
-                                    key="ChooseAllergy.title"/></div>
+                            <div class="DivContentTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseAllergy.title"/></div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="ChooseAllergy.section1Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseAllergy.section1Title"/></div>
                         </td>
                     </tr>
                     <tr>
-                        <td><html:form action="/oscarRx/searchAllergy"
+                        <td><form action="${pageContext.request.contextPath}/oscarRx/searchAllergy.do" method="post"
                                        focus="searchString" onsubmit="return isEmpty()">
                             <table>
                                 <tr valign="center">
                                     <td>Search:</td>
-                                    <td><html:text property="searchString" size="16" styleId="searchString"
+                                    <td><input type="text" name="searchString" size="16" id="searchString"
                                                    maxlength="16"/></td>
                                 </tr>
                                 <tr>
-                                    <td><html:submit property="submit" value="Search"
-                                                     styleClass="ControlPushButton"/></td>
+                                    <td>
+                                        <input type="submit" name="submit" value=Search" class="ControlPushButton"/>
+                                    </td>
                                     <td><input type=button class="ControlPushButton"
                                                onclick="javascript:document.forms.RxSearchAllergyForm.searchString.value='';document.forms.RxSearchAllergyForm.searchString.focus();"
                                                value="Reset"/>
@@ -171,10 +165,10 @@
                                         general to specific)</i></td>
                                 </tr>
                                 <tr>
-                                    <td><html:checkbox property="type4"/> Drug Classes</td>
-                                    <td><html:checkbox property="type3"/> Ingredients</td>
-                                    <td><html:checkbox property="type2"/> Generic Names</td>
-                                    <td><html:checkbox property="type1"/> Brand Names</td>
+                                    <td><input type="checkbox" name="type4"/> Drug Classes</td>
+                                    <td><input type="checkbox" name="type3"/> Ingredients</td>
+                                    <td><input type="checkbox" name="type2"/> Generic Names</td>
+                                    <td><input type="checkbox" name="type1"/> Brand Names</td>
                                 </tr>
                                 <tr>
                                     <td colspan=4>
@@ -207,12 +201,11 @@
                                                                            value="Clear All"/></td>
                                 </tr>
                             </table>
-                        </html:form></td>
+                        </form></td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="ChooseAllergy.section2Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseAllergy.section2Title"/></div>
                         </td>
                     </tr>
                     <tr>
@@ -295,4 +288,4 @@
 
     </body>
 
-</html:html>
+</html>

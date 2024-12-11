@@ -47,8 +47,8 @@
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="org.oscarehr.managers.PreventionManager" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -147,11 +147,11 @@
 
 
 <%@page import="org.oscarehr.util.SessionConstants" %>
-<html:html>
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="oscarprevention.index.oscarpreventiontitre"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/></title>
         <!--I18n-->
         <link rel="stylesheet" type="text/css"
               href="../share/css/OscarStandardLayout.css"/>
@@ -564,18 +564,16 @@
     %>
     <table class="MainTable" id="scrollNumber1">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message key="oscarprevention.index.oscarpreventiontitre"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
                         <td><%=nameAge%>
                         </td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="prevention" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td style="text-align: right"><a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -706,7 +704,7 @@
                     <a href="javascript: function myFunction() {return false; }"
                        onclick="javascript:popup(700,960,'<rewrite:reWrite
                                jspPage="../oscarEncounter/immunization/initSchedule.do"/>?demographic_no=<%=demographic_no%>','oldImms')">Old
-                        <bean:message key="global.immunizations"/></a>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="global.immunizations"/></a>
                     <br>
                 </oscar:oscarPropertiesCheck></td>
 
@@ -1291,7 +1289,7 @@
 
     </script>
     </body>
-</html:html>
+</html>
 <%!
     String refused(Object re) {
         String ret = "Given";

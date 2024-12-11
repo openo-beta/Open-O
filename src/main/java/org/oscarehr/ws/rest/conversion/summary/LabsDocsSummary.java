@@ -164,7 +164,7 @@ public class LabsDocsSummary implements Summary {
                 Date date = formatter.parse(dateStr);
                 summaryItem.setDate(date);
             } catch (ParseException ex) {
-                MiscUtils.getLogger().debug("EctDisplayDocsAction: Error creating date " + ex.getMessage());
+                MiscUtils.getLogger().debug("EctDisplayDocs2Action: Error creating date " + ex.getMessage());
             }
 
 

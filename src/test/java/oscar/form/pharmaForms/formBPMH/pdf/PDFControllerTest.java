@@ -24,7 +24,12 @@
 package oscar.form.pharmaForms.formBPMH.pdf;
 
 
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.oscarehr.common.model.Demographic;
+import oscar.form.pharmaForms.formBPMH.bean.BpmhDrug;
+import oscar.form.pharmaForms.formBPMH.bean.BpmhForm2Bean;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -33,13 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.oscarehr.common.model.Demographic;
-
-import oscar.form.pharmaForms.formBPMH.bean.BpmhDrug;
-import oscar.form.pharmaForms.formBPMH.bean.BpmhFormBean;
+import static org.junit.Assert.assertEquals;
 
 /*
  * Author: Dennis Warren
@@ -51,7 +50,7 @@ import oscar.form.pharmaForms.formBPMH.bean.BpmhFormBean;
 public class PDFControllerTest {
 
     private static PDFController pdfController;
-    private static BpmhFormBean data;
+    private static BpmhForm2Bean data;
     private static Demographic demographic;
     private static BpmhDrug bpmhDrug1;
     private static URL url;
@@ -84,7 +83,7 @@ public class PDFControllerTest {
         bpmhDrugList.add(bpmhDrug1);
         bpmhDrugList.add(bpmhDrug2);
 
-        data = new BpmhFormBean();
+        data = new BpmhForm2Bean();
         data.setDemographicNo("2345");
         data.setFamilyDrName("Dr. Who");
         data.setDemographic(demographic);

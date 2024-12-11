@@ -25,8 +25,8 @@
 --%>
 
 <%@page import="org.oscarehr.util.SessionConstants" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="java.sql.*, java.util.*, oscar.*" errorPage="/errorpage.jsp" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
@@ -37,7 +37,7 @@
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.provider.web.ProviderPropertyAction" %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script LANGUAGE="JavaScript">
@@ -54,8 +54,7 @@
     <center>
         <table border="0" cellspacing="0" cellpadding="0" width="90%">
             <tr bgcolor="#486ebd">
-                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><bean:message
-                        key="provider.providerupdatepreference.description"/></font></th>
+                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerupdatepreference.description"/></font></th>
             </tr>
         </table>
         <%
@@ -98,8 +97,8 @@
         <hr width="90%"/>
         <form><input type="button"
                      value=
-                         <bean:message key="global.btnClose"/> onClick="self.close()">
+                         <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> onClick="self.close()">
         </form>
     </center>
     </body>
-</html:html>
+</html>

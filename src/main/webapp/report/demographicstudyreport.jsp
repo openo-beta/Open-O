@@ -68,12 +68,12 @@
 <jsp:useBean id="studyBean" class="java.util.Properties" scope="page"/>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="report.demographicstudyreport.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.demographicstudyreport.title"/>
         </title>
         <script language="JavaScript">
             <!--
@@ -86,14 +86,13 @@
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr bgcolor="<%=deepcolor%>">
-            <th><font face="Helvetica"><bean:message
-                    key="report.demographicstudyreport.msgTitle"/></font></th>
+            <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.demographicstudyreport.msgTitle"/></font></th>
         </tr>
         <tr>
             <td align="right"><input type="button" name="Button"
-                                     value="<bean:message key="global.btnPrint" />"
+                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                                      onClick="window.print()"> <input type="button" name="Button"
-                                                                      value="<bean:message key="global.btnCancel" />"
+                                                                      value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
                                                                       onClick="window.close()"></td>
         </tr>
     </table>
@@ -101,14 +100,11 @@
     <table width="100%" border="0" bgcolor="white" cellspacing="2"
            cellpadding="2">
         <tr bgcolor='<%=deepcolor%>'>
-            <TH width="20%" nowrap><bean:message
-                    key="report.reportpatientchartlist.msgLastName"/></TH>
-            <TH width="20%"><bean:message
-                    key="report.reportpatientchartlist.msgFirstName"/></TH>
-            <TH width="20%"><bean:message
-                    key="report.demographicstudyreport.msgStudy"/></TH>
+            <TH width="20%" nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgLastName"/></TH>
+            <TH width="20%"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgFirstName"/></TH>
+            <TH width="20%"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.demographicstudyreport.msgStudy"/></TH>
             <TH width="20%">Email</TH>
-            <TH><bean:message key="report.demographicstudyreport.msgProvider"/></TH>
+            <TH><fmt:setBundle basename="oscarResources"/><fmt:message key="report.demographicstudyreport.msgProvider"/></TH>
         </tr>
         <%
             for (Study s : studyDao.findByCurrent1(1)) {
@@ -149,8 +145,7 @@
         if (nLastPage >= 0) {
     %>
     <a
-            href="demographicstudyreport.jsp?limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><bean:message
-            key="report.reportactivepatientlist.msgLastPage"/></a>
+            href="demographicstudyreport.jsp?limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportactivepatientlist.msgLastPage"/></a>
     |
     <%
         }
@@ -158,9 +153,9 @@
     %>
     <a
             href="demographicstudyreport.jsp?limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
-        <bean:message key="report.reportactivepatientlist.msgNextPage"/></a>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportactivepatientlist.msgNextPage"/></a>
     <%
         }
     %>
     </body>
-</html:html>
+</html>

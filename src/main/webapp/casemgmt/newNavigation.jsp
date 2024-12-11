@@ -25,7 +25,7 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <script type="text/javascript">
@@ -37,7 +37,7 @@
 <!--dummmy div to force browser to allocate space -->
 <div id="leftColLoader" class="leftBox" style="width: 100%">
     <h3 style="width: 100%; background-color: #CCCCFF;">
-        <a href="#" onclick="return false;"><bean:message key="oscarEncounter.LeftNavBar.msgLoading"/></a>
+        <a href="#" onclick="return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.LeftNavBar.msgLoading"/></a>
     </h3>
 </div>
 

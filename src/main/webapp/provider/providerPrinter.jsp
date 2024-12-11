@@ -23,8 +23,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="oscar.oscarProvider.data.*" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
@@ -41,14 +41,14 @@
 
     OscarProperties oscarProps = OscarProperties.getInstance();
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.1.min.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
 
-        <title><bean:message key="provider.setDefaultPrinter.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.title"/></title>
 
         <script language="javascript">
             function createMessageHandler() {
@@ -99,9 +99,8 @@
     <body class="BodyStyle" vlink="#0000FF" onLoad="createMessageHandler();">
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message key="provider.setDefaultPrinter.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-                    key="provider.setDefaultPrinter.msgdefaulPrinter"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.msgdefaulPrinter"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -190,73 +189,61 @@
                     if (request.getAttribute("status") == null) {
                 %>
 
-                <html:form action="/EditPrinter.do">
-                    <bean:message key="provider.setDefaultPrinter.setDefaultPrinterFor"/>:<br>
+                <form action="${pageContext.request.contextPath}/EditPrinter.do" method="post">
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.setDefaultPrinterFor"/>:<br>
                     <table>
                         <tr>
                             <td>
-                                <input type=radio name="labelTypeRadioName" value="0" checked><bean:message
-                                    key="provider.setDefaultPrinter.appointmentReceipt"/></td>
+                                <input type=radio name="labelTypeRadioName" value="0" checked><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.appointmentReceipt"/></td>
                             <td><input type="text" id="defaultPrinterName0" name="defaultPrinterNameAppointmentReceipt"
                                        value="<%=defaultPrinterNameAppointmentReceipt%>" size="40" readonly>
                                 <input type="checkbox"
-                                       name="silentPrintAppointmentReceipt" <%=silentPrintAppointmentReceipt == true ? "checked" : ""%> ><bean:message
-                                        key="provider.setDefaultPrinter.silentPrint"/>
+                                       name="silentPrintAppointmentReceipt" <%=silentPrintAppointmentReceipt == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type=radio name="labelTypeRadioName" value="1"><bean:message
-                                    key="provider.setDefaultPrinter.PDFEnvelope"/></td>
+                                <input type=radio name="labelTypeRadioName" value="1"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFEnvelope"/></td>
                             <td><input type="text" id="defaultPrinterName1" name="defaultPrinterNamePDFEnvelope"
                                        value="<%=defaultPrinterNamePDFEnvelope%>" size="40" readonly>
                                 <input type="checkbox"
-                                       name="silentPrintPDFEnvelope" <%=silentPrintPDFEnvelope == true ? "checked" : ""%> ><bean:message
-                                        key="provider.setDefaultPrinter.silentPrint"/>
+                                       name="silentPrintPDFEnvelope" <%=silentPrintPDFEnvelope == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type=radio name="labelTypeRadioName" value="2"><bean:message
-                                    key="provider.setDefaultPrinter.PDFLabel"/></td>
+                                <input type=radio name="labelTypeRadioName" value="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFLabel"/></td>
                             <td><input type="text" id="defaultPrinterName2" name="defaultPrinterNamePDFLabel"
                                        value="<%=defaultPrinterNamePDFLabel%>" size="40" readonly>
                                 <input type="checkbox"
-                                       name="silentPrintPDFLabel" <%=silentPrintPDFLabel == true ? "checked" : ""%> ><bean:message
-                                        key="provider.setDefaultPrinter.silentPrint"/>
+                                       name="silentPrintPDFLabel" <%=silentPrintPDFLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type=radio name="labelTypeRadioName" value="3"><bean:message
-                                    key="provider.setDefaultPrinter.PDFAddressLabel"/></td>
+                                <input type=radio name="labelTypeRadioName" value="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFAddressLabel"/></td>
                             <td><input type="text" id="defaultPrinterName3" name="defaultPrinterNamePDFAddressLabel"
                                        value="<%=defaultPrinterNamePDFAddressLabel%>" size="40" readonly>
                                 <input type="checkbox"
-                                       name="silentPrintPDFAddressLabel" <%=silentPrintPDFAddressLabel == true ? "checked" : ""%> ><bean:message
-                                        key="provider.setDefaultPrinter.silentPrint"/>
+                                       name="silentPrintPDFAddressLabel" <%=silentPrintPDFAddressLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type=radio name="labelTypeRadioName" value="4"><bean:message
-                                    key="provider.setDefaultPrinter.PDFChartLabel"/></td>
+                                <input type=radio name="labelTypeRadioName" value="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFChartLabel"/></td>
                             <td><input type="text" id="defaultPrinterName4" name="defaultPrinterNamePDFChartLabel"
                                        value="<%=defaultPrinterNamePDFChartLabel%>" size="40" readonly>
                                 <input type="checkbox"
-                                       name="silentPrintPDFChartLabel" <%=silentPrintPDFChartLabel == true ? "checked" : ""%> ><bean:message
-                                        key="provider.setDefaultPrinter.silentPrint"/>
+                                       name="silentPrintPDFChartLabel" <%=silentPrintPDFChartLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type=radio name="labelTypeRadioName" value="5"><bean:message
-                                    key="provider.setDefaultPrinter.ClientLabLabel"/></td>
+                                <input type=radio name="labelTypeRadioName" value="5"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.ClientLabLabel"/></td>
                             <td><input type="text" id="defaultPrinterName5" name="defaultPrinterNameClientLabLabel"
                                        value="<%=defaultPrinterNameClientLabLabel%>" size="40" readonly>
                                 <input type="checkbox"
-                                       name="silentPrintClientLabLabel" <%=silentPrintClientLabLabel == true ? "checked" : ""%> ><bean:message
-                                        key="provider.setDefaultPrinter.silentPrint"/>
+                                       name="silentPrintClientLabLabel" <%=silentPrintClientLabLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
                         </tr>
                         <tr>
@@ -266,11 +253,11 @@
                             <td colspan="2">
                                 <%if (oscarProps.getProperty("new_label_print") != null && oscarProps.getProperty("new_label_print").equals("true")) { %>
                                 <input type="submit" onclick="return true;"
-                                       value="<bean:message key="provider.setDefaultPrinter.btnSave" />"/>
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.btnSave"/>"/>
                                 <br><br>
                                 <%}%>
-                                <bean:message key="provider.setDefaultPrinter.requirement"/> <br>
-                                <bean:message key="provider.setDefaultPrinter.requirementSilentPrint"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.requirement"/> <br>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.requirementSilentPrint"/>
                                 <div style="visibility: hidden; display:inline;">
                                     <object id="myPdf" type="application/pdf"
                                             data="<%=request.getContextPath()%>/PrinterList.do?method=generatePrinterListInPDF"
@@ -279,9 +266,9 @@
                             </td>
                         </tr>
                     </table>
-                </html:form> <%
+                </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {%>
-                <bean:message key="provider.setDefaultPrinter.msgSuccess"/> <br>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.msgSuccess"/> <br>
             </td>
         </tr>
         <%}%>
@@ -291,4 +278,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

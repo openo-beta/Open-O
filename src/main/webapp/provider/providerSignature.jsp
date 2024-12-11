@@ -24,9 +24,9 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="oscar.oscarProvider.data.*" %>
 
 <%
@@ -37,17 +37,17 @@
     ProSignatureData sig = new ProSignatureData();
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
 
-        <title><bean:message key="provider.providerSignature.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.title"/></title>
 
     </head>
 
@@ -55,19 +55,16 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="provider.providerSignature.msgPrefs"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgPrefs"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><bean:message key="provider.providerSignature.msgTitle"/>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgTitle"/>
                         </td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="signature" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td style="text-align: right"><a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -77,17 +74,11 @@
             <td class="MainTableRightColumn">
                 <% boolean hasSig = sig.hasSignature(curUser_no);
                     if (hasSig) {
-                %> <bean:message
-                    key="provider.providerSignature.msgCurrentSignature"/> <u><%=sig.getSignature(curUser_no)%>
+                %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgCurrentSignature"/> <u><%=sig.getSignature(curUser_no)%>
             </u>
                 <br>
-                <a href="editSignature.jsp"><bean:message
-                        key="provider.providerSignature.btnClickHere"/></a> <bean:message
-                    key="provider.providerSignature.msgChangeIt"/> <% } else {%> <bean:message
-                    key="provider.providerSignature.msgSigNotSet"/><br>
-                <a href="editSignature.jsp"><bean:message
-                        key="provider.providerSignature.btnClickHere"/></a> <bean:message
-                    key="provider.providerSignature.msgCreate"/> <%}%>
+                <a href="editSignature.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.btnClickHere"/></a> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgChangeIt"/> <% } else {%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgSigNotSet"/><br>
+                <a href="editSignature.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.btnClickHere"/></a> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgCreate"/> <%}%>
             </td>
         </tr>
         <tr>
@@ -96,4 +87,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

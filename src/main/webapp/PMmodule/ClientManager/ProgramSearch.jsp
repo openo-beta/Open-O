@@ -36,14 +36,12 @@
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Program Search</title>
-        <link href="<html:rewrite page='/css/tigris.css'/>" rel="stylesheet"
-              type="text/css"/>
-        <link href="<html:rewrite page='/css/displaytag.css'/>" rel="stylesheet"
-              type="text/css"/>
+        <link href="${request.contextPath}/css/tigris.css" rel="stylesheet" type="text/css"/>
+        <link href="${request.contextPath}/css/displaytag.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <script type="text/javascript">
@@ -217,4 +215,4 @@
     </c:if>
 
     </body>
-</html:html>
+</html>

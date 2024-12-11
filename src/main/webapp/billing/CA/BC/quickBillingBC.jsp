@@ -51,8 +51,6 @@
                 oscar.util.*,
                 org.springframework.web.context.support.WebApplicationContextUtils,
                 org.springframework.web.context.WebApplicationContext" %>
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -276,7 +274,7 @@
     <div id="header" class="bgLilac">
         <ul>
             <li>
-                <bean:message key="billing.provider.billProvider"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.provider.billProvider"/>
 
                 <select id="provider" name="provider">
                     <option value="empty">- Select Provider -</option>

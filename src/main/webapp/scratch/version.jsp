@@ -28,7 +28,7 @@
 <%@ page import="org.oscarehr.common.model.ScratchPad" %>
 <%@ page import="oscar.util.DateUtils" %>
 <%@ page import="oscar.oscarProvider.data.ProviderColourUpdater" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
     String date = null;
@@ -57,7 +57,7 @@
 %>
 
 <head>
-    <title><bean:message key="ScratchPad.title"/> <%=title%>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ScratchPad.title"/> <%=title%>
     </title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/share/css/OscarStandardLayout.css">
     <%if (userColour != null) {%>
@@ -71,19 +71,18 @@
 <body class="BodyStyle">
 <table class="MainTable" id="scrollNumber1">
     <tr class="MainTableTopRow">
-        <td class="MainTableTopRowLeftColumn"><bean:message key="ScratchPad.title"/></td>
+        <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="ScratchPad.title"/></td>
         <td class="MainTableTopRowRightColumn">
             <table class="TopStatusBar">
                 <tr>
                     <td><h1><%=userfirstname%> <%=userlastname%>
                     </h1></td>
-                    <td style="text-align:center"><bean:message key="ScratchPad.title"/> <%=title%>
+                    <td style="text-align:center"><fmt:setBundle basename="oscarResources"/><fmt:message key="ScratchPad.title"/> <%=title%>
                     </td>
                     <td style="text-align: right">
-                        <oscar:help keywords="pad" key="app.top1"/> |
+
                         <a href="javascript:void(0)"
-                           onclick="javascript:popup(600,700,'../oscarEncounter/About.jsp')"><bean:message
-                                key="global.about"/></a>
+                           onclick="javascript:popup(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                     </td>
                 </tr>
             </table>
@@ -101,7 +100,7 @@
         <%} else {%>
         <td class="MainTableLeftColumn"></td>
         <td class="MainTableRightColumn">
-            <h2>Success! <bean:message key="ScratchPad.title"/> <%=request.getAttribute("actionDeleted")%>
+            <h2>Success! <fmt:setBundle basename="oscarResources"/><fmt:message key="ScratchPad.title"/> <%=request.getAttribute("actionDeleted")%>
             </h2>
             <button name="updateScratchBtn" onclick="updateScratch()">Close</button>
 

@@ -44,13 +44,13 @@
     String userlastname = (String) session.getAttribute("userlastname");
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 
 <%@ page
         import="java.util.*, oscar.*, oscar.util.*, oscar.oscarProvider.data.ProviderData, org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
-<%@ page import="org.oscarehr.documentManager.data.AddEditDocumentForm" %>
+<%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 <%
@@ -91,9 +91,9 @@
 
     String lastUpdate = "", fileName = "";
     boolean oldDoc = true;
-    AddEditDocumentForm formdata = new AddEditDocumentForm();
+    AddEditDocument2Form formdata = new AddEditDocument2Form();
     if (request.getAttribute("completedForm") != null) {
-        formdata = (AddEditDocumentForm) request.getAttribute("completedForm");
+        formdata = (AddEditDocument2Form) request.getAttribute("completedForm");
         lastUpdate = EDocUtil.getDmsDateTime();
     } else if ((editDocumentNo != null) && (!editDocumentNo.isEmpty())) {
         EDoc currentDoc = EDocUtil.getDoc(editDocumentNo);
@@ -196,7 +196,7 @@
 
     <script type="text/javascript" src="../share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
     <script type="text/javascript">
         window.onload = function () {
@@ -270,10 +270,9 @@
 <div class="maindiv">
     <div class="maindivheading">&nbsp;&nbsp;&nbsp; Edit Document</div>
     <%-- Lists linkhtmlerrors --%> <% for (Enumeration errorkeys = linkhtmlerrors.keys(); errorkeys.hasMoreElements(); ) {%>
-    <font class="warning">Error: <bean:message
-            key="<%=(String) linkhtmlerrors.get(errorkeys.nextElement())%>"/></font><br/>
-    <% } %> <html:form action="/documentManager/addEditHtml" method="POST"
-                       enctype="multipart/form-data" styleClass="form"
+    <font class="warning">Error: <fmt:setBundle basename="oscarResources"/><fmt:message key="<%=(String) linkhtmlerrors.get(errorkeys.nextElement())%>"/></font><br/>
+    <% } %> <form action="${pageContext.request.contextPath}/documentManager/addEditHtml.do" method="POST"
+                       enctype="multipart/form-data" class="form"
                        onsubmit="return submitUpload(this);">
     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
     <input type="hidden" name="function"
@@ -294,7 +293,7 @@
             <td width="180px">Type:</td>
             <td>
                 <select id="docType" name="docType" style="width: 160">
-                    <option value=""><bean:message key="dms.addDocument.formSelect"/></option>
+                    <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                     <% for (int i = 0; i < doctypes.size(); i++) {
                         String doctype = doctypes.get(i); %>
                     <option value="<%= doctype%>" <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
@@ -302,13 +301,13 @@
                     <%}%>
                 </select>
                 <input id="docTypeinput" type="button" size="20" onClick="newDocType();"
-                       value="<bean:message key="dms.documentEdit.formAddNewDocType"/> "/>
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentEdit.formAddNewDocType"/> "/>
             </td>
         </tr>
         <tr>
-            <td><bean:message key="dms.addDocument.msgDocClass"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocClass"/>:</td>
             <td><select name="docClass" id="docClass">
-                <option value=""><bean:message key="dms.addDocument.formSelectClass"/></option>
+                <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelectClass"/></option>
                 <% boolean consultShown = false;
                     for (String reportClass : reportClasses) {
                         if (reportClass.startsWith("Consultant Report")) {
@@ -324,7 +323,7 @@
             </td>
         </tr>
         <tr>
-            <td><bean:message key="dms.addDocument.msgDocSubClass"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocSubClass"/>:</td>
             <td><input type="text" name="docSubClass" id="docSubClass" value="<%=formdata.getDocSubClass()%>"
                        style="width:330px">
                 <div class="autocomplete_style" id="docSubClass_list"></div>
@@ -363,7 +362,7 @@
             </td>
         </tr>
         <tr>
-            <td><bean:message key="dms.addDocument.formContentAddedUpdated"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formContentAddedUpdated"/>:</td>
             <td><%=formdata.getContentDateTime()%>
             </td>
         </tr>
@@ -422,7 +421,7 @@
         <div><input type="submit" name="Submit" value="Submit"><input
                 type="button" value="Cancel" onclick="window.close();"></div>
     </center>
-</html:form>
+</form>
     <script type="text/javascript">
         Calendar.setup({
             inputField: "observationDate",

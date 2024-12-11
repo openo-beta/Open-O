@@ -30,7 +30,7 @@
 
 <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
-<form action="/SurveyManager" method="POST" id="surveyForm">
+<form action="<%=request.getContextPath() %>/SurveyManager.do" method="POST" id="surveyForm">
     <input type="hidden" name="method" value="create_survey"/>
     <input type="hidden" name="numPages" id="numPages" value="1"/>
 

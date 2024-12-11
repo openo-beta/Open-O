@@ -27,9 +27,9 @@
 <%@page import="org.oscarehr.common.model.Drug" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
@@ -49,7 +49,7 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
 
         <link href="${ pageContext.request.contextPath }/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -59,7 +59,7 @@
 
         <script type="text/javascript">var ctx = '${ oscar_context_path }';</script>
         <title>Drug Reason</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <%
             String id = request.getParameter("id");
@@ -195,4 +195,4 @@
     </form>
     </body>
 
-</html:html>
+</html>

@@ -38,20 +38,18 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="oscar.form.*" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.formFemaleAnnualPrint.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.title"/></title>
 
         <link rel="stylesheet" type="text/css" href="annualStyle.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css">
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <%
@@ -105,17 +103,13 @@
 
     <table cellspacing="3" cellpadding="0" width="100%">
         <tr>
-            <td><big><i><b><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgAnnualFemaleHealthReview"/></b></i></big>
+            <td><big><i><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAnnualFemaleHealthReview"/></b></i></big>
             </td>
-            <td><b><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgName"/>:</b> <%= props.getProperty("pName", "") %>
+            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgName"/>:</b> <%= props.getProperty("pName", "") %>
             </td>
-            <td><b><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgAge"/>:</b> <%= props.getProperty("age", "") %>
+            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAge"/>:</b> <%= props.getProperty("age", "") %>
             </td>
-            <td><b><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgDate"/></b><small>(yyyy/mm/dd)</small>:
+            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgDate"/></b><small>(yyyy/mm/dd)</small>:
                 <%=props.getProperty("formDate", "") %>
             </td>
         </tr>
@@ -125,8 +119,7 @@
             <td rowspan="4" width="55%">
                 <table class="DashedBorder" width="100%">
                     <tr>
-                        <td><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgCurrentConcerns"/>:</b></td>
+                        <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgCurrentConcerns"/>:</b></td>
                     </tr>
                     <tr>
                         <td valign="top" width="30%"
@@ -134,36 +127,29 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="center"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgSeeChart"/><br>
-                            <%= checkMarks(props.getProperty("currentConcernsNo", "")) %> &nbsp;<bean:message
-                                    key="oscarEncounter.formFemaleAnnualPrint.msgNo"/>&nbsp;&nbsp;&nbsp;
+                        <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSeeChart"/><br>
+                            <%= checkMarks(props.getProperty("currentConcernsNo", "")) %> &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNo"/>&nbsp;&nbsp;&nbsp;
                             <%= checkMarks(props.getProperty("currentConcernsYes", "")) %>
-                            &nbsp;<bean:message
-                                    key="oscarEncounter.formFemaleAnnualPrint.msgyes"/></td>
+                            &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgyes"/></td>
                     </tr>
                 </table>
             </td>
             <td>
                 <table>
                     <tr>
-                        <td colspan="3"><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgSystemReview"/>:</b></td>
+                        <td colspan="3"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSystemReview"/>:</b></td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgN"/></b></td>
-                        <td colspan="2"><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgAbN"/></b></td>
+                        <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgN"/></b></td>
+                        <td colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAbN"/></b></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("headN", "")) %>
                         </td>
                         <td><%= checkMarks(props.getProperty("headAbN", "")) %>
                         </td>
-                        <td align="left" nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgHeadNeck"/>:
+                        <td align="left" nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgHeadNeck"/>:
                         </td>
                         <td align="left"><%= props.getProperty("head", "") %>
                         </td>
@@ -173,8 +159,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("respAbN", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgResp"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgResp"/>:
                         </td>
                         <td align="left"><%= props.getProperty("resp", "") %>
                         </td>
@@ -184,8 +169,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("cardioAbN", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgCardio"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgCardio"/>:
                         </td>
                         <td align="left"><%= props.getProperty("cardio", "") %>
                         </td>
@@ -195,8 +179,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("giAbN", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgGI"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgGI"/>:
                         </td>
                         <td align="left"><%= props.getProperty("gi", "") %>
                         </td>
@@ -206,8 +189,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("guAbN", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgGU"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgGU"/>:
                         </td>
                         <td align="left"><%= props.getProperty("gu", "") %>
                         </td>
@@ -217,8 +199,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("skinAbN", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgSkin"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSkin"/>:
                         </td>
                         <td align="left"><%= props.getProperty("skin", "") %>
                         </td>
@@ -228,8 +209,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("mskAbN", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.MSK"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.MSK"/>:
                         </td>
                         <td align="left"><%= props.getProperty("msk", "") %>
                         </td>
@@ -239,8 +219,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("endocrinAbN", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgEndocrin"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgEndocrin"/>:
                         </td>
                         <td align="left"><%= props.getProperty("endocrin", "") %>
                         </td>
@@ -250,8 +229,7 @@
                         </td>
                         <td valign="top"><%= checkMarks(props.getProperty("otherAbN", "")) %>
                         </td>
-                        <td valign="top"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgOther"/>:
+                        <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOther"/>:
                         </td>
                         <td align="left"><%= props.getProperty("other", "") %>
                         </td>
@@ -266,32 +244,25 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgGTPAL"/>&nbsp; <%= checkMarks(props.getProperty("noGtpalRevisions", "")) %>
-                            <bean:message
-                                    key="oscarEncounter.formFemaleAnnualPrint.msgNo"/> <%= checkMarks(props.getProperty("yesGtpalRevisions", "")) %>
-                            <bean:message key="oscarEncounter.formFemaleAnnualPrint.msgyes"/><br>
-                            <%= checkMarks(props.getProperty("frontSheet", "")) %> <bean:message
-                                    key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgGTPAL"/>&nbsp; <%= checkMarks(props.getProperty("noGtpalRevisions", "")) %>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNo"/> <%= checkMarks(props.getProperty("yesGtpalRevisions", "")) %>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgyes"/><br>
+                            <%= checkMarks(props.getProperty("frontSheet", "")) %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgLMP"/><small>(yyyy/mm/dd)</small>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgLMP"/><small>(yyyy/mm/dd)</small>:
                             <%= props.getProperty("lmp", "") %><br>
-                            <bean:message
-                                    key="oscarEncounter.formFemaleAnnualPrint.msgMenopause"/>: <%= props.getProperty("menopause", "") %>
-                            /<bean:message
-                                    key="oscarEncounter.formFemaleAnnualPrint.msgMenopauseUnit"/></td>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgMenopause"/>: <%= props.getProperty("menopause", "") %>
+                            /<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgMenopauseUnit"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("papSmearsN", "")) %>
                         </td>
                         <td><%= checkMarks(props.getProperty("papSmearsAbN", "")) %>
                         </td>
-                        <td nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgPreviousPaoSmears"/>:
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPreviousPaoSmears"/>:
                             <%= props.getProperty("papSmears", "") %>
                         </td>
                     </tr>
@@ -304,43 +275,36 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td colspan="4"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgReview"/>:
+                        <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgReview"/>:
                         </td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td><%= checkMarks(props.getProperty("drugs", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgDrugs"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgDrugs"/></td>
                         <td>&nbsp;</td>
                         <td align="right"><%= checkMarks(props.getProperty("medSheet", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgMedSheet"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgMedSheet"/></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td><%= checkMarks(props.getProperty("allergies", "")) %>
                         </td>
-                        <td colspan="2" nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgAllergies"/></td>
+                        <td colspan="2" nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAllergies"/></td>
                         <td align="right"><%= checkMarks(props.getProperty("frontSheet1", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td><%= checkMarks(props.getProperty("familyHistory", "")) %>
                         </td>
-                        <td colspan="2"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgFamilyHist"/></td>
+                        <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFamilyHist"/></td>
                         <td align="right"><%= checkMarks(props.getProperty("frontSheet2", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
                     </tr>
                 </table>
             </td>
@@ -351,15 +315,12 @@
             <td class="DashedBorder" width="50%">
                 <table>
                     <tr>
-                        <td colspan="3" nowrap="true"><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgLifestyle"/>:</b></td>
+                        <td colspan="3" nowrap="true"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgLifestyle"/>:</b></td>
                         <td><b><i><small>("Any concerns with ...?")</small></i></b></td>
                     </tr>
                     <tr>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgNo"/></td>
-                        <td colspan="2"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgyes"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNo"/></td>
+                        <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgyes"/></td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
@@ -367,8 +328,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("smokingYes", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgSmoking"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSmoking"/>:
                         </td>
                         <td align="right"><%= props.getProperty("smoking", "") %>
                         </td>
@@ -378,8 +338,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("alcoholYes", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgAlcohol"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAlcohol"/>:
                         </td>
                         <td align="right"><%= props.getProperty("alcohol", "") %>
                         </td>
@@ -389,8 +348,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("otcYes", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgIllicitDrugs"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgIllicitDrugs"/>:
                         </td>
                         <td align="right"><%= props.getProperty("otc", "") %>
                         </td>
@@ -400,8 +358,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("exerciseYes", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgExercise"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgExercise"/></td>
                         <td align="right"><%= props.getProperty("exercise", "") %>
                         </td>
                     </tr>
@@ -410,8 +367,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("nutritionYes", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgNutrition"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNutrition"/>:
                         </td>
                         <td align="right"><%= props.getProperty("nutrition", "") %>
                         </td>
@@ -421,8 +377,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("dentalYes", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgDentalHygiene"/>:
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgDentalHygiene"/>:
                         </td>
                         <td align="right"><%= props.getProperty("dental", "") %>
                         </td>
@@ -432,8 +387,7 @@
                         </td>
                         <td valign="top"><%= checkMarks(props.getProperty("relationshipYes", "")) %>
                         </td>
-                        <td valign="top"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgRelationshipIssues"/>:
+                        <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgRelationshipIssues"/>:
                         </td>
                         <td align="right"><%= props.getProperty("relationship", "") %>
                         </td>
@@ -443,8 +397,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("sexualityYes", "")) %>
                         </td>
-                        <td nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgSexualityRisks"/>:
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSexualityRisks"/>:
                         </td>
                         <td align="right"><%= props.getProperty("sexuality", "") %>
                         </td>
@@ -454,8 +407,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("occupationalYes", "")) %>
                         </td>
-                        <td nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgOccupationalRisks"/>:
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOccupationalRisks"/>:
                         </td>
                         <td align="right"><%= props.getProperty("occupational", "") %>
                         </td>
@@ -465,8 +417,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("drivingYes", "")) %>
                         </td>
-                        <td nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgDrivingSafety"/>:
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgDrivingSafety"/>:
                         </td>
                         <td align="right"><%= props.getProperty("driving", "") %>
                         </td>
@@ -476,8 +427,7 @@
                         </td>
                         <td><%= checkMarks(props.getProperty("travelYes", "")) %>
                         </td>
-                        <td nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgForeignTravel"/>:
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgForeignTravel"/>:
                         </td>
                         <td align="right"><%= props.getProperty("travel", "") %>
                         </td>
@@ -487,8 +437,7 @@
                         </td>
                         <td valign="top"><%= checkMarks(props.getProperty("otherYes", "")) %>
                         </td>
-                        <td nowrap="true" valign="top"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgOther"/>:
+                        <td nowrap="true" valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOther"/>:
                         </td>
                         <td rowspan="3" align="right"><%= props.getProperty("otherLifestyle", "") %>
                         </td>
@@ -498,8 +447,7 @@
             <td width="100%" valign="top" class="DashedBorder">
                 <table width="100%">
                     <tr>
-                        <td width="50%" colspan="2"><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgScreeningReview"/>:</b></td>
+                        <td width="50%" colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgScreeningReview"/>:</b></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
@@ -507,44 +455,37 @@
                     <tr>
                         <td><%= checkMarks(props.getProperty("mammogram", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgMammogram"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgMammogram"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("breast", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgBreastSelfTest"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgBreastSelfTest"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("pap", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgPapSmear"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPapSmear"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("femaleImmunization", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgImmunization"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgImmunization"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("precontraceptive", "")) %>
                         </td>
-                        <td nowrap="true"><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgprecontraceptive"/></td>
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgprecontraceptive"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("femaleCardiac", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgCardiacRisk"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgCardiacRisk"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("osteoporosis", "")) %>
                         </td>
-                        <td><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgOsteoporosis"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOsteoporosis"/></td>
                     </tr>
                     <tr>
                         <td><%= checkMarks(props.getProperty("femaleOther1c", "")) %>
@@ -564,42 +505,29 @@
     </table>
     <table width="100%" class="tableWithBorder">
         <tr>
-            <td colspan="9"><b><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgPhysicalExam"/>:</b></td>
+            <td colspan="9"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPhysicalExam"/>:</b></td>
         </tr>
         <tr>
-            <td><b><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgVitals"/>: </b></td>
-            <td><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgBP"/>: <%= props.getProperty("bprTop", "") %>/
-                <%= props.getProperty("bprBottom", "") %> <bean:message
-                        key="oscarEncounter.formFemaleAnnualPrint.msgR"/></td>
-            <td align="right"><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgPulse"/>:
+            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgVitals"/>: </b></td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgBP"/>: <%= props.getProperty("bprTop", "") %>/
+                <%= props.getProperty("bprBottom", "") %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgR"/></td>
+            <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPulse"/>:
             </td>
-            <td><%= props.getProperty("pulse", "") %> <bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgPulseUnit"/></td>
-            <td align="right"><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgHeight"/>:
+            <td><%= props.getProperty("pulse", "") %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPulseUnit"/></td>
+            <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgHeight"/>:
             </td>
-            <td><%= props.getProperty("height", "") %> <bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgHeightUnit"/></td>
-            <td align="right"><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgWeight"/>: <%= props.getProperty("weight", "") %>
-                <bean:message key="oscarEncounter.formFemaleAnnualPrint.msgWeightUnit"/></td>
+            <td><%= props.getProperty("height", "") %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgHeightUnit"/></td>
+            <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgWeight"/>: <%= props.getProperty("weight", "") %>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgWeightUnit"/></td>
         <tr>
             <td>&nbsp;</td>
-            <td><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgBP"/>: <%= props.getProperty("bplTop", "") %>/
-                <%= props.getProperty("bplBottom", "") %> <bean:message
-                        key="oscarEncounter.formFemaleAnnualPrint.msgL"/></td>
-            <td align="right"><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgRhythm"/>:
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgBP"/>: <%= props.getProperty("bplTop", "") %>/
+                <%= props.getProperty("bplBottom", "") %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgL"/></td>
+            <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgRhythm"/>:
             </td>
             <td><%= props.getProperty("rhythm", "") %>
             </td>
-            <td align="right"><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgUrineDipstick"/>:
+            <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgUrineDipstick"/>:
             </td>
             <td><%= props.getProperty("urine", "") %>
             </td>
@@ -610,8 +538,7 @@
             <td rowspan="3">
                 <table width="100%" class="DashedBorder">
                     <tr>
-                        <td><b> <bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgPhysicalSigns"/>: </b></td>
+                        <td><b> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPhysicalSigns"/>: </b></td>
                     </tr>
                     <tr>
                         <td class="physicalSigns"><%= props.getProperty("physicalSigns", "") %>
@@ -626,8 +553,7 @@
             <td>
                 <table width="100%">
                     <tr>
-                        <td><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgAssessment"/></b></td>
+                        <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAssessment"/></b></td>
                     </tr>
                     <tr>
                         <td align="center" class="assessmentPlan"><%= props.getProperty("assessment", "") %>
@@ -638,8 +564,7 @@
             <td>
                 <table width="100%">
                     <tr>
-                        <td align="center"><b><bean:message
-                                key="oscarEncounter.formFemaleAnnualPrint.msgPlan"/></b></td>
+                        <td align="center"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPlan"/></b></td>
                     </tr>
                     <tr>
                         <td align="center" class="assessmentPlan"><%= props.getProperty("plan", "") %>
@@ -649,8 +574,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" align="right"><bean:message
-                    key="oscarEncounter.formFemaleAnnualPrint.msgSignature"/>: <%= props.getProperty("signature", "") %>
+            <td colspan="2" align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSignature"/>: <%= props.getProperty("signature", "") %>
             </td>
         </tr>
     </table>
@@ -668,7 +592,7 @@
 
 
     </body>
-</html:html>
+</html>
 
 <%! String checkMarks(String val) {
     String ret = "<img src='graphics/notChecked.gif'>";

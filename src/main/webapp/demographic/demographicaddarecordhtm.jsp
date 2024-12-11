@@ -48,8 +48,8 @@
     String str = null;
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -101,7 +101,7 @@
 
 <%@ include file="../admin/dbconnection.jsp" %>
 <%
-    java.util.Locale vLocale = (java.util.Locale) session.getAttribute(org.apache.struts.Globals.LOCALE_KEY);
+    java.util.Locale vLocale = request.getLocale();
 
     OscarProperties props = OscarProperties.getInstance();
 
@@ -156,7 +156,7 @@
     String today = fmt.format(new Date());
 %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -210,7 +210,7 @@
 
         </script>
 
-        <title><bean:message key="demographic.demographicaddrecordhtm.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.title"/></title>
 
         <% if (OscarProperties.getInstance().getBooleanProperty("indivica_hc_read_enabled", "true")) { %>
         <script language="javascript" src="<%=request.getContextPath() %>/hcHandler/hcHandler.js"></script>
@@ -228,7 +228,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
        adding a calendar a matter of 1 or 2 lines of code. -->
@@ -262,7 +262,7 @@
                         typeInOK = true;
                     }
                     if (dob.value.length != 10) {
-                        alert("<bean:message key="demographic.search.msgWrongDOB"/>");
+                        alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.msgWrongDOB"/>");
                         typeInOK = false;
                     }
 
@@ -279,7 +279,7 @@
                         typeInOK = true;
                     }
                 }
-                if (!typeInOK) alert("<bean:message key="demographic.demographicaddrecordhtm.msgMissingFields"/>");
+                if (!typeInOK) alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMissingFields"/>");
                 return typeInOK;
             }
 
@@ -753,8 +753,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
     <body>
     <table>
         <tr bgcolor="#CCCCFF">
-            <th class="subject"><bean:message
-                    key="demographic.demographicaddrecordhtm.msgMainLabel"/></th>
+            <th class="subject"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMainLabel"/></th>
         </tr>
     </table>
 
@@ -808,13 +807,13 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                        value="add_record">
                                 <input type="hidden" name="displaymode" value="Add Record">
                                 <input type="submit" name="submit"
-                                       value="<bean:message key="demographic.demographicaddrecordhtm.btnAddRecord"/>">
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.btnAddRecord"/>">
                                 <input type="button" name="Button"
-                                       value="<bean:message key="demographic.demographicaddrecordhtm.btnSwipeCard"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.btnSwipeCard"/>"
                                        onclick="window.open('zadddemographicswipe.htm','', 'scrollbars=yes,resizable=yes,width=600,height=300')"
                                        ;>
                                 <input type="button" name="Button"
-                                       value="<bean:message key="demographic.demographicaddrecordhtm.btnCancel"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.btnCancel"/>"
                                        onclick=self.close();>
                             </td>
                         </tr>
@@ -843,16 +842,14 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         %>
 
                         <tr id="rowWithLastName">
-                            <td align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formLastName"/><span
+                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formLastName"/><span
                                     style="color:red;">:</span> </b></td>
                             <td id="lastName" align="left">
                                 <input type="text" name="last_name" id="last_name" onBlur="upCaseCtrl(this)"
                                        value="<%=lastNameVal%>">
 
                             </td>
-                            <td align="right" id="firstNameLbl"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formFirstName"/><span
+                            <td align="right" id="firstNameLbl"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formFirstName"/><span
                                     style="color:red;">:</span> </b></td>
                             <td id="firstName" align="left">
                                 <input type="text" name="first_name" id="first_name" onBlur="upCaseCtrl(this)"
@@ -860,99 +857,67 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </td>
                         </tr>
                         <tr>
-                            <td align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formMiddleNames"/>: </b></td>
+                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formMiddleNames"/>: </b></td>
                             <td id="middleName" align="left">
                                 <input type="text" name="middleNames" id="middleNames" onBlur="upCaseCtrl(this)"
                                        value="">
 
                             </td>
-                            <td align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formNameUsed"/>:
+                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNameUsed"/>:
                             </b></td>
                             <td align="left">
                                 <input type="text" name="nameUsed" size="30" value="" onBlur="upCaseCtrl(this)"/>
                             </td>
                         </tr>
                         <tr>
-                            <td id="languageLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.msgDemoLanguage"/><font
+                            <td id="languageLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgDemoLanguage"/><font
                                     color="red">:</font></b></td>
                             <td id="languageCell" align="left">
                                 <select id="official_lang" name="official_lang">
                                     <option value="English" <%= vLocale.getLanguage().equals("en") ? " selected" : "" %>>
-                                        <bean:message key="demographic.demographiceaddrecordhtm.msgEnglish"/></option>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceaddrecordhtm.msgEnglish"/></option>
                                     <option value="French"  <%= vLocale.getLanguage().equals("fr") ? " selected" : "" %>>
-                                        <bean:message key="demographic.demographiceaddrecordhtm.msgFrench"/></option>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceaddrecordhtm.msgFrench"/></option>
                                 </select>
                             </td>
-                            <td id="titleLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.msgDemoTitle"/><font
+                            <td id="titleLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgDemoTitle"/><font
                                     color="red">:</font></b></td>
                             <td id="titleCell" align="left">
                                 <select id="title" name="title" onchange="checkTitleSex(value);">
-                                    <option value=""><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgNotSet"/></option>
-                                    <option value="DR"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgDr"/></option>
-                                    <option value="MS"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMs"/></option>
-                                    <option value="MISS"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMiss"/></option>
-                                    <option value="MRS"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMrs"/></option>
-                                    <option value="MR"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMr"/></option>
-                                    <option value="MSSR"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMssr"/></option>
-                                    <option value="PROF"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgProf"/></option>
-                                    <option value="REEVE"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgReeve"/></option>
-                                    <option value="REV"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgRev"/></option>
-                                    <option value="RT_HON"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgRtHon"/></option>
-                                    <option value="SEN"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgSen"/></option>
-                                    <option value="SGT"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgSgt"/></option>
-                                    <option value="SR"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgSr"/></option>
+                                    <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgNotSet"/></option>
+                                    <option value="DR"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgDr"/></option>
+                                    <option value="MS"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMs"/></option>
+                                    <option value="MISS"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMiss"/></option>
+                                    <option value="MRS"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMrs"/></option>
+                                    <option value="MR"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMr"/></option>
+                                    <option value="MSSR"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMssr"/></option>
+                                    <option value="PROF"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgProf"/></option>
+                                    <option value="REEVE"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgReeve"/></option>
+                                    <option value="REV"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgRev"/></option>
+                                    <option value="RT_HON"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgRtHon"/></option>
+                                    <option value="SEN"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgSen"/></option>
+                                    <option value="SGT"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgSgt"/></option>
+                                    <option value="SR"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgSr"/></option>
 
-                                    <option value="MADAM"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMadam"/></option>
-                                    <option value="MME"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMme"/></option>
-                                    <option value="MLLE"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMlle"/></option>
-                                    <option value="MAJOR"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMajor"/></option>
-                                    <option value="MAYOR"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgMayor"/></option>
+                                    <option value="MADAM"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMadam"/></option>
+                                    <option value="MME"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMme"/></option>
+                                    <option value="MLLE"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMlle"/></option>
+                                    <option value="MAJOR"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMajor"/></option>
+                                    <option value="MAYOR"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgMayor"/></option>
 
-                                    <option value="BRO"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgBro"/></option>
-                                    <option value="CAPT"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgCapt"/></option>
-                                    <option value="Chief"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgChief"/></option>
-                                    <option value="Cst"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgCst"/></option>
-                                    <option value="Corp"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgCorp"/></option>
-                                    <option value="FR"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgFr"/></option>
-                                    <option value="HON"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgHon"/></option>
-                                    <option value="LT"><bean:message
-                                            key="demographic.demographicaddrecordhtm.msgLt"/></option>
+                                    <option value="BRO"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgBro"/></option>
+                                    <option value="CAPT"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgCapt"/></option>
+                                    <option value="Chief"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgChief"/></option>
+                                    <option value="Cst"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgCst"/></option>
+                                    <option value="Corp"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgCorp"/></option>
+                                    <option value="FR"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgFr"/></option>
+                                    <option value="HON"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgHon"/></option>
+                                    <option value="LT"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgLt"/></option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td id="spokenLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.msgSpoken"/>:</b></td>
+                            <td id="spokenLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgSpoken"/>:</b></td>
                             <td id="spokenCell"><select name="spoken_lang">
                                 <%for (String sp_lang : Util.spokenLangProperties.getLangSorted()) { %>
                                 <option value="<%=sp_lang %>"><%=sp_lang %>
@@ -965,13 +930,11 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         </tr>
 
                         <tr valign="top">
-                            <td id="addrLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formAddress"/>: </b></td>
+                            <td id="addrLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formAddress"/>: </b></td>
                             <td id="addressCell" align="left"><input id="address" type="text" name="address" size=40/>
 
                             </td>
-                            <td id="cityLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formCity"/>: </b></td>
+                            <td id="cityLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formCity"/>: </b></td>
                             <td id="cityCell" align="left"><input type="text" id="city" name="city"
                                                                   value="<%=defaultCity %>"/></td>
                         </tr>
@@ -979,7 +942,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         <tr valign="top">
                             <td id="provLbl" align="right"><b>
                                 <% if (oscarProps.getProperty("demographicLabelProvince") == null) { %>
-                                <bean:message key="demographic.demographicaddrecordhtm.formprovince"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formprovince"/>
                                 <% } else {
                                     out.print(oscarProps.getProperty("demographicLabelProvince"));
                                 } %> : </b></td>
@@ -1217,7 +1180,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </td>
                             <td class="postalLbl" align="right">
                                 <b><% if (oscarProps.getProperty("demographicLabelPostal") == null) { %>
-                                    <bean:message key="demographic.demographicaddrecordhtm.formPostal"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPostal"/>
                                     <% if ("false".equals(OscarProperties.getInstance().getProperty("skip_postal_code_validation", "false"))) { %>
                                     <span style="color:red">*</span>
                                     <% } %>
@@ -1231,14 +1194,12 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
 
                         <tr valign="top">
-                            <td class="addrLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formResidentialAddress"/>: </b></td>
+                            <td class="addrLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formResidentialAddress"/>: </b></td>
                             <td class="addressCell" align="left"><input id="residentialAddress" type="text"
                                                                         name="residentialAddress" size=40/>
 
                             </td>
-                            <td class="cityLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formResidentialCity"/>: </b></td>
+                            <td class="cityLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formResidentialCity"/>: </b></td>
                             <td class="cityCell" align="left"><input type="text" id="residentialCity"
                                                                      name="residentialCity"
                                                                      value=""/></td>
@@ -1246,7 +1207,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
                         <tr valign="top">
                             <td class="provLbl" align="right"><b>
-                                <bean:message key="demographic.demographicaddrecordhtm.formResidentialProvince"/> : </b>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formResidentialProvince"/> : </b>
                             </td>
                             <td class="provCell" align="left">
                                 <%
@@ -1481,7 +1442,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <% } %>
                             </td>
                             <td id="postalLbl" align="right"><b>
-                                <bean:message key="demographic.demographicaddrecordhtm.formResidentialPostal"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formResidentialPostal"/>
                                 : </b></td>
                             <td id="postalCell" align="left"><input type="text" id="residentialPostal"
                                                                     name="residentialPostal"
@@ -1489,48 +1450,37 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         </tr>
 
                         <tr valign="top">
-                            <td id="phoneLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPhoneHome"/>: </b></td>
+                            <td id="phoneLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPhoneHome"/>: </b></td>
                             <td id="phoneCell" align="left"><input type="text" id="phone" name="phone"
                                                                    onBlur="formatPhoneNum()"
                                                                    value="<%=props.getProperty("phoneprefix", "905-")%>">
-                                <bean:message
-                                        key="demographic.demographicaddrecordhtm.Ext"/>:<input
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.Ext"/>:<input
                                         type="text" id="hPhoneExt" name="hPhoneExt" value="" size="4"/></td>
-                            <td id="phoneWorkLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPhoneWork"/>:</b></td>
+                            <td id="phoneWorkLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPhoneWork"/>:</b></td>
                             <td id="phoneWorkCell" align="left"><input type="text" name="phone2"
-                                                                       onBlur="formatPhoneNum()" value=""> <bean:message
-                                    key="demographic.demographicaddrecordhtm.Ext"/>:<input type="text"
+                                                                       onBlur="formatPhoneNum()" value=""> <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.Ext"/>:<input type="text"
                                                                                            name="wPhoneExt" value=""
                                                                                            style="display: inline"
                                                                                            size="4"/></td>
                         </tr>
                         <tr valign="top">
-                            <td id="phoneCellLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPhoneCell"/>: </b></td>
+                            <td id="phoneCellLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPhoneCell"/>: </b></td>
                             <td id="phoneCellCell" align="left"><input type="text" name="demo_cell"
                                                                        onBlur="formatPhoneNum()"></td>
-                            <td align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPhoneComment"/>: </b></td>
+                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPhoneComment"/>: </b></td>
                             <td align="left" colspan="3">
                                 <textarea rows="2" cols="30" name="phoneComment"></textarea>
                             </td>
                         </tr>
                         <tr valign="top">
-                            <td id="newsletterLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formNewsLetter"/>: </b></td>
+                            <td id="newsletterLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNewsLetter"/>: </b></td>
                             <td id="newsletterCell" align="left"><select name="newsletter">
-                                <option value="Unknown" selected><bean:message
-                                        key="demographic.demographicaddrecordhtm.formNewsLetter.optUnknown"/></option>
-                                <option value="No"><bean:message
-                                        key="demographic.demographicaddrecordhtm.formNewsLetter.optNo"/></option>
-                                <option value="Paper"><bean:message
-                                        key="demographic.demographicaddrecordhtm.formNewsLetter.optPaper"/></option>
-                                <option value="Electronic"><bean:message
-                                        key="demographic.demographicaddrecordhtm.formNewsLetter.optElectronic"/></option>
+                                <option value="Unknown" selected><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNewsLetter.optUnknown"/></option>
+                                <option value="No"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNewsLetter.optNo"/></option>
+                                <option value="Paper"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNewsLetter.optPaper"/></option>
+                                <option value="Electronic"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNewsLetter.optElectronic"/></option>
                             </select></td>
-                            <td align="right"><b><bean:message key="demographic.demographiceditdemographic.aboriginal"/>: </b>
+                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.aboriginal"/>: </b>
                             </td>
                             <td align="left">
                                 <select name="aboriginal">
@@ -1540,18 +1490,15 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 </select>
                         </tr>
                         <tr valign="top">
-                            <td id="emailLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formEMail"/>: </b></td>
+                            <td id="emailLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formEMail"/>: </b></td>
                             <td id="emailCell" align="left"><input type="text" id="email" name="email" value="">
                             </td>
-                            <td id="myOscarLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPHRUserName"/>:</b></td>
+                            <td id="myOscarLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPHRUserName"/>:</b></td>
                             <td id="myOscarCell" align="left"><input type="text" name="myOscarUserName" value="">
                             </td>
                         </tr>
                         <tr valign="top">
-                            <td id="dobLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formDOB"/><span
+                            <td id="dobLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formDOB"/><span
                                     style="color:red;">:</span></b></td>
                             <td id="dobTbl" align="left">
                                 <table>
@@ -1615,15 +1562,14 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </td>
 
                             <td style="text-align: right;">
-                                <strong><bean:message key="demographic.demographicaddrecordhtm.formPronouns"/></strong>
+                                <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPronouns"/></strong>
                             </td>
                             <td style="text-align: left;">
                                 <input type="text" id="patientPronouns" name="pronouns"/>
                             </td>
                         </tr>
                         <tr>
-                            <td align="right" id="genderLbl"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formSex"/><font
+                            <td align="right" id="genderLbl"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formSex"/><font
                                     color="red">:</font></b></td>
 
                             <% // Determine if curUser has selected a default sex in preferences
@@ -1649,7 +1595,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </td>
 
                             <td style="text-align: right;">
-                                <strong><bean:message key="demographic.demographicaddrecordhtm.formGender"/></strong>
+                                <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formGender"/></strong>
                             </td>
                             <td style="text-align: left;">
                                 <input type="text" id="patientGender" name="gender"/>
@@ -1657,144 +1603,252 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         </tr>
 
 
-			<tr valign="top">
-				<td align="right" id="hinLbl"><b><bean:message
-					key="demographic.demographicaddrecordhtm.formHIN" />: </b></td>
-				<td align="left" id="hinVer" >
-					<input type="text" name="hin" id="hin" onfocus="autoFillHin()" oninput="sanitizeInput(this)">
-					<bean:message key="demographic.demographicaddrecordhtm.formVer" />:
-						<input type="text" id="ver" name="ver" value="" onBlur="upCaseCtrl(this)">
-				</td>
-				<td id="effDateLbl" align="right"><b><bean:message
-					key="demographic.demographicaddrecordhtm.formEFFDate" />: </b></td>
-				<td id="effDate" align="left">
-					<input type="text" placeholder="yyyy" id="eff_date_year" name="eff_date_year"  maxlength="4">
-					<input type="text" placeholder="mm"  id="eff_date_month" name="eff_date_month" maxlength="2">
-					<input type="text" placeholder="dd" id="eff_date_date" name="eff_date_date" maxlength="2">
-				</td>
-			</tr>                       
-			<tr>
-				<td id="hcTypeLbl" align="right"><b><bean:message
-					key="demographic.demographicaddrecordhtm.formHCType" />: </b></td>
-				<td id="hcType">
-				
-				<select name="hc_type" id="hc_type">
-					<option value="OT"
-						<%=HCType.equals("")||HCType.equals("OT")?" selected":""%>>Other</option>
-					<% if (pNames.isDefined()) {
-                   for (ListIterator li = pNames.listIterator(); li.hasNext(); ) {
-                       String province = (String) li.next(); %>
-                       <option value="<%=province%>"<%=province.equals(HCType)?" selected":""%>><%=li.next()%></option>
-                   <% } %>
-            <% } else { %>
-		<option value="AB"<%=HCType.equals("AB")?" selected":""%>>AB-Alberta</option>
-		<option value="BC"<%=HCType.equals("BC")?" selected":""%>>BC-British Columbia</option>
-		<option value="MB"<%=HCType.equals("MB")?" selected":""%>>MB-Manitoba</option>
-		<option value="NB"<%=HCType.equals("NB")?" selected":""%>>NB-New Brunswick</option>
-		<option value="NL"<%=HCType.equals("NL")?" selected":""%>>NL-Newfoundland & Labrador</option>
-		<option value="NT"<%=HCType.equals("NT")?" selected":""%>>NT-Northwest Territory</option>
-		<option value="NS"<%=HCType.equals("NS")?" selected":""%>>NS-Nova Scotia</option>
-		<option value="NU"<%=HCType.equals("NU")?" selected":""%>>NU-Nunavut</option>
-		<option value="ON"<%=HCType.equals("ON")?" selected":""%>>ON-Ontario</option>
-		<option value="PE"<%=HCType.equals("PE")?" selected":""%>>PE-Prince Edward Island</option>
-		<option value="QC"<%=HCType.equals("QC")?" selected":""%>>QC-Quebec</option>
-		<option value="SK"<%=HCType.equals("SK")?" selected":""%>>SK-Saskatchewan</option>
-		<option value="YT"<%=HCType.equals("YT")?" selected":""%>>YT-Yukon</option>
-		<option value="US"<%=HCType.equals("US")?" selected":""%>>US resident</option>
-		<option value="US-AK" <%=HCType.equals("US-AK")?" selected":""%>>US-AK-Alaska</option>
-		<option value="US-AL" <%=HCType.equals("US-AL")?" selected":""%>>US-AL-Alabama</option>
-		<option value="US-AR" <%=HCType.equals("US-AR")?" selected":""%>>US-AR-Arkansas</option>
-		<option value="US-AZ" <%=HCType.equals("US-AZ")?" selected":""%>>US-AZ-Arizona</option>
-		<option value="US-CA" <%=HCType.equals("US-CA")?" selected":""%>>US-CA-California</option>
-		<option value="US-CO" <%=HCType.equals("US-CO")?" selected":""%>>US-CO-Colorado</option>
-		<option value="US-CT" <%=HCType.equals("US-CT")?" selected":""%>>US-CT-Connecticut</option>
-		<option value="US-CZ" <%=HCType.equals("US-CZ")?" selected":""%>>US-CZ-Canal Zone</option>
-		<option value="US-DC" <%=HCType.equals("US-DC")?" selected":""%>>US-DC-District Of Columbia</option>
-		<option value="US-DE" <%=HCType.equals("US-DE")?" selected":""%>>US-DE-Delaware</option>
-		<option value="US-FL" <%=HCType.equals("US-FL")?" selected":""%>>US-FL-Florida</option>
-		<option value="US-GA" <%=HCType.equals("US-GA")?" selected":""%>>US-GA-Georgia</option>
-		<option value="US-GU" <%=HCType.equals("US-GU")?" selected":""%>>US-GU-Guam</option>
-		<option value="US-HI" <%=HCType.equals("US-HI")?" selected":""%>>US-HI-Hawaii</option>
-		<option value="US-IA" <%=HCType.equals("US-IA")?" selected":""%>>US-IA-Iowa</option>
-		<option value="US-ID" <%=HCType.equals("US-ID")?" selected":""%>>US-ID-Idaho</option>
-		<option value="US-IL" <%=HCType.equals("US-IL")?" selected":""%>>US-IL-Illinois</option>
-		<option value="US-IN" <%=HCType.equals("US-IN")?" selected":""%>>US-IN-Indiana</option>
-		<option value="US-KS" <%=HCType.equals("US-KS")?" selected":""%>>US-KS-Kansas</option>
-		<option value="US-KY" <%=HCType.equals("US-KY")?" selected":""%>>US-KY-Kentucky</option>
-		<option value="US-LA" <%=HCType.equals("US-LA")?" selected":""%>>US-LA-Louisiana</option>
-		<option value="US-MA" <%=HCType.equals("US-MA")?" selected":""%>>US-MA-Massachusetts</option>
-		<option value="US-MD" <%=HCType.equals("US-MD")?" selected":""%>>US-MD-Maryland</option>
-		<option value="US-ME" <%=HCType.equals("US-ME")?" selected":""%>>US-ME-Maine</option>
-		<option value="US-MI" <%=HCType.equals("US-MI")?" selected":""%>>US-MI-Michigan</option>
-		<option value="US-MN" <%=HCType.equals("US-MN")?" selected":""%>>US-MN-Minnesota</option>
-		<option value="US-MO" <%=HCType.equals("US-MO")?" selected":""%>>US-MO-Missouri</option>
-		<option value="US-MS" <%=HCType.equals("US-MS")?" selected":""%>>US-MS-Mississippi</option>
-		<option value="US-MT" <%=HCType.equals("US-MT")?" selected":""%>>US-MT-Montana</option>
-		<option value="US-NC" <%=HCType.equals("US-NC")?" selected":""%>>US-NC-North Carolina</option>
-		<option value="US-ND" <%=HCType.equals("US-ND")?" selected":""%>>US-ND-North Dakota</option>
-		<option value="US-NE" <%=HCType.equals("US-NE")?" selected":""%>>US-NE-Nebraska</option>
-		<option value="US-NH" <%=HCType.equals("US-NH")?" selected":""%>>US-NH-New Hampshire</option>
-		<option value="US-NJ" <%=HCType.equals("US-NJ")?" selected":""%>>US-NJ-New Jersey</option>
-		<option value="US-NM" <%=HCType.equals("US-NM")?" selected":""%>>US-NM-New Mexico</option>
-		<option value="US-NU" <%=HCType.equals("US-NU")?" selected":""%>>US-NU-Nunavut</option>
-		<option value="US-NV" <%=HCType.equals("US-NV")?" selected":""%>>US-NV-Nevada</option>
-		<option value="US-NY" <%=HCType.equals("US-NY")?" selected":""%>>US-NY-New York</option>
-		<option value="US-OH" <%=HCType.equals("US-OH")?" selected":""%>>US-OH-Ohio</option>
-		<option value="US-OK" <%=HCType.equals("US-OK")?" selected":""%>>US-OK-Oklahoma</option>
-		<option value="US-OR" <%=HCType.equals("US-OR")?" selected":""%>>US-OR-Oregon</option>
-		<option value="US-PA" <%=HCType.equals("US-PA")?" selected":""%>>US-PA-Pennsylvania</option>
-		<option value="US-PR" <%=HCType.equals("US-PR")?" selected":""%>>US-PR-Puerto Rico</option>
-		<option value="US-RI" <%=HCType.equals("US-RI")?" selected":""%>>US-RI-Rhode Island</option>
-		<option value="US-SC" <%=HCType.equals("US-SC")?" selected":""%>>US-SC-South Carolina</option>
-		<option value="US-SD" <%=HCType.equals("US-SD")?" selected":""%>>US-SD-South Dakota</option>
-		<option value="US-TN" <%=HCType.equals("US-TN")?" selected":""%>>US-TN-Tennessee</option>
-		<option value="US-TX" <%=HCType.equals("US-TX")?" selected":""%>>US-TX-Texas</option>
-		<option value="US-UT" <%=HCType.equals("US-UT")?" selected":""%>>US-UT-Utah</option>
-		<option value="US-VA" <%=HCType.equals("US-VA")?" selected":""%>>US-VA-Virginia</option>
-		<option value="US-VI" <%=HCType.equals("US-VI")?" selected":""%>>US-VI-Virgin Islands</option>
-		<option value="US-VT" <%=HCType.equals("US-VT")?" selected":""%>>US-VT-Vermont</option>
-		<option value="US-WA" <%=HCType.equals("US-WA")?" selected":""%>>US-WA-Washington</option>
-		<option value="US-WI" <%=HCType.equals("US-WI")?" selected":""%>>US-WI-Wisconsin</option>
-		<option value="US-WV" <%=HCType.equals("US-WV")?" selected":""%>>US-WV-West Virginia</option>
-		<option value="US-WY" <%=HCType.equals("US-WY")?" selected":""%>>US-WY-Wyoming</option>
-          <% } %>
-          </select>
-       
-      </td>
-      <td id="renewDateLbl" align="right"><b>*<bean:message key="demographic.demographiceditdemographic.formHCRenewDate" />:</b></td>
-      <td id="renewDate" align="left"> <input type="text" placeholder="yyyy" id="hc_renew_date_year" name="hc_renew_date_year" size="4" maxlength="4" value="">
-                                       <input type="text" placeholder="mm" id="hc_renew_date_month" name="hc_renew_date_month" size="2" maxlength="2" value="">
-                                       <input type="text" placeholder="dd" id="hc_renew_date_date" name="hc_renew_date_date" size="2" maxlength="2" value="">
-      </td>
-     </tr>
-     <tr>
-      <td id="countryLbl" align="right">
-         <b><bean:message key="demographic.demographicaddrecordhtm.msgCountryOfOrigin"/>:</b>
-      </td>
-      <td id="countryCell">
-          <select id="countryOfOrigin" name="countryOfOrigin">
-              <option value="-1"><bean:message key="demographic.demographicaddrecordhtm.msgNotSet"/></option>
-              <%for(CountryCode cc : countryList){ %>
-              <option value="<%=cc.getCountryId()%>"><%=cc.getCountryName() %></option>
-              <%}%>
-          </select>
-      </td>
-		<oscar:oscarPropertiesCheck property="privateConsentEnabled" value="true">
-		<%
-			String[] privateConsentPrograms = OscarProperties.getInstance().getProperty("privateConsentPrograms","").split(",");
-			ProgramProvider pp2 = programManager2.getCurrentProgramInDomain(loggedInInfo,loggedInInfo.getLoggedInProviderNo());
-			boolean showConsentsThisTime=false;
-			if(pp2 != null) {
-				for(int x=0;x<privateConsentPrograms.length;x++) {
-					if(privateConsentPrograms[x].equals(pp2.getProgramId().toString())) {
-						showConsentsThisTime=true;
-					}
-				}
-			}
-		
-			if(showConsentsThisTime) {
-		%>
-		<td colspan="2">
+                        <tr valign="top">
+                            <td align="right" id="hinLbl"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formHIN"/>: </b></td>
+                            <td align="left" id="hinVer">
+                                <input type="text" name="hin" id="hin" onfocus="autoFillHin()">
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formVer"/>:
+                                <input type="text" id="ver" name="ver" value="" onBlur="upCaseCtrl(this)">
+                            </td>
+                            <td id="effDateLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formEFFDate"/>: </b></td>
+                            <td id="effDate" align="left">
+                                <input type="text" placeholder="yyyy" id="eff_date_year" name="eff_date_year"
+                                       maxlength="4">
+                                <input type="text" placeholder="mm" id="eff_date_month" name="eff_date_month"
+                                       maxlength="2">
+                                <input type="text" placeholder="dd" id="eff_date_date" name="eff_date_date"
+                                       maxlength="2">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="hcTypeLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formHCType"/>: </b></td>
+                            <td id="hcType">
+
+                                <select name="hc_type" id="hc_type">
+                                    <option value="OT"
+                                            <%=HCType.equals("") || HCType.equals("OT") ? " selected" : ""%>>Other
+                                    </option>
+                                    <% if (pNames.isDefined()) {
+                                        for (ListIterator li = pNames.listIterator(); li.hasNext(); ) {
+                                            String province = (String) li.next(); %>
+                                    <option value="<%=province%>"<%=province.equals(HCType) ? " selected" : ""%>><%=li.next()%>
+                                    </option>
+                                    <% } %>
+                                    <% } else { %>
+                                    <option value="AB"<%=HCType.equals("AB") ? " selected" : ""%>>AB-Alberta</option>
+                                    <option value="BC"<%=HCType.equals("BC") ? " selected" : ""%>>BC-British Columbia
+                                    </option>
+                                    <option value="MB"<%=HCType.equals("MB") ? " selected" : ""%>>MB-Manitoba</option>
+                                    <option value="NB"<%=HCType.equals("NB") ? " selected" : ""%>>NB-New Brunswick
+                                    </option>
+                                    <option value="NL"<%=HCType.equals("NL") ? " selected" : ""%>>NL-Newfoundland &
+                                        Labrador
+                                    </option>
+                                    <option value="NT"<%=HCType.equals("NT") ? " selected" : ""%>>NT-Northwest
+                                        Territory
+                                    </option>
+                                    <option value="NS"<%=HCType.equals("NS") ? " selected" : ""%>>NS-Nova Scotia
+                                    </option>
+                                    <option value="NU"<%=HCType.equals("NU") ? " selected" : ""%>>NU-Nunavut</option>
+                                    <option value="ON"<%=HCType.equals("ON") ? " selected" : ""%>>ON-Ontario</option>
+                                    <option value="PE"<%=HCType.equals("PE") ? " selected" : ""%>>PE-Prince Edward
+                                        Island
+                                    </option>
+                                    <option value="QC"<%=HCType.equals("QC") ? " selected" : ""%>>QC-Quebec</option>
+                                    <option value="SK"<%=HCType.equals("SK") ? " selected" : ""%>>SK-Saskatchewan
+                                    </option>
+                                    <option value="YT"<%=HCType.equals("YT") ? " selected" : ""%>>YT-Yukon</option>
+                                    <option value="US"<%=HCType.equals("US") ? " selected" : ""%>>US resident</option>
+                                    <option value="US-AK" <%=HCType.equals("US-AK") ? " selected" : ""%>>US-AK-Alaska
+                                    </option>
+                                    <option value="US-AL" <%=HCType.equals("US-AL") ? " selected" : ""%>>US-AL-Alabama
+                                    </option>
+                                    <option value="US-AR" <%=HCType.equals("US-AR") ? " selected" : ""%>>
+                                        US-AR-Arkansas
+                                    </option>
+                                    <option value="US-AZ" <%=HCType.equals("US-AZ") ? " selected" : ""%>>US-AZ-Arizona
+                                    </option>
+                                    <option value="US-CA" <%=HCType.equals("US-CA") ? " selected" : ""%>>
+                                        US-CA-California
+                                    </option>
+                                    <option value="US-CO" <%=HCType.equals("US-CO") ? " selected" : ""%>>
+                                        US-CO-Colorado
+                                    </option>
+                                    <option value="US-CT" <%=HCType.equals("US-CT") ? " selected" : ""%>>
+                                        US-CT-Connecticut
+                                    </option>
+                                    <option value="US-CZ" <%=HCType.equals("US-CZ") ? " selected" : ""%>>US-CZ-Canal
+                                        Zone
+                                    </option>
+                                    <option value="US-DC" <%=HCType.equals("US-DC") ? " selected" : ""%>>US-DC-District
+                                        Of Columbia
+                                    </option>
+                                    <option value="US-DE" <%=HCType.equals("US-DE") ? " selected" : ""%>>
+                                        US-DE-Delaware
+                                    </option>
+                                    <option value="US-FL" <%=HCType.equals("US-FL") ? " selected" : ""%>>US-FL-Florida
+                                    </option>
+                                    <option value="US-GA" <%=HCType.equals("US-GA") ? " selected" : ""%>>US-GA-Georgia
+                                    </option>
+                                    <option value="US-GU" <%=HCType.equals("US-GU") ? " selected" : ""%>>US-GU-Guam
+                                    </option>
+                                    <option value="US-HI" <%=HCType.equals("US-HI") ? " selected" : ""%>>US-HI-Hawaii
+                                    </option>
+                                    <option value="US-IA" <%=HCType.equals("US-IA") ? " selected" : ""%>>US-IA-Iowa
+                                    </option>
+                                    <option value="US-ID" <%=HCType.equals("US-ID") ? " selected" : ""%>>US-ID-Idaho
+                                    </option>
+                                    <option value="US-IL" <%=HCType.equals("US-IL") ? " selected" : ""%>>
+                                        US-IL-Illinois
+                                    </option>
+                                    <option value="US-IN" <%=HCType.equals("US-IN") ? " selected" : ""%>>US-IN-Indiana
+                                    </option>
+                                    <option value="US-KS" <%=HCType.equals("US-KS") ? " selected" : ""%>>US-KS-Kansas
+                                    </option>
+                                    <option value="US-KY" <%=HCType.equals("US-KY") ? " selected" : ""%>>
+                                        US-KY-Kentucky
+                                    </option>
+                                    <option value="US-LA" <%=HCType.equals("US-LA") ? " selected" : ""%>>
+                                        US-LA-Louisiana
+                                    </option>
+                                    <option value="US-MA" <%=HCType.equals("US-MA") ? " selected" : ""%>>
+                                        US-MA-Massachusetts
+                                    </option>
+                                    <option value="US-MD" <%=HCType.equals("US-MD") ? " selected" : ""%>>
+                                        US-MD-Maryland
+                                    </option>
+                                    <option value="US-ME" <%=HCType.equals("US-ME") ? " selected" : ""%>>US-ME-Maine
+                                    </option>
+                                    <option value="US-MI" <%=HCType.equals("US-MI") ? " selected" : ""%>>
+                                        US-MI-Michigan
+                                    </option>
+                                    <option value="US-MN" <%=HCType.equals("US-MN") ? " selected" : ""%>>
+                                        US-MN-Minnesota
+                                    </option>
+                                    <option value="US-MO" <%=HCType.equals("US-MO") ? " selected" : ""%>>
+                                        US-MO-Missouri
+                                    </option>
+                                    <option value="US-MS" <%=HCType.equals("US-MS") ? " selected" : ""%>>
+                                        US-MS-Mississippi
+                                    </option>
+                                    <option value="US-MT" <%=HCType.equals("US-MT") ? " selected" : ""%>>US-MT-Montana
+                                    </option>
+                                    <option value="US-NC" <%=HCType.equals("US-NC") ? " selected" : ""%>>US-NC-North
+                                        Carolina
+                                    </option>
+                                    <option value="US-ND" <%=HCType.equals("US-ND") ? " selected" : ""%>>US-ND-North
+                                        Dakota
+                                    </option>
+                                    <option value="US-NE" <%=HCType.equals("US-NE") ? " selected" : ""%>>
+                                        US-NE-Nebraska
+                                    </option>
+                                    <option value="US-NH" <%=HCType.equals("US-NH") ? " selected" : ""%>>US-NH-New
+                                        Hampshire
+                                    </option>
+                                    <option value="US-NJ" <%=HCType.equals("US-NJ") ? " selected" : ""%>>US-NJ-New
+                                        Jersey
+                                    </option>
+                                    <option value="US-NM" <%=HCType.equals("US-NM") ? " selected" : ""%>>US-NM-New
+                                        Mexico
+                                    </option>
+                                    <option value="US-NU" <%=HCType.equals("US-NU") ? " selected" : ""%>>US-NU-Nunavut
+                                    </option>
+                                    <option value="US-NV" <%=HCType.equals("US-NV") ? " selected" : ""%>>US-NV-Nevada
+                                    </option>
+                                    <option value="US-NY" <%=HCType.equals("US-NY") ? " selected" : ""%>>US-NY-New
+                                        York
+                                    </option>
+                                    <option value="US-OH" <%=HCType.equals("US-OH") ? " selected" : ""%>>US-OH-Ohio
+                                    </option>
+                                    <option value="US-OK" <%=HCType.equals("US-OK") ? " selected" : ""%>>
+                                        US-OK-Oklahoma
+                                    </option>
+                                    <option value="US-OR" <%=HCType.equals("US-OR") ? " selected" : ""%>>US-OR-Oregon
+                                    </option>
+                                    <option value="US-PA" <%=HCType.equals("US-PA") ? " selected" : ""%>>
+                                        US-PA-Pennsylvania
+                                    </option>
+                                    <option value="US-PR" <%=HCType.equals("US-PR") ? " selected" : ""%>>US-PR-Puerto
+                                        Rico
+                                    </option>
+                                    <option value="US-RI" <%=HCType.equals("US-RI") ? " selected" : ""%>>US-RI-Rhode
+                                        Island
+                                    </option>
+                                    <option value="US-SC" <%=HCType.equals("US-SC") ? " selected" : ""%>>US-SC-South
+                                        Carolina
+                                    </option>
+                                    <option value="US-SD" <%=HCType.equals("US-SD") ? " selected" : ""%>>US-SD-South
+                                        Dakota
+                                    </option>
+                                    <option value="US-TN" <%=HCType.equals("US-TN") ? " selected" : ""%>>
+                                        US-TN-Tennessee
+                                    </option>
+                                    <option value="US-TX" <%=HCType.equals("US-TX") ? " selected" : ""%>>US-TX-Texas
+                                    </option>
+                                    <option value="US-UT" <%=HCType.equals("US-UT") ? " selected" : ""%>>US-UT-Utah
+                                    </option>
+                                    <option value="US-VA" <%=HCType.equals("US-VA") ? " selected" : ""%>>
+                                        US-VA-Virginia
+                                    </option>
+                                    <option value="US-VI" <%=HCType.equals("US-VI") ? " selected" : ""%>>US-VI-Virgin
+                                        Islands
+                                    </option>
+                                    <option value="US-VT" <%=HCType.equals("US-VT") ? " selected" : ""%>>US-VT-Vermont
+                                    </option>
+                                    <option value="US-WA" <%=HCType.equals("US-WA") ? " selected" : ""%>>
+                                        US-WA-Washington
+                                    </option>
+                                    <option value="US-WI" <%=HCType.equals("US-WI") ? " selected" : ""%>>
+                                        US-WI-Wisconsin
+                                    </option>
+                                    <option value="US-WV" <%=HCType.equals("US-WV") ? " selected" : ""%>>US-WV-West
+                                        Virginia
+                                    </option>
+                                    <option value="US-WY" <%=HCType.equals("US-WY") ? " selected" : ""%>>US-WY-Wyoming
+                                    </option>
+                                    <% } %>
+                                </select>
+
+                            </td>
+                            <td id="renewDateLbl" align="right"><b>*<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formHCRenewDate"/>:</b></td>
+                            <td id="renewDate" align="left"><input type="text" placeholder="yyyy"
+                                                                   id="hc_renew_date_year" name="hc_renew_date_year"
+                                                                   size="4" maxlength="4" value="">
+                                <input type="text" placeholder="mm" id="hc_renew_date_month" name="hc_renew_date_month"
+                                       size="2" maxlength="2" value="">
+                                <input type="text" placeholder="dd" id="hc_renew_date_date" name="hc_renew_date_date"
+                                       size="2" maxlength="2" value="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="countryLbl" align="right">
+                                <b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgCountryOfOrigin"/>:</b>
+                            </td>
+                            <td id="countryCell">
+                                <select id="countryOfOrigin" name="countryOfOrigin">
+                                    <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgNotSet"/></option>
+                                    <%for (CountryCode cc : countryList) { %>
+                                    <option value="<%=cc.getCountryId()%>"><%=cc.getCountryName() %>
+                                    </option>
+                                    <%}%>
+                                </select>
+                            </td>
+                            <oscar:oscarPropertiesCheck property="privateConsentEnabled" value="true">
+                                <%
+                                    String[] privateConsentPrograms = OscarProperties.getInstance().getProperty("privateConsentPrograms", "").split(",");
+                                    ProgramProvider pp2 = programManager2.getCurrentProgramInDomain(loggedInInfo, loggedInInfo.getLoggedInProviderNo());
+                                    boolean showConsentsThisTime = false;
+                                    if (pp2 != null) {
+                                        for (int x = 0; x < privateConsentPrograms.length; x++) {
+                                            if (privateConsentPrograms[x].equals(pp2.getProgramId().toString())) {
+                                                showConsentsThisTime = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (showConsentsThisTime) {
+                                %>
+                                <td colspan="2">
 
                                     <input type="radio" name="usSigned" value="signed">U.S. Resident Consent Form Signed
 
@@ -1819,15 +1873,13 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 </jsp:include>
                             </oscar:oscarPropertiesCheck>
                                 <%-- END TOGGLE FIRST NATIONS MODULE --%>
-                            <td id="sinNoLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.msgSIN"/>:</b></td>
+                            <td id="sinNoLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgSIN"/>:</b></td>
                             <td id="sinNoCell" align="left">
                                 <input type="text" name="sin">
                             </td>
 
 
-                            <td id="cytologyLbl" align="right"><b> <bean:message
-                                    key="demographic.demographicaddrecordhtm.cytolNum"/>:</b></td>
+                            <td id="cytologyLbl" align="right"><b> <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.cytolNum"/>:</b></td>
                             <td id="cytologyCell" align="left">
                                 <input type="text" name="cytolNum">
 
@@ -1838,7 +1890,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <b><% if (oscarProps.getProperty("demographicLabelDoctor") != null) {
                                     out.print(oscarProps.getProperty("demographicLabelDoctor", ""));
                                 } else { %>
-                                    <bean:message key="demographic.demographicaddrecordhtm.formDoctor"/> <% } %>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formDoctor"/> <% } %>
                                     : </b></td>
                             <td id="demoDoctorCell" align="left">
                                 <select name="staff">
@@ -1855,8 +1907,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                     %>
                                     <option value=""></option>
                                 </select></td>
-                            <td id="nurseLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formNurse"/>: </b></td>
+                            <td id="nurseLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNurse"/>: </b></td>
                             <td id="nurseCell"><select name="cust1">
                                 <option value=""></option>
                                 <%
@@ -1871,8 +1922,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </select></td>
                         </tr>
                         <tr valign="top">
-                            <td id="midwifeLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formMidwife"/>: </b></td>
+                            <td id="midwifeLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formMidwife"/>: </b></td>
                             <td id="midwifeCell"><select name="cust4">
                                 <option value=""></option>
                                 <%
@@ -1886,8 +1936,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
                                 %>
                             </select></td>
-                            <td id="residentLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formResident"/>: </b></td>
+                            <td id="residentLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formResident"/>: </b></td>
                             <td id="residentCell" align="left"><select name="cust2">
                                 <option value=""></option>
                                 <%
@@ -1903,8 +1952,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </select></td>
                         </tr>
                         <tr id="rowWithReferralDoc" valign="top">
-                            <td id="referralDocLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formReferalDoctor"/>:</b></td>
+                            <td id="referralDocLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formReferalDoctor"/>:</b></td>
                             <td id="referralDocCell" align="left">
                                 <% if ("true".equals(oscarProps.getProperty("isMRefDocSelectList", ""))) {
                                     // drop down list
@@ -1954,38 +2002,31 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <% } else {%> <input type="text" name="r_doctor" maxlength="40"
                                                      value=""> <% } %>
                             </td>
-                            <td id="referralDocNoLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formReferalDoctorN"/>:</b></td>
+                            <td id="referralDocNoLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formReferalDoctorN"/>:</b></td>
                             <td id="referralDocNoCell" align="left"><input type="text"
                                                                            name="r_doctor_ohip"
                                                                            maxlength="6"> <% if ("ON".equals(prov)) { %>
                                 <a
-                                        href="javascript:referralScriptAttach2('r_doctor_ohip','r_doctor')"><bean:message
-                                        key="demographic.demographiceditdemographic.btnSearch"/>
+                                        href="javascript:referralScriptAttach2('r_doctor_ohip','r_doctor')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnSearch"/>
                                     #</a> <% } %>
                             </td>
                         </tr>
                         <tr valign="top">
-                            <td align="right" id="rosterStatusLbl" nowrap><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPCNRosterStatus"/>: </b></td>
+                            <td align="right" id="rosterStatusLbl" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPCNRosterStatus"/>: </b></td>
                             <td id="rosterStatus" align="left">
                                 <!--input type="text" name="roster_status" onBlur="upCaseCtrl(this)"-->
                                 <select id="roster_status" name="roster_status" style="width: 160px">
                                     <option value=""></option>
-                                    <option value="RO"><bean:message
-                                            key="demographic.demographicaddrecordhtm.RO-rostered"/></option>
-                                    <option value="FS"><bean:message
-                                            key="demographic.demographicaddrecordhtm.FS-feeforservice"/></option>
+                                    <option value="RO"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.RO-rostered"/></option>
+                                    <option value="FS"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.FS-feeforservice"/></option>
 
                                     <%
                                         for (String status : demographicDao.getRosterStatuses()) {%>
                                     <option value="<%=status%>"><%=status%>
                                     </option>
                                     <% } // end while %>
-                                </select> <input type="button" onClick="newStatus1();" value="<bean:message
-					key="demographic.demographicaddrecordhtm.AddNewRosterStatus"/> "/></td>
-                            <td id="rosterDateLbl" align="right" nowrap><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPCNDateJoined"/>: </b></td>
+                                </select> <input type="button" onClick="newStatus1();" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.AddNewRosterStatus"/> "/></td>
+                            <td id="rosterDateLbl" align="right" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPCNDateJoined"/>: </b></td>
                             <td class="rosterDateCell" align="left"><input type="text" name="roster_date_year"
                                                                            size="4" maxlength="4"> <input type="text"
                                                                                                           name="roster_date_month"
@@ -1996,8 +2037,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </td>
                         </tr>
                         <tr valign="top">
-                            <td align="right" id="rosterEnrolledToLbl"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formRosterEnrolledTo"/>: </b></td>
+                            <td align="right" id="rosterEnrolledToLbl"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formRosterEnrolledTo"/>: </b></td>
                             <td id="rosterEnrolledTo" align="left">
                                 <select id="roster_enrolled_to" name="roster_enrolled_to">
                                     <option value=""></option>
@@ -2012,35 +2052,27 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 					%>
                                     <option value=""></option>
                             </td>
-                            <td id="chartNoLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formChartNo"/>:</b></td>
+                            <td id="chartNoLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formChartNo"/>:</b></td>
                             <td id="chartNo" align="left"><input type="text" id="chart_no" name="chart_no"
                                                                  value="<%=StringEscapeUtils.escapeHtml(chartNoVal)%>">
                             </td>
 
                         </tr>
                         <tr valign="top">
-                            <td id="ptStatusLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPatientStatus"/>:</b></td>
+                            <td id="ptStatusLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPatientStatus"/>:</b></td>
                             <td id="ptStatusCell" align="left">
                                 <select id="patient_status" name="patient_status" style="width: 160px">
-                                    <option value="AC"><bean:message
-                                            key="demographic.demographicaddrecordhtm.AC-Active"/></option>
-                                    <option value="IN"><bean:message
-                                            key="demographic.demographicaddrecordhtm.IN-InActive"/></option>
-                                    <option value="DE"><bean:message
-                                            key="demographic.demographicaddrecordhtm.DE-Deceased"/></option>
-                                    <option value="MO"><bean:message
-                                            key="demographic.demographicaddrecordhtm.MO-Moved"/></option>
-                                    <option value="FI"><bean:message
-                                            key="demographic.demographicaddrecordhtm.FI-Fired"/></option>
+                                    <option value="AC"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.AC-Active"/></option>
+                                    <option value="IN"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.IN-InActive"/></option>
+                                    <option value="DE"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.DE-Deceased"/></option>
+                                    <option value="MO"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.MO-Moved"/></option>
+                                    <option value="FI"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.FI-Fired"/></option>
                                     <%
                                         for (String status : demographicDao.search_ptstatus()) { %>
                                     <option value="<%=status%>"><%=status%>
                                     </option>
                                     <% } // end while %>
-                                </select> <input type="button" onClick="newStatus();" value="<bean:message
-					key="demographic.demographicaddrecordhtm.AddNewPatient"/> ">
+                                </select> <input type="button" onClick="newStatus();" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.AddNewPatient"/> ">
 
                             </td>
                             <td align="right" nowrap>
@@ -2056,8 +2088,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
 
                         <tr valign="top">
-                            <td id="joinDateLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formDateJoined"/></b><b>:
+                            <td id="joinDateLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formDateJoined"/></b><b>:
                             </b></td>
                             <td id="joinDateCell" align="left"><input type="text" name="date_joined_year"
                                                                       placeholder="yyyy"
@@ -2068,8 +2099,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                                       name="date_joined_date" size="2" maxlength="2"
                                                                       value="<%=curDay%>">
                             </td>
-                            <td id="endDateLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formEndDate"/></b><b>: </b></td>
+                            <td id="endDateLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formEndDate"/></b><b>: </b></td>
                             <td id="endDateCell" align="left"><input type="text" placeholder="yyyy" name="end_date_year"
                                                                      size="4" maxlength="4"> <input type="text"
                                                                                                     placeholder="mm"
@@ -2081,8 +2111,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         </tr>
 
                         <tr valign="top">
-                            <td id="phuLbl" align="right"><b><bean:message
-                                    key="demographic.demographicaddrecordhtm.formPHU"/>:</b></td>
+                            <td id="phuLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPHU"/>:</b></td>
                             <td id="phuLblCell" align="left">
                                 <select id="PHU" name="PHU">
                                     <option value="">Select Below</option>
@@ -2229,14 +2258,12 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             <td id="waitListTbl" colspan="4">
                                 <table border="1" width="100%">
                                     <tr valign="top">
-                                        <td align="right"><b> <bean:message
-                                                key="demographic.demographicaddarecordhtm.msgWaitList"/>: </b></td>
+                                        <td align="right"><b> <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecordhtm.msgWaitList"/>: </b></td>
                                         <td align="left"><select id="name_list_id" name="list_id">
                                             <% if (wLReadonly.equals("")) { %>
                                             <option value="0">--Select Waiting List--</option>
                                             <%} else { %>
-                                            <option value="0"><bean:message
-                                                    key="demographic.demographicaddarecordhtm.optCreateWaitList"/>
+                                            <option value="0"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecordhtm.optCreateWaitList"/>
                                             </option>
                                             <%} %>
                                             <%
@@ -2249,8 +2276,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                 }
                                             %>
                                         </select></td>
-                                        <td align="right" nowrap><b><bean:message
-                                                key="demographic.demographicaddarecordhtm.msgWaitListNote"/>: </b></td>
+                                        <td align="right" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecordhtm.msgWaitListNote"/>: </b></td>
                                         <td align="left"><input type="text" id="waiting_list_note"
                                                                 name="waiting_list_note"
                                                 <%=wLReadonly%>></td>
@@ -2258,8 +2284,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
                                     <tr>
 
-                                        <td align="right" nowrap><b><bean:message
-                                                key="demographic.demographicaddarecordhtm.msgDateOfReq"/>:</b></td>
+                                        <td align="right" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecordhtm.msgDateOfReq"/>:</b></td>
                                         <td align="left"><input type="text" placeholder="yyyy-mm-dd"
                                                                 name="waiting_list_referral_date"
                                                                 id="waiting_list_referral_date"
@@ -2406,15 +2431,13 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <table width="100%" bgcolor="#EEEEFF">
                                     <tr>
                                         <td id="alertLbl" width="10%" align="right"><font
-                                                color="#FF0000"><b><bean:message
-                                                key="demographic.demographicaddrecordhtm.formAlert"/>: </b></font></td>
+                                                color="#FF0000"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formAlert"/>: </b></font></td>
                                         <td id="alertCell"><textarea id="cust3" name="cust3" style="width: 100%"
                                                                      rows="2"></textarea>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td id="notesLbl" align="right"><b><bean:message
-                                                key="demographic.demographicaddrecordhtm.formNotes"/> : </b></td>
+                                        <td id="notesLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNotes"/> : </b></td>
                                         <td id="notesCell"><textarea id="content" name="content" style="width: 100%"
                                                                      rows="2"></textarea>
                                         </td>
@@ -2449,14 +2472,14 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <input type="hidden" name="dboperation"
                                        value="add_record"> <input type="hidden" name="displaymode" value="Add Record">
                                 <input type="submit" id="btnAddRecord" name="btnAddRecord"
-                                       value="<bean:message key="demographic.demographicaddrecordhtm.btnAddRecord"/>"/>
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.btnAddRecord"/>"/>
                                 <input type="button" id="btnSwipeCard" name="Button"
-                                       value="<bean:message key="demographic.demographicaddrecordhtm.btnSwipeCard"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.btnSwipeCard"/>"
                                        onclick="window.open('zadddemographicswipe.htm','', 'scrollbars=yes,resizable=yes,width=600,height=300')"
                                        ;>
 
                                 <input type="button" name="closeButton"
-                                       value="<bean:message key="demographic.demographicaddrecordhtm.btnCancel"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.btnCancel"/>"
                                        onclick="self.close();">
 
                             </td>
@@ -2514,4 +2537,4 @@ if (privateConsentEnabled) {
     <!--<iframe src="../eform/efmshowform_data.jsp?fid=<%=fid%>" width="100%" height="100%"></iframe>-->
     <%//}%>
     </body>
-</html:html>
+</html>

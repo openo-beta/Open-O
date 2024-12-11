@@ -19,8 +19,7 @@
 --%>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@page import="oscar.util.DateUtils" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -238,22 +237,17 @@ Colposcopy Total :
 
     if (!bPremiumList.isEmpty()) {
 %>
-<html:form action="/billing/CA/ON/ApplyPractitionerPremium">
+<form action="<%=request.getContextPath() %>/billing/CA/ON/ApplyPractitionerPremium.do">
     <input type="hidden" name="rano" value="<%=raNo%>"/>
     <input type="hidden" name="method" value="applyPremium"/>
-    <h3><bean:message key="oscar.billing.on.genRADesc.premiumTitle"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.premiumTitle"/></h3>
     <table>
         <thead>
-        <th style="width:30px;font-family: helvetica; background-color: #486ebd; color:white;"><bean:message
-                key="oscar.billing.on.genRADesc.applyPremium"/></th>
-        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><bean:message
-                key="oscar.billing.on.genRADesc.ohipNo"/></th>
-        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><bean:message
-                key="oscar.billing.on.genRADesc.providerName"/></th>
-        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><bean:message
-                key="oscar.billing.on.genRADesc.totalMonthlyPayment"/></th>
-        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><bean:message
-                key="oscar.billing.on.genRADesc.paymentDate"/></th>
+        <th style="width:30px;font-family: helvetica; background-color: #486ebd; color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.applyPremium"/></th>
+        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.ohipNo"/></th>
+        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.providerName"/></th>
+        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.totalMonthlyPayment"/></th>
+        <th style="font-family: helvetica; background-color: #486ebd; color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.paymentDate"/></th>
         </thead>
         <%
 
@@ -296,11 +290,11 @@ Colposcopy Total :
         %>
         <tr>
             <td colspan="5" style="text-align: right"><input type="submit"
-                                                             value="<bean:message key="oscar.billing.on.genRADesc.submitPremium"/>"/>
+                                                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.submitPremium"/>"/>
             </td>
         </tr>
     </table>
-</html:form>
+</form>
 <% } %><%--  --%>
 <pre><%=message_txt%></pre>
 

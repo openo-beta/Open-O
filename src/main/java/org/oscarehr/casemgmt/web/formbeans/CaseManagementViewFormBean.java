@@ -23,12 +23,12 @@
 
 package org.oscarehr.casemgmt.web.formbeans;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.upload.FormFile;
 import org.oscarehr.casemgmt.model.CaseManagementCPP;
 import org.oscarehr.common.model.EncounterWindow;
 
-public class CaseManagementViewFormBean extends ActionForm {
+import java.io.File;
+
+public class CaseManagementViewFormBean {
     private String demographicNo;
     private String providerNo;
     private String issues[];
@@ -42,7 +42,7 @@ public class CaseManagementViewFormBean extends ActionForm {
 
     private EncounterWindow ectWin = new EncounterWindow();
     public static final String[] tabs = {"Current Issues", "Client History", "Allergies", "Prescriptions", "Reminders", "Ticklers", "Search"};
-    private FormFile imageFile;
+    private File imageFile;
 
     private String searchStartDate;
     private String searchEndDate;
@@ -91,11 +91,11 @@ public class CaseManagementViewFormBean extends ActionForm {
         tab = tabs[0];
     }
 
-    public FormFile getImageFile() {
+    public File getImageFile() {
         return imageFile;
     }
 
-    public void setImageFile(FormFile imageFile) {
+    public void setImageFile(File imageFile) {
         this.imageFile = imageFile;
     }
 

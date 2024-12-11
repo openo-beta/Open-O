@@ -44,9 +44,9 @@
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.jsp");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 <%@ page import="java.util.*" %>
 <%@ page
@@ -68,7 +68,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message key="billing.bc.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.bc.title"/></title>
     <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     <script language="JavaScript">
         <!--
@@ -204,7 +204,7 @@
 </head>
 
 
-<html:base/>
+<base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
 <body bgcolor="#FFFFFF" text="#000000" rightmargin="0" leftmargin="0"
       topmargin="10" marginwidth="0" marginheight="0"
@@ -216,7 +216,7 @@
             <p><font face="Verdana, Arial, Helvetica, sans-serif"
                      color="#FFFFFF"><b><font
                     face="Arial, Helvetica, sans-serif" size="4">oscar<font
-                    size="3"><bean:message key="billing.bc.title"/></font></font></b></font></p>
+                    size="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.bc.title"/></font></font></b></font></p>
         </td>
     </tr>
 </table>
@@ -329,11 +329,11 @@
                     <td valign="top">
                         <table width="100%" border="0" cellspacing="1" cellpadding="1">
                             <tr bgcolor="#EAEAFF">
-                                <td><bean:message key="billing.service.code"/></td>
-                                <td><bean:message key="billing.service.desc"/></td>
-                                <td><bean:message key="billing.service.unit"/></td>
-                                <td><bean:message key="billing.service.fee"/></td>
-                                <td><bean:message key="billing.service.total"/></td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.code"/></td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.desc"/></td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.unit"/></td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.fee"/></td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.total"/></td>
                             </tr>
                             <% for (int i = 0; i < billItem.size(); i++) { %>
                             <tr>
@@ -367,9 +367,8 @@
                         </table>
                         <table width="100%" border="0" cellspacing="1" cellpadding="1">
                             <tr bgcolor="#EAEAFF">
-                                <td width="10%" height="14"><bean:message
-                                        key="billing.diagnostic.code"/></td>
-                                <td width="39%"><bean:message key="billing.diagnostic.desc"/></td>
+                                <td width="10%" height="14"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.diagnostic.code"/></td>
+                                <td width="39%"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.diagnostic.desc"/></td>
                                 <td width="37%">&nbsp;</td>
                                 <td width="14%">&nbsp;</td>
                             </tr>
@@ -418,15 +417,14 @@
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td align="right"><html:form
-                                        action="/billing/CA/BC/SaveBilling">
+                                <td align="right"><form action="${pageContext.request.contextPath}/billing/CA/BC/SaveBilling.do" method="post">
                                     <input type="button" name="Submit3" value="Print Receipt"
                                            onclick="javascript:gotoPrintReceipt();"/>
                                     <input type="button" name="Submit" value="Print Bill"
                                            onClick="javascript:window.print()">
                                     <input type="button" name="Submit2" value="Cancel"
                                            onClick="javascript:window.close()">
-                                </html:form></td>
+                                </form></td>
                             </tr>
                         </table>
 

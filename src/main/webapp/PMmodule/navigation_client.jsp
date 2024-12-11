@@ -44,8 +44,8 @@
                 <div><b>Summary</b></div>
             </c:when>
             <c:when test="${'V' eq tabSummary}">
-                <div><html:link action="/PMmodule/QuatroClientSummary.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">Summary</html:link>
+                <div><a href="${pageContext.request.contextPath}/PMmodule/QuatroClientSummary.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">Summary</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -56,8 +56,8 @@
                 <div><b>History</b></div>
             </c:when>
             <c:when test="${'V' eq tabHistory}">
-                <div><html:link action="/PMmodule/ClientHistory.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">History</html:link>
+                <div><a href="${pageContext.request.contextPath}/PMmodule/ClientHistory.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">History</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -68,8 +68,8 @@
                 <div><b>Intake</b></div>
             </c:when>
             <c:when test="${'V' eq tabIntake}">
-                <div><html:link action="/PMmodule/QuatroIntake.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">Intake</html:link>
+                <div><a href="${pageContext.request.contextPath}/PMmodule/QuatroIntake.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">Intake</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -80,8 +80,8 @@
                 <div><b>Admission</b></div>
             </c:when>
             <c:when test="${'V' eq tabAdmission}">
-                <div><html:link action="/PMmodule/QuatroAdmission.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">Admission</html:link>
+                <div><a href="${pageContext.request.contextPath}/PMmodule/QuatroAdmission.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">Admission</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -92,8 +92,8 @@
                 <div><b>Referral</b></div>
             </c:when>
             <c:when test="${'V' eq tabRefer}">
-                <div><html:link action="PMmodule/QuatroRefer.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;"> Referral</html:link>
+                <div><a action="${pageContext.request.contextPath}/PMmodule/QuatroRefer.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;"> Referral</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -104,8 +104,8 @@
                 <div><b>Discharge</b></div>
             </c:when>
             <c:when test="${'V' eq tabDischarge}">
-                <div><html:link action="/PMmodule/QuatroDischarge.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">Discharge</html:link>
+                <div><a href="${pageContext.request.contextPath}/PMmodule/QuatroDischarge.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">Discharge</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -116,9 +116,9 @@
                 <div><b>Service Restriction</b></div>
             </c:when>
             <c:when test="${'V' eq tabRestriction}">
-                <div><html:link action="/PMmodule/QuatroServiceRestriction.do"
+                <div><a href="${pageContext.request.contextPath}/PMmodule/QuatroServiceRestriction.do"
                                 name="actionParam"
-                                style="color:Navy;text-decoration:none;">Service Restriction</html:link>
+                                style="color:Navy;text-decoration:none;">Service Restriction</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -129,8 +129,8 @@
                 <div><b>Complaint</b></div>
             </c:when>
             <c:when test="${'V' eq tabComplaint}">
-                <div><html:link action="/PMmodule/QuatroComplaint.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">Complaint</html:link>
+                <div><a href="${pageContext.request.contextPath}/PMmodule/QuatroComplaint.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">Complaint</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -141,8 +141,8 @@
                 <div><b>Consent</b></div>
             </c:when>
             <c:when test="${'V' eq tabConsent}">
-                <div><html:link action="/PMmodule/QuatroConsent.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">Consent</html:link>
+                <div><a href="${pageContext.request.contextPath}/PMmodule/QuatroConsent.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">Consent</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -153,8 +153,8 @@
                 <div><b>Case Management</b></div>
             </c:when>
             <c:when test="${'V' eq tabCase}">
-                <div><html:link action="/CaseManagementView2.do"
-                                name="actionParam" style="color:Navy;text-decoration:none;">Case Management</html:link>
+                <div><a href="${pageContext.request.contextPath}/CaseManagementView2.do"
+                                name="actionParam" style="color:Navy;text-decoration:none;">Case Management</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -166,8 +166,8 @@
                     <div><b>Attachment</b></div>
                 </c:when>
                 <c:when test="${'V' eq tabAttachment}">
-                    <div><html:link action="/PMmodule/UploadFile.do"
-                                    name="actionParam" style="color:Navy;text-decoration:none;">Attachment</html:link>
+                    <div><a href="${pageContext.request.contextPath}/PMmodule/UploadFile.do"
+                                    name="actionParam" style="color:Navy;text-decoration:none;">Attachment</a>
                     </div>
                 </c:when>
                 <c:otherwise>
@@ -179,8 +179,8 @@
                     <div><b>Tasks</b></div>
                 </c:when>
                 <c:when test="${'V' eq tabTask}">
-                    <div><html:link action="/PMmodule/Task.do"
-                                    name="actionParam" style="color:Navy;text-decoration:none;">Tasks</html:link>
+                    <div><a href="${pageContext.request.contextPath}/PMmodule/Task.do"
+                                    name="actionParam" style="color:Navy;text-decoration:none;">Tasks</a>
                     </div>
                 </c:when>
                 <c:otherwise>
@@ -193,7 +193,7 @@
                 </c:when>
                 <c:when test="${'V' eq tabPrintLabel}">
                     <div>
-                        <a href='javascript:popupLabel(&quot;<html:rewrite page="/demographic/printBarcodeAction.do?clientId="/><c:out value="${clientId}"></c:out>&quot;)'>
+                        <a href='javascript:popupLabel("${pageContext.request.contextPath}/demographic/printBarcodeAction.do?clientId=${clientId}"></c:out>“)'>
                             Print Label</a>
                     </div>
                 </c:when>

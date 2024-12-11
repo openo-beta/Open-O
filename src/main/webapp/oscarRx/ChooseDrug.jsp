@@ -38,9 +38,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -48,22 +48,25 @@
 <c:if test="${empty RxSessionBean}">
     <% response.sendRedirect("error.html"); %>
 </c:if>
-<c:if test="${not empty RxSessionBean}">
-    <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean" name="RxSessionBean" scope="session"/>
-    <c:if test="${bean.valid == false}">
-        <% response.sendRedirect("error.html"); %>
-    </c:if>
+<c:if test="${not empty sessionScope.RxSessionBean}">
+    <%
+        // Directly access the RxSessionBean from the session
+        oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        if (bean != null && !bean.isValid()) {
+            response.sendRedirect("error.html");
+            return; // Ensure no further JSP processing
+        }
+    %>
 </c:if>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="ChooseDrug.title.DrugSearchResults"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.title.DrugSearchResults"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script type="text/javascript" src="<c:out value="../share/javascript/Oscar.js"/>"></script>
         <script type="text/javascript" src="<c:out value="../share/javascript/prototype.js"/>"></script>
 
         <%
-            RxSessionBean bean = (RxSessionBean) pageContext.findAttribute("bean");
             RxDrugData.DrugSearch drugSearch = (RxDrugData.DrugSearch) request.getAttribute("drugSearch");//set from searchdrugaction
             String demoNo = (String) request.getAttribute("demoNo");//set from searchdrugaction
             ArrayList brand = drugSearch.getBrand();
@@ -182,79 +185,78 @@
                         <td width="0%" valign="top">
                             <div class="DivCCBreadCrumbs">
                                 <a href="SearchDrug.jsp">
-                                    <bean:message key="SearchDrug.title"/></a>
-                                <b><bean:message key="ChooseDrug.title"/></b>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a>
+                                <b><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.title"/></b>
                             </div>
                         </td>
                     </tr>
                     <!----Start new rows here-->
                     <tr>
                         <td>
-                            <div class="DivContentTitle"><bean:message key="ChooseDrug.title"/></div>
+                            <div class="DivContentTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.title"/></div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message key="ChooseDrug.section1Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.section1Title"/></div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <html:form action="/oscarRx/searchDrug" focus="searchString" onsubmit="processData();">
+                            <form action="${pageContext.request.contextPath}/oscarRx/searchDrug.do" method="post" focus="searchString" onsubmit="processData();">
                                 <%if (request.getParameter("rx2") != null && request.getParameter("rx2").equals("true")) { %>
                                 <input type="hidden" name="rx2" value="true"/>
                                 <%}%>
 
-                                <html:hidden property="demographicNo"/>
+                                <input type="hidden" name="demographicNo" id="demographicNo"/>
                                 <table>
                                     <tr>
                                         <td>
-                                            <bean:message key="ChooseDrug.searchAgain"/><br>
-                                            <html:text styleId="searchString" property="searchString" size="16"
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.searchAgain"/><br>
+                                            <input type="text" id="searchString" name="searchString" size="16"
                                                        maxlength="16"/>
-                                            <!--<html:hidden property="otcExcluded" value="true"/>OTC Excluded-->
+                                            <!--<input type="hidden" name="otcExcluded" value="true"/>OTC Excluded-->
                                         </td>
                                         <td width=100>
                                             <% if (!OscarProperties.getInstance().getProperty("rx.drugofchoice.hide", "false").equals("true")) { %>
                                             <a href="#"
-                                               onclick="callTreatments('searchString','treatmentsMyD');return false;"><bean:message
-                                                    key="ChooseDrug.msgDrugOfChoice"/></a>
+                                               onclick="callTreatments('searchString','treatmentsMyD');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgDrugOfChoice"/></a>
                                             <%} %>
                                         </td>
                                         <td>
                                             <oscar:oscarPropertiesCheck property="drugref_route_search" value="on">
-                                                <bean:message key="SearchDrug.drugSearchRouteLabel"/><br>
+                                                <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.drugSearchRouteLabel"/><br>
                                                 <% for (int j = 0; j < d_route.length; j++) { %>
                                                 <input type=checkbox <%=selRoute[j]%> name=route<%=j%>
                                                        value="<%=d_route[j].trim()%>"><%=d_route[j].trim()%> &nbsp;</input>
                                                 <% } %>
-                                                <html:hidden property="searchRoute"/>
+                                                <input type="hidden" name="searchRoute" id="searchRoute"/>
                                             </oscar:oscarPropertiesCheck>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan=3>
-                                            <html:submit property="submit" styleClass="ControlPushButton"><bean:message
-                                                    key="ChooseDrug.msgSearch"/></html:submit>
+                                            <input type="submit" name="submit" class="ControlPushButton"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgSearch"/>" />
                                             &nbsp;&nbsp;&nbsp;
                                             <input type=button class="ControlPushButton"
                                                    onclick="javascript:document.forms.RxSearchDrugForm.searchString.value='';document.forms.RxSearchDrugForm.searchString.focus();"
-                                                   value="<bean:message key="ChooseDrug.msgReset"/>"/>
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgReset"/>"/>
                                             <%if (request.getParameter("rx2") == null || !request.getParameter("rx2").equals("true")) { %>
                                             <input type=button class="ControlPushButton"
                                                    onclick="javascript:customWarning();"
-                                                   value="<bean:message key="ChooseDrug.msgCustomDrug"/>"/>
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgCustomDrug"/>"/>
                                             <%}%>
 
                                         </td>
                                     </tr>
                                 </table>
-                            </html:form>
+                            </form>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message key="ChooseDrug.section2Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.section2Title"/></div>
                         </td>
                     </tr>
                     <tr>
@@ -265,10 +267,10 @@
                             <table width="100%" border=0>
                                 <tr>
                                     <td width="50%">
-                                        <div class="LeftMargin"><bean:message key="ChooseDrug.genericDrugBox"/></div>
+                                        <div class="LeftMargin"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.genericDrugBox"/></div>
                                     </td>
                                     <td width="50%">
-                                        <div class="LeftMargin"><bean:message key="ChooseDrug.brandDrugBox"/></div>
+                                        <div class="LeftMargin"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.brandDrugBox"/></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -289,8 +291,7 @@
                                                             <%= getMaxVal(t.name)%>
                                                         </a>
                                                         <span>&nbsp;&nbsp;(<a
-                                                                href="javascript:ShowDrugInfoGN('<%= response.encodeURL(t.name)%>');"><bean:message
-                                                                key="ChooseDrug.msgInfo"/></a>)</span>
+                                                                href="javascript:ShowDrugInfoGN('<%= response.encodeURL(t.name)%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgInfo"/></a>)</span>
                                                     </td>
                                                 </tr>
                                                 <%
@@ -320,8 +321,7 @@
                                                                 <%=brandName%>
                                                             </a>
                                                             <span>&nbsp;&nbsp;(<a
-                                                                    href="javascript:ShowDrugInfoBN('<%=response.encodeURL(t.pKey) %>');"><bean:message
-                                                                    key="ChooseDrug.msgInfo"/></a>)</span>
+                                                                    href="javascript:ShowDrugInfoBN('<%=response.encodeURL(t.pKey) %>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgInfo"/></a>)</span>
                                                     </td>
                                                 </tr>
                                                 <%
@@ -336,7 +336,7 @@
                             } else {
                             %>
                             <div class="LeftMargin">
-                                <bean:message key="ChooseDrug.msgSearchNoResults"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgSearchNoResults"/>
                             </div>
                             <%
                                 }
@@ -344,7 +344,7 @@
                             <br/>
                             <script language="javascript">
                                 function customWarning() {
-                                    if (confirm("<bean:message key="ChooseDrug.msgCustomWarning"/>") == true) {
+                                    if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgCustomWarning"/>") == true) {
                                         window.location.href = 'chooseDrug.do?demographicNo=<%= response.encodeURL(demoNo) %>';
                                     }
                                 }
@@ -352,7 +352,7 @@
                             <div class="LeftMargin">
                                 <%if (request.getParameter("rx2") == null || !request.getParameter("rx2").equals("true")) { %>
                                 <a href="javascript:customWarning();">
-                                    <bean:message key="ChooseDrug.msgDrugNotFound"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgDrugNotFound"/>
                                 </a>
                                 <%}%>
                             </div>
@@ -375,8 +375,7 @@
                                                 <%= t.name%>
                                             </a>
                                             <span>&nbsp;&nbsp;(<a
-                                                    href="javascript:ShowDrugInfo('<%= response.encodeURL(t.pKey)  %>');"><bean:message
-                                                    key="ChooseDrug.msgInfo"/></a>)</span>
+                                                    href="javascript:ShowDrugInfo('<%= response.encodeURL(t.pKey)  %>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgInfo"/></a>)</span>
                                         </td>
                                     </tr>
                                     <%
@@ -415,7 +414,7 @@
 
     </body>
 
-</html:html>
+</html>
 <%!
 
     String getColor(boolean t) {

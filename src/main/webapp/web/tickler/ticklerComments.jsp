@@ -23,17 +23,18 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <div class="modal-header">
-    <h4><bean:message key="tickler.comments.title" bundle="ui"/></h4>
+    <h4><fmt:message bundle="${uiBundle}" key="tickler.comments.title"/></h4>
 </div>
 <div class="modal-body">
     <table class="table">
         <thead>
         <tr>
-            <th><bean:message key="tickler.comments.provider" bundle="ui"/></th>
-            <th><bean:message key="tickler.comments.updateDate" bundle="ui"/></th>
-            <th><bean:message key="tickler.comments.comment" bundle="ui"/></th>
+            <th><fmt:message bundle="${uiBundle}" key="tickler.comments.provider"/></th>
+            <th><fmt:message bundle="${uiBundle}" key="tickler.comments.updateDate"/></th>
+            <th><fmt:message bundle="${uiBundle}" key="tickler.comments.comment"/></th>
         </tr>
         </thead>
         <tr ng-repeat="c in tickler.ticklerComments | orderBy:'updateDate':true">
@@ -45,7 +46,7 @@
 
 </div>
 <div class="modal-footer">
-    <button class="btn" ng-click="close()"><bean:message key="global.close" bundle="ui"/></button>
+    <button class="btn" ng-click="close()"><fmt:message bundle="${uiBundle}" key="global.close"/></button>
 </div>
 
 

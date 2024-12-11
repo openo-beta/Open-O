@@ -42,8 +42,6 @@
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -329,9 +327,9 @@
 <html>
 <head>
     <title>
-        <bean:message key="billing.bc.title"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.bc.title"/>
     </title>
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <link rel="stylesheet" type="text/css" media="all"
           href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
     <link rel="stylesheet" type="text/css" media="all"
@@ -358,7 +356,7 @@
 
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="${pageContext.servletContext.contextPath}/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="${pageContext.servletContext.contextPath}/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/share/calendar/calendar-setup.js"></script>
     <script type="text/javascript"
@@ -1254,26 +1252,25 @@
     <div class="icon-container">
         <img alt="OSCAR EMR" src="${pageContext.servletContext.contextPath}/images/oscar_logo_small.png" width="19px">
     </div>
-    <h3><bean:message key="billing.bc.title"/></h3>
-    <span class="badge badge-primary"><bean:message key="billing.patient"/></span>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.bc.title"/></h3>
+    <span class="badge badge-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient"/></span>
     <label class="label-text"><%=Encode.forHtmlContent(demo.getLastName())%>
         , <%=Encode.forHtmlContent(demo.getFirstName())%>
     </label>
 
-    <span class="badge badge-primary"><bean:message key="billing.patient.age"/></span>
+    <span class="badge badge-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.age"/></span>
     <label class="label-text"><%=demo.getAge()%>
     </label>
 
     <%-- 	Keep until confirmed not needed.
 
-            <span class="badge badge-primary"><bean:message key="billing.patient.status"/></span>
+            <span class="badge badge-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.status"/></span>
             <strong class="label-text"><%=demo.getPatientStatus()%></label>
 
-      <span class="badge badge-primary"><bean:message key="billing.patient.roster"/></span>
+      <span class="badge badge-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.roster"/></span>
             <label><%=demo.getRosterStatus()%></label>
     --%>
-    <span class="badge badge-primary" title="Most Responsible Provider"><bean:message
-            key="billing.provider.assignedProvider"/></span>
+    <span class="badge badge-primary" title="Most Responsible Provider"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.provider.assignedProvider"/></span>
     <label class="label-text">
         <c:choose>
             <c:when test="<%= demo.getProviderNo() != null && ! demo.getProviderNo().trim().isEmpty() %>">
@@ -1288,20 +1285,31 @@
     <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="x">
         <button type="button" class="btn btn-link" title="View this patient's Electronic Chart"
                 onclick="popup(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?providerNo=<%=loggedInInfo.getLoggedInProviderNo()%>&appointmentNo=&demographicNo=<%=demo.getDemographicNo()%>&curProviderNo=<%=loggedInInfo.getLoggedInProviderNo()%>&reason=&encType=face+to+face+encounter+with+client&userName=&curDate=<%= new Date().toString() %>&appointmentDate=&startTime=&status=&apptProvider_no=&providerview=<%=loggedInInfo.getLoggedInProviderNo()%>','encounter', 12556);return false;">
-            <bean:message key="billing.patient.encounter"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.encounter"/>
         </button>
     </security:oscarSec>
 
     <button type="button" class="btn btn-link" title="View previous invoices for this patient"
             onclick="popup(800, 1000, 'billStatus.jsp?lastName=<%=demo.getLastName()%>&firstName=<%=demo.getFirstName()%>&filterPatient=true&demographicNo=<%=demo.getDemographicNo()%>','InvoiceList');return false;">
-        <bean:message key="demographic.demographiceditdemographic.msgInvoiceList"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgInvoiceList"/>
     </button>
 
 </div>
 <div class="wrapper">
 
     <div class="container-fluid">
-        <html:errors/>
+        <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
 
         <!-- end error row -->
 
@@ -1312,14 +1320,14 @@
             WCB Form needs:
             <ul>
                 <%for (String s : wcbneeds) { %>
-                <li><bean:message key="<%=s%>"/></li>
+                <li><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/></li>
                 <%}%>
             </ul>
         </div>
         <%}%>
 
-        <html:form styleId="bcBillingForm" styleClass="form-inline" action="/billing/CA/BC/CreateBilling"
-                   onsubmit="toggleWCB();">
+        <form style="bcBillingForm" class="form-inline"
+              action="${pageContext.request.contextPath}/billing/CA/BC/CreateBilling.do" onsubmit="toggleWCB();">
 
             <input autocomplete="false" name="hidden" type="text" style="display:none;">
             <input type="hidden" name="fromBilling" value="">
@@ -1406,8 +1414,7 @@
                                     <td>
                                         <div class="form-group">
 
-                                            <label for="selectBillingForm"><bean:message
-                                                    key="billing.billingform"/></label>
+                                            <label for="selectBillingForm"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingform"/></label>
 
                                             <select class="form-control" id="selectBillingForm">
                                                 <% for (int i = 0; i < billformlist.length; i++) { %>
@@ -1427,20 +1434,19 @@
                                     <td>
                                         <div class="form-group">
 
-                                            <label for="xml_provider"><bean:message
-                                                    key="billing.provider.billProvider"/></label>
-                                            <html:select styleId="xml_provider" styleClass="form-control"
-                                                         property="xml_provider">
+                                            <label for="xml_provider"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.provider.billProvider"/></label>
+                                            <select id="xml_provider" class="form-control"
+                                                         name="xml_provider">
 
-                                                <html:option value="">
+                                                <option value="">
                                                     Select Provider
-                                                </html:option>
+                                                </option>
                                                 <% for (int j = 0; j < billphysician.length; j++) { %>
-                                                <html:option
+                                                <option
                                                         value="<%=billphysician[j].getProviderNo()%>"><%=Encode.forHtmlContent(billphysician[j].getProviderName())%>
-                                                </html:option>
+                                                </option>
                                                 <%} %>
-                                            </html:select>
+                                            </select>
 
 
                                         </div>
@@ -1449,15 +1455,15 @@
                                     <td>
                                         <div class="form-group">
 
-                                            <label for="xml_billtype"><bean:message key="billing.billingtype"/></label>
-                                            <html:select styleClass="form-control" styleId="xml_billtype"
+                                            <label for="xml_billtype"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingtype"/></label>
+                                            <select class="form-control" id="xml_billtype"
                                                          property="xml_billtype" onchange="CheckType();gotoPrivate();">
-                                                <html:option value="MSP">Bill MSP</html:option>
-                                                <html:option value="WCB">Bill WCB</html:option>
-                                                <html:option value="ICBC">Bill ICBC</html:option>
-                                                <html:option value="Pri">Private</html:option>
-                                                <html:option value="DONOTBILL">Do Not Bill</html:option>
-                                            </html:select>
+                                                <option value="MSP">Bill MSP</option>
+                                                <option value="WCB">Bill WCB</option>
+                                                <option value="ICBC">Bill ICBC</option>
+                                                <option value="Pri">Private</option>
+                                                <option value="DONOTBILL">Do Not Bill</option>
+                                            </select>
 
                                         </div>
 
@@ -1466,18 +1472,18 @@
                                         <div class="form-group">
 
                                             <label for="xml_location">Clarification Code</label>
-                                            <html:select styleClass="form-control" styleId="xml_location"
-                                                         property="xml_location">
+                                            <select class="form-control" id="xml_location"
+                                                         name="xml_location">
                                                 <%
                                                     for (int i = 0; i < billlocation.length; i++) {
                                                         String locationDescription = billlocation[i].getBillingLocation() + "|" + billlocation[i].getDescription().replaceAll("[^A-Za-z]+", "").toUpperCase();
                                                         ;
                                                 %>
-                                                <html:option
+                                                <option
                                                         value="<%=Encode.forHtmlAttribute(locationDescription)%>"><%=Encode.forHtmlContent(billlocation[i].getDescription())%>
-                                                </html:option>
+                                                </option>
                                                 <%} %>
-                                            </html:select>
+                                            </select>
                                         </div>
 
                                     </td>
@@ -1486,17 +1492,17 @@
                                         <div class="form-group">
 
                                             <label for="xml_visittype">Service Location</label>
-                                            <html:select styleClass="form-control" styleId="xml_visittype"
-                                                         property="xml_visittype">
+                                            <select class="form-control" id="xml_visittype"
+                                                         name="xml_visittype">
                                                 <%
                                                     for (BillingFormData.BillingVisit billingVisit : billvisit) {
                                                 %>
-                                                <html:option
+                                                <option
                                                         value="<%=Encode.forHtmlAttribute(billingVisit.getVisitType())%>">
                                                     <%=Encode.forHtmlContent(billingVisit.getDescription())%>
-                                                </html:option>
+                                                </option>
                                                 <%}%>
-                                            </html:select>
+                                            </select>
 
                                         </div>
 
@@ -1514,12 +1520,11 @@
                                     <div class="form-group">
 
                                         <a href="javascript:void(0)" id="hlSDate">
-                                            <label for="xml_appointment_date"><bean:message
-                                                    key="billing.servicedate"/></label>
+                                            <label for="xml_appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.servicedate"/></label>
                                         </a>
-                                        <html:text style="min-width:100px;" styleClass="form-control"
-                                                   property="xml_appointment_date" size="10" readonly="true"
-                                                   styleId="xml_appointment_date"/>
+                                        <input type="text" style="min-width:100px;" class="form-control"
+                                                   name="xml_appointment_date" size="10" readonly="true"
+                                                   id="xml_appointment_date"/>
                                     </div>
 
                                 </td>
@@ -1530,8 +1535,8 @@
                                             <label for="service_to_date">To Date</label>
                                         </a>
 
-                                        <html:text styleClass="form-control" property="service_to_date" size="2"
-                                                   maxlength="2" styleId="service_to_date"/>
+                                        <input type="text" class="form-control" name="service_to_date" size="2"
+                                                   maxlength="2" id="service_to_date"/>
                                     </div>
 
                                 </td>
@@ -1539,13 +1544,13 @@
                                     <div class="form-group">
 
                                         <label for="afterHours">After Hours</label>
-                                        <html:select styleClass="form-control" property="afterHours"
-                                                     styleId="afterHours">
-                                            <html:option value="0">No</html:option>
-                                            <html:option value="E">Evening</html:option>
-                                            <html:option value="N">Night</html:option>
-                                            <html:option value="W">Weekend</html:option>
-                                        </html:select>
+                                        <select styleClass="form-control" name="afterHours"
+                                                     id="afterHours">
+                                            <option value="0">No</option>
+                                            <option value="E">Evening</option>
+                                            <option value="N">Night</option>
+                                            <option value="W">Weekend</option>
+                                        </select>
                                     </div>
 
                                 </td>
@@ -1553,7 +1558,7 @@
                                     <div class="form-group">
 
                                         <label for="timeCall">Time Call</label>
-                                        <html:text styleClass="form-control" property="timeCall" styleId="timeCall"/>
+                                        <input type="text" class="form-control" name="timeCall" id="timeCall"/>
 
                                     </div>
                                 </td>
@@ -1592,10 +1597,10 @@
                                     <div class="form-group">
 
                                         <label for="dependent">Dependent</label>
-                                        <html:select styleClass="form-control" property="dependent" styleId="dependent">
-                                            <html:option value="00">No</html:option>
-                                            <html:option value="66">Yes</html:option>
-                                        </html:select>
+                                        <select class="form-control" name="dependent" id="dependent">
+                                            <option value="00">No</option>
+                                            <option value="66">Yes</option>
+                                        </select>
                                     </div>
 
                                 </td>
@@ -1603,19 +1608,19 @@
                                     <div class="form-group">
 
                                         <label for="submissionCode">Sub Code</label>
-                                        <html:select styleClass="form-control" property="submissionCode"
-                                                     styleId="submissionCode">
-                                            <html:option value="0">O - Normal</html:option>
-                                            <html:option value="D">D - Duplicate</html:option>
-                                            <html:option value="E">E - Debit</html:option>
-                                            <html:option value="C">C - Subscriber Coverage</html:option>
-                                            <html:option value="R">R - Resubmitted</html:option>
-                                            <html:option value="I">I - ICBC Claim > 90 Days</html:option>
-                                            <html:option value="A">A - Requested Preapproval</html:option>
-                                            <html:option value="W">W - WCB Rejected Claim</html:option>
-                                            <html:option
-                                                    value="X">X - Resubmitting Refused / Partially Paid Claim</html:option>
-                                        </html:select>
+                                        <select class="form-control" name="submissionCode"
+                                                     id="submissionCode">
+                                            <option value="0">O - Normal</option>
+                                            <option value="D">D - Duplicate</option>
+                                            <option value="E">E - Debit</option>
+                                            <option value="C">C - Subscriber Coverage</option>
+                                            <option value="R">R - Resubmitted</option>
+                                            <option value="I">I - ICBC Claim > 90 Days</option>
+                                            <option value="A">A - Requested Preapproval</option>
+                                            <option value="W">W - WCB Rejected Claim</option>
+                                            <option
+                                                    value="X">X - Resubmitting Refused / Partially Paid Claim</option>
+                                        </select>
                                     </div>
 
                                 </td>
@@ -1657,8 +1662,8 @@
 
                                     <div class="form-group">
                                         <label for="facilityNum">BCP Facility</label>
-                                        <html:text styleClass="form-control" property="facilityNum"
-                                                   styleId="facilityNum" size="5" maxlength="5"/>
+                                        <input type="text" class="form-control" name="facilityNum"
+                                                   id="facilityNum" size="5" maxlength="5"/>
 
                                     </div>
                                 </td>
@@ -1668,8 +1673,8 @@
 
                                     <div class="form-group">
                                         <label for="facilitySubNum">Sub Facility</label>
-                                        <html:text styleClass="form-control" property="facilitySubNum"
-                                                   styleId="facilitySubNum" size="5" maxlength="5"/>
+                                        <input type="text" class="form-control" name="facilitySubNum"
+                                                   id="facilitySubNum" size="5" maxlength="5"/>
 
                                     </div>
                                 </td>
@@ -1683,12 +1688,12 @@
                             <table class="tool-bar">
                                 <tr>
                                     <td>
-                                        <bean:message key="billing.admissiondate"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.admissiondate"/>
                                         <div class="form-group">
                                             <div class='input-group text'>
 
-                                                <html:text property="xml_vdate" readonly="true" value="" size="10"
-                                                           styleId="xml_vdate"/>
+                                                <input type="text" name="xml_vdate" readonly="true" value="" size="10"
+                                                           id="xml_vdate"/>
                                                 <a id="hlADate">
                                                     <img title="Calendar"
                                                          src="${pageContext.servletContext.contextPath}/images/cal.gif"
@@ -1735,16 +1740,16 @@
 
                                         <div class='form-group'>
                                             <label for="icbc_claim_no">ICBC Claim No</label>
-                                            <html:text styleClass="form-control" property="icbc_claim_no"
-                                                       styleId="icbc_claim_no" maxlength="8"/>
+                                            <input type="text" class="form-control" name="icbc_claim_no"
+                                                       id="icbc_claim_no" maxlength="8"/>
                                         </div>
                                         <div class='form-group'>
                                             <label for="mva_claim_code">MVA?</label>
-                                            <html:select styleClass="form-control" property="mva_claim_code"
-                                                         styleId="mva_claim_code">
-                                                <html:option value="N">No</html:option>
-                                                <html:option value="Y">Yes</html:option>
-                                            </html:select>
+                                            <select class="form-control" name="mva_claim_code"
+                                                         id="mva_claim_code">
+                                                <option value="N">No</option>
+                                                <option value="Y">Yes</option>
+                                            </select>
 
                                         </div>
 
@@ -1767,19 +1772,19 @@
                                             <tr>
                                                 <td>
                                                     <label>
-                                                        <bean:message key="billing.referral.doctor"/>
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.referral.doctor"/>
                                                     </label>
                                                 </td>
                                                 <td>
                                                     <label>
-                                                        <bean:message key="billing.referral.type"/>
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.referral.type"/>
                                                     </label>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="input-group">
-                                                        <html:text styleClass="form-control" property="xml_refer1"
+                                                        <input type="text" class="form-control" name="xml_refer1"
                                                                    onkeypress="return grabEnter(event,'ReferralScriptAttach1()')"/>
                                                         <span class="input-group-btn">
 		                     	<button type="button" class="btn btn-primary"
@@ -1790,18 +1795,18 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <html:select styleClass="form-control" property="refertype1">
-                                                        <html:option value="">Select Type</html:option>
-                                                        <html:option value="T">Refer To</html:option>
-                                                        <html:option value="B">Refer By</html:option>
-                                                    </html:select>
+                                                    <select class="form-control" name="refertype1">
+                                                        <option value="">Select Type</option>
+                                                        <option value="T">Refer To</option>
+                                                        <option value="B">Refer By</option>
+                                                    </select>
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td>
                                                     <div class="input-group">
-                                                        <html:text styleClass="form-control" property="xml_refer2"
+                                                        <input type="text" class="form-control" name="xml_refer2"
                                                                    onkeypress="return grabEnter(event,'ReferralScriptAttach2()')"/>
                                                         <span class="input-group-btn">
 			                     	<button type="button" class="btn btn-primary"
@@ -1812,11 +1817,11 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <html:select styleClass="form-control" property="refertype2">
-                                                        <html:option value="">Select Type</html:option>
-                                                        <html:option value="T">Refer To</html:option>
-                                                        <html:option value="B">Refer By</html:option>
-                                                    </html:select>
+                                                    <select class="form-control" name="refertype2">
+                                                        <option value="">Select Type</option>
+                                                        <option value="T">Refer To</option>
+                                                        <option value="B">Refer By</option>
+                                                    </select>
                                                 </td>
                                             </tr>
 
@@ -1912,10 +1917,10 @@
                             <table class="table table-condensed table-borderless">
                                 <tr>
                                     <td>
-                                        <label><bean:message key="billing.service.otherservice"/></label>
+                                        <label><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.otherservice"/></label>
                                     </td>
                                     <td>
-                                        <label><bean:message key="billing.service.unit"/></label>
+                                        <label><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.unit"/></label>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1924,7 +1929,7 @@
  							<span class="input-group-addon">
 								1
 							</span>
-                                            <html:text styleClass="form-control" property="xml_other1"
+                                            <input type="text" class="form-control" name="xml_other1"
                                                        onblur="checkSelectedCodes()"
                                                        onkeypress="return grabEnter(event,'OtherScriptAttach()')"/>
                                             <span class="input-group-btn">
@@ -1937,8 +1942,8 @@
                                     </td>
                                     <td style="width:40%;">
                                         <div class="input-group">
-                                            <html:text styleClass="form-control" property="xml_other1_unit" size="6"
-                                                       maxlength="6" styleId="xml_other1_unit"/>
+                                            <input type="text" class="form-control" name="xml_other1_unit" size="6"
+                                                       maxlength="6" id="xml_other1_unit"/>
                                             <span class="input-group-btn">
                             	<button type="button" class="btn btn-primary" value=".5"
                                         onClick="$('xml_other1_unit').value = '0.5'">.5</button>
@@ -1952,7 +1957,7 @@
  							<span class="input-group-addon">
 								2
 							</span>
-                                            <html:text styleClass="form-control" property="xml_other2"
+                                            <input type="text" class="form-control" name="xml_other2"
                                                        onblur="checkSelectedCodes()"
                                                        onkeypress="return grabEnter(event,'OtherScriptAttach()')"/>
                                             <span class="input-group-btn">
@@ -1965,8 +1970,8 @@
                                     </td>
                                     <td>
                                         <div class="input-group">
-                                            <html:text styleClass="form-control" property="xml_other2_unit" size="6"
-                                                       maxlength="6" styleId="xml_other2_unit"/>
+                                            <input type="text" class="form-control" name="xml_other2_unit" size="6"
+                                                       maxlength="6" id="xml_other2_unit"/>
                                             <span class="input-group-btn">
                              	<button type="button" class="btn btn-primary" value=".5"
                                         onClick="$('xml_other2_unit').value = '0.5'">.5</button>
@@ -1980,7 +1985,7 @@
  							<span class="input-group-addon">
 								3
 							</span>
-                                            <html:text styleClass="form-control" property="xml_other3"
+                                            <input type="text" class="form-control" name="xml_other3"
                                                        onblur="checkSelectedCodes()"
                                                        onkeypress="return grabEnter(event,'OtherScriptAttach()')"/>
                                             <span class="input-group-btn">
@@ -1993,8 +1998,8 @@
                                     </td>
                                     <td>
                                         <div class="input-group">
-                                            <html:text styleClass="form-control" property="xml_other3_unit"
-                                                       styleId="xml_other3_unit"/>
+                                            <input type="text" class="form-control" name="xml_other3_unit"
+                                                       id="xml_other3_unit"/>
                                             <span class="input-group-btn">
                             	<button type="button" class="btn btn-primary" value=".5"
                                         onClick="$('xml_other3_unit').value = '0.5'">.5</button>
@@ -2037,7 +2042,7 @@
                                             <c:choose>
                                                 <c:when test="${ isIcd10 }">
 										<span class="input-group-addon">
-											<bean:message key="billing.diagnostic.code"/>
+											<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.diagnostic.code"/>
 										</span>
                                                     <select style="min-width: 70px;" class="form-control"
                                                             name="dxCodeSystem" id="codingSystem">
@@ -2054,7 +2059,7 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <input type="hidden" id="codingSystem" value="msp"/>
-                                                    <label><bean:message key="billing.diagnostic.code"/></label>
+                                                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.diagnostic.code"/></label>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
@@ -2067,8 +2072,8 @@
 								<span class="input-group-addon">
 									1
 								</span>
-                                            <html:text styleClass="form-control jsonDxSearchInput"
-                                                       styleId="jsonDxSearchInput-1" property="xml_diagnostic_detail1"/>
+                                            <input type="text" class="form-control jsonDxSearchInput"
+                                                       id="jsonDxSearchInput-1" name="xml_diagnostic_detail1"/>
                                             <span class="input-group-btn">
 		                     		<button type="button" title="Search diagnostic code"
                                             class="btn btn-primary jsonDxSearchButton" value="jsonDxSearchInput-1">
@@ -2085,8 +2090,8 @@
   								<span class="input-group-addon">
 									2
 								</span>
-                                            <html:text styleClass="form-control jsonDxSearchInput"
-                                                       styleId="jsonDxSearchInput-2" property="xml_diagnostic_detail2"/>
+                                            <input type="text" class="form-control jsonDxSearchInput"
+                                                       id="jsonDxSearchInput-2" name="xml_diagnostic_detail2"/>
                                             <span class="input-group-btn">
 		                     		<button type="button" title="Search Dx Description"
                                             class="btn btn-primary jsonDxSearchButton" value="jsonDxSearchInput-2">
@@ -2102,8 +2107,8 @@
   								<span class="input-group-addon">
 									3
 								</span>
-                                            <html:text styleClass="form-control jsonDxSearchInput"
-                                                       styleId="jsonDxSearchInput-3" property="xml_diagnostic_detail3"/>
+                                            <input type="text" class="form-control jsonDxSearchInput"
+                                                       id="jsonDxSearchInput-3" name="xml_diagnostic_detail3"/>
                                             <span class="input-group-btn">
 		                     		<button type="button" title="Search Dx Description"
                                             class="btn btn-primary jsonDxSearchButton" value="jsonDxSearchInput-3">
@@ -2131,28 +2136,27 @@
                                 <tr>
                                     <td>
                                         <label for="shortClaimNote">Short Claim Note</label>
-                                        <html:text styleId="shortClaimNote" styleClass="form-control"
-                                                   property="shortClaimNote"/>
+                                        <input type="text" id="shortClaimNote" class="form-control"
+                                                   name="shortClaimNote"/>
                                     </td>
 
                                 </tr>
 
                                 <tr>
                                     <td align="left" colspan="2">
-                                        <html:select styleClass="form-control" property="correspondenceCode"
+                                        <select class="form-control" name="correspondenceCode"
                                                      onchange="correspondenceNote();">
-                                            <html:option value="0">No Correspondence</html:option>
-                                            <html:option value="N">Electronic Correspondence</html:option>
-                                            <html:option value="C">Paper Correspondence</html:option>
-                                            <html:option value="B">Both</html:option>
-                                        </html:select>
+                                            <option value="0">No Correspondence</option>
+                                            <option value="N">Electronic Correspondence</option>
+                                            <option value="C">Paper Correspondence</option>
+                                            <option value="B">Both</option>
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div id="CORRESPONDENCENOTE" style="display:none;">
-                                            <html:textarea styleClass="form-control notes-box" property="notes"
-                                                           onkeyup="checkTextLimit(this.form.notes,400);"></html:textarea>
+                                            <textarea class="form-control notes-box" name="notes" onkeyup="checkTextLimit(this.form.notes,400);"></textarea>
                                             <small>400 characters max.</small>
                                         </div>
                                         <div>
@@ -2160,9 +2164,7 @@
                                                 <label for="billing-notes-box">Billing Notes
                                                     <small>(Internal use. Not sent to MSP)</small></label>
                                             </div>
-                                            <html:textarea styleClass="form-control notes-box"
-                                                           styleId="billing-notes-box"
-                                                           property="messageNotes"></html:textarea>
+                                            <textarea class="form-control notes-box" id="billing-notes-box" name="messageNotes"></textarea>
                                         </div>
                                     </td>
                                 </tr>
@@ -2216,12 +2218,12 @@
                                                 </td>
                                                 <td width="61%" style="background-color:#CCCCFF;">
                                                     <label>
-                                                        <bean:message key="billing.service.desc"/>
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.desc"/>
                                                     </label>
                                                 </td>
                                                 <td width="14%">
                                                     <div align="right">
-                                                        <label>&dollar;<bean:message key="billing.service.fee"/></label>
+                                                        <label>&dollar;<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.fee"/></label>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2230,9 +2232,7 @@
                                                 <%String svcCall = "addSvcCode('" + billlist1[i].getServiceCode() + "')"; %>
                                                 <td width="25%" valign="middle">
                                                     <label class="checkbox">
-                                                        <html:multibox property="service"
-                                                                       value="<%=billlist1[i].getServiceCode()%>"
-                                                                       onclick="<%=svcCall%>"/>
+                                                        <input type="checkbox" name="service" value="<%=billlist1[i].getServiceCode()%>" onclick="<%=svcCall%>" />
                                                         <%=billlist1[i].getServiceCode()%>
                                                     </label>
                                                 </td>
@@ -2260,10 +2260,10 @@
                                                     </label>
                                                 </td>
                                                 <td width="60%" style="background-color:#CCCCFF;">
-                                                    <label><bean:message key="billing.service.desc"/></label>
+                                                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.desc"/></label>
                                                 </td>
                                                 <td width="19%" align="right">
-                                                    <label>&dollar;<bean:message key="billing.service.fee"/></label>
+                                                    <label>&dollar;<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.fee"/></label>
                                                 </td>
                                             </tr>
                                             <%for (int i = 0; i < billlist2.length; i++) { %>
@@ -2271,9 +2271,7 @@
                                                 <%String svcCall = "addSvcCode('" + billlist2[i].getServiceCode() + "')"; %>
                                                 <td width="25%">
                                                     <label class="checkbox">
-                                                        <html:multibox property="service"
-                                                                       value="<%=billlist2[i].getServiceCode()%>"
-                                                                       onclick="<%=svcCall%>"/>
+                                                        <input type="checkbox" name="service" value="<%=billlist2[i].getServiceCode()%>" onclick="<%=svcCall%>"/>
                                                         <%=billlist2[i].getServiceCode()%>
                                                     </label>
                                                 </td>
@@ -2298,10 +2296,10 @@
                                                     </label>
                                                 </td>
                                                 <td width="61%" style="background-color:#CCCCFF;">
-                                                    <label><bean:message key="billing.service.desc"/></label>
+                                                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.desc"/></label>
                                                 </td>
                                                 <td width="14%" align="right">
-                                                    <label>&dollar;<bean:message key="billing.service.fee"/></label>
+                                                    <label>&dollar;<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.fee"/></label>
                                                 </td>
                                             </tr>
                                             <%for (int i = 0; i < billlist3.length; i++) { %>
@@ -2309,9 +2307,7 @@
                                                 <%String svcCall = "addSvcCode('" + billlist3[i].getServiceCode() + "')"; %>
                                                 <td width="25%">
                                                     <label class="checkbox">
-                                                        <html:multibox property="service"
-                                                                       value="<%=billlist3[i].getServiceCode()%>"
-                                                                       onclick="<%=svcCall%>"/>
+                                                        <input type="checkbox" name="service" value="<%=billlist3[i].getServiceCode()%>"/>
                                                         <%=billlist3[i].getServiceCode()%>
                                                     </label>
                                                 </td>
@@ -2337,7 +2333,7 @@
             <div class="container-fluid">
                 <div id="wcbForms"></div>
             </div>
-        </html:form>
+        </form>
     </div>
 </div>
 

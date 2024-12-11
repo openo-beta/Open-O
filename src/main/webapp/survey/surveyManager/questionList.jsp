@@ -25,26 +25,26 @@
 
 
 <%@ include file="/survey/taglibs.jsp" %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Survey Manager</title>
     </head>
 
     <body>
-    <html:form action="/SurveyManager">
+    <form action="${pageContext.request.contextPath}/SurveyManager.do" method="post">
         <input type="hidden" name="method" value="save"/>
-        <html:hidden property="survey.surveyId"/>
+        <input type="hidden" name="surveyId" id="surveyId"/>
         <h3>Please enter details</h3>
         <br/>
         <table>
             <tr>
                 <td>Description:</td>
-                <td><html:text property="survey.description"/></td>
+                <td><input type="text" name="survey.description" id="survey.description" /></td>
             </tr>
         </table>
-        <html:submit value="save"/>
-        <html:cancel/>
-    </html:form>
+        <input type="submit" value="save" />
+        <button type="button" onclick="window.history.back();">Cancel</button>
+    </form>
     </body>
-</html:html>
+</html>

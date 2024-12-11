@@ -34,7 +34,7 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <c:set var="ctx" value="${pageContext.request.contextPath}"
@@ -43,7 +43,7 @@
               type="text/css">
         <link rel="stylesheet" type="text/css"
               href="<c:out value="${ctx}"/>/css/print.css" media="print"/>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>Case Management</title>
         <%! String refresh = oscar.OscarProperties.getInstance().getProperty("refresh.encounterLayout.jsp", "-1"); %>
         <%="-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + ";\">"%>
@@ -58,4 +58,4 @@
         </tbody>
     </table>
     </body>
-</html:html>
+</html>

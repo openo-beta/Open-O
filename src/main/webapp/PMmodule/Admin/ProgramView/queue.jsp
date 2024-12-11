@@ -196,8 +196,8 @@
         return true;
     }
 </script>
-<html:hidden property="clientId"/>
-<html:hidden property="queueId"/>
+<input type="hidden" name="clientId" id="clientId"/>
+<input type="hidden" name="queueId" id="queueId"/>
 
 <%
     ProgramProviderDAO ppd = (ProgramProviderDAO) SpringUtils.getBean(ProgramProviderDAO.class);
@@ -306,12 +306,10 @@
         %>
         <a href=#
            onClick="popupPage(710, 1024,'../oscarSurveillance/CheckSurveillance.do?demographicNo=<%=demographic_no%>&proceed=<%=java.net.URLEncoder.encode(eURL)%>');return false;"
-           title="<bean:message key="global.encounter"/>"> <bean:message
-                key="provider.appointmentProviderAdminDay.btnEncounter"/></a>&nbsp;&nbsp;
+           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnEncounter"/></a>&nbsp;&nbsp;
         <a href=#
            onClick="popupPage(710,1024,'<%=request.getContextPath()%>/eform/efmshowform_data.jsp?demographicNo=<%=demographic_no%>&fdid=<%=curform.get("fdid")%>','0'); return false;"
-           title="<bean:message key="global.remoteReferral"/>"> <bean:message
-                key="provider.appointmentProviderAdminDay.btnIntake"/></a>
+           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.remoteReferral"/>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnIntake"/></a>
 
 
         <% }
@@ -396,27 +394,27 @@
 <c:if test="${requestScope.do_reject != null}">
     <table width="100%" border="1" cellspacing="2" cellpadding="3">
         <tr>
-            <td width="5%"><html:radio property="radioRejectionReason"
+            <td width="5%"><input type="radio" name="radioRejectionReason"
                                        value="1"/></td>
             <td>Client requires acute care</td>
         </tr>
         <tr>
-            <td width="5%"><html:radio property="radioRejectionReason"
+            <td width="5%"><input type="radio" name="radioRejectionReason"
                                        value="2"/></td>
             <td>Client not interested</td>
         </tr>
         <tr>
-            <td width="5%"><html:radio property="radioRejectionReason"
+            <td width="5%"><input type="radio" name="radioRejectionReason"
                                        value="3"/></td>
             <td>Client does not fit program criteria</td>
         </tr>
         <tr>
-            <td width="5%"><html:radio property="radioRejectionReason"
+            <td width="5%"><input type="radio" name="radioRejectionReason"
                                        value="4"/></td>
             <td>Program does not have space available</td>
         </tr>
         <tr>
-            <td width="5%"><html:radio property="radioRejectionReason"
+            <td width="5%"><input type="radio" name="radioRejectionReason"
                                        value="5"/></td>
             <td>Other</td>
         </tr>

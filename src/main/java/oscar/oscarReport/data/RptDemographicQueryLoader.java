@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import oscar.oscarMessenger.docxfer.util.MsgCommxml;
-import oscar.oscarReport.pageUtil.RptDemographicReportForm;
+import oscar.oscarReport.pageUtil.RptDemographicReport2Form;
 
 
 public class RptDemographicQueryLoader {
@@ -44,9 +44,9 @@ public class RptDemographicQueryLoader {
     public RptDemographicQueryLoader() {
     }
 
-    public RptDemographicReportForm queryLoader(RptDemographicReportForm frm) {
+    public RptDemographicReport2Form queryLoader(RptDemographicReport2Form frm) {
         String qId = frm.getSavedQuery();
-        RptDemographicReportForm dRF = new RptDemographicReportForm();
+        RptDemographicReport2Form dRF = new RptDemographicReport2Form();
 
         String mSelect = null;
         String mAge = null;

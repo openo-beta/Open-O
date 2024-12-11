@@ -55,9 +55,9 @@
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 <%
     String curProvider_no = (String) session.getAttribute("user");
@@ -132,7 +132,7 @@
     }
 %>
 
-<html:html lang="en">
+<html>
 
     <%
 
@@ -171,17 +171,17 @@
 
     <head>
         <title>
-            <bean:message key="ectViewConsultationRequests.title"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="ectViewConsultationRequests.title"/>
         </title>
 
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <link rel="stylesheet" type="text/css" media="all" href="../../share/calendar/calendar.css"
               title="win2k-cold-1"/>
         <script type="text/javascript" src="../../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../../share/calendar/calendar-setup.js"></script>
         <!--META HTTP-EQUIV="Refresh" CONTENT="20;"-->
 
@@ -220,7 +220,7 @@
         function popupOscarRx(vheight, vwidth, varpage) { //open a new popup window
             var page = varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsReq"/>", windowprops);
+            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsReq"/>", windowprops);
             if (popup != null) {
                 if (popup.opener == null) {
                     popup.opener = self;
@@ -233,7 +233,7 @@
         function popupOscarConsultationConfig(vheight, vwidth, varpage) { //open a new popup window
             var page = varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsConfig"/>", windowprops);
+            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsConfig"/>", windowprops);
             if (popup != null) {
                 if (popup.opener == null) {
                     popup.opener = self;
@@ -283,17 +283,14 @@
                 <table class="TopStatusBar">
                     <tr>
                         <td class="Header" NOWRAP>
-                            <bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msfConsReqForTeam"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msfConsReqForTeam"/>
                             =
                             <%
                                 if (team.equals("-1")) {
                             %>
-                            <bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/>
                             <% } else if (team.isEmpty()) { %>
-                            <bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/>
                             <% } else { %>
                             <%= team %>
                             <% } %>
@@ -311,8 +308,7 @@
                         <td NOWRAP>
                             <a href="javascript:popupOscarConsultationConfig(700,960,'<%=request.getContextPath()%>/oscarEncounter/oscarConsultationRequest/config/ShowAllServices.jsp')"
                                class="consultButtonsActive">
-                                <bean:message
-                                        key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEditSpecialists"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEditSpecialists"/>
                             </a>
                         </td>
                     </tr>
@@ -322,20 +318,16 @@
                 <table width="100%">
                     <tr>
                         <td style="margin: 0; padding: 0;">
-                            <html:form action="/oscarEncounter/ViewConsultation" method="get">
-                                <bean:message
-                                        key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formSelectTeam"/>:
+                            <form action="${pageContext.request.contextPath}/oscarEncounter/ViewConsultation" method="get">
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formSelectTeam"/>:
                                 <select name="sendTo">
-                                    <option value=""><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/></option>
+                                    <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/></option>
                                     <%
                                         if (team.equals("-1")) { %>
-                                    <option value="-1" selected><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
+                                    <option value="-1" selected><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
                                     <% } else {
                                     %>
-                                    <option value="-1"><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
+                                    <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
                                     <% }
                                         for (int i = 0; i < consultUtil.teamVec.size(); i++) {
                                             String te = (String) consultUtil.teamVec.elementAt(i);
@@ -352,32 +344,27 @@
                                     %>
                                 </select>
                                 <input type="submit"
-                                       value="<bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
                                 <div style="margin: 0; padding: 0; ">
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:<html:text
-                                        property="startDate" size="8" styleId="startDate"/><a id="SCal"><img
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:
+                                    <input type="text" name="startDate" size="8" id="startDate"/><a id="SCal"><img
                                         title="Calendar" src="../../images/cal.gif" alt="Calendar" border="0"/></a>
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:<html:text
-                                        property="endDate" size="8" styleId="endDate"/><a id="ECal"><img
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:
+                                    <input type="text" name="endDate" size="8" id="endDate"/><a id="ECal"><img
                                         title="Calendar" src="../../images/cal.gif" alt="Calendar" border="0"/></a>
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:<html:checkbox
-                                        property="includeCompleted" value="include"/>
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSearchon"/><html:radio
-                                        property="searchDate" value="0" titleKey="Search on Referal Date"/>
-                                    <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgApptDate"/><html:radio
-                                        property="searchDate" value="1" titleKey="Search on Appt. Date"/>
-                                    <html:hidden property="currentTeam"/>
-                                    <html:hidden property="orderby"/>
-                                    <html:hidden property="desc"/>
-                                    <html:hidden property="offset"/>
-                                    <html:hidden property="limit"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
+                                    <input type="checkbox" name="includeCompleted" value="include"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSearchon"/>
+                                    <input type="radio" name="searchDate" value="0" titleKey="Search on Referal Date"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgApptDate"/>
+                                    <input type="radio" name="searchDate" value="1" titleKey="Search on Appt. Date"/>
+                                    <input type="hidden" name="currentTeam" id="currentTeam"/>
+                                    <input type="hidden" name="orderby" id="orderby"/>
+                                    <input type="hidden" name="desc" id="desc"/>
+                                    <input type="hidden" name="offset" id="offset"/>
+                                    <input type="hidden" name="limit" id="limit"/>
                                 </div>
-                            </html:form>
+                            </form>
                         </td>
                     </tr>
                     <tr>
@@ -386,67 +373,56 @@
                                 <tr>
                                     <th align="left" class="VCRheads" width="10%">
                                         <a href=# onclick="setOrder('1'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStatus"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStatus"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads" width="10%">
-                                        <bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgUrgency"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgUrgency"/>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('2'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgTeam"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgTeam"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads" width="75">
                                         <a href=# onclick="setOrder('3'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPatient"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPatient"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('4'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgProvider"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgProvider"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('5'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgService"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgService"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('6'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsultant"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsultant"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('7'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgRefDate"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgRefDate"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('8'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgAppointmentDate"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgAppointmentDate"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('9'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgFollowUpDate"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgFollowUpDate"/>
                                         </a>
                                     </th>
                                     <% if (bMultisites) { %>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('10'); return false;">
-                                            <bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSiteName"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSiteName"/>
                                         </a>
                                     </th>
                                     <%} %>
@@ -525,17 +501,13 @@
                                 <tr <%=overdue ? "style='color:red;'" : ""%>>
                                     <td class="stat<%=status%>">
                                         <% if (status.equals("1")) { %>
-                                        <bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgND"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgND"/>
                                         <% } else if (status.equals("2")) { %>
-                                        <bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSR"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSR"/>
                                         <% } else if (status.equals("3")) { %>
-                                        <bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPR"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPR"/>
                                         <% } else if (status.equals("4")) { %>
-                                        <bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgDONE"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgDONE"/>
                                         <% } %>
                                     </td>
                                     <td class="stat<%=status%>">
@@ -659,7 +631,7 @@
     </script>
     </body>
 
-</html:html>
+</html>
 <%!
     /*
     String getNewQueryString(String queryString,Integer offset, Integer limit) {

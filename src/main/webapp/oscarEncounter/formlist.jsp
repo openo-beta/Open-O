@@ -24,8 +24,8 @@
 
 --%>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -58,10 +58,10 @@
     EctFormData.Form[] forms = EctFormData.getForms();
     oscar.util.UtilDateUtilities dateConvert = new oscar.util.UtilDateUtilities();
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="oscarEncounter.formlist.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.title"/></title>
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
         <script type="text/javascript" language=javascript>
 
@@ -111,19 +111,15 @@
           rightmargin="0">
     <table border=0 cellspacing=0 cellpadding=0 width="100%">
         <tr bgcolor="<%=deepcolor%>">
-            <th><font face="Helvetica"><bean:message
-                    key="oscarEncounter.formlist.msgFormList"/></font></th>
+            <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.msgFormList"/></font></th>
         </tr>
     </table>
     <center>
         <table BORDER="0" CELLPADDING="2" CELLSPACING="2" WIDTH="65%" BGCOLOR="white">
             <tr BGCOLOR="<%=tableTitle%>">
-                <th width=35% nowrap><bean:message
-                        key="oscarEncounter.formlist.formName"/></th>
-                <th width=30% nowrap><bean:message
-                        key="oscarEncounter.formlist.formCreated"/></th>
-                <th width=35% nowrap><bean:message
-                        key="oscarEncounter.formlist.formEditedTime"/></th>
+                <th width=35% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formName"/></th>
+                <th width=30% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formCreated"/></th>
+                <th width=35% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formEditedTime"/></th>
             </tr>
 
             <%
@@ -184,8 +180,7 @@
                     if (nLastPage >= 0) {
             %>
             <a
-                    href="formlist.jsp?demographic_no=<%=demoNo%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><bean:message
-                    key="oscarEncounter.formlist.formLastpage"/></a>
+                    href="formlist.jsp?demographic_no=<%=demoNo%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formLastpage"/></a>
             |
             <%
                 }
@@ -193,7 +188,7 @@
             %>
             <a
                     href="formlist.jsp?demographic_no=<%=demoNo%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
-                <bean:message key="oscarEncounter.formlist.formNextPage"/></a>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formNextPage"/></a>
             </td>
             </tr>
             <%
@@ -209,4 +204,4 @@
         </table>
     </center>
     </body>
-</html:html>
+</html>

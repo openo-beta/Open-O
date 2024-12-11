@@ -24,35 +24,22 @@
  */
 package org.oscarehr.managers;
 
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Properties;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.velocity.VelocityContext;
 import org.oscarehr.common.dao.BillingONCHeader1Dao;
+import org.oscarehr.common.dao.BillingONExtDao;
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.web.BillingInvoiceAction;
-import org.oscarehr.common.service.BillingONService;
+import org.oscarehr.common.web.BillingInvoice2Action;
 import org.oscarehr.util.LocaleUtils;
 import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.VelocityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import oscar.util.DateUtils;
-import oscar.OscarProperties;
 
-import java.text.NumberFormat;
-
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.common.model.BillingONExt;
-import org.oscarehr.common.dao.BillingONExtDao;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * @author mweston4
@@ -82,7 +69,7 @@ public class BillingONManager {
         Properties p = new Properties();
         InputStream is = null;
         try {
-            is = BillingInvoiceAction.class.getResourceAsStream(BILLING_INVOICE_EMAIL_PROPERTIES_FILE);
+            is = BillingInvoice2Action.class.getResourceAsStream(BILLING_INVOICE_EMAIL_PROPERTIES_FILE);
             p.load(is);
         } catch (java.io.IOException e) {
             MiscUtils.getLogger().error("Error reading properties file : " + BILLING_INVOICE_EMAIL_PROPERTIES_FILE, e);
@@ -148,7 +135,7 @@ public class BillingONManager {
         //         InputStream is = null;
         //         String emailTemplate = null;
         //         try {
-        //             is = BillingInvoiceAction.class.getResourceAsStream(BILLING_INVOICE_EMAIL_TEMPLATE_FILE);
+        //             is = BillingInvoice2Action.class.getResourceAsStream(BILLING_INVOICE_EMAIL_TEMPLATE_FILE);
         //             emailTemplate = IOUtils.toString(is);
         //         } 
         //         catch (java.io.IOException e) {

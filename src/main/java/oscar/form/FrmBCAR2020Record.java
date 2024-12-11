@@ -143,7 +143,7 @@ public class FrmBCAR2020Record extends FrmRecord {
 
     @Deprecated
     /**
-     * Use FrmBCAR2020Action instead
+     * Use FrmBCAR20202Action instead
      * This is just required to extend FrmRecord 
      */
     public int saveFormRecord(Properties props) throws SQLException {

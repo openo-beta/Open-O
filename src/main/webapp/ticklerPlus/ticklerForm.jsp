@@ -116,18 +116,18 @@
 <%@ include file="/common/messages.jsp" %>
 
 <table width="60%" border="0" cellpadding="0" cellspacing="1" bgcolor="#C0C0C0">
-    <html:form action="/Tickler" focus="tickler.demographicNo" onsubmit="return validateTicklerForm(this);">
+    <form action="${pageContext.request.contextPath}/Tickler.do" method="post" focus="tickler.demographicNo" onsubmit="return validateTicklerForm(this);">
 
         <input type="hidden" name="method" value="save"/>
-        <html:hidden property="tickler.creator" value='<%=(String) session.getAttribute("user")%>'/>
-        <html:hidden property="tickler.id"/>
+        <input type="hidden" name="creator" id="creator" value='<%=(String) session.getAttribute("user")%>'/>
+        <input type="hidden" name="id" id="id"/>
 
         <tr>
             <td class="fieldTitle">
                 Demographic:
             </td>
             <td class="fieldValue">
-                <html:hidden property="tickler.demographicNo"/>
+                <input type="hidden" name="demographicNo" id="demographicNo"/>
                 <%=demographicName%>
             </td>
         </tr>
@@ -145,7 +145,7 @@
                 String formattedDate = year + "-" + month + "-" + day;
             %>
             <td class="fieldValue">
-                <html:text property="tickler.serviceDateWeb" value="<%=formattedDate%>" maxlength="10"/>
+                <input type="text" name="tickler.serviceDateWeb" value="<%=formattedDate%>" maxlength="10"/>
                 <span onClick="openBrWindow('calendar/oscarCalendarPopup.jsp?type=caisi&openerForm=ticklerForm&amp;openerElement=tickler.serviceDateWeb&amp;year=<%=year%>&amp;month=<%=month%>','','width=300,height=300')">
 					<img border="0" src="images/calendar.jpg"/>
 				</span>
@@ -211,11 +211,11 @@
                 Priority:
             </td>
             <td class="fieldValue">
-                <html:select property="tickler.priorityWeb">
+                <select name="tickler.priorityWeb" id="tickler.priorityWeb">
                     <option value="Normal">Normal</option>
                     <option value="High">High</option>
                     <option value="Low">Low</option>
-                </html:select>
+                </select>
             </td>
         </tr>
         <tr>
@@ -223,13 +223,17 @@
                 Task Assigned To:
             </td>
             <td class="fieldValue">
-                <html:hidden property="tickler.taskAssignedToName"/>
-                <html:select property="tickler.taskAssignedTo" value="none">
+                <input type="hidden" name="taskAssignedToName" id="taskAssignedToName"/>
+                <select name="taskAssignedTo" value="none">
                     <option value="none">- select -</option>
-                    <html:options collection="providers" property="providerNo" labelProperty="formattedName"/>
-                </html:select>
-                    <%--html:hidden property="tickler.taskAssignedTo" />
-                    <html:text property="tickler.taskAssignedToName" />
+                    <c:forEach var="provider" items="${providers}">
+                        <option value="${provider.providerNo}">
+                                ${provider.formattedName}
+                        </option>
+                    </c:forEach>
+                </select>
+                    <%--input type="hidden" name= property="tickler.taskAssignedTo" />
+                    <input type="text" name="tickler.taskAssignedToName" id="tickler.taskAssignedToName" />
                     <input type="button" value="Search" onclick="search_provider();" /--%>
             </td>
         </tr>
@@ -238,11 +242,11 @@
                 Status:
             </td>
             <td class="fieldValue">
-                <html:select property="tickler.statusWeb">
+                <select name="tickler.statusWeb" id="tickler.statusWeb">
                     <option value="A">Active</option>
                     <option value="C">Completed</option>
                     <option value="D">Deleted</option>
-                </html:select>
+                </select>
             </td>
         </tr>
         <tr>
@@ -250,7 +254,7 @@
                 Message:
             </td>
             <td class="fieldValue">
-                <html:textarea cols="40" rows="10" property="tickler.message"></html:textarea>
+                <textarea cols="40" rows="10" name="message"></textarea>
             </td>
         </tr>
         <!--
@@ -267,11 +271,11 @@
             <td class="fieldValue" colspan="3" align="left">
                 <input type="hidden" name="docType" value="<%=request.getParameter("docType")%>"/>
                 <input type="hidden" name="docId" value="<%=request.getParameter("docId")%>"/>
-                <html:submit styleClass="button">Save</html:submit>
+                <input type="submit" class="button" value="Save" />
                 <input type="button" value="Cancel" onclick="window.close()"/>
             </td>
         </tr>
-    </html:form>
+    </form>
 </table>
 
 <c:if test="${requestScope.from ne 'CaseMgmt'}">

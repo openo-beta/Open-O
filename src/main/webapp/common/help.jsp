@@ -30,10 +30,10 @@
 
 <%@ include file="/taglibs.jsp" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>CAISI Help</title>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
@@ -45,11 +45,12 @@
         <c:otherwise>
             <h3><c:out value="${param.topic}"/></h3>
             <br/>
-            <bean:message key="<%=topic%>" bundle="help"/>
+            <fmt:setBundle basename="HelpResources" var="help"/>
+            <fmt:message bundle="${help}" key="<%=topic%>"/>
         </c:otherwise>
     </c:choose>
     <br/>
     <center><input type="button" value="Close"
                    onclick="self.close();"/></center>
     </body>
-</html:html>
+</html>

@@ -30,8 +30,7 @@
 <div class="h4">
     <h5>Client Lists Report Criteria</h5>
 </div>
-<div class="axial"><html:form
-        action="/PMmodule/Reports/ClientListsReport">
+<div class="axial"><form action="${pageContext.request.contextPath}/PMmodule/Reports/ClientListsReport.do" method="post">
     <input type="hidden" name="method" value="report"/>
 
     <table border="0" cellspacing="2" cellpadding="3">
@@ -100,9 +99,8 @@
         </tr>
 
         <tr>
-            <td align="center" colspan="2"><html:submit
-                    value="Generate Report"/></td>
+            <td align="center" colspan="2"><input type="submit" name="submit" value="Generate Report"/></td>
         </tr>
     </table>
 
-</html:form></div>
+</form></div>

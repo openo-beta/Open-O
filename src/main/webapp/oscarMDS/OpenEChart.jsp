@@ -24,7 +24,7 @@
 
 --%>
 <%@ page import="java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.net.URLEncoder" %>
 <html>
 <head>

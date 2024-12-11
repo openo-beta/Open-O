@@ -25,9 +25,9 @@
 --%>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="oscar.oscarDemographic.data.DemographicData" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -98,16 +98,13 @@
 <% DisplayMessagesBeanId.setProviderNo(bean.getProviderNo());
     bean.nullAttachment();%>
 <jsp:setProperty name="DisplayMessagesBeanId" property="*"/>
-<jsp:useBean id="ViewMessageForm" scope="session"
-             class="oscar.oscarMessenger.pageUtil.MsgViewMessageForm"/>
 
-
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
-        <title><bean:message key="oscarMessenger.DisplayMessages.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.title"/>
         </title>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
@@ -138,8 +135,7 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarMessenger.DisplayMessages.msgMessenger"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgMessenger"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
@@ -149,10 +145,9 @@
                         </td>
                         <td></td>
                         <td style="text-align: right">
-                            <oscar:help keywords="message" key="app.top1"/> |
+
                             <a href="javascript:void(0)"
-                               onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><bean:message
-                                    key="global.about"/></a>
+                               onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                         </td>
                     </tr>
                 </table>
@@ -171,8 +166,7 @@
                                             <tr>
                                                 <td class="messengerButtonsA"><a
                                                         href="javascript:BackToOscar()"
-                                                        class="messengerButtons"><bean:message
-                                                        key="oscarMessenger.DisplayMessages.btnExit"/></a></td>
+                                                        class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.btnExit"/></a></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -186,49 +180,49 @@
                         <td>
                             <%String strutsAction = "/oscarMessenger/DisplayDemographicMessages.do?demographic_no=" + demographic_no; %>
 
-                            <html:form action="<%=strutsAction%>">
+                            <form action="<%=strutsAction%>" method="post">
 
                                 <table border="0" width="80%" cellspacing="1">
                                     <tr>
                                         <th bgcolor="#DDDDFF" width="75">&nbsp;</th>
                                         <th align="left" bgcolor="#DDDDFF">
-                                            <% if (moreMessages.equals("true")) {%> <html:link
-                                                page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=from&moreMessages=true">
-                                            <bean:message key="oscarMessenger.DisplayMessages.msgFrom"/>
-                                        </html:link> <%} else {%> <html:link
-                                                page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=from&moreMessages=false">
-                                            <bean:message key="oscarMessenger.DisplayMessages.msgFrom"/>
-                                        </html:link> <%}%>
+                                            <% if (moreMessages.equals("true")) {%> <a
+                                                href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=from&moreMessages=true">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgFrom"/>
+                                        </a> <%} else {%> <a
+                                                href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=from&moreMessages=false">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgFrom"/>
+                                        </a> <%}%>
                                         </th>
                                         <th align="left" bgcolor="#DDDDFF">
-                                            <% if (moreMessages.equals("true")) {%> <html:link
-                                                page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=subject&moreMessages=true">
-                                            <bean:message key="oscarMessenger.DisplayMessages.msgSubject"/>
-                                        </html:link> <%} else {%> <html:link
-                                                page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=subject&moreMessages=false">
-                                            <bean:message key="oscarMessenger.DisplayMessages.msgSubject"/>
-                                        </html:link> <%}%>
+                                            <% if (moreMessages.equals("true")) {%> <a
+                                                href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=subject&moreMessages=true">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgSubject"/>
+                                        </a> <%} else {%> <a
+                                                href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=subject&moreMessages=false">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgSubject"/>
+                                        </a> <%}%>
                                         </th>
                                         <th align="left" bgcolor="#DDDDFF">
-                                            <% if (moreMessages.equals("true")) {%> <html:link
-                                                page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=date&moreMessages=true">
-                                            <bean:message key="oscarMessenger.DisplayMessages.msgDate"/>
-                                        </html:link> <%} else {%> <html:link
-                                                page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=date&moreMessages=false">
-                                            <bean:message key="oscarMessenger.DisplayMessages.msgDate"/>
-                                        </html:link> <%}%>
+                                            <% if (moreMessages.equals("true")) {%> <a
+                                                href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=date&moreMessages=true">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgDate"/>
+                                        </a> <%} else {%> <a
+                                                href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=date&moreMessages=false">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgDate"/>
+                                        </a> <%}%>
                                         </th>
                                         <th align="left" bgcolor="#DDDDFF">
                                             <% if (moreMessages.equals("true")) {%>
-                                            <html:link
-                                                    page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=linked&moreMessages=true">
-                                                <bean:message key="oscarMessenger.DisplayMessages.msgLinked"/>
-                                            </html:link>
+                                            <a
+                                                    href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=linked&moreMessages=true">
+                                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgLinked"/>
+                                            </a>
                                             <%} else {%>
-                                            <html:link
-                                                    page="/oscarMessenger/DisplayDemographicMessages.jsp?orderby=linked&moreMessages=false">
-                                                <bean:message key="oscarMessenger.DisplayMessages.msgLinked"/>
-                                            </html:link>
+                                            <a
+                                                    href="${pageContext.request.contextPath}/oscarMessenger/DisplayDemographicMessages.jsp?orderby=linked&moreMessages=false">
+                                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgLinked"/>
+                                            </a>
                                             <%}%>
                                         </th>
                                     </tr>
@@ -246,8 +240,7 @@
                                     %>
                                     <tr>
                                         <td class='<%= dm.getType() == 3 ? "integratedMessage" : "normalMessage" %>'
-                                            width="75"><html:checkbox
-                                                property="messageNo" value="<%=dm.getMessageId() %>"/> <%
+                                            width="75"><input type="checkbox" name="messageNo" value="<%=dm.getMessageId() %>"/> <%
                                             String atta = dm.getAttach();
                                             if (atta.equals("1")) {
                                         %><img src="img/clip4.jpg">
@@ -278,15 +271,15 @@
                                             if (moreMessages.equals("false") && theMessages2.size() >= INITIAL_DISPLAY) {
                                         %>
                                         <td width="60%"></td>
-                                        <td align="left"><html:link
-                                                page="/oscarMessenger/DisplayMessages.jsp?moreMessages=true">
-                                            <bean:message key="oscarMessenger.DisplayMessages.msgAllMessage"/>
-                                        </html:link></td>
+                                        <td align="left"><a
+                                                href="${pageContext.request.contextPath}/oscarMessenger/DisplayMessages.jsp?moreMessages=true">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgAllMessage"/>
+                                        </a></td>
                                         <%}%>
                                     </tr>
                                 </table>
 
-                            </html:form></td>
+                            </form></td>
                     </tr>
                 </table>
             </td>
@@ -297,4 +290,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

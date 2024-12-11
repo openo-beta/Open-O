@@ -48,10 +48,10 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title><%=bundle.getString(providertitle)%></title>
 
         <link rel="stylesheet" type="text/css"
@@ -72,7 +72,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="<c:out value="${ctx}"/>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="<c:out value="${ctx}"/>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                        adding a calendar a matter of 1 or 2 lines of code. -->
@@ -125,7 +125,7 @@
             <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td>
         </tr>
         <%if (request.getAttribute("status") == null) {%>
-        <html:form action="/setProviderStaleDate.do">
+        <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
@@ -138,9 +138,13 @@
                     <div id="fromExisting">
                         <c:out value="${defaultDocQueueProperty.value}"/>
                         <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                        <html:select property="existingDefaultDocQueueProperty.value">
-                            <html:options collection="viewChoices" property="value" labelProperty="label"/>
-                        </html:select>
+                        <select name="existingDefaultDocQueueProperty.value" id="existingDefaultDocQueueProperty.value">
+                            <c:forEach var="viewChoice" items="${viewChoices}">
+                                <option value="${viewChoice.value}">
+                                        ${viewChoice.label}
+                                </option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </td>
             </tr>
@@ -155,7 +159,7 @@
                 <td class="MainTableRightColumn">
                     <div id="saveNew" style="display:none">
                         <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                        <html:text property="newDefaultDocQueueProperty.value"/>
+                        <input type="text" name="newDefaultDocQueueProperty.value" id="newDefaultDocQueueProperty.value" />
                     </div>
                 </td>
             </tr>
@@ -166,7 +170,7 @@
                     <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
                 </td>
             </tr>
-        </html:form>
+        </form>
         <%} else {%>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -179,4 +183,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

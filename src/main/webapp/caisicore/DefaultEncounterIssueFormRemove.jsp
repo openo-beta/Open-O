@@ -74,9 +74,10 @@
         </tr>
         <tr>
             <td class="filedValue" colspan="3"><input type="text" name="issueNames"/></td>
-            <td class="fieldValue" width="80%"><html:submit>Remove</html:submit>
-                <input type="button" value="Cancel"
-                       onclick="location.href='DefaultEncounterIssue.do'"/></td>
+            <td class="fieldValue" width="80%">
+                <input type="submit" name="submit" value="Remove" />
+                <input type="button" value="Cancel" onclick="location.href='DefaultEncounterIssue.do'"/>
+            </td>
         </tr>
         <tr>
             <td class="filedValue" colspan="4"><small><b>Tips:</b><br/>Enter default issue codes separated by commas,

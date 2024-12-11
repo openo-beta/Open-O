@@ -23,7 +23,10 @@
     Ontario, Canada
 
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
+<%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@page import="org.oscarehr.myoscar.commons.MedicalDataType" %>
 <%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
@@ -37,29 +40,11 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.phr.web.MyOscarMessagesHelper" %>
-<%@page import="org.oscarehr.myoscar_server.ws.MessageTransfer" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.net.URLEncoder" %>
-
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://struts.apache.org/tags-nested" prefix="nested" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
-<%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
-
-<%@ page import="oscar.oscarDemographic.data.DemographicData" %>
-<%@ page import="org.oscarehr.phr.model.PHRAction" %>
-<%@ page import="oscar.oscarProvider.data.ProviderData" %>
-<%@ page import="org.oscarehr.phr.model.PHRMessage" %>
-<%@ page
-        import="org.oscarehr.phr.dao.PHRActionDAO, org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@ page import="java.util.*" %>
-<%@ page import="oscar.util.StringUtils" %>
-<%@ page import="org.oscarehr.phr.indivo.service.accesspolicies.IndivoAPService" %>
-<%@ page import="oscar.util.UtilDateUtilities" %>
-
+<%@page import="org.oscarehr.phr.model.PHRAction" %>
+<%@page import="oscar.oscarProvider.data.ProviderData" %>
+<%@page import="java.util.*" %>
+<%@page import="org.oscarehr.phr.indivo.service.accesspolicies.IndivoAPService" %>
+<%@page import="oscar.util.UtilDateUtilities" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String providerNo = loggedInInfo.getLoggedInProviderNo();
@@ -111,7 +96,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <html>
 <head>
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <link rel="stylesheet" type="text/css" href="../../oscarMessenger/encounterStyles.css">
     <title>
         myOSCAR
@@ -286,20 +271,20 @@
 <table class="MainTable" id="scrollNumber1" name="encounterTable">
     <tr class="MainTableTopRow">
         <td class="MainTableTopRowLeftColumn">
-            <bean:message key="oscarMessenger.DisplayMessages.msgMessenger"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgMessenger"/>
         </td>
         <td class="MainTableTopRowRightColumn">
             <table class="TopStatusBar">
                 <tr>
                     <td>
-                        <div class="DivContentTitle"><bean:message key="oscarMessenger.DisplayMessages.msgInbox"/></div>
+                        <div class="DivContentTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgInbox"/></div>
                     </td>
                     <td>
                     </td>
                     <td style="text-align:right">
-                        <oscar:help keywords="myoscar message" key="app.top1"/> | <a
-                            href="javascript:popupStart(300,400,'About.jsp')"><bean:message key="global.about"/></a> |
-                        <a href="javascript:popupStart(300,400,'License.jsp')"><bean:message key="global.license"/></a>
+                        <a
+                            href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> |
+                        <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
                     </td>
                 </tr>
             </table>
@@ -333,10 +318,10 @@
                                     <table class=messButtonsA cellspacing=0 cellpadding=3>
                                         <tr>
                                             <td class="messengerButtonsA<%if (pageMethod.equals("viewMessages")) {%>Current<%}%>">
-                                                <html:link page="/phr/PhrMessage.do?method=viewMessages"
+                                                <a href="${pageContext.request.contextPath}/phr/PhrMessage.do?method=viewMessages"
                                                            styleClass="messengerButtons">
-                                                    <bean:message key="oscarMessenger.DisplayMessages.msgInbox"/>
-                                                </html:link>
+                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgInbox"/>
+                                                </a>
                                             </td>
                                         </tr>
                                     </table>
@@ -345,10 +330,10 @@
                                     <table class=messButtonsA cellspacing=0 cellpadding=3>
                                         <tr>
                                             <td class="messengerButtonsA<%if (pageMethod.equals("viewSentMessages")) {%>Current<%}%>">
-                                                <html:link page="/phr/PhrMessage.do?method=viewSentMessages"
+                                                <a href="${pageContext.request.contextPath}/phr/PhrMessage.do?method=viewSentMessages"
                                                            styleClass="messengerButtons">
-                                                    <bean:message key="oscarMessenger.DisplayMessages.msgSentTitle"/>
-                                                </html:link>
+                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgSentTitle"/>
+                                                </a>
                                             </td>
                                         </tr>
                                     </table>
@@ -357,10 +342,10 @@
                                     <table class=messButtonsA cellspacing=0 cellpadding=3>
                                         <tr>
                                             <td class="messengerButtonsA<%if (pageMethod.equals("viewArchivedMessages")) {%>Current<%}%>">
-                                                <html:link page="/phr/PhrMessage.do?method=viewArchivedMessages"
+                                                <a href="${pageContext.request.contextPath}/phr/PhrMessage.do?method=viewArchivedMessages"
                                                            styleClass="messengerButtons">
-                                                    <bean:message key="oscarMessenger.DisplayMessages.msgArchived"/>
-                                                </html:link>
+                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgArchived"/>
+                                                </a>
                                             </td>
                                         </tr>
                                     </table>
@@ -446,9 +431,9 @@
                 }
             %>
             <a href="?method=<%=pageMethod%>&startIndex=<%=MyOscarMessagesHelper.getPreviousPageStartIndex(startIndex)%>"/>
-            <bean:message key="oscarMessenger.DisplayMessages.msgNewerMessage"/></a>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgNewerMessage"/></a>
             <a href="?method=<%=pageMethod%>&startIndex=<%=MyOscarMessagesHelper.getNextPageStartIndex(startIndex)%>"/>
-            <bean:message key="oscarMessenger.DisplayMessages.msgOlderMessage"/></a>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgOlderMessage"/></a>
         </td>
     </tr>
     <tr>
@@ -492,20 +477,20 @@
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
                         <a href="../phr/PhrMessage.do?orderby=0&method=${pageMethod}">
-                            <bean:message key="oscarMessenger.DisplayMessages.msgStatus"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgStatus"/>
                         </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <bean:message key="oscarMessenger.DisplayMessages.msgFrom"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgFrom"/>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <bean:message key="oscarMessenger.DisplayMessages.msgTo"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgTo"/>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <bean:message key="oscarMessenger.DisplayMessages.msgSubject"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgSubject"/>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <bean:message key="oscarMessenger.DisplayMessages.msgDate"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgDate"/>
                     </th>
                     <th align="center" style="width: 30px;" bgcolor="#DDDDFF">
                         &nbsp;
@@ -635,11 +620,11 @@
                             <%
                                 if (recipientAttributesTransfer.isActive()) {
                             %>
-                            <bean:message key="oscarMessenger.DisplayMessages.formArchive"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.formArchive"/>
                             <%
                             } else {
                             %>
-                            <bean:message key="oscarMessenger.DisplayMessages.formUnarchive"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.formUnarchive"/>
                             <%
                                 }
                             %>

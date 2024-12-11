@@ -39,8 +39,8 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     SecRoleDao secRoleDao = SpringUtils.getBean(SecRoleDao.class);
 
@@ -134,9 +134,9 @@
 
 
 <!DOCTYPE HTML>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="admin.admin.addRole"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.addRole"/></title>
         <script src="${pageContext.request.contextPath}/js/global.js"></script>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
         <!-- Bootstrap 2.3.1 -->
@@ -178,7 +178,7 @@
                 var b = true;
                 if (document.forms[0].role_name.value.length < 2) {
                     b = false;
-                    alert("<bean:message key="admin.provideraddrole.msgyoumusttype"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrole.msgyoumusttype"/>");
                 }
                 return b;
             }
@@ -243,15 +243,14 @@
         </script>
     </head>
     <body onLoad="setfocus()">
-    <h4><bean:message key="admin.admin.addRole"/></h4>
+    <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.addRole"/></h4>
 
     <span style="display: inline-block; width:100%; margin:auto; text-align:center;" class="alert"><%=msg%></span>
     <br><br>
     <div class="well">
         <form method="post" name="baseurl" action="providerAddRole.jsp" class="form-horizontal">
             <div class="control-group">
-                <label class="control-label" for="role_name"><bean:message
-                        key="admin.provideraddrole.rolename"/></label>
+                <label class="control-label" for="role_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrole.rolename"/></label>
                 <div class="controls">
                     <input type="text" name="role_name" id="role_name"
                            value="<%=Encode.forHtmlAttribute(prop.getProperty("role_name", ""))%>"
@@ -265,7 +264,7 @@
                     <input
                             type="hidden" name="action" value='<%=action%>'/> <% if (!"search".equals(action)) {%>
                     <input type="submit" name="submit" class="btn btn-primary"
-                           value="<bean:message key="admin.resourcebaseurl.btnSave"/>"
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                            onclick="javascript:return onSave();"> <% }%>
                 </div>
             </div>
@@ -273,4 +272,4 @@
     </div>
 
     </body>
-</html:html>
+</html>

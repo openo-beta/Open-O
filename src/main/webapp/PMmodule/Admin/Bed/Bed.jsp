@@ -30,12 +30,12 @@
     }
 
     function roomFilter() {
-        document.forms[0].action = '<html:rewrite action="/PMmodule/BedManager.do?method=doRoomFilter" />';
+        document.forms[0].action = '<%=request.getContextPath() %>/PMmodule/BedManager.do?method=doRoomFilter';
         document.forms[0].submit();
     }
 
     function bedFilter() {
-        document.forms[0].action = '<html:rewrite action="/PMmodule/BedManager.do?method=doBedFilter" />';
+        document.forms[0].action = '<%=request.getContextPath() %>/PMmodule/BedManager.do?method=doBedFilter';
         document.forms[0].submit();
     }
 
@@ -104,7 +104,7 @@
     function deleteRoom() {
         var doDelete = confirm("Are you sure you want to delete the room?");
         if (doDelete) {
-            document.forms[0].action = '<html:rewrite action="/PMmodule/BedManager.do?method=deleteRoom" />';
+            document.forms[0].action = '<%=request.getContextPath() %>/PMmodule/BedManager.do?method=deleteRoom';
             document.forms[0].submit();
         }
     }
@@ -112,7 +112,7 @@
     function deleteBed() {
         var doDelete = confirm("Are you sure you want to delete the bed?");
         if (doDelete) {
-            document.forms[0].action = '<html:rewrite action="/PMmodule/BedManager.do?method=deleteBed" />';
+            document.forms[0].action = '<%=request.getContextPath() %>/PMmodule/BedManager.do?method=deleteBed';
             document.forms[0].submit();
         }
     }
@@ -130,13 +130,13 @@
     </table>
 </div>
 
-<html:form action="/PMmodule/BedManager.do">
+<form action="${pageContext.request.contextPath}/PMmodule/BedManager.do" method="post">
 
     <table width="100%" summary="Manage rooms and beds">
 
-        <html:hidden property="facilityId"/>
-        <html:hidden property="roomToDelete"/>
-        <html:hidden property="bedToDelete"/>
+        <input type="hidden" name="facilityId" id="facilityId"/>
+        <input type="hidden" name="roomToDelete" id="roomToDelete"/>
+        <input type="hidden" name="bedToDelete" id="bedToDelete"/>
 
         <tr>
             <td width="80%">
@@ -153,19 +153,25 @@
                     <tr>
                         <td width="40%"></td>
                         <td width="30%" style="font-weight: bold">Room Status<br/>
-                            <html:select property="roomStatusFilter" name="bedManagerForm"
+                            <select name="roomStatusFilter" name="bedManagerForm"
                                          onchange="roomFilter();">
-                                <html:optionsCollection property="roomStatusNames" value="key"
-                                                        label="value"/>
-                            </html:select></td>
+                                <c:forEach var="roomStatusName" items="${roomStatusNames}">
+                                    <option value="${roomStatusName.key}">
+                                            ${roomStatusName.value}
+                                    </option>
+                                </c:forEach>
+                            </select></td>
                         <td width="30%" align="right" style="font-weight: bold">Bed
                             Program<br/>
-                            <html:select property="bedProgramFilterForRoom"
+                            <select name="bedProgramFilterForRoom"
                                          name="bedManagerForm" onchange="roomFilter();">
                                 <option value="0">Any</option>
-                                <html:optionsCollection property="programs" value="id"
-                                                        label="name"/>
-                            </html:select></td>
+                                <c:forEach var="program" items="${programs}">
+                                    <option value="${program.id}">
+                                            ${program.name}
+                                    </option>
+                                </c:forEach>
+                            </select></td>
                     </tr>
                 </table>
 
@@ -272,14 +278,13 @@
 
             </display:table></td>
             <td width="20%"><br/>
-                <input type=hidden name="roomslines"
-                       value="<c:out value="${room_rowNum}" />"> <html:button
-                        property="submit.saveRooms" onclick="javascript:saveRooms();">Save Rooms</html:button>
+                <input type=hidden name="roomslines" value="<c:out value="${room_rowNum}" />"> 
+                <button type="button" onclick="saveRooms();" data-property="submit.saveRooms">Save Rooms</button>
                 <input type=hidden name="submit.saveRoom" value=""></td>
         </tr>
         <tr>
-            <td><html:text property="numRooms"/> <html:button
-                    property="submit.addRooms" onclick="javascript:addRooms();">Add Rooms</html:button>
+            <td><input type="text" name="numRooms" id="numRooms" /> 
+                <button type="button" onclick="addRooms();" data-property="submit.addRooms">Add Rooms</button>
                 <input type=hidden name="submit.addRoom" value=""></td>
         </tr>
         <tr>
@@ -301,17 +306,23 @@
                     <tr>
                         <td width="40%"></td>
                         <td width="30%" style="font-weight: bold">Bed Status<br/>
-                            <html:select property="bedStatusFilter" name="bedManagerForm"
+                            <select name="bedStatusFilter"
+                            <select name="bedStatusFilter"
                                          onchange="bedFilter();">
-                                <html:optionsCollection property="bedStatusNames" value="key"
-                                                        label="value"/>
-                            </html:select></td>
+                                <c:forEach var="bedStatusName" items="${bedStatusNames}">
+                                    <option value="${bedStatusName.key}">
+                                            ${bedStatusName.value}
+                                    </option>
+                                </c:forEach>
+                            </select></td>
                         <td width="30%" align="right" style="font-weight: bold">Room<br/>
-                            <html:select property="bedRoomFilterForBed" name="bedManagerForm"
-                                         onchange="bedFilter();">
-                                <html:optionsCollection property="assignedBedRooms" value="id"
-                                                        label="name"/>
-                            </html:select></td>
+                            <select name="bedRoomFilterForBed" onchange="bedFilter();">
+                                <c:forEach var="assignedBedRoom" items="${assignedBedRooms}">
+                                    <option value="${assignedBedRoom.id}">
+                                            ${assignedBedRoom.name}
+                                    </option>
+                                </c:forEach>
+                            </select></td>
                     </tr>
                 </table>
                 <!-- end bed status & bedRoom filter --> <display:table
@@ -379,29 +390,26 @@
 
             </display:table></td>
             <td width="20%"><br/>
-                <html:button property="submit.saveBeds"
-                             onclick="javascript:saveBeds();">Save Beds</html:button> <input
-                        type=hidden name="submit.saveBed" value=""></td>
+                <button type="button" onclick="saveBeds();" data-property="submit.saveBeds">Save Beds</button>
+                <input type=hidden name="submit.saveBed" value=""></td>
         </tr>
         <tr>
             <td><input type=hidden name="bedslines"
                        value="<c:out value="${bed_rowNum}" />"> <c:choose>
                 <c:when test="${not empty bedManagerForm.rooms}">
-                    <html:text property="numBeds"/>
-                    <html:button property="submit.addBeds"
-                                 onclick="javascript:addBeds();">Add Beds</html:button>
+                    <input type="text" name="numBeds" id="numBeds" />
+                    <button type="button" onclick="addBeds();" data-property="submit.addBeds">Add Beds</button>
                     <input type=hidden name="submit.addBed" value="">
                 </c:when>
                 <c:otherwise>
-                    <html:submit property="submit.addBeds" disabled="true">Add Beds</html:submit>
+                    <input type="submit" name="submit" value="Add beds" disabled="true" />
                 </c:otherwise>
             </c:choose></td>
         </tr>
     </table>
     <div>
-        <p><a
-                href="<html:rewrite action="/PMmodule/FacilityManager.do"/>?method=list"/>Return
+        <p><a href="<%=request.getContextPath() %>/PMmodule/FacilityManager.do?method=list">Return
             to facilities list</a></p>
     </div>
 
-</html:form>
+</form>

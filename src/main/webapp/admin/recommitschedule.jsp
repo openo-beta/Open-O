@@ -22,15 +22,9 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@ taglib uri="http://struts.apache.org/tags-nested"
-           prefix="nested" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://struts.apache.org/tags-html"
-           prefix="html" %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
@@ -100,10 +94,10 @@
                             }
                         </script>
                     </nested:select> :<nested:select property="schedule_min">
-                        <html:option value="0">00</html:option>
-                        <html:option value="15">15</html:option>
-                        <html:option value="30">30</html:option>
-                        <html:option value="45">45</html:option>
+                        <option value="0">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
                     </nested:select></td>
                     <td></td>
                 </tr>
@@ -162,4 +156,4 @@
     </c:if>
     </body>
 
-</html:html>
+</html>

@@ -45,8 +45,8 @@
 <%@ page
         import="org.oscarehr.phr.util.MyOscarUtils,org.oscarehr.myoscar.utils.MyOscarLoggedInInfo,org.oscarehr.util.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils,oscar.oscarLab.ca.all.*,oscar.oscarMDS.data.*,oscar.oscarLab.ca.all.util.*" %>
@@ -118,7 +118,7 @@
     <script type="text/javascript" src="../share/calendar/calendar.js"></script>
     <!-- language for the calendar -->
     <script type="text/javascript"
-            src="../share/calendar/lang/<bean:message key='global.javascript.calendar'/>"></script>
+            src="../share/calendar/lang/<fmt:setBundle basename='oscarResources'/><fmt:message key='global.javascript.calendar'/>"></script>
     <!-- the following script defines the Calendar.setup helper function, which makes
            adding a calendar a matter of 1 or 2 lines of code. -->
     <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
@@ -177,7 +177,7 @@
         //?segmentID=1&providerNo=999998&searchProviderNo=999998&status=A&demoName=
         function checkDelete(url, docDescription) {
             // revision Apr 05 2004 - we now allow anyone to delete documents
-            if (confirm("<bean:message key="dms.documentReport.msgDelete"/> " + docDescription)) {
+            if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDelete"/> " + docDescription)) {
                 window.location = url;
             }
         }
@@ -220,17 +220,17 @@
                     </legend>
                     <table border="0">
                         <tr>
-                            <td><bean:message key="inboxmanager.document.DocumentUploaded"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.DocumentUploaded"/></td>
                             <td><%=curdoc.getDateTimeStamp()%>
                             </td>
                         </tr>
                         <tr>
-                            <td><bean:message key="inboxmanager.document.ContentType"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.ContentType"/></td>
                             <td><%=contentType%>
                             </td>
                         </tr>
                         <tr>
-                            <td><bean:message key="inboxmanager.document.NumberOfPages"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.NumberOfPages"/></td>
                             <td><span id="viewedPage_<%=docId%>"
                                       class="<%= numOfPage > 1 ? "multiPage" : "singlePage" %>">1</span>&nbsp; of &nbsp;<span
                                     id="numPages_<%=docId %>"
@@ -247,10 +247,10 @@
                         <input type="hidden" name="status" value="<%=status%>"/>
                         <table border="0">
                             <tr>
-                                <td><bean:message key="dms.documentReport.msgDocType"/>:</td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocType"/>:</td>
                                 <td>
                                     <select tabindex="<%=tabindex++%>" name="docType" id="docType">
-                                        <option value=""><bean:message key="dms.addDocument.formSelect"/></option>
+                                        <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                                         <%
                                             for (int j = 0; j < doctypes.size(); j++) {
                                                 String doctype = (String) doctypes.get(j);
@@ -262,7 +262,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><bean:message key="dms.documentReport.msgDocDesc"/>:</td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
                                 <td><input tabindex="<%=tabindex++%>" type="text" name="documentDescription"
                                            value="<%=curdoc.getDescription()%>"/></td>
                             </tr>
@@ -739,15 +739,14 @@
 
 
                             <tr>
-                                <td><bean:message key="dms.documentReport.msgCreator"/>:</td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgCreator"/>:</td>
                                 <td><%=curdoc.getCreatorName()%>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td colspan="2" align="right"><a id="saveSucessMsg_<%=docId%>"
-                                                                 style="display:none;color:blue;"><bean:message
-                                        key="inboxmanager.document.SuccessfullySavedMsg"/></a><%if (!demographicID.equals("-1")) {%><input
+                                                                 style="display:none;color:blue;"><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.SuccessfullySavedMsg"/></a><%if (!demographicID.equals("-1")) {%><input
                                         type="submit" name="save" tabindex="<%=tabindex++%>" id="save<%=docId%>"
                                         value="Save"/><%} else {%><input type="submit" name="save"
                                                                          tabindex="<%=tabindex++%>" id="save<%=docId%>"
@@ -845,7 +844,7 @@
                     </form>
                 </fieldset>
                 <fieldset>
-                    <legend><bean:message key="inboxmanager.document.Comment"/></legend>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.Comment"/></legend>
                     <form name="acknowledgeForm_<%=docId%>" id="acknowledgeForm_<%=docId%>"
                           onsubmit="updateStatus('acknowledgeForm_<%=docId%>');" method="post"
                           action="javascript:void(0);">
@@ -869,21 +868,21 @@
                                         <tr>
                                             <td>
                                                 <input type="submit" tabindex="<%=tabindex++%>"
-                                                       value="<bean:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>">
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>">
                                                 <input type="button" tabindex="<%=tabindex++%>" class="smallButton"
                                                        value="Comment"
                                                        onclick="addDocComment('<%=docId%>','<%=curAckStatus%>')"/>
                                                 <input type="button" tabindex="<%=tabindex++%>" class="smallButton"
-                                                       value="<bean:message key="oscarMDS.index.btnForward"/>"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
                                                        onClick="ForwardSelectedRows(<%=docId%> + ':DOC', null, null);">
                                                 <input type="button" tabindex="<%=tabindex++%>" class="smallButton"
-                                                       value="<bean:message key="oscarMDS.index.btnFile"/>"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnFile"/>"
                                                        onclick="fileDoc('<%=documentNo%>');">
                                                 <input type="button" tabindex="<%=tabindex++%>"
-                                                       value=" <bean:message key="global.btnClose"/> "
+                                                       value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                                        onClick="window.close()">
                                                 <input type="button" tabindex="<%=tabindex++%>"
-                                                       value=" <bean:message key="global.btnPrint"/> "
+                                                       value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                                        onClick="popup(700,960,'<%=url2%>','file download')">
                                                 <% if (demographicID != null && !demographicID.equals("") && !demographicID.equalsIgnoreCase("null") && !demographicID.equals("-1")) {
                                                     String eURL = "../oscarEncounter/IncomingEncounter.do?providerNo=" + providerNo + "&appointmentNo=&demographicNo=" + demographicID + "&curProviderNo=&reason=" + java.net.URLEncoder.encode("Document Notes", "UTF-8") + "&encType=" + java.net.URLEncoder.encode("encounter without client", "UTF-8") + "&userName=" + java.net.URLEncoder.encode(provider.getFullName(), "UTF-8") + "&curDate=" + UtilDateUtilities.getToday("yyyy-MM-dd") + "&appointmentDate=&startTime=&status=";
@@ -916,7 +915,7 @@
                                                 %>
                                                 <input type="button" <%=WebUtils.getDisabledString(enabledMyOscarButton)%>
                                                        tabindex="<%=tabindex++%>"
-                                                       value="<bean:message key="global.btnSendToPHR"/>"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSendToPHR"/>"
                                                        onclick="popup(450, 600, '../phr/SendToPhrPreview.jsp?module=document&documentNo=<%=docId%>&demographic_no=<%=demographicID%>', 'sendtophr')"/>
 
                                                 <%

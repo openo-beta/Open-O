@@ -39,11 +39,11 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
-        <title><bean:message key="provider.setNoteStaleDate.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.title"/></title>
 
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
@@ -76,10 +76,8 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="provider.setNoteStaleDate.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-                    key="provider.setNoteStaleDate.msgProviderStaleDate"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.msgProviderStaleDate"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -87,71 +85,70 @@
                 <%
                     if (request.getAttribute("status") == null) {
 
-                %> <html:form styleId="frmProperty"
-                              action="/setProviderStaleDate.do">
+                %> <form style="frmProperty" action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                 <input type="hidden" id="method" name="method" value="save">
-                <html:hidden property="dateProperty.name"/>
-                <html:hidden property="dateProperty.providerNo"/>
-                <html:hidden property="dateProperty.id"/>
-                <bean:message key="provider.setNoteStaleDate.msgEdit"/>
-                <html:select property="dateProperty.value" styleId="staleDate">
-                    <html:option value="A">All</html:option>
-                    <html:option value="0">0</html:option>
-                    <html:option value="-1">1</html:option>
-                    <html:option value="-2">2</html:option>
-                    <html:option value="-3">3</html:option>
-                    <html:option value="-4">4</html:option>
-                    <html:option value="-5">5</html:option>
-                    <html:option value="-6">6</html:option>
-                    <html:option value="-7">7</html:option>
-                    <html:option value="-8">8</html:option>
-                    <html:option value="-9">9</html:option>
-                    <html:option value="-10">10</html:option>
-                    <html:option value="-11">11</html:option>
-                    <html:option value="-12">12</html:option>
-                    <html:option value="-13">13</html:option>
-                    <html:option value="-14">14</html:option>
-                    <html:option value="-15">15</html:option>
-                    <html:option value="-16">16</html:option>
-                    <html:option value="-17">17</html:option>
-                    <html:option value="-18">18</html:option>
-                    <html:option value="-19">19</html:option>
-                    <html:option value="-20">20</html:option>
-                    <html:option value="-21">21</html:option>
-                    <html:option value="-22">22</html:option>
-                    <html:option value="-23">23</html:option>
-                    <html:option value="-24">24</html:option>
-                    <html:option value="-25">25</html:option>
-                    <html:option value="-26">26</html:option>
-                    <html:option value="-27">27</html:option>
-                    <html:option value="-28">28</html:option>
-                    <html:option value="-29">29</html:option>
-                    <html:option value="-30">30</html:option>
-                    <html:option value="-31">31</html:option>
-                    <html:option value="-32">32</html:option>
-                    <html:option value="-33">33</html:option>
-                    <html:option value="-34">34</html:option>
-                    <html:option value="-35">35</html:option>
-                    <html:option value="-36">36</html:option>
-                </html:select>
+                <input type="hidden" name="name" id="name"/>
+                <input type="hidden" name="providerNo" id="providerNo"/>
+                <input type="hidden" name="id" id="id"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.msgEdit"/>
+                <select name="dateProperty.value" id="staleDate">
+                    <option value="A">All</option>
+                    <option value="0">0</option>
+                    <option value="-1">1</option>
+                    <option value="-2">2</option>
+                    <option value="-3">3</option>
+                    <option value="-4">4</option>
+                    <option value="-5">5</option>
+                    <option value="-6">6</option>
+                    <option value="-7">7</option>
+                    <option value="-8">8</option>
+                    <option value="-9">9</option>
+                    <option value="-10">10</option>
+                    <option value="-11">11</option>
+                    <option value="-12">12</option>
+                    <option value="-13">13</option>
+                    <option value="-14">14</option>
+                    <option value="-15">15</option>
+                    <option value="-16">16</option>
+                    <option value="-17">17</option>
+                    <option value="-18">18</option>
+                    <option value="-19">19</option>
+                    <option value="-20">20</option>
+                    <option value="-21">21</option>
+                    <option value="-22">22</option>
+                    <option value="-23">23</option>
+                    <option value="-24">24</option>
+                    <option value="-25">25</option>
+                    <option value="-26">26</option>
+                    <option value="-27">27</option>
+                    <option value="-28">28</option>
+                    <option value="-29">29</option>
+                    <option value="-30">30</option>
+                    <option value="-31">31</option>
+                    <option value="-32">32</option>
+                    <option value="-33">33</option>
+                    <option value="-34">34</option>
+                    <option value="-35">35</option>
+                    <option value="-36">36</option>
+                </select>
                 <br/>
-                <html:hidden property="singleViewProperty.name"/>
-                <html:hidden property="singleViewProperty.providerNo"/>
-                <html:hidden property="singleViewProperty.id"/>
+                <input type="hidden" name="name" id="name"/>
+                <input type="hidden" name="providerNo" id="providerNo"/>
+                <input type="hidden" name="id" id="id"/>
                 Use Single Line View:
-                <html:select property="singleViewProperty.value" styleId="staleDate">
-                    <html:option value="no">No</html:option>
-                    <html:option value="yes">Yes</html:option>
-                </html:select>
+                <select name="singleViewProperty.value" id="staleDate">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
 
                 <br/>
                 <input type="submit"
-                       value="<bean:message key="provider.setNoteStaleDate.btnSubmit"/>"/>
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.btnSubmit"/>"/>
                 <input type="submit" onclick="$('method').value='remove';"
-                       value="<bean:message key="provider.setNoteStaleDate.btnReset"/>"/>
-            </html:form> <%
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.btnReset"/>"/>
+            </form> <%
             } else {
-            %> <bean:message key="provider.setNoteStaleDate.msgSuccess"/>
+            %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.msgSuccess"/>
                 <br>
 
                 <%
@@ -165,4 +162,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -27,12 +27,12 @@
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
@@ -47,26 +47,33 @@
             });
         </script>
 
-        <title><bean:message
-                key="oscarEncounter.Measurements.msgAddMeasurementStyleSheet"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgAddMeasurementStyleSheet"/></title>
 
     </head>
 
     <body class="BodyStyle" vlink="#0000FF">
     <!--  -->
-    <html:errors/>
-    <html:form
-            action="/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.do"
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
+    <form action="${pageContext.request.contextPath}/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.do"
             method="POST" enctype="multipart/form-data">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><bean:message
-                        key="oscarEncounter.Measurements.msgMeasurements"/></td>
+                <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgMeasurements"/></td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><bean:message
-                                    key="oscarEncounter.Measurements.msgAddMeasurementStyleSheet"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgAddMeasurementStyleSheet"/></td>
                         </tr>
                     </table>
                 </td>
@@ -89,13 +96,12 @@
                                             </c:if>
                                         </td>
                                     <tr>
-                                        <td align="left"><bean:message
-                                                key="oscarEncounter.oscarMeasurements.createNewMeasurementStyleSheet"/>
+                                        <td align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.createNewMeasurementStyleSheet"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><html:file property="file" size="35"/>
-                                            <span title="<bean:message key="global.uploadWarningBody"/>"
+                                        <td><input type="file" name="file" id="file" size="35"/>
+                                            <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                                                   style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                                                     border="0" src="../../images/icon_alertsml.gif"/></span></span>
 
@@ -106,10 +112,10 @@
                                             <table>
                                                 <tr>
                                                     <td><input type="button" name="Button"
-                                                               value="<bean:message key="global.btnClose"/>"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
                                                                onClick="window.close()"></td>
                                                     <td><input type="button" name="Button"
-                                                               value="<bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.continueBtn"/>"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.continueBtn"/>"
                                                                onclick="submit();"/></td>
                                                 </tr>
                                             </table>
@@ -128,6 +134,6 @@
             <td class="MainTableBottomRowRightColumn"></td>
         </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

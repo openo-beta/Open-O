@@ -41,9 +41,9 @@
 %>
 <!DOCTYPE html>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-<html:html>
+<html>
     <head>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
         <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
@@ -67,15 +67,15 @@
                 <%if (request.getAttribute("status") == null) {%>
                 <%=bundle.getString(providermsgEdit)%>
 
-                <html:form styleId="providerForm" action="/setProviderStaleDate.do">
+                <form styleId="providerForm" action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <p id="errorMessage" class="alert alert-danger" style="display: none; color: red;">
                         Invalid input.
                     </p>
-                    Number of Notes : <html:text styleId="numericFormField" property="quickChartSize.value" size="5"/>
+                    Number of Notes : <input type="text" id="numericFormField" name="quickChartSize.value" size="5"/>
                     <br/>
-                    <html:submit styleClass="btn btn-primary" property="btnApply"/>
-                </html:form>
+                    <input type="submit" name="submit" value="Apply"class="btn btn-primary" />
+                </form>
 
                 <%} else {%>
                 <div class="alert alert-success" style="width:100%"><%=bundle.getString(providermsgPrefs)%> <br>
@@ -89,4 +89,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

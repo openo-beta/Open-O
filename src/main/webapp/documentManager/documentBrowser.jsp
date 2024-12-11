@@ -28,8 +28,8 @@
 <%@ page import="java.util.*" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
@@ -158,7 +158,7 @@ Remote documents not supported
 
 <html>
 <head>
-    <title><bean:message key="dms.documentBrowser.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.title"/></title>
 
     <script type="text/javascript">
         window.moveTo(0, 0);
@@ -334,7 +334,7 @@ Remote documents not supported
                 if (combinePdf == true) {
                     showPageCombineImg(docList);
                 } else {
-                    alert("<bean:message key="dms.documentBrowser.msgOnlyPDFCanBeCombined"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgOnlyPDFCanBeCombined"/>");
                     setdefaultdoc();
                 }
 
@@ -413,8 +413,7 @@ Remote documents not supported
         <tr>
             <td align="left" valign="top" style="width: 400px">
                 <oscar:nameage demographicNo="<%=moduleid%>"/> &nbsp; <oscar:phrverification
-                    demographicNo="<%=moduleid%>"><bean:message
-                    key="phr.verification.link"/></oscar:phrverification><br>
+                    demographicNo="<%=moduleid%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.link"/></oscar:phrverification><br>
                 <%=categoryKey%>
                 <br>
 
@@ -424,34 +423,28 @@ Remote documents not supported
                 <input type="hidden" name="functionid" value="<%=moduleid%>">
                 <input type="hidden" name="categorykey" value="<%=categoryKey%>">
 
-                <bean:message key="dms.documentBrowser.msgViewStatus"/> <select id="selviewstatus" name="selviewstatus"
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgViewStatus"/> <select id="selviewstatus" name="selviewstatus"
                                                                                 onchange="ReLoadDoc()">
                 <option value="all"
-                        <%=viewstatus.equalsIgnoreCase("all") ? "selected" : ""%>><bean:message
-                        key="dms.documentBrowser.msgAll"/></option>
+                        <%=viewstatus.equalsIgnoreCase("all") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgAll"/></option>
                 <option value="deleted"
-                        <%=viewstatus.equalsIgnoreCase("deleted") ? "selected" : ""%>><bean:message
-                        key="dms.documentBrowser.msgDeleted"/></option>
+                        <%=viewstatus.equalsIgnoreCase("deleted") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgDeleted"/></option>
                 <option value="active"
-                        <%=viewstatus.equalsIgnoreCase("active") ? "selected" : ""%>><bean:message
-                        key="dms.documentBrowser.msgPublished"/></option>
+                        <%=viewstatus.equalsIgnoreCase("active") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgPublished"/></option>
             </select>
 
-                <bean:message key="dms.documentBrowser.msgSortDate"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgSortDate"/>
                 <select id="selsortorder" name="selsortorder" onchange="ReLoadDoc()">
                     <option value="Content"
-                            <%=sortorder.equalsIgnoreCase("Content") ? "selected" : ""%>><bean:message
-                            key="dms.documentBrowser.msgContent"/></option>
+                            <%=sortorder.equalsIgnoreCase("Content") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgContent"/></option>
                     <option value="Observation"
-                            <%=sortorder.equalsIgnoreCase("Observation") ? "selected" : ""%>><bean:message
-                            key="dms.documentBrowser.msgObservation"/></option>
+                            <%=sortorder.equalsIgnoreCase("Observation") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgObservation"/></option>
                     <option value="Update"
-                            <%=sortorder.equalsIgnoreCase("Update") ? "selected" : ""%>><bean:message
-                            key="dms.documentBrowser.msgUpdate"/></option>
+                            <%=sortorder.equalsIgnoreCase("Update") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgUpdate"/></option>
 
                 </select>
                 <fieldset>
-                    <legend><bean:message key="dms.documentBrowser.msgView"/>:</legend>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgView"/>:</legend>
                     <input type="hidden" name="view" value="<%=view%>">
                     <input type="hidden" name="demographic_no" value="<%=demographicID%>">
                     <input type="hidden" name="undelDocumentNo" value="">
@@ -473,9 +466,9 @@ Remote documents not supported
                 <fieldset>
                     <legend><%
                         if (sortorder.equals("Content")) { %>
-                        <bean:message key="dms.documentBrowser.msgContent"/><%} else {%>
-                        <bean:message key="dms.documentBrowser.msgUpdate"/> <%}%>
-                        <bean:message key="dms.documentBrowser.ObservationTypeDescription"/></legend>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgContent"/><%} else {%>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgUpdate"/> <%}%>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.ObservationTypeDescription"/></legend>
                     <SELECT MULTIPLE SIZE=15 id="doclist" onchange="getDoc();" style="width: 400px">
                         <%
                             for (int i2 = 0; i2 < docs.size(); i2++) {
@@ -490,15 +483,15 @@ Remote documents not supported
                 <div id="docbuttons">
                     <% if (viewstatus.equalsIgnoreCase("active")) {%>
                     <% if (module.equalsIgnoreCase("demographic")) {%>
-                    <input type="button" value="<bean:message key="dms.documentBrowser.msgAddTickler"/>"
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgAddTickler"/>"
                            onclick="AddTickler();"> <%}%>
-                    <input type="button" value="<bean:message key="dms.documentBrowser.msgAnnotate"/>"
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgAnnotate"/>"
                            onclick="DocAnnotation()">
-                    <input type="button" value="<bean:message key="dms.documentBrowser.msgEdit"/>" onclick="DocEdit();">
-                    <input type="button" value="<bean:message key="dms.documentBrowser.msgDelete"/>"
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgEdit"/>" onclick="DocEdit();">
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgDelete"/>"
                            onclick="DeleteDoc();">
                     <div id="refilebutton">
-                        <input type="button" value="<bean:message key="dms.documentBrowser.msgRefile"/>"
+                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgRefile"/>"
                                onclick="RefileDoc();">
                         <select id="queueList" name="queueList" onchange="setQueue();">
                             <%
@@ -512,7 +505,7 @@ Remote documents not supported
                         </select>
                     </div>
                     <%} else if (viewstatus.equalsIgnoreCase("deleted")) {%>
-                    <input type="button" value="<bean:message key="dms.documentBrowser.msgUndelete"/>"
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgUndelete"/>"
                            onclick="UnDeleteDoc();">
                     <%}%>
                 </div>

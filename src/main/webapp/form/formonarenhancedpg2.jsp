@@ -23,10 +23,10 @@
     Ontario, Canada
 
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName2$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_form" rights="r" reverse="<%=true%>">
@@ -38,17 +38,11 @@
         return;
     }
 %>
-
 <%@ page import="oscar.form.graphic.*, oscar.util.*, oscar.form.*, oscar.form.data.*" %>
-<%@ page import="org.oscarehr.common.web.PregnancyAction" %>
+<%@ page import="org.oscarehr.common.web.Pregnancy2Action" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.apache.struts.util.LabelValueBean" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-
 <%
     String ctx = request.getContextPath();
     String formClass = "ONAREnhanced";
@@ -69,14 +63,14 @@
     String project_home = ctx.substring(1);
 
     //load eform groups
-    List<LabelValueBean> cytologyForms = PregnancyAction.getEformsByGroup("Cytology");
-    List<LabelValueBean> ultrasoundForms = PregnancyAction.getEformsByGroup("Ultrasound");
+    List<LabelValueBean> cytologyForms = Pregnancy2Action.getEformsByGroup("Cytology");
+    List<LabelValueBean> ultrasoundForms = Pregnancy2Action.getEformsByGroup("Ultrasound");
 
     String customEformGroup = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_eform_group");
     String prenatalScreenName = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_name");
     String prenatalScreen = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_abbrv");
 
-    List<LabelValueBean> customForms = PregnancyAction.getEformsByGroup(customEformGroup);
+    List<LabelValueBean> customForms = Pregnancy2Action.getEformsByGroup(customEformGroup);
 
     if (props.getProperty("rf_num", "0").equals("")) {
         props.setProperty("rf_num", "0");
@@ -117,16 +111,16 @@
     String hbsag = UtilMisc.htmlEscape(ar1Props.getProperty("pg1_labHBsAg", ""));
     String rubella = UtilMisc.htmlEscape(ar1Props.getProperty("pg1_labRubella", ""));
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Antenatal Record 2</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script type="text/javascript" src="<%= ctx %>/js/global.js"></script>
         <link rel="stylesheet" type="text/css" href="<%=bView?"arStyleView.css" : "arStyle.css"%>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
         <script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
         <script src="<%=ctx%>/js/jquery-ui-1.8.18.custom.min.js"></script>
@@ -770,7 +764,7 @@ if(bView) {
                 document.forms[0].submit.value = "print";
                 var ret = checkAllDates();
                 if (ret == true) {
-                    if (document.forms[0].c_finalEDB.value == "" && !confirm("<bean:message key="oscarEncounter.formOnar.msgNoEDB"/>")) {
+                    if (document.forms[0].c_finalEDB.value == "" && !confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formOnar.msgNoEDB"/>")) {
                         ret = false;
                     } else {
                         <%
@@ -1582,7 +1576,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                     }
                                 }
                                 if (!(typeof printAr2 == "undefined")) {
-                                    if (document.forms[0].c_finalEDB.value == "" && !confirm("<bean:message key="oscarEncounter.formOnar.msgNoEDB"/>")) {
+                                    if (document.forms[0].c_finalEDB.value == "" && !confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formOnar.msgNoEDB"/>")) {
                                         return;
                                     }
                                     if (!(typeof printAr1 == "undefined")) {
@@ -2333,7 +2327,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
     <div id="maincontent">
         <div id="content_bar" class="innertube">
 
-            <html:form action="/form/formname">
+            <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
                 <input type="hidden" name="commonField" value="ar2_"/>
                 <input type="hidden" name="c_lastVisited"
@@ -2922,7 +2916,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                 </table>
 
-            </html:form>
+            </form>
         </div>
     </div>
 
@@ -2932,7 +2926,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
         <form>
             <fieldset>
                 <input type="checkbox" name="penicillin" id="penicillin" class="text ui-widget-content ui-corner-all"/>
-                <label for="ferritin">Patient Penicillin Allergic</label>
+                <label for="penicillin">Patient Penicillin Allergic</label>
             </fieldset>
         </form>
     </div>
@@ -3245,4 +3239,4 @@ if (!fedb.equals("") && fedb.length()==10 ) {
         });
     </script>
     </body>
-</html:html>
+</html>

@@ -33,8 +33,9 @@
 %>
 <%@ page
         import="java.util.*,oscar.util.*, oscar.oscarWaitingList.bean.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
     String wlid = (String) request.getAttribute("WLId");
     if (wlid == null) {
@@ -43,7 +44,7 @@
 %>
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Waiting List</title>
@@ -57,7 +58,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
@@ -115,7 +116,7 @@
 
 
         function popupPage(ctr, patientName, demographicNo, startDate, vheight, vwidth, varpage) {
-            var nbPatients = "<bean:write name="nbPatients"/>";
+            var nbPatients = "<c:out value="${nbPatients}"/>";
             if (nbPatients > 1) {
                 var selected = document.forms[0].selectedProvider[ctr].options[document.forms[0].selectedProvider[ctr].selectedIndex].value;
             } else {
@@ -123,7 +124,7 @@
             }
             var page = varpage + '&provider_no=' + selected + '&startDate=' + startDate + '&demographic_no=' + demographicNo + '&demographic_name=' + patientName;
             var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-            var popup = window.open(page, "<bean:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
+            var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
             if (popup != null) {
                 if (popup.opener == null) {
                     popup.opener = self;
@@ -157,8 +158,7 @@
     <body class="BodyStyle" vlink="#0000FF"
           onload='window.resizeTo(900,400)'>
     <!--  -->
-    <html:form
-            action="/oscarWaitingList/SetupDisplayWaitingList.do?update=Y">
+    <form action="${pageContext.request.contextPath}/oscarWaitingList/SetupDisplayWaitingList.do?update=Y" method="post">
 
         <input type="hidden" name="demographicNumSelected" value=""/>
         <input type="hidden" name="wlNoteSelected" value=""/>
@@ -181,7 +181,7 @@
 
                             <td align="left">Please Select a Waiting List:</td>
                             <td>
-                                <html:select property="selectedWL">
+                                <select name="selectedWL" id="selectedWL">
                                 <option value=""></option>
                                         <%
                                 	String providerNo = (String)session.getAttribute("user");
@@ -201,7 +201,7 @@
                                 <option value="<%=id%>" <%=selected%>><%=name%>
                                 </option>
                                         <%}%>
-                                </html:select> <INPUT type="button" onClick="goToPage()" value="Generate Report">
+                                </select> <INPUT type="button" onClick="goToPage()" value="Generate Report">
                                         <%
         String userRole = "";
         if(session.getAttribute("userrole") != null){
@@ -243,7 +243,7 @@
                                         <td align="left" class="Header" width="50"></td>
                                     </tr>
                                     <c:forEach var="waitingListBean" items="${waitingList.waitingList}" varStatus="ctr">
-                                        <html:hidden name="waitingListBean" property="demographicNo" indexed="true"/>
+                                        <input type="hidden" name="demographicNo" id="demographicNo" indexed="true"/>
 
                                         <c:set var="styleClass" value="${(ctr.index % 2 == 0) ? 'data5' : 'data2'}"/>
 
@@ -262,10 +262,10 @@
                                                    onClick="updateWaitingList('${waitingListBean.waitingListID}', ${ctr.index});"/>
                                         </td>
                                         <td class="${styleClass}">
-                                            <html:textarea cols="45" name="waitingListBean" property="note" indexed="true" styleClass="data3" onblur="setParameters(this);"/>
+                                            <textarea cols="45" name="note" indexed="true" styleClass="data3" onblur="setParameters(this);"></textarea>
                                         </td>
                                         <td class="${styleClass}">
-                                            <html:text name="waitingListBean" property="onListSince" indexed="true" styleClass="data3" onblur="setParameters(this);" onchange="setParameters(this);"/>
+                                            <input type="text" name="onListSince" indexed="true" class="data3" onblur="setParameters(this);" onchange="setParameters(this);"/>
                                             <img src="../images/cal.gif" id="referral_date_cal_${ctr.index}">
                                             <script type="text/javascript">
                                                 Calendar.setup({
@@ -279,9 +279,13 @@
                                             </script>
                                         </td>
                                         <td class="${styleClass}">
-                                            <html:select property="selectedProvider" styleClass="data3">
-                                                <html:options collection="allProviders" property="providerID" labelProperty="providerName"/>
-                                            </html:select>
+                                            <select name="selectedProvider" class="data3">
+                                                <c:forEach var="allProvider" items="${allProviders}">
+                                                    <option value="${allProvider.providerID}">
+                                                            ${allProvider.providerName}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
                                             <a href="#" onClick="popupPage(${ctr.index}, '${waitingListBean.patientName}', '${waitingListBean.demographicNo}', '${today}', 400, 780, '../schedule/scheduleflipview.jsp?originalpage=../oscarWaitingList/DisplayWaitingList.jsp'); return false;">
                                                 make_appt
                                             </a>
@@ -298,7 +302,7 @@
                         <tr>
 
                             <td><input type="button" name="closeWindow"
-                                       value="<bean:message key="global.btnClose"/>"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
                                        style="font-size: 8pt;" onClick="window.close()"></td>
                         </tr>
                     </table>
@@ -312,7 +316,7 @@
             <td class="MainTableBottomRowRightColumn"></td>
         </tr>
         </table>
-    </html:form>
+    </form>
 
     </body>
-</html:html>
+</html>

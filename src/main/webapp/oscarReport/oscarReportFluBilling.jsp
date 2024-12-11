@@ -85,7 +85,7 @@
 
 <div class="page-header">
     <h4>
-        <bean:message key="oscarReport.oscarReportFluBilling.title"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.title"/>
         <%=years%>
     </h4>
 </div>
@@ -103,7 +103,7 @@
 
     </select> <select name="proNo" class="input-large">
     <option value="-1" <%=selled("-1", pros)%>>
-        <bean:message key="oscarReport.oscarReportFluBilling.msgAllProviders"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgAllProviders"/>
     </option>
     <%
         for (Provider p : providers) {
@@ -115,28 +115,21 @@
     %>
 </select>
     <button type="submit" class="btn btn-primary">
-        <bean:message key="oscarReport.oscarReportFluBilling.btnUpdate"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.btnUpdate"/>
     </button>
 </form>
 
 <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
     <tr>
-        <th><bean:message
-                key="oscarReport.oscarReportFluBilling.msgName"/></th>
-        <th><bean:message
-                key="oscarReport.oscarReportFluBilling.msgDOB"/></th>
-        <th><bean:message
-                key="oscarReport.oscarReportFluBilling.msgAge"/></th>
-        <th><bean:message
-                key="oscarReport.oscarReportFluBilling.msgRoster"/></th>
-        <th><bean:message
-                key="oscarReport.oscarReportFluBilling.msgPatientStatus"/></th>
-        <th><bean:message
-                key="oscarReport.oscarReportFluBilling.msgPhone"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgName"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgDOB"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgAge"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgRoster"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgPatientStatus"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgPhone"/></th>
 
-        <th><bean:message
-                key="oscarReport.oscarReportFluBilling.msgBillingDate"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.msgBillingDate"/></th>
     </tr>
     </thead>
     <tbody>

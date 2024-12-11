@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String newticklerwarningwindow = null;
     String ocanWarningWindow = null;
@@ -106,13 +106,13 @@ localStorage.setItem( id, isVisible);
 
 function confirmPopupPage(height, width, queryString, doConfirm, allowDay, allowWeek){
 if (doConfirm == "Yes") {
-if (confirm("<bean:message key="provider.appointmentProviderAdminDay.confirmBooking"/>")){
+if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.confirmBooking"/>")){
 popupPage(height, width, queryString);
 }
 }
 else if (doConfirm == "Day"){
 if (allowDay == "No") {
-alert("<bean:message key="provider.appointmentProviderAdminDay.sameDay"/>");
+alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.sameDay"/>");
 }
 else {
 popupPage(height, width, queryString);
@@ -120,7 +120,7 @@ popupPage(height, width, queryString);
 }
 else if (doConfirm == "Wk"){
 if (allowWeek == "No") {
-alert("<bean:message key="provider.appointmentProviderAdminDay.sameWeek"/>");
+alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.sameWeek"/>");
 }
 else {
 popupPage2(queryString, 'appointment', height, width);
@@ -148,7 +148,7 @@ this.focus();
 function popupPage(vheight,vwidth,varpage) {
 var page = "" + varpage;
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-var popup=window.open(page, "<bean:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
+var popup=window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
 if (popup != null) {
 if (popup.opener == null) {
 popup.opener = self;
@@ -228,7 +228,7 @@ popup.focus();
 function popupOscarRx(vheight,vwidth,varpage) {
 var page = varpage;
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-var popup=window.open(varpage, "<bean:message key="global.oscarRx"/>_appt", windowprops);
+var popup=window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_appt", windowprops);
 if (popup != null) {
 if (popup.opener == null) {
 popup.opener = self;
@@ -262,7 +262,7 @@ document.location.reload();
 }
 
 function onUnbilled(url) {
-if(confirm("<bean:message key="provider.appointmentProviderAdminDay.onUnbilled"/>")) {
+if(confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.onUnbilled"/>")) {
 popupPage(700,720, url);
 }
 }

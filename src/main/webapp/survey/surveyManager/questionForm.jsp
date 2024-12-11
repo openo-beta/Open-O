@@ -25,7 +25,7 @@
 
 
 <%@ include file="/survey/taglibs.jsp" %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Question Editor</title>
@@ -48,7 +48,7 @@
         }
     </script>
 
-    <html:form action="/SurveyManager">
+            <form action="${pageContext.request.contextPath}/SurveyManager.do" method="post">
         <input type="hidden" name="method" value="save_question"/>
         <center>
             <h2>Question Editor</h2>
@@ -57,14 +57,13 @@
         <table>
             <tr>
                 <td colspan="2">Question:<br/>
-                    <html:textarea property="questionModel.description" rows="5"
-                                   cols="50"></html:textarea></td>
+                    <textarea name="description" id="description" rows="5" cols="50"></textarea></td>
             </tr>
             <tr>
-                <td colspan="2"><html:checkbox property="questionModel.bold"
-                                               value="true"/>Bold&nbsp;&nbsp; <html:checkbox
-                        property="questionModel.underline" value="true"/>Underline&nbsp;&nbsp;
-                    <html:checkbox property="questionModel.italics" value="true"/>Italics&nbsp;&nbsp;
+                <td colspan="2"><input type="checkbox" name="questionModel.bold"
+                                               value="true"/>Bold&nbsp;&nbsp;
+                    <input type="checkbox" name="questionModel.underline" value="true"/>Underline&nbsp;&nbsp;
+                    <input type="checkbox" name="questionModel.italics" value="true"/>Italics&nbsp;&nbsp;
                     <select name="questionModel.color">
                         <option value="">&nbsp;</option>
                         <c:forEach var="color" items="${colors}">
@@ -80,7 +79,7 @@
             </tr>
             <tr>
                 <td>Units (optional)</td>
-                <td><html:text property="questionModel.unit"/></td>
+                <td><input type="text" name="questionModel.unit" id="questionModel.unit" /></td>
             </tr>
             <tr>
                 <td>Orientation</td>
@@ -152,23 +151,24 @@
                     <table width="100%">
                         <tr>
                             <td>Rows:</td>
-                            <td><html:text property="questionModel.type.openEnded.rows"
-                                           size="4"/></td>
+                            <td><input type="text" name="questionModel.type.openEnded.rows" size="4"/></td>
                         </tr>
                         <tr>
                             <td>Cols:</td>
-                            <td><html:text property="questionModel.type.openEnded.cols"
-                                           size="4"/></td>
+                            <td><input type="text" name="questionModel.type.openEnded.cols" size="4"/></td>
                         </tr>
                     </table>
                     <% } %> <%if (question.getType().isSetDate()) { %>
                     <table width="100%">
                         <tr>
                             <td>Format:</td>
-                            <td><html:select property="web.dateFormat">
-                                <html:options collection="dateFormats" property="value"
-                                              labelProperty="label"/>
-                            </html:select></td>
+                            <td><select name="dateFormat">
+                                <c:forEach var="d" items="${dateFormats}">
+                                    <option value="${d.value}">
+                                            ${d.label}
+                                    </option>
+                                </c:forEach>
+                            </select></td>
                         </tr>
                     </table>
                     <% } %> <%if (question.getType().isSetSelect()) { %>
@@ -194,48 +194,45 @@
                     </script>
                     <table width="100%">
                         <tr>
-                            <td><html:radio
-                                    property="questionModel.type.select.renderType" value="radio"
+                            <td><input type="radio" name="renderType" value="radio"
                                     onclick="set_select_type()"/></td>
                             <td>Radio Buttons</td>
                         </tr>
                         <tr>
-                            <td><html:radio
-                                    property="questionModel.type.select.renderType" value="select"
+                            <td><input type="radio" name="renderType" value="select"
                                     onclick="set_select_type()"/></td>
                             <td>Combo Box</td>
                         </tr>
                         <tr>
-                            <td><html:radio
-                                    property="questionModel.type.select.renderType" value="checkbox"
+                            <td><input type="radio" name="renderType" value="checkbox"
                                     onclick="set_select_type()"/></td>
                             <td>Checkboxes (Multi-Select)</td>
                         </tr>
                         <tr>
                             <td>Orientation</td>
-                            <td><html:select
-                                    property="questionModel.type.select.orientation">
-                                <html:option value="vertical">vertical</html:option>
-                                <html:option value="horizontal">horizontal</html:option>
-                            </html:select></td>
+                            <td><select
+                                    name="orientation">
+                                <option value="vertical">vertical</option>
+                                <option value="horizontal">horizontal</option>
+                            </select></td>
                         </tr>
                         <tr>
                             <td>Allow "Other":</td>
-                            <td><html:select
-                                    property="questionModel.type.select.otherAnswer">
-                                <html:option value="true"/>
-                                <html:option value="false"/>
-                            </html:select></td>
+                            <td><select
+                                    name="otherAnswer">
+                                <option value="true"/>
+                                <option value="false"/>
+                            </select></td>
                         </tr>
 
                         <tr>
                             <td>Number of Answers</td>
-                            <td><html:select property="web.numAnswers"
+                            <td><select name="numAnswers"
                                              onchange="adjust_possible_answers()">
                                 <%for (int x = 1; x < 50; x++) { %>
-                                <html:option value="<%=String.valueOf(x)%>"/>
+                                <option value="<%=String.valueOf(x)%>"/>
                                 <%} %>
-                            </html:select></td>
+                            </select></td>
                         </tr>
                         <tr>
                             <td>Answers</td>
@@ -257,8 +254,9 @@
         <input type="button" value="Save" onClick="save();"/>
         <input type="button" value="Cancel" onclick="window.close();"/>
         -->
-        <html:submit styleClass="button">Save</html:submit>
-        <html:cancel value="Cancel"/>
-    </html:form>
+
+        <input type="submit" name="submit" value="Save" class="button"/>
+        <button type="button" onclick="window.history.back();">Cancel</button>
+    </form>
     </body>
-</html:html>
+</html>

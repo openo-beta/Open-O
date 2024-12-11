@@ -41,9 +41,9 @@
 %>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page
         import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
@@ -72,13 +72,12 @@
     theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <!--META HTTP-EQUIV="Refresh" CONTENT="20;"-->
 
@@ -94,7 +93,7 @@
         function popupOscarRx(vheight, vwidth, varpage) { //open a new popup window
             var page = varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<bean:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReq"/>", windowprops);
+            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReq"/>", windowprops);
             //if (popup != null) {
             //  if (popup.opener == null) {
             //    popup.opener = self;
@@ -105,7 +104,7 @@
         function popupOscarConS(vheight, vwidth, varpage) { //open a new popup window
             var page = varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.oscarConS"/>", windowprops);
+            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.oscarConS"/>", windowprops);
             window.close();
         }
     </script>
@@ -119,8 +118,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td class="Header" NOWRAP><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReqFor"/>
+                        <td class="Header" NOWRAP><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReqFor"/>
                             <%=demographic.getLastName() %>, <%=demographic.getFirstName()%> <%=demographic.getSex()%>
                             <%=demographic.getAge()%>
                         </td>
@@ -135,8 +133,7 @@
                     <tr>
                         <td NOWRAP><a
                                 href="javascript:popupOscarRx(700,960,'ConsultationFormRequest.jsp?de=<%=demo%>&teamVar=<%=team%>')">
-                            <bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon"/></a>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon"/></a>
                         </td>
                     </tr>
                 </table>
@@ -144,8 +141,7 @@
             <td class="MainTableRightColumn">
                 <table width="100%">
                     <tr>
-                        <td><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgClickLink"/>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgClickLink"/>
                         </td>
                     </tr>
                     <tr>
@@ -153,23 +149,17 @@
 
                             <table border="0" width="80%" cellspacing="1">
                                 <tr>
-                                    <th align="left" class="VCRheads" width="75"><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgStatus"/>
+                                    <th align="left" class="VCRheads" width="75"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgStatus"/>
                                     </th>
-                                    <th align="left" class="VCRheads"><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgPat"/>
+                                    <th align="left" class="VCRheads"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgPat"/>
                                     </th>
-                                    <th align="left" class="VCRheads"><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgMRP"/>
+                                    <th align="left" class="VCRheads"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgMRP"/>
                                     </th>
-                                    <th align="left" class="VCRheads"><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgProvider"/>
+                                    <th align="left" class="VCRheads"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgProvider"/>
                                     </th>
-                                    <th align="left" class="VCRheads"><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgService"/>
+                                    <th align="left" class="VCRheads"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgService"/>
                                     </th>
-                                    <th align="left" class="VCRheads"><bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgRefDate"/>
+                                    <th align="left" class="VCRheads"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgRefDate"/>
                                     </th>
                                 </tr>
                                 <%
@@ -184,17 +174,12 @@
                                 %>
                                 <tr>
                                     <td class="stat<%=status%>" width="75">
-                                        <% if (status.equals("1")) { %> <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgNothingDone"/>
-                                        <% } else if (status.equals("2")) { %> <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgSpecialistCall"/>
-                                        <% } else if (status.equals("3")) { %> <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgPatCall"/>
-                                        <% } else if (status.equals("4")) { %> <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgAppMade"/>
+                                        <% if (status.equals("1")) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgNothingDone"/>
+                                        <% } else if (status.equals("2")) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgSpecialistCall"/>
+                                        <% } else if (status.equals("3")) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgPatCall"/>
+                                        <% } else if (status.equals("4")) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgAppMade"/>
                                             <%-- For ocean referrals --%>
-                                        <% } else if (status.equals("5")) { %> <bean:message
-                                            key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgBookCon"/>
+                                        <% } else if (status.equals("5")) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgBookCon"/>
                                         <% } %>
                                     </td>
                                     <td class="stat<%=status%>"><a
@@ -226,4 +211,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

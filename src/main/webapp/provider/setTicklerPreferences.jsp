@@ -41,10 +41,10 @@
     String providerbtnSubmit = (String) request.getAttribute("providerbtnSubmit");
     String providerbtnClose = (String) request.getAttribute("providerbtnClose");
 %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
@@ -68,21 +68,21 @@
             <td class="MainTableLeftColumn"></td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
-                <html:form action="/setTicklerPreferences.do">
+                <form action="${pageContext.request.contextPath}/setTicklerPreferences.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
 
-                    <html:hidden property="taskAssigneeSelection.value" styleId="taskAssignee"/>
+                    <input type="hidden" name="taskAssigneeSelection.value" id="taskAssignee"/>
 
                     <h2>Default Tickler Task Assignee:</h2>
 
                     <h3><c:out value="${providerMsg}"/></h3>
 
-                    <html:radio property="taskAssigneeMRP.value" styleId="taskAssigneeDefault" value="default"
-                                onchange="checkAssignee()">Default</html:radio>
-                    <html:radio property="taskAssigneeMRP.value" styleId="taskAssigneeMRP" value="mrp"
-                                onchange="checkAssignee()">MRP</html:radio>
-                    <html:radio property="taskAssigneeMRP.value" styleId="taskAssigneeProvider" value="provider"
-                                onchange="checkAssignee()">Set a provider</html:radio>
+                    <input type="radio" name="taskAssigneeMRP.value" id="taskAssigneeDefault" value="default"
+                                onchange="checkAssignee()"/>Default
+                    <input type="radio" name="taskAssigneeMRP.value" id="taskAssigneeMRP" value="mrp"
+                                onchange="checkAssignee()"/>MRP
+                    <input type="radio" name="taskAssigneeMRP.value" id="taskAssigneeProvider" value="provider"
+                                onchange="checkAssignee()"/>Set a provider
 
 
                     <div style="margin-top:20px;margin-bottom:20px;padding-left:20px;height:50px">
@@ -98,17 +98,20 @@
                         <div style="display:none;" id="taskAssigneeProviderContainer">
                             <h3>Select a provider from the list to set as your default assignee:</h3>
                             <br>
-                            <html:select property="taskAssigneeProvider.value"
-                                         onchange="updateTaskAssignee(this.value)">
-                                <html:options collection="providerSelect" property="value" labelProperty="label"/>
-                            </html:select>
+                            <select name="value" onchange="updateTaskAssignee(this.value)">
+                                <c:forEach var="provider" items="${providerSelect}">
+                                    <option value="${provider.value}">
+                                            ${provider.label}
+                                    </option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </div>
 
                     <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
                     <input type="button" value="<%=bundle.getString(providerbtnCancel)%>"
                            onclick="window.close();"/>
-                </html:form>
+                </form>
                 <%} else {%>
                 <h1><%=bundle.getString(providerMsg)%></h1>
                 <br/><br/>
@@ -183,4 +186,4 @@
     </script>
 
     </body>
-</html:html>
+</html>

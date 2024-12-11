@@ -26,24 +26,17 @@
 
 package oscar.oscarBilling.ca.bc.pageUtil;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.oscarehr.util.MiscUtils;
-
 import oscar.Misc;
 import oscar.entities.WCB;
 import oscar.util.StringUtils;
 import oscar.util.UtilDateUtilities;
 
-public final class WCBForm
-        extends ActionForm {
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+public final class WCBForm {
 
 
     public String toString() {
@@ -937,159 +930,5 @@ public final class WCBForm
 
     public void notBilled(boolean notBilled) {
         this.notBilled = notBilled;
-    }
-
-    /**
-     * Reset all bean properties to their default state.
-     *
-     * @param mapping The mapping used to select this instance
-     * @param request The servlet request we are processing
-     * @todo Implement this org.apache.struts.action.ActionForm method
-     */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-
-    }
-
-    /**
-     * Validate the properties that have been set for this HTTP request, and
-     * return an <code>ActionErrors</code> object that encapsulates any
-     * validation errors that have been found.
-     *
-     * @param mapping The mapping used to select this instance
-     * @param request The servlet request we are processing
-     * @return ActionErrors
-     * @todo Implement this org.apache.struts.action.ActionForm method
-     */
-
-    public ActionErrors validate2(ActionMapping mapping,
-                                  HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        BillingAssociationPersistence per = new BillingAssociationPersistence();
-
-        /**
-         * Disable validation of fields if this is a preliminary save
-         * Validation isn't required until it is time to bill and submit this particular claim
-         */
-        if (request.getParameter("save") != null && !doValidate) {
-            return errors;
-        }
-        if (w_lname == null || "".equals(w_lname)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_lname"));
-        }
-        if (w_fname == null || "".equals(w_fname)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_fname"));
-        }
-        if (w_dob == null || "".equals(w_dob)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_dob"));
-        }
-        if (w_gender == null || "".equals(w_gender)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_gender"));
-        }
-
-        if (!StringUtils.isNumeric(w_phn)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_phn"));
-        }
-        if (w_doi == null || "".equals(w_doi)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_doi"));
-        }
-
-        if ((w_feeitem == null || "".equals(w_feeitem) && (w_extrafeeitem == null || "".equals(w_extrafeeitem)))) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.enterfee"));
-        }
-        if (w_icd9 == null || "".equals(w_icd9)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_icd9"));
-
-        } else if (!per.dxcodeExists(w_icd9)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.error.invaliddxcode", w_icd9));
-        }
-
-        if (w_noi == null || "".equals(w_noi)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_noi"));
-        }
-
-        if ((w_noi != null && w_noi.length() > 0) && !StringUtils.isNumeric(w_noi)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_noi.numeric"));
-        }
-
-        if ((w_feeitem != null && w_feeitem.length() > 0) && !StringUtils.isNumeric(w_feeitem)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_feeitem.numeric"));
-        }
-
-        if ((w_extrafeeitem != null && w_extrafeeitem.length() > 0) && !StringUtils.isNumeric(w_extrafeeitem)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_extrafeeitem.numeric"));
-        }
-
-        if (!StringUtils.isNumeric(w_icd9)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_icd9.numeric"));
-        }
-
-        if ((w_bp != null && w_bp.length() > 0) && !StringUtils.isNumeric(w_bp)) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_bp.numeric"));
-        }
-
-
-        if ("1".equals(formNeeded)) {
-            if (w_empname == null || "".equals(w_empname)) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_empname"));
-            }
-            if (this.w_opaddress == null || "".equals(w_opaddress)) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_opaddress"));
-            }
-            if (this.w_opcity == null || "".equals(w_opcity)) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_opcity"));
-            }
-            if (this.w_emparea == null || !StringUtils.isNumeric(w_emparea)) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_emparea"));
-            }
-
-            if (w_empphone == null || !StringUtils.isNumeric(w_empphone)) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_empphone"));
-            }
-
-            if (w_diagnosis == null || "".equals(w_diagnosis)) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_diagnosis"));
-            }
-
-            //From injury or since last report, has the worker been disabled from work?
-            if ("Y".equals(w_work)) {
-                if (!StringUtils.isValidDate(w_workdate, "yyyy-MM-dd")) {
-                    errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_workdate"));
-                }
-            } else if (w_work == null) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_rphysician"));
-            }
-
-            //Is the worker now medically capable of working full duties, full time?
-            if ("N".equals(w_capability)) {
-                if (w_capreason == null || "".equals(w_capreason)) {
-                    errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_capreason"));
-                }
-            } else if (w_capability == null) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_capability"));
-            }
-
-            //If appropriate, is the worker now ready for a rehabilitation program?
-            if ("Y".equals(w_rehab)) {
-                if (w_rehabtype == null || "".equals(w_rehabtype)) {
-                    errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_rehabtype"));
-                }
-            } else if (w_rehab == null) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_rehab"));
-            }
-
-            if (w_rphysician == null) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_rphysician"));
-            }
-            if (w_reportype == null) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_reportype"));
-            }
-            if (w_estimate == null) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_estimate"));
-            }
-            if (w_tofollow == null) {
-                errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.w_tofollow"));
-            }
-        }
-        return errors;
     }
 }

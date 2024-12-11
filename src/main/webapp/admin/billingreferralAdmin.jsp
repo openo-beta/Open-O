@@ -46,7 +46,7 @@
     String addressQ = (String) request.getAttribute("address");
     Boolean checked = (Boolean) request.getAttribute("showHidden");
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Referral Doctor</title>
@@ -120,7 +120,7 @@
                 $("#addressQuery").val('');
             }
         </script>
-        <link href="<html:rewrite page='/css/displaytag.css'/>" rel="stylesheet"></link>
+        <link href="${request.contextPath}/css/displaytag.css" rel="stylesheet"></link>
     </head>
 
     <body vlink="#0000FF" class="BodyStyle">
@@ -240,4 +240,4 @@
         </tr>
     </table>
     <% } %>
-</html:html>
+</html>

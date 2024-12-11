@@ -18,11 +18,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
-        <title><bean:message key="provider.olisPrefs"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.olisPrefs"/></title>
 
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
         <link rel="stylesheet" type="text/css" media="all" href="<c:out value="${ctx}"/>/share/calendar/calendar.css"
@@ -41,8 +41,8 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message key="provider.setNoteStaleDate.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message key="provider.olisPrefs"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.olisPrefs"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -132,4 +132,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

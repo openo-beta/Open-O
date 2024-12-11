@@ -39,11 +39,11 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.util.*,oscar.oscarBilling.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 
-<html:html lang="en">
+<html>
 
     <%@ page
             import="org.oscarehr.common.dao.BillingServiceDao,org.oscarehr.util.SpringUtils,org.oscarehr.common.model.*" %>
@@ -80,11 +80,10 @@
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right">
-                            <a href="javascript:popupStart(300,400,'Help.jsp')"><bean:message key="global.help"/></a> |
-                            <a href="javascript:popupStart(300,400,'About.jsp')"><bean:message key="global.about"/></a>
+                            <a href="javascript:popupStart(300,400,'Help.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a> |
+                            <a href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                             |
-                            <a href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                    key="global.license"/></a>
+                            <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>
@@ -141,11 +140,11 @@
                 </table>
 
 
-                <html:form action="/billing/CA/BC/billingEditCode">
+                <form action="${pageContext.request.contextPath}/billing/CA/BC/billingEditCode.do" method="post">
                     <input type="hidden" name="whereTo" value="<%=request.getParameter("whereTo")%>"/>
                     <input type="hidden" name="method" value="returnToSearch"/>
-                    <html:submit property="submitButton" value="Back"/>
-                </html:form>
+                    <input type="submit" name="submit" value="Back"/>
+                </form>
 
 
                 <script type="text/javascript">
@@ -203,4 +202,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

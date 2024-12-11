@@ -376,8 +376,8 @@
             <% } %>
 
             <div class='tool-button print-button'>
-                <img title="<bean:message key="oscarEncounter.print.title"/>" id='print<%=globalNoteId%>'
-                     alt="<bean:message key="oscarEncounter.togglePrintNote.title"/>"
+                <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>" id='print<%=globalNoteId%>'
+                     alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintNote.title"/>"
                      onclick="togglePrint(<%=globalNoteId%>, event)" style='float: right; margin-right: 5px;'
                      src='<%=ctx %>/oscarEncounter/graphics/printer.png'/>
             </div>
@@ -397,8 +397,7 @@
                 if (false) {
             %>
             <div id="txt<%=globalNoteId%>">
-                <bean:message
-                        key="oscarEncounter.Index.msgLocked"/> <%=DateUtils.getDate(note.getUpdateDate(), dateFormat, request.getLocale()) + " " + note.getProviderName()%>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgLocked"/> <%=DateUtils.getDate(note.getUpdateDate(), dateFormat, request.getLocale()) + " " + note.getProviderName()%>
             </div>
             <%
             } else {
@@ -409,14 +408,14 @@
                         // blank if so it never displays min/max icon for documents
                     } else if (fulltxt) {
             %>
-            <img title="<bean:message key="oscarEncounter.MinDisplay.title"/>" id='quitImg<%=globalNoteId%>'
-                 alt="<bean:message key="oscarEncounter.MinDisplay.title"/>" onclick="minView(event)"
+            <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MinDisplay.title"/>" id='quitImg<%=globalNoteId%>'
+                 alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MinDisplay.title"/>" onclick="minView(event)"
                  style='float: right; margin-right: 5px; margin-bottom: 3px; margin-top: 2px;'
                  src='<%=ctx %>/oscarEncounter/graphics/triangle_up.gif'/>
             <%
             } else {
             %>
-            <img title="<bean:message key="oscarEncounter.MaxDisplay.title"/>" id='quitImg<%=globalNoteId%>'
+            <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MaxDisplay.title"/>" id='quitImg<%=globalNoteId%>'
                  name='fullViewTrigger' alt="Maximize Display" onclick="fullView(event)"
                  style='float: right; margin-right: 5px; margin-top: 2px;'
                  src='<%=ctx %>/oscarEncounter/graphics/triangle_down.gif'/>
@@ -428,7 +427,7 @@
                 {
             %>
             <div style="background-color:#ffcccc; text-align:right">
-                <bean:message key="oscarEncounter.noteFrom.label"/>&nbsp;<%=note.getLocation()%>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteFrom.label"/>&nbsp;<%=note.getLocation()%>
                 ,<%=note.getProviderName()%>
             </div>
             <%
@@ -447,8 +446,8 @@
                 if (!note.isDocument() && !note.isCpp() && !note.isEformData() && !note.isEncounterForm() && !note.isInvoice() && !note.isEmailNote()) {
 
             %>
-            <img title="<bean:message key="oscarEncounter.print.title"/>" id='print<%=globalNoteId%>'
-                 alt="<bean:message key="oscarEncounter.togglePrintNote.title"/>"
+            <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>" id='print<%=globalNoteId%>'
+                 alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintNote.title"/>"
                  onclick="togglePrint('<%=globalNoteId%>'   , event)"
                  style='float: right; margin-right: 5px; margin-top: 2px;'
                  src='<%=ctx %>/oscarEncounter/graphics/printer.png'/>
@@ -461,10 +460,10 @@
                     if (note.getRemoteFacilityId() == null && !note.isCpp() && !note.isEformData() && !note.isEncounterForm() && !note.isInvoice() && !note.isEmailNote()) {
                         if (!note.isReadOnly()) {
             %>
-            <a title="<bean:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
+            <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
                href="javascript:void(0)" onclick="<%=editWarn?"noPrivs(event)":"editNote(event)"%> ;return false;"
                style="float: right; margin-right: 5px;">
-                <bean:message key="oscarEncounter.edit.msgEdit"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
             </a>
             <%
                 }
@@ -473,8 +472,8 @@
             %>
             <a href="javascript:void(0)"
                onclick="window.open('<%=request.getContextPath()+"/lab/CA/ALL/sendOruR01.jsp?noteId="+globalNoteId%>', 'eSend');return(false);"
-               title="<bean:message key="oscarEncounter.eSendTitle"/>"
-               style="float: right; margin-right: 5px;"><bean:message key="oscarEncounter.eSend"/></a>
+               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.eSendTitle"/>"
+               style="float: right; margin-right: 5px;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.eSend"/></a>
             <%
                     }
                 }
@@ -489,10 +488,10 @@
                 {
                     if (!note.isReadOnly()) {
             %>
-            <a title="<bean:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
+            <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
                href="javascript:void(0);" onclick="<%=editWarn?"noPrivs(event);":"editNote(event);"%> return false;"
                style="float: right; margin-right: 5px; ">
-                <bean:message key="oscarEncounter.edit.msgEdit"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
             </a>
             <%
                     }
@@ -504,8 +503,7 @@
             <div class="view-links"
                  style="<%=(note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""%>">
                 <a class="links" title="<%=rx.getSpecial()%>" id="view<%=globalNoteId%>" href="javascript:void(0);"
-                   onclick="<%=url%>" style="float: right; margin-right: 5px; "> <bean:message
-                        key="oscarEncounter.view.rxView"/> </a>
+                   onclick="<%=url%>" style="float: right; margin-right: 5px; "> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.rxView"/> </a>
             </div>
             <%
                 }
@@ -526,10 +524,10 @@
                     if (!note.isReadOnly()) {
             %>
             <div>
-                <a title="<bean:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
+                <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
                    href="javascript:void(0);" onclick="<%=editWarn?"noPrivs(event);":"editNote(event);"%> return false;"
                    style="float: right; margin-right: 5px;">
-                    <bean:message key="oscarEncounter.edit.msgEdit"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
                 </a>
             </div>
             <%
@@ -538,9 +536,8 @@
             %>
             <div class="view-links"
                  style="<%=(note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""%>">
-                <a class="links" title="<bean:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>"
-                   href="javascript:void(0)" onclick="<%=url%>" style="float: right; margin-right: 5px;"> <bean:message
-                        key="oscarEncounter.view"/> </a>
+                <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>"
+                   href="javascript:void(0)" onclick="<%=url%>" style="float: right; margin-right: 5px;"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
             } else { //document note
@@ -555,9 +552,9 @@
             %>
             <div class="view-links"
                  style="<%=(note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""%>">
-                <a class="links" title="<bean:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>"
+                <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>"
                    href="javascript:void(0);" onclick="<%=url%>">
-                    <bean:message key="oscarEncounter.view"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/>
                 </a>
             </div>
             <%
@@ -576,8 +573,8 @@
             %>
             <div class="view-links"
                  style="<%=(note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""%>">
-                <a class="links" title="<bean:message key="oscarEncounter.view.eformView"/>" id="view<%=globalNoteId%>"
-                   href="javascript:void(0)" onclick="<%=url%>"> <bean:message key="oscarEncounter.view"/> </a>
+                <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.eformView"/>" id="view<%=globalNoteId%>"
+                   href="javascript:void(0)" onclick="<%=url%>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
             } else if (note.isInvoice()) {
@@ -587,8 +584,8 @@
             %>
             <div class="view-links"
                  style="<%=(note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""%>">
-                <a class="links" title="<bean:message key="oscarEncounter.view.eformView"/>" id="view<%=globalNoteId%>"
-                   href="javascript:void(0)" onclick="<%=url%>"> <bean:message key="oscarEncounter.view"/> </a>
+                <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.eformView"/>" id="view<%=globalNoteId%>"
+                   href="javascript:void(0)" onclick="<%=url%>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
             } else if (note.isEncounterForm()) {
@@ -610,16 +607,16 @@
             %>
             <div class="view-links"
                  style="<%=(note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""%>">
-                <a class="links" title="<bean:message key="oscarEncounter.view.eformView"/>" id="view<%=globalNoteId%>"
-                   href="javascript:void(0)" onclick="<%=url%>"><bean:message key="oscarEncounter.view"/></a>
+                <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.eformView"/>" id="view<%=globalNoteId%>"
+                   href="javascript:void(0)" onclick="<%=url%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/></a>
             </div>
             <%
             } else if (note.isEmailNote()) {
                 String url = "viewEmailByLogId(1100,1000,'" + request.getContextPath() + "/admin/ManageEmails.do?method=resendEmail&logId=" + dispDocNo + "');" + "return false;";
             %>
             <div class="view-links" style="<%=(isMagicNote)?(bgColour):""%>">
-                <a class="links" title="<bean:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>"
-                   href="javascript:void(0);" onclick="<%=url%>"><bean:message key="oscarEncounter.view"/> </a>
+                <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>"
+                   href="javascript:void(0);" onclick="<%=url%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
                 }
@@ -628,7 +625,7 @@
                     String addr = request.getContextPath() + "/annotation/annotation.jsp?atbname=" + atbname + "&table_id=" + String.valueOf(note.getNoteId()) + "&display=EChartNote&demo=" + demographicNo;
             %>
             <input type="image" id="anno<%=globalNoteId%>" src='<%=ctx %>/oscarEncounter/graphics/annotation.png'
-                   title='<bean:message key="oscarEncounter.Index.btnAnnotation"/>'
+                   title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnAnnotation"/>'
                    style="float: right; margin-right: 5px; margin-bottom: 3px; height:10px;width:10px"
                    onclick="window.open('<%=addr%>','anwin','width=400,height=500');$('annotation_attribname').value='<%=atbname%>'; return false;"/>
             <%
@@ -646,13 +643,13 @@
                     if (note.isCpp() || note.isEformData() || note.isEncounterForm() || note.isInvoice() || note.isEmailNote()) {
                 %>
                 <div id="observation<%=globalNoteId%>" style="display:ruby;">
-                    <bean:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
                     <span id="obs<%=globalNoteId%>"><%=note.getObservationDate() != null ? DateUtils.getDate(note.getObservationDate(), dateFormat, request.getLocale()) : "N/A"%></span>
                     <%
                         if (note.isCpp()) {
                     %>
                     &nbsp;
-                    <bean:message key="oscarEncounter.noteRev.title"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/>
                     <%
 
                         if (rev != null) {
@@ -685,8 +682,8 @@
 
                 if (!note.isEmailNote() && largeNote(noteStr)) {
             %>
-            <img title="<bean:message key="oscarEncounter.MinDisplay.title"/>" id='bottomQuitImg<%=globalNoteId%>'
-                 alt="<bean:message key="oscarEncounter.MinDisplay.title"/>" onclick="minView(event)"
+            <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MinDisplay.title"/>" id='bottomQuitImg<%=globalNoteId%>'
+                 alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MinDisplay.title"/>" onclick="minView(event)"
                  style='float: right; margin-right: 5px; margin-bottom: 3px;'
                  src='<%=ctx %>/oscarEncounter/graphics/triangle_up.gif'/>
             <%
@@ -706,9 +703,9 @@
             <div id="sig<%=globalNoteId%>" class="sig">
                 <div id="sumary<%=globalNoteId%>">
                     <div id="observation<%=globalNoteId%>" style="float: right; margin-right: 3px;">
-                        <bean:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
                         <span id="obs<%=globalNoteId%>"><%=DateUtils.getDate(note.getObservationDate(), dateFormat, request.getLocale())%></span>&nbsp;
-                        <bean:message key="oscarEncounter.noteRev.title"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/>
                         <%
                             if (rev != null) {
                         %>
@@ -725,7 +722,7 @@
 
 
                     <div>
-                        <span style="float: left;"><bean:message key="oscarEncounter.editors.title"/>:</span>
+                        <span style="float: left;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.editors.title"/>:</span>
                         <ul style="list-style: none inside none; margin: 0;">
                             <%
                                 ArrayList<String> editorNames = note.getEditorNames();
@@ -752,7 +749,7 @@
                         if (facility.isEnableEncounterTime() || (program != null && program.isEnableEncounterTime())) {
                     %>
                     <div style="clear: right; margin-right: 3px; float: right;">
-                        <bean:message key="oscarEncounter.encounterTime.title"/>:&nbsp;<span
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTime.title"/>:&nbsp;<span
                             id="encTime<%=globalNoteId%>"><%=note.getEncounterTime()%></span>
                     </div>
                     <% } %>
@@ -760,19 +757,19 @@
                         if (facility.isEnableEncounterTransportationTime() || (program != null && program.isEnableEncounterTransportationTime())) {
                     %>
                     <div style="clear: right; margin-right: 3px; float: right;">
-                        <bean:message key="oscarEncounter.encounterTransportation.title"/>:&nbsp;<span
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTransportation.title"/>:&nbsp;<span
                             id="encTransTime<%=globalNoteId%>"><%=note.getEncounterTransportationTime()%></span>
                     </div>
                     <% } %>
 
                     <div style="clear: right; margin-right: 3px; float: right;">
-                        <bean:message key="oscarEncounter.encType.title"/>:&nbsp;
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encType.title"/>:&nbsp;
                         <span id="encType<%=globalNoteId%>"><%=note.getEncounterType().equals("") ? "" : "&quot;" + note.getEncounterType() + "&quot;"%></span>
                     </div>
 
 
                     <div>
-                        <span style="float: left;"><bean:message key="oscarEncounter.assignedIssues.title"/></span>
+                        <span style="float: left;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignedIssues.title"/></span>
                         <%
                             ArrayList<String> issueDescriptions = note.getIssueDescriptions();
 

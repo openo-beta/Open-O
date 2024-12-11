@@ -39,18 +39,13 @@
 %>
 
 <%@ page import="oscar.form.*, java.util.*" %>
-<%@ page import="java.io.FileInputStream" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
-
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Print Mental Health Outcome</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="print" href="print.css">
         <link rel="stylesheet" type="text/css" media="screen"
               href="mhStyles.css">
@@ -212,4 +207,4 @@
     </table>
 
     </body>
-</html:html>
+</html>

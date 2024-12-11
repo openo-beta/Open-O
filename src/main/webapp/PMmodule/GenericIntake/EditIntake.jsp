@@ -89,10 +89,10 @@
 
     </script>
     <style type="text/css">
-        @import "<html:rewrite page="/css/genericIntake.css"/>";
+        @import "${request.contextPath}/css/genericIntake.css";
     </style>
     <script language="javascript" type="text/javascript"
-            src="<html:rewrite page="/share/javascript/Oscar.js"/>"></script>
+            src="${request.contextPath}/share/javascript/Oscar.js"></script>
     <script type="text/javascript">
         <!--
         var djConfig = {
@@ -114,7 +114,7 @@
                 return;
             }
             var id = document.getElementById('formInstanceId').value;
-            var url = '<html:rewrite action="/PMmodule/Forms/SurveyExecute.do"/>?method=survey&type=provider&formId=' + formId + '&formInstanceId=' + id + '&clientId=' + 10;
+            var url = '<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=survey&type=provider&formId=' + formId + '&formInstanceId=' + id + '&clientId=' + 10;
             ctl.selectedIndex = 0;
             popupPage(url);
         }
@@ -127,16 +127,16 @@
         }
     </script>
 
-    <script type="text/javascript" src="<html:rewrite page="/dojoAjax/dojo.js"/>"></script>
-    <script type="text/javascript" src="<html:rewrite page="/js/AlphaTextBox.js"/>"></script>
+    <script type="text/javascript" src="${request.contextPath}/dojoAjax/dojo.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/js/AlphaTextBox.js"></script>
     <script type="text/javascript">
         <!--
         dojo.require("dojo.widget.*");
         dojo.require("dojo.validate.*");
         // -->
     </script>
-    <script type="text/javascript" src="<html:rewrite page="/js/genericIntake.js" />"></script>
-    <script type="text/javascript" src="<html:rewrite page="/js/checkDate.js"/>"></script>
+    <script type="text/javascript" src="${request.contextPath}/js/genericIntake.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/js/checkDate.js"></script>
 
 
 </head>

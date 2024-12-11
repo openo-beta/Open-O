@@ -27,7 +27,7 @@
 <%@ include file="/taglibs.jsp" %>
 <script>
     function search_provider(name) {
-        var url = '<html:rewrite action="/PMmodule/ProviderSearch.do"/>';
+        var url = '<%=request.getContextPath() %>/PMmodule/ProviderSearch.do';
         url += '?q=' + name;
         url += '&formName=programManagerForm';
         url += '&formElementId=function.providerNo';
@@ -92,8 +92,8 @@
     <tr class="b">
         <td width="20%">Provider :</td>
         <td>
-            <html:hidden property="function.id"/>
-            <html:hidden property="function.providerNo"/>
+            <input type="hidden" name="id" id="id"/>
+            <input type="hidden" name="providerNo" id="providerNo"/>
             <%
                 String providerName = (String) request.getAttribute("providerName");
                 if (providerName == null) {
@@ -107,15 +107,19 @@
     <tr class="b">
         <td width="20%">Functional User Type:</td>
         <td>
-            <html:select property="function.userTypeId">
-                <html:options collection="functionalUserTypes" property="id" labelProperty="name"/>
-            </html:select>
+            <select name="function.userTypeId" id="function.userTypeId">
+                <c:forEach var="functionalUserType" items="${functionalUserTypes}">
+                    <option value="${functionalUserType.id}">
+                            ${functionalUserType.name}
+                    </option>
+                </c:forEach>
+            </select>
         </td>
     </tr>
     <tr>
         <td colspan="2">
             <input type="button" value="Save" onclick="add_functional_user(this.form)"/>
-            <html:cancel/>
+            <button type="button" onclick="window.history.back();">Cancel</button>
         </td>
     </tr>
 </table>

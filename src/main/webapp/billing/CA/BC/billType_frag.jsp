@@ -1,7 +1,6 @@
 <%@page import="java.sql.*" errorPage="" %>
 <%@page
         import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*,oscar.oscarBilling.ca.bc.MSP.*,oscar.oscarBilling.ca.bc.data.*" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 -
@@ -39,11 +38,14 @@ TODO: Localize Strings
     </tr>
     <tr>
         <td><label for="status">Change Type:</label></td>
-        <td><html:select styleId="status" property="status"
+        <td><select id="status" name="status"
                          onchange="javascript:document.forms[0].xml_status.value = this.value;callToggleWCB();">
-            <html:options collection="statusTypes" property="billingstatus"
-                          labelProperty="displayNameExt"/>
-        </html:select></td>
+            <c:forEach var="statusType" items="${statusTypes}">
+                <option value="${statusType.billingstatus}">
+                        ${statusType.displayNameExt}
+                </option>
+            </c:forEach>
+        </select></td>
     </tr>
 </table>
 <input type="hidden" name="xml_status" value="<%=BillType%>">

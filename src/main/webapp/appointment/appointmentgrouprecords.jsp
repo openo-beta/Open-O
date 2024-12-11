@@ -66,8 +66,8 @@
 <%@ page
         import="java.util.*, java.sql.*,java.net.*, oscar.*, oscar.util.*, org.oscarehr.common.OtherIdManager"
         errorPage="/errorpage.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%
     if (request.getParameter("groupappt") != null) {
@@ -290,8 +290,7 @@
 
         if (bSucc) {
 %>
-<h1><bean:message
-        key="appointment.appointmentgrouprecords.msgAddSuccess"/></h1>
+<h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgAddSuccess"/></h1>
 <script LANGUAGE="JavaScript">
     self.opener.refresh();
     self.close();
@@ -300,19 +299,17 @@
 } else {
 %>
 <p>
-<h1><bean:message
-        key="appointment.appointmentgrouprecords.msgAddFailure"/></h1>
+<h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgAddFailure"/></h1>
 
 <%
         }
         return;
     } // if (request.getParameter("groupappt") != null)
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="appointment.appointmentgrouprecords.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.title"/></title>
         <script language="JavaScript">
             <!--
 
@@ -364,7 +361,7 @@
             }
 
             function onExit() {
-                if (confirm("<bean:message key="appointment.appointmentgrouprecords.msgExitConfirmation"/>")) {
+                if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgExitConfirmation"/>")) {
                     window.close()
                 }
             }
@@ -377,7 +374,7 @@
 
             function onSub() {
                 if (saveTemp == 1) {
-                    return (confirm("<bean:message key="appointment.appointmentgrouprecords.msgDeleteConfirmation"/>"));
+                    return (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgDeleteConfirmation"/>"));
                 }
             }
 
@@ -395,31 +392,30 @@
                 <TD>
                     <% if (bEdit) { %> <INPUT TYPE="button"
                                               onclick="document.forms['groupappt'].groupappt.value='Group Update'; document.forms['groupappt'].submit();"
-                                              VALUE="<bean:message key="appointment.appointmentgrouprecords.btnGroupUpdate"/>">
+                                              VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnGroupUpdate"/>">
                     <INPUT TYPE="button"
                            onclick="document.forms['groupappt'].groupappt.value='Group Cancel'; document.forms['groupappt'].submit();"
-                           VALUE="<bean:message key="appointment.appointmentgrouprecords.btnGroupCancel"/>">
+                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnGroupCancel"/>">
                     <INPUT TYPE="button"
                            onclick="document.forms['groupappt'].groupappt.value='Group Delete'; document.forms['groupappt'].submit();"
-                           VALUE="<bean:message key="appointment.appointmentgrouprecords.btnGroupDelete"/>"
+                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnGroupDelete"/>"
                            onClick="onButDelete()"> <% } else { %> <INPUT
                         TYPE="button"
                         onclick="document.forms['groupappt'].groupappt.value='Add Group Appointment'; document.forms['groupappt'].submit();"
-                        VALUE="<bean:message key="appointment.appointmentgrouprecords.btnAddGroupAppt"/>">
+                        VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnAddGroupAppt"/>">
                     <% } %>
                 </TD>
                 <TD align="right"><INPUT TYPE="button"
-                                         VALUE=" <bean:message key="global.btnBack"/> "
+                                         VALUE=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/> "
                                          onClick="window.history.go(-1);return false;"> <INPUT
-                        TYPE="button" VALUE=" <bean:message key="global.btnExit"/> "
+                        TYPE="button" VALUE=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/> "
                         onClick="onExit()"></TD>
             </tr>
         </table>
 
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="<%=deepcolor%>">
-                <th><font face="Helvetica"><bean:message
-                        key="appointment.appointmentgrouprecords.msgLabel"/></font></th>
+                <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgLabel"/></font></th>
             </tr>
         </table>
 
@@ -508,14 +504,10 @@
         <table BORDER="0" CELLPADDING="2" CELLSPACING="2" WIDTH="100%"
                BGCOLOR="white">
             <tr BGCOLOR="<%=tableTitle%>">
-                <th width=30% nowrap><bean:message
-                        key="appointment.appointmentgrouprecords.msgProviderName"/></th>
-                <th width=11% nowrap><bean:message
-                        key="appointment.appointmentgrouprecords.msgFirstAppointment"/></th>
-                <th width=11% nowrap><bean:message
-                        key="appointment.appointmentgrouprecords.msgSecondAppointment"/></th>
-                <th width=48% nowrap><bean:message
-                        key="appointment.appointmentgrouprecords.msgExistedAppointment"/></th>
+                <th width=30% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgProviderName"/></th>
+                <th width=11% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgFirstAppointment"/></th>
+                <th width=11% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgSecondAppointment"/></th>
+                <th width=48% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgExistedAppointment"/></th>
             </tr>
             <%
 
@@ -592,27 +584,27 @@
                 <TD>
                     <% if (bEdit) { %> <INPUT TYPE="button"
                                               onclick="document.forms['groupappt'].groupappt.value='Group Update'; document.forms['groupappt'].submit();"
-                                              VALUE="<bean:message key="appointment.appointmentgrouprecords.btnGroupUpdate"/>">
+                                              VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnGroupUpdate"/>">
                     <INPUT TYPE="button"
                            onclick="document.forms['groupappt'].groupappt.value='Group Cancel'; document.forms['groupappt'].submit();"
-                           VALUE="<bean:message key="appointment.appointmentgrouprecords.btnGroupCancel"/>">
+                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnGroupCancel"/>">
                     <INPUT TYPE="button"
                            onclick="document.forms['groupappt'].groupappt.value='Group Delete'; document.forms['groupappt'].submit();"
-                           VALUE="<bean:message key="appointment.appointmentgrouprecords.btnGroupDelete"/>"
+                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnGroupDelete"/>"
                            onClick="onButDelete()"> <% } else { %> <INPUT
                         TYPE="button"
                         onclick="document.forms['groupappt'].groupappt.value='Add Group Appointment'; document.forms['groupappt'].submit();"
-                        VALUE="<bean:message key="appointment.appointmentgrouprecords.btnAddGroupAppt"/>">
+                        VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.btnAddGroupAppt"/>">
                     <% } %>
                 </TD>
                 <TD align="right"><INPUT TYPE="button"
-                                         VALUE=" <bean:message key="global.btnBack"/> "
+                                         VALUE=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/> "
                                          onClick="window.history.go(-1);return false;"> <INPUT
-                        TYPE="button" VALUE=" <bean:message key="global.btnExit"/> "
+                        TYPE="button" VALUE=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/> "
                         onClick="onExit()"></TD>
             </tr>
         </table>
 
     </form>
     </body>
-</html:html>
+</html>

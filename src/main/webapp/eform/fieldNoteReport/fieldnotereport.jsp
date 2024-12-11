@@ -28,8 +28,8 @@
 <%@ page import="java.util.*, java.text.*" %>
 <%@ page import="oscar.util.StringUtils" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     Calendar c = Calendar.getInstance();
     int year = c.get(Calendar.YEAR);
@@ -83,10 +83,10 @@
         }
     }
 %>
-<html:html lang="en">
+<html>
     <head>
 
-        <title><bean:message key="admin.fieldNote.report"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></title>
         <link rel="stylesheet" href="../../share/css/OscarStandardLayout.css">
         <link rel="stylesheet" href="../../share/css/eformStyle.css">
         <link rel="stylesheet" type="text/css" media="all" href="../../share/calendar/calendar.css"
@@ -160,33 +160,33 @@
 
         <table>
             <tr>
-                <th class="eformInputHeading"><bean:message key="admin.fieldNote.report"/></th>
+                <th class="eformInputHeading"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></th>
             </tr>
             <tr style="background-color: <%=fieldNoteEforms.isEmpty()?"#FFFF00":"#FFFFFF"%>;">
                 <td align="<%=fieldNoteEforms.isEmpty()?"left":"right"%>">
                     <%
                         if (fieldNoteEforms.isEmpty()) {
-                    %> <bean:message key="admin.fieldNote.noEformAssigned"/>
+                    %> <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.noEformAssigned"/>
                     <% }
-                    %> <input type="button" value="<bean:message key="admin.fieldNote.selectEformsButton"/>"
-                              title="<bean:message key="admin.fieldNote.selectEforms"/>"
+                    %> <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.selectEformsButton"/>"
+                              title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.selectEforms"/>"
                               onclick="window.location.href='fieldnoteselect.jsp'"/>
                 </td>
             </tr>
             <tr style="background-color: #F2F2F2;">
                 <td>
-                    <bean:message key="admin.fieldNote.startDate"/>:<input type="text" name="date_start" size="8"
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.startDate"/>:<input type="text" name="date_start" size="8"
                                                                            value="<%=dateStart%>" id="startDate"><a
                         id="SCal"><img title="Calendar" src="../../images/cal.gif" alt="Calendar" border="0"/></a>
                     &nbsp;
-                    <bean:message key="admin.fieldNote.endDate"/>:<input type="text" name="date_end" size="8"
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.endDate"/>:<input type="text" name="date_end" size="8"
                                                                          value="<%=dateEnd%>" id="endDate"><a id="ECal"><img
                         title="Calendar" src="../../images/cal.gif" alt="Calendar" border="0"/></a>
                     &nbsp;
-                    <input type="submit" value="<bean:message key="admin.fieldNote.getFieldNotes"/>"
+                    <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.getFieldNotes"/>"
                            style="font-weight:bold; font-size:large" onclick="getFieldNotes();"/>
-                    <input type="button" value="<bean:message key="admin.fieldNote.reset"/>"
-                           title="<bean:message key="admin.fieldNote.resetDates"/>" onclick="setDefaultDates();"/>
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.reset"/>"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.resetDates"/>" onclick="setDefaultDates();"/>
                     <script language='javascript'>
                         Calendar.setup({
                             inputField: "startDate",
@@ -213,7 +213,7 @@
             if (!showData) return;
         %>
         <input type="button" id="supervisorReportButton"
-               value="<bean:message key="admin.fieldNote.observerNoteCount"/> (<%=totalCount%>)"
+               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.observerNoteCount"/> (<%=totalCount%>)"
                onclick="showSupervisorReport(true);"/>
         <table id="supervisorReport" style="display:none">
             <tr>
@@ -224,10 +224,10 @@
                 <td>
                     <table class="bordered">
                         <tr>
-                            <th class="bordered"><bean:message key="admin.fieldNote.observerSupervisor"/></th>
-                            <th class="bordered"><bean:message key="admin.fieldNote.count"/></th>
-                            <th class="bordered"><bean:message key="admin.fieldNote.resident"/></th>
-                            <th class="bordered"><bean:message key="admin.fieldNote.count"/></th>
+                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.observerSupervisor"/></th>
+                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.count"/></th>
+                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.resident"/></th>
+                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.count"/></th>
                         </tr>
                         <%
                             for (String supervisor : supervisorResidentCountList.keySet()) {
@@ -259,7 +259,7 @@
                         }
                         %>
                         <tr>
-                            <td colspan="3" align="right"><bean:message key="admin.fieldNote.total"/>:</td>
+                            <td colspan="3" align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.total"/>:</td>
                             <td align="center"><%=totalCount%>
                             </td>
                         </tr>
@@ -268,8 +268,7 @@
             </tr>
         </table>
         <br/><br/>
-        <div style="text-decoration:underline; font-size:large"><bean:message
-                key="admin.fieldNote.residentReports"/></div>
+        <div style="text-decoration:underline; font-size:large"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.residentReports"/></div>
         <table>
             <%
                 for (String residentName : residentNameList.keySet()) {
@@ -280,11 +279,11 @@
                 <td><%=residentName%>
                 </td>
                 <td>
-                    <input type="button" value="<bean:message key="admin.fieldNote.view"/>"
-                           title="<bean:message key="admin.fieldNote.viewReport"/>"
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.view"/>"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.viewReport"/>"
                            onclick="send('<%=residentId%>','<%=resNameSend%>','view');"/>
-                    <input type="button" value="<bean:message key="admin.fieldNote.download"/>"
-                           title="<bean:message key="admin.fieldNote.downloadReport"/>"
+                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.download"/>"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.downloadReport"/>"
                            onclick="send('<%=residentId%>','<%=resNameSend%>','download');"/>
                 </td>
             </tr>
@@ -303,4 +302,4 @@
     </script>
 
     </body>
-</html:html>
+</html>

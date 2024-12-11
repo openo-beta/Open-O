@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page
         import="java.util.*,oscar.oscarBilling.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -43,7 +43,7 @@
     }
 %>
 
-<html:html lang="en">
+<html>
 
 
     <head>
@@ -93,32 +93,20 @@
                         <td>Add Billing Code</td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
-                                href="javascript:popupStart(300,400,'Help.jsp')"><bean:message
-                                key="global.help"/></a> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                                href="javascript:popupStart(300,400,'Help.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a> | <a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn" valign="top">&nbsp; &nbsp;</td>
-            <td class="MainTableRightColumn" valign="top"><html:form
-                    action="/billing/CA/BC/billingAddCode"
-                    onsubmit="return checkUnits();">
+            <td class="MainTableRightColumn" valign="top">
+                <form action="${pageContext.request.contextPath}/billing/CA/BC/billingAddCode.do" method="post" onsubmit="return checkUnits();">
                 <%
-                    BillingAddCodeForm frm = (BillingAddCodeForm) request.getAttribute("BillingAddCodeForm");
-                    String isEdit = request.getParameter("edit") != null ? request.getParameter("edit") : "";
-                    if (request.getAttribute("code") != null) {
-                        frm.setCode((String) request.getAttribute("code"));
-                        frm.setDesc((String) request.getAttribute("desc"));
-                        frm.setValue((String) request.getAttribute("value"));
-                    }
-
-                    if (request.getAttribute("returnMessage") != null) {%>
-
+                    if (request.getAttribute("returnMessage") != null) {
+                %>
                 <table>
                     <tr>
                         <td style="font-color: red;"><%=request.getAttribute("returnMessage")%>
@@ -126,36 +114,34 @@
                     </tr>
                 </table>
                 <%}%>
-                <html:hidden property="whereTo" value=""/>
+                <input type="hidden" name="whereTo" id="whereTo" value=""/>
 
                 <table width="50%">
                     <!--<tr>
                         <td>Code ID</td>
-                        <td><html:text property="codeId"/></td>
+                        <td><input type="text" name="codeId" id="codeId" /></td>
                     </tr>-->
 
                     <tr>
                         <td width="23%"><strong>Service Code:</strong></td>
-                        <td width="77%"><html:text property="code" maxlength="5"/></td>
+                        <td width="77%"><input type="checkbox" name="code" maxlength="5" /></td>
                     </tr>
                     <tr>
                         <td><strong>Description:</strong></td>
-                        <td><html:text property="desc"/></td>
+                        <td><input type="text" name="desc" id="desc" /></td>
                     </tr>
                     <tr>
                         <td><strong>Price:</strong></td>
-                        <td><html:text property="value"/></td>
+                        <td><input type="text" name="value" id="value" /></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                                <html:submit value="Add"/>
-                                <html:button
-                                        onclick="javascript: document.location = 'billingCodeAdjust.jsp'"
-                                        property="back" value="Back"/>
+                            <input type="submit" value="Add" />
+                            <button type="button" onclick="document.location = 'billingCodeAdjust.jsp'">Back</button>
                     </tr>
                 </table>
-            </html:form></td>
+            </form></td>
         </tr>
         <tr>
             <td class="MainTableBottomRowLeftColumn"></td>
@@ -163,4 +149,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

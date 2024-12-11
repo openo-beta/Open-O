@@ -37,9 +37,9 @@
 <%@page import="java.util.List" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="org.oscarehr.common.dao.DrugDao,org.oscarehr.common.model.Drug,org.oscarehr.util.MiscUtils,org.oscarehr.util.SpringUtils,org.oscarehr.PMmodule.dao.ProviderDao,org.oscarehr.common.dao.DemographicDao" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -124,8 +124,8 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
-    <html:base/>
-    <title><bean:message key="oscarRx.DisplayRxRecord.title"/></title>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.DisplayRxRecord.title"/></title>
     <link rel="stylesheet" type="text/css" href="../../../share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     <style>
@@ -176,12 +176,11 @@
                    bgcolor="black">
                 <tr>
                     <td width="66%" align="left" class="Cell">
-                        <div style="color:white;margin-left:5px;" class="Field2"><bean:message
-                                key="oscarMDS.segmentDisplay.formDetailResults"/></div>
+                        <div style="color:white;margin-left:5px;" class="Field2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDetailResults"/></div>
                     </td>
                     <td align="right">
-                        <input type="button" value="<bean:message key="global.btnClose"/>" onClick="window.close()"/>
-                        <input type="button" value="<bean:message key="global.btnPrint"/>" onClick="window.print()"/>
+                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="window.close()"/>
+                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>" onClick="window.print()"/>
                     </td>
                 </tr>
             </table>
@@ -369,11 +368,11 @@
                     <td class="label">Long Term:</td>
                     <td>
                         <% if (drug.getLongTerm() == null) { %>
-                        <bean:message key="WriteScript.msgUnset"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/>
                         <% } else if (drug.getLongTerm()) { %>
-                        <bean:message key="WriteScript.msgYes"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/>
                         <% } else { %>
-                        <bean:message key="WriteScript.msgNo"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/>
                         <% } %>
                     </td>
                 </tr>
@@ -386,11 +385,11 @@
                     <td class="label">Past Medication:</td>
                     <td>
                         <% if (drug.getPastMed() == null) { %>
-                        <bean:message key="WriteScript.msgUnset"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/>
                         <% } else if (drug.getPastMed()) { %>
-                        <bean:message key="WriteScript.msgYes"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/>
                         <% } else { %>
-                        <bean:message key="WriteScript.msgNo"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/>
                         <% } %>
                     </td>
                 </tr>
@@ -398,11 +397,11 @@
                     <td class="label">Patient Compliance:</td>
                     <td>
                         <% if (drug.getPatientCompliance() == null) { %>
-                        <bean:message key="WriteScript.msgUnset"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/>
                         <% } else if (drug.getPatientCompliance()) { %>
-                        <bean:message key="WriteScript.msgYes"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/>
                         <% } else { %>
-                        <bean:message key="WriteScript.msgNo"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/>
                         <% } %>
                     </td>
 

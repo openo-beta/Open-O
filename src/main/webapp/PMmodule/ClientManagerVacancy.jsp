@@ -42,13 +42,13 @@
 <%@page import="java.util.List" %>
 <%@page import="java.util.Properties" %>
 
-<html:form action="/PMmodule/ClientManager.do">
+<form action="${pageContext.request.contextPath}/PMmodule/ClientManager.do" method="post">`
 
-    <html:hidden property="view.tab"/>
+    <input type="hidden" name="tab" id="tab"/>
     <input type="hidden" name="id"
            value="<c:out value="${requestScope.id}"/>"/>
     <input type="hidden" name="method" value="edit"/>
-    <html:hidden property="client.demographicNo"/>
+    <input type="hidden" name="demographicNo" id="demographicNo"/>
 
     <script>
         function clickTab(name) {
@@ -110,4 +110,4 @@
     <%@ include file="/common/messages.jsp" %>
     <jsp:include
             page='<%="/PMmodule/ClientManager/referVacancy.jsp"%>'/>
-</html:form>
+</form>

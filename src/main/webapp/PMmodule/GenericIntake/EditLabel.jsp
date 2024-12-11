@@ -108,7 +108,7 @@
         }
     </script>
     <script language="javascript" type="text/javascript"
-            src="<html:rewrite page="/share/javascript/Oscar.js"/>"></script>
+            src="${request.contextPath}/share/javascript/Oscar.js"></script>
     <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 </head>
 <body>

@@ -46,8 +46,8 @@
     <%isSiteAccessPrivacy = true; %>
 </security:oscarSec>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.sql.*, java.util.*, oscar.*" errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.log.LogAction,oscar.log.LogConst" %>
 <%@ page import="oscar.log.*, oscar.oscarDB.*" %>
@@ -66,10 +66,10 @@
     String lotNr = request.getParameter("lotnr");
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="admin.lotdeleterecord.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotdeleterecord.title"/></title>
         <link rel="stylesheet" href="../web.css">
     </head>
 
@@ -78,7 +78,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
                 <th><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="admin.lotdeleterecord.description"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotdeleterecord.description"/>
                 </font></th>
             </tr>
         </table>
@@ -88,7 +88,7 @@
             List<String> lotnrs = PreventionsLotNrsDao.findLotNrs(prevention, false);
             if (!lotnrs.contains(lotNr)) {
         %>
-        <bean:message key="admin.lotdeleterecord.msgNonExistentLotnr"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotdeleterecord.msgNonExistentLotnr"/>
         <%
         } else {
             PreventionsLotNrs p = PreventionsLotNrsDao.findByName(prevention, lotNr, false);
@@ -100,11 +100,11 @@
             lotnrs = PreventionsLotNrsDao.findLotNrs(prevention, false);
             if (!lotnrs.contains(lotNr)) {
         %>
-        <bean:message key="admin.lotdeleterecord.msgDeletionSuccess"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotdeleterecord.msgDeletionSuccess"/>
         <%
         } else {
         %>
-        <bean:message key="admin.lotdeleterecord.msgDeletionFailure"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotdeleterecord.msgDeletionFailure"/>
         <%
                 }
             }
@@ -112,4 +112,4 @@
 
     </center>
     </body>
-</html:html>
+</html>

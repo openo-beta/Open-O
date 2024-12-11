@@ -45,18 +45,5 @@ public class FrmStudyRecordFactory {
         }
 
         return myClass;
-/*
-//String paramString1 = "one";
-//String paramString2 = "two";
-//Class string = Class.forName("java.lang.String");            // get reference to constructor taking those param types
-//Class[] paramTypes = { string, string };
-//        Constructor constr = c.getConstructor(); //paramTypes);            // use this constructor get an instance
-//        Object[] params = { paramString1, paramString2 };
-        if (which.equalsIgnoreCase("diabete2")) { //keyword - study_name
-            return new FrmStudydiabete2Record();
-        } else {
-            throw new IOException();
-        }
-*/
     }
 }

@@ -45,9 +45,9 @@
         import="oscar.util.*, oscar.form.*, oscar.form.data.*,java.util.*,oscar.oscarPrevention.*" %>
 <%@ page
         import="oscar.oscarProvider.data.*,oscar.oscarWorkflow.*,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 
 <%
@@ -108,17 +108,17 @@
 * Ontario, Canada
 */
 -->
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Rh Immune Globulin Injection Reporting Form</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
         <script type="text/javascript" src="../share/prototype.js"></script>
 
@@ -214,9 +214,7 @@
         }
     </script>
 
-
-    <html:form action="/oscarPrevention/AddPrevention"
-               onsubmit="return process(this);" styleId="injectForm">
+    <form action="${pageContext.request.contextPath}/oscarPrevention/AddPrevention.do" method="post" onsubmit="return process(this);" styleId="injectForm">
         <input type="hidden" name="prevention" value="RH"/>
         <input type="hidden" name="demographic_no" value="<%=demographicNo%>"/>
         <input type="hidden" name="workflowId" value="<%=workflowId%>"/>
@@ -317,7 +315,7 @@
         &nbsp;<input type="submit"
         value="Save Injection" />
 
-    </html:form>
+    </form>
     </div>
 
     <script type="text/javascript">
@@ -335,7 +333,7 @@
 
 
     </body>
-</html:html>
+</html>
 
 
 <%!

@@ -31,11 +31,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
-<html:html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+<html>
     <head>
         <jsp:include page="head-includes.jsp"/>
         <script language="javascript">
@@ -60,7 +60,7 @@
 
         <title>MCEDT: Update Upload</title>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <body>
@@ -68,26 +68,39 @@
         <div class="row-fluid">
             <h2>Update Upload</h2>
 
-            <html:form action="/mcedt/update" method="post" styleId="form"
+            <form action="${pageContext.request.contextPath}/mcedt/update" method="post" styleId="form"
                        enctype="multipart/form-data">
 
-                <html:errors/>
+                <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
 
-            <html:messages id="message" bundle="mcedt" message="true">
-                <c:out value="${message}"/>
-            </html:messages>
+                <c:if test="${not empty savedMessage}">
+                    <div class="messages">
+                            ${savedMessage}
+                    </div>
+                </c:if>
 
             <input id="method" name="method" type="hidden"
                    value="addUpdateRequest"/>
 
             <div class="form-group">
                 <label>Upload ID</label>
-                <html:text property="resourceId" readonly="true"/>
+                <input type="text" name="resourceId" readonly="true"/>
             </div>
 
             <div class="form-group">
                 <label>File Upload</label>
-                <html:file property="content"/>
+                <input type="file" name="content" id="content"/>
             </div>
 
             <div class="control-group" style="margin-top: 1em;">
@@ -96,6 +109,6 @@
                     <button class="btn" onclick="return cancel(this);">Cancel</button>
                 </div>
             </div>
-            </html:form>
+            </form>
     </body>
-</html:html>
+</html>

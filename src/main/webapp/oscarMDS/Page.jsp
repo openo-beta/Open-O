@@ -10,9 +10,9 @@
 --%>
 <%@ page import="java.util.*" %>
 <%@ page import="oscar.oscarLab.ca.on.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="org.oscarehr.util.MiscUtils,org.apache.commons.lang.StringEscapeUtils" %>
@@ -84,7 +84,7 @@
                     <td align="left" valign="center">
                         <c:if test="${ labdocs.size() gt 0}">
                             <input id="topFBtn" type="button" class="smallButton"
-                                   value="<bean:message key="oscarMDS.index.btnForward"/>"
+                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
                                    onClick="submitForward('${ searchProviderNo }', '${ param.status }')">
                             <c:if test="${ ackStatus eq 'N' or empty ackStatus }">
                                 <input id="topFileBtn" type="button" class="smallButton" value="File"
@@ -114,39 +114,39 @@
                     <tr>
                         <th>
                             <input type="checkbox" onclick="checkAllLabs('lab_form');" name="checkA"/>
-                            <%--                                <bean:message key="oscarMDS.index.msgHealthNumber"/>--%>
+                            <%--                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgHealthNumber"/>--%>
                         </th>
                         <th>
-                            <bean:message key="oscarMDS.index.msgPatientName"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgPatientName"/>
                         </th>
                         <th>
-                            <bean:message key="oscarMDS.index.msgSex"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgSex"/>
                         </th>
 
                         <th>
-                            <bean:message key="oscarMDS.index.msgResultStatus"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgResultStatus"/>
                         </th>
                         <th>
-                            <bean:message key="oscarMDS.index.msgLabel"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgLabel"/>
                         </th>
                         <th>
                             <% if (dateType.equals("receivedCreated")) { %>
-                            <bean:message key="oscarMDS.index.msgDateCreated"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgDateCreated"/>
                             <% } else { %>
-                            <bean:message key="oscarMDS.index.msgDateTest"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgDateTest"/>
                             <% } %>
                         </th>
                         <%--                            <th>--%>
-                        <%--                                <bean:message key="oscarMDS.index.msgOrderPriority"/>--%>
+                        <%--                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgOrderPriority"/>--%>
                         <%--                            </th>--%>
                         <th>
-                            <bean:message key="oscarMDS.index.msgRequestingClient"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgRequestingClient"/>
                         </th>
                         <th>
-                            <bean:message key="oscarMDS.index.msgDiscipline"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgDiscipline"/>
                         </th>
                         <th>
-                            <bean:message key="oscarMDS.index.msgReportStatus"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgReportStatus"/>
                         </th>
                         <th>
                             Ack #
@@ -167,9 +167,9 @@
                     <tr>
                         <td colspan="10" align="center">
                             <i><% if (pageNum == 1) { %>
-                                <bean:message key="oscarMDS.index.msgNoReports"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgNoReports"/>
                                 <% } else { %>
-                                <bean:message key="oscarMDS.index.msgNoMoreReports"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgNoMoreReports"/>
                                 <% } %>
                             </i>
 
@@ -180,9 +180,9 @@
 
                     <div>
                         <% if (pageNum == 1) { %>
-                        <bean:message key="oscarMDS.index.msgNoReports"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgNoReports"/>
                         <% } else { %>
-                        <bean:message key="oscarMDS.index.msgNoMoreReports"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgNoMoreReports"/>
                         <% } %>
                     </div>
 

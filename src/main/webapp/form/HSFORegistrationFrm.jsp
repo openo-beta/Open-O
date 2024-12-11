@@ -39,11 +39,11 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>HSFO Registration Template</title>
@@ -280,7 +280,7 @@
     <jsp:useBean id="visitData" class="oscar.form.study.HSFO.VisitData"
                  scope="request"/>
         <%--       name="form1" --%>
-    <html:form action="/form/HSFOsaveform.do" onsubmit="return checkform()">
+    <form action="${pageContext.request.contextPath}/form/HSFOsaveform.do" method="post" onsubmit="return checkform()">
         <table width="76%" border="0" cellpadding="1" cellspacing="0"
                class="table">
             <tr bgcolor="#FFFFFF">
@@ -631,8 +631,7 @@
                                     String user = (String) session.getAttribute("user");
                                 %> <input
                                     type="button"
-                                    onclick="popupXmlMsg('<html:rewrite
-                                            action="/form/HSFOXmlTransfer.do"/>?xmlHsfoProviderNo=<%=user%>&xmlHsfoDemographicNo=<%=patient%>')"
+                                    onclick="popupXmlMsg('<%=request.getContextPath() %>/form/HSFOXmlTransfer.do?xmlHsfoProviderNo=<%=user%>&xmlHsfoDemographicNo=<%=patient%>')"
                                     value="Submit current patient's data"></td>
                         </tr>
 
@@ -1976,8 +1975,8 @@
         <p align="center"><font size="2"
                                 face="Arial, Helvetica, sans-serif">Copyright &copy; 2006 Heart
             &amp; Stroke Foundation.</font></p>
-    </html:form>
+    </form>
 
     </body>
-</html:html>
+</html>
 

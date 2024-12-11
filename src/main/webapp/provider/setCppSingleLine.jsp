@@ -46,10 +46,10 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
 
@@ -71,7 +71,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="<c:out value="${ctx}"/>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="<c:out value="${ctx}"/>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                        adding a calendar a matter of 1 or 2 lines of code. -->
@@ -113,14 +113,13 @@
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%> <c:out value="${rxPageSizeProperty.value}"/>
-                <html:form action="/setProviderStaleDate.do">
+                <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                    <html:checkbox
-                            property="cppSingleLineProperty.checked">Enable CPP Single Line on eChart</html:checkbox>
+                    <input type="checkbox" name="cppSingleLineProperty.checked" />Enable CPP Single Line on eChart
                     <br/>
-                    <html:submit property="btnApply"/>
+                    <input type="submit" name="btnApply" value="Apply" />
                     <%--  <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>" />--%>
-                </html:form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
                 <%}%>
             </td>
         </tr>
@@ -130,4 +129,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

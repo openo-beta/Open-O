@@ -28,11 +28,8 @@
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
-
 <%@include file="/layouts/caisi_html_top.jspf" %>
-
-
-<%@page import="oscar.login.LoginAction" %>
+<%@ page import="oscar.login.Login2Action" %>
 <h2>Please select which facility you would like to currently work in</h2>
 <%
     FacilityDao facilityDao = (FacilityDao) SpringUtils.getBean(FacilityDao.class);
@@ -47,7 +44,7 @@
             Facility facility = facilityDao.find(facilityId);
     %>
     <li>
-        <a href='?nextPage=<%=request.getParameter("nextPage")%>&<%=LoginAction.SELECTED_FACILITY_ID%>=<%=facility.getId()%>'><%=facility.getName()%>
+        <a href='?nextPage=<%=request.getParameter("nextPage")%>&<%=Login2Action.SELECTED_FACILITY_ID%>=<%=facility.getId()%>'><%=facility.getName()%>
         </a></li>
     <%
         }

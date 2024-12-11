@@ -58,7 +58,7 @@ public class CaseManagementPrint {
     private PreventionManager preventionManager = SpringUtils.getBean(PreventionManager.class);
 
     /*
-     *This method was in CaseManagementEntryAction but has been moved out so that both the classic Echart and the flat echart can use the same printing method.
+     *This method was in CaseManagementEntry2Action but has been moved out so that both the classic Echart and the flat echart can use the same printing method.
      *
      */
     public void doPrint(LoggedInInfo loggedInInfo, Integer demographicNo, boolean printAllNotes, String[] noteIds, boolean printCPP, boolean printRx, boolean printLabs, boolean printPreventions, boolean useDateRange, Calendar startDate, Calendar endDate, HttpServletRequest request, OutputStream os) throws IOException, com.lowagie.text.DocumentException, com.itextpdf.text.DocumentException {

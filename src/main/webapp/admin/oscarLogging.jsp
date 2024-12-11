@@ -48,7 +48,7 @@
 
 <div class="page-header">
     <h4>
-        <bean:message key="admin.admin.serverLog"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.serverLog"/>
     </h4>
 </div>
 

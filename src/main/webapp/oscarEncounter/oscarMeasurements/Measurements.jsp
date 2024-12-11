@@ -27,8 +27,8 @@
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
@@ -43,15 +43,15 @@
     String groupName = (String) request.getAttribute("groupName");
 %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><c:if test="${not empty groupName}">
             <c:out value="${groupName}"/>
-        </c:if> <bean:message key="oscarEncounter.Index.measurements"/></title>
+        </c:if> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements"/></title>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
 
         <link href="/oscar/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -86,7 +86,7 @@
         </style>
         <script src="${ pageContext.request.contextPath }/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="${ pageContext.request.contextPath }/share/calendar/calendar.js"></script>
-        <script src="${ pageContext.request.contextPath }/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+        <script src="${ pageContext.request.contextPath }/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script src="${ pageContext.request.contextPath }/share/calendar/calendar-setup.js"></script>
         <link rel="stylesheet" type="text/css" media="all"
               href="${ pageContext.request.contextPath }/share/calendar/calendar.css" title="win2k-cold-2"/>
@@ -118,7 +118,7 @@
                 if (parentChanged) {
                     document.forms[0].elements["value(parentChanged)"].value = "true";
 
-                    if (!confirm("<bean:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <oscar:nameage demographicNo="<%=demo%>"/>"))
+                    if (!confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <oscar:nameage demographicNo="<%=demo%>"/>"))
                         ret = false;
                 }
 
@@ -143,7 +143,7 @@
         </script>
     </head>
     <body class="BodyStyle" onload="window.focus();">
-    <html:form action="/oscarEncounter/Measurements" styleId="theForm">
+    <form action="${pageContext.request.contextPath}/oscarEncounter/Measurements.do" method="post" styleId="theForm">
         <c:if test="${not empty css}">
             <link rel="stylesheet" type="text/css" href="${css}">
         </c:if>
@@ -172,8 +172,7 @@
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popupPage(150,200,'../calculators.jsp?demo=<%=demo%>'); return false;"><bean:message
-                                    key="oscarEncounter.Index.calculators"/></a></td>
+                                    onClick="popupPage(150,200,'../calculators.jsp?demo=<%=demo%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a></td>
                         </tr>
                     </table>
                 </td>
@@ -191,22 +190,28 @@
                                         <td>
                                             <div class="well">
                                                 <table class="table table-striped">
-                                                    <html:errors/>
+                                                    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
                                                     <tr class="Header">
-                                                        <th style="width:120px"><bean:message
-                                                                key="oscarEncounter.oscarMeasurements.Measurements.headingType"/>
+                                                        <th style="width:120px"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingType"/>
                                                         </th>
-                                                        <th style="width:160px"><bean:message
-                                                                key="oscarEncounter.oscarMeasurements.Measurements.headingMeasuringInstrc"/>
+                                                        <th style="width:160px"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingMeasuringInstrc"/>
                                                         </th>
-                                                        <th style="width:30px"><bean:message
-                                                                key="oscarEncounter.oscarMeasurements.Measurements.headingValue"/>
+                                                        <th style="width:30px"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingValue"/>
                                                         </th>
-                                                        <th style="width:40px"><bean:message
-                                                                key="oscarEncounter.oscarMeasurements.Measurements.headingObservationDate"/>
+                                                        <th style="width:40px"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingObservationDate"/>
                                                         </th>
-                                                        <th style="width:80px"><bean:message
-                                                                key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                        <th style="width:80px"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                         </th>
                                                         <th style="width:10px"></th>
                                                     </tr>
@@ -287,10 +292,10 @@
                                             <table>
                                                 <tr>
                                                     <td><input type="button" name="Button" class="btn"
-                                                               value="<bean:message key="global.btnCancel"/>"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
                                                                onClick="window.close()"></td>
                                                     <td><input type="button" name="Button" class="btn btn-primary"
-                                                               value="<bean:message key="global.btnSubmit"/>"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSubmit"/>"
                                                                onclick="check();"/></td>
                                                 </tr>
                                             </table>
@@ -307,7 +312,7 @@
                 <td class="MainTableBottomRowRightColumn"></td>
             </tr>
         </table>
-    </html:form>
+    </form>
 
     <script>
         $(document).ready(function () {
@@ -344,4 +349,4 @@
 
 
     </body>
-</html:html>
+</html>

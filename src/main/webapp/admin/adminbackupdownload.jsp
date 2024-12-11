@@ -44,7 +44,7 @@
     boolean bodd = false;
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.*,oscar.*,java.io.*,java.net.*,oscar.util.*,org.apache.commons.io.FileUtils"
          errorPage="/errorpage.jsp" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
@@ -59,7 +59,7 @@
 </head>
 <body>
 
-<h3><bean:message key="admin.admin.btnAdminBackupDownload"/></h3>
+<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnAdminBackupDownload"/></h3>
 
 <%
     String backuppath = oscarVariables.getProperty("backup_path");

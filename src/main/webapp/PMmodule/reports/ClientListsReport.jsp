@@ -32,8 +32,7 @@
 <div class="h4">
     <h5>Client Lists Report Results</h5>
 </div>
-<div class="axial"><html:form
-        action="/PMmodule/Reports/ClientListsReport">
+<div class="axial"><form action="${pageContext.request.contextPath}/PMmodule/Reports/ClientListsReport.do" method="post">
 
     <table border="0" cellspacing="2" cellpadding="3">
         <tr>
@@ -58,6 +57,6 @@
         %>
     </table>
 
-    <html:submit value="go back to form"/>
+    <input type="submit" value="go back to form" />
 
-</html:form></div>
+</form></div>

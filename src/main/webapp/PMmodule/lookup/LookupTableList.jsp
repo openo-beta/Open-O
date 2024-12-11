@@ -21,8 +21,6 @@
 
 --%>
 <%@ include file="/taglibs.jsp" %>
-
-
 <table width="100%" height="100%" cellpadding="0px" cellspacing="0px">
     <tr>
         <th class="pageTitle" align="center"><span
@@ -30,11 +28,11 @@
 			</span></th>
     </tr>
     <tr>
-        <td align="left" class="buttonBar2"><html:link
-                action="/PMmodule/Admin/SysAdmin.do"
+        <td align="left" class="buttonBar2"><a
+                href="${pageContext.request.contextPath}/PMmodule/Admin/SysAdmin.do"
                 style="color:Navy;text-decoration:none;">
             <img border=0 src=
-                    <html:rewrite page="/images/close16.png"/>/>&nbsp;Close&nbsp;&nbsp;|</html:link>
+                    ${request.contextPath}/images/close16.png/>&nbsp;Close&nbsp;&nbsp;|</a>
         </td>
 
     </tr>
@@ -54,9 +52,9 @@
                             <c:out value="${module.description}"></c:out>
                             <ul>
                                 <c:forEach var="lkTable" items="${module.associates}">
-                                    <li><html:link action="/Lookup/LookupCodeList.do" paramName="lkTable"
+                                    <li><a href="${pageContext.request.contextPath}/Lookup/LookupCodeList.do" paramName="lkTable"
                                                    paramProperty="code" paramId="id">
-                                        <bean:write name="lkTable" property="description"/></html:link></li>
+                                        <c:out value="${lkTable.description}"/></a></li>
                                 </c:forEach>
                             </ul>
                         </li>

@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -45,13 +45,13 @@
     oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
     bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean");
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="oscarEncounter.concurrencyError.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.concurrencyError.title"/></title>
     </head>
     <body>
-    <h1><bean:message key="oscarEncounter.concurrencyError.errorMsg"/></h1>
+    <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.concurrencyError.errorMsg"/></h1>
     <textarea name='encounterTextarea' wrap="hard" cols="99" rows="20"><%=bean.encounter%></textarea>
     </body>
-</html:html>
+</html>

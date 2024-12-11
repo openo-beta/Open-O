@@ -14,11 +14,8 @@
 %>
 
 <%@ page import="oscar.form.*, oscar.form.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-
 <%
     String formClass = "Growth0_36";
     String formLink = "formGrowth0_36.jsp";
@@ -40,7 +37,7 @@
     boolean bGirl = props.getProperty("patientSex", "").equals("F") ? true : false;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>CDC US Growth Charts</title>
@@ -54,12 +51,12 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <script type="text/javascript" language="Javascript">
@@ -300,7 +297,7 @@
     @oscar.formDB Field="formCreated" Type="date" Null="" Default="NULL"
     @oscar.formDB Field="formEdited" Type="timestamp"
     -->
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
                value="<%= props.getProperty("demographic_no", "0") %>"/>
         <input type="hidden" name="formCreated"
@@ -535,7 +532,7 @@
             </tr>
         </table>
 
-    </html:form>
+    </form>
     <script type="text/javascript">
         <%
         int nRStart = 1;
@@ -546,4 +543,4 @@
         Calendar.setup({inputField: "edc", ifFormat: "%Y/%m/%d", showsTime: false, button: "edc_cal"});
     </script>
     </body>
-</html:html>
+</html>

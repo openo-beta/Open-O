@@ -50,8 +50,8 @@
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%
     if (session.getValue("user") == null) response.sendRedirect("../logout.jsp");
@@ -63,9 +63,9 @@
     ProviderDataDao providerDao = SpringUtils.getBean(ProviderDataDao.class);
 %>
 
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="demographic.demographiclabelprintsetting.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.title"/></title>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
         <!-- Bootstrap 2.3.1 -->
 
@@ -100,7 +100,7 @@
         </script>
     </head>
     <body onLoad="setfocus()">
-    <h4><bean:message key="demographic.demographiclabelprintsetting.msgMainLabel"/></h4>
+    <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgMainLabel"/></h4>
 
     <%
         GregorianCalendar now = new GregorianCalendar();
@@ -116,7 +116,7 @@
         Demographic demo = demographicDao.getDemographic(demoNo);
         if (demo == null) {
     %>
-    <bean:message key="demographic.demographiclabelprintsetting.msgFailed"/>
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgFailed"/>
     <%
         } else {
             ProviderData provider = providerDao.findByProviderNo(demo.getProviderNo());
@@ -150,9 +150,9 @@
         <div class="well">
             <table style="width:100%">
                 <tr style="text-align:center">
-                    <th><bean:message key="demographic.demographiclabelprintsetting.msgLabel"/></th>
-                    <th><bean:message key="demographic.demographiclabelprintsetting.msgNumeberOfLabel"/></th>
-                    <th><bean:message key="demographic.demographiclabelprintsetting.msgLocation"/>
+                    <th><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgLabel"/></th>
+                    <th><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgNumeberOfLabel"/></th>
+                    <th><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgLocation"/>
                         <input type="hidden" name="address" value="<%=address%>">
                         <input type="hidden" name="chart_no" value="<%=chart_no%>">
                         <input type="hidden" name="city" value="<%=city%>">
@@ -186,50 +186,46 @@
                         </table>
                     </td>
                     <td style="text-align:center; background-color:#CCCCCC"><a href="#" onClick="onNewPatient()">
-                        <bean:message key="demographic.demographiclabelprintsetting.btnNewPatientLabel"/></a><br><br>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.btnNewPatientLabel"/></a><br><br>
                         <input type="checkbox" name="label1checkbox" value="checked">
                         <input type="text" name="label1no" size="2" maxlength="2"
                                value="<%= oscarVariables.getProperty("label.1no","1") %>"/>
                     </td>
                     <td rowspan=5 style="vertical-align:middle; background-color:#999999;">
                         <div class="control-group">
-                            <label class="control-label"><bean:message
-                                    key="demographic.demographiclabelprintsetting.formLeft"/>:</label>
+                            <label class="control-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.formLeft"/>:</label>
                             <div class="controls">
                                 <input type="text" class="input-small" name="left"
-                                       placeholder="<bean:message key="demographic.demographiclabelprintsetting.msgPx" />"
+                                       placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>"
                                        maxlength="3" value="<%= oscarVariables.getProperty("label.left","200") %>">&nbsp;
-                                <bean:message key="demographic.demographiclabelprintsetting.msgPx"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label"><bean:message
-                                    key="demographic.demographiclabelprintsetting.formTop"/>:</label>
+                            <label class="control-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.formTop"/>:</label>
                             <div class="controls">
                                 <input type="text" class="input-small" name="top" maxlength="3"
                                        value="<%= oscarVariables.getProperty("label.top","0")%>"
-                                       placeholder="<bean:message key="demographic.demographiclabelprintsetting.msgPx" />">&nbsp;
-                                <bean:message key="demographic.demographiclabelprintsetting.msgPx"/>
+                                       placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>">&nbsp;
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label"><bean:message
-                                    key="demographic.demographiclabelprintsetting.formHeight"/>:</label>
+                            <label class="control-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.formHeight"/>:</label>
                             <div class="controls">
                                 <input type="text" class="input-small" name="height" maxlength="3"
                                        value="<%= oscarVariables.getProperty("label.height","145")%>"
-                                       placeholder="<bean:message key="demographic.demographiclabelprintsetting.msgPx" />">&nbsp;
-                                <bean:message key="demographic.demographiclabelprintsetting.msgPx"/>
+                                       placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>">&nbsp;
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label"><bean:message
-                                    key="demographic.demographiclabelprintsetting.formGap"/>:</label>
+                            <label class="control-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.formGap"/>:</label>
                             <div class="controls">
                                 <input type="text" class="input-small" name="gap" size="3" maxlength="3"
                                        value="<%= oscarVariables.getProperty("label.gap","0")%>"
-                                       placeholder="<bean:message key="demographic.demographiclabelprintsetting.msgPx" />">&nbsp;
-                                <bean:message key="demographic.demographiclabelprintsetting.msgPx"/>
+                                       placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>">&nbsp;
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
                         </div>
                     </td>
@@ -241,9 +237,9 @@
                                 <td style="border: solid 1px; background-color: white;">
 				<span id="copytext2"
                       class="copytext"> <b><%=last_name%>,&nbsp;<%=first_name%>&nbsp;<%=chart_no%></b><br><%=address%><br><%=city%>,&nbsp;<%=province%>,&nbsp;<%=postal%><br>
-				<bean:message key="demographic.demographiclabelprintsetting.msgHome"/>:&nbsp;<%=phone%><br><%=dob%>&nbsp;<%=sex%><br><%=hin%><br>
-				<bean:message key="demographic.demographiclabelprintsetting.msgBus"/>:<%=phone2%>&nbsp;
-				<bean:message key="demographic.demographiclabelprintsetting.msgDr"/>&nbsp;<%=providername%><br>
+				<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgHome"/>:&nbsp;<%=phone%><br><%=dob%>&nbsp;<%=sex%><br><%=hin%><br>
+				<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgBus"/>:<%=phone2%>&nbsp;
+				<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgDr"/>&nbsp;<%=providername%><br>
 				</span></td>
                             </tr>
                         </table>
@@ -305,9 +301,9 @@
                 <tr>
                     <td style="text-align:left" colspan="3"><br><input type="submit" name="Submit"
                                                                        class="btn btn-primary"
-                                                                       value="<bean:message key='demographic.demographiclabelprintsetting.btnPrintPreviewPrint'/>">
+                                                                       value="<fmt:setBundle basename='oscarResources'/><fmt:message key='demographic.demographiclabelprintsetting.btnPrintPreviewPrint'/>">
                         <input type="button" class="btn btn-link" name="button"
-                               value="<bean:message key='global.btnBack'/>"
+                               value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnBack'/>"
                                onClick="javascript:history.go(-1);return false;"></td>
                 </tr>
             </table>
@@ -315,4 +311,4 @@
     </form>
 
     </body>
-</html:html>
+</html>

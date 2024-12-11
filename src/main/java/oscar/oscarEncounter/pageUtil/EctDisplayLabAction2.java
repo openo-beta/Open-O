@@ -26,21 +26,13 @@
 
 package oscar.oscarEncounter.pageUtil;
 
-import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.util.MessageResources;
 import org.oscarehr.caisi_integrator.ws.CachedDemographicLabResult;
 import org.oscarehr.common.dao.OscarLogDao;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.w3c.dom.Document;
-
 import oscar.OscarProperties;
 import oscar.oscarLab.ca.all.Hl7textResultsData;
 import oscar.oscarLab.ca.all.parsers.MessageHandler;
@@ -50,11 +42,17 @@ import oscar.oscarLab.ca.on.LabResultData;
 import oscar.util.DateUtils;
 import oscar.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 public class EctDisplayLabAction2 extends EctDisplayAction {
     private static final Logger logger = MiscUtils.getLogger();
     private static final String cmd = "labs";
 
-    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         logger.debug("EctDisplayLabAction2");
@@ -76,7 +74,7 @@ public class EctDisplayLabAction2 extends EctDisplayAction {
 
 
             // set text for lefthand module title
-            Dao.setLeftHeading(messages.getMessage(request.getLocale(), "oscarEncounter.LeftNavBar.Labs"));
+            Dao.setLeftHeading(getText("oscarEncounter.LeftNavBar.Labs"));
 
             // set link for lefthand module title
             String winName = "Labs" + bean.demographicNo;
@@ -87,27 +85,27 @@ public class EctDisplayLabAction2 extends EctDisplayAction {
             String menuId = "2";
             Dao.setRightHeadingID(menuId);
             Dao.setRightURL("return !showMenu('" + menuId + "', event);");
-            Dao.setMenuHeader(messages.getMessage("oscarEncounter.LeftNavBar.LabMenuHeading"));
+            Dao.setMenuHeader(getText("oscarEncounter.LeftNavBar.LabMenuHeading"));
 
             winName = "AllLabs" + bean.demographicNo;
 
             if (OscarProperties.getInstance().getBooleanProperty("HL7TEXT_LABS", "yes")) {
                 url = "popupPage(700,1000, '" + winName + "','" + request.getContextPath() + "/lab/CumulativeLabValues3.jsp?demographic_no=" + bean.demographicNo + "')";
                 Dao.addPopUpUrl(url);
-                Dao.addPopUpText(messages.getMessage("oscarEncounter.LeftNavBar.LabMenuItem1"));
+                Dao.addPopUpText(getText("oscarEncounter.LeftNavBar.LabMenuItem1"));
                 if (OscarProperties.getInstance().getProperty("labs.hide_old_grid_display", "false").equals("false")) {
                     url = "popupPage(700,1000, '" + winName + "','" + request.getContextPath() + "/lab/CumulativeLabValues2.jsp?demographic_no=" + bean.demographicNo + "')";
                     Dao.addPopUpUrl(url);
-                    Dao.addPopUpText(messages.getMessage("oscarEncounter.LeftNavBar.LabMenuItem1") + "-OLD");
+                    Dao.addPopUpText(getText("oscarEncounter.LeftNavBar.LabMenuItem1") + "-OLD");
                 }
             } else {
                 url = "popupPage(700,1000, '" + winName + "','" + request.getContextPath() + "/lab/CumulativeLabValues2.jsp?demographic_no=" + bean.demographicNo + "')";
                 Dao.addPopUpUrl(url);
-                Dao.addPopUpText(messages.getMessage("oscarEncounter.LeftNavBar.LabMenuItem1"));
+                Dao.addPopUpText(getText("oscarEncounter.LeftNavBar.LabMenuItem1"));
             }
             url = "popupPage(700,1000, '" + winName + "','" + request.getContextPath() + "/lab/CumulativeLabValues.jsp?demographic_no=" + bean.demographicNo + "')";
             Dao.addPopUpUrl(url);
-            Dao.addPopUpText(messages.getMessage("oscarEncounter.LeftNavBar.LabMenuItem2"));
+            Dao.addPopUpText(getText("oscarEncounter.LeftNavBar.LabMenuItem2"));
 
             // now we add individual module items
             LabResultData result;

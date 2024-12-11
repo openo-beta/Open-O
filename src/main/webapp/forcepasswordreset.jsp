@@ -35,11 +35,7 @@
         errormsg = request.getParameter("errormsg");
     }
 %>
-
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="org.springframework.web.util.JavaScriptUtils" %>
 <%@ page
         import="java.lang.*,oscar.*"
@@ -49,9 +45,9 @@
     OscarProperties op = OscarProperties.getInstance();
 %>
 
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="provider.providerchangepassword.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.title"/></title>
 
         <script type="text/javascript">
             function setfocus(el) {
@@ -63,7 +59,7 @@
             function checkPwdPolicy() {
 
                 if (document.forms[0].oldPassword.value == "") {
-                    alert('<bean:message key="provider.providerchangepassword.msgOldPasswordError"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgOldPasswordError"/>');
                     setfocus('oldPassword');
                     return false;
                 }
@@ -75,7 +71,7 @@
                     return false;
                 }
                 if (pwd1 != pwd2) {
-                    alert('<bean:message key="provider.providerchangepassword.msgPasswordConfirmError"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgPasswordConfirmError"/>');
                     setfocus('confirmPassword');
                     return false;
                 }
@@ -96,8 +92,8 @@
                 {
                     %>
                 if (pwd.length < password_min_length) {
-                    alert('<bean:message key="password.policy.violation.msgPasswordLengthError"/> ' +
-                        password_min_length + ' <bean:message key="password.policy.violation.msgSymbols"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPasswordLengthError"/> ' +
+                        password_min_length + ' <fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgSymbols"/>');
                     return false;
                 }
 
@@ -128,8 +124,8 @@
 
                 var groups_used = parseInt(lower ? 1 : 0) + parseInt(upper ? 1 : 0) + parseInt(digits ? 1 : 0) + parseInt(special ? 1 : 0);
                 if (groups_used < password_min_groups) {
-                    alert('<bean:message key="password.policy.violation.msgPasswordStrengthError"/> ' +
-                        password_min_groups + ' <bean:message key="password.policy.violation.msgPasswordGroups"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPasswordStrengthError"/> ' +
+                        password_min_groups + ' <fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPasswordGroups"/>');
                     return false;
                 }
                 <%
@@ -153,8 +149,8 @@
                 {
                     %>
                 if (pwd.length < password_min_length) {
-                    alert('<bean:message key="password.policy.violation.msgPasswordLengthError"/> ' +
-                        password_min_length + ' <bean:message key="password.policy.violation.msgSymbols"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPasswordLengthError"/> ' +
+                        password_min_length + ' <fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgSymbols"/>');
                     return false;
                 }
 
@@ -185,8 +181,8 @@
 
                 var groups_used = parseInt(lower ? 1 : 0) + parseInt(upper ? 1 : 0) + parseInt(digits ? 1 : 0) + parseInt(special ? 1 : 0);
                 if (groups_used < password_min_groups) {
-                    alert('<bean:message key="password.policy.violation.msgPasswordStrengthError"/> ' +
-                        password_min_groups + ' <bean:message key="password.policy.violation.msgPasswordGroups"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPasswordStrengthError"/> ' +
+                        password_min_groups + ' <fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPasswordGroups"/>');
                     return false;
                 }
                 <%
@@ -202,8 +198,8 @@
                 var password_group_digits = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))%>";
 
                 if (pin.length < password_pin_min_length) {
-                    alert('<bean:message key="password.policy.violation.msgPinLengthError"/> ' +
-                        password_pin_min_length + ' <bean:message key="password.policy.violation.msgDigits"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPinLengthError"/> ' +
+                        password_pin_min_length + ' <fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgDigits"/>');
                     return false;
                 }
 
@@ -211,7 +207,7 @@
                     var s = pin.charAt(i);
 
                     if (password_group_digits.indexOf(s) == -1) {
-                        alert('<bean:message key="password.policy.violation.msgPinGroups"/>');
+                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPinGroups"/>');
                         return false;
                     }
                 }
@@ -222,20 +218,16 @@
     </head>
 
     <body onLoad="setfocus('oldPassword')" topmargin="0" leftmargin="0" rightmargin="0">
-    <html:form method="post" action="login" onsubmit="return checkPwdPolicy();">
+    <form method="post" action="${pageContext.request.contextPath}/login.do" onsubmit="return checkPwdPolicy();">
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
-                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><bean:message
-                        key="provider.providerchangepassword.description"/></font></th>
+                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.description"/></font></th>
             </tr>
         </table>
 
         <table width="100%" border="0" cellpadding="2" bgcolor="#eeeeee">
             <tr>
-                <td><font face="arial" size="2"><bean:message
-                        key="provider.providerchangepassword.msgInstructions"/> &nbsp; <b><bean:message
-                        key="provider.providerchangepassword.msgUpdate"/></b> <bean:message
-                        key="provider.providerchangepassword.msgClickButton"/></font></td>
+                <td><font face="arial" size="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgInstructions"/> &nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgUpdate"/></b> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgClickButton"/></font></td>
             </tr>
 
         </table>
@@ -246,31 +238,21 @@
 
             <table border="0" width="100%" cellpadding="4" cellspacing="0">
                 <tr>
-                    <td align="right" width="50%"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgEnterOld"/> &nbsp; <b><bean:message
-                            key="provider.providerchangepassword.formOldPassword"/>:</b></font></td>
+                    <td align="right" width="50%"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgEnterOld"/> &nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formOldPassword"/>:</b></font></td>
                     <td><input type=password name="oldPassword" value="" size=20
                                maxlength=32></td>
                 </tr>
                 <tr>
-                    <td width="50%" align="right"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgChooseNew"/> &nbsp; <b><bean:message
-                            key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
+                    <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgChooseNew"/> &nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="newPassword" value="" size=20
-                               maxlength=32> <font size="-2">(<bean:message
-                            key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <bean:message
-                                key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                               maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
+                        <%=op.getProperty("password_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
-                    <td width="50%" align="right"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgConfirm"/> &nbsp; <b><bean:message
-                            key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
+                    <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgConfirm"/> &nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="confirmPassword" value="" size=20
-                               maxlength=32> <font size="-2">(<bean:message
-                            key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <bean:message
-                                key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                               maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
+                        <%=op.getProperty("password_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
             </table>
         </center>
@@ -278,13 +260,13 @@
                bgcolor="#486ebd">
             <tr>
                 <TD align="center" width="50%"><INPUT TYPE="submit"
-                                                      VALUE='<bean:message key="provider.providerchangepassword.btnSubmit"/>'
+                                                      VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.btnSubmit"/>'
                                                       SIZE="7"></TD>
             </tr>
         </table>
 
         <input type=hidden name='forcedpasswordchange' value='true'/>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

@@ -28,7 +28,7 @@
 <%@ page import="org.oscarehr.managers.EmailComposeManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
 	Addition of a floating global toolbar specifically for activation of the 
@@ -52,7 +52,18 @@
 
     <div id="hideshow" style="position: relative; z-index: 999;">
         <a href="javascript:hideDiv()">Hide Errors</a>
-        <span style="font-size: 10px; font-color: darkred;"> <html:errors/> </span>
+        <span style="font-size: 10px; font-color: darkred;"> <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %> </span>
     </div>
 </c:if>
 

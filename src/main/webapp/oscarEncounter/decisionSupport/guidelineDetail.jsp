@@ -32,9 +32,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -69,8 +69,7 @@
     <link rel="stylesheet" href="decisionSupport.css" type="text/css"></link>
 </head>
 <body>
-<div style="font-size: 16px; font-weight: bold;"><bean:message
-        key="oscarencounter.guidelinedetail.guidelineassessment"/> <c:out value="${patientName}"/></div>
+<div style="font-size: 16px; font-weight: bold;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinedetail.guidelineassessment"/> <c:out value="${patientName}"/></div>
 <br>
 <c:if test="${not empty consequences}">
     <c:forEach items="${consequences}" var="consequence">
@@ -81,15 +80,15 @@
 </c:if>
 <table style="font-size: 10px;  border-top: 1px solid black; border-collapse: collapse; margin-top: 15px;">
     <tr>
-        <th><bean:message key="oscarencounter.guidelinelist.title"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.title"/></th>
         <td><c:out value="${guideline.title}"/></td>
     </tr>
     <tr>
-        <th><bean:message key="oscarencounter.guidelinelist.author"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.author"/></th>
         <td><c:out value="${guideline.author}"/></td>
     </tr>
     <tr>
-        <th><bean:message key="oscarrx.showallergies.startdate"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarrx.showallergies.startdate"/></th>
         <td><c:out value="${guideline.dateStart}"/></td>
     </tr>
 </table>
@@ -97,38 +96,39 @@ Conditions:
 <table class="dsTable">
     <tr>
         <th>Type</th>
-        <th><bean:message key="oscarrx.showallergies.operator"/></th>
-        <th><bean:message key="oscarrx.showallergies.expected"/></th>
-        <th><bean:message key="oscarrx.showallergies.actual"/></th>
-        <th><bean:message key="oscarrx.showallergies.evaluate"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarrx.showallergies.operator"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarrx.showallergies.expected"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarrx.showallergies.actual"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarrx.showallergies.evaluate"/></th>
     </tr>
     <c:forEach var="conditionResult" items="${conditionResults}" varStatus="status">
-        <bean:define id="condition" name="conditionResult" property="condition"/>
-        <tr class="${status.index % 2 == 0 ? 'even' : 'odd'}">
+        <%
+            String cssClass = "even";
+            if (status.index % 2 == 1) cssClass = "odd";%>
+        <tr class="<%=cssClass%>">
             <td><c:out value="${conditionResult.condition.conditionType}"/></td>
             <td><c:out value="${conditionResult.condition.listOperator}"/></td>
             <td><c:out value="${conditionResult.condition.values}"/></td>
             <td>
                 <c:choose>
-                    <c:when test="${empty conditionResult.actualValues}"><span class="bad"><bean:message
-                            key="oscarencounter.guidelinedetail.error"/></span></c:when>
+                    <c:when test="${empty conditionResult.actualValues}"><span class="bad"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinedetail.error"/></span></c:when>
                     <c:otherwise><c:out value="${conditionResult.actualValues}"/></c:otherwise>
                 </c:choose>
             </td>
             <td style="text-align: center;">
                 <c:choose>
                     <c:when test="${conditionResult.result == true}">
-                        <span class="good"><bean:message key="oscarencounter.guidelinelist.passed"/></span>
+                        <span class="good"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.passed"/></span>
                     </c:when>
                     <c:otherwise>
-                        <span class="bad"><bean:message key="oscarencounter.guidelinelist.fail"/></span>
+                        <span class="bad"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinelist.fail"/></span>
                     </c:otherwise>
                 </c:choose>
             </td>
         </tr>
     </c:forEach>
 </table>
-<input type="button" value="<bean:message key="oscarencounter.guidelinedetail.btnlistguideline" />"
+<input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.guidelinedetail.btnlistguideline"/>"
        onclick="document.location='guidelineAction.do?method=list&demographic_no=<c:out
                value="${demographic_no}"/>&provider_no=<c:out value="${provider_no}"/>'">
 </body>

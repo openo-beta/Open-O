@@ -24,7 +24,7 @@
 
 --%>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
     // Force the page to un-cache itself so user cannot go back after logout
@@ -45,8 +45,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="../images/Oscar.ico">
-
-    <title><bean:message key="global.title" bundle="ui"/></title>
+    <fmt:setBundle basename="uiResources" var="uiBundle"/>
+    
+    <title><fmt:message key="global.title" bundle="${uiBundle}"/></title>
 
     <link href="../library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">

@@ -26,14 +26,12 @@
 
 <%@ include file="/taglibs.jsp" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Provider Search</title>
-        <link href="<html:rewrite page='/css/tigris.css'/>" rel="stylesheet"
-              type="text/css"/>
-        <link href="<html:rewrite page='/css/displaytag.css'/>" rel="stylesheet"
-              type="text/css"/>
+        <link href="${request.contextPath}/css/tigris.css" rel="stylesheet" type="text/css"/>
+        <link href="${request.contextPath}/css/displaytag.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <script type="text/javascript">
@@ -72,4 +70,4 @@
         <display:column property="providerType" sortable="true" title="Type"/>
     </display:table>
     </body>
-</html:html>
+</html>

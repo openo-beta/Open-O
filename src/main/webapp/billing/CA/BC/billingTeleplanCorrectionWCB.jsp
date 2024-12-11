@@ -40,8 +40,6 @@
 
 <%@page import="oscar.oscarBilling.ca.bc.data.*,oscar.*" %>
 <%@page import="java.util.*,java.io.*,oscar.oscarBilling.ca.bc.MSP.*,oscar.oscarBilling.ca.bc.administration.*,java.sql.*" %>
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
@@ -75,10 +73,10 @@
     List<BillingFormData.BillingVisit> billvisit = billform.getVisitType(billRegion);
     request.setAttribute("billvisit", billvisit);
 %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>OSCAR oscarBilling - Correction</title>
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -89,7 +87,7 @@
         <script src="../../../share/javascript/Oscar.js"></script>
         <script src="../../../share/calendar/calendar.js"></script>
         <script
-                src="../../../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"
+                src="../../../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"
                 type="text/javascript"></script>
         <script src="../../../share/calendar/calendar-setup.js"
                 type="text/javascript"></script>
@@ -166,7 +164,7 @@
         </script>
     </head>
     <body>
-    <html:form action="billing/CA/BC/billingTeleplanCorrectionWCB">
+    <form action="${pageContext.request.contextPath}/billing/CA/BC/billingTeleplanCorrectionWCB.do" method="post">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr bgcolor="#000000">
                 <td height="40" width="10%"></td>
@@ -185,11 +183,11 @@
             <tr>
                 <td colspan="2" class="SectionHead"><a href=#
                                                        onClick="popup(700,900,'../../../demographic/demographiccontrol.jsp?demographic_no=<%=form.getDemographicNumber()%>&displaymode=edit&dboperation=search_detail','
-                                                           <bean:message
-                                                                   key="oscarEncounter.Index.popupPage2Window"/>');return false;"
-                                                       title="<bean:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">Patient
-                    Information</a> <html:hidden property="id" value="<%=form.getId()%>"/> <html:hidden
-                        property="demographicNumber"
+                                                           <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>');return false;"
+                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">Patient
+                    Information</a> <input type="hidden" name="id" id="id" value="<%=form.getId()%>"/>
+                    <input type="hidden"
+                           name="demographicNumber" id="demographicNumber"
                         value="<%=form.getDemographicNumber()%>"/></td>
             </tr>
             <tr>
@@ -197,25 +195,25 @@
                     <table width="100%">
                         <tr>
                             <td class="FormLabel">First Name:</td>
-                            <td><html:text property="firstName"
+                            <td><input type="text" name="firstName"
                                            value="<%=form.getFirstName()%>"/></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Middle Name:</td>
-                            <td><html:text property="w_mname"
+                            <td><input type="text" name="w_mname"
                                            value="<%=form.getW_mname()%>"/></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Last Name:</td>
-                            <td><html:text property="lastName"
+                            <td><input type="text" name="lastName"
                                            value="<%=form.getLastName()%>"/></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Date Of Birth:</td>
-                            <td><html:text property="yearOfBirth"
-                                           value="<%=form.getYearOfBirth()%>" maxlength="4" size="4"/> <html:text
-                                    property="monthOfBirth" value="<%=form.getMonthOfBirth()%>"
-                                    maxlength="2" size="2"/> <html:text property="dayOfBirth"
+                            <td><input type="text" name="yearOfBirth"
+                                           value="<%=form.getYearOfBirth()%>" maxlength="4" size="4"/>
+                                <input type="text" name="monthOfBirth" value="<%=form.getMonthOfBirth()%>"
+                                    maxlength="2" size="2"/> <input type="text" name="dayOfBirth"
                                                                         value="<%=form.getDayOfBirth()%>" maxlength="2"
                                                                         size="2"/> Age:(
                                 <%=form.getAge()%> )
@@ -223,11 +221,11 @@
                         </tr>
                         <tr>
                             <td class="FormLabel">HIN (PHN):</td>
-                            <td><html:text property="hin" value="<%=form.getHin()%>"/></td>
+                            <td><input type="checkbox" name="hin" value="<%=form.getHin()%>" /></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Gender:</td>
-                            <td><html:text readonly="true" property="w_gender"
+                            <td><input type="text" readonly="true" name="w_gender"
                                            value="<%=form.getW_gender()%>"/></td>
                         </tr>
                     </table>
@@ -236,32 +234,32 @@
                     <table width="100%">
                         <tr>
                             <td width="100" class="FormLabel">Area:</td>
-                            <td><html:text property="w_area" value="<%=form.getW_area()%>"/>
+                            <td><input type="checkbox" name="w_area" value="<%=form.getW_area()%>" />
                             </td>
                         </tr>
                         <tr>
                             <td width="100" class="FormLabel">Phone:</td>
-                            <td><html:text property="w_phone"
+                            <td><input type="text" name="w_phone"
                                            value="<%=form.getW_phone()%>"/></td>
                         </tr>
                         <tr>
                             <td width="100" class="FormLabel">Address:</td>
-                            <td><html:text property="address"
+                            <td><input type="text" name="address"
                                            value="<%=form.getAddress()%>"/></td>
                         </tr>
                         <tr>
                             <td width="100" class="FormLabel">City:</td>
-                            <td><html:text property="city" value="<%=form.getCity()%>"/>
+                            <td><input type="checkbox" name="city" value="<%=form.getCity()%>" />
                             </td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Province:</td>
-                            <td><html:text property="province"
+                            <td><input type="text" name="province"
                                            value="<%=form.getProvince()%>"/></td>
                         </tr>
                         <tr>
                             <td width="100" class="FormLabel">Postal:</td>
-                            <td><html:text property="postal" value="<%=form.getPostal()%>"/>
+                            <td><input type="checkbox" name="postal" value="<%=form.getPostal()%>" />
                             </td>
                         </tr>
                     </table>
@@ -281,17 +279,17 @@
                                 <table width="100%">
                                     <tr>
                                         <td class="FormLabel">Name:</td>
-                                        <td><html:text property="w_empname"
+                                        <td><input type="text" name="w_empname"
                                                        value="<%=form.getW_empname()%>"/></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Area:</td>
-                                        <td><html:text property="w_emparea"
+                                        <td><input type="text" name="w_emparea"
                                                        value="<%=form.getW_emparea()%>"/></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Phone:</td>
-                                        <td><html:text property="w_empphone"
+                                        <td><input type="text" name="w_empphone"
                                                        value="<%=form.getW_empphone()%>"/></td>
                                     </tr>
                                 </table>
@@ -300,12 +298,12 @@
                                 <table width="100%">
                                     <tr>
                                         <td width="175" class="FormLabel">Operating Address:</td>
-                                        <td><html:text property="w_opaddress"
+                                        <td><input type="text" name="w_opaddress"
                                                        value="<%=form.getW_opaddress()%>"/></td>
                                     </tr>
                                     <tr>
                                         <td width="175" class="FormLabel">Operating City:</td>
-                                        <td><html:text property="w_opcity"
+                                        <td><input type="text" name="w_opcity"
                                                        value="<%=form.getW_opcity()%>"/></td>
                                     </tr>
                                 </table>
@@ -320,41 +318,41 @@
                         </tr>
                         <tr>
                             <td>Capability:</td>
-                            <td><html:select name="w_capability"
-                                             value="<%=form.getW_capability()%>" property="w_capability">
-                                <html:option value="Y">Yes</html:option>
-                                <html:option value="N">No</html:option>
-                            </html:select></td>
+                            <td><select name="w_capability"
+                                             value="<%=form.getW_capability()%>" id="w_capability">
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select></td>
                             <td>Rehab:</td>
-                            <td><html:select name="w_rehab" value="<%=form.getW_rehab()%>"
-                                             property="w_rehab">
-                                <html:option value="Y">Yes</html:option>
-                                <html:option value="N">No</html:option>
-                            </html:select></td>
+                            <td><select name="w_rehab" value="<%=form.getW_rehab()%>"
+                                             id="w_rehab">
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select></td>
                         </tr>
                         <tr>
                             <td>Rehab Type:</td>
-                            <td><html:select name="w_rehabtype"
-                                             value="<%=form.getW_rehabtype()%>" property="w_rehabtype">
-                                <html:option value="C">Work Conditioning</html:option>
-                                <html:option value="O">Other</html:option>
-                            </html:select></td>
+                            <td><select name="w_rehabtype"
+                                             value="<%=form.getW_rehabtype()%>" id="w_rehabtype">
+                                <option value="C">Work Conditioning</option>
+                                <option value="O">Other</option>
+                            </select></td>
                             <td>To Follow:</td>
-                            <td><html:select name="w_tofollow"
-                                             value="<%=form.getW_tofollow()%>" property="w_tofollow">
-                                <html:option value="Y">Yes</html:option>
-                                <html:option value="N">No</html:option>
-                            </html:select></td>
+                            <td><select name="w_tofollow"
+                                             value="<%=form.getW_tofollow()%>" id="w_tofollow">
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select></td>
                         </tr>
 
 
             </tr>
             <td>Advisor:</td>
-            <td><html:select name="w_wcbadvisor"
-                             value="<%=form.getW_wcbadvisor()%>" property="w_wcbadvisor">
-                <html:option value="Y">Yes</html:option>
-                <html:option value="N">No</html:option>
-            </html:select></td>
+            <td><select name="w_wcbadvisor"
+                             value="<%=form.getW_wcbadvisor()%>" id="w_wcbadvisor">
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+            </select></td>
             </tr>
         </table>
         </td>
@@ -371,12 +369,12 @@
                     <table width="100%">
                         <tr>
                             <td class="FormLabel">WCB Claim No:</td>
-                            <td><html:text property="w_wcbno"
+                            <td><input type="text" name="w_wcbno"
                                            value="<%=form.getW_wcbno()%>"/></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Billing Physician</td>
-                            <td><html:select style="font-size:80%;" property="providerNo"
+                            <td><select style="font-size:80%;" name="providerNo"
                                              value="<%=form.getProviderNo()%>">
                                 <%
                                     String proFirst = "", proLast = "", proOHIP = "", proNo = "";
@@ -386,15 +384,15 @@
                                             proLast = p.getLastName();
                                             proOHIP = p.getProviderNo();
                                 %>
-                                <html:option value="<%=proOHIP%>"><%=proOHIP%>                    |
+                                <option value="<%=proOHIP%>"><%=proOHIP%>                    |
                                     <%=proLast%>                    ,
                                     <%=proFirst%>
-                                </html:option>
+                                </option>
                                 <%
                                         }
                                     }
                                 %>
-                            </html:select></td>
+                            </select></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Practioner Num:</td>
@@ -408,32 +406,32 @@
                         </tr>
                         <tr>
                             <td class="FormLabel">Regular Physician:</td>
-                            <td><html:select name="w_rphysician"
-                                             value="<%=form.getW_rphysician()%>" property="w_rphysician">
-                                <html:option value="Y">Yes</html:option>
-                                <html:option value="N">No</html:option>
-                            </html:select></td>
+                            <td><select name="w_rphysician"
+                                             value="<%=form.getW_rphysician()%>" id="w_rphysician">
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Duration:</td>
-                            <td><html:select name="w_duration"
-                                             value="<%=form.getW_duration()%>" property="w_duration">
-                                <html:option value="1">0-6 months</html:option>
-                                <html:option value="2">7-12 months</html:option>
-                                <html:option value="9"> &gt;
-                                    12 months</html:option>
-                            </html:select></td>
+                            <td><select name="w_duration"
+                                             value="<%=form.getW_duration()%>" id="w_duration">
+                                <option value="1">0-6 months</option>
+                                <option value="2">7-12 months</option>
+                                <option value="9"> &gt;
+                                    12 months</option>
+                            </select></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Billing Unit:</td>
-                            <td><html:text property="billingUnit"
+                            <td><input type="text" name="billingUnit"
                                            value="<%=form.getBillingUnit()%>"/></td>
                         </tr>
                         <!--<tr>
 
 					<td class="FormLabel">Billing Code:</td>
 
-					<td><html:text property="billingCode" value="<%=form.getBillingCode()%>" />
+					<td><input type="checkbox" name="billingCode" value="<%=form.getBillingCode()%>" />
 
 					<a onClick="popup('400', '600', 'support/billingcodes.jsp?form=TeleplanCorrectionFormWCB&field=billingCode', 'Code');">Service</a>
 
@@ -442,7 +440,7 @@
 				</tr>-->
                         <tr>
                             <td class="FormLabel">Bill Amount:</td>
-                            <td><html:text property="billingAmount"
+                            <td><input type="text" name="billingAmount"
                                            value="<%=form.getBillingAmount()%>"/></td>
                         </tr>
                         <tr>
@@ -453,35 +451,35 @@
                         </tr>
                         <tr>
                             <td class="FormLabel">ICD 9:</td>
-                            <td><html:text property="w_icd9" value="<%=form.getW_icd9()%>"/>
+                            <td><input type="checkbox" name="w_icd9" value="<%=form.getW_icd9()%>" />
                                 <a onClick="popICD9List('TeleplanCorrectionFormWCB','w_icd9');">Codes</a>
                             </td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Body Part:</td>
-                            <td><html:text property="w_bp" value="<%=form.getW_bp()%>"/>
+                            <td><input type="checkbox" name="w_bp" value="<%=form.getW_bp()%>" />
                                 <a onClick="popBodyPartList('TeleplanCorrectionFormWCB','w_bp');">Codes</a>
                             </td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Side:</td>
-                            <td colspan="2"><html:select name="w_side"
-                                                         value="<%=form.getW_side()%>" property="w_side">
-                                <html:option value="B">Left and Right</html:option>
-                                <html:option value="L">Left</html:option>
-                                <html:option value="N">Not Applicable</html:option>
-                                <html:option value="R">Right</html:option>
-                            </html:select></td>
+                            <td colspan="2"><select name="w_side"
+                                                         value="<%=form.getW_side()%>" id="w_side">
+                                <option value="B">Left and Right</option>
+                                <option value="L">Left</option>
+                                <option value="N">Not Applicable</option>
+                                <option value="R">Right</option>
+                            </select></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Nature Of Injury:</td>
-                            <td><html:text property="w_noi" value="<%=form.getW_noi()%>"/>
+                            <td><input type="checkbox" name="w_noi" value="<%=form.getW_noi()%>" />
                                 <a onClick="popNOIList('TeleplanCorrectionFormWCB','w_noi');">Codes</a>
                             </td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Fee Item:</td>
-                            <td><html:text property="w_feeitem"
+                            <td><input type="text" name="w_feeitem"
                                            value="<%=form.getW_feeitem()%>"/> <a
                                     onClick="popFeeItemList('TeleplanCorrectionFormWCB','w_feeitem');">Codes</a>
                             </td>
@@ -490,22 +488,25 @@
 
 					<td class="FormLabel">Fee Item:</td>
 
-					<td><html:text property="w_extrafeeitem" value="<%=form.getW_extrafeeitem()%>" />
+					<td><input type="checkbox" name="w_extrafeeitem" value="<%=form.getW_extrafeeitem()%>" />
 
 					<a onClick="popup('400', '600', 'support/billingfeeitem.jsp?info=all&form=TeleplanCorrectionFormWCB&field=w_extrafeeitem', 'eFeeItem');">Codes</a></td>
 
 				</tr>-->
                         <tr>
                             <td class="FormLabel">Service Location:</td>
-                            <td><html:select property="serviceLocation"
+                            <td><select name="serviceLocation"
                                              style="font-size:80%;" value="<%=form.getServiceLocation()%>">
-                                <html:options collection="billvisit" property="visitType"
-                                              labelProperty="description"/>
-                            </html:select></td>
+                                <c:forEach var="bill" items="${billvisit}">
+                                    <option value="${bill.visitType}">
+                                            ${bill.description}
+                                    </option>
+                                </c:forEach>
+                            </select></td>
                         </tr>
                         <tr>
                             <td class="FormLabel">Report Type:</td>
-                            <td><html:text property="w_reporttype"
+                            <td><input type="text" name="w_reporttype"
                                            value="<%=form.getW_reporttype()%>"/></td>
                         </tr>
                         <tr>
@@ -534,16 +535,16 @@
                                     <tr>
                                         <td class="FormLabel">Disabled from Work:</td>
                                         <td>
-                                            <html:select name="w_work" value="<%=form.getW_work()%>" property="w_work">
-                                                <html:option value="Y">Yes</html:option>
-                                                <html:option value="N">No</html:option>
-                                            </html:select>
+                                            <select name="w_work" value="<%=form.getW_work()%>" property="w_work">
+                                                <option value="Y">Yes</option>
+                                                <option value="N">No</option>
+                                            </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Date Of Injury:</td>
                                         <td>
-                                            <html:text readonly="true" property="w_doi" value="<%=form.getW_doi()%>"
+                                            <input type="text" readonly="readonly" name="w_doi" value="<%=form.getW_doi()%>"
                                                        styleId="w_doi"/>
                                             <a id="hlIDate">Date</a>
                                         </td>
@@ -551,7 +552,7 @@
                                     <tr>
                                         <td class="FormLabel">Service Date:</td>
                                         <td>
-                                            <html:text readonly="true" property="w_servicedate"
+                                            <input type="text" readonly="readonly" name="w_servicedate"
                                                        value="<%=form.getW_servicedate()%>" styleId="w_servicedate"/>
                                             <a id="hlSDate">Date</a>
                                         </td>
@@ -559,7 +560,7 @@
                                     <tr>
                                         <td class="FormLabel">Work Date:</td>
                                         <td>
-                                            <html:text readonly="true" property="w_workdate"
+                                            <input type="text" readonly="readonly" name="w_workdate"
                                                        value="<%=form.getW_workdate()%>" styleId="w_workdate"/>
                                             <a id="hlWDate">Date</a>
                                         </td>
@@ -567,48 +568,50 @@
                                     <tr>
                                         <td class="FormLabel">Estimate:</td>
                                         <td>
-                                            <html:select name="w_estimate" value="<%=form.getW_estimate()%>"
-                                                         property="w_estimate">
-                                                <html:option value="0">At Work</html:option>
-                                                <html:option value="1">1-6 days</html:option>
-                                                <html:option value="2">7-13 days</html:option>
-                                                <html:option value="3">14-20 days</html:option>
-                                                <html:option value="9"> &gt;
+                                            <select name="w_estimate" value="<%=form.getW_estimate()%>">
+                                                <option value="0">At Work</option>
+                                                <option value="1">1-6 days</option>
+                                                <option value="2">7-13 days</option>
+                                                <option value="3">14-20 days</option>
+                                                <option value="9"> &gt;
                                                     20 days
-                                                </html:option>
-                                            </html:select></td>
+                                                </option>
+                                            </select></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Estimate Date:</td>
-                                        <td><html:text readonly="true" property="w_estimatedate"
+                                        <td><input type="text" readonly="true" name="w_estimatedate"
                                                        value="<%=form.getW_estimatedate()%>" styleId="w_estimatedate"/>
                                             <a id="hlEDate">Date</a></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">First Treatment:</td>
-                                        <td><html:text property="w_ftreatment"
+                                        <td><input type="text" name="w_ftreatment"
                                                        value="<%=form.getW_ftreatment()%>"/></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Problem:</td>
-                                        <td><html:textarea style="width:100%" property="w_problem"
-                                                           value="<%=form.getW_problem()%>"/></td>
+                                        <td><textarea style="width:100%" name="w_problem" id="w_problem">
+                                            <%=form.getW_problem()%>
+                                        </textarea></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Diagnosis:</td>
-                                        <td><html:textarea style="width:100%" property="w_diagnosis"
-                                                           value="<%=form.getW_diagnosis()%>"/></td>
+                                        <td><textarea style="width:100%" name="w_diagnosis" id="w_diagnosis">
+                                                           <%=form.getW_diagnosis()%>
+                                        </textarea></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Clinical Info:</td>
-                                        <td><html:textarea style="width:100%"
-                                                           property="w_clinicinfo"
-                                                           value="<%=form.getW_clinicinfo()%>"/></td>
+                                        <td><textarea style="width:100%" name="w_clinicinfo" id="w_clinicinfo">
+                                            <%=form.getW_clinicinfo()%>
+                                        </textarea></td>
                                     </tr>
                                     <tr>
                                         <td class="FormLabel">Problem:</td>
-                                        <td><html:textarea style="width:100%" property="w_capreason"
-                                                           value="<%=form.getW_capreason()%>"/></td>
+                                        <td><textarea style="width:100%" name="w_capreason" id="w_capreason">
+                                            <%=form.getW_capreason()%>
+                                        </textarea></td>
                                     </tr>
                                 </table>
                             </td>
@@ -700,8 +703,8 @@
         </table>
         <table width="100%">
         </table>
-        <html:hidden property="billingNo" value="<%=form.getBillingNo()%>"/>
-        <html:hidden property="id" value="<%=form.getId()%>"/>
+        <input type="hidden" name="billingNo" id="billingNo" value="<%=form.getBillingNo()%>"/>
+        <input type="hidden" name="id" id="id" value="<%=form.getId()%>"/>
         <table width="100%">
             <tr>
                 <td colspan="2" align="center" class="SectionHead"><a
@@ -710,7 +713,8 @@
                              onClick="window.close();"> | <input type="button"
                                                                  name="Button" value="Print" onClick="window.print();">
                     | <%if (!status.equals("S")) {%>
-                    <html:submit/> <html:submit property="settle" value="Settle Bill"/>
+                    <input type="submit" name="submit" value="Submit" />
+                    <input type="submit" name="submit" value="Settle Bill"/>
                     <%}%>
                 </td>
             </tr>
@@ -763,9 +767,9 @@
             });
 
         </script>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>
 <%!
     String checked(String val, String str, boolean dfault) {
         String retval = "";

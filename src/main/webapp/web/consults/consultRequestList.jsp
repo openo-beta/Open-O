@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!-- this CSS makes it so the modals don't have the vertical sliding animation. Not sure if I will keep this or how I will use this yet -->
 <style>
@@ -61,7 +61,8 @@
         background-color: #FFFFAA;
     }
 </style>
-
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
+<fmt:setBundle basename="oscarResources" var="oscarBundle"/>
 <div ng-show="consultReadAccess" class="col-lg-12">
 
     <form name="searchForm" id="searchForm">
@@ -73,19 +74,19 @@
                        class="form-control" uib-datepicker-popup="yyyy-MM-dd"
                        datepicker-append-to-body="true" is-open="data.isOpen"
                        ng-click="data.isOpen = true"
-                       placeholder="<bean:message key="consult.list.referralStartDate" bundle="ui"/>">
+                       placeholder="<fmt:message bundle="${uiBundle}" key="consult.list.referralStartDate"/>">
             </div>
             <div class="col-xs-2">
                 <input ng-model="search.referralEndDate" type="text"
                        id="referralEndDate" name="referralEndDate" class="form-control"
                        uib-datepicker-popup="yyyy-MM-dd" datepicker-append-to-body="true"
                        is-open="data2.isOpen" ng-click="data2.isOpen = true"
-                       placeholder="<bean:message key="consult.list.referralEndDate" bundle="ui"/>">
+                       placeholder="<fmt:message bundle="${uiBundle}" key="consult.list.referralEndDate"/>">
             </div>
             <div class="col-xs-2">
                 <select class="form-control" ng-model="search.status" name="status" id="status"
                         ng-options="status.value as status.name for status in statuses">
-                    <option value=""><bean:message key="consult.list.status.all" bundle="ui"/></option>
+                    <option value=""><fmt:message bundle="${uiBundle}" key="consult.list.status.all"/></option>
                 </select>
             </div>
             <div class="col-xs-2">
@@ -105,7 +106,7 @@
                        class="form-control" uib-datepicker-popup="yyyy-MM-dd"
                        datepicker-append-to-body="true" is-open="data3.isOpen"
                        ng-click="data3.isOpen = true"
-                       placeholder="<bean:message key="consult.list.appointmentStartDate" bundle="ui"/>">
+                       placeholder="<fmt:message bundle="${uiBundle}" key="consult.list.appointmentStartDate"/>">
             </div>
             <div class="col-xs-2">
                 <input ng-model="search.appointmentEndDate" type="text"
@@ -113,7 +114,7 @@
                        class="form-control" uib-datepicker-popup="yyyy-MM-dd"
                        datepicker-append-to-body="true" is-open="data4.isOpen"
                        ng-click="data4.isOpen = true"
-                       placeholder="<bean:message key="consult.list.appointmentEndDate" bundle="ui"/>">
+                       placeholder="<fmt:message bundle="${uiBundle}" key="consult.list.appointmentEndDate"/>">
             </div>
 
             <div class="col-xs-2" ng-hide="hideSearchPatient">
@@ -121,7 +122,7 @@
                     <div class="input-group-addon"><span class="glyphicon glyphicon-remove hand-hover"
                                                          ng-click="removeDemographicAssignment()"></span></div>
                     <input type="text" ng-model="consult.demographicName"
-                           placeholder="<bean:message key="consult.list.patient" bundle="ui"/>"
+                           placeholder="<fmt:message bundle="${uiBundle}" key="consult.list.patient"/>"
                            typeahead="pt.demographicNo as pt.name for pt in searchPatients($viewValue)"
                            typeahead-on-select="updateDemographicNo($item, $model, $label)"
                            class="form-control"/>
@@ -133,7 +134,7 @@
                     <div class="input-group-addon"><span class="glyphicon glyphicon-remove hand-hover"
                                                          ng-click="removeMrpAssignment()"></span></div>
                     <input type="text" ng-model="consult.mrpName"
-                           placeholder="<bean:message key="consult.list.mrp" bundle="ui"/>"
+                           placeholder="<fmt:message bundle="${uiBundle}" key="consult.list.mrp"/>"
                            typeahead="pvd as pvd.name for pvd in searchMrps($viewValue)"
                            typeahead-on-select="updateMrpNo($model)"
                            class="form-control"/>
@@ -145,20 +146,18 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <button class="btn btn-primary" type="button" ng-click="doSearch()"><bean:message key="global.search"
-                                                                                                  bundle="ui"/></button>
-                <button class="btn btn-default" type="button" ng-click="clear()"><bean:message key="global.clear"
-                                                                                               bundle="ui"/></button>
+                <button class="btn btn-primary" type="button" ng-click="doSearch()"><fmt:message bundle="${uiBundle}" key="global.search"/></button>
+                <button class="btn btn-default" type="button" ng-click="clear()"><fmt:message bundle="${uiBundle}" key="global.clear"/></button>
                 <button class="btn btn-success" type="button" title=
-                <bean:message key="consult.list.newRemindFill" bundle="ui"/> ng-click="addConsult()"
+                <fmt:message bundle="${uiBundle}" key="consult.list.newRemindFill"/> ng-click="addConsult()"
                         ng-disabled="search.demographicNo==null">
-                    <bean:message key="consult.list.new" bundle="ui"/>
+                    <fmt:message bundle="${uiBundle}" key="consult.list.new"/>
                 </button>
 
                 <button class="btn btn-default" type="button"
-                        ng-click="popup(700,960,'<%=request.getContextPath()%>/oscarEncounter/oscarConsultationRequest/config/ShowAllServices.jsp','<bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsConfig"/>')">
-                    <bean:message
-                            key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEditSpecialists"/></button>
+                        ng-click="popup(700,960,'<%=request.getContextPath()%>/oscarEncounter/oscarConsultationRequest/config/ShowAllServices.jsp','<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsConfig"/>')">
+                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEditSpecialists" bundle="${oscarBundle}"/>
+                </button>
             </div>
         </div>
     </form>
@@ -175,42 +174,42 @@
                                     <input type="checkbox" ng-model="consult.checked">
                  -->
             </td>
-            <td><a ng-click="editConsult(consult)" class="hand-hover"><bean:message key="global.edit" bundle="ui"/></a>
+            <td><a ng-click="editConsult(consult)" class="hand-hover"><fmt:message bundle="${uiBundle}" key="global.edit"/></a>
             </td>
-            <td data-title="'<bean:message key="consult.list.header.patient" bundle="ui"/>'" sortable="'Demographic'">
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.patient"/>'" sortable="'Demographic'">
                 {{consult.demographic.formattedName}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.service" bundle="ui"/>'" sortable="'Service'">
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.service"/>'" sortable="'Service'">
                 {{consult.serviceName}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.consultant" bundle="ui"/>'" sortable="'Consultant'">
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.consultant"/>'" sortable="'Consultant'">
                 {{consult.consultant.formattedName}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.team" bundle="ui"/>'" sortable="'Team'">
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.team"/>'" sortable="'Team'">
                 {{consult.teamName}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.status" bundle="ui"/>'" sortable="'Status'">
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.status"/>'" sortable="'Status'">
                 {{consult.statusDescription}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.priority" bundle="ui"/>'"
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.priority"/>'"
                 class="{{consult.urgencyColor}}" sortable="'Urgency'">{{consult.urgencyDescription}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.mrp" bundle="ui"/>'" sortable="'MRP'">
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.mrp"/>'" sortable="'MRP'">
                 {{consult.mrp.formattedName}}
             </td>
 
-            <td data-title="'<bean:message key="consult.list.header.appointmentDate" bundle="ui"/>'"
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.appointmentDate"/>'"
                 sortable="'AppointmentDate'">
                 {{consult.appointmentDate | date: 'yyyy-MM-dd HH:mm'}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.lastFollowUp" bundle="ui"/>'"
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.lastFollowUp"/>'"
                 sortable="'FollowUpDate'">
                 {{consult.lastFollowUp | date: 'yyyy-MM-dd'}}
             </td>
-            <td data-title="'<bean:message key="consult.list.header.referralDate" bundle="ui"/>'"
+            <td data-title="'<fmt:message bundle="${uiBundle}" key="consult.list.header.referralDate"/>'"
                 sortable="'ReferralDate'">
                 {{consult.referralDate | date: 'yyyy-MM-dd'}} <strong class="text-danger" ng-show="consult.outstanding"
-                                                                      title="<bean:message key="consult.list.outstanding" bundle="ui"/>">!</strong>
+                                                                      title="<fmt:message bundle="${uiBundle}" key="consult.list.outstanding"/>">!</strong>
             </td>
         </tr>
         </tbody>
@@ -218,7 +217,7 @@
         <tfoot>
         <!--<tr>
 				<td colspan="12" class="white">
-					<a ng-click="checkAll()" class="hand-hover"><bean:message key="consult.list.checkAll" bundle="ui"/></a> - <a ng-click="checkNone()" class="hand-hover"><bean:message key="consult.list.checkNone" bundle="ui"/></a>								
+					<a ng-click="checkAll()" class="hand-hover"><fmt:message bundle="${uiBundle}" key="consult.list.checkAll"/></a> - <a ng-click="checkNone()" class="hand-hover"><fmt:message bundle="${uiBundle}" key="consult.list.checkNone"/></a>								
 				</td>
 			</tr>-->
         </tfoot>
@@ -237,8 +236,8 @@
 <div ng-show="consultReadAccess != null && consultReadAccess == false"
      class="col-lg-12">
     <h3 class="text-danger">
-        <span class="glyphicon glyphicon-warning-sign"></span><bean:message key="consult.list.access_denied"
-                                                                            bundle="ui"/>
+        <span class="glyphicon glyphicon-warning-sign"></span><fmt:message bundle="${uiBundle}" key="consult.list.access_denied"
+                                                                           />
     </h3>
 </div>
 

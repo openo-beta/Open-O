@@ -26,29 +26,27 @@
 
 package oscar.oscarEncounter.pageUtil;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.oscarehr.documentManager.EDoc;
+import org.oscarehr.documentManager.EDocUtil;
+import org.oscarehr.documentManager.EDocUtil.EDocSort;
+import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.util.MiscUtils;
+import oscar.util.DateUtils;
+import oscar.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.struts.util.MessageResources;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
-import org.oscarehr.documentManager.EDocUtil.EDocSort;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
 
 public class EctDisplayPhotosAction extends EctDisplayAction {
     //private static final String BGCOLOUR = "476BB3";
     private static final String cmd = "photos";
 
-    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", "r", null)) {
@@ -68,7 +66,7 @@ public class EctDisplayPhotosAction extends EctDisplayAction {
             if (inboxflag) {
                 url = "popupPage(600,1024,'" + winName + "', '" + request.getContextPath() +
                         "/mod/docmgmtComp/DocList.do?method=list&&demographic_no=" + bean.demographicNo + "');";
-                Dao.setLeftHeading(messages.getMessage("oscarEncounter.Index.inboxManager"));
+                Dao.setLeftHeading(getText("oscarEncounter.Index.inboxManager"));
             }
             Dao.setLeftURL(url);
 
@@ -122,7 +120,7 @@ public class EctDisplayPhotosAction extends EctDisplayAction {
                     date = formatter.parse(dateStr);
                     serviceDateStr = DateUtils.formatDate(date, request.getLocale());
                 } catch (ParseException ex) {
-                    MiscUtils.getLogger().debug("EctDisplayDocsAction: Error creating date " + ex.getMessage());
+                    MiscUtils.getLogger().debug("EctDisplayDocs2Action: Error creating date " + ex.getMessage());
                     serviceDateStr = "Error";
                     date = null;
                 }

@@ -42,21 +42,21 @@
 %>
 
 <%@page import="oscar.*,oscar.oscarDemographic.data.*,java.util.*,oscar.oscarBilling.ca.bc.Teleplan.*,java.math.BigDecimal,oscar.oscarBilling.ca.bc.data.*,org.oscarehr.common.model.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ page import="org.oscarehr.common.dao.BillingServiceDao,org.oscarehr.util.SpringUtils,org.oscarehr.common.model.*" %>
 <%BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class); %>
 
 <%@page import="org.oscarehr.util.MiscUtils" %>
-<html:html lang="en">
+<html>
 
     <head>
         <title>
             Manage Billing Codes
         </title><!--I18n-->
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" href="../../../../share/css/OscarStandardLayout.css"/>
         <script type="text/javascript" src="../../../../share/javascript/Oscar.js"></script>
         <script type="text/javascript" src="../../../../share/javascript/prototype.js"></script>
@@ -348,10 +348,9 @@
 
                         </td>
                         <td style="text-align:right">
-                            <a href="javascript:popupStart(300,400,'Help.jsp')"><bean:message key="global.help"/></a> |
-                            <a href="javascript:popupStart(300,400,'About.jsp')"><bean:message key="global.about"/></a>
-                            | <a href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a>
+                            <a href="javascript:popupStart(300,400,'Help.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a> |
+                            <a href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                            | <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>
@@ -367,7 +366,7 @@
 
             <td valign="top" class="MainTableRightColumn">
 
-                <html:form action="/billing/CA/BC/ManageTeleplan">
+                <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
                     <input type="hidden" name="method" value="commitUpdateBillingCodes"/>
                     <input type="submit" value="Update Codes"/>
                     <table border="1">
@@ -425,7 +424,7 @@
                         </tr>
                         <%}%>
                     </table>
-                </html:form>
+                </form>
             </td>
         </tr>
         <tr>
@@ -443,4 +442,4 @@
 
     </form>
     </body>
-</html:html>
+</html>

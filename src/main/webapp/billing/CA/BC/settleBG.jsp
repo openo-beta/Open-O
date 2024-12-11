@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="oscar.oscarBilling.ca.bc.MSP.*" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -32,7 +32,7 @@
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h3><bean:message key="admin.admin.settlePaidClaims"/></h3>
+<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.settlePaidClaims"/></h3>
 
 <div class="container-fluid well">
     <%

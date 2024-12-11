@@ -48,8 +48,8 @@
 <%@ page import="org.oscarehr.common.dao.EncounterTemplateDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     EncounterTemplateDao encounterTemplateDao = SpringUtils.getBean(EncounterTemplateDao.class);
 %>
@@ -75,9 +75,9 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="admin.providertemplate.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.title"/></title>
 
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
@@ -111,11 +111,11 @@
             <div class="span12">
                 <!--Body content-->
 
-                <h3><bean:message key="admin.providertemplate.msgTitle"/></h3>
+                <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.msgTitle"/></h3>
 
                 <div class="well">
                     <form name="edittemplate" method="post" action="providertemplate.jsp" class="form-inline">
-                        <!--<bean:message key="admin.providertemplate.formEdit" />:-->
+                        <!--<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.formEdit"/>:-->
                         Select Template<br>
                         <select name="name">
                             <%
@@ -131,7 +131,7 @@
                             %>
                         </select>
                         <input type="hidden" value="Edit" name="dboperation">
-                        <input type="button" value="<bean:message key="admin.providertemplate.btnEdit"/>"
+                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.btnEdit"/>"
                                name="dboperation" class="btn"
                                onclick="document.forms['edittemplate'].dboperation.value='Edit'; document.forms['edittemplate'].submit();">
                     </form>
@@ -155,28 +155,28 @@
                     <form name="template" method="post" action="providertemplate.jsp">
                         <input type="hidden" name="dboperation" value="">
 
-                        <bean:message key="admin.providertemplate.formTemplateName"/>:<br>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.formTemplateName"/>:<br>
                         <input type="text" name="name" pattern="^[a-zA-Z0-9\s]+$" value="<%=bEdit?tName:""%>"
                                class="span10" maxlength="50"> <!-- match the definition in the schema -->
 
                         <br><br>
 
-                        <bean:message key="admin.providertemplate.formTemplateText"/>:<br>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.formTemplateText"/>:<br>
                         <textarea name="value" rows="20" class="span10"><%=bEdit ? tValue : ""%></textarea>
 
                         <br>
-                        <input type="button" value="<bean:message key="admin.providertemplate.btnDelete"/>"
+                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.btnDelete"/>"
                                class="btn btn-danger"
                                onClick="document.forms['template'].dboperation.value='Delete'; document.forms['template'].submit();">
 
                         <INPUT TYPE="hidden" NAME="creator" VALUE="<%=curUser_no%>">
-                        <input type="button" value="<bean:message key="admin.providertemplate.btnSave"/>"
+                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.btnSave"/>"
                                class="btn btn-primary"
                                onClick="document.forms['template'].dboperation.value=' Save '; document.forms['template'].submit();">
 
 
                         <input type="button" name="Button" id="exit-btn"
-                               value="<bean:message key="admin.providertemplate.btnExit"/>" class="btn"
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.btnExit"/>" class="btn"
                                onClick="window.close();">
 
                     </form>
@@ -188,4 +188,4 @@
 
 
     </body>
-</html:html>
+</html>

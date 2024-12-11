@@ -51,10 +51,10 @@
 </security:oscarSec>
 
 <%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>OLIS Preferences</title>
@@ -272,4 +272,4 @@
             </tr>
         </table>
     </form>
-</html:html>
+</html>

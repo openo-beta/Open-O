@@ -282,7 +282,7 @@ public class BedManager {
 
     /*
      *
-     * (e.g. used in BedManagerAction.saveBeds() )
+     * (e.g. used in BedManager2Action.saveBeds() )
      *
      * @param rooms
      * @param beds

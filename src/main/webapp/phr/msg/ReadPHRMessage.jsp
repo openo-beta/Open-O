@@ -43,6 +43,8 @@
         return;
     }
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.oscarehr.myoscar.client.ws_manager.MessageManager" %>
@@ -52,14 +54,8 @@
 <%@page import="oscar.util.DateUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils,java.net.URLEncoder" %>
 <%@page import="org.oscarehr.phr.web.MyOscarMessagesHelper" %>
-<%@page import="oscar.oscarDemographic.data.*, java.util.Enumeration" %>
 <%@page import="oscar.util.UtilDateUtilities,java.util.*" %>
 <%@page import="org.oscarehr.phr.util.MyOscarUtils,org.oscarehr.common.model.Demographic" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
 
 <%
     Long messageId = new Long(request.getParameter("messageId"));
@@ -92,7 +88,7 @@
     Demographic demographic = MyOscarUtils.getDemographicByMyOscarUserName(myOscarUserName);
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <link rel="stylesheet" type="text/css" href="../oscarMessenger/encounterStyles.css" media="screen">
         <link rel="stylesheet" type="text/css" href="../oscarMessenger/printable.css" media="print">
@@ -133,15 +129,14 @@
                 <table class="TopStatusBar">
                     <tr>
                         <td>
-                            <bean:message key="oscarMessenger.ViewMessage.msgViewMessage"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.msgViewMessage"/>
                         </td>
                         <td>
                         </td>
                         <td style="text-align:right">
-                            <oscar:help keywords="myoscar message" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message key="global.about"/></a>
-                            | <a href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a>
+                            <a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                            | <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>
@@ -162,8 +157,7 @@
                                             <tr>
                                                 <td class="messengerButtonsA">
                                                     <a href="javascript:window.print()"
-                                                       class="messengerButtons"><bean:message
-                                                            key="oscarMessenger.ViewMessage.btnPrint"/></a>
+                                                       class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.btnPrint"/></a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -198,7 +192,7 @@
                             <table border="0" cellspacing="1" valign="top">
                                 <tr>
                                     <td class="Printable" bgcolor="#DDDDFF" align="right">
-                                        <bean:message key="oscarMessenger.ViewMessage.msgFrom"/>:
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.msgFrom"/>:
                                     </td>
                                     <td class="Printable" bgcolor="#CCCCFF">
                                         <%
@@ -216,7 +210,7 @@
                                 </tr>
                                 <tr>
                                     <td class="Printable" bgcolor="#DDDDFF" align="right">
-                                        <bean:message key="oscarMessenger.ViewMessage.msgTo"/>:
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.msgTo"/>:
                                     </td>
                                     <td class="Printable" bgcolor="#BFBFFF">
                                         <%
@@ -231,7 +225,7 @@
                                 </tr>
                                 <tr>
                                     <td class="Printable" bgcolor="#DDDDFF" align="right">
-                                        <bean:message key="oscarMessenger.ViewMessage.msgSubject"/>:
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.msgSubject"/>:
                                     </td>
                                     <td class="Printable" bgcolor="#BBBBFF">
                                         <%=StringEscapeUtils.escapeHtml(subject)%>
@@ -239,7 +233,7 @@
                                 </tr>
                                 <tr>
                                     <td class="Printable" bgcolor="#DDDDFF" align="right">
-                                        <bean:message key="oscarMessenger.ViewMessage.msgDate"/>:
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.msgDate"/>:
                                     </td>
                                     <td class="Printable" bgcolor="#B8B8FF">
                                         <%=StringEscapeUtils.escapeHtml(DateUtils.formatDateTime(messageTransfer.getSentDate(), request.getLocale()))%>
@@ -279,29 +273,29 @@
                                         %>
 
                                         <input class="ControlPushButton" type="button"
-                                               value="<bean:message key="oscarMessenger.ViewMessage.btnReply"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.btnReply"/>"
                                                onclick="window.location.href='<%=request.getContextPath()%>/phr/msg/CreatePHRMessage.jsp?replyToMessageId=<%=messageId%>&amp;demographicNo=<%=demographicNo%>'"/>
                                         <input class="ControlPushButton" type="button"
-                                               value="<bean:message key="oscarMessenger.ViewMessage.btnReplyAll"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.btnReplyAll"/>"
                                                onclick="window.location.href='<%=request.getContextPath()%>/phr/msg/CreatePHRMessage.jsp?replyAll=true&amp;replyToMessageId=<%=messageId%>&amp;demographicNo=<%=demographicNo%>'"/>
 
                                         <input
                                                 <%if (demographic == null){%>
                                                 disabled="disabled"
-                                                title="<bean:message key="global.no.phr.account.registered"/>"
+                                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.no.phr.account.registered"/>"
                                                 <%}%>
                                                 class="ControlPushButton" type="button"
                                                 onclick="gotoEchart3('<%=demographicNo%>');"
-                                                value="<bean:message key="oscarMessenger.CreateMessage.btnOpenEchart"/>">
+                                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnOpenEchart"/>">
 
                                         <input
                                                 <%if (demographic == null){%>
                                                 disabled="disabled"
-                                                title="<bean:message key="global.no.phr.account.registered"/>"
+                                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.no.phr.account.registered"/>"
                                                 <%}%>
                                                 class="ControlPushButton" type="button"
                                                 onclick="gotoMSG('<%=demographicNo%>');"
-                                                value="<bean:message key="oscarMessenger.CreateMessage.btnOpenInOscarMsg"/>">
+                                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnOpenInOscarMsg"/>">
 
 
                                     </td>
@@ -327,4 +321,4 @@
     </table>
     </body>
 
-</html:html>
+</html>

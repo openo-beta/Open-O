@@ -33,8 +33,8 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 
 <%
@@ -79,8 +79,7 @@
 <script src="${pageContext.request.contextPath}/csrfguard"></script>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message
-            key="demographic.demographicsearch2apptresults.title"/>(demographicsearch2reportresults)</title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.title"/>(demographicsearch2reportresults)</title>
 
     <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     <script language="JavaScript">
@@ -103,7 +102,7 @@
                     dob.value = dob.value.substring(0, 4) + "-" + dob.value.substring(4, 6) + "-" + dob.value.substring(6, 8);
                 }
                 if (dob.value.length != 10) {
-                    alert("<bean:message key="demographic.demographicsearch2apptresults.msgWrongDOB"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.msgWrongDOB"/>");
                     return false;
                 } else {
                     return true;
@@ -130,7 +129,7 @@
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr class="subject">
-        <th><bean:message key="demographic.demographicsearch2apptresults.patientsRecord"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.patientsRecord"/></th>
     </tr>
 </table>
 <table border="0" cellpadding="1" cellspacing="0" width="100%"
@@ -139,8 +138,7 @@
 
 <table width="95%" border="0">
     <tr>
-        <td align="left"><bean:message
-                key="demographic.demographicsearch2apptresults.msgKeywords"/> <%=request.getParameter("keyword")%>
+        <td align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.msgKeywords"/> <%=request.getParameter("keyword")%>
         </td>
     </tr>
 </table>
@@ -187,22 +185,14 @@
         <form method="post" name="addform"
               action="../appointment/addappointment.jsp">
             <tr class="title">
-                <TH width="20%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.demographicId"/></b></TH>
-                <TH width="20%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.lastName"/></b></TH>
-                <TH width="20%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.firstName"/></b></TH>
-                <TH width="5%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.age"/></b></TH>
-                <TH width="10%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.rosterStatus"/></b></TH>
-                <TH width="5%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.sex"/></B></TH>
-                <TH width="10%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.DOB"/></B></TH>
-                <TH width="10%"><b><bean:message
-                        key="demographic.demographicsearch2apptresults.doctor"/></B></TH>
+                <TH width="20%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.demographicId"/></b></TH>
+                <TH width="20%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.lastName"/></b></TH>
+                <TH width="20%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.firstName"/></b></TH>
+                <TH width="5%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.age"/></b></TH>
+                <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.rosterStatus"/></b></TH>
+                <TH width="5%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.sex"/></B></TH>
+                <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.DOB"/></B></TH>
+                <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.doctor"/></B></TH>
             </tr>
 
             <%
@@ -283,9 +273,8 @@
     <%
         if (nItems == 0 && nLastPage <= 0) {
     %> <caisi:isModuleLoad moduleName="caisi" reverse="true">
-    <bean:message key="demographic.search.noResultsWereFound"/>
-    <a href="../demographic/demographicaddarecordhtm.jsp?search_mode=<%=request.getParameter("search_mode")%>&keyword=<%=request.getParameter("keyword")%>"><bean:message
-            key="demographic.search.btnCreateNew"/></a>
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.noResultsWereFound"/>
+    <a href="../demographic/demographicaddarecordhtm.jsp?search_mode=<%=request.getParameter("search_mode")%>&keyword=<%=request.getParameter("keyword")%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.btnCreateNew"/></a>
 </caisi:isModuleLoad> <%
     }
 %>
@@ -308,12 +297,12 @@
         <%
             if (nLastPage >= 0) {
         %> <input type="submit" class="mbttn" name="submit"
-                  value="<bean:message key="demographic.demographicsearch2apptresults.btnPrevPage"/>"
+                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.btnPrevPage"/>"
                   onClick="last()"> <%
         }
         if (nItems == Integer.parseInt(strLimit)) {
     %> <input type="submit" class="mbttn" name="submit"
-              value="<bean:message key="demographic.demographicsearch2apptresults.btnNextPage"/>"
+              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.btnNextPage"/>"
               onClick="next()"> <%
         }
     %> <%

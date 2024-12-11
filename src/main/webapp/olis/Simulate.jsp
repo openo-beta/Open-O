@@ -8,7 +8,7 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <link rel="stylesheet" type="text/css"
@@ -38,7 +38,7 @@
     <table>
         <tr>
             <td colspan="2"><b>Simulation File:</b><input type="file" name="simulateFile"/>
-                <span title="<bean:message key="global.uploadWarningBody"/>"
+                <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                       style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                         border="0" src="../images/icon_alertsml.gif"/></span></span>
 

@@ -26,24 +26,21 @@
 package oscar.oscarBilling.ca.bc.quickbilling;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.struts.action.ActionForm;
 import org.oscarehr.common.model.ProviderData;
-
 import oscar.oscarBilling.ca.bc.data.BillingFormData.BillingVisit;
 import oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class QuickBillingBCFormBean extends ActionForm {
+
+public class QuickBillingBCFormBean {
 
     /**
      * @author Dennis Warren
      * Company Colcamex Resources
      * Date Jun 4, 2012
      */
-    private static final long serialVersionUID = 1L;
     private ArrayList<BillingSessionBean> billingData;
     private String billingProvider;
     private String billingProviderNo;

@@ -39,17 +39,17 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html lang="en">
+
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Vascular Tracker (Draft)</title>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     </head>
 
@@ -696,12 +696,12 @@
           onunload="closeDSWindow();">
     <!--  -->
 
-    <html:form action="/form/SubmitForm">
+    <form action="${pageContext.request.contextPath}/form/SubmitForm.do" method="post">
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/oscarMeasurements/styles/measurementStyle.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css"/>
         <input type="hidden" name="value(formName)" value="VTForm"/>
-        <html:hidden property="value(formId)"/>
+        <input type="hidden" name="value(formId)" id="value(formId)"/>
         <table class="Head" class="hidePrint" width="640px" cellpadding="0"
                cellspacing="0">
             <tr>
@@ -727,7 +727,18 @@
                         <tr>
                             <td>
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <html:errors/>
+                                    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
                                     <tr>
                                         <td colspan="2">
 
@@ -758,26 +769,15 @@
                                                     <td width="53%">
                                                         <table width="100%">
                                                             <tr>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(DMValue)"
-                                                                        onclick="javascript: DMCheck();"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(HTNValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(HchlValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(MIValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(AngValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(ACSValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(RVTNValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(CVDValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><html:checkbox
-                                                                        property="value(PVDValue)"
-                                                                        onclick="javascript: PVDCheck();"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(DMValue)" onclick="javascript: DMCheck();"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(HTNValue)"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(HchlValue)"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(MIValue)"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(AngValue)"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(ACSValue)"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(RVTNValue)"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(CVDValue)"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(PVDValue)" onclick="javascript: PVDCheck();"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td valign="top" align="center" class="sixtyPercent"
@@ -814,8 +814,7 @@
                                                         <table>
                                                             <tr>
                                                                 <td>FP Visit Date</td>
-                                                                <td rowspan="2"><html:text size="8"
-                                                                                           property="value(visitCod)"/></td>
+                                                                <td rowspan="2"><input type="text" size="8" name="value(visitCod)"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>(YYYY-MM-DD)</td>
@@ -834,8 +833,8 @@
                                         <th>
                                             <table id="subjective" style="display: none">
                                                 <tr>
-                                                    <th><html:textarea property="value(subjective)" cols="78"
-                                                                       style="height:40"></html:textarea></th>
+                                                    <th><textarea name="value(subjective)" cols="78"
+                                                                       style="height:40"></textarea></th>
                                                 </tr>
                                             </table>
                                         </th>
@@ -886,8 +885,7 @@
                                                                 <td class="subTitle" width="15%">Ob. Date<br>
                                                                     (yyyy-MM-dd)
                                                                 </td>
-                                                                <td class="subTitle" width="28%"><bean:message
-                                                                        key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                                <td class="subTitle" width="28%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -907,12 +905,12 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="dataEntryTable">New Data</td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(SmkSValue)" size="8%"/></td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(SmkHValue)" size="8%"/></td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(SmkCValue)" size="8%"/></td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(SmkSValue)" size="8%" /></td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(SmkHValue)" size="8%" /></td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(SmkCValue)" size="8%" /></td>
                                                                 <td class="dataEntryTable" align="center"><input
                                                                         type="text" id="SmkDate" name="SmkDate"
                                                                         value="<%=request.getAttribute("SmkSDate")%>"
@@ -922,12 +920,12 @@
                                                                         value="<%=request.getAttribute("SmkSComments")%>"
                                                                         size="25%"
                                                                         tabindex="9999"/></td>
-                                                                <html:hidden property="value(SmkSComments)"/>
-                                                                <html:hidden property="value(SmkSDate)"/>
-                                                                <html:hidden property="value(SmkHComments)"/>
-                                                                <html:hidden property="value(SmkHDate)"/>
-                                                                <html:hidden property="value(SmkCComments)"/>
-                                                                <html:hidden property="value(SmkCDate)"/>
+                                                                <input type="hidden" name="value(SmkSComments)" id="value(SmkSComments)"/>
+                                                                <input type="hidden" name="value(SmkSDate)" id="value(SmkSDate)"/>
+                                                                <input type="hidden" name="value(SmkHComments)" id="value(SmkHComments)"/>
+                                                                <input type="hidden" name="value(SmkHDate)" id="value(SmkHDate)"/>
+                                                                <input type="hidden" name="value(SmkCComments)" id="value(SmkCComments)"/>
+                                                                <input type="hidden" name="value(SmkCDate)" id="value(SmkCDate)"/>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -946,12 +944,11 @@
                                                     </td>
                                                     <td class="subTitle" width="16%">Last Data</td>
                                                     <td class="subTitle" width="18%">New Data</td>
-                                                    <td class="subTitle" width="30%"><bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                    <td class="subTitle" width="30%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><bean:write name="ExerDesc"/>
+                                                    <td class="dataEntryTable"><c:out value="${ExerDesc}"/>
                                                         <font class="eightyPercent"><%=request.getAttribute("ExerMeasuringInstrc")%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
@@ -968,15 +965,16 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(ExerValue)" size="4%"/></td>
-                                                    <html:hidden property="value(ExerDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(ExerComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(ExerValue)" size="4%" />
+                                                    </td>
+                                                    <input type="hidden" name="value(ExerDate)" id="value(ExerDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(ExerComments)" size="30%" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><bean:write name="DietDesc"/>
+                                                    <td class="dataEntryTable"><c:out value="${DietDesc}"/>
                                                         <font class="eightyPercent"><%=request.getAttribute("DietMeasuringInstrc")%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
@@ -993,12 +991,11 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(DietValue)" size="4%"/></td>
-                                                    <html:hidden property="value(DietDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(DietComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(DietValue)" size="4%" /></td>
+                                                    <input type="hidden" name="value(DietDate)" id="value(DietDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(DietComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1019,8 +1016,7 @@
                                                                                            style="display: none;">New Data</span>
                                                     </td>
                                                     <td class="subTitle" width="30%"><span id="psychHead4"
-                                                                                           style="display: none;"> <bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                                                           style="display: none;"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
 									</span></td>
                                                 </tr>
                                                 <tr>
@@ -1040,17 +1036,17 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(DpScValue)" value="yes"/>Yes <html:radio
-                                                            property="value(DpScValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="radio" name="value(DpScValue)" value="yes"/>Yes
+                                                        <input type="radio" name="="value(DpScValue)" value="no"/>No
+                                                        <a
                                                             title="clear all"
                                                             href="javascript:clearAll(DpScId, DpScId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(DpScDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(DpScComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <input type="hidden" name="value(DpScDate)" id="value(DpScDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(DpScComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("StScDesc")%>
@@ -1069,17 +1065,16 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(StScValue)" value="yes"/>Yes <html:radio
-                                                            property="value(StScValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="radio" name="value(StScValue)" value="yes"/>Yes
+                                                        <input type="radio" name="value(StScValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(StScId, StScId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(StScDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(StScComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <input type="hidden" name="value(StScDate)" id="value(StScDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(StScComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("LcCtDesc")%>
@@ -1098,17 +1093,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(LcCtValue)" value="yes"/>Yes <html:radio
-                                                            property="value(LcCtValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(LcCtValue)" value="yes"/>Yes
+                                                        <input type="radio" name="value(LcCtValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(LcCtId, LcCtId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(LcCtDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(LcCtComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <input type="hidden" name="value(LcCtDate)" id="value(LcCtDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(LcCtComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1129,8 +1122,7 @@
                                                                                            style="display: none;">New Data</span>
                                                     </td>
                                                     <td class="subTitle" width="30%"><span id="medHead4"
-                                                                                           style="display: none;"> <bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                                                           style="display: none;"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
 									</span></td>
                                                 </tr>
                                                 <tr>
@@ -1150,17 +1142,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(MedGValue)" value="yes"/>Yes <html:radio
-                                                            property="value(MedGValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(MedGValue)" value="yes"/>Yes
+                                                        <input type="radio" name="value(MedGValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(MedGId, MedGId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(MedGDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(MedGComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <input type="hidden" name="value(MedGDate)" id="value(MedGDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(MedGComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("MedNDesc")%>
@@ -1179,17 +1169,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(MedNValue)" value="yes"/>Yes <html:radio
-                                                            property="value(MedNValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(MedNValue)" value="yes"/>Yes
+                                                        <input type="radio" name="value(MedNValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(MedNId, MedNId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(MedNDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(MedNComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <input type="hidden" name="value(MedNDate)" id="value(MedNDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(MedNComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("MedRDesc")%>
@@ -1208,17 +1196,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(MedRValue)" value="yes"/>Yes <html:radio
-                                                            property="value(MedRValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(MedRValue)" value="yes"/>Yes
+                                                        <input type="radio" name="value(MedRValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(MedRId, MedRId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(MedRDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(MedRComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <input type="hidden" name="value(MedRDate)" id="value(MedRDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(MedRComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("MedADesc")%>
@@ -1237,17 +1223,16 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(MedAValue)" value="yes"/>Yes <html:radio
-                                                            property="value(MedAValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="radio" name="value(MedAValue)" value="yes"/>Yes
+                                                        <input type="radio" name="value(MedAValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(MedAId, MedAId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(MedADate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(MedAComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <input type="hidden" name="value(MedADate)" id="value(MedADate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(MedAComments)" size="30%" abindex="9999"/></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1259,8 +1244,8 @@
                                         <th>
                                             <table id="objective" style="display: none">
                                                 <tr>
-                                                    <th><html:textarea property="value(objective)" cols="78"
-                                                                       style="height:40"></html:textarea></th>
+                                                    <th><textarea name="value(objective)" cols="78"
+                                                                       style="height:40"></textarea></th>
                                                 </tr>
                                             </table>
                                         </th>
@@ -1285,8 +1270,7 @@
                                                                                            style="display: none;">New Data</span>
                                                     </td>
                                                     <td class="subTitle" width="30%"><span id="vitalHead3"
-                                                                                           style="display: none;"><bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></span>
+                                                                                           style="display: none;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1308,12 +1292,11 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(BPValue)" size="5%"/></td>
-                                                    <html:hidden property="value(BPDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(BPComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(BPValue)" size="5%" /></td>
+                                                    <input type="hidden" name="value(BPDate)" id="value(BPDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(BPComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
 
 
@@ -1334,16 +1317,15 @@
                                                             </table>
                                                         </c:if>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(WHRBValue)" value="yes"/>Yes <html:radio
-                                                            property="value(WHRBValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="radio" name="value(WHRBValue)" value="yes"/>Yes
+                                                        <input type="radio" name="value(WHRBValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(MedAId, MedAId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(WHRBComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(WHRBComments)" size="30%" tabindex="9999" /></td>
                                                     </tr-->
 
 
@@ -1365,12 +1347,11 @@
                                                         </c:if>
 
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(WCValue)" size="5%"
-                                                            onchange="javascript: updateHipAndRatio();"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(WCComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(WCValue)" size="5%" onchange="javascript: updateHipAndRatio();"/>
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(WCComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <!--new-->
                                                 <tr>
@@ -1391,12 +1372,12 @@
                                                             </table>
                                                         </c:if>
                                                     </td>
-                                                    <td width="18%" class="dataEntryTable" align="center"><html:text
-                                                            property="value(HCValue)" size="5%"
-                                                            onchange="javascript: updateWaistAndRatio();"/></td>
-                                                    <td width="33%" class="dataEntryTable" align="center"><html:text
-                                                            property="value(HCComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td width="18%" class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HCValue)" size="5%" onchange="javascript: updateWaistAndRatio();"/>
+                                                    </td>
+                                                    <td width="33%" class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HCComments)" size="30%" tabindex="9999"/>
+                                                    </td>
                                                 </tr>
 
                                                 <tr>
@@ -1423,11 +1404,12 @@
                                                                         </tr>
                                                                     </table>
                                                                 </td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(HRValue)" size="5%"/></td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(HRComments)" size="30%"
-                                                                        tabindex="9999"/></td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(HRValue)" size="5%" />
+                                                                </td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(HRComments)" size="30%" tabindex="9999" />
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="dataEntryTable"><%=request.getAttribute("HTDisplay")%>
@@ -1448,11 +1430,12 @@
                                                                         </tr>
                                                                     </table>
                                                                 </td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(HTValue)" size="5%"/></td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(HTComments)" size="30%"
-                                                                        tabindex="9999"/></td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(HTValue)" size="5%" />
+                                                                </td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(HTComments)" size="30%" tabindex="9999" />
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -1474,11 +1457,12 @@
                                                             </table>
                                                         </c:if>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(WTValue)" size="5%"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(WTComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(WTValue)" size="5%" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(WTComments)" size="30%" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1505,8 +1489,7 @@
                                                     <td class="subTitle" width="10%">Ob. Date<br>
                                                         (yyyy-MM-dd)
                                                     </td>
-                                                    <td class="subTitle" width="23%"><bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
+                                                    <td class="subTitle" width="23%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
                                                 </tr>
                                                 <tr>
                                                     <th class="dataEntryTable" colspan="3">Foot Exam</th>
@@ -1541,11 +1524,9 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(FTExValue)"
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(FTExValue)"
                                                             onclick="javascript:controlFTExam();" value="yes"/>Yes
-                                                        <html:radio
-                                                                property="value(FTExValue)"
+                                                        <input type="radio" name="="value(FTExValue)"
                                                                 onclick="javascript:controlFTExam();" value="no"/>No <a
                                                                 title="clear all"
                                                                 href="javascript:clearAll(FTExId, FTExId-1)">&nbsp
@@ -1554,8 +1535,8 @@
                                                     <td class="dataEntryTable" rowspan="7" valign="top"
                                                         align="center">&nbsp;
                                                     </td>
-                                                    <html:hidden property="value(FTExDate)"/>
-                                                    <html:hidden property="value(FTExComments)"/>
+                                                    <input type="hidden" name="value(FTExDate)" id="value(FTExDate)"/>
+                                                    <input type="hidden" name="value(FTExComments)" id="value(FTExComments)"/>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("FTNeDesc")%>
@@ -1574,15 +1555,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(FTNeValue)" value="yes"/>Yes <html:radio
-                                                            property="value(FTNeValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(FTNeValue)" value="yes"/>Yes <input type="radio" name="value(FTNeValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(ftNeId, ftNeId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(FTNeDate)"/>
-                                                    <html:hidden property="value(FTNeComments)"/>
+                                                    <input type="hidden" name="value(FTNeDate)" id="value(FTNeDate)"/>
+                                                    <input type="hidden" name="value(FTNeComments)" id="value(FTNeComments)"/>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("FTIsDesc")%>
@@ -1601,15 +1580,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(FTIsValue)" value="yes"/>Yes <html:radio
-                                                            property="value(FTIsValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(FTIsValue)" value="yes"/>Yes <input type="radio" name="value(FTIsValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(ftIsId, ftIsId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(FTIsDate)"/>
-                                                    <html:hidden property="value(FTIsComments)"/>
+                                                    <input type="hidden" name="value(FTIsDate)" id="value(FTIsDate)"/>
+                                                    <input type="hidden" name="value(FTIsComments)" id="value(FTIsComments)"/>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("FTUlDesc")%>
@@ -1628,15 +1605,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(FTUlValue)" value="yes"/>Yes <html:radio
-                                                            property="value(FTUlValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(FTUlValue)" value="yes"/>Yes <input type="radio" name="value(FTUlValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(ftUlId, ftUlId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(FTUlDate)"/>
-                                                    <html:hidden property="value(FTUlComments)"/>
+                                                    <input type="hidden" name="value(FTUlDate)" id="value(FTUlDate)"/>
+                                                    <input type="hidden" name="value(FTUlComments)" id="value(FTUlComments)"/>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("FTInDesc")%>
@@ -1655,15 +1630,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(FTInValue)" value="yes"/>Yes <html:radio
-                                                            property="value(FTInValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(FTInValue)" value="yes"/>Yes <input type="radio" name="value(FTInValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(ftInId, ftInId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(FTInDate)"/>
-                                                    <html:hidden property="value(FTInComments)"/>
+                                                    <input type="hidden" name="value(FTInDate)" id="value(FTInDate)"/>
+                                                    <input type="hidden" name="value(FTInComments)" id="value(FTInComments)"/>
                                                 </tr>
                                                 <tr>
                                                     <td colspan='3'>
@@ -1688,18 +1661,18 @@
                                                                     </table>
                                                                 </td>
                                                                 <td width="22%" class="dataEntryTable" align="center">
-                                                                    <html:radio
-                                                                            property="value(FTOtValue)" value="yes"/>Yes
-                                                                    <html:radio
-                                                                            property="value(FTOtValue)" value="no"/>No
+                                                                    <input type="radio"
+                                                                            name="value(FTOtValue)" value="yes"/>Yes
+                                                                    <input type="radio"
+                                                                            name="value(FTOtValue)" value="no"/>No
                                                                     <a
                                                                             title="clear all"
                                                                             href="javascript:clearAll(ftOtId, ftOtId-1)">&nbsp
                                                                         <font
                                                                                 style="text-decoration: underline; color: blue;">clr</font>
                                                                     </a></td>
-                                                                <html:hidden property="value(FTOtDate)"/>
-                                                                <html:hidden property="value(FTOtComments)"/>
+                                                                <input type="hidden" name="value(FTOtDate)" id="value(FTOtDate)"/>
+                                                                <input type="hidden" name="value(FTOtComments)" id="value(FTOtComments)"/>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -1721,15 +1694,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(FTReValue)" value="yes"/>Yes <html:radio
-                                                            property="value(FTReValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(FTReValue)" value="yes"/>Yes <input type="radio" name="value(FTReValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(ftReId, ftReId-1)">&nbsp
                                                         <font style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(FTReDate)"/>
-                                                    <html:hidden property="value(FTReComments)"/>
+                                                    <input type="hidden" name="value(FTReDate)" id="value(FTReDate)"/>
+                                                    <input type="hidden" name="value(FTReComments)" id="value(FTReComments)"/>
                                                 </tr>
                                             </table>
                                             <table cellpadding='0' cellspacing='0' border="1" width="100%"
@@ -1743,8 +1714,7 @@
                                                     <td class="subTitle" width="10%">Ob. Date<br>
                                                         (yyyy-MM-dd)
                                                     </td>
-                                                    <td class="subTitle" width="23%"><bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
+                                                    <td class="subTitle" width="23%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
                                                 </tr>
                                                 <tr>
                                                     <th class="dataEntryTable" colspan="3">Eye Exam</th>
@@ -1779,15 +1749,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(iDiaValue)" value="yes"/>Yes <html:radio
-                                                            property="value(iDiaValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(iDiaValue)" value="yes"/>Yes <input type="radio" name="value(iDiaValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(eyeDiaId, eyeDiaId-1)">&nbsp <font
                                                             style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(iDiaDate)"/>
-                                                    <html:hidden property="value(iDiaComments)"/>
+                                                    <input type="hidden" name="value(iDiaDate)" id="value(iDiaDate)"/>
+                                                    <input type="hidden" name="value(iDiaComments)" id="value(iDiaComments)"/>
                                                 </tr>
                                                 <tr>
                                                     <td colspan='3'>
@@ -1812,18 +1780,18 @@
                                                                     </table>
                                                                 </td>
                                                                 <td width="22%" class="dataEntryTable" align="center">
-                                                                    <html:radio
-                                                                            property="value(iHypValue)" value="yes"/>Yes
-                                                                    <html:radio
-                                                                            property="value(iHypValue)" value="no"/>No
+                                                                    <input type="radio"
+                                                                            name="value(iHypValue)" value="yes"/>Yes
+                                                                    <input type="radio"
+                                                                            name="value(iHypValue)" value="no"/>No
                                                                     <a
                                                                             title="clear all"
                                                                             href="javascript:clearAll(eyeHypId, eyeHypId-1)">&nbsp
                                                                         <font
                                                                                 style="text-decoration: underline; color: blue;">clr</font>
                                                                     </a></td>
-                                                                <html:hidden property="value(iHypDate)"/>
-                                                                <html:hidden property="value(iHypComments)"/>
+                                                                <input type="hidden" name="value(iHypDate)" id="value(iHypDate)"/>
+                                                                <input type="hidden" name="value(iHypComments)" id="value(iHypComments)"/>
                                                             </tr>
                                                             <tr>
                                                                 <td class="dataEntryTable"><%=request.getAttribute("iOthDesc")%>
@@ -1842,24 +1810,24 @@
                                                                         </tr>
                                                                     </table>
                                                                 </td>
-                                                                <td class="dataEntryTable" align="center"><html:radio
-                                                                        property="value(iOthValue)" value="yes"/>Yes
-                                                                    <html:radio
-                                                                            property="value(iOthValue)" value="no"/>No
+                                                                <td class="dataEntryTable" align="center"><input type="radio"
+                                                                        name="value(iOthValue)" value="yes"/>Yes
+                                                                    <input type="radio"
+                                                                            name="value(iOthValue)" value="no"/>No
                                                                     <a
                                                                             title="clear all"
                                                                             href="javascript:clearAll(eyeOthId, eyeOthId-1)">&nbsp
                                                                         <font
                                                                                 style="text-decoration: underline; color: blue;">clr</font>
                                                                     </a></td>
-                                                                <html:hidden property="value(iOthDate)"/>
-                                                                <html:hidden property="value(iOthComments)"/>
+                                                                <input type="hidden" name="value(iOthDate)" id="value(iOthDate)"/>
+                                                                <input type="hidden" name="value(iOthComments)" id="value(iOthComments)"/>
                                                             </tr>
                                                         </table>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><bean:write name="iRefDesc"/></td>
+                                                    <td class="dataEntryTable"><c:out value="${iRefDesc}"/></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
@@ -1874,15 +1842,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:radio
-                                                            property="value(iRefValue)" value="yes"/>Yes <html:radio
-                                                            property="value(iRefValue)" value="no"/>No <a
+                                                    <td class="dataEntryTable" align="center"><input type="radio" name="value(iRefValue)" value="yes"/>Yes <input type="radio" name="value(iRefValue)" value="no"/>No <a
                                                             title="clear all"
                                                             href="javascript:clearAll(eyeRefId, eyeRefId-1)">&nbsp <font
                                                             style="text-decoration: underline; color: blue;">clr</font>
                                                     </a></td>
-                                                    <html:hidden property="value(iRefDate)"/>
-                                                    <html:hidden property="value(iRefComments)"/>
+                                                    <input type="hidden" name="value(iRefDate)" id="value(iRefDate)"/>
+                                                    <input type="hidden" name="value(iRefComments)" id="value(iRefComments)"/>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1908,8 +1874,7 @@
                                                     <td class="subTitle" width="10%">Ob. Date<br>
                                                         (yyyy-MM-dd)
                                                     </td>
-                                                    <td class="subTitle" width="35%"><bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                    <td class="subTitle" width="35%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1930,13 +1895,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(HbA1Value)" size="4%"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(HbA1Date)" size="10%" tabindex="9999"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(HbA1Comments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HbA1Value)" size="4%" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HbA1Date)" size="10%" tabindex="9999" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HbA1Comments)" size="30%" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("LDLDesc")%><br>
@@ -1956,13 +1923,14 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(LDLValue)" size="4%"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(LDLDate)" size="10%" tabindex="9999"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(LDLComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(LDLValue)" size="4%" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(LDLDate)" size="10%" tabindex="9999" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(LDLComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("HDLDesc")%><br>
@@ -1982,13 +1950,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(HDLValue)" size="4%"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(HDLDate)" size="10%" tabindex="9999"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(HDLComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HDLValue)" size="4%" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HDLDate)" size="10%" tabindex="9999" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(HDLComments)" size="30%" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("TCHLDesc")%><br>
@@ -2008,13 +1978,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(TCHLValue)" size="4%"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(TCHLDate)" size="10%" tabindex="9999"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(TCHLComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(TCHLValue)" size="4%" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(TCHLDate)" size="10%" tabindex="9999" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(TCHLComments)" size="30%" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan='5'>
@@ -2041,15 +2013,12 @@
                                                                     </table>
                                                                 </td>
                                                                 <td width="5%" class="dataEntryTable" align="center">
-                                                                    <html:text
-                                                                            property="value(TRIGValue)" size="4%"/></td>
+                                                                    <input type="text" name="value(TRIGValue)" size="4%"/></td>
                                                                 <td width="10%" class="dataEntryTable" align="center">
-                                                                    <html:text
-                                                                            property="value(TRIGDate)" size="10%"
+                                                                    <input type="text" name="value(TRIGDate)" size="10%"
                                                                             tabindex="9999"/></td>
                                                                 <td width="35%" class="dataEntryTable" align="center">
-                                                                    <html:text
-                                                                            property="value(TRIGComments)" size="30%"
+                                                                    <input type="text" name="value(TRIGComments)" size="30%"
                                                                             tabindex="9999"/></td>
                                                             </tr>
                                                             <tr>
@@ -2071,14 +2040,15 @@
                                                                         </tr>
                                                                     </table>
                                                                 </td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(BGValue)" size="4%"/></td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(BGDate)" size="10%"
-                                                                        tabindex="9999"/></td>
-                                                                <td class="dataEntryTable" align="center"><html:text
-                                                                        property="value(BGComments)" size="30%"
-                                                                        tabindex="9999"/></td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(BGValue)" size="4%" />
+                                                                </td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(BGDate)" size="10%" tabindex="9999" />
+                                                                </td>
+                                                                <td class="dataEntryTable" align="center">
+                                                                    <input type="text" name="value(BGComments)" size="30%" tabindex="9999" />
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -2101,13 +2071,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(UALBValue)" size="4%"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(UALBDate)" size="10%" tabindex="9999"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(UALBComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(UALBValue)" size="4%" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(UALBDate)" size="10%" tabindex="9999" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(UALBComments)" size="30%" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("24UADesc")%><br>
@@ -2127,13 +2099,15 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(24UAValue)" size="4%"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(24UADate)" size="10%" tabindex="9999"/></td>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(24UAComments)" size="30%"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(24UAValue)" size="4%" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(24UADate)" size="10%" tabindex="9999" />
+                                                    </td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(24UAComments)" size="30%" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -2143,9 +2117,9 @@
                                     <tr>
                                         <th class="soap" width="2%"><span id="bigA"
                                                                           style="display: none;">A</span></th>
-                                        <th><html:textarea property="value(assessment)" cols="78"
+                                        <th><textarea name="value(assessment)" cols="78"
                                                            style="height:40;display:none;"
-                                                           styleId="assessment"></html:textarea>
+                                                           id="assessment"></textarea>
                                         </th>
                                     </tr>
 
@@ -2164,8 +2138,8 @@
                                             <table cellpadding="0" cellspacing="0" id="diagnosis"
                                                    width="100%" style="display: none;">
                                                 <tr>
-                                                    <td><html:textarea property="value(diagnosisVT)" cols="78"
-                                                                       style="height:40;margin-left:10px;"></html:textarea></td>
+                                                    <td><textarea name="value(diagnosisVT)" cols="78"
+                                                                       style="height:40;margin-left:10px;"></textarea></td>
                                                 </tr>
 
                                             </table>
@@ -2180,8 +2154,8 @@
                                             <table id="plan" style="display: none" cellpadding="0"
                                                    cellspacing="0">
                                                 <tr>
-                                                    <th><html:textarea property="value(plan)" cols="78"
-                                                                       style="height:40;"></html:textarea></th>
+                                                    <th><textarea name="value(plan)" cols="78"
+                                                                       style="height:40;"></textarea></th>
                                                 </tr>
                                             </table>
                                         </th>
@@ -2260,8 +2234,7 @@
                                                         Entered on
                                                     </td>
                                                     <td class="subTitle" width="10%">&nbsp;</td>
-                                                    <td class="subTitle" width="45%"><bean:message
-                                                            key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                    <td class="subTitle" width="45%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -2281,12 +2254,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:checkbox
-                                                            property="value(NtrCValue)"/></td>
-                                                    <html:hidden property="value(NtrCDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(NtrCComments)" size="45"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="checkbox" name="value(NtrCValue)"/>
+                                                    </td>
+                                                    <input type="hidden" name="value(NtrCDate)" id="value(NtrCDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(NtrCComments)" size="45" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("ExeCDesc")%>
@@ -2305,12 +2279,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:checkbox
-                                                            property="value(ExeCValue)"/></td>
-                                                    <html:hidden property="value(ExeCDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(ExeCComments)" size="45"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="checkbox" name="value(ExeCValue)"/>
+                                                    </td>
+                                                    <input type="hidden" name="value(ExeCDate)" id="value(ExeCDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(ExeCComments)" size="45" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("SmCCDesc")%>
@@ -2329,12 +2304,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:checkbox
-                                                            property="value(SmCCValue)"/></td>
-                                                    <html:hidden property="value(SmCCDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(SmCCComments)" size="45"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="checkbox" name="value(SmCCValue)"/>
+                                                    </td>
+                                                    <input type="hidden" name="value(SmCCDate)" id="value(SmCCDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(SmCCComments)" size="45" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("DiaCDesc")%>
@@ -2353,12 +2329,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:checkbox
-                                                            property="value(DiaCValue)"/></td>
-                                                    <html:hidden property="value(DiaCDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(DiaCComments)" size="45"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="checkbox" name="value(DiaCValue)"/>
+                                                    </td>
+                                                    <input type="hidden" name="value(DiaCDate)" id="value(DiaCDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(DiaCComments)" size="45" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("PsyCDesc")%>
@@ -2377,12 +2354,13 @@
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:checkbox
-                                                            property="value(PsyCValue)"/></td>
-                                                    <html:hidden property="value(PsyCDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(PsyCComments)" size="45"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="checkbox" name="value(PsyCValue)"/>
+                                                    </td>
+                                                    <input type="hidden" name="value(PsyCDate)" id="value(PsyCDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(PsyCComments)" size="45" tabindex="9999" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><%=request.getAttribute("OthCDesc")%>
@@ -2399,16 +2377,15 @@
                                                                     align="right"><%=request.getAttribute("OthCLastData")%>
                                                                 </td>
                                                             </tr>
-                                                            <html:hidden property="value(OthCLDDate)"/>
-                                                            <html:hidden property="value(OthCLastData)"/>
+                                                            <input type="hidden" name="value(OthCLDDate)" id="value(OthCLDDate)"/>
+                                                            <input type="hidden" name="value(OthCLastData)" id="value(OthCLastData)"/>
                                                         </table>
                                                     </td>
-                                                    <td class="dataEntryTable" align="center"><html:checkbox
-                                                            property="value(OthCValue)"/></td>
-                                                    <html:hidden property="value(OthCDate)"/>
-                                                    <td class="dataEntryTable" align="center"><html:text
-                                                            property="value(OthCComments)" size="45"
-                                                            tabindex="9999"/></td>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="checkbox" name="value(OthCValue)"/></td>
+                                                    <input type="hidden" name="value(OthCDate)" id="value(OthCDate)"/>
+                                                    <td class="dataEntryTable" align="center">
+                                                        <input type="text" name="value(OthCComments)" size="45" tabindex="9999"/></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -2435,6 +2412,6 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

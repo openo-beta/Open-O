@@ -23,27 +23,26 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <div class="modal-header">
-    <h4><bean:message key="tickler.note.title" bundle="ui"/></h4>
+    <h4><fmt:message bundle="${uiBundle}" key="tickler.note.title"/></h4>
 </div>
 <div class="modal-body">
     <form>
 
         <textarea style="width:100%;height:80%" ng-model="ticklerNote.note"></textarea>
         <span ng-show="ticklerNote.revision>0">
-			<bean:message key="tickler.note.date"
-                          bundle="ui"/>: <span>{{ticklerNote.observationDate | date: 'yyyy-MM-dd'}}</span> <bean:message
-                key="tickler.note.revision" bundle="ui"/> <a target="note_history"
+			<fmt:message bundle="${uiBundle}" key="tickler.note.date"/>: <span>{{ticklerNote.observationDate | date: 'yyyy-MM-dd'}}</span> <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.note.revision"/> <a target="note_history"
                                                              href="../CaseManagementEntry.do?method=notehistory&noteId={{ticklerNote.noteId}}"><span>{{ticklerNote.revision}}</span></a><br>
-			<bean:message key="tickler.note.editor" bundle="ui"/>: <span>{{ticklerNote.editor}}</span>
+			<fmt:message bundle="${uiBundle}" key="tickler.note.editor"/>: <span>{{ticklerNote.editor}}</span>
 			</span>
     </form>
 
 </div>
 <div class="modal-footer">
-    <button class="btn" ng-click="save()"><bean:message key="global.save" bundle="ui"/></button>
-    <button class="btn" ng-click="close()"><bean:message key="global.close" bundle="ui"/></button>
+    <button class="btn" ng-click="save()"><fmt:message bundle="${uiBundle}" key="global.save"/></button>
+    <button class="btn" ng-click="close()"><fmt:message bundle="${uiBundle}" key="global.close"/></button>
 </div>
 
 

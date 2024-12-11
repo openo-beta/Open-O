@@ -61,14 +61,14 @@
         }
     }
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
-    <title><bean:message key="admin.admin.uploadEntryTxt"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.uploadEntryTxt"/></title>
     <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
 
@@ -98,13 +98,11 @@
         <td class="MainTableTopRowRightColumn">
             <table class="TopStatusBar">
                 <tr>
-                    <td><bean:message key="admin.admin.uploadEntryTxt"/></td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.uploadEntryTxt"/></td>
                     <td>&nbsp;</td>
-                    <td style="text-align: right"><oscar:help keywords="1.6.11" key="app.top1"/> | <a
-                            href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                            key="global.about"/></a> | <a
-                            href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                            key="global.license"/></a></td>
+                    <td style="text-align: right"><a
+                            href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                            href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                 </tr>
             </table>
         </td>
@@ -112,7 +110,7 @@
     <tr>
         <td class="MainTableLeftColumn" valign="top">&nbsp;</td>
         <td class="MainTableRightColumn">
-            <html:form action="/admin/uploadEntryText" method="POST" enctype="multipart/form-data">
+            <form action="${pageContext.request.contextPath}/admin/uploadEntryText.do" method="POST" enctype="multipart/form-data">
 
                 How long is agreement valid?<br>
 
@@ -153,13 +151,13 @@
                 <br>
                 <br>
                 Agreement file (txt file)<input type="file" name="importFile">
-                <span title="<bean:message key="global.uploadWarningBody"/>"
+                <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                       style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                         border="0" src="../images/icon_alertsml.gif"/></span></span>
 
                 <br>
-                <input type="submit" value="<bean:message key="admin.admin.uploadEntryTxt"/>">
-            </html:form>
+                <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.uploadEntryTxt"/>">
+            </form>
         </td>
     </tr>
     <%
@@ -170,9 +168,9 @@
         <td class="MainTableLeftColumn" valign="top">&nbsp;</td>
         <td class="MainTableRightColumn">
             <% if (error == true) { %>
-            <span style="color:red;"><bean:message key="admin.admin.ErrorUploadEntryTxt"/></span>
+            <span style="color:red;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ErrorUploadEntryTxt"/></span>
             <%}%>
-            <!--   span style="color:green;"><bean:message key="admin.admin.SuccessUploadEntryTxt"/></span -->
+            <!--   span style="color:green;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.SuccessUploadEntryTxt"/></span -->
 
         </td>
 

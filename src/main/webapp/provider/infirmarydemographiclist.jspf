@@ -1,8 +1,8 @@
 <%@ page import="org.oscarehr.managers.TicklerManager" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
 
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
@@ -14,7 +14,7 @@
 <%
 	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
 	session.setAttribute("case_program_id", session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID));
-	org.caisi.core.web.InfirmAction.updateCurrentProgram((String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID),loggedInInfo.getLoggedInProviderNo());
+	org.caisi.core.web.Infirm2Action.updateCurrentProgram((String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID),loggedInInfo.getLoggedInProviderNo());
 	java.util.Date todayDate=new java.util.Date();
 	todayDate.setHours(23);
 	todayDate.setMinutes(59);
@@ -36,9 +36,9 @@
 			<p><b>no client in this program.</b></p>
 		<%if(session.getAttribute("archiveView")==null || session.getAttribute("archiveView")=="false") { %>
 			<b>You are in Case Management View! </b>
-			&nbsp; <a href="<html:rewrite action="/ArchiveView.do"/>">Click here for Archive View</a>
+			&nbsp; <a href="<%=request.getContextPath() %>/ArchiveView.do">Click here for Archive View</a>
 		<%} else {%>
-			<b>You are in the archive view ! </b>&nbsp; <a href="<html:rewrite action="/ArchiveView.do"/>?method=cmm">Back to Case Management View</a>
+			<b>You are in the archive view ! </b>&nbsp; <a href="<%=request.getContextPath() %>/ArchiveView.do?method=cmm">Back to Case Management View</a>
 		<%} %>
 	 <%}else{
 		int k=0;
@@ -49,9 +49,9 @@
 		<tr>
 			<td>
 			<%if(session.getAttribute("archiveView")==null || session.getAttribute("archiveView")=="false") { %>
-			<b>You are in Case Management View! </b> &nbsp; <a href="<html:rewrite action="/ArchiveView.do"/>">Click here for Archive View</a>
+			<b>You are in Case Management View! </b> &nbsp; <a href="<%=request.getContextPath() %>/ArchiveView.do">Click here for Archive View</a>
 			<%} else {%> <b>You are in Archive View ! </b>&nbsp; <a
-				href="<html:rewrite action="/ArchiveView.do"/>?method=cmm">Back
+				href="<%=request.getContextPath() %>/ArchiveView.do?method=cmm">Back
 			to Case Management View</a> <%} %>
 			</td>
 		</tr>
@@ -111,8 +111,8 @@
 						<%
 							String eURL = base_eURL + "&appointmentNo=" + rsAppointNO + "&demographicNo=" + demographic_no + "&reason=" + URLEncoder.encode(reason) + "&startTime=" + apptime.getHours() + ":" + apptime.getMinutes() + "&status=" + status;
 						%>
-						<a href="#" onClick="popupWithApptNo(710, 1024, '../oscarSurveillance/CheckSurveillance.do?demographicNo=${demographic_no}&proceed=${eURL}', 'encounter'); return false;" title="<bean:message key='global.encounter'/>">
-							|<bean:message key="provider.appointmentProviderAdminDay.btnE"/>
+						<a href="#" onClick="popupWithApptNo(710, 1024, '../oscarSurveillance/CheckSurveillance.do?demographicNo=${demographic_no}&proceed=${eURL}', 'encounter'); return false;" title="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.encounter'/>">
+							|<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnE"/>
 						</a>
 					</c:if>
 				</td>

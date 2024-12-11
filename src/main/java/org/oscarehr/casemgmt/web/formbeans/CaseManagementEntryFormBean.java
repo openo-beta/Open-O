@@ -23,16 +23,14 @@
 
 package org.oscarehr.casemgmt.web.formbeans;
 
-import java.util.List;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
 import org.oscarehr.casemgmt.model.CaseManagementCPP;
 import org.oscarehr.casemgmt.model.CaseManagementNote;
 import org.oscarehr.casemgmt.web.CheckBoxBean;
 import org.oscarehr.casemgmt.web.CheckIssueBoxBean;
 
-public class CaseManagementEntryFormBean extends ActionForm implements java.io.Serializable {
+import java.util.List;
+
+public class CaseManagementEntryFormBean {
     private CaseManagementNote caseNote;
     private CaseManagementCPP cpp;
     private String demoNo;
@@ -77,18 +75,6 @@ public class CaseManagementEntryFormBean extends ActionForm implements java.io.S
     public CaseManagementEntryFormBean() {
         super();
         this.caseNote = new CaseManagementNote();
-    }
-
-    public void reset(ActionMapping mapping, javax.servlet.http.HttpServletRequest request) {
-        String strDemo;
-        if ((strDemo = request.getParameter("demographicNo")) != null) {
-            String sessionName = "caseManagementEntryForm" + strDemo;
-            CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) request.getSession().getAttribute(sessionName);
-            if (sessionFrm != null) {
-                this.issueCheckList = sessionFrm.getIssueCheckList();
-                this.newIssueCheckList = sessionFrm.newIssueCheckList;
-            }
-        }
     }
 
     public String getObservation_date() {

@@ -41,7 +41,7 @@
 <%
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <script src="<%=request.getContextPath() %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
 
@@ -90,4 +90,4 @@
         } %>
     success
 
-</html:html>
+</html>

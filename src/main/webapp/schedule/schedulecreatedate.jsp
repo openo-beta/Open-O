@@ -53,8 +53,8 @@
 <%@ page
         import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
         errorPage="../appointment/errorpage.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <jsp:useBean id="scheduleRscheduleBean" class="oscar.RscheduleBean" scope="session"/>
 <jsp:useBean id="scheduleDateBean" class="java.util.Hashtable" scope="session"/>
 <jsp:useBean id="scheduleHolidayBean" class="java.util.Hashtable" scope="session"/>
@@ -230,10 +230,10 @@
 <%@page import="oscar.appt.ApptUtil" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="schedule.schedulecreatedate.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.title"/></title>
         <link rel="stylesheet" href="../web.css"/>
 
         <script language="JavaScript">
@@ -263,8 +263,7 @@
                         <tr bgcolor="#486ebd">
                             <th align="CENTER" bgcolor="#009966">
                                 <p>&nbsp;</p>
-                                <p><font face="Helvetica" color="#FFFFFF"><bean:message
-                                        key="schedule.schedulecreatedate.msgMainLabel"/></font></p>
+                                <p><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgMainLabel"/></font></p>
                             </th>
                         </tr>
                     </table>
@@ -272,16 +271,11 @@
                         <tr>
                             <td>
                                 <p>&nbsp;</p>
-                                <p><font size="-1"><bean:message
-                                        key="schedule.schedulecreatedate.msgStepOne"/></font></p>
-                                <p><font size="-1"><bean:message
-                                        key="schedule.schedulecreatedate.msgStepTwo"/></font></p>
-                                <p><font size="-1"><bean:message
-                                        key="schedule.schedulecreatedate.msgStepThree"/></font></p>
-                                <p><font size="-1"><bean:message
-                                        key="schedule.schedulecreatedate.msgStepFour"/></font></p>
-                                <p><font size="-1"><bean:message
-                                        key="schedule.schedulecreatedate.msgStepFive"/></font></p>
+                                <p><font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgStepOne"/></font></p>
+                                <p><font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgStepTwo"/></font></p>
+                                <p><font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgStepThree"/></font></p>
+                                <p><font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgStepFour"/></font></p>
+                                <p><font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgStepFive"/></font></p>
                                 <p>&nbsp;</p>
                                 <p>&nbsp;</p>
                             </td>
@@ -291,8 +285,7 @@
                 </td>
                 <td><br>
                     <b><%=provider_name%>
-                    </b> &nbsp; &nbsp; <font size="-1"><bean:message
-                            key="schedule.schedulecreatedate.msgEffective"/>&nbsp;<b>(<%=scheduleRscheduleBean.sdate + " - " + scheduleRscheduleBean.edate%>
+                    </b> &nbsp; &nbsp; <font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgEffective"/>&nbsp;<b>(<%=scheduleRscheduleBean.sdate + " - " + scheduleRscheduleBean.edate%>
                         )</b></font>
                     <center>
                         <%
@@ -306,8 +299,7 @@
                                 if (scheduleOverlaps) {
                             %>
                             <tr>
-                                <td style="color: red"><bean:message
-                                        key="schedule.schedulecreatedate.msgConflict"/></td>
+                                <td style="color: red"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgConflict"/></td>
                             </tr>
                             <%
                                 }
@@ -317,15 +309,13 @@
                                         href="schedulecreatedate.jsp?provider_no=<%=provider_no%>&provider_name=<%=URLEncoder.encode(provider_name)%>&year=<%=year%>&month=<%=month%>&day=<%=day%>&delta=-1&bFirstDisp=0">
                                     &nbsp;&nbsp;<img src="../images/previous.gif" WIDTH="10" HEIGHT="9"
                                                      BORDER="0"
-                                                     ALT='<bean:message key="schedule.schedulecreatedate.btnLastMonthTip"/>'
-                                                     vspace="2"> <bean:message
-                                        key="schedule.schedulecreatedate.btnLastMonth"/>&nbsp;&nbsp; </a> <b><span
+                                                     ALT='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnLastMonthTip"/>'
+                                                     vspace="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnLastMonth"/>&nbsp;&nbsp; </a> <b><span
                                         CLASS=title><%=year%>-<%=month%></span></b> <a
                                         href="schedulecreatedate.jsp?provider_no=<%=provider_no%>&provider_name=<%=URLEncoder.encode(provider_name)%>&year=<%=year%>&month=<%=month%>&day=<%=day%>&delta=1&bFirstDisp=0">
-                                    &nbsp;&nbsp;<bean:message
-                                        key="schedule.schedulecreatedate.btnNextMonth"/><img
+                                    &nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnNextMonth"/><img
                                         src="../images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                                        ALT='<bean:message key="schedule.schedulecreatedate.btnNextMonthTip"/>'
+                                        ALT='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnNextMonthTip"/>'
                                         vspace="2">&nbsp;&nbsp;</a></td>
                             </TR>
                         </table>
@@ -334,21 +324,14 @@
                                bgcolor="silver">
                             <tr bgcolor="#FOFOFO" align="center">
                                 <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"
-                                                        color="red"><bean:message
-                                        key="schedule.schedulecreatedate.msgSunday"/></font></td>
-                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                                        key="schedule.schedulecreatedate.msgMonday"/></font></td>
-                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                                        key="schedule.schedulecreatedate.msgTuesday"/></font></td>
-                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                                        key="schedule.schedulecreatedate.msgWednesday"/></font></td>
-                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                                        key="schedule.schedulecreatedate.msgThursday"/></font></td>
-                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><bean:message
-                                        key="schedule.schedulecreatedate.msgFriday"/></font></td>
+                                                        color="red"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgSunday"/></font></td>
+                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgMonday"/></font></td>
+                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgTuesday"/></font></td>
+                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgWednesday"/></font></td>
+                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgThursday"/></font></td>
+                                <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgFriday"/></font></td>
                                 <td width="12.5%"><font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2"
-                                                        color="green"><bean:message
-                                        key="schedule.schedulecreatedate.msgSaturday"/></font></td>
+                                                        color="green"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgSaturday"/></font></td>
                             </tr>
 
                             <%
@@ -416,7 +399,7 @@
                                         <input type="hidden" name="provider_no" value="<%=provider_no%>">
                                         <input type="hidden" name="Submit" value=" Next "> <input
                                                 type="submit"
-                                                value='<bean:message key="schedule.schedulecreatedate.btnNext"/>'>
+                                                value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnNext"/>'>
                                     </div>
                                 </td>
                             </tr>
@@ -432,4 +415,4 @@
 
 
     </body>
-</html:html>
+</html>

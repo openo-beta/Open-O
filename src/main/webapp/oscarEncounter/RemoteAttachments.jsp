@@ -42,9 +42,9 @@
 <%@ page import="oscar.oscarEncounter.immunization.data.*" %>
 <%@ page
         import="oscar.oscarEncounter.immunization.pageUtil.*, java.util.*, org.w3c.dom.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%
     oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
     if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
@@ -55,16 +55,15 @@
     remoAttach.estMessageIds(bean.getDemographicNo());
     out.print(bean.getDemographicNo());
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.RemoteAttachments.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.title"/></title>
         <script type="text/javascript" language=javascript>
             function popupViewAttach(vheight, vwidth, varpage) { //open a new popup window
                 var page = varpage;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<bean:message key="oscarEncounter.RemoteAttachments.msgViewAtt"/>", windowprops);
+                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgViewAtt"/>", windowprops);
                 if (popup != null) {
                     if (popup.opener == null) {
                         popup.opener = self;
@@ -75,7 +74,7 @@
             function popupSendAttach(vheight, vwidth, varpage) { //open a new popup window
                 var page = varpage;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<bean:message key="oscarEncounter.RemoteAttachments.msgSendAtt"/>", windowprops);
+                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSendAtt"/>", windowprops);
                 if (popup != null) {
                     if (popup.opener == null) {
                         popup.opener = self;
@@ -89,21 +88,18 @@
     <body class="BodyStyle" vlink="#0000FF">
     <!--  -->
     <table class="MainTable" id="scrollNumber1"
-           name="<bean:message key="oscarEncounter.RemoteAttachments.msgEncounterTable"/>">
+           name="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgEncounterTable"/>">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarEncounter.RemoteAttachments.title"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.title"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
                         <td><%= bean.patientLastName %> , <%= bean.patientFirstName%>
                         </td>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="attachment" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td style="text-align: right"><a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -114,21 +110,15 @@
                     String prov = bean.getDemographicNo();
                     String demog = bean.providerNo;
                 %> <a
-                    href="javascript:popupSendAttach(700,960,'../oscarMessenger/Transfer/SelectItems.jsp?val1=<%=demog%>&val2=<%=prov%>')"><bean:message
-                    key="oscarEncounter.RemoteAttachments.msgSendEDoc"/></a></td>
+                    href="javascript:popupSendAttach(700,960,'../oscarMessenger/Transfer/SelectItems.jsp?val1=<%=demog%>&val2=<%=prov%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSendEDoc"/></a></td>
             <td class="MainTableRightColumn">
-                <h2><bean:message
-                        key="oscarEncounter.RemoteAttachments.msgDemogAtt"/></h2>
+                <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgDemogAtt"/></h2>
                 <table border="0" width="80%" cellspacing="1">
                     <tr>
-                        <th bgcolor="#DDDDFF"><bean:message
-                                key="oscarEncounter.RemoteAttachments.msgSubject"/></th>
-                        <th bgcolor="#DDDDFF"><bean:message
-                                key="oscarEncounter.RemoteAttachments.msgSentFrom"/></th>
-                        <th bgcolor="#DDDDFF"><bean:message
-                                key="oscarEncounter.RemoteAttachments.msgSavedBy"/></th>
-                        <th bgcolor="#DDDDFF"><bean:message
-                                key="oscarEncounter.RemoteAttachments.msgDate"/></th>
+                        <th bgcolor="#DDDDFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSubject"/></th>
+                        <th bgcolor="#DDDDFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSentFrom"/></th>
+                        <th bgcolor="#DDDDFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSavedBy"/></th>
+                        <th bgcolor="#DDDDFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgDate"/></th>
 
                     </tr>
                     <%
@@ -165,4 +155,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

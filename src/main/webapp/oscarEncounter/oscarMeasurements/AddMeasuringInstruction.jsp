@@ -27,15 +27,14 @@
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.Measurements.msgAddMeasurementInstruction"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgAddMeasurementInstruction"/></title>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
         <script type="text/javascript">
@@ -48,18 +47,26 @@
 
     <body class="BodyStyle" vlink="#0000FF">
     <!--  -->
-    <html:errors/>
-    <html:form
-            action="/oscarEncounter/oscarMeasurements/AddMeasuringInstruction.do">
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
+    <form action="${pageContext.request.contextPath}/oscarEncounter/oscarMeasurements/AddMeasuringInstruction.do" method="post">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><bean:message
-                        key="oscarEncounter.Measurements.msgMeasurements"/></td>
+                <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgMeasurements"/></td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><bean:message
-                                    key="oscarEncounter.Measurements.msgAddMeasurementInstruction"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgAddMeasurementInstruction"/></td>
                         </tr>
                     </table>
                 </td>
@@ -84,29 +91,32 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th align="left" class="td.tite"><bean:message
-                                                key="oscarEncounter.oscarMeasurements.Measurements.headingType"/>
+                                        <th align="left" class="td.tite"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingType"/>
                                         </th>
-                                        <td><html:select property="typeDisplayName">
-                                            <html:options collection="typeDisplayNames"
-                                                          property="typeDisplayName" labelProperty="typeDisplayName"/>
-                                        </html:select></td>
+                                        <td><select name="typeDisplayName" id="typeDisplayName">
+                                            <c:forEach var="typeDisplayName" items="${typeDisplayNames}">
+                                                <option value="${typeDisplayName.typeDisplayName}">
+                                                        ${typeDisplayName.typeDisplayName}
+                                                </option>
+                                            </c:forEach>
+                                        </select></td>
                                     </tr>
                                     <tr>
-                                        <th align="left" class="td.tite"><bean:message
-                                                key="oscarEncounter.oscarMeasurements.Measurements.headingMeasuringInstrc"/>
+                                        <th align="left" class="td.tite"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingMeasuringInstrc"/>
                                         </th>
-                                        <td><html:text property="measuringInstrc"/></td>
+                                        <td><input type="text" name="measuringInstrc" id="measuringInstrc" /></td>
                                     </tr>
                                     <tr>
-                                        <th align="left" class="td.tite"><bean:message
-                                                key="oscarEncounter.oscarMeasurements.Measurements.headingValidation"/>
+                                        <th align="left" class="td.tite"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingValidation"/>
                                         </th>
-                                        <td><html:select property="validation">
-                                            <html:options collection="validations" property="id"
-                                                          labelProperty="name"/>
-                                        </html:select> <input type="hidden" name="msgBetween"
-                                                              value="<bean:message key="oscarEncounter.oscarMeasurements.AddMeasurementType.successful"/>"/>
+                                        <td><select name="validation" id="validation">
+                                            <c:forEach var="validation" items="${validations}">
+                                                <option value="${validation.id}">
+                                                        ${validation.name}
+                                                </option>
+                                            </c:forEach>
+                                        </select> <input type="hidden" name="msgBetween"
+                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.AddMeasurementType.successful"/>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -114,10 +124,10 @@
                                             <table>
                                                 <tr>
                                                     <td><input type="button" name="Button"
-                                                               value="<bean:message key="global.btnClose"/>"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
                                                                onClick="window.close()"/></td>
                                                     <td><input type="button" name="Button"
-                                                               value="<bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/>"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/>"
                                                                onclick="submit();"/></td>
                                                 <tr>
                                             </table>
@@ -137,6 +147,6 @@
             <td class="MainTableBottomRowRightColumn"></td>
         </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

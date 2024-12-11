@@ -19,9 +19,9 @@
 --%>
 <!DOCTYPE html>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page errorPage="/errorpage.jsp" %>
 
@@ -596,7 +596,7 @@
     <!-- main calendar program -->
     <script type="text/javascript" src="${ pageContext.request.contextPath }/share/calendar/calendar.js"></script>
     <!-- language for the calendar -->
-    <script src="${ pageContext.request.contextPath }/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+    <script src="${ pageContext.request.contextPath }/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <!-- the following script defines the Calendar.setup helper function, which makes
            adding a calendar a matter of 1 or 2 lines of code. -->
     <script type="text/javascript"
@@ -1249,9 +1249,8 @@
            style="width: 100%; background-color: silver;">
         <tr>
             <td><H4><i class="icon-money" style="margin-left:10px;"></i>&nbsp;Ontario Billing</H4></td>
-            <td style="text-align: right"><i class="icon-question-sign"></i>&nbsp;<oscar:help keywords="Billing"
-                                                                                              key="app.top1"/>
-                | <i class="icon-edit"></i><a href="javascript:void(0);"
+            <td style="text-align: right"><i class="icon-question-sign"></i>&nbsp;
+                <i class="icon-edit"></i><a href="javascript:void(0);"
                                               onclick="popupPage(800,700,'billingONfavourite.jsp'); return false;">
                     Edit
                 </a> <select name="cutlist" id="cutlist" onchange="changeCut(this)">
@@ -1378,15 +1377,12 @@
                                             <%=checkRefBox%> onclick="onClickRefDoc()"/><br/>
                                         <input
                                                 type="text" name="referralCode" class="input-mini" maxlength="6"
-                                                placeholder="<bean:message
-													key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.referralNo" />"
+                                                placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.referralNo"/>"
                                                 value="<%=refNo%>">&nbsp;
-                                        <input type="text" placeholder="<bean:message
-													key="dms.documentReport.msgType" />"
+                                        <input type="text" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgType"/>"
                                                name="referralSpet" class="input-small" maxlength="2"
                                                value="<%=referSpet==null?"":referSpet%>"><br/>
-                                        <input placeholder="<bean:message
-													key="demographic.demographiceditdemographic.formRefDoc" />"
+                                        <input placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formRefDoc"/>"
                                                type="text" name="referralDocName" class="input-medium" maxlength="30"
                                                value="<%=refName%>">
                                     </td>
@@ -1541,8 +1537,7 @@
                                     %>
                                         Clinic Nbr <%
                                         } else {
-                                        %> <bean:message
-                                                key="billing.billingCorrection.formVisitType"/> <%
+                                        %> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formVisitType"/> <%
                                             }
                                         %>
                                     </b></td>
@@ -1668,52 +1663,40 @@
                                         <%=m_review.equals("Y")?"checked":""%>></td>
                                 </tr>
                                 <tr>
-                                    <td><b><bean:message
-                                            key="oscar.billing.CA.ON.billingON.OB.SLIcode"/></b></td>
+                                    <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode"/></b></td>
                                     <td colspan="3"><select name="xml_slicode">
                                         <option value="<%=clinicNo%>">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.NA"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.NA"/>
                                         </option>
                                         <option value="HDS">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.HDS"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HDS"/>
                                         </option>
                                         <option value="HED">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.HED"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HED"/>
                                         </option>
                                         <option value="HIP">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.HIP"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HIP"/>
                                         </option>
                                         <option value="HOP">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.HOP"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HOP"/>
                                         </option>
                                         <option value="HRP">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.HRP"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HRP"/>
                                         </option>
                                         <option value="IHF">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.IHF"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.IHF"/>
                                         </option>
                                         <option value="OFF">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.OFF"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.OFF"/>
                                         </option>
                                         <option value="OTN">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.OTN"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.OTN"/>
                                         </option>
                                         <option value="PDF">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.PDF"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.PDF"/>
                                         </option>
                                         <option value="RTF">
-                                            <bean:message
-                                                    key="oscar.billing.CA.ON.billingON.OB.SLIcode.RTF"/>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.RTF"/>
                                         </option>
                                     </select></td>
                                 </tr>

@@ -53,7 +53,7 @@
     Properties prop = new Properties();
 
 %>
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -131,7 +131,7 @@
             </tr>
         </table>
     </center>
-    <html:form action="/demographic/Contact">
+    <form action="${pageContext.request.contextPath}/demographic/Contact.do" method="post">
         <input type="hidden" name="contact.id" value="<c:out value="${contact.id}"/>"/>
         <input type="hidden" name="method" value="saveContact"/>
         <table width="100%" border="0" cellspacing="2" cellpadding="2">
@@ -259,13 +259,13 @@
             </tr>
             <tr>
                 <td align="center" bgcolor="#CCCCFF" colspan="2">
-                    <input type="submit" name="submit" value="<bean:message key="admin.resourcebaseurl.btnSave"/>"
+                    <input type="submit" name="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                            onclick="javascript:return onSave();">
-                    <input type="button" name="Cancel" value="<bean:message key="admin.resourcebaseurl.btnExit"/>"
+                    <input type="button" name="Cancel" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnExit"/>"
                            onClick="window.close()">
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

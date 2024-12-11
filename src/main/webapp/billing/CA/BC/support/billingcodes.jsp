@@ -30,7 +30,7 @@
         response.sendRedirect("../../logout.jsp");
     }
 %>
-<html:html lang="en">
+<html>
     <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <title>OSCAR Providers</title>

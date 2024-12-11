@@ -42,7 +42,7 @@
 
 <%@ page
         import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat,oscar.oscarBilling.ca.bc.MSP.*,oscar.*" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+
 
 <jsp:useBean id="documentBean" class="oscar.DocumentBean" scope="request"/>
 
@@ -663,7 +663,7 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <link rel="stylesheet" href="../../../billing/billing.css">
     <title>Billing Reconcilliation</title>
 

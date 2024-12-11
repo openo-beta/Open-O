@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -49,11 +49,11 @@
     <%isSiteAccessPrivacy = true; %>
 </security:oscarSec>
 
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="admin.securitysearchrecordshtm.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitysearchrecordshtm.title"/></title>
         <link rel="stylesheet" href="../web.css">
         <script LANGUAGE="JavaScript">
             <!--
@@ -81,7 +81,7 @@
             <tr bgcolor="#486ebd">
 
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="admin.securitysearchrecordshtm.description"/></font></th>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitysearchrecordshtm.description"/></font></th>
             </tr>
         </table>
 
@@ -93,16 +93,14 @@
                   onsubmit="return onsub()">
                 <tr valign="top">
                     <td rowspan="2" align="right" valign="middle"><font
-                            face="Verdana" color="#0000FF"><b><i><bean:message
-                            key="admin.securitysearchrecordshtm.msgCriteria"/></i></b></font></td>
+                            face="Verdana" color="#0000FF"><b><i><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitysearchrecordshtm.msgCriteria"/></i></b></font></td>
                     <td nowrap><font size="1" face="Verdana" color="#0000FF">
                         <input type="radio" name="search_mode" value="search_username">
-                        <bean:message key="admin.securityrecord.formUserName"/></font></td>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityrecord.formUserName"/></font></td>
 
                     <td nowrap><font size="1" face="Verdana" color="#0000FF">
                         <input type="radio" checked name="search_mode"
-                               value="search_providerno"> <bean:message
-                            key="admin.securityrecord.formProviderNo"/></font></td>
+                               value="search_providerno"> <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityrecord.formProviderNo"/></font></td>
                     <td valign="middle" rowspan="2" ALIGN="left"><input type="text"
                                                                         NAME="keyword" SIZE="17" MAXLENGTH="100"> <INPUT
                             TYPE="hidden" NAME="orderby" VALUE="user_name">
@@ -110,12 +108,11 @@
                         <INPUT TYPE="hidden" NAME="limit1" VALUE="0"> <INPUT
                                 TYPE="hidden" NAME="limit2" VALUE="10"><INPUT
                                 TYPE="SUBMIT" NAME="button"
-                                VALUE="<bean:message key="admin.securitysearchrecordshtm.btnSearch"/>"
+                                VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitysearchrecordshtm.btnSearch"/>"
                                 SIZE="17"></td>
                 </tr>
                 <tr>
-                    <td nowrap><font size="1" face="Verdana" color="#0000FF"><bean:message
-                            key="admin.securitysearchrecordshtm.reserved"/> </font></td>
+                    <td nowrap><font size="1" face="Verdana" color="#0000FF"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitysearchrecordshtm.reserved"/> </font></td>
                     <td nowrap><font size="1" face="Verdana" color="#0000FF">
                     </font></td>
 
@@ -125,4 +122,4 @@
 
     </center>
     </body>
-</html:html>
+</html>

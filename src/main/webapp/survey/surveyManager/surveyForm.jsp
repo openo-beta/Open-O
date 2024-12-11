@@ -28,12 +28,12 @@
 
 <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
-<html:form action="/SurveyManager" method="POST" styleId="surveyForm">
+<form action="${pageContext.request.contextPath}/SurveyManager.do" method="POST" styleId="surveyForm">
 
     <script language="JavaScript">
 
         function OpenQuestionEditor(page, section, question) {
-            window.open('<html:rewrite action="/SurveyManager"/>?method=edit_question&page=' + page + '&section=' + section + '&id=' + question, 'question_editor', 'width=500,height=500');
+            window.open('<%=request.getContextPath() %>/SurveyManager"/>?method=edit_question&page=' + page + '&section=' + section + '&id=' + question, 'question_editor', 'width=500,height=500');
         }
 
         function navigate(pageName) {
@@ -123,13 +123,13 @@
     </script>
 
     <input type="hidden" name="method" value="save"/>
-    <html:hidden property="web.page"/>
-    <html:hidden property="web.section"/>
-    <html:hidden property="web.questionTypeData"/>
+    <input type="hidden" name="page" id="page"/>
+    <input type="hidden" name="section" id="section"/>
+    <input type="hidden" name="questionTypeData" id="questionTypeData"/>
 
     <input type="hidden" name="numPages" id="numPages" value="1"/>
 
-    <html:hidden property="survey.id"/>
+    <input type="hidden" name="id" id="id"/>
     <br/>
     <table width="100%">
         <tr>
@@ -140,13 +140,11 @@
                 <table>
                     <tr>
                         <td class="field">Form Name:</td>
-                        <td><html:text property="survey.description"
-                                       styleClass="formElement" disabled="true"/></td>
+                        <td><input type="text" name="survey.description" class="formElement" disabled="true"/></td>
                     </tr>
                     <tr>
                         <td class="field">Version:</td>
-                        <td><html:text property="survey.version"
-                                       styleClass="formElement" disabled="true"/></td>
+                        <td><input type="text" name="survey.version" class="formElement" disabled="true"/></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -160,7 +158,7 @@
                                                onclick="addClosingPage()" style=""/></td>
                                     <td><input type="button" value="Save Survey"
                                                onclick="save()"/></td>
-                                    <td><html:cancel/></td>
+                                    <td><button type="button" onclick="window.history.back();">Cancel</button></td>
                                 </tr>
                             </table>
                         </td>
@@ -219,17 +217,15 @@
                                     <td width="1%" class="pageTitle" nowrap>Include on First
                                         Page
                                     </td>
-                                    <td align="left"><html:radio
-                                            property="model.survey.introduction.includeOnFirstPage"
-                                            value="true"/>Yes&nbsp; <html:radio
-                                            property="model.survey.introduction.includeOnFirstPage"
+                                    <td align="left"><input type="radio" name="includeOnFirstPage"
+                                            value="true"/>Yes&nbsp; <input type="radio" name="includeOnFirstPage"
                                             value="false"/>No&nbsp;
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="1%" class="pageTitle" nowrap>Introduction Text:</td>
-                                    <td align="left"><html:textarea cols="80" rows="10"
-                                                                    property="model.survey.introduction.text"></html:textarea></td>
+                                    <td align="left">
+                                        <textarea cols="80" rows="10" name="introduction.text"></textarea></td>
                                 </tr>
                             </table>
                         </div>
@@ -244,16 +240,14 @@
                                 </tr>
                                 <tr>
                                     <td width="1%" class="pageTitle" nowrap>Include on Last Page</td>
-                                    <td align="left"><html:radio
-                                            property="model.survey.closing.includeOnLastPage" value="true"/>Yes&nbsp;
-                                        <html:radio property="model.survey.closing.includeOnLastPage"
+                                    <td align="left"><input type="radio" name="includeOnLastPage" value="true"/>Yes&nbsp;
+                                        <input type="radio" name="includeOnLastPage"
                                                     value="false"/>No&nbsp;
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="1%" class="pageTitle" nowrap>Closing Text:</td>
-                                    <td align="left"><html:textarea cols="80" rows="10"
-                                                                    property="model.survey.closing.text"></html:textarea></td>
+                                    <td align="left"><textarea cols="80" rows="10" name="closing.text"></textarea></td>
                                 </tr>
                             </table>
                         </div>
@@ -266,19 +260,21 @@
                             <table class="surveyPage" width="100%">
                                 <tr>
                                     <td class="pageTitle" colspan="3"><a
-                                            href="<html:rewrite action="/SurveyManager"/>?method=remove_page&id=<c:out value="${page_number }"/>"><img
+                                            href="<%=request.getContextPath() %>/SurveyManager.do?method=remove_page&id=<c:out value="${page_number }"/>"><img
                                             src="images/delete.png" border="0"></a> &nbsp; Page
-                                        Title:&nbsp; <html:text property="pageModel.description"
-                                                                size="60" styleClass="formElement"/></td>
+                                        Title:&nbsp; <input type="text" name="pageModel.description" size="60" class="formElement"/></td>
                                 </tr>
                                 <tr>
-                                    <td width="1%"><html:select property="web.questionType"
+                                    <td width="1%"><select name="questionType"
                                                                 onchange="addQuestionType('0', this.options[this.selectedIndex].value);"
-                                                                styleClass="formElement">
-                                        <html:option value="">Add New Question:</html:option>
-                                        <html:options collection="QuestionTypes" property="value"
-                                                      labelProperty="label"/>
-                                    </html:select></td>
+                                                                class="formElement">
+                                        <option value="">Add New Question:</option>
+                                        <c:forEach var="q" items="${QuestionTypes}">
+                                            <option value="${q.value}">
+                                                    ${q.label}
+                                            </option>
+                                        </c:forEach>
+                                    </select></td>
 
                                     <td align="right"><input type="button"
                                                              value="Add New Section" onclick="addSection()"/></td>
@@ -305,12 +301,12 @@
                                         <table class="section" width="90%">
                                             <tr>
                                                 <td width="10%"><a
-                                                        href="<html:rewrite action="/SurveyManager"/>?method=remove_question&id=<c:out value="${question.id }"/>&section=0"><img
+                                                        href="<%=request.getContextPath() %>/SurveyManager.do?method=remove_question&id=<c:out value="${question.id }"/>&section=0"><img
                                                         src="images/delete.png" border="0"></a> &nbsp; <!--
                                           	<a href="javascript:void(0);return false;" onclick="OpenQuestionEditor('<c:out value="${surveyForm.map.web.page}"/>','0','<c:out value="${question.id}"/>')"><img src="images/edit.png" border="0"></a>
                                        		&nbsp;
                                        		  --> <a
-                                                        href="<html:rewrite action="/SurveyManager"/>?method=edit_question&page=<c:out value="${surveyForm.map.web.page}"/>&section=0&id=<c:out value="${question.id}"/>"><img
+                                                        href="<%=request.getContextPath() %>/SurveyManager.do?method=edit_question&page=<c:out value="${surveyForm.map.web.page}"/>&section=0&id=<c:out value="${question.id}"/>"><img
                                                         src="images/edit.png" border="0"></a></td>
                                                 <td align="left"><c:out value="${question.description}"/>
                                                 </td>
@@ -348,7 +344,7 @@
                                         <table class="section" width="90%">
                                             <tr>
                                                 <td class="sectionDescr" width="1%"><a
-                                                        href="<html:rewrite action="/SurveyManager"/>?method=remove_section&id=<c:out value="${section.id}"/>"><img
+                                                        href="<%=request.getContextPath() %>/SurveyManager.do?method=remove_section&id=<c:out value="${section.id}"/>"><img
                                                         src="images/delete.png" border="0"></a> &nbsp; <input
                                                         type="text"
                                                         name="section_description_<%=containers[x].getSection().getId() %>"
@@ -399,9 +395,12 @@
                                                         name="web.questionType"
                                                         onchange="addQuestionType('${section.id}', this.options[this.selectedIndex].value);"
                                                         styleClass="formElement">
-                                                    <html:option value="">Add New Question:</html:option>
-                                                    <html:options collection="QuestionTypes" property="value"
-                                                                  labelProperty="label"/>
+                                                    <option value="">Add New Question:</option>
+                                                    <c:forEach var="qt" items="${QuestionTypes}">
+                                                        <option value="${qt.value}">
+                                                                ${qt.label}
+                                                        </option>
+                                                    </c:forEach>
                                                 </select></td>
                                             </tr>
                                             <!--  loop through questions at this level -->
@@ -412,12 +411,12 @@
                                                         <table class="section" width="90%">
                                                             <tr>
                                                                 <td width="10%"><a
-                                                                        href="<html:rewrite action="/SurveyManager"/>?method=remove_question&id=<c:out value="${question.id }"/>&web.section=<c:out value="${section.id}"/>"><img
+                                                                        href="<%=request.getContextPath() %>/SurveyManager.do?method=remove_question&id=<c:out value="${question.id }"/>&web.section=<c:out value="${section.id}"/>"><img
                                                                         src="images/delete.png" border="0"></a> &nbsp; <!--
                                           	<a href="javascript:void(0);return false;" onclick="OpenQuestionEditor('<c:out value="${surveyForm.map.web.page}"/>','<c:out value="${section.id}"/>','<c:out value="${question.id}"/>')"><img src="images/edit.png" border="0"></a>
                                        		&nbsp;
                                        		 --> <a
-                                                                        href="<html:rewrite action="/SurveyManager"/>?method=edit_question&page=<c:out value="${surveyForm.map.web.page}"/>&section=<c:out value="${section.id}"/>&id=<c:out value="${question.id}"/>"><img
+                                                                        href="<%=request.getContextPath() %>/SurveyManager.do?method=edit_question&page=<c:out value="${surveyForm.map.web.page}"/>&section=<c:out value="${section.id}"/>&id=<c:out value="${question.id}"/>"><img
                                                                         src="images/edit.png" border="0"></a></td>
                                                                 <td align="left"><c:out value="${question.description}"/>
                                                                 </td>
@@ -458,4 +457,4 @@
             </td>
         </tr>
     </table>
-</html:form>
+</form>

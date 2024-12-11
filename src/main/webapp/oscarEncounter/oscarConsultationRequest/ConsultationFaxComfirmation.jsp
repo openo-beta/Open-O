@@ -26,9 +26,9 @@
 
 <%@ page
         import="java.util.*, org.w3c.dom.*, oscar.oscarEncounter.oscarConsultationRequest.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -57,7 +57,7 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <title>OscarFax - Consultations</title>
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
 
 </head>
@@ -72,7 +72,7 @@
                 <tr>
                     <td>consultation Requests</td>
                     <td></td>
-                    <td style="text-align: right"><oscar:help keywords="consult" key="app.top1"/> | <a
+                    <td style="text-align: right"><a
                             href="javascript:popupStart(300,400,'About.jsp')">About</a> | <a
                             href="javascript:popupStart(300,400,'License.jsp')">License</a></td>
                 </tr>

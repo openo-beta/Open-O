@@ -35,7 +35,7 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
 
         <title>Dx Register Report</title>
@@ -90,4 +90,4 @@
     </nested:form>
 
     </body>
-</html:html>
+</html>

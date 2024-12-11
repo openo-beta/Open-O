@@ -33,7 +33,7 @@
     }
 %>
 
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.js"></script>
@@ -58,9 +58,9 @@
             }
 
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html;">
-        <title><bean:message key="admin.oscarStatus.oscarStatus"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.oscarStatus.oscarStatus"/></title>
 
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -85,7 +85,7 @@
                 <% } %>
 
         <div class="page-header">
-            <h4><bean:message key="admin.oscarStatus.oscarStatus"/></h4>
+            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.oscarStatus.oscarStatus"/></h4>
         </div>
 
         <h5>Master Status:</h5>
@@ -127,7 +127,7 @@
         <pre>Git SHA-1: <%=BuildNumberPropertiesFileReader.getGitSha1()%></pre>
 
         <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc" rights="r" reverse="<%=false%>">
-        <h4><bean:message key="admin.oscarStatus.restart"/></h4>
+        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.oscarStatus.restart"/></h4>
         <div class="well">
             <form method="post" action="rebootConfirmation.jsp" name="confirmOscarReboot">
                 <p>If you are having issues with Oscar, click the button below to restart Oscar.</p>
@@ -146,4 +146,4 @@
         </script>
     </body>
 
-</html:html>
+</html>

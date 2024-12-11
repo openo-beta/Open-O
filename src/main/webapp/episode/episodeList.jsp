@@ -41,7 +41,7 @@
 <%
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="<%=request.getContextPath() %>/library/DataTables/datatables.min.js"></script>
@@ -66,7 +66,7 @@
             $(document).ready(function () {
                 $('#ocanTable').DataTable({
                     "language": {
-                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
+                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
                     }
                     //  "aaSorting": [[ 1, "desc" ]]
                 });
@@ -136,4 +136,4 @@
 
     <br/><br/>
 
-</html:html>
+</html>

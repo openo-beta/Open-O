@@ -26,8 +26,8 @@
 
 <%@ page import="java.util.*,java.sql.*" errorPage="../provider/errorpage.jsp" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.MyGroup" %>
 <%@ page import="org.oscarehr.common.model.MyGroupPrimaryKey" %>
@@ -38,10 +38,10 @@
     MyGroupDao myGroupDao = SpringUtils.getBean(MyGroupDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="provider.providernewgroup.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.title"/></title>
         <script language="javascript">
             <!--
             start
@@ -90,8 +90,7 @@
           onSubmit="return checkForm();">
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
-                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><bean:message
-                        key="provider.providernewgroup.msgTitle"/></font></th>
+                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.msgTitle"/></font></th>
             </tr>
         </table>
 
@@ -103,12 +102,10 @@
                         <table BORDER="0" CELLPADDING="0" CELLSPACING="1" WIDTH="100%"
                                BGCOLOR="#C0C0C0">
                             <tr BGCOLOR="#CCFFFF">
-                                <td ALIGN="center"><font face="arial"> <bean:message
-                                        key="provider.providernewgroup.msgGroupNo"/></font></td>
+                                <td ALIGN="center"><font face="arial"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.msgGroupNo"/></font></td>
                                 <td ALIGN="center"><font face="arial"> </font> <input
                                         type="text" name="mygroup_no" size="10" maxlength="10"> <font
-                                        size="-2"><bean:message
-                                        key="provider.providernewgroup.msgMaxChars"/></font></td>
+                                        size="-2"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.msgMaxChars"/></font></td>
                             </tr>
                             <%
                                 int i = 0;
@@ -144,9 +141,9 @@
             <tr>
                 <TD align="center"><input type="hidden" name="Submit"
                                           value=" Save "> <input type="submit"
-                                                                 value="<bean:message key="provider.providernewgroup.btnSave"/>">
+                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.btnSave"/>">
                     <INPUT TYPE="RESET"
-                           VALUE="<bean:message key="provider.providernewgroup.btnExit"/>"
+                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.btnExit"/>"
                            onClick="window.close();"></TD>
             </tr>
         </TABLE>
@@ -156,4 +153,4 @@
     <div align="center"><font size="1" face="Verdana" color="#0000FF"><B></B></font></div>
 
     </body>
-</html:html>
+</html>

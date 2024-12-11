@@ -33,14 +33,14 @@
 <%@ page import="java.util.*" %>
 <%@ page
         import="org.oscarehr.hospitalReportManager.SFTPConnector, org.oscarehr.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<html:html>
+<html>
     <head>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Hospital Report Manager</title>
@@ -220,7 +220,7 @@
               method="post" onsubmit="return validateForm()">
             Upload HRM reports from your computer: <input type="file" id="fileInput" name="importFile" multiple
                                                           onChange="getFileList(event)"/>
-            <span title="<bean:message key="global.uploadWarningBody"/>"
+            <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                   style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                     alt="alert" src="../images/icon_alertsml.gif"></span>
 
@@ -259,4 +259,4 @@
                onclick="window.location='disable_msg_action.jsp'">
     </div>
     </body>
-</html:html>
+</html>

@@ -34,7 +34,6 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.util.MessageResources;
 import org.oscarehr.common.dao.PartialDateDao;
 import org.oscarehr.common.model.PartialDate;
 import org.oscarehr.util.LoggedInInfo;
@@ -54,7 +53,7 @@ public class EctDisplayDxAction extends EctDisplayAction {
 
     PartialDateDao partialDateDao = SpringUtils.getBean(PartialDateDao.class);
 
-    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_dxresearch", "r", null)) {
             return true; //Dx link won't show up on new CME screen.
@@ -63,7 +62,7 @@ public class EctDisplayDxAction extends EctDisplayAction {
             //set lefthand module heading and link
             String winName = "Disease" + bean.demographicNo;
             String url = "popupPage(580,900,'" + winName + "','" + request.getContextPath() + "/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&quickList=')";
-            Dao.setLeftHeading(messages.getMessage(request.getLocale(), "oscarEncounter.LeftNavBar.DxRegistry"));
+            Dao.setLeftHeading(getText("oscarEncounter.LeftNavBar.DxRegistry"));
             Dao.setLeftURL(url);
 
             //set righthand link to same as left so we have visual consistency with other modules

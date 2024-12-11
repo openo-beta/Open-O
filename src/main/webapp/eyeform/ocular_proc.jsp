@@ -23,11 +23,6 @@
     Ontario, Canada
 
 --%>
-
-<%@page import="org.oscarehr.eyeform.model.EyeformOcularProcedure" %>
-<%@page import="org.oscarehr.eyeform.web.OcularProcAction" %>
-
-
 <%@ include file="/taglibs.jsp" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -48,13 +43,13 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />'/>
+    <link rel="stylesheet" type="text/css" href='${request.contextPath}/jsCalendar/skins/aqua/theme.css'/>
 
     <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css"
           title="win2k-cold-1"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="<%=request.getContextPath()%>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
 
 </head>
@@ -62,20 +57,20 @@
 Enter Ocular Procedure
 <br/>
 
-<html:form action="/eyeform/OcularProc.do">
+<form action="${pageContext.request.contextPath}/eyeform/OcularProc.do" method="post">
     <table style="margin-left:auto;margin-right:auto;background-color:#f0f0f0;border-collapse:collapse">
         <input type="hidden" name="method" value="save"/>
 
-        <html:hidden property="proc.demographicNo"/>
-        <html:hidden property="proc.appointmentNo"/>
-        <html:hidden property="proc.id"/>
-        <html:hidden property="proc.status"/>
+        <input type="hidden" name="demographicNo" id="demographicNo"/>
+        <input type="hidden" name="appointmentNo" id="appointmentNo"/>
+        <input type="hidden" name="id" id="id"/>
+        <input type="hidden" name="status" id="status"/>
 
 
         <tr>
             <td class="genericTableHeader">Date</td>
             <td class="genericTableData">
-                <html:text property="proc.dateStr" size="10" styleId="pdate"/> <img
+                <input type="text" name="proc.dateStr" size="10" id="pdate"/> <img
                     src="<%=request.getContextPath()%>/images/cal.gif" id="pdate_cal">
             </td>
             <script type="text/javascript">
@@ -92,37 +87,41 @@ Enter Ocular Procedure
         <tr>
             <td class="genericTableHeader">Eye</td>
             <td class="genericTableData">
-                <html:select property="proc.eye">
-                    <html:option value="OD">OD</html:option>
-                    <html:option value="OS">OS</html:option>
-                    <html:option value="OU">OU</html:option>
-                </html:select>
+                <select name="eye">
+                    <option value="OD">OD</option>
+                    <option value="OS">OS</option>
+                    <option value="OU">OU</option>
+                </select>
             </td>
         </tr>
         <tr>
             <td class="genericTableHeader">Procedure</td>
             <td class="genericTableData">
-                <html:text property="proc.procedureName" size="50"/>
+                <input type="checkbox" name="proc.procedureName" size="50" />
             </td>
         </tr>
         <tr>
             <td class="genericTableHeader">Doctor Name</td>
             <td class="genericTableData">
-                <html:select property="proc.doctor">
-                    <html:options collection="providers" property="providerNo" labelProperty="formattedName"/>
-                </html:select>
+                <select name="doctor">
+                    <c:forEach var="provider" items="${providers}">
+                        <option value="${provider.providerNo}">
+                                ${provider.formattedName}
+                        </option>
+                    </c:forEach>
+                </select>
             </td>
         </tr>
         <tr>
             <td class="genericTableHeader">Location</td>
             <td class="genericTableData">
-                <html:text property="proc.location" size="35"/>
+                <input type="checkbox" name="proc.location" size="35" />
             </td>
         </tr>
         <tr>
             <td class="genericTableHeader">Procedure Notes</td>
             <td class="genericTableData">
-                <html:textarea rows="5" cols="40" property="proc.procedureNote"></html:textarea>
+                <textarea rows="5" cols="40" name="procedureNote" id="procedureNote"></textarea>
             </td>
         </tr>
 
@@ -132,7 +131,7 @@ Enter Ocular Procedure
 
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <html:submit value="Submit"/>
+                <input type="submit" value="Submit" />
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" name="cancel" value="Cancel" onclick="window.close()"/>
@@ -141,7 +140,7 @@ Enter Ocular Procedure
         </tr>
     </table>
 
-</html:form>
+</form>
 
 </body>
 </html>

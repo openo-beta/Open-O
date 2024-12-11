@@ -33,8 +33,8 @@
 <%@ page import="java.util.*" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="myoscar" %>
@@ -77,7 +77,7 @@
 <html lang="en">
 
 <head>
-    <title><bean:message key="admin.admin.page.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.page.title"/></title>
     <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="<%=request.getContextPath() %>/css/datepicker.css" rel="stylesheet" type="text/css">
     <link href="<%=request.getContextPath() %>/css/DT_bootstrap.css" rel="stylesheet" type="text/css">
@@ -308,9 +308,6 @@
 </head>
 
 <body>
-
-<!--<oscar:help keywords="admin" key="app.top1"/> -->
-
 <div class="container-fluid">
     <div class="row-fluid hidden-print" style="text-align:right">
         <i class=" icon-question-sign"></i>
@@ -320,8 +317,7 @@
         <%} else {%>
         <div id="help-link">
             <a href="javascript:void(0)"
-               onclick="document.getElementById('helpHtml').style.display='block';document.getElementById('helpHtml').style.right='0px';"><bean:message
-                    key="global.help"/></a>
+               onclick="document.getElementById('helpHtml').style.display='block';document.getElementById('helpHtml').style.right='0px';"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a>
 
             <div id="helpHtml">
                 <div class="help-title">Help</div>
@@ -338,8 +334,7 @@
         <%}%>
 
         <i class=" icon-info-sign" style="margin-left:10px;"></i> <a href="javascript:void(0)"
-                                                                     onClick="window.open('<%=request.getContextPath()%>/oscarEncounter/About.jsp','About OSCAR','scrollbars=1,resizable=1,width=800,height=600,left=0,top=0')"><bean:message
-            key="global.about"/></a></div>
+                                                                     onClick="window.open('<%=request.getContextPath()%>/oscarEncounter/About.jsp','About OSCAR','scrollbars=1,resizable=1,width=800,height=600,left=0,top=0')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a></div>
 
     <div class="row-fluid">
 
@@ -361,7 +356,7 @@
                     <div class="well quick-links">
                         <a href='javascript:void(0);' class="xlink" rel="${ctx}/admin/unLock.jsp"><i
                                 class="icon-user icon-4x"></i>
-                            <h5><bean:message key="admin.admin.unlockAcct"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.unlockAcct"/></h5></a>
                     </div>
                 </security:oscarSec>
 
@@ -370,13 +365,13 @@
                     <div class="well quick-links">
                         <a href='javascript:void(0);' class="xlink" rel="${ctx}/admin/provideraddarecordhtm.jsp"><i
                                 class="icon-user icon-4x"></i>
-                            <h5><bean:message key="admin.admin.btnAddProvider"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnAddProvider"/></h5></a>
                     </div>
 
                     <div class="well quick-links">
                         <a href='javascript:void(0);' class="xlink" rel="${ctx}/admin/securityaddarecord.jsp"><i
                                 class="icon-user icon-4x"></i>
-                            <h5><bean:message key="admin.admin.btnAddLogin"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnAddLogin"/></h5></a>
                     </div>
                 </security:oscarSec>
 
@@ -385,7 +380,7 @@
                     <div class="well quick-links">
                         <a href="${ctx}/eform/efmformmanager.jsp" class="contentLink defaultForms"><i
                                 class="icon-file icon-4x"></i>
-                            <h5><bean:message key="eform.showmyform.msgManageEFrm"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgManageEFrm"/></h5></a>
                     </div>
                 </security:oscarSec>
 
@@ -393,15 +388,15 @@
                                    reverse="<%=false%>">
                     <div class="well quick-links">
                         <a href="javascript:void(0);" class="xlink" rel="${ctx}/schedule/scheduletemplatesetting.jsp"
-                           title="<bean:message key="admin.admin.scheduleSettingTitle"/>"><i
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.scheduleSettingTitle"/>"><i
                                 class="icon-calendar icon-4x"></i>
-                            <h5><bean:message key="admin.admin.scheduleSetting"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.scheduleSetting"/></h5></a>
                     </div>
 
                     <div class="well quick-links">
                         <a href="javascript:void(0);" class="xlink" rel="${ctx}/admin/admindisplaymygroup.jsp"><i
                                 class="icon-calendar icon-4x"></i>
-                            <h5><bean:message key="admin.admin.btnSearchGroupNoRecords"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSearchGroupNoRecords"/></h5></a>
                     </div>
                 </security:oscarSec>
 
@@ -410,7 +405,7 @@
                     <div class="well quick-links">
                         <a href='javascript:void(0);' class="xlink" rel="${ctx}/admin/providertemplate.jsp"><i
                                 class="icon-medkit icon-4x"></i>
-                            <h5><bean:message key="admin.admin.btnInsertTemplate"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnInsertTemplate"/></h5></a>
                     </div>
                 </security:oscarSec>
 
@@ -419,7 +414,7 @@
                     <div class="well quick-links">
                         <a href='javascript:void(0);' class="xlink" rel="${ctx}/admin/providerPrivilege.jsp"><i
                                 class="icon-wrench icon-4x"></i>
-                            <h5><bean:message key="admin.admin.assignRightsObject"/></h5></a>
+                            <h5><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.assignRightsObject"/></h5></a>
                     </div>
                 </security:oscarSec>
             </div>
@@ -594,7 +589,7 @@
     function popupPage(vheight, vwidth, varpage) {
         var page = "" + varpage;
         windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-        var popup = window.open(page, "<bean:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
+        var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
         if (popup != null) {
             if (popup.opener == null) {
                 popup.opener = self;

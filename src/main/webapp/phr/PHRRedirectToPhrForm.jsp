@@ -32,9 +32,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
 
 <html>
 <head>
@@ -46,10 +46,10 @@
     </script>
 </head>
 <body onload="onloadd()">
-<form action="<bean:write name="url"/>" name="autosubmit" method="POST">
-    <input type="hidden" name="userName" value="<bean:write name="userName"/>">
-    <input type="hidden" name="password" value="<bean:write name="password"/>">
-    <input type="hidden" name="viewpatient" value="<bean:write name="viewpatient"/>">
+<form action="<c:out value="${url}"/>" name="autosubmit" method="POST">
+    <input type="hidden" name="userName" value="<c:out value="${userName}"/>">
+    <input type="hidden" name="password" value="<c:out value="${password}"/>">
+    <input type="hidden" name="viewpatient" value="<c:out value="${viewpatient}"/>">
 </form>
 </body>
 </html>

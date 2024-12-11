@@ -42,11 +42,11 @@
         return;
     }
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Edit Facility</title>
-        <link rel="stylesheet" type="text/css" href='<html:rewrite page="/css/tigris.css" />'/>
-        <link rel="stylesheet" type="text/css" href='<html:rewrite page="/css/displaytag.css" />'/>
+        <link rel="stylesheet" type="text/css" href='${request.contextPath}/css/tigris.css'/>
+        <link rel="stylesheet" type="text/css" href='${request.contextPath}/css/displaytag.css'/>
 
         <script type="text/javascript"
                 src="<%=request.getContextPath()%>/js/validation.js">
@@ -90,11 +90,11 @@
     </head>
     <body>
     <h1>Edit Facility</h1>
-    <html:form action="/FacilityManager.do"
+    <form action="${pageContext.request.contextPath}/FacilityManager.do" method="post"
                onsubmit="return validateForm();">
         <input type="hidden" name="method" value="save"/>
-        <html:hidden property="facility.orgId"/>
-        <html:hidden property="facility.sectorId"/>
+        <input type="hidden" name="orgId" id="orgId"/>
+        <input type="hidden" name="sectorId" id="sectorId"/>
         <!-- Ronnie
         < :hidden property="facility.ocanServiceOrgNumber" />
         -->
@@ -105,38 +105,36 @@
             </tr>
             <tr class="b">
                 <td>Name: *</td>
-                <td><html:text property="facility.name" size="32"
-                               maxlength="32" styleId="facilityName"/></td>
+                <td><input type="text" name="facility.name" size="32" maxlength="32" id="facilityName"/></td>
             </tr>
             <tr class="b">
                 <td>Description: *</td>
-                <td><html:text property="facility.description" size="60"
-                               maxlength="70" styleId="facilityDesc"/></td>
+                <td><input type="text" name="facility.description" size="60" maxlength="70" id="facilityDesc"/></td>
             </tr>
             <tr class="b">
                 <td width="20%">Enable Digital Signatures:</td>
-                <td><html:checkbox property="facility.enableDigitalSignatures"/></td>
+                <td><input type="checkbox" name="facility.enableDigitalSignatures"/></td>
             </tr>
             <tr class="b">
                 <td>Enable Integrator:</td>
-                <td><html:checkbox property="facility.integratorEnabled"/></td>
+                <td><input type="checkbox" name="facility.integratorEnabled"/></td>
             </tr>
             <tr class="b">
                 <td>Integrator Url:</td>
-                <td><html:text property="facility.integratorUrl" size="40"/></td>
+                <td><input type="checkbox" name="facility.integratorUrl" size="40" /></td>
             </tr>
             <tr class="b">
                 <td>Integrator User:</td>
-                <td><html:text property="facility.integratorUser"/></td>
+                <td><input type="text" name="facility.integratorUser" id="facility.integratorUser" /></td>
             </tr>
             <tr class="b">
                 <td>Integrator Password:</td>
-                <td><html:password property="facility.integratorPassword"/></td>
+                <td><input type="password" name="integratorPassword" id="integratorPassword"/></td>
             </tr>
             <tr class="b">
                 <td>Remove Demographic Identity:</td>
                 <td>
-                    <html:checkbox property="removeDemographicIdentity"/>
+                    <input type="checkbox" name="removeDemographicIdentity"/>
                     (All patients' names, hin# & sin# will be removed in Integrator)
                     <br>
                 </td>
@@ -145,13 +143,13 @@
             <tr class="b">
                 <td>Rx Interaction Warning Level:</td>
                 <td>
-                    <html:select property="facility.rxInteractionWarningLevel">
-                        <html:option value="0">Not Specified</html:option>
-                        <html:option value="1">Low</html:option>
-                        <html:option value="2">Medium</html:option>
-                        <html:option value="3">High</html:option>
-                        <html:option value="4">None</html:option>
-                    </html:select>
+                    <select name="rxInteractionWarningLevel">
+                        <option value="0">Not Specified</option>
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                        <option value="4">None</option>
+                    </select>
                 </td>
             </tr>
             <!--Ronnie
@@ -159,7 +157,7 @@
                 <tr class="b">
                     <td>Integrator Update Interval:</td>
                     <td>
-                        <html:text property="updateInterval" size="3" />
+                        <input type="checkbox" name="updateInterval" id="updateInterval" size="3" />
                         Hour(s)
                         <br>
                     </td>
@@ -168,10 +166,11 @@
             <tr>
                 <td colspan="2">* Mandatory fields</td>
             <tr>
-                <td colspan="2"><html:submit property="submit.save" onclick="bCancel=false;">Save</html:submit>
-                    <html:cancel>Cancel</html:cancel></td>
+                <td colspan="2">
+                    <input type="submit" name="submit" value="Save" onclick="bCancel=false;" />
+                    <button type="button" onclick="window.history.back();">Cancel</button></td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

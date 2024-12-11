@@ -27,18 +27,8 @@
 
 package org.oscarehr.managers;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.*;
-
+import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.action.DynaActionForm;
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.FaxClientLogDao;
 import org.oscarehr.common.dao.FaxConfigDao;
@@ -48,21 +38,25 @@ import org.oscarehr.common.model.FaxClientLog;
 import org.oscarehr.common.model.FaxConfig;
 import org.oscarehr.common.model.FaxJob;
 import org.oscarehr.common.model.FaxJob.STATUS;
+import org.oscarehr.documentManager.EDocUtil;
 import org.oscarehr.fax.core.FaxAccount;
 import org.oscarehr.fax.core.FaxRecipient;
 import org.oscarehr.fax.core.FaxSchedulerJob;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import net.sf.json.JSONObject;
-import oscar.OscarProperties;
-import org.oscarehr.documentManager.EDocUtil;
 import oscar.form.util.FormTransportContainer;
 import oscar.log.LogAction;
 import oscar.util.ConcatPDF;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class FaxManagerImpl implements FaxManager {
@@ -199,18 +193,6 @@ public class FaxManagerImpl implements FaxManager {
         logger.info("Rendering form number " + formTransportContainer.getFormName() + " for fax preview.");
 
         return faxDocumentManager.getFormFaxDocument(loggedInInfo, formTransportContainer);
-    }
-
-    /**
-     * Calls the save method after the faxJob(s) are created.
-     * The FaxJob list that is returned contains persisted FaxJob Objects
-     * This method has a specific purpose for the FaxAction class.  Use the
-     * createFaxJob(LoggedInInfo loggedInInfo, Map<String, Object> faxJobMap) signature otherwise.
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<FaxJob> createAndSaveFaxJob(LoggedInInfo loggedInInfo, DynaActionForm faxActionForm) {
-        return createAndSaveFaxJob(loggedInInfo, faxActionForm.getMap());
     }
 
     /**

@@ -23,7 +23,7 @@
 
 package org.oscarehr.PMmodule.web.formbean;
 
-import org.apache.struts.util.LabelValueBean;
+import oscar.util.LabelValueBean;
 
 public class GenericIntakeConstants {
 

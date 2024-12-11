@@ -17,8 +17,8 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -33,22 +33,25 @@
     FavoritesPrivilegeDao favoritesPrivilegeDao = SpringUtils.getBean(FavoritesPrivilegeDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
-        <title><bean:message key="SearchDrug.title.CopyFavorites"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title.CopyFavorites"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
             <% response.sendRedirect("error.html"); %>
         </c:if>
         <c:if test="${not empty RxSessionBean}">
-            <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean" name="RxSessionBean" scope="session"/>
-            <c:if test="${bean.valid == false}">
-                <% response.sendRedirect("error.html"); %>
-            </c:if>
+            <%
+                // Directly access the RxSessionBean from the session
+                oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+                if (bean != null && !bean.isValid()) {
+                    response.sendRedirect("error.html");
+                    return; // Ensure no further JSP processing
+                }
+            %>
         </c:if>
-        <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean" name="bean" scope="page"/>
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
 
@@ -86,7 +89,7 @@
 
 
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
-    <html:form action="/oscarRx/copyFavorite">
+    <form action="/oscarRx/copyFavorite.do">
         <input type="hidden" name="dispatch" value="refresh"/>
         <input type="hidden" name="userProviderNo" value=<%=providerNo%>/>
         <input type="hidden" name="copyProviderNo" value=""/>
@@ -334,9 +337,8 @@
                         <tr>
                             <td width="0%" valign="top">
                                 <div class="DivCCBreadCrumbs">
-                                    <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <bean:message
-                                            key="SearchDrug.title"/></a> > <b>
-                                            <bean:message key="SearchDrug.title.CopyFavorites"/> > <b>Setting</b></div>
+                                    <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> > <b>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title.CopyFavorites"/> > <b>Setting</b></div>
                             </td>
                         </tr>
 
@@ -394,6 +396,6 @@
                     colspan="2"></td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

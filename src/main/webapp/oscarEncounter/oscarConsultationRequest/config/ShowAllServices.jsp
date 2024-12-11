@@ -41,11 +41,11 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
 
     <jsp:useBean id="showAllServicesUtil" scope="session"
                  class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConShowAllServicesUtil"/>
@@ -53,10 +53,9 @@
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script>
             function BackToOscar() {
                 window.close();
@@ -66,7 +65,18 @@
     </head>
 
     <body class="BodyStyle" vlink="#0000FF">
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <div id="service-providers-wrapper" style="margin:auto 10px;">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
@@ -74,8 +84,7 @@
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td class="Header"><bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
+                            <td class="Header"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
                             </td>
                         </tr>
                     </table>
@@ -97,10 +106,9 @@
                             <td>
 
                                 <table>
-                                    <html:form action="/oscarEncounter/AddService">
+                                    <form action="${pageContext.request.contextPath}/oscarEncounter/AddService.do" method="post">
                                         <tr>
-                                            <td><bean:message
-                                                    key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.services"/>
+                                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.services"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -125,7 +133,7 @@
                                                 </table>
                                             </td>
                                         </tr>
-                                    </html:form>
+                                    </form>
                                 </table>
                             </td>
                         </tr>
@@ -140,4 +148,4 @@
         </table>
     </div>
     </body>
-</html:html>
+</html>

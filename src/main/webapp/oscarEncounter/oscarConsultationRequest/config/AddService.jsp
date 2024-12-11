@@ -26,9 +26,9 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -43,16 +43,15 @@
         return;
     }
 %>
-
-<html:html lang="en">
+<fmt:setBundle basename="oscarResources"/>
+<html>
 
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.config.AddService.title"/>
+        <title><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddService.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
     <script language="javascript">
@@ -63,7 +62,7 @@
         function checkServiceName() {
             var service = document.forms[0].service;
             if (service.value.trim() == "") {
-                alert("<bean:message key="oscarEncounter.oscarConsultationRequest.config.AddService.serviceNameEmpty"/>");
+                alert("<fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddService.serviceNameEmpty"/>");
                 service.focus();
                 return false;
             } else return true;
@@ -79,8 +78,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td class="Header"><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.config.AddService.title"/>
+                        <td class="Header"><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddService.title"/>
                         </td>
                         <td></td>
                     </tr>
@@ -108,28 +106,29 @@
                         String added = (String) request.getAttribute("SERVADD");
                         if (added != null) { %>
                     <tr>
-                        <td><font color="red"><bean:message
-                                key="oscarEncounter.oscarConsultationRequest.config.AddService.msgServiceAdded"
-                                arg0="<%=added%>"/></font></td>
+                        <td style="color:red">
+                            <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded">
+                                <fmt:param value="${added}" />
+                            </fmt:message>
+                        </td>
                     </tr>
                     <%}%>
                     <tr>
                         <td>
 
                             <table>
-                                <html:form action="/oscarEncounter/AddService" onsubmit="return checkServiceName();">
+                                <form action="${pageContext.request.contextPath}/oscarEncounter/AddService.do" method="post" onsubmit="return checkServiceName();">
                                     <tr>
-                                        <td><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.AddService.service"/>
+                                        <td><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddService.service"/>
                                         </td>
                                         <td><input type="text" name="service"/></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><input type="submit"
-                                                               value="<bean:message key="oscarEncounter.oscarConsultationRequest.config.AddService.btnAddService"/>"/>
+                                                               value="<fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddService.btnAddService"/>"/>
                                         </td>
                                     </tr>
-                                </html:form>
+                                </form>
                             </table>
                         </td>
                     </tr>
@@ -147,4 +146,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

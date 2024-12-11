@@ -32,7 +32,6 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 <%--
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 --%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -44,9 +43,9 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 
 <center><h1>This document is not found on the system</h1></center>
 <center>
-    <html:link page="/phr/msg/DisplayPHRMessages.jsp?method=${comingfrom}" styleClass="messengerButtons">
+    <a href="${pageContext.request.contextPath}/phr/msg/DisplayPHRMessages.jsp?method=${comingfrom}" styleClass="messengerButtons">
         Go Back
-    </html:link>
+    </a>
 </center>
 
 <%--

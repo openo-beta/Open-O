@@ -11,7 +11,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils, org.oscarehr.common.model.Document" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="org.oscarehr.common.dao.DocumentDao" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

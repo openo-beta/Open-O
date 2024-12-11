@@ -30,8 +30,8 @@
 <%@ page
         import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*"
         errorPage="../appointment/errorpage.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:useBean id="dataBean" class="java.util.Properties" scope="page"/>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -68,9 +68,9 @@
         }
     }
 %>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="schedule.scheduletemplatecodesetting.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.title"/></title>
 
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/share/javascript/picker.js"></script>
@@ -84,7 +84,7 @@
                 var node = document.getElementById("bookinglimit");
 
                 if (isNaN(node.value)) {
-                    alert("<bean:message key="schedule.scheduletemplatecodesetting.msgCheckInput"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgCheckInput"/>");
                     node.focus();
                     return false;
                 }
@@ -104,7 +104,7 @@
 
             function checkInput() {
                 if (document.schedule.holiday_name.value == "") {
-                    alert("<bean:message key="schedule.scheduletemplatecodesetting.msgCheckInput"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgCheckInput"/>");
                     return false;
                 } else {
                     return true;
@@ -117,17 +117,17 @@
     </head>
     <body onLoad="setfocus()">
 
-    <h4><bean:message key="schedule.scheduletemplatecodesetting.msgApptTemplateCode"/></h4>
+    <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgApptTemplateCode"/></h4>
     <div class="alert">
-        <bean:message key="schedule.scheduletemplatecodesetting.msgCode"/><br>
-        <bean:message key="schedule.scheduletemplatecodesetting.msgDescription"/><br>
-        <bean:message key="schedule.scheduletemplatecodesetting.msgDuration"/><br>
-        <bean:message key="schedule.scheduletemplatecodesetting.msgColor"/><br>
-        <bean:message key="schedule.scheduletemplatecodesetting.msgBookingLimit"/><br>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgCode"/><br>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgDescription"/><br>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgDuration"/><br>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgColor"/><br>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgBookingLimit"/><br>
     </div>
     <div style="text-align: center; background-color: #CCFFCC;">
         <form name="deletetemplatecode" method="post" action="scheduletemplatecodesetting.jsp">
-            <bean:message key="schedule.scheduletemplatecodesetting.formTemplateCode"/>:
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.formTemplateCode"/>:
             <select name="code">
                 <%
                     List<ScheduleTemplateCode> stcs = scheduleTemplateCodeDao.findAll();
@@ -142,7 +142,7 @@
                 %>
             </select>
             <input type="hidden" name="dboperation" value=" Edit ">
-            <input type="submit" class="btn" value='<bean:message key="schedule.scheduletemplatecodesetting.btnEdit"/>'>
+            <input type="submit" class="btn" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.btnEdit"/>'>
         </form>
     </div>
 
@@ -164,39 +164,34 @@
                 }
             %>
             <div class="control-group">
-                <label class="control-label" for="code"><bean:message
-                        key="schedule.scheduletemplatecodesetting.formCode"/>:</label>
+                <label class="control-label" for="code"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.formCode"/>:</label>
                 <div class="controls">
                     <input type="text" name="code" id="code" maxlength="1"
                             <%=bEdit?("value='"+dataBean.getProperty("code")+"'"):"value=''"%>>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="description"><bean:message
-                        key="schedule.scheduletemplatecodesetting.formDescription"/>:</label>
+                <label class="control-label" for="description"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.formDescription"/>:</label>
                 <div class="controls">
                     <input type="text" name="description" id="description" maxlength="40"
                             <%=bEdit?("value='"+Encode.forHtmlContent(dataBean.getProperty("description"))+"'"):"value=''"%>>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="duration"><bean:message
-                        key="schedule.scheduletemplatecodesetting.formDuration"/>:</label>
+                <label class="control-label" for="duration"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.formDuration"/>:</label>
                 <div class="controls">
                     <input type="text" name="duration" id="duration" maxlength="3"
-                           placeholder="<bean:message key="schedule.scheduletemplatecodesetting.msgDuration" />"
+                           placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgDuration"/>"
                             <%=bEdit?("value='"+dataBean.getProperty("duration")+"'"):"value=''"%>>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="color"><bean:message
-                        key="schedule.scheduletemplatecodesetting.formColor"/>:</label>
+                <label class="control-label" for="color"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.formColor"/>:</label>
                 <div class="controls">
                     <div class="input-append">
                         <input type="text" name="color" id="color" maxlength="10"
                                style="width: 178px; background-color:<%=bEdit?(dataBean.getProperty("color")):"white"%>;"
-                               placeholder="<bean:message
-					key="schedule.scheduletemplatecodesetting.msgColorExample" />"
+                               placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.msgColorExample"/>"
                                 <%=bEdit?("value='"+dataBean.getProperty("color")+"'"):"value=''"%>>
                         <span class="add-on"><a
                                 href="javascript:TCP.popup(document.forms['addtemplatecode'].elements['color']);"><img
@@ -207,8 +202,7 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="bookingLimit"><bean:message
-                        key="schedule.scheduletemplatecodesetting.formBookingLimit"/>:</label>
+                <label class="control-label" for="bookingLimit"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.formBookingLimit"/>:</label>
                 <div class="controls">
                     <input type="text" id="bookinglimit" name="bookinglimit"
                             <%=bEdit?("value='"+dataBean.getProperty("bookinglimit")+"'"):"value='1'"%>>
@@ -239,12 +233,12 @@
                     <br>
                     <input type="button" class="btn"
                            onclick="document.forms['addtemplatecode'].dboperation.value='Delete'; document.forms['addtemplatecode'].submit();"
-                           value='<bean:message key="schedule.scheduletemplatecodesetting.btnDelete"/>'>
+                           value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.btnDelete"/>'>
                     <input type="button" class="btn btn-primary"
                            onclick="if( validateNum() ) { document.forms['addtemplatecode'].dboperation.value=' Save '; document.forms['addtemplatecode'].submit();}"
-                           value='<bean:message key="schedule.scheduletemplatecodesetting.btnSave"/>'>
+                           value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatecodesetting.btnSave"/>'>
                     <input type="button" name="Button" class="btn btn-link"
-                           value='<bean:message key="global.btnExit"/>'
+                           value='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>'
                            onClick="window.close()">
                     <input type="hidden" name="dboperation" value=""/>
                 </div>
@@ -252,4 +246,4 @@
         </form>
     </div>
     </body>
-</html:html>
+</html>

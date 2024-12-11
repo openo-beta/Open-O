@@ -31,9 +31,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.lang.*, java.util.*, java.text.*,java.sql.*, oscar.*" %>
 <%
     String mcedtUsername = (String) session.getAttribute("mcedtUsername");
@@ -67,7 +67,7 @@
 
 
             if (document.getElementById("password").value == "") {
-                alert('<bean:message key="admin.securityrecord.formPassword" /> <bean:message key="admin.securityrecord.msgIsRequired"/>');
+                alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityrecord.formPassword"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityrecord.msgIsRequired"/>');
                 setfocus('password');
                 return false;
             }
@@ -76,7 +76,7 @@
             //	return false;
             //}
             if (document.getElementById("password").value != document.getElementById("conPassword").value) {
-                alert('<bean:message key="admin.securityrecord.msgPasswordNotConfirmed" />');
+                alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityrecord.msgPasswordNotConfirmed"/>');
                 setfocus('conPassword');
                 return false;
             }
@@ -116,8 +116,7 @@
         </div>
 
         <div class="center" style="width:45%">
-            <%-- <html:form action="<%=request.getContextPath() %>/mcedt/kaichpass.do" method="POST"> --%>
-            <html:form action="/mcedt/kaichpass" method="post" styleId="form">
+            <form action="${pageContext.request.contextPath}/mcedt/kaichpass.do" method="post" styleId="form">
                 <input id="method" name="method" type="hidden" value=""/>
                 <table class="password">
                     <tr>
@@ -144,7 +143,7 @@
                         </td>
                     </tr>
                 </table>
-            </html:form>
+            </form>
         </div>
     </div>
 </div>

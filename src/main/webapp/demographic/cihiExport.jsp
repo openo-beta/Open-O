@@ -39,26 +39,17 @@
         return;
     }
 %>
-
 <%@page import="org.oscarehr.common.dao.DataExportDao" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
-<%@page import="oscar.util.StringUtils" %>
 <%@page import="oscar.oscarReport.data.DemographicSets" %>
-<%@page import="org.apache.struts.validator.DynaValidatorForm" %>
-<%@page import="java.util.ArrayList, java.util.List" %>
+<%@page import="java.util.List" %>
 <%@page import="org.oscarehr.common.model.DataExport" %>
 <%@include file="/casemgmt/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%
-    String demographic_no = request.getParameter("demographic_no");
-%>
-
-<%
     DemographicSets ds = new DemographicSets();
     List<String> setsList = ds.getDemographicSets();
-
 %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <script src="${pageContext.request.contextPath}/csrfguard"></script>
@@ -81,71 +72,71 @@
 </head>
 <body>
 <div class="container-fluid well">
-    <html:form action="/demographic/cihiExportOMD4.do" method="get">
+    <form action="${pageContext.request.contextPath}/demographic/cihiExportOMD4.do" method="get">
         <h3>Vendor Information</h3>
         <table class="table-condensed">
             <tr>
                 <td>Organization Name</td>
-                <td><html:text styleClass="right" property="orgName"></html:text></td>
+                <td><input type="text" name="orgName" styleClass="right" /></td>
             </tr>
             <tr>
                 <td>Contact Last Name</td>
-                <td><html:text styleClass="right" property="contactLName"></html:text></td>
+                <td><input type="text" name="contactLName" styleClass="right" /></td>
             </tr>
             <tr>
                 <td>Contact First Name</td>
-                <td><html:text styleClass="right" property="contactFName"></html:text></td>
+                <td><input type="text" name="contactFName" styleClass="right" /></td>
             </tr>
             <tr>
                 <td>Contact Phone</td>
-                <td><html:text styleClass="right" property="contactPhone"></html:text></td>
+                <td><input type="text" name="contactPhone" styleClass="right" /></td>
             </tr>
             <tr>
                 <td>Contact Email</td>
-                <td><html:text styleClass="right" property="contactEmail"></html:text></td>
+                <td><input type="text" name="contactEmail" styleClass="right" /></td>
             </tr>
             <tr>
                 <td>Contact Username</td>
-                <td><html:text styleClass="right" property="contactUserName"></html:text></td>
+                <td><input type="text" name="contactUserName" styleClass="right" /></td>
             </tr>
             <tr>
                 <td>Vendor Business Name</td>
-                <td><html:text styleClass="right" property="vendorBusinessName"></html:text></td>
+                <td><input type="text" name="vendorBusinessName" styleClass="right" /></td>
             </tr>
             <tr>
                 <td>Vendor ID</td>
-                <td><html:text styleClass="right" readonly="true" property="vendorId"></html:text></td>
+                <td><input type="text" name="vendorId" styleClass="right" readonly="true" /></td>
             </tr>
             <tr>
                 <td>Vendor Common Name</td>
-                <td><html:text styleClass="right" readonly="true" property="vendorCommonName"></html:text></td>
+                <td><input type="text" name="vendorCommonName" styleClass="right" readonly="true" /></td>
             </tr>
             <tr>
                 <td>Vendor Software</td>
-                <td><html:text styleClass="right" readonly="true" property="vendorSoftware"></html:text></td>
+                <td><input type="text" name="vendorSoftware" styleClass="right" readonly="true" /></td>
             </tr>
             <tr>
                 <td>Vendor Software Common Name</td>
-                <td><html:text styleClass="right" readonly="true" property="vendorSoftwareCommonName"></html:text></td>
+                <td><input type="text" name="vendorSoftwareCommonName" styleClass="right" readonly="true" /></td>
             </tr>
             <tr>
                 <td>Vendor Software Ver</td>
-                <td><html:text styleClass="right" readonly="true" property="vendorSoftwareVer"></html:text></td>
+                <td><input type="text" name="vendorSoftwareVer" styleClass="right" readonly="true" /></td>
             </tr>
             <tr>
                 <td>Vendor Install Date</td>
-                <td><html:text styleClass="right" readonly="true" property="installDate"></html:text></td>
+                <td><input type="text" name="installDate" styleClass="right" readonly="true" /></td>
             </tr>
 
             <tr>
                 <td>Extract Type</td>
                 <td>
-                    <html:select property="extractType" onchange="setReportType(this);">
-                        <html:option value="<%=DataExportDao.CIHI_OMD4%>"><%=DataExportDao.CIHI_OMD4%>
-                        </html:option>
-                        <html:option value="<%=DataExportDao.CIHI_PHC_VRS%>"><%=DataExportDao.CIHI_PHC_VRS%>
-                        </html:option>
-                    </html:select>
+                    <select name="extractType" onchange="setReportType(this);">
+                        <option value="<%=DataExportDao.CIHI_OMD4%>"><%=DataExportDao.CIHI_OMD4%>
+                        </option>
+                        <option value="<%=DataExportDao.CIHI_PHC_VRS%>"><%=DataExportDao.CIHI_PHC_VRS%>
+                        </option>
+                    </select>
                 </td>
             </tr>
 
@@ -154,19 +145,19 @@
                     Patient Set
                 </td>
                 <td>
-                    <html:select property="patientSet">
-                        <html:option value="-1">--Select Set--</html:option>
+                    <select name="patientSet" id="patientSet">
+                        <option value="-1">--Select Set--</option>
                         <%
                             String setName;
                             for (int idx = 0; idx < setsList.size(); ++idx) {
                                 setName = setsList.get(idx);
                         %>
-                        <html:option value="<%=setName%>"><%=setName%>
-                        </html:option>
+                        <option value="<%=setName%>"><%=setName%>
+                        </option>
                         <%
                             }
                         %>
-                    </html:select>
+                    </select>
                 </td>
             </tr>
 
@@ -205,7 +196,7 @@
                 }
             %>
         </table>
-    </html:form>
+    </form>
 </div>
 </body>
 </html>

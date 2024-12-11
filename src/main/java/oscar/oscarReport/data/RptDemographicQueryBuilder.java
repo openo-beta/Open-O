@@ -35,7 +35,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.oscarPrevention.reports.PreventionReportUtil;
-import oscar.oscarReport.pageUtil.RptDemographicReportForm;
+import oscar.oscarReport.pageUtil.RptDemographicReport2Form;
 import oscar.util.DateUtils;
 import oscar.util.UtilDateUtilities;
 
@@ -64,11 +64,7 @@ public class RptDemographicQueryBuilder {
     public RptDemographicQueryBuilder() {
     }
 
-    public java.util.ArrayList<ArrayList<String>> buildQuery(LoggedInInfo loggedInInfo, RptDemographicReportForm frm) {
-        return buildQuery(loggedInInfo, frm, null);
-    }
-
-    public java.util.ArrayList<ArrayList<String>> buildQuery(LoggedInInfo loggedInInfo, RptDemographicReportForm frm, String asofRosterDate) {
+    public java.util.ArrayList<ArrayList<String>> buildQuery(LoggedInInfo loggedInInfo, RptDemographicReport2Form frm, String asofRosterDate) {
         MiscUtils.getLogger().debug("in buildQuery");
 
         String[] select = frm.getSelect();

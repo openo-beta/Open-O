@@ -11,20 +11,22 @@
 <%@page import="java.nio.charset.Charset" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page language="java" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="java.util.*,oscar.*,java.io.*,java.net.*,oscar.util.*,org.apache.commons.io.FileUtils"
          errorPage="/errorpage.jsp" %>
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="session"/>
 
-<html:html lang="en">
-<head>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/jquery/jquery-1.4.2.js"></script>
-<title>MOH Report</title>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/billing.css" >
-<link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/css/extractedFromPages.css" />
+<html>
+    <head>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
+        <script type="text/javascript"
+                src="<%= request.getContextPath() %>/share/javascript/jquery/jquery-1.4.2.js"></script>
+        <title>MOH Report</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/billing.css">
+        <link rel="stylesheet" type="text/css" media="all"
+              href="<%=request.getContextPath()%>/share/css/extractedFromPages.css"/>
 
         <%
             String INBOX = OscarProperties.getInstance().getProperty("ONEDT_INBOX");
@@ -128,7 +130,7 @@
                 <font size="3">Billing</font>
             </td>
             <td width="90%" align="right" class="Header">
-                <input type="button" name="print" value="<bean:message key="global.btnPrint"/>"
+                <input type="button" name="print" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                        onClick="window.print()">
             </td>
         </tr>
@@ -136,5 +138,5 @@
     <div id="MOHreport"></div>
 
     </body>
-</html:html>
+</html>
 

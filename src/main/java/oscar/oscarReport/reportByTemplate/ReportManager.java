@@ -23,7 +23,7 @@
  * Ontario, Canada
  */
 //This is the main utility object that:
-//   -Makes all database transactions (except one in GenerateReportAction)
+//   -Makes all database transactions (except one in GenerateReport2Action)
 //   -Loads/saves all the reports
 //   -Saves/loads parameters
 //   -Parses/saves all XML

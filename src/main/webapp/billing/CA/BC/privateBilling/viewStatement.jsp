@@ -11,8 +11,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="bean" uri="/WEB-INF/struts-bean.tld" %>
-<%@ taglib prefix="html" uri="/WEB-INF/struts-html.tld" %>
+
+
 
 <%
     if (session.getValue("user") == null)
@@ -23,10 +23,10 @@
 
 <%@ page contentType="text/html" %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
         <meta charset="utf-8">
-        <title><bean:message key="admin.admin.PrivateBillingStatement"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.PrivateBillingStatement"/></title>
         <link rel="stylesheet" type="text/css" media="all" href="${ctx}/library/bootstrap/3.0.0/css/bootstrap.min.css">
         <style>
             .table > tbody > tr.highlight_pink {
@@ -48,7 +48,7 @@
     </head>
 
     <body>
-    <h3><bean:message key="admin.admin.PrivateBillingStatement"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.PrivateBillingStatement"/></h3>
 
     <div class="container-fluid well">
 
@@ -254,4 +254,4 @@
         });
     </script>
     </body>
-</html:html>
+</html>

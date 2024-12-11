@@ -29,9 +29,9 @@
 <%@page import="org.joda.time.*" %>
 <%@page import="org.oscarehr.ws.rest.FormsService" %>
 <%@page import="org.oscarehr.app.AppOAuth1Config" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
 
     <%@ page session="true" %>
     <head>
@@ -90,7 +90,7 @@
                     document.getElementById("total_downloaded").innerHTML = 'Total EForms Processed: ' + jsonObject.total;
                     document.getElementById("errors").innerHTML = jsonObject.content;
                     document.getElementById("download_all_k2a_eforms").disabled = false;
-                    document.getElementById("download_all_k2a_eforms").value = '<bean:message key="eform.download.msgDownloadEform" />';
+                    document.getElementById("download_all_k2a_eforms").value = '<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgDownloadEform"/>';
                 }
             }
             xhr.open("POST", "<%=request.getContextPath()%>/ws/rs/forms/getAllK2AEForms");
@@ -127,23 +127,23 @@
         <h5 id="total_downloaded"></h5>
         <p id="errors"></p>
     </div>
-    <h4><bean:message key="eform.download.msgK2AResources"/></h4>
-    <input type="button" id="download_all_k2a_eforms" value="<bean:message key="eform.download.msgDownloadEform" />"
+    <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgK2AResources"/></h4>
+    <input type="button" id="download_all_k2a_eforms" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgDownloadEform"/>"
            class="btn btn-primary upload"
            onclick="this.value = 'Downloading...'; this.disabled = true;downloadAllK2AEForms();"/>
-    <input type="button" value="<bean:message key="eform.download.msgK2ABrowse" />" class="btn btn-primary upload"
+    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgK2ABrowse"/>" class="btn btn-primary upload"
            onclick="window.open('<%=k2aURL%>/#/ws/rs/posts/browse/EForm');"/>
-    <input type="button" value="<bean:message key="eform.download.msgRefresh" />" class="btn btn-primary upload"
+    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgRefresh"/>" class="btn btn-primary upload"
            onclick="location.reload();"/>
 
     <table class="table table-condensed table-striped" id="k2aEFormTbl">
         <thead>
         <tr>
             <th>&nbsp;</th>
-            <th><bean:message key="eform.download.msgName"/></th>
-            <th><bean:message key="eform.download.msgCreator"/></th>
-            <th><bean:message key="eform.download.msgCategory"/></th>
-            <th><bean:message key="eform.download.msgCreated"/></th>
+            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgName"/></th>
+            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCreator"/></th>
+            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCategory"/></th>
+            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCreated"/></th>
         </tr>
         </thead>
         <tbody>
@@ -154,7 +154,7 @@
         <tr>
             <td>
                 <a href="#" onclick="downloadK2AEForm(<%=eform.getString("id")%>);"><i class="icon-download-alt"
-                                                                                       title="<bean:message key="eform.download.btnLoadEform"/>"></i></a>
+                                                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.btnLoadEform"/>"></i></a>
             </td>
             <td><%=eform.getString("name")%>
             </td>
@@ -176,7 +176,7 @@
     <% } %>
     <div>&nbsp;</div>
     </body>
-</html:html>
+</html>
 
 <%!
     String stripDrugref(Object obj) {

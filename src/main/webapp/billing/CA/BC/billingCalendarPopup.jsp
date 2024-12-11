@@ -26,9 +26,9 @@
 <!--
 Use returnForm and returnItem request params and this page will fill in that input item on that page
 -->
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../../logout.jsp");
@@ -65,7 +65,7 @@ Use returnForm and returnItem request params and this page will fill in that inp
 
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <title>CALENDAR</title>
     <script language="JavaScript">
 

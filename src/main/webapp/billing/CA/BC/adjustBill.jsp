@@ -39,9 +39,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="oscar.oscarBilling.ca.bc.data.*,oscar.*,org.oscarehr.common.model.*" %>
@@ -52,7 +52,7 @@
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="oscar.oscarBilling.ca.on.administration.GstControlAction" %>
+<%@ page import="oscar.oscarBilling.ca.on.administration.GstControl2Action" %>
 <%@ page import="oscar.oscarBilling.ca.bc.administration.GstReport" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
@@ -137,7 +137,7 @@
         request.setAttribute("invoiceNo", String.valueOf(bm.getBillingNo()));
     }
     GstReport gstReport = new GstReport();
-    String gstPercent = (new GstControlAction()).readDatabase().getProperty("gstPercent", "");
+    String gstPercent = (new GstControl2Action()).readDatabase().getProperty("gstPercent", "");
 
 %>
 <html>
@@ -148,7 +148,7 @@
           title="win2k-cold-1"/>
     <script type="text/javascript" src="../../../share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="../../../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="../../../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="../../../share/calendar/calendar-setup.js"></script>
     <script type="text/javascript" src="../../../share/javascript/prototype.js"></script>
     <script type="text/javascript" src="../../../share/javascript/Oscar.js"></script>
@@ -202,7 +202,7 @@
             var page = "" + varpage;
             windowprops = "height=700,width=800,location=no,"
                 + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-            window.open(page, "<bean:message key="oscarEncounter.Index.popupPage2Window"/>", windowprops);
+            window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>", windowprops);
         }
 
         var awnd = null;
@@ -516,7 +516,7 @@
     }
 
 %>
-<html:form styleId="reprocessBilling" action="/billing/CA/BC/reprocessBill" onsubmit="return checkSubmitType()">
+<form style="reprocessBilling" action="${pageContext.request.contextPath}/billing/CA/BC/reprocessBill.do" method="post" onsubmit="return checkSubmitType()">
     <input type="hidden" name="update_date" value="<%=UpdateDate%>"/>
     <input type="hidden" name="demoNo" value="<%=DemoNo%>"/>
     <input type="hidden" name="billNumber" value="<%=allFields.getProperty("billingNo")%>"/>
@@ -538,7 +538,7 @@
                 Patient Name:
                 <a href=#
                    onClick="popupPage2('../../../demographic/demographiccontrol.jsp?demographic_no=<%=DemoNo%>&displaymode=edit&dboperation=search_detail');return false;"
-                   title="<bean:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">
+                   title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">
                     <%=Encode.forHtmlContent(DemoName)%>
                 </a>
                 <input type="hidden" name="demo_name" value="<%=Encode.forHtmlAttribute(DemoName)%>">
@@ -1194,7 +1194,7 @@
 
 
     </table>
-</html:form>
+</form>
 <a href="javascript: function myFunction() {return false; }" onClick="javascript: showRecord();">View Full Record</a>
 <div style="display: none;" id="SENDRECORD">
     <table border=1>

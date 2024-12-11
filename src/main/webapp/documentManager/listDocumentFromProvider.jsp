@@ -40,8 +40,8 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
@@ -182,10 +182,10 @@
                             <input type="hidden" name="documentId" value="<%=curDocId%>"/>
                             <table>
                                 <tr>
-                                    <td><bean:message key="dms.documentReport.msgDocType"/>:</td>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocType"/>:</td>
                                     <td>
                                         <select tabindex="<%=tabindex++%>" name="docType" id="docType">
-                                            <option value=""><bean:message key="dms.addDocument.formSelect"/></option>
+                                            <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                                             <%
                                                 for (int j = 0; j < doctypes.size(); j++) {
                                                     String doctype = (String) doctypes.get(j);
@@ -197,7 +197,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><bean:message key="dms.documentReport.msgDocDesc"/>:</td>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
                                     <td><input tabindex="<%=tabindex++%>" type="text" name="documentDescription"
                                                value="<%=curdoc.getDescription()%>"/></td>
                                 </tr>
@@ -436,7 +436,7 @@
 
 
                                 <tr>
-                                    <td><bean:message key="dms.documentReport.msgCreator"/>:</td>
+                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgCreator"/>:</td>
                                     <td><%=curdoc.getCreatorName()%>
                                     </td>
                                 </tr>

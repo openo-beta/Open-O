@@ -25,8 +25,8 @@
 --%>
 <%@page import="org.oscarehr.common.model.PharmacyInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ page import="oscar.oscarRx.data.*" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -38,10 +38,14 @@
     <c:redirect url="error.html"/>
 </c:if>
 <c:if test="${not empty sessionScope.RxSessionBean}">
-    <c:set var="bean" value="${sessionScope.RxSessionBean}" scope="page"/>
-    <c:if test="${bean.valid == false}">
-        <c:redirect url="error.html"/>
-    </c:if>
+    <%
+        // Directly access the RxSessionBean from the session
+        oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        if (bean != null && !bean.isValid()) {
+            response.sendRedirect("error.html");
+            return; // Ensure no further JSP processing
+        }
+    %>
 </c:if>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -60,8 +64,6 @@
 %>
 
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
-
     String userfirstname = (String) session.getAttribute("userfirstname");
     String userlastname = (String) session.getAttribute("userlastname");
 
@@ -85,13 +87,13 @@
         prefPharmacy = pharmacyList.get(0).getName();
     }
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
         <title>Print Drug Profile</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
@@ -105,11 +107,8 @@
                 showall = true;
             }
         }
+        oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
     %>
-
-    <bean:define id="patient"
-                 type="oscar.oscarRx.data.RxPatientData.Patient" name="Patient"/>
-
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
     <table border="0" cellpadding="0" cellspacing="0"
            style="border-collapse: collapse" bordercolor="#111111" width="100%"
@@ -125,37 +124,25 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="SearchDrug.section1Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.section1Title"/></div>
                         </td>
                     </tr>
                     <tr>
-                        <td><!-- <b><bean:message key="SearchDrug.nameText" /></b>-->
-                            <jsp:getProperty name="patient" property="surname"/>
-                            ,
-                            <jsp:getProperty name="patient" property="firstName"/>
-                            <br/>
-
-                            <jsp:getProperty name="patient" property="address"/>
-                            <br/>
-                            <jsp:getProperty name="patient" property="city"/>
-                            ,
-                            <jsp:getProperty name="patient" property="province"/>
-                            <jsp:getProperty name="patient" property="postal"/>
+                        <td><!-- <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>-->
+                            ${patient.surname}, ${patient.firstName}<br/>
+                            ${patient.address}<br/>
+                            ${patient.city}, ${patient.province} ${patient.postal}
                             <br/>
                             <br/>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <b><bean:message key="SearchDrug.ageText"/></b>
-                            <jsp:getProperty name="patient" property="age"/>
-                            <b>Gender:</b>
-                            <jsp:getProperty name="patient" property="sex"/>
-                            <b>HC:</b>
-                            <jsp:getProperty name="patient" property="hin"/>
-                            <br/>
-                            <b>User:</b> <%=userlastname%>, <%=userfirstname %><br/>
+                            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.ageText"/></b>
+                            ${patient.age}
+                            <b>Gender:</b> ${patient.sex}
+                            <b>HC:</b> ${patient.hin}<br/>
+                            <b>User:</b> ${userlastname}, ${userfirstname}<br/>
                         </td>
                     </tr>
                     <tr>
@@ -163,8 +150,7 @@
                             <table cellspacing="0" width="100%" cellpadding="0">
                                 <tr>
                                     <td>
-                                        <div class="DivContentSectionHead"><bean:message
-                                                key="SearchDrug.section2Title"/></div>
+                                        <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.section2Title"/></div>
                                     </td>
                                     <td align="right" class="noPrint">
                                         <div class="DivContentSectionHead">
@@ -187,10 +173,8 @@
                                     <td width="100%"><!--<div class="Step1Text" style="width:100%">-->
                                         <table width="100%" cellpadding="3">
                                             <tr>
-                                                <th align=left width=20%><b><bean:message
-                                                        key="SearchDrug.msgRxDate"/></b></th>
-                                                <th align=left width=100%><b><bean:message
-                                                        key="SearchDrug.msgPrescription"/></b></th>
+                                                <th align=left width=20%><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgRxDate"/></b></th>
+                                                <th align=left width=100%><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgPrescription"/></b></th>
                                             </tr>
 
                                             <%
@@ -259,4 +243,4 @@
 
 
     </body>
-</html:html>
+</html>

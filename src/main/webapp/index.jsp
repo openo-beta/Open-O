@@ -26,8 +26,7 @@
 
 
 <%@ page import="oscar.login.UAgentInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page contentType="text/html;charset=UTF-8" session="false" %>
@@ -44,34 +43,31 @@
 <jsp:useBean id="LoginResourceBean" beanName="oscar.login.LoginResourceBean" type="oscar.login.LoginResourceBean"/>
 <c:set var="login_error" value="" scope="page"/>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
 
     <head>
-    <title>
-<%--	    <c:choose>--%>
-<%--	    	<c:when test="${ not empty LoginResourceBean.tabName }">--%>
-<%--	    		<c:out value="${ LoginResourceBean.tabName }" />--%>
-<%--	    	</c:when>--%>
-<%--	    	<c:otherwise>--%>
-	    		<bean:message key="loginApplication.title"/>
-<%--	    	</c:otherwise>--%>
-<%--	    </c:choose>--%>
-    </title>
-    	
-    <link rel="icon" href="${pageContext.request.contextPath}/images/Oscar.ico" />
-<%--	<link href="${pageContext.request.contextPath}/css/Roboto.css" rel='stylesheet' type='text/css' />--%>
-    <script type="text/javascript">
-    
-        function showHideItem(id){
-            if(document.getElementById(id).style.display === 'none')
-            {
-                document.getElementById(id).style.display = 'block';
+        <title>
+                <%--	    <c:choose>--%>
+                <%--	    	<c:when test="${ not empty LoginResourceBean.tabName }">--%>
+                <%--	    		<c:out value="${ LoginResourceBean.tabName }" />--%>
+                <%--	    	</c:when>--%>
+                <%--	    	<c:otherwise>--%>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.title"/>
+                <%--	    	</c:otherwise>--%>
+                <%--	    </c:choose>--%>
+        </title>
+
+        <link rel="icon" href="${pageContext.request.contextPath}/images/Oscar.ico"/>
+        <link href="${pageContext.request.contextPath}/css/Roboto.css" rel='stylesheet' type='text/css'/>
+        <script type="text/javascript">
+
+            function showHideItem(id) {
+                if (document.getElementById(id).style.display === 'none') {
+                    document.getElementById(id).style.display = 'block';
+                } else {
+                    document.getElementById(id).style.display = 'none';
+                }
             }
-            else
-           	{
-                document.getElementById(id).style.display = 'none';
-           	}
-        }
 
             function setfocus() {
                 document.loginForm.username.focus();
@@ -551,20 +547,20 @@
 
                     <!-- default text if logo is missing -->
                     <h2 id="default_logo" style="display:none;">
-                        <bean:message key="loginApplication.formLabel"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.formLabel"/>
                     </h2>
                 </div>
 
                 <c:if test='${ param.login eq "failed" }'>
                     <c:set var="login_error" value="has-error" scope="page"/>
                     <div class="alert">
-                        <bean:message key="loginApplication.formFailedLabel"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.formFailedLabel"/>
                     </div>
                 </c:if>
 
                 <div class="panel-body">
                     <div class="leftinput">
-                        <html:form action="login" method="POST">
+                        <form action="login.do" method="POST">
 
                             <div class="form-group ${ login_error }">
                                 <input type="text" name="username" placeholder="Enter your username"
@@ -583,14 +579,14 @@
                                     <input type="password" name="pin" placeholder="Enter your PIN" value=""
                                            size="15" maxlength="15" autocomplete="off" class="form-control"/>
                                     <span class="extrasmall">
-										<bean:message key="loginApplication.formCmt"/>
+										<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.formCmt"/>
 									</span>
                                 </div>
                             </c:if>
                             <input type="hidden" id="oneIdKey" name="nameId" value="${ nameId }"/>
                             <input type="hidden" id="loginType" name="loginType" value=""/>
                             <input type=hidden name='propname'
-                                   value='<bean:message key="loginApplication.propertyFile"/>'/>
+                                   value='<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.propertyFile"/>'/>
 
                             <div id="buttonContainer">
                                 <c:choose>
@@ -608,23 +604,23 @@
                                 </c:choose>
                             </div>
 
-                        </html:form>
+                        <form>
 
                         <oscar:oscarPropertiesCheck property="oneid.enabled" value="true" defaultVal="false">
                             <a href="${ LoginResourceBean.econsultURL }"
                                id="oneIdLogin" onclick="addStartTime()" class="btn btn-primary btn-block oneIDLogin">
                                 <span class="oneIDLogo"></span>
                                 <span class="oneIdText">
-    									<bean:message key="loginApplication.oneid"/>
+    									<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.oneid"/>
     								</span>
                             </a>
                         </oscar:oscarPropertiesCheck>
 
                         <c:if test="${ LoginResourceBean.acceptableUseAgreementManager.auaAvailable }">
     			            <span class="extrasmall">
-	                        	<bean:message key="global.aua"/> &nbsp;
+	                        	<fmt:setBundle basename="oscarResources"/><fmt:message key="global.aua"/> &nbsp;
 	                        	<a href="javascript:void(0);" onclick="showHideItem('auaText');">
-	                        		<bean:message key="global.showhide"/>
+	                        		<fmt:setBundle basename="oscarResources"/><fmt:message key="global.showhide"/>
 	                        	</a>
 	                        </span>
                         </c:if>
@@ -681,10 +677,10 @@
     </div>
     <footer>
      	<span id="license" class="extrasmall">
-     		<bean:message key="loginApplication.leftRmk2"/>
+     		<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.leftRmk2"/>
      	</span>
     </footer>
 
     </body>
     <script type="text/javascript" src="${pageContext.request.contextPath}/csrfguard"></script>
-</html:html>
+</html>

@@ -40,19 +40,19 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="oscar.form.*" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Type 2 Diabetes Record</title>
         <link rel="stylesheet" type="text/css" href="styles.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="print.css"/>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <%
@@ -239,7 +239,7 @@
     <body bgproperties="fixed" class="Type2DiabetesForm" bgcolor="#EEEEFF"
           onLoad="javascript:window.focus()" topmargin="0" leftmargin="0"
           rightmargin="0">
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
 
         <input type="hidden" name="demographic_no"
@@ -854,6 +854,6 @@
             </tr>
         </table>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

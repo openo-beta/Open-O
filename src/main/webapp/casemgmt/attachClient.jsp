@@ -47,20 +47,20 @@
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <link rel="stylesheet" type="text/css"
-      href='<html:rewrite page="/css/tigris.css" />'/>
+      href='${request.contextPath}/css/tigris.css'/>
 <link rel="stylesheet" type="text/css"
-      href='<html:rewrite page="/css/displaytag.css" />'/>
+      href='${request.contextPath}/css/displaytag.css'/>
 
 <link rel="stylesheet" type="text/css"
-      href='<html:rewrite page="/share/calendar/skins/aqua/theme.css" />'/>
+      href='${request.contextPath}/share/calendar/skins/aqua/theme.css'/>
 
 <link rel="stylesheet" type="text/css"
-      href='<html:rewrite page="/css/topnav.css" />'/>
+      href='${request.contextPath}/css/topnav.css'/>
 
 <!-- style type="text/css">
-@import "<html:rewrite page="/css/tigris.css"/>";
-@import "<html:rewrite page="/css/displaytag.css"/>";
-@import "<html:rewrite page="/jsCalendar/skins/aqua/theme.css"/>";
+@import "${request.contextPath}/css/tigris.css";
+@import "${request.contextPath}/css/displaytag.css";
+@import "${request.contextPath}/jsCalendar/skins/aqua/theme.css";
 </style -->
 <%
     String noteId$ = (String) session.getAttribute("noteId");
@@ -93,7 +93,7 @@
         }
         var page = "" + varpage;
         windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
-        //var popup =window.open(page, "<bean:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
+        //var popup =window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
         openWindows[name] = window.open(page, name, windowprops);
 
         if (openWindows[name] != null) {
@@ -109,7 +109,7 @@
         alert('not yet implemented... will show term definitions');
     }
 </script>
-<html:form action="/PMmodule/ClientSearch2">
+<form action="${pageContext.request.contextPath}/PMmodule/ClientSearch2.do" method="post">
     <input type="hidden" name="method" value="attachSearch"/>
     <input type="hidden" name="method" value="attachSearch"/>
 
@@ -121,34 +121,34 @@
             <table border="0" cellspacing="2" cellpadding="3">
                 <tr>
                     <th>Client No</th>
-                    <td><html:text property="criteria.demographicNo" size="15"/></td>
+                    <td><input type="checkbox" name="criteria.demographicNo" size="15" /></td>
                 </tr>
                 <tr>
                     <th>First Name</th>
-                    <td><html:text property="criteria.firstName" size="15"/></td>
+                    <td><input type="checkbox" name="criteria.firstName" size="15" /></td>
                 </tr>
 
                 <tr>
                     <th>Last Name</th>
-                    <td><html:text property="criteria.lastName" size="15"/></td>
+                    <td><input type="checkbox" name="criteria.lastName" size="15" /></td>
                 </tr>
 
                 <tr>
                     <th>Date of Birth</th>
-                    <td><html:text property="criteria.dob" size="15"/><br/><font size="1">yyyy/mm/dd</font></td>
+                    <td><input type="checkbox" name="criteria.dob" size="15" /><br/><font size="1">yyyy/mm/dd</font></td>
                 </tr>
                 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                     <caisi:isModuleLoad moduleName="GET_OHIP_INFO" reverse="false">
                         <tr>
                             <th>Health Card Number</th>
-                            <td><html:text property="criteria.healthCardNumber" size="15"/>
-                                <html:text property="criteria.healthCardVersion" size="2"/></td>
+                            <td><input type="checkbox" name="criteria.healthCardNumber" size="15" />
+                                <input type="checkbox" name="criteria.healthCardVersion" size="2" /></td>
                         </tr>
                     </caisi:isModuleLoad>
 
                     <tr>
                         <th>Chart No (MRN)</th>
-                        <td><html:text property="criteria.chartNo" size="15"/></td>
+                        <td><input type="checkbox" name="criteria.chartNo" size="15" /></td>
                     </tr>
 
                     <!-- <th>Search outside of domain <a href="javascript:void(0)" onclick="popupHelp('domain')">?</a></th>
@@ -158,44 +158,47 @@
                                 moduleName="pmm.client.search.outside.of.domain.enabled">
                             <th>Search all clients <a href="javascript:void(0)"
                                                       onclick="popupHelp('domain')">?</a></th>
-                            <td><html:checkbox property="criteria.searchOutsideDomain"/></td>
+                            <td><input type="checkbox" name="criteria.searchOutsideDomain"/></td>
                         </caisi:isModuleLoad>
                     </tr>
 
                     <tr>
                         <th>Soundex on names <a href="javascript:void(0)"
                                                 onclick="popupHelp('soundex')">?</a></th>
-                        <td><html:checkbox property="criteria.searchUsingSoundex"/></td>
+                        <td><input type="checkbox" name="criteria.searchUsingSoundex"/></td>
                     </tr>
                     <%--
                         <tr>
                             <th>Bed Program</th>
                               <td>
-                                <html:select property="criteria.bedProgramId">
-                                    <html:option value="">
-                                    </html:option>
-                                      <html:options collection="allBedPrograms" property="id" labelProperty="name" />
-                                </html:select>
+                                <select name="criteria.bedProgramId" id="criteria.bedProgramId">
+                                    <option value="">
+                                <c:forEach var="allBedProgram" items="${allBedPrograms}">
+                                    <option value="${allBedProgram.id}">
+                                        ${allBedProgram.name}
+                                    </option>
+                                </c:forEach>
+                                </select>
                               </td>
                         </tr>
                          --%>
                     <tr>
                         <th>Admission Date From</th>
-                        <td><html:text property="criteria.dateFrom" size="12"/><br/><font size="1">yyyy/mm/dd</font>
+                        <td><input type="checkbox" name="criteria.dateFrom" size="12" /><br/><font size="1">yyyy/mm/dd</font>
                         </td>
                     </tr>
                     <tr>
                         <th>Admission Date To</th>
-                        <td><html:text property="criteria.dateTo" size="12"/><br/><font size="1">yyyy/mm/dd</font></td>
+                        <td><input type="checkbox" name="criteria.dateTo" size="12" /><br/><font size="1">yyyy/mm/dd</font></td>
                     </tr>
                 </caisi:isModuleLoad>
                 <tr>
                     <th>Status</th>
-                    <td><html:select property="criteria.active">
-                        <html:option value="1">Admitted</html:option>
-                        <html:option value="0">Discharged</html:option>
-                        <html:option value="">ALL</html:option>
-                    </html:select></td>
+                    <td><select name="active">
+                        <option value="1">Admitted</option>
+                        <option value="0">Discharged</option>
+                        <option value="">ALL</option>
+                    </select></td>
                 </tr>
                 <tr>
                     <th>Gender</th>
@@ -211,14 +214,14 @@
             </table>
             <table>
                 <tr>
-                    <td align="center"><html:submit value="search"/></td>
+                    <td align="center"><input type="submit" value="search" /></td>
                     <td align="center"><input type="button" name="reset"
                                               value="reset" onclick="resetClientFields()"/></td>
                 </tr>
             </table>
         </div>
     </div>
-</html:form>
+</form>
 <br/>
 <c:if test="${requestScope.clients != null}">
     <form method="post" name="mergeform" action="../admin/MergeRecords.do">
@@ -232,12 +235,12 @@
 
             <display:column sortable="true" title="Client No" sortProperty="demographicNo" defaultorder="ascending">
                 <a
-                        href="<html:rewrite action="/oscarEncounter/IncomingEncounter.do"/>?selectId=<c:out value="${client.demographicNo}"/>&demographicNo=<c:out value="${client.demographicNo}"/>&PEAttach=yes&appointmentNo=0&noteId=<%=noteId$%>"><c:out
+                        href="<%=request.getContextPath() %><%=request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?selectId=<c:out value="${client.demographicNo}"/>&demographicNo=<c:out value="${client.demographicNo}"/>&PEAttach=yes&appointmentNo=0&noteId=<%=noteId$%>"><c:out
                         value="${client.demographicNo}"/></a>
             </display:column>
             <display:column sortable="true" title="Name" sortProperty="formattedName">
                 <a
-                        href="javascript:popupPage(600,800,'client','<html:rewrite action="/PMmodule/ClientManager.do"/>?id=<c:out value="${client.currentRecord}"/>&consent=<c:out value="${consent}"/>')"><c:out
+                        href="javascript:popupPage(600,800,'client','<%=request.getContextPath() %>/PMmodule/ClientManager.do?id=<c:out value="${client.currentRecord}"/>&consent=<c:out value="${consent}"/>')"><c:out
                         value="${client.formattedName}"/></a>
             </display:column>
             <display:column sortable="true" title="Date of Birth">

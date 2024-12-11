@@ -31,7 +31,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.action.ActionMessages;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.oscarehr.common.OtherIdManager;
@@ -379,10 +378,6 @@ public class EForm extends EFormBase {
     public void setNowDateTime() {
         this.formTime = UtilDateUtilities.DateToString(new Date(), "HH:mm:ss");
         this.formDate = UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd");
-    }
-
-    public ActionMessages setMeasurements(ArrayList<String> names, ArrayList<String> values) {
-        return (WriteNewMeasurements.addMeasurements(names, values, this.demographicNo, this.providerNo));
     }
 
     public void setContextPath(String contextPath) {

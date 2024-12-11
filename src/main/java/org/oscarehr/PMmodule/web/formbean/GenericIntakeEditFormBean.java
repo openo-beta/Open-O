@@ -23,23 +23,18 @@
 
 package org.oscarehr.PMmodule.web.formbean;
 
+import org.oscarehr.PMmodule.model.Intake;
+import org.oscarehr.PMmodule.model.IntakeNodeJavascript;
+import org.oscarehr.PMmodule.model.Program;
+import org.oscarehr.common.model.Demographic;
+import oscar.util.LabelValueBean;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.util.LabelValueBean;
-import org.oscarehr.PMmodule.model.Intake;
-import org.oscarehr.PMmodule.model.IntakeAnswerElement;
-import org.oscarehr.PMmodule.model.IntakeNodeJavascript;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.common.model.Demographic;
-
-public class GenericIntakeEditFormBean extends ActionForm {
+public class GenericIntakeEditFormBean {
 
     private static final String BED_PROGRAM_LABEL = "Bed Program";
     private static final String EXTERNAL_PROGRAM_LABEL = "External Agency Client Referred From";
@@ -348,23 +343,6 @@ public class GenericIntakeEditFormBean extends ActionForm {
     public String getTitle() {
         return intake.getNode().getLabelStr();
     }
-
-    @Override
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-        setBedProgramId("");
-        setCommunityProgramId("");
-        setServiceProgramIds(new String[]{});
-
-        if (intake != null) {
-            for (String id : intake.getBooleanAnswerIds()) {
-                if (request.getParameter("answerMapped[" + id + "].value") == null) {
-                    intake.setAnswerMapped(id, IntakeAnswerElement.FALSE);
-                }
-            }
-        }
-    }
-
-    // Private
 
     private List<LabelValueBean> convertToLabelValues2(List<Program> primary) {
         List<LabelValueBean> labelValues = new ArrayList<LabelValueBean>();

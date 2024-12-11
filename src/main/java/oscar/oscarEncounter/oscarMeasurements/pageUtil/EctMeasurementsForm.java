@@ -29,9 +29,7 @@ package oscar.oscarEncounter.oscarMeasurements.pageUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.struts.action.ActionForm;
-
-public final class EctMeasurementsForm extends ActionForm {
+public final class EctMeasurementsForm {
 
     //Using map-backed method to get the value of each field
     //key: the field property

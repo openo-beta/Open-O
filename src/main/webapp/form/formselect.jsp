@@ -26,25 +26,25 @@
 
 
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html lang="en">
+
+
+<html>
     <head>
 
-        <title><bean:message key="admin.admin.btnSelectForm"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSelectForm"/></title>
 
 
     </head>
 
     <body>
 
-    <h3><bean:message key="admin.admin.btnSelectForm"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSelectForm"/></h3>
 
     <div class="well">
 
-        <html:form action="/form/select.do" styleId="selectForm">
+        <form action="${pageContext.request.contextPath}/form/select.do" method="post" styleId="selectForm">
             <table id="scrollNumber1" name="encounterTable">
                 <tr>
                     <td class="MainTableLeftColumn"></td>
@@ -54,39 +54,43 @@
                                 <td>
                                     <table>
                                         <tr>
-                                            <th align="left"><bean:message
-                                                    key="oscarEncounter.form.msgAllAvailableForms"/></th>
+                                            <th align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.msgAllAvailableForms"/></th>
                                             <th></th>
-                                            <th align="left"><bean:message
-                                                    key="oscarEncounter.form.msgSelectedForms"/></th>
+                                            <th align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.msgSelectedForms"/></th>
                                         </tr>
-                                        <td><html:select multiple="true" property="selectedAddTypes"
+                                        <td><select multiple="true" name="selectedAddTypes"
                                                          size="10" style="width:150">
-                                            <html:options collection="formHiddenVector" property="formName"
-                                                          labelProperty="formName"/>
-                                        </html:select></td>
+                                            <c:forEach var="f" items="${formHiddenVector}">
+                                                <option value="${f.formName}">
+                                                        ${f.formName}
+                                                </option>
+                                            </c:forEach>
+                                        </select></td>
                                         <td>
                                             <table>
                                                 <tr>
                                                     <td><input type="button" name="button" id="add" class="btn function"
                                                                style="width:80px"
-                                                               value="<bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/> >>"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/> >>"
                                                     /></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <input type="button" name="button" class="btn function"
                                                                id="delete" style="width:80px"
-                                                               value="<< <bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"/>
+                                                               value="<< <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"/>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
-                                        <td><html:select multiple="true"
-                                                         property="selectedDeleteTypes" size="10" style="width:150">
-                                            <html:options collection="formShownVector" property="formName"
-                                                          labelProperty="formName"/>
-                                        </html:select></td>
+                                        <td><select multiple="true"
+                                                         name="selectedDeleteTypes" size="10" style="width:150">
+                                            <c:forEach var="f" items="${formShownVector}">
+                                                <option value="${f.formName}">
+                                                        ${f.formName}
+                                                </option>
+                                            </c:forEach>
+                                        </select></td>
                             </tr>
                             <tr>
 
@@ -110,7 +114,7 @@
             </table>
 
             <input type="hidden" name="forward" id="forward" value="error"/>
-        </html:form>
+        </form>
 
     </div>
 
@@ -132,4 +136,4 @@
     </script>
 
     </body>
-</html:html>
+</html>

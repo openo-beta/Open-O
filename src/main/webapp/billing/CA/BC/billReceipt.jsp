@@ -44,9 +44,6 @@
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.jsp");
 %>
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@page import="java.util.*, oscar.oscarDemographic.data.*" %>
 <%@page import="oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.*,oscar.oscarClinic.*" %>
 <%@ page import="oscar.util.StringUtils" %>
@@ -92,10 +89,10 @@
         vecFaxes.add(st.nextToken());
     }
 %>
-<html:html>
+<html>
     <head>
         <title>
-            <bean:message key="billing.bc.title"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.bc.title"/>
         </title>
         <link rel="stylesheet" type="text/css" href="billReceiptPrint.css" id="printStyle" media="print"/>
         <style>
@@ -267,8 +264,8 @@
     </head>
     <body bgcolor="#FFFFFF" text="#000000" rightmargin="0" leftmargin="0" topmargin="10" marginwidth="0"
           marginheight="0">
-    <html:form action="/billing/CA/BC/UpdateBilling">
-        <html:hidden property="billingNo"/>
+    <form action="${pageContext.request.contextPath}/billing/CA/BC/UpdateBilling.do" method="post">
+        <input type="hidden" name="billingNo" id="billingNo"/>
         <table width="650" border="0" align="center" style="border:black solid 1px ">
             <tr>
                 <td>
@@ -347,40 +344,40 @@
                                                                 <td>
                                                                     <strong>Name:</strong></td>
                                                                 <td>
-                                                                    <html:text styleClass="billTo" maxlength="100"
-                                                                               property="recipientName" size="50"/>
+                                                                    <input type="text" class="billTo" maxlength="100"
+                                                                               name="recipientName" size="50"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
                                                                     <strong>Address:</strong></td>
                                                                 <td>
-                                                                    <html:text styleClass="billTo" maxlength="100"
-                                                                               property="recipientAddress" size="50"/>
+                                                                    <input type="text" class="billTo" maxlength="100"
+                                                                               name="recipientAddress" size="50"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
                                                                     <strong>City:</strong></td>
                                                                 <td>
-                                                                    <html:text styleClass="billTo" maxlength="100"
-                                                                               property="recipientCity" size="50"/>
+                                                                    <input type="text" class="billTo" maxlength="100"
+                                                                               name="recipientCity" size="50"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
                                                                     <strong>Province:</strong></td>
                                                                 <td>
-                                                                    <html:text styleClass="billTo" maxlength="100"
-                                                                               property="recipientProvince" size="50"/>
+                                                                    <input type="text" class="billTo" maxlength="100"
+                                                                               name="recipientProvince" size="50"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
                                                                     <strong>Postal:</strong></td>
                                                                 <td>
-                                                                    <html:text styleClass="billTo" maxlength="6"
-                                                                               property="recipientPostal" size="50"/>
+                                                                    <input type="text" class="billTo" maxlength="6"
+                                                                               name="recipientPostal" size="50"/>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -458,7 +455,7 @@
                                                     <td></td>
                                                     <td>Line#</td>
                                                     <td>
-                                                        <bean:message key="billing.service.desc"/>
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.desc"/>
                                                     </td>
                                                     <td>Service Code</td>
                                                     <td>QTY</td>
@@ -635,9 +632,9 @@
                                                 </tr>
                                                 <tr>
                                                     <td rowspan="2">
-                                                        <html:textarea cols="60" style="width:100%;" styleClass="notes"
+                                                        <textarea cols="60" style="width:100%;" class="notes"
                                                                        rows="5"
-                                                                       property="messageNotes">&nbsp;</html:textarea>
+                                                                       name="messageNotes">&nbsp;</textarea>
                                                     </td>
                                                 </tr>
 
@@ -653,22 +650,14 @@
 
                                                             <tr>
                                                                 <td colspan="2" align="left" valign="bottom">
-                                                                    <html:submit styleClass="header"
-                                                                                 value="Update Invoice" property=""/>
+                                                                    <input type="submit" name="submit" class="header" value="Update Invoice" />
                                                                     <button class="header" value="Edit Invoice"
                                                                             onclick="editInvoice('<%=bean.getBillingMasterNo()%>')">
                                                                         Edit Invoice
                                                                     </button>
-                                                                    <html:button styleClass="header" value="Print"
-                                                                                 property="Submit"
-                                                                                 onclick="javascript:printInvoiceWithoutNotes()"/>
-                                                                    <html:button styleClass="header"
-                                                                                 value="Print With Notes"
-                                                                                 property="Submit"
-                                                                                 onclick="javascript:printInvoiceWithNotes()"/>
-                                                                    <html:button styleClass="header" value="Cancel"
-                                                                                 property="Submit2"
-                                                                                 onclick="javascript:window.close()"/>
+                                                                    <button class="header" onclick="printInvoiceWithoutNotes()">Print</button>
+                                                                    <button class="header" onclick="printInvoiceWithNotes()">Print With Notes</button>
+                                                                    <button class="header" onclick="window.close()">Cancel</button>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -686,6 +675,6 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

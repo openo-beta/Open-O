@@ -39,9 +39,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 
 <%@ page import="oscar.util.*, oscar.form.*, oscar.form.data.*" %>
@@ -104,7 +104,7 @@
 
     <!-- language for the calendar -->
     <script type="text/javascript"
-            src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
     <!-- the following script defines the Calendar.setup helper function, which makes
            adding a calendar a matter of 1 or 2 lines of code. -->
@@ -274,7 +274,7 @@
             if (checkMeasures()) {
                 popPage(url, name);
             } else {
-                alert('<bean:message key="oscarEncounter.formRourke2006.frmError"/>');
+                alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.frmError"/>');
             }
         }
 
@@ -735,7 +735,7 @@
     </style>
 </head>
 <body onload="init()">
-<html:form styleId="frmP1" action="/form/formname">
+<form styleId="frmP1" action="${pageContext.request.contextPath}/form/formname.do" method="post">
     <div id="rourke2020-tabs">
         <ul id="tab-list">
             <li><a href="#tab-cp1">Page I</a></li>
@@ -760,7 +760,7 @@
             <div class="tab-page" id="tab-all"></div>
         </div>
     </div>
-</html:form>
+</form>
 <form id="frmPopUp" method="get" action=""></form>
 <form id="graph" method="post" action=""></form>
 <script type="text/javascript">
@@ -777,7 +777,7 @@
                 document.forms["frmP1"].submit();
             }
         } else {
-            alert('<bean:message key="oscarEncounter.formRourke2006.frmError"/>');
+            alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.frmError"/>');
         }
         return false;
     }
@@ -791,7 +791,7 @@
                 document.forms["frmP1"].submit();
             }
         } else {
-            alert('<bean:message key="oscarEncounter.formRourke2006.frmError"/>');
+            alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.frmError"/>');
         }
         return false;
     }

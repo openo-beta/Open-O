@@ -27,14 +27,13 @@
 
 <%@ page import="java.util.*, java.sql.*, oscar.*"
          errorPage="../appointment/errorpage.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html lang="en">
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="demographic.demographicprintdemographic.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicprintdemographic.title"/></title>
         <script language="JavaScript">
             <!--
 
@@ -97,13 +96,10 @@
                     ,&nbsp;<%=request.getParameter("first_name")%>&nbsp;<%=request.getParameter("chart_no")%>
                 </b><br><%=request.getParameter("address")%><br><%=request.getParameter("city")%>
                     ,&nbsp;<%=request.getParameter("province")%>,&nbsp;<%=request.getParameter("postal")%><br>
-                    <bean:message
-                            key="demographic.demographiclabelprintsetting.msgHome"/>:&nbsp;<%=request.getParameter("phone")%>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgHome"/>:&nbsp;<%=request.getParameter("phone")%>
                     <br><%=request.getParameter("dob")%>&nbsp;<%=request.getParameter("sex")%>
                     <br><%=request.getParameter("hin")%><br>
-                    <bean:message
-                            key="demographic.demographiclabelprintsetting.msgBus"/>:<%=request.getParameter("phone2")%>&nbsp;<bean:message
-                            key="demographic.demographiclabelprintsetting.msgDr"/>&nbsp;<%=request.getParameter("providername")%>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgBus"/>:<%=request.getParameter("phone2")%>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiclabelprintsetting.msgDr"/>&nbsp;<%=request.getParameter("providername")%>
                     <br>
                 </font></td>
             </tr>
@@ -172,13 +168,13 @@
     <div ID="blockDiv1"
          STYLE="position: absolute; visibility: visible; z-index: 2; left: 620px; top: 0px; width: 70px; height: 20px;">
         <input type="button" name="button"
-               value="<bean:message key='global.btnPrint'/>" onClick="window.print();">
+               value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnPrint'/>" onClick="window.print();">
     </div>
     <div ID="blockDiv1"
          STYLE="position: absolute; visibility: visible; z-index: 2; left: 620px; top: 24px; width: 70px; height: 20px;">
         <input type="button" name="button"
-               value="<bean:message key='global.btnBack'/>"
+               value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnBack'/>"
                onClick="javascript:history.go(-1);return false;"></div>
 
     </body>
-</html:html>
+</html>

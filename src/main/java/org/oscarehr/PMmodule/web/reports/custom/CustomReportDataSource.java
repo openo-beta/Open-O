@@ -23,7 +23,7 @@
 
 package org.oscarehr.PMmodule.web.reports.custom;
 
-import org.apache.struts.util.LabelValueBean;
+import oscar.util.LabelValueBean;
 
 public interface CustomReportDataSource {
 

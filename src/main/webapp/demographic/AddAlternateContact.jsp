@@ -62,19 +62,19 @@
 <%@page import="org.oscarehr.common.model.CtlRelationships" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%
     CtlRelationshipsDao ctlRelationshipsDao = SpringUtils.getBean(CtlRelationshipsDao.class);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="demographic.demographiceditdemographic.msgAddRelation"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddRelation"/></title>
         <!--I18n-->
         <link rel="stylesheet" type="text/css"
               href="../share/css/OscarStandardLayout.css"/>
@@ -99,18 +99,15 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="demographic.demographiceditdemographic.msgAddRelation"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddRelation"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
                         <td><oscar:nameage demographicNo="<%=creatorDemo%>"/></td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="contact" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td style="text-align: right"><a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -177,8 +174,7 @@
                     String name = request.getParameter("name");
                     String origDemo = request.getParameter("remarks");
                     if (demoNo != null) {
-                %> <html:form
-                    action="/demographic/AddRelation">
+                %> <form action="${pageContext.request.contextPath}/demographic/AddRelation.do" method="post">
                 <input type="hidden" name="origDemo" value="<%=origDemo%>"/>
                 <input type="hidden" name="linkingDemo" value="<%=demoNo%>"/>
 
@@ -232,7 +228,7 @@
                             <textarea cols="20" rows="3" name="notes"></textarea> <input
                                     type="submit" value="Add Relationship"/></fieldset>
                 </div>
-            </html:form> <%}%>
+            </form> <%}%>
 
                 <div class="tablelisting">
                     <table>
@@ -274,10 +270,10 @@
 
                 <oscar:oscarPropertiesCheck property="TORONTO_RFQ" value="yes">
                     <br/>
-                    <html:form action="/demographic/AddRelation">
+                    <form action="<%=request.getContextPath() %>/demographic/AddRelation.do">
                         <input type="hidden" name="origDemo" value="<%=creatorDemo%>"/>
                         <input type="submit" name="pmmClient" value="Finished"/>
-                    </html:form>
+                    </form>
                 </oscar:oscarPropertiesCheck></td>
         </tr>
         <tr>
@@ -286,7 +282,7 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>
 <%!
     String returnYesIf1(Object o) {
         String ret = "";

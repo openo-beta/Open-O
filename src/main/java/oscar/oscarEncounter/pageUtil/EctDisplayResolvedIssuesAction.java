@@ -23,13 +23,7 @@
 
 package oscar.oscarEncounter.pageUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.util.MessageResources;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import org.oscarehr.caisi_integrator.ws.CachedDemographicIssue;
@@ -38,8 +32,11 @@ import org.oscarehr.casemgmt.service.CaseManagementManager;
 import org.oscarehr.util.CppUtils;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
-
 import oscar.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * retrieves info to display Disease entries for demographic
@@ -55,14 +52,13 @@ public class EctDisplayResolvedIssuesAction extends EctDisplayAction {
         this.caseManagementMgr = caseManagementMgr;
     }
 
-    @Override
-    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO navBarDisplayDAO, MessageResources messages) {
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO navBarDisplayDAO) {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         // set lefthand module heading and link
-        navBarDisplayDAO.setLeftHeading(messages.getMessage(request.getLocale(), "oscarEncounter.NavBar.resolvedIssues"));
+        navBarDisplayDAO.setLeftHeading(getText("oscarEncounter.NavBar.resolvedIssues"));
 
         navBarDisplayDAO.setLeftURL("$('check_issue').value='';document.caseManagementViewForm.submit();");
 

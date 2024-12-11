@@ -32,7 +32,7 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
 <%@page import="java.util.Locale" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -74,19 +74,19 @@
         email = demo.getEmail();
     }
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Questimed</title>
     </head>
     <body>
     <form method="post">
         <br>
-        <h4><bean:message key="questimed.patient.registration"/></h4>
+        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="questimed.patient.registration"/></h4>
         <br>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <div class="row">
                 <div class="form-group">
-                    <label class="col-sm-12 col-md-3 control-label"><bean:message key="questimed.patient"/></label>
+                    <label class="col-sm-12 col-md-3 control-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="questimed.patient"/></label>
                     <div class="col-sm-12 col-md-9" id='patientInfo'><%=demo.getHin()%><br>
                         <%=demo.getFirstName()%> <%=demo.getLastName()%><br>
                         <%=demo.getBirthDayAsString()%> <%=demo.getSex()%><br>
@@ -96,7 +96,7 @@
             <br>
             <div class="row">
                 <div class="form-group">
-                    <label class="col-sm-12 col-md-3  control-label"><bean:message key="questimed.email"/></label>
+                    <label class="col-sm-12 col-md-3  control-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="questimed.email"/></label>
                     <div class="col-sm-12 col-md-9 "><input type='text' class="form-control" name=email autofocus
                                                             id='email' value="<%=email%>"></div>
                 </div>
@@ -106,9 +106,9 @@
                 <div class="form-group">
                     <label class="col-sm-12 col-md-3 control-label"></label>
                     <div class="col-sm-12 col-md-9">
-                        <bean:message key="questimed.Authorization"/><br><br>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="questimed.Authorization"/><br><br>
                         <input type='submit' class="btn btn-primary" id='createAccountBtn'
-                               value='<bean:message key="questimed.createAccount" />'>
+                               value='<fmt:setBundle basename="oscarResources"/><fmt:message key="questimed.createAccount"/>'>
                     </div>
                 </div>
             </div>
@@ -128,4 +128,4 @@
         </div>
     </form>
     </body>
-</html:html>
+</html>

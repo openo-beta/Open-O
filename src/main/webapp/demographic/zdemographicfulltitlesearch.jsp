@@ -33,8 +33,8 @@
     boolean fromMessenger = request.getParameter("fromMessenger") == null ? false : (request.getParameter("fromMessenger")).equalsIgnoreCase("true") ? true : false;
     String roleName = session.getAttribute("userrole") + "," + session.getAttribute("user");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 
@@ -79,29 +79,29 @@
         <div class="input-group select-group">
             <select class="form-control input-group-addon" name="search_mode" id="search_mode">
                 <option value="search_name" <%=searchMode.equals("search_name") ? "selected" : ""%>>
-                    <bean:message key="demographic.zdemographicfulltitlesearch.formName"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formName"/>
                 </option>
                 <option value="search_phone" <%=searchMode.equals("search_phone") ? "selected" : ""%>>
-                    <bean:message key="demographic.zdemographicfulltitlesearch.formPhone"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formPhone"/>
                 </option>
                 <option value="search_dob" <%=searchMode.equals("search_dob") ? "selected" : ""%>>
-                    <bean:message key="demographic.zdemographicfulltitlesearch.formDOB"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formDOB"/>
                 </option>
                 <option value="search_address" <%=searchMode.equals("search_address") ? "selected" : ""%>>
-                    <bean:message key="demographic.zdemographicfulltitlesearch.formAddr"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formAddr"/>
                 </option>
                 <option value="search_hin" <%=searchMode.equals("search_hin") ? "selected" : ""%>>
-                    <bean:message key="demographic.zdemographicfulltitlesearch.formHIN"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formHIN"/>
                 </option>
                 <option value="search_chart_no" <%=searchMode.equals("search_chart_no") ? "selected" : ""%>>
-                    <bean:message key="demographic.zdemographicfulltitlesearch.formChart"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formChart"/>
                 </option>
                 <option value="search_demographic_no" <%=searchMode.equals("search_demographic_no") ? "selected" : ""%>>
-                    <bean:message key="demographic.zdemographicfulltitlesearch.formDemographicNo"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formDemographicNo"/>
                 </option>
                 <oscar:oscarPropertiesCheck value="true" defaultVal="false" property="FIRST_NATIONS_MODULE">
                     <option value="search_band_number" <%=searchMode.equals("search_band_number") ? "selected" : ""%> >
-                        <bean:message key="demographic.zdemographicfulltitlesearch.formBandNumber"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.formBandNumber"/>
                     </option>
                 </oscar:oscarPropertiesCheck>
             </select>
@@ -120,17 +120,17 @@
             <INPUT TYPE="hidden" NAME="outofdomain" VALUE="">
             <div class="input-group-btn">
                 <INPUT TYPE="SUBMIT" class="rightButton blueButton top btn btn-primary" VALUE="Active" SIZE="17"
-                       TITLE="<bean:message key="demographic.zdemographicfulltitlesearch.tooltips.searchActive"/>">
+                       TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchActive"/>">
 
 
                 <INPUT TYPE="button" class="btn btn-secondary" onclick="searchInactive();"
-                       TITLE="<bean:message key="demographic.zdemographicfulltitlesearch.tooltips.searchInactive"/>"
-                       VALUE="<bean:message key="demographic.search.Inactive"/>">
+                       TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchInactive"/>"
+                       VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.Inactive"/>">
 
 
                 <INPUT TYPE="button" class="btn btn-secondary" onclick="searchAll();"
-                       TITLE="<bean:message key="demographic.zdemographicfulltitlesearch.tooltips.searchAll"/>"
-                       VALUE="<bean:message key="demographic.search.All"/>">
+                       TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchAll"/>"
+                       VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.All"/>">
             </div>
             <%
                 LoggedInInfo loggedInInfo2 = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -142,13 +142,13 @@
 
             <security:oscarSec roleName="<%=roleName%>" objectName="_search.outofdomain" rights="r">
                 <INPUT TYPE="button" onclick="searchOutOfDomain();"
-                       TITLE="<bean:message key="demographic.zdemographicfulltitlesearch.tooltips.searchOutOfDomain"/>"
-                       VALUE="<bean:message key="demographic.search.OutOfDomain"/>">
+                       TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchOutOfDomain"/>"
+                       VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.OutOfDomain"/>">
             </security:oscarSec>
 
             <caisi:isModuleLoad moduleName="caisi">
                 <input type="button" value="cancel"
-                       onclick="location.href='<html:rewrite page="/PMmodule/ProviderInfo.do"/>'">
+                       onclick="location.href='${request.contextPath}/PMmodule/ProviderInfo.do'">
             </caisi:isModuleLoad>
         </div>
 

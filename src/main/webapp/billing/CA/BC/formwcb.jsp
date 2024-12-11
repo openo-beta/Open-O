@@ -45,9 +45,9 @@
 %>
 <%@ page
         import="oscar.form.*, java.util.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.oscarDB.*,oscar.oscarBilling.ca.bc.MSP.*, oscar.oscarBilling.ca.bc.Teleplan.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 
 <%
@@ -81,10 +81,10 @@
     String fromBilling = request.getParameter("fromBilling");
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>OSCAR BC Billing - WCB</title>
         <link rel="stylesheet" href="../../../share/css/oscar.css">
         <link rel="stylesheet" href="../../../share/css/reporting.css">
@@ -92,7 +92,7 @@
         <script src="../../../share/javascript/Oscar.js"></script>
         <script src="../../../share/calendar/calendar.js"></script>
         <script
-                src="../../../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"
+                src="../../../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"
                 type="text/javascript"></script>
         <script src="../../../share/calendar/calendar-setup.js"
                 type="text/javascript"></script>
@@ -401,9 +401,20 @@
     </head>
     <body onLoad="isformNeeded()" bgproperties="fixed" topmargin="0"
           leftmargin="0" rightmargin="0">
-    <html:errors/>
-    <html:form action="/billing/CA/BC/formwcb" onsubmit="return validateForm()">
-        <html:hidden property="w_servicelocation"/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
+    <form action="${pageContext.request.contextPath}/billing/CA/BC/formwcb.do" method="post" onsubmit="return validateForm()">
+        <input type="hidden" name="w_servicelocation" id="w_servicelocation"/>
 
         <!-- Params for billingBC.jsp `-->
         <input type="hidden" name="method" value="save"/>
@@ -424,7 +435,7 @@
                value="<%=form.getProviderNo()%>"/>
         <input type="hidden" name="bNewForm" value="1"/>
         <input type="hidden" name="fromBilling" value="<%=fromBilling%>"/>
-        <html:hidden property="wcbFormId"/>
+        <input type="hidden" name="wcbFormId" id="wcbFormId"/>
 
         <%
             java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyy-MM-dd");
@@ -457,12 +468,11 @@
                     }
                 %>
 
-                <td>Form Needed <html:checkbox value="1" property="formNeeded"
-                                               onclick="isformNeeded();"/></td>
+                <td>Form Needed <input type="checkbox" value="1" name="formNeeded" onclick="isformNeeded();"/></td>
                 <td colspan="1" valign="top" height="25" class="SmallerText"
-                    id="reportTypeSection">Physician's First Report <html:radio
-                        value="F" property="w_reporttype"/> or The worker's condition or
-                    treatment has changed: <html:radio value="C" property="w_reporttype"/>
+                    id="reportTypeSection">Physician's First Report <input type="radio"
+                        value="F" name="w_reporttype"/> or The worker's condition or
+                    treatment has changed: <input type="radio" value="C" name="w_reporttype"/>
                     </span></td>
             </tr>
 
@@ -471,7 +481,7 @@
                     <%if (!haveClaims) {%> <a
                         href="javascript: function myFunction() {return false; }"
                         onClick="showpic('claimLayer','claimId');" id="claimId"><%}%> <b>WCB
-                    Claim Number:</B> <html:text maxlength="25" property="w_wcbno"/> *Can be left
+                    Claim Number:</B> <input type="text" maxlength="25" name="w_wcbno"/> *Can be left
                     blank <%if (!haveClaims) {%>
                 </a> <%}%>
                 </td>
@@ -491,20 +501,20 @@
                                     onClick="showpic('employerLayer','employerId');" id="employerId">
                                 <%}%> Employer's Name: <%if (!haveClaims) {%></a> <%}%>
                             </td>
-                            <td><html:text maxlength="25" property="w_empname"/></td>
+                            <td><input type="text" maxlength="25" name="w_empname"/></td>
                             <!--</tr>
                         <tr id="firstSection2">-->
                             <td class="SmallerText">Operating Address:</td>
-                            <td><html:text maxlength="25" property="w_opaddress" size="25"/></td>
+                            <td><input type="text" maxlength="25" name="w_opaddress" size="25"/></td>
                         </tr>
                         <tr id="firstSection3">
                             <td class="SmallerText">Operating City:</td>
-                            <td><html:text maxlength="25" property="w_opcity"/></td>
+                            <td><input type="text" maxlength="25" name="w_opcity"/></td>
                             <!--</tr>
                         <tr id="firstSection4">-->
                             <td class="SmallerText">Employers Telephone No:</td>
-                            <td><html:text maxlength="3" property="w_emparea" size="3"/>-<html:text
-                                    maxlength="7" property="w_empphone" size="10"/></td>
+                            <td><input type="text" maxlength="3" name="w_emparea" size="3"/>-
+                                <input type="text" maxlength="7" name="w_empphone" size="10"/></td>
                 </td>
             </tr>
 
@@ -521,38 +531,39 @@
                         <td colspan="4" class="SmallerText">Worker's Info</td>
                     </tr>
                     <tr>
-                        <td colspan="1" class="SmallerText"><b>Last Name:</b> <html:text
-                                maxlength="18" property="w_lname" size="20"/></td>
-                        <td class="SmallerText"><b>First Name:</b> <html:text
-                                maxlength="12" property="w_fname" size="20"/></td>
-                        <td class="SmallerText" colspan="2">Initial: <html:text
-                                maxlength="1" property="w_mname" size="1"/></td>
+                        <td colspan="1" class="SmallerText"><b>Last Name:</b>
+                            <input type="text"
+                                maxlength="18" name="w_lname" size="20"/></td>
+                        <td class="SmallerText"><b>First Name:</b>
+                            <input type="text"
+                                maxlength="12" name="w_fname" size="20"/></td>
+                        <td class="SmallerText" colspan="2">Initial:
+                            <input type="text"
+                                maxlength="1" name="w_mname" size="1"/></td>
 
                     </tr>
                     <tr>
 
-                        <td class="SmallerText"><b>Date of Birth:</b> <html:text
-                                readonly="readonly" maxlength="10" property="w_dob" size="10"/>
+                        <td class="SmallerText"><b>Date of Birth:</b>
+                            <input type="text" readonly="readonly" maxlength="10" name="w_dob" size="10"/>
                         </td>
-                        <td class="SmallerText"><b>Gender:</b> <html:text
-                                readonly="readonly" maxlength="1" property="w_gender" size="1"/>
+                        <td class="SmallerText"><b>Gender:</b>
+                            <input type="text" readonly="readonly" maxlength="1" name="w_gender" size="1"/>
                         </td>
-                        <td class="SmallerText"><b>PHN:</b> <html:text maxlength="12"
-                                                                       property="w_phn" size="12"/></td>
+                        <td class="SmallerText"><b>PHN:</b>
+                            <input type="text" maxlength="12" name="w_phn" size="12"/></td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr id="workersAddressSection">
-                        <td class="SmallerText">Worker's Telephone No: <html:text
-                                maxlength="3" property="w_area" size="3"/> <html:text
-                                maxlength="7" property="w_phone" size="7"/></td>
-                        <td class="SmallerText">Address: <html:text maxlength="25"
-                                                                    property="w_address" size="20"/></td>
-                        <td class="SmallerText">City: <html:text maxlength="20"
-                                                                 property="w_city" size="20"/></td>
-                        <td class="SmallerText">Postal Code: <html:text maxlength="6"
-                                                                        property="w_postal" size="6"/></td>
-
-
+                        <td class="SmallerText">Worker's Telephone No:
+                            <input type="text" maxlength="3" name="w_area" size="3"/>
+                            <input type="text" maxlength="7" name="w_phone" size="7"/></td>
+                        <td class="SmallerText">Address:
+                            <input type="text" maxlength="25" name="w_address" size="20"/></td>
+                        <td class="SmallerText">City:
+                            <input type="text" maxlength="20" name="w_city" size="20"/></td>
+                        <td class="SmallerText">Postal Code:
+                            <input type="text" maxlength="6" name="w_postal" size="6"/></td>
             </td>
         </tr>
         <tr>
@@ -569,30 +580,29 @@
 
         <tr id="secondSection1">
             <td>Are you the worker's regular physician?</td>
-            <td><html:radio value="Y" property="w_rphysician"
-                            onclick="ShowElementById('secondSection2')"/> Yes <html:radio
-                    value="N" property="w_rphysician"
+            <td><input type="radio" value="Y" name="w_rphysician"
+                            onclick="ShowElementById('secondSection2')"/> Yes <input type="radio"
+                    value="N" name="w_rphysician"
                     onclick="HideElementById('secondSection2')"/> No
             </td>
         </tr>
         <tr id="secondSection2">
             <td>If yes, how long has the worker been your patient?</td>
-            <td><html:radio value="1" property="w_duration"/> 0-6 months <html:radio
-                    value="2" property="w_duration"/> 7-12 months <html:radio value="9"
-                                                                              property="w_duration"/>&gt; 12 months
+            <td><input type="radio" value="1" name="w_duration"/> 0-6 months <input type="radio"
+                    value="2" name="w_duration"/> 7-12 months <input type="radio" value="9" name="w_duration"/>&gt; 12 months
             </td>
         </tr>
         <tr id="secondSection3">
             <td>Who rendered the first treatment?</td>
-            <td><html:text maxlength="25" property="w_ftreatment" size="25"/>
+            <td><input type="text" maxlength="25" name="w_ftreatment" size="25"/>
             </td>
         </tr>
         <tr id="secondSection4">
             <td>Prior/Other Problems Affecting Injury, Recovery and
                 Disability
             </td>
-            <td><html:textarea cols="50" onkeyup="checkTextLimit(this.form.w_problem,160);" styleId="w_problem"
-                               property="w_problem" style="height:50px;width:100%;"></html:textarea>
+            <td><textarea cols="50" onkeyup="checkTextLimit(this.form.w_problem,160);" id="w_problem"
+                               name="w_problem" style="height:50px;width:100%;"></textarea>
             </td>
         </tr>
 
@@ -601,18 +611,18 @@
         </tr>
         <tr>
             <td class="SectionHead">Injury Codes and Descriptions</td>
-            <td><b>Date of Service</b> <html:text property="w_servicedate"
-                                                  styleId="w_servicedate" size="10" readonly="true"/> <a
+            <td><b>Date of Service</b> <input type="text" name="w_servicedate"
+                                                  id="w_servicedate" size="10" readonly="true"/> <a
                     id="hlSDate"><img
                     title="Calendar" src="../../../images/cal.gif" alt="Calendar"
                     border="0"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Date of Injury:</b>
-                <html:text styleId="w_doi" property="w_doi" readonly="true" size="12"/>
+                <input type="text" id="w_doi" name="w_doi" readonly="true" size="12"/>
                 <a id="hlDDate"><img title="Calendar"
                                      src="../../../images/cal.gif" alt="Calendar" border="0"/></a></td>
         </tr>
         <tr id="thirdSection1">
             <td>Diagnosis:</td>
-            <td><html:text maxlength="120" property="w_diagnosis" styleId="w_diagnosis" size="120"/>
+            <td><input type="text" maxlength="120" name="w_diagnosis" id="w_diagnosis" size="120"/>
             </td>
         </tr>
         <tr>
@@ -622,36 +632,39 @@
             </td>
 
 
-            <td><html:text maxlength="5" property="w_feeitem" size="5"
+            <td><input type="text" maxlength="5" name="w_feeitem" size="5"
                            onkeypress="return grabEnter(event,WCBFeeItemCall)"/>
                 <a onClick="popFeeItemList('WCBForm','w_feeitem');">Search</a></td>
         </tr>
         <tr>
             <td>Service code:</td>
-            <td><html:text maxlength="5" property="w_extrafeeitem" size="5"
+            <td><input type="text" maxlength="5" name="w_extrafeeitem" size="5"
                            onkeypress="return grabEnter(event,extraFeeItemCall)"/>
                 <a onClick="popFeeItemList('WCBForm','w_extrafeeitem');">Search</a></td>
         </tr>
         <tr>
             <td><b>ICD9:</b></td>
-            <td><html:text maxlength="5" property="w_icd9" size="5" onkeypress="return grabEnter(event,icd9Call)"/> <a
+            <td><input type="text" maxlength="5" name="w_icd9" size="5" onkeypress="return grabEnter(event,icd9Call)"/> <a
                     onClick="popICD9List('WCBForm','w_icd9');">Search</a></td>
         </tr>
         <tr>
             <td><b>Body Part:</b></td>
-            <td><html:text maxlength="5" property="w_bp" size="5" onkeypress="return grabEnter(event,bodyPartCall)"/> <a
+            <td><input type="text" maxlength="5" name="w_bp" size="5" onkeypress="return grabEnter(event,bodyPartCall)"/> <a
                     onClick="popBodyPartList('WCBForm','w_bp');">Search</a></td>
         </tr>
         <tr>
             <td><b>Side:</b></td>
-            <td><html:select property="w_side">
-                <html:options collection="injuryLocations" property="sidetype"
-                              labelProperty="sidedesc"/>
-            </html:select></td>
+            <td><select name="w_side">
+                <c:forEach var="injury" items="${injuryLocations}">
+                    <option value="${injury.sidetype}">
+                            ${injury.sidedesc}
+                    </option>
+                </c:forEach>
+            </select></td>
         </tr>
         <tr>
             <td><b>Nature of Injury</b></td>
-            <td><html:text maxlength="5" property="w_noi" size="5"
+            <td><input type="text" maxlength="5" name="w_noi" size="5"
                            onkeypress="return grabEnter(event,natureOfInjuryCall)"/> <a
                     onClick="popNOIList('WCBForm','w_noi');">Search</a></td>
         </tr>
@@ -659,17 +672,17 @@
             <td>From injury or since last report, has the worker been
                 disabled from work?
             </td>
-            <td><html:radio value="Y" property="w_work"
-                            onclick="ShowElementById('thirdSection9')"/>Yes <html:radio
-                    value="N" property="w_work"
+            <td><input type="radio" value="Y" name="w_work"
+                            onclick="ShowElementById('thirdSection9')"/>Yes <input type="radio"
+                    value="N" name="w_work"
                     onclick="HideElementById('thirdSection9')"/>No
                 </p>
             </td>
         </tr>
         <tr id="thirdSection9">
             <td>If Yes, as of what date? (if known)</td>
-            <td align="left" valign="top"><html:text readonly="true"
-                                                     styleId="w_workdate" property="w_workdate"
+            <td align="left" valign="top"><input type="text" readonly="true"
+                                                     id="w_workdate" name="w_workdate"
                                                      onclick="window.WCBForm.w_workdate.value = '';"/> <a
                     id="hlWDate"><img
                     title="Calendar" src="../../../images/cal.gif" alt="Calendar"
@@ -682,10 +695,10 @@
                     Examination<br>
                     Investigations<br>
                     Treatment, Meds</small></td>
-            <td align="left" valign="top"><html:textarea
-                    styleClass="mhAssTextarea"
-                    onkeyup="checkTextLimit(this.form.w_clinicinfo,800);" styleId="w_clinicinfo"
-                    property="w_clinicinfo" style="height:80px;width:100%;"></html:textarea>
+            <td align="left" valign="top"><textarea
+                    class="mhAssTextarea"
+                    onkeyup="checkTextLimit(this.form.w_clinicinfo,800);" id="w_clinicinfo"
+                    name="w_clinicinfo" style="height:80px;width:100%;"></textarea>
             </td>
         </tr>
         <tr id="forthSectionTitle">
@@ -695,9 +708,9 @@
             <td>Is the worker now medically capable of working full duties,
                 full time?
             </td>
-            <td><html:radio value="Y" property="w_capability"
-                            onclick="HideElementById('forthSection2')"/> Yes <html:radio
-                    value="N" property="w_capability"
+            <td><input type="radio" value="Y" name="w_capability"
+                            onclick="HideElementById('forthSection2')"/> Yes <input type="radio"
+                    value="N" name="w_capability"
                     onclick="ShowElementById('forthSection2')"/> No
             </td>
         </tr>
@@ -705,50 +718,50 @@
             <td valign="top">If No: What are the current physical and/or
                 psychological restrictions?
             </td>
-            <td><html:textarea styleClass="mhAssTextarea"
-                               onkeyup="checkTextLimit(this.form.w_capreason,240);" styleId="w_capreason"
-                               property="w_capreason" style="height:80px;width:100%;"></html:textarea>
+            <td><textarea class="mhAssTextarea"
+                               onkeyup="checkTextLimit(this.form.w_capreason,240);" id="w_capreason"
+                               name="w_capreason" style="height:80px;width:100%;"></textarea>
             </td>
         </tr>
         <tr id="forthSection3">
             <td valign="top">Estimated time before the worker will be able
                 to return to the workplace.
             </td>
-            <td><html:radio value="0" property="w_estimate"/>At Work<br>
-                <html:radio value="1" property="w_estimate"/>1-6 days <html:radio
-                        value="2" property="w_estimate"/>7-13 days<br>
-                <html:radio value="3" property="w_estimate"/>14-20 days <html:radio
-                        value="9" property="w_estimate"/>20 days
+            <td><input type="radio" value="0" name="w_estimate"/>At Work<br>
+                <input type="radio" value="1" name="w_estimate"/>1-6 days
+                <input type="radio" value="2" name="w_estimate"/>7-13 days<br>
+                <input type="radio" value="3" name="w_estimate"/>14-20 days
+                <input type="radio" value="9" name="w_estimate"/>20 days
             </td>
         </tr>
         <tr id="forthSection4">
             <td>If appropriate, is the worker now ready for a rehabilitation
                 program?
             </td>
-            <td><html:radio value="Y" property="w_rehab"
-                            onclick="ShowElementById('forthSection5')"/> Yes <html:radio
-                    value="N" property="w_rehab"
+            <td><input type="radio" value="Y" name="w_rehab"
+                            onclick="ShowElementById('forthSection5')"/> Yes <input type="radio"
+                    value="N" name="w_rehab"
                     onclick="HideElementById('forthSection5')"/> No
             </td>
         </tr>
         <tr id="forthSection5">
             <td>If Yes, Select &quot;WCP&quot; or Other</td>
-            <td><html:radio value="C" property="w_rehabtype"/>WCP <html:radio
-                    value="O" property="w_rehabtype"/>Other
+            <td><input type="radio" value="C" name="w_rehabtype"/>WCP <input type="radio"
+                    value="O" name="w_rehabtype"/>Other
             </td>
         </tr>
         <tr id="forthSection6">
             <td>Do you wish to consult with WCB physician or nurse advisor?</td>
-            <td><html:radio value="Y" property="w_wcbadvisor"/> Yes <html:radio
-                    value="N" property="w_wcbadvisor"/> No
+            <td><input type="radio" value="Y" name="w_wcbadvisor"/> Yes <input type="radio"
+                    value="N" name="w_wcbadvisor"/> No
             </td>
         </tr>
         <tr id="forthSection7">
             <td>If possible, please estimate date of Maximal Medical
                 Recovery
             </td>
-            <td><html:text readonly="readonly" styleId="w_estimatedate"
-                           property="w_estimatedate"
+            <td><input type="text" readonly="readonly" id="w_estimatedate"
+                           name="w_estimatedate"
                            onclick="window.WCBForm.w_estimatedate.value = '';"/><a
                     id="hlEDate"> <img title="Calendar"
                                        src="../../../images/cal.gif" alt="Calendar" border="0"/></a></td>
@@ -757,22 +770,22 @@
             <td>Further Correspondence to Follow: (2nd electronic form or
                 paper)
             </td>
-            <td><html:radio value="Y" property="w_tofollow"/> Yes <html:radio
-                    value="N" property="w_tofollow"/> No
+            <td><input type="radio" value="Y" name="w_tofollow"/> Yes <input type="radio"
+                    value="N" name="w_tofollow"/> No
             </td>
         </tr>
         <tr>
-            <td>Payee Number: <html:text readonly="readonly"
-                                         property="w_payeeno" size="5"/></td>
-            <td>Provider No: <html:text readonly="readonly"
-                                        property="w_pracno" size="5"/>(<%=form.getW_pracname()%>)
+            <td>Payee Number: <input type="text" readonly="readonly"
+                                         name="w_payeeno" size="5"/></td>
+            <td>Provider No: <input type="text" readonly="readonly"
+                                        name="w_pracno" size="5"/>(<%=form.getW_pracname()%>)
             </td>
         </tr>
         <tr>
             <td colspan="2" align="center" valign="top" class="SectionHead">
                 <input type="button" onclick="checkAskiiData(document.getElementById('w_diagnosis'))"/>
 
-                <html:hidden property="doValidate"/>
+                <input type="hidden" name="doValidate" id="doValidate"/>
                 <%if (hideToBill) { %>
                 <hidden name="hideToBill" value="true"/>
                 <%}%>
@@ -827,7 +840,7 @@
             });
             //Calendar.setup({inputField:"w_doi",ifFormat:"y-m-d",button:"hlDDate",align:"Bl",singleClick:true});
         </script>
-    </html:form>
+    </form>
 
 
     <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -988,7 +1001,7 @@
 
 
     </body>
-</html:html>
+</html>
 
 
 <%!

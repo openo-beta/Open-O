@@ -23,9 +23,9 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="col-lg-12" ng-hide="page.canRead">
-    <bean:message key="oscarEncounter.accessDenied"/>
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.accessDenied"/>
 </div>
 
 <div class="col-sm-3" ng-show="page.canRead">
@@ -77,20 +77,16 @@
                     {{item.displayName.length > 34 ? '...' : '' }}<small
                             ng-show="item.classification">({{item.classification}})</small></a></li>
                 <a href="javascript:void(0)" class="text-muted add-summary" ng-if="mod.summaryItem==null"
-                   ng-click="openPreventions(demographicNo)" ng-show="mod.summaryCode=='preventions'"><bean:message
-                        key="global.btnAdd"/> {{mod.displayName}}</a>
+                   ng-click="openPreventions(demographicNo)" ng-show="mod.summaryCode=='preventions'"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnAdd"/> {{mod.displayName}}</a>
                 <a href="javascript:void(0)" class="text-muted add-summary" ng-if="mod.summaryItem==null"
                    ng-click="gotoState('add', mod)"
-                   ng-hide="mod.summaryCode=='meds' || mod.summaryCode=='assessments' || mod.summaryCode=='allergies' || mod.summaryCode=='preventions' || page.cannotAdd"><bean:message
-                        key="global.btnAdd"/> {{mod.displayName}}</a>
+                   ng-hide="mod.summaryCode=='meds' || mod.summaryCode=='assessments' || mod.summaryCode=='allergies' || mod.summaryCode=='preventions' || page.cannotAdd"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnAdd"/> {{mod.displayName}}</a>
                 <a href="javascript:void(0)" class="text-muted add-summary" ng-if="mod.summaryItem==null"
-                   ng-click="openRx(demographicNo)" ng-show="mod.summaryCode=='meds'"><bean:message
-                        key="global.btnAdd"/> {{mod.displayName}}</a>
+                   ng-click="openRx(demographicNo)" ng-show="mod.summaryCode=='meds'"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnAdd"/> {{mod.displayName}}</a>
                 <a href="javascript:void(0)" class="text-muted add-summary" ng-if="mod.summaryItem==null"
-                   ng-click="openAllergies(demographicNo)" ng-show="mod.summaryCode=='allergies'"><bean:message
-                        key="global.btnAdd"/> {{mod.displayName}}</a>
+                   ng-click="openAllergies(demographicNo)" ng-show="mod.summaryCode=='allergies'"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnAdd"/> {{mod.displayName}}</a>
                 <a href="#/record/{{demographicNo}}/forms" class="text-muted add-summary" ng-if="mod.summaryItem==null"
-                   ng-show="mod.summaryCode=='assessments'"><bean:message key="global.btnAdd"/> {{mod.displayName}}</a>
+                   ng-show="mod.summaryCode=='assessments'"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnAdd"/> {{mod.displayName}}</a>
             </ul>
 
             <span ng-class="showMoreItemsSymbol(mod)" ng-click="toggleList(mod)" ng-show="showMoreItems(mod)"></span>
@@ -133,16 +129,13 @@
                 <dd ng-repeat-end ng-show="showNote(note)">
                     <pre ng-class="isNoteBeingEdited(note)" style="margin-bottom:0px;" ng-show="showNote(note)"
                          ng-hide="note.cpp==true" ng-dblclick="editNote(note)">{{note.note}}</pre>
-                    <h6 style="margin-top:1px;margin-bottom:0px;"><bean:message key="oscarEncounter.editors.title"/>:
-                        <small>{{note.editorNames}}</small> <span class="pull-right"><bean:message
-                                key="oscarEncounter.encounterDate.title"/>: <small>{{note.observationDate | date: 'medium'}}</small> <bean:message
-                                key="oscarEncounter.noteRev.title"/>: <small ng-click="openRevisionHistory(note)"
+                    <h6 style="margin-top:1px;margin-bottom:0px;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.editors.title"/>:
+                        <small>{{note.editorNames}}</small> <span class="pull-right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>: <small>{{note.observationDate | date: 'medium'}}</small> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/>: <small ng-click="openRevisionHistory(note)"
                                                                              class="hand-hover">{{note.revision}}</small></span>
                     </h6>
 
-                    <h6 style="margin-top:0px;"><bean:message key="oscarEncounter.assignedIssues.title"/>:
-                        <small>{{note.issueDescriptions}}</small> <span class="pull-right"><bean:message
-                                key="oscarEncounter.encType.title"/>: <small>{{note.encounterType}}</small></span></h6>
+                    <h6 style="margin-top:0px;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignedIssues.title"/>:
+                        <small>{{note.issueDescriptions}}</small> <span class="pull-right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encType.title"/>: <small>{{note.encounterType}}</small></span></h6>
                 </dd>
             </dl>
         </div>

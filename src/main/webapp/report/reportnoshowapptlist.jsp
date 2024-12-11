@@ -50,8 +50,8 @@
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:useBean id="patientBean" class="oscar.AppointmentMainBean" scope="page"/>
 <jsp:useBean id="myGroupBean" class="java.util.Vector" scope="page"/>
@@ -102,10 +102,10 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="report.reportnoshowapptlist.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnoshowapptlist.title"/></title>
         <link rel="stylesheet" href="../web.css">
         <script language="JavaScript">
             <!--
@@ -145,12 +145,11 @@
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr bgcolor=<%=deepcolor%>>
-            <th><font face="Helvetica"><bean:message
-                    key="report.reportnoshowapptlist.msgTitle"/></font></th>
+            <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnoshowapptlist.msgTitle"/></font></th>
             <th width="10%" nowrap><input type="button" name="Button"
-                                          value="<bean:message key="global.btnPrint" />"
+                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                                           onClick="window.print()"><input type="button" name="Button"
-                                                                          value="<bean:message key="global.btnExit" />"
+                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>"
                                                                           onClick="window.close()"></th>
         </tr>
     </table>
@@ -192,19 +191,14 @@
     <table width="100%" border="1" bgcolor="#ffffff" cellspacing="1" cellpadding="0">
         <tr bgcolor=<%=deepcolor%> align="center">
             <TH width="20%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=appointment_date"><bean:message
-                    key="report.reportapptsheet.msgApptDate"/></a></b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgApptDate"/></a></b></TH>
             <TH width="20%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=start_time"><bean:message
-                    key="report.reportapptsheet.msgStartTime"/></a> </b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=start_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgStartTime"/></a> </b></TH>
             <TH width="20%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=end_time"><bean:message
-                    key="report.reportapptsheet.msgEndTime"/></a> </b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=end_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgEndTime"/></a> </b></TH>
             <TH width="10%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=name"><bean:message
-                    key="report.reportapptsheet.msgName"/></a></b></TH>
-            <TH width="30%"><b><bean:message
-                    key="report.reportapptsheet.msgComments"/></b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgName"/></a></b></TH>
+            <TH width="30%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgComments"/></b></TH>
         </tr>
         <%
             }
@@ -220,8 +214,7 @@
             </td>
             <td align="center"><%=rsdemo.getString("name")%>
             </td>
-            <td>&nbsp;<bean:message
-                    key="report.reportnoshowapptlist.msgNoShow"/></td>
+            <td>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnoshowapptlist.msgNoShow"/></td>
         </tr>
         <%
                 }
@@ -230,4 +223,4 @@
 
     </table>
     </body>
-</html:html>
+</html>

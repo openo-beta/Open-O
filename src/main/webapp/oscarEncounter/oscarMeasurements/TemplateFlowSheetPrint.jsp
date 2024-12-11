@@ -35,8 +35,8 @@
 <%@ page import="oscar.util.UtilDateUtilities" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -160,7 +160,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
 
 %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <title><oscar:nameage demographicNo="<%=demographic_no%>"/> - <%=flowSheet%> Custom Print</title><!--I18n-->
@@ -1150,7 +1150,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
 
 
     </body>
-</html:html>
+</html>
 <%!
     String refused(Object re) {
         String ret = "Given";

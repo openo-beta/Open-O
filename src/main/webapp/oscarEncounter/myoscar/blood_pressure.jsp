@@ -28,11 +28,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html>
+
+
+<html>
     <head>
 
         <title>MyOSCAR Measurement: Blood Pressure</title>
@@ -47,7 +47,7 @@
             <c:param name="yaxisLabel" value="mm[Hg]"/>
         </c:import>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <body>
@@ -195,4 +195,4 @@
     <hr>
 
     </body>
-</html:html>
+</html>

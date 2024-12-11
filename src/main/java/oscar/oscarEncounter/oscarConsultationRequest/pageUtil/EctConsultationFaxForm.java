@@ -27,7 +27,6 @@
 package oscar.oscarEncounter.oscarConsultationRequest.pageUtil;
 
 import net.sf.json.JSONObject;
-import org.apache.struts.action.ActionForm;
 import org.oscarehr.fax.core.FaxAccount;
 import org.oscarehr.fax.core.FaxRecipient;
 
@@ -35,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class EctConsultationFaxForm extends ActionForm {
+public final class EctConsultationFaxForm {
 
     private String method;
     private String recipient;

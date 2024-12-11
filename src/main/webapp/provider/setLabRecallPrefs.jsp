@@ -40,9 +40,9 @@
     String providermsgSuccess = (String) request.getAttribute("providermsgSuccess");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html:html>
+<html>
     <head>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
@@ -60,40 +60,47 @@
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
                 <%=bundle.getString(providermsgEdit)%>
-                <html:form action="/setProviderStaleDate.do">
+                <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <table>
                         <tr>
                             <td>Delegate: <font color="red">*required</font></td>
                             <td>
-                                <html:select property="labRecallDelegate.value" onchange="delegateCheck();">
-                                    <html:options collection="providerSelect" property="value" labelProperty="label"/>
-                                </html:select>
+                                <select name="value" onchange="delegateCheck();">
+                                    <c:forEach var="provider" items="${providerSelect}">
+                                        <option value="${provider.value}">
+                                                ${provider.label}
+                                        </option>
+                                    </c:forEach>
+                                </select>
                             </td>
                         </tr>
 
                         <tr>
                             <td>Default Message Subject:</td>
-                            <td><html:text property="labRecallMsgSubject.value" size="50"/></td>
+                            <td><input type="checkbox" name="labRecallMsgSubject.value" size="50" /></td>
                         </tr>
 
                         <tr>
                             <td>Tickler Assignee:</td>
-                            <td><html:checkbox
-                                    property="labRecallTicklerAssignee.checked">default to delegate</html:checkbox></td>
+                            <td><input type="checkbox" name="labRecallTicklerAssignee.checked" />default to delegate</td>
                         </tr>
 
                         <tr>
                             <td>Tickler Priority:</td>
-                            <td><html:select property="labRecallTicklerPriority.value">
-                                <html:options collection="prioritySelect" property="value" labelProperty="label"/>
-                            </html:select></td>
+                            <td><select name="labRecallTicklerPriority.value" id="labRecallTicklerPriority.value">
+                                <c:forEach var="priority" items="${prioritySelect}">
+                                    <option value="${priority.value}">
+                                            ${priority.label}
+                                    </option>
+                                </c:forEach>
+                            </select></td>
                         </tr>
 
                     </table>
-                    <html:submit property="btnApply"/>
+                    <input type="submit" name="btnApply" value="Apply" />
                     <input type="button" name="delete" value="Delete" onclick="deleteProp();" style="display:none;">
-                </html:form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
                 <%}%>
             </td>
         </tr>
@@ -130,4 +137,4 @@
 
     </script>
     </body>
-</html:html>
+</html>

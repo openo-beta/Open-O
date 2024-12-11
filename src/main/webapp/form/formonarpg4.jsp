@@ -15,9 +15,9 @@
 
 <%@ page
         import="oscar.form.graphic.*, oscar.util.*, oscar.form.*, oscar.form.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
 <%
@@ -50,11 +50,11 @@
     String ar1CompleteSignal = "AR1 labs Complete";
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Antenatal Record 2</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css"
               href="<%=bView?"arStyleView.css" : "arStyle.css"%>">
         <!-- calendar stylesheet -->
@@ -66,7 +66,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
@@ -95,7 +95,7 @@
             var ret = checkAllDates();
             setLock(false);
             if (ret == true) {
-                if (document.forms[0].c_finalEDB.value == "" && !confirm("<bean:message key="oscarEncounter.formOnar.msgNoEDB"/>")) {
+                if (document.forms[0].c_finalEDB.value == "" && !confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formOnar.msgNoEDB"/>")) {
                     ret = false;
                 } else {
                     document.forms[0].action = "../form/createpdf?__title=Antenatal+Record+Part+2&__cfgfile=onar2PrintCfgPg3&__cfgGraphicFile=onar2PrintGraphCfgPg3&__template=onar2";
@@ -560,7 +560,7 @@
 
 
     <body bgproperties="fixed" topmargin="0" leftmargin="0" rightmargin="0">
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <input type="hidden" name="commonField" value="ar2_"/>
         <input type="hidden" name="c_lastVisited"
@@ -1704,7 +1704,7 @@
             </tr>
         </table>
 
-    </html:form>
+    </form>
     <% if (bView) { %>
     <script type="text/javascript">
         window.onload = function () {
@@ -1748,4 +1748,4 @@
         });
 
     </script>
-</html:html>
+</html>

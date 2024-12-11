@@ -31,8 +31,8 @@
 
 <%@ page
         import="java.util.*,oscar.oscarReport.reportByTemplate.*,java.sql.*, org.apache.commons.lang.StringEscapeUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -46,7 +46,7 @@
 </security:oscarSec>
 <!DOCTYPE html>
 
-<html:html lang="en">
+<html>
     <head>
         <title>Report by Template</title>
 
@@ -146,7 +146,7 @@
                 for (int x = 0; x < csvList.size(); x++) {
             %>
 
-            <html:form style="display:inline;" action="/oscarReport/reportByTemplate/generateOutFilesAction">
+            <form style="display:inline;" action="${pageContext.request.contextPath}/oscarReport/reportByTemplate/generateOutFilesAction.do" method="post">
                 <%if (x > 1) { %>
                 <label><%=(x + 1)%>
                 </label>
@@ -154,7 +154,7 @@
                 <input type="hidden" class="btn" name="csv" value="<%=StringEscapeUtils.escapeHtml(csvList.get(x))%>">
                 <input type="submit" class="btn" name="getCSV" value="Export to CSV">
                 <input type="submit" class="btn" name="getXLS" value="Export to XLS">
-            </html:form>
+            </form>
 
             <% } %>
         </div>
@@ -179,4 +179,4 @@
         </div>
     </div>
 
-</html:html>
+</html>

@@ -94,8 +94,8 @@ Ontario, Canada
 
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
@@ -178,10 +178,10 @@ Ontario, Canada
     ProgramManager2 programManager2 = SpringUtils.getBean(ProgramManager2.class);
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title><bean:message key="appointment.addappointment.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.title"/></title>
 
 
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -336,7 +336,7 @@ Ontario, Canada
                 obj.blur();
                 document.ADDAPPT.keyword.focus();
                 document.ADDAPPT.keyword.select();
-                window.alert("<bean:message key="Appointment.msgFillNameField"/>");
+                window.alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgFillNameField"/>");
             }
 
             function checkTypeNum(typeIn) {
@@ -366,11 +366,11 @@ Ontario, Canada
             function checkTimeTypeIn(obj) {
                 var colonIdx;
                 if (!checkTypeNum(obj.value)) {
-                    alert("<bean:message key="Appointment.msgFillTimeField"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgFillTimeField"/>");
                 } else {
                     colonIdx = obj.value.indexOf(':');
                     if (colonIdx == -1) {
-                        if (obj.value.length < 3) alert("<bean:message key="Appointment.msgFillValidTimeField"/>");
+                        if (obj.value.length < 3) alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgFillValidTimeField"/>");
                         obj.value = obj.value.substring(0, obj.value.length - 2) + ":" + obj.value.substring(obj.value.length - 2);
                     }
                 }
@@ -418,7 +418,7 @@ Ontario, Canada
                 var duration = document.ADDAPPT.duration.value;
 
                 if (isNaN(duration)) {
-                    alert("<bean:message key="Appointment.msgFillTimeField"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgFillTimeField"/>");
                     return false;
                 }
 
@@ -444,7 +444,7 @@ Ontario, Canada
                 document.ADDAPPT.end_time.value = shour + ":" + smin;
 
                 if (shour > 23) {
-                    alert("<bean:message key="Appointment.msgCheckDuration"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgCheckDuration"/>");
                     return false;
                 }
 
@@ -593,23 +593,23 @@ Ontario, Canada
                     _renderItem: function (ul, item) {
                         var string = "<div><b>" + item.label + "</b> "
                         if (item.element.attr("data-dur") && item.element.attr("data-dur").length > 0) {
-                            string = string + item.element.attr("data-dur") + "&nbsp;<bean:message key='provider.preference.min' />";
+                            string = string + item.element.attr("data-dur") + "&nbsp;<fmt:setBundle basename='oscarResources'/><fmt:message key='provider.preference.min'/>";
                         }
                         if (item.element.attr("data-notes") && item.element.attr("data-notes").length > 0) {
-                            string = string + "&nbsp;&nbsp;" + "<span style='color:gray'> <i class='icon-pencil' title='" + "<bean:message key="Appointment.formNotes" />:&nbsp;" +
+                            string = string + "&nbsp;&nbsp;" + "<span style='color:gray'> <i class='icon-pencil' title='" + "<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNotes"/>:&nbsp;" +
                                 item.element.attr("data-notes") + "'></i></span>";
                         }
                         string = string + "<br>";
                         if (item.element.attr("data-reason") && item.element.attr("data-reason").length > 0) {
-                            string = string + "<span style='color:gray'><i class='icon-tags' title='" + "<bean:message key="Appointment.formReason" />" + "'></i></span>&nbsp;&nbsp;" +
+                            string = string + "<span style='color:gray'><i class='icon-tags' title='" + "<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formReason"/>" + "'></i></span>&nbsp;&nbsp;" +
                                 item.element.attr("data-reason");
                         }
                         if (item.element.attr("data-resources") && item.element.attr("data-resources").length > 0) {
-                            string = string + "<br>" + "<span style='color:gray'><i class='icon-cog' title='" + "<bean:message key="Appointment.formResources" />" + "'></i></span>&nbsp;&nbsp;" +
+                            string = string + "<br>" + "<span style='color:gray'><i class='icon-cog' title='" + "<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formResources"/>" + "'></i></span>&nbsp;&nbsp;" +
                                 item.element.attr("data-resources");
                         }
                         if (item.element.attr("data-loc") && item.element.attr("data-loc").length > 1) {
-                            string = string + "<br>" + "<span style='color:gray'><i class='icon-home' title='" + "<bean:message key="Appointment.formLocation" />" + "'></i></span>&nbsp;&nbsp;" +
+                            string = string + "<br>" + "<span style='color:gray'><i class='icon-home' title='" + "<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formLocation"/>" + "'></i></span>&nbsp;&nbsp;" +
                                 item.element.attr("data-loc");
                         }
                         string = string + "</div>";
@@ -990,8 +990,8 @@ Ontario, Canada
         %>
         <div id="tooManySameDayGroupApptWarning" style="<%=displayStyle%>">
             <div class="alert alert-error">
-                <h4><bean:message key='appointment.addappointment.titleMultipleGroupDayBooking'/></h4>
-                <bean:message key='appointment.addappointment.MultipleGroupDayBooking'/>
+                <h4><fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.titleMultipleGroupDayBooking'/></h4>
+                <fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.MultipleGroupDayBooking'/>
             </div>
         </div>
         <%
@@ -1031,8 +1031,8 @@ Ontario, Canada
 
         %>
         <div class="alert alert-info" title='<%=exp%>'>
-            <h4><bean:message key="Appointment.msgPatientStatus"/>:</h4>
-            <%=patientStatus%>&nbsp;<bean:message key="Appointment.msgRosterStatus"/>:&nbsp;<%=rosterStatus%>
+            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgPatientStatus"/>:</h4>
+            <%=patientStatus%>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgRosterStatus"/>:&nbsp;<%=rosterStatus%>
         </div>
         <%
 
@@ -1045,7 +1045,7 @@ Ontario, Canada
 
         %>
         <div class="alert alert-error">
-            <h4><bean:message key="Appointment.formAlert"/>:</h4> <%=demographicCust.getAlert()%>
+            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formAlert"/>:</h4> <%=demographicCust.getAlert()%>
         </div>
 
         <%
@@ -1059,7 +1059,7 @@ Ontario, Canada
 
         %>
         <div class="alert alert-error">
-            <h4><bean:message key='appointment.addappointment.msgDoubleBooking'/></h4>
+            <h4><fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.msgDoubleBooking'/></h4>
             <%
                 if (bDnb) out.println("<br/>You CANNOT book an appointment on this time slot.");
             %>
@@ -1091,8 +1091,8 @@ Ontario, Canada
 
             <div class="time" id="header"><h4>
                 <!-- We display a shortened title for the mobile version -->
-                <% if (isMobileOptimized) { %><bean:message key="appointment.addappointment.msgMainLabelMobile"/>
-                <% } else { %><bean:message key="appointment.addappointment.msgMainLabel"/>
+                <% if (isMobileOptimized) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabelMobile"/>
+                <% } else { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabel"/>
                 <% out.println("(" + pFirstname + " " + pLastname + ")"); %>
                 <% } %></h4>
             </div>
@@ -1101,7 +1101,7 @@ Ontario, Canada
                     <table class="table table-condensed table-responsive">
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formDate"/>&nbsp;<span
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDate"/>&nbsp;<span
                                     style="color:brown;">(<%=dateString1%>)</span>:
                             </td>
                             <td>
@@ -1112,7 +1112,7 @@ Ontario, Canada
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formStartTime"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formStartTime"/>:
                             </td>
                             <td>
                                 <input type="time" name="start_time" class="form-control"
@@ -1122,7 +1122,7 @@ Ontario, Canada
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formDuration"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDuration"/>:
                             </td>
                             <td>
                                 <input type="number" name="duration" id="duration" class="form-control"
@@ -1136,7 +1136,7 @@ Ontario, Canada
                             <td>
                                 <input type="submit" name="searchBtn" id="searchBtn" class="btn"
                                        onclick="parseSearch(); document.forms['ADDAPPT'].displaymode.value='Search ';"
-                                       value="<bean:message key="appointment.addappointment.btnSearch"/>">
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnSearch"/>">
                             </td>
                             <td>
                                 <%
@@ -1145,13 +1145,13 @@ Ontario, Canada
                                 %>
                                 <input type="text" name="keyword" id="keyword" class="form-control"
                                        value="<%=Encode.forHtmlAttribute(name)%>"
-                                       placeholder="<bean:message key="Appointment.formNamePlaceholder" />">
+                                       placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNamePlaceholder"/>">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label for="reasonCode">
-                                    <bean:message key="Appointment.formReason"/>:
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formReason"/>:
                                 </label>
                             </td>
                             <td>
@@ -1178,7 +1178,7 @@ Ontario, Canada
                             <td>
                                 <textarea id="reason" name="reason" class="form-control" tabindex="2" rows="2"
                                           style="resize:none;"
-                                          placeholder="<bean:message key="Appointment.formReason" />" cols="18"
+                                          placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formReason"/>" cols="18"
                                           maxlength="80"><%=bFirstDisp ? "" : request.getParameter("reason").equals("") ? "" : Encode.forHtmlContent(request.getParameter("reason"))%></textarea>
                             </td>
                         </tr>
@@ -1196,7 +1196,7 @@ Ontario, Canada
 
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formLocation"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formLocation"/>:
                             </td>
                             <td>
                                 <% // multisites start ==================
@@ -1241,7 +1241,7 @@ Ontario, Canada
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formCreator"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formCreator"/>:
                             </td>
                             <td>
                                 <input type="TEXT" name="user_id" readonly
@@ -1253,7 +1253,7 @@ Ontario, Canada
                         <% if (pros.isPropertyActive("mc_number")) { %>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formMC"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formMC"/>:
                             </td>
                             <td>
                                 <input type="text" name="appt_mc_number" tabindex="4"/>
@@ -1267,7 +1267,7 @@ Ontario, Canada
                     <table class="table table-condensed table-responsive">
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formStatus"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formStatus"/>:
                             </td>
                             <td>
                                 <%
@@ -1293,11 +1293,11 @@ Ontario, Canada
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formType"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formType"/>:
                             </td>
                             <td>
                                 <select name="type" id="type"
-                                        title="<bean:message key="billing.billingCorrection.msgSelectVisitType"/>">
+                                        title="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgSelectVisitType"/>">
                                     <option data-dur="" data-reason=""></option>
                                     <!-- important leave a blank top entry  -->
 
@@ -1319,7 +1319,7 @@ Ontario, Canada
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formDoctor"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDoctor"/>:
                             </td>
                             <td>
                                 <input type="text" id="mrp" readonly
@@ -1327,7 +1327,7 @@ Ontario, Canada
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="button" value="<bean:message key="Appointment.doNotBook" />"
+                            <td><input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.doNotBook"/>"
                                        class="btn btn-link" style="padding-left:0px;" onclick="onNotBook();">
 
                             </td>
@@ -1340,17 +1340,17 @@ Ontario, Canada
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formNotes"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNotes"/>:
                             </td>
                             <td>
                                 <textarea name="notes" tabindex="3" rows="2" style="resize:none;"
-                                          placeholder="<bean:message key="Appointment.formNotes" />" cols="18"
+                                          placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNotes"/>" cols="18"
                                           maxlength="255"><%=bFirstDisp ? "" : request.getParameter("notes").equals("") ? "" : request.getParameter("notes")%></textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formResources"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formResources"/>:
                             </td>
                             <td>
                                 <input type="text" name="resources"
@@ -1361,7 +1361,7 @@ Ontario, Canada
                         </tr>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formDateTime"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDateTime"/>:
                             </td>
                             <td>
                                 <%
@@ -1387,7 +1387,7 @@ Ontario, Canada
                         <tr>
                             <td>
                                 <label for="urgency">
-                                    <bean:message key="Appointment.formCritical"/> <i class="icon-warning-sign"></i>:
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formCritical"/> <i class="icon-warning-sign"></i>:
                                 </label>
                             </td>
                             <td>
@@ -1399,7 +1399,7 @@ Ontario, Canada
                             if ((emailReminder != null) && emailReminder.equalsIgnoreCase("yes")) { %>
                         <tr>
                             <td>
-                                <bean:message key="Appointment.formEmailReminder"/>:
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formEmailReminder"/>:
                             </td>
                             <td>
                                 <input type="checkbox" name="emailPt" value="email reminder">
@@ -1442,24 +1442,21 @@ Ontario, Canada
                     <input type="submit" id="addButton" class="btn btn-primary"
                            onclick="document.forms['ADDAPPT'].displaymode.value='Add Appointment'"
                            tabindex="6"
-                           value="<% if (isMobileOptimized) { %><bean:message key="appointment.addappointment.btnAddAppointmentMobile" />
-                   <% } else { %><bean:message key="appointment.addappointment.btnAddAppointment"/><% } %>"
+                           value="<% if (isMobileOptimized) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointmentMobile"/>
+                   <% } else { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointment"/><% } %>"
                             <%=disabled%>>
                     <input type="submit" id="groupButton" class="btn"
                            onclick="document.forms['ADDAPPT'].displaymode.value='Group Appt'"
-                           value="<bean:message key="appointment.addappointment.btnGroupAppt"/>"
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnGroupAppt"/>"
                             <%=disabled%>>
                     <% }
 
                         if (dateString2.equals(inform.format(inform.parse(now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH))))
 
                                 || dateString2.equals(inform.format(inform.parse(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DAY_OF_MONTH))))) {
-
-                            org.apache.struts.util.MessageResources resources = org.apache.struts.util.MessageResources.getMessageResources("oscarResources");
-
                     %> <input type="submit" id="addPrintPreviewButton" class="btn"
                               onclick="document.forms['ADDAPPT'].displaymode.value='Add Appt & PrintPreview'"
-                              value="<bean:message key='appointment.addappointment.btnAddApptPrintPreview'/>"
+                              value="<fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.btnAddApptPrintPreview'/>"
                         <%=disabled%>>
 
 
@@ -1470,12 +1467,12 @@ Ontario, Canada
 
                     <input type="submit" id="printReceiptButton" class="btn"
                            onclick="document.forms['ADDAPPT'].displaymode.value='Add Appointment';document.forms['ADDAPPT'].printReceipt.value='1';"
-                           value="<bean:message key='appointment.addappointment.btnPrintReceipt'/>"
+                           value="<fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.btnPrintReceipt'/>"
                             <%=disabled%>>
                     <input type="hidden" name="printReceipt" value="">
                     <input type="submit" id="printButton"
                            onclick="document.forms['ADDAPPT'].displaymode.value='Add Appt & PrintCard'" class="btn"
-                           value="<bean:message key='global.btnPrint'/>"
+                           value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnPrint'/>"
                             <%=disabled%>>
 
 
@@ -1506,11 +1503,11 @@ Ontario, Canada
 
                     <% if (!props.getProperty("allowMultipleSameDayGroupAppt", "").equalsIgnoreCase("no")) {%>
                     <input type="button" id="apptRepeatButton" class="btn"
-                           value="<bean:message key="appointment.addappointment.btnRepeat"/>"
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnRepeat"/>"
                            onclick="onButRepeat()" <%=disabled%>>
                     <% } %>
                     <input type="RESET" id="backButton" class="btn btn-link"
-                           value="<bean:message key="global.btnCancel"/>" onClick="cancelPageLock();window.close();">
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>" onClick="cancelPageLock();window.close();">
 
                 </div>
             </div>
@@ -1525,44 +1522,37 @@ Ontario, Canada
                         <table style="font-size: 9pt; background-color:#e8e8e8; text-align:center; vertical-align: top; padding:3px;">
                             <tr style="background-color:#e8e8e8;">
                                 <th colspan="2">
-                                    <bean:message key="appointment.addappointment.msgDemgraphics"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgDemgraphics"/>
                                     <a title="Master File"
                                        onclick="popup(700,1000,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=demoNo%>&amp;displaymode=edit&amp;dboperation=search_detail','master')"
-                                       href="javascript: function myFunction() {return false; }"><bean:message
-                                            key="appointment.addappointment.btnEdit"/></a>
+                                       href="javascript: function myFunction() {return false; }"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnEdit"/></a>
 
-                                    <bean:message key="appointment.addappointment.msgSex"/>: <%=sex%> &nbsp;
-                                    <bean:message key="appointment.addappointment.msgDOB"/>: <%=dob%>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgSex"/>: <%=sex%> &nbsp;
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgDOB"/>: <%=dob%>
                                 </th>
                             </tr>
                             <tr style="background-color:#fdfdfd">
-                                <th style="padding-right: 20px; text-align: left"><bean:message
-                                        key="appointment.addappointment.msgHin"/>:
+                                <th style="padding-right: 20px; text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgHin"/>:
                                 </th>
                                 <td><%=hin.replace("null", "")%>
                                 </td>
                             </tr>
                             <tr style="background-color:#f3f6f9">
-                                <th style="padding-right: 20px; text-align: left"><bean:message
-                                        key="appointment.addappointment.msgAddress"/>:
+                                <th style="padding-right: 20px; text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddress"/>:
                                 </th>
                                 <td><%=StringUtils.trimToEmpty(address)%>, <%=StringUtils.trimToEmpty(city)%>
                                     , <%=StringUtils.trimToEmpty(province)%>, <%=StringUtils.trimToEmpty(postal)%>
                                 </td>
                             </tr>
                             <tr style="background-color:#fdfdfd">
-                                <th style="padding-right: 20px; text-align: left"><bean:message
-                                        key="appointment.addappointment.msgPhone"/>:
+                                <th style="padding-right: 20px; text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgPhone"/>:
                                 </th>
-                                <td><b><bean:message
-                                        key="appointment.addappointment.msgH"/></b>:<%=StringUtils.trimToEmpty(phone)%>
-                                    <b><bean:message
-                                            key="appointment.addappointment.msgW"/></b>:<%=StringUtils.trimToEmpty(phone2)%>
+                                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgH"/></b>:<%=StringUtils.trimToEmpty(phone)%>
+                                    <b><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgW"/></b>:<%=StringUtils.trimToEmpty(phone2)%>
                                 </td>
                             </tr>
                             <tr style="background-color:#f3f6f9; text-align:left">
-                                <th style="padding-right: 20px"><bean:message
-                                        key="appointment.addappointment.msgEmail"/>:
+                                <th style="padding-right: 20px"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgEmail"/>:
                                 </th>
                                 <td><%=StringUtils.trimToEmpty(email)%>
                                 </td>
@@ -1596,7 +1586,7 @@ Ontario, Canada
                         <table style="background-color: #e8e8e8; margin-left:auto; vertical-align: top;padding:3px">
                             <tr style="background-color:#f3f6f9">
                                 <th colspan="2">
-                                    <bean:message key="appointment.addappointment.msgFormsSaved"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgFormsSaved"/>
                                 </th>
                             </tr>
                             <% }%>
@@ -1604,9 +1594,9 @@ Ontario, Canada
                             <tr style="background-color:#e8e8e8; text-align:left">
                                 <th style="padding-right: 20px"><c:out value="${formName}:"/></th>
                                 <% if (formComplete) { %>
-                                <td><bean:message key="appointment.addappointment.msgFormCompleted"/></td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgFormCompleted"/></td>
                                 <% } else { %>
-                                <td><bean:message key="appointment.addappointment.msgFormNotCompleted"/></td>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgFormNotCompleted"/></td>
                                 <% } %>
                             </tr>
                             <%
@@ -1622,14 +1612,13 @@ Ontario, Canada
                     <td style="vertical-align: top;">
                         <table style="font-size: 8pt; background-color:#e9e9e9; margin-left:auto; vertical-align: top;">
                             <tr style="background-color:#e8e8e8">
-                                <th colspan="4"><bean:message key="appointment.addappointment.msgOverview"/></th>
+                                <th colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgOverview"/></th>
                             </tr>
                             <tr style="background-color:#fdfdfd">
-                                <th style="padding-right: 25px"><bean:message key="Appointment.formDate"/></th>
-                                <th style="padding-right: 25px"><bean:message key="Appointment.formStartTime"/></th>
-                                <th style="padding-right: 25px"><bean:message
-                                        key="appointment.addappointment.msgProvider"/></th>
-                                <th><bean:message key="appointment.addappointment.msgComments"/></th>
+                                <th style="padding-right: 25px"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDate"/></th>
+                                <th style="padding-right: 25px"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formStartTime"/></th>
+                                <th style="padding-right: 25px"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgProvider"/></th>
+                                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgComments"/></th>
                             </tr>
                             <%
 
@@ -1697,4 +1686,4 @@ Ontario, Canada
     </div>
     </body>
 
-</html:html>
+</html>

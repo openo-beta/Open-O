@@ -22,25 +22,15 @@
     Toronto, Ontario, Canada
 
 --%>
-
-
 <%@ include file="/taglibs.jsp" %>
-<%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.survey.web.formbean.SurveyExecuteDataBean" %>
-<%@ page import="org.apache.struts.validator.DynaValidatorForm" %>
 <%@ page import="org.oscarehr.surveymodel.*" %>
-<%@ page import="org.oscarehr.PMmodule.web.forms.SurveyExecuteAction" %>
-
+<%@ page import="org.oscarehr.PMmodule.web.forms.SurveyExecute2Action" %>
 <c:set var="id" scope="page">
     <c:out value="${question.id}"/>
 </c:set>
 <%
     //This little piece of code is needed to expose the value-map from the formbean
-    //to the scriptlets - too bad html:text doesn't support the id attribute.
-    String id = ((String) pageContext.getAttribute("id"));
-    DynaValidatorForm form = (DynaValidatorForm) session.getAttribute("surveyExecuteForm");
-    SurveyExecuteDataBean data = (SurveyExecuteDataBean) form.get("data");
-    Map valueMap = data.getValues();
+    //to the scriptlets - too bad html doesn't support the id attribute.
 %>
 <script>
     function select_checkbox(name) {
@@ -170,7 +160,7 @@
                             style="cursor: pointer;" title="Date selector"/> <%
                         Question q = (Question) request.getAttribute("question");
                         String format = q.getType().getDate().toString();
-                        String calFormat = SurveyExecuteAction.getCalendarFormat(format);
+                        String calFormat = SurveyExecute2Action.getCalendarFormat(format);
                     %>
                         <script type="text/javascript">
                             Calendar.setup({
@@ -302,7 +292,7 @@
                                         <c:if test="${question.type.select.otherAnswer eq true}">
                                             <td><input type="hidden"
                                                     name="data.value(checkbox_${pageNumber}_${sectionId}_${question.id}_other)"/>
-                                                <input type="checkbox
+                                                <input type="checkbox"
                                                         name="data.value(${pageNumber}_${sectionId}_${question.id}_other)"
                                                         value="other"
                                                         onclick="select_checkbox('${pageNumber}_${sectionId}_${question.id}_other')"/>&nbsp;Other&nbsp;<input type="text"

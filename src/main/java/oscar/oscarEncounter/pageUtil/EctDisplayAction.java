@@ -25,30 +25,24 @@
 
 package oscar.oscarEncounter.pageUtil;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
-
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.util.MessageResources;
+import org.apache.struts2.ServletActionContext;
 import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-
 import oscar.util.UtilDateUtilities;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 
 
 /**
@@ -56,7 +50,9 @@ import oscar.util.UtilDateUtilities;
  *
  * @author rjonasz
  */
-public class EctDisplayAction extends Action {
+public class EctDisplayAction extends ActionSupport {
+    HttpServletRequest request = ServletActionContext.getRequest();
+    HttpServletResponse response = ServletActionContext.getResponse();
 
     private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
@@ -101,7 +97,7 @@ public class EctDisplayAction extends Action {
 
     }
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public String execute() throws IOException, ServletException {
 
         EctSessionBean bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean");
         String forward = "error";
@@ -166,8 +162,6 @@ public class EctDisplayAction extends Action {
             //Check to see if this call is for us
             if (params.indexOf(cmd) > -1) {
 
-                MessageResources messages = getResources(request);
-
                 NavBarDisplayDAO Dao = (NavBarDisplayDAO) request.getAttribute("DAO");
                 if (Dao == null) Dao = new NavBarDisplayDAO();
 
@@ -182,7 +176,7 @@ public class EctDisplayAction extends Action {
                 com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
                 if (securityMgr.hasReadAccess("_" + cmd.toLowerCase(), request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
 
-                    if (getInfo(bean, request, Dao, messages)) {
+                    if (getInfo(bean, request, Dao)) {
                         request.setAttribute("DAO", Dao);
 
                         String regex = "\\b" + cmd + "\\b";
@@ -217,7 +211,7 @@ public class EctDisplayAction extends Action {
         if (forward != null && !forward.equals("success")) {
             MiscUtils.getLogger().error("Forward :" + forward + " navName :" + navName + " cmd " + cmd + " params " + params);
         }
-        return new ActionForward(Actions.get(forward));
+        return forward;
     }
 
     /**
@@ -226,11 +220,10 @@ public class EctDisplayAction extends Action {
      * @param bean     Current session information
      * @param request  Current request
      * @param Dao      View DAO responsible for rendering encounter
-     * @param messages i18n message bundle
      * @return Returns true if the content was loaded successfully and false otherwise. Please note that returning false will case
      * an error message rendered for this action.
      */
-    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
         return true;
     }
 
@@ -271,8 +264,8 @@ public class EctDisplayAction extends Action {
      * link.
      *
      * @param title Title to be displayed for the item
+     * @param url url
      * @param color Color of the link to be displayed in the item (e.g. "red", or "green")
-     * @param link  Targer URL to be opened with link is clicked
      * @return Returns the new item.
      */
     protected NavBarDisplayDAO.Item newItem(String title, String url, String color) {

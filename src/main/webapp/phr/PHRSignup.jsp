@@ -38,11 +38,11 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html ng-app="phrConfig">
 <head ng-cloak>
-    <title><bean:message key="admin.admin.phrconfig"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.phrconfig"/></title>
     <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
     <script src="<%=request.getContextPath() %>/js/jquery-1.9.1.js"></script>

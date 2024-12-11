@@ -24,13 +24,13 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Edit Favorites</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
             <% response.sendRedirect("error.html"); %>
@@ -60,26 +60,26 @@
         int i, j;
     %>
 
-    <html:form action="/oscarRx/updateFavorite">
-        <html:hidden property="favoriteId"/>
-        <html:hidden property="favoriteName"/>
-        <html:hidden property="customName"/>
-        <html:hidden property="takeMin"/>
-        <html:hidden property="takeMax"/>
-        <html:hidden property="frequencyCode"/>
-        <html:hidden property="duration"/>
-        <html:hidden property="durationUnit"/>
-        <html:hidden property="quantity"/>
-        <html:hidden property="repeat"/>
-        <html:hidden property="nosubs"/>
-        <html:hidden property="prn"/>
-        <html:hidden property="special"/>
-        <html:hidden property="customInstr"/>
-    </html:form>
+    <form action="${pageContext.request.contextPath}/oscarRx/updateFavorite.do" method="post">
+        <input type="hidden" name="favoriteId" id="favoriteId"/>
+        <input type="hidden" name="favoriteName" id="favoriteName"/>
+        <input type="hidden" name="customName" id="customName"/>
+        <input type="hidden" name="takeMin" id="takeMin"/>
+        <input type="hidden" name="takeMax" id="takeMax"/>
+        <input type="hidden" name="frequencyCode" id="frequencyCode"/>
+        <input type="hidden" name="duration" id="duration"/>
+        <input type="hidden" name="durationUnit" id="durationUnit"/>
+        <input type="hidden" name="quantity" id="quantity"/>
+        <input type="hidden" name="repeat" id="repeat"/>
+        <input type="hidden" name="nosubs" id="nosubs"/>
+        <input type="hidden" name="prn" id="prn"/>
+        <input type="hidden" name="special" id="special"/>
+        <input type="hidden" name="customInstr" id="customInstr"/>
+    </form>
 
-    <html:form action="/oscarRx/deleteFavorite">
-        <html:hidden property="favoriteId"/>
-    </html:form>
+    <form action="${pageContext.request.contextPath}/oscarRx/deleteFavorite.do" method="post">
+        <input type="hidden" name="favoriteId" id="favoriteId"/>
+    </form>
 
     <script language=javascript>
         function updateRow(rowId) {
@@ -164,9 +164,7 @@
                        width="100%" height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <bean:message
-                                    key="SearchDrug.title"/></a> > <b><bean:message
-                                    key="StaticScript.title.EditFavorites"/></b></div>
+                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> > <b><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title.EditFavorites"/></b></div>
                         </td>
                     </tr>
 
@@ -383,4 +381,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

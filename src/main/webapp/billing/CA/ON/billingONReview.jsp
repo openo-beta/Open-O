@@ -27,9 +27,9 @@
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -68,7 +68,7 @@
 
 <%
     Properties gstProp = new Properties();
-    GstControlAction db = new GstControlAction();
+    GstControl2Action db = new GstControl2Action();
     GstReport gstRep = new GstReport();
     gstProp = db.readDatabase();
     String gstFlag;
@@ -710,10 +710,8 @@
                     <tr style="color:white">
                         <td align=center>
                             <div class='myError'>
-                                (<bean:message
-                                    key="oscar.billing.ca.on.billingON.review.invoiceNo"/><%=String.valueOf(bCh1.getId())%>
-                                ) A003A - <bean:message
-                                    key="oscar.billing.ca.on.billingON.review.msgServiceCodeAlreadyBilled"/>
+                                (<fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.ca.on.billingON.review.invoiceNo"/><%=String.valueOf(bCh1.getId())%>
+                                ) A003A - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.ca.on.billingON.review.msgServiceCodeAlreadyBilled"/>
                             </div>
                         </td>
                     </tr>

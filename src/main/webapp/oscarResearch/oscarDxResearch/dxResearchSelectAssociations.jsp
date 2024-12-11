@@ -22,23 +22,16 @@
     Toronto, Ontario, Canada
 
 --%>
-
-<%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<html>
     <head>
         <link rel="stylesheet" type="text/css" href="dxResearch.css">
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <link rel="stylesheet" type="text/css"
-              href="<%= request.getContextPath() %>/js/jquery_css/smoothness/jquery-ui-1.10.2.custom.min.css"/>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/js/jquery_css/smoothness/jquery-ui-1.10.2.custom.min.css"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-1.9.1.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-ui-1.10.2.custom.min.js"></script>
 
-        <title><bean:message
-                key="oscarResearch.oscarDxResearch.dxCustomization.selectAssociations"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.selectAssociations"/>
         </title>
 
         <script type="text/javascript">
@@ -112,8 +105,7 @@
     <!--  -->
     <table width="100%" bgcolor="#EEEEFF">
         <tr bgcolor="#000000">
-            <td class="subject" colspan="2">&nbsp;&nbsp;&nbsp;<bean:message
-                    key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
+            <td class="subject" colspan="2">&nbsp;&nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
         </tr>
         <tr>
             <td class=heading colspan="2">Customize Associations List</td>
@@ -128,19 +120,17 @@
                 <br/>
                 <div id="upload_form">
                     <h4>Upload CSV file:</h4>
-                    <html:form action="/oscarResearch/oscarDxResearch/dxResearchLoadAssociations.do?method=uploadFile"
+                    <form action="${pageContext.request.contextPath}/oscarResearch/oscarDxResearch/dxResearchLoadAssociations.do?method=uploadFile.do"
                                method="post" enctype="multipart/form-data">
-                        <html:file property="file"></html:file>
-                        <span title="<bean:message key="global.uploadWarningBody"/>"
-                              style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
-                                border="0" src="../../images/icon_alertsml.gif"/></span></span>
-
+                        <input type="file" name="file" id="file" size="35"/>
+                        <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
+                              style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img border="0" src="../../images/icon_alertsml.gif"/></span></span>
                         <br/>
-                        <html:radio property="replace" value="true"/>Replace&nbsp;
-                        <html:radio property="replace" value="false"/>Append
+                        <input type="radio" name="replace" value="true"/>Replace&nbsp;
+                        <input type="radio" name="replace" value="false"/>Append
                         <br/>
-                        <html:submit/>
-                    </html:form>
+                        <input type="submit" name="submit" value="Submit" />
+                    </form>
                 </div>
                 <br/>
                 <input id="automatch" type="button" class="mbttn"
@@ -160,4 +150,4 @@
     </table>
 
     </body>
-</html:html>
+</html>

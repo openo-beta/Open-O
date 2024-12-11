@@ -83,12 +83,12 @@
     <link href="<%=request.getContextPath() %>/css/datepicker.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
 
-    <title><bean:message key="admin.admin.btnBatchBilling"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBatchBilling"/></title>
     <script type="text/javascript">
         <!--
 
         function askFirst(method) {
-            if (confirm('<bean:message key="billing.batchbilling.msgConfirmDelete"/>')) {
+            if (confirm('<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgConfirmDelete"/>')) {
                 setMethod(method);
             }
 
@@ -163,7 +163,7 @@
 </head>
 
 <body>
-<h3><bean:message key="admin.admin.btnBatchBilling"/></h3>
+<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBatchBilling"/></h3>
 
 <div class="container-fluid">
 
@@ -176,12 +176,11 @@
             <input type="hidden" id="method" name="method" value="">
 
             <div class="span2">
-                <bean:message key="billing.batchbilling.msgProvider"/><br>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgProvider"/><br>
                 <select name="provider" class="span2" onChange="jumpMenu('window',this)">
-                    <option value="#"><b><bean:message key="billing.batchbilling.msgProvider"/></b></option>
+                    <option value="#"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgProvider"/></b></option>
                     <option value="all"
-                            <%=providerview.equals("all") ? "selected" : ""%>><bean:message
-                            key="billing.batchbilling.msgAllProvider"/></option>
+                            <%=providerview.equals("all") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgAllProvider"/></option>
                     <% List<Provider> providers = providerDao.getBillableProviders();
                         String proFirst, proLast, proNo;
                         for (Provider p : providers) {
@@ -201,10 +200,9 @@
             </div>
 
             <div class="span3">
-                <bean:message key="billing.batchbilling.serviceCode"/>:
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.serviceCode"/>:
                 <select id="service_code" class="span3" name="service_code">
-                    <option value="all" <%=servicecode.equals("all") ? "selected" : ""%>><bean:message
-                            key="billing.batchbilling.msgAllServiceCode"/></option>
+                    <option value="all" <%=servicecode.equals("all") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgAllServiceCode"/></option>
                     <%
                         List<String> serviceCodes = batchBillingDAO.findDistinctServiceCodes();
                         for (String service : serviceCodes) {
@@ -218,7 +216,7 @@
             </div>
 
             <div class="span4">
-                <bean:message key="billing.batchbilling.msgClinicLocation"/>:
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgClinicLocation"/>:
                 <select name="clinic_view" class="span4">
                     <%
                         String clinic_location = "", clinic_code = "";
@@ -262,13 +260,13 @@
         <table class="table table-striped table-hover table-condensed">
             <thead>
             <tr>
-                <th><bean:message key="billing.batchbilling.msgSelection"/></th>
-                <th><bean:message key="billing.batchbilling.msgDemographic"/></th>
-                <th><bean:message key="billing.batchbilling.msgProviderTitle"/></th>
-                <th><bean:message key="billing.batchbilling.msgService"/></th>
-                <th><bean:message key="billing.batchbilling.msgAmount"/></th>
-                <th><bean:message key="billing.batchbilling.msgDiagnostic"/></th>
-                <th><bean:message key="billing.batchbilling.msgLastBillDate"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgSelection"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgDemographic"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgProviderTitle"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgService"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgAmount"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgDiagnostic"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgLastBillDate"/></th>
 
             </tr>
             </thead>
@@ -339,14 +337,14 @@
                 if (Count1 == 0) {
             %>
             <tr>
-                <td colspan=7><bean:message key="billing.batchbilling.msgNoMatch"/></td>
+                <td colspan=7><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgNoMatch"/></td>
             </tr>
             <%} else {%>
 
             <tr>
                 <td colspan="7">
                     <div class="span3">
-                        <bean:message key="billing.batchbilling.serviceDate"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.serviceDate"/>
                         <div class="input-append">
                             <input type="text" name="BillDate" id="BillDate"
                                    value="<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>"
@@ -357,9 +355,9 @@
 
                     <div class="span4">
                         <input type="button" class="btn btn-primary" onclick="return setMethod('doBatchBill');"
-                               value="<bean:message key="billing.batchbilling.btnSubmit"/>">
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.btnSubmit"/>">
                         <input type="button" class="btn" onclick="return askFirst('remove');"
-                               value="<bean:message key="billing.batchbilling.btnRemove"/>">
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.btnRemove"/>">
                     </div>
                 </td>
             </tr>

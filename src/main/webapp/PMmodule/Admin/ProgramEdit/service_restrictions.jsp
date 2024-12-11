@@ -60,13 +60,13 @@ Please define the following parameters control the behaviour of new service rest
 <table width="100%" border="1" cellspacing="2" cellpadding="3">
     <tr class="b">
         <td width="20%">Maximum length of service restriction (in days):</td>
-        <td><html:text property="program.maximumServiceRestrictionDays" size="4" maxlength="4"/>&nbsp;(empty or zero
+        <td><input type="checkbox" name="program.maximumServiceRestrictionDays" size="4" maxlength="4" />&nbsp;(empty or zero
             means no maximum)
         </td>
     </tr>
     <tr class="b">
         <td width="20%">Default service restriction length (in days):</td>
-        <td><html:text property="program.defaultServiceRestrictionDays" size="4" maxlength="4"/></td>
+        <td><input type="checkbox" name="program.defaultServiceRestrictionDays" size="4" maxlength="4" /></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -95,7 +95,7 @@ Please define the following parameters control the behaviour of new service rest
         document.programManagerForm.submit();
     }
 </script>
-<html:hidden property="restriction.id"/>
+<input type="hidden" name="id" id="id"/>
 
 <display-el:table class="simple" cellspacing="2" cellpadding="3" id="restriction" name="service_restrictions"
                   export="false" pagesize="0" requestURI="/PMmodule/ProgramManager.do">

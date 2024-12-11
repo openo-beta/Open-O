@@ -47,13 +47,13 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />'/>
+    <link rel="stylesheet" type="text/css" href='${request.contextPath}/jsCalendar/skins/aqua/theme.css'/>
 
     <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css"
           title="win2k-cold-1"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="<%=request.getContextPath()%>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
 
 </head>
@@ -61,14 +61,14 @@
 Specs History
 <br/>
 
-<html:form action="/eyeform/SpecsHistory.do">
+<form action="${pageContext.request.contextPath}/eyeform/SpecsHistory.do" method="post">
     <table border="0" cellspacing="5" width="100%">
         <tbody>
         <tr>
             <td>Date:</td>
 
             <td>
-                <html:text property="specs.dateStr" size="10" styleId="pdate"/> <img
+                <input type="text" name="specs.dateStr" size="10" id="pdate"/> <img
                     src="<%=request.getContextPath()%>/images/cal.gif" id="pdate_cal">
             </td>
             <script type="text/javascript">
@@ -86,7 +86,7 @@ Specs History
         <tr>
             <td>Doctor Name:</td>
             <td>
-                <html:text property="specs.doctor"/>
+                <input type="text" name="specs.doctor" id="specs.doctor" />
 
             </td>
 
@@ -95,12 +95,12 @@ Specs History
         <tr>
             <td>Specs Type:</td>
             <td>
-                <html:select property="specs.type">
-                    <html:option value="distance">distance</html:option>
-                    <html:option value="bifocal">bifocal</html:option>
-                    <html:option value="invisible bifocal">invisible bifocal</html:option>
-                    <html:option value="reading">reading</html:option>
-                </html:select>
+                <select name="type">
+                    <option value="distance">distance</option>
+                    <option value="bifocal">bifocal</option>
+                    <option value="invisible bifocal">invisible bifocal</option>
+                    <option value="reading">reading</option>
+                </select>
             </td>
         </tr>
 
@@ -120,20 +120,20 @@ Specs History
 
                     <tr>
                         <td width="10%">OD</td>
-                        <td width="18%"><html:text property="specs.odSph" size="8"/></td>
-                        <td width="18%"><html:text property="specs.odCyl" size="8"/></td>
-                        <td width="18%"><html:text property="specs.odAxis" size="8"/></td>
-                        <td width="18%"><html:text property="specs.odAdd" size="8"/></td>
-                        <td width="18%"><html:text property="specs.odPrism" size="8"/></td>
+                        <td width="18%"><input type="checkbox" name="specs.odSph" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odCyl" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odAxis" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odAdd" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odPrism" size="8" /></td>
                     </tr>
 
                     <tr>
                         <td width="10%">OS</td>
-                        <td width="18%"><html:text property="specs.osSph" size="8"/></td>
-                        <td width="18%"><html:text property="specs.osCyl" size="8"/></td>
-                        <td width="18%"><html:text property="specs.osAxis" size="8"/></td>
-                        <td width="18%"><html:text property="specs.osAdd" size="8"/></td>
-                        <td width="18%"><html:text property="specs.osPrism" size="8"/></td>
+                        <td width="18%"><input type="checkbox" name="specs.osSph" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osCyl" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osAxis" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osAdd" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osPrism" size="8" /></td>
                     </tr>
 
                     </tbody>
@@ -148,12 +148,8 @@ Specs History
         <tbody>
         <tr>
             <td colspan="2" align="right">
-
-                <html:submit value="save" onclick="this.form.method.value='save'; return validate(this);"/>
-
-
+                <input type="submit" name="submit" value="save" onclick="this.form.method.value='save'; return validate(this);"/>
             </td>
-
         </tr>
         </tbody>
     </table>
@@ -161,12 +157,12 @@ Specs History
 
     <input type="hidden" name="method" value="save"/>
 
-    <html:hidden property="specs.demographicNo"/>
-    <html:hidden property="specs.appointmentNo"/>
-    <html:hidden property="specs.id"/>
+    <input type="hidden" name="demographicNo" id="demographicNo"/>
+    <input type="hidden" name="appointmentNo" id="appointmentNo"/>
+    <input type="hidden" name="id" id="id"/>
 
 
-</html:form>
+</form>
 
 </body>
 </html>

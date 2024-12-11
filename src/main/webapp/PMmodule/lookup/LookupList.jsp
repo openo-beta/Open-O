@@ -20,9 +20,8 @@
         <Quatro Group Software Systems inc.>  <OSCAR Team>
 
 --%>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+
+
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -33,7 +32,7 @@
     <script type="text/javascript" src='<c:out value="${ctx}"/>/js/quatroReport.js'></script>
     <script type="text/javascript" src='<c:out value="${ctx}"/>/js/quatroLookup.js'></script>
     <style type="text/css">
-        @import "<html:rewrite page="/css/core.css" />";
+        @import "${request.contextPath}/css/core.css";
 
         <
         style type
@@ -42,7 +41,7 @@
         "text/css"
         >
 
-        @import "<html:rewrite page="/css/displaytag.css" />";
+        @import "${request.contextPath}/css/displaytag.css";
     </style>
     <style type="text/css">
         .clsAlignLeft {
@@ -51,22 +50,22 @@
     </style>
 </head>
 <body>
-<html:form action="/Lookup/LookupList.do">
-    <html:hidden property="tableId"/>
-    <html:hidden property="openerForm"/>
-    <html:hidden property="codeName"/>
-    <html:hidden property="descName"/>
-    <html:hidden property="parentCode"/>
+<form action="${pageContext.request.contextPath}/Lookup/LookupList.do" method="post">
+    <input type="hidden" name="tableId" id="tableId"/>
+    <input type="hidden" name="openerForm" id="openerForm"/>
+    <input type="hidden" name="codeName" id="codeName"/>
+    <input type="hidden" name="descName" id="descName"/>
+    <input type="hidden" name="parentCode" id="parentCode"/>
     <table width="100%" border="0">
         <tr>
             <th class="pageTitle" align="center"><span
                     id="_ctl0_phBody_lblTitle" align="left">Lookup Tables &nbsp;-&nbsp;
-			<bean:write name="lookupListForm" property="tableDef.description"/>
+			<c:out value="${lookupListForm.tableDef.description}"/>
 			</span></th>
         </tr>
         <tr>
-            <td width="80%">Description: <html:text property="keywordName" style="width:100%;" maxlength="80"/></td>
-            <td width="20%"><html:submit property="method" value="search"/></td>
+            <td width="80%">Description: <input type="text" name="keywordName" style="width:100%;" maxlength="80"/></td>
+            <td width="20%"><input type="submit" name="submit" value="search"/></td>
         </tr>
         <tr>
             <td colspan="2">
@@ -92,6 +91,6 @@
             </td>
         </tr>
     </table>
-</html:form>
+</form>
 </body>
 </html>

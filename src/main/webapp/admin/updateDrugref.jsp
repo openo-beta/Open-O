@@ -41,16 +41,16 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
-        <html:base/>
-        <title><bean:message key="admin.admin.UpdateDrugref"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.UpdateDrugref"/></title>
         <link href="<c:out value="${ctx}/css/bootstrap.css"/>" rel="stylesheet" type="text/css">
         <script src="<c:out value="${ctx}/share/javascript/Oscar.js"/>"></script>
         <script src="<c:out value="${ctx}/share/javascript/prototype.js"/>"></script>
@@ -95,15 +95,15 @@
         </script>
     </head>
     <body class="mainbody" onload="getUpdateTime();">
-    <h4><bean:message key="admin.admin.UpdateDrugref"/></h4>
+    <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.UpdateDrugref"/></h4>
     <div class="well">
-        <p><bean:message key="admin.admin.DrugRef"/></p>
+        <p><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DrugRef"/></p>
         <p><a id="dbInfo" href="javascript:void(0);"></a></p>
         <p><a id="updatedb" style="display:none" onclick="updateDB();" href="javascript:void(0);"
-              class="btn btn-primary"><bean:message key="admin.admin.UpdateDrugref"/></a>
+              class="btn btn-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.UpdateDrugref"/></a>
         <p><a id="updateResult"></a>
         <p>
     </div>
     </body>
 
-</html:html>
+</html>

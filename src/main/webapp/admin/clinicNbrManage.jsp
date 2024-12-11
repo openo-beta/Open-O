@@ -32,7 +32,7 @@
         import="java.sql.*, java.util.*, oscar.*, oscar.SxmlMisc, oscar.oscarProvider.data.ProviderBillCenter"
         errorPage="/errorpage.jsp" %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
@@ -146,4 +146,4 @@
     </form>
     </body>
 
-</html:html>
+</html>

@@ -29,8 +29,8 @@
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -104,7 +104,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title><bean:message key="admin.resourcebaseurl.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.title"/></title>
 
 
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
@@ -126,7 +126,7 @@
 
 <div class="container-fluid">
 
-    <h3><bean:message key="admin.admin.btnBaseURLSetting"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBaseURLSetting"/></h3>
 
     <%if (request.getParameter("websiteSave") != null) {%>
     <div class="alert alert-success">
@@ -150,13 +150,13 @@
             <form method="post" name="baseurl" id="websiteForm" action="resourcebaseurl.jsp" class="form-inline">
 
                 <h4>Website</h4>
-                <!--<bean:message key="admin.resourcebaseurl.formBaseUrl" /><br>-->
+                <!--<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.formBaseUrl"/><br>-->
                 <input type="text" name="resource_baseurl" style="width:100%;margin-bottom:10px"
-                       placeholder="<bean:message key="admin.resourcebaseurl.formBaseUrlExample" />"
+                       placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.formBaseUrlExample"/>"
                        value="<%if(resource_baseurl_value!=null){ out.print(resource_baseurl_value);}%>">
                 <div class="span8">
                     <input type="submit" class="btn pull-right" name="websiteSave" id="websiteSave"
-                           value="<bean:message key="admin.resourcebaseurl.btnSave"/>">
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>">
                 </div>
 
             </form>
@@ -185,7 +185,7 @@
                         <div class='alert alert-plain'>Character Limit = 2000</div>
                     </div>
                     <input type="submit" class="btn pull-right" name="detailsSave" id="detailsSave"
-                           value="<bean:message key="admin.resourcebaseurl.btnSave"/>">
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>">
                 </div>
             </form>
         </div><!-- span8 -->

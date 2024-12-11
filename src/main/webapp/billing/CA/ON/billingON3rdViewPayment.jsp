@@ -17,9 +17,8 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@page import="org.oscarehr.common.model.BillingOnItemPayment" %>
 <%@page import="org.oscarehr.common.model.BillingONPayment" %>
 <%@page import="org.oscarehr.common.model.BillingPaymentType" %>
 <%@page import="org.oscarehr.common.dao.BillingPaymentTypeDao" %>
@@ -57,13 +56,13 @@
     <c:if test="${not empty itemDataList}">
         <c:forEach var="itemData" items="${itemDataList}" varStatus="idx">
             <tr align="center">
-                <td><bean:write name="itemData" property="patientName"/></td>
-                <td><bean:write name="itemData" property="ch1_id"/></td>
-                <td><bean:write name="itemData" property="service_code"/></td>
-                <td><bean:write name="itemData" property="paid"/></td>
-                <td><bean:write name="itemData" property="discount"/></td>
-                <td><bean:write name="itemData" property="credit"/></td>
-                <td><bean:write name="itemData" property="refund"/></td>
+                <td><c:out value="${itemData.patientName}"/></td>
+                <td><c:out value="${itemData.ch1_id}"/></td>
+                <td><c:out value="${itemData.service_code}"/></td>
+                <td><c:out value="${itemData.paid}"/></td>
+                <td><c:out value="${itemData.discount}"/></td>
+                <td><c:out value="${itemData.credit}"/></td>
+                <td><c:out value="${itemData.refund}"/></td>
             </tr>
         </c:forEach>
     </c:if>

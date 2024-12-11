@@ -28,7 +28,7 @@
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
 
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+
 
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>

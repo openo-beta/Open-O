@@ -29,7 +29,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -100,29 +100,29 @@
     <input type="hidden" name="studyId" value="<%=studyId%>"/>
     <input type="hidden" name="method" value="saveUpdateStudy"/>
 
-    <h3>&nbsp;&nbsp;<bean:message key="admin.admin.btnStudy"/></h3>
+    <h3>&nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnStudy"/></h3>
 
     <div class="well">
         <div class="row">
             <div class="span4">
                 <fieldset>
-                    <legend><bean:message key="admin.admin.btnStudy"/></legend>
-                    <label><bean:message key="admin.providersearch.formName"/></label>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnStudy"/></legend>
+                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearch.formName"/></label>
                     <input type="text" class="input-block-level" id="studyName" name="studyName"
                            value="<%=study == null ? "" : Encode.forHtml(study.getStudyName())%>"/>
-                    <label><bean:message key="issueAdmin.description"/></label>
+                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="issueAdmin.description"/></label>
                     <input type="text" class="input-block-level" id="studyDescription" name="studyDescription"
                            value="<%=study == null || study.getDescription() == null ? "" : Encode.forHtml(study.getDescription())%>"/>
-                    <label><bean:message key="oscarEncounter.formlist.formName"/></label>
+                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formName"/></label>
                     <input type="text" class="input-block-level" name="studyForm"
                            value="<%=study == null || study.getFormName() == null ? "" : Encode.forHtml(study.getFormName())%>"/>
-                    <label><bean:message key="provider.eRx.labelURL"/></label>
+                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelURL"/></label>
                     <input type="text" class="input-block-level" name="studyRemoteURL"
                            value="<%=study == null || study.getRemoteServerUrl() == null ? "" : Encode.forHtml(study.getRemoteServerUrl())%>"/>
                     <label>Study Link</label>
                     <input type="text" class="input-block-level" name="studyLink"
                            value="<%=study == null || study.getStudyLink() == null ? "" : Encode.forHtml(study.getStudyLink())%>"/><br>
-                    <input type="submit" class="btn btn-primary" value="<bean:message key="global.btnSave" />"
+                    <input type="submit" class="btn btn-primary" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSave"/>"
                            onclick="return validateForm();">
                 </fieldset>
             </div> <!-- class="span4" -->

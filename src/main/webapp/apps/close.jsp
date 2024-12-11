@@ -24,10 +24,10 @@
 
 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-    <title><bean:message key="global.btnClose"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/></title>
 
     <link href="../library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
 </head>
@@ -39,12 +39,12 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><bean:message key="global.resources"/></h3>
+                    <h3 class="panel-title"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.resources"/></h3>
                 </div>
                 <div class="panel-body">
                     <%=session.getAttribute("oauthMessage") %>
                     <%session.removeAttribute("oauthMessage"); %>
-                    <a class="pull-right" onclick="window.close()"><bean:message key="global.btnClose"/></a>
+                    <a class="pull-right" onclick="window.close()"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/></a>
                 </div>
             </div>
 

@@ -23,11 +23,12 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <div class="modal-body">
     <form>
         <div class="form-group">
-            <label for="numAppt2Show"><bean:message key="patientList.config.numAppt2Show" bundle="ui"/></label>
+            <label for="numAppt2Show"><fmt:message bundle="${uiBundle}" key="patientList.config.numAppt2Show"/></label>
             <input type="number" class="form-control" id="numAppt2Show"
                    ng-model="patientListConfig.numberOfApptstoShow"/>
         </div>
@@ -36,17 +37,18 @@
 
         <div class="checkbox">
             <label>
-                <input type="checkbox" ng-model="patientListConfig.showReason"> <b><bean:message
-                    key="patientList.config.showReason" bundle="ui"/></b>
+                <input type="checkbox" ng-model="patientListConfig.showReason"> <b><fmt:setBundle basename="oscarResources"/><fmt:message key="patientList.config.showReason"/></b>
             </label>
         </div>
 
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="cancel()"><bean:message key="global.close"
-                                                                                    bundle="ui"/></button>
-    <button type="button" class="btn btn-primary" ng-click="saveConfiguration()"><bean:message key="global.save"
-                                                                                               bundle="ui"/></button>
+    <button type="button" class="btn btn-default" ng-click="cancel()">
+        <fmt:message bundle="${uiBundle}" key="global.close"/>
+    </button>
+    <button type="button" class="btn btn-primary" ng-click="saveConfiguration()">
+        <fmt:message bundle="${uiBundle}" key="global.save" />
+    </button>
 </div>
     

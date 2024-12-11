@@ -33,9 +33,9 @@ package oscar.eform;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
-import oscar.eform.actions.DisplayImageAction;
+import oscar.OscarProperties;
 import oscar.eform.data.EForm;
-import oscar.eform.upload.ImageUploadAction;
+import oscar.eform.upload.ImageUpload2Action;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -112,7 +112,7 @@ public class EFormExportZip {
                 int length = "${oscar_image_path}".length();
                 String imageFileName = match.substring(length, match.length() - 1);
                 MiscUtils.getLogger().debug("Image Name: " + imageFileName);
-                File imageFile = DisplayImageAction.getImageFile(imageFileName);
+                File imageFile = getImageFile(imageFileName);
                 try {
                     FileInputStream fis = new FileInputStream(imageFile);  //should error out if image not found, in this case, skip the image
                     ZipEntry imageZipEntry = new ZipEntry(directoryName + imageFileName);
@@ -127,6 +127,30 @@ public class EFormExportZip {
         }
 
         zos.close();
+    }
+
+
+    public File getImageFile(String imageFileName) throws Exception {
+        String home_dir = OscarProperties.getInstance().getProperty("eform_image");
+
+        File file = null;
+        try {
+            File directory = new File(home_dir);
+            if (!directory.exists()) {
+                throw new Exception("Directory:  " + home_dir + " does not exist");
+            }
+            file = new File(directory, imageFileName);
+            //String canonicalPath = file.getParentFile().getCanonicalPath(); //absolute path of the retrieved file
+
+            if (!directory.equals(file.getParentFile())) {
+                MiscUtils.getLogger().debug("SECURITY WARNING: Illegal file path detected, client attempted to navigate away from the file directory");
+                throw new Exception("Could not open file " + imageFileName + ".  Check the file path");
+            }
+            return file;
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+            throw new Exception("Could not open file " + home_dir + imageFileName + " does " + home_dir + " exist ?", e);
+        }
     }
 
     private void outputToInput(OutputStream os, InputStream is) throws IOException {
@@ -147,7 +171,7 @@ public class EFormExportZip {
         ArrayList<String> errors = new ArrayList<String>();
         _log.info("Importing eforms");
 
-        File imageDir = ImageUploadAction.getImageFolder();
+        File imageDir = ImageUpload2Action.getImageFolder();
         File imageExtractDir = new File(imageDir, "extractFolder"); //do not delete this as two people may be importing at once
         //create if exists
         if (!imageExtractDir.exists() && !imageExtractDir.mkdir()) {
@@ -230,7 +254,7 @@ public class EFormExportZip {
                 //do not save file if eform fails
             } else {
                 FileInputStream fis = new FileInputStream(tempFile.getValue());
-                File imageFile = new File(ImageUploadAction.getImageFolder(), tempFile.getKey());
+                File imageFile = new File(ImageUpload2Action.getImageFolder(), tempFile.getKey());
                 if (imageFile.exists()) {
                     errors.add("Image '" + tempFile.getKey() + "' already exists, skipping image, but the form may still be uploaded.  Please resolve.");
                     _log.info("EForm Import: Image with name '" + tempFile.getKey() + "' already exists, skipping image, but the form may still be uploaded.  Please resolve.");

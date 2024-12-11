@@ -25,9 +25,9 @@
 --%>
 
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="org.w3c.dom.*" %>
 <%@ page import="oscar.oscarMessenger.util.Msgxml" %>
 <%@ page import="oscar.oscarDemographic.data.*" %>
@@ -108,9 +108,9 @@
 
 %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="oscarMessenger.CreateMessage.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.title"/></title>
 
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
 
@@ -149,18 +149,18 @@
                 // cannot send attachments to remote facilities
                 $("input:checked").each(function () {
                     if (this.id.split("-")[2] > 0 && $("#attachmentAlert").val()) {
-                        alert("<bean:message key="oscarMessenger.CreateMessage.attachmentsNotPermitted"/>");
+                        alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.attachmentsNotPermitted"/>");
                         return false;
                     }
                 })
 
                 if (document.forms[0].message.value.length == 0) {
-                    alert("<bean:message key="oscarMessenger.CreateMessage.msgEmptyMessage"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgEmptyMessage"/>");
                     return false;
                 }
                 val = validateCheckBoxes(document.forms[0]);
                 if (val == 0) {
-                    alert("<bean:message key="oscarMessenger.CreateMessage.msgNoProvider"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgNoProvider"/>");
                     return false;
                 }
                 return true
@@ -269,19 +269,18 @@
         <table class="MainTable" id="scrollNumber1">
             <tr class="MainTableTopRow">
                 <td class="MainTableTopRowLeftColumn">
-                    <bean:message key="oscarMessenger.CreateMessage.msgMessenger"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgMessenger"/>
                 </td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><h2><bean:message key="oscarMessenger.CreateMessage.msgCreate"/></h2>
+                            <td><h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgCreate"/></h2>
                             </td>
                             <td>&nbsp;</td>
                             <td style="text-align: right">
-                                <oscar:help keywords="message" key="app.top1"/> |
+                                
                                 <a href="javascript:void(0)"
-                                   onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><bean:message
-                                        key="global.about"/></a>
+                                   onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                             </td>
                         </tr>
                     </table>
@@ -299,22 +298,22 @@
                                         <td>
                                             <table class=messButtonsA cellspacing=0 cellpadding=3>
                                                 <tr>
-                                                    <td class="messengerButtonsA"><html:link
-                                                            page="/oscarMessenger/DisplayMessages.jsp"
-                                                            styleClass="messengerButtons">
-                                                        <bean:message key="oscarMessenger.ViewMessage.btnInbox"/>
-                                                    </html:link></td>
+                                                    <td class="messengerButtonsA"><a
+                                                            href="${pageContext.request.contextPath}/oscarMessenger/DisplayMessages.jsp"
+                                                            class="messengerButtons">
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.btnInbox"/>
+                                                    </a></td>
                                                 </tr>
                                             </table>
                                         </td>
                                         <td>
                                             <table class=messButtonsA cellspacing=0 cellpadding=3>
                                                 <tr>
-                                                    <td class="messengerButtonsA"><html:link
-                                                            page="/oscarMessenger/ClearMessage.do"
-                                                            styleClass="messengerButtons">
-                                                        <bean:message key="oscarMessenger.CreateMessage.btnClear"/>
-                                                    </html:link></td>
+                                                    <td class="messengerButtonsA"><a
+                                                            href="${pageContext.request.contextPath}/oscarMessenger/ClearMessage.do"
+                                                            class="messengerButtons">
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnClear"/>
+                                                    </a></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -323,8 +322,7 @@
                                                 <tr>
                                                     <td class="messengerButtonsA"><a
                                                             href="javascript:BackToOscar()"
-                                                            class="messengerButtons"><bean:message
-                                                            key="oscarMessenger.CreateMessage.btnExit"/></a></td>
+                                                            class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnExit"/></a></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -335,13 +333,11 @@
 
                         <tr>
                             <td>
-                                <html:form action="/oscarMessenger/CreateMessage" onsubmit="return validatefields()">
+                                <form action="${pageContext.request.contextPath}/oscarMessenger/CreateMessage.do" method="post" onsubmit="return validatefields()">
                                     <table>
                                         <tr>
-                                            <th bgcolor="#DDDDFF" width="75"><bean:message
-                                                    key="oscarMessenger.CreateMessage.msgRecipients"/></th>
-                                            <th colspan="2" align="left" bgcolor="#DDDDFF"><bean:message
-                                                    key="oscarMessenger.CreateMessage.msgMessage"/></th>
+                                            <th bgcolor="#DDDDFF" width="75"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgRecipients"/></th>
+                                            <th colspan="2" align="left" bgcolor="#DDDDFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgMessage"/></th>
                                         </tr>
                                         <tr>
 
@@ -349,10 +345,10 @@
                                                 <table>
                                                     <tr>
                                                         <td><input type="submit" class="ControlPushButton"
-                                                                   value="<bean:message key="oscarMessenger.CreateMessage.btnSendMessage"/>">
+                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnSendMessage"/>">
                                                         </td>
                                                         <td><input type="button" class="ControlPushButton"
-                                                                   value="<bean:message key="oscarMessenger.CreateMessage.btnSendnArchiveMessage"/>"
+                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnSendnArchiveMessage"/>"
                                                                    onClick="XMLHttpRequestSendnArch()">
                                                         </td>
                                                     </tr>
@@ -504,16 +500,15 @@
                                             <td bgcolor="#EEEEFF" valign=top colspan="2"><!--Message and Subject Cell-->
                                                 <div>
                                                     <label for="subject">
-                                                        <bean:message key="oscarMessenger.CreateMessage.formSubject"/> :
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.formSubject"/> :
                                                     </label>
-                                                    <html:text name="msgCreateMessageForm" styleId="subject"
-                                                               property="subject" size="67" value="${messageSubject}"/>
+                                                    <input type="text" name="subject" id="subject" size="67" value="${messageSubject}"/>
                                                     <br>
                                                 </div>
                                                 <div>
-                                                    <html:textarea styleClass="boxsizingBorder"
-                                                                   name="msgCreateMessageForm" property="message"
-                                                                   cols="60" rows="18" value="${messageBody}"/>
+                                                    <textarea class="boxsizingBorder"
+                                                                   name="message"
+                                                              cols="60" rows="18">${messageBody}</textarea>
                                                 </div>
                                                 <%
                                                     String att = bean.getAttachment();
@@ -521,7 +516,7 @@
                                                     if (att != null || pdfAtt != null) {
                                                 %>
                                                 <br>
-                                                <bean:message key="oscarMessenger.CreateMessage.msgAttachments"/>
+                                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgAttachments"/>
                                                 <input type="hidden" id="attachmentAlert" name="attachmentAlert"
                                                        value="true"/>
                                                 <%
@@ -533,8 +528,7 @@
 
                                         <tr>
                                             <td bgcolor="#B8B8FF"></td>
-                                            <td bgcolor="#B8B8FF" colspan="2"><strong><bean:message
-                                                    key="oscarMessenger.CreateMessage.msgLinkThisMessage"/></strong>
+                                            <td bgcolor="#B8B8FF" colspan="2"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgLinkThisMessage"/></strong>
                                             </td>
                                         </tr>
 
@@ -547,14 +541,13 @@
                                             </td>
                                             <td bgcolor="#EEEEFF">
                                                 <input type="button" class="ControlPushButton" name="searchDemo"
-                                                       value="<bean:message key="oscarMessenger.CreateMessage.msgSearchDemographic" />"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgSearchDemographic"/>"
                                                        onclick="popupSearchDemo(document.forms[0].keyword.value)"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td bgcolor="#EEEEFF"></td>
-                                            <td bgcolor="#EEEEFF" colspan="2"><strong><bean:message
-                                                    key="oscarMessenger.CreateMessage.msgSelectedDemographic"/></strong>
+                                            <td bgcolor="#EEEEFF" colspan="2"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgSelectedDemographic"/></strong>
                                             </td>
                                         </tr>
                                         <tr>
@@ -586,10 +579,10 @@
                                             <td bgcolor="#EEEEFF">
                                                 <input type="button"
                                                        class="ControlPushButton" name="clearDemographic"
-                                                       value="<bean:message key="oscarMessenger.CreateMessage.msgClearSelectedDemographic" />"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgClearSelectedDemographic"/>"
                                                        onclick='document.forms[0].demographic_no.value = ""; document.forms[0].selectedDemo.value = "none"'/>
                                                 <input type="button" class="ControlPushButton" name="attachDemo"
-                                                       value="<bean:message key="oscarMessenger.CreateMessage.msgAttachDemographic" />"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgAttachDemographic"/>"
                                                        onclick="popupAttachDemo(document.forms[0].demographic_no.value)"
                                                        style="display: "/>
                                             </td>
@@ -597,7 +590,7 @@
                                         </tr>
 
                                     </table>
-                                </html:form>
+                                </form>
                             </td>
                         </tr>
                         <tr>
@@ -618,4 +611,4 @@
         </table>
     </div>
     </body>
-</html:html>
+</html>

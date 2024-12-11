@@ -23,8 +23,9 @@
 <%@page import="org.oscarehr.olis.model.OLISRequestNomenclature" %>
 <%@page import="org.oscarehr.olis.dao.OLISRequestNomenclatureDao" %>
 <%@ page language="java" contentType="text/html;" %>
-<%@page import="com.indivica.olis.queries.*,org.oscarehr.olis.OLISSearchAction,java.util.*,oscar.oscarLab.ca.all.parsers.Factory, oscar.oscarLab.ca.all.parsers.OLISHL7Handler, oscar.oscarLab.ca.all.parsers.OLISHL7Handler.OLISError, org.oscarehr.olis.OLISResultsAction, org.oscarehr.util.SpringUtils" %>
+<%@page import="com.indivica.olis.queries.*,java.util.*,oscar.oscarLab.ca.all.parsers.Factory, oscar.oscarLab.ca.all.parsers.OLISHL7Handler, oscar.oscarLab.ca.all.parsers.OLISHL7Handler.OLISError, org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.olis.OLISResults2Action" %>
 
 <%
     OLISResultsDao olisResultsDao = SpringUtils.getBean(OLISResultsDao.class);
@@ -532,7 +533,7 @@
 
 
                     for (String resultUuid : resultList) {
-                        result = OLISResultsAction.searchResultsMap.get(resultUuid);
+                        result = OLISResults2Action.searchResultsMap.get(resultUuid);
 
                         //is there an OLIS duplicate. Have we gotten this before?
                         //boolean dup1 = FileUploadCheck.hasFileBeenUploadedByFileLocation(System.getProperty("java.io.tmpdir") + "/olis_" + resultUuid + ".response");
@@ -779,7 +780,7 @@
                             <tbody>
                             <% int lineNum = 0;
                                 for (String resultUuid : resultList) {
-                                    result = OLISResultsAction.searchResultsMap.get(resultUuid);
+                                    result = OLISResults2Action.searchResultsMap.get(resultUuid);
                                     if (duplicates.get(resultUuid) != null && duplicates.get(resultUuid) == true) {
                                         LogAction.addLog(LoggedInInfo.getLoggedInInfoFromSession(request), "OLIS", "duplicate", resultUuid, "", "");
                                         continue;

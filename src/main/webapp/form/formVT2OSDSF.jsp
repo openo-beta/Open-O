@@ -37,12 +37,10 @@
     if (!authed) {
         return;
     }
-%>%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-
-<html:html lang="en">
+%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -64,46 +62,46 @@
     <form method="POST"
           action="https://oscartest.oscarmcmaster.org/osdsf/form/dmtracker.do?id=12345678"
           enctype="multipart/form-data">Uploading data to OSDEF... HbA1c <input
-            type="hidden" name="dbl_HbA1c" value="<bean:write name="A1C"/>"/> LDL
-        <input type="hidden" name="dbl_LDL_mM" value="<bean:write name="LDL"/>"/>
+            type="hidden" name="dbl_HbA1c" value="<c:out value="${A1C}"/>"/> LDL
+        <input type="hidden" name="dbl_LDL_mM" value="<c:out value="${LDL}"/>"/>
         HDL <input type="hidden" name="dbl_HDL_mM"
-                   value="<bean:write name="HDL"/>"/> Total Cholesterol <input
+                   value="<c:out value="${HDL}"/>"/> Total Cholesterol <input
                 type="hidden" name="dbl_TotalCholesterol_mM"
-                value="<bean:write name="TCHL"/>"/> Triglycerides <input type="hidden"
+                value="<c:out value="${TCHL}"/>"/> Triglycerides <input type="hidden"
                                                                          name="dbl_Triglycerides"
-                                                                         value="<bean:write name="TRIG"/>"/> Urinary
+                                                                         value="<c:out value="${TRIG}"/>"/> Urinary
         Albumin Creatinine Ratio <input type="hidden"
                                         name="dbl_UrinaryAlbuminCreatinineRatio_mgPermmol"
-                                        value="<bean:write name="ALCR"/>"/> 24 hrs albumin Foot check: Ulcer <input
+                                        value="<c:out value="${ALCR}"/>"/> 24 hrs albumin Foot check: Ulcer <input
                 type="hidden" name="b_FootCheck_NoUlcerSeen"
-                value="<bean:write name="FTUL"/>"/> Foot check: Ischemia <input
+                value="<c:out value="${FTUL}"/>"/> Foot check: Ischemia <input
                 type="hidden" name="b_FootCheck_NoIschemiaSeen"
-                value="<bean:write name="FTIS"/>"/> Foot check: Neuropathy <input
+                value="<c:out value="${FTIS}"/>"/> Foot check: Neuropathy <input
                 type="hidden" name="b_FootCheck_NoNeuropathySeen"
-                value="<bean:write name="FTNE"/>"/> Eye Exam: Diabetic Retinopathy <input
+                value="<c:out value="${FTNE}"/>"/> Eye Exam: Diabetic Retinopathy <input
                 type="hidden" name="b_EyeCheck_NoDiabeticRetinopathySeen"
-                value="<bean:write name="EYED"/>"/> Eye Exam: Hypertensive Retinopathy
+                value="<c:out value="${EYED}"/>"/> Eye Exam: Hypertensive Retinopathy
         <input type="hidden" name="b_EyeCheck_NoHypertensiveRetinopathySeen"
-               value="<bean:write name="EYEH"/>"/> Vascular Specialist Blood pressure
-        SBP: <bean:write name="SBP"/> DBP: <bean:write name="DBP"/> DateBP: <bean:write
-                name="DateBP"/> <input type="hidden" name="int_SBP_mmHg"
-                                       value="<bean:write name="SBP"/>"/> <input type="hidden"
+               value="<c:out value="${EYEH}"/>"/> Vascular Specialist Blood pressure
+        SBP: <c:out value="${SBP}"/> DBP: <c:out value="${DBP}"/> DateBP: 
+            <c:out value="${DateBP}"/> <input type="hidden" name="int_SBP_mmHg"
+                                       value="<c:out value="${SBP}"/>"/> <input type="hidden"
                                                                                  name="int_DBP_mmHg"
-                                                                                 value="<bean:write name="DBP"/>"/>
+                                                                                 value="<c:out value="${DBP}"/>"/>
         <input
-                type="hidden" name="int_BP_mmHg" value="<bean:write name="DateBP"/>"/>
+                type="hidden" name="int_BP_mmHg" value="<c:out value="${DateBP}"/>"/>
         Weight <input type="hidden" name="int_Weight_kg"
-                      value="<bean:write name="WT"/>"/> Height <input type="hidden"
+                      value="<c:out value="${WT}"/>"/> Height <input type="hidden"
                                                                       name="int_Height_kg"
-                                                                      value="<bean:write name="HT"/>"/> smoking number
+                                                                      value="<c:out value="${HT}"/>"/> smoking number
         of pack of cigarette per day <input type="hidden"
                                             name="int_CumulativeSmoking_PackYears"
-                                            value="<bean:write name="SMKP"/>"/> number of cigarette per day <input
+                                            value="<c:out value="${SMKP}"/>"/> number of cigarette per day <input
                 type="hidden" name="int_AvgSmokingcurrently_CigsPerDay"
-                value="<bean:write name="SMKC"/>"/> exercise
+                value="<c:out value="${SMKC}"/>"/> exercise
         <script>
             autosubmit();
         </script>
     </form>
     </body>
-</html:html>
+</html>

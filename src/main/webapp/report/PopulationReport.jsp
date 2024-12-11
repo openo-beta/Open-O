@@ -41,11 +41,11 @@
 
 <div class="page-header">
     <h4>
-        <bean:message key="admin.admin.popRpt"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.popRpt"/>
         <div class="pull-right">
             <button name='print' onClick='window.print()' class="btn">
                 <i class="icon-print icon-black"></i>
-                <bean:message key="global.btnPrint"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>
             </button>
         </div>
     </h4>

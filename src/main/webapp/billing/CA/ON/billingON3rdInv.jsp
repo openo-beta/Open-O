@@ -19,7 +19,7 @@
 --%>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="oscar.util.DateUtils,org.oscarehr.util.SpringUtils, org.oscarehr.util.MiscUtils" %>
 <%@page import="java.util.Properties,java.util.Date,java.util.List,java.util.ArrayList,java.math.BigDecimal" %>
 <%@page import="org.oscarehr.common.dao.BillingONPaymentDao,org.oscarehr.common.model.BillingONPayment" %>
@@ -35,14 +35,14 @@
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.billing.CA.ON.util.DisplayInvoiceLogo" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.oscarehr.common.model.Site" %>
 <%@page import="oscar.oscarBilling.ca.on.pageUtil.Billing3rdPartPrep" %>
-<%@page import="oscar.oscarBilling.ca.on.administration.GstControlAction" %>
+<%@page import="oscar.oscarBilling.ca.on.administration.GstControl2Action" %>
+<%@ page import="org.oscarehr.billing.CA.ON.util.DisplayInvoiceLogo2Action" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%
     String invoiceNoStr = request.getParameter("billingNo");
@@ -90,12 +90,12 @@
     oscar.OscarProperties props = oscar.OscarProperties.getInstance();
 
     Properties gstProp = new Properties();
-    GstControlAction db = new GstControlAction();
+    GstControl2Action db = new GstControl2Action();
     gstProp = db.readDatabase();
 
     String percent = gstProp.getProperty("gstPercent", "");
 
-    String filePath = DisplayInvoiceLogo.getLogoImgAbsPath();
+    String filePath = DisplayInvoiceLogo2Action.getLogoImgAbsPath();
     boolean isLogoImgExisted = true;
     if (filePath.isEmpty()) {
         isLogoImgExisted = false;
@@ -220,7 +220,7 @@
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <script type="text/javascript">
         function submitForm(methodName) {
-            // The sendEmail() method in BillingInvoiceAction.java is not supported. For more details, please refer to the sendEmail() method.
+            // The sendEmail() method in BillingInvoice2Action.java is not supported. For more details, please refer to the sendEmail() method.
             // if (methodName=="email"){
             //     document.forms[0].method.value="sendEmail";
             // } else
@@ -244,10 +244,10 @@
     <input type="hidden" name="invoiceNo" id="invoiceNo" value="<%=invoiceNoStr%>"/>
     <div class="doNotPrint">
         <div class="titleBar">
-            <input type="button" name="printInvoice" value="<bean:message key="billing.billing3rdInv.printPDF"/>"
+            <input type="button" name="printInvoice" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billing3rdInv.printPDF"/>"
                    onClick="submitForm('print')"/>
             <input type="button" name="printHtml" value="Print" onclick="window.print();">
-            <%-- <input type="button" name="emailInvoice" value="<bean:message key="billing.billing3rdInv.email"/>" onClick="submitForm('email')"/> --%>
+            <%-- <input type="button" name="emailInvoice" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billing3rdInv.email"/>" onClick="submitForm('email')"/> --%>
         </div>
     </div>
 </form>
@@ -298,7 +298,7 @@
         </b></font><br/>
             Print Date:<%=DateUtils.sumDate("yyyy-MM-dd HH:mm", "0") %><br/>
             <% if (props.hasProperty("invoice_due_date")) { %>
-            <b><bean:message key="oscar.billing.CA.ON.3rdpartyinvoice.dueDate"/>:</b><%=dueDateStr%>
+            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.3rdpartyinvoice.dueDate"/>:</b><%=dueDateStr%>
             <% }%>
         </td>
     </tr>

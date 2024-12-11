@@ -50,10 +50,7 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "BCAR2020";
     Integer pageNo = 6;
@@ -71,7 +68,7 @@
 
 %>
 <!DOCTYPE HTML>
-<html:html lang="en">
+<html>
     <head>
 
         <title>BC Antenatal Record 2020 Attachments/Additional Info</title>
@@ -79,7 +76,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%=request.getContextPath() %>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="<%=request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/formBCAR2020Record.js"></script>
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-1.12.0.min.js"
@@ -272,14 +269,14 @@
                 txtArea.focus();
             }
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     </head>
 
     <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1">
     <div id="maincontent">
         <div id="content_bar" class="innertube">
-            <html:form action="/form/BCAR2020">
+            <form action="${pageContext.request.contextPath}/form/BCAR2020.do" method="post">
                 <input type="hidden" id="demographicNo" name="demographicNo" value="<%=demoNo%>"/>
                 <input type="hidden" id="formId" name="formId" value="<%=formId%>"/>
                 <input type="hidden" name="provider_no" value=<%=Encode.forHtmlAttribute(providerNo)%>/>
@@ -479,7 +476,7 @@
                                         <input id="fetchLongTermMedications|mt_attMedications" type="button"
                                                class="btn-small clinicalData" value="Long Term Medications"/>&nbsp;
                                         <input id="fetchOtherMeds" type="button" class="btn-small"
-                                               value="<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportOtherMeds"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportOtherMeds"/>"
                                                onclick="importFromEnct('OtherMeds',document.forms[0].mt_attMedications);"/>
                                         <br/>
                                         <textarea name="mt_attMedications" id="mt_attMedications"
@@ -517,19 +514,19 @@
                                         <span class="title">Additional Information</span>
                                         <p>The buttons below will pull information in from the E-Chart.</p>
                                         <input id="fetchAddInfoSocHistory" type="button" class="btn-small"
-                                               value="<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportSocHistory"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportSocHistory"/>"
                                                onclick="importFromEnct('SocialHistory',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoFamHistory" type="button" class="btn-small"
-                                               value="<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportFamHistory"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportFamHistory"/>"
                                                onclick="importFromEnct('FamilyHistory',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoMedHistory" type="button" class="btn-small"
-                                               value="<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportMedHistory"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportMedHistory"/>"
                                                onclick="importFromEnct('MedicalHistory',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoConcerns" type="button" class="btn-small"
-                                               value="<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportConcerns"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportConcerns"/>"
                                                onclick="importFromEnct('ongoingConcerns',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoReminders" type="button" class="btn-small"
-                                               value="<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportReminders"/>"
+                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportReminders"/>"
                                                onclick="importFromEnct('Reminders',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchRiskFactors|mt_attAdditionalInfo" type="button"
                                                class="btn-small clinicalData" value="Risk Factors"/>&nbsp;
@@ -559,7 +556,7 @@
                         </td>
                     </tr>
                 </table>
-            </html:form>
+            </form>
         </div>
     </div>
     <div id="print-dialog" title="Print BCAR2020 Record">
@@ -598,4 +595,4 @@
     </body>
 
 
-</html:html>
+</html>

@@ -30,8 +30,8 @@
 <%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.data.*,oscar.oscarPrevention.pageUtil.*,java.net.*,oscar.eform.*" %>
 <%@page import="oscar.OscarProperties, org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.BillingONCHeader1Dao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
@@ -65,11 +65,11 @@
     BillingONCHeader1Dao bCh1Dao = (BillingONCHeader1Dao) SpringUtils.getBean(BillingONCHeader1Dao.class);
 %>
 
-<html:html lang="en">
+<html>
 
     <head>
-        <html:base/>
-        <title><bean:message key="oscarprevention.index.oscarpreventiontitre"/></title><!-- i18n -->
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/></title><!-- i18n -->
 
         <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
         <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
@@ -77,7 +77,7 @@
 
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
         <script type="text/javascript" src="../share/javascript/prototype.js"></script>
         <script type="text/javascript" src="../share/javascript/sortable.js"></script>
@@ -392,7 +392,7 @@
     <table class="MainTable" id="scrollNumber1">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRowLeftColumn" width="100">
-                <bean:message key="oscarprevention.index.oscarpreventiontitre"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/>
             </td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
@@ -405,10 +405,9 @@
                                 letters</a>
                         </td>
                         <td style="text-align:right">
-                            <oscar:help keywords="report" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message key="global.about"/></a>
-                            | <a href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a>
+                            <a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                            | <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>
@@ -419,36 +418,36 @@
                 &nbsp;
             </td>
             <td valign="top" class="MainTableRightColumn">
-                <html:form action="/oscarPrevention/PreventionReport" method="get">
+                <form action="${pageContext.request.contextPath}/oscarPrevention/PreventionReport.do" method="get">
                     <div>
                         Patient Demographic Query:
-                        <html:select property="patientSet">
-                            <html:option value="-1">--Select Query--</html:option>
+                        <select name="patientSet" id="patientSet">
+                            <option value="-1">--Select Query--</option>
                             <%
                                 for (int i = 0; i < queryArray.size(); i++) {
                                     RptSearchData.SearchCriteria sc = (RptSearchData.SearchCriteria) queryArray.get(i);
                                     String qId = sc.id;
                                     String qName = sc.queryName;
                             %>
-                            <html:option value="<%=qId%>"><%=qName%>
-                            </html:option>
+                            <option value="<%=qId%>"><%=qName%>
+                            </option>
                             <%}%>
-                        </html:select>
+                        </select>
                     </div>
                     <div>
                         Prevention:
-                        <html:select property="prevention">
-                            <html:option value="-1">--Select Prevention--</html:option>
-                            <html:option value="PAP">PAP</html:option>
-                            <html:option value="Mammogram">Mammogram</html:option>
-                            <html:option value="Flu">Flu</html:option>
-                            <html:option value="ChildImmunizations">Child Immunizations</html:option>
-                            <html:option value="FOBT">FOBT</html:option>
-                        </html:select>
+                        <select name="prevention" id="prevention">
+                            <option value="-1">--Select Prevention--</option>
+                            <option value="PAP">PAP</option>
+                            <option value="Mammogram">Mammogram</option>
+                            <option value="Flu">Flu</option>
+                            <option value="ChildImmunizations">Child Immunizations</option>
+                            <option value="FOBT">FOBT</option>
+                        </select>
                     </div>
                     <div>
                         As of:
-                        <html:text property="asofDate" size="9" styleId="asofDate"/> <a id="date"><img title="Calendar"
+                        <input type="text" name="asofDate" size="9" styleId="asofDate"/> <a id="date"><img title="Calendar"
                                                                                                        src="../images/cal.gif"
                                                                                                        alt="Calendar"
                                                                                                        border="0"/></a>
@@ -457,7 +456,7 @@
 
                     </div>
                     <input type="submit"/>
-                </html:form>
+                </form>
 
 
             </td>
@@ -789,7 +788,7 @@
     </script>
 
     </body>
-</html:html>
+</html>
 
 <%!
     String getUrlParamList(ArrayList list, String paramName) {

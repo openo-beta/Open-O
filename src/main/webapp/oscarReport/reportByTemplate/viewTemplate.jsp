@@ -30,8 +30,8 @@
 %>
 
 <%@ page import="oscar.oscarReport.reportByTemplate.*, org.apache.commons.lang.StringEscapeUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -44,7 +44,7 @@
 </security:oscarSec>
 <!DOCTYPE html>
 
-<html:html lang="en">
+<html>
     <head>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="${pageContext.request.contextPath}/css/DT_bootstrap.css" rel="stylesheet" type="text/css">
@@ -88,4 +88,4 @@
                onclick="document.location='addEditTemplate.jsp?templateid=<%=templateid%>&opentext=1'"/>
     </div>
 
-</html:html>
+</html>

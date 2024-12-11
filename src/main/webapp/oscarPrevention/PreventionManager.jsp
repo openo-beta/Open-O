@@ -38,8 +38,8 @@
 <%@page import="java.util.regex.*" %>
 <%@page import="java.util.*" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -59,10 +59,9 @@
 
 <!DOCTYPE html>
 
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="oscarprevention.index.oscarpreventiontitre"/> - <bean:message
-                key="admin.admin.preventionNotification.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/> - <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.preventionNotification.title"/></title>
 
         <style type="text/css">
 
@@ -245,7 +244,7 @@
         <tr>
             <td>
                 <!-- Master Control: to enable or disable stop sign warnings -->
-                <h3>Appointment <bean:message key="admin.admin.preventionNotification.title"/>:</h3>
+                <h3>Appointment <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.preventionNotification.title"/>:</h3>
                 These settings will set the "stop sign" notifications you see displayed on the appointment screen.
 
                 <form name="masterForm" action="PreventionManager.jsp?formAction=update" method="post">
@@ -286,7 +285,7 @@
                 <hr bgcolor="#666666" width="530" align="left"></hr>
 
                 <!-- Customize each prevention warnings/reminders -->
-                <h3>Customize <bean:message key="admin.admin.preventionNotification.title"/>:</h3>
+                <h3>Customize <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.preventionNotification.title"/>:</h3>
                 To customize the notifications below, "Display on Appointment Screen" must be enabled.
 
                 <form name="prevForm" action="PreventionManager.jsp?formAction=custom" method="post">
@@ -370,4 +369,4 @@
         });
     </script>
     </body>
-</html:html>
+</html>

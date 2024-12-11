@@ -1,7 +1,4 @@
-<%@page import="java.sql.*" errorPage="" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -21,7 +18,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message key="oscar.billing.CA.BC.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.title"/></title>
     <script type="javascript">
         function refreshParent() {
             opener.window.location.href = opener.window.location.href;
@@ -32,17 +29,14 @@
 <body>
 <c:if test="${receivePaymentActionForm.paymentReceived}">
     <fieldset>
-        <legend><bean:message
-                key="oscar.billing.CA.BC.received"/></legend>
+        <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.received"/></legend>
         <div class="msgDisplay">
             <%
                 oscar.oscarBilling.ca.bc.pageUtil.ReceivePaymentActionForm frm = (oscar.oscarBilling.ca.bc.pageUtil.ReceivePaymentActionForm) request.getAttribute("receivePaymentActionForm");
             %> <%=java.text.NumberFormat.getCurrencyInstance().format(new Double(frm.getAmountReceived()))%>
-            <bean:message key="oscar.billing.CA.BC.credit"/> &nbsp; <bean:message
-                key="oscar.billing.CA.BC.invoice"/> <bean:write
-                name="receivePaymentActionForm" property="billNo"/> &nbsp; <bean:message
-                key="oscar.billing.CA.BC.lineNo"/> <bean:write
-                name="receivePaymentActionForm" property="billingmasterNo"/></div>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.credit"/> &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.invoice"/> 
+            <c:out value="${receivePaymentActionForm.billNo}"/> &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.lineNo"/> 
+            <c:out value="${receivePaymentActionForm.billingmasterNo}"/></div>
         <div align="center">
             <button
                     onclick="opener.window.location.reload();self.close();return false;">Close
@@ -51,33 +45,33 @@
     </fieldset>
 </c:if>
 <c:if test="${not receivePaymentActionForm.paymentReceived}">
-    <html:form action="/billing/CA/BC/receivePaymentAction">
-        <html:hidden property="billingmasterNo"/>
-        <html:hidden property="billNo"/>
+    <form action="${pageContext.request.contextPath}/billing/CA/BC/receivePaymentAction.do" method="post">
+        <input type="hidden" name="billingmasterNo" id="billingmasterNo"/>
+        <input type="hidden" name="billNo" id="billNo"/>
 
         <fieldset>
-            <legend><bean:message
-                    key="oscar.billing.CA.BC.title"/></legend>
+            <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.title"/></legend>
             <div class="msgDisplay">
-                <p><bean:message key="oscar.billing.CA.BC.invoice"/> <bean:write
-                        name="receivePaymentActionForm" property="billNo"/></p>
-                <p><bean:message key="oscar.billing.CA.BC.lineNo"/> <bean:write
-                        name="receivePaymentActionForm" property="billingmasterNo"/></p>
+                <p><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.invoice"/> 
+                    <c:out value="${receivePaymentActionForm.billNo}"/></p>
+                <p><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.lineNo"/> 
+                    <c:out value="${receivePaymentActionForm.billingmasterNo}"/></p>
             </div>
-            <p><label> <bean:message key="oscar.billing.CA.BC.amount"/>
-                <html:text maxlength="6" property="amountReceived" /><!--&nbsp;<html:checkbox property="isRefund" value="true"/>-->
+            <p><label> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.amount"/>
+                <input type="text" maxlength="6" name="amountReceived" /><!--&nbsp;<input type="checkbox" name="isRefund" value="true"/>-->
             </label></p>
-            <p><label> <bean:message key="oscar.billing.CA.BC.method"/>
-                <bean:define id="paymentMethodList" scope="request"
-                             name="receivePaymentActionForm" property="paymentMethodList"/> <html:select
-                        property="paymentMethod">
-                    <html:options name="receivePaymentActionForm"
-                                  collection="paymentMethodList" property="id"
-                                  labelProperty="paymentType"/>
-                </html:select> </label></p>
+            <p>
+                <label> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.BC.method"/>
+                    <select name="paymentMethod" id="paymentMethod">
+                        <c:forEach var="method" items="${receivePaymentActionForm.paymentMethodList}">
+                            <option value="${method.id}">${method.paymentType}</option>
+                        </c:forEach>
+                    </select>
+                </label>
+            </p>
             <p><input type="submit" value="Submit"/></p>
         </fieldset>
-    </html:form>
+    </form>
 </c:if>
 </body>
 </html>

@@ -27,7 +27,7 @@
 <%@page import="oscar.OscarProperties" %>
 
 
-<html:html lang="en">
+<html>
     <head>
         <title>About OSCAR | Open Source Clinical Application Resource</title>
 
@@ -143,4 +143,4 @@
 
     </body>
 
-</html:html>
+</html>

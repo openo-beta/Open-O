@@ -41,9 +41,9 @@
 
 <%@ page
         import="java.util.*, oscar.util.UtilDateUtilities, oscar.form.*, oscar.form.data.*, oscar.oscarPrevention.PreventionData, oscar.oscarRx.data.RxPrescriptionData" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
 
@@ -137,7 +137,7 @@
     props.setProperty("c_lastVisited", "pg1");
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>B.C. Health Passport</title>
@@ -153,7 +153,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
@@ -444,7 +444,7 @@
 
             -->
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1">
@@ -468,8 +468,8 @@
         <center>3 doses* &#64; 0, 1 &amp; 6 months</center>
     </div>
 
-    <html:form action="/form/formname">
-        <input type="hidden" name="c_lastVisited" value="pg1"/>
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
+    <input type="hidden" name="c_lastVisited" value="pg1"/>
         <input type="hidden" name="demographic_no"
                value="<%= props.getProperty("demographic_no", "0") %>"/>
         <input type="hidden" name="formCreated"
@@ -1340,7 +1340,7 @@
             </tr>
         </table>
 
-    </html:form>
+    </form>
     </body>
 
     <script type="text/javascript">
@@ -1794,4 +1794,4 @@
         });
     </script>
 
-</html:html>
+</html>

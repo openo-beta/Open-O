@@ -31,9 +31,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page
         import="java.io.*,java.util.*, java.sql.*, oscar.*, java.net.*, org.oscarehr.integration.mcedt.mailbox.ActionUtils, java.math.BigInteger,ca.ontario.health.edt.ResponseResult" %>
 <%
@@ -209,20 +209,20 @@
     <div class="center">
         <h1>Uploading Claims from Oscar to MCEDT</h1>
         <div>
-            <%-- <html:form action="<%=request.getContextPath() %>/mcedt/kaichpass.do" method="POST"> --%>
-            <%-- <html:form action="/mcedt/kaichpass" method="post" styleId="form">
+            <%-- <form action="<%=request.getContextPath() %>/mcedt/kaichpass.do" method="POST"> --%>
+            <%-- <form action="<%=request.getContextPath() %>/mcedt/kaichpass.do" method="post" styleId="form">
             <input id="method" name="method" type="hidden" value="" />
-            </html:form> --%>
+            </form> --%>
             <div>
-                <html:form action="/mcedt/autoUpload.do" method="post" styleId="form">
+                <form action="${pageContext.request.contextPath}/mcedt/autoUpload.do" method="post" styleId="form">
                     <jsp:include page="../messages.jsp"/>
                     <jsp:include page="spinner.jsp" flush="true"/>
                     <input id="method" name="method" type="hidden" value=""/>
-                    <html:hidden styleId="description" property="description" value=""/>
-                    <html:hidden styleId="fileName" property="fileName" value='<%=fileUpload %>'/>
-                    <html:hidden property="resourceType" styleId="resourceType" value=""/>
-                    <html:hidden styleId="resourceId" property="resourceId" value='<%=resourceId.toString() %>'/>
-                </html:form>
+                    <input type="hidden" id="description" name="description" value=""/>
+                    <input type="hidden" id="fileName" name="fileName" value='<%=fileUpload %>'/>
+                    <input type="hidden" name="resourceType" id="resourceType" value=""/>
+                    <input type="hidden" id="resourceId" name="resourceId" value='<%=resourceId.toString() %>'/>
+                </form>
 
                 <table class="whiteBox" width="100%" border="0" cellspacing="0" cellpadding="5"
                        style="margin:5px 0 15px;">

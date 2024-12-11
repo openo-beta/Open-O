@@ -68,11 +68,11 @@
     String action = request.getParameter("action");
     String last_name = "", first_name = "", mygroup = "";
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
-        <title><bean:message key="oscarReport.manageProvider.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.title"/></title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
         <script language="JavaScript">
             <!--
@@ -106,16 +106,16 @@
     <div class="container-fluid">
         <form name="form1" action="dbManageProvider.jsp" method="post">
 
-            <h3><bean:message key="oscarReport.manageProvider.msgManageProvider"/> <span
+            <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.msgManageProvider"/> <span
                     class="text-info"><%=action.toUpperCase()%></span></h3>
 
             <table class="table table-hover table-condensed">
 
                 <thead>
                 <tr>
-                    <td width="40%"><bean:message key="oscarReport.manageProvider.msgTeam"/></td>
-                    <td width="50%" align="left"><bean:message key="oscarReport.manageProvider.msgProviderName"/></td>
-                    <td width="10%" align="left"><bean:message key="oscarReport.manageProvider.msgCheck"/></td>
+                    <td width="40%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.msgTeam"/></td>
+                    <td width="50%" align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.msgProviderName"/></td>
+                    <td width="10%" align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.msgCheck"/></td>
                 </tr>
                 </thead>
 
@@ -165,12 +165,12 @@
                 </tbody>
             </table>
 
-            <input class="btn" type='button' name='print' value='<bean:message key="global.btnPrint"/>'
+            <input class="btn" type='button' name='print' value='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>'
                    onClick='window.print()'>
             <input type="hidden" name="submit" value="Submit">
-            <input class="btn btn-primary" type=submit value=<bean:message key="oscarReport.manageProvider.btnSubmit"/>>
+            <input class="btn btn-primary" type=submit value=<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.btnSubmit"/>>
             <input type=hidden name=action value=<%=action%>> <input type=hidden name=count value=<%=count1%>>
         </form>
     </div>
     </body>
-</html:html>
+</html>

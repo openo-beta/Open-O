@@ -28,8 +28,8 @@
 <%@ page import="com.quatro.service.security.SecurityManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -68,9 +68,9 @@
 %>
 
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="oscarResearch.oscarDxResearch.dxResearch.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.title"/></title>
 
         <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/global.js"></script>
         <script type="text/javascript"
@@ -154,7 +154,7 @@
             function openNewPage(vheight, vwidth, varpage) {
                 var page = varpage;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=no,menubars=no,toolbars=no,resizable=no,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<bean:message key="global.oscarComm"/>", windowprops);
+                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarComm"/>", windowprops);
                 popup.focus();
             }
 
@@ -189,7 +189,7 @@
         <div id="page-header">
             <table id="oscarDxHeader">
                 <tr>
-                    <td id="oscarDxHeaderLeftColumn"><h1><bean:message key="global.disease"/></h1></td>
+                    <td id="oscarDxHeaderLeftColumn"><h1><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></h1></td>
 
                     <td id="oscarDxHeaderCenterColumn">
                         <oscar:nameage demographicNo="${ demographicNo }"/>
@@ -208,9 +208,20 @@
 
         <table>
             <tr>
-                <td><html:form action="/oscarResearch/oscarDxResearch/dxResearch.do">
+                <td><form action="${pageContext.request.contextPath}/oscarResearch/oscarDxResearch/dxResearch.do" method="post">
                     <table>
-                        <html:errors/>
+                        <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
                         <tr>
                             <td id="codeSelectorTable">
 
@@ -219,42 +230,42 @@
                                         <td>
                                             <div class="input-group">
 								<span class="input-group-addon" id="basic-addon3">
-									<bean:message key="oscarResearch.oscarDxResearch.codingSystem"/>
+									<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.codingSystem"/>
 								</span>
 
-                                                <html:select styleClass="form-control" property="selectedCodingSystem"
+                                                <select class="form-control" name="selectedCodingSystem"
                                                              disabled="<%=disable%>">
                                                     <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
                                                         <option value="${codingSys}">
                                                             <c:out value="${codingSys}"/>
                                                         </option>
                                                     </c:forEach>
-                                                </html:select>
+                                                </select>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><html:text styleClass="form-control" property="xml_research1"
+                                        <td><input type="text" class="form-control" name="xml_research1"
                                                        disabled="<%=disable%>"/>
                                             <input type="hidden" name="demographicNo"
-                                                   value="<bean:write name="demographicNo"/>">
+                                                   value="<c:out value="${demographicNo}"/>">
                                             <input type="hidden" name="providerNo"
-                                                   value="<bean:write name="providerNo"/>"></td>
+                                                   value="<c:out value="${providerNo}"/>"></td>
                                     </tr>
                                     <tr>
-                                        <td><html:text styleClass="form-control" property="xml_research2"
+                                        <td><input type="text" class="form-control" name="xml_research2"
                                                        disabled="<%=disable%>"/></td>
                                     </tr>
                                     <tr>
-                                        <td><html:text styleClass="form-control" property="xml_research3"
+                                        <td><input type="text" class="form-control" name="xml_research3"
                                                        disabled="<%=disable%>"/></td>
                                     </tr>
                                     <tr>
-                                        <td><html:text styleClass="form-control" property="xml_research4"
+                                        <td><input type="text" class="form-control" name="xml_research4"
                                                        disabled="<%=disable%>"/></td>
                                     </tr>
                                     <tr>
-                                        <td><html:text styleClass="form-control" property="xml_research5"
+                                        <td><input type="text" class="form-control" name="xml_research5"
                                                        disabled="<%=disable%>"/></td>
                                     </tr>
                                     <tr>
@@ -262,22 +273,22 @@
                                             <input type="hidden" name="forward" value="none"/>
                                             <%if (!disable) { %>
                                             <input type="button" name="codeSearch" class="btn btn-primary"
-                                                   value="<bean:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
                                                    onClick="javascript: ResearchScriptAttach();" )>
 
                                             <input type="button" name="codeAdd" class="btn btn-primary"
-                                                   value="<bean:message key="ADD"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>"
                                                    onClick="javascript: submitform('','');">
 
                                             <% } else { %>
 
                                             <input type="button" name="button" class="btn btn-primary"
-                                                   value="<bean:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
                                                    onClick="javascript: ResearchScriptAttach();" )
                                                    disabled="<%=disable%>">
 
                                             <input type="button" name="button" class="btn btn-primary"
-                                                   value="<bean:message key="ADD"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>"
                                                    onClick="javascript: submitform('','');" disabled="<%=disable%>">
                                             <% } %>
                                         </td>
@@ -306,17 +317,12 @@
                                 <table>
                                     <tr>
                                         <th>System</th>
-                                        <th class="heading"><bean:message
-                                                key="oscarResearch.oscarDxResearch.dxResearch.msgCode"/></th>
-                                        <th class="heading"><bean:message
-                                                key="oscarResearch.oscarDxResearch.dxResearch.msgDiagnosis"/></th>
-                                        <th class="heading"><bean:message
-                                                key="oscarResearch.oscarDxResearch.dxResearch.msgFirstVisit"/></th>
-                                        <th class="heading"><bean:message
-                                                key="oscarResearch.oscarDxResearch.dxResearch.msgLastVisit"/></th>
+                                        <th class="heading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgCode"/></th>
+                                        <th class="heading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgDiagnosis"/></th>
+                                        <th class="heading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgFirstVisit"/></th>
+                                        <th class="heading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgLastVisit"/></th>
                                         <% if (!disable) { %>
-                                        <th class="heading"><bean:message
-                                                key="oscarResearch.oscarDxResearch.dxResearch.msgAction"/></th>
+                                        <th class="heading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgAction"/></th>
                                         <%} %>
                                     </tr>
                                     <c:forEach var="diagnotics" items="${allDiagnostics.dxResearchBeanVector}" varStatus="ctr">
@@ -378,11 +384,11 @@
                             </td>
                         </tr>
                     </table>
-                </html:form>
+                </form>
                 </td>
             </tr>
         </table>
     </div>
     </body>
-</html:html>
+</html>
 

@@ -32,11 +32,9 @@
 <%@page import="oscar.oscarRx.pageUtil.AllergyDisplay" %>
 <%@page import="java.util.List" %>
 <%@page import="oscar.OscarProperties" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -60,23 +58,26 @@
 <c:if test="${empty RxSessionBean}">
     <% response.sendRedirect("error.html"); %>
 </c:if>
-<c:if test="${not empty RxSessionBean}">
-    <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                 name="RxSessionBean" scope="session"/>
-    <c:if test="${bean.valid == false}">
-        <% response.sendRedirect("error.html"); %>
-    </c:if>
+<c:if test="${not empty sessionScope.RxSessionBean}">
+    <%
+        // Directly access the RxSessionBean from the session
+        oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        if (bean != null && !bean.isValid()) {
+            response.sendRedirect("error.html");
+            return; // Ensure no further JSP processing
+        }
+        oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+    %>
 </c:if>
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_ALLERGY;
 
     com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="EditAllergies.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.title"/></title>
         <link rel="stylesheet" type="text/css" href="styles.css">
 
         <style type="text/css">
@@ -180,9 +181,6 @@
             }
         </script>
     </head>
-    <bean:define id="patient"
-                 type="oscar.oscarRx.data.RxPatientData.Patient" name="Patient"/>
-
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
     <table border="0" cellpadding="0" cellspacing="0"
            style="border-collapse: collapse" bordercolor="#111111" width="100%"
@@ -197,31 +195,26 @@
                        height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <bean:message
-                                    key="SearchDrug.title"/></a>&nbsp;&gt;&nbsp; <b><bean:message
-                                    key="EditAllergies.title"/></b></div>
+                            <div class="DivCCBreadCrumbs"><a href="SearchDrug.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a>&nbsp;&gt;&nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.title"/></b></div>
                         </td>
                     </tr>
                     <!----Start new rows here-->
 
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="EditAllergies.section1Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.section1Title"/></div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <table>
                                 <tr>
-                                    <td><b><bean:message key="SearchDrug.nameText"/></b>
-                                        <jsp:getProperty name="patient" property="surname"/>
-                                        ,
-                                        <jsp:getProperty name="patient" property="firstName"/>
+                                    <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
+                                        ${patient.surname}, ${patient.firstName}<br/>
                                     </td>
                                     <td>&nbsp;</td>
                                     <td><b>Age:</b>
-                                        <jsp:getProperty name="patient" property="age"/>
+                                        ${patient.age}
                                     </td>
                                 </tr>
                             </table>
@@ -230,8 +223,7 @@
 
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="EditAllergies.section2Title"/>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.section2Title"/>
                                 | <span class="view_menu">View:
 				
 				<%
@@ -411,9 +403,7 @@
                                                             if (displayAllergy.getRemoteFacilityId() == null) {
                                                         %>
                                                         <a href="#" title="Annotation"
-                                                           onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=displayAllergy.getId()%>&demo=
-                                                               <jsp:getProperty name="patient"
-                                                                                property="demographicNo"/>','anwin','width=400,height=500');"><img
+                                                           onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=displayAllergy.getId()%>&demo=${patient.demographicNo}','anwin','width=400,height=500');"><img
                                                                 src="../images/notes.gif" border="0"></a>
                                                         <%
                                                             }
@@ -443,24 +433,23 @@
                     <%if (securityManager.hasWriteAccess("_allergies", roleName2$)) {%>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><bean:message
-                                    key="EditAllergies.section3Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.section3Title"/></div>
                         </td>
                     </tr>
                     <tr>
-                        <td><html:form action="/oscarRx/searchAllergy"
+                        <td><form action="${pageContext.request.contextPath}/oscarRx/searchAllergy.do" method="post"
                                        focus="searchString" onsubmit="return isEmpty()">
                             <table>
                                 <tr valign="center">
                                     <td>Search:</td>
                                 </tr>
                                 <tr>
-                                    <td><html:text property="searchString" size="50" styleId="searchString"
+                                    <td><input type="text" name="searchString" size="50" id="searchString"
                                                    maxlength="50"/></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <html:submit property="submit" value="Search" styleClass="ControlPushButton"/>
+                                        <input type="submit" name="submit" value="Search" class="ControlPushButton"/>
                                         <input type=button class="ControlPushButton"
                                                onclick="javascript:document.forms.RxSearchAllergyForm.searchString.value='';document.forms.RxSearchAllergyForm.searchString.focus();"
                                                value="Reset"/>
@@ -495,10 +484,10 @@
                                 </tr>
 
                                 <tr>
-                                    <td><html:checkbox property="type4"/> Drug Classes</td>
-                                    <td><html:checkbox property="type3"/> Ingredients</td>
-                                    <td><html:checkbox property="type2"/> Generic Names</td>
-                                    <td><html:checkbox property="type1"/> Brand Names</td>
+                                    <td><input type="checkbox" name="type4"/> Drug Classes</td>
+                                    <td><input type="checkbox" name="type3"/> Ingredients</td>
+                                    <td><input type="checkbox" name="type2"/> Generic Names</td>
+                                    <td><input type="checkbox" name="type1"/> Brand Names</td>
                                 </tr>
                                 <tr>
                                     <td colspan=4>
@@ -543,7 +532,7 @@
                                                                            value="Clear All"/></td>
                                 </tr>
                             </table>
-                        </html:form> <br>
+                        </form> <br>
                             <br>
                             <%
                                 String sBack = "SearchDrug.jsp";
@@ -581,4 +570,4 @@
         <% } %>
     </table>
     </body>
-</html:html>
+</html>

@@ -30,8 +30,8 @@
 %>
 
 <%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -43,7 +43,7 @@
     %>
 </security:oscarSec>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
 
         <title>Report by Template</title>
@@ -56,7 +56,7 @@
         <script src="${pageContext.request.contextPath}/share/javascript/Oscar.js"></script>
 
         <script src="${pageContext.request.contextPath}/share/calendar/calendar.js"></script>
-        <script src="${pageContext.request.contextPath}/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+        <script src="${pageContext.request.contextPath}/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script src="${pageContext.request.contextPath}/share/calendar/calendar-setup.js"></script>
         <script src="${pageContext.servletContext.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.2.js"></script>
@@ -113,8 +113,8 @@
     </c:if>
 
     <div class="well configDiv" id=manageGroups>
-        <html:form styleClass="form" action="/oscarReport/reportByTemplate/GenerateReportAction"
-                   onsubmit="return checkform(this);">
+        <form class="form" action="${pageContext.request.contextPath}/oscarReport/reportByTemplate/GenerateReportAction.do"
+                   method="post" onsubmit="return checkform(this);">
             <input type="hidden" name="templateId" value="${ curreport.templateId }">
             <input type="hidden" name="type" value="${ curreport.type }">
 
@@ -210,7 +210,7 @@
                     <input type="submit" class="btn btn-primary" name="submitButton" value="Run Query"/>
                 </div>
             </div>
-        </html:form>
+        </form>
     </div>
 
     <div id="optionsDiv" class="form-actions">
@@ -223,4 +223,4 @@
         </a>
     </div>
 
-</html:html>
+</html>

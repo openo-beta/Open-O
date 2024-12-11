@@ -26,7 +26,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <script>
     function popupHelp(topic) {
-        url = '<html:rewrite page="/common/help.jsp?topic="/>';
+        url = '${request.contextPath}/common/help.jsp?topic=';
         window.open(url + topic, 'help', 'width=450, height=200');
     }
 </script>
@@ -54,14 +54,14 @@ includes:
     <display:column sortable="true" sortProperty="program.name"
                     title="Program Name">
         <a
-                href="<html:rewrite action="/PMmodule/ProgramManagerView"/>?id=<c:out value="${program.programId}"/>"><c:out
+                href="<%=request.getContextPath() %>/PMmodule/ProgramManagerView.do?id=<c:out value="${program.programId}"/>"><c:out
                 value="${program.program.name}"/>
         </a>
     </display:column>
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_pmm_editProgram.vacancies" rights="r">
         <display:column title="">
-            <a href="<html:rewrite action="/PMmodule/ProgramManager.do"/>?method=edit&view.tab=vacancy_add&newVacancy=true&id=<c:out value="${program.programId}" />">
+            <a href="<%=request.getContextPath() %>/PMmodule/ProgramManager.do?method=edit&view.tab=vacancy_add&newVacancy=true&id=<c:out value="${program.programId}" />">
                 New Vacancy </a>
         </display:column>
     </security:oscarSec>
@@ -71,7 +71,7 @@ includes:
                     title="Program Type"/>
     <display:column sortable="true" title="Clients in Queue">
         <a
-                href="<html:rewrite action="/PMmodule/ProgramManagerView.do"/>?method=view&tab=queue&id=<c:out value="${program.programId}"/>">
+                href="<%=request.getContextPath() %>/PMmodule/ProgramManagerView.do?method=view&tab=queue&id=<c:out value="${program.programId}"/>">
             <c:out value="${program.program.queueSize}"/></a>
     </display:column>
 
@@ -85,7 +85,7 @@ You belong to the following facilities:
     <display:column sortable="true" sortProperty="name"
                     title="Facility Name">
         <a
-                href="<html:rewrite action="/PMmodule/FacilityManager?method=view&"/>id=<c:out value="${facility.id}"/>"><c:out
+                href="<%=request.getContextPath() %>/PMmodule/FacilityManager.do?method=view&id=<c:out value="${facility.id}"/>"><c:out
                 value="${facility.name}"/></a>
     </display:column>
     <display:column property="description" sortable="true"

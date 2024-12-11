@@ -49,17 +49,17 @@
 
 <body topmargin="20" leftmargin="10">
 
-<html:form action="/PMmodule/HealthSafety.do">
+<form action="${pageContext.request.contextPath}/PMmodule/HealthSafety.do" method="post">
     <input type="hidden" name="method" value="savehealthSafety"/>
     <input type="hidden" name="id"
            value="<c:out value="${requestScope.id}"/>">
-    <html:hidden property="healthsafety.userName"/>
-    <html:hidden property="healthsafety.demographicNo"/>
+    <input type="hidden" name="userName" id="userName"/>
+    <input type="hidden" name="demographicNo" id="demographicNo"/>
     <table border="2" width="700" cellspacing="0" cellpadding="0">
         <tr>
             <td colspan="3">Message:<br>
-                <html:textarea property="healthsafety.message" rows="5"
-                               style="width:100%;"></html:textarea></td>
+                <textarea name="message" rows="5"
+                               style="width:100%;"></textarea></td>
         </tr>
         <tr>
             <td width="40%">User Name: <c:out
@@ -71,6 +71,6 @@
                     type="button" value="Cancel" onclick="window.close()"/></td>
         </tr>
     </table>
-</html:form>
+</form>
 </body>
 </html>

@@ -66,31 +66,37 @@
     </tr>
     <tr>
         <td bgcolor="#EEEEFF">Date Range:</td>
-        <td bgcolor="#EEEEFF"><html:text property="searchStartDate"/>
-            to <html:text property="searchEndDate"/> (yyyy-mm-dd)
+        <td bgcolor="#EEEEFF"><input type="text" name="searchStartDate" id="searchStartDate" />
+            to <input type="text" name="searchEndDate" id="searchEndDate" /> (yyyy-mm-dd)
         </td>
     </tr>
 
     <tr>
         <td bgcolor="#EEEEFF">Program:</td>
-        <td bgcolor="#EEEEFF"><html:select property="searchProgramId">
-            <html:option value="0">&nbsp;</html:option>
-            <html:options collection="program_domain" property="id"
-                          labelProperty="name"/>
-        </html:select></td>
+        <td bgcolor="#EEEEFF"><select name="searchProgramId" id="searchProgramId">
+            <option value="0">&nbsp;</option>
+            <c:forEach var="p" items="${program_domain}">
+                <option value="${p.id}">
+                        ${p.name}
+                </option>
+            </c:forEach>
+        </select></td>
     </tr>
 
     <tr>
         <td bgcolor="#EEEEFF">Role:</td>
-        <td bgcolor="#EEEEFF"><html:select property="searchRoleId">
-            <html:option value="0">&nbsp;</html:option>
-            <html:options collection="roles" property="id" labelProperty="name"/>
-        </html:select></td>
+        <td bgcolor="#EEEEFF"><select name="searchRoleId" id="searchRoleId">
+            <option value="0">&nbsp;</option>
+            <c:forEach var="role" items="${roles}">
+                <option value="${role.id}">
+                        ${role.name}
+                </option>
+            </c:forEach>
+        </select></td>
     </tr>
 
     <tr>
-        <td bgcolor="#EEEEFF" colspan="2"><html:submit
-                onclick="this.form.method.value='search'"/></td>
+        <td bgcolor="#EEEEFF" colspan="2"><input type="submit" name="submit" value="Submit" onclick="this.form.method.value='search'"/></td>
     </tr>
 </table>
 
@@ -108,10 +114,10 @@
             </td>
             <td align="right">Sort: <select name="note_sort"
                                                     onchange="document.caseManagementViewForm.method.value='search';document.caseManagementViewForm.note_view.value='${param.note_view}';document.caseManagementViewForm.submit()">
-                <html:option value="update_date">Date</html:option>
-                <html:option value="providerName">Provider</html:option>
-                <html:option value="programName">Program</html:option>
-                <html:option value="roleName">Role</html:option>
+                <option value="update_date">Date</option>
+                <option value="providerName">Provider</option>
+                <option value="programName">Program</option>
+                <option value="roleName">Role</option>
             </select></td>
         </tr>
     </table>

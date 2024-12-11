@@ -23,27 +23,22 @@
     Ontario, Canada
 
 --%>
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
-
 <%@ page errorPage="/errorpage.jsp" %>
-
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="org.apache.struts.util.LabelValueBean" %>
 <%@ page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
 <%@ page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
 <%@ page import="org.oscarehr.appointment.web.NextAppointmentSearchHelper" %>
 <%@ page import="org.oscarehr.appointment.web.NextAppointmentSearchBean" %>
 <%@ page import="org.oscarehr.appointment.web.NextAppointmentSearchResult" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="oscar.util.LabelValueBean" %>
 <%
     SimpleDateFormat dayFormatter = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
@@ -55,7 +50,7 @@
 
     //day of week
     String dayOfWeek = request.getParameter("dayOfWeek") != null ? request.getParameter("dayOfWeek") : "daily";
-    List<LabelValueBean> dayOfWeekOptions = new ArrayList<LabelValueBean>();
+    List<LabelValueBean> dayOfWeekOptions = new ArrayList<>();
     dayOfWeekOptions.add(new LabelValueBean("Any Weekday", "daily"));
     dayOfWeekOptions.add(new LabelValueBean("Monday", String.valueOf(Calendar.MONDAY)));
     dayOfWeekOptions.add(new LabelValueBean("Tuesday", String.valueOf(Calendar.TUESDAY)));
@@ -118,7 +113,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message key="appointment.searchnext.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.title"/></title>
     <link rel="stylesheet" href="../web.css">
     <script>
         function popupPage2(varpage, windowname, vheight, vwidth) {
@@ -161,7 +156,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <th NOWRAP bgcolor="#CCCCFF">
-            <font face="Helvetica"><bean:message key="appointment.searchnext.2ndtitle"/></font>
+            <font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.2ndtitle"/></font>
         </th>
     </tr>
 </table>
@@ -170,7 +165,7 @@
     <input type="hidden" name="method" value="search"/>
     <table width="100%" border="0">
         <tr>
-            <td><bean:message key="appointment.searchnext.provider"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.provider"/>:</td>
             <td>
                 <select name="provider_no">
                     <option value="">All</option>
@@ -190,7 +185,7 @@
             </td>
         </tr>
         <tr>
-            <td><bean:message key="appointment.searchnext.day_of_week"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.day_of_week"/>:</td>
             <td>
                 <select name="dayOfWeek">
                     <%
@@ -209,7 +204,7 @@
             </td>
         </tr>
         <tr>
-            <td><bean:message key="appointment.searchnext.time_of_day"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.time_of_day"/>:</td>
             <td>
                 <select name="startTime">
                     <%
@@ -225,7 +220,7 @@
                         }
                     %>
                 </select>
-                &nbsp;<bean:message key="appointment.searchnext.to"/>&nbsp;
+                &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.to"/>&nbsp;
                 <select name="endTime">
                     <%
                         for (LabelValueBean lvb : endTimeOfDayOptions) {
@@ -243,7 +238,7 @@
             </td>
         </tr>
         <tr>
-            <td><bean:message key="appointment.searchnext.appt_type"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.appt_type"/>:</td>
             <td>
                 <select name="code">
                     <option value="">Any</option>
@@ -263,7 +258,7 @@
             </td>
         </tr>
         <tr>
-            <td><bean:message key="appointment.searchnext.num_results"/>:</td>
+            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.num_results"/>:</td>
             <td>
                 <select name="numberOfResults">
                     <%
@@ -295,9 +290,9 @@
 <CENTER>
     <table width="100%" border="1" bgcolor="#ffffff" cellspacing="1" cellpadding="0">
         <tr bgcolor="#CCCCFF">
-            <TH width="20%"><bean:message key="appointment.searchnext.date"/></TH>
-            <TH width="20%"><bean:message key="appointment.searchnext.time"/></TH>
-            <TH width="60%"><bean:message key="appointment.searchnext.provider"/></TH>
+            <TH width="20%"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.date"/></TH>
+            <TH width="20%"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.time"/></TH>
+            <TH width="60%"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.searchnext.provider"/></TH>
         </tr>
         <%
             for (int x = 0; x < Math.min(results.size(), Integer.parseInt(numberOfResults)); x++) {

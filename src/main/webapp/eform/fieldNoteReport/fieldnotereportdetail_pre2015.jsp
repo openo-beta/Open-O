@@ -29,8 +29,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="oscar.util.StringUtils" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     String residentId = request.getParameter("residentId");
     String residentName = request.getParameter("residentName");
@@ -89,9 +89,9 @@
 
     HashMap<Integer, List<EFormValue>> residentFieldNoteValues = FieldNoteManager.getResidentFieldNoteValues(residentId);
 %>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="admin.fieldNote.report"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></title>
         <link rel="stylesheet" href="../../share/css/OscarStandardLayout.css">
         <link rel="stylesheet" href="../../share/css/eformStyle.css">
         <style>
@@ -109,7 +109,7 @@
     <body>
 
     <div class="eformInputHeading" align="center">
-        <bean:message key="admin.fieldNote.report"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/>
     </div>
 
     <%
@@ -118,7 +118,7 @@
     <table width="100%">
         <tr>
             <td valign="top">
-                <input type="button" value="<bean:message key="admin.fieldNote.back" />" onclick="window.close();"/>
+                <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.back"/>" onclick="window.close();"/>
             </td>
             <td>
                 <%
@@ -325,7 +325,7 @@
         if (!"download".equals(method)) {
     %>
     <p>&nbsp;</p>
-    <input type="button" value="<bean:message key="admin.fieldNote.back" />" onclick="window.close();"/>
+    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.back"/>" onclick="window.close();"/>
     <%
         }
     %>
@@ -338,4 +338,4 @@
         });
     </script>
     </body>
-</html:html>
+</html>

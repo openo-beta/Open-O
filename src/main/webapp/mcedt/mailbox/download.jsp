@@ -31,9 +31,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page
         import="java.math.BigInteger,java.util.*,org.oscarehr.integration.mcedt.mailbox.DetailDataCustom,org.oscarehr.integration.mcedt.mailbox.ActionUtils" %>
 
@@ -103,29 +103,29 @@
 <c:set var="resourceListDL" value="${sessionScope.resourceListDL}"/>
 <c:set var="resultSize" value="${sessionScope.resultSize}"/>
 
-<html:form action="/mcedt/download" method="post" styleId="formDownload">
+<form action="${pageContext.request.contextPath}/mcedt/download.do" method="post" styleId="formDownload">
     <jsp:include page="../messages.jsp"/>
     <input id="methodDownload" name="method" type="hidden" value=""/>
     <div>
         <div>
             Billing Number:
-            <html:select property="serviceId" styleId="serviceId"
-                         styleClass="serviceId">
+            <select name="serviceId" id="serviceId"
+                         class="serviceId">
                 <c:forEach var="r" items="${serviceIds}">
-                    <html:option value="${r}">
+                    <option value="${r}">
                         <c:out value="${r}"/>
-                    </html:option>
+                    </option>
                 </c:forEach>
-            </html:select>
+            </select>
             Page #:
-            <html:select property="pageNo" styleId="pageNo">
+            <select name="pageNo" id="pageNo">
                 <c:forEach var="i" begin="1"
                            end="${resultSize}">
-                    <html:option value="${i}">
+                    <option value="${i}">
                         <c:out value="${i}"/>
-                    </html:option>
+                    </option>
                 </c:forEach>
-            </html:select>
+            </select>
             <button class="noBorder blackBox flatLink font12 small" onclick="ShowSpin(true); return changeDisplayDL();">
                 Load Page
             </button>
@@ -179,6 +179,6 @@
         </button>
     </div>
 
-</html:form>
+</form>
 </body>
 </html>

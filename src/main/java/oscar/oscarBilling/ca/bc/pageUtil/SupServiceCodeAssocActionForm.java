@@ -25,91 +25,9 @@
 
 package oscar.oscarBilling.ca.bc.pageUtil;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
-public class SupServiceCodeAssocActionForm
-        extends ActionForm {
+public class SupServiceCodeAssocActionForm {
     public static final String MODE_EDIT = "edit";
     public static final String MODE_DELETE = "delete";
     public static final String MODE_VIEW = "view";
-    private String actionMode = MODE_VIEW;
-    private String primaryCode;
-    private String secondaryCode;
-    private String id;
 
-    public String getActionMode() {
-        return actionMode;
-    }
-
-    public void setActionMode(String actionMode) {
-        this.actionMode = actionMode;
-    }
-
-    public void setSecondaryCode(String secondaryCode) {
-        this.secondaryCode = secondaryCode;
-    }
-
-    public void setPrimaryCode(String primaryCode) {
-        this.primaryCode = primaryCode;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPrimaryCode() {
-        return primaryCode;
-    }
-
-    public String getSecondaryCode() {
-        return secondaryCode;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public ActionErrors validate(ActionMapping actionMapping,
-                                 HttpServletRequest httpServletRequest) {
-        ActionErrors errors = new ActionErrors();
-        BillingAssociationPersistence per = new BillingAssociationPersistence();
-        if (SupServiceCodeAssocActionForm.MODE_EDIT.equals(this.actionMode)) {
-            if (primaryCode == null || "".equals(primaryCode)) {
-                errors.add("",
-                        new ActionMessage(
-                                "oscar.billing.CA.BC.billingBC.error.nullservicecode"));
-
-            } else if (!per.serviceCodeExists(primaryCode)) {
-                errors.add("",
-                        new ActionMessage(
-                                "oscar.billing.CA.BC.billingBC.error.invalidsvccode", primaryCode));
-
-
-            }
-
-
-            if (secondaryCode == null || "".equals(secondaryCode)) {
-                errors.add("",
-                        new ActionMessage(
-                                "oscar.billing.CA.BC.billingBC.error.nullservicecode"));
-
-            } else if (!per.serviceCodeExists(secondaryCode)) {
-                errors.add("",
-                        new ActionMessage(
-                                "oscar.billing.CA.BC.billingBC.error.invalidsvccode", secondaryCode));
-            }
-        }
-        return errors;
-    }
-
-    public void reset(ActionMapping actionMapping,
-                      HttpServletRequest servletRequest) {
-        this.primaryCode = "";
-        this.secondaryCode = "";
-    }
 }

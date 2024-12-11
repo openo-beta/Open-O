@@ -23,9 +23,9 @@
 
 package org.oscarehr.survey.model;
 
-import java.util.ArrayList;
+import oscar.util.LabelValueBean;
 
-import org.apache.struts.util.LabelValueBean;
+import java.util.ArrayList;
 
 public class QuestionTypes extends ArrayList<LabelValueBean> {
 

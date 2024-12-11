@@ -41,7 +41,7 @@
 
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%@page import="org.oscarehr.sharingcenter.model.InfrastructureDataObject" %>
 <%@page import="org.oscarehr.sharingcenter.dao.InfrastructureDao" %>
@@ -240,7 +240,7 @@
                         <div class="input-group">
                             <span class="input-group-addon">PKCS7 Certificate:</span> <input
                                 id="file" type="file" style="display: none" name="file"/>
-                            <span title="<bean:message key="global.uploadWarningBody"/>"
+                            <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                                   style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                                     border="0" src="../../images/icon_alertsml.gif"/></span></span>
 

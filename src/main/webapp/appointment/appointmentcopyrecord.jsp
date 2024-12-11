@@ -30,9 +30,9 @@
         import="oscar.appt.*"
         errorPage="/errorpage.jsp" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     </head>
@@ -42,7 +42,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="90%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="appointment.appointmentupdatearecord.msgMainLabel"/></font></th>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgMainLabel"/></font></th>
             </tr>
         </table>
         <%
@@ -50,8 +50,7 @@
             if (true) {
         %>
         <p>
-        <h1><bean:message
-                key="appointment.appointmentupdatearecord.msgUpdateSuccess"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgUpdateSuccess"/></h1>
         </p>
         <script LANGUAGE="JavaScript">
             self.opener.refresh();
@@ -61,8 +60,7 @@
         } else {
         %>
         <p>
-        <h1><bean:message
-                key="appointment.appointmentupdatearecord.msgUpdateFailure"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgUpdateFailure"/></h1>
         </p>
         <%
             }
@@ -70,8 +68,8 @@
         <p></p>
         <hr width="90%"/>
         <form>
-            <input type="button" value="<bean:message key="global.btnClose"/>" onClick="closeit()">
+            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="closeit()">
         </form>
     </center>
     </body>
-</html:html>
+</html>

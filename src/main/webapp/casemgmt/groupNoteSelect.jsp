@@ -47,8 +47,6 @@
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.dao.GroupNoteDao" %>
 <%@page import="org.oscarehr.common.model.GroupNoteLink" %>
-<%@page import="org.oscarehr.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
-
 <%
     ProgramManager programManager = (ProgramManager) SpringUtils.getBean(ProgramManager.class);
     AdmissionManager admissionManager = (AdmissionManager) SpringUtils.getBean(AdmissionManager.class);
@@ -59,8 +57,7 @@
     String demographicNo = request.getParameter("demographicNo");
 
     String frmName = "caseManagementEntryForm" + demographicNo;
-    CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) session.getAttribute(frmName);
-    String noteId = cform.getNoteId();
+    String noteId = null;
     boolean isUpdate = false;
 %>
 <html>
@@ -70,7 +67,7 @@
 </head>
 <body>
 
-<%if (cform.getNoteId() == null) { %>
+<%if (noteId == null) { %>
 <h4>In order to use this page, you must first save this note and then click on edit for this note then click on group
     icon to select client members of this group. Please try again.</h4>
 <input type="button" onclick="window.close();" value="Close Window"/>

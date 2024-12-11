@@ -112,9 +112,9 @@ var secs
 <%=ticklerProvName %> have
 <c:out value="${sessionScope.num_ticklers}"/>
 ticklers.
-<html:form styleId="unreadTicklerForm" action="/UnreadTickler.do" target="_self">
+<form style="unreadTicklerForm" action="${pageContext.request.contextPath}/UnreadTickler.do" target="_self" method="post">
     <input type="hidden" name="method" value="refresh"/>
-</html:form>
+</form>
 
 <!-- 
 <table width="100%">

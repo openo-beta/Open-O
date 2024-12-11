@@ -39,9 +39,9 @@
 %>
 
 <%@ page import="oscar.form.graphic.*, oscar.util.*, oscar.form.*, oscar.form.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
 <%
@@ -86,11 +86,11 @@
     if (props.getProperty("ar2_age", "").equals(""))
         props.setProperty("ar2_age", props.getProperty("pg1_ageAtEDD", ""));
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Antenatal Record 2</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" href="<%=bView?"bcArStyleView.css" : "bcAr2007Style.css"%>">
         <!-- calendar stylesheet -->
         <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
@@ -100,7 +100,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
        adding a calendar a matter of 1 or 2 lines of code. -->
@@ -1043,7 +1043,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
         <center><i>Send Hospital copy at 36 weeks</i></center>
     </div>
 
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <input type="hidden" name="commonField" value="ar2_"/>
         <input type="hidden" name="c_lastVisited" value="pg2"/>
@@ -3527,7 +3527,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
         </table>
 
 
-    </html:form>
+    </form>
     <script type="text/javascript">
         Calendar.setup({
             inputField: "ar2_labDiabDate",      // id of the input field
@@ -3629,4 +3629,4 @@ if (!fedb.equals("") && fedb.length()==10 ) {
     </script>
 
     </body>
-</html:html>
+</html>

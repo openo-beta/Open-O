@@ -7,7 +7,6 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.util.MiscUtils" %>
 <%@ taglib prefix="security" uri="/oscarSecuritytag" %>
-<%@ taglib prefix="bean" uri="http://struts.apache.org/tags-bean-el" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -65,12 +64,12 @@
 
 <html>
 <head>
-    <title><bean:message key="admin.admin.manageFeeSplit"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageFeeSplit"/></title>
     <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h3><bean:message key="admin.admin.manageFeeSplit"/></h3>
+<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageFeeSplit"/></h3>
 <form action="manageFeeSplit.jsp">
     <label for="providerNo">Provider:</label>
     <select name="providerNo" id="providerNo" onchange="setSplitProvider()">

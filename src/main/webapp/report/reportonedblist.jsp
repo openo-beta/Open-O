@@ -44,12 +44,12 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="report.reportnewdblist.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.title"/></title>
         <link rel="stylesheet" href="../css/receptionistapptstyle.css">
         <script language="JavaScript">
             <!--
@@ -62,14 +62,13 @@
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr bgcolor="<%=deepcolor%>">
-            <th><font face="Helvetica"><bean:message
-                    key="report.reportnewdblist.msgEDBList"/></font></th>
+            <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgEDBList"/></font></th>
         </tr>
         <tr>
             <td align="right"><input type="button" name="Button"
-                                     value="<bean:message key="global.btnPrint"/>"
+                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                                      onClick="window.print()"> <input type="button" name="Button"
-                                                                      value="<bean:message key="global.btnCancel" />"
+                                                                      value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
                                                                       onClick="window.close()"></td>
         </tr>
     </table>
@@ -86,22 +85,15 @@
             <tr bgcolor='<%=deepcolor%>'>
                 <TH style="text-decoration: bold; text-align: center;">#</TH>
                 <TH style="text-decoration: bold; text-align: center;" width="10%"
-                    nowrap><bean:message key="report.reportnewdblist.msgEDB"/></TH>
-                <TH style="text-decoration: bold; text-align: center;" width="30%"><bean:message
-                        key="report.reportnewdblist.msgName"/></TH>
+                    nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgEDB"/></TH>
+                <TH style="text-decoration: bold; text-align: center;" width="30%"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgName"/></TH>
                 <!--TH align="center" width="20%"><b>Demog' No </b></TH-->
-                <TH style="text-decoration: bold; text-align: center;" width="5%"><bean:message
-                        key="report.reportnewdblist.msgAge"/></TH>
-                <TH style="text-decoration: bold; text-align: center;" width="5%"><bean:message
-                        key="report.reportnewdblist.msgGravida"/></TH>
-                <TH style="text-decoration: bold; text-align: center;" width="10%"><bean:message
-                        key="report.reportnewdblist.msgTerm"/></TH>
-                <TH style="text-decoration: bold; text-align: center;" width="10%"><bean:message
-                        key="report.reportnewdblist.msgPhone"/></TH>
-                <TH style="text-decoration: bold"><bean:message
-                        key="report.reportnewdblist.msGP"/></TH>
-                <TH style="text-decoration: bold; text-align: center;"><bean:message
-                        key="report.reportnewdblist.msProvider"/></TH>
+                <TH style="text-decoration: bold; text-align: center;" width="5%"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgAge"/></TH>
+                <TH style="text-decoration: bold; text-align: center;" width="5%"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgGravida"/></TH>
+                <TH style="text-decoration: bold; text-align: center;" width="10%"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgTerm"/></TH>
+                <TH style="text-decoration: bold; text-align: center;" width="10%"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgPhone"/></TH>
+                <TH style="text-decoration: bold"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msGP"/></TH>
+                <TH style="text-decoration: bold; text-align: center;"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msProvider"/></TH>
             </tr>
             </thead>
             <tfoot></tfoot>
@@ -195,15 +187,14 @@
   nLastPage=Integer.parseInt(strLimit1)-Integer.parseInt(strLimit2);
   if(nLastPage>=0) {
 %> <a
-            href="reportonedblist.jsp?startDate=<%=request.getParameter("startDate")%>&endDate=<%=request.getParameter("endDate")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><bean:message
-            key="report.reportnewdblist.msgLastPage"/></a> | <%
+            href="reportonedblist.jsp?startDate=<%=request.getParameter("startDate")%>&endDate=<%=request.getParameter("endDate")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgLastPage"/></a> | <%
   }
   if(nItems==Integer.parseInt(strLimit2)) {
 %> <a
             href="reportonedblist.jsp?startDate=<%=request.getParameter("startDate")%>&endDate=<%=request.getParameter("endDate")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
-        <bean:message key="report.reportnewdblist.msgNextPage"/></a> <%
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgNextPage"/></a> <%
 }
 %>
 
     </body>
-</html:html>
+</html>

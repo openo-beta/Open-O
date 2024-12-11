@@ -40,8 +40,8 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
@@ -54,10 +54,10 @@
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="dms.documentReport.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.title"/></title>
         <link rel="stylesheet" type="text/css"
               href="../share/css/OscarStandardLayout.css"/>
         <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
@@ -124,7 +124,7 @@
                 if (aBoxIsChecked) {
                     popupStart(300, 400, 'SelectProvider.jsp', 'providerselect');
                 } else {
-                    alert("<bean:message key="oscarMDS.index.msgSelectOneLab"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgSelectOneLab"/>");
                 }
             }
 
@@ -186,7 +186,7 @@
            style="margin: 0px;">
         <tr>
             <td class="MainTableRightColumn" colspan="2" valign="top">
-                <html:form action="/documentManager/combinePDFs">
+                <form action="${pageContext.request.contextPath}/documentManager/combinePDFs.do" method="post">
                     <div class="documentLists"><%-- STUFF TO DISPLAY --%>
                         <%
                             for (int i = 0; i < categories.size(); i++) {
@@ -201,21 +201,17 @@
 
                                     </tr>
                                     <tr>
-                                        <th width="30%"><b><a style="color:black;"><bean:message
-                                                key="dms.documentReport.msgDocDesc"/></a></b></th>
+                                        <th width="30%"><b><a style="color:black;"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocDesc"/></a></b></th>
                                         <th width="8%"><b><a style="color:black;">
-                                            <bean:message key="dms.documentReport.msgContent"/></a></b></th>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgContent"/></a></b></th>
                                         <th width="8%"><b><a style="color:black;">
-                                            <bean:message key="dms.documentReport.msgType"/></a></b></th>
-                                        <th width="12%"><b><a style="color:black;"><bean:message
-                                                key="dms.documentReport.msgCreator"/></a></b></th>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgType"/></a></b></th>
+                                        <th width="12%"><b><a style="color:black;"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgCreator"/></a></b></th>
                                         <th width="12%"><b><a style="color:black;">
-                                            <bean:message key="dms.documentReport.msgResponsible"/></a></b></th>
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgResponsible"/></a></b></th>
                                         <th width="10%"><a style="color:black;"
-                                                           title="Observation Date"><b><bean:message
-                                                key="dms.documentReport.msgDate"/></b></a></th>
-                                        <th width="12%"><a style="color:black;"><b><bean:message
-                                                key="dms.documentReport.msgReviewer"/></b></a></th>
+                                                           title="Observation Date"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDate"/></b></a></th>
+                                        <th width="12%"><a style="color:black;"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgReviewer"/></b></a></th>
                                     </tr>
 
                                     <%
@@ -262,8 +258,7 @@
                                         if (category.size() == 0) {
                                     %>
                                     <tr>
-                                        <td colspan="6"><bean:message
-                                                key="dms.documentReport.msgNoDocumentsToDisplay"/></td>
+                                        <td colspan="6"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgNoDocumentsToDisplay"/></td>
                                     </tr>
                                     <%}%>
                                 </table>
@@ -272,7 +267,7 @@
                         </div>
                         <%}%>
                     </div>
-                </html:form></td>
+                </form></td>
         </tr>
     </table>
 
@@ -285,16 +280,11 @@
                 <th align="center" colspan="5"><%=demoName%>'s Labs</th>
             </tr>
             <tr>
-                <th align="left" valign="bottom" class="cell"><bean:message
-                        key="oscarMDS.index.msgDiscipline"/></th>
-                <th align="left" valign="bottom" class="cell"><bean:message
-                        key="oscarMDS.index.msgDateTest"/></th>
-                <th align="left" valign="bottom" class="cell"><bean:message
-                        key="oscarMDS.index.msgRequestingClient"/></th>
-                <th align="left" valign="bottom" class="cell"><bean:message
-                        key="oscarMDS.index.msgResultStatus"/></th>
-                <th align="left" valign="bottom" class="cell"><bean:message
-                        key="oscarMDS.index.msgReportStatus"/></th>
+                <th align="left" valign="bottom" class="cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgDiscipline"/></th>
+                <th align="left" valign="bottom" class="cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgDateTest"/></th>
+                <th align="left" valign="bottom" class="cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgRequestingClient"/></th>
+                <th align="left" valign="bottom" class="cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgResultStatus"/></th>
+                <th align="left" valign="bottom" class="cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgReportStatus"/></th>
             </tr>
 
             <%
@@ -347,12 +337,11 @@
 
                 if (endIndex == 0) { %>
             <tr>
-                <td colspan="9" align="center"><i><bean:message
-                        key="oscarMDS.index.msgNoReports"/></i></td>
+                <td colspan="9" align="center"><i><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgNoReports"/></i></td>
             </tr>
             <% } %>
         </table>
     </form>
 
     </body>
-</html:html>
+</html>

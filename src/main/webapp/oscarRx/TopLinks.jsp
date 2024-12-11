@@ -26,7 +26,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <c:set var="ctx" value="${ pageContext.servletContext.contextPath }"/>
 <c:set var="url"
@@ -42,7 +42,7 @@
 
             <c:if test="${ not empty param.patientName }">
                 <a href="javascript:void(0)" onClick="popupPage(700,1000,'${ url }'); return false;"
-                   title="<bean:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">
+                   title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">
                     <c:out value="${ param.patientName }"/>
                 </a>
             </c:if>
@@ -77,7 +77,7 @@
             <c:if test="${ not empty param.mrp }">
                 <security:oscarSec roleName="${ security }" objectName="_newCasemgmt.doctorName" rights="r">
 	    	<span class="label">	
-	    		  <bean:message key="oscarEncounter.Index.msgMRP"/>  			   
+	    		  <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgMRP"/>  			   
 		    </span>
                     <span>
 		     	<c:out value="${ param.mrp }"/>
@@ -88,7 +88,7 @@
 
         <td id="topLinkRightColumn">
 	 		<span class="HelpAboutLogout" style="color:white;">
-                 <oscar:help keywords="2.2.4" key="app.top1" style="color:white;"/>
+
                  <a style="color:white;" href="${ ctx }/oscarEncounter/About.jsp" target="_new">About</a>
              </span>
         </td>

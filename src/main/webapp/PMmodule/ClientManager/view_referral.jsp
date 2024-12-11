@@ -21,16 +21,11 @@
     Centre for Research on Inner City Health, St. Michael's Hospital,
     Toronto, Ontario, Canada
 
---%>
-
-<%@ page import="org.apache.struts.validator.DynaValidatorForm" %>
-<%@ page import="org.oscarehr.PMmodule.model.ClientReferral" %>
+--%><%@ page import="org.oscarehr.PMmodule.model.ClientReferral" %>
 <%@ page import="org.oscarehr.common.model.OscarLog" %>
 <%@ page import="java.util.List" %>
-
-
 <%@ include file="/taglibs.jsp" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Referral Details</title>
@@ -50,65 +45,58 @@
         </script>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     <body>
-    <html:form action="/PMmodule/ClientManager.do">
+    <form action="${pageContext.request.contextPath}/PMmodule/ClientManager.do" method="post">`
         <%
-            DynaValidatorForm form = (DynaValidatorForm) session.getAttribute("clientManagerForm");
-            ClientReferral referral = (ClientReferral) form.get("referral");
+            String id = (String) request.getAttribute("id");
         %>
-        <html:hidden property="referral.id"/>
+        <input type="hidden" name="id" id="id"/>
 
         <table width="100%" border="1" cellspacing="2" cellpadding="3">
             <tr class="b">
                 <td width="20%">Client name:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="client.formattedName"/></td>
+                <td><c:out value="${clientManagerForm.client.formattedName}"/></td>
             </tr>
             <tr class="b">
                 <td width="20%">Provider name:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="provider.formattedName"/></td>
+                <td><c:out value="${clientManagerForm.provider.formattedName}"/></td>
             </tr>
             <tr class="b">
                 <td width="20%">Program name:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="referral.programName"/></td>
+                <td><c:out value="${clientManagerForm.referral.programName}"/></td>
             </tr>
 
             <tr class="b">
                 <td width="20%">Provider:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="referral.providerFormattedName"/></td>
+                <td><c:out value="${clientManagerForm.referral.providerFormattedName}"/></td>
             </tr>
 
             <tr class="b">
                 <td width="20%">Completion date:</td>
                 <td>
-                    <bean:write name="clientManagerForm" property="referral.completionDate"/>
+                    <c:out value="${clientManagerForm.referral.completionDate}"/>
                     <%if (request.getAttribute("completion_date_updates") != null) { %>
                     <sup><a href="javascript:void(0)"
-                            onclick="popupPage(600,400,'<%=request.getContextPath()%>/PMmodule/ClientManager/showHistory.jsp?type=update_completion_date&title=Completion Date Updates&id=<%=referral.getId()%>');return false;"><%=((List<OscarLog>) request.getAttribute("completion_date_updates")).size() %>
+                            onclick="popupPage(600,400,'<%=request.getContextPath()%>/PMmodule/ClientManager/showHistory.jsp?type=update_completion_date&title=Completion Date Updates&id=<%=id%>');return false;"><%=((List<OscarLog>) request.getAttribute("completion_date_updates")).size() %>
                     </a></sup>
                     <%} %>
                 </td>
             </tr>
             <tr class="b">
                 <td width="20%">Completion status:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="referral.status"/></td>
+                <td><c:out value="${clientManagerForm.referral.status}"/></td>
             </tr>
             <tr class="b">
                 <td width="20%">Completion notes:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="referral.completionNotes"/></td>
+                <td><c:out value="${clientManagerForm.referral.completionNotes}"/></td>
             </tr>
 
             <tr class="b">
                 <td width="20%">Referral date:</td>
                 <td>
-                    <bean:write name="clientManagerForm" property="referral.referralDate"/>
+                    <c:out value="${clientManagerForm.referral.referralDate}"/>
                     <%if (request.getAttribute("referral_date_updates") != null) { %>
                     <sup><a href="javascript:void(0)"
-                            onclick="popupPage(600,400,'<%=request.getContextPath()%>/PMmodule/ClientManager/showHistory.jsp?type=update_referral_date&title=Referral Date Updates&id=<%=referral.getId()%>');return false;"><%=((List<OscarLog>) request.getAttribute("referral_date_updates")).size() %>
+                            onclick="popupPage(600,400,'<%=request.getContextPath()%>/PMmodule/ClientManager/showHistory.jsp?type=update_referral_date&title=Referral Date Updates&id=<%=id%>');return false;"><%=((List<OscarLog>) request.getAttribute("referral_date_updates")).size() %>
                     </a></sup>
                     <%} %>
                 </td>
@@ -116,24 +104,21 @@
 
             <tr class="b">
                 <td width="20%">Temporary admission:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="referral.temporaryAdmission"/></td>
+                <td><c:out value="${clientManagerForm.referral.temporaryAdmission}"/></td>
             </tr>
 
             <tr class="b">
                 <td width="20%">Present problems:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="referral.presentProblems"/></td>
+                <td><c:out value="${clientManagerForm.referral.presentProblems}"/></td>
             </tr>
 
             <tr class="b">
                 <td width="20%">Rejection reason:</td>
-                <td><bean:write name="clientManagerForm"
-                                property="referral.radioRejectionReason"/></td>
+                <td><c:out value="${clientManagerForm.referral.radioRejectionReason}"/></td>
             </tr>
 
         </table>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

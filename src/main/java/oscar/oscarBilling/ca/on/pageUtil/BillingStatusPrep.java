@@ -19,13 +19,12 @@
 
 package oscar.oscarBilling.ca.on.pageUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.struts.util.LabelValueBean;
-
 import oscar.oscarBilling.ca.on.data.BillingClaimHeader1Data;
 import oscar.oscarBilling.ca.on.data.JdbcBillingReviewImpl;
+import oscar.util.LabelValueBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BillingStatusPrep {
     //private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();

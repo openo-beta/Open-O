@@ -28,8 +28,8 @@
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -49,7 +49,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><bean:message key="oscarprevention.preventionlistmanager.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.preventionlistmanager.title"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -70,7 +70,7 @@
 <body>
 
 <div class="container-fluid">
-    <h1><bean:message key="oscarprevention.preventionlistmanager.title"/></h1>
+    <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.preventionlistmanager.title"/></h1>
     <p class="lead">Customize which prevention items to display on the prevention list.</p>
     <p style="margin-top:-20px"><span class="label label-info">Info</span> Any changes made here will affect every
         provider using the prevention module. To add/remove any item from the prevention list simply click on the item

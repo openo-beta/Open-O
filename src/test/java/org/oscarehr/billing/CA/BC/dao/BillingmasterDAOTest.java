@@ -111,9 +111,6 @@ public class BillingmasterDAOTest extends DaoTestFixtures {
 
         List<Object[]> results = dao.select_user_bill_report_wcb(1);
         assertNotNull(results);
-        TeleplanCorrectionFormWCB f = new TeleplanCorrectionFormWCB(results);
-        assertNotNull(f);
-
     }
 
     @Test

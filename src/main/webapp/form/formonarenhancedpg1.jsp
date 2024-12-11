@@ -23,10 +23,10 @@
     Ontario, Canada
 
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName2$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_form" rights="r" reverse="<%=true%>">
@@ -38,18 +38,11 @@
         return;
     }
 %>
-
 <%@ page import="oscar.util.*, oscar.form.*, oscar.form.data.*" %>
-<%@ page import="org.oscarehr.common.web.PregnancyAction" %>
+<%@ page import="org.oscarehr.common.web.Pregnancy2Action" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.apache.struts.util.LabelValueBean" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-
-
 <%
     String formClass = "ONAREnhanced";
     String formLink = "formonarenhancedpg1.jsp";
@@ -69,14 +62,14 @@
     String project_home = request.getContextPath().substring(1);
 
     //load eform groups
-    List<LabelValueBean> cytologyForms = PregnancyAction.getEformsByGroup("Cytology");
-    List<LabelValueBean> ultrasoundForms = PregnancyAction.getEformsByGroup("Ultrasound");
+    List<LabelValueBean> cytologyForms = Pregnancy2Action.getEformsByGroup("Cytology");
+    List<LabelValueBean> ultrasoundForms = Pregnancy2Action.getEformsByGroup("Ultrasound");
 
     String customEformGroup = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_eform_group");
     String prenatalScreenName = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_name");
     String prenatalScreen = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_abbrv");
 
-    List<LabelValueBean> customForms = PregnancyAction.getEformsByGroup(customEformGroup);
+    List<LabelValueBean> customForms = Pregnancy2Action.getEformsByGroup(customEformGroup);
 
     if (props.getProperty("obxhx_num", "0").equals("")) {
         props.setProperty("obxhx_num", "0");
@@ -91,7 +84,7 @@
     if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Antenatal Record 1</title>
@@ -99,7 +92,7 @@
         <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
 
         <script src="<%=request.getContextPath() %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
@@ -1098,7 +1091,7 @@
                 $("input[name='pg1_geneticD']").val($("input[name='pg1_geneticD1']").attr('checked') + "/" + $("input[name='pg1_geneticD2']").attr('checked'));
             }
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <script type="text/javascript" language="Javascript">
             function reset() {
@@ -2213,7 +2206,7 @@
 
     <div id="maincontent">
         <div id="content_bar" class="innertube">
-            <html:form action="/form/formname">
+            <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
                 <input type="hidden" name="c_lastVisited"
                        value=<%=props.getProperty("c_lastVisited", "pg1")%>/>
                 <input type="hidden" name="demographic_no"
@@ -3873,7 +3866,7 @@
                     </tr>
                 </table>
 
-            </html:form>
+            </form>
         </div>
     </div>
 
@@ -4418,7 +4411,7 @@
         </table>
     </div>
 
-</html:html>
+</html>
 
 <%!
     String getSelected(String a, String b) {

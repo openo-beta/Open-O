@@ -20,7 +20,7 @@
 <%@ page import="org.oscarehr.util.SessionConstants" %>
 <%@ page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@ include file="/taglibs.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -54,9 +54,9 @@
 %>
 
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="admin.admin.DiseaseRegistry"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DiseaseRegistry"/></title>
 
         <link rel="stylesheet" type="text/css" media="all"
               href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
@@ -139,29 +139,29 @@
     <div class="container-fluid">
         <div class="navbar">
             <div class="navbar-inner">
-                <a class="brand" href="#"><bean:message key="admin.admin.DiseaseRegistry"/></a>
+                <a class="brand" href="#"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DiseaseRegistry"/></a>
             </div>
         </div>
 
         <div class="well well-small">
-            <html:form action="/report/DxresearchReport?method=addSearchCode">
+            <form action="${pageContext.request.contextPath}/report/DxresearchReport?method=addSearchCode.do" method="post">
                 <div class="row-fluid">
                     <input type="hidden" name="action" value="NA"/>
-                    <html:select property="quicklistname" styleClass="sel">
+                    <select name="quicklistname" class="sel">
                         <option value="">Add Dx QuickList</option>
                         <c:forEach var="quickLists" items="${allQuickLists.dxQuickListBeanVector}">
                             <option value="${quickLists.quickListName}" ${quickLists.lastUsed}>
                                 ${quickLists.quickListName}
                             </option>
                         </c:forEach>
-                    </html:select>
+                    </select>
                     OR
-                    <html:select property="codesystem" styleClass="sel" styleId="codingSystem">
+                    <select name="codesystem" class="sel" id="codingSystem">
                         <option value="">Select Coding System</option>
                         <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
                             <option value="${codingSys}">${codingSys}</option>
                         </c:forEach>
-                    </html:select>
+                    </select>
                     <input type="text" id="codesearch" placeholder="search description" name="codesearch"
                            class="span4 jsonDxSearch"/>
                 </div>
@@ -170,7 +170,7 @@
                     <input type="button" class="btn btn-danger" value="Clear"
                            onclick="javascript:this.form.action='${pageContext.servletContext.contextPath}/report/DxresearchReport.do?method=clearSearchCode';this.form.submit()"/>
                 </div>
-            </html:form>
+            </form>
 
         </div>
         <div class="row-fluid">
@@ -215,7 +215,7 @@
 
 
                 <select id="provider_no" name="provider_no" class="sel">
-                    <option value="*"><bean:message key="report.reportindex.formAllProviders"/></option>
+                    <option value="*"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/></option>
 
                     <option disabled>___________</option>
 
@@ -284,4 +284,4 @@
         </nested:form>
     </div>
     </body>
-</html:html>
+</html>

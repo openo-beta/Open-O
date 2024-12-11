@@ -27,7 +27,7 @@
 <%--<%@ include file="/taglibs.jsp"%>--%>
 
 <%@ page import="org.oscarehr.PMmodule.web.formbean.*" %>
-<html:form action="/PMmodule/AgencyManager">
+<form action="${pageContext.request.contextPath}/PMmodule/AgencyManager.do" method="post">
     <table width="100%" summary="Create and edit rooms, and beds">
         <tr>
             <td width="80%">
@@ -103,12 +103,12 @@
                     </display:column>
                 </display:table></td>
             <td width="20%"><br/>
-                <html:submit onclick="agencyManagerForm.method.value='saveRooms';">Save Rooms</html:submit>
+                <input type="submit" name="submit" value="Save Rooms" onclick="agencyManagerForm.method.value='saveRooms';" />
             </td>
         </tr>
         <tr>
-            <td><html:text property="numRooms"/> <html:submit
-                    onclick="agencyManagerForm.method.value='addRooms';">Add Rooms</html:submit>
+            <td><input type="text" name="numRooms" id="numRooms" />
+                <input type="submit" name="submit" value="Add Rooms" onclick="agencyManagerForm.method.value='addRooms';" />
             </td>
         </tr>
         <tr>
@@ -182,21 +182,21 @@
                     </display:column>
                 </display:table></td>
             <td width="20%"><br/>
-                <html:submit onclick="agencyManagerForm.method.value='saveBeds';">Save Beds</html:submit>
+                <input type="submit" name="submit" value="Save Beds" onclick="agencyManagerForm.method.value='saveBeds';"/>
             </td>
         </tr>
         <tr>
             <td><c:choose>
                 <c:when test="${not empty agencyManagerForm.map.rooms}">
-                    <html:text property="numBeds"/>
-                    <html:submit onclick="agencyManagerForm.method.value='addBeds';">Add Beds</html:submit>
+                    <input type="text" name="numBeds" id="numBeds" />
+                    <input type="submit" name="submit" value="Add Beds" onclick="agencyManagerForm.method.value='addBeds';" />
                 </c:when>
                 <c:otherwise>
-                    <html:submit disabled="true">Add Beds</html:submit>
+                    <input type="submit" name="submit" value="Add Beds" disabled="disabled" />
                 </c:otherwise>
             </c:choose></td>
         </tr>
     </table>
     <%@include file="/common/messages.jsp" %>
 
-</html:form>
+</form>

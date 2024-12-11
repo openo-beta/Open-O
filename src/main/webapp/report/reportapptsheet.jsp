@@ -49,7 +49,7 @@
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <jsp:useBean id="daySheetBean" class="oscar.AppointmentMainBean" scope="page"/>
 <jsp:useBean id="myGroupBean" class="java.util.Properties" scope="page"/>
@@ -102,7 +102,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message key="report.reportapptsheet.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.title"/></title>
     <link rel="stylesheet" href="../web.css">
     <script language="JavaScript">
         <!--
@@ -140,12 +140,11 @@
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr bgcolor="#CCCCFF">
-        <th align=CENTER NOWRAP><font face="Helvetica"><bean:message
-                key="report.reportapptsheet.title"/></font></th>
+        <th align=CENTER NOWRAP><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.title"/></font></th>
         <th width="10%" nowrap><%=createtime%> <input type="button"
-                                                      name="Button" value="<bean:message key="global.btnPrint"/>"
+                                                      name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                                                       onClick="window.print()"><input type="button" name="Button"
-                                                                                      value="<bean:message key="global.btnExit"/>"
+                                                                                      value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>"
                                                                                       onClick="window.close()"></th>
     </tr>
 </table>
@@ -195,19 +194,14 @@
        cellpadding="0">
     <tr bgcolor="#CCCCFF" align="center">
         <TH width="20%"><b><a
-                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.appointment_date"><bean:message
-                key="report.reportapptsheet.msgApptDate"/></a></b></TH>
+                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgApptDate"/></a></b></TH>
         <TH width="20%"><b><a
-                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.start_time"><bean:message
-                key="report.reportapptsheet.msgStartTime"/></a> </b></TH>
+                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.start_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgStartTime"/></a> </b></TH>
         <TH width="20%"><b><a
-                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.end_time"><bean:message
-                key="report.reportapptsheet.msgEndTime"/></a> </b></TH>
+                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.end_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgEndTime"/></a> </b></TH>
         <TH width="10%"><b><a
-                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.name"><bean:message
-                key="report.reportapptsheet.msgName"/></a></b></TH>
-        <TH width="30%"><b><bean:message
-                key="report.reportapptsheet.msgComments"/></b></TH>
+                href="reportapptsheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=a.name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgName"/></a></b></TH>
+        <TH width="30%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgComments"/></b></TH>
     </tr>
     <%
         }

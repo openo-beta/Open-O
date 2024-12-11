@@ -35,8 +35,8 @@
     ScheduleTemplateDao scheduleTemplateDao = SpringUtils.getBean(ScheduleTemplateDao.class);
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 
 <jsp:useBean id="scheduleDateBean" class="java.util.Hashtable" scope="session"/>
@@ -59,10 +59,10 @@
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="schedule.scheduledatepopup.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.title"/></title>
         <link rel="stylesheet" href="../web.css"/>
 
         <script language="JavaScript">
@@ -91,8 +91,7 @@
                     <table width="95%" border="0" cellspacing="0" cellpadding="5">
                         <tr>
                             <td bgcolor="#CCFFCC">
-                                <p align="right"><bean:message
-                                        key="schedule.scheduledatepopup.formDate"/>:</p>
+                                <p align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formDate"/>:</p>
                             </td>
                             <td bgcolor="#CCFFCC"><%=year%>-<%=month%>-<%=day%>
                             </td>
@@ -101,21 +100,17 @@
                         </tr>
                         <tr>
                             <td>
-                                <div align="right"><bean:message
-                                        key="schedule.scheduledatepopup.formAvailable"/>:
+                                <div align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formAvailable"/>:
                                 </div>
                             </td>
                             <td><input type="radio" name="available" value="1"
-                                    <%=available.equals("checked")?"checked":""%>> <bean:message
-                                    key="schedule.scheduledatepopup.formAvailableYes"/> <input
+                                    <%=available.equals("checked")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formAvailableYes"/> <input
                                     type="radio" name="available" value="0"
-                                    <%=available.equals("checked")?"":"checked"%>> <bean:message
-                                    key="schedule.scheduledatepopup.formAvailableNo"/></td>
+                                    <%=available.equals("checked")?"":"checked"%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formAvailableNo"/></td>
                         </tr>
                         <tr>
                             <td>
-                                <div align="right"><bean:message
-                                        key="schedule.scheduledatepopup.formTemplate"/>:
+                                <div align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formTemplate"/>:
                                 </div>
                             </td>
                             <td><!--input type="text" name="hour1" <%=strHour%> --> <select
@@ -180,8 +175,7 @@
                         <!--  input type="hidden" name="reason" <%--=strReason--%> -->
                         <tr>
                             <td>
-                                <div align="right"><bean:message
-                                        key="schedule.scheduledatepopup.formCreator"/>:
+                                <div align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formCreator"/>:
                                 </div>
                             </td>
                             <td><%=strCreator%>
@@ -201,12 +195,12 @@
                                     <input type="hidden" name="provider_no"
                                            value="<%=request.getParameter("provider_no")%>"> <input
                                             type="button"
-                                            value='<bean:message key="schedule.scheduledatepopup.btnSave"/>'
+                                            value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.btnSave"/>'
                                             onclick="document.forms['schedule'].Submit.value=' Save '; document.forms['schedule'].submit();">
                                     <input type="button" name="Button"
-                                           value='<bean:message key="schedule.scheduledatepopup.btnCancel"/>'
+                                           value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.btnCancel"/>'
                                            onClick="window.close()"> <input type="button"
-                                                                            value='<bean:message key="schedule.scheduledatepopup.btnDelete"/>'
+                                                                            value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.btnDelete"/>'
                                                                             onclick="document.forms['schedule'].Submit.value=' Delete '; document.forms['schedule'].submit();">
                                 </div>
                             </td>
@@ -219,4 +213,4 @@
 
     </form>
     </body>
-</html:html>
+</html>

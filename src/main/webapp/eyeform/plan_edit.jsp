@@ -29,19 +29,19 @@
 <%@page import="org.oscarehr.eyeform.model.EyeformFollowUp" %>
 <%@page import="org.oscarehr.eyeform.model.EyeformProcedureBook" %>
 <%@page import="org.oscarehr.eyeform.model.EyeformTestBook" %>
-<%@page import="org.oscarehr.eyeform.web.PlanAction" %>
+<%@page import="org.oscarehr.eyeform.web.Plan2Action" %>
 
 
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />'/>
+    <link rel="stylesheet" type="text/css" href='${request.contextPath}/jsCalendar/skins/aqua/theme.css'/>
 
     <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css"
           title="win2k-cold-1"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="<%=request.getContextPath()%>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
 
 </head>
@@ -67,24 +67,24 @@
                 <tr>
                     <td width="25%">
                         <select name="followup<%=followUp.getId()%>.type">
-                            <%=PlanAction.printFollowUpTypeOptions(followUp)%>
+                            <%=Plan2Action.printFollowUpTypeOptions(followUp)%>
                         </select>
                     </td>
                     <td width="30%">
                         <input type="text" name="followup<%=followUp.getId()%>.timespan" size="4" style="width: 25px;"
                                class="special" value="<c:out value="${f.timespan}"/>"/>
                         <select name="followup<%=followUp.getId()%>.timeframe">
-                            <%=PlanAction.printFollowUpTimeFrameOptions(followUp)%>
+                            <%=Plan2Action.printFollowUpTimeFrameOptions(followUp)%>
                         </select>*
                     </td>
                     <td width="25%">
                         <select name="followup<%=followUp.getId()%>.followupProvider">
-                            <%=PlanAction.printFollowUpProvidersOptions(followUp)%>
+                            <%=Plan2Action.printFollowUpProvidersOptions(followUp)%>
                         </select>
                     </td>
                     <td width="20%">
                         <select name="followup<%=followUp.getId()%>.urgency">
-                            <%=PlanAction.printFollowUpUrgency(followUp)%>
+                            <%=Plan2Action.printFollowUpUrgency(followUp)%>
                         </select>
                     </td>
                 </tr>
@@ -127,7 +127,7 @@
                     <td class="genericTableHeader">Eye</td>
                     <td class="genericTableData">
                         <select name="proc<%=proc.getId()%>.eye">
-                            <%=PlanAction.printProcedureEye(proc)%>
+                            <%=Plan2Action.printProcedureEye(proc)%>
                         </select>
                     </td>
                 </tr>
@@ -136,7 +136,7 @@
                     <td class="genericTableHeader">Urgency</td>
                     <td class="genericTableData">
                         <select name="proc<%=proc.getId()%>.urgency">
-                            <%=PlanAction.printProcedureUrgency(proc)%>
+                            <%=Plan2Action.printProcedureUrgency(proc)%>
                         </select>
                     </td>
                 </tr>
@@ -185,7 +185,7 @@
                     <td class="genericTableHeader">Eye</td>
                     <td class="genericTableData">
                         <select name="test<%=test.getId()%>.eye">
-                            <%=PlanAction.printTestEye(test) %>
+                            <%=Plan2Action.printTestEye(test) %>
                         </select>
                     </td>
                 </tr>
@@ -202,7 +202,7 @@
                     <td class="genericTableHeader">Urgency</td>
                     <td class="genericTableData">
                         <select name="test<%=test.getId()%>.urgency">
-                            <%=PlanAction.printTestUrgency(test) %>
+                            <%=Plan2Action.printTestUrgency(test) %>
                         </select>
                     </td>
                 </tr>

@@ -33,7 +33,6 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
-import oscar.form.study.hsfo2.pageUtil.RecommitHSFOAction.ResubmitJob;
 import oscar.form.study.hsfo2.pageUtil.XMLTransferUtil.SoapElementKey;
 
 public class RecommitTest {
@@ -43,7 +42,7 @@ public class RecommitTest {
 
     public static void recommit() {
         try {
-            new ResubmitJob().execute(null);
+            new RecommitHSFO2Action.ResubmitJob().execute(null);
         } catch (Exception exception) {
             ;
         }

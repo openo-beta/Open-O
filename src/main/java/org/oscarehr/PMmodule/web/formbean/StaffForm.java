@@ -23,9 +23,7 @@
 
 package org.oscarehr.PMmodule.web.formbean;
 
-import org.apache.struts.validator.ValidatorForm;
-
-public class StaffForm extends ValidatorForm {
+public class StaffForm {
     private String firstName;
     private String lastName;
     private String orgcd;

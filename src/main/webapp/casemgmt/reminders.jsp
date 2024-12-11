@@ -43,16 +43,16 @@
 <%@ page import="org.oscarehr.casemgmt.web.formbeans.*" %>
 
 
-<html:hidden property="cpp.primaryPhysician"/>
-<html:hidden property="cpp.primaryCounsellor"/>
-<html:hidden property="cpp.otherFileNumber"/>
+<input type="hidden" name="primaryPhysician" id="primaryPhysician"/>
+<input type="hidden" name="primaryCounsellor" id="primaryCounsellor"/>
+<input type="hidden" name="otherFileNumber" id="otherFileNumber"/>
 
-<html:hidden property="cpp.familyHistory"/>
-<html:hidden property="cpp.medicalHistory"/>
-<html:hidden property="cpp.socialHistory"/>
+<input type="hidden" name="familyHistory" id="familyHistory"/>
+<input type="hidden" name="medicalHistory" id="medicalHistory"/>
+<input type="hidden" name="socialHistory" id="socialHistory"/>
 
-<html:hidden property="cpp.pastMedications"/>
-<html:hidden property="cpp.otherSupportSystems"/>
+<input type="hidden" name="pastMedications" id="pastMedications"/>
+<input type="hidden" name="otherSupportSystems" id="otherSupportSystems"/>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="1"
        bgcolor="#C0C0C0">
@@ -60,13 +60,10 @@
         <td>Reminders</td>
     </tr>
     <tr>
-        <td bgcolor="white"><html:textarea property="cpp.reminders"
-                                           rows="4" cols="85"/></td>
-
+        <td bgcolor="white"><textarea name="reminders" rows="4" cols="85"></textarea></td>
     </tr>
 </table>
-<html:submit value="save"
-             onclick="this.form.method.value='patientCPPSave'"/>
+<input type="submit" name="submit" value="save" onclick="this.form.method.value='patientCPPSave'"/>
 <c:if test="${not empty messages}">
     <c:forEach var="message" items="${messages}">
         <div style="color: blue"><I><c:out value="${message}"/></I></div>

@@ -99,15 +99,14 @@
 <%@ page import="java.util.Properties" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
-        <html:base/>
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.optChooseSpec"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.optChooseSpec"/></title>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"> <!-- Bootstrap 2.3.1 -->
         <link href="${pageContext.request.contextPath}/css/DT_bootstrap.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/library/DataTables-1.10.12/media/css/jquery.dataTables.min.css"
@@ -156,31 +155,29 @@
         <script>
             jQuery(document).ready(function () {
                 jQuery('#tblDocs').DataTable({
-                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "<bean:message key="oscarEncounter.LeftNavBar.AllLabs"/>"]],
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.LeftNavBar.AllLabs"/>"]],
                     "order": [],
                     "language": {
-                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
+                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
                     }
                 });
             });
         </script>
     </head>
     <body>
-    <h3><bean:message
-            key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.optChooseSpec"/></h3>&nbsp;<%=keyword == null ? "" : keyword %>&nbsp;<input
-            type="button" class="btn-link" value="<bean:message key="report.reportindex.formAllProviders" />"
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.optChooseSpec"/></h3>&nbsp;<%=keyword == null ? "" : keyword %>&nbsp;<input
+            type="button" class="btn-link" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/>"
             onclick="location = location.href.replace(/(\?|\&)(keyword)([^&]*)/, '').replace(/(\?|\&)(submit)([^&]*)/, '');">
     <div class="container-fluid">
         <table style="width:100%" id="tblDocs" class="table table-condensed">
             <thead>
             <tr class="title">
-                <th><bean:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.referralNo"/></th>
-                <th><bean:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.lastName"/></th>
-                <th><bean:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.firstName"/></th>
-                <th><bean:message
-                        key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.specialistType"/></th>
-                <th><bean:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.phone"/></th>
-                <th><bean:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.address"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.referralNo"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.lastName"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.firstName"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.specialistType"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.phone"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.address"/></th>
             </tr>
             </thead>
             <tbody>
@@ -208,7 +205,7 @@
                 </td>
                 <td><%=Encode.forHtml(prop.getProperty("specialty", ""))%>
                 </td>
-                <td title="<bean:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.fax" /> <%=Encode.forHtml(prop.getProperty("to_fax", ""))%>"><%=Encode.forHtml(prop.getProperty("phone", ""))%>
+                <td title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.fax"/> <%=Encode.forHtml(prop.getProperty("to_fax", ""))%>"><%=Encode.forHtml(prop.getProperty("phone", ""))%>
                 </td>
                 <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
                     title="<%=Encode.forHtml(prop.getProperty("to_address", ""))%>"><%=Encode.forHtml(prop.getProperty("to_address", ""))%>
@@ -219,9 +216,8 @@
         </table>
         <br>
         <a class="btn"
-           href="${pageContext.request.contextPath}/oscarEncounter/oscarConsultationRequest/config/EditSpecialists.jsp"><bean:message
-                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/></a>
+           href="${pageContext.request.contextPath}/oscarEncounter/oscarConsultationRequest/config/EditSpecialists.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/></a>
 
     </div>
     </body>
-</html:html>
+</html>

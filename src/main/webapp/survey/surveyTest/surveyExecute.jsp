@@ -25,7 +25,7 @@
 
 
 <%@ include file="/survey/taglibs.jsp" %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Test Manager</title>
@@ -62,10 +62,10 @@
     <body>
 
     <%@ include file="/survey/messages.jsp" %>
-    <html:form action="/SurveyTest"
+    <form action="<%=request.getContextPath() %>/SurveyTest.do"
                onsubmit="return validateForm(this,document.surveyTestForm.elements['view.tab'].value,true);">
-        <html:hidden property="view.tab"/>
-        <html:hidden property="view.id"/>
+        <input type="hidden" name="tab" id="tab"/>
+        <input type="hidden" name="id" id="id"/>
         <input type="hidden" name="method" value="save"/>
         <h3>Survey</h3>
         <br/>
@@ -128,11 +128,13 @@
         <br/>
         <table width="50%">
             <tr>
-                <td colspan="2"><html:submit value="Save"/> <html:cancel
-                        value="Cancel"/></td>
+                <td colspan="2">
+                    <input type="submit" value="Save" /> 
+                    <button type="button" onclick="window.history.back();">Cancel</button>
+                </td>
             </tr>
         </table>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

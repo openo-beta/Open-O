@@ -42,7 +42,7 @@
 
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat"
          errorPage="/errorpage.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.billing.CA.BC.dao.TeleplanS21Dao" %>
 <%@page import="org.oscarehr.billing.CA.BC.model.TeleplanS21" %>
@@ -73,7 +73,7 @@
 <html>
 <head>
 
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <link rel="stylesheet" href="../../../billing/billing.css">
     <title>Billing Reconcilliation</title>
     <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>

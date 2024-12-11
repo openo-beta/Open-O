@@ -43,10 +43,10 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
         <link rel="stylesheet" type="text/css"
@@ -63,14 +63,17 @@
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%>
-                <html:form action="/setProviderStaleDate.do">
+                <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                    <html:select property="displayDocumentAsProperty.value">
-                        <html:options collection="dropOpts" property="value"
-                                      labelProperty="label"/>
-                    </html:select>
-                    <html:submit property="btnApply"/>
-                </html:form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                    <select name="displayDocumentAsProperty.value" id="displayDocumentAsProperty.value">
+                        <c:forEach var="dropOpt" items="${dropOpts}">
+                            <option value="${dropOpt.value}">
+                                    ${dropOpt.label}
+                            </option>
+                        </c:forEach>
+                    </select>
+                    <input type="submit" name="btnApply" value="Apply" />
+                </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
                 <%}%>
             </td>
         </tr>
@@ -80,4 +83,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

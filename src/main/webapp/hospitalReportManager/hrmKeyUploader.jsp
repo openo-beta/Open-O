@@ -27,7 +27,7 @@
 %>
 
 <%@page contentType="text/html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%
@@ -107,8 +107,7 @@ opener.updateLink(<%=filePath%>, <%=type%>);</script>
       action='<%=request.getContextPath()%>/hospitalReportManager/hrmKeyUploader.do'>
     <table align="center" class="MainTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn" width="175"><bean:message
-                    key="demographic.demographiceditdemographic.msgPatientDetailRecord"/>
+            <td class="MainTableTopRowLeftColumn" width="175"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgPatientDetailRecord"/>
             </td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
@@ -116,12 +115,9 @@ opener.updateLink(<%=filePath%>, <%=type%>);</script>
                         <td>Upload <!--i18n--></td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
-                                href="javascript:popupStart(300,400,'Help.jsp')"><bean:message
-                                key="global.help"/></a> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                                href="javascript:popupStart(300,400,'Help.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a> | <a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -134,7 +130,7 @@ opener.updateLink(<%=filePath%>, <%=type%>);</script>
                     <tr>
                         <td>Please select the key file:</td>
                         <td><input type="file" name="importFile">
-                            <span title="<bean:message key="global.uploadWarningBody"/>"
+                            <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                                   style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                                     border="0" src="../images/icon_alertsml.gif"/></span></span>
 

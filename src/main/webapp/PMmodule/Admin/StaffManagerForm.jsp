@@ -47,12 +47,12 @@
         background-color: white;
     }
 </style>
-<html:form action="/PMmodule/StaffManager.do">
-    <html:hidden property="view.tab"/>
+<form action="${pageContext.request.contextPath}/PMmodule/StaffManager.do" method="post">
+    <input type="hidden" name="tab" id="tab"/>
     <input type="hidden" name="id"
            value="<c:out value="${requestScope.id}"/>"/>
     <input type="hidden" name="method" value="edit"/>
-    <html:hidden property="provider.providerNo"/>
+    <input type="hidden" name="providerNo" id="providerNo"/>
     <c:choose>
         <c:when test="${id != null && id gt 0}">
             <script>
@@ -111,4 +111,4 @@
             <jsp:include page="/PMmodule/Admin/StaffEdit/summary.jsp"/>
         </c:otherwise>
     </c:choose>
-</html:form>
+</form>

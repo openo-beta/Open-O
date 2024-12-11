@@ -190,7 +190,7 @@ public class CLSHandler implements MessageHandler {
         try {
             Segment obxSeg = msg.getRESPONSE().getORDER_OBSERVATION(i).getOBSERVATION(j).getOBX();
             String subIdent = Terser.get(obxSeg, 3, 0, 1, 2);
-            if (subIdent != null) { //HACK: for gdml labs generated with SubmitLabByFormAction
+            if (subIdent != null) { //HACK: for gdml labs generated with SubmitLabByForm2Action
                 return getString(msg.getRESPONSE().getORDER_OBSERVATION(i).getOBSERVATION(j).getOBX().getObservationIdentifier().getIdentifier().getValue()) + "&" + subIdent;
             }
             return (getString(msg.getRESPONSE().getORDER_OBSERVATION(i).getOBSERVATION(j).getOBX().getObservationIdentifier().getIdentifier().getValue()));

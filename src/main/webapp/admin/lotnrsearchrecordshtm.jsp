@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page import="org.oscarehr.common.model.PreventionsLotNrs" %>
 <%@ page import="org.oscarehr.common.dao.PreventionsLotNrsDao" %>
@@ -54,10 +54,10 @@
 </security:oscarSec>
 
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="admin.lotnrsearchrecordshtm.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotnrsearchrecordshtm.title"/></title>
         <link rel="stylesheet" href="../web.css">
         <script LANGUAGE="JavaScript">
             <!--
@@ -87,8 +87,7 @@
     <center>
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
-                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><bean:message
-                        key="admin.lotnrsearchrecordshtm.description"/></font></th>
+                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotnrsearchrecordshtm.description"/></font></th>
             </tr>
         </table>
 
@@ -99,12 +98,10 @@
                   onsubmit="return onsub();">
                 <tr valign="top">
                     <td rowspan="2" align="right" valign="middle"><font
-                            face="Verdana" color="#0000FF"><b><i><bean:message
-                            key="admin.search.formSearchCriteria"/></i></b></font></td>
+                            face="Verdana" color="#0000FF"><b><i><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.search.formSearchCriteria"/></i></b></font></td>
                     <td nowrap><font size="1" face="Verdana" color="#0000FF">
                         <input type="radio" checked name="search_mode" value="search_prev"
-                               onclick="document.forms['searchlotnr'].keyword.focus();"><bean:message
-                            key="admin.lotnrsearch.prevention"/></font></td>
+                               onclick="document.forms['searchlotnr'].keyword.focus();"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotnrsearch.prevention"/></font></td>
 
 
                     <td valign="middle" rowspan="2" ALIGN="left"><input type="text"
@@ -115,13 +112,13 @@
                                 TYPE="hidden" NAME="limit2" VALUE="10"> <INPUT
                                 TYPE="SUBMIT" NAME="button"
                                 VALUE=
-                                    <bean:message key="admin.lotnrsearch.btnSubmit"/> SIZE="17"></td>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.lotnrsearch.btnSubmit"/> SIZE="17"></td>
                 </tr>
             </form>
         </table>
 
-        <p><bean:message key="admin.providersearchrecordshtm.msgInstructions"/></p>
+        <p><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchrecordshtm.msgInstructions"/></p>
 
     </center>
     </body>
-</html:html>
+</html>

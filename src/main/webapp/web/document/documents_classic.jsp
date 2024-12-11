@@ -23,14 +23,14 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <p class="info">
-    <a class="hand-hover" ng-click="openPopup()"><bean:message key="document.panel" bundle="ui"/></a>&nbsp;<bean:message
-        key="document.popupMessage" bundle="ui"/>
+    <a class="hand-hover" ng-click="openPopup()"><fmt:message key="document.panel" bundle="${uiBundle}"/></a>
+    &nbsp;<fmt:message key="document.popupMessage" bundle="${uiBundle}"/>/>
 </p>
 
-<p><a ui-sref="dashboard"><bean:message key="global.goToDashboard" bundle="ui"/></a></p>
+<p><a ui-sref="dashboard"><fmt:message key="global.goToDashboard" bundle="${uiBundle}"/></a></p>
 
 
 

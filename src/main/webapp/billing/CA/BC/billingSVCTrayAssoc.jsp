@@ -1,8 +1,5 @@
 <%@page import="java.sql.*" errorPage="" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -20,7 +17,7 @@
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -72,25 +69,36 @@
         <title>Manage Procedure and Tray Fee Associations</title>
     </head>
     <body>
-    <html:errors/>
-    <html:form action="/billing/CA/BC/supServiceCodeAssocAction">
-        <html:hidden property="actionMode"/>
-        <html:hidden property="id"/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
+    <form action="${pageContext.request.contextPath}/billing/CA/BC/supServiceCodeAssocAction.do" method="post">
+        <input type="hidden" name="actionMode" id="actionMode"/>
+        <input type="hidden" name="id" id="id"/>
         <fieldset>
             <legend> Edit Procedure/Tray Fee
                 Associations
             </legend>
-            <p><label for="primaryCode"> Procedure Fee Code: </label> <html:text
-                    property="primaryCode" styleId="primaryCode"/> <a href="#"
+            <p><label for="primaryCode"> Procedure Fee Code: </label>
+                <input type="text" name="primaryCode" id="primaryCode"/> <a href="#"
                                                                       onClick="popFeeItemList('supServiceCodeAssocActionForm','primaryCode'); return false;">Search</a>
             </p>
-            <p><label for="secondaryCode"> Tray Fee Code: </label> <html:text
-                    property="secondaryCode" styleId="secondaryCode"/> <a href="#"
+            <p><label for="secondaryCode"> Tray Fee Code: </label>
+                <input type="text" name="secondaryCode" id="secondaryCode"/> <a href="#"
                                                                           onClick="popFeeItemList('supServiceCodeAssocActionForm','secondaryCode'); return false;">Search</a>
             </p>
             <input type="submit" name="submitButton" value="Save Association"
                    onclick="setMode('edit');"/> <input type="reset" value="Clear"/></fieldset>
-    </html:form>
+    </form>
     <p/><display:table class="displayGrid" name="list" pagesize="50"
                        defaultsort="1" defaultorder="descending"
                        decorator="oscar.oscarBilling.ca.bc.pageUtil.BillCodesTableWrapper">
@@ -99,4 +107,4 @@
         <display:column property="associationStatus" title="Options"/>
     </display:table>
     </body>
-</html:html>
+</html>

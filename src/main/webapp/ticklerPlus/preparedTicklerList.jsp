@@ -34,7 +34,7 @@
 <br/>
 <table width="30%" border="0" cellpadding="0" cellspacing="1"
        bgcolor="#C0C0C0">
-    <html:form action="/Tickler">
+    <form action="${pageContext.request.contextPath}/Tickler.do" method="post">
         <input type="hidden" name="method" value="prepared_tickler_list"/>
         <tr class="title">
             <th width="20%"></th>
@@ -55,7 +55,7 @@
                 <td>${preparedTickler.name}</td>
             </tr>
         </c:forEach>
-    </html:form>
+    </form>
 </table>
 
 <table>
@@ -75,7 +75,7 @@
 <br/>
 <table width="100%">
     <tr>
-        <td><html:link action="/Tickler">Back to Ticklers</html:link></td>
+        <td><a href="${pageContext.request.contextPath}/Tickler.do">Back to Ticklers</a></td>
     </tr>
 </table>
 </body>

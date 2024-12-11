@@ -40,11 +40,10 @@
                 id="_ctl0_phBody_lblTitle" align="left">Organization Chart</span></th>
     </tr>
     <tr>
-        <td align="left" class="buttonBar2"><html:link
-                action="/PMmodule/Admin/SysAdmin.do"
+        <td align="left" class="buttonBar2"><a
+                href="${pageContext.request.contextPath}/PMmodule/Admin/SysAdmin.do"
                 style="color:Navy;text-decoration:none;">
-            <img border=0 src=
-                    <html:rewrite page="/images/close16.png"/>/>&nbsp;Close&nbsp;&nbsp;|</html:link>
+            <img border=0 src="${pageContext.request.contextPath}/images/close16.png"/>&nbsp;Close&nbsp;&nbsp;|</a>
         </td>
     </tr>
     <tr>

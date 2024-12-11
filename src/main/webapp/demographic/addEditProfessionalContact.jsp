@@ -32,7 +32,7 @@
 <%@ page import="org.oscarehr.common.dao.ContactSpecialtyDao" %>
 <%@ page import="org.oscarehr.common.model.ContactSpecialty" %>
 
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -195,7 +195,7 @@
         </tr>
     </table>
 
-    <html:form action="/demographic/Contact" styleId="addEditProfessionalForm">
+    <form action="/demographic/Contact" styleId="addEditProfessionalForm">
 
         <c:if test="${ pcontact.id gt 0 }">
             <input type="hidden" name="pcontact.id" value="${ pcontact.id }"/>
@@ -368,13 +368,13 @@
             </tr>
             <tr>
                 <td align="center" bgcolor="#CCCCFF" colspan="2">
-                    <input type="button" name="submitbtn" value="<bean:message key="admin.resourcebaseurl.btnSave"/>"
+                    <input type="button" name="submitbtn" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                            onclick="javascript: onSave();">
-                    <input type="button" name="cancelbtn" value="<bean:message key="admin.resourcebaseurl.btnExit"/>"
+                    <input type="button" name="cancelbtn" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnExit"/>"
                            onClick="window.close()">
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

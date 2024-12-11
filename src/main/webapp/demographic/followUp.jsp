@@ -49,7 +49,7 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page
         import="org.oscarehr.casemgmt.model.*, org.oscarehr.common.dao.DemographicDao, org.oscarehr.util.SpringUtils, org.oscarehr.common.model.Demographic" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -77,7 +77,7 @@
     </tr>
 </table>
 
-<html:form method="post" action="/demographic/FollowUp">
+<form method="post" action="${pageContext.request.contextPath}/demographic/FollowUp.do">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#EEEEFF">
         <tr>
             <td width="35%"><font color="#003366"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Client
@@ -122,6 +122,6 @@
         </tr>
 
     </table>
-</html:form>
+</form>
 </body>
 </html>

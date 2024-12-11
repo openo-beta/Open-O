@@ -45,9 +45,9 @@
 %>
 <!DOCTYPE html>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-<html:html>
+<html>
     <head>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title><%=bundle.getString(providertitle)%></title>
 
         <script src="<c:out value="${ctx}"/>/js/global.js"></script>
@@ -67,15 +67,15 @@
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%> <!--c:out value="${rxDefaultQuantityProperty.value}" /-->
-                <html:form styleId="providerForm" action="/setProviderStaleDate.do">
+                <form styleId="providerForm" action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                    <html:text styleId="numericFormField" property="rxDefaultQuantityProperty.value"/>
+                    <input type="text" id="numericFormField" name="rxDefaultQuantityProperty.value"/>
                     <p id="errorMessage" class="alert alert-danger" style="display: none; color: red;">
                         Invalid input.
                     </p>
                     <br>
                     <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
-                </html:form> <%} else {%>
+                </form> <%} else {%>
                 <div class="alert alert-success"><%=bundle.getString(providermsgSuccess)%></div>
                 <br>
                 <%}%>
@@ -87,4 +87,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

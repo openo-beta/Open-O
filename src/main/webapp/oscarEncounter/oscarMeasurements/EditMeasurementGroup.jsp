@@ -28,15 +28,15 @@
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
 <%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.Measurements.msgEditMeasurementGroup"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/></title>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
         <script type="text/javascript">
@@ -58,18 +58,26 @@
     <body class="BodyStyle" vlink="#0000FF"
           onload="window.resizeTo(1000,500)">
     <!--  -->
-    <html:errors/>
-    <html:form
-            action="/oscarEncounter/oscarMeasurements/EditMeasurementGroup.do">
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
+    <form action="${pageContext.request.contextPath}/oscarEncounter/oscarMeasurements/EditMeasurementGroup.do" method="post">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><bean:message
-                        key="oscarEncounter.Measurements.msgMeasurements"/></td>
+                <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgMeasurements"/></td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><bean:message
-                                    key="oscarEncounter.Measurements.msgEditMeasurementGroup"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/></td>
                         </tr>
                     </table>
                 </td>
@@ -82,48 +90,49 @@
                             <td>
                                 <table>
                                     <tr>
-                                        <th align="left"><bean:message
-                                                key="oscarEncounter.oscarMeasurements.MeasurementGroup.allTypes"/>
+                                        <th align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementGroup.allTypes"/>
                                         </th>
 
-                                        <th align="left"><bean:write name="groupName"/></th>
+                                        <th align="left"><c:out value="${groupName}"/></th>
                                     </tr>
                                     <tr>
-                                        <td><bean:message
-                                                key="oscarEncounter.oscarMeasurements.MeasurementGroup.add2Group"/><bean:write
-                                                name="groupName"/></td>
-                                        <td><bean:message
-                                                key="oscarEncounter.oscarMeasurements.MeasurementGroup.deleteTypes"/><bean:write
-                                                name="groupName"/></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementGroup.add2Group"/>
+                                            <c:out value="${groupName}"/></td>
+                                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementGroup.deleteTypes"/>
+                                            <c:out value="${groupName}"/></td>
                                     <tr>
-                                        <td><html:select multiple="true" property="selectedAddTypes"
-                                                         size="10">
-                                            <html:options collection="allTypeDisplayNames"
-                                                          property="typeDisplayName" labelProperty="typeDisplayName"/>
-                                        </html:select></td>
-                                        <td><html:select multiple="true"
-                                                         property="selectedDeleteTypes" size="10">
-                                            <html:options collection="existingTypeDisplayNames"
-                                                          property="typeDisplayName" labelProperty="typeDisplayName"/>
-                                        </html:select></td>
+                                        <td><select multiple="true" name="selectedAddTypes" size="10">
+                                            <c:forEach var="allTypeDisplayName" items="${allTypeDisplayNames}">
+                                                <option value="${allTypeDisplayName.typeDisplayName}">
+                                                        ${allTypeDisplayName.typeDisplayName}
+                                                </option>
+                                            </c:forEach>
+                                        </select></td>
+                                        <td><select multiple="true" name="selectedDeleteTypes" size="10">
+                                            <c:forEach var="existingTypeDisplayName" items="${existingTypeDisplayNames}">
+                                                <option value="${existingTypeDisplayName.typeDisplayName}">
+                                                        ${existingTypeDisplayName.typeDisplayName}
+                                                </option>
+                                            </c:forEach>
+                                        </select></td>
                                     </tr>
                                     <tr>
                                         <input type="hidden" name="forward" value="error"/>
                                         <td><input type="button" name="button"
-                                                   value="<bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/>"
                                                    onclick="set('add');submit();"/></td>
                                         <td><input type="button" name="button"
-                                                   value="<bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"
                                                    onclick="set('delete');submit();"/></td>
                                     </tr>
                                     <tr>
                                         <td><input type="button" name="Button"
-                                                   value="<bean:message key="global.btnClose"/>"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
                                                    onClick="window.close()"></td>
                                         <td></td>
                                     </tr>
                                     <input type="hidden" name="groupName"
-                                           value="<bean:write name="groupName"/>"/>
+                                           value="<c:out value="${groupName}"/>"/>
                                 </table>
                             </td>
                         </tr>
@@ -135,6 +144,6 @@
                 <td class="MainTableBottomRowRightColumn"></td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

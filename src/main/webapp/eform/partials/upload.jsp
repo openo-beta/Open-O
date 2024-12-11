@@ -25,11 +25,11 @@
 --%>
 <!DOCTYPE html>
 <%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <script src="${pageContext.request.contextPath}/js/global.js"></script>
@@ -65,22 +65,33 @@
     </c:if>
 
 
-    <html:form action="/eform/uploadHtml" method="POST" onsubmit="return checkFormAndDisable()"
+    <form action="${pageContext.request.contextPath}/eform/uploadHtml.do" method="POST" onsubmit="return checkFormAndDisable()"
                enctype="multipart/form-data">
-        <div class="alert alert-error" style="display:none"><html:errors/></div>
+        <div class="alert alert-error" style="display:none"><% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %></div>
 
         <div class='uploadEformTitle'>
-            <bean:message key="eform.uploadhtml.formName"/> <span class="text-error textExists" style='display:none;'>Name already exists</span><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.formName"/> <span class="text-error textExists" style='display:none;'>Name already exists</span><br>
             <input type="text" name="formName" size="30" class="check" required>
         </div>
 
         <div class='uploadEformTitle'>
-            <bean:message key="eform.uploadhtml.formSubject"/><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.formSubject"/><br>
             <input type="text" name="formSubject" size="30">
         </div>
 
         <div class='uploadEformTitle'>
-            <bean:message key="eform.uploadhtml.btnRoleType"/><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnRoleType"/><br>
             <select name="roleType">
                 <option value="">- select one -</option>
                 <% ArrayList roleList = EFormUtil.listSecRole();
@@ -97,14 +108,12 @@
         <div class='uploadEformTitle'>
             <div>
                 <label class="checkbox">
-                    <input type="checkbox" name="showLatestFormOnly" value="true"/><bean:message
-                        key="eform.uploadhtml.showLatestFormOnly"/>
+                    <input type="checkbox" name="showLatestFormOnly" value="true"/><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.showLatestFormOnly"/>
                 </label>
             </div>
             <div>
                 <label class="checkbox">
-                    <input type="checkbox" name="patientIndependent" value="true"/><bean:message
-                        key="eform.uploadhtml.patientIndependent"/>
+                    <input type="checkbox" name="patientIndependent" value="true"/><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.patientIndependent"/>
                 </label>
             </div>
         </div>
@@ -112,14 +121,14 @@
         <input type="file" name="formHtml" id="formHtml" class="check" size="50" required>
         <span style="color:red;">
 								         <i class="icon-warning-sign"
-                                            title="<bean:message key="global.uploadWarningBody"/>"></i>
+                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"></i>
 								        </span>
 
 
         <input type="submit" name="subm" class="btn btn-primary upload"
-               value="<bean:message key="eform.uploadhtml.btnUpload"/>" disabled>
+               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnUpload"/>" disabled>
 
-    </html:form>
+    </form>
 
     <div style="font-size:0; line-height:0">&nbsp;</div>
 
@@ -166,4 +175,4 @@
         }
     </script>
     </body>
-</html:html>
+</html>

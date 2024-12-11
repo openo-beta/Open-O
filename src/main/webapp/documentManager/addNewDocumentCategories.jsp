@@ -10,8 +10,8 @@
 --%>
 <%@ page
         import="java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -49,13 +49,13 @@
         }
     </script>
     <!-- <title>Add New Document Type</title> -->
-    <title><bean:message key="dms.documentReport.msgAddNewDocumentType"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgAddNewDocumentType"/></title>
 </head>
 <body>
 <div>
     <% Iterator iter = doctypeerrors.keySet().iterator();
         while (iter.hasNext()) {%>
-    <font class="warning">Error: <bean:message key="<%= doctypeerrors.get(iter.next())%>"/></font><br/>
+    <font class="warning">Error: <fmt:setBundle basename="oscarResources"/><fmt:message key="<%= doctypeerrors.get(iter.next())%>"/></font><br/>
     <% } %>
 </div>
 
@@ -66,36 +66,36 @@
             <table class="TopStatusBar">
                 <tr>
                     <!--                             <td>Add New Document Type</td> -->
-                    <td><bean:message key="dms.documentEdit.msgAddDocument"/></td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentEdit.msgAddDocument"/></td>
 
                 </tr>
             </table>
         </td>
     </tr>
-    <html:form action="/documentManager/addDocumentType" method="POST"
-               enctype="multipart/form-data" styleClass="forms"
+    <form action="${pageContext.request.contextPath}/documentManager/addDocumentType" method="POST"
+               enctype="multipart/form-data" class="forms"
                onsubmit="return submitUpload(this)">
         <table>
             <tr>
                 <!-- 		<td><b>Select module name: </b></td> -->
-                <td><b><bean:message key="dms.documentEdit.msgSelectModuleName"/></b></td>
+                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentEdit.msgSelectModuleName"/></b></td>
 
                 <td>
                     <input <% if (doctypeerrors.containsKey("modulemissing")) {%>
                         <%-- 				class="warning" <%}%> id="function" type="radio" name="function" value="Demographic"> Demographic</td> --%>
                             class="warning" <%}%> id="function" type="radio" name="function" value="Demographic">
-                    <bean:message key="oscarReport.oscarReportCatchment.msgDemographic"/></td>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportCatchment.msgDemographic"/></td>
 
                 <td>
                     <input <% if (doctypeerrors.containsKey("modulemissing")) {%>
                         <%-- 				class="warning" <%}%> id="function" type="radio" name="function" value="Provider"> Provider</td> --%>
                             class="warning" <%}%> id="function" type="radio" name="function" value="Provider">
-                    <bean:message key="oscarReport.RptByExample.MsgProvider"/></td>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgProvider"/></td>
 
             </tr>
 
             <tr>
-                <td><b><bean:message key="dms.documentReport.msgEnterDocumentType"/> </b></td>
+                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgEnterDocumentType"/> </b></td>
                 <td>
                     <input <% if (doctypeerrors.containsKey("doctypemissing")) {%>
                             class="warning" <%}%> id="docType" type="text" name="docType" value=""> <br></td>
@@ -107,7 +107,7 @@
                 <td><input type="button" name="button" value="Cancel" onclick=self.close()></td>
             </tr>
         </table>
-    </html:form>
+    </form>
 </table>
 </body>
 </html>

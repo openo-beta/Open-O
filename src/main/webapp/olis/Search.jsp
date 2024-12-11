@@ -23,7 +23,7 @@
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%
@@ -76,7 +76,7 @@ opener.refreshView();</script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><bean:message key="olis.olisSearch"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="olis.olisSearch"/></title>
     <link rel="stylesheet" type="text/css" href="../../../share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
     <script type="text/javascript" src="../../../share/javascript/Oscar.js"></script>

@@ -44,10 +44,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
 
@@ -73,17 +73,17 @@
                 <%if (request.getAttribute("status") == null) {%>
                 <%=bundle.getString(providermsgEdit)%>
 
-                <html:form action="/setProviderStaleDate.do">
+                <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <br/>
-                    Width: <html:text property="encounterWindowWidth.value" size="5"/>
+                    Width: <input type="checkbox" name="encounterWindowWidth.value" size="5" />
                     <br/>
-                    Height: <html:text property="encounterWindowHeight.value" size="5"/>
+                    Height: <input type="checkbox" name="encounterWindowHeight.value" size="5" />
                     <br/>
-                    Maximize: <html:checkbox property="encounterWindowMaximize.checked"/>
+                    Maximize: <input type="checkbox" name="encounterWindowMaximize.checked"/>
                     <br/>
-                    <html:submit property="btnApply"/>
-                </html:form>
+                    <input type="submit" name="btnApply" value="Apply" />
+                </form>
 
                 <%} else {%>
                 <%=bundle.getString(providermsgSuccess)%> <br>
@@ -96,4 +96,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

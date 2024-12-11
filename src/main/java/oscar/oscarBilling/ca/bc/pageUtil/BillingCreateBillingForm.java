@@ -27,16 +27,12 @@
 package oscar.oscarBilling.ca.bc.pageUtil;
 
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.oscarehr.util.MiscUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public final class BillingCreateBillingForm extends ActionForm {
+public final class BillingCreateBillingForm {
     private static final Logger _log = MiscUtils.getLogger();
 
     private String[] service;
@@ -396,20 +392,6 @@ public final class BillingCreateBillingForm extends ActionForm {
     }
 
     /**
-     * Used to reset everything to a null value
-     *
-     * @param mapping
-     * @param request
-     */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-        this.service = null;
-        _log.debug("RESET IS CALLED IN BILLING CREATE BILLING FORM");
-        // this.message = null;
-        // this.subject = null;
-
-    }
-
-    /**
      * Getter for property xml_encounter.
      *
      * @return Value of property xml_encounter.
@@ -743,61 +725,6 @@ public final class BillingCreateBillingForm extends ActionForm {
         }
 
         return svc;
-    }
-
-    public ActionErrors validate(ActionMapping mapping,
-                                 HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-
-
-        this.refertype1 = this.xml_refer1.equals("") ? "" : this.refertype1;
-        this.refertype2 = this.xml_refer2.equals("") ? "" : this.refertype2;
-
-
-        if ("WCB".equals(this.getXml_billtype()) && request.getParameter("WCBid") == null) {
-            errors.add("", new ActionMessage("oscar.billing.CA.BC.billingBC.wcb.error.formRequired"));
-            request.setAttribute("FormMissing", "YES");
-        }
-
-        if (this.xml_refer1.equals("") && this.xml_refer2.equals("")) {
-            if (this.xml_other1 == null || xml_other1.equals("")) {
-                if (this.service == null || service.length == 0) {
-                    errors.add("",
-                            new ActionMessage(
-                                    "oscar.billing.CA.BC.billingBC.error.nullservicecode"));
-                }
-            }
-            if (!"pri".equalsIgnoreCase(this.getXml_billtype())) {
-                if ((this.xml_diagnostic_detail1 == null ||
-                        xml_diagnostic_detail1.equals("")) &&
-                        (this.xml_diagnostic_detail2 == null ||
-                                xml_diagnostic_detail2.equals("")) &&
-                        (this.xml_diagnostic_detail3 == null ||
-                                xml_diagnostic_detail3.equals(""))) {
-                    errors.add("",
-                            new ActionMessage(
-                                    "oscar.billing.CA.BC.billingBC.error.nulldxcodes"));
-                }
-            }
-        }
-
-        BillingSessionBean bean = (BillingSessionBean) request.getSession().getAttribute("billingSessionBean");
-        if (bean != null) {
-            bean.setStartTimeHr(this.getXml_starttime_hr());
-            bean.setStartTimeMin(this.getXml_starttime_min());
-            bean.setEndTimeHr(this.getXml_endtime_hr());
-            bean.setEndTimeMin(this.getXml_endtime_min());
-        }
-        request.setAttribute("loadFromSession", "y");
-
-        //fixes bug where redirection to wcb form was occurring
-        //when billing form in error
-        if ("WCB".equals(xml_billtype)) {
-            request.setAttribute("newWCBClaim", "1");
-        }
-
-        _log.debug("About to return errors " + errors.size());
-        return errors;
     }
 
 }

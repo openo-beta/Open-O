@@ -136,7 +136,7 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <title>Add To Intake</title>
-    <script type="text/javascript" src="<html:rewrite page="/js/jquery.js"/>"></script>
+    <script type="text/javascript" src="${request.contextPath}/js/jquery.js"></script>
     <script type="text/javascript">
         $("document").ready(function () {
             $("input[name='elementType']").change(function () {
@@ -201,7 +201,7 @@
         }
     </script>
     <script language="javascript" type="text/javascript"
-            src="<html:rewrite page="/share/javascript/Oscar.js"/>"></script>
+            src="${request.contextPath}/share/javascript/Oscar.js"></script>
 </head>
 <body>
 

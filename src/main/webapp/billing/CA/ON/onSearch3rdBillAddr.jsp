@@ -62,9 +62,9 @@
          import="java.util.*,java.sql.*,java.net.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.apache.commons.lang.WordUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Add/Edit 3rd Bill Address</title>
@@ -210,7 +210,7 @@
         %> <%
         if (nItems == 0 && nLastPage <= 0) {
 
-    %> <bean:message key="demographic.search.noResultsWereFound"/> <%
+    %> <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.noResultsWereFound"/> <%
         }
     %>
         <script language="JavaScript">
@@ -233,13 +233,13 @@
                 if (nLastPage >= 0) {
 
             %> <input type="submit" class="mbttn" name="submit"
-                      value="<bean:message key="demographic.demographicsearch2apptresults.btnPrevPage"/>"
+                      value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.btnPrevPage"/>"
                       onClick="last()"> <%
             }
             if (nItems == Integer.parseInt(strLimit2)) {
 
         %> <input type="submit" class="mbttn" name="submit"
-                  value="<bean:message key="demographic.demographicsearch2apptresults.btnNextPage"/>"
+                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.btnNextPage"/>"
                   onClick="next()"> <%
             }
         %>
@@ -247,4 +247,4 @@
         <br>
         <a href="onAddEdit3rdAddr.jsp">Add/Edit Address</a></center>
     </body>
-</html:html>
+</html>

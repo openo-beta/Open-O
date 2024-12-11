@@ -39,10 +39,7 @@
 %>
 
 <!DOCTYPE html>
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="oscar.form.FrmRecord" %>
 <%@ page import="oscar.form.FrmRecordFactory" %>
 <%@ page import="org.oscarehr.util.LocaleUtils" %>
@@ -79,7 +76,7 @@
 
 %>
 
-<html:html lang="en">
+<html>
     <% response.setHeader("Cache-Control", "no-cache");%>
 
     <HEAD>
@@ -90,7 +87,7 @@
 
     <body bgproperties="fixed" topmargin="0" leftmargin="0" rightmargin="0" onload="window.resizeTo(768,768)" bgcolor="#eeeeee">
 
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no" value="<%= props.getProperty("demographic_no", "0") %>"/>
         <input type="hidden" name="formCreated" value="<%= props.getProperty("formCreated", "") %>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
@@ -458,5 +455,5 @@
             }
 
         </script>
-    </html:form>
-</html:html>
+    </form>
+</html>

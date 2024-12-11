@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="oscar.oscarProvider.data.*" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
@@ -35,19 +35,19 @@
     if (session.getValue("user") == null) response.sendRedirect("../logout.htm");
     String curUser_no = (String) session.getAttribute("user");
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
 
-        <title><bean:message key="provider.editRxFax.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.title"/></title>
 
         <script type="text/javascript">
             function validate() {
-                var msg = "<bean:message key="provider.editRxFax.msgPhoneFormat" />";
+                var msg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgPhoneFormat"/>";
                 var strnum = document.forms[0].elements[0].value;
                 if (strnum.length > 0) {
                     if (!strnum.match(/^\d{3}-\d{3}-\d{4}$/)) {
@@ -65,10 +65,8 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="provider.editRxFax.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-                    key="provider.editRxFax.msgProviderFaxNumber"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgProviderFaxNumber"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -83,7 +81,7 @@
 
                     if (request.getAttribute("status") == null) {
 
-                %> <html:form action="/EditFaxNum.do">
+                %> <form action="${pageContext.request.contextPath}/EditFaxNum.do" method="post">
 
 
 			<span style="color:blue">By entering in a value, you will 
@@ -95,14 +93,14 @@
 			</span>
                 <br/>
 
-                <html:text property="faxNumber" value="<%=faxNum%>" size="40"/>
+                <input type="text" name="faxNumber" value="<%=faxNum%>" size="40"/>
                 <br>
 
                 <input type="submit" onclick="return validate();"
-                       value="<bean:message key="provider.editRxFax.btnSubmit"/>"/>
-            </html:form> <%
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.btnSubmit"/>"/>
+            </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {
-            %> <bean:message key="provider.editRxFax.msgSuccess"/> <br>
+            %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgSuccess"/> <br>
                 <%=faxNum%> <%
                 }
             %>
@@ -114,4 +112,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

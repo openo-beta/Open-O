@@ -40,7 +40,7 @@
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%@page import="org.oscarehr.sharingcenter.dao.AffinityDomainDao" %>
 <%@page import="org.oscarehr.sharingcenter.model.AffinityDomainDataObject" %>
@@ -110,7 +110,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">Upload Configuration:</span> <input
                         id="file" name="file" type="file" style="display: none">
-                    <span title="<bean:message key="global.uploadWarningBody"/>"
+                    <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                           style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                             border="0" src="../../images/icon_alertsml.gif"/></span></span>
 

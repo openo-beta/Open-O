@@ -41,11 +41,11 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html ng-app="surveillanceConfig">
 <head>
-    <title><bean:message key="admin.admin.surveillanceConfig"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.surveillanceConfig"/></title>
     <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
     <script type="text/javascript" src="<%=request.getContextPath() %>/library/angular.min.js"></script>
@@ -56,17 +56,14 @@
 <body vlink="#0000FF" class="BodyStyle">
 <div ng-controller="surveillanceConfig">
     <div class="page-header">
-        <h4><bean:message key="admin.admin.surveillanceConfig"/> <small data-ng-show="k2aActive"><bean:message
-                key="admin.k2a.active"/></small></h4>
+        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.surveillanceConfig"/> <small data-ng-show="k2aActive"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.k2a.active"/></small></h4>
     </div>
     <div class="row">
         <div class="col-xs-3">
 
             <ul class="nav nav-tabs nav-justified">
-                <li role="presentation" ng-class="tabActive('local')"><a ng-click="setActiveTab('local')"><bean:message
-                        key="admin.surveillance.config.loaded"/></a></li>
-                <li role="presentation" ng-class="tabActive('k2a')"><a ng-click="setActiveTab('k2a')"><bean:message
-                        key="admin.surveillance.config.loadedk2aSurveillanceConfigs"/></a></li>
+                <li role="presentation" ng-class="tabActive('local')"><a ng-click="setActiveTab('local')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.surveillance.config.loaded"/></a></li>
+                <li role="presentation" ng-class="tabActive('k2a')"><a ng-click="setActiveTab('k2a')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.surveillance.config.loadedk2aSurveillanceConfigs"/></a></li>
 
             </ul>
             <div class="tab-content">
@@ -102,17 +99,15 @@
                        data-ng-repeat="k2aSurvConfig in k2aSurveillanceConfigs | limitTo:loadedSurveillanceConfigsQuantity">
 
                         <h4 class="list-group-item-heading">{{k2aSurvConfig.name}}</h4>
-                        <p class="list-group-item-text"><bean:message
-                                key="admin.surveillance.table.author"/>:{{k2aSurvConfig.author}}<br>
+                        <p class="list-group-item-text"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.surveillance.table.author"/>:{{k2aSurvConfig.author}}<br>
                             <span ng-if="k2aSurvConfig.resourceNew">update available</span><br>{{k2aSurvConfig.updated_at
                             | date}}
                         </p>
                         <br>
                         <button ng-if="canAdd(k2aSurvConfig)" class="btn btn-default btn-sm"
-                                ng-click="addSurveyFromK2A(k2aSurvConfig)"><bean:message key="admin.k2a.save"/></button>
+                                ng-click="addSurveyFromK2A(k2aSurvConfig)"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.k2a.save"/></button>
                         <button ng-if="canUpdate(k2aSurvConfig)" class="btn btn-default btn-sm"
-                                ng-click="updateSurveyFromK2A(k2aSurvConfig)"><bean:message
-                                key="admin.k2a.update"/></button>
+                                ng-click="updateSurveyFromK2A(k2aSurvConfig)"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.k2a.update"/></button>
 
                     </a>
                 </div>
@@ -370,9 +365,9 @@
 
         $scope.addSurveyFromK2A = function (prevSet) {
 
-            if (confirm("<bean:message key="admin.k2a.confirmation"/>")) {
+            if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.k2a.confirmation"/>")) {
                 console.log("prev", prevSet);
-                prevSet.agreement = "<bean:message key="admin.k2a.confirmation"/>";
+                prevSet.agreement = "<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.k2a.confirmation"/>";
                 surveillanceService.addSurveyFromK2A(prevSet).then(function (data) {
                     console.log("data coming back", data);
                     allLoadedSurveillanceConfigs();
@@ -382,9 +377,9 @@
 
         $scope.updateSurveyFromK2A = function (prevSet) {
 
-            if (confirm("<bean:message key="admin.k2a.confirmation"/>")) {
+            if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.k2a.confirmation"/>")) {
                 console.log("prev", prevSet);
-                prevSet.agreement = "<bean:message key="admin.k2a.confirmation"/>";
+                prevSet.agreement = "<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.k2a.confirmation"/>";
                 surveillanceService.updateSurveyFromK2A(prevSet).then(function (data) {
                     console.log("data coming back", data);
                     allLoadedSurveillanceConfigs();

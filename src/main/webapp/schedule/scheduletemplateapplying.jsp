@@ -24,13 +24,9 @@
 
 --%>
 <!DOCTYPE html>
-<%@ page
-        import="java.util.*, java.net.*, java.sql.*, oscar.*, oscar.util.*, java.text.*, java.lang.*, org.apache.struts.util.*"
-        errorPage="../appointment/errorpage.jsp" %>
-
+<%@ page import="java.util.*, java.net.*, oscar.*, oscar.util.*, java.lang.*" %>
 <jsp:useBean id="scheduleRscheduleBean" class="oscar.RscheduleBean" scope="session"/>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -42,21 +38,21 @@
 <%@ page import="org.oscarehr.common.dao.ScheduleTemplateDao" %>
 <%
     ScheduleDateDao scheduleDateDao = SpringUtils.getBean(ScheduleDateDao.class);
-    RScheduleDao rScheduleDao = (RScheduleDao) SpringUtils.getBean(RScheduleDao.class);
+    RScheduleDao rScheduleDao = SpringUtils.getBean(RScheduleDao.class);
     ScheduleTemplateDao scheduleTemplateDao = SpringUtils.getBean(ScheduleTemplateDao.class);
 %>
 <%@ page import="org.oscarehr.common.dao.SiteDao" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.oscarehr.common.model.Site" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<html:html lang="en">
+<html>
 
     <%
         if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
         String CurProviderNo = (String) session.getAttribute("user");
 
         if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
-        String CurRoleName = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+        String CurRoleName = session.getAttribute("userrole") + "," + session.getAttribute("user");
 
         boolean isSiteAccessPrivacy = false;
     %>
@@ -69,7 +65,7 @@
 
     <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
     <%! String[] bgColors; %>
-    <%! List<String> excludedSites = new ArrayList<String>(); %>
+    <%! List<String> excludedSites = new ArrayList<>(); %>
     <%
 
         String weekdaytag[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
@@ -173,8 +169,7 @@
 
     <head>
 
-        <title><bean:message
-                key="schedule.scheduletemplateapplying.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.title"/></title>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
         <!-- Bootstrap 2.3.1 -->
@@ -200,7 +195,7 @@
             }
 
             function onBtnDelete(s) {
-                if (confirm("<bean:message key="schedule.scheduletemplateapplying.msgDeleteConfirmation"/>")) {
+                if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDeleteConfirmation"/>")) {
                     var ref = "<rewrite:reWrite jspPage="scheduletemplateapplying.jsp"/>";
                     ref += "?provider_no=<%=request.getParameter("provider_no")%>&provider_name=<%=URLEncoder.encode(request.getParameter("provider_name"))%>";
                     ref += "&sdate=" + s.options[s.selectedIndex].value;
@@ -231,13 +226,13 @@
 
             function onChangeDates() {
                 if (!checkDate(document.schedule.syear.value, document.schedule.smonth.value, document.schedule.sday.value)) {
-                    alert("<bean:message key="schedule.scheduletemplateapplying.msgIncorrectOutput"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgIncorrectOutput"/>");
                 }
             }
 
             function onChangeDatee() {
                 if (!checkDate(document.schedule.eyear.value, document.schedule.emonth.value, document.schedule.eday.value)) {
-                    alert("<bean:message key="schedule.scheduletemplateapplying.msgIncorrectOutput"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgIncorrectOutput"/>");
                 }
             }
 
@@ -325,7 +320,7 @@
                 document.schedule.avail_hour.value = str1;
 
                 if (document.schedule.syear.value == "" || document.schedule.smonth.value == "" || document.schedule.sday.value == "") {
-//	  alert("<bean:message key="schedule.scheduletemplateapplying.msgInputDate"/>"); return false;
+//	  alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgInputDate"/>"); return false;
                 } else {
                     return true;
                 }
@@ -395,7 +390,7 @@
                 document.schedule.day_of_weekB.value = strB;
                 document.schedule.avail_hourB.value = str1;
                 if (document.schedule.syear.value == "" || document.schedule.smonth.value == "" || document.schedule.sday.value == "") {
-//	  alert("<bean:message key="schedule.scheduletemplateapplying.msgInputDate"/>"); return false;
+//	  alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgInputDate"/>"); return false;
                 } else {
                     return true;
                 }
@@ -404,10 +399,10 @@
             function addDataString1() {
                 var str = "";
                 if (document.schedule.syear.value == "" || document.schedule.smonth.value == "" || document.schedule.sday.value == "" || document.schedule.eyear.value == "" || document.schedule.emonth.value == "" || document.schedule.eday.value == "") {
-                    alert("<bean:message key="schedule.scheduletemplateapplying.msgInputDate"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgInputDate"/>");
                     return false;
                 } else if (!checkDate(document.schedule.syear.value, document.schedule.smonth.value, document.schedule.sday.value) || !checkDate(document.schedule.eyear.value, document.schedule.emonth.value, document.schedule.eday.value)) {
-                    alert("<bean:message key="schedule.scheduletemplateapplying.msgInputCorrectDate"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgInputCorrectDate"/>");
                     return false;
                 }
 
@@ -415,7 +410,7 @@
                 var eDate = new Date(document.schedule.eyear.value, document.schedule.emonth.value, document.schedule.eday.value);
 
                 if (sDate > eDate) {
-                    alert("<bean:message key="schedule.scheduletemplateapplying.msgDateOrder"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDateOrder"/>");
                     return false;
                 }
             }
@@ -453,15 +448,15 @@
         <table style="width:100%">
             <tr>
                 <td style="vertical-align:top; width:98%">
-                    <h4><bean:message key="schedule.scheduletemplateapplying.msgMainLabel"/></h4>
+                    <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgMainLabel"/></h4>
                     <div class="alert">
-                        <bean:message key="schedule.scheduletemplateapplying.msgStepOne"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgStepOne"/>
                         <br>
-                        <bean:message key="schedule.scheduletemplateapplying.msgStepTwo"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgStepTwo"/>
                         <br>
-                        <bean:message key="schedule.scheduletemplateapplying.msgStepThree"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgStepThree"/>
                         <br>
-                        <bean:message key="schedule.scheduletemplateapplying.msgStepFour"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgStepFour"/>
                     </div>
                     <div class="well">
 
@@ -540,22 +535,27 @@
                                     </option>
                                     <%
                                         }
-                                        MessageResources msg = MessageResourcesFactory.createFactory().createResources("oscarResources");
                                     %>
                                 </select> <input type="button" name="command" class="btn"
-                                                 value="<bean:message key="schedule.scheduletemplateapplying.btnDelete"/>"
+                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.btnDelete"/>"
                                                  onClick="onBtnDelete(document.forms['schedule'].elements['select'])">
                                 </td>
                             </tr>
                             <tr>
-                                <td style="color: red"
-                                    colspan="2"><%=request.getParameter("overlap") != null ? msg.getMessage("schedule.scheduletemplateapplying.msgScheduleConflict") : "&nbsp;"%>
+                                <td style="color: red" colspan="2">
+                                    <%
+                                        if(request.getParameter("overlap") != null) {
+                                    %>
+                                    <fmt:message key="schedule.scheduletemplateapplying.btnDelete"/>
+                                    <%
+                                        } else {
+                                            out.print("&nbsp;");
+                                        }
+                                    %>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="background-color:#CCFFCC" colspan="2"><bean:message
-                                        key="schedule.scheduletemplateapplying.msgDate"/> <bean:message
-                                        key="schedule.scheduletemplateapplying.msgFrom"/>:
+                                <td style="background-color:#CCFFCC" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDate"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFrom"/>:
                                     <input
                                             type="text" name="syear" maxlength="4" value="<%=syear%>"
                                             style="width: 40px;"> -
@@ -563,9 +563,8 @@
                                            maxlength="2" value="<%=smonth%>" style="width: 30px;"> -
                                     <input
                                             type="text" name="sday" maxlength="2" value="<%=sday%>"
-                                            onChange="onChangeDates()" style="width: 30px;"> <bean:message
-                                            key="schedule.scheduletemplateapplying.msgDateFormat"/> &nbsp;
-                                    &nbsp; <bean:message key="schedule.scheduletemplateapplying.msgTo"/>:
+                                            onChange="onChangeDates()" style="width: 30px;"> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDateFormat"/> &nbsp;
+                                    &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTo"/>:
                                     <input type="text" name="eyear" maxlength="4"
                                            value="<%=eyear%>" style="width: 40px;">
                                     <input type="hidden"
@@ -585,13 +584,10 @@
                                 <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr>
-                                <td colspan="2"><bean:message
-                                        key="schedule.scheduletemplateapplying.msgAvaiableEvery"/> (<bean:message
-                                        key="schedule.scheduletemplateapplying.msgDayOfWeek"/>):
+                                <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgAvaiableEvery"/> (<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDayOfWeek"/>):
                                     <input
                                             type="checkbox" name="alternate" value="checked"
-                                            onClick="onAlternate()" <%=bOrigAlt||bAlternate?"checked":""%>><bean:message
-                                            key="schedule.scheduletemplateapplying.msgAlternateWeekSetting"/></td>
+                                            onClick="onAlternate()" <%=bOrigAlt||bAlternate?"checked":""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgAlternateWeekSetting"/></td>
                             </tr>
                             <tr>
                                 <td style="text-align:center; white-space:nowrap" colspan="2">
@@ -644,8 +640,7 @@
                                                                       name="checksun" value="1"
                                                                       onClick="addDataString()"
                                                                     <%=param2[0]%>>
-                                                                    <bean:message
-                                                                            key="schedule.scheduletemplateapplying.msgSunday"/>
+                                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSunday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="sunfrom1" size="20" value="<%=param3[0][0]%>"
@@ -658,8 +653,7 @@
                                                     <tr>
                                                         <td><input type="checkbox"
                                                                    name="checkmon" value="2" onClick="addDataString()"
-                                                                <%=param2[1]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgMonday"/></td>
+                                                                <%=param2[1]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgMonday"/></td>
                                                         <td><input type="text"
                                                                    name="monfrom1" size="20" value="<%=param3[1][0]%>"
                                                                    readonly>
@@ -671,8 +665,7 @@
                                                     <tr style="background-color:#CCFFCC">
                                                         <td><input type="checkbox"
                                                                    name="checktue" value="3" onClick="addDataString()"
-                                                                <%=param2[2]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgTuesday"/>
+                                                                <%=param2[2]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTuesday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="tuefrom1" size="20" value="<%=param3[2][0]%>"
@@ -685,8 +678,7 @@
                                                     <tr>
                                                         <td><input type="checkbox"
                                                                    name="checkwed" value="4" onClick="addDataString()"
-                                                                <%=param2[3]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgWednesday"/>
+                                                                <%=param2[3]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgWednesday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="wedfrom1" size="20" value="<%=param3[3][0]%>"
@@ -699,8 +691,7 @@
                                                     <tr style="background-color:#CCFFCC">
                                                         <td><input type="checkbox"
                                                                    name="checkthu" value="5" onClick="addDataString()"
-                                                                <%=param2[4]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgThursday"/>
+                                                                <%=param2[4]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgThursday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="thufrom1" size="20" value="<%=param3[4][0]%>"
@@ -713,8 +704,7 @@
                                                     <tr>
                                                         <td><input type="checkbox"
                                                                    name="checkfri" value="6" onClick="addDataString()"
-                                                                <%=param2[5]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgFriday"/></td>
+                                                                <%=param2[5]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFriday"/></td>
                                                         <td><input type="text"
                                                                    name="frifrom1" size="20" value="<%=param3[5][0]%>"
                                                                    readonly>
@@ -726,8 +716,7 @@
                                                     <tr style="background-color:#CCFFCC">
                                                         <td><input type="checkbox"
                                                                    name="checksat" value="7" onClick="addDataString()"
-                                                                <%=param2[6]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgSaturday"/>
+                                                                <%=param2[6]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSaturday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="satfrom1" size="20" value="<%=param3[6][0]%>"
@@ -819,8 +808,7 @@
                                                                       name="checksun2" value="1"
                                                                       onClick="addDataString()"
                                                                     <%=param2[0]%>>
-                                                                    <bean:message
-                                                                            key="schedule.scheduletemplateapplying.msgSunday"/>
+                                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSunday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="sunfrom2" size="20" value="<%=param3[0][0]%>">
@@ -833,8 +821,7 @@
                                                     <tr style="background-color:#E0FFFF">
                                                         <td><input type="checkbox"
                                                                    name="checkmon2" value="2" onClick="addDataString()"
-                                                                <%=param2[1]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgMonday"/></td>
+                                                                <%=param2[1]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgMonday"/></td>
                                                         <td><input type="text"
                                                                    name="monfrom2" size="20" value="<%=param3[1][0]%>">
                                                             <input
@@ -846,8 +833,7 @@
                                                     <tr style="background-color:#00C5CD">
                                                         <td><input type="checkbox"
                                                                    name="checktue2" value="3" onClick="addDataString()"
-                                                                <%=param2[2]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgTuesday"/>
+                                                                <%=param2[2]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTuesday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="tuefrom2" size="20" value="<%=param3[2][0]%>">
@@ -860,8 +846,7 @@
                                                     <tr style="background-color:#E0FFFF">
                                                         <td><input type="checkbox"
                                                                    name="checkwed2" value="4" onClick="addDataString()"
-                                                                <%=param2[3]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgWednesday"/>
+                                                                <%=param2[3]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgWednesday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="wedfrom2" size="20" value="<%=param3[3][0]%>">
@@ -874,8 +859,7 @@
                                                     <tr style="background-color:#00C5CD">
                                                         <td><input type="checkbox"
                                                                    name="checkthu2" value="5" onClick="addDataString()"
-                                                                <%=param2[4]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgThursday"/>
+                                                                <%=param2[4]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgThursday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="thufrom2" size="20" value="<%=param3[4][0]%>">
@@ -888,8 +872,7 @@
                                                     <tr style="background-color:#E0FFFF">
                                                         <td><input type="checkbox"
                                                                    name="checkfri2" value="6" onClick="addDataString()"
-                                                                <%=param2[5]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgFriday"/></td>
+                                                                <%=param2[5]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFriday"/></td>
                                                         <td><input type="text"
                                                                    name="frifrom2" size="20" value="<%=param3[5][0]%>">
                                                             <input
@@ -901,8 +884,7 @@
                                                     <tr style="background-color:#00C5CD">
                                                         <td><input type="checkbox"
                                                                    name="checksat2" value="7" onClick="addDataString()"
-                                                                <%=param2[6]%>> <bean:message
-                                                                key="schedule.scheduletemplateapplying.msgSaturday"/>
+                                                                <%=param2[6]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSaturday"/>
                                                         </td>
                                                         <td><input type="text"
                                                                    name="satfrom2" size="20" value="<%=param3[6][0]%>">
@@ -965,7 +947,7 @@
                                                 value="<%=bAlternate||bOrigAlt?"A":"1"%>"> <input
                                                 type="hidden" name="Submit" value=" Next "> <input
                                                 type="submit" class="btn btn-primary"
-                                                value='<bean:message key="schedule.scheduletemplateapplying.btnNext"/>'>
+                                                value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.btnNext"/>'>
                                     </div>
                                 </td>
                             </tr>
@@ -1026,4 +1008,4 @@
         return ret;
     }
     %>
-</html:html>
+</html>

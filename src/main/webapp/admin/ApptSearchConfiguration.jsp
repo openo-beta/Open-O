@@ -42,11 +42,11 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html ng-app="phrConfig">
 <head ng-cloak>
-    <title><bean:message key="admin.admin.phrconfig"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.phrconfig"/></title>
     <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
     <script src="<%=request.getContextPath() %>/js/jquery-1.9.1.js"></script>
@@ -65,8 +65,7 @@
 <body vlink="#0000FF" class="BodyStyle" ng-cloak style="margin:7px;">
 <div ng-controller="phrConfig" ng-cloak>
     <div class="page-header">
-        <h4><bean:message key="admin.admin.phrconfig"/> <small data-ng-show="phrActive"> <bean:message
-                key="admin.phr.active"/></small><small data-ng-show="serverOffline"> Connector Offline</small></h4>
+        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.phrconfig"/> <small data-ng-show="phrActive"> <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.phr.active"/></small><small data-ng-show="serverOffline"> Connector Offline</small></h4>
     </div>
 
     <%--  div class="container"> --%>
@@ -85,22 +84,20 @@
                 </div>
                 <ul class="nav nav-tabs nav-justified">
                     <li role="presentation" ng-class="tabActive('main')"><a
-                            ng-click="setActiveTab('main')"><bean:message key="admin.appointmentSearchConfig.main"/></a>
+                            ng-click="setActiveTab('main')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.main"/></a>
                     </li>
                     <li role="presentation" ng-class="tabActive('codes')"><a
-                            ng-click="setActiveTab('codes')"><bean:message
-                            key="admin.appointmentSearchConfig.apptCodes"/></a></li>
+                            ng-click="setActiveTab('codes')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.apptCodes"/></a></li>
                     <li role="presentation" ng-class="tabActive('types')"><a
-                            ng-click="setActiveTab('types')"><bean:message
-                            key="admin.appointmentSearchConfig.apptTypes"/></a></li>
+                            ng-click="setActiveTab('types')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.apptTypes"/></a></li>
 
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane" ng-class="tabActive('main')" id="home">
                         <table class="table table-bordered table-striped table-hover">
                             <tr>
-                                <th><bean:message key="admin.appointmentSearchConfig.provider"/></th>
-                                <th><bean:message key="admin.appointmentSearchConfig.team"/></th>
+                                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.provider"/></th>
+                                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.team"/></th>
                                 <td ng-repeat="appt in currentSearchConfig.bookingAppointmentTypes">
                                     <small>{{appt.name}}</small></td>
                             </tr>
@@ -111,11 +108,11 @@
                                              ng-click="removeProvider(provider, currentSearchConfig.bookingProviders, $index, $event)"></md-icon>
                                 </td>
                                 <td>
-                                    <%-- button class="btn btn-default" aria-label="Add Appointment Code"  ng-click="cnf.openAddTeamMemberDialog(provider, $event)" style="padding:0px; margin:0px;"><bean:message key="admin.appointmentSearchConfig.add"/></button> --%>
+                                    <%-- button class="btn btn-default" aria-label="Add Appointment Code"  ng-click="cnf.openAddTeamMemberDialog(provider, $event)" style="padding:0px; margin:0px;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.add"/></button> --%>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default btn-xs dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <bean:message key="admin.appointmentSearchConfig.add"/> <span
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.add"/> <span
                                                 class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -149,7 +146,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default btn-xs dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <bean:message key="admin.appointmentSearchConfig.add"/> <span
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.add"/> <span
                                                 class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -195,8 +192,7 @@
 
                                         <button class="btn btn-default btn-xs pull-right" aria-label="Add"
                                                 ng-click="addApptTypeFromOSCAR(appointmentType)" <%-- ng-disabled="mat.isApptAlreadyAdded(apptType.id)" --%>
-                                                class="md-raised md-primary"><bean:message
-                                                key="admin.appointmentSearchConfig.add"/></button>
+                                                class="md-raised md-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.add"/></button>
 
                                     </h4>
                                 </a>
@@ -209,8 +205,7 @@
                                            placeholder="Appt description user will see" ng-model="apptLabelDesc">
                                 </div>
                                 <button type="button" class="btn btn-default btn-xs"
-                                        ng-click="addApptType(apptLabelDesc)"><bean:message
-                                        key="admin.appointmentSearchConfig.add"/></button>
+                                        ng-click="addApptType(apptLabelDesc)"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appointmentSearchConfig.add"/></button>
 
                             </div>
                         </div>

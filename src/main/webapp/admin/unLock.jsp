@@ -33,7 +33,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -96,14 +96,14 @@
 
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html:html lang="en">
+<html>
     <head>
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
-        <title><bean:message key="admin.admin.unlockAcct"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.unlockAcct"/></title>
         <script type="text/javascript" language="JavaScript">
 
             <!--
@@ -117,7 +117,7 @@
     </head>
     <body>
     <div width="100%">
-        <div id="header"><H4><i class="icon-unlock"></i>&nbsp;<bean:message key="admin.admin.unlockAcct"/></H4>
+        <div id="header"><H4><i class="icon-unlock"></i>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.unlockAcct"/></H4>
         </div>
     </div>
 
@@ -128,18 +128,18 @@
         </div>
         <% } %>
         <div class="well">
-            <b><bean:message key="admin.providersearchresults.ID"/></b>
+            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.ID"/></b>
             <select name="userName">
                 <% for (int i = 0; i < vec.size(); i++) { %>
                 <option value="<%=(String) vec.get(i) %>"><%=(String) vec.get(i) %>
                 </option>
                 <% } %>
             </select> <input type="submit" name="submit" class="btn btn-primary"
-                             value="<bean:message key="admin.admin.unlockAcct" />"/>
+                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.unlockAcct"/>"/>
         </div>
 
 
     </form>
 
     </body>
-</html:html>
+</html>

@@ -23,18 +23,18 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div ng-controller="PatientListProgramCtrl">
-
+    <fmt:setBundle basename="uiResources" var="uiBundle"/>
     <a ng-repeat="admission in admissions | filter:query" ng-click="goToRecord(admission.demographic)"
        class="list-group-item hand-hover" class="default">
         <h5 class="list-group-item-heading">{{admission.demographic.lastName}},{{admission.demographic.firstName}}</h5>
-        <p class="list-group-item-text"><bean:message key="patientList.program.since" bundle="ui"/>:
+        <p class="list-group-item-text"><fmt:message bundle="${uiBundle}" key="patientList.program.since"/>:
             {{admission.admissionDate | date: 'yyyy-MM-dd'}} </p>
     </a>
 
     <a ng-if="admissions.length === 0" class="list-group-item hand-hover default">
-        <h5 class="list-group-item-heading"><bean:message key="patientList.program.empty" bundle="ui"/></h5>
+        <h5 class="list-group-item-heading"><fmt:message bundle="${uiBundle}" key="patientList.program.empty"/></h5>
     </a>
 
 </div>

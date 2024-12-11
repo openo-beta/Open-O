@@ -26,9 +26,9 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -43,10 +43,7 @@
         return;
     }
 %>
-
-<%@page import="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConAddDepartmentForm" %>
-
-<html:html lang="en">
+<html>
 
     <%
         ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
@@ -63,7 +60,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><%=transactionType%>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
     <script language="javascript">
@@ -75,7 +72,18 @@
     <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
     <body class="BodyStyle" vlink="#0000FF">
 
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
@@ -106,37 +114,29 @@
                         String added = (String) request.getAttribute("Added");
                         if (added != null) { %>
                     <tr>
-                        <td><font color="red"> <bean:message
-                                key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded"
-                                arg0="<%=added%>"/> </font></td>
+                        <td style="color: red;">
+                            <fmt:setBundle basename="oscarResources"/>
+                            <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded">
+                                <fmt:param value="${added}" />
+                            </fmt:message>
+                        </td>
                     </tr>
                     <%}%>
                     <tr>
                         <td>
 
-                            <html:form action="/oscarEncounter/AddDepartment">
+                            <form action="${pageContext.request.contextPath}/oscarEncounter/AddDepartment.do" method="post">
                             <table>
-                                        <%
-                           if (request.getAttribute("id") != null ){
-                           EctConAddDepartmentForm thisForm;
-                           thisForm = (EctConAddDepartmentForm) request.getAttribute("EctConAddDepartmentForm");
-                           thisForm.setId((String) request.getAttribute("id"));
-                           thisForm.setName( (String) request.getAttribute("name"));
-                     
-                           thisForm.setAnnotation( (String) request.getAttribute("annotation"));
-                           }
-                        %>
-                                    <html:hidden name="EctConAddDepartmentForm" property="id"/>
+                                    <input type="hidden" name="EctConAddDepartmentForm" id="EctConAddDepartmentForm" property="id"/>
                                 <tr>
                                     <td>Name</td>
-                                    <td><html:text name="EctConAddDepartmentForm" property="name"/></td>
+                                    <td><input type="text" name="name"/></td>
 
                                 </tr>
 
                                 <td>Annotation
                                 </td>
-                                <td colspan="4"><html:textarea name="EctConAddDepartmentForm" property="annotation"
-                                                               cols="30" rows="3"/>
+                                <td colspan="4"><textarea name="annotation" cols="30" rows="3"></textarea>
                                 </td>
                     </tr>
 
@@ -147,7 +147,7 @@
                         </td>
                     </tr>
                 </table>
-                </html:form>
+                </form>
             </td>
         </tr>
         <!----End new rows here-->
@@ -164,4 +164,4 @@
     </tr>
     </table>
     </body>
-</html:html>
+</html>

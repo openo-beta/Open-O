@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="col-sm-3">
     <fieldset ng-repeat="mod in $ctrl.page.columnOne.modules">
         <legend style="margin-bottom:0px;">
@@ -47,8 +47,7 @@
                             ng-show="item.classification">({{item.classification}})</small></a>
             </li>
             <a href="javascript:void(0)" class="text-muted add-summary" ng-if="mod.summaryItem==null"
-               ng-click="$ctrl.openAllergies()" ng-show="mod.summaryCode=='allergies'"><bean:message
-                    key="global.btnAdd"/>{{mod.displayName}}</a>
+               ng-click="$ctrl.openAllergies()" ng-show="mod.summaryCode=='allergies'"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnAdd"/>{{mod.displayName}}</a>
         </ul>
 
         <span ng-class="showMoreItemsSymbol(mod)" ng-click="toggleList(mod)" ng-show="showMoreItems(mod)"></span>

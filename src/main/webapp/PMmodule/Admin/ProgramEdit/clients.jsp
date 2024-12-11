@@ -43,9 +43,9 @@
         document.programManagerForm.submit();
     }
 </script>
-<html:hidden property="admission.id"/>
-<html:hidden property="admission.teamId"/>
-<html:hidden property="admission.clientStatusId"/>
+<input type="hidden" name="id" id="id"/>
+<input type="hidden" name="teamId" id="teamId"/>
+<input type="hidden" name="clientStatusId" id="clientStatusId"/>
 <div class="tabs">
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>

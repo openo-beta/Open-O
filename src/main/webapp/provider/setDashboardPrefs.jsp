@@ -41,10 +41,10 @@
     String providerbtnCancel = (String) request.getAttribute("providerbtnCancel");
     String providermsgSuccess = (String) request.getAttribute("providermsgSuccess");
 %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=bundle.getString(providertitle)%></title>
         <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
@@ -62,15 +62,15 @@
             <td class="MainTableLeftColumn"></td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
-                <html:form action="/setProviderStaleDate.do">
+                <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
-                    <html:checkbox property="dashboardShareProperty.checked">
-                        <bean:message key="provider.pref.dashboardShare"/></html:checkbox>
+                    <input type="checkbox" name="dashboardShareProperty.checked" />
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.dashboardShare"/>
                     <br/><br/>
                     <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
                     <input type="button" value="<%=bundle.getString(providerbtnCancel)%>"
                            onclick="window.close();"/>
-                </html:form>
+                </form>
                 <%} else {%>
                 <%=bundle.getString(providermsgSuccess)%>
                 <br/><br/>
@@ -84,4 +84,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

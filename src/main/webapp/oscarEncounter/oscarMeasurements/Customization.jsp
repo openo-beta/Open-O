@@ -27,36 +27,45 @@
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="oscar.oscarEncounter.pageUtil.*" %>
 <%@ page import="oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.Vector" %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.Measurements.msgCustomization"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgCustomization"/></title>
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script type="text/javascript">
             function popupOscarConS(vheight, vwidth, varpage) { //open a new popup window
                 var page = varpage;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<bean:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.oscarConS"/>", windowprops);
+                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.oscarConS"/>", windowprops);
             }
         </script>
     </head>
 
     <link rel="stylesheet" type="text/css" href="../styles.css">
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <table>
         <tr>
-            <td class=Title colspan="2"><bean:message
-                    key="oscarEncounter.Measurements.msgGroup"/></td>
+            <td class=Title colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgGroup"/></td>
         </tr>
         <tr>
             <td>
@@ -64,8 +73,7 @@
                     <tr>
                         <td class="messengerButtonsA" width="200"><a href=#
                                                                      onClick="popupOscarConS(300,1000,'SetupStyleSheetList.do')"
-                                                                     class="messengerButtons"><bean:message
-                                key="oscarEncounter.Index.measurements.addMeasurementGroup"/></a></td>
+                                                                     class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements.addMeasurementGroup"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -74,15 +82,13 @@
                     <tr>
                         <td class="messengerButtonsA" width="200"><a href=#
                                                                      onClick="popupOscarConS(300,1000,'SetupGroupList.do')"
-                                                                     class="messengerButtons"><bean:message
-                                key="oscarEncounter.Index.measurements.editMeasurementGroup"/></a></td>
+                                                                     class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements.editMeasurementGroup"/></a></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td class=Title colspan="2"><bean:message
-                    key="oscarEncounter.Measurements.msgType"/></td>
+            <td class=Title colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgType"/></td>
         </tr>
         <tr>
             <td>
@@ -90,8 +96,7 @@
                     <tr>
                         <td class="messengerButtonsA" width="200"><a href=#
                                                                      onClick="popupOscarConS(700,1000,'SetupDisplayMeasurementTypes.do')"
-                                                                     class="messengerButtons"><bean:message
-                                key="oscarEncounter.Index.measurements.viewMeasurementType"/></a></td>
+                                                                     class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements.viewMeasurementType"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -100,8 +105,7 @@
                     <tr>
                         <td class="messengerButtonsA" width="200"><a href=#
                                                                      onClick="popupOscarConS(300,1000,'SetupAddMeasurementType.do')"
-                                                                     class="messengerButtons"><bean:message
-                                key="oscarEncounter.Index.measurements.addMeasurementType"/></a></td>
+                                                                     class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements.addMeasurementType"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -134,8 +138,7 @@
             </td>
         </tr>
         <tr>
-            <td class=Title colspan="2"><bean:message
-                    key="oscarEncounter.Measurements.msgMeasuringInstruction"/></td>
+            <td class=Title colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgMeasuringInstruction"/></td>
         </tr>
         <tr>
             <td>
@@ -143,16 +146,14 @@
                     <tr>
                         <td class="messengerButtonsA" width="200"><a href=#
                                                                      onClick="popupOscarConS(300,1000,'SetupAddMeasuringInstruction.do')"
-                                                                     class="messengerButtons"><bean:message
-                                key="oscarEncounter.Index.measurements.addMeasuringInstruction"/></a>
+                                                                     class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements.addMeasuringInstruction"/></a>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td class=Title colspan="2"><bean:message
-                    key="oscarEncounter.Measurements.msgStyleSheets"/></td>
+            <td class=Title colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgStyleSheets"/></td>
         </tr>
         <tr>
             <td>
@@ -160,8 +161,7 @@
                     <tr>
                         <td class="messengerButtonsA" width="200"><a href=#
                                                                      onClick="popupOscarConS(300,1000,'SetupDisplayMeasurementStyleSheet.do')"
-                                                                     class="messengerButtons"><bean:message
-                                key="oscarEncounter.Index.measurements.viewMeasurementStyleSheet"/></a>
+                                                                     class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements.viewMeasurementStyleSheet"/></a>
                         </td>
                     </tr>
                 </table>
@@ -171,8 +171,7 @@
                     <tr>
                         <td class="messengerButtonsA" width="200"><a href=#
                                                                      onClick="popupOscarConS(300,1000,'AddMeasurementStyleSheet.jsp')"
-                                                                     class="messengerButtons"><bean:message
-                                key="oscarEncounter.Index.measurements.addMeasurementStyleSheet"/></a>
+                                                                     class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.measurements.addMeasurementStyleSheet"/></a>
                         </td>
                     </tr>
                 </table>
@@ -183,4 +182,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

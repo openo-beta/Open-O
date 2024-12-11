@@ -1,4 +1,4 @@
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -470,7 +470,7 @@
 <html lang="en">
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message key="oscarReport.oscarReportscpbDemo.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.title"/></title>
     <LINK REL="StyleSheet" HREF="../web.css" TYPE="text/css">
     <!-- calendar stylesheet -->
     <link rel="stylesheet" type="text/css" media="all"
@@ -520,9 +520,9 @@
 
     <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
         <tr>
-            <th BGCOLOR="#CCFFFF"><bean:message key="oscarReport.oscarReportscpbDemo.msgHeader"/></th>
+            <th BGCOLOR="#CCFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgHeader"/></th>
             <th width="10%" nowrap><a href=# onclick="history.back();">
-                <bean:message key="oscarReport.oscarReportscpbDemo.btnBack"/></a></th>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.btnBack"/></a></th>
         </tr>
     </table>
 
@@ -530,7 +530,7 @@
            class="sortable tabular_list">
         <thead>
         <tr BGCOLOR="#66CCCC">
-            <th width="6%"><bean:message key="oscarReport.oscarReportscpbDemo.msgNoHeader"/></th>
+            <th width="6%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgNoHeader"/></th>
             <% for (int i = 0; i < vecFieldCaption.size(); i++) { %>
             <th><%=(String) vecFieldCaption.get(i)%>
             </th>

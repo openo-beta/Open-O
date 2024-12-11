@@ -25,11 +25,11 @@
     <h4>Patient List</h4>
 </div>
 
-<form id="plForm" action="${ctx}/patientlistbyappt" class="well form-horizontal">
+<form id="plForm" action="<%=request.getContextPath() %>/patientlistbyappt.do" class="well form-horizontal">
 
     <fieldset>
         <h4>
-            <bean:message key="admin.admin.exportPatientbyAppt"/> <br> <small>Please select
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.exportPatientbyAppt"/> <br> <small>Please select
             the provider and appointment date from &amp; to.</small>
         </h4>
         <div class="row-fluid">

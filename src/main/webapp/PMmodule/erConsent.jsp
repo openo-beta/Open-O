@@ -52,7 +52,7 @@
 
 <script>
     function cancel() {
-        location.href = '<html:rewrite action="/PMmodule/GenericIntake/Search.do"/>';
+        location.href = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Search.do';
     }
 
     function submit() {
@@ -70,7 +70,7 @@
 <br/>
 <br/>
 <br/>
-<html:form action="/PMmodule/ClientManager.do">
+<form action="${pageContext.request.contextPath}/PMmodule/ClientManager.do" method="post">`
     <input type="hidden" name="id"
            value="<c:out value="${requestScope.id}"/>"/>
     <input type="hidden" name="method" value="submit_erconsent"/>
@@ -86,10 +86,9 @@
         <tr>
 
         </tr>
-        <td><html:textarea property="erconsent.consentReason" rows="8"
-                           cols="80"></html:textarea></td>
+        <td><textarea name="consentReason" rows="8" cols="80"></textarea></td>
         <tr>
             <td><input type="button" value="submit" onclick="submit()"/> <input
                     type="button" value="Cancel" onclick="cancel()"/></td>
     </table>
-</html:form>
+</form>

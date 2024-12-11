@@ -25,9 +25,9 @@
 --%>
 <%@ page
         import="oscar.oscarProvider.data.*, oscar.oscarRx.data.*,oscar.OscarProperties, oscar.oscarClinic.ClinicData, java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -70,13 +70,13 @@
 %>
 
 
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="ViewScript.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.title"/></title>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <c:if test="${empty sessionScope.RxSessionBean}">
             <c:redirect url="error.html"/>
         </c:if>
@@ -693,14 +693,14 @@
                                     </div>
                                 </td>
 
-                                <td valign=top><html:form action="/oscarRx/clearPending">
-                                    <html:hidden property="action" value=""/>
+                                <td valign=top><form action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
+                                    <input type="hidden" name="action" id="action" value=""/>
                                     <div class="warning-note" id="faxWarningNote">
                                         <strong>Warning:</strong> faxing is disabled because no pharmacy fax number is
                                         available.</br></br>To enable faxing, close this window and select a pharmacy
                                         with a fax number before trying again.
                                     </div>
-                                </html:form>
+                                </form>
                                     <script type="text/javascript">
                                         function clearPending(action) {
                                             document.forms.RxClearPendingForm.action.value = action;
@@ -749,7 +749,7 @@
                                             document.getElementById('preview').style.width = "600px";
                                             frames['preview'].document.getElementById('pharmInfo').innerHTML = text;
                                             //frames['preview'].document.getElementById('removePharm').show();
-                                            $("selectedPharmacy").innerHTML = '<bean:message key="oscarRx.printPharmacyInfo.paperSizeWarning"/>';
+                                            $("selectedPharmacy").innerHTML = '<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.printPharmacyInfo.paperSizeWarning"/>';
 
                                         }
 
@@ -766,7 +766,7 @@
                                         <% //vecAddress=null;
                                             if (vecAddress != null) { %>
                                         <tr>
-                                            <td align="left" colspan=2><bean:message key="ViewScript.msgAddress"/>
+                                            <td align="left" colspan=2><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgAddress"/>
                                                 <select name="addressSel" id="addressSel" onChange="addressSelect()"
                                                         style="width:200px;">
                                                     <% String rxAddr = (String) session.getAttribute("RX_ADDR");
@@ -785,8 +785,7 @@
                                         </tr>
                                         <% } %>
                                         <tr>
-                                            <td colspan=2 style="font-weight: bold;"><span><bean:message
-                                                    key="ViewScript.msgActions"/></span>
+                                            <td colspan=2 style="font-weight: bold;"><span><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgActions"/></span>
                                             </td>
                                         </tr>
 
@@ -820,7 +819,7 @@
                                         <tr>
                                             <!--td width=10px></td-->
                                             <td style="padding-bottom: 0"><span><input type=button
-                                                                                       value="<bean:message key="ViewScript.msgPrint"/>"
+                                                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgPrint"/>"
                                                                                        class="ControlPushButton"
                                                                                        style="width: 210px"
                                                                                        onClick="javascript:printIframe();"/></span>
@@ -881,7 +880,7 @@
                                         <tr>
                                             <!--td width=10px></td-->
                                             <td><span><input type=button
-                                                             value="<bean:message key="ViewScript.msgCreateNewRx"/>"
+                                                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgCreateNewRx"/>"
                                                              class="ControlPushButton"
                                                              style="width: 210px"
                                                              onClick="resetStash();resetReRxDrugList();javascript:parent.myLightWindow.deactivate();"/></span>
@@ -890,13 +889,13 @@
                                         <tr>
                                             <!--td width=10px></td-->
                                             <td><span><input type=button
-                                                             value="<bean:message key="ViewScript.msgBackToOscar"/>"
+                                                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 210px"
                                                              onClick="javascript:clearPending('close');parent.window.close();"/></span>
                                             </td>
                                         </tr>
                                             <%--                                       <%if(prefPharmacy.length()>0 && prefPharmacyId.length()>0){   %>--%>
-                                            <%--                                           <tr><td><span><input id="selectPharmacyButton" type=button value="<bean:message key='oscarRx.printPharmacyInfo.addPharmacyButton'/>" class="ControlPushButton" style="width:150px;"--%>
+                                            <%--                                           <tr><td><span><input id="selectPharmacyButton" type=button value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarRx.printPharmacyInfo.addPharmacyButton'/>" class="ControlPushButton" style="width:150px;"--%>
                                             <%--                                                             onclick="printPharmacy('<%=prefPharmacyId%>','<%=prefPharmacy%>');"/>--%>
                                             <%--                                                </span>--%>
 
@@ -912,8 +911,7 @@
                                             if (request.getSession().getAttribute("rePrint") == null) {%>
 
                                         <tr>
-                                            <td colspan=2 style="font-weight: bold"><span><bean:message
-                                                    key="ViewScript.msgAddNotesRx"/></span></td>
+                                            <td colspan=2 style="font-weight: bold"><span><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgAddNotesRx"/></span></td>
                                         </tr>
                                         <tr>
                                             <!--td width=10px></td-->
@@ -942,8 +940,7 @@
                                         </tr>
                                         <%}%>
                                         <tr>
-                                            <td colspan=2 style="font-weight: bold"><span><bean:message
-                                                    key="ViewScript.msgDrugInfo"/></span></td>
+                                            <td colspan=2 style="font-weight: bold"><span><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgDrugInfo"/></span></td>
                                         </tr>
                                         <%
                                             for (int i = 0; i < bean.getStashSize(); i++) {
@@ -981,4 +978,4 @@
 
         </div>
     </body>
-</html:html>
+</html>

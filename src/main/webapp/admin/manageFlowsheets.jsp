@@ -41,9 +41,9 @@
 %>
 
 <%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <%@ page import="oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet" %>
 <%@ page import="org.oscarehr.common.model.Flowsheet" %>
@@ -65,7 +65,7 @@
     }
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Manage Flowsheets</title>
@@ -162,7 +162,7 @@
     <form enctype="multipart/form-data" method="POST"
           action="<%=request.getContextPath()%>/admin/manageFlowsheetsUpload.jsp">
         <input type="file" name="flowsheet_file">
-        <span title="<bean:message key="global.uploadWarningBody"/>"
+        <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
               style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                 alt="alert" src="<%=request.getContextPath()%>/images/icon_alertsml.gif"/></span>
 
@@ -170,4 +170,4 @@
         <input type="submit" value="Upload" class="btn btn-primary">
     </form>
 
-</html:html>
+</html>

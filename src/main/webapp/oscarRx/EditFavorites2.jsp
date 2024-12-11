@@ -24,18 +24,18 @@
 
 --%>
 <!DOCTYPE html>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/screen.js"/>"></script>
         <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/rx.js"/>"></script>
         <title>Edit Favorites</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
             <c:redirect url="error.html"/>
@@ -67,7 +67,6 @@
 
         <script language=javascript>
             function ajaxUpdateRow(rowId) {
-                //var put = document.forms.RxUpdateFavoriteForm;
                 var get = document.forms.DispForm;
                 var err = false;
                 var favoriteId = eval('get.fldFavoriteId' + rowId).value;
@@ -154,32 +153,32 @@
 
     </head>
     <body>
-    <html:form action="/oscarRx/updateFavorite2">
-        <html:hidden property="favoriteId"/>
-        <html:hidden property="favoriteName"/>
-        <html:hidden property="customName"/>
-        <html:hidden property="takeMin"/>
-        <html:hidden property="takeMax"/>
-        <html:hidden property="frequencyCode"/>
-        <html:hidden property="duration"/>
-        <html:hidden property="durationUnit"/>
-        <html:hidden property="quantity"/>
-        <html:hidden property="repeat"/>
-        <html:hidden property="nosubs"/>
-        <html:hidden property="prn"/>
-        <html:hidden property="special"/>
-        <html:hidden property="customInstr"/>
-    </html:form>
+    <form action="${pageContext.request.contextPath}/oscarRx/updateFavorite2.do" method="post">
+        <input type="hidden" name="favoriteId" id="favoriteId"/>
+        <input type="hidden" name="favoriteName" id="favoriteName"/>
+        <input type="hidden" name="customName" id="customName"/>
+        <input type="hidden" name="takeMin" id="takeMin"/>
+        <input type="hidden" name="takeMax" id="takeMax"/>
+        <input type="hidden" name="frequencyCode" id="frequencyCode"/>
+        <input type="hidden" name="duration" id="duration"/>
+        <input type="hidden" name="durationUnit" id="durationUnit"/>
+        <input type="hidden" name="quantity" id="quantity"/>
+        <input type="hidden" name="repeat" id="repeat"/>
+        <input type="hidden" name="nosubs" id="nosubs"/>
+        <input type="hidden" name="prn" id="prn"/>
+        <input type="hidden" name="special" id="special"/>
+        <input type="hidden" name="customInstr" id="customInstr"/>
+    </form>
 
-    <html:form action="/oscarRx/deleteFavorite2">
-        <html:hidden property="favoriteId"/>
-    </html:form>
+    <form action="${pageContext.request.contextPath}/oscarRx/deleteFavorite2.do" method="post">
+        <input type="hidden" name="favoriteId" id="favoriteId"/>
+    </form>
 
     <table style="width:100%;"
            id="AutoNumber1">
         <tr>
             <td>
-                <h1><bean:message key="StaticScript.title.EditFavorites"/></h1>
+                <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title.EditFavorites"/></h1>
                 <!-- <%@ include file="TopLinks.jsp"%>--><!-- Row One included here-->
             </td>
         </tr>
@@ -189,9 +188,7 @@
                 <table style="width:100%; height:100%">
                     <tr>
                         <td style="width:10%; vertical-align:top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <bean:message
-                                    key="SearchDrug.title"/></a> > <b><bean:message
-                                    key="StaticScript.title.EditFavorites"/></b></div>
+                            <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> > <b><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title.EditFavorites"/></b></div>
                         </td>
                     </tr>
 
@@ -402,4 +399,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -17,8 +17,8 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
@@ -33,7 +33,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message key="admin.appt.status.mgr.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.title"/></title>
     <link href="../css/jquery.ui.colorPicker.css" rel="stylesheet" type="text/css"/>
     <script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
     <script src="../js/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
@@ -58,36 +58,31 @@
 
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
     <tr bgcolor="#486ebd">
-        <th align="CENTER" NOWRAP><font face="Helvetica" color="#FFFFFF"><bean:message
-                key="admin.appt.status.mgr.title"/></font></th>
+        <th align="CENTER" NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.title"/></font></th>
     </tr>
 </table>
 
 
-<html:form action="/appointment/apptStatusSetting">
+<form action="<%=request.getContextPath() %>/appointment/apptStatusSetting.do">
     <table>
         <tr>
-            <td class="tdLabel"><bean:message
-                    key="admin.appt.status.mgr.label.status"/>:
+            <td class="tdLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.label.status"/>:
             </td>
-            <td><html:text readonly="true" property="apptStatus" size="40"/></td>
+            <td><input type="text" readonly="readonly" name="apptStatus" size="40"/></td>
         </tr>
         <tr>
-            <td class="tdLabel"><bean:message
-                    key="admin.appt.status.mgr.label.desc"/>:
+            <td class="tdLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.label.desc"/>:
             </td>
-            <td><html:text property="apptDesc" size="40"/></td>
+            <td><input type="checkbox" name="apptDesc" size="40" /></td>
         </tr>
         <tr>
-            <td class="tdLabel"><bean:message
-                    key="admin.appt.status.mgr.label.oldcolor"/>:
+            <td class="tdLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.label.oldcolor"/>:
             </td>
-            <td><html:text readonly="true" styleId="old_color" property="apptOldColor" size="40"/>
+            <td><input type="text" readonly="true" id="old_color" name="apptOldColor" size="40"/>
             </td>
         </tr>
         <tr>
-            <td class="tdLabel"><bean:message
-                    key="admin.appt.status.mgr.label.newcolor"/>:
+            <td class="tdLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.label.newcolor"/>:
             </td>
             <td>
                 <input id="apptColor" name="apptColor" value="" size="20"/>
@@ -97,13 +92,13 @@
 
         <div id="list_entries"></div>
         <tr>
-            <td colspan="2"><html:hidden property="ID"/> <input
+            <td colspan="2"><input type="hidden" name="ID" id="ID"/> <input
                     type="hidden" name="dispatch" value="update"/> <br/>
                 <input type="submit"
-                       value="<bean:message key="oscar.appt.status.mgr.label.submit"/>"/>
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.appt.status.mgr.label.submit"/>"/>
             </td>
         </tr>
     </table>
-</html:form>
+</form>
 </body>
 </html>

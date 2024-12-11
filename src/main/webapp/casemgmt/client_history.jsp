@@ -44,22 +44,22 @@
 <%@ page import="org.oscarehr.casemgmt.web.formbeans.*" %>
 <%@ page import="oscar.OscarProperties" %>
 
-<html:hidden property="cpp.reminders"/>
+<input type="hidden" name="reminders" id="reminders"/>
 <table width="100%" border="0" cellpadding="0" cellspacing="1"
        bgcolor="#C0C0C0">
     <%if (!OscarProperties.getInstance().isTorontoRFQ()) { %>
     <tr>
         <td bgcolor="white">Primary Health Care Provider</td>
-        <td bgcolor="white"><html:text property="cpp.primaryPhysician"/></td>
+        <td bgcolor="white"><input type="text" name="cpp.primaryPhysician" id="cpp.primaryPhysician" /></td>
     </tr>
     <%} %>
     <tr>
         <td bgcolor="white">Primary Counsellor/Caseworker</td>
-        <td bgcolor="white"><html:text property="cpp.primaryCounsellor"/></td>
+        <td bgcolor="white"><input type="text" name="cpp.primaryCounsellor" id="cpp.primaryCounsellor" /></td>
     </tr>
     <tr>
         <td bgcolor="white">Other File Number</td>
-        <td bgcolor="white"><html:text property="cpp.otherFileNumber"/></td>
+        <td bgcolor="white"><input type="text" name="cpp.otherFileNumber" id="cpp.otherFileNumber" /></td>
     </tr>
     <tr height="10">
         <td bgcolor="white" colspan="2">&nbsp;</td>
@@ -77,10 +77,8 @@
         <td>Family History</td>
     </tr>
     <tr>
-        <td bgcolor="white"><html:textarea property="cpp.socialHistory"
-                                           rows="5" cols="45"/></td>
-        <td bgcolor="white"><html:textarea property="cpp.familyHistory"
-                                           rows="5" cols="45"/></td>
+        <td bgcolor="white"><textarea name="socialHistory" rows="5" cols="45"></textarea></td>
+        <td bgcolor="white"><textarea name="familyHistory" rows="5" cols="45"></textarea></td>
     </tr>
 
     <tr class="title">
@@ -88,24 +86,22 @@
         <td>Past Medications</td>
     </tr>
     <tr>
-        <td bgcolor="white"><html:textarea property="cpp.medicalHistory"
-                                           rows="5" cols="45"/></td>
-        <td bgcolor="white"><html:textarea property="cpp.pastMedications"
-                                           rows="5" cols="45"/></td>
+        <td bgcolor="white"><textarea name="medicalHistory"
+                                      rows="5" cols="45"></textarea></td>
+        <td bgcolor="white"><textarea name="pastMedications"
+                                      rows="5" cols="45"></textarea></td>
     </tr>
 
     <tr class="title">
         <td colspan="2">Other Support Systems</td>
     </tr>
     <tr>
-        <td colspan="2" bgcolor="white"><html:textarea
-                property="cpp.otherSupportSystems" rows="2" cols="95"/></td>
+        <td colspan="2" bgcolor="white"><textarea
+                name="otherSupportSystems" rows="2" cols="95"></textarea></td>
     </tr>
 </table>
-<html:submit value="Save"
-             onclick="this.form.method.value='patientCPPSave'"/>
-<html:submit value="Print Preview"
-             onclick="this.form.method.value='patientCppPrintPreview'"></html:submit>
+<input type="submit" name="submit" value="Save" onclick="this.form.method.value='patientCPPSave'"/>
+<input type="submit" name="submit" value="Print Preview" onclick="this.form.method.value='patientCppPrintPreview'" />
 <c:if test="${not empty requestScope.messages}">
     <c:forEach var="message" items="${requestScope.messages}">
         <div style="color: blue"><I><c:out value="${message}"/></I></div>

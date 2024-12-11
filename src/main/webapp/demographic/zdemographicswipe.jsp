@@ -24,9 +24,9 @@
 
 --%>
 
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
+
+
 
 <html>
 <script src="${pageContext.request.contextPath}/csrfguard"></script>
@@ -71,8 +71,7 @@
     </tr>
 </table>
 
-<html:form action="/demographic/ValidateSwipeCard" onsubmit="return verifyInput();">
-
+<form action="<%=request.getContextPath() %>/demographic/ValidateSwipeCard.do" onsubmit="return verifyInput();">
     <div class="container">
 
         <p class="row">
@@ -80,18 +79,18 @@
             Swipe card
         </p>
         <p class="span">
-            <html:text property="magneticStripe" size="79"/>
+            <input type="checkbox" name="magneticStripe" size="79" />
         </p>
         </p>
 
         <p class="row">
         <p class="span2">
-            <html:submit value="Validate"/>
+            <input type="submit" value="Validate" />
         </p>
         </p>
     </div>
 
-</html:form>
+</form>
 <br>
 <br>
 <form>

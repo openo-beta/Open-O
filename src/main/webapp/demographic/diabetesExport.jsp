@@ -43,8 +43,8 @@
 
 <%@page
         import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%
@@ -60,7 +60,7 @@
     String userRole = (String) session.getAttribute("userrole");
 %>
 
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <!--I18n-->
@@ -70,7 +70,7 @@
 
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
 
         <SCRIPT LANGUAGE="JavaScript">
@@ -110,9 +110,9 @@
         } else {
         %>
 
-        <h3>Reporting of Diabetes <small><oscar:help keywords="export" key="app.top1"/></small></h3>
+        <h3>Reporting of Diabetes </h3>
 
-        <html:form action="/demographic/DiabetesExport" method="get"
+        <form action="${pageContext.request.contextPath}/demographic/DiabetesExport.do" method="get"
                    onsubmit="return checkAll();">
 
         <table>
@@ -121,35 +121,35 @@
                 <td><input type="hidden" name="demographicNo" value="<%=demographic_no%>"/>
                     Reporting :
                     <%} else {%>
-                    Patient Set: <html:select property="patientSet">
-                        <html:option value="-1">--Select Set--</html:option>
+                    Patient Set: <select name="patientSet" id="patientSet">
+                        <option value="-1">--Select Set--</option>
                         <%
                             for (int i = 0; i < sets.size(); i++) {
                                 String setName = sets.get(i);
                         %>
-                        <html:option value="<%=setName%>"><%=setName%>
-                        </html:option>
+                        <option value="<%=setName%>"><%=setName%>
+                        </option>
                         <%}%>
-                    </html:select>
+                    </select>
                     <%}%>
                 </td>
             </tr>
             <tr>
                 <td align="right" width=73>Start Date:</td>
-                <td><html:text property="startDate" size="10"/> (YYYY-MM-DD)</td>
+                <td><input type="checkbox" name="startDate" size="10" /> (YYYY-MM-DD)</td>
             </tr>
             <tr>
                 <td align="right">End Date:</td>
-                <td><html:text property="endDate" size="10"/> (YYYY-MM-DD)</td>
+                <td><input type="checkbox" name="endDate" size="10" /> (YYYY-MM-DD)</td>
             </tr>
         </table>
         <p><input class="btn btn-primary" type="submit" value="Export"/>
-            </html:form>
+            </form>
 
                     <%}%>
     </div>
     </body>
-</html:html>
+</html>
 <%!
 
 %>

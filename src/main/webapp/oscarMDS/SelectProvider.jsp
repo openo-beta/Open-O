@@ -34,7 +34,7 @@
 <html>
 <head>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
-    <title><bean:message key="oscarMDS.selectProvider.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.selectProvider.title"/></title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/share/javascript/prototype.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/share/javascript/effects.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/share/javascript/controls.js"></script>
@@ -115,7 +115,7 @@
 <input type="hidden" id="forwardList" value="<c:out value="${ param.forwardList }" />"/>
 <form name="providerSelectForm">
     <p style="font-weight:bold;">
-        <bean:message key="oscarMDS.forward.msgInstruction1"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.forward.msgInstruction1"/>
     </p>
     <div>
         <input id="autocompleteprov" type="text" style="width:100%;">
@@ -154,7 +154,7 @@
         </div>
     </div>
     <div>
-        <p><bean:message key="oscarMDS.forward.msgInstruction2"/></p>
+        <p><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.forward.msgInstruction2"/></p>
         <!-- <input type="button" id="submitButton" value="Submit" onclick="prepSubmit();return false;"> -->
     </div>
 </form>

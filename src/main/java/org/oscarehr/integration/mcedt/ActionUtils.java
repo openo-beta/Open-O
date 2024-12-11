@@ -24,43 +24,24 @@
  */
 package org.oscarehr.integration.mcedt;
 
-import static org.oscarehr.integration.mcedt.McedtConstants.REQUEST_ATTR_KEY_RESOURCE_ID;
-import static org.oscarehr.integration.mcedt.McedtConstants.SESSION_KEY_MCEDT_UPDATES;
-import static org.oscarehr.integration.mcedt.McedtConstants.SESSION_KEY_MCEDT_UPLOADS;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-
-import oscar.util.ConversionUtils;
 import ca.ontario.health.edt.Detail;
 import ca.ontario.health.edt.TypeListResult;
 import ca.ontario.health.edt.UpdateRequest;
 import ca.ontario.health.edt.UploadData;
+import oscar.util.ConversionUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.oscarehr.integration.mcedt.McedtConstants.*;
 
 /**
  * Defines utility methods for action classes.
  */
 class ActionUtils {
-
-    static ActionMessages addMessage(String messageId, String... messageParams) {
-        ActionMessage message = null;
-        if (messageParams != null) {
-            message = new ActionMessage(messageId, messageParams);
-        } else {
-            message = new ActionMessage(messageId);
-        }
-
-        ActionMessages messages = new ActionMessages();
-        messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-        return messages;
-    }
 
     static Detail getDetails(HttpServletRequest request) {
         Detail result = (Detail) request.getSession().getAttribute(McedtConstants.SESSION_KEY_RESOURCE_LIST);

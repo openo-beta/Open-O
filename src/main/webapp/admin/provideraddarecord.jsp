@@ -46,8 +46,8 @@
     <%isSiteAccessPrivacy = true; %>
 </security:oscarSec>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.sql.*, java.util.*, oscar.*" errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.log.LogAction,oscar.log.LogConst" %>
 <%@ page import="oscar.log.*, oscar.oscarDB.*" %>
@@ -69,10 +69,10 @@
     ProviderSiteDao providerSiteDao = SpringUtils.getBean(ProviderSiteDao.class);
     boolean alreadyExists = false;
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="admin.provideraddrecord.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrecord.title"/></title>
         <link rel="stylesheet" href="../web.css">
     </head>
 
@@ -81,7 +81,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
                 <th><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="admin.provideraddrecord.description"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrecord.description"/>
                 </font></th>
             </tr>
         </table>
@@ -208,22 +208,22 @@
                     billCenter.addBillCenter(request.getParameter("provider_no"), request.getParameter("billcenter"));
 
         %>
-        <h1><bean:message key="admin.provideraddrecord.msgAdditionSuccess"/>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrecord.msgAdditionSuccess"/>
         </h1>
         <%
         } else {
         %>
-        <h1><bean:message key="admin.provideraddrecord.msgAdditionFailure"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrecord.msgAdditionFailure"/></h1>
         <%
             if (alreadyExists) {
-        %><h2><bean:message key="admin.provideraddrecord.msgAlreadyExists"/></h2><%
+        %><h2><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrecord.msgAlreadyExists"/></h2><%
             }
 
         }
     } else {
         if (!isProviderFormalize) {
     %>
-        <h1><bean:message key="<%=errMsgProviderFormalize%>"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=errMsgProviderFormalize%>"/></h1>
         Provider # range from : <%=min_value %> To : <%=max_value %>
         <%
                 }
@@ -231,4 +231,4 @@
         %>
     </center>
     </body>
-</html:html>
+</html>

@@ -1,5 +1,5 @@
 function getGeneralFormsReport() {
-    popupPage2('<html:rewrite action="/PMmodule/ClientManager.do"/>?method=getGeneralFormsReport', "generalFormsReport");
+    popupPage2('${request.contextPath}/PMmodule/ClientManager.do?method=getGeneralFormsReport', "generalFormsReport");
 }
 
 function getIntakeReport(type) {

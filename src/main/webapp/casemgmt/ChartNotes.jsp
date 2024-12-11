@@ -187,13 +187,13 @@
 
 </script>
 <div id="topContent">
-    <html:form action="/CaseManagementView" method="post">
-        <html:hidden property="demographicNo" value="<%=demographicNo%>"/>
-        <html:hidden property="providerNo" value="<%=provNo%>"/>
-        <html:hidden property="tab" value="Current Issues"/>
-        <html:hidden property="hideActiveIssue"/>
-        <html:hidden property="ectWin.rowOneSize" styleId="rowOneSize"/>
-        <html:hidden property="ectWin.rowTwoSize" styleId="rowTwoSize"/>
+    <form action="${pageContext.request.contextPath}/CaseManagementView.do" method="post">
+        <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
+        <input type="hidden" name="providerNo" value="<%=provNo%>"/>
+        <input type="hidden" name="tab" value="Current Issues"/>
+        <input type="hidden" name="hideActiveIssue" id="hideActiveIssue"/>
+        <input type="hidden" name="ectWin.rowOneSize" styleId="rowOneSize"/>
+        <input type="hidden" name="ectWin.rowTwoSize" styleId="rowTwoSize"/>
         <input type="hidden" name="chain" value="list">
         <input type="hidden" name="method" value="view">
         <input type="hidden" id="check_issue" name="check_issue">
@@ -202,7 +202,7 @@
         <div id="filteredresults">
             <nested:notEmpty name="caseManagementViewForm" property="filter_providers">
                 <fieldset class="filterresult">
-                    <legend><bean:message key="oscarEncounter.providers.title"/></legend>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.providers.title"/></legend>
                     <nested:iterate type="String" id="filter_provider" property="filter_providers">
                         <c:choose>
                             <c:when test="${filter_provider == 'a'}">All</c:when>
@@ -221,7 +221,7 @@
 
             <nested:notEmpty name="caseManagementViewForm" property="filter_roles">
                 <fieldset class="filterresult">
-                    <legend><bean:message key="oscarEncounter.roles.title"/></legend>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.roles.title"/></legend>
                     <nested:iterate type="String" id="filter_role" property="filter_roles">
                         <c:choose>
                             <c:when test="${filter_role == 'a'}">All</c:when>
@@ -240,7 +240,7 @@
 
             <nested:notEmpty name="caseManagementViewForm" property="note_sort">
                 <fieldset class="filterresult">
-                    <legend><bean:message key="oscarEncounter.sort.title"/></legend>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sort.title"/></legend>
                     <nested:write property="note_sort"/><br>
                 </fieldset>
             </nested:notEmpty>
@@ -248,7 +248,7 @@
             <nested:notEmpty name="caseManagementViewForm" property="issues">
                 <fieldset class="filterresult">
                     <legend>
-                        <bean:message key="oscarEncounter.issues.title"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.issues.title"/>
                     </legend>
                     <nested:iterate type="String" id="filter_issue" property="issues">
                         <c:choose>
@@ -269,31 +269,32 @@
         </div>
         <div id="filter" style="display:none;margin-top: 5px; margin-left: 5px;margin-right: 5px;">
             <input type="button" value="Hide" onclick="return filter(false);"/>
-            <input type="button" value="<bean:message key="oscarEncounter.resetFilter.title" />"
+            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.resetFilter.title"/>"
                    onclick="return filter(true);"/>
 
             <table style="border-collapse:collapse;width:100%;">
                 <tr>
                     <th>
-                        <bean:message key="oscarEncounter.providers.title"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.providers.title"/>
                     </th>
                     <th>
                         Role
                     </th>
                     <th>
-                        <bean:message key="oscarEncounter.sort.title"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sort.title"/>
                     </th>
                     <th>
-                        <bean:message key="oscarEncounter.issues.title"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.issues.title"/>
                     </th>
                 </tr>
                 <tr>
                     <td style="border-left:solid #ddddff 3px">
                         <div style="height:150px;overflow:auto">
                             <ul style="padding:0;margin:0;list-style:none inside none">
-                                <li><html:multibox property="filter_providers" value="a"
-                                                   onclick="filterCheckBox(this)"></html:multibox><bean:message
-                                        key="oscarEncounter.sortAll.title"/></li>
+                                <li>
+                                    <input type="checkbox" name="filter_providers" value="a" onclick="filterCheckBox(this)" />
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sortAll.title"/>
+                                </li>
                                 <%
                                     @SuppressWarnings("unchecked")
                                     Set<Provider> providers = (Set<Provider>) request.getAttribute("providers");
@@ -305,8 +306,8 @@
                                         prov = iter.next();
                                         providerNo = prov.getProviderNo();
                                 %>
-                                <li><html:multibox property="filter_providers" value="<%=providerNo%>"
-                                                   onclick="filterCheckBox(this)"></html:multibox><%=prov.getFormattedName()%>
+                                <li>
+                                    <input type="checkbox" name="filter_providers" value="<%= providerNo %>" onclick="filterCheckBox(this)" /><%=prov.getFormattedName()%>
                                 </li>
                                 <%
                                     }
@@ -317,17 +318,19 @@
                     <td style="border-left:solid #ddddff 3px">
                         <div style="height:150px;overflow:auto">
                             <ul style="padding:0;margin:0;list-style:none inside none">
-                                <li><html:multibox property="filter_roles" value="a"
-                                                   onclick="filterCheckBox(this)"></html:multibox><bean:message
-                                        key="oscarEncounter.sortAll.title"/></li>
+                                <li>
+                                    <input type="checkbox" name="filter_roles" value="a" onclick="filterCheckBox(this)" />
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sortAll.title"/>
+                                </li>
                                 <%
                                     @SuppressWarnings("unchecked")
                                     List roles = (List) request.getAttribute("roles");
                                     for (int num = 0; num < roles.size(); ++num) {
                                         Secrole role = (Secrole) roles.get(num);
                                 %>
-                                <li><html:multibox property="filter_roles" value="<%=String.valueOf(role.getId())%>"
-                                                   onclick="filterCheckBox(this)"></html:multibox><%=role.getName()%>
+                                <li>
+                                    <input type="checkbox" name="filter_roles" value="<%=String.valueOf(role.getId())%>" onclick="filterCheckBox(this)" />
+                                    <%=role.getName()%>
                                 </li>
                                 <%
                                     }
@@ -338,32 +341,33 @@
                     <td style="border-left:solid #ddddff 3px">
                         <div style="height:150px;overflow:auto">
                             <ul style="padding:0;margin:0;list-style:none inside none">
-                                <li><html:radio property="note_sort" value="observation_date_asc">
-                                    <bean:message key="oscarEncounter.sortDateAsc.title"/>
-                                </html:radio></li>
-                                <li><html:radio property="note_sort" value="observation_date_desc">
-                                    <bean:message key="oscarEncounter.sortDateDesc.title"/>
-                                </html:radio></li>
-                                <li><html:radio property="note_sort" value="providerName">
-                                    <bean:message key="oscarEncounter.provider.title"/>
-                                </html:radio></li>
-                                <li><html:radio property="note_sort" value="programName">
-                                    <bean:message key="oscarEncounter.program.title"/>
-                                </html:radio></li>
-                                <li><html:radio property="note_sort" value="roleName">
-                                    <bean:message key="oscarEncounter.role.title"/>
-                                </html:radio></li>
+                                <li><input type="radio" name="note_sort" value="observation_date_asc"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sortDateAsc.title"/>
+                                </li>
+                                <li><input type="radio" name="note_sort" value="observation_date_desc"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sortDateDesc.title"/>
+                                </li>
+                                <li><input type="radio" name="note_sort" value="providerName"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.provider.title"/>
+                                </li>
+                                <li><input type="radio" name="note_sort" value="programName"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.program.title"/>
+                                </li>
+                                <li><input type="radio" name="note_sort" value="roleName"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.role.title"/>
+                                </li>
                             </ul>
                         </div>
                     </td>
                     <td style="border-left:solid #ddddff 3px;">
                         <div style="height:150px;overflow:auto">
                             <ul style="padding:0;margin:0;list-style:none inside none">
-                                <li><html:multibox property="issues" value="a"
-                                                   onclick="filterCheckBox(this)"></html:multibox><bean:message
-                                        key="oscarEncounter.sortAll.title"/></li>
-                                <li><html:multibox property="issues" value="n"
-                                                   onclick="filterCheckBox(this)"></html:multibox>None
+                                <li>
+                                    <input type="checkbox" name="issues" value="a" onclick="filterCheckBox(this)" />
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sortAll.title"/>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="issues" value="n" onclick="filterCheckBox(this)" />None
                                 </li>
 
                                 <%
@@ -372,9 +376,10 @@
                                     for (int num = 0; num < issues.size(); ++num) {
                                         CheckBoxBean issue_checkBoxBean = (CheckBoxBean) issues.get(num);
                                 %>
-                                <li><html:multibox property="issues"
-                                                   value="<%=String.valueOf(issue_checkBoxBean.getIssue().getId())%>"
-                                                   onclick="filterCheckBox(this)"></html:multibox><%=issue_checkBoxBean.getIssueDisplay().getResolved().equals("resolved") ? "* " : ""%> <%=issue_checkBoxBean.getIssueDisplay().getDescription()%>
+                                <li>
+                                    <input type="checkbox" name="issues" value="<%=String.valueOf(issue_checkBoxBean.getIssue().getId())%>"
+                                                   onclick="filterCheckBox(this)" />
+                                    <%=issue_checkBoxBean.getIssueDisplay().getResolved().equals("resolved") ? "* " : ""%> <%=issue_checkBoxBean.getIssueDisplay().getDescription()%>
                                 </li>
                                 <%
                                     }
@@ -400,13 +405,12 @@
                     <input type="checkbox" value="" name="studentParticipationConsentCheck"
                            id="studentParticipationConsentCheck"
                            onClick="return doStudentParticipationCheck('<%=demoNo%>');"/>
-                    <label for="studentParticipationConsentCheck"><bean:message
-                            key="casemgmt.chartnotes.studentParticipationConsent"/></label>
+                    <label for="studentParticipationConsentCheck"><fmt:setBundle basename="oscarResources"/><fmt:message key="casemgmt.chartnotes.studentParticipationConsent"/></label>
                 </oscar:oscarPropertiesCheck>
                 <oscar:oscarPropertiesCheck value="false" property="STUDENT_PARTICIPATION_CONSENT">
                     <input type="checkbox" value="" name="informedConsentCheck" id="informedConsentCheck"
                            onClick="return doInformedConsent('<%=demoNo%>');"/>
-                    <label for="informedConsentCheck"><bean:message key="casemgmt.chartnotes.informedConsent"/></label>
+                    <label for="informedConsentCheck"><fmt:setBundle basename="oscarResources"/><fmt:message key="casemgmt.chartnotes.informedConsent"/></label>
                 </oscar:oscarPropertiesCheck>
             </div>
             <%
@@ -415,7 +419,7 @@
             <fieldset>
                 <legend>Template Search</legend>
 
-                <img alt="<bean:message key="oscarEncounter.msgFind"/>"
+                <img alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.msgFind"/>"
                      src="<c:out value="${ctx}/oscarEncounter/graphics/edit-find.png"/>">
                 <input id="enTemplate" placeholder="template name" tabindex="6" size="16" type="text" value=""
                        onkeypress="return grabEnterGetTemplate(event)">
@@ -434,12 +438,12 @@
                     <!-- channel -->
                     <select id="channel">
                         <option value="http://resource.oscarmcmaster.org/oscarResource/OSCAR_search?query=">
-                            <bean:message key="oscarEncounter.Index.oscarSearch"/></option>
-                        <option value="http://www.google.com/search?q="><bean:message key="global.google"/></option>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.oscarSearch"/></option>
+                        <option value="http://www.google.com/search?q="><fmt:setBundle basename="oscarResources"/><fmt:message key="global.google"/></option>
                         <option value="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?SUBMIT=y&amp;CDM=Search&amp;DB=PubMed&amp;term=">
-                            <bean:message key="global.pubmed"/></option>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.pubmed"/></option>
                         <option value="http://search.nlm.nih.gov/medlineplus/query?DISAMBIGUATION=true&amp;FUNCTION=search&amp;SERVER2=server2&amp;SERVER1=server1&amp;PARAMETER=">
-                            <bean:message key="global.medlineplus"/></option>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.medlineplus"/></option>
                         <option value="tripsearch.jsp?searchterm=">Trip Database</option>
                         <option value="macplussearch.jsp?searchterm=">MacPlus Database</option>
                         <option value="https://empendium.com/mcmtextbook/search?type=textbook&q=">McMaster Text Book
@@ -447,9 +451,8 @@
                     </select>
                 </div>
                 <input type="button" id="searchButton" name="button"
-                       value="<bean:message key="oscarEncounter.Index.btnSearch"/>"
-                       onClick="popupPage(600,800,'<bean:message
-                               key="oscarEncounter.Index.popupSearchPageWindow"/>',$('channel').options[$('channel').selectedIndex].value+urlencode($F('keyword')) ); return false;"/>
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSearch"/>"
+                       onClick="popupPage(600,800,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupSearchPageWindow"/>',$('channel').options[$('channel').selectedIndex].value+urlencode($F('keyword')) ); return false;"/>
             </fieldset>
 
             <fieldset>
@@ -466,7 +469,7 @@
                 </security:oscarSec>
                 </oscar:oscarPropertiesCheck>
 
-                <input type="button" value="<bean:message key="oscarEncounter.Filter.title"/>" onclick="showFilter();"/>
+                <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Filter.title"/>" onclick="showFilter();"/>
                         <%
 					String roleName = session.getAttribute("userrole") + "," + session.getAttribute("user");
 					String pAge = Integer.toString(UtilDateUtilities.calcAge(bean.yearOfBirth,bean.monthOfBirth,bean.dateOfBirth));
@@ -478,7 +481,7 @@
 
                 <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="r">
                 <select onchange="javascript:popupPage(700,700,'Templates',this.value);">
-                    <option value="-1"><bean:message key="oscarEncounter.Header.Templates"/></option>
+                    <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Templates"/></option>
                     <option value="-1">------------------</option>
                     <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="w">
                         <option value="<%=request.getContextPath()%>/admin/providertemplate.jsp">New / Edit Template
@@ -501,7 +504,7 @@
                 </security:oscarSec>
 
         </div>
-    </html:form>
+    </form>
 </div>
 
 
@@ -517,8 +520,8 @@
     String OscarMsgTypeLink = (String) request.getParameter("OscarMsgTypeLink");
 %>
 <nested:form action="/CaseManagementEntry">
-    <html:hidden property="demographicNo" value="<%=demographicNo%>"/>
-    <html:hidden property="includeIssue" value="off"/>
+    <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
+    <input type="hidden" name="includeIssue" value="off"/>
     <input type="hidden" name="OscarMsgType" value="<%=oscarMsgType%>"/>
     <input type="hidden" name="OscarMsgTypeLink" value="<%=OscarMsgTypeLink%>"/>
     <%
@@ -548,13 +551,13 @@
         }
     %>
 
-    <html:hidden property="appointmentNo" value="<%=apptNo%>"/>
-    <html:hidden property="appointmentDate" value="<%=apptDate%>"/>
-    <html:hidden property="start_time" value="<%=startTime%>"/>
-    <html:hidden property="billRegion"
+    <input type="hidden" name="appointmentNo" value="<%=apptNo%>"/>
+    <input type="hidden" name="appointmentDate" value="<%=apptDate%>"/>
+    <input type="hidden" name="start_time" value="<%=startTime%>"/>
+    <input type="hidden" name="billRegion"
                  value="<%=(OscarProperties.getInstance().getProperty(\"billregion\",\"\")).trim().toUpperCase()%>"/>
-    <html:hidden property="apptProvider" value="<%=apptProv%>"/>
-    <html:hidden property="providerview" value="<%=provView%>"/>
+    <input type="hidden" name="apptProvider" value="<%=apptProv%>"/>
+    <input type="hidden" name="providerview" value="<%=provView%>"/>
     <input type="hidden" name="toBill" id="toBill" value="false">
     <input type="hidden" name="deleteId" value="0">
     <input type="hidden" name="lineId" value="0">
@@ -624,38 +627,38 @@
                     <input tabindex="16" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/group-gnote.png"/>" id="groupNoteImg"
                            onclick="Event.stop(event);return selectGroup(document.forms['caseManagementEntryForm'].elements['caseNote.program_no'].value,document.forms['caseManagementEntryForm'].elements['demographicNo'].value);"
-                           title='<bean:message key="oscarEncounter.Index.btnGroupNote"/>'>
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnGroupNote"/>'>
                     <% }
                         if (facility.isEnablePhoneEncounter()) {
                     %>
                     <input tabindex="25" type='image' src="<c:out value="${ctx}/oscarEncounter/graphics/attach.png"/>"
                            id="attachNoteImg"
                            onclick="Event.stop(event);return assign(document.forms['caseManagementEntryForm'].elements['caseNote.program_no'].value,document.forms['caseManagementEntryForm'].elements['demographicNo'].value);"
-                           title='<bean:message key="oscarEncounter.Index.btnAttachNote"/>'>
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnAttachNote"/>'>
                     <% } %>
                     <input tabindex="17" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/media-floppy.png"/>" id="saveImg"
                            onclick="Event.stop(event);return saveNoteAjax('save', 'list');"
-                           title='<bean:message key="oscarEncounter.Index.btnSave"/>'>
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSave"/>'>
                     <input tabindex="18" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/document-new.png"/>" id="newNoteImg"
                            onclick="newNote(event); return false;"
-                           title='<bean:message key="oscarEncounter.Index.btnNew"/>'>
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnNew"/>'>
                     <input tabindex="19" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/note-save.png"/>" id="signSaveImg"
                            onclick="document.forms['caseManagementEntryForm'].sign.value='on';Event.stop(event);return savePage('saveAndExit', '');"
-                           title='<bean:message key="oscarEncounter.Index.btnSignSave"/>'>
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSignSave"/>'>
                     <input tabindex="20" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/verify-sign.png"/>" id="signVerifyImg"
                            onclick="document.forms['caseManagementEntryForm'].sign.value='on';document.forms['caseManagementEntryForm'].verify.value='on';Event.stop(event);return savePage('saveAndExit', '');"
-                           title='<bean:message key="oscarEncounter.Index.btnSign"/>'>
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSign"/>'>
                     <%
                         if (bean.source == null) {
                     %>
                     <input tabindex="21" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/dollar-sign-icon.png"/>"
                            onclick="document.forms['caseManagementEntryForm'].sign.value='on';document.forms['caseManagementEntryForm'].toBill.value='true';Event.stop(event);return savePage('saveAndExit', '');"
-                           title='<bean:message key="oscarEncounter.Index.btnBill"/>'>
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnBill"/>'>
                     <%
                         }
                     %>
@@ -663,19 +666,19 @@
 
                     <input tabindex="23" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/system-log-out.png"/>"
-                           onclick='closeEnc(event);return false;' title='<bean:message key="global.btnExit"/>'>
+                           onclick='closeEnc(event);return false;' title='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>'>
                     <input tabindex="24" type='image'
                            src="<c:out value="${ctx}/oscarEncounter/graphics/document-print.png"/>"
                            onclick="return printSetup(event);"
-                           title='<bean:message key="oscarEncounter.Index.btnPrint"/>' id="imgPrintEncounter">
+                           title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnPrint"/>' id="imgPrintEncounter">
                 </div>
                 <div id="timer-control">
                     <input type="text" placeholder="Time Label" id="timer-note" title="Time Label"/>
                     <button type="button" onclick="pasteTimer()" id="aTimer"
-                            title="<bean:message key="oscarEncounter.Index.pasteTimer"/>">00:00
+                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.pasteTimer"/>">00:00
                     </button>
                     <button type="button" id="toggleTimer" onclick="toggleATimer(this)"
-                            title='<bean:message key="oscarEncounter.Index.toggleTimer"/>'>
+                            title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.toggleTimer"/>'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-pause-fill" viewBox="0 0 16 16">
                             <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"></path>
@@ -688,28 +691,23 @@
                        placeholder="Search Issue" title="Search Issues" name="issueSearch"
                        onkeydown="return submitIssue(event);">
                 <input tabindex="9" type="button" id="asgnIssues" title="Assign Selected Issue"
-                       value="<bean:message key="oscarEncounter.assign.title"/>">
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assign.title"/>">
                 <span id="busy" style="display: none">
 		            <img src="<c:out value="${ctx}/oscarEncounter/graphics/busy.gif"/>"
-                         alt="<bean:message key="oscarEncounter.Index.btnWorking" />">
+                         alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnWorking"/>">
 		        </span>
             </div>
         </div>
         <div class="row">
             <div id="note-control-panel">
-                <button type="button" onclick="return showHideIssues(event, 'noteIssues-resolved');"><bean:message
-                        key="oscarEncounter.Index.btnDisplayResolvedIssues"/></button>
-                <button type="button" onclick="return showHideIssues(event, 'noteIssues-unresolved');"><bean:message
-                        key="oscarEncounter.Index.btnDisplayUnresolvedIssues"/></button>
-                <button type="button" onclick="notesLoadAll();"><bean:message
-                        key="oscarEncounter.Index.btnLoadAllNotes"/></button>
-                <button type="button" onclick="toggleFullViewForAll();"><bean:message
-                        key="oscarEncounter.Index.btneExpandLoadedNotes"/></button>
-                <button type="button" onclick="toggleCollapseViewForAll();"><bean:message
-                        key="oscarEncounter.Index.btnCollapseLoadedNotes"/></button>
+                <button type="button" onclick="return showHideIssues(event, 'noteIssues-resolved');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnDisplayResolvedIssues"/></button>
+                <button type="button" onclick="return showHideIssues(event, 'noteIssues-unresolved');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnDisplayUnresolvedIssues"/></button>
+                <button type="button" onclick="notesLoadAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnLoadAllNotes"/></button>
+                <button type="button" onclick="toggleFullViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btneExpandLoadedNotes"/></button>
+                <button type="button" onclick="toggleCollapseViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnCollapseLoadedNotes"/></button>
                 <button type="button"
                         onclick="popupPage(500,200,'noteBrowser<%=bean.demographicNo%>','noteBrowser.jsp?demographic_no=<%=bean.demographicNo%>&FirstTime=1');">
-                    <bean:message key="oscarEncounter.Index.BrowseNotes"/></button>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.BrowseNotes"/></button>
             </div>
         </div>
     </div>

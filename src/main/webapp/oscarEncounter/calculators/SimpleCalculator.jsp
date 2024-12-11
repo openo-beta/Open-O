@@ -24,16 +24,15 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html>
+
+<html>
 
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.calculators.SimpleCalculator.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.calculators.SimpleCalculator.title"/></title>
         <link rel="stylesheet" type="text/css" href="../encounterStyles.css">
         <SCRIPT LANGUAGE="JavaScript">
 
@@ -232,19 +231,15 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarEncounter.calculators.SimpleCalculator.module"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.calculators.SimpleCalculator.module"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><bean:message
-                                key="oscarEncounter.calculators.SimpleCalculator.msgTitle"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.calculators.SimpleCalculator.msgTitle"/></td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="calculator" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'../About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'../License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td style="text-align: right"><a
+                                href="javascript:popupStart(300,400,'../About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'../License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -262,8 +257,7 @@
                                     <td id="blah"></td>
                                 </tr>
                             </table>
-                            <bean:message
-                                    key="oscarEncounter.calculators.SimpleCalculator.MsgUsage"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.calculators.SimpleCalculator.MsgUsage"/>
 
                             <FORM NAME="rcform"><INPUT TYPE="text" VALUE="0"
                                                        NAME="display">
@@ -349,4 +343,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -35,7 +35,7 @@
 
     <c:import url="header.jsp"/>
 
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     <c:import url="plot_javascript.jsp">
         <c:param name="series1" value="${measurements.asMap['Height']}"/>

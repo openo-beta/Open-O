@@ -31,8 +31,8 @@
 	output: opener.param.substring("&formdatebox=".length()) = year1 + "-" + month1 + "-" + day1
   */
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%
 
@@ -122,22 +122,21 @@
         <td width="5%" align="center" nowrap><a
                 href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param)%>&delta=-12">
             <img src="../images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                 ALT="<bean:message key="share.CalendarPopUp.msgNextYear"/>"
+                 ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgNextYear"/>"
                  vspace="2"> <img src="../images/previous.gif" WIDTH="10"
                                   HEIGHT="9" BORDER="0"
-                                  ALT="<bean:message key="share.CalendarPopUp.msgLastYear"/>"
+                                  ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgLastYear"/>"
                                   vspace="2"> </a></td>
         <td align="center" nowrap><a
                 href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param)%>&delta=-1">
             <img src="../images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                 ALT="<bean:message key="share.CalendarPopUp.msgViewLastMonth"/>"
-                 vspace="2"> <bean:message
-                key="share.CalendarPopUp.msgLastMonth"/> </a> <b><span CLASS=title><%=year%>-<%=month%></span></b>
+                 ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgViewLastMonth"/>"
+                 vspace="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgLastMonth"/> </a> <b><span CLASS=title><%=year%>-<%=month%></span></b>
             <a
                     href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param)%>&delta=1">
-                <bean:message key="share.CalendarPopUp.msgNextMonth"/> <img
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgNextMonth"/> <img
                     src="../images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                    ALT="<bean:message key="share.CalendarPopUp.msgNextMonth"/>"
+                    ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgNextMonth"/>"
                     vspace="2"></a></td>
         <td align='right'><a
                 href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param)%>&delta=12">
@@ -164,22 +163,20 @@
 <table width="100%" border="0" cellspacing="1" cellpadding="2"
        bgcolor="silver">
     <tr bgcolor="#CCCCFF" align="center">
-        <th width="14%"><font color="red"><bean:message
-                key="share.CalendarPopUp.msgSun"/></font>
+        <th width="14%"><font color="red"><fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgSun"/></font>
             </td>
-        <th width="14%"><bean:message key="share.CalendarPopUp.msgMon"/></font>
+        <th width="14%"><fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgMon"/></font>
             </td>
-        <th width="14%"><bean:message key="share.CalendarPopUp.msgTue"/></font>
+        <th width="14%"><fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgTue"/></font>
             </td>
-        <th width="14%"><bean:message key="share.CalendarPopUp.msgWed"/></font>
+        <th width="14%"><fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgWed"/></font>
             </td>
-        <th width="14%"><bean:message key="share.CalendarPopUp.msgThu"/></font>
+        <th width="14%"><fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgThu"/></font>
             </td>
         <th width="14%">
-            <bean:message key="share.CalendarPopUp.msgFri"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgFri"/>
             </td>
-        <th width="14%"><font color="green"><bean:message
-                key="share.CalendarPopUp.msgSat"/></font>
+        <th width="14%"><font color="green"><fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgSat"/></font>
             </td>
     </tr>
 

@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div class="page-header" style="margin-top: 0px; margin-bottom: 0px;">
     <h1 class="patientHeaderName" style="margin-top: 0px;" ng-cloak>
@@ -31,11 +31,11 @@
             ng-show="demographic.alias">({{demographic.alias}})</span>
 
         <small class="patientHeaderExt pull-right">
-            <i><bean:message key="demographic.patient.context.born"/>: </i>
+            <i><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.patient.context.born"/>: </i>
             <b>{{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</b> (<b>{{demographic.age |
-        age}}</b>) &nbsp;&nbsp; <i><bean:message key="demographic.patient.context.sex"/>:</i>
+        age}}</b>) &nbsp;&nbsp; <i><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.patient.context.sex"/>:</i>
             <b>{{demographic.sex}}</b>
-            <i> &nbsp;&nbsp; <bean:message key="Appointment.msgTelephone"/>:</i> <b>{{demographic.phone}}</b>
+            <i> &nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgTelephone"/>:</i> <b>{{demographic.phone}}</b>
             <!-- <span class="glyphicon glyphicon-new-window"></span>-->
         </small>
     </h1>

@@ -45,7 +45,7 @@
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="org.oscarehr.eyeform.model.EyeformConsultationReport" %>
 <%@page import="oscar.OscarProperties" %>
-<html:html>
+<html>
 
     <head>
         <style type="text/css" media="print">
@@ -215,9 +215,9 @@
         OscarProperties props = OscarProperties.getInstance();
     %>
 
-    <html:form action="/eyeform/Eyeform">
-        <html:hidden property="cp.id"/>
-        <html:hidden property="cp.demographicNo"/>
+    <form action="${pageContext.request.contextPath}/eyeform/Eyeform.do" method="post">
+        <input type="hidden" name="id" id="id"/>
+        <input type="hidden" name="demographicNo" id="demographicNo"/>
 
         <table class="header">
             <tr>
@@ -590,6 +590,6 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

@@ -30,8 +30,8 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.managers.SecurityInfoManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
@@ -49,7 +49,7 @@
 <!DOCTYPE html >
 <html>
     <head>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>HRM - HOSPITAL REPORT INBOX</title>
@@ -67,7 +67,7 @@
         <script src="<%=request.getContextPath() %>/library/DataTables/datatables.min.js"></script>
         <!-- DataTables 1.13.4 -->
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
-        <script> var lang = '<bean:message key="global.i18nLanguagecode"/>';</script>
+        <script> var lang = '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>';</script>
         <script src="${ pageContext.request.contextPath }/hospitalReportManager/inbox.js?<%=(int)(Math.random()*100000)%>"></script>
 
         <script src="${ pageContext.request.contextPath }/js/jquery.ui.widget.js"></script>

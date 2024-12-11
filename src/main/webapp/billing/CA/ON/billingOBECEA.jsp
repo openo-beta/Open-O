@@ -17,9 +17,9 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 <%
     if (session.getValue("user") == null)
@@ -33,7 +33,7 @@
 
 %>
 <!DOCTYPE html>
-<html:html>
+<html>
     <head>
 
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
@@ -45,12 +45,23 @@
 
     <p>EDT OBEC Response Report Generator</p>
 
-    <html:form action="/oscarBilling/DocumentErrorReportUpload.do" method="POST" enctype="multipart/form-data">
+    <form action="${pageContext.request.contextPath}/oscarBilling/DocumentErrorReportUpload.do" method="POST" enctype="multipart/form-data">
 
 
         <div class="alert alert-error">
 
-            <html:errors/>
+            <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
         </div>
 
         <div class="well">
@@ -60,6 +71,6 @@
         </div>
 
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

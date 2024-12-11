@@ -111,11 +111,11 @@
 
 <div class="page-header">
     <h3>
-        <bean:message key="oscarReport.oscarReportVisitControl.title"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportVisitControl.title"/>
         <div class="pull-right">
             <button name="print" onclick="window.print()" class="btn hidden-print">
                 <i class="icon-print icon-black"></i>
-                <bean:message key="global.btnPrint"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>
             </button>
         </div>
     </h3>
@@ -125,7 +125,7 @@
       class="well form-horizontal hidden-print" id="visitForm">
     <fieldset>
         <h4>
-            <bean:message key="oscarReport.oscarReportVisitControl.title"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportVisitControl.title"/>
             <br> <small>Please select the report type, provider and
             service begin and end dates.</small>
         </h4>
@@ -134,13 +134,11 @@
             <div class="controls">
                 <label class="radio inline"> <input type="radio"
                                                     name="reportAction" onClick="toggleDivs();" value="lk"
-                    <%=reportAction.equals("lk")?"checked":""%>> <bean:message
-                        key="oscarReport.oscarReportVisitControl.msgLarryKainReport"/>
+                    <%=reportAction.equals("lk")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportVisitControl.msgLarryKainReport"/>
                 </label> <label class="radio inline"> <input type="radio"
                                                              name="reportAction" onClick="toggleDivs();" value="vr"
                 <%=reportAction.equals("vr") || reportAction.equals("")?"checked":""%>>
-                <bean:message
-                        key="oscarReport.oscarReportVisitControl.msgVisitReport"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportVisitControl.msgVisitReport"/>
             </label>
             </div>
         </div>
@@ -151,8 +149,7 @@
                 <select id="providerview" name="providerview"
                         <%=reportAction.equals("lk") ? "disabled" : ""%>>
                     <option value="%">
-                        <bean:message
-                                key="oscarReport.oscarReportVisitControl.msgSelectProviderAll"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportVisitControl.msgSelectProviderAll"/>
                     </option>
                     <%
                         for (ReportProvider rps : reportProviderDao.findByAction("visitreport")) {
@@ -189,8 +186,7 @@
         <div class="control-group">
             <div class="controls">
                 <button type="submit" class="btn btn-primary">
-                    <bean:message
-                            key="oscarReport.oscarReportVisitControl.btnCreateReport"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportVisitControl.btnCreateReport"/>
                 </button>
             </div>
         </div>

@@ -30,9 +30,9 @@
         <td align="left" width="180px" rowspan="2">
             <%if (oscar.OscarProperties.getInstance().isTorontoRFQ() && !oscar.OscarProperties.getInstance().getBooleanProperty("USE_CAISI_LOGO", "true")) {%>
             &nbsp;&nbsp;<img
-                src="<html:rewrite page="/images/QuatroShelter-Logo180.gif"   />"
+                src="<%=request.getContextPath() %>/images/QuatroShelter-Logo180.gif"
                 width="180px" alt="QuatroShelter" border="0"/> <%} else {%> <img
-                src="<html:rewrite page="/images/caisi_1.jpg" />" alt="Caisi"
+                src="${request.contextPath}/images/caisi_1.jpg" alt="Caisi"
                 id="caisilogo" border="0"/> <%}%>
         </td>
         <th rowspan="2">&nbsp;</th>
@@ -47,7 +47,7 @@
                         <c:when test="${'V' eq sessionScope.mnuHome}">
                             <td class="clsMenuCell2" nowrap="nowrap">
 
-                                <div><html:link action="/Home.do" styleClass="clsMenu">Home</html:link>
+                                <div><a href="${pageContext.request.contextPath}/Home.do" styleClass="clsMenu">Home</a>
                                 </div>
                             </td>
                         </c:when>
@@ -55,24 +55,24 @@
                     <c:choose>
                         <c:when test="${'V' eq sessionScope.mnuTask}">
                             <td class="clsMenuCell2" nowrap="nowrap">
-                                <div><html:link action="/PMmodule/Task.do?method=filter"
-                                                styleClass="clsMenu">My Tasks</html:link></div>
+                                <div><a href="${pageContext.request.contextPath}/PMmodule/Task.do?method=filter"
+                                                styleClass="clsMenu">My Tasks</a></div>
                             </td>
                         </c:when>
                     </c:choose>
                     <c:choose>
                         <c:when test="${'V' eq sessionScope.mnuReport}">
                             <td class="clsMenuCell2" nowrap="nowrap">
-                                <div><html:link action="QuatroReport/ReportList.do"
-                                                styleClass="clsMenu">Reports</html:link></div>
+                                <div><a action="QuatroReport/ReportList.do"
+                                                styleClass="clsMenu">Reports</a></div>
                             </td>
                         </c:when>
                     </c:choose>
                     <td class="clsMenuCell2" nowrap="nowrap"><a target="_blank"
                                                                 href='<%=request.getContextPath()%>/help/QuatroShelter.htm'
                                                                 class="clsMenu">Help</a></td>
-                    <td class="clsMenuCell2" nowrap="nowrap"><html:link
-                            action="/login.do?method=logout" styleClass="clsMenu">Logout</html:link>
+                    <td class="clsMenuCell2" nowrap="nowrap"><a
+                            href="${pageContext.request.contextPath}/login.do?method=logout" styleClass="clsMenu">Logout</a>
                     </td>
                 </tr>
             </table>
@@ -88,34 +88,34 @@
                     <c:choose>
                         <c:when test="${'V' eq sessionScope.mnuClient}">
                             <td class="clsMenuCell2" nowrap="nowrap">
-                                <div><html:link
-                                        action="/PMmodule/ClientSearch2.do?client=true"
-                                        styleClass="clsMenu">Client</html:link></div>
+                                <div><a
+                                        href="${pageContext.request.contextPath}/PMmodule/ClientSearch2.do?client=true"
+                                        styleClass="clsMenu">Client</a></div>
                             </td>
                         </c:when>
                     </c:choose>
                     <c:choose>
                         <c:when test="${'V' eq sessionScope.mnuProg}">
                             <td class="clsMenuCell2" nowrap="nowrap">
-                                <div><html:link action="/PMmodule/ProgramManager.do"
-                                                styleClass="clsMenu">Program</html:link></div>
+                                <div><a href="${pageContext.request.contextPath}/PMmodule/ProgramManager.do"
+                                                styleClass="clsMenu">Program</a></div>
                             </td>
                         </c:when>
                     </c:choose>
                     <c:choose>
                         <c:when test="${'V' eq sessionScope.mnuFacility}">
                             <td class="clsMenuCell2" nowrap="nowrap">
-                                <div><html:link
-                                        action="/PMmodule/FacilityManager.do?method=list"
-                                        styleClass="clsMenu">Facility</html:link></div>
+                                <div><a
+                                        href="${pageContext.request.contextPath}/PMmodule/FacilityManager.do?method=list"
+                                        styleClass="clsMenu">Facility</a></div>
                             </td>
                         </c:when>
                     </c:choose>
                     <c:choose>
                         <c:when test="${'V' eq sessionScope.mnuAdmin}">
                             <td class="clsMenuCell2" nowrap="nowrap">
-                                <div><html:link action="/PMmodule/Admin/SysAdmin.do"
-                                                styleClass="clsMenu">Administration</html:link></div>
+                                <div><a href="${pageContext.request.contextPath}/PMmodule/Admin/SysAdmin.do"
+                                                styleClass="clsMenu">Administration</a></div>
                             </td>
                         </c:when>
                     </c:choose>

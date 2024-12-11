@@ -24,9 +24,9 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.InstitutionDao" %>
 <%@page import="org.oscarehr.common.model.Institution" %>
@@ -38,12 +38,12 @@
     List<Institution> institutions = institutionDao.findAll();
 %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Edit Institutions</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
     <script language="javascript">
@@ -54,7 +54,18 @@
     <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
     <body class="BodyStyle" vlink="#0000FF">
 
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
@@ -82,19 +93,18 @@
 
                     <!----Start new rows here-->
                     <tr>
-                        <td><%--bean:message
+                        <td><%--fmt:message
 					key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.msgCheckOff" /--%><br>
-                            <bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.config.EditInstitutions.msgClickOn"/><br>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditInstitutions.msgClickOn"/><br>
 
 
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <html:form action="/oscarEncounter/EditSpecialists">
+                            <form action="${pageContext.request.contextPath}/oscarEncounter/EditSpecialists.do" method="post">
                                 <%-- input type="submit" name="delete"
-                                    value="<bean:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.btnDeleteSpecialist"/>"--%>
+                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.btnDeleteSpecialist"/>"--%>
                             <div class="ChooseRecipientsBox1">
                                 <table>
                                     <tr>
@@ -131,7 +141,7 @@
                     </tr>
                 </table>
                 </div>
-                </html:form></td>
+                </form></td>
         </tr>
         <!----End new rows here-->
 
@@ -147,4 +157,4 @@
     </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -24,17 +24,12 @@
 
 --%>
 
-
-<%@ page import="java.util.*,oscar.oscarReport.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
@@ -49,7 +44,7 @@
 
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
-<html:html lang="en">
+<html>
     <script language="JavaScript" type="text/JavaScript">
         <!--
         function reloadPage(init) {  //reloads the window if Nav4 resized
@@ -95,8 +90,7 @@
     </script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarReport.RptByExample.MsgQueryByExamples"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/></title>
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
         <style type="text/css" media="print">
@@ -164,15 +158,13 @@
         </table>
     </div>
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
-        <html:form action="/oscarReport/RptByExample.do">
+        <form action="${pageContext.request.contextPath}/oscarReport/RptByExample.do" method="post">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarReport.CDMReport.msgReport"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgReport"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><bean:message
-                                key="oscarReport.RptByExample.MsgQueryByExamples"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/></td>
                     </tr>
                 </table>
             </td>
@@ -195,26 +187,27 @@
             <td class="MainTableRightColumn">
                 <table>
                     <tr>
-                        <td><bean:message
-                                key="oscarReport.RptByExample.MsgEnterAQuery"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgEnterAQuery"/></td>
                     </tr>
                     <tr>
-                        <td><html:textarea property="sql" cols="80" rows="4"/></td>
+                        <td><textarea name="sql" cols="80" rows="4"></textarea></td>
                     </tr>
                     <tr>
-                        <td><bean:message key="oscarReport.RptByExample.MsgOr"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgOr"/></td>
                     </tr>
                     <tr>
-                        <td><bean:message
-                                key="oscarReport.RptByExample.MsgSelectFromMyFavorites"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgSelectFromMyFavorites"/></td>
                     </tr>
                     <tr>
-                        <td><html:select property="selectedRecentSearch"
+                        <td><select name="selectedRecentSearch"
                                          style="width:660">
-                            <html:option value="My favorites" disabled="true"/>
-                            <html:options collection="favorites" labelProperty="queryName"
-                                          property="query"/>
-                        </html:select> <input type="button" value="Load Query"
+                            <option value="My favorites" disabled="true"/>
+                            <c:forEach var="favorite" items="${favorites}">
+                                <option value="${favorite.queryName}">
+                                        ${favorite.query}
+                                </option>
+                            </c:forEach>
+                        </select> <input type="button" value="Load Query"
                                               onClick="write2TextArea(); return false;"></td>
                     </tr>
                     <tr>
@@ -239,6 +232,6 @@
         </tr>
     </table>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

@@ -26,12 +26,12 @@
 
 <script type="text/javascript">
     function popupBedReservationChangeReport(reservedBedId) {
-        url = '<html:rewrite page="/PMmodule/ProgramManagerView.do?method=viewBedReservationChangeReport&reservedBedId="/>';
+        url = '${request.contextPath}/PMmodule/ProgramManagerView.do?method=viewBedReservationChangeReport&reservedBedId=';
         window.open(url + reservedBedId, 'bedHistoryReport', 'width=800,height=400');
     }
 
     function popupBedCheckReport(programId) {
-        url = '<html:rewrite page="/PMmodule/ProgramManagerView.do?method=viewBedCheckReport&programId="/>';
+        url = '${request.contextPath}/PMmodule/ProgramManagerView.do?method=viewBedCheckReport&programId=';
         window.open(url + programId, 'bedCheckReport', 'width=1000,height=600,scrollbars=1');
     }
 
@@ -75,14 +75,14 @@
         }
         //alert("switchBeds(): switchBed1 2= " + theForm.switchBed1.value);
         //alert("switchBeds(): switchBed2 2= " + theForm.switchBed2.value);
-        document.forms[0].action = '<html:rewrite action="/PMmodule/ProgramManagerView.do?method=switch_beds" />';
+        document.forms[0].action = '<%=request.getContextPath() %>/PMmodule/ProgramManagerView.do?method=switch_beds';
         document.forms[0].submit();
     }
 
 </script>
 
-<html:hidden property="switchBed1"/>
-<html:hidden property="switchBed2"/>
+<input type="hidden" name="switchBed1" id="switchBed1"/>
+<input type="hidden" name="switchBed2" id="switchBed2"/>
 
 <table width="100%" summary="View program reserved beds">
     <tr>
@@ -156,7 +156,7 @@
                            readonly="readonly"
                            value="<c:out value="${reservedBed.strReservationEnd}"/>"/>
 
-                    <img align="top" src="<html:rewrite page="/images/calendar.gif" />"
+                    <img align="top" src="${request.contextPath}/images/calendar.gif"
                          id="strReservationEnd_<c:out value="${reservedBed_rowNum - 1}" />_field-button"
                          alt="Until Calendar" title="Until Calendar"/>
 
@@ -198,8 +198,7 @@
         <td>Generate: <a href="javascript:void(0)"
                          onclick="popupBedCheckReport('<c:out value="${id}"/>')">Bed Check
             Report</a> <input type="button" name="bedSwitch" onclick="switchBeds()"
-                              value="Switch Beds"/> <html:submit
-                onclick="programManagerViewForm.method.value='saveReservedBeds';">Save Changes</html:submit>
+                              value="Switch Beds"/> <input type="submit" name="submit" value="Save Changes" onclick="programManagerViewForm.method.value='saveReservedBeds';" />
         </td>
     </tr>
     <tr>

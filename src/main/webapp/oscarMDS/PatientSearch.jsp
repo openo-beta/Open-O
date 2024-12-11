@@ -26,9 +26,9 @@
 <%@ page import="java.util.*, java.sql.*,java.net.*, oscar.oscarDB.DBPreparedHandler, oscar.MyDateFormat, oscar.Misc" %>
 <%@ page import="oscar.oscarDemographic.data.DemographicMerged" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -63,8 +63,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message
-            key="oscarMDS.segmentDisplay.patientSearch.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.title"/></title>
     <script language="JavaScript">
         <!--
         function setfocus() {
@@ -114,14 +113,11 @@
                     face="Verdana" color="#0000FF"><b><i>Search</i></b></font></td>
             <td width="10%" nowrap><font size="1" face="Verdana"
                                          color="#0000FF"> <input type="radio" checked
-                                                                 name="search_mode" value="search_name"> <bean:message
-                    key="oscarMDS.segmentDisplay.patientSearch.formName"/> </font></td>
+                                                                 name="search_mode" value="search_name"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.formName"/> </font></td>
             <td nowrap><font size="1" face="Verdana" color="#0000FF">
-                <input type="radio" name="search_mode" value="search_phone"> <bean:message
-                    key="oscarMDS.segmentDisplay.patientSearch.formPhone"/> </font></td>
+                <input type="radio" name="search_mode" value="search_phone"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.formPhone"/> </font></td>
             <td nowrap><font size="1" face="Verdana" color="#0000FF">
-                <input type="radio" name="search_mode" value="search_dob"> <bean:message
-                    key="oscarMDS.segmentDisplay.patientSearch.formDOB"/> </font></td>
+                <input type="radio" name="search_mode" value="search_dob"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.formDOB"/> </font></td>
             <td valign="middle" rowspan="2" ALIGN="left"><input type="text"
                                                                 NAME="keyword" SIZE="17" MAXLENGTH="100"
                                                                 value="<%=request.getParameter("keyword")%>"> <INPUT
@@ -133,17 +129,16 @@
                                                                                                   value="Search ">
                 <input type="SUBMIT"
                        name="displaymode"
-                       value="<bean:message key="oscarMDS.segmentDisplay.patientSearch.btnSearch"/>"
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.btnSearch"/>"
                        size="17"></td>
         </tr>
         <tr>
             <td nowrap><font size="1" face="Verdana" color="#0000FF">
                 <input type="radio" name="search_mode" value="search_address">
-                <bean:message key="oscarMDS.segmentDisplay.patientSearch.formAddress"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.formAddress"/>
             </font></td>
             <td nowrap><font size="1" face="Verdana" color="#0000FF">
-                <input type="radio" name="search_mode" value="search_hin"> <bean:message
-                    key="oscarMDS.segmentDisplay.patientSearch.formHIN"/> </font></td>
+                <input type="radio" name="search_mode" value="search_hin"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.formHIN"/> </font></td>
             <td>&nbsp;</td>
         </tr>
     </form>
@@ -151,8 +146,7 @@
 
 <table width="95%" border="0">
     <tr>
-        <td align="left"><font size="-1"> <i><bean:message
-                key="oscarMDS.segmentDisplay.patientSearch.msgResults"/></i> : <%=request.getParameter("keyword")%>
+        <td align="left"><font size="-1"> <i><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgResults"/></i> : <%=request.getParameter("keyword")%>
         </font></td>
     </tr>
 </table>
@@ -190,24 +184,15 @@
             <input type="hidden" name="labType"
                    value="<%=request.getParameter("labType")%>"/>
             <tr bgcolor="#339999">
-                <TH align="center" width="10%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgPatientId"/></b></TH>
-                <TH align="center" width="20%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgLastName"/></b></TH>
-                <TH align="center" width="20%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgFirstName"/></b></TH>
-                <TH align="center" width="5%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgAge"/></b></TH>
-                <TH align="center" width="10%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgRosterStatus"/></b></TH>
-                <TH align="center" width="10%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgPatientStatus"/></b></TH>
-                <TH align="center" width="5%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgSex"/></B></TH>
-                <TH align="center" width="10%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgDOB"/></B></TH>
-                <TH align="center" width="10%"><b><bean:message
-                        key="oscarMDS.segmentDisplay.patientSearch.msgDoctor"/></B></TH>
+                <TH align="center" width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgPatientId"/></b></TH>
+                <TH align="center" width="20%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgLastName"/></b></TH>
+                <TH align="center" width="20%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgFirstName"/></b></TH>
+                <TH align="center" width="5%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgAge"/></b></TH>
+                <TH align="center" width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgRosterStatus"/></b></TH>
+                <TH align="center" width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgPatientStatus"/></b></TH>
+                <TH align="center" width="5%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgSex"/></B></TH>
+                <TH align="center" width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgDOB"/></B></TH>
+                <TH align="center" width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgDoctor"/></B></TH>
             </tr>
 
             <%
@@ -401,19 +386,18 @@
                value="<%=request.getParameter("labType")%>"/> <%
             if (nLastPage >= 0) {
         %> <input type="submit" name="submit"
-                  value="<bean:message key="oscarMDS.segmentDisplay.patientSearch.btnLastPage"/>"
+                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.btnLastPage"/>"
                   onClick="last()"> <%
             }
             if (nItems == Integer.parseInt(strLimit2)) {
         %> <input type="submit" name="submit"
-                  value="<bean:message key="oscarMDS.segmentDisplay.patientSearch.btnNextPage"/>"
+                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.btnNextPage"/>"
                   onClick="next()"> <%
             }
         %>
     </form>
 
-    <bean:message
-            key="oscarMDS.segmentDisplay.patientSearch.msgSearchMessage"/></center>
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.patientSearch.msgSearchMessage"/></center>
 </body>
 </html>
 <%!

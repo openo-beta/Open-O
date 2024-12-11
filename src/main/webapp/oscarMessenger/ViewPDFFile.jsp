@@ -28,8 +28,8 @@
         import="oscar.oscarMessenger.docxfer.send.*, oscar.oscarMessenger.docxfer.util.*, oscar.util.*" %>
 <%@ page import="java.util.*, org.w3c.dom.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -49,12 +49,13 @@
     <% response.sendRedirect("index.jsp"); %>
 </c:if>
 <c:if test="${not empty sessionScope.msgSessionBean}">
-    <bean:define id="bean"
-                 type="oscar.oscarMessenger.pageUtil.MsgSessionBean"
-                 name="msgSessionBean" scope="session"/>
-    <c:if test="${bean.valid == false}">
-        <% response.sendRedirect("index.jsp"); %>
-    </c:if>
+    <% 
+        // Directly accessing the bean from the session
+        oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) session.getAttribute("msgSessionBean");
+        if (!bean.isValid()) {
+            response.sendRedirect("index.jsp");
+        }
+    %>
 </c:if>
 <%
     String pdfAttch = (String) request.getAttribute("PDFAttachment");

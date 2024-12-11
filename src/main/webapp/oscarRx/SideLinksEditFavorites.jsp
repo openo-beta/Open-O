@@ -31,7 +31,7 @@
 
 <%@page import="oscar.oscarRx.data.RxPatientData" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean2 = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
@@ -43,17 +43,14 @@
 %>
 
 <div class="PropSheetMenu">
-    <p class="PropSheetLevel1CurrentItem"><bean:message key="oscarRx.sideLinks.msgSpecial"/></p>
-    <p class="PropSheetMenuItemLevel1"><a href="SelectPharmacy.jsp"><bean:message
-            key="oscarRx.sideLinks.msgEditPharmacy"/></a></p>
-    <p class="PropSheetMenuItemLevel1"><a href="EditFavorites.jsp"><bean:message
-            key="oscarRx.sideLinks.msgEditFavorites"/></a></p>
-    <p class="PropSheetMenuItemLevel1"><a href="CopyFavorites.jsp"><bean:message
-            key="oscarRx.sideLinks.msgCopyFavorites"/></a></p>
+    <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgSpecial"/></p>
+    <p class="PropSheetMenuItemLevel1"><a href="SelectPharmacy.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgEditPharmacy"/></a></p>
+    <p class="PropSheetMenuItemLevel1"><a href="EditFavorites.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgEditFavorites"/></a></p>
+    <p class="PropSheetMenuItemLevel1"><a href="CopyFavorites.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgCopyFavorites"/></a></p>
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
 
-        <p class="PropSheetLevel1CurrentItem<%=alle%>"><bean:message key="oscarRx.sideLinks.msgAllergies"/></p>
+        <p class="PropSheetLevel1CurrentItem<%=alle%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></p>
         <p class="PropSheetMenuItemLevel1">
                     <%
 
@@ -69,7 +66,7 @@
     </security:oscarSec>
 
 
-    <p class="PropSheetLevel1CurrentItem"><bean:message key="oscarRx.sideLinks.msgFavorites"/></p>
+    <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/></p>
     <p class="PropSheetMenuItemLevel1">
             <%
         oscar.oscarRx.data.RxPrescriptionData.Favorite[] favorites

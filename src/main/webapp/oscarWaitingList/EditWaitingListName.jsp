@@ -23,25 +23,16 @@
     Ontario, Canada
 
 --%>
-
 <!DOCTYPE html>
-
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
 <%@page import="java.util.*" %>
-<%@page import="org.apache.struts.action.*" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
-<%@page import="org.owasp.encoder.Encode" %>
 <%@page import="oscar.oscarWaitingList.bean.*" %>
-<%@page import="oscar.util.*" %>
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<html>
     <head>
         <script src="${pageContext.request.contextPath}/js/global.js"></script>
         <!-- Bootstrap 2.3.1 -->
@@ -87,15 +78,14 @@
     %>
 
 
-    <html:form
-            action="/oscarWaitingList/WLEditWaitingListNameAction.do?edit=Y">
-        <html:hidden property="actionChosen"/>
+    <form action="${pageContext.request.contextPath}/oscarWaitingList/WLEditWaitingListNameAction.do?edit=Y.do" method="post">
+        <input type="hidden" name="actionChosen" id="actionChosen"/>
 
-        <h3>&nbsp;&nbsp;<bean:message key="oscarwaitinglist.displayPatientWaitingList.waitinglist"/></h3>
+        <h3>&nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarwaitinglist.displayPatientWaitingList.waitinglist"/></h3>
         <%
             if (message != null && !message.equals("")) {
         %>
-        <div class="alert"><bean:message key="<%=message%>"/></div>
+        <div class="alert"><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=message%>"/></div>
         <%
             }
         %>
@@ -103,13 +93,11 @@
             <div class="row">
                 <div class="span6">
                     <fieldset>
-                        <legend><bean:message key="marc-hi.affinityDomains.manageExisting"/></legend>
-                        <label class="control-label" for="selectedWL"><bean:message
-                                key="oscarMessenger.config.MessengerAdmin.rename"/></label>
+                        <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="marc-hi.affinityDomains.manageExisting"/></legend>
+                        <label class="control-label" for="selectedWL"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.config.MessengerAdmin.rename"/></label>
                         <div class="controls">
                             <select name="selectedWL" id="selectedWL">
-                                <option value=""><bean:message
-                                        key="demographic.demographicaddrecordhtm.cbselectwaitinglist"/></option>
+                                <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.cbselectwaitinglist"/></option>
                                 <%
                                     for (int i = 0; i < allWaitingListName.size(); i++) {
                                         WLWaitingListNameBean wLBean = (WLWaitingListNameBean) allWaitingListName.get(i);
@@ -122,32 +110,29 @@
                                 <%}%>
                             </select>
                             <input type="text" class="input-medium" name="wlChangedName" placeholder="" value="">
-                            <input type="submit" class="btn" value="<bean:message key="global.btnSave" />"
+                            <input type="submit" class="btn" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSave"/>"
                                    onclick="resetFields('change');document.forms[0].actionChosen.value='change'">
                         </div> <!-- class="controls" -->
                     </fieldset>
                 </div> <!-- class="span4" -->
                 <div class="span6">
                     <fieldset>
-                        <legend><bean:message key="oscarMDS.search.formReportStatusNew"/></legend>
-                        <label class="control-label" for="wlNewName"><bean:message
-                                key="oscarMessenger.config.MessengerAdmin.newGroup"/></label>
+                        <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.search.formReportStatusNew"/></legend>
+                        <label class="control-label" for="wlNewName"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.config.MessengerAdmin.newGroup"/></label>
                         <div class="controls">
-                            <input type="text" class="input-medium" name="wlNewName" placeholder="" value="">
-                            <input type="submit" class="btn" value="<bean:message key="global.btnSave" />"
+                            <input type="text" class="input-medium" name="wlNewName" id="wlNewName" placeholder="" value="">
+                            <input type="submit" class="btn" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSave"/>"
                                    onclick="resetFields('create');document.forms[0].actionChosen.value='create'">
                         </div> <!-- class="controls" -->
                     </fieldset>
                 </div> <!-- class="span4" -->
                 <div class="span6">
                     <fieldset>
-                        <legend><bean:message key="global.btnDelete"/></legend>
-                        <label class="control-label" for="selectedWL2"><bean:message
-                                key="global.btnDeleteList"/></label>
+                        <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnDelete"/></legend>
+                        <label class="control-label" for="selectedWL2"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnDeleteList"/></label>
                         <div class="controls">
-                            <select name="selectedWL2" id="selectedWL">
-                                <option value=""><bean:message
-                                        key="demographic.demographicaddrecordhtm.cbselectwaitinglist"/></option>
+                            <select name="selectedWL2" id="selectedWL2">
+                                <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.cbselectwaitinglist"/></option>
                                 <%
                                     for (int i = 0; i < allWaitingListName.size(); i++) {
                                         WLWaitingListNameBean wLBean = (WLWaitingListNameBean) allWaitingListName.get(i);
@@ -159,7 +144,7 @@
                                 </option>
                                 <%}%>
                             </select>
-                            <input type="submit" class="btn btn-warning" value="<bean:message key="global.btnDelete" />"
+                            <input type="submit" class="btn btn-warning" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnDelete"/>"
                                    onclick="resetFields('remove');document.forms[0].actionChosen.value='remove'">
                         </div> <!-- class="controls" -->
                     </fieldset>
@@ -168,10 +153,10 @@
         </div>
         <!-- end editWrapper -->
         <div>
-            <input type="reset" class="btn btn-link" value='<bean:message key="global.btnClose" />'
+            <input type="reset" class="btn btn-link" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>'
                    onClick="window.close();">
         </div>
-    </html:form>
+    </form>
 
     </body>
-</html:html>
+</html>

@@ -30,15 +30,12 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@page import="java.util.*,org.oscarehr.learning.web.CourseManagerAction,org.oscarehr.common.model.SecRole" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-
-<html:html lang="en">
+<html>
 
     <head>
-        <title><bean:message key="oscarLearning.studentImport.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarLearning.studentImport.title"/></title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
     </head>
 
@@ -47,7 +44,7 @@
 
     <div class="container-fluid">
 
-        <h3><bean:message key="admin.admin.learning.importStudent"/></h3>
+        <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.learning.importStudent"/></h3>
         <div class="well">
 
 
@@ -68,14 +65,14 @@
                 <p>lastname,firstname,username,password,pin,student#</p>
                 <h4>Upload CSV file:</h4>
 
-                <html:form action="/oscarLearning/StudentImport.do?method=uploadFile" method="post"
+                <form action="${pageContext.request.contextPath}/oscarLearning/StudentImport.do?method=uploadFile.do" method="post"
                            enctype="multipart/form-data">
-                    <html:file property="file"></html:file>
+                    <input type="file" name="file" id="file" size="35"/>
                     <br/>
-                    <html:submit/>
-                </html:form>
+                    <input type="submit" name="submit" value="Submit" />
+                </form>
             </div>
         </div>
     </div>
     </body>
-</html:html>
+</html>

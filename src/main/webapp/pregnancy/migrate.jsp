@@ -49,7 +49,7 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 
 
-<html:html lang="en">
+<html>
     <head>
         <title>Migration Tool</title>
 
@@ -126,4 +126,4 @@
         </fieldset>
     </form>
 
-</html:html>
+</html>

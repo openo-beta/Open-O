@@ -23,26 +23,13 @@
 
 package org.oscarehr.PMmodule.service;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.util.LabelValueBean;
 import org.oscarehr.PMmodule.dao.SurveySecurityDao;
 import org.oscarehr.PMmodule.dao.SurveySecurityDaoImpl;
 import org.oscarehr.PMmodule.web.reports.custom.CustomReportDataSource;
 import org.oscarehr.PMmodule.web.reports.custom.Item;
-import org.oscarehr.common.dao.CaisiFormDao;
-import org.oscarehr.common.dao.CaisiFormDataDao;
-import org.oscarehr.common.dao.CaisiFormDataTmpSaveDao;
-import org.oscarehr.common.dao.CaisiFormInstanceDao;
-import org.oscarehr.common.dao.CaisiFormInstanceTmpSaveDao;
-import org.oscarehr.common.model.CaisiForm;
-import org.oscarehr.common.model.CaisiFormData;
-import org.oscarehr.common.model.CaisiFormDataTmpSave;
-import org.oscarehr.common.model.CaisiFormInstance;
-import org.oscarehr.common.model.CaisiFormInstanceTmpSave;
+import org.oscarehr.common.dao.*;
+import org.oscarehr.common.model.*;
 import org.oscarehr.surveymodel.Page;
 import org.oscarehr.surveymodel.Question;
 import org.oscarehr.surveymodel.Section;
@@ -51,6 +38,11 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import oscar.util.LabelValueBean;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component(value = "surveyManager2")
 public class SurveyManager implements CustomReportDataSource {

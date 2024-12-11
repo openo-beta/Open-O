@@ -40,8 +40,8 @@
 %>
 
 <%@ include file="../admin/dbconnection.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@page import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*" errorPage="/errorpage.jsp" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
@@ -88,10 +88,10 @@
     String xml_appointment_date = request.getParameter("xml_appointment_date") == null ? "" : request.getParameter("xml_appointment_date");
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="oscarReport.oscarReportAgeSex.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.title"/></title>
         <link rel="stylesheet" href="oscarReport.css">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
         <script language="JavaScript">
@@ -125,13 +125,12 @@
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr bgcolor="#000000">
             <td height="40" width="10%"><input type='button' name='print'
-                                               value='<bean:message key="global.btnPrint"/>'
+                                               value='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>'
                                                onClick='window.print()'></td>
             <td width="90%" align="left">
                 <p><font face="Verdana, Arial, Helvetica, sans-serif"
                          color="#FFFFFF"><b><font
-                        face="Arial, Helvetica, sans-serif" size="4"><bean:message
-                        key="oscarReport.oscarReportAgeSex.msgOscarReport"/></font></b></font></p>
+                        face="Arial, Helvetica, sans-serif" size="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgOscarReport"/></font></b></font></p>
             </td>
         </tr>
     </table>
@@ -141,8 +140,7 @@
             <tr>
                 <td colspan="3">
                     <div align="center"><font face="Arial, Helvetica, sans-serif"
-                                              size="2"><b><bean:message
-                            key="oscarReport.oscarReportAgeSex.msgAgeSexRep"/><font
+                                              size="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgAgeSexRep"/><font
                             color="#333333"></font></b></font></div>
                 </td>
             </tr>
@@ -152,24 +150,19 @@
                                                                    color="#333333"
                                                                    face="Verdana, Arial, Helvetica, sans-serif">
                         <input type="radio" name="reportAction" value="RO"
-                                <%=reportAction.equals("RO")?"checked":""%>> <bean:message
-                            key="oscarReport.oscarReportAgeSex.formRostered"/> <input
+                                <%=reportAction.equals("RO")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.formRostered"/> <input
                             type="radio" name="reportAction" value="NR"
-                            <%=reportAction.equals("NR")?"checked":""%>> <bean:message
-                            key="oscarReport.oscarReportAgeSex.formNotRostered"/> <input
+                            <%=reportAction.equals("NR")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.formNotRostered"/> <input
                             type="radio" name="reportAction" value="TO"
-                            <%=reportAction.equals("TO")?"checked":""%>> <bean:message
-                            key="oscarReport.oscarReportAgeSex.formTotal"/></font> <font
+                            <%=reportAction.equals("TO")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.formTotal"/></font> <font
                             face="Arial, Helvetica, sans-serif" size="1"><b> </b></font></font></div>
                 </td>
                 <td width="40%">
                     <div align="right"></div>
                     <div align="center"><font
-                            face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#333333"><b><bean:message
-                            key="oscarReport.oscarReportAgeSex.formSelectProvider"/> </b></font> <select
+                            face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#333333"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.formSelectProvider"/> </b></font> <select
                             name="providerview">
-                        <option value="" <%=providerview.equals("all") ? "selected" : ""%>>-------<bean:message
-                                key="oscarReport.oscarReportAgeSex.formSelectProvider"/> ----------
+                        <option value="" <%=providerview.equals("all") ? "selected" : ""%>>-------<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.formSelectProvider"/> ----------
                         </option>
                         <%
                             // builds provider dropdown
@@ -195,7 +188,7 @@
                 <td width="20%"><font color="#333333" size="2"
                                       face="Verdana, Arial, Helvetica, sans-serif"> <input
                         type="submit" name="Submit"
-                        value="<bean:message key="oscarReport.oscarReportAgeSex.btnCreate"/>">
+                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnCreate"/>">
                 </font></td>
             </tr>
             <tr>
@@ -203,12 +196,10 @@
                     <div align="left"><font color="#003366"><font
                             face="Verdana, Arial, Helvetica, sans-serif" size="1"><b>
 
-                        <font color="#333333"><bean:message
-                                key="oscarReport.oscarReportAgeSex.msgServiceDate"/></font></b></font></font> &nbsp;
+                        <font color="#333333"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgServiceDate"/></font></b></font></font> &nbsp;
                         &nbsp; <font
                                 size="1" face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                onClick="openBrWindow('../billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')"><bean:message
-                                key="oscarReport.oscarReportAgeSex.btnBegin"/>:</a></font> <input type="text"
+                                                                                onClick="openBrWindow('../billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnBegin"/>:</a></font> <input type="text"
                                                                                                   name="xml_vdate"
                                                                                                   value="<%=xml_vdate%>">
                     </div>
@@ -216,8 +207,7 @@
                 <td colspan='2'>
                     <div align="left"><font size="1"
                                             face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                   onClick="openBrWindow('../billing/billingCalendarPopup.jsp?type=end&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')"><bean:message
-                            key="oscarReport.oscarReportAgeSex.btnEnd"/>:</a></font> <input type="text"
+                                                                                   onClick="openBrWindow('../billing/billingCalendarPopup.jsp?type=end&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnEnd"/>:</a></font> <input type="text"
                                                                                             name="xml_appointment_date"
                                                                                             value="<%=xml_appointment_date%>">
                     </div>
@@ -263,19 +253,14 @@
         BigDecimal LineTotal = new BigDecimal(0).setScale(0, BigDecimal.ROUND_HALF_UP);
         BigDecimal LinePerc = new BigDecimal(0).setScale(2, BigDecimal.ROUND_HALF_UP);
     %>
-    <pre><font face="Arial, Helvetica, sans-serif" size="2"> <bean:message
-            key="oscarReport.oscarReportAgeSex.msgDate"/>: <%=curYear%>-<%=curMonth%>-<%=curDay%> <bean:message
-            key="oscarReport.oscarReportAgeSex.msgUnit"/>: <%=clinic%> <bean:message
-            key="oscarReport.oscarReportAgeSex.msgPhysician"/>: <%=providerview%></font></pre>
+    <pre><font face="Arial, Helvetica, sans-serif" size="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgDate"/>: <%=curYear%>-<%=curMonth%>-<%=curDay%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgUnit"/>: <%=clinic%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgPhysician"/>: <%=providerview%></font></pre>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr bgcolor="#CCCCFF">
             <td>
-                <div align="center"><bean:message
-                        key="oscarReport.oscarReportAgeSex_noroster.msgAge"/></div>
+                <div align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex_noroster.msgAge"/></div>
             </td>
             <td colspan='12'>
-                <div align="center">---------------------------<bean:message
-                        key="oscarReport.oscarReportAgeSex_noroster.msgFemale"/>
+                <div align="center">---------------------------<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex_noroster.msgFemale"/>
                     ---------------------------------
                 </div>
             </td>
@@ -283,22 +268,19 @@
                 <div align="center"></div>
             </td>
             <td colspan='12'>
-                <div align="center">----------------------------<bean:message
-                        key="oscarReport.oscarReportAgeSex_noroster.msgMale"/>
+                <div align="center">----------------------------<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex_noroster.msgMale"/>
                     ----------------------------------
                 </div>
             </td>
             <td colspan='2'>
-                <div align="center">---<bean:message
-                        key="oscarReport.oscarReportAgeSex_noroster.msgTotal"/> ---
+                <div align="center">---<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex_noroster.msgTotal"/> ---
                 </div>
 
             </td>
         </tr>
         <tr bgcolor="#CCCCFF">
             <td width="10%">
-                <div align="center"><bean:message
-                        key="oscarReport.oscarReportAgeSex_noroster.msgGroup"/></div>
+                <div align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex_noroster.msgGroup"/></div>
             </td>
             <td width="8%">
                 <div align="right">####</div>
@@ -509,8 +491,7 @@
             } %>
         <tr bgcolor="#CCCCFF">
             <td width="10%">
-                <div align="center"><bean:message
-                        key="oscarReport.oscarReportAgeSex_noroster.msgTotal"/></div>
+                <div align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex_noroster.msgTotal"/></div>
             </td>
             <td width="8%">
                 <div align="right"><%=fTotal.toString().substring(0, fTotal.toString().indexOf("."))%>
@@ -606,7 +587,7 @@
 
 
     </body>
-</html:html>
+</html>
 
 <%! public String WriteMaleBar(int x) {
     String content = "";

@@ -60,11 +60,11 @@
     remove the password.</h5>
 <nested:form action="/CaseManagementView">
     <input type="hidden" name="method" value="do_unlock"/>
-    <html:hidden property="noteId"/>
+    <input type="hidden" name="noteId" id="noteId"/>
     <table>
         <tr>
             <td class="fieldTitle">Password:</td>
-            <td class="fieldValue"><html:password property="password"/></td>
+            <td class="fieldValue"><input type="password" name="password" id="password"/></td>
         </tr>
         <tr>
             <td class="fieldValue" colspan="2"><input type="button"

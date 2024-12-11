@@ -30,7 +30,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -134,18 +134,17 @@
     <input type="hidden" name="method" value="RemoveFromStudy">
     <input type="hidden" name="studyId" value="<%=studyId%>">
     <div class="well">
-        <h4><%=Encode.forHtml(studyDetails.getStudyName())%>&nbsp; <bean:message
-                key="demographic.demographicexport.providers"/></h4>
+        <h4><%=Encode.forHtml(studyDetails.getStudyName())%>&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicexport.providers"/></h4>
         <!-- do not alter the value of this submit as it informs the action of the form -->
         <input type="submit" class="btn" name="submit" value="Remove Provider"
-               title="<bean:message key="eform.groups.removeFromGroup" />" onclick="return checkForm('Provider');">
+               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.removeFromGroup"/>" onclick="return checkForm('Provider');">
         <table id="providerTable" class="table table-striped table-condensed table-hover" style="width:500px;">
             <thead>
             <tr>
-                <th title="<bean:message key="eform.groups.removeFromGroup" />"><bean:message key="REMOVE"/>&nbsp;
+                <th title="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.removeFromGroup"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>&nbsp;
                     <input type="checkbox" onclick="selectAll('Provider')"></th>
-                <th><bean:message key="report.demographicstudyreport.msgProvider"/></th>
-                <th><bean:message key="admin.providersearch.formName"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="report.demographicstudyreport.msgProvider"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearch.formName"/></th>
             </tr>
             </thead>
             <tbody>
@@ -168,20 +167,19 @@
 
     </div>
     <div class="well">
-        <h4><%=studyDetails.getStudyName()%> &nbsp; <bean:message
-                key="oscarEncounter.formIntakeHx.academicEnrollment"/></h4>
+        <h4><%=studyDetails.getStudyName()%> &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.academicEnrollment"/></h4>
         <!-- do not alter the value of this submit as it informs the action of the form -->
         <input type="submit" class="btn" name="submit" value="Remove Demographic"
-               title="<bean:message key="eform.groups.removeFromGroup" />" onclick="return checkForm('Demographic');">
+               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.removeFromGroup"/>" onclick="return checkForm('Demographic');">
         <table id="demoTable" class="table table-striped table-condensed table-hover">
             <thead>
             <tr>
-                <th><bean:message key="REMOVE"/> &nbsp; <input type="checkbox" onclick="selectAll('Demographic')"></th>
-                <th><bean:message key="oscarEncounter.search.demographicSearch.msgDemoN"/></th>
-                <th><bean:message key="admin.providersearch.formName"/></th>
-                <th><bean:message key="oscarEncounter.search.demographicSearch.msgDOB"/></th>
-                <th><bean:message key="oscarEncounter.search.demographicSearch.msgAddr"/></th>
-                <th><bean:message key="dms.incomingDocs.MRP"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/> &nbsp; <input type="checkbox" onclick="selectAll('Demographic')"></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.search.demographicSearch.msgDemoN"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearch.formName"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.search.demographicSearch.msgDOB"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.search.demographicSearch.msgAddr"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.incomingDocs.MRP"/></th>
             </tr>
             </thead>
             <tbody>

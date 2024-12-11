@@ -27,20 +27,20 @@
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page
         import="java.lang.*,oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarEncounter.Measurements.msgProcessEditMeasurementGroupAction"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgProcessEditMeasurementGroupAction"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <script language="javascript">
@@ -56,12 +56,23 @@
 
     <link rel="stylesheet" type="text/css" href="../styles.css">
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <table>
         <form action="SetupEditMeasurementGroup.do">
             <tr>
                 <input type="hidden" name="value(groupName)"
-                       value="<bean:write name="groupName"/>"/>
+                       value="<c:out value="${groupName}"/>"/>
                 <td>Processing...</td>
                 <script>
                     submitForm();
@@ -72,4 +83,4 @@
 
 
     </body>
-</html:html>
+</html>

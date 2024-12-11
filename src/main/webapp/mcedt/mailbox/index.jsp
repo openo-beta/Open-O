@@ -31,11 +31,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.*,org.oscarehr.integration.mcedt.mailbox.ActionUtils" %>
-
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -191,7 +188,7 @@
     <div id="first"
          class="greyBox" <%=((tab == null || tab.equals("first")) ? "style='display:block;'" : "style='display:none;'") %> >
         <div class="center">
-            <html:form action="/mcedt/kaimcedt" method="post" styleId="form">
+            <form action="${pageContext.request.contextPath}/mcedt/kaimcedt.do" method="post" styleId="form">
                 <table>
                     <tr>
                         <input id="method" name="method" type="hidden" value=""/>
@@ -236,7 +233,7 @@
                         </div>
                     </tr>
                 </table>
-            </html:form>
+            </form>
         </div>
     </div>
     <div id="upload"

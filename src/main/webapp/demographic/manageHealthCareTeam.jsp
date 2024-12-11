@@ -25,7 +25,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List, org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.oscarehr.common.web.ContactAction" %>
+<%@ page import="org.oscarehr.common.web.Contact2Action" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
@@ -72,7 +72,7 @@
     <%-- DETACHED VIEW ENABLED  --%>
     <c:if test="${ param.view eq 'detached' }">
 
-        <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
         <!DOCTYPE html>
@@ -359,11 +359,11 @@
                             <c:out value="${ demographic.age }"/>&nbsp;years
                         </td>
                         <td style="text-align: right">
-                            <oscar:help keywords="contact" key="app.top1"/> |
+
                             <a href="javascript:popupStart(300,400,'About.jsp')">
-                                <bean:message key="global.about"/></a> | <a
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
                                 href="javascript:popupStart(300,400,'License.jsp')">
-                            <bean:message key="global.license"/></a></td>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>

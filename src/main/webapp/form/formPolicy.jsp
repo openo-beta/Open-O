@@ -40,9 +40,7 @@
 
 <!DOCTYPE html>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="oscar.form.FrmRecord" %>
 <%@ page import="oscar.form.FrmRecordFactory" %>
 <%@ page import="org.oscarehr.util.LocaleUtils" %>
@@ -67,7 +65,7 @@
 
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -94,7 +92,7 @@
 
     <body bgproperties="fixed" topmargin="0" leftmargin="0" rightmargin="0" onload="window.resizeTo(768,768)"
           bgcolor="#eeeeee">
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=formId%>"/>
@@ -159,6 +157,6 @@
             </tr>
         </table>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

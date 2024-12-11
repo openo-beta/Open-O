@@ -26,8 +26,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+
 <%@ page import="oscar.oscarReport.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.*, java.sql.*, java.text.*, java.net.*" %>
 <%
@@ -38,14 +37,13 @@
     int curDay = now.get(Calendar.DAY_OF_MONTH);
 %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarReport.CDMReport.msgFrequencyOfRelevantTestsBeingPerformed"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgFrequencyOfRelevantTestsBeingPerformed"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
     <script language="javascript">
@@ -87,24 +85,30 @@
           href="../../oscarEncounter/encounterStyles.css">
     <body topmargin="0" leftmargin="0" vlink="#0000FF"
           onload="window.focus();">
-    <html:errors/>
-    <html:form
-            action="oscarReport/oscarMeasurements/InitializeFrequencyOfRelevantTestsCDMReport.do">
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
+    <form action="${pageContext.request.contextPath}/oscarReport/oscarMeasurements/InitializeFrequencyOfRelevantTestsCDMReport.do" method="post">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><bean:message
-                        key="oscarReport.CDMReport.msgReport"/></td>
+                <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgReport"/></td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><bean:message key="oscarReport.CDMReport.msgTitle"/>: <bean:write
-                                    name="CDMGroup"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgTitle"/>: <c:out value="${CDMGroup}"/></td>
                             <td></td>
-                            <td style="text-align: right"><oscar:help keywords="report" key="app.top1"/> | <a
-                                    href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                    key="global.about"/></a> | <a
-                                    href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                    key="global.license"/></a></td>
+                            <td style="text-align: right"><a
+                                    href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                    href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                         </tr>
                     </table>
                 </td>
@@ -117,15 +121,12 @@
                             <td>
                                 <table>
                                     <tr>
-                                        <td class="nameBox" colspan='4'><bean:message
-                                                key="oscarReport.CDMReport.msgNumberOfPatientsSeen"/></td>
+                                        <td class="nameBox" colspan='4'><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgNumberOfPatientsSeen"/></td>
                                     </tr>
                                     <tr>
                                         <th align="left" class="subTitles" width="2"></th>
-                                        <th align="left" class="subTitles" width="120"><bean:message
-                                                key="oscarReport.CDMReport.msgStartDate"/></th>
-                                        <th align="left" class="subTitles" width="120"><bean:message
-                                                key="oscarReport.CDMReport.msgEndDate"/></th>
+                                        <th align="left" class="subTitles" width="120"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgStartDate"/></th>
+                                        <th align="left" class="subTitles" width="120"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgEndDate"/></th>
                                         <th align="left" class="subTitles" width="650"></th>
                                     </tr>
                                     <tr>
@@ -134,12 +135,12 @@
                                                 checked="checked"/></td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input
                                                 type="text" name='startDateA'
-                                                value='<bean:write name="lastYear"/>' size="10"> <img
+                                                value='<c:out value="${lastYear}"/>' size="10"> <img
                                                 src="../img/calendar.gif" border="0"
                                                 onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=startDateA&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input
-                                                type="text" name='endDateA' value='<bean:write name="today"/>'
+                                                type="text" name='endDateA' value='<c:out value="${today}"/>'
                                                 size="10"> <img src="../img/calendar.gif" border="0"
                                                                 onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=endDateA&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
@@ -154,7 +155,7 @@
                                     <tr>
                                         <c:if test="${not empty messages}">
                                             <c:forEach var="msg" items="${messages}">
-                                                <bean:write name="msg"/>
+                                                <c:out value="${msg}"/>
                                                 <br>
                                             </c:forEach>
                                         </c:if>
@@ -162,58 +163,37 @@
                                     <tr>
                                         <td>
                                     <tr>
-                                        <td class="nameBox" colspan='9'><bean:message
-                                                key="oscarReport.CDMReport.msgFrequencyOfRelevantTestsBeingPerformed"/>
+                                        <td class="nameBox" colspan='9'><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgFrequencyOfRelevantTestsBeingPerformed"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th align="left" class="subTitles" width="2"></th>
-                                        <th align="left" class="subTitles" width="4"><bean:message
-                                                key="oscarReport.CDMReport.msgTest"/></th>
-                                        <th align="left" class="subTitles" width="200"><bean:message
-                                                key="oscarReport.CDMReport.msgTestDescription"/></th>
-                                        <th align="left" class="subTitles" width="200"><bean:message
-                                                key="oscarReport.CDMReport.msgMeasuringInstruction"/></th>
-                                        <th align="left" class="subTitles" width="80"><bean:message
-                                                key="oscarReport.CDMReport.msgExactly"/></th>
-                                        <th align="left" class="subTitles" width="80"><bean:message
-                                                key="oscarReport.CDMReport.msgMoreThan"/></th>
-                                        <th align="left" class="subTitles" width="80"><bean:message
-                                                key="oscarReport.CDMReport.msgLessThan"/></th>
-                                        <th align="left" class="subTitles" width="120"><bean:message
-                                                key="oscarReport.CDMReport.msgStartDate"/></th>
-                                        <th align="left" class="subTitles" width="120"><bean:message
-                                                key="oscarReport.CDMReport.msgEndDate"/></th>
+                                        <th align="left" class="subTitles" width="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgTest"/></th>
+                                        <th align="left" class="subTitles" width="200"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgTestDescription"/></th>
+                                        <th align="left" class="subTitles" width="200"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgMeasuringInstruction"/></th>
+                                        <th align="left" class="subTitles" width="80"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgExactly"/></th>
+                                        <th align="left" class="subTitles" width="80"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgMoreThan"/></th>
+                                        <th align="left" class="subTitles" width="80"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgLessThan"/></th>
+                                        <th align="left" class="subTitles" width="120"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgStartDate"/></th>
+                                        <th align="left" class="subTitles" width="120"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgEndDate"/></th>
                                     </tr>
                                     <c:forEach var="measurementType" items="${measurementTypes.measurementTypeVector}" varStatus="ctr">
                                     <tr>
                                         <td width="2" class="fieldBox" bgcolor="#ddddff"><input
                                                 type="checkbox" name="frequencyCheckbox" value="${ctr.index}"/></td>
-                                        <td width="4" class="fieldBox" bgcolor="#ddddff"><bean:write
-                                                name="measurementType" property="typeDisplayName"/></td>
-                                        <td width="200" class="fieldBox" bgcolor="#ddddff"><bean:write
-                                                name="measurementType" property="typeDesc"/></td>
+                                        <td width="4" class="fieldBox" bgcolor="#ddddff"><c:out value="${measurementType.typeDisplayName}"/></td>
+                                        <td width="200" class="fieldBox" bgcolor="#ddddff"><c:out value="${measurementType.typeDesc}"/></td>
                                         <td width="200" class="fieldBox" bgcolor="#ddddff"></td>
-                                        <td width="80" class="fieldBox" bgcolor="#ddddff"><input
-                                                type="text" name="exactly" size="6"/></td>
-                                        <td width="80" class="fieldBox" bgcolor="#ddddff"><input
-                                                type="text" name="moreThan" size="6"/></td>
-                                        <td width="80" class="fieldBox" bgcolor="#ddddff"><input
-                                                type="text" name="lessThan" size="6"/></td>
-                                        <td width="120" class="fieldBox" bgcolor="#ddddff"><input
-                                                type="text" name="startDateD"
-                                                value='<bean:write name="lastYear"/>' size="10"> <img
-                                                src="../img/calendar.gif" border="0"
-                                                onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=startDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
+                                        <td width="80" class="fieldBox" bgcolor="#ddddff"><input type="text" name="exactly" size="6"/></td>
+                                        <td width="80" class="fieldBox" bgcolor="#ddddff"><input type="text" name="moreThan" size="6"/></td>
+                                        <td width="80" class="fieldBox" bgcolor="#ddddff"><input type="text" name="lessThan" size="6"/></td>
+                                        <td width="120" class="fieldBox" bgcolor="#ddddff"><input type="text" name="startDateD" value='<c:out value="${lastYear}"/>' size="10"> 
+                                            <img src="../img/calendar.gif" border="0" onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=startDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
                                         </td>
-                                        <td width="120" class="fieldBox" bgcolor="#ddddff"><input
-                                                type="text" name="endDateD" value='<bean:write name="today"/>'
-                                                size="10"> <img src="../img/calendar.gif" border="0"
-                                                                onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=endDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
+                                        <td width="120" class="fieldBox" bgcolor="#ddddff"><input type="text" name="endDateD" value='<c:out value="${today}"/>' size="10"> 
+                                            <img src="../img/calendar.gif" border="0" onClick="window.open('../../oscarReport/oscarReportCalendarPopup.jsp?type=endDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
                                         </td>
-                                        <input type="hidden"
-                                               name='value(measurementTypeD${ctr.index})'
-                                               value="<bean:write name="measurementType" property="type" />"/>
+                                        <input type="hidden" name='value(measurementTypeD${ctr.index})' value="<c:out value="${measurementType.type}"/>"/>
                                     </tr>
                                     <tr>
                                         <td width="2" class="fieldBox" bgcolor="#ddddff"></td>
@@ -227,8 +207,9 @@
                                                         <td><input type="checkbox"
                                                                    name='value(mInstrcsCheckboxD${ctr.index}${index.index})'
                                                                    checked="checked"
-                                                                   value='<bean:write name="mInstrc" property="measuringInstrc" />'/><bean:write
-                                                                name="mInstrc" property="measuringInstrc"/></td>
+                                                                   value='<c:out value="${mInstrc.measuringInstrc}"/>'/>
+                                                                   <c:out value='${mInstrc.measuringInstrc}'/>
+                                                                   </td>
                                                     </tr>
                                                     <%k++;%>
                                                 </c:forEach>
@@ -260,7 +241,7 @@
                 <table>
                     <tr>
                         <td align="left"><input type="submit" name="submitBtn"
-                                                value="<bean:message key="oscarReport.CDMReport.btnGenerateReport"/>"/>
+                                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.btnGenerateReport"/>"/>
                         </td>
                     </tr>
                 </table>
@@ -268,7 +249,7 @@
         </tr>
         </table>
 
-    </html:form>
+    </form>
 
     </body>
-</html:html>
+</html>

@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script>
     function newWindow(url) {
@@ -36,10 +36,12 @@
 
     newWindow('<%=request.getContextPath()%>/administration/');
 </script>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <p class="info"><a href="javascript:void()"
-                   onClick="newWindow('<%=request.getContextPath()%>/administration/');return false"><bean:message
-        key="admin.panel" bundle="ui"/></a> <bean:message key="admin.popupMessage" bundle="ui"/></p>
+                   onClick="newWindow('<%=request.getContextPath()%>/administration/');return false">
+                   <fmt:message bundle="${uiBundle}" key="admin.panel"/></a> 
+                   <fmt:message bundle="${uiBundle}" key="admin.popupMessage"/></p>
 
-<p><a href="#/dashboard"><bean:message key="global.goToDashboard" bundle="ui"/></a></p>
+<p><a href="#/dashboard"><fmt:message bundle="${uiBundle}" key="global.goToDashboard"/></a></p>
 
 

@@ -26,8 +26,8 @@
 <!DOCTYPE html>
 <html>
 <%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
@@ -73,7 +73,18 @@
         if (importErrors != null && importErrors.size() > 0) {
     %>
     <div class="row-fluid">
-        <html:errors/>
+        <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
         <ul>
             <%for (String importError : importErrors) {%>
             <li class="text-error"><%=importError%>
@@ -88,7 +99,7 @@
             <label class="control-label" for="zippedForm">Import eForm:</label>
             <input type="file" class="input-file" id="zippedForm" name="zippedForm" size="50" required/>
             <span style="color:red;">
-		         <i class="icon-warning-sign" title="<bean:message key="global.uploadWarningBody"/>"></i>
+		         <i class="icon-warning-sign" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"></i>
 		         </span>
             <input type="submit" name="subm" value="Import" class="btn btn-primary upload" disabled>
         </div>

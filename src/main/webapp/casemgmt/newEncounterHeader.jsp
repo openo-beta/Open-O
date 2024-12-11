@@ -24,7 +24,7 @@
 --%>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="org.oscarehr.util.MiscUtils" %>
@@ -83,7 +83,7 @@
                 <li>
                     <a href="javascript:void(0)" style="display: flex; align-items: flex-end;"
                        onClick="window.open('${ctx}/provider/providerpreference.jsp?provider_no=<%=loggedInInfo.getLoggedInProviderNo()%>', 'height=680px,width=715px')"
-                       title='<bean:message key="provider.appointmentProviderAdminDay.msgSettings"/>'>
+                       title='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>'>
                         <div class="glyphicon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -104,8 +104,7 @@
     <% if (oscar.OscarProperties.getInstance().hasProperty("ONTARIO_MD_INCOMINGREQUESTOR")) {%>
     <div>
         <a href="javascript:void(0);" onClick="popupPage(600,175,'Calculators','<c:out
-                value="${ctx}"/>/common/omdDiseaseList.jsp?sex=<%=bean.patientSex%>&age=<%=demographic.getAge()%>'); return false;"><bean:message
-                key="oscarEncounter.Header.OntMD"/></a>
+                value="${ctx}"/>/common/omdDiseaseList.jsp?sex=<%=bean.patientSex%>&age=<%=demographic.getAge()%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.OntMD"/></a>
     </div>
     <%}%>
 
@@ -139,10 +138,10 @@
         %>
         <%if (CaisiIntegratorManager.isIntegratorOffline(session)) {%>
         <div style="background: none repeat scroll 0 0 red; color: white; font-weight: bold; padding-left: 10px; margin-bottom: 2px;">
-            <bean:message key="oscarEncounter.integrator.NA"/></div>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.integrator.NA"/></div>
         <%} else if (!allSynced) {%>
         <div style="background: none repeat scroll 0% 0% orange; color: white; font-weight: bold; padding-left: 10px; margin-bottom: 2px;">
-            <bean:message key="oscarEncounter.integrator.outOfSync"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.integrator.outOfSync"/>
 
             <a href="javascript:void(0)" onClick="popupPage(233,600,'ViewICommun','<c:out
                     value="${ctx}"/>/admin/viewIntegratedCommunity.jsp'); return false;">Integrator</a>

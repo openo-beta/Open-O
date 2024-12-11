@@ -33,7 +33,7 @@ import org.oscarehr.util.SpringUtils;
 import oscar.entities.Billingmaster;
 import oscar.entities.WCB;
 import oscar.oscarBilling.ca.bc.data.BillingmasterDAO;
-import oscar.oscarBilling.ca.on.administration.GstControlAction;
+import oscar.oscarBilling.ca.on.administration.GstControl2Action;
 import oscar.util.ConversionUtils;
 import oscar.util.StringUtils;
 
@@ -47,7 +47,7 @@ import java.util.List;
 
 public class BillingBillingManager implements Serializable {
     private String billTtype;
-    private String gstPercent = (new GstControlAction()).readDatabase().getProperty("gstPercent", "");
+    private String gstPercent = (new GstControl2Action()).readDatabase().getProperty("gstPercent", "");
 
     public BillingItem[] getBillingItem(String[] service, String service1, String service2, String service3, String service1unit, String service2unit, String service3unit) {
         BillingItem[] arr = {};

@@ -22,13 +22,8 @@
     Toronto, Ontario, Canada
 
 --%>
-
-
 <%-- Error Messages --%>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="1"
-       bgcolor="#C0C0C0">
-
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#C0C0C0">
     <c:if test="${not empty requestScope['org.apache.struts.action.ERROR']}">
         <c:forEach var="error" items="${requestScope['org.apache.struts.action.ERROR']}">
             <tr>

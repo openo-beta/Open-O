@@ -48,13 +48,13 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 <%@page import="org.oscarehr.eyeform.model.*" %>
-<%@page import="org.oscarehr.eyeform.web.EyeformAction" %>
+<%@page import="org.oscarehr.eyeform.web.Eyeform2Action" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.common.model.DemographicContact" %>
 
-<html:html>
+<html>
     <head>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>generate consultation report</title>
 
         <style type="text/css">
@@ -105,9 +105,9 @@
         %>
 
         <%
-            request.setAttribute("sections", EyeformAction.getMeasurementSections());
-            request.setAttribute("headers", EyeformAction.getMeasurementHeaders());
-            request.setAttribute("providers", EyeformAction.getActiveProviders());
+            request.setAttribute("sections", Eyeform2Action.getMeasurementSections());
+            request.setAttribute("headers", Eyeform2Action.getMeasurementHeaders());
+            request.setAttribute("providers", Eyeform2Action.getActiveProviders());
         %>
 
         <style type="text/css">
@@ -496,22 +496,22 @@
     </head>
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
 
-    <html:form action="/eyeform/Eyeform">
+    <form action="${pageContext.request.contextPath}/eyeform/Eyeform.do" method="post">
         <input type="hidden" name="method" value="saveConRequest"/>
-        <input type="hidden" name="demographicNo" value="<%=EyeformAction.getField(request,"demographicNo")%>"/>
+        <input type="hidden" name="demographicNo" value="<%=Eyeform2Action.getField(request,"demographicNo")%>"/>
         <input type="hidden" name="referralNo" value=""/>
         <input type="hidden" name="otherDocId" value=""/>
         <input type="hidden" name="famDoctor" value=""/>
         <input type="hidden" name="apptno" value=""/>
 
-        <html:hidden property="cp.id"/>
-        <html:hidden property="cp.demographicNo"/>
-        <html:hidden property="cp.providerNo"/>
-        <html:hidden property="cp.appointmentNo"/>
-        <html:hidden property="cp.urgency"/>
-        <html:hidden property="cp.reason"/>
-        <html:hidden property="cp.referralId"/>
-        <html:hidden property="cp.referralNo"/>
+        <input type="hidden" name="id" id="id"/>
+        <input type="hidden" name="demographicNo" id="demographicNo"/>
+        <input type="hidden" name="providerNo" id="providerNo"/>
+        <input type="hidden" name="appointmentNo" id="appointmentNo"/>
+        <input type="hidden" name="urgency" id="urgency"/>
+        <input type="hidden" name="reason" id="reason"/>
+        <input type="hidden" name="referralId" id="referralId"/>
+        <input type="hidden" name="referralNo" id="referralNo"/>
 
 
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
@@ -552,7 +552,7 @@
                             <td class="tite4" colspan="2">
                                 <table>
                                     <tr>
-                                        <td class="stat"><html:radio property="cp.status"
+                                        <td class="stat"><input type="radio" name="status"
                                                                      value="Incomplete"/></td>
                                         <td class="stat">Incomplete</td>
                                     </tr>
@@ -563,7 +563,7 @@
                             <td class="tite4" colspan="2">
                                 <table>
                                     <tr>
-                                        <td class="stat"><html:radio property="cp.status"
+                                        <td class="stat"><input type="radio" name="status"
                                                                      value="Completed,not sent"/></td>
                                         <td class="stat">Completed,not sent</td>
                                     </tr>
@@ -574,7 +574,7 @@
                             <td class="tite4" colspan="2">
                                 <table>
                                     <tr>
-                                        <td class="stat"><html:radio property="cp.status"
+                                        <td class="stat"><input type="radio" name="status"
                                                                      value="Completed,and sent"/></td>
                                         <td class="stat">Completed,and sent</td>
                                     </tr>
@@ -662,8 +662,8 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td width="10%" class="tite4">cc:</td>
-                                        <td width="90%" class="tite4"><html:text style="width:100%"
-                                                                                 property="cp.cc"/></td>
+                                        <td width="90%" class="tite4"><input type="text" style="width:100%"
+                                                                                 name="cp.cc"/></td>
                                     </tr>
                                 </table>
                             </td>
@@ -674,11 +674,11 @@
                                 <table style="background-color: #ddddff;" width="100%">
                                     <tr>
                                         <td class="tite4" width="10%">Greeting:</td>
-                                        <td class="tite4" width="60%"><html:select
-                                                property="cp.greeting">
-                                            <html:option value="1">standard consult report</html:option>
-                                            <html:option value="2">assessment report</html:option>
-                                        </html:select></td>
+                                        <td class="tite4" width="60%"><select
+                                                name="greeting">
+                                            <option value="1">standard consult report</option>
+                                            <option value="2">assessment report</option>
+                                        </select></td>
                                     </tr>
                                 </table>
                             </td>
@@ -726,8 +726,7 @@
 
 
                         <tr>
-                            <td colspan=2><html:textarea rows="4" style="width:100%"
-                                                         property="cp.clinicalInfo"/></td>
+                            <td colspan=2><textarea rows="4" style="width:100%" name="clinicalInfo"></textarea></td>
                         <tr>
                         <tr>
                             <td colspan=2 class="tite4">
@@ -744,8 +743,7 @@
                         </tr>
 
                         <tr>
-                            <td colspan=2><html:textarea rows="4" style="width:100%"
-                                                         property="cp.allergies"/></td>
+                            <td colspan=2><textarea rows="4" style="width:100%" name="allergies"></textarea></td>
                         </tr>
 
                         <tr>
@@ -796,8 +794,8 @@
                             <td colspan=2 style="width: 100%">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td width="74%"><html:textarea rows="7" style="width:100%"
-                                                                       property="cp.examination"/></td>
+                                        <td width="74%"><textarea rows="7" style="width:100%"
+                                                                  name="examination"></textarea></td>
                                     </tr>
                                 </table>
                             </td>
@@ -816,8 +814,8 @@
                         </tr>
 
                         <tr>
-                            <td colspan="2"><html:textarea rows="3" style="width:100%"
-                                                           property="cp.impression"/></td>
+                            <td colspan="2"><textarea rows="3" style="width:100%"
+                                                      name="impression"></textarea></td>
                         </tr>
                         <!--
 				<tr>
@@ -836,7 +834,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><html:textarea rows="4" style="width:100%"
+					<td colspan="2"><textarea rows="4" style="width:100%"
 						property="cp.plan" /></td>
 				</tr>
 -->
@@ -866,7 +864,7 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
 
     </body>
-</html:html>
+</html>

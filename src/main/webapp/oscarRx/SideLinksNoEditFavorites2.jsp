@@ -30,7 +30,7 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean2 = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
@@ -48,7 +48,7 @@
 
         <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
 
-            <p class="PropSheetLevel1CurrentItem<%=alle%>"><bean:message key="oscarRx.sideLinks.msgAllergies"/></p>
+            <p class="PropSheetLevel1CurrentItem<%=alle%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></p>
             <p class="PropSheetMenuItemLevel1">
                         <%for (int j=0; j<allergies.length; j++){%>
 
@@ -61,7 +61,7 @@
 
         </security:oscarSec>
 
-        <p class="PropSheetLevel1CurrentItem"><bean:message key="oscarRx.sideLinks.msgFavorites"/></p>
+        <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/></p>
         <p class="PropSheetMenuItemLevel1">
                 <%
         oscar.oscarRx.data.RxPrescriptionData.Favorite[] favorites = new oscar.oscarRx.data.RxPrescriptionData().getFavorites(bean2.getProviderNo());

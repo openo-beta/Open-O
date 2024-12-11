@@ -15,9 +15,9 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page import="oscar.form.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
 <%
@@ -32,7 +32,7 @@
 
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Ovalation</title>
@@ -49,7 +49,7 @@
         </style>
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -329,7 +329,6 @@
             var ret = checkAllDates();
             if (ret == true) {
 //            document.forms[0].action = "../form/createpdf?__title=Ovulation+Form&__cfgfile=bcar1PrintCfgPg1&__template=bcar1";
-//				document.all.FrmForm.action="../form/createpdf?__title=Invoice&__cfgfile=invoice&__template=invoice";
 
 //            document.forms[0].action = "../form/createpdf?__title=Ovulation+Form&__cfgfile=ovulationPrintCfgPg1&__template=bcar1";
                 document.forms[0].action = "../form/createpdf?__title=Ovulation+Form&__cfgfile=ovulationPrintCfgPg1&__cfgfile=ovulationPrintCfgPg2&__template=OvulationForm_95";
@@ -638,7 +637,7 @@
     </head>
 
     <body>
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
     <input type="hidden" name="demographic_no"
            value="<%= props.getProperty("demographic_no", "0") %>"/>
@@ -4651,12 +4650,9 @@
                             <tr>
                                 <td align="center" class="style76"><input type="submit"
                                                                           value="Save"
-                                                                          onclick="javascript:return onSave('
-                                                                              <html:rewrite
-                                                                                      page="/form/formname.do"/>');"/>
+                                                                          onclick="javascript:return onSave('<%=request.getContextPath() %>/form/formname.do');"/>
                                     <input type="submit" value="Save and Exit"
-                                           onclick="javascript:return onSaveExit('<html:rewrite
-                                                   page="/form/formname.do"/>');"/>
+                                           onclick="javascript:return onSaveExit('<%=request.getContextPath() %>/form/formname.do"/>');"/>
                                     <input type="submit" value="Exit"
                                            onclick="javascript:return onExit();"/> <input type="submit"
                                                                                           value="Print"
@@ -4665,6 +4661,6 @@
                             </tr>
                         </table>
 
-                        </html:form>
+                        </form>
     </body>
-</html:html>
+</html>

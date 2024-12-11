@@ -66,7 +66,7 @@
     <display:setProperty name="paging.banner.placement" value="bottom"/>
     <display:column sortable="false" title="">
         <a
-                href="<html:rewrite action="/PMmodule/Admin/DefaultRoleAccess"/>?method=delete&id=<c:out value="${item.id}"/>"
+                href="<%=request.getContextPath() %>/PMmodule/Admin/DefaultRoleAccess.do?method=delete&id=<c:out value="${item.id}"/>"
                 title="Delete"> Delete </a>
     </display:column>
     <display:column property="caisi_role.name" sortable="true"
@@ -76,6 +76,6 @@
 </display:table>
 <br/>
 <button
-        onclick="location.href='<html:rewrite action="/PMmodule/Admin/DefaultRoleAccess"/>?method=edit'">New
+        onclick="location.href='<%=request.getContextPath() %>/PMmodule/Admin/DefaultRoleAccess.do?method=edit'">New
     Access
 </button>

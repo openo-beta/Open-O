@@ -41,8 +41,8 @@
 %>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.sql.*, java.util.*,java.security.*,oscar.*,oscar.oscarDB.*" errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.log.LogAction,oscar.log.LogConst" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -52,10 +52,10 @@
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
 %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="admin.securityaddsecurity.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityaddsecurity.title"/></title>
         <script src="${pageContext.request.contextPath}/csrfguard"></script>
         <link rel="stylesheet" href="../web.css">
     </head>
@@ -63,16 +63,15 @@
     <center>
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
-                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><bean:message
-                        key="admin.securityaddsecurity.description"/></font></th>
+                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityaddsecurity.description"/></font></th>
             </tr>
         </table>
         <%
             SecurityAddSecurityHelper helper = new SecurityAddSecurityHelper();
             helper.addProvider(pageContext);
         %>
-        <h1><bean:message key="${message}"/></h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="${message}"/></h1>
 
     </center>
     </body>
-</html:html>
+</html>

@@ -25,7 +25,7 @@
 --%>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.CtlBillingType" %>
@@ -58,7 +58,7 @@
         <td>&nbsp;</td>
         <td class="white">
             <p>&nbsp;<br>
-                <bean:message key="billing.manageBillingform_add.formDefaultBillType"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_add.formDefaultBillType"/>
                 :<br>
                 <input type="hidden" name="bill_servicetype" value="<%=type_id%>">
                 <input type="hidden" name="billtype_old" value="<%=billtype%>">

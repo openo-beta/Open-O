@@ -46,9 +46,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.managers.DemographicManager" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/rourke-tag.tld" prefix="rourke" %>
 
 <%
@@ -84,7 +82,7 @@
 <body bgproperties="fixed" topmargin="0" leftmargin="0" rightmargin="0">
 <div style="display:block; width:100%;">
     <img alt="copyright" width="80%" src="graphics/Rourke2020Banner.png"
-         onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2009.formCopyRight"/>')"
+         onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formCopyRight"/>')"
          onMouseOut="hideLayer()">
 </div>
 <div id="object1"
@@ -94,13 +92,13 @@
 <table cellpadding="0" cellspacing="0" class="Header" class="hidePrint">
     <tr>
         <td nowrap="true">
-            <input type="button" value="<bean:message key="oscarEncounter.formRourke1.btnSave"/>"
+            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
                    onclick="javascript:onSave(); return false;"/>
-            <input type="button" value="<bean:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
+            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
                    onclick="javascript:onSaveExit(); return false;"/>
-            <input type="button" value="<bean:message key="oscarEncounter.formRourke1.btnExit"/>"
+            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
                    onclick="javascript:onExit(); return false;"/><br/>
-            <input type="submit" value="<bean:message key="oscarEncounter.formRourke1.btnPrint"/>"
+            <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
                    onclick="javascript:return onPrint();"/>
             <input type="button" value="About"
                    onclick="javascript:return popPage('http://rourkebabyrecord.ca','About Rourke');"/>
@@ -112,11 +110,11 @@
             <% if (formId > 0) { %>
             <a name="length" href="#"
                onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2020&__title=Baby+Growth+Graph1&__cfgfile=<%=growthCharts[0]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth1" + demoNo %>');return false;">
-                <bean:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/>
             </a><br>
             <a name="headCirc" href="#"
                onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2020&__title=Baby+Head+Circumference&__cfgfile=<%=growthCharts[1]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth2" + demoNo %>');return false;">
-                <bean:message key="oscarEncounter.formRourke1.btnGraphHead"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/>
             </a> <% } else { %>
             &nbsp; <% } %>
         </td>
@@ -125,32 +123,31 @@
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr class="titleBar">
-        <th><bean:message key="oscarEncounter.formRourke2006_4.msgRourkeBabyRecord"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.msgRourkeBabyRecord"/></th>
     </tr>
 </table>
 <div id="patientInfop4">
-    <bean:message key="oscarEncounter.formRourke1.msgName"/>:
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgName"/>:
     <input type="text" maxlength="60" size="30" value="<%= Encode.forHtmlAttribute(props.getProperty("c_pName", "")) %>"
            readonly="true"/>
-    &nbsp;&nbsp;<bean:message key="oscarEncounter.formRourke1.msgBirthDate"/> (d/m/yyyy):
+    &nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgBirthDate"/> (d/m/yyyy):
     <input type="text" id="c_birthDate4" size="10" maxlength="10" value="<%= props.getProperty("c_birthDate", "") %>"
            readonly="true"/>
     &nbsp;&nbsp;
     Age: <input type="text" id="currentAge4" size="10" maxlength="10" readonly="true" ondblclick="calcAge();"/>
-    <% if (!((FrmRourke2020Record) rec).isFemale(loggedInInfo, demoNo)) { %>(<bean:message
-        key="oscarEncounter.formRourke1.msgMale"/>)
-    <% } else { %>(<bean:message key="oscarEncounter.formRourke1.msgFemale"/>)
+    <% if (!((FrmRourke2020Record) rec).isFemale(loggedInInfo, demoNo)) { %>(<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgMale"/>)
+    <% } else { %>(<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgFemale"/>)
     <% } %>
 </div>
 <table cellpadding="0" cellspacing="0" width="100%" border="1">
     <tr align="center">
-        <td class="column"><a><bean:message key="oscarEncounter.formRourke2006_1.visitDate"/></a></td>
-        <td colspan="3" class="row"><a><bean:message key="oscarEncounter.formRourke2006_4.msg18mos"/></a></td>
-        <td colspan="4" class="row"><a><bean:message key="oscarEncounter.formRourke2006_4.msg2yrs"/></a></td>
-        <td colspan="3" class="row"><a><bean:message key="oscarEncounter.formRourke2006_4.msg4yrs"/></a></td>
+        <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.visitDate"/></a></td>
+        <td colspan="3" class="row"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.msg18mos"/></a></td>
+        <td colspan="4" class="row"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.msg2yrs"/></a></td>
+        <td colspan="3" class="row"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.msg4yrs"/></a></td>
     </tr>
     <tr align="center">
-        <td class="column"><a><bean:message key="oscarEncounter.formRourke1.msgDate"/></a></td>
+        <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgDate"/></a></td>
         <td colspan="3">
             <img src="../images/cal.gif" id="p4_date18m_cal" style="vertical-align: middle;">
             <input readonly type="text" id="p4_date18m" name="p4_date18m" ondblclick="resetDate(this)" size="10"
@@ -176,62 +173,61 @@
     </tr>
     <tr align="center" id="growthAp4">
         <td class="column" rowspan="2">
-            <a><bean:message key="oscarEncounter.formRourke2020_1.btnGrowth"/><br><bean:message
-                    key="oscarEncounter.formRourke2009_1.btnGrowthmsg"/></a>
+            <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020_1.btnGrowth"/><br><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_1.btnGrowthmsg"/></a>
         </td>
         <td>
             <a href="javascript:void(0)"
                onclick="displayDemographicMeasurements('p4_ht18m', 'HT', '<%=demographic.getDemographicNo()%>',
                        '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
-                <bean:message key="oscarEncounter.formRourke1.formHt"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formHt"/>
             </a>
         </td>
         <td>
             <a href="javascript:void(0)"
                onclick="displayDemographicMeasurements('p4_wt18m', 'WT', '<%=demographic.getDemographicNo()%>',
                        '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
-                <bean:message key="oscarEncounter.formRourke1.formWt"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formWt"/>
             </a>
         </td>
         <td>
-            <bean:message key="oscarEncounter.formRourke2006_3.formHdCirc"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_3.formHdCirc"/>
         </td>
         <td>
             <a href="javascript:void(0)"
                onclick="displayDemographicMeasurements('p4_ht24m', 'HT', '<%=demographic.getDemographicNo()%>',
                        '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
-                <bean:message key="oscarEncounter.formRourke1.formHt"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formHt"/>
             </a>
         </td>
         <td>
             <a href="javascript:void(0)"
                onclick="displayDemographicMeasurements('p4_wt24m', 'WT', '<%=demographic.getDemographicNo()%>',
                        '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
-                <bean:message key="oscarEncounter.formRourke1.formWt"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formWt"/>
             </a>
         </td>
         <td>
-            <bean:message key="oscarEncounter.formRourke2006_3.formHdCirc"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_3.formHdCirc"/>
         </td>
         <td>
-            <bean:message key="oscarEncounter.formRourke1.formBmi"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formBmi"/>
         </td>
         <td>
             <a href="javascript:void(0)"
                onclick="displayDemographicMeasurements('p4_ht48m', 'HT', '<%=demographic.getDemographicNo()%>',
                        '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
-                <bean:message key="oscarEncounter.formRourke1.formHt"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formHt"/>
             </a>
         </td>
         <td>
             <a href="javascript:void(0)"
                onclick="displayDemographicMeasurements('p4_wt48m', 'WT', '<%=demographic.getDemographicNo()%>',
                        '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
-                <bean:message key="oscarEncounter.formRourke1.formWt"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formWt"/>
             </a>
         </td>
         <td>
-            <bean:message key="oscarEncounter.formRourke1.formBmi"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formBmi"/>
         </td>
 
     </tr>
@@ -278,7 +274,7 @@
         </td>
     </tr>
     <tr align="center">
-        <td class="column"><a><bean:message key="oscarEncounter.formRourke2020.msgParentConcerns"/></a></td>
+        <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgParentConcerns"/></a></td>
         <td colspan="3"><textarea id="p4_pConcern18m" name="p4_pConcern18m" class="wide limit-rows" cols="10" rows="5"
                                   maxlength="450"><%= props.getProperty("p4_pConcern18m", "") %></textarea></td>
         <td colspan="4"><textarea id="p4_pConcern24m" name="p4_pConcern24m" class="wide limit-rows" cols="10" rows="5"
@@ -288,9 +284,9 @@
 
     </tr>
     <tr align="center" id="nutritionp4">
-        <td class="column"><a><bean:message key="oscarEncounter.formRourke1.msgNutrition"/>*</a><br/>
+        <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgNutrition"/>*</a><br/>
             <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif">
-            <bean:message key="oscarEncounter.formRourke2020.msgNutritionLegend"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgNutritionLegend"/>
         </td>
         <td colspan="3">
             <table id="ntp41" cellpadding="0" cellspacing="0" width="100%">
@@ -300,58 +296,57 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top"><bean:message key="oscarEncounter.formRourke2009.formNo"/></td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNo"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_breastFeeding18m" formProperties="<%=props%>"
                                                   showNoOption="<%=true%>" showNotDiscussedOption="<%=true%>"/>
                     <td><b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formBreastfeedingVitaminD"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBreastfeedingVitaminD"/>
                     </a></b></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_homoMilk18m" formProperties="<%=props%>"
                                                   showNoOption="<%=true%>" showNotDiscussedOption="<%=true%>"/>
                     <td><a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formHomogenizedMilk"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHomogenizedMilk"/>
                     </a></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_AvoidJuiceAndBeverages18m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formAvoidJuiceAndBeverages"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formAvoidJuiceAndBeverages"/>*
                     </a></b></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_noBottle18m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
-                    <td><bean:message key="oscarEncounter.formRourke2020.formNoBottle"/></td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formNoBottle"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_inquireVegetarian18m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formInquireVegetarianDiets"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formInquireVegetarianDiets"/>*
                     </a></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_independentSelfFeed18m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formIndependentSelfFeeding"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formIndependentSelfFeeding"/>*
                     </a></td>
                 </tr>
                 <tr>
@@ -370,17 +365,16 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top"><bean:message key="oscarEncounter.formRourke2009.formNo"/></td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNo"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_breastFeeding24m" formProperties="<%=props%>"
                                                   showNoOption="<%=true%>" showNotDiscussedOption="<%=true%>"/>
                     <td><b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formBreastfeedingVitaminD"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBreastfeedingVitaminD"/>
                     </a></b></td>
                 </tr>
 
@@ -388,36 +382,36 @@
                     <rourke:discussionRadioSelect sectionName="p4_AvoidJuiceAndBeverages24m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formAvoidJuiceAndBeverages"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formAvoidJuiceAndBeverages"/>*
                     </a></b></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_inquireVegetarian24m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formInquireVegetarianDiets"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formInquireVegetarianDiets"/>*
                     </a></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_lowerfatdiet24m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formLowerFatDiet"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formLowerFatDiet"/>*
                     </a></i></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_homo2percent24m" formProperties="<%=props%>"
                                                   showNoOption="<%=true%>" showNotDiscussedOption="<%=true%>"/>
                     <td><a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formMilk"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formMilk"/>
                     </a></td>
                 </tr>
                 <tr>
@@ -425,9 +419,9 @@
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td>
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formCanadasFoodGuide"/>*</a>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formCanadasFoodGuide"/>*</a>
                     </td>
                 </tr>
                 <tr>
@@ -446,36 +440,35 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top"><bean:message key="oscarEncounter.formRourke2009.formNo"/></td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNo"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
 
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_inquireVegetarian48m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formInquireVegetarianDiets"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formInquireVegetarianDiets"/>*
                     </a></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_AvoidJuiceAndBeverages48m" formProperties="<%=props%>"
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td><b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formAvoidJuiceAndBeverages"/>*
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formAvoidJuiceAndBeverages"/>*
                     </a></b></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_homo2percent48m" formProperties="<%=props%>"
                                                   showNoOption="<%=true%>" showNotDiscussedOption="<%=true%>"/>
                     <td><a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formMilk"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formMilk"/>
                     </a></td>
                 </tr>
                 <tr>
@@ -483,9 +476,9 @@
                                                   showNotDiscussedOption="<%=true%>"/>
                     <td>
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formCanadasFoodGuide"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formCanadasFoodGuide"/>*
                         </a>
                     </td>
                 </tr>
@@ -500,16 +493,14 @@
     </tr>
     <tr id="educationp4">
         <td class="column">
-            <a><bean:message key="oscarEncounter.formRourke1.msgEducational"/></a><br/>
-            <small><bean:message key="oscarEncounter.formRourke1.msgEducationalSubtitle"/></small><br/>
-            <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><bean:message
-                key="oscarEncounter.formRourke2006.msgEducationalLegend"/>
+            <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgEducational"/></a><br/>
+            <small><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgEducationalSubtitle"/></small><br/>
+            <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.msgEducationalLegend"/>
         </td>
         <td colspan="3">
             <table id="edt41" style="font-size: 8pt;" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                    <td valign="top" colspan="4"><bean:message
-                            key="oscarEncounter.formRourke2006_1.formInjuryPrev"/></td>
+                    <td valign="top" colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formInjuryPrev"/></td>
                 </tr>
                 <tr>
                     <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
@@ -517,16 +508,15 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_poisons18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
-                        <b><a onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                        <b><a onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()" href="javascript:showNotes()">
-                            <bean:message key="oscarEncounter.formRourke2006_2.formPoisons"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_2.formPoisons"/>*
                         </a></b>
                     </td>
                 </tr>
@@ -534,9 +524,9 @@
                     <rourke:discussionRadioSelect sectionName="p4_carSeat18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
-                        <b><a onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                        <b><a onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()" href="javascript:showNotes()">
-                            <bean:message key="oscarEncounter.formRourke2020.formCarBoosterSeat"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formCarBoosterSeat"/>*
                         </a></b>
                     </td>
                 </tr>
@@ -544,10 +534,9 @@
                     <rourke:discussionRadioSelect sectionName="p4_bathSafety18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
-                        <i><a onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                        <i><a onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()" href="javascript:showNotes()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formBathSafety"/>*/<bean:message
-                                key="oscarEncounter.formRourke2020.formBurns"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formBathSafety"/>*/<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBurns"/>*
                         </a></i>
                     </td>
                 </tr>
@@ -556,9 +545,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formSafeToys"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formSafeToys"/>*
                         </a>
                     </td>
                 </tr>
@@ -567,9 +556,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formFallsAndFurniture"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formFallsAndFurniture"/>*
                         </a></i>
                     </td>
                 </tr>
@@ -578,29 +567,28 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formWeanFromPacifier"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formWeanFromPacifier"/>*
                         </a></i>
                     </td>
                 </tr>
                 <tr>
-                    <td valign="top" colspan="4"><bean:message
-                            key="oscarEncounter.formRourke2020.formBehaviourAndFamily"/></td>
+                    <td valign="top" colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBehaviourAndFamily"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_parentChild18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formParentChild"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formParentChild"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_discipline18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2009_4.formDiscipline"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formDiscipline"/>**
                         </a></b>
                     </td>
                 </tr>
@@ -609,9 +597,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formHealthySleep"/>**</a></b>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHealthySleep"/>**</a></b>
                     </td>
                 </tr>
                 <tr>
@@ -619,9 +607,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_4.formHighRisk"/>**</a></b>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formHighRisk"/>**</a></b>
                     </td>
                 </tr>
                 <tr>
@@ -629,9 +617,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_3.formEncourageReading"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_3.formEncourageReading"/>**
                         </a></i>
                     </td>
                 </tr>
@@ -640,25 +628,25 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formParentFatigueStressDepression"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formParentFatigueStressDepression"/>**
                         </a></b>
                     </td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_socializing18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formSocPeerPlay"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formSocPeerPlay"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_activeLiving18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td colspan="5" valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formHealthyActiveLiving"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHealthyActiveLiving"/>**
                         </a></b>
                     </td>
                 </tr>
@@ -667,25 +655,23 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td colspan="5" valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formMakingEndsMeetInquiry"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formMakingEndsMeetInquiry"/>**
                         </a></b>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="4" valign="top"><bean:message
-                            key="oscarEncounter.formRourke2020.formEnvironmentalHealth"/> &amp; <bean:message
-                            key="oscarEncounter.formRourke2006_1.formOtherIssues"/></td>
+                    <td colspan="4" valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formEnvironmentalHealth"/> &amp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formOtherIssues"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_2ndSmoke18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020_1.formSecondHandSmoke"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020_1.formSecondHandSmoke"/>*
                         </a></b>
                     </td>
                 </tr>
@@ -694,9 +680,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_2.formPesticides"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_2.formPesticides"/>*
                         </a></i>
                     </td>
                 </tr>
@@ -705,9 +691,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formSunExposure"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formSunExposure"/>*
                         </a>
                     </td>
                 </tr>
@@ -716,9 +702,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2009_4.formDentalCleaning"/>*</a></b>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formDentalCleaning"/>*</a></b>
                     </td>
                 </tr>
                 <tr>
@@ -726,9 +712,9 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_4.formToiletLearning"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formToiletLearning"/>**
                         </a>
                     </td>
                 </tr>
@@ -744,8 +730,7 @@
             <table id="edt42" style="font-size: 8pt;" cellpadding="0" cellspacing="0" width="100%">
 
                 <tr>
-                    <td valign="top" colspan="12"><bean:message
-                            key="oscarEncounter.formRourke2006_1.formInjuryPrev"/></td>
+                    <td valign="top" colspan="12"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formInjuryPrev"/></td>
                 </tr>
                 <tr>
                     <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
@@ -753,72 +738,68 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                     <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
                         <div class="checkmark-img-wrapper"><img height="15" width="20" src="graphics/Checkmark_L.gif">
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                     <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
                         <div class="checkmark-img-wrapper"><img height="15" width="20" src="graphics/Checkmark_L.gif">
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_bikeHelmets24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
-                        <b><a onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                        <b><a onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()" href="javascript:showNotes()">
-                            <bean:message key="oscarEncounter.formRourke2020.forBikeHelmets"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.forBikeHelmets"/>*
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_firearmSafety24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formFirearmSafety"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formFirearmSafety"/>*
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_injuryMatches24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2020.forMatches"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.forMatches"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_poisons24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
-                        <b><a onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                        <b><a onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()" href="javascript:showNotes()">
-                            <bean:message key="oscarEncounter.formRourke2006_2.formPoisons"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_2.formPoisons"/>
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_smokeSafety24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formSmokeSafety"/>*/<bean:message
-                                key="oscarEncounter.formRourke2020.formBurns"/>*/
-                            <bean:message key="oscarEncounter.formRourke2020.forMatches"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formSmokeSafety"/>*/<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBurns"/>*/
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.forMatches"/>
                         </a>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_waterSafety24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formWaterSafety"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formWaterSafety"/>*
                         </a></i>
                     </td>
                 </tr>
@@ -827,32 +808,31 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formFallsFurnitureAndTrampolines"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formFallsFurnitureAndTrampolines"/>*
                         </a></i>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_carSeat24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
-                        <b><a onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                        <b><a onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()" href="javascript:showNotes()">
-                            <bean:message key="oscarEncounter.formRourke2020.formCarBoosterSeat"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formCarBoosterSeat"/>*
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_noPacifiers24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formNoPacifiers"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formNoPacifiers"/>*
                         </a></i>
                     </td>
                 </tr>
                 <tr>
-                    <td valign="top" colspan="12"><bean:message
-                            key="oscarEncounter.formRourke2020.formBehaviourAndFamily"/></td>
+                    <td valign="top" colspan="12"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBehaviourAndFamily"/></td>
                 </tr>
                 <tr>
                 <tr>
@@ -860,39 +840,39 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_4.formHighRisk"/>**</a></b>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formHighRisk"/>**</a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_discipline24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2009_4.formDiscipline"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formDiscipline"/>**
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_parentChild24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formParentChild"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formParentChild"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_pFatigue24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formParentFatigueStressDepression"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formParentFatigueStressDepression"/>**
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_famConflict24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_1.formFamConflict"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formFamConflict"/></td>
                     <rourke:discussionRadioSelect sectionName="p4_siblings24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_1.formSiblings"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formSiblings"/></td>
                 </tr>
 
                 <tr>
@@ -900,17 +880,17 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formHealthySleep"/>**</a></b>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHealthySleep"/>**</a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_schoolReadiness24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.forChildCareAndSchoolReadiness"/>**</a></i>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.forChildCareAndSchoolReadiness"/>**</a></i>
                     </td>
                 </tr>
                 <tr>
@@ -918,39 +898,38 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_3.formEncourageReading"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_3.formEncourageReading"/>**
                         </a></i>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_activeLiving24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td colspan="5" valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formHealthyActiveLiving"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHealthyActiveLiving"/>**
                         </a></b>
                     </td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_socializing24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formSocializing"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formSocializing"/></td>
                     <rourke:discussionRadioSelect sectionName="p4_makingEndsMeetInquiry24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td colspan="5" valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formMakingEndsMeetInquiry"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formMakingEndsMeetInquiry"/>**
                         </a></b>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="12" valign="top">
-                        <bean:message key="oscarEncounter.formRourke2020.formEnvironmentalHealth"/> &amp; <bean:message
-                            key="oscarEncounter.formRourke2006_1.formOtherIssues"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formEnvironmentalHealth"/> &amp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formOtherIssues"/>
                     </td>
                 </tr>
                 <tr>
@@ -958,18 +937,18 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020_1.formSecondHandSmoke"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020_1.formSecondHandSmoke"/>*
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_sunExposure24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td colspan="5" valign="top">
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formSunExposure"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formSunExposure"/>*
                         </a>
                     </td>
                 </tr>
@@ -978,18 +957,18 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formNoOtcColdMed"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formNoOtcColdMed"/>*
                         </a></b>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_dentalCareOk24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td colspan="5" valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formDentalCleaningFluoride"/>*</a></b>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formDentalCleaningFluoride"/>*</a></b>
                     </td>
                 </tr>
                 <tr>
@@ -997,27 +976,27 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_2.formPesticides"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_2.formPesticides"/>*
                         </a></i>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_altMed24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <i><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2020.formAltMed"/>*
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formAltMed"/>*
                         </a></i>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_toiletLearning24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <a href="javascript:showNotes()"
-                           onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote2"/>')"
+                           onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                            onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_4.formToiletLearning"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formToiletLearning"/>**
                         </a>
                     </td>
                 </tr>
@@ -1043,22 +1022,21 @@
     </tr>
     <tr id="developmentp4">
         <td class="column">
-            <a><bean:message key="oscarEncounter.formRourke1.msgDevelopment"/>**</a><br>
-            <bean:message key="oscarEncounter.formRourke2020.msgDevelopmentDesc"/><br>
-            <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><bean:message
-                key="oscarEncounter.formRourke2006_1.msgDevelopmentLegend"/>
+            <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgDevelopment"/>**</a><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgDevelopmentDesc"/><br>
+            <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.msgDevelopmentLegend"/>
         </td>
         <td colspan="3" align="center">
             <table id="dt41" cellpadding="0" cellspacing="0" width="300px" height="100%">
                 <tr>
                     <td colspan="4">
-                        <bean:message key="oscarEncounter.formRourke2020_4.msgNippissing"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020_4.msgNippissing"/>
                         <textarea id="p4_nippisingattained" name="p4_nippisingattained" class="wide" cols="10"
                                   rows="2"><%= props.getProperty("p4_nippisingattained", "") %></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.formSocialEmotion"/>**</td>
+                    <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formSocialEmotion"/>**</td>
                 </tr>
                 <tr>
                     <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
@@ -1066,97 +1044,96 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_manageable18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formManageable"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formManageable"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_otherChildren18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formOtherChildren"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formOtherChildren"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_soothability18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formSoothability"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formSoothability"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_comfort18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formComfort"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formComfort"/></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.formCommSkills"/>**</td>
+                    <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formCommSkills"/>**</td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_points2body18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formPoints"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formPoints"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_getAttn18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formGetAttn"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formGetAttn"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_recsName18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formRecsName"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formRecsName"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_points2want18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formPoints2want"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formPoints2want"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_looks4toy18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formLooks4toy"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formLooks4toy"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_initSpeech18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formInitSpeech"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formInitSpeech"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_says20words18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2020.formSays15Words"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formSays15Words"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_4consonants18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.form4consonants"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.form4consonants"/></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.formMotorSkills"/></td>
+                    <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formMotorSkills"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_walksbackAlone18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009_4.formWalksAlone"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formWalksAlone"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_feedsSelf18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formFeedsSelf"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formFeedsSelf"/></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.formAdaptiv"/></td>
+                    <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formAdaptiv"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_removesHat18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formRemovesHat"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formRemovesHat"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_noParentsConcerns18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**</td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**</td>
                 </tr>
                 <tr>
                     <td colspan="4" style="vertical-align:bottom;">
@@ -1172,7 +1149,7 @@
                     <td>
                         <table cellpadding="0" cellspacing="0" width="100%" height="100%">
                             <tr>
-                                <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.form2yrs"/>**</td>
+                                <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.form2yrs"/>**</td>
                             </tr>
                             <tr>
                                 <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
@@ -1180,64 +1157,55 @@
                                                                             src="graphics/Checkmark_L.gif"></div>
                                 </td>
                                 <td class="edcol" valign="top">X</td>
-                                <td class="edcol" valign="top" colspan="2"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                                <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_2wSentence24m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.form2wordSentence"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.form2wordSentence"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_one2stepdirections24m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formone2stepDirections"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formone2stepDirections"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_walksbackward24m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formwalksbackward"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formwalksbackward"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_runse24m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formTriestoRun"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formTriestoRun"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_smallContainer24m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formSmallContainer"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formSmallContainer"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_pretendsPlay24m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formpretendsPlay"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formpretendsPlay"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_newSkills24m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formNewSkills"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formNewSkills"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_noParentsConcerns24m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
                                 </td>
                             </tr>
                             <tr>
@@ -1251,7 +1219,7 @@
                     <td>
                         <table cellpadding="0" cellspacing="0" height="100%">
                             <tr>
-                                <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.form4yrs"/></td>
+                                <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.form4yrs"/></td>
                             </tr>
                             <tr>
                                 <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
@@ -1259,50 +1227,43 @@
                                                                             src="graphics/Checkmark_L.gif"></div>
                                 </td>
                                 <td class="edcol" valign="top">X</td>
-                                <td class="edcol" valign="top" colspan="2"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                                <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_3directions48m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.form3Directions"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.form3Directions"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_asksQuestions48m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formAsksQuestions"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formAsksQuestions"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_upDownStairs48m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formupDownStairs"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formupDownStairs"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_undoesZippers48m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formundoesZippers"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formundoesZippers"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_tries2comfort48m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formTries2comfort"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formTries2comfort"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_noParentsConcerns48m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
                                 </td>
                             </tr>
                             <tr>
@@ -1318,7 +1279,7 @@
                     <td>
                         <table cellpadding="0" cellspacing="0" width="100%" height="100%">
                             <tr>
-                                <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.form3yrs"/></td>
+                                <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.form3yrs"/></td>
                             </tr>
                             <tr>
                                 <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
@@ -1326,71 +1287,61 @@
                                                                             src="graphics/Checkmark_L.gif"></div>
                                 </td>
                                 <td class="edcol" valign="top">X</td>
-                                <td class="edcol" valign="top" colspan="2"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                                <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_2directions36m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.form2Directions"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.form2Directions"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_5ormoreWords36m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.form5ormoreWords"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.form5ormoreWords"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_walksUpStairs36m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formwalksUpStairs"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formwalksUpStairs"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_twistsLids36m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formTwistsLids"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formTwistsLids"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_sharesSometime36m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formSharesSometimes"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formSharesSometimes"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_playMakeBelieve36m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formplayMakeBelieve"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formplayMakeBelieve"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_turnsPages36m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formTurnsPages"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formTurnsPages"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_listenMusic36m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2020.formListensMusic"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formListensMusic"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_noParentsConcerns36m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
                                 </td>
                             </tr>
                             <tr>
@@ -1404,7 +1355,7 @@
                     <td>
                         <table cellpadding="0" cellspacing="0" width="100%" height="100%">
                             <tr>
-                                <td colspan="4"><bean:message key="oscarEncounter.formRourke2006_4.form5yrs"/></td>
+                                <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.form5yrs"/></td>
                             </tr>
                             <tr>
                                 <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
@@ -1412,71 +1363,61 @@
                                                                             src="graphics/Checkmark_L.gif"></div>
                                 </td>
                                 <td class="edcol" valign="top">X</td>
-                                <td class="edcol" valign="top" colspan="2"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                                <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_countsOutloud60m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formCountsOutloud"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formCountsOutloud"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_speaksClearly60m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formSpeaksClearly"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formSpeaksClearly"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_throwsCatches60m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2006_4.formThrowsCatches"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formThrowsCatches"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_hops1foot60m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formHops1Foot"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formHops1Foot"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_dressesUndresses60m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formdressesUndresses"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formdressesUndresses"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_obeysAdult60m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formobeysAdult"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formobeysAdult"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_retellsStory60m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formretellsStory"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formretellsStory"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_separates60m" formProperties="<%=props%>"
                                                               showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009_4.formSeparates"/></td>
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.formSeparates"/></td>
                             </tr>
                             <tr>
                                 <rourke:discussionRadioSelect sectionName="p4_noParentsConcerns60m"
                                                               formProperties="<%=props%>" showNoOption="<%=false%>"
                                                               showNotDiscussedOption="<%=true%>"/>
-                                <td valign="top"><bean:message
-                                        key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
+                                <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNoparentConcerns"/>**
                                 </td>
                             </tr>
                             <tr>
@@ -1493,10 +1434,10 @@
     </tr>
     <tr id="physicalExamp4">
         <td class="column">
-            <a><bean:message key="oscarEncounter.formRourke1.msgPhysicalExamination"/></a><br>
-            <bean:message key="oscarEncounter.formRourke1.msgPhysicalExaminationDesc"/><br>
+            <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgPhysicalExamination"/></a><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgPhysicalExaminationDesc"/><br>
             <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif">
-            <bean:message key="oscarEncounter.formRourke2009.msgPhysicalExaminationLegend"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.msgPhysicalExaminationLegend"/>
         </td>
         <td colspan="3" id="physicalExamp4a">
             <table id="pt41" cellpadding="0" cellspacing="0" width="100%">
@@ -1509,23 +1450,20 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_fontanelles18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formAnteriorFontanelleClosed"/>**
+                    <td valign="top"><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formAnteriorFontanelleClosed"/>**
                     </a></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_eyes18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke1.formRedReflex"/>**
+                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formRedReflex"/>**
                     </a></b></td>
                 </tr>
                 <tr>
@@ -1533,40 +1471,36 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>/<bean:message
-                                key="oscarEncounter.formRourke2020.formCoverUncoverTest"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>/<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formCoverUncoverTest"/>**
                         </a></b>
                     </td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_hearing18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formHearingInquiry"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formHearingInquiry"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_tonsilSize18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formTonsilSize"/>**
+                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formTonsilSize"/>**
                     </a></b></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_teeth18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formTeethRisk"/>**
+                    <td valign="top"><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formTeethRisk"/>**
                     </a></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_HeartLungsAbdomen18m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formHeartLungsAbdomen"/>
+                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHeartLungsAbdomen"/>
                     </a></i></td>
                 </tr>
                 <tr>
@@ -1588,23 +1522,20 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_bloodPressure24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formBloodPressureIfAtRisk"/>**
+                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBloodPressureIfAtRisk"/>**
                     </a></i></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_eyes24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.EyesVisualAcuity"/>**
+                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.EyesVisualAcuity"/>**
                     </a></b></td>
                 </tr>
                 <tr>
@@ -1612,40 +1543,36 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>/<bean:message
-                                key="oscarEncounter.formRourke2020.formCoverUncoverTest"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>/<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formCoverUncoverTest"/>**
                         </a></b>
                     </td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_hearing24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formHearingInquiry"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formHearingInquiry"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_tonsilSize24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formTonsilSize"/>**
+                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formTonsilSize"/>**
                     </a></b></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_teeth24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formTeethRisk"/>**
+                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formTeethRisk"/>**
                     </a></i></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_HeartLungsAbdomen24m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formHeartLungsAbdomen"/>
+                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHeartLungsAbdomen"/>
                     </a></i></td>
                 </tr>
                 <tr>
@@ -1667,23 +1594,20 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="2"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_bloodPressure48m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formBloodPressureIfAtRisk"/>**
+                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBloodPressureIfAtRisk"/>**
                     </a></i></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_eyes48m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.EyesVisualAcuity"/>**
+                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.EyesVisualAcuity"/>**
                     </a></b></td>
                 </tr>
                 <tr>
@@ -1691,40 +1615,36 @@
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
                     <td valign="top">
                         <b><a href="javascript:showNotes()"
-                              onMouseOver="popLayer('<bean:message key="oscarEncounter.formRourke2006.footnote1"/>')"
+                              onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()">
-                            <bean:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>/<bean:message
-                                key="oscarEncounter.formRourke2020.formCoverUncoverTest"/>**
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>/<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formCoverUncoverTest"/>**
                         </a></b>
                     </td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_hearing48m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><bean:message key="oscarEncounter.formRourke2006_4.formHearingInquiry"/></td>
+                    <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_4.formHearingInquiry"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_tonsilSize48m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formTonsilSize"/>**
+                    <td valign="top"><b><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formTonsilSize"/>**
                     </a></b></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_teeth48m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formTeethRisk"/>**
+                    <td valign="top"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formTeethRisk"/>**
                     </a></i></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_HeartLungsAbdomen48m" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td valign="top"><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formHeartLungsAbdomen"/>
+                    <td valign="top"><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formHeartLungsAbdomen"/>
                     </a></td>
                 </tr>
 
@@ -1740,11 +1660,9 @@
     </tr>
     <tr id="problemsPlansp4">
         <td class="column">
-            <a><bean:message key="oscarEncounter.formRourke2020.msgProblemsAndPlans"/>/<bean:message
-                    key="oscarEncounter.formRourke2020.msgCurrentAndNewReferrals"/></a><br/>
-            <small><bean:message key="oscarEncounter.formRourke2020.msgPlansAndReferralsDescription"/></small><br/>
-            <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><bean:message
-                key="oscarEncounter.formRourke2009.msgProblemsLegend"/>
+            <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgProblemsAndPlans"/>/<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgCurrentAndNewReferrals"/></a><br/>
+            <small><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgPlansAndReferralsDescription"/></small><br/>
+            <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.msgProblemsLegend"/>
         </td>
         <td colspan="3" valign="bottom">
             <textarea id="p4_problems18m" name="p4_problems18m" rows="5" cols="25" class="wide limit-rows"
@@ -1762,10 +1680,10 @@
     </tr>
     <tr id="immunizationp4">
         <td class="column">
-            <a><bean:message key="oscarEncounter.formRourke2020.msgInvestigationsScreeningAndImmunization"/></a><br>
-            <bean:message key="oscarEncounter.formRourke2020.msgInvestigationsScreeningAndImmunizationDesc"/><br/>
+            <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgInvestigationsScreeningAndImmunization"/></a><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.msgInvestigationsScreeningAndImmunizationDesc"/><br/>
             <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif">
-            <bean:message key="oscarEncounter.formRourke2009.msgProblemsLegend"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.msgProblemsLegend"/>
         </td>
         <td colspan="10" valign="top">
             <table id="immt41" style="font-size: 9pt;" cellpadding="0" cellspacing="0" width="100%">
@@ -1775,28 +1693,24 @@
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="3"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                     <td style="padding-right: 5pt" valign="top" onclick="selectAllOkRadioButtons(this)">
                         <div class="checkmark-img-wrapper"><img height="15" width="20" src="graphics/Checkmark_L.gif">
                         </div>
                     </td>
                     <td class="edcol" valign="top">X</td>
-                    <td class="edcol" valign="top" colspan="3"><bean:message
-                            key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
+                    <td class="edcol" valign="top" colspan="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.formNotDiscussed"/></td>
                 </tr>
                 <tr>
                     <rourke:discussionRadioSelect sectionName="p4_AnemiaScreening" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td colspan="2"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formAnemiaScreening"/>**</a></i>
+                    <td colspan="2"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formAnemiaScreening"/>**</a></i>
                     </td>
                     <rourke:discussionRadioSelect sectionName="p4_BloodLead" formProperties="<%=props%>"
                                                   showNoOption="<%=false%>" showNotDiscussedOption="<%=true%>"/>
-                    <td colspan="3"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<bean:message
-                            key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
-                        <bean:message key="oscarEncounter.formRourke2020.formBloodLead"/>*</a></i>
+                    <td colspan="3"><i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')" onMouseOut="hideLayer()">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2020.formBloodLead"/>*</a></i>
                     </td>
                 </tr>
                 <tr>
@@ -1810,7 +1724,7 @@
 
     </tr>
     <tr>
-        <td class="column"><a><bean:message key="oscarEncounter.formRourke1.formSignature"/></a></td>
+        <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formSignature"/></a></td>
         <td colspan="3"><input type="text" class="wide" style="width: 100%" name="p4_signature18m"
                                value="<%= props.getProperty("p4_signature18m", "") %>"/></td>
         <td colspan="4"><input type="text" class="wide" maxlength="42" style="width: 100%" name="p4_signature24m"
@@ -1822,13 +1736,13 @@
 <table cellpadding="0" cellspacing="0" class="Header" class="hidePrint">
     <tr>
         <td nowrap="true">
-            <input type="submit" value="<bean:message key="oscarEncounter.formRourke1.btnSave"/>"
+            <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
                    onclick="javascript:return onSave();"/>
-            <input type="submit" value="<bean:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
+            <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
                    onclick="javascript:return onSaveExit();"/>
-            <input type="submit" value="<bean:message key="oscarEncounter.formRourke1.btnExit"/>"
+            <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
                    onclick="javascript:return onExit();"><br/>
-            <input type="submit" value="<bean:message key="oscarEncounter.formRourke1.btnPrint"/>"
+            <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
                    onclick="javascript:return onPrint();"/>
             <input type="button" value="About"
                    onclick="javascript:return popPage('http://rourkebabyrecord.ca','About Rourke');"/>
@@ -1839,15 +1753,15 @@
         <td align="center" nowrap="true" width="100%">
             <% if (formId > 0) { %> <a name="length" href="#"
                                        onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2020&__title=Baby+Growth+Graph1&__cfgfile=<%=growthCharts[0]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth1" + demoNo %>');return false;">
-            <bean:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
             <a name="headCirc" href="#"
                onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2020&__title=Baby+Head+Circumference&__cfgfile=<%=growthCharts[1]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth2" + demoNo %>');return false;">
-                <bean:message key="oscarEncounter.formRourke1.btnGraphHead"/></a> <% } else { %>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/></a> <% } else { %>
             &nbsp; <% } %>
         </td>
     </tr>
 </table>
-<p style="font-size: 8pt;"><bean:message key="oscarEncounter.formRourke2009.footer"/><br/></p>
+<p style="font-size: 8pt;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009.footer"/><br/></p>
 
 <script type="text/javascript">
     Calendar.setup({

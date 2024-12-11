@@ -31,9 +31,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page
         import="java.io.*,java.util.*, java.sql.*, oscar.*, java.net.*, org.oscarehr.integration.mcedt.mailbox.ActionUtils" %>
 <html>
@@ -125,14 +125,14 @@
     </script>
 </head>
 <body>
-<html:form action="/mcedt/upload.do" method="post" styleId="formUpload">
+<form action="${pageContext.request.contextPath}/mcedt/upload.do" method="post" styleId="formUpload">
     <jsp:include page="../messages.jsp"/>
 
     <input id="methodUpload" name="method" type="hidden" value=""/>
-    <html:hidden styleId="description" property="description" value=""/>
-    <html:hidden styleId="fileName" property="fileName" value=''/>
-    <html:hidden property="resourceType" styleId="resourceType" value=""/>
-</html:form>
+    <input type="hidden" id="description" name="description" value=""/>
+    <input type="hidden" id="fileName" name="fileName" value=''/>
+    <input type="hidden" id="resourceType" name="resourceType" value=""/>
+</form>
 <div>
     * You may select a maximum of 5 files at a time to upload to MC-EDT
     <table width="100%" border="0" cellspacing="0" cellpadding="5" style="margin:5px 0 15px;" class="whiteBox">

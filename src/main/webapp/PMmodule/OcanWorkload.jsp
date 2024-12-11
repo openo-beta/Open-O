@@ -48,7 +48,7 @@
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     Provider provider = loggedInInfo.getLoggedInProvider();
 %>
-<html:html lang="en">
+<html>
     <head>
         <script src="<%=request.getContextPath() %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
         <script src="<%=request.getContextPath() %>/js/jquery.dataTables.js" type="text/javascript"></script>
@@ -236,7 +236,7 @@
         </form>
     </div>
 
-</html:html>
+</html>
 <%!
 
     String convertOcanReasonUserString(String type) {

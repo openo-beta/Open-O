@@ -32,11 +32,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
-<html:html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+<html>
     <head>
         <jsp:include page="head-includes.jsp"/>
         <script language="javascript">
@@ -73,7 +73,7 @@
 
         <title>MCEDT: Upload</title>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <body>
@@ -82,7 +82,7 @@
 
             <h2>Create New Upload</h2>
 
-            <html:form action="/mcedt/uploads" method="post" styleId="form">
+            <form action="${pageContext.request.contextPath}/mcedt/uploads.do" method="post" styleId="form">
 
                 <jsp:include page="messages.jsp"/>
 
@@ -129,8 +129,8 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-            </html:form>
+            </form>
         </div>
     </div>
     </body>
-</html:html>
+</html>

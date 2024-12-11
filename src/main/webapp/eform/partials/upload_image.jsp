@@ -25,12 +25,12 @@
 --%>
 <!DOCTYPE html>
 <%@ page import="oscar.eform.data.*, oscar.OscarProperties, oscar.eform.*, java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<html:html lang="en">
+<html>
 
     <head>
         <script src="${pageContext.request.contextPath}/js/global.js"></script>
@@ -90,22 +90,32 @@
 
     <div class="row-fluid">
         <div class="well">
-            <html:form action="/eform/imageUpload" enctype="multipart/form-data" method="post">
+            <form action="${pageContext.request.contextPath}/eform/imageUpload.do" enctype="multipart/form-data" method="post">
 
-                <div class="text-error message row-fluid"><html:errors/></div>
+                <div class="text-error message row-fluid"><% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %></div>
                 <div class="control-group">
                     <div class="controls">
-                        <label class="control-label" for="zippedForm"><bean:message
-                                key="eform.uploadimages.msgFileName"/></label>
+                        <label class="control-label" for="zippedForm"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.msgFileName"/></label>
                         <input type="file" name="image" id="image" class="check" size="40" required>
                         <span style="color:red;">
-		         <i class="icon-warning-sign" title="<bean:message key="global.uploadWarningBody"/>"></i>
+		         <i class="icon-warning-sign" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"></i>
 		         </span>
                         <input type="submit" class="btn btn-primary upload" name="subm"
-                               value="<bean:message key="eform.uploadimages.btnUpload"/>" disabled>
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnUpload"/>" disabled>
                     </div>
                 </div>
-            </html:form>
+            </form>
         </div>
     </div>
 
@@ -136,4 +146,4 @@
 
     </script>
     </body>
-</html:html>
+</html>

@@ -31,9 +31,7 @@
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@page import="org.oscarehr.phr.RegistrationHelper" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%
@@ -45,21 +43,19 @@
 
     if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn() && myOscarUserName != null && demographic != null) {
         if (!RegistrationHelper.iHavePatientRelationship(myOscarLoggedInInfo, myOscarUserId)) { %>
-<span id="relationshipMessage" style="color:red; font-size:x-small;padding-left:3px;"><bean:message
-        key="phr.verification.patient.not.respond"/>
-      		<a id="relationshipAdder" href="javascript:void();"><bean:message
-                    key="phr.verification.addPatientRelationship"/></a>
+<span id="relationshipMessage" style="color:red; font-size:x-small;padding-left:3px;"><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.patient.not.respond"/>
+      		<a id="relationshipAdder" href="javascript:void();"><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.addPatientRelationship"/></a>
       	</span>
 <%} else { %>
 <span id="relationshipMessage" style="font-size:x-small;">
-			<bean:message key="phr.verification.patientRelationshipExists"/>
+			<fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.patientRelationshipExists"/>
 		</span>
 <%
     }
 } else if (myOscarLoggedInInfo == null || !myOscarLoggedInInfo.isLoggedIn()) {
     MiscUtils.getLogger().debug("should show not logged in message");
 %>
-<bean:message key="phr.verification.notloggedin"/>
+<fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.notloggedin"/>
 <%}%>
 <script type="text/javascript">
     $(function () {

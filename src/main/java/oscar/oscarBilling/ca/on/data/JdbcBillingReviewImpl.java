@@ -19,47 +19,24 @@
 
 package oscar.oscarBilling.ca.on.data;
 
+import org.apache.logging.log4j.Logger;
+import org.oscarehr.PMmodule.dao.ProviderDao;
+import org.oscarehr.billing.CA.ON.dao.BillingPercLimitDao;
+import org.oscarehr.billing.CA.ON.model.BillingPercLimit;
+import org.oscarehr.common.dao.*;
+import org.oscarehr.common.model.*;
+import org.oscarehr.util.DateRange;
+import org.oscarehr.util.MiscUtils;
+import org.oscarehr.util.SpringUtils;
+import oscar.util.ConversionUtils;
+import oscar.util.LabelValueBean;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.struts.util.LabelValueBean;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.billing.CA.ON.dao.BillingPercLimitDao;
-import org.oscarehr.billing.CA.ON.model.BillingPercLimit;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.dao.BillingONExtDao;
-import org.oscarehr.common.dao.BillingONItemDao;
-import org.oscarehr.common.dao.BillingONPaymentDao;
-import org.oscarehr.common.dao.BillingOnItemPaymentDao;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.dao.ClinicLocationDao;
-import org.oscarehr.common.dao.CtlBillingServiceDao;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.model.BillingONExt;
-import org.oscarehr.common.model.BillingONItem;
-import org.oscarehr.common.model.BillingONPayment;
-import org.oscarehr.common.model.BillingOnItemPayment;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.DateRange;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-
-import oscar.util.ConversionUtils;
+import java.util.*;
 
 public class JdbcBillingReviewImpl {
     private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();

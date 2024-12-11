@@ -25,13 +25,7 @@
 
 package oscar.oscarEncounter.pageUtil;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.util.MessageResources;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.service.myoscar.MeasurementsManager;
@@ -41,6 +35,10 @@ import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 public class EctDisplayMyOscarAction extends EctDisplayAction {
 
@@ -52,18 +50,18 @@ public class EctDisplayMyOscarAction extends EctDisplayAction {
 
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
 
-    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao, MessageResources messages) {
+    public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
         Demographic demographic = demographicManager.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), bean.getDemographicNo());
 
         //Does a patient have a myoscar account
         String myoscarusername = demographic.getMyOscarUserName();
         if (myoscarusername == null || myoscarusername.trim().equals("")) {//No Account don't show
             logger.debug("no myoscar account registered");
-            Dao.setLeftHeading(messages.getMessage(request.getLocale(), "oscarEncounter.LeftNavBar.PHR"));
+            Dao.setLeftHeading(getText("oscarEncounter.LeftNavBar.PHR"));
             NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
             String registrationUrl = "popupPage(700,1000,'indivoRegistration','" + request.getContextPath() + "/phr/indivo/RegisterIndivo.jsp?demographicNo=" + demographic.getDemographicNo() + "');return false;";
             item.setURL(registrationUrl);
-            item.setTitle(messages.getMessage(request.getLocale(), "demographic.demographiceditdemographic.msgRegisterPHR"));
+            item.setTitle(getText("demographic.demographiceditdemographic.msgRegisterPHR"));
             Dao.addItem(item);
             Dao.setRightURL(registrationUrl);
             Dao.setRightHeadingID(cmd);
@@ -82,7 +80,7 @@ public class EctDisplayMyOscarAction extends EctDisplayAction {
         String curProvider_no = (String) request.getSession().getAttribute("user");
 
         //set text for lefthand module title
-        Dao.setLeftHeading(messages.getMessage(request.getLocale(), "oscarEncounter.LeftNavBar.PHR"));
+        Dao.setLeftHeading(getText("oscarEncounter.LeftNavBar.PHR"));
 
         //set link for lefthand module title
         String winName = "viewPatientPHR" + bean.demographicNo;

@@ -66,7 +66,7 @@
     if (location == null) location = new String();
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <title>Questimed Config</title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -103,4 +103,4 @@
             </div>
         </fieldset>
     </form>
-</html:html>
+</html>

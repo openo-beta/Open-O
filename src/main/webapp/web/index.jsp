@@ -24,7 +24,7 @@
 
 --%>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
     // Force the page to un-cache itself so user cannot go back after logout
@@ -45,8 +45,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="../images/Oscar.ico">
+    <fmt:setBundle basename="uiResources" var="uiBundle"/>
 
-    <title><bean:message key="global.title" bundle="ui"/></title>
+    <title><fmt:message key="global.title" bundle="${uiBundle}"/></title>
 
     <link href="../library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
@@ -292,7 +293,7 @@
 
             <!-- link back to 'classic' view -->
             <a href="../provider/providercontrol.jsp"><img class="navbarlogo" src="../images/Logo2.png"
-                                                           title="<bean:message key="global.goToClassic" bundle="ui"/>"
+                                                           title="<fmt:message bundle="${uiBundle}" key="global.goToClassic"/>"
                                                            border="0"/></a>
         </div>
 
@@ -303,13 +304,13 @@
                 <div class="form-group">
                     <div class="input-group">
                         <input type="text" class="form-control search-query"
-                               placeholder="<bean:message key="navbar.searchPatients" bundle="ui"/>"
+                               placeholder="<fmt:message bundle="${uiBundle}" key="navbar.searchPatients"/>"
                                id="demographicQuickSearch" autocomplete="off" value="">
                         <span class="input-group-addon btn-default hand-hover" ng-click="goToPatientSearch()"
-                              title="<bean:message key="navbar.searchPatients" bundle="ui"/>"><span
+                              title="<fmt:message bundle="${uiBundle}" key="navbar.searchPatients"/>"><span
                                 class="glyphicon glyphicon-search"></span></span>
                         <span class="input-group-addon btn-default hand-hover" ng-click="newDemographic('sm')"
-                              title="<bean:message key="navbar.newPatient" bundle="ui"/>"><span
+                              title="<fmt:message bundle="${uiBundle}" key="navbar.newPatient"/>"><span
                                 class="glyphicon glyphicon-plus"></span></span>
                     </div>
                 </div>
@@ -319,13 +320,13 @@
             <ul class="nav navbar-nav visible-lg hidden-md hidden-sm hidden-xs">
                 <li style="margin-right:5px"><span class="navbar-text glyphicon glyphicon-chevron-right hand-hover"
                                                    ng-show="showPtList === false" ng-click="showPatientList()"
-                                                   title="<bean:message key="navbar.showPatientList" bundle="ui"/>"></span>
+                                                   title="<fmt:message bundle="${uiBundle}" key="navbar.showPatientList"/>"></span>
                 </li>
 
                 <%--New Dashboard Menu --%>
                 <li style="margin-right:5px"><span class="navbar-text glyphicon glyphicon-home hand-hover"
                                                    ui-sref="dashboard"
-                                                   title="<bean:message key="navbar.dashboard" bundle="ui"/>"></span>
+                                                   title="<fmt:message bundle="${uiBundle}" key="navbar.dashboard"/>"></span>
                 </li>
 
 
@@ -350,12 +351,12 @@
             <ul class="nav navbar-nav hidden-lg visible-md visible-sm visible-xs">
                 <li style="margin-right:5px"><span class="navbar-text glyphicon glyphicon-chevron-right hand-hover"
                                                    ng-show="showPtList === false" ng-click="showPatientList()"
-                                                   title="<bean:message key="navbar.showPatientList" bundle="ui"/>"></span>
+                                                   title="<fmt:message bundle="${uiBundle}" key="navbar.showPatientList"/>"></span>
                 </li>
 
-
-                <li class="dropdown hand-hover"><a href="void()" class="dropdown-toggle"><bean:message
-                        key="navbar.modules" bundle="ui"/><b class="caret"></b></a>
+                <fmt:setBundle basename="oscarResources" var="oscarBundle"/>
+                <li class="dropdown hand-hover"><a href="void()" class="dropdown-toggle"><fmt:message bundle="${oscarBundle}"
+                        key="navbar.modules"/><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li ng-repeat="item in menuItems" ng-class="{'active': isActive(item) }">
                             <a ng-click="transition(item)" data-toggle="tab">{{item.label}}
@@ -374,12 +375,12 @@
 
             <div class="navbar-text pull-right" style="line-height:20px">
                 <a onClick="popup(700,1024,'../scratch/index.jsp','scratch')"
-                   title="<bean:message key="navbar.scratchpad" bundle="ui"/>" class="hand-hover">
+                   title="<fmt:message bundle="${uiBundle}" key="navbar.scratchpad"/>" class="hand-hover">
                     <span class="glyphicon glyphicon-edit"></span>
                 </a>
                 &nbsp;&nbsp;
                 <span ng-show="messageRights === true">
-						<a ng-click="openMessenger()" title="<bean:message key="navbar.messenger" bundle="ui"/>"
+						<a ng-click="openMessenger()" title="<fmt:message bundle="${uiBundle}" key="navbar.messenger"/>"
                            class="hand-hover">
 							<span class="glyphicon glyphicon-envelope"></span>
 						</a>
@@ -392,7 +393,7 @@
 
                 <span class="dropdown">
 						<span class="dropdown-toggle hand-hover"
-                              title="<bean:message key="navbar.changeProgram" bundle="ui"/>"><span
+                              title="<fmt:message bundle="${uiBundle}" key="navbar.changeProgram"/>"><span
                                 class="glyphicon glyphicon-globe"></span></span>
 						<ul class="dropdown-menu" role="menu">
 	                    	<li ng-repeat="item in programDomain">
@@ -408,7 +409,7 @@
                 &nbsp;
 
                 <span class="dropdown-toggle hand-hover" data-toggle="dropdown"
-                      title="<bean:message key="navbar.user" bundle="ui"/>"><span
+                      title="<fmt:message bundle="${uiBundle}" key="navbar.user"/>"><span
                         class="glyphicon glyphicon-user"></span><u>{{me.firstName}}</u></span>
                 <ul class="dropdown-menu" role="menu">
                     <li ng-repeat="item in userMenuItems">
@@ -417,7 +418,7 @@
                     </li>
                 </ul>
 
-                <a href="../logout.jsp" title="<bean:message key="navbar.logout" bundle="ui"/>"
+                <a href="../logout.jsp" title="<fmt:message bundle="${uiBundle}" key="navbar.logout"/>"
                    style="padding-left:10px;">
                     <span class="glyphicon glyphicon-off"></span>
                 </a>
@@ -457,36 +458,36 @@
 
 
             <button type="button" class="btn btn-default" ng-click="hidePatientList()"
-                    title="<bean:message key="patientList.hide" bundle="ui"/>">
+                    title="<fmt:message bundle="${uiBundle}" key="patientList.hide"/>">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </button>
 
             <button type="button" class="btn btn-default" ng-click="refresh()"
-                    title="<bean:message key="patientList.refresh" bundle="ui"/>">
+                    title="<fmt:message bundle="${uiBundle}" key="patientList.refresh"/>">
                 <span class="glyphicon glyphicon-refresh"></span>
             </button>
 
             <button type="button" class="btn btn-default" ng-disabled="currentPage == 0"
-                    ng-click="changePage(currentPage-1)" title="<bean:message key="patientList.pageUp" bundle="ui"/>">
+                    ng-click="changePage(currentPage-1)" title="<fmt:message bundle="${uiBundle}" key="patientList.pageUp"/>">
                 <span class="glyphicon glyphicon-circle-arrow-up"></span>
             </button>
 
             <button type="button" class="btn btn-default" ng-disabled="currentPage == nPages-1"
-                    ng-click="changePage(currentPage+1)" title="<bean:message key="patientList.pageDown" bundle="ui"/>">
+                    ng-click="changePage(currentPage+1)" title="<fmt:message bundle="${uiBundle}" key="patientList.pageDown"/>">
                 <span class="glyphicon glyphicon-circle-arrow-down"></span>
             </button>
 
             <form class="form-search" role="search">
 				<span ng-show="showFilter === true" class="form-group twitter-typeahead">
 					<input type="text" class="form-control"
-                           placeholder="<bean:message key="patientList.filter" bundle="ui"/>" ng-model="query"/>
+                           placeholder="<fmt:message bundle="${uiBundle}" key="patientList.filter"/>" ng-model="query"/>
 				</span>
             </form>
 
             <div ng-include="sidebar.location"></div>
 
             <span class="pull-right"
-                  title="<bean:message key="patientList.pagination" bundle="ui"/>">{{currentPage + 1}}/{{numberOfPages()}}</span>
+                  title="<fmt:message bundle="${uiBundle}" key="patientList.pagination"/>">{{currentPage + 1}}/{{numberOfPages()}}</span>
         </div>
     </div>
     <!-- End patient List template -->
@@ -642,7 +643,7 @@
 
                         if (parsedResponse.total > 10) {
                             retval.push({
-                                name: "<bean:message key="navbar.moreResults" bundle="ui"/>",
+                                name: "<fmt:message bundle="${uiBundle}" key="navbar.moreResults"/>",
                                 hin: parsedResponse.total + " total",
                                 "demographicNo": -1,
                                 "more": true

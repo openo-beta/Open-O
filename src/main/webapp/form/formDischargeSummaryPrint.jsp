@@ -41,9 +41,9 @@
 
 <%@ page
         import="oscar.util.*, oscar.form.*, oscar.form.data.*, org.oscarehr.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page
         import="org.springframework.context.*,org.springframework.web.context.support.*" %>
 
@@ -68,11 +68,11 @@
     if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>MULTI-DISCIPLINARY TEAM DISCHARGE SUMMARY</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <style type="text/css" media="print">
             .header {
                 display: none;
@@ -547,4 +547,4 @@
     <br>
 
     </body>
-</html:html>
+</html>

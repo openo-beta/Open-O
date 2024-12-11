@@ -38,8 +38,7 @@ import oscar.MyDateFormat;
 import oscar.oscarDemographic.data.DemographicData;
 import oscar.util.ConversionUtils;
 
-public class TeleplanCorrectionFormWCB
-        extends org.apache.struts.action.ActionForm {
+public class TeleplanCorrectionFormWCB {
 
     private static Logger logger = MiscUtils.getLogger();
 

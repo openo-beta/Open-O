@@ -52,12 +52,12 @@
     String reportAction = request.getParameter("reportAction") == null ? "" : request.getParameter("reportAction");
 
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="billing.manageBillingform.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.title"/></title>
         <link rel="stylesheet" href="billing.css">
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -90,7 +90,7 @@
 
             function validateServiceType() {
                 if (document.servicetypeform.typeid.value == "MFP") {
-                    alert("<bean:message key="billing.manageBillingform.msgIDExists"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.msgIDExists"/>");
                     return false;
                 } else {
                     return true;
@@ -108,7 +108,7 @@
             }
 
             function onUnbilled(url) {
-                if (confirm("<bean:message key="billing.manageBillingform.msgDeleteBillingConfirm"/>")) {
+                if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.msgDeleteBillingConfirm"/>")) {
                     popupPage(700, 720, url);
                 }
             }
@@ -126,8 +126,7 @@
                 <p><font face="Verdana, Arial, Helvetica, sans-serif"
                          color="#FFFFFF"><b><font
                         face="Arial, Helvetica, sans-serif" size="4">oscar<font
-                        size="3"><bean:message
-                        key="billing.manageBillingform.msgBilling"/></font></font></b></font></p>
+                        size="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.msgBilling"/></font></font></b></font></p>
             </td>
         </tr>
     </table>
@@ -137,21 +136,16 @@
                 <td width="30%" align="right"><font size="2" color="#333333"
                                                     face="Verdana, Arial, Helvetica, sans-serif"> <input
                         type="radio" name="reportAction" value="servicecode"
-                        <%=reportAction.equals("servicecode")?"checked":""%>> <bean:message
-                        key="billing.manageBillingform.formServiceCode"/> <input
+                        <%=reportAction.equals("servicecode")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formServiceCode"/> <input
                         type="radio" name="reportAction" value="dxcode"
-                        <%=reportAction.equals("dxcode")?"checked":""%>> <bean:message
-                        key="billing.manageBillingform.formDxCode"/></font></td>
+                        <%=reportAction.equals("dxcode")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formDxCode"/></font></td>
                 <td width="50%">
                     <div align="right"></div>
                     <div align="center"><font
-                            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#333333"><b><bean:message
-                            key="billing.manageBillingform.formSelectForm"/></b></font> <select
+                            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#333333"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formSelectForm"/></b></font> <select
                             name="billingform">
-                        <option value="000" <%=clinicview.equals("000") ? "selected" : ""%>><bean:message
-                                key="billing.manageBillingform.formAddDelete"/></option>
-                        <option value="***" <%=clinicview.equals("***") ? "selected" : ""%>><bean:message
-                                key="billing.manageBillingform.formManagePremium"/></option>
+                        <option value="000" <%=clinicview.equals("000") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formAddDelete"/></option>
+                        <option value="***" <%=clinicview.equals("***") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formManagePremium"/></option>
                         <% String formDesc = "";
                             String formID = "";
                             int Count = 0;
@@ -176,7 +170,7 @@
                 <td width="40%"><font color="#333333" size="2"
                                       face="Verdana, Arial, Helvetica, sans-serif"> <input
                         type="submit" name="Submit"
-                        value="<bean:message key="billing.manageBillingform.btnManage"/>">
+                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.btnManage"/>">
                 </font></td>
             </tr>
         </form>
@@ -221,4 +215,4 @@
     <%@ include file="../demographic/zfooterbackclose.jsp" %>
 
     </body>
-</html:html>
+</html>

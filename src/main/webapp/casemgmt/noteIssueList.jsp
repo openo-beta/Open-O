@@ -93,18 +93,18 @@
 
 <div style="margin: 0 3px 0 0;"><span style="float: right;">
 <nested:notEmpty name="ajaxsave">
-	<bean:message key="oscarEncounter.encounterDate.title"/>:&nbsp;<span
+	<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;<span
         id="obs<nested:write name="caseManagementEntryForm" property="caseNote.id" />">
 	<nested:write name="caseManagementEntryForm"
                   property="caseNote.observation_date" format="dd-MMM-yyyy H:mm"/></span>&nbsp;
-        <bean:message key="oscarEncounter.noteRev.title"/><a href="#"
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/><a href="#"
                                                              onclick="return showHistory('<nested:write
                                                                      name="caseManagementEntryForm"
                                                                      property="caseNote.id"/>', event);"><nested:write
         name="caseManagementEntryForm" property="caseNote.revision"/></a>
 </nested:notEmpty>
 <nested:empty name="ajaxsave">
-	<bean:message key="oscarEncounter.encounterDate.title"/>:&nbsp;<img src="<c:out value="${ctx}/images/cal.gif" />"
+	<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;<img src="<c:out value="${ctx}/images/cal.gif" />"
                                                                         id="observationDate_cal"
                                                                         alt="calendar">&nbsp;<input type="text"
                                                                                                     id="observationDate"
@@ -121,7 +121,7 @@
 </div>
 
 <div style="margin-left: 3px;"><span style="float: left;">
-<bean:message key="oscarEncounter.editors.title"/>:</span>
+<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.editors.title"/>:</span>
     <nested:equal
             name="newNote" value="false">
         <ul style="list-style: none inside none; margin: 0;">
@@ -157,7 +157,7 @@
 %>
 <div style="clear: right; margin: 0 30px 0 0; float: right;"><span>
 <nested:notEmpty name="ajaxsave">
-    <bean:message key="oscarEncounter.encounterTime.title"/>:&nbsp;
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTime.title"/>:&nbsp;
     <span id="encTimeHr<nested:write name="caseManagementEntryForm" property="caseNote.id" />">
 		<nested:write name="caseManagementEntryForm" property="caseNote.hourOfEncounterTime"/>
 	</span>:
@@ -166,7 +166,7 @@
 	</span>
 </nested:notEmpty>
 <nested:empty name="ajaxsave">
-    <bean:message key="oscarEncounter.encounterTime.title"/>:&nbsp;
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTime.title"/>:&nbsp;
     <input type="text" tabindex="11" id="hourOfEncounterTime" name="hourOfEncounterTime" maxlength="2"
            style="border: 1px; width: 20px; height:12px"
            value="<nested:write name="caseManagementEntryForm" property="caseNote.hourOfEncounterTime"/>">&nbsp;<b>:</b>&nbsp;
@@ -182,7 +182,7 @@
 %>
 <div style="clear: right; margin: 0 30px 0 0; float: right;"><span>
 <nested:notEmpty name="ajaxsave">
-    <bean:message key="oscarEncounter.encounterTransportation.title"/>:&nbsp;
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTransportation.title"/>:&nbsp;
     <span id="encTransTimeHr<nested:write name="caseManagementEntryForm" property="caseNote.id" />">
 		<nested:write name="caseManagementEntryForm" property="caseNote.hourOfEncTransportationTime"/>
 	</span>:
@@ -191,7 +191,7 @@
 	</span>
 </nested:notEmpty>
 <nested:empty name="ajaxsave">
-    <bean:message key="oscarEncounter.encounterTransportation.title"/>:&nbsp;
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTransportation.title"/>:&nbsp;
     <input type="text" tabindex="13" id="hourOfEncTransportationTime" name="hourOfEncTransportationTime" maxlength="2"
            style="border: 1px; width: 20px; height:12px"
            value="<nested:write name="caseManagementEntryForm" property="caseNote.hourOfEncTransportationTime"/>">&nbsp;<b>:</b>&nbsp;
@@ -209,36 +209,30 @@
     encSelect += noteIndex;
 %>
 <div style="clear: right; margin: 0 3px 0 0; float: right;">
-    <bean:message key="oscarEncounter.encType.title"/>:&nbsp;
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encType.title"/>:&nbsp;
     <span id="encType<%=noteIndex%>">
 	<nested:empty name="ajaxsave">
-        <html:select styleId="<%=encSelect%>" styleClass="encTypeCombo"
-                     name="caseManagementEntryForm" property="caseNote.encounter_type">
-            <html:option value=""></html:option>
-            <html:option value="face to face encounter with client"><bean:message
-                    key="oscarEncounter.faceToFaceEnc.title"/></html:option>
-            <html:option value="telephone encounter with client"><bean:message key="oscarEncounter.telephoneEnc.title"/></html:option>
-            <html:option value="email encounter with client"><bean:message
-                    key="oscarEncounter.emailEnc.title"/></html:option>
-            <html:option value="encounter without client"><bean:message
-                    key="oscarEncounter.noClientEnc.title"/></html:option>
+        <select id="<%=encSelect%>" class="encTypeCombo"
+                     name="encounter_type">
+            <option value=""></option>
+            <option value="face to face encounter with client"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.faceToFaceEnc.title"/></option>
+            <option value="telephone encounter with client"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.telephoneEnc.title"/></option>
+            <option value="email encounter with client"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.emailEnc.title"/></option>
+            <option value="encounter without client"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noClientEnc.title"/></option>
 
             <%
                 if (loggedInInfo73557.getCurrentFacility().isEnableGroupNotes()) {
             %>
 
-            <html:option value="group face to face encounter"><bean:message
-                    key="oscarEncounter.groupFaceEnc.title"/></html:option>
-            <html:option value="group telephone encounter"><bean:message key="oscarEncounter.groupTelephoneEnc.title"/></html:option>
-            <html:option value="group encounter with client"><bean:message
-                    key="oscarEncounter.emailEnc.title"/></html:option>
-            <html:option value="group encounter without group"><bean:message
-                    key="oscarEncounter.groupNoClientEnc.title"/></html:option>
+            <option value="group face to face encounter"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.groupFaceEnc.title"/></option>
+            <option value="group telephone encounter"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.groupTelephoneEnc.title"/></option>
+            <option value="group encounter with client"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.emailEnc.title"/></option>
+            <option value="group encounter without group"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.groupNoClientEnc.title"/></option>
 
             <%
                 }
             %>
-        </html:select>
+        </select>
     </nested:empty> <nested:notEmpty name="ajaxsave">
         &quot;<nested:write name="caseManagementEntryForm"
                             property="caseNote.encounter_type"/>&quot;
@@ -252,8 +246,7 @@
         <div>&nbsp;</div>
     </nested:equal> --%>
 <nested:greaterThan name="numIssues" value="0">
-    <div style="margin: 0px 0px 0px 3px;"><span style="float: left;"><bean:message
-            key="oscarEncounter.assignedIssues.title"/>
+    <div style="margin: 0px 0px 0px 3px;"><span style="float: left;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignedIssues.title"/>
 	</span>
         <ul style="float: left; list-style: circle inside; margin: 0px;">
             <nested:iterate id="noteIssue" property="caseNote.issues"
@@ -272,7 +265,7 @@
 
 <div id="noteIssues">
     <div id="noteIssues-resolved" style="margin: 0; background-color: #CCCCFF; display: none;">
-        <b><bean:message key="oscarEncounter.referenceResolvedIssues.title"/></b>
+        <b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.referenceResolvedIssues.title"/></b>
         <% int countResolvedIssue = -1; %>
         <table id="setIssueList">
             <nested:iterate indexId="ind" id="issueCheckList" property="issueCheckList" name="caseManagementEntryForm"
@@ -388,7 +381,7 @@
 
     <% int countUnresolvedIssue = -1; %>
     <div id="noteIssues-unresolved" style="margin: 0px; background-color: #CCCCFF; display: none;">
-        <b><bean:message key="oscarEncounter.referenceUnresolvedIssues.title"/></b>
+        <b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.referenceUnresolvedIssues.title"/></b>
 
         <table id="setIssueList">
             <nested:iterate indexId="ind" id="issueCheckList" property="issueCheckList" name="caseManagementEntryForm"

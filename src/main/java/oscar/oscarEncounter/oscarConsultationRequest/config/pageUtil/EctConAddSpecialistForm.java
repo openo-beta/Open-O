@@ -26,14 +26,7 @@
 
 package oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
-public final class EctConAddSpecialistForm extends ActionForm {
+public final class EctConAddSpecialistForm {
     String fName;
     String lName;
     String proLetters;
@@ -167,46 +160,6 @@ public final class EctConAddSpecialistForm extends ActionForm {
 
     public void setSpecId(String str) {
         specId = str;
-    }
-
-    @Override
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        if (fName == null || fName.length() == 0) errors.add("fName", new ActionMessage("Errors.Firstname"));
-        if (lName == null || lName.length() == 0) errors.add("lName", new ActionMessage("Errors.Lastname"));
-        if (phone == null || phone.length() == 0) errors.add("phone", new ActionMessage("Errors.Phone"));
-        if (address == null || address.length() == 0) errors.add("address", new ActionMessage("Errors.Address"));
-        if (!errors.isEmpty() && whichType == 2) request.setAttribute("upd", "getterUpdating");
-        return errors;
-    }
-
-    @Override
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-        resetForm();
-    }
-
-    public void resetForm() {
-        fName = null;
-        lName = null;
-        proLetters = null;
-        address = null;
-        phone = null;
-        fax = null;
-        website = null;
-        email = null;
-        specType = null;
-        transType = null;
-        specId = null;
-        eDataUrl = null;
-        eDataOscarKey = null;
-        eDataServiceKey = null;
-        annotation = null;
-        referralNo = null;
-        privatePhoneNumber = null;
-        cellPhoneNumber = null;
-        pagerNumber = null;
-        salutation = null;
-        whichType = 0;
     }
 
     /**

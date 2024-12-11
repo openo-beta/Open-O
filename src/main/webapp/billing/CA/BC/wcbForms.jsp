@@ -44,7 +44,6 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="oscar.oscarDemographic.data.*,org.oscarehr.util.SpringUtils" %>
 <%@page import="java.text.*, java.util.*, oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.*,oscar.entities.*" %>
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
@@ -93,7 +92,7 @@
                 if (wcb.verifyFormNotNeeded() != null && wcb.verifyFormNotNeeded().size() > 0) {
                     List<String> errs = wcb.verifyFormNotNeeded();
             %>
-            <td title="header=[To bill WCB without a form the following is needed] body=[<%for (String s : errs) { %><bean:message key="<%=s%>"/><%  }%>]">
+            <td title="header=[To bill WCB without a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/><%  }%>]">
                     <%}else{%>
             <td>
                 <%}%>
@@ -106,7 +105,7 @@
                 if (wcb.verifyEverythingOnForm() != null && wcb.verifyEverythingOnForm().size() > 0) {
                     List<String> errs = wcb.verifyEverythingOnForm();
             %>
-            <td title="header=[To bill WCB with a form the following is needed] body=[<%for (String s : errs) { %><bean:message key="<%=s%>"/><%  }%>]">
+            <td title="header=[To bill WCB with a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/><%  }%>]">
                     <%}else{%>
             <td>
                 <%}%>

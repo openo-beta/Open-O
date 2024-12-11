@@ -23,7 +23,8 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <div class="col-sm-3">
     <ul class="nav nav-tabs nav-justified">
         <li ng-repeat="list in page.formlists" ng-class="getListClass(list.id)" class="hand-hover"><a
@@ -87,12 +88,12 @@
     <a class="hand-hover pull-right" ng-show="!isEmpty(page.currentForm)" title="Open in new window"
        ng-click="viewFormState(page.currentForm,2)"><span class="glyphicon glyphicon-new-window"></span></a>
     <div ng-if="isEmpty(page.currentForm)">
-        <h2><bean:message key="forms.title.form.library" bundle="ui"/></h2>
+        <h2><fmt:message bundle="${uiBundle}" key="forms.title.form.library"/></h2>
         <div>
 
             <div class="col-sm-4">
                 <legend style="margin-bottom:0px;">
-                    <bean:message key="forms.title.form.groups" bundle="ui"/>
+                    <fmt:message bundle="${uiBundle}" key="forms.title.form.groups"/>
                 </legend>
                 <ul class="list-group">
                     <li ng-repeat="mod in page.formGroups" class="list-group-item" ng-class="getGroupListClass(mod)">
@@ -119,7 +120,7 @@
 
             <div ng-if="favouriteGroup" class="col-sm-4">
                 <legend style="margin-bottom:0px;">
-                    <bean:message key="forms.title.form.favourite" bundle="ui"/>: {{favouriteGroup.displayName}}
+                    <fmt:message bundle="${uiBundle}" key="forms.title.form.favourite"/>: {{favouriteGroup.displayName}}
                 </legend>
 
                 <ul style="padding-left:12px;">

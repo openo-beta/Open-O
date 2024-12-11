@@ -28,7 +28,7 @@
     Integer latestFrmId = (Integer) session.getAttribute("latestFrmId");
     session.removeAttribute("latestFrmId");
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script language=javascript>
@@ -37,7 +37,6 @@
         </script>
     </head>
     <body>
-    <a href="javascript:window.close();"><bean:message
-            key="oscarEncounter.close.btnHere"/></a>
+    <a href="javascript:window.close();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.close.btnHere"/></a>
     </body>
-</html:html>
+</html>

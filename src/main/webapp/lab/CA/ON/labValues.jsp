@@ -50,11 +50,8 @@
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
-
     String labType = request.getParameter("labType");
     String demographicNo = request.getParameter("demo");
     String testName = request.getParameter("testName");
@@ -87,9 +84,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><bean:message key="oscarMDS.segmentDisplay.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.title"/></title>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
     <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="<%=request.getContextPath() %>/css/DT_bootstrap.css" rel="stylesheet" type="text/css">
@@ -135,7 +132,7 @@
 
 <script language="JavaScript">
     function getComment() {
-        var commentVal = prompt('<bean:message key="oscarMDS.segmentDisplay.msgComment"/>', '');
+        var commentVal = prompt('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.msgComment"/>', '');
         document.acknowledgeForm.comment.value = commentVal;
         return true;
     }
@@ -167,7 +164,7 @@
                         <tr>
                             <td>
                                 <div class="Field2" style="text-align: center;">
-                                    <bean:message key="oscarMDS.segmentDisplay.formDetailResults"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDetailResults"/>
                                 </div>
                             </td>
                         </tr>
@@ -182,27 +179,23 @@
                                                         <table>
                                                             <tr>
                                                                 <td>
-                                                                    <div class="FieldData"><strong><bean:message
-                                                                            key="oscarMDS.segmentDisplay.formPatientName"/>: </strong>
+                                                                    <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formPatientName"/>: </strong>
                                                                         <%=Encode.forHtml(demographic.getFormattedName())%>
                                                                     </div>
 
                                                                 </td>
                                                                 <td>
-                                                                    <div class="" nowrap><strong><bean:message
-                                                                            key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=demographic.getSex()%>
+                                                                    <div class="" nowrap><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=demographic.getSex()%>
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <div class="FieldData"><strong><bean:message
-                                                                            key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=DemographicData.getDob(demographic, "-")%>
+                                                                    <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=DemographicData.getDob(demographic, "-")%>
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <div class="FieldData"><strong><bean:message
-                                                                            key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=demographic.getAge()%>
+                                                                    <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=demographic.getAge()%>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -224,18 +217,12 @@
                     <table name="tblDiscs" id="tblDiscs" class="table table-condensed table-striped">
                         <thead>
                         <tr class="Field2">
-                            <th class="Cell"><bean:message
-                                    key="oscarMDS.segmentDisplay.formTestName"/></th>
-                            <th class="Cell"><bean:message
-                                    key="oscarMDS.segmentDisplay.formResult"/></th>
-                            <th class="Cell"><bean:message
-                                    key="oscarMDS.segmentDisplay.formAbn"/></th>
-                            <th class="Cell"><bean:message
-                                    key="oscarMDS.segmentDisplay.formReferenceRange"/></th>
-                            <th class="Cell"><bean:message
-                                    key="oscarMDS.segmentDisplay.formUnits"/></th>
-                            <th class="Cell"><bean:message
-                                    key="oscarMDS.segmentDisplay.formDateTimeCompleted"/></th>
+                            <th class="Cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formTestName"/></th>
+                            <th class="Cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formResult"/></th>
+                            <th class="Cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formAbn"/></th>
+                            <th class="Cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formReferenceRange"/></th>
+                            <th class="Cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formUnits"/></th>
+                            <th class="Cell"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDateTimeCompleted"/></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -285,10 +272,10 @@
                     <table class="MainTableBottomRowRightColumn" bgcolor="#003399">
                         <tr>
                             <td align="left"><input type="button" class="btn btn-danger DoNotPrint"
-                                                    value=" <bean:message key="global.btnClose"/> "
+                                                    value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                                     onClick="window.close()"> <input type="button"
                                                                                      class="btn DoNotPrint"
-                                                                                     value=" <bean:message key="global.btnPrint"/> "
+                                                                                     value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                                                                      onClick="window.print()">
                                 <input type="button" value="Plot" class="btn btn-primary DoNotPrint"
                                        onclick="window.location = 'labValuesGraph.jsp?demographic_no=<%=demographicNo%>&labType=<%=labType%>&identifier=<%=identifier%>&testName=<%=testName%>';"/>

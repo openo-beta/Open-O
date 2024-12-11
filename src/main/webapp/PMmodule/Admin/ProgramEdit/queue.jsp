@@ -38,7 +38,7 @@
         document.programManagerForm.submit();
     }
 </script>
-<html:hidden property="queue.id"/>
+<input type="hidden" name="id" id="id"/>
 <div class="tabs" id="tabs">
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>

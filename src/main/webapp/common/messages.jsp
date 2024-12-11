@@ -28,22 +28,22 @@
 <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.ERROR')}">
     <table width="100%" border="0" cellpadding="0" cellspacing="1"
            bgcolor="#C0C0C0">
-        <html:messages id="error" bundle="pmm">
+        <c:if test="${not empty savedMessage}">
             <tr>
-                <td class="error"><c:out value="${error}"/></td>
+                <td class="error">${savedMessage}</td>
             </tr>
-        </html:messages>
+        </c:if>
     </table>
 </c:if>
 <%-- Success Messages --%>
 <c:if test="${not empty pageContext.request.getAttribute('org.apache.struts.action.MESSAGE')}">
     <table width="100%" border="0" cellpadding="0" cellspacing="1"
            bgcolor="#C0C0C0">
-        <html:messages id="message" message="true" bundle="pmm">
+        <c:if test="${not empty savedMessage}">
             <tr>
-                <td class="message"><c:out value="${message}"/></td>
+                <td class="message"><c:out value="${savedMessage}"/></td>
             </tr>
-        </html:messages>
+        </c:if>
     </table>
 </c:if>
 

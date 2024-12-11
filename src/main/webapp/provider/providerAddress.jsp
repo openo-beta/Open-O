@@ -25,8 +25,8 @@
 --%>
 
 <%@ page language="java" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="oscar.oscarProvider.data.*" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
@@ -39,15 +39,15 @@
     if (session.getValue("user") == null) response.sendRedirect("../logout.htm");
     String curUser_no = (String) session.getAttribute("user");
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
 
-        <title><bean:message key="provider.editRxAddress.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxAddress.title"/></title>
 
         <script type="text/javascript">
             function validate() {
@@ -139,10 +139,8 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="provider.editRxFax.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-                    key="provider.editRxAddress.msgProviderAddress"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxAddress.msgProviderAddress"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -173,7 +171,7 @@
 
                 %>
 
-                <html:form action="/EditAddress.do">
+                <form action="${pageContext.request.contextPath}/EditAddress.do" method="post">
 
 			<span style="color:blue">By entering in values, you will 
 			<ul>
@@ -186,23 +184,23 @@
 
 
                     <label for="address">Address</label>
-                    <html:text property="address" value="<%=address %>"/>
+                    <input type="checkbox" name="address" value="<%=address %>" />
                     <br/>
                     <label for="city">City</label>
-                    <html:text property="city" value="<%=city %>"/>
+                    <input type="checkbox" name="city" value="<%=city %>" />
                     <br/>
                     <label for="province">Province</label>
-                    <html:text property="province" value="<%=province %>"/>
+                    <input type="checkbox" name="province" value="<%=province %>" />
                     <br/>
                     <label for="postal">Postal</label>
-                    <html:text property="postal" value="<%=postal %>"/>
+                    <input type="checkbox" name="postal" value="<%=postal %>" />
                     <br/>
 
                     <input type="submit" onclick="return validate();"
-                           value="<bean:message key="provider.editRxFax.btnSubmit"/>"/>
-                </html:form> <%
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.btnSubmit"/>"/>
+                </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {
-            %> <bean:message key="provider.editRxAddress.msgSuccess"/> <br>
+            %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxAddress.msgSuccess"/> <br>
                 <%=address%>, <%=city%>, <%=province%>, <%=postal%>  <%
                 }
             %>
@@ -214,4 +212,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

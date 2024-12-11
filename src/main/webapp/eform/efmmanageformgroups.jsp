@@ -25,8 +25,8 @@
 --%>
 <%@page import="java.net.URLEncoder" %>
 <%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     String user = (String) session.getAttribute("user");
     if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
@@ -55,10 +55,10 @@
     else if (orderByRequest.equals("file_name")) orderBy = EFormUtil.FILE_NAME;
 %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
 
-        <title><bean:message key="admin.admin.frmGroups"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.frmGroups"/></title>
 
         <style>
             .contentLink {
@@ -80,7 +80,7 @@
     <body>
     <%@ include file="efmTopNav.jspf" %>
 
-    <h3><bean:message key="admin.admin.frmGroups"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.frmGroups"/></h3>
     <div class="row-fluid">
         <div class="well span6">
 
@@ -90,9 +90,9 @@
                 <div class="controls">
                     <div class="input-append">
                         <input type="text" name="groupName" class="check"
-                               placeholder="<bean:message key="eform.groups.addGroup" />">
+                               placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addGroup"/>">
                         <input type="submit" name="subm" class="btn btn-primary groupAdd"
-                               value="<bean:message key="eform.groups.addGroup" />" disabled>
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addGroup"/>" disabled>
                     </div>
                 </div>
             </form>
@@ -151,7 +151,7 @@
         <!--EFORMS IN GROUP-->
 
         <div class="well span6">
-            <h4><bean:message key="eform.groups.contents"/>: <%=groupView%>
+            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.contents"/>: <%=groupView%>
             </h4>
 
             <table class="table table-condensed table-striped">
@@ -163,14 +163,14 @@
                     <th>
                         <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=groupView%>"
                            class="contentLink">
-                            <bean:message key="eform.uploadhtml.btnFormName"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFormName"/>
                         </a>
                     </th>
 
                     <th>
                         <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?group_view=<%=groupView%>"
                            class="contentLink">
-                            <bean:message key="eform.uploadhtml.btnDate"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnDate"/>
                         </a>
                     </th>
 
@@ -186,7 +186,7 @@
                                 HashMap<String, ? extends Object> curForm = eForms.get(i);
                 %>
                 <tr rel="popover" data-html="true" data-title="<%=curForm.get("formName")%>"
-                    data-content="<strong><bean:message key="eform.uploadhtml.btnSubject" />:</strong><br> <%=curForm.get("formSubject")%> <br> <small><bean:message key="eform.uploadhtml.btnFile" />: <%=curForm.get("formFileName")%></small>"
+                    data-content="<strong><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnSubject"/>:</strong><br> <%=curForm.get("formSubject")%> <br> <small><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFile"/>: <%=curForm.get("formFileName")%></small>"
                     data-trigger="hover" data-placement="bottom">
 
                     <td>
@@ -208,12 +208,12 @@
                 <% }
                 } else { %>
                 <tr align="center">
-                    <td colspan="5"><bean:message key="eform.groups.noFormsInGroup"/></td>
+                    <td colspan="5"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.noFormsInGroup"/></td>
                 </tr>
                 <% }
                 } else {%>
                 <tr align="center">
-                    <td colspan="5"><bean:message key="eform.groups.noGroupMsg"/></td>
+                    <td colspan="5"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.noGroupMsg"/></td>
                 </tr>
                 <% } %>
                 </tbody>
@@ -227,28 +227,28 @@
         </div>
         <!--modal-->
                 <% if (!groupView.equals("")) { %>
-        <html:form action="/eform/addToGroup" method="get" styleId="eformToGroupForm">
+        <form action="${pageContext.request.contextPath}/eform/addToGroup.do" method="get" styleId="eformToGroupForm">
         <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                <h3 id="myModalLabel"><bean:message key="eform.groups.addToGroup"/> <%=groupView%>
+                <h3 id="myModalLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addToGroup"/> <%=groupView%>
                 </h3>
             </div>
             <div class="modal-body">
 
                 <div style="text-align:center">
 
-                    <html:select property="fid" styleId="eformSelect">
+                    <select name="fid" id="eformSelect">
                         <%
                             for (int i = 0; i < forms.size(); i++) {
                                 HashMap<String, ? extends Object> curhash = forms.get(i);
                         %>
-                        <html:option
+                        <option
                                 value='<%= (String) curhash.get("fid")%>'><%= (String) curhash.get("formName")%> | <%= (String) curhash.get("formDate")%>
-                        </html:option>
+                        </option>
                         <% } %>
-                    </html:select>
+                    </select>
 
 
                     <input type="hidden" name="groupName" value="<%= groupView%>">
@@ -264,7 +264,7 @@
                        value="Add eForm to Group">
             </div>
         </div>
-        </html:form>
+        </form>
                 <% } %>
 
             <%@ include file="efmFooter.jspf" %>
@@ -329,4 +329,4 @@
 
         </script>
     </body>
-</html:html>
+</html>

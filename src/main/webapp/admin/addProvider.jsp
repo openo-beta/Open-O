@@ -55,7 +55,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><bean:message key="oscarMDS.selectProvider.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.selectProvider.title"/></title>
 
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
     <!-- Bootstrap 2.3.1 -->
@@ -110,8 +110,8 @@
                 .autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li>")
                     .append("<div><b>" + item.lastName + ", " + item.firstName + "</b>" +
-                        "<br>" + "<bean:message key="admin.provider.formProviderNo" />" + ": " + item.providerNo +
-                        "<br>" + "<bean:message key="admin.provider.formBillingNo" />" + ": " + item.ohipNo + "</div>")
+                        "<br>" + "<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formProviderNo"/>" + ": " + item.providerNo +
+                        "<br>" + "<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formBillingNo"/>" + ": " + item.ohipNo + "</div>")
                     .appendTo(ul);
             };
 
@@ -128,27 +128,27 @@
 <form name="providerSelectForm" method="post" action="${pageContext.request.contextPath}/study/ManageStudy.do">
     <input type="hidden" name="method" value="AddProvider"/>
     <input type="hidden" name="studyId" value="<%=request.getParameter("studyId")%>"/>
-    <h3>&nbsp;&nbsp;<bean:message key="admin.admin.btnStudy"/></h3>
+    <h3>&nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnStudy"/></h3>
 
     <div class="well">
         <div class="row">
             <div class="span4">
                 <fieldset>
-                    <legend><bean:message key="billing.batchbilling.msgProviderTitle"/></legend>
-                    <label><bean:message key="billing.batchbilling.msgProvider"/></label>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgProviderTitle"/></legend>
+                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgProvider"/></label>
                     <input type="text" id="keyword" class="input-block-level"
-                           placeholder="<bean:message key="billing.batchbilling.msgProvider" />"
+                           placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.batchbilling.msgProvider"/>"
                            title="Type in a provider's name and select it.">
                 </fieldset>
             </div class="span4">
             <div class="span6">
                 <fieldset>
-                    <legend><bean:message key="demographic.demographicexport.providers"/></legend>
-                    <label><bean:message key="demographic.demographicexport.providers"/></label>
+                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicexport.providers"/></legend>
+                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicexport.providers"/></label>
                     <select id="fwdProviders" name="providerNo" class="input-block-level" multiple="multiple"
                             ondblclick="removeProvider(this);"></select>
-                    <span class="help-block"><bean:message key="oscarMDS.forward.msgInstruction2"/></span>
-                    <input type="submit" class="btn btn-primary" value="<bean:message key="global.btnSubmit" />"
+                    <span class="help-block"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.forward.msgInstruction2"/></span>
+                    <input type="submit" class="btn btn-primary" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSubmit"/>"
                            onclick="return preSubmit();">
                 </fieldset>
             </div class="span6">

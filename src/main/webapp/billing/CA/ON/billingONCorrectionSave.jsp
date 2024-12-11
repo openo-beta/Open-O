@@ -17,9 +17,9 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page errorPage="/errorpage.jsp"
          import="java.util.*,java.math.*,java.net.*,java.sql.*,oscar.util.*,oscar.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>

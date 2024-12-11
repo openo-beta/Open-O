@@ -27,9 +27,9 @@
 <%@page import="org.oscarehr.common.model.PartialDate" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.casemgmt.web.PrescriptDrug" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -52,15 +52,19 @@
 <%@page import="java.util.ArrayList,oscar.util.*,java.util.*,org.oscarehr.common.model.Drug,org.oscarehr.common.dao.*" %>
 <%@page import="org.oscarehr.managers.DrugDispensingManager" %>
 <%@page import="org.oscarehr.managers.CodingSystemManager" %>
-<bean:define id="patient" type="oscar.oscarRx.data.RxPatientData.Patient" name="Patient"/>
 <c:if test="${empty sessionScope.RxSessionBean}">
     <c:redirect url="error.html"/>
 </c:if>
 <c:if test="${not empty sessionScope.RxSessionBean}">
-    <c:set var="bean" value="${sessionScope.RxSessionBean}" scope="page"/>
-    <c:if test="${bean.valid == false}">
-        <c:redirect url="error.html"/>
-    </c:if>
+    <%
+        // Directly access the RxSessionBean from the session
+        oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        if (bean != null && !bean.isValid()) {
+            response.sendRedirect("error.html");
+            return; // Ensure no further JSP processing
+        }
+        oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+    %>
 </c:if>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
@@ -81,7 +85,6 @@
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
-    oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
     PartialDateDao partialDateDao = SpringUtils.getBean(PartialDateDao.class);
 
     boolean showall = false;
@@ -106,29 +109,27 @@
     <table width="100%" cellpadding="3" border="0" class="sortable" id="Drug_table<%=heading%>">
         <tr>
             <th align="left"><b>Entered Date</b></th>
-            <th align="left"><b><bean:message key="SearchDrug.msgRxDate"/></b></th>
+            <th align="left"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgRxDate"/></b></th>
             <th align="left"><b>Days to Exp</b></th>
             <th align="left"><b>LT Med</b></th>
-            <th align="left"><b><bean:message key="SearchDrug.msgPrescription"/></b></th>
+            <th align="left"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgPrescription"/></b></th>
             <%if (securityManager.hasWriteAccess("_rx", roleName$, true)) {%>
-            <th align="center" width="35px"><b><bean:message key="SearchDrug.msgReprescribe"/></b></th>
+            <th align="center" width="35px"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgReprescribe"/></b></th>
             <%if (!OscarProperties.getInstance().getProperty("rx.delete_drug.hide", "false").equals("true")) {%>
-            <th align="center" width="35px"><b><bean:message key="SearchDrug.msgDelete"/></b></th>
+            <th align="center" width="35px"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgDelete"/></b></th>
             <% }
             }
             %>
-            <th align="center" width="35px"><b><bean:message key="SearchDrug.msgDiscontinue"/></b></th>
-            <th align="center" width="35px" title="<bean:message key="SearchDrug.msgReason_help"/>"><b><bean:message
-                    key="SearchDrug.msgReason"/></b></th>
-            <th align="center" width="35px"><b><bean:message key="SearchDrug.msgPastMed"/></b></th>
+            <th align="center" width="35px"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgDiscontinue"/></b></th>
+            <th align="center" width="35px" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgReason_help"/>"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgReason"/></b></th>
+            <th align="center" width="35px"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgPastMed"/></b></th>
             <%if (securityManager.hasWriteAccess("_rx", roleName$, true)) {%>
             <th align="center" width="15px">&nbsp;</th>
             <% } %>
-            <th align="center"><bean:message key="SearchDrug.msgLocationPrescribed"/></th>
-            <th align="center" title="<bean:message key="SearchDrug.msgHideCPP_help"/>"><bean:message
-                    key="SearchDrug.msgHideCPP"/></th>
+            <th align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgLocationPrescribed"/></th>
+            <th align="center" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgHideCPP_help"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgHideCPP"/></th>
             <%if (OscarProperties.getInstance().getProperty("rx.enable_internal_dispensing", "false").equals("true")) {%>
-            <th align="center"><bean:message key="SearchDrug.msgDispense"/></th>
+            <th align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgDispense"/></th>
             <%} %>
             <th align="center"></th>
         </tr>
@@ -241,7 +242,7 @@
                     if (securityManager.hasWriteAccess("_rx", roleName$, true)) {
                 %>
                 <a id="notLongTermDrug_<%=prescriptIdInt%>"
-                   title="<bean:message key='oscarRx.Prescription.changeDrugLongTerm'/>"
+                   title="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarRx.Prescription.changeDrugLongTerm'/>"
                    onclick="changeLt('<%=prescriptIdInt%>');" href="javascript:void(0);">
                     L
                 </a>

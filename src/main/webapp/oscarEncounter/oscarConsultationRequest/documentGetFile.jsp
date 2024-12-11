@@ -39,8 +39,6 @@
     }
 %>
 
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@page
         import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
 
@@ -92,5 +90,5 @@
 
     } else {
 %>
-<bean:message key="dms.documentGetFile.msgFileNotfound"/>
+<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentGetFile.msgFileNotfound"/>
 <%}%>

@@ -26,11 +26,11 @@
 <%@ page import="org.oscarehr.PMmodule.web.formbean.*" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<html:form action="/PMmodule/ProgramManagerView">
+<form action="${pageContext.request.contextPath}/PMmodule/ProgramManagerView.do" method="post">
 
-    <html:hidden property="tab"/>
-    <html:hidden property="subtab"/>
-    <html:hidden property="vacancyOrTemplateId"/>
+    <input type="hidden" name="tab" id="tab"/>
+    <input type="hidden" name="subtab" id="subtab"/>
+    <input type="hidden" name="vacancyOrTemplateId" id="vacancyOrTemplateId"/>
     <input type="hidden" name="id"
            value="<c:out value="${requestScope.id}"/>"/>
     <input type="hidden" name="method" value="view"/>
@@ -208,4 +208,4 @@
     <jsp:include
             page='<%="/PMmodule/Admin/ProgramView/" + selectedTab.toLowerCase().replaceAll(" ","_") + ".jsp"%>'/>
     <%}%>
-</html:form>
+</form>

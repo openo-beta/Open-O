@@ -19,7 +19,7 @@
 --%>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <html>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="org.oscarehr.util.DateRange" %>
 <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -52,7 +52,7 @@
 <jsp:useBean id="SxmlMisc" class="oscar.SxmlMisc" scope="session"/>
 
 <head>
-    <title><bean:message key="admin.admin.btnSimulationOHIPDiskette"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSimulationOHIPDiskette"/></title>
     <%
         GregorianCalendar now = new GregorianCalendar();
         int curYear = now.get(Calendar.YEAR);
@@ -290,7 +290,7 @@
 <body>
 
 <div class="container-fluid">
-    <h3><bean:message key="admin.admin.btnSimulationOHIPDiskette"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSimulationOHIPDiskette"/></h3>
 
     <form name="serviceform" id="serviceform"
           action="<%=request.getContextPath() %>/billing/CA/ON/billingOHIPsimulation.jsp">

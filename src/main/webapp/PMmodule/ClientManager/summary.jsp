@@ -103,27 +103,27 @@
     }
 
     function updateQuickIntake(clientId) {
-        location.href = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=update&type=quick&clientId=" + clientId;
+        location.href = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=update&type=quick&clientId=' + clientId;
     }
 
     function printQuickIntake(clientId, intakeId) {
-        url = '<html:rewrite action="/PMmodule/GenericIntake/Edit.do"/>' + "?method=print&type=quick&clientId=" + clientId + "&intakeId=" + intakeId;
+        url = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=print&type=quick&clientId=' + clientId + "&intakeId=" + intakeId;
         window.open(url, 'quickIntakePrint', 'width=1024,height=768,scrollbars=1');
     }
 
     function openHealthSafety() {
-        var url = '<html:rewrite action="/PMmodule/HealthSafety.do"/>';
+        var url = '<%=request.getContextPath() %>/PMmodule/HealthSafety.do';
         url += '?method=form&id=' + '<c:out value="${client.demographicNo}"/>';
         window.open(url, 'consent');
     }
 
 
     function saveJointAdmission(clientId, headClientId, jType) {
-        location.href = '<html:rewrite action="/PMmodule/ClientManager.do"/>' + "?method=save_joint_admission&clientId=<c:out value='${client.demographicNo}'/>&headClientId=" + headClientId + "&dependentClientId=" + clientId + "&type=" + jType;
+        location.href = "<%=request.getContextPath() %>/PMmodule/ClientManager.do?method=save_joint_admission&clientId=<c:out value='${client.demographicNo}'/>&headClientId=" + headClientId + "&dependentClientId=" + clientId + "&type=" + jType;
     }
 
     function removeJointAdmission(clientId) {
-        location.href = '<html:rewrite action="/PMmodule/ClientManager.do"/>' + "?method=remove_joint_admission&clientId=<c:out value='${client.demographicNo}'/>&dependentClientId=" + clientId;
+        location.href = "<%=request.getContextPath() %>/PMmodule/ClientManager.do?method=remove_joint_admission&clientId=<c:out value='${client.demographicNo}'/>&dependentClientId=" + clientId;
     }
 
     function openSurvey() {
@@ -132,7 +132,7 @@
         document.clientManagerForm.clientId.value = '<c:out value="${client.demographicNo}"/>';
         document.clientManagerForm.formId.value = formId;
         var id = document.getElementById('formInstanceId').value;
-        location.href = '<html:rewrite action="/PMmodule/Forms/SurveyExecute.do"/>' + "?method=survey&formId=" + formId + "&formInstanceId=" + id + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
+        location.href = "<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=survey&formId=" + formId + "&formInstanceId=" + id + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
     }
 
 </script>
@@ -388,7 +388,7 @@
             <c:forEach var="rHash" items="${relations}">
                 <tr>
                     <td><a
-                            href="<html:rewrite action="/PMmodule/ClientManager.do"/>?method=edit&id=<c:out value="${rHash['demographicNo']}"/>">
+                            href="<%=request.getContextPath() %>/PMmodule/ClientManager.do?method=edit&id=<c:out value="${rHash['demographicNo']}"/>">
                         <c:out value="${rHash['lastName']}"/>, <c:out
                             value="${rHash['firstName']}"/> </a><!-- <c:out value="${rHash}"/> -->
                     </td>
@@ -619,7 +619,7 @@
                 <input type="button" value="Print Preview"
                        onclick="document.location='ClientManager/ocan_form.jsp?ocanType=FULL&demographicId=<%=currentDemographic.getDemographicNo()%>&print=true'"/>
                 <input type="button" value="Blank Form"
-                       onclick="window.open('<html:rewrite page="/ocan/OCAN_2.0_FULL_v2.0.5.pdf"/>')"/>
+                       onclick="window.open('${request.contextPath}/ocan/OCAN_2.0_FULL_v2.0.5.pdf')"/>
             </td>
         </c:if>
         <c:if test="${ocanStaffForm == null}">
@@ -632,7 +632,7 @@
                        onclick="document.location='ClientManager/ocan_form.jsp?prepopulate=1&ocanType=FULL&demographicId=<%=currentDemographic.getDemographicNo()%>'"/>
             </td>
             <td><input type="button" value="Blank Form"
-                       onclick="window.open('<html:rewrite page="/ocan/OCAN_2.0_FULL_v2.0.5.pdf"/>')"/>
+                       onclick="window.open('${request.contextPath}/ocan/OCAN_2.0_FULL_v2.0.5.pdf')"/>
             </td>
         </c:if>
     </tr>
@@ -675,7 +675,7 @@
                 <input type="button" value="Print Preview"
                        onclick="document.location='ClientManager/ocan_form.jsp?ocanType=SELF&demographicId=<%=currentDemographic.getDemographicNo()%>&print=true'"/>
                 <input type="button" value="Blank Form"
-                       onclick="window.open('<html:rewrite page="/ocan/OCAN_2.0_CORE_SELF_v2.0.5.pdf"/>')"/>
+                       onclick="window.open('${request.contextPath}/ocan/OCAN_2.0_CORE_SELF_v2.0.5.pdf')"/>
 
             </td>
         </c:if>
@@ -689,7 +689,7 @@
                        onclick="document.location='ClientManager/ocan_form.jsp?prepopulate=1&ocanType=SELF&demographicId=<%=currentDemographic.getDemographicNo()%>'"/>
             </td>
             <td><input type="button" value="Blank Form"
-                       onclick="window.open('<html:rewrite page="/ocan/OCAN_2.0_CORE_SELF_v2.0.5.pdf"/>')"/>
+                       onclick="window.open('${request.contextPath}/ocan/OCAN_2.0_CORE_SELF_v2.0.5.pdf')"/>
             </td>
         </c:if>
     </tr>
@@ -706,7 +706,7 @@
                 <input type="button" value="Print Preview"
                        onclick="document.location='ClientManager/ocan_client_form.jsp?ocanType=SELF&demographicId=<%=currentDemographic.getDemographicNo()%>&print=true'"/>
                 <input type="button" value="Blank Form"
-                       onclick="window.open('<html:rewrite page="/ocan/OCAN_2.0_CORE_SELF_v2.0.5.pdf"/>')"/>
+                       onclick="window.open('${request.contextPath}/ocan/OCAN_2.0_CORE_SELF_v2.0.5.pdf')"/>
 
             </td>
         </c:if>
@@ -733,7 +733,7 @@
                 <input type="button" value="Print Preview"
                        onclick="document.location='ClientManager/ocan_form.jsp?ocanType=CORE&demographicId=<%=currentDemographic.getDemographicNo()%>&print=true'"/>
                 <input type="button" value="Blank Form"
-                       onclick="window.open('<html:rewrite page="/ocan/OCAN_2.0_CORE_v2.0.5.pdf"/>')"/>
+                       onclick="window.open('${request.contextPath}/ocan/OCAN_2.0_CORE_v2.0.5.pdf')"/>
 
             </td>
         </c:if>
@@ -748,7 +748,7 @@
                        onclick="document.location='ClientManager/ocan_form.jsp?prepopulate=1&ocanType=CORE&demographicId=<%=currentDemographic.getDemographicNo()%>'"/>
             </td>
             <td><input type="button" value="Blank Form"
-                       onclick="window.open('<html:rewrite page="/ocan/OCAN_2.0_CORE_v2.0.5.pdf"/>')"/>
+                       onclick="window.open('${request.contextPath}/ocan/OCAN_2.0_CORE_v2.0.5.pdf')"/>
             </td>
         </c:if>
     </tr>
@@ -827,11 +827,14 @@
     <table cellspacing="0" cellpadding="0">
         <tr>
             <td>New User Created Form:</td>
-            <td><html:select property="form.formId" onchange="openSurvey()">
-                <html:option value="0">&nbsp;</html:option>
-                <html:options collection="survey_list" property="formId"
-                              labelProperty="description"/>
-            </html:select></td>
+            <td><select name="formId" onchange="openSurvey()">
+                <option value="0">&nbsp;</option>
+                <c:forEach var="survey" items="${survey_list}">
+                    <option value="${survey.formId}">
+                            ${survey.description}
+                    </option>
+                </c:forEach>
+            </select></td>
         </tr>
     </table>
     <br/>
@@ -881,8 +884,8 @@
         <c:if test="${admission.programType != 'community'}">
             <a href=#
                onClick="popupPage(710, 1024,'../oscarSurveillance/CheckSurveillance.do?programId=<%=tempAdmission.getProgramId()%>&demographicNo=<%=demographic_no%>&proceed=<%=java.net.URLEncoder.encode(eURL)%>');return false;"
-               title="<bean:message key="global.encounter"/>">
-                <bean:message key="provider.appointmentProviderAdminDay.btnEncounter"/>
+               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>">
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnEncounter"/>
             </a>
         </c:if>
         <%

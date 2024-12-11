@@ -24,19 +24,17 @@
  */
 package org.oscarehr.integration.mcedt;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.struts.action.ActionForm;
-
 import ca.ontario.health.edt.Detail;
 import ca.ontario.health.edt.DetailData;
 import ca.ontario.health.edt.ResourceStatus;
 import ca.ontario.health.edt.TypeListResult;
 
-public class ResourceForm extends ActionForm {
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class ResourceForm {
 
     private static final long serialVersionUID = 1L;
 

@@ -23,7 +23,7 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
@@ -66,4 +66,4 @@
     </security:oscarSec>
     </body>
 
-</html:html>
+</html>

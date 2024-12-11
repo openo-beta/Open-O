@@ -23,9 +23,8 @@
 
 package org.oscarehr.survey.web.formbean;
 
+import java.io.File;
 import java.io.Serializable;
-
-import org.apache.struts.upload.FormFile;
 
 public class SurveyManagerFormBean implements Serializable {
     private String page;
@@ -34,7 +33,7 @@ public class SurveyManagerFormBean implements Serializable {
     private String questionTypeData;
     private int numAnswers;
     private String dateFormat;
-    private FormFile importFile;
+    private File importFile;
     private int templateId;
 
 
@@ -46,11 +45,11 @@ public class SurveyManagerFormBean implements Serializable {
         this.templateId = templateId;
     }
 
-    public FormFile getImportFile() {
+    public File getImportFile() {
         return importFile;
     }
 
-    public void setImportFile(FormFile importFile) {
+    public void setImportFile(File importFile) {
         this.importFile = importFile;
     }
 

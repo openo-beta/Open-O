@@ -21,7 +21,7 @@
 <%
     String user_no = (String) session.getAttribute("user");
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.*, java.sql.*, java.net.*" %>
 <%@ include file="../../../../admin/dbconnection.jsp" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -58,7 +58,7 @@
 
 <html>
 <head>
-    <title><bean:message key="admin.admin.btnINRBatchBilling"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnINRBatchBilling"/></title>
     <script language="JavaScript">
         <!--
         function openBrWindow(theURL, winName, features) {
@@ -94,7 +94,7 @@
 </head>
 
 <body>
-<h3><bean:message key="admin.admin.btnINRBatchBilling"/></h3>
+<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnINRBatchBilling"/></h3>
 
 <div class="container-fluid well">
     <button class="btn" type='button' name='print' value='Print' onClick='window.print()'><i

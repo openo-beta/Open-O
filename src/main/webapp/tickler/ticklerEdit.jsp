@@ -23,7 +23,6 @@
     Ontario, Canada
 
 --%>
-
 <%@page import="java.util.Set" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.GregorianCalendar" %>
@@ -31,7 +30,7 @@
 <%@page import="java.util.Locale" %>
 <%@page import="java.text.DateFormat" %>
 <%@page import="java.text.SimpleDateFormat" %>
-<%@ page import="org.owasp.encoder.Encode" %>
+<%@page import="org.owasp.encoder.Encode" %>
 <%@page import="org.oscarehr.common.dao.TicklerTextSuggestDao" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
 <%@page import="org.oscarehr.common.dao.TicklerTextSuggestDao" %>
@@ -46,21 +45,16 @@
 <%@page import="org.oscarehr.managers.TicklerManager" %>
 <%@page import="org.oscarehr.managers.DemographicManager" %>
 <%@page import="oscar.OscarProperties" %>
-
-
 <%
     TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_tickler" rights="w" reverse="<%=true%>">
@@ -72,7 +66,6 @@
         return;
     }
 %>
-
 <%
     boolean caisiEnabled = OscarProperties.getInstance().isPropertyActive("caisi");
     String ticklerNoStr = request.getParameter("tickler_no");
@@ -83,7 +76,6 @@
     } catch (NumberFormatException ignored) {
     }
 
-
     Tickler t = null;
     Demographic d = null;
     if (ticklerNo != null) {
@@ -93,7 +85,7 @@
         response.sendRedirect("../errorpage.jsp");
     }
 
-    java.util.Locale vLocale = (java.util.Locale) session.getAttribute(org.apache.struts.Globals.LOCALE_KEY);
+    java.util.Locale vLocale = request.getLocale();
 
     String selected = "";
     String stActive = LocaleUtils.getMessage(request.getLocale(), "tickler.ticklerMain.stActive");
@@ -115,7 +107,7 @@
     DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss", locale);
 %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
         <style>
             .tickler-comment-row:nth-child(odd) td {
@@ -163,7 +155,7 @@
                 cursor: pointer;
             }
         </style>
-        <title><bean:message key="tickler.ticklerEdit.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.title"/></title>
         <script type="application/javascript">
             //open a new popup window
             function popupPage(vheight, vwidth, varpage) {
@@ -285,7 +277,7 @@
 
             function validateDate() {
                 if (document.serviceform.xml_appointment_date.value === "" || !IsDate(document.serviceform.xml_appointment_date.value)) {
-                    document.getElementById("error").insertAdjacentText("beforeend", "<bean:message key="tickler.ticklerAdd.msgMissingDate"/>");
+                    document.getElementById("error").insertAdjacentText("beforeend", "<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgMissingDate"/>");
                     document.getElementById("error").style.display = 'block';
                     return false;
                 } else {
@@ -300,37 +292,37 @@
 
     <body onLoad="addQuickPick()">
     <div class="container">
-        <html:form action="/tickler/EditTickler">
+        <form action="${pageContext.request.contextPath}/tickler/EditTickler.do" method="post">
             <input type="hidden" name="method" value="editTickler"/>
             <input type="hidden" name="ticklerNo" value="<%=ticklerNo%>"/>
-            <h2><bean:message key="tickler.ticklerEdit.title"/></h2>
+            <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.title"/></h2>
             <div id="error" class="alert alert-error" style="display:none;"></div>
 
             <table class="table table-condensed">
 
                 <tr>
-                    <th style="background-color: #EEEEFF"><bean:message key="tickler.ticklerEdit.demographicName"/></th>
+                    <th style="background-color: #EEEEFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.demographicName"/></th>
                     <td><a href="javascript:void(0)"
                            onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=d.getDemographicNo()%>&displaymode=edit&dboperation=search_detail')">
                         <%=Encode.forHtmlContent(d.getLastName())%>,<%=Encode.forHtmlContent(d.getFirstName())%>
                     </a></td>
-                    <th style="background-color: #EEEEFF"><bean:message key="tickler.ticklerEdit.phoneNumbers"/></th>
+                    <th style="background-color: #EEEEFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.phoneNumbers"/></th>
                     <td>(H) <%=Encode.forHtmlContent(d.getPhone())%><br>(W) <%=Encode.forHtmlContent(d.getPhone2())%>
                         <br>(C) <%=Encode.forHtmlContent(d.getCellPhone())%>
                     </td>
                 </tr>
                 <tr>
-                    <th style="background-color: #EEEEFF"><bean:message key="tickler.ticklerEdit.chartNo"/></th>
+                    <th style="background-color: #EEEEFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.chartNo"/></th>
                     <td><%=d.getChartNo()%>
                     </td>
-                    <th style="background-color: #EEEEFF"><bean:message key="tickler.ticklerEdit.phoneComments"/></th>
+                    <th style="background-color: #EEEEFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.phoneComments"/></th>
                     <td><%=Encode.forHtmlContent(d.getPhoneComment())%>
                     </td>
                 </tr>
                 <tr>
-                    <th style="background-color: #EEEEFF"><bean:message key="tickler.ticklerEdit.age"/></th>
+                    <th style="background-color: #EEEEFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.age"/></th>
                     <td><%=d.getAge()%>(<%=d.getFormattedDob()%>)</td>
-                    <th style="background-color: #EEEEFF"><bean:message key="tickler.ticklerEdit.email"/></th>
+                    <th style="background-color: #EEEEFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.email"/></th>
                     <td><%=Encode.forHtmlContent(d.getEmail())%>
                     </td>
                 </tr>
@@ -339,11 +331,9 @@
                     <td colspan="4" style="padding-bottom:1em;"></td>
                 </tr>
                 <tr>
-                    <th colspan="2" style="background-color: #336666;color:white;"><bean:message
-                            key="tickler.ticklerEdit.messages"/></th>
-                    <th style="background-color: #336666;color:white;"><bean:message key="tickler.ticklerEdit.addedBy"/>
-                    <th style="background-color: #336666;color:white;"><bean:message
-                            key="tickler.ticklerEdit.dateAdded"/>
+                    <th colspan="2" style="background-color: #336666;color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.messages"/></th>
+                    <th style="background-color: #336666;color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.addedBy"/>
+                    <th style="background-color: #336666;color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.dateAdded"/>
                 </tr>
 
                 <tr>
@@ -376,16 +366,14 @@
                     <td colspan="4" style="padding-top:1em;"></td>
                 </tr>
                 <tr>
-                    <th colspan="2" style="background-color: #666699;color:white;"><bean:message
-                            key="tickler.ticklerEdit.newMessage"/></th>
-                    <th colspan="2" style="background-color: #666699;color:white;"><label for="status"><bean:message
-                            key="tickler.ticklerEdit.status"/></label></th>
+                    <th colspan="2" style="background-color: #666699;color:white;"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.newMessage"/></th>
+                    <th colspan="2" style="background-color: #666699;color:white;"><label for="status"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.status"/></label></th>
                 </tr>
                 <tr>
                     <td><label for="suggestedText"><a href="javascript:void(0)"
                                                       onclick="openBrWindow('./ticklerSuggestedText.jsp','tickler_suggested_text','width=680,height=400')"
                                                       style="font-weight:bold">
-                        <bean:message key="tickler.ticklerEdit.suggestedText"/></a>:</label></td>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.suggestedText"/></a>:</label></td>
                     <td>
                         <select class="form-control" name="suggestedText" id="suggestedText">
                             <option value="">---</option>
@@ -401,20 +389,17 @@
                     <td colspan="2">
                         <select class="form-control" name="status" id="status">
                                     <% if (t.getStatusDesc(vLocale).equals(stActive)){selected="selected";}else{selected="";}%>
-                            <option <%=selected%> value="A"><bean:message key="tickler.ticklerMain.stActive"/></option>
+                            <option <%=selected%> value="A"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.stActive"/></option>
                                     <% if (t.getStatusDesc(vLocale).equals(stComplete)){selected="selected";}else{selected="";}%>
-                            <option <%=selected%> value="C"><bean:message
-                                    key="tickler.ticklerMain.stComplete"/></option>
+                            <option <%=selected%> value="C"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.stComplete"/></option>
                                     <% if (t.getStatusDesc(vLocale).equals(stDeleted)){selected="selected";}else{selected="";}%>
-                            <option <%=selected%> value="D"><bean:message key="tickler.ticklerMain.stDeleted"/></option>
+                            <option <%=selected%> value="D"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.stDeleted"/></option>
                             <select>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="border: none;"><label for="newMessage"><bean:message
-                            key="tickler.ticklerEdit.messageText"/>:</label></td>
-                    <th colspan="2" style="background-color: #666699;color:white;"><label for="priority"><bean:message
-                            key="tickler.ticklerEdit.priority"/></label></th>
+                    <td colspan="2" style="border: none;"><label for="newMessage"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.messageText"/>:</label></td>
+                    <th colspan="2" style="background-color: #666699;color:white;"><label for="priority"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.priority"/></label></th>
                 </tr>
 
                 <tr>
@@ -422,7 +407,7 @@
                         <textarea class="form-control" rows="23" style="width:100%;" id="newMessage"
                                   name="newMessage"></textarea>
                         <input type="button" class="btn" name="pasteMessage" onclick="pasteMessageText()"
-                               value="<bean:message key="tickler.ticklerEdit.pasteMessage"/>"/>
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.pasteMessage"/>"/>
                     </td>
 
                     <td colspan="2">
@@ -432,29 +417,29 @@
                             } else {
                                 selected = "";
                             }%>
-                            <option <%=selected%> value="<bean:message key="tickler.ticklerMain.priority.high"/>">
-                                <bean:message key="tickler.ticklerMain.priority.high"/></option>
+                            <option <%=selected%> value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.high"/>">
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.high"/></option>
                             <% if (t.getPriorityWeb().equals(prNormal)) {
                                 selected = "selected";
                             } else {
                                 selected = "";
                             }%>
-                            <option <%=selected%> value="<bean:message key="tickler.ticklerMain.priority.normal"/>">
-                                <bean:message key="tickler.ticklerMain.priority.normal"/></option>
+                            <option <%=selected%> value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.normal"/>">
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.normal"/></option>
                             <% if (t.getPriorityWeb().equals(prLow)) {
                                 selected = "selected";
                             } else {
                                 selected = "";
                             }%>
-                            <option <%=selected%> value="<bean:message key="tickler.ticklerMain.priority.low"/>">
-                                <bean:message key="tickler.ticklerMain.priority.low"/></option>
+                            <option <%=selected%> value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.low"/>">
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.low"/></option>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
                     <th colspan="2" style="background-color: #666699;color:white;">
-                        <label for="assignedToProviders"><bean:message key="tickler.ticklerEdit.assignedTo"/></label>
+                        <label for="assignedToProviders"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.assignedTo"/></label>
                     </th>
                 </tr>
                 <tr>
@@ -482,7 +467,7 @@
 
                 <tr>
                     <th colspan="2" style="background-color: #666699;color:white;">
-                        <bean:message key="tickler.ticklerEdit.serviceDate"/>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.serviceDate"/>
                     </th>
                 </tr>
                 <tr>
@@ -495,8 +480,7 @@
 
                     %>
                     <td colspan="2" style="border: none;">
-                        <label for="xml_appointment_date"><bean:message
-                                key="tickler.ticklerEdit.calendarLookup"/></label>
+                        <label for="xml_appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.calendarLookup"/></label>
                         <input name="xml_appointment_date" class="form-control" id="xml_appointment_date" type="date"
                                maxlength="10" value="<%=strDate%>"/>
                     </td>
@@ -514,20 +498,19 @@
                 <tr>
                     <td colspan="2" style="vertical-align: bottom;text-align:right; padding-top:15px; border:none;">
                         <oscar:oscarPropertiesCheck property="tickler_email_enabled" value="true">
-                            <html:checkbox property="emailDemographic"><bean:message
-                                    key="tickler.ticklerEdit.emailDemographic"/></html:checkbox>
+                            <input type="checkbox" name="emailDemographic" value="true" /><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.emailDemographic"/>
                         </oscar:oscarPropertiesCheck>
 
                         <input type="button" class="btn btn-primary" name="updateTickler"
-                               value="<bean:message key="tickler.ticklerEdit.update"/>" onClick="validate(this.form)"/>
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.update"/>" onClick="validate(this.form)"/>
                         <input type="button" class="btn" name="cancelChangeTickler"
-                               value="<bean:message key="tickler.ticklerEdit.cancel"/>" onClick="window.close()"/>
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.cancel"/>" onClick="window.close()"/>
 
                     </td>
                 </tr>
             </table>
-        </html:form>
+        </form>
     </div>
 
     </body>
-</html:html>
+</html>

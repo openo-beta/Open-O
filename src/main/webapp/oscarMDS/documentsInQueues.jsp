@@ -40,7 +40,7 @@
 %>
 
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.*, oscar.util.*, oscar.OscarProperties" %>
 <!DOCTYPE HTML >
 
@@ -73,7 +73,7 @@
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/share/calendar/calendar.js"></script>
     <!-- language for the calendar -->
     <script type="text/javascript"
-            src="${pageContext.servletContext.contextPath}/share/calendar/lang/<bean:message key='global.javascript.calendar'/>"></script>
+            src="${pageContext.servletContext.contextPath}/share/calendar/lang/<fmt:setBundle basename='oscarResources'/><fmt:message key='global.javascript.calendar'/>"></script>
     <!-- the following script defines the Calendar.setup helper function, which makes
 		       adding a calendar a matter of 1 or 2 lines of code. -->
     <script type="text/javascript"
@@ -2386,8 +2386,7 @@
         <td class="MainTableTopRowRightColumn" colspan="2" align="left">
             <table width="100%">
                 <tr>
-                    <td align="center" class="Nav" valign="center"><span class="white"><bean:message
-                            key="inboxmanager.documentsInQueues"/></span></td>
+                    <td align="center" class="Nav" valign="center"><span class="white"><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.documentsInQueues"/></span></td>
                 </tr>
                 <tr>
                     <td align="left" valign="center">
@@ -2400,13 +2399,13 @@
                         <input type="hidden" name="selectedProviders">
 
                         <input type="button" class="smallButton" onclick="window.close();"
-                               value="<bean:message key="oscarMDS.index.btnClose"/>">
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnClose"/>">
 
                     </td>
 
                     <%--                            <td align="right" valign="center" width="30%">--%>
-                    <%--                                <oscar:help keywords="inbox queue" key="app.top1"/>--%>
-                    <%--                                | <a href="javascript:popupStart(300,400,'../oscarEncounter/About.jsp')" style="color: #FFFFFF;" ><bean:message key="global.about"/></a>--%>
+
+                    <%--                                | <a href="javascript:popupStart(300,400,'../oscarEncounter/About.jsp')" style="color: #FFFFFF;" ><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>--%>
                     <%--                            </td>--%>
                 </tr>
             </table>

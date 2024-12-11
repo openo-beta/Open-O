@@ -42,8 +42,8 @@
 <%@ page
         import="java.sql.*, java.util.*, oscar.MyDateFormat, org.oscarehr.common.OtherIdManager, oscar.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.event.EventService, org.oscarehr.util.SpringUtils" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
@@ -52,7 +52,7 @@
     AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <style type="text/css" media="print">
@@ -67,7 +67,7 @@
             <table border="0" cellspacing="0" cellpadding="0" width="90%">
                 <tr bgcolor="#486ebd">
                     <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                        <bean:message key="appointment.addappointment.msgMainLabel"/></font></th>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabel"/></font></th>
                 </tr>
             </table>
             <%
@@ -159,7 +159,7 @@
                     }
             %>
             <p>
-            <h3><bean:message key="appointment.addappointment.msgAddSuccess"/></h3>
+            <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddSuccess"/></h3>
 
         </div>
         <form>
@@ -174,11 +174,9 @@
                                 </th>
                             </tr>
                             <tr style="font-family: arial, sans-serif; font-size: 8pt;">
-                                <th style="padding-right: 10px"><bean:message key="Appointment.formDate"/></th>
-                                <th width="60" style="padding-right: 10px"><bean:message
-                                        key="Appointment.formStartTime"/></th>
-                                <th width="120" style="padding-right: 10px"><bean:message
-                                        key="appointment.addappointment.msgProvider"/></th>
+                                <th style="padding-right: 10px"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDate"/></th>
+                                <th width="60" style="padding-right: 10px"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formStartTime"/></th>
+                                <th width="120" style="padding-right: 10px"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgProvider"/></th>
 
                             </tr>
                             <%
@@ -231,7 +229,7 @@
 
                             <tr class="DoNotPrint">
                                 <td style="padding-left: 10px"><input type="button"
-                                                                      value="<bean:message key="global.btnPrint"/>"
+                                                                      value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                                                                       onClick="window.print();"></td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
@@ -260,7 +258,7 @@
             } else {
             %>
             <p>
-            <h1><bean:message key="appointment.addappointment.msgAddFailure"/></h1>
+            <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddFailure"/></h1>
 
             <%
                 }
@@ -269,9 +267,9 @@
                 <p></p>
                 <hr width="90%"/>
 
-                <input type="button" value="<bean:message key="global.btnClose"/>" onClick="window.close();">
+                <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="window.close();">
             </div>
         </form>
     </center>
     </body>
-</html:html>
+</html>

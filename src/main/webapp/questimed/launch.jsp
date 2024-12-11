@@ -44,7 +44,7 @@
         return;
     }
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Questimed</title>
     </head>
@@ -91,4 +91,4 @@
     <body>
     <%=errorMsg%>
     </body>
-</html:html>
+</html>

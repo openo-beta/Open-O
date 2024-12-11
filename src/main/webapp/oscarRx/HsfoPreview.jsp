@@ -24,20 +24,20 @@
 
 --%>
 <%@page import="oscar.oscarRx.data.RxPatientData" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="oscar.oscarProvider.data.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="oscar.*,java.lang.*" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Print Preview</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
             <c:redirect url="error.html"/>
@@ -86,7 +86,7 @@
         doctorName = doctorName.replaceAll("\\-", "");
         OscarProperties props = OscarProperties.getInstance();
     %>
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <table width="400px" height="500px" cellspacing=0 cellpadding=8
                border=0 style="border: 2px ridge;">
@@ -162,7 +162,7 @@
                                 <%= patient.getCity() %> <%= patient.getPostal() %><br>
                                 <%= patient.getPhone() %><br>
                                 <b><% if (!props.getProperty("showRxHin", "").equals("false")) { %>
-                                    <bean:message key="oscar.oscarRx.hin"/><%= patient.getHin() %> <% } %>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.hin"/><%= patient.getHin() %> <% } %>
                                 </b></td>
                             <td align=right valign=top>
                                 <b><%= oscar.oscarRx.util.RxUtil.DateToString(oscar.oscarRx.util.RxUtil.Today(), "MMMM d, yyyy") %>
@@ -278,6 +278,6 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

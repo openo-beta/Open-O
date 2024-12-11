@@ -32,8 +32,8 @@ Required Parameters to plug-in:
 	quickList : default quick list name by parameter
 
  --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
@@ -43,7 +43,7 @@ Required Parameters to plug-in:
             ${ quickList }
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <bean:message key="oscarResearch.oscarDxResearch.quickList"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.quickList"/>
                     <small class="pull-right">
                         <a class="oscar-dialog-link" href="dxResearchCustomization.jsp">
                             add/edit
@@ -55,25 +55,25 @@ Required Parameters to plug-in:
     </tr>
     <tr>
         <td class="quickList">
-            <html:select styleClass="form-control" style="overflow:auto" property="quickList"
+            <select class="form-control" style="overflow:auto" name="quickList"
                          onchange="javascript:changeList(this,'${ demographicNo }','${ providerNo }');">
                 <c:forEach var="quickLists" items="${allQuickLists.dxQuickListBeanVector}">
                     <option value="${ quickLists.quickListName }" ${ quickLists.quickListName eq param.quickList || quickLists.lastUsed eq 'Selected' ? 'selected' : '' } >
-                        <bean:write name="quickLists" property="quickListName"/>
+                        <c:out value="${quickLists.quickListName}"/>
                     </option>
                 </c:forEach>
-            </html:select>
+            </select>
             <ul class="list-group">
                 <c:forEach var="item" items="${allQuickListItems.dxQuickListItemsVector}">
                     <li class="list-group-item">
   					<span class="pull-right">
- 						<html:link href="#" title="${ item.dxSearchCode }"
+ 						<a href="#" title="${ item.dxSearchCode }"
                                    onclick="javascript:submitform( '${ item.dxSearchCode }', '${ item.type }' )">
                             add
-                        </html:link>
+                        </a>
 					</span>
-                        <bean:write name="item" property="type"/>:
-                        <bean:write name="item" property="description"/>
+                        <c:out value="${item.type}"/>:
+                        <c:out value="${item.description}"/>
                     </li>
                 </c:forEach>
             </ul>

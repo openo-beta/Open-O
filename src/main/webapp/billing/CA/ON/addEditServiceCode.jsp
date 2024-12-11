@@ -292,11 +292,11 @@
     }
 
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<html>
     <head>
-        <title><bean:message key="admin.admin.manageBillingServiceCode"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageBillingServiceCode"/></title>
         <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.min.js"></script>
         <script src="<%=request.getContextPath() %>/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/js/bootstrap-datepicker.js"></script>
@@ -447,7 +447,7 @@
 
     </head>
     <body onLoad="setfocus()">
-    <h3><bean:message key="admin.admin.manageBillingServiceCode"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageBillingServiceCode"/></h3>
 
 
     <div class="container-fluid well">
@@ -559,14 +559,14 @@
                 <br>
                 <input type="hidden" id="action" name="action" value=''> <input class="btn" type="submit"
                                                                                 name="submitFrm"
-                                                                                value="<bean:message key="admin.resourcebaseurl.btnSave"/>"
+                                                                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                                                                                 onclick="document.getElementById('action').value='<%=action%>';return onSave();">
 
                 <%
                     if (!action2.equals("")) {
                 %>
                 <input class="btn" type="submit" name="submitFrm"
-                       value="<bean:message key="admin.resourcebaseurl.btnAdd"/>"
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnAdd"/>"
                        onclick="document.getElementById('action').value='<%=action2%>';return onSave();">
                 <%}%>
             </div>
@@ -584,4 +584,4 @@
     </script>
 
     </body>
-</html:html>
+</html>

@@ -25,9 +25,9 @@
 --%>
 
 <!-- Jan 20, 2003,-->
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%
     oscar.oscarEncounter.pageUtil.EctSessionBean sessionbean = null;
     if ((sessionbean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
@@ -36,7 +36,7 @@
     }
 %>
 <link rel="stylesheet" type="text/css" href="encounterStyles.css">
-<html:html lang="en">
+<html>
     <script type="text/javascript" language=javascript>
         function loadUp() {
             window.resizeTo(900, 50);
@@ -50,20 +50,19 @@
     </script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="oscarEncounter.timeOut.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.timeOut.title"/></title>
     </head>
     <body onload="javascript:loadUp()">
 
     <!--  -->
     <table class="MainTable" id="scrollNumber1"
-           name="<bean:message key="oscarEncounter.timeOut.msgEncounter"/>">
+           name="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.timeOut.msgEncounter"/>">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRowLeftColumn"></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td style="color: white"><bean:message
-                                key="oscarEncounter.timeOut.msgSaveExit"/></td>
+                        <td style="color: white"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.timeOut.msgSaveExit"/></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -72,4 +71,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

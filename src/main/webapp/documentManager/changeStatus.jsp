@@ -25,15 +25,12 @@
 %>
 
 <%@ page
-        import="java.util.*, org.oscarehr.documentManager.EDocUtil, org.oscarehr.documentManager.data.ChangeDocStatusForm" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+        import="java.util.*, org.oscarehr.documentManager.EDocUtil" %>
+
 <%
     ArrayList<String> doctypesD = EDocUtil.getDoctypes("demographic");
     ArrayList<String> doctypesP = EDocUtil.getDoctypes("provider");
 
-    ArrayList<String> doctypes;
-
-    ChangeDocStatusForm formdata = new ChangeDocStatusForm();
     HashMap<String, String> doctypeerrors = new HashMap<String, String>();
     if (request.getAttribute("doctypeerrors") != null) {
         doctypeerrors = (HashMap<String, String>) request.getAttribute("doctypeerrors");
@@ -58,8 +55,7 @@
     </script>
     <% Iterator iter = doctypeerrors.keySet().iterator();
         while (iter.hasNext()) {%>
-    <font class="warning">Error: <bean:message
-            key="<%=doctypeerrors.get(iter.next())%>"/></font><br/>
+    <font class="warning">Error: <fmt:setBundle basename="oscarResources"/><fmt:message key="<%=doctypeerrors.get(iter.next())%>"/></font><br/>
     <% } %>
 
     <link rel="stylesheet" type="text/css" href="../share/yui/css/fonts-min.css"/>
@@ -80,7 +76,7 @@
         </td>
     </tr>
 
-    <html:form action="/documentManager/changeDocStatus" method="POST"
+    <form action="${pageContext.request.contextPath}/documentManager/changeDocStatus.do" method="POST"
                enctype="multipart/form-data" styleClass="forms"
                onsubmit="return submitUpload(this)">
 
@@ -94,7 +90,7 @@
                             <option value="">Demographic Document Types</option>
                             <% for (String doctypeD : doctypesD) { %>
                             <option value="<%= doctypeD%>"
-                                    <%=(formdata.getDocTypeD().equals(doctypeD)) ? " selected" : ""%>><%= doctypeD%>
+                                    <%= doctypeD%>
                             </option>
                             <%}%>
                         </select>
@@ -122,8 +118,8 @@
                             <option value="">Provider Document Types</option>
                             <%
                                 for (String doctypeP : doctypesP) { %>
-                            <option value="<%= doctypeP%>"
-                                    <%=(formdata.getDocTypeP().equals(doctypeP)) ? " selected" : ""%>><%= doctypeP%>
+                            <option value="<%= doctypeP%>">
+                                    <%= doctypeP%>
                             </option>
                             <%}%>
                         </select>
@@ -148,7 +144,7 @@
                            onclick=self.close()></td>
             </tr>
         </table>
-    </html:form>
+    </form>
 </table>
 </body>
 </html>

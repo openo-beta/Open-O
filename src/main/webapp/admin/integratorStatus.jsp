@@ -102,7 +102,7 @@
     List<IntegratorFileLog> logs = integratorFileLogManager.getFileLogHistory(LoggedInInfo.getLoggedInInfoFromSession(request));
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Integrator Status</title>
         <link rel="stylesheet" type="text/css"
@@ -308,4 +308,4 @@
 
     </div>
     </body>
-</html:html>
+</html>

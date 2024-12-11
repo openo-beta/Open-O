@@ -27,7 +27,7 @@
 <%@page import="java.util.*,oscar.oscarLab.ca.on.CommonLabResultData,org.oscarehr.util.SpringUtils,org.oscarehr.common.dao.QueueDao, oscar.oscarMDS.data.ProviderData" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao, org.oscarehr.common.model.Provider" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     ArrayList<Provider> providers = new ArrayList<Provider>(providerDao.getActiveProviders());
@@ -50,7 +50,7 @@
 <html lang="en" class="no-js">
 <head>
     <meta charset="utf-8">
-    <title><bean:message key="inboxmanager.document.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.title"/></title>
     <link rel="stylesheet" href="<%=context%>/css/cupertino/jquery-ui-1.8.18.custom.css" id="theme">
     <link rel="stylesheet" href="<%=resourcePath%>jquery.fileupload-ui.css">
     <link rel="stylesheet" href="<%=resourcePath%>style.css">

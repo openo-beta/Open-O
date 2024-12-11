@@ -24,8 +24,8 @@
 
 --%>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -59,12 +59,12 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
-        <title><bean:message key="StaticScript.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title"/></title>
 
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <%
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -179,8 +179,7 @@
                        width="100%" height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <bean:message
-                                    key="SearchDrug.title"/></a> &gt; <b><bean:message key="StaticScript.title"/></b>
+                            <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> &gt; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title"/></b>
                             </div>
                         </td>
                     </tr>
@@ -252,37 +251,38 @@
                                         <%}%>
 
                                         <% if (drug.nonAuthoritative) { %>
-                                        &nbsp;<bean:message key="WriteScript.msgNonAuthoritative"></bean:message>
+                                        &nbsp;<fmt:setBundle basename="oscarResources"/>
+                                        <fmt:message key="WriteScript.msgNonAuthoritative"/>
                                         <% } %>
 
                                         <%
                                             if (drug.pickupDate != null && !drug.pickupDate.equals("") && !drug.pickupDate.equals("0000-00-00")) {
-                                        %><br/><bean:message
-                                            key="WriteScript.msgPickUpDate"></bean:message>&nbsp;<%=drug.pickupDate%>&nbsp;
+                                        %><br/><fmt:message
+                                            key="WriteScript.msgPickUpDate"/>&nbsp;<%=drug.pickupDate%>&nbsp;
                                         <%
                                             if (!((drug.pickupTime).equals("")) && !((drug.pickupTime).equals("12:00 AM"))) {
                                         %> &nbsp;<%=drug.pickupTime%>&nbsp;
                                         <% }
                                         } %>
                                         <%if (drug.eTreatmentType != null && !drug.eTreatmentType.equals("null")) { %>
-                                        &nbsp;<bean:message key="WriteScript.msgETreatmentType"/>:
+                                        &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatmentType"/>:
 
                                         <%if (drug.eTreatmentType.equals("CHRON")) {%>
-                                        <bean:message key="WriteScript.msgETreatment.Continuous"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.Continuous"/>
                                         <%} else if (drug.eTreatmentType.equals("ACU")) {%>
-                                        <bean:message key="WriteScript.msgETreatment.Acute"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.Acute"/>
                                         <%} else if (drug.eTreatmentType.equals("ONET")) {%>
-                                        <bean:message key="WriteScript.msgETreatment.OneTime"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.OneTime"/>
                                         <%} else if (drug.eTreatmentType.equals("PRNL")) {%>
-                                        <bean:message key="WriteScript.msgETreatment.LongTermPRN"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.LongTermPRN"/>
                                         <%} else if (drug.eTreatmentType.equals("PRNS")) {%>
-                                        <bean:message key="WriteScript.msgETreatment.ShortTermPRN"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.ShortTermPRN"/>
                                         <%
                                                 }
                                             }
                                         %>
                                         <%if (drug.rxStatus != null && !drug.rxStatus.equals("null")) { %>
-                                        &nbsp;<bean:message key="WriteScript.msgRxStatus"/>: <%=drug.rxStatus%>
+                                        &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgRxStatus"/>: <%=drug.rxStatus%>
                                         <%}%>
 
                                     </td>
@@ -308,11 +308,11 @@
                             <%
                                 if (drug.isLocal) {
                             %>
-                                <%--  <html:form action="">
-      <html:hidden property="drugList" value="<%=drug.localDrugId.toString()%>" />
+                                <%--  <form action="">
+      <input type="hidden" name="drugList" value="<%=drug.localDrugId.toString()%>" />
       <input type="hidden" name="method" value="represcribe">
-                                                  <html:submit style="width:100px" styleClass="ControlPushButton"  onclick="javascript:reRxDrugSearch3('<%=drug.localDrugId%>');" value="Re-prescribe" />
-  </html:form> --%>
+                                                  <input type="submit" name="submit" style="width:100px" styleClass="ControlPushButton"  onclick="javascript:reRxDrugSearch3('<%=drug.localDrugId%>');" value="Re-prescribe" />
+  </form> --%>
                             <input type="button" align="top" value="Represcribe" style="width: 100px"
                                    class="ControlPushButton"
                                    onclick="javascript:reRxDrugSearch3('<%=drug.localDrugId%>');"/>
@@ -373,4 +373,4 @@
     </table>
 
     </body>
-</html:html>
+</html>

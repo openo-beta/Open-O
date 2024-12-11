@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div ng-controller="PatientListAppointmentListCtrl" class="list-patients">
 
@@ -70,7 +70,7 @@
         <h5 class="list-group-item-heading" ng-style="getAppointmentTextStyle(patient)">{{patient.name}}</h5>
 
         <p class="list-group-item-text" ng-if="patient.demographicNo != 0" ng-show="patientListConfig.showReason"
-           ng-style="getAppointmentTextStyle(patient)"><bean:message key="provider.appointmentProviderAdminDay.Reason"/>:
+           ng-style="getAppointmentTextStyle(patient)"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.Reason"/>:
             {{patient.reason}} </p>
     </a>
 

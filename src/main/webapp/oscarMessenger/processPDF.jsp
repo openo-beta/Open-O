@@ -29,9 +29,9 @@
 <%@  page
         import=" java.util.*, org.w3c.dom.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
         errorPage="../appointment/errorpage.jsp" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -87,17 +87,17 @@
 <%-- <jsp:getProperty name="beanInstanceName"  property="propertyName" /> --%>
 
 
-<html:form action="/oscarMessenger/ProcessDoc2PDF">
+<form action="${pageContext.request.contextPath}/oscarMessenger/ProcessDoc2PDF.do" method="post">
 
     Attaching <%=demographic_no%>
     <%=pdfTitle%>
 
     <textarea name="srcText" rows="5" cols="80"></textarea>
-    <html:hidden property="isPreview" value="false"/>
-    <html:submit property="ok"/>
-    <html:hidden property="pdfTitle" value="<%=pdfTitle%>"/>
+    <input type="hidden" name="isPreview" id="isPreview" value="false"/>
+    <input type="submit" name="ok" value="Apply" />
+    <input type="hidden" name="pdfTitle" id="pdfTitle" value="<%=pdfTitle%>"/>
 
-</html:form>
+</form>
 
 <script>
     SetBottomURL('<%=uri%>' + "&demographic_no=" + '<%=demographic_no%> ');

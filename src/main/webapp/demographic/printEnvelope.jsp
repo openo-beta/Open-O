@@ -23,8 +23,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -45,16 +45,16 @@
         }
     }
 %>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="report.printLabel.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.title"/></title>
     </head>
     <body>
     <% if (!defaultPrinterName.isEmpty()) {
         if (silentPrint == true) {%>
-    <bean:message key="report.printLabel.SilentlyPrintToDefaultPrinter"/>
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.SilentlyPrintToDefaultPrinter"/>
     <%} else {%>
-    <bean:message key="report.printLabel.DefaultPrinter"/>
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.DefaultPrinter"/>
     <%}%>
     <%=defaultPrinterName%>
     <%}%>
@@ -71,5 +71,5 @@
 
     </object>
     </body>
-</html:html>
+</html>
 

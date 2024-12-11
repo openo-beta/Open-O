@@ -22,7 +22,7 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <body>
     <%    oscar.OscarProperties props = oscar.OscarProperties.getInstance(); %>
@@ -30,8 +30,7 @@
     <tr bgcolor='gold'>
         <td>
             <center><font size="+1"><b><%=props.getProperty("logintitle", "")%>
-                <% if (props.getProperty("logintitle", "").equals("")) { %> <bean:message
-                        key="loginApplication.alert"/> <% } %></b></font></center>
+                <% if (props.getProperty("logintitle", "").equals("")) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.alert"/> <% } %></b></font></center>
         </td>
     </tr>
 </table>

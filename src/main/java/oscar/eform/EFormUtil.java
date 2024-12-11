@@ -53,7 +53,6 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
-import oscar.eform.actions.DisplayImageAction;
 import oscar.eform.data.EForm;
 import oscar.eform.data.EFormBase;
 import oscar.oscarClinic.ClinicData;
@@ -1166,12 +1165,31 @@ public class EFormUtil {
         String imagePath = OscarProperties.getInstance().getProperty("eform_image");
         MiscUtils.getLogger().debug("Img Path: " + imagePath);
         File dir = new File(imagePath);
-        String[] files = DisplayImageAction.getRichTextLetterTemplates(dir);
+        String[] files = getRichTextLetterTemplates(dir);
         ArrayList<String> fileList;
         if (files != null) fileList = new ArrayList<String>(Arrays.asList(files));
         else fileList = new ArrayList<String>();
 
         return fileList;
+    }
+
+    public static String[] getRichTextLetterTemplates(File dir) {
+        ArrayList<String> results = getFiles(dir, ".*(rtl)$", null);
+        return results.toArray(new String[0]);
+    }
+
+    public static ArrayList<String> getFiles(File dir, String ext, ArrayList<String> files) {
+        if (files == null) {
+            files = new ArrayList<String>();
+        }
+        if (dir.isDirectory()) {
+            for (String fileName : dir.list()) {
+                if (fileName.toLowerCase().matches(ext)) {
+                    files.add(fileName);
+                }
+            }
+        }
+        return files;
     }
 
     public static ArrayList<HashMap<String, ? extends Object>> getFormsSameFidSamePatient(String fdid, String sortBy, String userRoles) {

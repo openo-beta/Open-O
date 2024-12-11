@@ -52,7 +52,7 @@
 <%
     Properties props = (Properties) request.getAttribute("props");
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Migration Tool</title>
 
@@ -719,4 +719,4 @@
         </fieldset>
     </form>
 
-</html:html>
+</html>

@@ -20,9 +20,9 @@
 --%>
 <%@ page
         import="java.util.*,oscar.oscarReport.data.*, java.util.Properties, oscar.oscarBilling.ca.on.administration.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -38,12 +38,12 @@
     }
 %>
 
-<html:html lang="en">
+<html>
 
     <%
 
         Properties props = new Properties();
-        GstControlAction db = new GstControlAction();
+        GstControl2Action db = new GstControl2Action();
         props = db.readDatabase();
         String percent = props.getProperty("gstPercent");
 
@@ -59,14 +59,14 @@
         }
     </script>
     <head>
-        <title><bean:message key="admin.admin.manageGSTControl"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageGSTControl"/></title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body onload="loadData()">
 
-    <h3><bean:message key="admin.admin.manageGSTControl"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageGSTControl"/></h3>
 
-    <html:form action="/admin/GstControl">
+    <form action="<%=request.getContextPath() %>/admin/GstControl.do">
         GST:<br>
         <div class="input-append">
             <input type="text" class="span2" maxlength="3" id="gstPercent" name="gstPercent" value="<%=percent%>"/>
@@ -74,6 +74,6 @@
         </div>
         <br>
         <input class="btn btn-primary" type="submit" value="save" onclick="submitcheck()"/>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

@@ -44,9 +44,9 @@
     EChartDao eChartDao = SpringUtils.getBean(EChartDao.class);
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -96,10 +96,10 @@
 
 
 <link rel="stylesheet" type="text/css" href="encounterStyles.css">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="oscarMessenger.CreateMessage.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.title"/>
         </title>
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
@@ -223,19 +223,16 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarMessenger.CreateMessage.msgMessenger"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgMessenger"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
                         <td>Attach document for: <%=demoName%>
                         </td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="message" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td style="text-align: right"><a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -267,8 +264,7 @@
 
                     <tr>
 
-                        <td bgcolor="#EEEEFF"><html:form
-                                action="/oscarMessenger/Doc2PDF">
+                        <td bgcolor="#EEEEFF"><form action="${pageContext.request.contextPath}/oscarMessenger/Doc2PDF.do" method="post">
 
 
                             <table border="0" cellpadding="0" cellspacing="1" width="400">
@@ -280,9 +276,10 @@
                                 <tr>
                                     <td>
                                         <% String currentURI = "../demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&displaymode=pdflabel&dboperation=search_detail"; %>
-                                        <html:checkbox property="uriArray" value="<%=currentURI%>"
-                                                       style="display:none"/> <html:multibox property="indexArray"
-                                                                                             value="<%= Integer.toString(indexCount++) %>"/>
+                                        <input type="checkbox" name="uriArray" value="<%=currentURI%>"
+                                                       style="display:none"/>
+
+                                        <input type="checkbox" name="indexArray" value="<%= Integer.toString(indexCount++) %>"/>
                                         <input
                                                 type=checkbox name="titleArray"
                                                 value="<%=demoName%> information" style="display: none"/></td>
@@ -312,9 +309,9 @@
                                 <tr>
                                     <td>
                                         <% currentURI = "../oscarEncounter/echarthistoryprint.jsp?echartid=" + ec.getId() + "&demographic_no=" + demographic_no; %>
-                                        <html:checkbox property="uriArray" value="<%=currentURI%>"
-                                                       style="display:none"/> <html:multibox property="indexArray"
-                                                                                             value="<%= Integer.toString(indexCount++) %>"/>
+                                        <input type="checkbox" name="uriArray" value="<%=currentURI%>"
+                                                       style="display:none"/>
+                                        <input type="checkbox" name="indexArray" value="<%= Integer.toString(indexCount++) %>"/>
                                         <input
                                                 type=checkbox name="titleArray"
                                                 value='Encounter: <%=ec.getTimestamp().toString()%>'
@@ -366,9 +363,9 @@
 
                                         %> <% currentURI = "../oscarRx/PrintDrugProfile.jsp?demographic_no=" + demographic_no; %>
 
-                                        <html:checkbox property="uriArray" value="<%=currentURI%>"
-                                                       style="display:none"/> <html:multibox property="indexArray"
-                                                                                             value="<%= Integer.toString(indexCount++) %>"/>
+                                        <input type="checkbox" name="uriArray" value="<%=currentURI%>"
+                                                       style="display:none"/>
+                                        <input type="checkbox" name="indexArray" value="<%= Integer.toString(indexCount++) %>"/>
                                         <input
                                                 type=checkbox name="titleArray" value='Current prescriptions'
                                                 style="display: none"/></td>
@@ -390,21 +387,18 @@
                                 </tr>
 
                                 <tr>
-                                    <td colspan="3"><html:hidden property="srcText" value=''/>
+                                    <td colspan="3"><input type="hidden" name="srcText" id="srcText" value=''/>
 
-                                        <html:hidden property="attachmentCount"
-                                                     value='<%=request.getParameter("attachmentCount")%>'/> <html:hidden
-                                                property="demographic_no" value='<%=demographic_no%>'/> <html:hidden
-                                                property="isPreview"
-                                                value='<%=request.getParameter("isPreview")%>'/> <html:hidden
-                                                property="isAttaching"
-                                                value='<%=request.getParameter("isAttaching")%>'/> <html:hidden
-                                                property="isNew" value='true'/> <html:hidden
-                                                property="attachmentTitle" value=''/></td>
+                                        <input type="hidden" name="attachmentCount" id="attachmentCount" value='<%=request.getParameter("attachmentCount")%>'/>
+                                        <input type="hidden" name="demographic_no" id="demographic_no" value='<%=demographic_no%>'/>
+                                        <input type="hidden" name="isPreview" id="isPreview" value='<%=request.getParameter("isPreview")%>'/>
+                                        <input type="hidden" name="isAttaching" id="isAttaching" value='<%=request.getParameter("isAttaching")%>'/>
+                                        <input type="hidden" name="isNew" id="isNew" value='true'/>
+                                        <input type="hidden" name="attachmentTitle" id="attachmentTitle" value=''/></td>
                                 </tr>
 
                             </table>
-                        </html:form>
+                        </form>
                             <script>
                                 if (document.forms[0].isAttaching.value == "true") {
 
@@ -436,4 +430,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

@@ -47,8 +47,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.oscarehr.integration.mcedt.McedtConstants;
 import org.oscarehr.integration.mcedt.ResourceForm;
 import org.oscarehr.util.MiscUtils;
@@ -69,31 +67,6 @@ import ca.ontario.health.edt.UploadData;
  */
 public class ActionUtils {
     private static Logger logger = MiscUtils.getLogger();
-
-    static ActionMessages addMessage(String messageId, String... messageParams) {
-        ActionMessage message = null;
-        if (messageParams != null) {
-            message = new ActionMessage(messageId, messageParams);
-        } else {
-            message = new ActionMessage(messageId);
-        }
-
-        ActionMessages messages = new ActionMessages();
-        messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-        return messages;
-    }
-
-    static ActionMessages addMoreMessage(ActionMessages messages, String messageId, String... messageParams) {
-        ActionMessage message = null;
-        if (messageParams != null) {
-            message = new ActionMessage(messageId, messageParams);
-        } else {
-            message = new ActionMessage(messageId);
-        }
-        if (messages == null) messages = new ActionMessages();
-        messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-        return messages;
-    }
 
     static Detail getDetails(HttpServletRequest request) {
         Detail result = (Detail) request.getSession().getAttribute(McedtConstants.SESSION_KEY_RESOURCE_LIST);

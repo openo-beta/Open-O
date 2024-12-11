@@ -21,9 +21,9 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page
         import="java.math.*, java.util.*, oscar.util.*, oscar.oscarBilling.ca.on.administration.*, oscar.oscarBilling.ca.on.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%
@@ -91,7 +91,7 @@
 %>
 <html>
 <head>
-    <title><bean:message key="admin.admin.gstReport"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.gstReport"/></title>
 
     <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.min.js"></script>
     <script src="<%=request.getContextPath() %>/js/bootstrap.min.js"></script>
@@ -104,7 +104,7 @@
 <body>
 <FORM name="gstform" action="gstreport.jsp" class="form-inline">
 
-    <h3><bean:message key="admin.admin.gstReport"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.gstReport"/></h3>
 
     <div class="container-fluid well well-small">
         <div class="span2">Date: <%=DateUtils.sumDate("yyyy-MM-dd", "0")%>

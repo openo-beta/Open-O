@@ -44,7 +44,7 @@
         </tr>
     </table>
 </div>
-<html:form action="/PMmodule/ProgramManager.do">
+<form action="${pageContext.request.contextPath}/PMmodule/ProgramManager.do" method="post">
     <table class="simple" cellspacing="2" cellpadding="3" width="100%">
         <thead>
         <tr>
@@ -56,20 +56,20 @@
         </thead>
         <tbody>
         <tr>
-            <td><html:select property="searchStatus">
-                <html:option value="Any"/>
-                <html:option value="active"/>
-                <html:option value="inactive"/>
-            </html:select></td>
-            <td><html:select property="searchType">
-                <html:option value="Any"/>
-                <html:option value="Bed"/>
-                <html:option value="Service"/>
+            <td><select name="searchStatus" id="searchStatus">
+                <option value="Any"/>
+                <option value="active"/>
+                <option value="inactive"/>
+            </select></td>
+            <td><select name="searchType" id="searchType">
+                <option value="Any"/>
+                <option value="Bed"/>
+                <option value="Service"/>
                 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="false">
-                    <html:option value="External"/>
-                    <html:option value="community">Community</html:option>
+                    <option value="External"/>
+                    <option value="community">Community</option>
                 </caisi:isModuleLoad>
-            </html:select></td>
+            </select></td>
             <td><select property="searchFacilityId">
                 <option value="0">Any</option>
                 <c:forEach var="facility" items="${facilities}">
@@ -86,7 +86,7 @@
         </tr>
         </tbody>
     </table>
-</html:form>
+</form>
 <display:table class="simple" cellspacing="2" cellpadding="3"
                id="program" name="programs" export="false" pagesize="0"
                requestURI="/PMmodule/ProgramManager.do">
@@ -99,7 +99,7 @@
     <display:column sortable="false" title="">
         <a
                 onclick="return ConfirmDelete('<c:out value="${program.nameJs}"/>')"
-                href="<html:rewrite action="/PMmodule/ProgramManager.do"/>?method=delete&id=<c:out value="${program.id}"/>&name=<c:out value="${program.name}"/>">
+                href="<%=request.getContextPath() %>/PMmodule/ProgramManager.do?method=delete&id=<c:out value="${program.id}"/>&name=<c:out value="${program.name}"/>">
             Delete </a>
     </display:column>
 
@@ -107,7 +107,7 @@
         <c:when test="${program.programStatus=='active'}">
             <display:column sortable="false" title="">
                 <a
-                        href="<html:rewrite action="/PMmodule/ProgramManager.do"/>?method=edit&id=<c:out value="${program.id}" />">
+                        href="<%=request.getContextPath() %>/PMmodule/ProgramManager.do?method=edit&id=<c:out value="${program.id}" />">
                     Edit </a>
             </display:column>
         </c:when>
@@ -120,7 +120,7 @@
 
     <display:column sortable="true" title="Name">
         <a
-                href="<html:rewrite action="/PMmodule/ProgramManagerView.do"/>?id=<c:out value="${program.id}" />">
+                href="<%=request.getContextPath() %>/PMmodule/ProgramManagerView.do?id=<c:out value="${program.id}" />">
             <c:out value="${program.name}"/> </a>
     </display:column>
     <display:column property="description" sortable="true"

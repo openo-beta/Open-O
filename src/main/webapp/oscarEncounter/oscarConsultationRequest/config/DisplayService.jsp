@@ -42,11 +42,12 @@
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+<fmt:setBundle basename="oscarResources"/>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <jsp:useBean id="displayServiceUtil" scope="request"
                  class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
     <%
@@ -56,10 +57,9 @@
     %>
     <head>
 
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.config.DisplayService.title"/>
+        <title><fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.title"/>
         </title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script>
             function BackToOscar() {
@@ -80,7 +80,18 @@
             }
         }
     </script>
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <div id="service-providers-wrapper" style="margin:auto 10px;">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
@@ -88,8 +99,7 @@
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td class="Header"><bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.config.DisplayService.title"/>
+                            <td class="Header"><fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.title"/>
                             </td>
                         </tr>
                     </table>
@@ -108,30 +118,27 @@
 
                         <!----Start new rows here-->
                         <tr>
-                            <td><bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.config.DisplayService.msgCheckOff"
-                                    arg0="<%=serviceDesc %>"/></td>
+                            <td>
+                                <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.DisplayService.msgCheckOff">
+                                    <fmt:param value="${serviceDesc}" />
+                                </fmt:message>
+                            </td>
                         </tr>
                         <tr>
-                            <td><html:form
-                                    action="/oscarEncounter/UpdateServiceSpecialists">
+                            <td><form action="${pageContext.request.contextPath}/oscarEncounter/UpdateServiceSpecialists.do" method="post">
                                 <input type="hidden" name="serviceId" value="<%=serviceId %>">
                                 <input type="submit"
-                                       value="<bean:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.btnUpdateServices"/>">
+                                       value="<fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.btnUpdateServices"/>">
                                 <table>
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.DisplayService.specialist"/>
+                                        <th><fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.specialist"/>
                                         </th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.DisplayService.address"/>
+                                        <th><fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.address"/>
                                         </th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.DisplayService.phone"/>
+                                        <th><fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.phone"/>
                                         </th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.DisplayService.fax"/>
+                                        <th><fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.fax"/>
                                         </th>
 
                                     </tr>
@@ -170,7 +177,7 @@
 
                                 </table>
 
-                            </html:form></td>
+                            </form></td>
                         </tr>
                     </table>
                 </td>
@@ -182,4 +189,4 @@
         </table>
     </div>
     </body>
-</html:html>
+</html>

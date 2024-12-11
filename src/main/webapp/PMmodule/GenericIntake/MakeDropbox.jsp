@@ -129,7 +129,7 @@
         }
     </script>
     <script language="javascript" type="text/javascript"
-            src="<html:rewrite page="/share/javascript/Oscar.js"/>"></script>
+            src="${request.contextPath}/share/javascript/Oscar.js"></script>
 </head>
 <body>
 <form name="makeDropboxFrm" method="post" action="MakeDropbox.jsp">

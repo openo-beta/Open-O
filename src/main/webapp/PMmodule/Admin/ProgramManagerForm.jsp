@@ -26,19 +26,18 @@
 
 <%@ page import="org.oscarehr.PMmodule.web.formbean.*" %>
 <%@ page import="org.oscarehr.PMmodule.model.Program" %>
-<%@ page import="org.apache.struts.validator.DynaValidatorForm" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
-<html:form action="/PMmodule/ProgramManager">
+<form action="${pageContext.request.contextPath}/PMmodule/ProgramManager.do" method="post">
 
-    <html:hidden property="view.tab"/>
-    <html:hidden property="view.subtab"/>
-    <html:hidden property="vacancyOrTemplateId"/>
+    <input type="hidden" name="tab" id="tab"/>
+    <input type="hidden" name="subtab" id="subtab"/>
+    <input type="hidden" name="vacancyOrTemplateId" id="vacancyOrTemplateId"/>
     <input type="hidden" name="id"
            value="<c:out value="${requestScope.id}"/>"/>
     <input type="hidden" name="method" value="edit"/>
-    <html:hidden property="program.id"/>
+    <input type="hidden" name="id" id="id"/>
 
     <c:choose>
         <c:when test="${id != null && id gt 0}">
@@ -242,4 +241,4 @@
             <jsp:include page="/PMmodule/Admin/ProgramEdit/general.jsp"/>
         </c:otherwise>
     </c:choose>
-</html:form>
+</form>

@@ -25,14 +25,9 @@
 
 package org.oscarehr.documentManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Comparator;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.upload.FormFile;
 import org.oscarehr.common.model.CtlDocument;
 import org.oscarehr.common.model.CtlDocumentPK;
 import org.oscarehr.common.model.Document;
@@ -45,6 +40,9 @@ import oscar.util.ConversionUtils;
 import oscar.util.UtilDateUtilities;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 public class EDoc extends TagObject implements Comparable<EDoc> {
@@ -245,30 +243,6 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     public byte[] getFileBytes() throws IOException {
         return (FileUtils.readFileToByteArray(new File(getFilePath())));
     }
-
-    public void writeLocalFile(FormFile docFile, String fileName) throws IOException {
-        InputStream is = null;
-        OutputStream os = null;
-        try {
-            is = docFile.getInputStream();
-            os = this.getFileOutputStream();
-            byte[] buf = new byte[128 * 1024];
-            int i = 0;
-            while ((i = is.read(buf)) != -1) {
-                os.write(buf, 0, i);
-            }
-        } catch (IOException ioe) {
-            MiscUtils.getLogger().error("Error", ioe);
-            if (is != null) is.close();
-            if (os != null) os.close();
-            throw ioe;
-        }
-
-        if (is != null) is.close();
-        if (os != null) os.close();
-
-    }
-
     // Getter/Setter methods...
 
     public String getDocId() {

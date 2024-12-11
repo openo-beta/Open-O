@@ -18,7 +18,7 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -73,7 +73,7 @@
 
 <html>
 <head>
-    <title><bean:message key="admin.admin.btnBillingReconciliation"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBillingReconciliation"/></title>
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
     <script language="JavaScript">
@@ -113,7 +113,7 @@
 </head>
 
 <body>
-<h3><bean:message key="admin.admin.btnBillingReconciliation"/></h3>
+<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBillingReconciliation"/></h3>
 
 <div class="container-fluid well">
     <button class="btn btn-primary pull-right" type='button' name='print' value='Print'

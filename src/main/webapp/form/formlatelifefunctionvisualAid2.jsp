@@ -40,12 +40,12 @@
 %>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<html:html lang="en">
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Late Life FDI: Function component</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
     </head>
 
@@ -179,4 +179,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

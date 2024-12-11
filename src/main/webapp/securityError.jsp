@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ page import="java.util.List" %>
 
 <html>
 <head>
@@ -45,7 +45,18 @@ You tried to access a resource with insufficient privileges.
         }
     }
 %>
-<html:errors/>
+<% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
 
 </body>
 </html>

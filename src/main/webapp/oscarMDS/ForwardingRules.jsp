@@ -23,9 +23,9 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page
         import="oscar.oscarMDS.data.ProviderData, java.util.ArrayList, oscar.oscarLab.ForwardingRules, oscar.OscarProperties" %>
 
@@ -97,13 +97,11 @@
                 <table width="100%">
                     <tr>
                         <td align="left"><input type="button"
-                                                value=" <bean:message key="global.btnClose"/> "
+                                                value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                                 onClick="window.close()"></td>
-                        <td align="right"><oscar:help keywords="inbox forwarding" key="app.top1"/> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                        <td align="right"><a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -166,8 +164,7 @@
                         <tr>
                             <td class="Cell">Set incoming report status:</td>
                             <td class="Cell"><input type="radio" name="status" value="N"
-                                <%= status.equals("F") ? "" : "checked" %>><bean:message
-                                    key="oscarMDS.search.formReportStatusNew"/> <input type="radio"
+                                <%= status.equals("F") ? "" : "checked" %>><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.search.formReportStatusNew"/> <input type="radio"
                                                                                        name="status"
                                                                                        value="F" <%= status.equals("F") ? "checked" : "" %>>Filed
                             </td>

@@ -64,7 +64,7 @@
     pageContext.setAttribute("cppPreferences", cppPreferences, PageContext.PAGE_SCOPE);
 %>
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
         <title>
             Encounter
@@ -104,7 +104,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="<c:out value="${ctx}"/>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="<c:out value="${ctx}"/>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes adding a calendar a matter of 1 or 2 lines of code. -->
         <script type="text/javascript" src="<c:out value="${ctx}"/>/share/calendar/calendar-setup.js"></script>
@@ -370,8 +370,8 @@
                 ocean-host=<%=Encode.forUriComponent(OscarProperties.getInstance().getProperty("ocean_host"))%>></script>
         <% } %>
 
-        <html:base/>
-        <title><bean:message key="oscarEncounter.Index.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/></title>
         <script type="text/javascript">
             ctx = "<c:out value="${ctx}"/>";
             demographicNo = "<c:out value="${demographicNo}"/>";
@@ -392,51 +392,51 @@
             ocularMedicationsLabel = "oscarEncounter.eyeform.ocularMedications.title";
             currentHistoryLabel = "oscarEncounter.eyeform.currentHistory.title";
 
-            quickChartMsg = "<bean:message key="oscarEncounter.quickChart.msg"/>";
-            fullChartMsg = "<bean:message key="oscarEncounter.fullChart.msg"/>";
-            insertTemplateError = "<bean:message key="oscarEncounter.templateError.msg"/>";
-            unsavedNoteWarning = "<bean:message key="oscarEncounter.unsavedNoteWarning.msg"/>";
-            sessionExpiredError = "<bean:message key="oscarEncounter.sessionExpiredError.msg"/>";
-            unlockNoteError = "<bean:message key="oscarEncounter.unlockNoteError.msg"/>";
-            filterError = "<bean:message key="oscarEncounter.filterError.msg"/>";
-            pastObservationDateError = "<bean:message key="oscarEncounter.pastObservationDateError.msg"/>";
-            encTimeError = "<bean:message key="oscarEncounter.encounterTimeError.msg"/>";
-            encMinError = "<bean:message key="oscarEncounter.encounterMinuteError.msg"/>";
-            assignIssueError = "<bean:message key="oscarEncounter.assignIssueError.msg"/>";
-            assignObservationDateError = "<bean:message key="oscarEncounter.assignObservationDateError.msg"/>";
+            quickChartMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.quickChart.msg"/>";
+            fullChartMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.fullChart.msg"/>";
+            insertTemplateError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.templateError.msg"/>";
+            unsavedNoteWarning = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.unsavedNoteWarning.msg"/>";
+            sessionExpiredError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.sessionExpiredError.msg"/>";
+            unlockNoteError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.unlockNoteError.msg"/>";
+            filterError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.filterError.msg"/>";
+            pastObservationDateError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.pastObservationDateError.msg"/>";
+            encTimeError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTimeError.msg"/>";
+            encMinError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterMinuteError.msg"/>";
+            assignIssueError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignIssueError.msg"/>";
+            assignObservationDateError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignObservationDateError.msg"/>";
 
-            encTimeMandatoryMsg = "<bean:message key="oscarEncounter.encounterTimeMandatory.msg"/>";
+            encTimeMandatoryMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTimeMandatory.msg"/>";
             encTimeMandatory = <%=encTimeMandatoryValue%>;
 
-            assignEncTypeError = "<bean:message key="oscarEncounter.assignEncTypeError.msg"/>";
-            savingNoteError = "<bean:message key="oscarEncounter.savingNoteError.msg"/>";
-            changeIssueMsg = "<bean:message key="oscarEncounter.change.title"/>";
-            closeWithoutSaveMsg = "<bean:message key="oscarEncounter.closeWithoutSave.msg"/>";
-            pickIssueMsg = "<bean:message key="oscarEncounter.pickIssue.msg"/>";
-            assignIssueMsg = "<bean:message key="oscarEncounter.assign.title"/>";
-            updateIssueError = "<bean:message key="oscarEncounter.updateIssueError.msg"/>";
-            unsavedNoteMsg = "<bean:message key="oscarEncounter.unsavedNote.msg"/>";
-            printDateMsg = "<bean:message key="oscarEncounter.printDate.msg"/>";
-            printDateOrderMsg = "<bean:message key="oscarEncounter.printDateOrder.msg"/>";
-            nothing2PrintMsg = "<bean:message key="oscarEncounter.nothingToPrint.msg"/>";
-            editUnsignedMsg = "<bean:message key="oscarEncounter.editUnsignedNote.msg"/>";
-            msgDraftSaved = "<bean:message key="oscarEncounter.draftSaved.msg"/>";
-            msgPasswd = "<bean:message key="Logon.passWord"/>";
-            btnMsgUnlock = "<bean:message key="oscarEncounter.Index.btnUnLock"/>";
-            editLabel = "<bean:message key="oscarEncounter.edit.msgEdit"/>";
-            annotationLabel = "<bean:message key="oscarEncounter.Index.btnAnnotation"/>";
-            month[0] = "<bean:message key="share.CalendarPopUp.msgJan"/>";
-            month[1] = "<bean:message key="share.CalendarPopUp.msgFeb"/>";
-            month[2] = "<bean:message key="share.CalendarPopUp.msgMar"/>";
-            month[3] = "<bean:message key="share.CalendarPopUp.msgApr"/>";
-            month[4] = "<bean:message key="share.CalendarPopUp.msgMay"/>";
-            month[5] = "<bean:message key="share.CalendarPopUp.msgJun"/>";
-            month[6] = "<bean:message key="share.CalendarPopUp.msgJul"/>";
-            month[7] = "<bean:message key="share.CalendarPopUp.msgAug"/>";
-            month[8] = "<bean:message key="share.CalendarPopUp.msgSep"/>";
-            month[9] = "<bean:message key="share.CalendarPopUp.msgOct"/>";
-            month[10] = "<bean:message key="share.CalendarPopUp.msgNov"/>";
-            month[11] = "<bean:message key="share.CalendarPopUp.msgDec"/>";
+            assignEncTypeError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignEncTypeError.msg"/>";
+            savingNoteError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.savingNoteError.msg"/>";
+            changeIssueMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.change.title"/>";
+            closeWithoutSaveMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.closeWithoutSave.msg"/>";
+            pickIssueMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.pickIssue.msg"/>";
+            assignIssueMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assign.title"/>";
+            updateIssueError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.updateIssueError.msg"/>";
+            unsavedNoteMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.unsavedNote.msg"/>";
+            printDateMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.printDate.msg"/>";
+            printDateOrderMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.printDateOrder.msg"/>";
+            nothing2PrintMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.nothingToPrint.msg"/>";
+            editUnsignedMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.editUnsignedNote.msg"/>";
+            msgDraftSaved = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.draftSaved.msg"/>";
+            msgPasswd = "<fmt:setBundle basename="oscarResources"/><fmt:message key="Logon.passWord"/>";
+            btnMsgUnlock = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnUnLock"/>";
+            editLabel = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>";
+            annotationLabel = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnAnnotation"/>";
+            month[0] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgJan"/>";
+            month[1] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgFeb"/>";
+            month[2] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgMar"/>";
+            month[3] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgApr"/>";
+            month[4] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgMay"/>";
+            month[5] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgJun"/>";
+            month[6] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgJul"/>";
+            month[7] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgAug"/>";
+            month[8] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgSep"/>";
+            month[9] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgOct"/>";
+            month[10] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgNov"/>";
+            month[11] = "<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgDec"/>";
 
 
             jQuery(window).on("load", function () {
@@ -618,94 +618,91 @@
 
             <table>
                 <tr id="Itemproblemdescription">
-                    <td><bean:message
-                            key="oscarEncounter.problemdescription.title"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.problemdescription.title"/>:
                     </td>
                     <td><input type="text" id="problemdescription"
                                name="problemdescription" value=""></td>
                 </tr>
                 <tr id="Itemstartdate">
-                    <td><bean:message key="oscarEncounter.startdate.title"/>:</td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.startdate.title"/>:</td>
                     <td><input type="text" id="startdate" name="startdate"
                                value="" size="12"> (YYYY-MM-DD)
                     </td>
                 </tr>
                 <tr id="Itemresolutiondate">
-                    <td><bean:message key="oscarEncounter.resolutionDate.title"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.resolutionDate.title"/>:
                     </td>
                     <td><input type="text" id="resolutiondate"
                                name="resolutiondate" value="" size="12"> (YYYY-MM-DD)
                     </td>
                 </tr>
                 <tr id="Itemprocedure">
-                    <td><bean:message
-                            key="oscarEncounter.procedure.title"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.procedure.title"/>:
                     </td>
                     <td><input type="text" id="procedure"
                                name="procedure" value=""></td>
                 </tr>
                 <tr id="Itemageatonset">
-                    <td><bean:message key="oscarEncounter.ageAtOnset.title"/>:</td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.ageAtOnset.title"/>:</td>
                     <td><input type="text" id="ageatonset" name="ageatonset"
                                value="" size="2"></td>
                 </tr>
 
                 <tr id="Itemproceduredate">
-                    <td><bean:message key="oscarEncounter.procedureDate.title"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.procedureDate.title"/>:
                     </td>
                     <td><input type="text" id="proceduredate" name="proceduredate"
                                value="" size="12"> (YYYY-MM-DD)
                     </td>
                 </tr>
                 <tr id="Itemtreatment">
-                    <td><bean:message key="oscarEncounter.treatment.title"/>:</td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.treatment.title"/>:</td>
                     <td><input type="text" id="treatment" name="treatment"
                                value=""></td>
                 </tr>
                 <tr id="Itemproblemstatus">
-                    <td><bean:message key="oscarEncounter.problemStatus.title"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.problemStatus.title"/>:
                     </td>
                     <td><input type="text" id="problemstatus" name="problemstatus"
-                               value="" size="8"> <bean:message
-                            key="oscarEncounter.problemStatusExample.msg"/></td>
+                               value="" size="8"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.problemStatusExample.msg"/></td>
                 </tr>
                 <tr id="Itemexposuredetail">
-                    <td><bean:message key="oscarEncounter.exposureDetail.title"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.exposureDetail.title"/>:
                     </td>
                     <td><input type="text" id="exposuredetail"
                                name="exposuredetail" value=""></td>
                 </tr>
                 <tr id="Itemrelationship">
-                    <td><bean:message key="oscarEncounter.relationship.title"/>:
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.relationship.title"/>:
                     </td>
                     <td><input type="text" id="relationship" name="relationship"
                                value=""></td>
                 </tr>
                 <tr id="Itemlifestage">
-                    <td><bean:message key="oscarEncounter.lifestage.title"/>:</td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.lifestage.title"/>:</td>
                     <td><select name="lifestage" id="lifestage">
                         <option value="">
-                            <bean:message key="oscarEncounter.lifestage.opt.notset"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.lifestage.opt.notset"/>
                         </option>
                         <option value="N">
-                            <bean:message key="oscarEncounter.lifestage.opt.newborn"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.lifestage.opt.newborn"/>
                         </option>
                         <option value="I">
-                            <bean:message key="oscarEncounter.lifestage.opt.infant"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.lifestage.opt.infant"/>
                         </option>
                         <option value="C">
-                            <bean:message key="oscarEncounter.lifestage.opt.child"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.lifestage.opt.child"/>
                         </option>
                         <option value="T">
-                            <bean:message key="oscarEncounter.lifestage.opt.adolescent"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.lifestage.opt.adolescent"/>
                         </option>
                         <option value="A">
-                            <bean:message key="oscarEncounter.lifestage.opt.adult"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.lifestage.opt.adult"/>
                         </option>
                     </select></td>
                 </tr>
                 <tr id="Itemhidecpp">
-                    <td><bean:message key="oscarEncounter.hidecpp.title"/>:</td>
+                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.hidecpp.title"/>:</td>
                     <td><select id="hidecpp" name="hidecpp">
                         <option value="0">No</option>
                         <option value="1">Yes</option>
@@ -713,33 +710,33 @@
                 </tr>
             </table>
             <div class="control-panel">
-                <input type="hidden" id="startTag" value='<bean:message key="oscarEncounter.Index.startTime"/>'>
-                <input type="hidden" id="endTag" value='<bean:message key="oscarEncounter.Index.endTime"/>'>
+                <input type="hidden" id="startTag" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.startTime"/>'>
+                <input type="hidden" id="endTag" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.endTime"/>'>
                 <br> <span style="float: right; margin-right: 10px;">
 				<input
                         type="image"
                         src="<c:out value="${ctx}/oscarEncounter/graphics/copy.png"/>"
-                        title='<bean:message key="oscarEncounter.Index.btnCopy"/>'
+                        title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnCopy"/>'
                         onclick="copyCppToCurrentNote(); return false;"> <input
                     type="image"
                     src="<c:out value="${ctx}/oscarEncounter/graphics/annotation.png"/>"
-                    title='<bean:message key="oscarEncounter.Index.btnAnnotation"/>'
+                    title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnAnnotation"/>'
                     id="anno" style="padding-right: 10px;"> <input type="image"
                                                                    src="<c:out value="${ctx}/oscarEncounter/graphics/edit-cut.png"/>"
-                                                                   title='<bean:message key="oscarEncounter.Index.btnArchive"/>'
+                                                                   title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnArchive"/>'
                                                                    onclick="$('archived').value='true';"
                                                                    style="padding-right: 10px;">
 				<input type="image"
                        src="<c:out value="${ctx}/oscarEncounter/graphics/note-save.png"/>"
-                       title='<bean:message key="oscarEncounter.Index.btnSignSave"/>'
+                       title='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSignSave"/>'
                        onclick="$('archived').value='false';" style="padding-right: 10px;">
 				<input type="image"
                        src="<c:out value="${ctx}/oscarEncounter/graphics/system-log-out.png"/>"
-                       title='<bean:message key="global.btnExit"/>'
+                       title='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>'
                        onclick="this.focus();$('channel').style.visibility ='visible';$('showEditNote').style.display='none';return false;">
 			</span>
                 <label for="position">
-                    <bean:message key="oscarEncounter.Index.btnPosition"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnPosition"/>
                 </label>
                 <select id="position" name="position">
                     <option id="popt0" value="0">1</option>
@@ -754,86 +751,81 @@
             </div>
             <div class="add-issues">
                 <label for="issueAutocompleteCPP">
-                    <bean:message key="oscarEncounter.Index.assnIssue"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.assnIssue"/>
                 </label>
                 &nbsp;<input tabindex="100" type="text" id="issueAutocompleteCPP" class="issueAutocomplete"
                              name="issueSearch" style="z-index: 2;" size="25">&nbsp; <span
                     id="busy2" style="display: none"><img
                     style="position: absolute;"
                     src="<c:out value="${ctx}/oscarEncounter/graphics/busy.gif"/>"
-                    alt="<bean:message key="oscarEncounter.Index.btnWorking"/>"></span>
+                    alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnWorking"/>"></span>
             </div>
         </form>
     </div>
     <div id="printOps" class="printOps">
         <h3 style="margin-bottom: 5px; text-align: center;">
-            <bean:message key="oscarEncounter.Index.PrintDialog"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintDialog"/>
         </h3>
         <form id="frmPrintOps" action="" onsubmit="return false;">
             <table id="printElementsTable">
                 <tr>
                     <td><input type="radio" id="printopSelected" name="printop"
                                value="selected">
-                        <bean:message key="oscarEncounter.Index.PrintSelect"/></td>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintSelect"/></td>
                     <td>
                         <security:oscarSec roleName="<%=roleName%>"
                                            objectName="_newCasemgmt.cpp" rights="r" reverse="false">
                             <img style="cursor: pointer;"
-                                 title="<bean:message key="oscarEncounter.print.title"/>"
+                                 title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
                                  id='imgPrintCPP'
-                                 alt="<bean:message key="oscarEncounter.togglePrintCPP.title"/>"
+                                 alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintCPP.title"/>"
                                  onclick="return printInfo(this,'printCPP');"
-                                 src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<bean:message
-                                key="oscarEncounter.cpp.title"/>
+                                 src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.cpp.title"/>
                         </security:oscarSec>
                     </td>
                 </tr>
                 <tr>
                     <td><input type="radio" id="printopAll" name="printop"
                                value="all">
-                        <bean:message key="oscarEncounter.Index.PrintAll"/></td>
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintAll"/></td>
                     <td><img style="cursor: pointer;"
-                             title="<bean:message key="oscarEncounter.print.title"/>"
+                             title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
                              id='imgPrintRx'
-                             alt="<bean:message key="oscarEncounter.togglePrintRx.title"/>"
+                             alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintRx.title"/>"
                              onclick="return printInfo(this, 'printRx');"
-                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<bean:message
-                            key="oscarEncounter.Rx.title"/></td>
+                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Rx.title"/></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><img style="cursor: pointer;"
-                             title="<bean:message key="oscarEncounter.print.title"/>"
+                             title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
                              id='imgPrintLabs'
-                             alt="<bean:message key="oscarEncounter.togglePrintLabs.title"/>"
+                             alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintLabs.title"/>"
                              onclick="return printInfo(this, 'printLabs');"
-                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<bean:message
-                            key="oscarEncounter.Labs.title"/></td>
+                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Labs.title"/></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><img style="cursor: pointer;"
-                             title="<bean:message key="oscarEncounter.print.title"/>"
+                             title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
                              id='imgPrintPreventions'
-                             alt="<bean:message key="oscarEncounter.togglePrintPreventions.title"/>"
+                             alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintPreventions.title"/>"
                              onclick="return printInfo(this, 'printPreventions');"
-                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<bean:message
-                            key="oscarEncounter.Preventions.title"/></td>
+                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Preventions.title"/></td>
                 </tr>
                 <!--  extension point -->
                 <tr id="printDateRow">
                     <td><input type="radio" id="printopDates" name="printop"
                                value="dates">
-                        <bean:message key="oscarEncounter.Index.PrintDates"/>&nbsp;<a
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintDates"/>&nbsp;<a
                                 style="font-variant: small-caps;" href="#"
-                                onclick="return printToday(event);"><bean:message
-                                key="oscarEncounter.Index.PrintToday"/></a></td>
+                                onclick="return printToday(event);"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintToday"/></a></td>
                     <td></td>
                 </tr>
             </table>
 
             <div style="float: left; margin-left: 5px; width: 30px;">
-                <bean:message key="oscarEncounter.Index.PrintFrom"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintFrom"/>
                 :
             </div>
             <img src="<c:out value="${ctx}/images/cal.gif" />"
@@ -843,7 +835,7 @@
                 style="font-style: italic; border: 1px solid #7682b1; width: 125px; background-color: #FFFFFF;"
                 readonly value=""><br>
             <div style="float: left; margin-left: 5px; width: 30px;">
-                <bean:message key="oscarEncounter.Index.PrintTo"/>
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintTo"/>
                 :
             </div>
             <img src="<c:out value="${ctx}/images/cal.gif" />"
@@ -997,4 +989,4 @@
     <%}%>
 
     </body>
-</html:html>
+</html>

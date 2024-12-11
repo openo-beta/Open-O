@@ -108,7 +108,7 @@
     <!-- End of Assign Room -------------------------------------------------------------->
     <tr>
         <th width="20%">Assign Bed</th>
-        <td><html:select property="bedDemographic.bedId">
+        <td><select name="bedDemographic.bedId" id="bedDemographic.bedId">
             <c:choose>
                 <c:when test="${!isAssignedBed}">
                     <option value="0" selected="selected"><c:out value="N/A"/>
@@ -136,11 +136,11 @@
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
-        </html:select></td>
+        </select></td>
     </tr>
     <tr>
         <th width="20%">Status</th>
-        <td><html:select property="bedDemographic.bedDemographicStatusId">
+        <td><select name="bedDemographic.bedDemographicStatusId" id="bedDemographic.bedDemographicStatusId">
             <c:forEach var="bedDemographicStatus"
                        items="${clientManagerForm.map.bedDemographicStatuses}">
                 <c:choose>
@@ -156,11 +156,11 @@
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
-        </html:select></td>
+        </select></td>
     </tr>
     <tr>
         <th width="20%">Late Pass</th>
-        <td><html:checkbox property="bedDemographic.latePass"/></td>
+        <td><input type="checkbox" name="bedDemographic.latePass"/></td>
     </tr>
     <tr>
         <th width="20%">Until</th>
@@ -179,7 +179,7 @@
             <input type="text" name="" id="strReservationEnd_field"
                    readonly="readonly" value="<c:out value="${endDate}"/>"
                    onchange="setEndDate();"/> <img align="top"
-                                                   src="<html:rewrite page="/images/calendar.gif" />"
+                                                   src="${request.contextPath}/images/calendar.gif"
                                                    id="strReservationEnd_field-button" alt="Reserve Until Calendar"
                                                    title="Reserve Until Calendar"/>
             <script type="text/javascript">
@@ -204,9 +204,8 @@
 </table>
 <table>
     <tr>
-        <td><html:submit
-                onclick="return validateAndSubmit();">Save</html:submit>
+        <td><input type="submit" name="submit" value="Save" onclick="return validateAndSubmit();" />
         </td>
-        <td><html:reset>Reset</html:reset></td>
+        <td><input type="reset" value="Reset"/></td>
     </tr>
 </table>

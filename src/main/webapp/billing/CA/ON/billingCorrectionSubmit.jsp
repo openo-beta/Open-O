@@ -18,13 +18,13 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html lang="en">
+
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="billing.billingCorrectionSubmit.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrectionSubmit.title"/></title>
     </head>
     <body>
     <%@ page import="oscar.*,java.text.*, java.util.*" %>
@@ -49,8 +49,7 @@
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr bgcolor="#486ebd">
-            <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><bean:message
-                    key="billing.billingCorrectionSubmit.msgSuccessfull"/></font></th>
+            <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrectionSubmit.msgSuccessfull"/></font></th>
         </tr>
     </table>
     <%
@@ -145,10 +144,10 @@
 
     <form action="billingCorrection.jsp"><input type="hidden"
                                                 name="billing_no" value=""> <input type="submit"
-                                                                                   value="<bean:message key="billing.billingCorrectionSubmit.btnCorrectAnother"/>"
+                                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrectionSubmit.btnCorrectAnother"/>"
                                                                                    name="submit"> <input type="button"
-                                                                                                         value="<bean:message key="billing.billingCorrectionSubmit.btnClose"/>"
+                                                                                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrectionSubmit.btnClose"/>"
                                                                                                          onClick="window.close()">
     </form>
     </body>
-</html:html>
+</html>

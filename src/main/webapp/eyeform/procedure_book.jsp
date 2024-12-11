@@ -24,14 +24,10 @@
 
 --%>
 
-<%@page import="org.oscarehr.eyeform.model.EyeformProcedureBook" %>
-<%@page import="org.oscarehr.eyeform.web.ProcedureBookAction" %>
-
-
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="w" reverse="<%=true%>">
@@ -48,13 +44,13 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />'/>
+    <link rel="stylesheet" type="text/css" href='${request.contextPath}/jsCalendar/skins/aqua/theme.css'/>
 
     <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css"
           title="win2k-cold-1"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="<%=request.getContextPath()%>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
 
 </head>
@@ -62,19 +58,19 @@
 Book Procedure
 <br/>
 
-<html:form action="/eyeform/ProcedureBook.do">
+<form action="${pageContext.request.contextPath}/eyeform/ProcedureBook.do" method="post">
     <table style="margin-left:auto;margin-right:auto;background-color:#f0f0f0;border-collapse:collapse">
         <input type="hidden" name="method" value="save"/>
 
-        <html:hidden property="data.id"/>
-        <html:hidden property="data.demographicNo"/>
-        <html:hidden property="data.appointmentNo"/>
+        <input type="hidden" name="id" id="id"/>
+        <input type="hidden" name="demographicNo" id="demographicNo"/>
+        <input type="hidden" name="appointmentNo" id="appointmentNo"/>
 
 
         <tr>
             <td class="genericTableHeader">Procedure name</td>
             <td class="genericTableData">
-                <html:text property="data.procedureName" size="50"/>
+                <input type="checkbox" name="data.procedureName" size="50" />
             </td>
         </tr>
 
@@ -82,26 +78,26 @@ Book Procedure
         <tr>
             <td class="genericTableHeader">Eye</td>
             <td class="genericTableData">
-                <html:select property="data.eye">
-                    <html:option value="OU">OU</html:option>
-                    <html:option value="OD">OD</html:option>
-                    <html:option value="OS">OS</html:option>
-                    <html:option value="OD then OS">OD then OS</html:option>
-                    <html:option value="OS then OD">OS then OD</html:option>
-                </html:select>
+                <select name="eye">
+                    <option value="OU">OU</option>
+                    <option value="OD">OD</option>
+                    <option value="OS">OS</option>
+                    <option value="OD then OS">OD then OS</option>
+                    <option value="OS then OD">OS then OD</option>
+                </select>
             </td>
         </tr>
 
         <tr>
             <td class="genericTableHeader">Location</td>
             <td class="genericTableData">
-                <html:text property="data.location" size="35"/>
+                <input type="checkbox" name="data.location" size="35" />
             </td>
         </tr>
         <tr>
             <td class="genericTableHeader">Comment</td>
             <td class="genericTableData">
-                <html:textarea rows="5" cols="40" property="data.comment"></html:textarea>
+                <textarea rows="5" cols="40" name="comment" id="comment"></textarea>
             </td>
         </tr>
 
@@ -111,7 +107,7 @@ Book Procedure
 
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <html:submit value="Book Procedure"/>
+                <input type="submit" value="Book Procedure" />
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" name="cancel" value="Cancel" onclick="window.close()"/>
@@ -120,7 +116,7 @@ Book Procedure
         </tr>
     </table>
 
-</html:form>
+</form>
 
 </body>
 </html>

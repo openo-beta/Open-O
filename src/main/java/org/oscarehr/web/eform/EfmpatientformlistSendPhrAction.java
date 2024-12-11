@@ -34,12 +34,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.documentManager.actions.AddEditDocument2Action;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
-import org.oscarehr.documentManager.actions.AddEditDocumentAction;
 
 public final class EfmpatientformlistSendPhrAction {
 
@@ -154,7 +154,7 @@ public final class EfmpatientformlistSendPhrAction {
 
         FileInputStream fis = new FileInputStream(file);
         try {
-            AddEditDocumentAction.writeLocalFile(fis, newFileName);
+            AddEditDocument2Action.writeLocalFile(fis, newFileName);
         } finally {
             fis.close();
         }

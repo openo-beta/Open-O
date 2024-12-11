@@ -45,8 +45,8 @@
     Integer BRemotelockset = s.getBRemotelockset();
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page
         import="java.lang.*, java.util.*, java.text.*,java.sql.*, oscar.*"
         errorPage="/errorpage.jsp" %>
@@ -55,11 +55,11 @@
     OscarProperties op = OscarProperties.getInstance();
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/checkPassword.js.jsp"></script>
-        <title><bean:message key="provider.providerchangepassword.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.title"/></title>
         <script language="javascript">
             function setfocus(el) {
                 this.focus();
@@ -84,14 +84,14 @@
                 }
 
                 if (pwd1 == '' && (pin1 == null || pin1 == '')) {
-                    alert('<bean:message key="provider.providerchangepassword.msgPasswordAndPINBlank"/>');
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgPasswordAndPINBlank"/>');
                     setfocus('mypassword');
                     return false;
                 }
 
                 if (pwd1 != "") {
                     if (document.updatepassword.oldpassword.value == "") {
-                        alert('<bean:message key="provider.providerchangepassword.msgCurrPasswordError"/>');
+                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgCurrPasswordError"/>');
                         setfocus('oldpassword');
                         return false;
                     }
@@ -100,7 +100,7 @@
                         return false;
                     }
                     if (pwd1 != pwd2) {
-                        alert('<bean:message key="provider.providerchangepassword.msgPasswordConfirmError"/>');
+                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgPasswordConfirmError"/>');
                         setfocus('confirmpassword');
                         return false;
                     }
@@ -112,7 +112,7 @@
 
                 if (pin1 != "") {
                     if (document.updatepassword.pin.value == "") {
-                        alert('<bean:message key="provider.providerchangepassword.msgCurrPinError"/>');
+                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgCurrPinError"/>');
                         setfocus('pin');
                         return false;
                     }
@@ -120,13 +120,13 @@
                     var pin_min_length = <%=op.getProperty("password_pin_min_length")%>;
 
                     if (pin1.length < pin_min_length) {
-                        alert('<bean:message key="password.policy.violation.msgPinLengthError"/> ' +
-                            pin_min_length + ' <bean:message key="password.policy.violation.msgDigits"/>');
+                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPinLengthError"/> ' +
+                            pin_min_length + ' <fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgDigits"/>');
                         return false;
                     }
 
                     if (pin1 != pin2) {
-                        alert('<bean:message key="provider.providerchangepassword.msgPinConfirmError"/>');
+                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgPinConfirmError"/>');
                         setfocus('confirmpin');
                         return false;
                     }
@@ -142,8 +142,7 @@
           ACTION="providerupdatepassword.jsp" onSubmit="return(checkPwdPolicy())">
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
-                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><bean:message
-                        key="provider.providerchangepassword.description"/></font></th>
+                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.description"/></font></th>
             </tr>
         </table>
 
@@ -152,71 +151,48 @@
 
         <table width="100%" border="0" cellpadding="2" bgcolor="#eeeeee">
             <tr>
-                <td><font face="arial" size="2"><bean:message
-                        key="provider.providerchangepassword.msgInstructions"/> <b><bean:message
-                        key="provider.providerchangepassword.msgUpdate"/></b> <bean:message
-                        key="provider.providerchangepassword.msgClickButton"/></font></td>
+                <td><font face="arial" size="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgInstructions"/> <b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgUpdate"/></b> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgClickButton"/></font></td>
             </tr>
         </table>
         <center>
 
             <table border="0" width="100%" cellpadding="4" cellspacing="0">
                 <tr>
-                    <td align="right" width="50%"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgEnterOld"/> &nbsp;<b><bean:message
-                            key="provider.providerchangepassword.formCurrPassword"/>:</b></font></td>
+                    <td align="right" width="50%"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgEnterOld"/> &nbsp;<b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formCurrPassword"/>:</b></font></td>
                     <td><input type=password name="oldpassword" value="" size=20
                                maxlength=32></td>
                 </tr>
                 <tr>
-                    <td width="50%" align="right"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgChooseNew"/> &nbsp;<b><bean:message
-                            key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
+                    <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgChooseNew"/> &nbsp;<b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="mypassword" value="" size=20
-                               maxlength=32> <font size="-2">(<bean:message
-                            key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <bean:message
-                                key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                               maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
+                        <%=op.getProperty("password_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
-                    <td width="50%" align="right"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgConfirm"/> &nbsp;<b><bean:message
-                            key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
+                    <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgConfirm"/> &nbsp;<b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="confirmpassword" value="" size=20
-                               maxlength=32> <font size="-2">(<bean:message
-                            key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <bean:message
-                                key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                               maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
+                        <%=op.getProperty("password_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
 
                 <% if (BLocallockset != null && BRemotelockset != null && (BLocallockset.intValue() == 1 || BRemotelockset.intValue() == 1)) { %>
 
                 <tr>
-                    <td align="right" width="50%"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgEnterOld"/>&nbsp;<b><bean:message
-                            key="provider.providerchangepassword.currentPIN"/>:</b></font></td>
+                    <td align="right" width="50%"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgEnterOld"/>&nbsp;<b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.currentPIN"/>:</b></font></td>
                     <td><input type=password name="pin" value="" size=20
                                maxlength=32></td>
                 </tr>
                 <tr>
-                    <td width="50%" align="right"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgChooseNew"/>&nbsp;<b><bean:message
-                            key="provider.providerchangepassword.newPIN"/>:</b></font></td>
+                    <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgChooseNew"/>&nbsp;<b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.newPIN"/>:</b></font></td>
                     <td><input type=password name="newpin" value="" size=20
-                               maxlength=32> <font size="-2">(<bean:message
-                            key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_pin_min_length")%> <bean:message
-                                key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                               maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
+                        <%=op.getProperty("password_pin_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
-                    <td width="50%" align="right"><font face="arial"><bean:message
-                            key="provider.providerchangepassword.msgConfirm"/>&nbsp;<b><bean:message
-                            key="provider.providerchangepassword.newPIN"/>:</b></font></td>
+                    <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgConfirm"/>&nbsp;<b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.newPIN"/>:</b></font></td>
                     <td><input type=password name="confirmpin" value="" size=20
-                               maxlength=32> <font size="-2">(<bean:message
-                            key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_pin_min_length")%> <bean:message
-                                key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                               maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
+                        <%=op.getProperty("password_pin_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <% } %>
 
@@ -226,13 +202,13 @@
                bgcolor="#486ebd">
             <tr>
                 <TD align="center" width="50%"><INPUT TYPE="submit"
-                                                      VALUE='<bean:message key="provider.providerchangepassword.btnSubmit"/>'
+                                                      VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.btnSubmit"/>'
                                                       SIZE="7"> &nbsp;&nbsp;&nbsp; <INPUT TYPE="RESET"
-                                                                                          VALUE='<bean:message key="global.btnBack"/>'
+                                                                                          VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/>'
                                                                                           onClick="window.close();">
                 </TD>
             </tr>
         </table>
     </form>
     </body>
-</html:html>
+</html>

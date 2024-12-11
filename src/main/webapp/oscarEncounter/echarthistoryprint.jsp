@@ -25,9 +25,9 @@
 --%>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 <%@page
         import="oscar.oscarEncounter.data.*,oscar.oscarEncounter.pageUtil.EctSessionBean, java.net.*" %>
@@ -59,9 +59,20 @@
         return true;
     }
 </script>
-<html:html>
+<html>
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
 
     <table class="Header">
         <tr>
@@ -181,4 +192,4 @@
     </table>
 
     </body>
-</html:html>
+</html>

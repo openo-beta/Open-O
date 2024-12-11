@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="oscar.oscarProvider.data.*" %>
 
 
@@ -40,11 +40,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
-        <title><bean:message key="provider.setPHRLogin.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setPHRLogin.title"/></title>
 
         <link rel="stylesheet" type="text/css"
               href="../oscarEncounter/encounterStyles.css">
@@ -69,14 +69,23 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="provider.setColour.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><bean:message
-                    key="provider.setPHRLogin.msgMyOscarId"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setColour.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setPHRLogin.msgMyOscarId"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
-            <td class="MainTableRightColumn"><html:errors/> <%
+            <td class="MainTableRightColumn"><% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %> <%
                 String login = ProviderMyOscarIdData.getMyOscarId(curUser_no);
                 int atsign = login.indexOf("@");
                 if (atsign > -1)
@@ -84,16 +93,16 @@
 
                 if (request.getAttribute("status") == null) {
 
-            %> <html:form action="/setMyOscarId.do">
-                <bean:message key="provider.setPHRLogin.msgEdit"/>&nbsp;&nbsp;
-                <html:text property="myOscarLoginId" value="<%=login%>"
+            %> <form action="${pageContext.request.contextPath}/setMyOscarId.do" method="post">
+                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setPHRLogin.msgEdit"/>&nbsp;&nbsp;
+                <input type="text" name="myOscarLoginId" value="<%=login%>"
                            size="20"/>
                 <br>
                 <input type="submit" onclick="return validate();"
-                       value="<bean:message key="provider.setPHRLogin.btnSubmit"/>"/>
-            </html:form> <%
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setPHRLogin.btnSubmit"/>"/>
+            </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {
-            %> <bean:message key="provider.setPHRLogin.msgSuccess"/>&nbsp;'<%=login%>'
+            %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setPHRLogin.msgSuccess"/>&nbsp;'<%=login%>'
 
                 <%
                     }
@@ -110,4 +119,4 @@
             document.forms["setMyOscarIdForm"].myOscarLoginId.focus();
     </script>
     </body>
-</html:html>
+</html>

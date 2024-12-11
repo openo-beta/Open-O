@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <style>
     .searchedHeader {
         color: black;
@@ -53,7 +53,8 @@
         <input type="text"
                ng-model="$ctrl.selected"
                typeahead-on-select="$ctrl.onSelect($item, $model, $label)"
-               placeholder="<bean:message key="oscarRx.placeholder.searchforMeds" bundle="ui"/>"
+               placeholder="<fmt:setBundle basename="uiResources" var="uiBundle"/>
+               <fmt:message bundle="${uiBundle}" key="oscarRx.placeholder.searchforMeds"/>"
                uib-typeahead="med as $ctrl.medTypeAheadLabel(med) for med in $ctrl.lookupMeds($viewValue)"
                typeahead-loading="loadingLocations"
                typeahead-template-url="customTemplate.html"

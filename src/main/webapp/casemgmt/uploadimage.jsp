@@ -88,7 +88,7 @@
 <table BORDER="0" CELLPADDING="1" CELLSPACING="0" WIDTH="100%"
        BGCOLOR="#C4D9E7">
 
-    <html:form action="/ClientImage" enctype="multipart/form-data"
+    <form action="${pageContext.request.contextPath}/ClientImage.do" enctype="multipart/form-data"
                method="post" onsubmit="return onPicUpload();">
         <input type="hidden" name="method" value="saveImage"/>
         <%
@@ -99,11 +99,11 @@
                     face="Verdana" color="#0000FF"><b><i>Add Image </i></b></font></td>
 
 
-            <td valign="middle" rowspan="2" ALIGN="left"><html:file
-                    property="clientImage" size="30" accept="*.gif,*.jpg"/><br>
-                <html:submit value="Upload"/></td>
+            <td valign="middle" rowspan="2" ALIGN="left">
+                <input type="file" name="clientImage" id="clientImage" size="30" accept="*.gif,*.jpg"/><br>
+                <input type="submit" value="Upload" /></td>
         </tr>
-    </html:form>
+    </form>
 </table>
 <br>
 Attention:

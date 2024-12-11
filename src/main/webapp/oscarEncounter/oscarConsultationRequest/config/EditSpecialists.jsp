@@ -23,8 +23,9 @@
     Ontario, Canada
 
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ page import="java.util.List" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -38,13 +39,8 @@
         return;
     }
 %>
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <jsp:useBean id="displayServiceUtil" scope="request"
                  class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
     <%
@@ -52,11 +48,10 @@
     %>
     <head>
 
-        <title><bean:message
-                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/>
         </title>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script language="javascript">
             function BackToOscar() {
                 window.close();
@@ -76,7 +71,18 @@
             }
         }
     </script>
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <div id="service-providers-wrapper" style="margin:auto 10px;">
         <table class="MainTable" id="scrollNumber1">
             <tr class="MainTableTopRow">
@@ -84,8 +90,7 @@
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td class="Header"><bean:message
-                                    key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/>
+                            <td class="Header"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.title"/>
                             </td>
                         </tr>
                     </table>
@@ -105,28 +110,23 @@
                         <!----Start new rows here-->
                         <tr>
                             <td>
-                                <bean:message
-                                        key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.msgClickOn"/><br>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.msgClickOn"/><br>
 
                             </td>
                         </tr>
                         <tr>
-                            <td><html:form action="/oscarEncounter/EditSpecialists">
+                            <td><form action="${pageContext.request.contextPath}/oscarEncounter/EditSpecialists.do" method="post">
 
                                 <table>
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.specialist"/>
+                                        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.specialist"/>
                                         </th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.address"/>
+                                        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.address"/>
                                         </th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.phone"/>
+                                        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.phone"/>
                                         </th>
-                                        <th><bean:message
-                                                key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.fax"/>
+                                        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.fax"/>
                                         </th>
 
                                     </tr>
@@ -163,7 +163,7 @@
 
                                 </table>
 
-                            </html:form></td>
+                            </form></td>
                         </tr>
 
                     </table>
@@ -176,4 +176,4 @@
         </table>
     </div>
     </body>
-</html:html>
+</html>

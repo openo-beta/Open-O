@@ -26,20 +26,15 @@
 
 package oscar.util;
 
+import org.apache.logging.log4j.Logger;
+import org.oscarehr.util.MiscUtils;
+
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.struts.upload.FormFile;
-import org.oscarehr.util.MiscUtils;
 
 public class StringUtils {
 
@@ -272,21 +267,6 @@ public class StringUtils {
         }
         return ret;
 
-    }
-
-    public static String readFileStream(FormFile file) {
-        try {
-            InputStream is = file.getInputStream();
-            int pointer;
-            StringBuilder strb = new StringBuilder(file.getFileSize());
-            while ((pointer = is.read()) != -1) {
-                strb.append((char) pointer);
-            }
-            return (strb.toString());
-        } catch (Exception e) {
-            MiscUtils.getLogger().error("Error", e);
-        }
-        return ("");
     }
 
     //joins an array into a string; array elements separated by a specified delimiter

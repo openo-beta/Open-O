@@ -23,8 +23,8 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@page import="oscar.oscarSurveillance.*,java.util.*,org.commonmark.node.*,org.commonmark.parser.Parser,org.commonmark.renderer.html.HtmlRenderer" %>
 <%
     Survey survey = (Survey) request.getAttribute("survey");
@@ -35,7 +35,7 @@
     HtmlRenderer renderer = HtmlRenderer.builder().build();
     String surveyQuestion = renderer.render(document);
 %>
-<html:html lang="en">
+<html>
 
     <%--
 
@@ -44,8 +44,8 @@
      --%>
 
     <head>
-        <html:base/>
-        <title><bean:message key="admin.admin.surveillanceConfig"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.surveillanceConfig"/></title>
         <link href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
         <script type="text/javascript" src="<%=request.getContextPath() %>/library/angular.min.js"></script>
@@ -62,18 +62,18 @@
         <div class="jumbotron" style="text-align: center;">
             <%=surveyQuestion%>
             <br/>
-            <html:form action="/oscarSurveillance/SurveillanceAnswer">
-                <html:hidden property="proceed" value='<%=(String) request.getAttribute(\"proceedURL\")%>'/>
-                <html:hidden property="demographicNo" value='<%=(String) request.getAttribute(\"demographic_no\")%>'/>
-                <html:hidden property="surveyId" value="<%=(String) survey.getSurveyId()%>"/>
-                <html:hidden property="currentSurveyNum" value="<%=currSurveyNum%>"/>
+            <form action="${pageContext.request.contextPath}/oscarSurveillance/SurveillanceAnswer.do" method="post">
+                <input type="hidden" name="proceed" id="proceed" value='<%=(String) request.getAttribute(\"proceedURL\")%>'/>
+                <input type="hidden" name="demographicNo" id="demographicNo" value='<%=(String) request.getAttribute(\"demographic_no\")%>'/>
+                <input type="hidden" name="surveyId" id="surveyId" value="<%=(String) survey.getSurveyId()%>"/>
+                <input type="hidden" name="currentSurveyNum" id="currentSurveyNum" value="<%=currSurveyNum%>"/>
 
                 <% for (int i = 0; i < survey.numAnswers(); i++) {%>
                 <input type="submit" name="answer" class="btn btn-primary btn-lg"
                        value="<%=survey.getAnswerString(i)%>"/>
                 <%}%>
 
-            </html:form>
+            </form>
         </div>
     </body>
-</html:html>
+</html>

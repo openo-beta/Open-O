@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="modal-body">
     <div class="row">
         <div class="col-xs-12">
@@ -148,7 +148,8 @@
 
     <button class="btn btn-primary" ng-click="save()">Save</button>
     <button class="btn btn-default" ng-click="close()">
-        <bean:message key="global.close" bundle="ui"/>
+        <fmt:setBundle basename="uiResources" var="uiBundle"/>
+        <fmt:message key="global.close" bundle="${uiBundle}"/>
     </button>
 </div>
 

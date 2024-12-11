@@ -25,19 +25,19 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@ page import="java.util.*,oscar.oscarBilling.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="admin.admin.ManagePrivFrm"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ManagePrivFrm"/></title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
     </head>
 
     <body>
-    <h3><bean:message key="admin.admin.ManagePrivFrm"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ManagePrivFrm"/></h3>
     <div class="container-fluid well">
 
         <a href="billingAddPrivateCode.jsp?addNew=true" class="btn btn-primary">Add Code</a>
@@ -74,4 +74,4 @@
         <%}%>
     </div>
     </body>
-</html:html>
+</html>

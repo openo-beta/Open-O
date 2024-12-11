@@ -375,32 +375,6 @@
             <version>3.7.1</version>
         </dependency>
 
-        <!-- struts -->
-        <!-- Struts Core Library -->
-        <dependency>
-            <groupId>io.github.weblegacy</groupId>
-            <artifactId>struts-core</artifactId>
-            <version>${struts.version}</version>
-        </dependency>
-        <!-- Struts Taglib Library -->
-        <dependency>
-            <groupId>io.github.weblegacy</groupId>
-            <artifactId>struts-taglib</artifactId>
-            <version>${struts.version}</version>
-        </dependency>
-        <!-- Struts Extras Library -->
-        <dependency>
-            <groupId>io.github.weblegacy</groupId>
-            <artifactId>struts-extras</artifactId>
-            <version>${struts.version}</version>
-        </dependency>
-        <!-- Struts El Library -->
-        <dependency>
-            <groupId>io.github.weblegacy</groupId>
-            <artifactId>struts-el</artifactId>
-            <version>${struts.version}</version>
-        </dependency>
-
         <!-- struts2 coming soon...-->
         <!--        <dependency>-->
         <!--            <groupId>org.apache.struts</groupId>-->
@@ -1297,6 +1271,16 @@
            <artifactId>jaxws-ri</artifactId>
            <version>2.3.3</version>
            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-core</artifactId>
+            <version>2.5.33</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-spring-plugin</artifactId>
+            <version>2.5.33</version>
         </dependency>
     </dependencies>
 

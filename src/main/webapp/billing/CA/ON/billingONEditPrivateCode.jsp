@@ -152,13 +152,13 @@
         }
     }
 %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <!DOCTYPE html>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="admin.admin.managePrivBillingCode"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.managePrivBillingCode"/></title>
 
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet">
         <link href="<%=request.getContextPath() %>/css/datepicker.css" rel="stylesheet">
@@ -268,7 +268,7 @@
     </head>
     <body>
 
-    <h3><bean:message key="admin.admin.managePrivBillingCode"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.managePrivBillingCode"/></h3>
 
     <div class="container-fluid">
 
@@ -356,7 +356,7 @@
                 <input class="btn" type="submit" name="submit" value="Delete" onclick="javascript:return onDelete();">
                 <input type="hidden" name="action" value='<%=action%>'>
                 <input class="btn" type="submit" name="submit"
-                       value="<bean:message key="admin.resourcebaseurl.btnSave"/>"
+                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                        onclick="javascript:return onSave();">
             </form>
         </div><!--edit/add well-->
@@ -373,4 +373,4 @@
             $('#billingservice_date').datepicker();
         });
     </script>
-</html:html>
+</html>

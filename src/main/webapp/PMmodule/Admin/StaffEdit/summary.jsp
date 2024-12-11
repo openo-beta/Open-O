@@ -42,7 +42,7 @@
 
     <display:column sortable="true" title="Program Name">
         <a
-                href="<html:rewrite action="/PMmodule/ProgramManager"/>?id=<c:out value="${program.programId}"/>&view.tab=staff&method=edit"><c:out
+                href="<%=request.getContextPath() %>/PMmodule/ProgramManager.do?id=<c:out value="${program.programId}"/>&view.tab=staff&method=edit"><c:out
                 value="${program.programName}"/></a>
     </display:column>
     <display:column property="role.name" sortable="true" title="Role"/>

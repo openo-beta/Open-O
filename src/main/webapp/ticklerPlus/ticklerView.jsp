@@ -71,7 +71,7 @@
         document.ticklerForm.submit();
     }
 </script>
-<html:form action="/Tickler" onsubmit="add_comment();return false;">
+<form action="${pageContext.request.contextPath}/Tickler.do" onsubmit="add_comment();return false;">
     <input type="hidden" name="id" value=""/>
     <input type="hidden" name="method" value=""/>
 
@@ -169,7 +169,7 @@
         <tr>
             <td class="fieldTitle">Task Assigned To:</td>
             <td class="fieldValue">
-                <html:select property="tickler.taskAssignedTo" value="<%=assignee_id%>">
+                <select name="taskAssignedTo" value="<%=assignee_id%>">
                     <%
                         if (inactive_name.length() > 0) {
                     %>
@@ -178,8 +178,12 @@
                     <%
                         }
                     %>
-                    <html:options collection="providers" property="providerNo" labelProperty="formattedName"/>
-                </html:select>
+                    <c:forEach var="provider" items="${providers}">
+                        <option value="${provider.providerNo}">
+                                ${provider.formattedName}
+                        </option>
+                    </c:forEach>
+                </select>
                 <input type="button" value="Re-Assign Task" onclick="reassign_tickler()"/>
                 <%
                     if (inactive_name.length() > 0) {
@@ -293,9 +297,9 @@
     <br/>
     <table width="100%">
         <tr>
-            <td><html:link action="Tickler.do?method=filter">Return to list</html:link></td>
+            <td><a href="${pageContext.request.contextPath}/Tickler.do?method=filter">Return to list</a></td>
         </tr>
     </table>
-</html:form>
+</form>
 </body>
 </html>

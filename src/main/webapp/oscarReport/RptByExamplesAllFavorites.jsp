@@ -41,17 +41,15 @@
 
 <%@ page import="java.util.*,oscar.oscarReport.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
 <html lang="en">
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarReport.RptByExample.MsgQueryByExamples"/> - <bean:message
-                key="oscarReport.RptByExample.MsgMyFavorites"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/> - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgMyFavorites"/></title>
 
     </head>
     <script type="text/javascript">
@@ -79,14 +77,11 @@
     <form action="/oscarReport/RptByExamplesFavorite.do">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><bean:message
-                        key="oscarReport.CDMReport.msgReport"/></td>
+                <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgReport"/></td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><bean:message
-                                    key="oscarReport.RptByExample.MsgQueryByExamples"/> - <bean:message
-                                    key="oscarReport.RptByExample.MsgMyFavorites"/></td>
+                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/> - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgMyFavorites"/></td>
                         </tr>
                     </table>
                 </td>
@@ -96,10 +91,8 @@
                 <td class="MainTableRightColumn">
                     <table>
                         <tr class="Header">
-                            <td align="left" width="150"><bean:message
-                                    key="oscarReport.RptByExample.MsgName"/></td>
-                            <td align="left" width="500"><bean:message
-                                    key="oscarReport.RptByExample.MsgQuery"/></td>
+                            <td align="left" width="150"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgName"/></td>
+                            <td align="left" width="500"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQuery"/></td>
                             <td width="100"></td>
                         </tr>
                         <input type="hidden" name="newName"/>
@@ -111,10 +104,10 @@
                             <td><c:out value="${favorite.queryName}"/></td>
                             <td><c:out value="${favorite.query}"/></td>
                             <td><input type="button" name="editButton"
-                                       value="<bean:message key='oscarReport.RptByExample.MsgEdit'/>"
+                                       value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarReport.RptByExample.MsgEdit'/>"
                                        onClick="javascript:set('${favorite.queryWithEscapeChar}','${favorite.queryName}'); submit(); return false;"/><input
                                     type="button" name="deleteButton"
-                                    value="<bean:message key='oscarReport.RptByExample.MsgDelete'/>"
+                                    value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarReport.RptByExample.MsgDelete'/>"
                                     onClick="javascript:confirmDelete('${favorite.id}'); return false;"/>
                             </td>
                 </td>
@@ -122,7 +115,7 @@
             </c:forEach>
             <tr>
                 <td><input type="button"
-                           value="<bean:message key='global.btnClose'/>"
+                           value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnClose'/>"
                            onClick="javascript:closeAndRefresh();"/>
             </tr>
         </table>

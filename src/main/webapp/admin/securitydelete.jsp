@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -51,7 +51,7 @@
 <%
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
 %>
-<html:html lang="en">
+<html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
@@ -62,7 +62,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <bean:message key="admin.securitydelete.description"/></font></th>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitydelete.description"/></font></th>
             </tr>
         </table>
         <%
@@ -78,12 +78,12 @@
             if (rowsAffected == 1) {
         %>
         <p>
-        <h2><bean:message key="admin.securitydelete.msgDeletionSuccess"/>:
+        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitydelete.msgDeletionSuccess"/>:
             <%= request.getParameter("keyword") %>.</h2>
         <%
         } else {
         %>
-        <h1><bean:message key="admin.securitydelete.msgDeletionFailure"/>:
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitydelete.msgDeletionFailure"/>:
             <%= request.getParameter("keyword") %>.</h1>
         <%
             }
@@ -92,4 +92,4 @@
 
     </center>
     </body>
-</html:html>
+</html>

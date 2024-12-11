@@ -41,12 +41,9 @@
 * Yi Li
 */
 -->
-<%@page import="java.awt.ItemSelectable" %>
-<%@page import="org.oscarehr.common.model.BillingONItem" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.math.*,java.util.*,java.sql.*,oscar.*,java.net.*,java.text.*"
          errorPage="/errorpage.jsp" %>
 <%@page import="org.oscarehr.common.model.Site,org.oscarehr.common.dao.SiteDao" %>
@@ -125,7 +122,7 @@
 
     <script type="text/javascript" src="../../../share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="../../../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="../../../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="../../../share/calendar/calendar-setup.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript">
@@ -265,7 +262,7 @@
         }
 
     </script>
-    <title><bean:message key="admin.admin.editBillPaymentList"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.editBillPaymentList"/></title>
 </head>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="w">
 <body bgcolor="ivory" text="#000000" topmargin="0" leftmargin="0" rightmargin="0">
@@ -341,19 +338,14 @@
                 <td align="left">
                     <table width="100%">
                         <c:forEach var="billingPaymentType" items="${paymentTypeList}" varStatus="ttr">
-                            <c:if test="${ttr.index % 2 == 0}">
-                                <tr>
-                            </c:if>
+                            <%= ttr.intValue() % 2 == 0 ? "<tr>" : "" %>
                             <td width="50%">
                                 <input type="radio" name="paymentType"
-                                       id="paymentType<bean:write name='billingPaymentType' property='id'/>"
-                                       value="<bean:write name='billingPaymentType' property='id'/>" 
-                                       <c:if test="${ttr.index == 0}">checked="true"</c:if> />
-                                <bean:write name="billingPaymentType" property="paymentType"/>
+                                       id="paymentType<c:out value='${billingPaymentType.id}'/>"
+                                       value="<c:out value='${billingPaymentType.id}'/>" <%=(ttr == 0 ? "checked=true" : "")%> />
+                                <c:out value="${billingPaymentType.paymentType}"/>
                             </td>
-                            <c:if test="${ttr.index % 2 == 0}">
-                                </tr>
-                            </c:if>
+                            <%= ttr.intValue() % 2 == 0 ? "" : "</tr>" %>
                         </c:forEach>
                     </table>
                 </td>
@@ -441,33 +433,24 @@
         <c:if test="${not empty paymentsList}">
             <c:forEach var="displayPayment" items="${paymentsList}" varStatus="ctr">
                 <tr>
-                    <!-- Display index starting from 1 -->
-                    <td>${ctr.index + 1}</td>
-
-                    <!-- Display properties of displayPayment -->
-                    <td><c:out value="${displayPayment.total_payment}" /></td>
-
-                    <!-- Accessing types list using JSTL -->
-                    <td>${types[ctr.index]}</td>
-
-                    <td><c:out value="${displayPayment.paymentDateFormatted}" /></td>
-                    <td><c:out value="${displayPayment.total_discount}" /></td>
-                    <td><c:out value="${displayPayment.total_credit}" /></td>
-                    <td><c:out value="${displayPayment.total_refund}" /></td>
-
-                    <!-- Conditional formatting for balances -->
-                    <c:choose>
-                        <c:when test="${balances[ctr.index] < 0}">
-                            <td>${'-' + currency.format(balances[ctr.index])}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>${currency.format(balances[ctr.index])}</td>
-                        </c:otherwise>
-                    </c:choose>
-
-                    <!-- Link to view payment -->
+                    <td><%= ctr + 1 %>
+                    </td>
+                    <td><c:out value="${displayPayment.total_payment}"/></td>
+                    <td><%=types.get(ctr.intValue()) %>
+                    </td>
+                    <td><c:out value="${displayPayment.paymentDateFormatted}"/></td>
+                    <td><c:out value="${displayPayment.total_discount}"/></td>
+                    <td><c:out value="${displayPayment.total_credit}"/></td>
+                    <td><c:out value="${displayPayment.total_refund}"/></td>
+                    <%if (((BigDecimal) balances.get(index)).compareTo(BigDecimal.ZERO) == -1) {%>
+                    <td><%= "-" + currency.format(balances.get(index++)) %>
+                    </td>
+                    <%} else { %>
+                    <td><%= currency.format(balances.get(index++)) %>
+                    </td>
+                    <%} %>
                     <td>
-                        <a href="javascript:onViewPayment('${displayPayment.id}')">view</a>
+                        <a href="javascript:onViewPayment('<c:out value="${displayPayment.id}"/>')">view</a>
                     </td>
                 </tr>
             </c:forEach>

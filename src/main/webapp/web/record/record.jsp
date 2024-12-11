@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div class="page-header" style="margin-top: 0px; margin-bottom: 0px;">
     <h1 class="patientHeaderName" style="margin-top: 0px;" ng-cloak>
@@ -31,11 +31,10 @@
             ng-show="demographic.alias">({{demographic.alias}})</span>
 
         <small class="patientHeaderExt pull-right">
-            <i><bean:message key="demographic.patient.context.born"/>: </i>
+            <i><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.patient.context.born"/>: </i>
             <b>{{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</b>
-            (<b>{{demographic.age | age}}</b>) &nbsp;&nbsp; <i><bean:message
-                key="demographic.patient.context.sex"/>:</i> <b>{{demographic.sex}}</b>
-            <i> &nbsp;&nbsp; <bean:message key="Appointment.msgTelephone"/>:</i> <b>{{demographic.phone}}</b>
+            (<b>{{demographic.age | age}}</b>) &nbsp;&nbsp; <i><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.patient.context.sex"/>:</i> <b>{{demographic.sex}}</b>
+            <i> &nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgTelephone"/>:</i> <b>{{demographic.phone}}</b>
             <!-- <span class="glyphicon glyphicon-new-window"></span>-->
         </small>
     </h1>
@@ -64,16 +63,16 @@
                     <span ng-if="tab.label=='Tickler' && overdueTicklersCount>0" class="badge badge-danger"
                           title="{{overdueTicklersCount+' overdue ticklers'}}">{{overdueTicklersCount}}</span>
                     <strong class="text-danger" ng-show="tab.extra=='outstanding'"
-                            title="<bean:message key="oscarEncounter.Index.ConsultOutstanding"/>">!</strong></a>
+                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.ConsultOutstanding"/>">!</strong></a>
                 <a href="javascript:void(0)" ng-if="tab.dropdown" class="dropdown-toggle"
                    data-toggle="dropdown">{{tab.label}} <strong class="text-danger" ng-show="tab.extra=='outstanding'"
-                                                                title="<bean:message key="oscarEncounter.Index.ConsultOutstanding"/>">!</strong><span
+                                                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.ConsultOutstanding"/>">!</strong><span
                         class="caret"></span></a>
                 <ul ng-if="tab.dropdown" class="dropdown-menu" role="menu">
                     <li ng-repeat="dropdownItem in tab.dropdownItems">
                         <a href="javascript:void(0)" ng-click="changeTab(dropdownItem)">{{dropdownItem.label}} <strong
                                 class="text-danger" ng-show="dropdownItem.extra=='outstanding'"
-                                title="<bean:message key="oscarEncounter.Index.ConsultOutstanding"/>">!</strong></a>
+                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.ConsultOutstanding"/>">!</strong></a>
                     </li>
                 </ul>
             </li>
@@ -149,32 +148,32 @@
         </div>
 
 
-        <input type="hidden" id="startTag" value="<bean:message key="oscarEncounter.Index.startTime"/>">
-        <input type="hidden" id="endTag" value="<bean:message key="oscarEncounter.Index.endTime"/>">
+        <input type="hidden" id="startTag" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.startTime"/>">
+        <input type="hidden" id="endTag" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.endTime"/>">
 
         <div class="btn-group btn-group-sm pull-right">
             <button type="button" class="btn btn-default" ng-click="pasteTimer()" id="aTimer"
-                    title="<bean:message key="oscarEncounter.Index.pasteTimer"/>">00:00
+                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.pasteTimer"/>">00:00
             </button>
             <button type="button" class="btn btn-default" ng-click="toggleTimer()"
-                    title="<bean:message key="oscarEncounter.Index.toggleTimer"/>">
+                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.toggleTimer"/>">
                 <span class="glyphicon glyphicon-pause" id="aToggle"></span>
             </button>
             <button type="button" class="btn btn-default" ng-click="saveNote()" id="saveButton"
                     data-ng-disabled="page.encounterNote.isSigned"
-                    title="<bean:message key="oscarEncounter.Index.btnSave"/>">
+                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSave"/>">
                 <span class="glyphicon glyphicon-save" id="theSave"></span>
             </button>
             <button type="button" class="btn btn-default" ng-click="saveSignNote()"
-                    title="<bean:message key="oscarEncounter.Index.btnSignSave"/>">
+                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSignSave"/>">
                 <span class="glyphicon glyphicon-pencil" id="Sign"></span>
             </button>
             <button type="button" class="btn btn-default" ng-click="saveSignVerifyNote()"
-                    title="<bean:message key="oscarEncounter.Index.btnSign"/>">
+                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSign"/>">
                 <span class="glyphicon glyphicon-thumbs-up" id="SaveSignVerify"></span>
             </button>
             <button type="button" class="btn btn-default" ng-click="saveSignBillNote()"
-                    title="<bean:message key="oscarEncounter.Index.btnSignSaveBill"/>">
+                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSignSaveBill"/>">
                 <span class="glyphicon glyphicon-usd" id="bill"></span>
             </button>
         </div>

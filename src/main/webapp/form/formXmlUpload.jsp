@@ -38,9 +38,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 <%
     if (session.getValue("user") == null)
@@ -52,10 +52,10 @@
     session.setAttribute("homepath", docdownload);
 
 %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="admin.admin.btnImportFormData"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnImportFormData"/></title>
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/js/jquery_css/smoothness/jquery-ui-1.10.2.custom.min.css"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-1.9.1.js"></script>
@@ -72,17 +72,28 @@
 
     <div class="well">
 
-        <h3><bean:message key="admin.admin.btnImportFormData"/></h3>
+        <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnImportFormData"/></h3>
 
-        <html:form action="/form/xmlUpload.do" method="POST" enctype="multipart/form-data">
+        <form action="${pageContext.request.contextPath}/form/xmlUpload.do" method="POST" enctype="multipart/form-data">
 
-            <html:errors/>
+            <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
 
 
             Select data in zip format:<br />
 
             <input type="file" name="file1" value="">
-            <span title="<bean:message key="global.uploadWarningBody"/>"
+            <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
                   style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                     border="0" src="../images/icon_alertsml.gif"/></span></span>
 
@@ -91,8 +102,8 @@
             <p><i class="icon-info-sign"></i> Use this function to import data for a specific form into the OSCAR
                 database</p>
 
-        </html:form>
+        </form>
 
     </div>
     </body>
-</html:html>
+</html>

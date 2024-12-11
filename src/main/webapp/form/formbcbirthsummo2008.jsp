@@ -41,9 +41,9 @@
 
 <%@ page language="java" %>
 <%@ page import="oscar.form.*, oscar.form.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <jsp:useBean id="oscarVariables" class="java.util.Properties"
              scope="session"/>
@@ -107,7 +107,7 @@
 * Ontario, Canada
 */
 -->
-<html:html lang="en">
+<html>
     <% response.setHeader("Cache-Control", "no-cache");%>
 
     <head>
@@ -123,12 +123,12 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
     <script type="text/javascript" language="Javascript">
@@ -541,8 +541,8 @@
     @oscar.formDB Field="formCreated" Type="date" Null="" Default="NULL"
     @oscar.formDB Field="formEdited" Type="timestamp"
     -->
-    <html:form action="/form/formname">
-        <input type="hidden" name="demographic_no"
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
+    <input type="hidden" name="demographic_no"
                value="<%= props.getProperty("demographic_no", "0") %>"/>
         <input type="hidden" name="formCreated"
                value="<%= props.getProperty("formCreated", "") %>"/>
@@ -1808,7 +1808,7 @@
             </tr>
         </table>
 
-    </html:form>
+    </form>
     <br>
     <br>
     <br>
@@ -1901,4 +1901,4 @@
         });
     </script>
     </body>
-</html:html>
+</html>

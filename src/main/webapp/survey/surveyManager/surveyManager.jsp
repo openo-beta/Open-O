@@ -22,15 +22,6 @@
     Toronto, Ontario, Canada
 
 --%>
-
-<%@ taglib uri="http://struts.apache.org/tags-bean"
-           prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html"
-           prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el"
-           prefix="html-el" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic"
-           prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
@@ -68,57 +59,57 @@
         <c:if test="${entry.status eq 0}">
             <!-- in review -->
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=edit&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=edit&id=<c:out value="${entry.id}"/>"><img
                     src="images/edit.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=delete&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=delete&id=<c:out value="${entry.id}"/>"><img
                     src="images/delete.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=test&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=test&id=<c:out value="${entry.id}"/>"><img
                     src="images/test.png" border="0"></a>
         </c:if>
         <c:if test="${entry.status eq 1}">
             <!-- test -->
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=edit&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=edit&id=<c:out value="${entry.id}"/>"><img
                     src="images/edit.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=delete&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=delete&id=<c:out value="${entry.id}"/>"><img
                     src="images/delete.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=test&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=test&id=<c:out value="${entry.id}"/>"><img
                     src="images/test.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=clear_test_data&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=clear_test_data&id=<c:out value="${entry.id}"/>"><img
                     src="images/clear.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=launch&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=launch&id=<c:out value="${entry.id}"/>"><img
                     src="images/launch.png" border="0"></a>
         </c:if>
         <c:if test="${entry.status eq 2}">
             <!-- launched -->
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=close&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=close&id=<c:out value="${entry.id}"/>"><img
                     src="images/close.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=export&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=export&id=<c:out value="${entry.id}"/>"><img
                     src="images/export.gif" border="0"></a>
         </c:if>
         <c:if test="${entry.status eq 3}">
             <!-- closed -->
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=reopen&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=reopen&id=<c:out value="${entry.id}"/>"><img
                     src="images/launch.png" border="0"></a>
             &nbsp;
             <a
-                    href="<html:rewrite action="/SurveyManager"/>?method=export&id=<c:out value="${entry.id}"/>"><img
+                    href="<%=request.getContextPath() %>/SurveyManager.do?method=export&id=<c:out value="${entry.id}"/>"><img
                     src="images/export.gif" border="0"></a>
         </c:if>
 
@@ -140,19 +131,19 @@
 <br/>
 <br/>
 <input type="button" value="Create New Form"
-       onclick="location.href='<html:rewrite action="/SurveyManager"/>?method=new_survey'"/>
+       onclick="location.href='<%=request.getContextPath() %>/SurveyManager.do?method=new_survey'"/>
 <br/>
 <br/>
 <input type="button" value="Import"
-       onclick="location.href='<html:rewrite action="/SurveyManager"/>?method=show_import_form'"/>
+       onclick="location.href='<%=request.getContextPath() %>/SurveyManager.do?method=show_import_form'"/>
 <br/>
 <br/>
 <script>
     function export_csv(selectObj) {
         var formId = selectObj.options[selectObj.selectedIndex].value;
         if (formId != "") {
-            //alert('<html:rewrite action="/SurveyManager"/>?method=export_csv&id=' + formId);
-            location.href = '<html:rewrite action="/SurveyManager"/>?method=export_csv&id=' + formId;
+            //alert('<%=request.getContextPath() %>/SurveyManager.do?method=export_csv&id=' + formId);
+            location.href = '<%=request.getContextPath() %>/SurveyManager.do?method=export_csv&id=' + formId;
         }
         //run the command
 
@@ -162,8 +153,8 @@
     function export_inverse_csv(selectObj) {
         var formId = selectObj.options[selectObj.selectedIndex].value;
         if (formId != "") {
-            //alert('<html:rewrite action="/SurveyManager"/>?method=export_csv&id=' + formId);
-            location.href = '<html:rewrite action="/SurveyManager"/>?method=export_inverse_csv&id=' + formId;
+            //alert('<%=request.getContextPath() %>/SurveyManager.do?method=export_csv&id=' + formId);
+            location.href = '<%=request.getContextPath() %>/SurveyManager.do?method=export_inverse_csv&id=' + formId;
         }
         //run the command
 
@@ -173,8 +164,8 @@
     function export_to_db(selectObj) {
         var formId = selectObj.options[selectObj.selectedIndex].value;
         if (formId != "") {
-            //alert('<html:rewrite action="/SurveyManager"/>?method=export_csv&id=' + formId);
-            location.href = '<html:rewrite action="/SurveyManager"/>?method=export_to_db&id=' + formId;
+            //alert('<%=request.getContextPath() %>/SurveyManager.do?method=export_csv&id=' + formId);
+            location.href = '<%=request.getContextPath() %>/SurveyManager.do?method=export_to_db&id=' + formId;
         }
         //run the command
 

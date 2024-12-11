@@ -43,7 +43,7 @@
 <%@ page import="org.oscarehr.common.dao.RecycleBinDao" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     ProgramDao programDao = SpringUtils.getBean(ProgramDao.class);
     SecRoleDao secRoleDao = SpringUtils.getBean(SecRoleDao.class);
@@ -317,8 +317,7 @@
     <script src="${ pageContext.request.contextPath }/library/jquery/jquery-3.6.4.min.js"></script>
 
     <script src="${ pageContext.request.contextPath }/js/jqBootstrapValidation-1.3.7.min.js"></script>
-    <title><bean:message key="global.update"/> <bean:message key="admin.admin.provider"/> <bean:message
-            key="role"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="global.update"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.provider"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="role"/></title>
 
 
     <script>
@@ -381,8 +380,7 @@
 
 <div id="header" class="navbar">
     <div class="navbar-inner">
-        <div class="brand"><i class="icon-lock"></i>&nbsp;<bean:message key="global.update"/>&nbsp;<bean:message
-                key="admin.admin.provider"/>&nbsp;<bean:message key="role"/></div>
+        <div class="brand"><i class="icon-lock"></i>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="global.update"/>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.provider"/>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="role"/></div>
     </div>
 </div>
 
@@ -398,9 +396,9 @@
 
         <div class="controls">
             <div class="input-append">
-                <input type="text" placeholder="<bean:message key="admin.securityrecord.formUserName" />" name="keyword"
+                <input type="text" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityrecord.formUserName"/>" name="keyword"
                        value="<%=Encode.forHtmlAttribute(keyword)%>"/>
-                <input type="submit" class="btn btn-primary" name="search" value="<bean:message key="global.search" />">
+                <input type="submit" class="btn btn-primary" name="search" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.search"/>">
             </div>
         </div>
 
@@ -410,19 +408,19 @@
 <table id="provTable" class="table table-striped table-hover table-condensed">
     <thead>
     <tr>
-        <th><bean:message key="admin.admin.provider"/></th>
-        <th><bean:message key="admin.provider.formFirstName"/></th>
-        <th><bean:message key="admin.provider.formLastName"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.provider"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formFirstName"/></th>
+        <th><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formLastName"/></th>
         <% if (newCaseManagement) { %>
         <th>
-            <bean:message key="role"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="role"/>
         </th>
         <th>
-            <bean:message key="demographic.demographiceditdemographic.primaryEMR"/> <bean:message key="role"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.primaryEMR"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="role"/>
         </th>
         <% } else {%>
         <th>
-            <bean:message key="role"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="role"/>
         </th>
         <%} %>
         <th>Action</th>
@@ -471,11 +469,11 @@
                        value="<%= Encode.forHtmlAttribute(item.getProperty("role_name", ""))%>">
                 <div class="button-group">
                     <input type="submit" name="submit" class="btn btn-primary"
-                           value="<bean:message key="global.btnAdd" />">
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnAdd"/>">
                     <input type="submit" name="buttonUpdate" class="btn btn-info"
-                           value="<bean:message	key="global.update" />" <%= StringUtils.hasText(item.getProperty("role_id"))?"":"disabled"%>>
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.update"/>" <%= StringUtils.hasText(item.getProperty("role_id"))?"":"disabled"%>>
                     <input type="submit" name="submit" class="btn-link" style="color:red;"
-                           value="<bean:message key="global.btnDelete" />" <%= StringUtils.hasText(item.getProperty("role_id"))?"":"disabled"%>>
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnDelete"/>" <%= StringUtils.hasText(item.getProperty("role_id"))?"":"disabled"%>>
                 </div>
             </td>
         </tr>
@@ -492,13 +490,11 @@
     <form name="myform" action="providerRole.jsp" method="POST">
         <table>
             <tr>
-                <td><bean:message key="global.update"/>&nbsp;<bean:message
-                        key="demographic.demographiceditdemographic.primaryEMR"/>&nbsp;<bean:message key="role"/></td>
+                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="global.update"/>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.primaryEMR"/>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="role"/></td>
             </tr>
             <tr>
                 <td>
-                    <label class="control-label" for="primaryRoleProvider"><bean:message
-                            key="admin.admin.provider"/>:</label>
+                    <label class="control-label" for="primaryRoleProvider"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.provider"/>:</label>
                     <select id="primaryRoleProvider" name="primaryRoleProvider" onChange="primaryRoleChooseProvider()">
                         <option value="">Select Below</option>
                         <%
@@ -520,7 +516,7 @@
 
             <tr>
                 <td>
-                    <label class="control-label" for="primaryRoleRole"><bean:message key="role"/>:</label>
+                    <label class="control-label" for="primaryRoleRole"><fmt:setBundle basename="oscarResources"/><fmt:message key="role"/>:</label>
                     <select id="primaryRoleRole" name="primaryRoleRole">
                     </select>
                 </td>
@@ -528,7 +524,7 @@
             <tr>
                 <td>
                     <input type="submit" name="buttonSetPrimaryRole"
-                           value="<bean:message key="global.update" />&nbsp;<bean:message key="demographic.demographiceditdemographic.primaryEMR" />&nbsp;<bean:message key="role" />"
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.update"/>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.primaryEMR"/>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="role"/>"
                            class="btn btn-primary" onClick="return setPrimaryRole();">
                 </td>
             </tr>

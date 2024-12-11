@@ -43,8 +43,8 @@
         var formId = document.ucfForm.formId.value;
         if (formId != "") {
             alert("formid = " + formId);
-            //alert('<html:rewrite action="/SurveyManager"/>?method=export_csv&id=' + formId);
-            location.href = '<html:rewrite action="/SurveyManager"/>?method=getUcfReport&forId=' + formId;
+            //alert('<%=request.getContextPath() %>/SurveyManager.do?method=export_csv&id=' + formId);
+            location.href = '<%=request.getContextPath() %>/SurveyManager.do?method=getUcfReport&forId=' + formId;
             return true;
         } else {
             alert("Please select a form from the form list.");

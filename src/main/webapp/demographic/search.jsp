@@ -41,16 +41,16 @@
 
 <!DOCTYPE HTML>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <% Boolean isMobileOptimized = session.getAttribute("mobileOptimized") != null; %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="demographic.search.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.title"/></title>
         <script type="text/javascript">
 
             function setfocus() {
@@ -77,7 +77,7 @@
                         dob.value = dob.value.substring(0, 4) + "-" + dob.value.substring(4, 6) + "-" + dob.value.substring(6, 8);
                     }
                     if (dob.value.length != 10) {
-                        alert('<bean:message key="demographic.search.msgWrongDOB"/>');
+                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.msgWrongDOB"/>');
                         typeInOK = false;
                     }
                     return typeInOK;
@@ -128,16 +128,15 @@
 
         <!-- <security:oscarSec roleName="<%=roleName$%>" objectName="_demographic.addnew" rights="r">  -->
         <div class="createNew">
-            <a href="demographicaddarecordhtm.jsp"><b><font size="+1"><bean:message
-                    key="demographic.search.btnCreateNew"/></font></b></a>
+            <a href="demographicaddarecordhtm.jsp"><b><font size="+1"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.btnCreateNew"/></font></b></a>
         </div>
         <!-- </security:oscarSec> -->
 
         <oscar:oscarPropertiesCheck
                 property="SHOW_FILE_IMPORT_SEARCH" value="yes">
             &nbsp;&nbsp;&nbsp;<a href="demographicImport.jsp"><b><font
-            size="+1"><bean:message key="demographic.search.importNewDemographic"/></font></b></a>
+            size="+1"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.importNewDemographic"/></font></b></a>
         </oscar:oscarPropertiesCheck>
     </div>
     </body>
-</html:html>
+</html>

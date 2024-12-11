@@ -52,7 +52,7 @@
 <%
 
 %>
-<html:html lang="en">
+<html>
     <head>
         <title>Pregnancy History</title>
         <link rel="stylesheet" href="<%=request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.min.css">
@@ -80,7 +80,7 @@
             $(document).ready(function () {
                 $('#pregTable').DataTable({
                     "language": {
-                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
+                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
                     }
                     //  "aaSorting": [[ 1, "desc" ]]
                 });
@@ -154,4 +154,4 @@
 
     <br><br>
 
-</html:html>
+</html>

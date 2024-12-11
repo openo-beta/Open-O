@@ -29,8 +29,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="oscar.util.StringUtils" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     String residentId = request.getParameter("residentId");
     String residentName = request.getParameter("residentName");
@@ -86,9 +86,9 @@
 
     HashMap<Integer, List<EFormValue>> residentFieldNoteValues = FieldNoteManager.getResidentFieldNoteValues(residentId);
 %>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="admin.fieldNote.report"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></title>
         <link rel="stylesheet" href="../../share/css/OscarStandardLayout.css">
         <link rel="stylesheet" href="../../share/css/eformStyle.css">
         <style>
@@ -101,7 +101,7 @@
     </head>
 
     <body>
-    <div class="eformInputHeading" align="center"><bean:message key="admin.fieldNote.report"/></div>
+    <div class="eformInputHeading" align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></div>
 
     <% if ("download".equals(method)) { //if-start
     %>
@@ -213,7 +213,7 @@
     <table width="100%">
         <tr>
             <td valign="top">
-                <input type="button" value="<bean:message key="admin.fieldNote.close" />" onclick="window.close();"/>
+                <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.close"/>" onclick="window.close();"/>
             </td>
             <td>
                 <table>
@@ -376,7 +376,7 @@
     </table>
     <br/>
 
-    <input type="button" value="<bean:message key="admin.fieldNote.close" />" onclick="window.close();"/>
+    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.close"/>" onclick="window.close();"/>
     <% } //if-end
     %>
 
@@ -387,4 +387,4 @@
         });
     </script>
     </body>
-</html:html>
+</html>

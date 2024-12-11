@@ -40,34 +40,29 @@
 %>
 
 <%@ page import="java.util.*,oscar.oscarReport.data.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <link rel="stylesheet" type="text/css"
       href="../oscarEncounter/encounterStyles.css">
-<html:html lang="en">
+<html>
     <script language="JavaScript" type="text/JavaScript">
 
     </script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message
-                key="oscarReport.RptByExample.MsgQueryByExamples"/> - <bean:message
-                key="oscarReport.RptByExample.MsgEditMyFavorite"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/> - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgEditMyFavorite"/></title>
     </head>
 
     <body vlink="#0000FF" class="BodyStyle">
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
-        <html:form action="/oscarReport/RptByExamplesFavorite.do">
+        <form action="${pageContext.request.contextPath}/oscarReport/RptByExamplesFavorite.do" method="post">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><bean:message
-                    key="oscarReport.CDMReport.msgReport"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgReport"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><bean:message
-                                key="oscarReport.RptByExample.MsgQueryByExamples"/> - <bean:message
-                                key="oscarReport.RptByExample.MsgEditMyFavorite"/></td>
+                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/> - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgEditMyFavorite"/></td>
                     </tr>
                 </table>
             </td>
@@ -77,15 +72,15 @@
             <td class="MainTableRightColumn">
                 <table>
                     <tr>
-                        <td><html:text property="favoriteName" size="40"/></td>
+                        <td><input type="checkbox" name="favoriteName" size="40" /></td>
                     </tr>
                     <tr>
-                        <td><html:textarea property="query" cols="80" rows="3"/></td>
+                        <td><textarea name="query" cols="80" rows="3"></textarea></td>
                     </tr>
                     <tr>
                         <td><input type="button" value="Add" onclick="submit();"/> <input
                                 type="button"
-                                value="<bean:message key='oscarReport.RptByExample.MsgCancel'/>"
+                                value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarReport.RptByExample.MsgCancel'/>"
                                 onclick="javascript:history.back(1);"/></td>
                     </tr>
                     <tr></tr>
@@ -99,6 +94,6 @@
         </tr>
     </table>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

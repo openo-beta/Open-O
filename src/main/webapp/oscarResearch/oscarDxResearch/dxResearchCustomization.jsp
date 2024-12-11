@@ -25,29 +25,38 @@
 --%>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html lang="en">
+
+
+<html>
     <head>
-        <title><bean:message key="oscarResearch.oscarDxResearch.dxCustomization.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.title"/></title>
         <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/global.js"></script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" href="dxResearch.css"/>
 
     </head>
 
     <body topmargin="0" leftmargin="0" vlink="#0000FF" onload="setfocus();">
-    <html:errors/>
+    <% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
     <table width="100%" bgcolor="#EEEEFF">
         <tr bgcolor="#000000">
-            <td class="subject" colspan="3">&nbsp;&nbsp;&nbsp;<bean:message
-                    key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
+            <td class="subject" colspan="3">&nbsp;&nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
         </tr>
         <tr>
-            <td class=heading colspan="3"><bean:message
-                    key="oscarResearch.oscarDxResearch.dxCustomization.title"/></td>
+            <td class=heading colspan="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.title"/></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -56,17 +65,17 @@
             <td valign="center"><input type="button" class="mbttn"
                                        style="width: 180px"
                                        onClick="popupPage(230,600,'dxResearchNewQuickList.jsp')"
-                                       value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.addNewQuickList"/>"/>
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.addNewQuickList"/>"/>
             </td>
             <td valign="center"><input type="button" class="mbttn"
                                        style="width: 180px"
                                        onClick="popupPage(230,600,'dxResearchLoadQuickList.do')"
-                                       value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.editQuickList"/>"/>
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.editQuickList"/>"/>
             </td>
             <td valign="center"><input type="button" class="mbttn"
                                        style="width: 180px"
                                        onClick="popupPage(230,600,'dxResearchSelectAssociations.jsp')"
-                                       value="<bean:message key="oscarResearch.oscarDxResearch.dxCustomization.editAssociations"/>"/>
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.editAssociations"/>"/>
             </td>
         </tr>
         <tr>
@@ -74,4 +83,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

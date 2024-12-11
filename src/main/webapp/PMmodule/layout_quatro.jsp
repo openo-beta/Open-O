@@ -26,26 +26,26 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Program Management Module</title>
         <link rel="stylesheet" type="text/css"
-              href='<html:rewrite page="/css/tigris.css" />'/>
+              href='${request.contextPath}/css/tigris.css'/>
         <link rel="stylesheet" type="text/css"
-              href='<html:rewrite page="/css/displaytag.css" />'/>
+              href='${request.contextPath}/css/displaytag.css'/>
         <link rel="stylesheet" type="text/css"
-              href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />'/>
+              href='${request.contextPath}/jsCalendar/skins/aqua/theme.css'/>
         <link rel="stylesheet" type="text/css"
-              href='<html:rewrite page="/css/core.css" />'/>
+              href='${request.contextPath}/css/core.css'/>
 
         <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
         <script type="text/javascript"
-                src="<html:rewrite page="/js/quatroLookup.js" />"></script>
+                src="${request.contextPath}/js/quatroLookup.js"></script>
         <script type="text/javascript"
-                src="<html:rewrite page="/js/validation.js" />"></script>
+                src="${request.contextPath}/js/validation.js"></script>
         <script type="text/javascript"
-                src="<html:rewrite page="/js/checkDate.js" />"></script>
+                src="${request.contextPath}/js/checkDate.js"></script>
 
         <script type="text/javascript">
             var isInFrame = true;
@@ -91,7 +91,7 @@
                 if (win != null) win.close();
             }
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
     <body onload="initPage()" onunload="unloadMe()">
     <table border="0" cellspacing="0" cellpadding="0" width="100%"
@@ -106,7 +106,7 @@
                         <td id="leftcol" width="200px"><<jsp:include
                                 page="navigation_blank.jsp"/></td>
                         <td valign="top" width="3px"><img
-                                src='<html:rewrite page="/images/1x1.gif" />' width="3px"/></td>
+                                src='${request.contextPath}/images/1x1.gif' width="3px"/></td>
                         <td align="left"><!--  div class="body" align="left"  this is the layout-->
                             <jsp:include page="Home.jsp"/> <!--  /div --></td>
                     </tr>
@@ -116,4 +116,4 @@
     </table>
     </body>
 
-</html:html>
+</html>

@@ -47,16 +47,12 @@
 <%@page import="org.oscarehr.util.LocaleUtils" %>
 <%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.util.SpringUtils" %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
-
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Laboratory Requisition</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="screen"
               href="labReq07Style.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css">
@@ -310,7 +306,7 @@
     </script>
 
     <body style="page: doublepage; page-break-after: right">
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <input type="hidden" name="demographic_no"
                value="<%= props.getProperty("demographic_no", "0") %>"/>
@@ -544,8 +540,7 @@
                                         %>
                                         <td class="borderGrayBottomRight"
                                             style="border-right: 0px; width: 130px;"><font
-                                                class="subHeading"><bean:message
-                                                key="oscarEncounter.form.labreq.patientChartNo"/></font><br/>
+                                                class="subHeading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.labreq.patientChartNo"/></font><br/>
                                             <input type="hidden" style="width: 90%" name="patientChartNo"
                                                    value="<%=demoChartNo%>"/> <%=props.getProperty("patientChartNo", "")%>
                                         </td>
@@ -1309,6 +1304,6 @@
             </tr>
         </table>
 
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

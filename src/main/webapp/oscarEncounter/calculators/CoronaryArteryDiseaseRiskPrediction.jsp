@@ -820,7 +820,7 @@
         <td class="MainTableTopRowLeftColumn">Calculators: Coronary
             Artery Disease Risk Prediction
         </td>
-        <td style="text-align: right"><oscar:help keywords="calculator" key="app.top1"/> | <a
+        <td style="text-align: right"><a
                 href="javascript:
                     popupStart(300,400,'About.jsp')">About</a>
             | <a href="javascript:popupStart(300,400,'License.jsp')">License</a>

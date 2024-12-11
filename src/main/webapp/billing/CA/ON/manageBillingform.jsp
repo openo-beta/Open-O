@@ -26,8 +26,8 @@
     String service_form = "", service_name = "";
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%@ page import="java.util.*, java.sql.*, oscar.*, java.net.*" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
@@ -51,9 +51,9 @@
     String clinicview = request.getParameter("billingform") == null ? oscarVariables.getProperty("default_view") : request.getParameter("billingform");
     String reportAction = request.getParameter("reportAction") == null ? "" : request.getParameter("reportAction");
 %>
-<html:html lang="en">
+<html>
     <head>
-        <title><bean:message key="billing.manageBillingform.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.title"/></title>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
         <!-- Bootstrap 2.3.1 -->
@@ -85,12 +85,12 @@
 
             function validateServiceType() {
                 if (document.servicetypeform.typeid.value == "MFP") {
-                    alert("<bean:message key="billing.manageBillingform.msgIDExists"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.msgIDExists"/>");
                     return false;
                 }
 
                 if (document.servicetypeform.typeid.value == '') {
-                    alert("<bean:message key="billing.manageBillingform.btnManage.msgRequiredField"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.btnManage.msgRequiredField"/>");
                     return false;
                 }
                 return true;
@@ -119,7 +119,7 @@
             }
 
             function onUnbilled(url) {
-                if (confirm("<bean:message key="billing.manageBillingform.msgDeleteBillingConfirm"/>")) {
+                if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.msgDeleteBillingConfirm"/>")) {
                     popupPage(700, 720, url);
                 }
             }
@@ -142,7 +142,7 @@
         </script>
     </head>
     <body onload="showManageType(false);">
-    <h4><b>oscar<bean:message key="billing.manageBillingform.msgBilling"/></h4>
+    <h4><b>oscar<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.msgBilling"/></h4>
 
     <form name="serviceform" method="post" action="manageBillingform.jsp">
 
@@ -151,19 +151,15 @@
                 <tr>
                     <td style="width:30%; text-align:right">
                         <input type="radio" name="reportAction" value="servicecode"
-                                <%=reportAction.equals("servicecode")?"checked":""%>> <bean:message
-                            key="billing.manageBillingform.formServiceCode"/>
+                                <%=reportAction.equals("servicecode")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formServiceCode"/>
                         <input type="radio" name="reportAction" value="dxcode"
-                                <%=reportAction.equals("dxcode")?"checked":""%>> <bean:message
-                            key="billing.manageBillingform.formDxCode"/></td>
+                                <%=reportAction.equals("dxcode")?"checked":""%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formDxCode"/></td>
                     <td style="width:40%; text-align: center">
                         <div style="align:right">
-                            <bean:message key="billing.manageBillingform.formSelectForm"/>&nbsp;&nbsp;
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formSelectForm"/>&nbsp;&nbsp;
                             <select name="billingform">
-                                <option value="000" <%=clinicview.equals("000") ? "selected" : ""%>><bean:message
-                                        key="billing.manageBillingform.formAddDelete"/></option>
-                                <option value="***" <%=clinicview.equals("***") ? "selected" : ""%>><bean:message
-                                        key="billing.manageBillingform.formManagePremium"/></option>
+                                <option value="000" <%=clinicview.equals("000") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formAddDelete"/></option>
+                                <option value="***" <%=clinicview.equals("***") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.formManagePremium"/></option>
 
                                 <%
                                     String serviceType = "";
@@ -184,7 +180,7 @@
                     </td>
                     <td style="width:30%;">
                         <input type="submit" name="Submit" class="btn"
-                               value="<bean:message key="billing.manageBillingform.btnManage"/>">
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform.btnManage"/>">
                     </td>
                 </tr>
             </table>
@@ -207,4 +203,4 @@
     </div>
 
     </body>
-</html:html>
+</html>

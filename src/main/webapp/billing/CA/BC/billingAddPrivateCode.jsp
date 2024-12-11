@@ -25,8 +25,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page import="java.util.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -43,7 +43,7 @@
     }
 %>
 
-<html:html lang="en">
+<html>
 
 
     <head>
@@ -80,35 +80,27 @@
     <h3>Add Private Billing Code</h3>
     <div class="container-fluid well">
 
-        <html:form action="/billing/CA/BC/billingAddCode" onsubmit="return checkUnits();">
+        <form action="${pageContext.request.contextPath}/billing/CA/BC/billingAddCode.do" method="post" onsubmit="return checkUnits();">
             <%
-                BillingAddCodeForm frm = (BillingAddCodeForm) request.getAttribute("BillingAddCodeForm");
-                String isEdit = request.getParameter("edit") != null ? request.getParameter("edit") : "";
-                if (request.getAttribute("code") != null) {
-                    frm.setCode((String) request.getAttribute("code"));
-                    frm.setDesc((String) request.getAttribute("desc"));
-                    frm.setValue((String) request.getAttribute("value"));
-                }
-
-                if (request.getAttribute("returnMessage") != null) {%>
+                if (request.getAttribute("returnMessage") != null) {
+            %>
             <%=request.getAttribute("returnMessage")%>
             <%}%>
-            <html:hidden property="whereTo" value="private"/>
-
+            <input type="hidden" name="whereTo" id="whereTo" value="private"/>
 
             Service Code: <br>
-            A-<html:text property="code" maxlength="9" style="width:100px"/>
+            A-<input type="text" name="code" maxlength="9" style="width:100px"/>
             <div style="margin-top:-10px;margin-bottom:10px;"><small>Private Codes will be prefixed with 'A' by
                 default</small></div>
 
             Description:<br>
-            <html:text property="desc"/><br>
+            <input type="text" name="desc" id="desc" /><br>
 
             Price:<br>
-            <html:text property="value"/><br>
+            <input type="text" name="value" id="value" /><br>
 
-            <html:submit styleClass="btn btn-primary" value="Add"/> <a href="billingPrivateCodeAdjust.jsp" class="btn">Cancel</a>
-        </html:form>
+            <input type="submit" name="submit" class="btn btn-primary" value="Add"/> <a href="billingPrivateCodeAdjust.jsp" class="btn">Cancel</a>
+        </form>
     </div>
     </body>
-</html:html>
+</html>

@@ -46,7 +46,7 @@
     String curUser_no = (String) session.getAttribute("user");
 %>
 
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/jquery/jquery-1.4.2.js"></script>
@@ -66,7 +66,7 @@
                 }
             }
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <title>Migration Tool</title>
 
@@ -124,4 +124,4 @@
 
     </body>
 
-</html:html>
+</html>

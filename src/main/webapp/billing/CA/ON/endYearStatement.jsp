@@ -19,12 +19,12 @@
 
 --%>
 <%@ page language="java" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page import="java.util.List" %>
 
 <html>
 <head>
-    <title><bean:message key="admin.admin.endYearStatement"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.endYearStatement"/></title>
 
     <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.min.js"></script>
     <script src="<%=request.getContextPath() %>/js/bootstrap.min.js"></script>
@@ -99,13 +99,13 @@
     }
 %>
 <body>
-<h3><bean:message key="admin.admin.endYearStatement"/></h3>
+<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.endYearStatement"/></h3>
 
 <div class="container-fluid">
 
     <div class="row well">
-        <html:form action="billing/CA/ON/endYearStatement">
-            <html:hidden property="demographicNoParam"/>
+        <form action="${pageContext.request.contextPath}/billing/CA/ON/endYearStatement.do" method="post">
+            <input type="hidden" name="demographicNoParam" id="demographicNoParam"/>
 
             <div class="span5">
                 Patient Name: <br>
@@ -116,8 +116,8 @@
                 </div>
             </div>
 
-            <html:hidden property="firstNameParam" styleId="fname"></html:hidden>
-            <html:hidden property="lastNameParam" styleId="lname"></html:hidden>
+            <input type="hidden" name="firstNameParam" id="fname"/>
+            <input type="hidden" name="lastNameParam" id="lname"/>
 
 
             <div class="span2">
@@ -148,13 +148,24 @@
                 <input class="btn" type="submit" name="pdf" value="Print PDF"
                        <c:if test="${empty result}">disabled="disabled"</c:if> >
             </div>
-        </html:form>
+        </form>
     </div>
 
     <div class="row">
 
         <div style="color" red
-        "><html:errors/></div>
+        "><% 
+    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
+    if (actionErrors != null && !actionErrors.isEmpty()) {
+%>
+    <div class="action-errors">
+        <ul>
+            <% for (String error : actionErrors) { %>
+                <li><%= error %></li>
+            <% } %>
+        </ul>
+    </div>
+<% } %></div>
 
     <c:if test="${not empty summary}">
         <table class="table table-striped table-condensed">

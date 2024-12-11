@@ -47,8 +47,8 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page
         import="java.util.*,oscar.oscarDemographic.data.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.data.*,oscar.oscarPrevention.pageUtil.*,oscar.oscarDemographic.pageUtil.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
@@ -57,7 +57,7 @@
     String msg = (String) request.getAttribute("msg");
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <title>Audit Log Purge Tool</title>
 
@@ -177,4 +177,4 @@
 
 
     </body>
-</html:html>
+</html>

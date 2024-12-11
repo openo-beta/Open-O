@@ -44,21 +44,22 @@
         }
     }
 </script>
-<html:form action="/Lookup/LookupCodeEdit">
+<form action="${pageContext.request.contextPath}/Lookup/LookupCodeEdit.do" method="post">
     <input type="hidden" name="scrollPosition" value='<c:out value="${scrPos}"/>'/>
     <input type="hidden" name="tableId" value='<c:out value="${lookupCodeEditForm.tableDef.tableId}"/>'/>
     <table width="100%" height="100%" cellpadding="0px" cellspacing="0px">
         <tr>
             <th class="pageTitle" align="center"><span
-                    id="lblTitle" align="left">Code Edit - <bean:write name="lookupCodeEditForm"
-                                                                       property="tableDef.description"/></span></th>
+                    id="lblTitle" align="left">Code Edit - 
+                <c:out value="${lookupCodeEditForm.tableDef.description}"/>
+            </span></th>
         </tr>
         <tr>
             <td align="left" class="buttonBar2">
                 <input type="hidden" id="method" name="method"></input>
-                <html:link action="/Lookup/LookupCodeList.do" paramId="id" paramName="lookupCodeEditForm"
+                <a href="${pageContext.request.contextPath}/Lookup/LookupCodeList.do" paramId="id" paramName="lookupCodeEditForm"
                            paramProperty="tableDef.tableId">
-                    <img src="../images/close16.png" border="0"/> Close</html:link>
+                    <img src="../images/close16.png" border="0"/> Close</a>
                 <c:if test="${!isReadOnly}">
                     &nbsp;|&nbsp; <a href="javascript:void1();"
                                      onclick="javascript:setNoConfirm();return deferedSubmit('');">
@@ -169,4 +170,4 @@
         </tr>
     </table>
     <%@ include file="/common/readonly.jsp" %>
-</html:form>
+</form>

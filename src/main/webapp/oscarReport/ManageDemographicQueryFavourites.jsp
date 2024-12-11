@@ -39,9 +39,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page import="oscar.oscarReport.data.RptSearchData,java.util.*" %>
 
 <%
@@ -50,11 +50,11 @@
 %>
 
 
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Manage Saved Demographic Queries</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <style type="text/css" media="print">
             .MainTable {
@@ -94,7 +94,7 @@
                     <tr>
                         <td>Manage Saved Demographic Queries</td>
                         <td>&nbsp;</td>
-                        <td style="text-align: right"><oscar:help keywords="report" key="app.top1"/> | <a
+                        <td style="text-align: right"><a
                                 href="javascript:popupStart(300,400,'About.jsp')">About</a> | <a
                                 href="javascript:popupStart(300,400,'License.jsp')">License</a></td>
                     </tr>
@@ -104,8 +104,7 @@
         <tr>
 
             <td class="MainTableLeftColumn">&nbsp;</td>
-            <td class="MainTableRightColumn"><html:form
-                    action="/report/DeleteDemographicReport">
+            <td class="MainTableRightColumn"><form action="${pageContext.request.contextPath}/report/DeleteDemographicReport.do" method="post">
                 <ul style="list-style-type: none; padding-left: 3px;">
                     <%
                         for (int i = 0; i < queryArray.size(); i++) {
@@ -120,7 +119,7 @@
                 </ul>
                 <input type="submit" value="Delete"/>
                 <a href="ReportDemographicReport.jsp">cancel</a>
-            </html:form></td>
+            </form></td>
         </tr>
         <tr>
             <td class="MainTableBottomRowLeftColumn">&nbsp;</td>
@@ -129,4 +128,4 @@
     </table>
 
     </body>
-</html:html>
+</html>

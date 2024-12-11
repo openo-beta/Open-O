@@ -22,7 +22,6 @@
 <%@page import="java.text.DecimalFormat" %>
 <%@page import="java.text.NumberFormat" %>
 <%@page import="java.util.*" %>
-<%@page import="org.apache.struts.util.LabelValueBean" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.oscarehr.common.model.Site" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
@@ -33,10 +32,7 @@
 <%@page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@page import="oscar.util.*" %>
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
     The taglib directive below imports the JSTL library. If you uncomment it,
     you must also add the JSTL library to the project. The Add Library... action
@@ -48,23 +44,17 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean isTeamBillingOnly = false;
     boolean isSiteAccessPrivacy = false;
-    boolean isTeamAccessPrivacy = false;
     OscarProperties props = OscarProperties.getInstance();
-
     boolean hideName = Boolean.valueOf(props.getProperty("invoice_reports.print.hide_name", "false"));
-
 %>
 <security:oscarSec objectName="_team_billing_only" roleName="<%=roleName$ %>" rights="r" reverse="false">
     <% isTeamBillingOnly = true; %>
 </security:oscarSec>
 <security:oscarSec objectName="_site_access_privacy" roleName="<%=roleName$%>" rights="r" reverse="false">
     <%isSiteAccessPrivacy = true; %>
-</security:oscarSec>
-<security:oscarSec objectName="_team_access_privacy" roleName="<%=roleName$%>" rights="r" reverse="false">
-    <%isTeamAccessPrivacy = true; %>
 </security:oscarSec>
 <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
 <%
@@ -216,11 +206,11 @@
         ohipNo = request.getParameter("provider_ohipNo");
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            <bean:message key="admin.admin.invoiceRpts"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.invoiceRpts"/>
         </title>
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="<%=request.getContextPath() %>/js/bootstrap.min.js"></script>
@@ -254,7 +244,7 @@
             }
 
             function submitForm(methodName) {
-                // The sendListEmail() method in BillingInvoiceAction.java is not supported. For more details, please refer to the sendListEmail() method.
+                // The sendListEmail() method in BillingInvoice2Action.java is not supported. For more details, please refer to the sendListEmail() method.
                 // if (methodName=="email"){
                 //     document.invoiceForm.method.value="sendListEmail";
                 // } else
@@ -428,7 +418,7 @@
     <body>
     <jsp:include page="../../../images/spinner.jsp" flush="true"/>
     <h3>
-        <bean:message key="admin.admin.invoiceRpts"/>
+        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.invoiceRpts"/>
     </h3>
     <div class="container-fluid">
         <!--Hiding for now since this does not seem to manage the providers in the select
@@ -861,7 +851,7 @@
                         <% }%>
                         <th class="hidden-print">
                             <a href="#" onClick="checkAll(document.invoiceForm.invoiceAction)">
-                                <bean:message key="billing.billingStatus.action"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingStatus.action"/>
                             </a>
                         </th>
                     </tr>
@@ -1043,7 +1033,7 @@
                         "bPaginate": false,
                         "order": [],
                         "language": {
-                            "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
+                            "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
                         }
                     });
 
@@ -1091,10 +1081,10 @@
                         <% }%>
                         <td style="text-align:center" class="hidden-print">
                             <a href="#" onClick="submitForm('print')">
-                                <bean:message key="billing.billingStatus.print"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingStatus.print"/>
                             </a>
                                 <%-- <a href="#" onClick="submitForm('email')">
-                                    <bean:message key="billing.billingStatus.email"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingStatus.email"/>
                                 </a> --%>
                         </td>
                     </tr>
@@ -1112,7 +1102,7 @@
                     "bPaginate": false,
                     "order": [],
                     "language": {
-                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
+                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
                     }
                 });
 
@@ -1152,4 +1142,4 @@
             return s;
         }
     %>
-</html:html>
+</html>

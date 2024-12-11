@@ -44,19 +44,14 @@
     //int demographic_no = Integer.parseInt(request.getParameter("demographic_no"));
     String demographic_no = request.getParameter("demographic_no");
 %>
-
-<%@page import="oscar.oscarDemographic.data.*,java.util.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-
-
-<html:html lang="en">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<html>
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <!--I18n-->
         <title>Lab Upload Utility</title>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css"
               href="../../../share/css/OscarStandardLayout.css">
         <script type="text/javascript" src="../../../share/javascript/Oscar.js"></script>
@@ -82,8 +77,7 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn" width="175"><bean:message
-                    key="demographic.demographiceditdemographic.msgPatientDetailRecord"/>
+            <td class="MainTableTopRowLeftColumn" width="175"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgPatientDetailRecord"/>
             </td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
@@ -91,24 +85,21 @@
                         <td>Upload <!--i18n--></td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
-                                href="javascript:popupStart(300,400,'Help.jsp')"><bean:message
-                                key="global.help"/></a> | <a
-                                href="javascript:popupStart(300,400,'About.jsp')"><bean:message
-                                key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><bean:message
-                                key="global.license"/></a></td>
+                                href="javascript:popupStart(300,400,'Help.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a> | <a
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn" valign="top">&nbsp;</td>
-            <td valign="top" class="MainTableRightColumn"><html:form
-                    action="/lab/labUpload" method="POST" enctype="multipart/form-data"
+            <td valign="top" class="MainTableRightColumn">
+                <form action="${pageContext.request.contextPath}/lab/labUpload.do" method="POST" enctype="multipart/form-data"
                     onsubmit="javascript: return displayAndDisable()">
                 <input type="file" name="importFile" value="">
                 <input type="submit" name="Submit" value="Import">
-            </html:form> <%
+            </form> <%
                 String outcome = (String) request.getAttribute("outcome");
                 if (outcome != null && outcome.equals("success")) { %>
                 <div>Lab File Successfully Uploaded</div>
@@ -125,4 +116,4 @@
         </tr>
     </table>
     </body>
-</html:html>
+</html>

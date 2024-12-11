@@ -27,8 +27,8 @@
 <%@page import="org.oscarehr.common.model.TicklerTextSuggest, org.oscarehr.common.dao.TicklerTextSuggestDao" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -51,12 +51,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><bean:message key="tickler.ticklerEdit.title"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="application/javascript">
         function setEmpty(selectbox) {
-            var emptyTxt = "<bean:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.empty"/>";
+            var emptyTxt = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.empty"/>";
             var emptyVal = "0";
             var op = document.createElement("option");
             try {
@@ -150,35 +150,35 @@
 </head>
 <body style="font-family:arial, sans-serif;">
 <div class="container">
-    <h3>Tickler <bean:message key="tickler.ticklerTextSuggest.textSuggestTitle"/></h3>
-    <html:form action="/tickler/EditTicklerTextSuggest">
+    <h3>Tickler <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerTextSuggest.textSuggestTitle"/></h3>
+    <form action="${pageContext.request.contextPath}/tickler/EditTicklerTextSuggest.do" method="post">
         <input type="hidden" name="method" value="updateTextSuggest">
         <table style="display: flex;justify-content: space-evenly;align-items: stretch;">
 
             <tr>
-                <th><bean:message key="tickler.ticklerTextSuggest.activeText"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerTextSuggest.activeText"/></th>
                 <th></th>
-                <th><bean:message key="tickler.ticklerTextSuggest.inactiveText"/></th>
+                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerTextSuggest.inactiveText"/></th>
             </tr>
             <tr>
                 <td style="vertical-align: top">
-                    <html:select styleClass="form-control text-selection" property="activeText" multiple="true"
+                    <select class="form-control text-selection" name="activeText" multiple="true"
                                  size="10">
                         <% java.util.List<TicklerTextSuggest> activeTexts = ticklerTextSuggestDao.getActiveTicklerTextSuggests();
                             if (activeTexts.isEmpty()) {
                         %>
-                        <html:option value=""></html:option>
+                        <option value=""></option>
                         <% } else {
 
                             for (TicklerTextSuggest tTextSuggestActive : activeTexts) {
                         %>
-                        <html:option
+                        <option
                                 value="<%=tTextSuggestActive.getId().toString()%>"><%=tTextSuggestActive.getSuggestedText()%>
-                        </html:option>
+                        </option>
                         <% }
                         }
                         %>
-                    </html:select>
+                    </select>
                 </td>
                 <td>
                     <input type="button" class="btn" name="movetoInactive" value=">>"
@@ -188,35 +188,35 @@
                            onclick="swap('inactiveText','activeText')"/>
                 </td>
                 <td style="vertical-align: top">
-                    <html:select styleClass="form-control text-selection" property="inactiveText" multiple="true"
+                    <select class="form-control text-selection" name="inactiveText" multiple="true"
                                  size="10">
                         <%
                             java.util.List<TicklerTextSuggest> inactiveTexts = ticklerTextSuggestDao.getInactiveTicklerTextSuggests();
                             if (inactiveTexts.isEmpty()) {
                         %>
-                        <html:option value=""></html:option>
+                        <option value=""></option>
                         <%
                         } else {
                             for (TicklerTextSuggest tTextSuggestInactive : inactiveTexts) {
                         %>
-                        <html:option
+                        <option
                                 value="<%=tTextSuggestInactive.getId().toString()%>"><%=tTextSuggestInactive.getSuggestedText()%>
-                        </html:option>
+                        </option>
                         <% }
                         }
                         %>
-                    </html:select>
+                    </select>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <label for="newTextSuggest"><bean:message key="tickler.ticklerTextSuggest.enterText"/>:</label>
+                    <label for="newTextSuggest"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerTextSuggest.enterText"/>:</label>
                     <div class="input-group">
                         <input id="newTextSuggest" class="form-control" name="newTextSuggest" type="text"
                                maxlength="100"/>
                         <div class="input-group-btn">
                             <input type="button" class="btn btn-default" name="addNewTextSuggest"
-                                   value="<bean:message key="tickler.ticklerTextSuggest.addText"/>"
+                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerTextSuggest.addText"/>"
                                    onclick="addToList('activeText','newTextSuggest')"/>
                         </div>
                     </div>
@@ -226,16 +226,16 @@
                 <td colspan="3">
                     <div class="form-group pull-right">
                         <input type="button" class="btn btn-primary" name="saveTextChanges"
-                               value="<bean:message key="tickler.ticklerTextSuggest.save"/>"
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerTextSuggest.save"/>"
                                onclick="doSelect('activeText');doSelect('inactiveText');document.tsTicklerForm.submit();"/>
                         <input type="button" class="btn btn-danger" name="cancelTextChanges"
-                               value="<bean:message key="tickler.ticklerTextSuggest.cancel"/>"
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerTextSuggest.cancel"/>"
                                onclick="window.close()"/>
                     </div>
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
 </div>
 </body>
 </html>

@@ -46,9 +46,9 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.eyeform.model.EyeformConsultationReport" %>
 
-<html:html>
+<html>
     <head>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>Generate Consultation Report</title>
         <link rel="stylesheet" href="css/displaytag.css" type="text/css">
         <style type="text/css">
@@ -88,7 +88,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="<c:out value="${ctx}"/>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+                src="<c:out value="${ctx}"/>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
              adding a calendar a matter of 1 or 2 lines of code. -->
@@ -136,10 +136,10 @@
 
     <body>
 
-    <html:form action="/eyeform/ConsultationReportList">
+    <form action="${pageContext.request.contextPath}/eyeform/ConsultationReportList.do" method="post">
         <input type="hidden" name="method" value="list"/>
-        <html:hidden property="cr.demographicNo"/>
-        <html:hidden property="cr.demographicName"/>
+        <input type="hidden" name="demographicNo" id="demographicNo"/>
+        <input type="hidden" name="demographicName" id="demographicName"/>
 
         <table style="border:0;">
             <tr>
@@ -152,17 +152,21 @@
             <tr>
 
                 <td>Status:</td>
-                <td><html:select property="cr.status">
-                    <html:option value="">All</html:option>
-                    <html:option value="Incomplete">Incomplete</html:option>
-                    <html:option value="Completed,not sent">Completed,not sent</html:option>
-                    <html:option value="Completed,and sent">Completed,and sent</html:option>
-                </html:select></td>
+                <td><select name="status">
+                    <option value="">All</option>
+                    <option value="Incomplete">Incomplete</option>
+                    <option value="Completed,not sent">Completed,not sent</option>
+                    <option value="Completed,and sent">Completed,and sent</option>
+                </select></td>
                 <td>Internal Doctor:</td>
-                <td><html:select property="cr.providerNo">
-                    <html:option value="">All</html:option>
-                    <html:optionsCollection property="cr.providerList" label="formattedName" value="providerNo"/>
-                </html:select></td>
+                <td><select name="providerNo">
+                    <option value="">All</option>
+                    <c:forEach var="provider" items="${cr.providerList}">
+                        <option value="${provider.formattedName}">
+                                ${provider.providerNo}
+                        </option>
+                    </c:forEach>
+                </select></td>
                 <td>Demographic:</td>
                 <td>
                     <%
@@ -182,14 +186,14 @@
             <tr>
                 <td>Report Start Date:</td>
                 <td>
-                    <html:text styleClass="plain" property="cr.startDate" size="12" onfocus="this.blur()"
-                               readonly="readonly" styleId="sdate"/><img
+                    <input type="text" class="plain" name="cr.startDate" size="12" onfocus="this.blur()"
+                               readonly="readonly" id="sdate"/><img
                         src="<%=request.getContextPath()%>/images/cal.gif" id="sdate_cal">
                 </td>
                 <td>Report End Date:</td>
                 <td>
-                    <html:text styleClass="plain" property="cr.endDate" size="12" onfocus="this.blur()"
-                               readonly="readonly" styleId="edate"/><img
+                    <input type="text" class="plain" name="cr.endDate" size="12" onfocus="this.blur()"
+                               readonly="readonly" id="edate"/><img
                         src="<%=request.getContextPath()%>/images/cal.gif" id="edate_cal">
 
                 </td>
@@ -215,8 +219,7 @@
                 <td></td>
 
                 <td>
-
-                    <html:submit onclick="return doSubmit();">List Consultation Reports</html:submit>
+                    <input type="submit" name="submit" value="List Consultation Reports" onclick="return doSubmit();" />
 
                 </td>
 
@@ -276,7 +279,7 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
 
     </body>
-</html:html>
+</html>

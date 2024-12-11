@@ -24,9 +24,9 @@
 
 --%>
 <%@page import="oscar.oscarRx.data.RxPatientData" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="oscar.oscarProvider.data.*, oscar.log.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
@@ -49,23 +49,24 @@
     }
 %>
 
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="RxPreview.title"/></title>
-        <html:base/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.title"/></title>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
             <% response.sendRedirect("error.html"); %>
         </c:if>
-        <c:if test="${not empty RxSessionBean}">
-            <bean:define id="bean" type="oscar.oscarRx.pageUtil.RxSessionBean"
-                         name="RxSessionBean" scope="session"/>
-            <c:if test="${bean.valid == false}">
-                <% response.sendRedirect("error.html"); %>
-            </c:if>
+        <c:if test="${not empty sessionScope.RxSessionBean}">
+            <%
+                // Directly access the RxSessionBean from the session
+                oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+                if (!bean.isValid()) {
+                    response.sendRedirect("error.html");
+                }
+            %>
         </c:if>
-
         <link rel="stylesheet" type="text/css" href="styles.css">
         <script type="text/javascript" language="Javascript">
             function onPrint(cfgPage) {
@@ -85,7 +86,6 @@
     <%
         Date rxDate = oscar.oscarRx.util.RxUtil.Today();
         String rePrint = request.getParameter("rePrint");
-        oscar.oscarRx.pageUtil.RxSessionBean bean;
         oscar.oscarRx.data.RxProviderData.Provider provider;
         String signingProvider;
         if (rePrint != null && rePrint.equalsIgnoreCase("true")) {
@@ -135,7 +135,7 @@
         String strUser = (String) session.getAttribute("user");
         ProviderData user = new ProviderData(strUser);
     %>
-    <html:form action="/form/formname">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <table width="400px" height="500px" cellspacing=0 cellpadding=10
                border=2>
@@ -173,7 +173,7 @@
                     <input type="hidden" name="patientCityPostal"
                            value="<%= StringEscapeUtils.escapeHtml(patient.getCity())+ ", " + StringEscapeUtils.escapeHtml(patient.getProvince()) + " " + StringEscapeUtils.escapeHtml(patient.getPostal())%>"/>
                     <input type="hidden" name="patientPhone"
-                           value="<bean:message key="RxPreview.msgTel"/><%=StringEscapeUtils.escapeHtml(patient.getPhone()) %>"/>
+                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTel"/><%=StringEscapeUtils.escapeHtml(patient.getPhone()) %>"/>
 
                     <input type="hidden" name="rxDate"
                            value="<%= StringEscapeUtils.escapeHtml(oscar.oscarRx.util.RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
@@ -189,15 +189,15 @@
                             <%= provider.getClinicAddress() %><br>
                             <%= provider.getClinicCity() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <%= provider.getClinicPostal() %><br>
-                            <bean:message key="RxPreview.msgTel"/>: <%= provider.getClinicPhone() %><br>
-                            <bean:message key="RxPreview.msgFax"/>: <%= provider.getClinicFax() %><br>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTel"/>: <%= provider.getClinicPhone() %><br>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgFax"/>: <%= provider.getClinicFax() %><br>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${infirmaryView_programAddress}" escapeXml="false"/>
                             <br/>
-                            <bean:message key="RxPreview.msgTel"/>: <c:out value="${infirmaryView_programTel}"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTel"/>: <c:out value="${infirmaryView_programTel}"/>
                             <br/>
-                            <bean:message key="RxPreview.msgFax"/>: <c:out value="${infirmaryView_programFax}"/>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgFax"/>: <c:out value="${infirmaryView_programFax}"/>
                         </c:otherwise>
                     </c:choose></td>
             </tr>
@@ -211,10 +211,10 @@
                                 <%= patient.getCity() %>, <%= patient.getProvince() %> <%= patient.getPostal() %><br>
                                 <%= patient.getPhone() %><br>
                                 <b><% if (!props.getProperty("showRxHin", "").equals("false")) { %>
-                                    <bean:message key="oscar.oscarRx.hin"/><%= patient.getHin() %> <% } %>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.hin"/><%= patient.getHin() %> <% } %>
                                 </b><br>
                                 <% if (props.getProperty("showRxChartNo", "").equalsIgnoreCase("true")) { %>
-                                <bean:message key="oscar.oscarRx.chartNo"/><%=patient.getChartNo()%> <% } %></td>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.chartNo"/><%=patient.getChartNo()%> <% } %></td>
                             <td align=right valign=top>
                                 <b><%= oscar.oscarRx.util.RxUtil.DateToString(rxDate, "MMMM d, yyyy", request.getLocale()) %>
                                 </b></td>
@@ -262,7 +262,7 @@
 
 
                         <tr valign=bottom>
-                            <td height=25px width=25%><bean:message key="RxPreview.msgSignature"/>:</td>
+                            <td height=25px width=25%><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgSignature"/>:</td>
                             <td height=25px width=75%
                                 style="border-width: 0; border-bottom-width: 1; border-style: solid;">
                                 &nbsp;
@@ -273,19 +273,17 @@
 
                             <td height=25px>
                                 &nbsp; <%= doctorName%> <% if (pracNo != null && !pracNo.equals("") && !pracNo.equalsIgnoreCase("null")) { %>
-                                <br/> &nbsp; <bean:message key="RxPreview.PractNo"/> <%= pracNo%> <% } %>
+                                <br/> &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.PractNo"/> <%= pracNo%> <% } %>
                             </td>
 
 
                         </tr>
                         <% if (rePrint.equalsIgnoreCase("true") && rx != null) { %>
                         <tr valign=bottom style="font-size: 6px;">
-                            <td height=25px colspan="2"><bean:message
-                                    key="RxPreview.msgReprintBy"/> <%=user.getProviderName(strUser)%><span
+                            <td height=25px colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgReprintBy"/> <%=user.getProviderName(strUser)%><span
                                     style="float: left;">
-					<bean:message key="RxPreview.msgOrigPrinted"/>:&nbsp;<%=rx.getPrintDate()%></span> <span
-                                    style="float: right;"><bean:message
-                                    key="RxPreview.msgTimesPrinted"/>:&nbsp;<%=String.valueOf(rx.getNumPrints())%></span>
+					<fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;<%=rx.getPrintDate()%></span> <span
+                                    style="float: right;"><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;<%=String.valueOf(rx.getNumPrints())%></span>
                             </td>
                             <input type="hidden" name="origPrintDate"
                                    value="<%=rx.getPrintDate()%>">
@@ -306,6 +304,6 @@
                 </td>
             </tr>
         </table>
-    </html:form>
+    </form>
     </body>
-</html:html>
+</html>

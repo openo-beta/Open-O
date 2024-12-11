@@ -25,13 +25,7 @@
 package org.oscarehr.ws.rest;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
@@ -45,14 +39,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import com.quatro.dao.security.SecroleDao;
+import com.quatro.model.security.Secrole;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
+import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
+import org.oscarehr.PMmodule.model.DefaultRoleAccess;
+import org.oscarehr.PMmodule.model.Program;
+import org.oscarehr.PMmodule.model.ProgramAccess;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAO;
 import org.oscarehr.casemgmt.dao.IssueDAO;
+import org.oscarehr.casemgmt.dao.RoleProgramAccessDAO;
 import org.oscarehr.casemgmt.model.CaseManagementCPP;
 import org.oscarehr.casemgmt.model.CaseManagementIssue;
 import org.oscarehr.casemgmt.model.CaseManagementNote;
@@ -63,12 +65,15 @@ import org.oscarehr.casemgmt.service.CaseManagementManager;
 import org.oscarehr.casemgmt.service.NoteSelectionCriteria;
 import org.oscarehr.casemgmt.service.NoteSelectionResult;
 import org.oscarehr.casemgmt.service.NoteService;
-import org.oscarehr.casemgmt.web.CaseManagementEntryAction;
 import org.oscarehr.casemgmt.web.NoteDisplay;
 import org.oscarehr.casemgmt.web.NoteDisplayLocal;
+import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.dao.CaseManagementIssueNotesDao;
+import org.oscarehr.common.dao.ProviderDefaultProgramDao;
+import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.CaseManagementTmpSave;
 import org.oscarehr.common.model.Provider;
+import org.oscarehr.common.model.ProviderDefaultProgram;
 import org.oscarehr.managers.ProgramManager2;
 import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.EncounterUtil;
@@ -1657,7 +1662,7 @@ public class NotesService extends AbstractServiceImpl {
         }
 
         //weird place for it , but for now.
-        CaseManagementEntryAction.determineNoteRole(cmn, loggedInProvider.getProviderNo(), String.valueOf(demographicNo));
+        determineNoteRole(cmn, loggedInProvider.getProviderNo(), String.valueOf(demographicNo));
 
         caseManagementMgr.saveNoteSimple(cmn);
 
@@ -1706,6 +1711,93 @@ public class NotesService extends AbstractServiceImpl {
         return new GenericRESTResponse();
     }
 
+
+    private boolean determineNoteRole(CaseManagementNote note, String providerNo, String demographicNo) {
+        // Determines what program & role to assign the note to
+        ProgramProviderDAO programProviderDao = (ProgramProviderDAO) SpringUtils.getBean(ProgramProviderDAO.class);
+        ProviderDefaultProgramDao defaultProgramDao = (ProviderDefaultProgramDao) SpringUtils.getBean(ProviderDefaultProgramDao.class);
+        boolean programSet = false;
+
+        if (note.getProgram_no() != null && note.getProgram_no().length() > 0 && !"null".equals(note.getProgram_no())) {
+            ProgramProvider pp = programProviderDao.getProgramProvider(note.getProviderNo(), Long.valueOf(note.getProgram_no()));
+            if (pp != null) {
+                note.setReporter_caisi_role(String.valueOf(pp.getRoleId()));
+                programSet = true;
+            }
+        }
+
+        if (!programSet) {
+            List<ProviderDefaultProgram> programs = defaultProgramDao.getProgramByProviderNo(providerNo);
+            Map<Program, List<Secrole>> rolesForDemo = getAllProviderAccessibleRolesForDemo(providerNo, demographicNo);
+            for (ProviderDefaultProgram pdp : programs) {
+                for (Program p : rolesForDemo.keySet()) {
+                    if (pdp.getProgramId() == p.getId().intValue()) {
+                        List<ProgramProvider> programProviderList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, (long) pdp.getProgramId());
+
+                        note.setProgram_no("" + pdp.getProgramId());
+                        note.setReporter_caisi_role("" + programProviderList.get(0).getRoleId());
+
+                        programSet = true;
+                    }
+                }
+            }
+        }
+        return programSet;
+    }
+
+    private Map<Program, List<Secrole>> getAllProviderAccessibleRolesForDemo(String providerNo, String demoNo) {
+        ProgramProviderDAO programProviderDao = SpringUtils.getBean(ProgramProviderDAO.class);
+        ProgramAccessDAO programAccessDAO = (ProgramAccessDAO) SpringUtils.getBean(ProgramAccessDAO.class);
+        SecroleDao secroleDao = (SecroleDao) SpringUtils.getBean(SecroleDao.class);
+        RoleProgramAccessDAO roleProgramAccessDao = (RoleProgramAccessDAO) SpringUtils.getBean(RoleProgramAccessDAO.class);
+        AdmissionDao admissionDao = (AdmissionDao) SpringUtils.getBean(AdmissionDao.class);
+
+        Map<Program, List<Secrole>> visibleRoles = new HashMap<Program, List<Secrole>>();
+
+        @SuppressWarnings("unchecked")
+        List<ProgramProvider> programProviderList = programProviderDao.getProgramProvidersByProvider(providerNo);
+
+        List<Integer> demoPrograms = new ArrayList<Integer>();
+        for (Admission a : admissionDao.getCurrentAdmissions(Integer.parseInt(demoNo))) {
+            demoPrograms.add(a.getProgramId());
+        }
+
+        for (ProgramProvider provider : programProviderList) {
+            if (!demoPrograms.contains(provider.getProgram().getId()))
+                continue;
+
+            if (!visibleRoles.containsKey(provider.getProgram())) {
+                visibleRoles.put(provider.getProgram(), new ArrayList<Secrole>());
+            }
+
+            List<Secrole> roleList = visibleRoles.get(provider.getProgram());
+            if (!roleList.contains(provider.getRole())) {
+                roleList.add(provider.getRole());
+
+                // This role definitely has access to these permissions -> get role names and add to list
+                List<DefaultRoleAccess> defaultAccess = roleProgramAccessDao.getDefaultSpecificAccessRightByRole(provider.getRoleId(), "read%notes");
+                for (DefaultRoleAccess access : defaultAccess) {
+                    String roleName = access.getAccess_type().getName().substring(5, access.getAccess_type().getName().length() - 6);
+                    Secrole role = secroleDao.getRoleByName(roleName);
+                    if (!roleList.contains(role))
+                        roleList.add(role);
+                }
+
+                // This role also has access to these permissions -> add them to the list as well
+                List<ProgramAccess> programAccess = programAccessDAO.getProgramAccessListByType(provider.getProgramId(), "read%notes");
+                for (ProgramAccess access : programAccess) {
+                    if (access.getRoles().contains(provider.getRole())) {
+                        String roleName = access.getAccessType().getName().substring(5, access.getAccessType().getName().length() - 6);
+                        Secrole role = secroleDao.getRoleByName(roleName);
+                        if (!roleList.contains(role))
+                            roleList.add(role);
+                    }
+                }
+            }
+        }
+
+        return visibleRoles;
+    }
 
     @POST
     @Path("/searchIssues")

@@ -16,9 +16,6 @@
 
 <%@ page
         import="java.math.*,java.util.*, java.sql.*, oscar.*, java.net.*,oscar.oscarBilling.ca.bc.MSP.*,oscar.util.*" %>
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ReportProviderDao" %>
@@ -58,13 +55,13 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <html:base/>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <title>Billing Report</title>
     <link rel="stylesheet" type="text/css" media="all"
           href="../../../share/calendar/calendar.css" title="win2k-cold-1"/>
     <script type="text/javascript" src="../../../share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="../../../share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+            src="../../../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript"
             src="../../../share/calendar/calendar-setup.js"></script>
     <link rel="stylesheet" type="text/css" media="all" href="../../../share/css/extractedFromPages.css"/>

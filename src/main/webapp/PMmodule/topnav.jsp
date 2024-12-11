@@ -97,41 +97,39 @@
             <ul id="navlist">
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_day" rights="r">
                     <li>
-                        <a href="<html:rewrite page="/provider/providercontrol.jsp"/>?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday"
-                           TITLE="<bean:message key="provider.appointmentProviderAdminDay.viewDaySched"/>"><u>T</u>oday</a>
+                        <a href="${request.contextPath}/provider/providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday"
+                           TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewDaySched"/>"><u>T</u>oday</a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_month" rights="r">
                     <li>
-                        <a href="<html:rewrite page="/provider/providercontrol.jsp"/>?year=<%=curYear%>&month=<%=curMonth%>&day=1&view=0&displaymode=month&dboperation=searchappointmentmonth"
-                           TITLE="<bean:message key="provider.appointmentProviderAdminDay.viewMonthSched"/>">Mo<u>n</u>th</a>
+                        <a href="${request.contextPath}/provider/providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=1&view=0&displaymode=month&dboperation=searchappointmentmonth"
+                           TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewMonthSched"/>">Mo<u>n</u>th</a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_resource" rights="r">
                     <li>
                         <a href="#" ONCLICK="popupPage2('<%=resourcebaseurl%>');return false;"
-                           title="<bean:message key="provider.appointmentProviderAdminDay.viewResources"/>">R<u>e</u>sources</a>
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewResources"/>">R<u>e</u>sources</a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_search" rights="r">
                     <li>
-                        <a href="<html:rewrite page="/PMmodule/ClientSearch2.do"/>"
+                        <a href="${request.contextPath}/PMmodule/ClientSearch2.do"
                            title="Search for patient records"><u>S</u>earch</a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_report" rights="r">
                     <li>
-                        <a HREF="#" ONCLICK="popupPage2('<html:rewrite
-                                page="/report/reportindex.jsp"/>','reportPage');return false;"
-                           title="<bean:message key="global.genReport"/>"><u>R</u>eport</a>
+                        <a HREF="#" ONCLICK="popupPage2('<%=request.getContextPath() %>/report/reportindex.jsp','reportPage');return false;"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genReport"/>"><u>R</u>eport</a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="r">
                     <oscar:oscarPropertiesCheck property="NOT_FOR_CAISI" value="no" defaultVal="true">
                         <li>
-                            <a HREF="#" ONCLICK="popupPage2('<html:rewrite
-                                    page="/billing"/>/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=curUser_no%>');return false;"
-                               title="<bean:message key="global.genBillReport"/>"><u>B</u>illing</a>
+                            <a HREF="#" ONCLICK="popupPage2('<%=request.getContextPath() %>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=curUser_no%>');return false;"
+                               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>"><u>B</u>illing</a>
                         </li>
                     </oscar:oscarPropertiesCheck>
                 </security:oscarSec>
@@ -139,55 +137,49 @@
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_appointment.doctorLink" rights="r">
                     <oscar:oscarPropertiesCheck property="NOT_FOR_CAISI" value="no" defaultVal="true">
                         <li>
-                            <a HREF="#" ONCLICK="popupInboxManager('<html:rewrite
-                                    page="/documentManager/inboxManage.do?method=prepareForIndexPage"/>&providerNo=<%=curUser_no%>', 'Lab');return false;"
-                               title="<bean:message key="provider.appointmentProviderAdminDay.viewLabReports"/>">
-                                <span id="oscar_new_lab"><bean:message key="global.lab"/></span>
+                            <a HREF="#" ONCLICK="popupInboxManager('<%=request.getContextPath() %>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=curUser_no%>', 'Lab');return false;"
+                               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewLabReports"/>">
+                                <span id="oscar_new_lab"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.lab"/></span>
                             </a>
                             <oscar:newUnclaimedLab>
-                                <a class="tabalert" HREF="#" ONCLICK="popupInboxManager('<html:rewrite
-                                        page="/documentManager/inboxManage.do?method=prepareForIndexPage"/>?providerNo=0&searchProviderNo=0&status=N&lname=&fname=&hnum=&pageNum=1&startIndex=0', 'Lab');return false;"
-                                   TITLE='<bean:message key="provider.appointmentProviderAdminDay.viewLabReports"/>'>*</a>
+                                <a class="tabalert" HREF="#" ONCLICK="popupInboxManager('<%=request.getContextPath() %>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=0&searchProviderNo=0&status=N&lname=&fname=&hnum=&pageNum=1&startIndex=0', 'Lab');return false;"
+                                   TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewLabReports"/>'>*</a>
                             </oscar:newUnclaimedLab>
                         </li>
                     </oscar:oscarPropertiesCheck>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r">
                     <li>
-                        <a HREF="#" ONCLICK="popupOscarRx(600,900,'<html:rewrite
-                                page="/oscarMessenger/DisplayMessages.do?"/>providerNo=<%=curUser_no%>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname)%>');return false;"
-                           title="<bean:message key="global.messenger"/>">
+                        <a HREF="#" ONCLICK="popupOscarRx(600,900,'<%=request.getContextPath() %>/oscarMessenger/DisplayMessages.do?providerNo=<%=curUser_no%>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname)%>');return false;"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.messenger"/>">
                             <span id="oscar_new_msg"><u>M</u>sg</span>
                         </a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r">
                     <li>
-                        <a HREF="#" ONCLICK="popupOscarRx(625,900,'<html:rewrite
-                                page="/oscarEncounter/IncomingConsultation.do"/>?providerNo=<%=curUser_no %>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname)%>');return false;"
-                           title="<bean:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
+                        <a HREF="#" ONCLICK="popupOscarRx(625,900,'<%=request.getContextPath() %>/oscarEncounter/IncomingConsultation.do?providerNo=<%=curUser_no %>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname)%>');return false;"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
                             <span id="oscar_aged_consults">C<u>o</u>n</span></a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
                     <li>
-                        <a href="#" onClick="popupPage(400,680,'<html:rewrite
-                                page="/provider/providerpreference.jsp"/>?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&mygroup_no=<%=mygroupno%>&new_tickler_warning_window=<%=newticklerwarningwindow%>&tklerproviderno=<%=tklerProviderNo %>&default_pmm=<%=default_pmm%>');return false;"
-                           title="<bean:message key="provider.appointmentProviderAdminDay.msgSettings"/>"><u>P</u>ref</a>
+                        <a href="#" onClick="popupPage(400,680,'<%=request.getContextPath() %>/provider/providerpreference.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&mygroup_no=<%=mygroupno%>&new_tickler_warning_window=<%=newticklerwarningwindow%>&tklerproviderno=<%=tklerProviderNo %>&default_pmm=<%=default_pmm%>');return false;"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>"><u>P</u>ref</a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
                     <li>
-                        <a HREF="#" onclick="popup('700', '1000', '<html:rewrite
-                                page="/documentManager/documentReport.jsp"/>?function=provider&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');return false;"
-                           title="<bean:message key="provider.appointmentProviderAdminDay.viewEdoc"/>">e<u>D</u>oc</a>
+                        <a HREF="#" onclick="popup('700', '1000', '<%=request.getContextPath() %>/documentManager/documentReport.jsp?function=provider&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');return false;"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>">e<u>D</u>oc</a>
                     </li>
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_tickler" rights="r">
                     <li>
-                        <a HREF="#" ONCLICK="popupPage2('<html:rewrite page="/Tickler.do"/>?filter.demographic_no=','
-                            <bean:message key="global.tickler"/>');return false;"
-                           TITLE='<bean:message key="global.tickler"/>' +'+'>
+                        <a HREF="#" ONCLICK="popupPage2('${request.contextPath}/Tickler.do?filter.demographic_no=','
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>');return false;"
+                           TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>' +'+'>
                         <span id="oscar_new_tickler">T<u>i</u>ckler</span></a>
                     </li>
                 </security:oscarSec>
@@ -195,35 +187,33 @@
                                    objectName="_admin,_admin.userAdmin,_admin.schedule,_admin.billing,_admin.resource,_admin.reporting,_admin.backup,_admin.messenger,_admin.eform,_admin.encounter,_admin.misc"
                                    rights="r">
                     <li>
-                        <a HREF="#" ONCLICK="popupOscarRx(700,687,'<html:rewrite
-                                page="/admin/admin.jsp"/>');return false;"><bean:message key="global.admin"/></a>
+                        <a HREF="#" ONCLICK="popupOscarRx(700,687,'<%=request.getContextPath() %>/admin/admin.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.admin"/></a>
                     </li>
                 </security:oscarSec>
                 <oscar:oscarPropertiesCheck property="referral_menu" value="yes">
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc,_ref" rights="r">
                         <li id="ref">
                             <a href="#"
-                               onclick="popupPage(550,800,'../admin/ManageBillingReferral.do');return false;"><bean:message
-                                    key="global.manageReferrals"/></a>
+                               onclick="popupPage(550,800,'../admin/ManageBillingReferral.do');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.manageReferrals"/></a>
                         </li>
                     </security:oscarSec>
                 </oscar:oscarPropertiesCheck>
                 <li>
-                    <a href='<html:rewrite page="/PMmodule/ProviderInfo.do"/>'>Program</a>
+                    <a href='${request.contextPath}/PMmodule/ProviderInfo.do'>Program</a>
                 </li>
             </ul>
 
         </td>
         <td align="right" valign="bottom">
             <a href="javascript: function myFunction() {return false; }"
-               onClick="popup(700,1000,'<html:rewrite page="/scratch/index.jsp"/>','scratch')"><span
+               onClick="popup(700,1000,'${request.contextPath}/scratch/index.jsp','scratch')"><span
                     id="oscar_scratch"></span></a>
             &nbsp;&nbsp;
             <a href=#
                onClick="popupPage(600,750,'http://www.oscarcanada.org/manual/oscar-caisi-documentation/');return false;"><u>H</u>elp</a>
             &nbsp;
-            <a href='<html:rewrite page="/PMmodule/ProviderInfo.do"/>'>Home</a> |
-            <a href="<html:rewrite page="/logout.jsp"/>">Lo<u>g</u>out</a>
+            <a href='${request.contextPath}/PMmodule/ProviderInfo.do'>Home</a> |
+            <a href="${request.contextPath}/logout.jsp">Lo<u>g</u>out</a>
         </td>
     </tr>
 </table>

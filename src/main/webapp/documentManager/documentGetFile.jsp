@@ -25,8 +25,6 @@
 --%>
 
 <%@page import="oscar.util.ConversionUtils" %>
-<%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DocumentDao" %>
@@ -62,10 +60,10 @@
             if (downloadMethod == null) {
                 filePath = "../../OscarDocument" + request.getContextPath() + "/document/" + filename;
 %>
-<html:html lang="en">
+<html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><bean:message key="dms.documentGetFile.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentGetFile.title"/></title>
     </head>
     <frameset rows="21,*" frameborder="NO" border="0"
               frames.opera
@@ -77,7 +75,7 @@
         <body bgcolor="#FFFFFF" text="#000000">
         </body>
     </noframes>
-</html:html>
+</html>
 
 <%
         } else {
@@ -113,5 +111,5 @@
     }
 } else {
 %>
-<bean:message key="dms.documentGetFile.msgFileNotfound"/>
+<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentGetFile.msgFileNotfound"/>
 <%}%>

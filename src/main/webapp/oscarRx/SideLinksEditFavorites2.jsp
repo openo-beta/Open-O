@@ -39,7 +39,7 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean2 = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
@@ -55,7 +55,7 @@
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
 
         <p class="PropSheetLevel1CurrentItem<%=alle%>">
-            <bean:message key="oscarRx.sideLinks.msgAllergies"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/>
             <a href="javascript:void(0);" name="cmdAllergies"
                onclick="javascript:window.location.href='ShowAllergies2.jsp?demographicNo=<%=request.getParameter("demographicNo")%>';"
                style="width: 200px">+</a>
@@ -77,7 +77,7 @@
     <security:oscarSec roleName="<%=roleName$%>" objectName="_rxresearch" rights="r" reverse="<%=false%>">
 
         <p class="PropSheetLevel1CurrentItem">
-            <bean:message key="oscarRx.sideLinks.msgDiseases"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgDiseases"/>
         </p>
         <%
             DxresearchDAO dxreasearchDao = SpringUtils.getBean(DxresearchDAO.class);
@@ -109,7 +109,7 @@
     <security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=false%>">
 
         <p class="PropSheetLevel1CurrentItem">
-            <bean:message key="oscarRx.sideLinks.msgMedHistory"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgMedHistory"/>
         </p>
         <%
             CaseManagementManager cmgmtMgr1 = SpringUtils.getBean(CaseManagementManager.class);
@@ -130,9 +130,9 @@
 
     </security:oscarSec>
 
-    <p class="PropSheetLevel1CurrentItem"><bean:message key="oscarRx.sideLinks.msgFavorites"/>
+    <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/>
         <a href="EditFavorites2.jsp">edit</a>
-        <a href="CopyFavorites2.jsp">copy</a> <%-- <bean:message key="oscarRx.sideLinks.msgCopyFavorites"/> --%>
+        <a href="CopyFavorites2.jsp">copy</a> <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgCopyFavorites"/> --%>
     </p>
     <p class="PropSheetMenuItemLevel1">
             <%

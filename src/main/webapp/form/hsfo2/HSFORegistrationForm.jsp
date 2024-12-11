@@ -24,8 +24,8 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -44,7 +44,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="org.oscarehr.common.model.Hsfo2Patient" %>
 <%@page import="org.oscarehr.common.model.Hsfo2Visit" %>
-<html:html>
+<html>
     <head>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/HSFO2.js"></script>
@@ -61,7 +61,7 @@
     %>
     <body onLoad="initialize()">
 
-    <html:form action="/form/SaveHSFORegistrationForm2.do" onsubmit="return checkform(true)" styleId="form1">
+    <form action="${pageContext.request.contextPath}/form/SaveHSFORegistrationForm2.do" method="post" onsubmit="return checkform(true)" styleId="form1">
         <DIV id="page_1">
 
             <DIV id="id_1">
@@ -2334,8 +2334,8 @@
         <!--end of page_1 -->
 
 
-    </html:form>
+    </form>
 
     </body>
-</html:html>
+</html>
 
