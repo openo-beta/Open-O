@@ -37,7 +37,13 @@ import javax.servlet.ServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
-import org.quartz.*;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import oscar.OscarProperties;
