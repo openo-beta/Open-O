@@ -289,7 +289,7 @@ public class AddEditDocumentAction extends DispatchAction {
 				throw new FileNotFoundException();
 			}
 			// original file name
-			String fileName1 = docFile.getFileName();
+			String fileName1 = MiscUtils.sanitizeFileName(docFile.getFileName());
 
 			EDoc newDoc = new EDoc(fm.getDocDesc(), fm.getDocType(), fileName1, "", fm.getDocCreator(), fm.getResponsibleId(), fm.getSource(), 'A', fm.getObservationDate(), "", "", fm.getFunction(), fm.getFunctionId());
 			newDoc.setDocPublic(fm.getDocPublic());

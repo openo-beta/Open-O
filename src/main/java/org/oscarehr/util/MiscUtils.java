@@ -304,7 +304,7 @@ public final class MiscUtils {
 	/**
 	 * Sanitizes a file name to ensure it is safe for use and complies with naming conventions .
 	 *		<p>- Replace spaces with underscores
-	 * 		<p>- Remove invalid characters
+	 * 		<p>- Remove invalid characters, excluding valid delimiter like {@code -}.
 	 * 		<p>- Remove repeated dots
 	 *
 	 * @param fileName The original file name to be sanitized. It must not be {@code null}.
@@ -313,7 +313,7 @@ public final class MiscUtils {
 	 */
 	public static String sanitizeFileName(String fileName) {
         return fileName.replaceAll("\\s+", "_")
-                .replaceAll("[^a-zA-Z0-9._:-]", "")
+                .replaceAll("[^a-zA-Z0-9._]", "")
                 .replaceAll("\\.+", ".");
 	}
 

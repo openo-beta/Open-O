@@ -231,7 +231,7 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     }
 
     public void setDocfilename(String docfilename) {
-        this.docfilename = MiscUtils.sanitizeFileName(docfilename);
+        this.docfilename = docfilename;
     }
 
     public String getDoccreator() {
