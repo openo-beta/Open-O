@@ -57,7 +57,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.io.FileUtils;
-import org.oscarehr.util.MiscUtils;
 
 /**
  *
