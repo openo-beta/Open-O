@@ -24,6 +24,7 @@
 package org.oscarehr.util;
 
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.util.password.PasswordHashHelper;
 
 import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
@@ -35,7 +36,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 
-public final class EncryptionUtils extends PasswordHash {
+public final class EncryptionUtils {
     private static final QueueCacheValueCloner<byte[]> byteArrayCloner = new QueueCacheValueCloner<byte[]>() {
         public byte[] cloneBean(byte[] original) {
             return (byte[])original.clone();
@@ -283,25 +284,39 @@ public final class EncryptionUtils extends PasswordHash {
     }
 
     /**
-     * A one way PBKDF2 With Hmac SHA1 hash of given password string.
-     * The verify method, should be used to validate the hash against
-     * passwords.
+     * Generates a secure hash of the given password using the PasswordHashHelper.
+     *
+     * @see PasswordHashHelper#encodePassword(CharSequence) 
      * @param password string
      * @return hashed password
-     * @throws CannotPerformOperationException failed encrypt
+     * @throws IllegalArgumentException If the password is null or empty.
      */
-    public static String hash(String password) throws CannotPerformOperationException {
-        return createHash(password);
+    public static String hash(CharSequence password) throws IllegalArgumentException {
+        return PasswordHashHelper.encodePassword(password);
     }
 
     /**
      * Validate a given password phrase against the stored hash password.
      * This is a boolean validation. No password values are returned
      * @param password  plain password string
+     * @see PasswordHashHelper#matches(CharSequence, String)
      * @param hashedPassword hashed password string usually stored in the database.
+     * @return True if the raw password matches the encoded password, false otherwise.
+     * @throws IllegalArgumentException failure while matching
      */
-    public static boolean verify(String password, String hashedPassword) throws InvalidHashException, CannotPerformOperationException {
-        return verifyPassword(password, hashedPassword);
+    public static boolean verify(CharSequence password, String hashedPassword) throws IllegalArgumentException {
+        return PasswordHashHelper.matches(password, hashedPassword);
+    }
+
+    /**
+     * Check if a given hashed password needs to be upgraded to a more secure
+     * algorithm.
+     * @param hashedPassword hashed password string usually stored in the database.
+     * @see PasswordHashHelper#upgradeEncoding(String)
+     * @return true if upgrade is needed.
+     */
+    public static boolean isPasswordHashUpgradeNeeded(String hashedPassword) {
+        return PasswordHashHelper.upgradeEncoding(hashedPassword);
     }
 
     static {
