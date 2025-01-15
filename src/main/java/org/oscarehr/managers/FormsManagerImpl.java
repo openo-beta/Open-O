@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -61,9 +62,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 
  * This class will change soon to incorporate dealing with forms
- *
  */
 @Service
 public class FormsManagerImpl implements FormsManager {
@@ -90,15 +89,12 @@ public class FormsManagerImpl implements FormsManager {
 
     /**
      * Finds all eforms based on the status.
-     * 
-     * @param status
-     *                  Status to be used when looking up forms.
-     * @param sortOrder
-     *                  Order how records should be sorted. Providing no sort order
+     *
+     * @param status    Status to be used when looking up forms.
+     * @param sortOrder Order how records should be sorted. Providing no sort order
      *                  delegates to the default sorting order of the persistence
      *                  provider
-     * @return
-     *         Returns the list of all forms with the specified status.
+     * @return Returns the list of all forms with the specified status.
      */
     @Override
     public List<EForm> findByStatus(LoggedInInfo loggedInInfo, boolean status, EFormSortOrder sortOrder) {
@@ -114,7 +110,7 @@ public class FormsManagerImpl implements FormsManager {
 
     /**
      * get eform in group by group name
-     * 
+     *
      * @param groupName
      * @return list of EForms
      */
@@ -163,7 +159,7 @@ public class FormsManagerImpl implements FormsManager {
 
     @Override
     public List<PatientForm> getEncounterFormsbyDemographicNumber(LoggedInInfo loggedInInfo, Integer demographicId,
-            boolean getAllVersions, boolean getOnlyPDFReadyForms) {
+                                                                  boolean getAllVersions, boolean getOnlyPDFReadyForms) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
             throw new RuntimeException("missing required security object (_form)");
         }
@@ -172,10 +168,10 @@ public class FormsManagerImpl implements FormsManager {
     }
 
     private List<PatientForm> processEncounterForms(LoggedInInfo loggedInInfo, Integer demographicId,
-            boolean getAllVersions, boolean getOnlyPDFReadyForms) {
+                                                    boolean getAllVersions, boolean getOnlyPDFReadyForms) {
         List<PatientForm> patientFormList = new ArrayList<PatientForm>();
         List<EncounterForm> encounterFormList = getAllEncounterForms();
-        String[] pdfReadyFormNames = { "Annual" };
+        String[] pdfReadyFormNames = {"Annual"};
 
         for (EncounterForm encounterForm : encounterFormList) {
             String formName = encounterForm.getFormName();
@@ -197,13 +193,13 @@ public class FormsManagerImpl implements FormsManager {
         return patientFormList;
     }
 
-	
-	private List<String> getPDFReadyFormNames() {
-		List<String> pdfReadyFormList = new ArrayList<>();
-		pdfReadyFormList.add("Annual");
-		return pdfReadyFormList;
-	}
-	
+
+    private List<String> getPDFReadyFormNames() {
+        List<String> pdfReadyFormList = new ArrayList<>();
+        pdfReadyFormList.add("Annual");
+        return pdfReadyFormList;
+    }
+
     /**
      * Saves a form as PDF EDoc.
      * Returns the id of the converted document.
@@ -232,69 +228,72 @@ public class FormsManagerImpl implements FormsManager {
     }
 
 
-	
-	/**
-	 * Please refrain from using this method unless your form ID is sourced from PDF-ready forms, as the form ID alone is not guaranteed to be unique.
-	 * To generate a PDF of a specific form, provide both the form ID and name, as they collectively ensure accurate identification.
-	 */
-	@Override
-	public Path renderForm(HttpServletRequest request, HttpServletResponse response, Integer formId, Integer demographicNo) throws PDFGenerationException {
-		EctFormData.PatientForm patientForm = null;
-		List<EncounterForm> encounterFormList = getAllEncounterForms();
-		List<String> pdfReadyFormList = getPDFReadyFormNames();
+    /**
+     * Please refrain from using this method unless your form ID is sourced from PDF-ready forms, as the form ID alone is not guaranteed to be unique.
+     * To generate a PDF of a specific form, provide both the form ID and name, as they collectively ensure accurate identification.
+     */
+    @Override
+    public Path renderForm(HttpServletRequest request, HttpServletResponse response, Integer formId, Integer demographicNo) throws PDFGenerationException {
+        EctFormData.PatientForm patientForm = null;
+        List<EncounterForm> encounterFormList = getAllEncounterForms();
+        List<String> pdfReadyFormList = getPDFReadyFormNames();
 
-		for (EncounterForm encounterForm : encounterFormList) {
-			String formName = encounterForm.getFormName();
-			String table = encounterForm.getFormTable();
-			if (!pdfReadyFormList.contains(formName)) { continue; }
-			patientForm = new PatientForm(table, formName, formId, demographicNo);
-		}
+        for (EncounterForm encounterForm : encounterFormList) {
+            String formName = encounterForm.getFormName();
+            String table = encounterForm.getFormTable();
+            if (!pdfReadyFormList.contains(formName)) {
+                continue;
+            }
+            patientForm = new PatientForm(table, formName, formId, demographicNo);
+        }
 
-		if (patientForm == null) {
-			throw new PDFGenerationException("Error Details: Form with id: " + formId + " is not a PDF-ready form");
-		} 
+        if (patientForm == null) {
+            throw new PDFGenerationException("Error Details: Form with id: " + formId + " is not a PDF-ready form");
+        }
 
-		return renderForm(request, response, patientForm);
-	}
+        return renderForm(request, response, patientForm);
+    }
 
-	@Override
-	public Path renderForm(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
-		  throw new RuntimeException("missing required security object (_form)");
-	  }
-		
-		LogAction.addLogSynchronous(loggedInInfo, "FormsManager.saveFormAsTempPdf", "" );
-		
-	  return ConvertToEdoc.saveAsTempPDF(formTransportContainer);
-	}
+    @Override
+    public Path renderForm(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
+            throw new RuntimeException("missing required security object (_form)");
+        }
 
-	/**
-	 * This method processes a PatientForm, which can be null, and retrieves data using the 'formId', 'formName',
-	 * and 'demographicNo' parameters from the HttpServletRequest request.
-	 *
-	 * @param form The PatientForm to process (can be null).
-	 * @param request The HttpServletRequest containing the parameters.
-	 */
-	@Override
-	public Path renderForm(HttpServletRequest request, HttpServletResponse response, EctFormData.PatientForm form) throws PDFGenerationException {
-		LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-		if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() == null) { loggedInInfo = LoggedInInfo.getLoggedInInfoFromRequest(request); }
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_form)");
-		}
+        LogAction.addLogSynchronous(loggedInInfo, "FormsManager.saveFormAsTempPdf", "");
 
-		FormTransportContainer formTransportContainer = getFormTransportContainer(request, response, form);
-		Path path = null;
-		try {
-			path = ConvertToEdoc.saveAsTempPDF(formTransportContainer);
-		} catch (Exception e) {
-			throw new PDFGenerationException("Error Details: Form [" + formTransportContainer.getFormName() + "] could not be converted into a PDF", e);
-		}
-		return path;
-	}
+        return ConvertToEdoc.saveAsTempPDF(formTransportContainer);
+    }
+
+    /**
+     * This method processes a PatientForm, which can be null, and retrieves data using the 'formId', 'formName',
+     * and 'demographicNo' parameters from the HttpServletRequest request.
+     *
+     * @param form    The PatientForm to process (can be null).
+     * @param request The HttpServletRequest containing the parameters.
+     */
+    @Override
+    public Path renderForm(HttpServletRequest request, HttpServletResponse response, EctFormData.PatientForm form) throws PDFGenerationException {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() == null) {
+            loggedInInfo = LoggedInInfo.getLoggedInInfoFromRequest(request);
+        }
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
+            throw new RuntimeException("missing required security object (_form)");
+        }
+
+        FormTransportContainer formTransportContainer = getFormTransportContainer(request, response, form);
+        Path path = null;
+        try {
+            path = ConvertToEdoc.saveAsTempPDF(formTransportContainer);
+        } catch (Exception e) {
+            throw new PDFGenerationException("Error Details: Form [" + formTransportContainer.getFormName() + "] could not be converted into a PDF", e);
+        }
+        return path;
+    }
 
     private FormTransportContainer getFormTransportContainer(HttpServletRequest request, HttpServletResponse response,
-            EctFormData.PatientForm form) throws PDFGenerationException {
+                                                             EctFormData.PatientForm form) throws PDFGenerationException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String formId = request.getParameter("formId") != null ? request.getParameter("formId") : form.getFormId();
         String formName = request.getParameter("formName") != null ? request.getParameter("formName")
@@ -318,28 +317,32 @@ public class FormsManagerImpl implements FormsManager {
         return formTransportContainer;
     }
 
-	/**
-	 * Please refrain from using this method unless your form ID is sourced from PDF-ready forms, as the form ID alone is not guaranteed to be unique.
-	 * Fetch a specific form by providing both the form ID and name, as they collectively ensure accurate identification.
-	 */
-	public PatientForm getFormById(LoggedInInfo loggedInInfo, Integer formId, Integer demographicNo) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_form)");
-		}
+    /**
+     * Please refrain from using this method unless your form ID is sourced from PDF-ready forms, as the form ID alone is not guaranteed to be unique.
+     * Fetch a specific form by providing both the form ID and name, as they collectively ensure accurate identification.
+     */
+    public PatientForm getFormById(LoggedInInfo loggedInInfo, Integer formId, Integer demographicNo) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
+            throw new RuntimeException("missing required security object (_form)");
+        }
 
-		PatientForm patientForm = null;
-		List<EncounterForm> encounterFormList = getAllEncounterForms();
-		List<String> pdfReadyFormList = getPDFReadyFormNames();
+        PatientForm patientForm = null;
+        List<EncounterForm> encounterFormList = getAllEncounterForms();
+        List<String> pdfReadyFormList = getPDFReadyFormNames();
 
-		for (EncounterForm encounterForm : encounterFormList) {
-			String formName = encounterForm.getFormName();
-			String table = encounterForm.getFormTable();
-			if (!pdfReadyFormList.contains(formName)) { continue; }
-			patientForm = new PatientForm(table, formName, formId, demographicNo);
-			if (patientForm != null) { break; }
-		}
+        for (EncounterForm encounterForm : encounterFormList) {
+            String formName = encounterForm.getFormName();
+            String table = encounterForm.getFormTable();
+            if (!pdfReadyFormList.contains(formName)) {
+                continue;
+            }
+            patientForm = new PatientForm(table, formName, formId, demographicNo);
+            if (patientForm != null) {
+                break;
+            }
+        }
 
-		return patientForm;
-	}
+        return patientForm;
+    }
 
 }

@@ -25,71 +25,70 @@
 Autocompleter.SelectBox = Class.create();
 
 Autocompleter.SelectBox.prototype = Object.extend(new Autocompleter.Base(), {
-initialize: function(select, options) {
-	this.element = "<input type=\"text\" id=\"" + $(select).id + "_combo\" />"
-	new Insertion.Before(select, this.element)
-	var inputClasses = Element.classNames(select);
-	inputClasses.each(function(inputClass)
-		{
-			Element.addClassName($(select).id + "_combo", inputClass);
-		});
-	
-	this.update = "<div id=\"" + $(select).id + "_options\" class=\"autocomplete\"></div>"	
-	new Insertion.Before(select, this.update)
-		
-		
-    this.baseInitialize($(select).id + "_combo", $(select).id + "_options", options);
-    this.select = select;
-	this.selectOptions = [];
-		
-	$(this.element.id).setAttribute('readonly','readonly');
-	this.element.readOnly = true;
-	if(this.options.debug)alert('input ' + this.element.id + ' and div '+ this.update.id + ' created, Autocompleter.Base() initialized');
-	if(!this.options.debug)Element.hide(select);
+    initialize: function (select, options) {
+        this.element = "<input type=\"text\" id=\"" + $(select).id + "_combo\" />"
+        new Insertion.Before(select, this.element)
+        var inputClasses = Element.classNames(select);
+        inputClasses.each(function (inputClass) {
+            Element.addClassName($(select).id + "_combo", inputClass);
+        });
 
-	var optionList = $(this.select).getElementsByTagName('option');
-	var nodes = $A(optionList);
+        this.update = "<div id=\"" + $(select).id + "_options\" class=\"autocomplete\"></div>"
+        new Insertion.Before(select, this.update)
 
-	for(i=0; i<nodes.length;i++){
-		this.selectOptions.push("<li id=\"" + nodes[i].value + "\">" + nodes[i].innerHTML + '</li>');
-		if (nodes[i].getAttribute("selected")) this.element.value = nodes[i].innerHTML;
-		
-		if(this.options.debug)alert('option ' + nodes[i].innerHTML + ' added to '+ this.update.id);
-	}
-	
-	Event.observe(this.element, "click", this.activate.bindAsEventListener(this));
-	
-	if ($(select).selectedIndex >= 0)this.element.value = $(select).options[$(select).selectedIndex].innerHTML;
-	
-	var self = this;
-	this.options.afterUpdateElement = function(text, li) {
-		var optionList = $(select).getElementsByTagName('option');
-		var nodes = $A(optionList);
 
-		var opt = nodes.find( function(node){
-			return (node.value == li.id);
-		});
-		$(select).selectedIndex=opt.index;
-		if(self.options.redirect) document.location.href = opt.value;
-		if(self.options.autoSubmit) 
-			$(self.options.autoSubmit).submit;
-	}
-  },
+        this.baseInitialize($(select).id + "_combo", $(select).id + "_options", options);
+        this.select = select;
+        this.selectOptions = [];
 
-  getUpdatedChoices: function() {
-  		this.updateChoices(this.setValues());
-  },
+        $(this.element.id).setAttribute('readonly', 'readonly');
+        this.element.readOnly = true;
+        if (this.options.debug) alert('input ' + this.element.id + ' and div ' + this.update.id + ' created, Autocompleter.Base() initialized');
+        if (!this.options.debug) Element.hide(select);
 
-  setValues : function(){
-		return ("<ul>" + this.selectOptions.join('') + "</ul>");
-  },
+        var optionList = $(this.select).getElementsByTagName('option');
+        var nodes = $A(optionList);
 
-  setOptions: function(options) {
-    this.options = Object.extend({
-		//MORE OPTIONS TO EXTEND THIS CLASS
-		redirect	: false, // redirects to option value
-		debug		: false, //show alerts with information
-		autoSubmit	: '' //form Id to submit after change
-	}, options || {});
-  }
+        for (i = 0; i < nodes.length; i++) {
+            this.selectOptions.push("<li id=\"" + nodes[i].value + "\">" + nodes[i].innerHTML + '</li>');
+            if (nodes[i].getAttribute("selected")) this.element.value = nodes[i].innerHTML;
+
+            if (this.options.debug) alert('option ' + nodes[i].innerHTML + ' added to ' + this.update.id);
+        }
+
+        Event.observe(this.element, "click", this.activate.bindAsEventListener(this));
+
+        if ($(select).selectedIndex >= 0) this.element.value = $(select).options[$(select).selectedIndex].innerHTML;
+
+        var self = this;
+        this.options.afterUpdateElement = function (text, li) {
+            var optionList = $(select).getElementsByTagName('option');
+            var nodes = $A(optionList);
+
+            var opt = nodes.find(function (node) {
+                return (node.value == li.id);
+            });
+            $(select).selectedIndex = opt.index;
+            if (self.options.redirect) document.location.href = opt.value;
+            if (self.options.autoSubmit)
+                $(self.options.autoSubmit).submit;
+        }
+    },
+
+    getUpdatedChoices: function () {
+        this.updateChoices(this.setValues());
+    },
+
+    setValues: function () {
+        return ("<ul>" + this.selectOptions.join('') + "</ul>");
+    },
+
+    setOptions: function (options) {
+        this.options = Object.extend({
+            //MORE OPTIONS TO EXTEND THIS CLASS
+            redirect: false, // redirects to option value
+            debug: false, //show alerts with information
+            autoSubmit: '' //form Id to submit after change
+        }, options || {});
+    }
 });

@@ -17,6 +17,5 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-<logic:redirect page="/appointment/apptStatusSetting.do?dispatch=view"
-	scope="request" />
+
+<% response.sendRedirect("/appointment/apptStatusSetting.do?dispatch=view"); %>

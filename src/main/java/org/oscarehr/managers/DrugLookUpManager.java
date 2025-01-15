@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2013-2015. Department of Computer Science, University of Victoria. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -101,8 +102,8 @@ public class DrugLookUpManager implements DrugLookUp {
 
                 temp = new DrugSearchTo1();
                 temp.setName((String) h.get("name"));
-                if(h.containsKey("isInactive")) {
-                		temp.setActive(!((Boolean) h.get("isInactive")));
+                if (h.containsKey("isInactive")) {
+                    temp.setActive(!((Boolean) h.get("isInactive")));
                 }
                 temp.setId((Integer) h.get("id"));
                 temp.setCategory((Integer) h.get("category"));
@@ -112,17 +113,17 @@ public class DrugLookUpManager implements DrugLookUp {
             }
 
         } catch (Exception e) {
-            logger.error("fullSearch Error",e);
+            logger.error("fullSearch Error", e);
             return null;
         }
 
         return drugs;
 
     }
-    
+
     @Override
-	public List<DrugSearchTo1> searchByElement(String s) {
-    	RxDrugRef dr = new RxDrugRef();
+    public List<DrugSearchTo1> searchByElement(String s) {
+        RxDrugRef dr = new RxDrugRef();
 
         List<DrugSearchTo1> drugs = new ArrayList<DrugSearchTo1>();
 
@@ -142,8 +143,8 @@ public class DrugLookUpManager implements DrugLookUp {
 
                 temp = new DrugSearchTo1();
                 temp.setName((String) h.get("name"));
-                if(h.containsKey("isInactive")) {
-                		temp.setActive(!((Boolean) h.get("isInactive")));
+                if (h.containsKey("isInactive")) {
+                    temp.setActive(!((Boolean) h.get("isInactive")));
                 }
                 temp.setId((Integer) h.get("id"));
                 temp.setCategory((Integer) h.get("category"));
@@ -153,16 +154,16 @@ public class DrugLookUpManager implements DrugLookUp {
             }
 
         } catch (Exception e) {
-            logger.error("fullSearch Error",e);
+            logger.error("fullSearch Error", e);
             return null;
         }
 
         return drugs;
 
-	}
+    }
 
-    
-    public DrugSearchTo1 details(String id) throws Exception{
+
+    public DrugSearchTo1 details(String id) throws Exception {
 
         RxDrugRef dr = new RxDrugRef();
 
@@ -228,5 +229,5 @@ public class DrugLookUpManager implements DrugLookUp {
 
     }
 
-	
+
 }

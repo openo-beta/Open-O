@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,48 +24,50 @@
 --%>
 
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ include file="/survey/taglibs.jsp" %>
 
-<%@ include file="/survey/taglibs.jsp"%>
+<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
 
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
+<form action="<%=request.getContextPath() %>/SurveyManager.do" method="POST" id="surveyForm">
+    <input type="hidden" name="method" value="create_survey"/>
+    <input type="hidden" name="numPages" id="numPages" value="1"/>
 
-<html:form action="/SurveyManager" method="POST" styleId="surveyForm">
-	<input type="hidden" name="method" value="create_survey" />
-	<input type="hidden" name="numPages" id="numPages" value="1" />
-
-	<html:hidden property="survey.id" />
-	<br />
-	<table width="100%">
-		<logic:messagesPresent message="true">
-			<html:messages id="message" message="true" bundle="survey">
-				<tr>
-					<td colspan="3" class="message"><c:out value="${message}" /></td>
-				</tr>
-			</html:messages>
-		</logic:messagesPresent>
-		<logic:messagesPresent>
-			<html:messages id="error" bundle="survey">
-				<tr>
-					<td colspan="3" class="error"><c:out value="${error}" /></td>
-				</tr>
-			</html:messages>
-		</logic:messagesPresent>
-		<tr>
-			<td class="leftfield">Form Name:&nbsp;&nbsp; <html:text
-				property="survey.description" styleClass="formElement" />&nbsp;&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td class="leftfield">Template:&nbsp;&nbsp; <html:select
-				property="web.templateId" styleClass="formElement">
-				<html:option value="0">&nbsp;</html:option>
-				<html:options collection="templates" property="id"
-					labelProperty="description" />
-			</html:select></td>
-		</tr>
-		<tr>
-			<td><br />
-			<html:submit>Create Form</html:submit></td>
-		</tr>
-	</table>
-</html:form>
+    <input type="hidden" name="survey.id"/>
+    <br/>
+    <table width="100%">
+        <c:if test="${not empty messages}">
+            <c:forEach var="message" items="${messages}">
+                <tr>
+                    <td colspan="3" class="message"><c:out value="${message}"/></td>
+                </tr>
+            </c:forEach>
+        </c:if>
+        <c:if test="${not empty errors}">
+            <c:forEach var="error" items="${errors}">
+                <tr>
+                    <td colspan="3" class="error"><c:out value="${error}"/></td>
+                </tr>
+            </c:forEach>
+        </c:if>
+        <tr>
+            <td class="leftfield">Form Name:&nbsp;&nbsp; <input
+                    type="text" name="survey.description" class="formElement"/>&nbsp;&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td class="leftfield">Template:&nbsp;&nbsp; <select
+                    name="web.templateId" class="formElement">
+                <option value="0">&nbsp;</option>
+                <c:forEach var="template" items="${templates}">
+                    <option value="${template.id}">${template.description}</option>
+                </c:forEach>
+            </select></td>
+        </tr>
+        <tr>
+            <td><br/>
+                <input type="submit" value="Create Form"/></td>
+        </tr>
+    </table>
+</form>

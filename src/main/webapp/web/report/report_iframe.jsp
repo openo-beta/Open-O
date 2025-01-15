@@ -24,15 +24,15 @@
 
 --%>
 
- <div class="tab-pane" id="currentReportFrameContainer">
-	 <iframe 
-	 	id="currentReportFrame" 
-	 	scrolling="yes" 
-	 	frameborder="0" 
-	 	ng-src="{{currentReport.iframeUrl}}" 
-	 	width="100%"
-	 	
-	style="min-height:820px"
-	 ></iframe>
- </div>
+<div class="tab-pane" id="currentReportFrameContainer">
+    <iframe
+            id="currentReportFrame"
+            scrolling="yes"
+            frameborder="0"
+            ng-src="{{currentReport.iframeUrl}}"
+            width="100%"
+
+            style="min-height:820px"
+    ></iframe>
+</div>
  

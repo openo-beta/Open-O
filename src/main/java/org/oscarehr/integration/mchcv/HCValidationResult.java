@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -55,9 +56,9 @@ public class HCValidationResult {
 
     public HCValidationResult() {
     }
-    
+
     public boolean isValid() {
-        
+
         if (responseCode == null) {
             return false;
         }
@@ -67,19 +68,19 @@ public class HCValidationResult {
 
     /**
      * A two character representation of the validation response code for given health number and/or version code
-     * Response code is mandatory field and is returned for each validation request submitted. 
+     * Response code is mandatory field and is returned for each validation request submitted.
      */
     public String getResponseCode() {
         return responseCode;
     }
-    
+
     public void setResponseCode(String value) {
         responseCode = value;
     }
 
     /**
-     * A description for the validation response code for given health number and/or version code. 
-     * Response description is optional field and can be returned for each validation request submitted. 
+     * A description for the validation response code for given health number and/or version code.
+     * Response description is optional field and can be returned for each validation request submitted.
      */
     public String getResponseDescription() {
         return responseDescription;
@@ -88,10 +89,10 @@ public class HCValidationResult {
     public void setResponseDescription(String value) {
         this.responseDescription = value;
     }
-    
+
     /**
-     * The action required of the caller for the returned response code. 
-     * Response action is optional field and can be returned for each validation request submitted. 
+     * The action required of the caller for the returned response code.
+     * Response action is optional field and can be returned for each validation request submitted.
      */
     public String getResponseAction() {
         return responseAction;
@@ -102,9 +103,9 @@ public class HCValidationResult {
     }
 
     /**
-     * MOHLTC stores this value as upper case characters.  
-     * A maximum of 20 characters are kept on card.  
-     * No accents or other diacritic marks are stored or returned. 
+     * MOHLTC stores this value as upper case characters.
+     * A maximum of 20 characters are kept on card.
+     * No accents or other diacritic marks are stored or returned.
      */
     public String getFirstName() {
         return firstName;
@@ -123,8 +124,8 @@ public class HCValidationResult {
     }
 
     /**
-     * MOHLTC stores this value as upper case characters.  
-     * A maximum of 30 characters are kept on card.  
+     * MOHLTC stores this value as upper case characters.
+     * A maximum of 30 characters are kept on card.
      * No accents or other diacritic marks are stored or returned.
      */
     public String getLastName() {
@@ -136,8 +137,8 @@ public class HCValidationResult {
     }
 
     /**
-     * The card holder’s date of birth. 
-     */ 
+     * The card holder’s date of birth.
+     */
     public String getBirthDate() {
         return birthDate;
     }
@@ -147,7 +148,7 @@ public class HCValidationResult {
     }
 
     /**
-     * The gender is returned as either an M or F, for male or female respectively. 
+     * The gender is returned as either an M or F, for male or female respectively.
      */
     public String getGender() {
         return gender;
@@ -217,21 +218,21 @@ public class HCValidationResult {
     }
 
     public String getEbsFaultCode() {
-        if(ebsFault == null) {
+        if (ebsFault == null) {
             return null;
         }
         return ebsFault.getCode();
     }
 
     public String getEbsFaultDescription() {
-        if(ebsFault == null) {
+        if (ebsFault == null) {
             return null;
         }
         return ebsFault.getMessage();
     }
 
     public List<FeeServiceDetails> getFeeServiceDetails() {
-        if(feeServiceDetails == null) {
+        if (feeServiceDetails == null) {
             return Collections.emptyList();
         }
         return feeServiceDetails;
@@ -251,7 +252,7 @@ public class HCValidationResult {
 
     public Date getFeeServiceDate(String feeServiceCode) {
         XMLGregorianCalendar date = getFeeServiceDetailsbyFeeServiceCode(feeServiceCode).getFeeServiceDate();
-        if(date != null) {
+        if (date != null) {
             return date.toGregorianCalendar().getTime();
         }
         return null;
@@ -260,8 +261,8 @@ public class HCValidationResult {
     private FeeServiceDetails getFeeServiceDetailsbyFeeServiceCode(String feeServiceCode) {
         FeeServiceDetails selectedFeeServiceDetails = new FeeServiceDetails();
         selectedFeeServiceDetails.setFeeServiceCode(feeServiceCode);
-        for(FeeServiceDetails feeServiceDetail : this.feeServiceDetails) {
-            if(feeServiceCode.equalsIgnoreCase(feeServiceDetail.getFeeServiceCode())) {
+        for (FeeServiceDetails feeServiceDetail : this.feeServiceDetails) {
+            if (feeServiceCode.equalsIgnoreCase(feeServiceDetail.getFeeServiceCode())) {
                 selectedFeeServiceDetails = feeServiceDetail;
                 try {
                     BeanUtils.copyProperties(selectedFeeServiceDetails, feeServiceDetail);
@@ -293,14 +294,14 @@ public class HCValidationResult {
                 .append("   Issue Date: " + issueDate + "\n")
                 .append("   Fault: " + getEbsFaultCode() + " : " + getEbsFaultDescription() + "\n");
 
-                for (FeeServiceDetails feeServiceDetails : getFeeServiceDetails()) {
+        for (FeeServiceDetails feeServiceDetails : getFeeServiceDetails()) {
 
-                    stringBuilder.append("   Fee Service Code: " + feeServiceDetails.getFeeServiceCode() + "\n")
-                            .append("   Fee Service Response Code: " + feeServiceDetails.getFeeServiceResponseCode() + "\n")
-                            .append("   Fee Service Response Description: " + feeServiceDetails.getFeeServiceResponseDescription() + "\n")
-                            .append("   Fee Service Date: " + feeServiceDetails.getFeeServiceDate() + "\n");
+            stringBuilder.append("   Fee Service Code: " + feeServiceDetails.getFeeServiceCode() + "\n")
+                    .append("   Fee Service Response Code: " + feeServiceDetails.getFeeServiceResponseCode() + "\n")
+                    .append("   Fee Service Response Description: " + feeServiceDetails.getFeeServiceResponseDescription() + "\n")
+                    .append("   Fee Service Date: " + feeServiceDetails.getFeeServiceDate() + "\n");
 
-                }
+        }
 
         return stringBuilder.toString();
     }

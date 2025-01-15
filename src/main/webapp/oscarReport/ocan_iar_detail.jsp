@@ -23,94 +23,104 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="java.util.*"%>
-<%@page import="org.caisi.dao.*"%>
-<%@page import="org.caisi.model.*"%>
-<%@page import="org.oscarehr.common.dao.SecRoleDao"%>
-<%@page import="org.oscarehr.common.model.*"%>
-<%@page import="org.oscarehr.PMmodule.model.*"%>
-<%@page import="org.oscarehr.PMmodule.dao.*"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="java.text.DateFormatSymbols"%>
-<%@page import="org.apache.commons.lang.StringEscapeUtils"%>
-<%@page import="org.oscarehr.web.*"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="java.util.*" %>
+<%@page import="org.caisi.dao.*" %>
+<%@page import="org.caisi.model.*" %>
+<%@page import="org.oscarehr.common.dao.SecRoleDao" %>
+<%@page import="org.oscarehr.common.model.*" %>
+<%@page import="org.oscarehr.PMmodule.model.*" %>
+<%@page import="org.oscarehr.PMmodule.dao.*" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="java.text.DateFormatSymbols" %>
+<%@page import="org.apache.commons.lang.StringEscapeUtils" %>
+<%@page import="org.oscarehr.web.*" %>
 
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-	String submissionId = request.getParameter("submissionId");
-	OcanSubmissionLog log = null;
-	
-	if(submissionId != null) {
-		log = OcanReportUIBean.getOcanSubmissionLog(loggedInInfo.getCurrentFacility().getId(), submissionId);	
-	}
-	
-	java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
-	java.text.SimpleDateFormat formatter2 = new java.text.SimpleDateFormat("yyyy-MM-dd");
-	
+    String submissionId = request.getParameter("submissionId");
+    OcanSubmissionLog log = null;
+
+    if (submissionId != null) {
+        log = OcanReportUIBean.getOcanSubmissionLog(loggedInInfo.getCurrentFacility().getId(), submissionId);
+    }
+
+    java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
+    java.text.SimpleDateFormat formatter2 = new java.text.SimpleDateFormat("yyyy-MM-dd");
+
 %>
 
-	<div class="page-header">
-		<h4>OCAN IAR Detail Report</h4>
-	</div>
+<div class="page-header">
+    <h4>OCAN IAR Detail Report</h4>
+</div>
 
-	<h5>IAR Submission</h5>
-	<table class="table table-bordered table-striped table-hover">
-	<thead>
-		<tr>				
-			<th>Submission Id</th>
-			<th>Submission Date</th>
-			<th>Transaction ID</th>
-			<th>Result</th>
-			<th>Result Message</th>
-		</tr>
-	</thead>		
-		<tr>
-			<td><%=log.getId() %></td>
-			<td><%=formatter.format(log.getSubmitDateTime())%></td>
-			<td><%=log.getTransactionId()%></td>
-			<td><%=log.getResult() %></td>
-			<td><%=log.getResultMessage()%></td>
-		</tr>			
-	</table>	
+<h5>IAR Submission</h5>
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+        <th>Submission Id</th>
+        <th>Submission Date</th>
+        <th>Transaction ID</th>
+        <th>Result</th>
+        <th>Result Message</th>
+    </tr>
+    </thead>
+    <tr>
+        <td><%=log.getId() %>
+        </td>
+        <td><%=formatter.format(log.getSubmitDateTime())%>
+        </td>
+        <td><%=log.getTransactionId()%>
+        </td>
+        <td><%=log.getResult() %>
+        </td>
+        <td><%=log.getResultMessage()%>
+        </td>
+    </tr>
+</table>
 
-	<h5>Records</h5>
-	<table class="table table-bordered table-striped table-hover">
-	<thead>
-		<tr>
-			<td>Form Id</td>
-			<td>Date Started</td>
-			<td>Date Completed</td>
-			<td>Client</td>
-			<td>Provider</td>			
-		</tr>
-	</thead>
-		<%for(OcanStaffForm form:log.getRecords()) { %>
-			<tr>
-				<td><%=form.getId()%></td>
-				<td><%=formatter2.format(form.getStartDate()) %></td>
-				<td><%=formatter2.format(form.getCompletionDate()) %></td>
-				<td><%=form.getClientId() %></td>
-				<td><%=form.getProviderName()%></td>
-			</tr>
-		<%} %>
-	</table>
+<h5>Records</h5>
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+        <td>Form Id</td>
+        <td>Date Started</td>
+        <td>Date Completed</td>
+        <td>Client</td>
+        <td>Provider</td>
+    </tr>
+    </thead>
+    <%for (OcanStaffForm form : log.getRecords()) { %>
+    <tr>
+        <td><%=form.getId()%>
+        </td>
+        <td><%=formatter2.format(form.getStartDate()) %>
+        </td>
+        <td><%=formatter2.format(form.getCompletionDate()) %>
+        </td>
+        <td><%=form.getClientId() %>
+        </td>
+        <td><%=form.getProviderName()%>
+        </td>
+    </tr>
+    <%} %>
+</table>

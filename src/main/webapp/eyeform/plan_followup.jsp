@@ -24,52 +24,52 @@
 
 --%>
 
-<%@ include file="/taglibs.jsp"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao"%>
+<%@ include file="/taglibs.jsp" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%
-	String id = request.getParameter("id");
-	ProviderDao providerDao = (ProviderDao)SpringUtils.getBean(ProviderDao.class);
-	request.setAttribute("providers",providerDao.getActiveProviders());
+    String id = request.getParameter("id");
+    ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+    request.setAttribute("providers", providerDao.getActiveProviders());
 %>
 
 <div id="followup_<%=id%>">
-					<input type="hidden" name="followup_<%=id%>.id" id="followup_<%=id%>.id" value=""/>
-					
-					<a href="#" onclick="deleteFollowUp(<%=id%>);">[Delete]</a>
-					
-					&nbsp;
-					
-		            <select name="followup_<%=id%>.type" id="followup_<%=id%>.type">
-		            	<option value="followup">Follow up</option>
-		            	<option value="consult">Consult</option>
-		            </select>
-	            	
-	            	&nbsp;
-	            		             
-		            <select name="followup_<%=id%>.followupProvider" id="followup_<%=id%>.followupProvider">
-		            	<c:forEach var="item" items="${providers}">
-		            		<option value="<c:out value="${item.providerNo}"/>"><c:out value="${item.formattedName}"/></option>
-		            	</c:forEach>            	
-					</select>
-				
-	            	&nbsp;
-	            			           
-		             <input type="text" name="followup_<%=id%>.timespan" id="followup_<%=id%>.timespan" size="4"/>		             
-		             <select name="followup_<%=id%>.timeframe" id="followup_<%=id%>.timeframe" >
-		             	<option value="days">days</option>
-		            	<option value="weeks">weeks</option>
-		            	<option value="months">months</option>
-		            </select>
-	            	            	
-					&nbsp;
-					
-		            <select name="followup_<%=id%>.urgency" id="followup_<%=id%>.urgency">
-		             	<option value="routine">routine</option>
-		            	<option value="ASAP">ASAP</option>            	
-		            </select>
-	           
-	           		&nbsp;
-	           		Comment:
-	           		<input type="text" name="followup_<%=id%>.comment" id="followup_<%=id%>.comment" size="40"/>		
+    <input type="hidden" name="followup_<%=id%>.id" id="followup_<%=id%>.id" value=""/>
+
+    <a href="#" onclick="deleteFollowUp(<%=id%>);">[Delete]</a>
+
+    &nbsp;
+
+    <select name="followup_<%=id%>.type" id="followup_<%=id%>.type">
+        <option value="followup">Follow up</option>
+        <option value="consult">Consult</option>
+    </select>
+
+    &nbsp;
+
+    <select name="followup_<%=id%>.followupProvider" id="followup_<%=id%>.followupProvider">
+        <c:forEach var="item" items="${providers}">
+            <option value="<c:out value="${item.providerNo}"/>"><c:out value="${item.formattedName}"/></option>
+        </c:forEach>
+    </select>
+
+    &nbsp;
+
+    <input type="text" name="followup_<%=id%>.timespan" id="followup_<%=id%>.timespan" size="4"/>
+    <select name="followup_<%=id%>.timeframe" id="followup_<%=id%>.timeframe">
+        <option value="days">days</option>
+        <option value="weeks">weeks</option>
+        <option value="months">months</option>
+    </select>
+
+    &nbsp;
+
+    <select name="followup_<%=id%>.urgency" id="followup_<%=id%>.urgency">
+        <option value="routine">routine</option>
+        <option value="ASAP">ASAP</option>
+    </select>
+
+    &nbsp;
+    Comment:
+    <input type="text" name="followup_<%=id%>.comment" id="followup_<%=id%>.comment" size="40"/>
 </div>

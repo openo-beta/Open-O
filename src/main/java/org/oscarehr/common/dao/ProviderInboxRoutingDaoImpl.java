@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -40,7 +41,6 @@ import org.springframework.stereotype.Repository;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 
 /**
- *
  * @author jay gallagher
  */
 @Repository
@@ -58,9 +58,9 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
     @Override
     public List<ProviderInboxItem> getProvidersWithRoutingForDocument(String docType, Integer docId) {
         Query query = entityManager
-                .createQuery("select p from ProviderInboxItem p where p.labType = ? and p.labNo = ?");
-        query.setParameter(0, docType);
-        query.setParameter(1, docId);
+                .createQuery("select p from ProviderInboxItem p where p.labType = ?1 and p.labNo = ?2");
+        query.setParameter(1, docType);
+        query.setParameter(2, docId);
 
         @SuppressWarnings("unchecked")
         List<ProviderInboxItem> results = query.getResultList();
@@ -71,10 +71,10 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
     @Override
     public boolean hasProviderBeenLinkedWithDocument(String docType, Integer docId, String providerNo) {
         Query query = entityManager.createQuery(
-                "select p from ProviderInboxItem p where p.labType = ? and p.labNo = ? and p.providerNo=?");
-        query.setParameter(0, docType);
-        query.setParameter(1, docId);
-        query.setParameter(2, providerNo);
+                "select p from ProviderInboxItem p where p.labType = ?1 and p.labNo = ?2 and p.providerNo=?3");
+        query.setParameter(1, docType);
+        query.setParameter(2, docId);
+        query.setParameter(3, providerNo);
 
         @SuppressWarnings("unchecked")
         List<ProviderInboxItem> results = query.getResultList();
@@ -84,8 +84,8 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
 
     @Override
     public int howManyDocumentsLinkedWithAProvider(String providerNo) {
-        Query query = entityManager.createQuery("select p from ProviderInboxItem p where p.providerNo=?");
-        query.setParameter(0, providerNo);
+        Query query = entityManager.createQuery("select p from ProviderInboxItem p where p.providerNo=?1");
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<ProviderInboxItem> results = query.getResultList();
@@ -95,16 +95,12 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
 
     /**
      * Adds lab results to the provider inbox
-     * 
-     * @param providerNo
-     *                   Provider to add lab results to
-     * @param labNo
-     *                   Document id to be added to the inbox
-     * @param labType
-     *                   Type of the document to be added. Available document types
+     *
+     * @param providerNo Provider to add lab results to
+     * @param labNo      Document id to be added to the inbox
+     * @param labType    Type of the document to be added. Available document types
      *                   are defined in {@link oscar.oscarLab.ca.on.LabResultData}
      *                   class.
-     * 
      */
     // TODO Replace labType parameter with an enum
     @SuppressWarnings("unchecked")
@@ -115,8 +111,8 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
 
         try {
             Query rulesQuery = entityManager
-                    .createQuery("FROM IncomingLabRules r WHERE r.archive = 0 AND r.providerNo = :providerNo");
-            rulesQuery.setParameter("providerNo", providerNo);
+                    .createQuery("FROM IncomingLabRules r WHERE r.archive = 0 AND r.providerNo = ?1");
+            rulesQuery.setParameter(1, providerNo);
 
             for (IncomingLabRules rules : (List<IncomingLabRules>) rulesQuery.getResultList()) {
                 String status = rules.getStatus();

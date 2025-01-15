@@ -1,3 +1,3 @@
-oscarApp.controller('BillingCtrl', function ($scope,$http) {
+oscarApp.controller('BillingCtrl', function ($scope, $http) {
 
 });

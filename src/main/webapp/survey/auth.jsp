@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,40 +24,40 @@
 --%>
 
 
-
-<%@ page errorPage="error.jsp"%>
-<%@ include file="/survey/taglibs.jsp"%>
+<%@ page errorPage="error.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="/survey/taglibs.jsp" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<html:base />
-<title>Oscar Forms</title>
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"  />
-</head>
-<body>
+<html>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <title>Oscar Forms</title>
+        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+    </head>
+    <body>
 
-<table border="0" cellspacing="0" cellpadding="18" width="100%">
-	<logic:messagesPresent message="true">
-		<html:messages id="message" message="true" bundle="survey">
-			<tr>
-				<td colspan="3" class="message"><c:out value="${message}" /></td>
-			</tr>
-		</html:messages>
-	</logic:messagesPresent>
-	<logic:messagesPresent>
-		<html:messages id="error" bundle="survey">
-			<tr>
-				<td colspan="3" class="error"><c:out value="${error}" /></td>
-			</tr>
-		</html:messages>
-	</logic:messagesPresent>
-	<tr>
-		<td><a href="javascript:history.go(-1);">back</a></td>
-	</tr>
-</table>
+    <table border="0" cellspacing="0" cellpadding="18" width="100%">
+        <c:if test="${not empty messages}">
+            <c:forEach var="message" items="${messages}">
+                <tr>
+                    <td colspan="3" class="message"><c:out value="${message}"/></td>
+                </tr>
+            </c:forEach>
+        </c:if>
+        <c:if test="${not empty errors}">
+            <c:forEach var="error" items="${errors}">
+                <tr>
+                    <td colspan="3" class="error"><c:out value="${error}"/></td>
+                </tr>
+            </c:forEach>
+        </c:if>
+        <tr>
+            <td><a href="javascript:history.go(-1);">back</a></td>
+        </tr>
+    </table>
 
-</body>
-</html:html>
+    </body>
+</html>

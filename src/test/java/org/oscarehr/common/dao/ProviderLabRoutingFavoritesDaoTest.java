@@ -5,21 +5,24 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
+ *
+ * @author Shazib
+ * @author Shazib
  */
 /**
  * @author Shazib
@@ -43,50 +46,50 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 public class ProviderLabRoutingFavoritesDaoTest extends DaoTestFixtures {
-	
-	protected ProviderLabRoutingFavoritesDao dao = (ProviderLabRoutingFavoritesDao)SpringUtils.getBean(ProviderLabRoutingFavoritesDao.class);
-	
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("providerLabRoutingFavorites");
-	}
 
-	@Test
-	public void testFindFavorites() throws Exception {
-		
-		String providerNo1 = "100";
-		String providerNo2 = "200";
-				
-		ProviderLabRoutingFavorite providerLabRoutingFav1 = new ProviderLabRoutingFavorite();
-		EntityDataGenerator.generateTestDataForModelClass(providerLabRoutingFav1);
-		providerLabRoutingFav1.setProvider_no(providerNo1);
-		dao.persist(providerLabRoutingFav1);
-		
-		ProviderLabRoutingFavorite providerLabRoutingFav2 = new ProviderLabRoutingFavorite();
-		EntityDataGenerator.generateTestDataForModelClass(providerLabRoutingFav2);
-		providerLabRoutingFav2.setProvider_no(providerNo2);
-		dao.persist(providerLabRoutingFav2);
-		
-		ProviderLabRoutingFavorite providerLabRoutingFav3 = new ProviderLabRoutingFavorite();
-		EntityDataGenerator.generateTestDataForModelClass(providerLabRoutingFav3);
-		providerLabRoutingFav3.setProvider_no(providerNo1);
-		dao.persist(providerLabRoutingFav3);
-		
-		List<ProviderLabRoutingFavorite> expectedResult = new ArrayList<ProviderLabRoutingFavorite>(Arrays.asList(providerLabRoutingFav1, providerLabRoutingFav3));
-		List<ProviderLabRoutingFavorite> result = dao.findFavorites(providerNo1);
+    protected ProviderLabRoutingFavoritesDao dao = (ProviderLabRoutingFavoritesDao) SpringUtils.getBean(ProviderLabRoutingFavoritesDao.class);
 
-		Logger logger = MiscUtils.getLogger();
-		
-		if (result.size() != expectedResult.size()) {
-			logger.warn("Array sizes do not match.");
-			fail("Array sizes do not match.");
-		}
-		for (int i = 0; i < expectedResult.size(); i++) {
-			if (!expectedResult.get(i).equals(result.get(i))){
-				logger.warn("Items  do not match.");
-				fail("Items  do not match.");
-			}
-		}
-		assertTrue(true);
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("providerLabRoutingFavorites");
+    }
+
+    @Test
+    public void testFindFavorites() throws Exception {
+
+        String providerNo1 = "100";
+        String providerNo2 = "200";
+
+        ProviderLabRoutingFavorite providerLabRoutingFav1 = new ProviderLabRoutingFavorite();
+        EntityDataGenerator.generateTestDataForModelClass(providerLabRoutingFav1);
+        providerLabRoutingFav1.setProvider_no(providerNo1);
+        dao.persist(providerLabRoutingFav1);
+
+        ProviderLabRoutingFavorite providerLabRoutingFav2 = new ProviderLabRoutingFavorite();
+        EntityDataGenerator.generateTestDataForModelClass(providerLabRoutingFav2);
+        providerLabRoutingFav2.setProvider_no(providerNo2);
+        dao.persist(providerLabRoutingFav2);
+
+        ProviderLabRoutingFavorite providerLabRoutingFav3 = new ProviderLabRoutingFavorite();
+        EntityDataGenerator.generateTestDataForModelClass(providerLabRoutingFav3);
+        providerLabRoutingFav3.setProvider_no(providerNo1);
+        dao.persist(providerLabRoutingFav3);
+
+        List<ProviderLabRoutingFavorite> expectedResult = new ArrayList<ProviderLabRoutingFavorite>(Arrays.asList(providerLabRoutingFav1, providerLabRoutingFav3));
+        List<ProviderLabRoutingFavorite> result = dao.findFavorites(providerNo1);
+
+        Logger logger = MiscUtils.getLogger();
+
+        if (result.size() != expectedResult.size()) {
+            logger.warn("Array sizes do not match.");
+            fail("Array sizes do not match.");
+        }
+        for (int i = 0; i < expectedResult.size(); i++) {
+            if (!expectedResult.get(i).equals(result.get(i))) {
+                logger.warn("Items  do not match.");
+                fail("Items  do not match.");
+            }
+        }
+        assertTrue(true);
+    }
 }

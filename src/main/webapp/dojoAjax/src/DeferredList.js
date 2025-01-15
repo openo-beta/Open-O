@@ -25,28 +25,32 @@ dojo.DeferredList = function (list, /*bool?*/ fireOnOneCallback, /*bool?*/ fireO
     this.results = [null, null];
     this.canceller = canceller;
     this.silentlyCancelled = false;
-    
+
     if (this.list.length === 0 && !fireOnOneCallback) {
         this.callback(this.resultList);
     }
-    
+
     this.finishedCount = 0;
     this.fireOnOneCallback = fireOnOneCallback;
     this.fireOnOneErrback = fireOnOneErrback;
     this.consumeErrors = consumeErrors;
 
     var index = 0;
-    
+
     var _this = this;
-    
-    dojo.lang.forEach(this.list, function(d) {
+
+    dojo.lang.forEach(this.list, function (d) {
         var _index = index;
         //dojo.debug("add cb/errb index "+_index);
-        d.addCallback(function(r) { _this._cbDeferred(_index, true, r) });
-        d.addErrback(function(r) { _this._cbDeferred(_index, false, r) });
+        d.addCallback(function (r) {
+            _this._cbDeferred(_index, true, r)
+        });
+        d.addErrback(function (r) {
+            _this._cbDeferred(_index, false, r)
+        });
         index++;
     });
-                      
+
 };
 
 
@@ -72,7 +76,7 @@ dojo.lang.extend(dojo.DeferredList, {
         }
         return result;
     },
-    
+
     gatherResults: function (deferredList) {
         var d = new dojo.DeferredList(deferredList, false, true, false);
         d.addCallback(function (results) {

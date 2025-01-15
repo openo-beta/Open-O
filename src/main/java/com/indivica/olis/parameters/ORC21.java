@@ -1,6 +1,7 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -11,49 +12,49 @@ package com.indivica.olis.parameters;
 
 /**
  * Ordering Facility ID (Z06 Only - Depricated in Z01)
- * @author jen
  *
+ * @author jen
  */
 public class ORC21 implements Parameter {
 
-	private String universalId;
-	private String universalIdType;
-	
-	public ORC21(String universalId, String universalIdType) {
-	    this.universalId = universalId;
-	    this.universalIdType = universalIdType;
+    private String universalId;
+    private String universalIdType;
+
+    public ORC21(String universalId, String universalIdType) {
+        this.universalId = universalId;
+        this.universalIdType = universalIdType;
     }
 
-	public ORC21() {
+    public ORC21() {
     }
 
-	@Override
+    @Override
     public String toOlisString() {
-	    return getQueryCode() + ".6.2" + (universalId != null ? universalId : "") + "~" +
-	    	getQueryCode() + ".6.3" + (universalIdType != null ? universalIdType : "");
+        return getQueryCode() + ".6.2" + (universalId != null ? universalId : "") + "~" +
+                getQueryCode() + ".6.3" + (universalIdType != null ? universalIdType : "");
     }
 
-	@Override
+    @Override
     public void setValue(Object value) {
-		throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
-	@Override
+    @Override
     public void setValue(Integer part, Object value) {
-		throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
-	@Override
+    @Override
     public void setValue(Integer part, Integer part2, Object value) {
-	    if (part == 6 && part2 == 2)
-	    	universalId = (String) value;
-	    else if (part == 6 && part2 == 3)
-	    	universalIdType = (String) value;
+        if (part == 6 && part2 == 2)
+            universalId = (String) value;
+        else if (part == 6 && part2 == 3)
+            universalIdType = (String) value;
     }
 
-	@Override
+    @Override
     public String getQueryCode() {
-	    return "@ORC.21";
+        return "@ORC.21";
     }
 
 }

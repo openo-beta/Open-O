@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,12 +53,12 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 /**
- * @deprecated unsafe with potential memory leaks. Consider another conversion tool.
  * @author root
+ * @deprecated unsafe with potential memory leaks. Consider another conversion tool.
  */
 @Deprecated
 public class Doc2PDF {
-    private static Logger logger=MiscUtils.getLogger(); 
+    private static Logger logger = MiscUtils.getLogger();
 
     public static void parseJSP2PDF(HttpServletRequest request, HttpServletResponse response, String uri, String jsessionid) {
 
@@ -79,9 +80,7 @@ public class Doc2PDF {
 
             PrintPDFFromHTMLString(response, documentTxt);
 
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("", e);
         }
 
@@ -122,14 +121,13 @@ public class Doc2PDF {
             PrintPDFFromBytes(response, bos.toByteArray());
 
             // Return the exit status from HTMLDOC...
-            return(process.waitFor());
-        }
-        catch (Exception e) {
+            return (process.waitFor());
+        } catch (Exception e) {
             // An error occurred - send it to stderr for the web server...
             logger.error(e.toString() + " caught while running:\n\n");
             logger.error("    " + command + "\n");
             logger.error("", e);
-            return(1);
+            return (1);
         }
     }
 
@@ -140,7 +138,7 @@ public class Doc2PDF {
         //server_port, // SERVER_PORT env var
         //path_info, // PATH_INFO env var
         String query_string, // QUERY_STRING env var
-        filename; // File to convert
+                filename; // File to convert
 
         filename = url;
 
@@ -171,10 +169,8 @@ public class Doc2PDF {
 
             PrintPDFFromHTMLString(response, AddAbsoluteTag(request, tidyout.toString(), ""));
 
-        }
-
-        catch (Exception e) {
-        	logger.error("Unexpected error", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
         }
 
     }
@@ -198,10 +194,8 @@ public class Doc2PDF {
 
             return testFile;
 
-        }
-
-        catch (Exception e) {
-        	logger.error("Unexpected error", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
             return null;
         }
 
@@ -220,8 +214,7 @@ public class Doc2PDF {
             p.flush();
             ostream.close();
 
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             MiscUtils.getLogger().debug("IO error: " + ioe);
         }
     }
@@ -235,13 +228,12 @@ public class Doc2PDF {
 
             MiscUtils.getLogger().debug(" " + uri + ";jsessionid=" + jsessionid);
 
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             in = new BufferedInputStream(conn.getInputStream());
 
-        }
-        catch (Exception e) {
-        	logger.error("Unexpected error", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
         }
         return in;
     }
@@ -255,14 +247,14 @@ public class Doc2PDF {
             InputStream is = new ByteArrayInputStream(docText.getBytes());
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, is);
             document.close();
-            return(new String(Base64.encodeBase64(baos.toByteArray())));
-        }
-        catch (Exception e) {
-        	logger.error("Unexpected error", e);
+            return (new String(Base64.encodeBase64(baos.toByteArray())));
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
         }
         return null;
 
     }
+
     public static void PrintPDFFromBin(HttpServletResponse response, String docBin) {
 
         // step 1: creation of a document-object
@@ -274,10 +266,8 @@ public class Doc2PDF {
             PrintPDFFromBytes(response, binDecodedArray);
             return;
 
-        }
-
-        catch (Exception e) {
-        	logger.error("Unexpected error", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
         }
 
     }
@@ -308,10 +298,8 @@ public class Doc2PDF {
             o.flush();
             o.close(); // *important* to ensure no more jsp output
             return;
-        }
-
-        catch (Exception e) {
-        	logger.error("Unexpected error", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
         }
 
     }
@@ -327,9 +315,8 @@ public class Doc2PDF {
             document.close();
             byte[] binArray = baos.toByteArray();
             PrintPDFFromBytes(response, binArray);
-        }
-        catch (Exception e) {
-        	logger.error("Unexpected error", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
         }
     }
 
@@ -343,8 +330,7 @@ public class Doc2PDF {
 
         if (request.getProtocol().toString().equals("HTTP/1.1")) {
             absolutePath = "http://";
-        }
-        else {
+        } else {
             absolutePath = "https://";
         }
 
@@ -384,8 +370,7 @@ public class Doc2PDF {
             // processed yet.
             try {
                 xmlString = xmlString.substring(lastIndex + endTagToSearch.length());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 xmlString = "";
             }
 

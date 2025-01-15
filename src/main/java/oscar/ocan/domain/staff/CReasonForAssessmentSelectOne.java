@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -58,16 +58,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cInitialAssessment",
-    "cReassessmentAt6Months",
-    "cPriorToDischarge",
-    "cOtherSignificantChangeClientRequest",
-    "cSpecifyOther"
+        "cInitialAssessment",
+        "cReassessmentAt6Months",
+        "cPriorToDischarge",
+        "cOtherSignificantChangeClientRequest",
+        "cSpecifyOther"
 })
 @XmlRootElement(name = "CReason_for_Assessment__Select_One_")
 public class CReasonForAssessmentSelectOne {
@@ -85,11 +83,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Gets the value of the cInitialAssessment property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCInitialAssessment() {
         return cInitialAssessment;
@@ -97,11 +93,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Sets the value of the cInitialAssessment property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCInitialAssessment(String value) {
         this.cInitialAssessment = value;
@@ -109,11 +103,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Gets the value of the cReassessmentAt6Months property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCReassessmentAt6Months() {
         return cReassessmentAt6Months;
@@ -121,11 +113,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Sets the value of the cReassessmentAt6Months property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCReassessmentAt6Months(String value) {
         this.cReassessmentAt6Months = value;
@@ -133,11 +123,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Gets the value of the cPriorToDischarge property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCPriorToDischarge() {
         return cPriorToDischarge;
@@ -145,11 +133,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Sets the value of the cPriorToDischarge property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCPriorToDischarge(String value) {
         this.cPriorToDischarge = value;
@@ -157,11 +143,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Gets the value of the cOtherSignificantChangeClientRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOtherSignificantChangeClientRequest() {
         return cOtherSignificantChangeClientRequest;
@@ -169,11 +153,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Sets the value of the cOtherSignificantChangeClientRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOtherSignificantChangeClientRequest(String value) {
         this.cOtherSignificantChangeClientRequest = value;
@@ -181,11 +163,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Gets the value of the cSpecifyOther property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSpecifyOther() {
         return cSpecifyOther;
@@ -193,11 +173,9 @@ public class CReasonForAssessmentSelectOne {
 
     /**
      * Sets the value of the cSpecifyOther property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSpecifyOther(String value) {
         this.cSpecifyOther = value;

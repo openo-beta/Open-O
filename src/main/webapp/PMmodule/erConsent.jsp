@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,72 +24,71 @@
 --%>
 
 
-
-<%@ include file="/taglibs.jsp"%>
-<%@page import="org.oscarehr.PMmodule.web.formbean.*"%>
+<%@ include file="/taglibs.jsp" %>
+<%@page import="org.oscarehr.PMmodule.web.formbean.*" %>
 <style>
-.sortable {
-	background-color: #555;
-	color: #555;
-}
+    .sortable {
+        background-color: #555;
+        color: #555;
+    }
 
-.b th {
-	border-right: 1px solid #333;
-	background-color: #ddd;
-	color: #ddd;
-	border-left: 1px solid #fff;
-}
+    .b th {
+        border-right: 1px solid #333;
+        background-color: #ddd;
+        color: #ddd;
+        border-left: 1px solid #fff;
+    }
 
-.message {
-	color: red;
-	background-color: white;
-}
+    .message {
+        color: red;
+        background-color: white;
+    }
 
-.error {
-	color: red;
-	background-color: white;
-}
+    .error {
+        color: red;
+        background-color: white;
+    }
 </style>
 
 <script>
-			function cancel() {
-				location.href='<html:rewrite action="/PMmodule/GenericIntake/Search.do"/>';
-			}
-			
-			function submit() {
-				var reason = document.clientManagerForm.elements['erconsent.consentReason'].value;
-				if(reason == '') {
-					alert('Please provide a reason client is visiting your agency');
-					return false;
-				}
-				document.clientManagerForm.method.value='submit_erconsent';
-				document.clientManagerForm.submit();
-			}
-			
-		</script>
+    function cancel() {
+        location.href = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Search.do';
+    }
 
-<br />
-<br />
-<br />
-<html:form action="/PMmodule/ClientManager.do">
-	<input type="hidden" name="id"
-		value="<c:out value="${requestScope.id}"/>" />
-	<input type="hidden" name="method" value="submit_erconsent" />
-	<input type="hidden" name="erconsent.consentType"
-		value="<%=request.getParameter("consent") %>">
+    function submit() {
+        var reason = document.clientManagerForm.elements['erconsent.consentReason'].value;
+        if (reason == '') {
+            alert('Please provide a reason client is visiting your agency');
+            return false;
+        }
+        document.clientManagerForm.method.value = 'submit_erconsent';
+        document.clientManagerForm.submit();
+    }
 
-	<table width="100%" cellpadding="3" cellspacing="4">
-		<tr>
-			<td>Please enter reason client is visiting your agency
-			(presenting problem):</td>
-		</tr>
-		<tr>
+</script>
 
-		</tr>
-		<td><html:textarea property="erconsent.consentReason" rows="8"
-			cols="80"></html:textarea></td>
-		<tr>
-			<td><input type="button" value="submit" onclick="submit()" /> <input
-				type="button" value="Cancel" onclick="cancel()" /></td>
-	</table>
-</html:form>
+<br/>
+<br/>
+<br/>
+<form action="${pageContext.request.contextPath}/PMmodule/ClientManager.do" method="post">`
+    <input type="hidden" name="id"
+           value="<c:out value="${requestScope.id}"/>"/>
+    <input type="hidden" name="method" value="submit_erconsent"/>
+    <input type="hidden" name="erconsent.consentType"
+           value="<%=request.getParameter("consent") %>">
+
+    <table width="100%" cellpadding="3" cellspacing="4">
+        <tr>
+            <td>Please enter reason client is visiting your agency
+                (presenting problem):
+            </td>
+        </tr>
+        <tr>
+
+        </tr>
+        <td><textarea name="consentReason" rows="8" cols="80"></textarea></td>
+        <tr>
+            <td><input type="button" value="submit" onclick="submit()"/> <input
+                    type="button" value="Cancel" onclick="cancel()"/></td>
+    </table>
+</form>

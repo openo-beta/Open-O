@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (C) 2011-2012  PeaceWorks Technology Solutions
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- * 
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -60,13 +61,11 @@ public class ERxPatientRecordSynchronizer implements PatientRecordSynchronizer {
 
     /**
      * Send a patient's data to the remote prescription provider.
-     * 
-     * @param patient
-     *            The patient data to send to the remote prescription provider.
-     * @param providerId
-     *            The OSCAR ID of the provider who the patient is seeing and who
-     *            may prescribe something for the patient using the external
-     *            prescription provider.
+     *
+     * @param patient    The patient data to send to the remote prescription provider.
+     * @param providerId The OSCAR ID of the provider who the patient is seeing and who
+     *                   may prescribe something for the patient using the external
+     *                   prescription provider.
      */
     @Override
     public void sendRecord(Demographic patient, String providerId) {
@@ -76,7 +75,7 @@ public class ERxPatientRecordSynchronizer implements PatientRecordSynchronizer {
         /*
          * The credentials of the facility who administers the medical records
          * of the patient
-         * 
+         *
          * FUTURE: this should get credential objects from a factory class that
          * knows the provider's preferred external prescription provider; where
          * the credential objects returned conform to the signature of
@@ -87,7 +86,7 @@ public class ERxPatientRecordSynchronizer implements PatientRecordSynchronizer {
         /*
          * The credentials of the doctor who will be seeing (and possibly
          * prescribing-something-to) the patient
-         * 
+         *
          * FUTURE: this should get credential objects from a factory class that
          * knows the provider's preferred external prescription provider; where
          * the credential objects returned conform to the signature of
@@ -97,7 +96,7 @@ public class ERxPatientRecordSynchronizer implements PatientRecordSynchronizer {
 
         /*
          * The object which will facilitate communications
-         * 
+         *
          * FUTURE: this should get communicator objects from a factory class
          * that knows the provider's preferred external prescription provider;
          * where the communicator objects returned conform to the signature of
@@ -148,17 +147,17 @@ public class ERxPatientRecordSynchronizer implements PatientRecordSynchronizer {
                                     patientLastModifiedDate));
                 } catch (SecurityException e) {
                     logger.error("Failed to send a patient record to an external prescription provider because the remote web service denied us access: "
-                                    + e.getMessage()
-                                    + " This is likely due to incorrectly-configured provider or facility credentials.",e);
+                            + e.getMessage()
+                            + " This is likely due to incorrectly-configured provider or facility credentials.", e);
                 }
             } catch (NumberFormatException e) {
                 logger.error("Failed to translate a patient because an unparsable number was given: "
-                                + e.getMessage(),e);
+                        + e.getMessage(), e);
             }
         } catch (IllegalArgumentException e) {
-            logger.error("Failed to send a patient record to an external prescription provider because the doctor ID given was not valid, or did not have any external prescription provider data stored.",e);
+            logger.error("Failed to send a patient record to an external prescription provider because the doctor ID given was not valid, or did not have any external prescription provider data stored.", e);
         } catch (MalformedURLException e) {
-            logger.error("Failed to send a patient record to an external prescription provider because the web service URL was not valid.",e);
+            logger.error("Failed to send a patient record to an external prescription provider because the web service URL was not valid.", e);
         } finally {
             logger.info("Completed attempt to send a patient record to an external prescription provider.");
         }

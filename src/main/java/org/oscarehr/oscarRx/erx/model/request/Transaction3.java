@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (C) 2011-2012  PeaceWorks Technology Solutions
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- * 
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,25 +36,24 @@ import javax.xml.soap.SOAPFactory;
 
 /**
  * A value type that stores data about a single web transaction with the External Prescriber.
- * 
+ * <p>
  * This class conforms to the External Prescriber's Transaction3 structure defined on their wiki
  * (retrieved 2011-12-30)
- * 
+ *
  * @see <a
- *      href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=GetPrescriptions5">The
- *      the External Prescriber GetPrescriptions5 web services demo page</a>
+ * href="https://the External Prescriber.org:5201/oscar/ZRxPMISBridge/PMISBridge.asmx?op=GetPrescriptions5">The
+ * the External Prescriber GetPrescriptions5 web services demo page</a>
  * @see <a
- *      href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgePatientV3.ashx#TransactionD_7">The
- *      the External Prescriber wiki</a>
+ * href="http://the External Prescriber.dyndns.org:88/Wiki/Dev/ExternDev.PMISBridgePatientV3.ashx#TransactionD_7">The
+ * the External Prescriber wiki</a>
  */
 public class Transaction3 {
     /**
      * Formats dates in a way that the the External Prescriber web services can understand.
-     * 
-     * @param date
-     *            The date to format. Can be null.
+     *
+     * @param date The date to format. Can be null.
      * @return The formatted date. If the date to format is null, then it
-     *         returns an empty string.
+     * returns an empty string.
      */
     private static String formatDateTime(Date date) {
         if (date == null) {
@@ -91,23 +91,18 @@ public class Transaction3 {
 
     /**
      * Construct a Transaction3.
-     * 
-     * @param transactionId
-     *            A strongly-recommended, unique, sequential number used for
-     *            debugging purposes.
-     * @param engine
-     *            The name of the software connecting to the web service.
-     * @param sender
-     *            The name of the software vendor that created the software
-     *            connecting to the web service.
-     * @param version
-     *            The version of the software connecting to the web service.
-     * @param datePatientLastModifiedLocally
-     *            The last-modified-date of the latest updated patient within
-     *            the PMIS database.
+     *
+     * @param transactionId                  A strongly-recommended, unique, sequential number used for
+     *                                       debugging purposes.
+     * @param engine                         The name of the software connecting to the web service.
+     * @param sender                         The name of the software vendor that created the software
+     *                                       connecting to the web service.
+     * @param version                        The version of the software connecting to the web service.
+     * @param datePatientLastModifiedLocally The last-modified-date of the latest updated patient within
+     *                                       the PMIS database.
      */
     public Transaction3(long transactionId, String engine, String sender, String version,
-            Date datePatientLastModifiedLocally) {
+                        Date datePatientLastModifiedLocally) {
         this.transactionId = transactionId;
         this.engine = engine;
         this.sender = sender;
@@ -138,23 +133,21 @@ public class Transaction3 {
 
     /**
      * Get a SOAP document fragment representing this object.
-     * 
+     *
      * @return A SOAPElement representing this transaction.
-     * @throws SOAPException
-     *             If an error occurred when trying to construct the element.
+     * @throws SOAPException If an error occurred when trying to construct the element.
      */
     public SOAPElement getSOAPElement() throws SOAPException {
         SOAPElement answer = SOAPFactory.newInstance().createElement(
                 "transaction");
-        
+
         String transId = "";
-       
+
         if (this.transactionId >= Integer.MAX_VALUE) {
-        	//bit shift to get the right most 32 bit values
-        	transId = Integer.toString((int) (this.transactionId << 32));
-        }
-        else {
-        	transId = Integer.toString((int) this.transactionId);
+            //bit shift to get the right most 32 bit values
+            transId = Integer.toString((int) (this.transactionId << 32));
+        } else {
+            transId = Integer.toString((int) this.transactionId);
         }
 
         answer.addChildElement("TransactionId").addTextNode(transId);
@@ -182,40 +175,35 @@ public class Transaction3 {
     }
 
     /**
-     * @param engine
-     *            the engine to set
+     * @param engine the engine to set
      */
     public void setEngine(String engine) {
         this.engine = engine;
     }
 
     /**
-     * @param pmisLastUpdate
-     *            the pmisLastUpdate to set
+     * @param pmisLastUpdate the pmisLastUpdate to set
      */
     public void setPmisLastUpdate(Date pmisLastUpdate) {
         this.pmisLastUpdate = pmisLastUpdate;
     }
 
     /**
-     * @param sender
-     *            the sender to set
+     * @param sender the sender to set
      */
     public void setSender(String sender) {
         this.sender = sender;
     }
 
     /**
-     * @param transactionId
-     *            the transactionId to set
+     * @param transactionId the transactionId to set
      */
     public void setTransactionId(long transactionId) {
         this.transactionId = transactionId;
     }
 
     /**
-     * @param version
-     *            the version to set
+     * @param version the version to set
      */
     public void setVersion(String version) {
         this.version = version;

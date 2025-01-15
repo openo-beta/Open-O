@@ -23,12 +23,16 @@
  * Ontario, Canada 
  */
 --%>
+
+<%@page import="java.util.List" %>
+<%@page import="org.oscarehr.common.model.CtlBillingServicePremium" %>
+<%@page import="org.oscarehr.common.dao.CtlBillingServicePremiumDao" %>
+
 <% 
   
 
   String[] param2 =new String[10];
-  
- 
+
   List<CtlBillingServicePremium> cbsps = ctlBillingServicePremiumDao.findByStatus("A");
 		  
    int rCount = 0;     int rCount1 = 0;  int tCount = 0;  int tCount1 = 0; int tCount2 = 0; int tCount3 = 0;
@@ -78,8 +82,7 @@
 			<form method="post" name="form1"
 				action="dbManageBillingform_premium.jsp">
 			<tr>
-				<td><bean:message
-					key="billing.manageBillingform_premium.msgAdd" /></td>
+				<td><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_premium.msgAdd"/></td>
 			</tr>
 			<% for (int x=0; x<10 ; x++) { %>
 			<tr>
@@ -89,7 +92,7 @@
 			<%}%>
 			<tr>
 				<td><input type="submit" name="submit"
-					value="<bean:message key="billing.manageBillingform_premium.btnAdd"/>"></td>
+					value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_premium.btnAdd"/>"></td>
 			</tr>
 			</form>
 		</table>
@@ -99,12 +102,9 @@
 			<form method="post" name="form1"
 				action="dbManageBillingform_premium_delete.jsp">
 			<tr>
-				<td class="rightBorder"><bean:message
-					key="billing.manageBillingform_premium.msgDescription" /></td>
-				<td class="rightBorder"><bean:message
-					key="billing.manageBillingform_premium.msgDescription" /></td>
-				<td><bean:message
-					key="billing.manageBillingform_premium.msgDescription" /></td>
+				<td class="rightBorder"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_premium.msgDescription"/></td>
+				<td class="rightBorder"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_premium.msgDescription"/></td>
+				<td><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_premium.msgDescription"/></td>
 
 			</tr>
 			<% tCount = 0;
@@ -138,7 +138,7 @@
 			<tr>
 
 				<td><input type="submit" name="submit"
-					value="<bean:message key="billing.manageBillingform_premium.btnDelete"/>"></td>
+					value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_premium.btnDelete"/>"></td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 			</tr>

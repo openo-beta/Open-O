@@ -24,6 +24,10 @@
  */
 -->
 
+<%@page import="java.util.List" %>
+<%@page import="org.oscarehr.common.model.CtlBillingService" %>
+<%@page import="org.oscarehr.common.dao.CtlBillingServiceDao" %>
+
 <form method="post" name="form1"
 	action="dbManageBillingform_service.jsp">
 <table width="75%" border="0" cellpadding="3" bgcolor="#9999CC">
@@ -56,6 +60,7 @@ int rCount = 0;
   } else {
   %>
 		<%
+
     for (CtlBillingService result:results) {
 
       bodd=bodd?false:true; //for the color of rows
@@ -98,7 +103,7 @@ int rCount = 0;
 	</tr>
 	<tr>
 		<td colspan="3"><input type="submit" name="submit"
-			value="<bean:message key="billing.manageBillingform_service.btnUpdate"/>"><input
+			value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_service.btnUpdate"/>"><input
 			type="hidden" name="typeid"
 			value="<%=request.getParameter("billingform")%>"><input
 			type="hidden" name="type" value="<%=service_name%>"></td>

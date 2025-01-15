@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2005, 2009 IBM Corporation and others.
@@ -5,20 +6,20 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
- *
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -32,14 +33,12 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.oscarehr.util.MiscUtils;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.quatro.model.security.SecProvider;
 
 /**
- * 
  * @author JZhang
- *
  */
 
 public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProviderDao {
@@ -99,8 +98,8 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     public SecProvider findById(java.lang.String id, String status) {
         logger.debug("getting Provider instance with id: " + id);
         try {
-            String sql = "from SecProvider where id=? and status=?";
-            List lst = this.getHibernateTemplate().find(sql, new Object[] { id, status });
+            String sql = "from SecProvider where id=?0 and status=?1";
+            List lst = this.getHibernateTemplate().find(sql, new Object[]{id, status});
             if (lst.size() == 0)
                 return null;
             else
@@ -115,10 +114,10 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     @Override
     public List findByExample(SecProviderDao instance) {
         logger.debug("finding Provider instance by example");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             List results = session.createCriteria(
-                    "com.quatro.model.security.SecProvider").add(
+                            "com.quatro.model.security.SecProvider").add(
                             Example.create(instance))
                     .list();
             logger.debug("find by example successful, result size: "
@@ -127,8 +126,6 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         } catch (RuntimeException re) {
             logger.error("find by example failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
@@ -136,18 +133,16 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     public List findByProperty(String propertyName, Object value) {
         logger.debug("finding Provider instance with property: " + propertyName
                 + ", value: " + value);
-        Session session = getSession();
+        Session session = currentSession();
         try {
             String queryString = "from Provider as model where model."
-                    + propertyName + "= ?";
+                    + propertyName + "= ?1";
             Query queryObject = session.createQuery(queryString);
-            queryObject.setParameter(0, value);
+            queryObject.setParameter(1, value);
             return queryObject.list();
         } catch (RuntimeException re) {
             logger.error("find by property name failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
@@ -234,7 +229,7 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
     @Override
     public List findAll() {
         logger.debug("finding all Provider instances");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             String queryString = "from Provider";
             Query queryObject = session.createQuery(queryString);
@@ -242,15 +237,13 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         } catch (RuntimeException re) {
             logger.error("find all failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
     @Override
     public SecProviderDao merge(SecProviderDao detachedInstance) {
         logger.debug("merging Provider instance");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             SecProviderDao result = (SecProviderDao) session.merge(detachedInstance);
             logger.debug("merge successful");
@@ -258,38 +251,32 @@ public class SecProviderDaoImpl extends HibernateDaoSupport implements SecProvid
         } catch (RuntimeException re) {
             logger.error("merge failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
     @Override
     public void attachDirty(SecProviderDao instance) {
         logger.debug("attaching dirty Provider instance");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             session.saveOrUpdate(instance);
             logger.debug("attach successful");
         } catch (RuntimeException re) {
             logger.error("attach failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 
     @Override
     public void attachClean(SecProviderDao instance) {
         logger.debug("attaching clean Provider instance");
-        Session session = getSession();
+        Session session = currentSession();
         try {
             session.lock(instance, LockMode.NONE);
             logger.debug("attach successful");
         } catch (RuntimeException re) {
             logger.error("attach failed", re);
             throw re;
-        } finally {
-            this.releaseSession(session);
         }
     }
 }

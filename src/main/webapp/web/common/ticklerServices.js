@@ -24,105 +24,108 @@
 
 */
 angular.module("ticklerServices", [])
-	.service("ticklerService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/tickler',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-	      
-        setCompleted: function (ticklerIds) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/complete',
-                method: "POST",
-                data: JSON.stringify({"ticklers":ticklerIds}),
-                headers: {'Content-Type': 'application/json'}
-              }).then(function (response) {
-            	  deferred.resolve(response.data);
-                },function (data, status, headers, config) {
-                	deferred.reject("An error occured while setting ticklers to completed status");
+    .service("ticklerService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/tickler',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+
+            setCompleted: function (ticklerIds) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/complete',
+                    method: "POST",
+                    data: JSON.stringify({"ticklers": ticklerIds}),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while setting ticklers to completed status");
                 });
-           return deferred.promise;
-        },
-        setDeleted: function (ticklerIds) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/delete',
-                method: "POST",
-                data: JSON.stringify({"ticklers":ticklerIds}),
-                headers: {'Content-Type': 'application/json'}
-              }).then(function (data) {
-            	  deferred.resolve(data.data);
-                },function (data, status, headers, config) {
-                	deferred.reject("An error occured while setting ticklers to deleted status");
+                return deferred.promise;
+            },
+            setDeleted: function (ticklerIds) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/delete',
+                    method: "POST",
+                    data: JSON.stringify({"ticklers": ticklerIds}),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (data) {
+                    deferred.resolve(data.data);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while setting ticklers to deleted status");
                 });
-           return deferred.promise;
-        },
-        search: function (filter, startIndex,limit) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/search?startIndex='+startIndex+'&limit='+limit,
-                method: "POST",
-                data: JSON.stringify(filter),
-                headers: {'Content-Type': 'application/json'}
-              }).then(function (data) {
-            	  deferred.resolve(data.data);
-                },function (data, status, headers, config) {
-                	deferred.reject("An error occured while searching ticklers");
+                return deferred.promise;
+            },
+            search: function (filter, startIndex, limit) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/search?startIndex=' + startIndex + '&limit=' + limit,
+                    method: "POST",
+                    data: JSON.stringify(filter),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (data) {
+                    deferred.resolve(data.data);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while searching ticklers");
                 });
-           return deferred.promise;
-        },
-        update: function (tickler) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/update',
-                method: "POST",
-                data: JSON.stringify(tickler),
-                headers: {'Content-Type': 'application/json'}
-              }).then(function (data) {
-            	  deferred.resolve(data.data);
-                },function (data, status, headers, config) {
-                	deferred.reject("An error occured while updating tickler");
+                return deferred.promise;
+            },
+            update: function (tickler) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/update',
+                    method: "POST",
+                    data: JSON.stringify(tickler),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (data) {
+                    deferred.resolve(data.data);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while updating tickler");
                 });
-           return deferred.promise;
-        },getTextSuggestions: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/textSuggestions',
-                method: "GET"
-              }).then(function (response) {
-            	  deferred.resolve(response.data);
-                },function (data, status, headers, config) {
-                	deferred.reject("An error occured while getting tickler text suggestions");
+                return deferred.promise;
+            }, getTextSuggestions: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/textSuggestions',
+                    method: "GET"
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while getting tickler text suggestions");
                 });
-           return deferred.promise;
-        },
-        add: function (tickler) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/add',
-                method: "POST",
-                data: JSON.stringify(tickler),
-                headers: {'Content-Type': 'application/json'}
-              }).then(function (response) {
-            	  deferred.resolve(response.data);
-                },function (data, status, headers, config) {
-                	deferred.reject("An error occured while saving tickler");
+                return deferred.promise;
+            },
+            add: function (tickler) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/add',
+                    method: "POST",
+                    data: JSON.stringify(tickler),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while saving tickler");
                 });
-           return deferred.promise;
-        },
-        getTicklerOverdueCount: function (demographicNo) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/'+demographicNo+'/count/overdue',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function (response) {
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting tickler overdue count");
+                return deferred.promise;
+            },
+            getTicklerOverdueCount: function (demographicNo) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/' + demographicNo + '/count/overdue',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting tickler overdue count");
                 });
-           return deferred.promise;
-        }
-    };
-});
+                return deferred.promise;
+            }
+        };
+    });

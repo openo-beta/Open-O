@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -46,9 +46,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -70,13 +70,11 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "c1Medication",
-    "c2MedicationOrC3MedicationOrC4Medication"
+        "c1Medication",
+        "c2MedicationOrC3MedicationOrC4Medication"
 })
 @XmlRootElement(name = "CList_of_all_current_medications__including_prescribed_and_alternative_over_the_counter_medicati")
 public class CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTheCounterMedicati {
@@ -84,24 +82,22 @@ public class CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTh
     @XmlElement(name = "C1__Medication_", required = true)
     protected String c1Medication;
     @XmlElementRefs({
-        @XmlElementRef(name = "C4__Medication_", type = JAXBElement.class),
-        @XmlElementRef(name = "CHelp_is_needed_", type = JAXBElement.class),
-        @XmlElementRef(name = "CHelp_is_provided_", type = JAXBElement.class),
-        @XmlElementRef(name = "C2__Medication_", type = JAXBElement.class),
-        @XmlElementRef(name = "C5__Medication_", type = JAXBElement.class),
-        @XmlElementRef(name = "C3__Medication_", type = JAXBElement.class),
-        @XmlElementRef(name = "CDosage_", type = JAXBElement.class),
-        @XmlElementRef(name = "CTaken_as_prescribed_", type = JAXBElement.class)
+            @XmlElementRef(name = "C4__Medication_", type = JAXBElement.class),
+            @XmlElementRef(name = "CHelp_is_needed_", type = JAXBElement.class),
+            @XmlElementRef(name = "CHelp_is_provided_", type = JAXBElement.class),
+            @XmlElementRef(name = "C2__Medication_", type = JAXBElement.class),
+            @XmlElementRef(name = "C5__Medication_", type = JAXBElement.class),
+            @XmlElementRef(name = "C3__Medication_", type = JAXBElement.class),
+            @XmlElementRef(name = "CDosage_", type = JAXBElement.class),
+            @XmlElementRef(name = "CTaken_as_prescribed_", type = JAXBElement.class)
     })
     protected List<JAXBElement<String>> c2MedicationOrC3MedicationOrC4Medication;
 
     /**
      * Gets the value of the c1Medication property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getC1Medication() {
         return c1Medication;
@@ -109,11 +105,9 @@ public class CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTh
 
     /**
      * Sets the value of the c1Medication property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setC1Medication(String value) {
         this.c1Medication = value;
@@ -121,20 +115,20 @@ public class CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTh
 
     /**
      * Gets the value of the c2MedicationOrC3MedicationOrC4Medication property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the c2MedicationOrC3MedicationOrC4Medication property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getC2MedicationOrC3MedicationOrC4Medication().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link String }{@code >}
@@ -145,8 +139,6 @@ public class CListOfAllCurrentMedicationsIncludingPrescribedAndAlternativeOverTh
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * 
-     * 
      */
     public List<JAXBElement<String>> getC2MedicationOrC3MedicationOrC4Medication() {
         if (c2MedicationOrC3MedicationOrC4Medication == null) {

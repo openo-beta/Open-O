@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -33,31 +33,31 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name="dxresearch")
-public class Dxresearch  extends AbstractModel<Integer> implements java.io.Serializable {
+@Table(name = "dxresearch")
+public class Dxresearch extends AbstractModel<Integer> implements java.io.Serializable {
 
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="dxresearch_no")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "dxresearch_no")
     private Integer dxresearchNo;
-	@Column(name="demographic_no")
+    @Column(name = "demographic_no")
     private Integer demographicNo;
-	@Column(name="start_date")
-	@Temporal(TemporalType.DATE)
+    @Column(name = "start_date")
+    @Temporal(TemporalType.DATE)
     private Date startDate;
-	@Column(name="update_date")
-	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
     private Character status;
-    @Column(name="dxresearch_code")
+    @Column(name = "dxresearch_code")
     private String dxresearchCode;
-    @Column(name="coding_system")
+    @Column(name = "coding_system")
     private String codingSystem;
     private byte association;
 
     private String providerNo;
-    
+
     public Dxresearch() {
     }
 
@@ -65,19 +65,20 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public Dxresearch(byte association) {
         this.association = association;
     }
+
     public Dxresearch(Integer demographicNo, Date startDate, Date updateDate, Character status, String dxresearchCode, String codingSystem, byte association, String providerNo) {
-       this.demographicNo = demographicNo;
-       this.startDate = startDate;
-       this.updateDate = updateDate;
-       this.status = status;
-       this.dxresearchCode = dxresearchCode;
-       this.codingSystem = codingSystem;
-       this.association = association;
-       this.providerNo = providerNo;
+        this.demographicNo = demographicNo;
+        this.startDate = startDate;
+        this.updateDate = updateDate;
+        this.status = status;
+        this.dxresearchCode = dxresearchCode;
+        this.codingSystem = codingSystem;
+        this.association = association;
+        this.providerNo = providerNo;
     }
 
     public Integer getId() {
-    	return getDxresearchNo();
+        return getDxresearchNo();
     }
 
     public Integer getDxresearchNo() {
@@ -87,6 +88,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setDxresearchNo(Integer dxresearchNo) {
         this.dxresearchNo = dxresearchNo;
     }
+
     public Integer getDemographicNo() {
         return this.demographicNo;
     }
@@ -94,6 +96,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setDemographicNo(Integer demographicNo) {
         this.demographicNo = demographicNo;
     }
+
     public Date getStartDate() {
         return this.startDate;
     }
@@ -101,6 +104,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+
     public Date getUpdateDate() {
         return this.updateDate;
     }
@@ -108,6 +112,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+
     public Character getStatus() {
         return this.status;
     }
@@ -115,6 +120,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setStatus(Character status) {
         this.status = status;
     }
+
     public String getDxresearchCode() {
         return this.dxresearchCode;
     }
@@ -122,6 +128,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setDxresearchCode(String dxresearchCode) {
         this.dxresearchCode = dxresearchCode;
     }
+
     public String getCodingSystem() {
         return this.codingSystem;
     }
@@ -129,6 +136,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setCodingSystem(String codingSystem) {
         this.codingSystem = codingSystem;
     }
+
     public byte getAssociation() {
         return this.association;
     }
@@ -136,20 +144,19 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
     public void setAssociation(byte association) {
         this.association = association;
     }
-    
-    
+
 
     public String getProviderNo() {
-		return providerNo;
-	}
+        return providerNo;
+    }
 
 
-	public void setProviderNo(String providerNo) {
-		this.providerNo = providerNo;
-	}
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
 
-	@Override
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -176,7 +183,7 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
         if ((this.codingSystem == null) ? (other.codingSystem != null) : !this.codingSystem.equals(other.codingSystem)) {
             return false;
         }
-        
+
         if ((this.providerNo == null) ? (other.providerNo != null) : !this.providerNo.equals(other.providerNo)) {
             return false;
         }
@@ -198,9 +205,9 @@ public class Dxresearch  extends AbstractModel<Integer> implements java.io.Seria
 
 
     @PrePersist
-	@PreUpdate
-	protected void jpaUpdateDate() {
-		this.updateDate = new Date();
-	}
+    @PreUpdate
+    protected void jpaUpdateDate() {
+        this.updateDate = new Date();
+    }
 
 }

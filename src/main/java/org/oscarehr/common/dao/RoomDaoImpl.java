@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -50,14 +51,13 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
     /**
      * Does room with id exist
      *
-     * @param roomId
-     *               id
+     * @param roomId id
      * @return true if room exists
      */
     @Override
     public boolean roomExists(Integer roomId) {
-        Query query = entityManager.createQuery("select count(*) from Room r where r.id = ?");
-        query.setParameter(0, roomId);
+        Query query = entityManager.createQuery("select count(*) from Room r where r.id = ?1");
+        query.setParameter(1, roomId);
 
         Long result = (Long) query.getSingleResult();
 
@@ -71,8 +71,7 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
     /**
      * Get room by id
      *
-     * @param roomId
-     *               id
+     * @param roomId id
      * @return room
      */
     @Override
@@ -86,8 +85,7 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
     /**
      * Get rooms
      *
-     * @param active
-     *               filter
+     * @param active filter
      * @return list of rooms
      */
     @SuppressWarnings("unchecked")
@@ -186,8 +184,7 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
     /**
      * Save room
      *
-     * @param room
-     *             room to save
+     * @param room room to save
      */
     @Deprecated
     @Override
@@ -216,11 +213,14 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
     public String getRoomsQueryString(Integer facilityId, Integer programId, Boolean active) {
         StringBuilder queryBuilder = new StringBuilder("select r from Room r");
 
-        queryBuilder.append(" where ");
+        if (facilityId != null || programId != null || active != null) {
+            queryBuilder.append(" where ");
+        }
 
+        int paramIndex = 1;
         boolean andClause = false;
         if (facilityId != null) {
-            queryBuilder.append("r.facilityId = ?");
+            queryBuilder.append("r.facilityId = ?" + paramIndex++);
             andClause = true;
         }
 
@@ -229,13 +229,13 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
                 queryBuilder.append(" and ");
             else
                 andClause = true;
-            queryBuilder.append("r.programId = ?");
+            queryBuilder.append("r.programId = ?" + paramIndex++);
         }
 
         if (active != null) {
             if (andClause)
                 queryBuilder.append(" and ");
-            queryBuilder.append("r.active = ?");
+            queryBuilder.append("r.active = ?" + paramIndex++);
         }
 
         return queryBuilder.toString();
@@ -244,12 +244,15 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
     @Override
     public String getAssignedBedRoomsQueryString(Integer facilityId, Integer programId, Boolean active) {
         StringBuilder queryBuilder = new StringBuilder("select r from Room r");
+        
+        if (facilityId != null || programId != null || active != null) {
+            queryBuilder.append(" where ");
+        }
 
-        queryBuilder.append(" where ");
-
+        int paramIndex = 1;
         boolean andClause = false;
         if (facilityId != null) {
-            queryBuilder.append("r.facilityId = ?");
+            queryBuilder.append("r.facilityId = ?" + paramIndex++);
             andClause = true;
         }
 
@@ -259,7 +262,7 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
             } else {
                 andClause = true;
             }
-            queryBuilder.append("r.programId = ?");
+            queryBuilder.append("r.programId = ?" + paramIndex++);
         }
 
         if (active != null) {
@@ -269,7 +272,7 @@ public class RoomDaoImpl extends AbstractDaoImpl<Room> implements RoomDao {
                 andClause = true;
             }
 
-            queryBuilder.append("r.active = ?");
+            queryBuilder.append("r.active = ?" + paramIndex++);
         }
 
         if (andClause) {

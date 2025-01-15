@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+
 import org.apache.xmlbeans.XmlOptions;
 import org.oscarehr.caisi_integrator.util.MiscUtils;
 
@@ -80,7 +82,6 @@ import cdshrm.TransactionInformationDocument.TransactionInformation;
 import oscar.OscarProperties;
 
 /**
- *
  * @author ronnie
  */
 public class CreateHRMFile {
@@ -96,26 +97,26 @@ public class CreateHRMFile {
         writeDemographics(demographic, HRMdemo);
         writeReportsReceived(reports, patientRecord);
 
-	XmlOptions options = new XmlOptions();
-	options.put( XmlOptions.SAVE_PRETTY_PRINT );
-	options.put( XmlOptions.SAVE_PRETTY_PRINT_INDENT, 3 );
-	options.put( XmlOptions.SAVE_AGGRESSIVE_NAMESPACES );
+        XmlOptions options = new XmlOptions();
+        options.put(XmlOptions.SAVE_PRETTY_PRINT);
+        options.put(XmlOptions.SAVE_PRETTY_PRINT_INDENT, 3);
+        options.put(XmlOptions.SAVE_AGGRESSIVE_NAMESPACES);
 
-        HashMap<String,String> suggestedPrefix = new HashMap<String,String>();
-        suggestedPrefix.put("cds_dt","cdsd");
+        HashMap<String, String> suggestedPrefix = new HashMap<String, String>();
+        suggestedPrefix.put("cds_dt", "cdsd");
         options.setSaveSuggestedPrefixes(suggestedPrefix);
-	options.setSaveOuter();
+        options.setSaveOuter();
 
-	if(!filepath.contains(File.separator)) {
-		filepath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + File.separator + filepath;
-	}
+        if (!filepath.contains(File.separator)) {
+            filepath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + File.separator + filepath;
+        }
         File file = new File(filepath);
         try {
             omdCdsDoc.save(file, options);
         } catch (IOException ex) {
             org.oscarehr.util.MiscUtils.getLogger();
         }
-        
+
         MiscUtils.getLogger().debug("saved HRM file: " + filepath);
     }
 
@@ -127,28 +128,28 @@ public class CreateHRMFile {
         cdsDt.PersonNameStandard.LegalName.LastName lastName = null;
         cdsDt.PersonNamePurposeCode.Enum namePurpose = null;
         OtherNames[] otherNames = personName.getOtherNamesArray();
-        
-        if (legalName!=null) {
+
+        if (legalName != null) {
             lastName = legalName.getLastName();
             firstName = legalName.getFirstName();
             namePurpose = legalName.getNamePurpose();
         } else if (otherNames.length > 0) {
-        	for (OtherNames.OtherName oName : otherNames[0].getOtherNameArray()) {
-	        	if (oName.getPartType().toString().equals("FAMC")) {
-	        		lastName = cdsDt.PersonNameStandard.LegalName.LastName.Factory.newInstance();
-	        		lastName.setPart(oName.getPart());
-	        		lastName.setPartQualifier(oName.getPartQualifier());
-	        		lastName.setPartType(oName.getPartType());
-	        	}
-	            if (oName.getPartType().toString().equals("GIV")) {
-	            	firstName = cdsDt.PersonNameStandard.LegalName.FirstName.Factory.newInstance();
-	            	firstName.setPart(oName.getPart());
-	            	firstName.setPartQualifier(oName.getPartQualifier());
-	            	firstName.setPartType(oName.getPartType());
-	            }	
-        	}
+            for (OtherNames.OtherName oName : otherNames[0].getOtherNameArray()) {
+                if (oName.getPartType().toString().equals("FAMC")) {
+                    lastName = cdsDt.PersonNameStandard.LegalName.LastName.Factory.newInstance();
+                    lastName.setPart(oName.getPart());
+                    lastName.setPartQualifier(oName.getPartQualifier());
+                    lastName.setPartType(oName.getPartType());
+                }
+                if (oName.getPartType().toString().equals("GIV")) {
+                    firstName = cdsDt.PersonNameStandard.LegalName.FirstName.Factory.newInstance();
+                    firstName.setPart(oName.getPart());
+                    firstName.setPartQualifier(oName.getPartQualifier());
+                    firstName.setPartType(oName.getPartType());
+                }
+            }
         } else {
-        	org.oscarehr.util.MiscUtils.getLogger();
+            org.oscarehr.util.MiscUtils.getLogger();
         }
 
         PersonNameStandard HRMpersonName = HRMdemo.addNewNames();
@@ -156,117 +157,124 @@ public class CreateHRMFile {
         PersonNameStandard.LegalName.FirstName HRMfirstName = HRMlegalName.addNewFirstName();
         PersonNameStandard.LegalName.LastName HRMlastName = HRMlegalName.addNewLastName();
 
-        if (firstName.getPart()!=null) HRMfirstName.setPart(firstName.getPart());
+        if (firstName.getPart() != null) HRMfirstName.setPart(firstName.getPart());
         else HRMfirstName.setPart("");
         HRMfirstName.setPartType(PersonNamePartTypeCode.GIV);
         HRMfirstName.setPartQualifier(PersonNamePartQualifierCode.BR);
 
-        if (lastName.getPart()!=null) HRMlastName.setPart(lastName.getPart());
+        if (lastName.getPart() != null) HRMlastName.setPart(lastName.getPart());
         else HRMlastName.setPart("");
         HRMlastName.setPartType(PersonNamePartTypeCode.FAMC);
         HRMlastName.setPartQualifier(PersonNamePartQualifierCode.BR);
 
-        if (namePurpose!=null) HRMlegalName.setNamePurpose(PersonNamePurposeCode.Enum.forString(namePurpose.toString()));
+        if (namePurpose != null)
+            HRMlegalName.setNamePurpose(PersonNamePurposeCode.Enum.forString(namePurpose.toString()));
 
         //Gender
         cdsDt.Gender.Enum gender = demo.getGender();
-        if (gender!=null) HRMdemo.setGender(Gender.Enum.forString(gender.toString()));
+        if (gender != null) HRMdemo.setGender(Gender.Enum.forString(gender.toString()));
         else HRMdemo.setGender(Gender.U);
 
         //ChartNumber
-        if (demo.getChartNumber()!=null) HRMdemo.setChartNumber(demo.getChartNumber());
+        if (demo.getChartNumber() != null) HRMdemo.setChartNumber(demo.getChartNumber());
 
         //SIN
-        if (demo.getSIN()!=null) HRMdemo.setSIN(demo.getSIN());
+        if (demo.getSIN() != null) HRMdemo.setSIN(demo.getSIN());
 
         //UniqueVendorIdSequence
-        if (demo.getUniqueVendorIdSequence()!=null) HRMdemo.setUniqueVendorIdSequence(demo.getUniqueVendorIdSequence());
+        if (demo.getUniqueVendorIdSequence() != null)
+            HRMdemo.setUniqueVendorIdSequence(demo.getUniqueVendorIdSequence());
         else HRMdemo.setUniqueVendorIdSequence("");
 
         //Email
-        if (demo.getEmail()!=null) HRMdemo.setEmail(demo.getEmail());
+        if (demo.getEmail() != null) HRMdemo.setEmail(demo.getEmail());
 
         //NoteAboutPatient
-        if (demo.getNoteAboutPatient()!=null) HRMdemo.setNoteAboutPatient(demo.getNoteAboutPatient());
+        if (demo.getNoteAboutPatient() != null) HRMdemo.setNoteAboutPatient(demo.getNoteAboutPatient());
 
         //PreferredLanguages
         cdsDt.OfficialSpokenLanguageCode.Enum officialLang = demo.getPreferredOfficialLanguage();
-        if (officialLang!=null) HRMdemo.setPreferredOfficialLanguage(OfficialSpokenLanguageCode.Enum.forString(officialLang.toString()));
+        if (officialLang != null)
+            HRMdemo.setPreferredOfficialLanguage(OfficialSpokenLanguageCode.Enum.forString(officialLang.toString()));
 
-        if (demo.getPreferredSpokenLanguage()!=null) HRMdemo.setPreferredSpokenLanguage(demo.getPreferredSpokenLanguage());
+        if (demo.getPreferredSpokenLanguage() != null)
+            HRMdemo.setPreferredSpokenLanguage(demo.getPreferredSpokenLanguage());
 
         //DateOfBirth
-        if (demo.getDateOfBirth()!=null) HRMdemo.addNewDateOfBirth().setFullDate(demo.getDateOfBirth());
+        if (demo.getDateOfBirth() != null) HRMdemo.addNewDateOfBirth().setFullDate(demo.getDateOfBirth());
 
         //PersonStatus
         cdsDt.PersonStatus.Enum personStatus = demo.getPersonStatusCode().getPersonStatusAsEnum();
-        if (personStatus!=null) HRMdemo.setPersonStatusCode(PersonStatus.Enum.forString(personStatus.toString()));
+        if (personStatus != null) HRMdemo.setPersonStatusCode(PersonStatus.Enum.forString(personStatus.toString()));
         else HRMdemo.setPersonStatusCode(PersonStatus.O);
 
-        if (demo.getPersonStatusDate()!=null) HRMdemo.addNewPersonStatusDate().setFullDate(demo.getPersonStatusDate());
+        if (demo.getPersonStatusDate() != null)
+            HRMdemo.addNewPersonStatusDate().setFullDate(demo.getPersonStatusDate());
 
         //EnrollmentStatus
-        if(demo.getEnrolment() != null) {
-	        EnrolmentHistory[] enrolments = demo.getEnrolment().getEnrolmentHistoryArray();
-	        if (enrolments!=null && enrolments.length>0) {
-	            cdsDt.EnrollmentStatus.Enum enrollmentStatus = enrolments[0].getEnrollmentStatus();
-	            if (enrollmentStatus!=null) HRMdemo.setEnrollmentStatus(EnrollmentStatus.Enum.forString(enrollmentStatus.toString()));
-	
-	            if (enrolments[0].getEnrollmentDate()!=null) {
-	                HRMdemo.addNewEnrollmentDate().setFullDate(enrolments[0].getEnrollmentDate());
-	            }
-	            if (enrolments[0].getEnrollmentTerminationDate()!=null) {
-	                HRMdemo.addNewEnrollmentTerminationDate().setFullDate(enrolments[0].getEnrollmentTerminationDate());
-	            }
-	        }
+        if (demo.getEnrolment() != null) {
+            EnrolmentHistory[] enrolments = demo.getEnrolment().getEnrolmentHistoryArray();
+            if (enrolments != null && enrolments.length > 0) {
+                cdsDt.EnrollmentStatus.Enum enrollmentStatus = enrolments[0].getEnrollmentStatus();
+                if (enrollmentStatus != null)
+                    HRMdemo.setEnrollmentStatus(EnrollmentStatus.Enum.forString(enrollmentStatus.toString()));
+
+                if (enrolments[0].getEnrollmentDate() != null) {
+                    HRMdemo.addNewEnrollmentDate().setFullDate(enrolments[0].getEnrollmentDate());
+                }
+                if (enrolments[0].getEnrollmentTerminationDate() != null) {
+                    HRMdemo.addNewEnrollmentTerminationDate().setFullDate(enrolments[0].getEnrollmentTerminationDate());
+                }
+            }
         }
-	        
+
         //HealhCard
         cdsDt.HealthCard healthCard = demo.getHealthCard();
-        if (healthCard!=null) {
+        if (healthCard != null) {
             HealthCard HRMhealthCard = HRMdemo.addNewHealthCard();
-            if (healthCard.getNumber()!=null) HRMhealthCard.setNumber(healthCard.getNumber());
-            if (healthCard.getVersion()!=null) HRMhealthCard.setVersion(healthCard.getVersion());
-            if (healthCard.getProvinceCode()!=null) {
+            if (healthCard.getNumber() != null) HRMhealthCard.setNumber(healthCard.getNumber());
+            if (healthCard.getVersion() != null) HRMhealthCard.setVersion(healthCard.getVersion());
+            if (healthCard.getProvinceCode() != null) {
                 HRMhealthCard.setProvinceCode(HealthCardProvinceCode.Enum.forString(healthCard.getProvinceCode().toString()));
             }
-            if (healthCard.getExpirydate()!=null) HRMhealthCard.setExpirydate(healthCard.getExpirydate());
+            if (healthCard.getExpirydate() != null) HRMhealthCard.setExpirydate(healthCard.getExpirydate());
         }
 
         //PrimaryPhysician
         DemographicsDocument.Demographics.PrimaryPhysician primaryPhysician = demo.getPrimaryPhysician();
-        if (primaryPhysician!=null) {
+        if (primaryPhysician != null) {
             Demographics.PrimaryPhysician HRMprimaryPhysician = HRMdemo.addNewPrimaryPhysician();
-            if (primaryPhysician.getName()!=null) {
+            if (primaryPhysician.getName() != null) {
                 copyPersonNameSimple(HRMprimaryPhysician.addNewName(), primaryPhysician.getName());
             }
-            if (primaryPhysician.getOHIPPhysicianId()!=null)
+            if (primaryPhysician.getOHIPPhysicianId() != null)
                 HRMprimaryPhysician.setOHIPPhysicianId(primaryPhysician.getOHIPPhysicianId());
             else HRMprimaryPhysician.setOHIPPhysicianId("");
         }
 
         //Addresses
         cdsDt.Address[] addresses = demo.getAddressArray();
-        if (addresses!=null) {
+        if (addresses != null) {
             for (cdsDt.Address address : addresses) {
 
                 //copy address type
                 cdsDt.AddressType.Enum addressType = address.getAddressType();
 
-                if (address.getFormatted()!=null) {
-                    
+                if (address.getFormatted() != null) {
+
                     //address.formated
-                    Address HRMaddress =  HRMdemo.addNewAddress();
+                    Address HRMaddress = HRMdemo.addNewAddress();
                     HRMaddress.setFormatted(address.getFormatted());
 
                     //address type
-                    if (addressType!=null) HRMaddress.setAddressType(AddressType.Enum.forString(addressType.toString()));
+                    if (addressType != null)
+                        HRMaddress.setAddressType(AddressType.Enum.forString(addressType.toString()));
                     else HRMaddress.setAddressType(AddressType.R);
 
-                } else if (address.getStructured()!=null) {
-                    
+                } else if (address.getStructured() != null) {
+
                     //address.structured
-                    Address HRMaddress =  HRMdemo.addNewAddress();
+                    Address HRMaddress = HRMdemo.addNewAddress();
                     cdsDt.AddressStructured addrStruct = address.getStructured();
                     AddressStructured HRMaddrStruct = HRMaddress.addNewStructured();
 
@@ -274,18 +282,21 @@ public class CreateHRMFile {
                     HRMaddrStruct.setCountrySubdivisionCode(addrStruct.getCountrySubdivisionCode());
                     HRMaddrStruct.setLine1(addrStruct.getLine1());
 
-                    if (addrStruct.getLine2()!=null) HRMaddrStruct.setLine2(addrStruct.getLine2());
-                    if (addrStruct.getLine3()!=null) HRMaddrStruct.setLine3(addrStruct.getLine3());
+                    if (addrStruct.getLine2() != null) HRMaddrStruct.setLine2(addrStruct.getLine2());
+                    if (addrStruct.getLine3() != null) HRMaddrStruct.setLine3(addrStruct.getLine3());
 
                     cdsDt.PostalZipCode postalZipCode = addrStruct.getPostalZipCode();
                     PostalZipCode HRMpostalZipCode = HRMaddrStruct.addNewPostalZipCode();
-                    if (postalZipCode!=null) {
-                        if (postalZipCode.getPostalCode()!=null) HRMpostalZipCode.setPostalCode(postalZipCode.getPostalCode());
-                        else if (postalZipCode.getZipCode()!=null) HRMpostalZipCode.setZipCode(postalZipCode.getZipCode());
+                    if (postalZipCode != null) {
+                        if (postalZipCode.getPostalCode() != null)
+                            HRMpostalZipCode.setPostalCode(postalZipCode.getPostalCode());
+                        else if (postalZipCode.getZipCode() != null)
+                            HRMpostalZipCode.setZipCode(postalZipCode.getZipCode());
                     }
 
                     //address type
-                    if (addressType!=null) HRMaddress.setAddressType(AddressType.Enum.forString(addressType.toString()));
+                    if (addressType != null)
+                        HRMaddress.setAddressType(AddressType.Enum.forString(addressType.toString()));
                     else HRMaddress.setAddressType(AddressType.R);
                 }
             }
@@ -293,59 +304,63 @@ public class CreateHRMFile {
 
         //PhoneNumbers
         cdsDt.PhoneNumber[] phoneNumbers = demo.getPhoneNumberArray();
-        if (phoneNumbers!=null) {
+        if (phoneNumbers != null) {
             for (cdsDt.PhoneNumber phoneNumber : phoneNumbers) {
                 PhoneNumber HRMphoneNumber = HRMdemo.addNewPhoneNumber();
 
-                if (phoneNumber.getPhoneNumber()!=null) {
+                if (phoneNumber.getPhoneNumber() != null) {
                     HRMphoneNumber.setPhoneNumber(phoneNumber.getPhoneNumber());
-                } else if (phoneNumber.getNumber()!=null) {
+                } else if (phoneNumber.getNumber() != null) {
                     HRMphoneNumber.setNumber(phoneNumber.getNumber());
                     HRMphoneNumber.setAreaCode(phoneNumber.getAreaCode());
-                    if (phoneNumber.getExchange()!=null) HRMphoneNumber.setExchange(phoneNumber.getExchange());
+                    if (phoneNumber.getExchange() != null) HRMphoneNumber.setExchange(phoneNumber.getExchange());
                 }
-                if (phoneNumber.getExtension()!=null) HRMphoneNumber.setExtension(phoneNumber.getExtension());
+                if (phoneNumber.getExtension() != null) HRMphoneNumber.setExtension(phoneNumber.getExtension());
                 HRMphoneNumber.setPhoneNumberType(PhoneNumberType.Enum.forString(phoneNumber.getPhoneNumberType().toString()));
             }
         }
 
         //Contacts
         DemographicsDocument.Demographics.Contact[] contacts = demo.getContactArray();
-        if (contacts!=null) {
+        if (contacts != null) {
             for (DemographicsDocument.Demographics.Contact contact : contacts) {
-                if (contact.getName()!=null) {
+                if (contact.getName() != null) {
                     Contact HRMcontact = HRMdemo.addNewContact();
 
                     //contact name
                     cdsDt.PersonNameSimpleWithMiddleName contactName = contact.getName();
                     PersonNameSimpleWithMiddleName HRMcontactName = HRMcontact.addNewName();
 
-                    if (contactName.getFirstName()!=null) HRMcontactName.setFirstName(contactName.getFirstName());
-                    if (contactName.getLastName()!=null) HRMcontactName.setLastName(contactName.getLastName());
-                    if (contactName.getMiddleName()!=null) HRMcontactName.setMiddleName(contactName.getMiddleName());
+                    if (contactName.getFirstName() != null) HRMcontactName.setFirstName(contactName.getFirstName());
+                    if (contactName.getLastName() != null) HRMcontactName.setLastName(contactName.getLastName());
+                    if (contactName.getMiddleName() != null) HRMcontactName.setMiddleName(contactName.getMiddleName());
 
                     //contact purpose
                     cdsDt.PurposeEnumOrPlainText[] purposes = contact.getContactPurposeArray();
-                    if (purposes!=null && purposes.length>0) {
+                    if (purposes != null && purposes.length > 0) {
                         cdsDt.PurposeEnumOrPlainText.PurposeAsEnum.Enum purpose = purposes[0].getPurposeAsEnum();
-                        if (purpose!=null) HRMcontact.setContactPurpose(ContactPersonPurpose.Enum.forString(purpose.toString()));
-                        if (HRMcontact.getContactPurpose()==null) HRMcontact.setContactPurpose(ContactPersonPurpose.O);
+                        if (purpose != null)
+                            HRMcontact.setContactPurpose(ContactPersonPurpose.Enum.forString(purpose.toString()));
+                        if (HRMcontact.getContactPurpose() == null)
+                            HRMcontact.setContactPurpose(ContactPersonPurpose.O);
                     }
 
                     //contact phone
                     cdsDt.PhoneNumber[] contactPhones = contact.getPhoneNumberArray();
-                    if (contactPhones!=null) {
+                    if (contactPhones != null) {
                         for (cdsDt.PhoneNumber contactPhone : contactPhones) {
                             PhoneNumber HRMcontactPhone = HRMcontact.addNewPhoneNumber();
 
-                            if (contactPhone.getPhoneNumber()!=null) {
+                            if (contactPhone.getPhoneNumber() != null) {
                                 HRMcontactPhone.setPhoneNumber(contactPhone.getPhoneNumber());
-                            } else if (contactPhone.getNumber()!=null) {
+                            } else if (contactPhone.getNumber() != null) {
                                 HRMcontactPhone.setNumber(contactPhone.getNumber());
                                 HRMcontactPhone.setAreaCode(contactPhone.getAreaCode());
-                                if (contactPhone.getExchange()!=null) HRMcontactPhone.setExchange(contactPhone.getExchange());
+                                if (contactPhone.getExchange() != null)
+                                    HRMcontactPhone.setExchange(contactPhone.getExchange());
                             }
-                            if (contactPhone.getExtension()!=null) HRMcontactPhone.setExtension(contactPhone.getExtension());
+                            if (contactPhone.getExtension() != null)
+                                HRMcontactPhone.setExtension(contactPhone.getExtension());
                             HRMcontactPhone.setPhoneNumberType(PhoneNumberType.Enum.forString(contactPhone.getPhoneNumberType().toString()));
                         }
                     }
@@ -360,80 +375,89 @@ public class CreateHRMFile {
 
             //AuthorPhysician
             SourceAuthorPhysician authorPhysician = report.getSourceAuthorPhysician();
-            if (authorPhysician!=null && authorPhysician.getAuthorName()!=null) {
+            if (authorPhysician != null && authorPhysician.getAuthorName() != null) {
                 copyPersonNameSimple(HRMreport.addNewAuthorPhysician(), authorPhysician.getAuthorName());
             }
 
             //ReportClass
-            if (report.getClass1()!=null) HRMreport.setClass1(ReportClass.Enum.forString(report.getClass1().toString()));
+            if (report.getClass1() != null)
+                HRMreport.setClass1(ReportClass.Enum.forString(report.getClass1().toString()));
 
             //SubClass
-            if (report.getSubClass()!=null) HRMreport.setSubClass(report.getSubClass());
+            if (report.getSubClass() != null) HRMreport.setSubClass(report.getSubClass());
 
             //Content
             cdsDt.ReportContent reportContent = report.getContent();
-            if (reportContent!=null && reportContent.getTextContent()!=null) {
-            	if(report.getFormat() == cdsDt.ReportFormat.BINARY) {
-            		ReportContent HRMreportContent = HRMreport.addNewContent();
-            		HRMreportContent.setMedia(Base64.getDecoder().decode(reportContent.getTextContent()));
-            	} else {
-            		ReportContent HRMreportContent = HRMreport.addNewContent();
-            		HRMreportContent.setTextContent(reportContent.getTextContent());
-            	}            
-            } else if (reportContent!=null && reportContent.getMedia()!=null) {  //handling situation where HRM has embedded PDF and is stored in media tag instead of text tag
-            	if(report.getFormat() == cdsDt.ReportFormat.BINARY) {
-            		ReportContent HRMreportContent = HRMreport.addNewContent();
-            		HRMreportContent.setMedia(reportContent.getMedia());
-            	}              
+            if (reportContent != null && reportContent.getTextContent() != null) {
+                if (report.getFormat() == cdsDt.ReportFormat.BINARY) {
+                    ReportContent HRMreportContent = HRMreport.addNewContent();
+                    HRMreportContent.setMedia(Base64.getDecoder().decode(reportContent.getTextContent()));
+                } else {
+                    ReportContent HRMreportContent = HRMreport.addNewContent();
+                    HRMreportContent.setTextContent(reportContent.getTextContent());
+                }
+            } else if (reportContent != null && reportContent.getMedia() != null) {  //handling situation where HRM has embedded PDF and is stored in media tag instead of text tag
+                if (report.getFormat() == cdsDt.ReportFormat.BINARY) {
+                    ReportContent HRMreportContent = HRMreport.addNewContent();
+                    HRMreportContent.setMedia(reportContent.getMedia());
+                }
             }
 
             //FileExtensionAndVersion
-            if (report.getFileExtensionAndVersion()!=null) 
+            if (report.getFileExtensionAndVersion() != null)
                 HRMreport.setFileExtensionAndVersion(report.getFileExtensionAndVersion());
             else HRMreport.setFileExtensionAndVersion("");
 
             //Format
-            if (report.getFormat()!=null) HRMreport.setFormat(ReportFormat.Enum.forString(report.getFormat().toString()));
+            if (report.getFormat() != null)
+                HRMreport.setFormat(ReportFormat.Enum.forString(report.getFormat().toString()));
 
             //Media
-            if (report.getMedia()!=null) HRMreport.setMedia(ReportMedia.Enum.forString(report.getMedia().toString()));
+            if (report.getMedia() != null) HRMreport.setMedia(ReportMedia.Enum.forString(report.getMedia().toString()));
 
             //EventDateTime
-            if (report.getEventDateTime()!=null) copyDateFP(HRMreport.addNewEventDateTime(), report.getEventDateTime());
+            if (report.getEventDateTime() != null)
+                copyDateFP(HRMreport.addNewEventDateTime(), report.getEventDateTime());
 
             //ReceivedDateTime
-            if (report.getReceivedDateTime()!=null) copyDateFP(HRMreport.addNewReceivedDateTime(), report.getReceivedDateTime());
+            if (report.getReceivedDateTime() != null)
+                copyDateFP(HRMreport.addNewReceivedDateTime(), report.getReceivedDateTime());
 
             //Reviews
             ReportReviewed[] reportReviews = report.getReportReviewedArray();
-            if (reportReviews!=null && reportReviews.length>0) {
-                if (reportReviews[0].getDateTimeReportReviewed()!=null) {
+            if (reportReviews != null && reportReviews.length > 0) {
+                if (reportReviews[0].getDateTimeReportReviewed() != null) {
                     copyDateFP(HRMreport.addNewReviewedDateTime(), reportReviews[0].getDateTimeReportReviewed());
                 }
-                if (reportReviews[0].getReviewingOHIPPhysicianId()!=null) {
+                if (reportReviews[0].getReviewingOHIPPhysicianId() != null) {
                     HRMreport.setReviewingOHIPPhysicianId(reportReviews[0].getReviewingOHIPPhysicianId());
                 }
             }
 
             //ResultStatus
-            if (report.getHRMResultStatus()!=null) HRMreport.setResultStatus(ResultStatus.Enum.forString(report.getHRMResultStatus()));
+            if (report.getHRMResultStatus() != null)
+                HRMreport.setResultStatus(ResultStatus.Enum.forString(report.getHRMResultStatus()));
 
             //SendingFacility
-            if (report.getSendingFacilityId()!=null) HRMreport.setSendingFacility(report.getSendingFacilityId());
+            if (report.getSendingFacilityId() != null) HRMreport.setSendingFacility(report.getSendingFacilityId());
 
             //SendingFacilityReportNumber
-            if (report.getSendingFacilityReport()!=null) HRMreport.setSendingFacilityReportNumber(report.getSendingFacilityReport());
+            if (report.getSendingFacilityReport() != null)
+                HRMreport.setSendingFacilityReportNumber(report.getSendingFacilityReport());
 
             //OBRConent
             OBRContent[] OBRs = report.getOBRContentArray();
-            if (OBRs!=null && OBRs.length>0) {
+            if (OBRs != null && OBRs.length > 0) {
                 for (OBRContent OBR : OBRs) {
                     ReportsReceived.OBRContent HRMobr = HRMreport.addNewOBRContent();
 
-                    if (OBR.getAccompanyingDescription()!=null) HRMobr.setAccompanyingDescription(OBR.getAccompanyingDescription());
-                    if (OBR.getAccompanyingMnemonic()!=null) HRMobr.setAccompanyingMnemonic(OBR.getAccompanyingMnemonic());
-                    if (OBR.getAccompanyingSubClass()!=null) HRMobr.setAccompanyingSubClass(OBR.getAccompanyingSubClass());
-                    if (OBR.getObservationDateTime()!=null) {
+                    if (OBR.getAccompanyingDescription() != null)
+                        HRMobr.setAccompanyingDescription(OBR.getAccompanyingDescription());
+                    if (OBR.getAccompanyingMnemonic() != null)
+                        HRMobr.setAccompanyingMnemonic(OBR.getAccompanyingMnemonic());
+                    if (OBR.getAccompanyingSubClass() != null)
+                        HRMobr.setAccompanyingSubClass(OBR.getAccompanyingSubClass());
+                    if (OBR.getObservationDateTime() != null) {
                         copyDateFP(HRMobr.addNewObservationDateTime(), OBR.getObservationDateTime());
                     }
                 }
@@ -441,7 +465,7 @@ public class CreateHRMFile {
 
             //MessageUniqueID
             TransactionInformation transactionInfo = patientRecord.addNewTransactionInformation();
-            if (report.getMessageUniqueID()!=null) transactionInfo.setMessageUniqueID(report.getMessageUniqueID());
+            if (report.getMessageUniqueID() != null) transactionInfo.setMessageUniqueID(report.getMessageUniqueID());
             else transactionInfo.setMessageUniqueID("");
             transactionInfo.setDeliverToUserID("");
             PersonNameSimple physician = transactionInfo.addNewProvider();
@@ -450,23 +474,21 @@ public class CreateHRMFile {
     }
 
 
-
-
     static private void copyDateFP(DateFullOrPartial dfp, cdsDt.DateFullOrPartial idfp) {
-        if (idfp.getFullDate()!=null) dfp.setFullDate(idfp.getFullDate());
-        if (idfp.getYearMonth()!=null) dfp.setYearMonth(idfp.getYearMonth());
-        if (idfp.getYearOnly()!=null) dfp.setYearOnly(idfp.getYearOnly());
+        if (idfp.getFullDate() != null) dfp.setFullDate(idfp.getFullDate());
+        if (idfp.getYearMonth() != null) dfp.setYearMonth(idfp.getYearMonth());
+        if (idfp.getYearOnly() != null) dfp.setYearOnly(idfp.getYearOnly());
     }
 
     static private void copyDateFP(DateFullOrPartial dfp, cdsDt.DateTimeFullOrPartial idfp) {
-        if (idfp.getFullDateTime()!=null) dfp.setDateTime(idfp.getFullDateTime());
-        if (idfp.getFullDate()!=null) dfp.setFullDate(idfp.getFullDate());
-        if (idfp.getYearMonth()!=null) dfp.setYearMonth(idfp.getYearMonth());
-        if (idfp.getYearOnly()!=null) dfp.setYearOnly(idfp.getYearOnly());
+        if (idfp.getFullDateTime() != null) dfp.setDateTime(idfp.getFullDateTime());
+        if (idfp.getFullDate() != null) dfp.setFullDate(idfp.getFullDate());
+        if (idfp.getYearMonth() != null) dfp.setYearMonth(idfp.getYearMonth());
+        if (idfp.getYearOnly() != null) dfp.setYearOnly(idfp.getYearOnly());
     }
 
     static private void copyPersonNameSimple(PersonNameSimple hrm, cdsDt.PersonNameSimple cds) {
-        if (cds.getFirstName()!=null) hrm.setFirstName(cds.getFirstName());
-        if (cds.getLastName()!=null) hrm.setLastName(cds.getLastName());
+        if (cds.getFirstName() != null) hrm.setFirstName(cds.getFirstName());
+        if (cds.getLastName() != null) hrm.setLastName(cds.getLastName());
     }
 }

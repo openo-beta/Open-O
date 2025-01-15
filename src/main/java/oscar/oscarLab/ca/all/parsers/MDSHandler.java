@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,7 +51,6 @@ import oscar.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 
 /**
- *
  * @author wrighd
  */
 public class MDSHandler implements MessageHandler {
@@ -58,68 +58,69 @@ public class MDSHandler implements MessageHandler {
     Object msg = null;
     Object terser;
     ArrayList obrGroups = null;
-    HashMap<String,String> headerMaps = new HashMap<String,String>();
+    HashMap<String, String> headerMaps = new HashMap<String, String>();
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-    /** Creates a new instance of CMLHandler */
-    public MDSHandler(){
+    /**
+     * Creates a new instance of CMLHandler
+     */
+    public MDSHandler() {
     }
 
     public void init(String hl7Body) throws HL7Exception {
-    	hl7Body=StringUtils.trimToNull(hl7Body);
-    	if (hl7Body==null)
-    	{
-    		logger.error("Some one called MDSHandler.init with null data");
-    		return;
-    	}
+        hl7Body = StringUtils.trimToNull(hl7Body);
+        if (hl7Body == null) {
+            logger.error("Some one called MDSHandler.init with null data");
+            return;
+        }
 
-    	try {
-    	
-	        msg=DynamicHapiLoaderUtils.parseMdsMsg(hl7Body.replace( "\n", "\r\n"));
-	        terser = DynamicHapiLoaderUtils.getMdsTerser(msg);
+        try {
 
-	        int obrCount = getOBRCount();
-	        int obrNum;
-	        boolean obrFlag;
-	        String segmentName;
-	        String[] segments = DynamicHapiLoaderUtils.terser_getFinder_getCurrentGroup_getNames(terser);
-	        obrGroups = new ArrayList();
-	        /*
-	         *  Fill the OBX array list for use by future methods
-	         */
-	        for (int i=0; i < obrCount; i++){
-	            ArrayList<String> obxSegs = new ArrayList<String>();
-	            int count = 0;
+            msg = DynamicHapiLoaderUtils.parseMdsMsg(hl7Body.replace("\n", "\r\n"));
+            terser = DynamicHapiLoaderUtils.getMdsTerser(msg);
 
-	            if (i == 0){
-	                try{
-	                    while(DynamicHapiLoaderUtils.terserGet(terser, "/.OBX("+count+")-1-1") != null){
-	                        obxSegs.add("/.OBX("+count+")");
-	                        count++;
-	                    }
-	                }catch(Exception e){
-	                    //ignore exception
-	                }
-	            }
+            int obrCount = getOBRCount();
+            int obrNum;
+            boolean obrFlag;
+            String segmentName;
+            String[] segments = DynamicHapiLoaderUtils.terser_getFinder_getCurrentGroup_getNames(terser);
+            obrGroups = new ArrayList();
+            /*
+             *  Fill the OBX array list for use by future methods
+             */
+            for (int i = 0; i < obrCount; i++) {
+                ArrayList<String> obxSegs = new ArrayList<String>();
+                int count = 0;
 
-	            obrNum = i+1;
-	            obrFlag = false;
-	            for (int k=0; k < segments.length; k++){
+                if (i == 0) {
+                    try {
+                        while (DynamicHapiLoaderUtils.terserGet(terser, "/.OBX(" + count + ")-1-1") != null) {
+                            obxSegs.add("/.OBX(" + count + ")");
+                            count++;
+                        }
+                    } catch (Exception e) {
+                        //ignore exception
+                    }
+                }
 
-	                segmentName = segments[k].substring(0, 3);
+                obrNum = i + 1;
+                obrFlag = false;
+                for (int k = 0; k < segments.length; k++) {
 
-	                if (obrFlag && segmentName.equals("OBX")){
-	                    if (!segments[k].equals("OBX")) // would have already been added to first array
-	                        obxSegs.add("/."+segments[k]);
-	                }else if (obrFlag && segmentName.equals("OBR")){
-	                    break;
-	                }else if ( segments[k].equals("OBR"+obrNum) || ( obrNum==1 && segments[k].equals("OBR"))){
-	                    obrFlag = true;
-	                }
+                    segmentName = segments[k].substring(0, 3);
 
-	            }
-	            obrGroups.add(obxSegs);
-	        }
+                    if (obrFlag && segmentName.equals("OBX")) {
+                        if (!segments[k].equals("OBX")) // would have already been added to first array
+                            obxSegs.add("/." + segments[k]);
+                    } else if (obrFlag && segmentName.equals("OBR")) {
+                        break;
+                    } else if (segments[k].equals("OBR" + obrNum) || (obrNum == 1 && segments[k].equals("OBR"))) {
+                        obrFlag = true;
+                    }
+
+                }
+                obrGroups.add(obxSegs);
+            }
 	        /*
 	        for(int i=0; i<obrGroups.size(); i++){
 	            ArrayList obxSegs = (ArrayList) obrGroups.get(i);
@@ -130,28 +131,28 @@ public class MDSHandler implements MessageHandler {
 	        }
 	         */
         } catch (Exception e) {
-        	throw new HL7Exception(e);
+            throw new HL7Exception(e);
         }
     }
 
-    public String getMsgType(){
-        return("MDS");
+    public String getMsgType() {
+        return ("MDS");
     }
 
-    public String getMsgPriority(){
+    public String getMsgPriority() {
 
-        int i=1;
+        int i = 1;
         String priority = "R";
-        try{
+        try {
             priority = DynamicHapiLoaderUtils.terserGet(terser, "/.OBR-27-1");
-            while(priority != null){
+            while (priority != null) {
                 i++;
-                priority = DynamicHapiLoaderUtils.terserGet(terser, "/.OBR"+i+"-27-1");
-                if (!priority.equalsIgnoreCase("R")){
+                priority = DynamicHapiLoaderUtils.terserGet(terser, "/.OBR" + i + "-27-1");
+                if (!priority.equalsIgnoreCase("R")) {
                     break;
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             // ignore exceptions
         }
 
@@ -162,28 +163,28 @@ public class MDSHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information about the Observation Request
+     * Methods to get information about the Observation Request
      */
-    public int getOBRCount(){
-        if (obrGroups != null){
-            return(obrGroups.size());
-        }else{
+    public int getOBRCount() {
+        if (obrGroups != null) {
+            return (obrGroups.size());
+        } else {
             int i = 1;
             String test;
-            try{
+            try {
                 test = DynamicHapiLoaderUtils.terserGet(terser, "/.OBR-2-1");
-                while(test != null){
+                while (test != null) {
                     i++;
-                    test = DynamicHapiLoaderUtils.terserGet(terser, "/.OBR"+i+"-2-1");
+                    test = DynamicHapiLoaderUtils.terserGet(terser, "/.OBR" + i + "-2-1");
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 // ignore exceptions
             }
-            return(i-1);
+            return (i - 1);
         }
     }
 
-    public String getOBRName(int i){
+    public String getOBRName(int i) {
         /*String obrCode;
         i++;
         try{
@@ -199,7 +200,7 @@ public class MDSHandler implements MessageHandler {
 
         // the MDS local table is not available so the corresponding lab names are unknown
         // NO NAMES FOR MDS OBR SEGMENTS
-        return("");
+        return ("");
     }
 
     @Override
@@ -207,107 +208,137 @@ public class MDSHandler implements MessageHandler {
         return null;
     }
 
-    public String getTimeStamp(int i, int j){
+    public String getTimeStamp(int i, int j) {
         String timeStamp;
         i++;
-        try{
-            if (i == 1){
+        try {
+            if (i == 1) {
                 timeStamp = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.OBR-7-1")));
-            }else{
-                timeStamp = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.OBR"+i+"-7-1")));
+            } else {
+                timeStamp = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.OBR" + i + "-7-1")));
             }
-            return(timeStamp);
-        }catch(Exception e){
+            return (timeStamp);
+        } catch (Exception e) {
             return getMsgDate();
         }
     }
 
-    public boolean isOBXAbnormal(int i, int j){
+    public boolean isOBXAbnormal(int i, int j) {
         if (getOBXAbnormalFlag(i, j).equals(""))
-            return(false);
+            return (false);
         else
-            return(true);
+            return (true);
     }
 
-    public String getOBXAbnormalFlag(int i, int j){
-        return(getOBXField("8-1", i, j));
+    public String getOBXAbnormalFlag(int i, int j) {
+        return (getOBXField("8-1", i, j));
     }
 
-    public String getObservationHeader(int i, int j){
+    public String getObservationHeader(int i, int j) {
 
         ArrayList obxSegs = (ArrayList) obrGroups.get(i);
         //logger.info("OBRGROUP("+i+") OBXSEG("+j+"): '"+((String) obxSegs.get(j)));
-        return(matchOBXToHeader( (String) obxSegs.get(j)));
+        return (matchOBXToHeader((String) obxSegs.get(j)));
 
     }
 
-    public int getOBXCount(int i){
+    public int getOBXCount(int i) {
 
         ArrayList obxSegs = (ArrayList) obrGroups.get(i);
-        return(obxSegs.size());
+        return (obxSegs.size());
     }
 
-    public String getOBXIdentifier(int i, int j){
-        return(getOBXField("3-1", i, j));
+    public String getOBXIdentifier(int i, int j) {
+        return (getOBXField("3-1", i, j));
     }
 
 
-    public String getOBXValueType(int i, int j){
-        return(getOBXField("2-1",i,j));
+    public String getOBXValueType(int i, int j) {
+        return (getOBXField("2-1", i, j));
     }
 
-    public String getOBXName(int i, int j){
-        return(getOBXField("3-2", i, j));
+    public String getOBXName(int i, int j) {
+        return (getOBXField("3-2", i, j));
     }
 
     @Override
     public String getOBXNameLong(int i, int j) {
-        return(getOBXField("3-3", i, j));
+        return (getOBXField("3-3", i, j));
     }
 
-    public String getOBXResult(int i, int j){
-        return(getOBXField("5-1", i, j));
+    public String getOBXResult(int i, int j) {
+        return (getOBXField("5-1", i, j));
     }
 
-    public String getOBXReferenceRange(int i, int j){
-        return(getOBXField("7-1", i, j));
+    public String getOBXReferenceRange(int i, int j) {
+        return (getOBXField("7-1", i, j));
     }
 
-    public String getOBXUnits(int i, int j){
-        return(getOBXField("6-1", i, j));
+    public String getOBXUnits(int i, int j) {
+        return (getOBXField("6-1", i, j));
     }
 
-    public String getOBXResultStatus(int i, int j){
+    public String getOBXResultStatus(int i, int j) {
         String resultStatus = getOBXField("11-1", i, j);
 
-        switch(resultStatus.charAt(0)){
-            case 'C': resultStatus = "Edited"; break;
-            case 'D': resultStatus = "DNS"; break;
-            case 'F': resultStatus = "Final"; break;
-            case 'f': resultStatus = "Final"; break;
-            case 'I': resultStatus = "Pending"; break;
-            case 'P': resultStatus = "Preliminary"; break;
-            case 'p': resultStatus = "Preliminary"; break;
-            case 'R': resultStatus = "Entered - Not Verified"; break;
-            case 'r': resultStatus = "Entered - Not Verified"; break;
-            case 'S': resultStatus = "Partial"; break;
-            case 's': resultStatus = "Partial"; break;
-            case 'X': resultStatus = "DNS"; break; // do not show
-            case 'U': resultStatus = "Changed to Final"; break;
-            case 'u': resultStatus = "Changed to Final"; break;
-            case 'W': resultStatus = "DNS"; break;
+        switch (resultStatus.charAt(0)) {
+            case 'C':
+                resultStatus = "Edited";
+                break;
+            case 'D':
+                resultStatus = "DNS";
+                break;
+            case 'F':
+                resultStatus = "Final";
+                break;
+            case 'f':
+                resultStatus = "Final";
+                break;
+            case 'I':
+                resultStatus = "Pending";
+                break;
+            case 'P':
+                resultStatus = "Preliminary";
+                break;
+            case 'p':
+                resultStatus = "Preliminary";
+                break;
+            case 'R':
+                resultStatus = "Entered - Not Verified";
+                break;
+            case 'r':
+                resultStatus = "Entered - Not Verified";
+                break;
+            case 'S':
+                resultStatus = "Partial";
+                break;
+            case 's':
+                resultStatus = "Partial";
+                break;
+            case 'X':
+                resultStatus = "DNS";
+                break; // do not show
+            case 'U':
+                resultStatus = "Changed to Final";
+                break;
+            case 'u':
+                resultStatus = "Changed to Final";
+                break;
+            case 'W':
+                resultStatus = "DNS";
+                break;
         }
 
         return (resultStatus);
     }
 
-    public int getOBXFinalResultCount(){
+    public int getOBXFinalResultCount() {
         int obrCount = getOBRCount();
         int obxCount;
         int count = 0;
-        for (int i=0; i < obrCount; i++){
+        for (int i = 0; i < obrCount; i++) {
             obxCount = getOBXCount(i);
-            for (int j=0; j < obxCount; j++){
+            for (int j = 0; j < obxCount; j++) {
                 String status = getOBXResultStatus(i, j);
                 if (status.equalsIgnoreCase("Final") || status.equalsIgnoreCase("Edited"))
                     count++;
@@ -317,15 +348,15 @@ public class MDSHandler implements MessageHandler {
         // add extra so final reports are always the ordered as the latest
         if (orderStatus.equalsIgnoreCase("F"))
             count = count + 100;
-        
+
         return count;
     }
 
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
-    public ArrayList<String> getHeaders(){
+    public ArrayList<String> getHeaders() {
         ArrayList<String> headers = new ArrayList<String>();
         String currentHeader = "";
         String nextHeader;
@@ -333,22 +364,22 @@ public class MDSHandler implements MessageHandler {
         String nextHeaderNum;
         int i = 0;
 
-        try{
+        try {
 
             nextHeaderNum = DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG(0)-2-1");
             nextHeader = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG(0)-7-1"));
             headerNum = nextHeaderNum;
-            while(nextHeaderNum != null){
+            while (nextHeaderNum != null) {
 
-                if (headerNum.equals(nextHeaderNum)){
+                if (headerNum.equals(nextHeaderNum)) {
                     if (currentHeader.equals(""))
                         currentHeader = nextHeader;
                     else
-                        currentHeader = currentHeader+"<br />"+nextHeader;
-                }else{
+                        currentHeader = currentHeader + "<br />" + nextHeader;
+                } else {
 
                     if (currentHeader.equals(""))
-                        currentHeader = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG("+(i-1)+")-5-1"));
+                        currentHeader = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG(" + (i - 1) + ")-5-1"));
 
                     headerMaps.put(headerNum, currentHeader);
                     headers.add(currentHeader);
@@ -357,193 +388,192 @@ public class MDSHandler implements MessageHandler {
                 }
 
                 i++;
-                nextHeaderNum = DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG("+i+")-2-1");
-                nextHeader = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG("+i+")-7-1"));
+                nextHeaderNum = DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG(" + i + ")-2-1");
+                nextHeader = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG(" + i + ")-7-1"));
 
             }
             if (currentHeader.equals(""))
-                currentHeader = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG("+(i-1)+")-5-1"));
+                currentHeader = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZRG(" + (i - 1) + ")-5-1"));
 
             headerMaps.put(headerNum, currentHeader);
             headers.add(currentHeader);
 
-        }catch(Exception e){
-
-        }
-
-        return(headers);
-    }
-
-    /**
-     *  Methods to get information from observation notes
-     */
-    public int getOBRCommentCount(int i){
-        // not needed comments will only follow OBX segments
-        return(0);
-    }
-
-    public String getOBRComment(int i, int j){
-        // not needed comments will only follow OBX segments
-        return("");
-    }
-
-    /**
-     *  Methods to get information from observation notes
-     */
-    public int getOBXCommentCount(int i, int j){
-        try {
-	        // jth obx of the ith obr
-
-	        String[] segments = DynamicHapiLoaderUtils.terser_getFinder_getCurrentGroup_getNames(terser);
-	        ArrayList obxSegs = (ArrayList) obrGroups.get(i);
-	        String obxSeg = ((String) obxSegs.get(j)).substring(2);
-
-	        // if the obxSeg is part of the first obx array
-	        if (obxSeg.charAt(3) == '('){
-
-	            if(j+1 == obxSegs.size()){
-	                obxSeg = obxSeg.substring(0, 3);
-	            }else{
-	                String nextObxSeg = ((String) obxSegs.get(j+1)).substring(2);
-	                if (nextObxSeg.charAt(3) == '('){
-	                    return(0);
-	                }else{
-	                    obxSeg = obxSeg.substring(0, 3);
-	                }
-	            }
-
-	        }
-
-	        int k = 0;
-	        while(!obxSeg.equals(segments[k])){
-	            k++;
-	        }
-
-	        int count = 0;
-	        k++;
-	        while (k < segments.length && segments[k].substring(0, 3).equals("NTE")){
-	            k++;
-	            count++;
-	        }
-
-	        return(count);
         } catch (Exception e) {
-	        logger.error("Unexpected error", e);
-	        return(-1);
+
+        }
+
+        return (headers);
+    }
+
+    /**
+     * Methods to get information from observation notes
+     */
+    public int getOBRCommentCount(int i) {
+        // not needed comments will only follow OBX segments
+        return (0);
+    }
+
+    public String getOBRComment(int i, int j) {
+        // not needed comments will only follow OBX segments
+        return ("");
+    }
+
+    /**
+     * Methods to get information from observation notes
+     */
+    public int getOBXCommentCount(int i, int j) {
+        try {
+            // jth obx of the ith obr
+
+            String[] segments = DynamicHapiLoaderUtils.terser_getFinder_getCurrentGroup_getNames(terser);
+            ArrayList obxSegs = (ArrayList) obrGroups.get(i);
+            String obxSeg = ((String) obxSegs.get(j)).substring(2);
+
+            // if the obxSeg is part of the first obx array
+            if (obxSeg.charAt(3) == '(') {
+
+                if (j + 1 == obxSegs.size()) {
+                    obxSeg = obxSeg.substring(0, 3);
+                } else {
+                    String nextObxSeg = ((String) obxSegs.get(j + 1)).substring(2);
+                    if (nextObxSeg.charAt(3) == '(') {
+                        return (0);
+                    } else {
+                        obxSeg = obxSeg.substring(0, 3);
+                    }
+                }
+
+            }
+
+            int k = 0;
+            while (!obxSeg.equals(segments[k])) {
+                k++;
+            }
+
+            int count = 0;
+            k++;
+            while (k < segments.length && segments[k].substring(0, 3).equals("NTE")) {
+                k++;
+                count++;
+            }
+
+            return (count);
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
+            return (-1);
         }
     }
 
-    public String getOBXComment(int i, int j, int k){
+    public String getOBXComment(int i, int j, int k) {
 
-    	try
-    	{
-	        String[] segments = DynamicHapiLoaderUtils.terser_getFinder_getCurrentGroup_getNames(terser);
-	        ArrayList obxSegs = (ArrayList) obrGroups.get(i);
-	        String obxSeg = ((String) obxSegs.get(j)).substring(2);
+        try {
+            String[] segments = DynamicHapiLoaderUtils.terser_getFinder_getCurrentGroup_getNames(terser);
+            ArrayList obxSegs = (ArrayList) obrGroups.get(i);
+            String obxSeg = ((String) obxSegs.get(j)).substring(2);
 
-	        // if the obxSeg is part of the first obx array
-	        if (obxSeg.charAt(3) == '('){
-	            obxSeg = obxSeg.substring(0, 3);
-	        }
+            // if the obxSeg is part of the first obx array
+            if (obxSeg.charAt(3) == '(') {
+                obxSeg = obxSeg.substring(0, 3);
+            }
 
-	        int l = 0;
-	        while(!obxSeg.equals(segments[l])){
-	            l++;
-	        }
+            int l = 0;
+            while (!obxSeg.equals(segments[l])) {
+                l++;
+            }
 
-	        l = l+k+1; // at this point, l is pointing at the NTE segment
+            l = l + k + 1; // at this point, l is pointing at the NTE segment
 
-	        try{
-	            Object[] nteSegs = DynamicHapiLoaderUtils.terser_getFinder_getRoot_getAll(terser,segments[l]);
-	            if (getString(DynamicHapiLoaderUtils.terserGet(terser,"/."+segments[l]+"-2-1")).equals("MC")){
-	              String comment = "";
-	              for (int x=0; x < nteSegs.length; x++){
+            try {
+                Object[] nteSegs = DynamicHapiLoaderUtils.terser_getFinder_getRoot_getAll(terser, segments[l]);
+                if (getString(DynamicHapiLoaderUtils.terserGet(terser, "/." + segments[l] + "-2-1")).equals("MC")) {
+                    String comment = "";
+                    for (int x = 0; x < nteSegs.length; x++) {
 
-	                int m = 0;
-	                Object nteSeg = nteSegs[x];
-	                String commentCode = getString(DynamicHapiLoaderUtils.terserGet(terser,nteSeg,3,0,2,1));
-	                String matchCommentCode = DynamicHapiLoaderUtils.terserGet(terser,"/.ZMC("+m+")-2-1");
-	                while(matchCommentCode != null){
+                        int m = 0;
+                        Object nteSeg = nteSegs[x];
+                        String commentCode = getString(DynamicHapiLoaderUtils.terserGet(terser, nteSeg, 3, 0, 2, 1));
+                        String matchCommentCode = DynamicHapiLoaderUtils.terserGet(terser, "/.ZMC(" + m + ")-2-1");
+                        while (matchCommentCode != null) {
 
-	                    if (matchCommentCode.equals(commentCode)){
-	                        if (comment.equals(""))
-	                            comment = getString(DynamicHapiLoaderUtils.terserGet(terser,"/.ZMC("+m+")-6-1"));
-	                        else
-	                            comment = comment+"<br />"+getString(DynamicHapiLoaderUtils.terserGet(terser,"/.ZMC("+m+")-6-1"));
-	                    }
+                            if (matchCommentCode.equals(commentCode)) {
+                                if (comment.equals(""))
+                                    comment = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZMC(" + m + ")-6-1"));
+                                else
+                                    comment = comment + "<br />" + getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZMC(" + m + ")-6-1"));
+                            }
 
-	                    m++;
-	                    matchCommentCode = DynamicHapiLoaderUtils.terserGet(terser,"/.ZMC("+m+")-2-1");
-	                }
-	              }
-	              return(comment);
+                            m++;
+                            matchCommentCode = DynamicHapiLoaderUtils.terserGet(terser, "/.ZMC(" + m + ")-2-1");
+                        }
+                    }
+                    return (comment);
 
-	            }else{
-	                //return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/."+segments[l]+"-3-2")));
-	            	String comment = null;
-					for (int x=0; x < nteSegs.length; x++){
-						String commentCode = getString(DynamicHapiLoaderUtils.terserGet(terser,nteSegs[x],3,0,2,1));
-						comment = (comment==null) ? commentCode : comment+"<br/>"+commentCode;
-					}
-					return comment;
-	            }
-	        }catch(Exception e){
-	            logger.error("Could not retrieve OBX comments", e);
+                } else {
+                    //return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/."+segments[l]+"-3-2")));
+                    String comment = null;
+                    for (int x = 0; x < nteSegs.length; x++) {
+                        String commentCode = getString(DynamicHapiLoaderUtils.terserGet(terser, nteSegs[x], 3, 0, 2, 1));
+                        comment = (comment == null) ? commentCode : comment + "<br/>" + commentCode;
+                    }
+                    return comment;
+                }
+            } catch (Exception e) {
+                logger.error("Could not retrieve OBX comments", e);
 
-	            return("");
-	        }
-    	} catch (Exception e) {
-	        logger.error("Unexpected error", e);
-	        return(null);
+                return ("");
+            }
+        } catch (Exception e) {
+            logger.error("Unexpected error", e);
+            return (null);
         }
     }
 
 
     /**
-     *  Methods to get information about the patient
+     * Methods to get information about the patient
      */
-    public String getPatientName(){
-        return(getFirstName()+" "+getLastName());
+    public String getPatientName() {
+        return (getFirstName() + " " + getLastName());
     }
 
-    public String getFirstName(){
+    public String getFirstName() {
         try {
-            return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-5-2")));
+            return (getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-5-2")));
         } catch (Exception ex) {
-            return("");
+            return ("");
         }
     }
 
-    public String getLastName(){
+    public String getLastName() {
         try {
-            return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-5-1")));
+            return (getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-5-1")));
         } catch (Exception ex) {
-            return("");
+            return ("");
         }
     }
 
-    public String getMiddleName(){
+    public String getMiddleName() {
         try {
-            return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-5-3")));
+            return (getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-5-3")));
         } catch (Exception ex) {
-            return("");
+            return ("");
         }
     }
 
-    public String getUnescapedName(){
-        return getLastName()+"^"+getFirstName()+"^"+getMiddleName();
+    public String getUnescapedName() {
+        return getLastName() + "^" + getFirstName() + "^" + getMiddleName();
     }
 
-    public String getDOB(){
-        try{
-            return(formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-7-1"))).substring(0, 10));
-        }catch(Exception e){
+    public String getDOB() {
+        try {
+            return (formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-7-1"))).substring(0, 10));
+        } catch (Exception e) {
             logger.error("Error retrieving date of birth", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getAge(){
+    public String getAge() {
         String age = "N/A";
         String dob = getDOB();
         try {
@@ -558,330 +588,342 @@ public class MDSHandler implements MessageHandler {
         return age;
     }
 
-    public String getSex(){
-        try{
-            return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-8-1")));
-        }catch(Exception e){
-            return("");
+    public String getSex() {
+        try {
+            return (getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-8-1")));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getHealthNum(){
-        try{
-            String healthNum = getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-19-1"));
+    public String getHealthNum() {
+        try {
+            String healthNum = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-19-1"));
             int end = healthNum.indexOf(" ");
             if (end > 0)
-                return(healthNum.substring(1, end));
+                return (healthNum.substring(1, end));
             else
-                return(healthNum.substring(1));
-        }catch(Exception e){
-            return("");
+                return (healthNum.substring(1));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getHealthNumVersion(){
-        try{
-            String healthNum = getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-19-1"));
-            return(healthNum.substring(healthNum.indexOf(" ")+1));
-        }catch(Exception e){
-            return("");
+    public String getHealthNumVersion() {
+        try {
+            String healthNum = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-19-1"));
+            return (healthNum.substring(healthNum.indexOf(" ") + 1));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getHomePhone(){
-        try{
-            return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.PID-13-1")));
-        }catch(Exception e){
-            return("");
+    public String getHomePhone() {
+        try {
+            return (getString(DynamicHapiLoaderUtils.terserGet(terser, "/.PID-13-1")));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getWorkPhone(){
-        return("N/A");
+    public String getWorkPhone() {
+        return ("N/A");
     }
 
-    public String getPatientLocation(){
-        try{
-            return(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.MSH-3-1")));
+    public String getPatientLocation() {
+        try {
+            return (getString(DynamicHapiLoaderUtils.terserGet(terser, "/.MSH-3-1")));
             //return(getString(terser.get("/.PV1-3-1-1")));
-        }catch(Exception e){
-            return("");
+        } catch (Exception e) {
+            return ("");
         }
     }
 
     //should be from the 1st OBR always.
-    public String getServiceDate(){
-        try{
-        	return getRequestDate(0);
-        }catch(Exception e){
-            return("");
+    public String getServiceDate() {
+        try {
+            return getRequestDate(0);
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getRequestDate(int i){
+    public String getRequestDate(int i) {
         String requestDate;
         i++;
-        try{
-            if (i == 1){
-            	requestDate = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.OBR-14-1")));
-            }else{
-            	requestDate = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.OBR"+i+"-14-1")));
+        try {
+            if (i == 1) {
+                requestDate = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.OBR-14-1")));
+            } else {
+                requestDate = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.OBR" + i + "-14-1")));
             }
-            return(requestDate);
-        }catch(Exception e){
+            return (requestDate);
+        } catch (Exception e) {
             return getMsgDate();
         }
     }
 
-    public String getOrderStatus(){
+    public String getOrderStatus() {
 
         String ret = "F";
-        try{
-            if (getString(DynamicHapiLoaderUtils.terserGet(terser,"/.ZFR-3-1")).equals("0"))
-                return("P");
+        try {
+            if (getString(DynamicHapiLoaderUtils.terserGet(terser, "/.ZFR-3-1")).equals("0"))
+                return ("P");
 
             String status = "";
-            int i=0;
+            int i = 0;
 
             // If one of the zfr segments says partial, the lab should be marked
             // as a partial lab
-            while ((status = DynamicHapiLoaderUtils.terserGet(terser,"/.ZFR("+i+")-3-1")) != null){
-                if (status.equals("0")){
+            while ((status = DynamicHapiLoaderUtils.terserGet(terser, "/.ZFR(" + i + ")-3-1")) != null) {
+                if (status.equals("0")) {
                     ret = "P";
                     break;
                 }
                 i++;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Exception retrieving order status", e);
         }
         return ret;
     }
 
-    public String getClientRef(){
-        try{
-            String clientNum = getString(DynamicHapiLoaderUtils.terserGet(terser,"/.MSH-10-1"));
+    public String getClientRef() {
+        try {
+            String clientNum = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.MSH-10-1"));
             int firstDash = clientNum.indexOf("-");
-            return(clientNum.substring(0, firstDash));
-        }catch(Exception e){
-            return("");
+            return (clientNum.substring(0, firstDash));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getDocNum(){
-        try{
-            return(DynamicHapiLoaderUtils.terserGet(terser,"/.PV1-8-1").replace("-", ""));
-        }catch(Exception e){
-            return("");
+    public String getDocNum() {
+        try {
+            return (DynamicHapiLoaderUtils.terserGet(terser, "/.PV1-8-1").replace("-", ""));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getAccessionNum(){
-        try{
-            String accessionNum = getString(DynamicHapiLoaderUtils.terserGet(terser,"/.MSH-10-1"));
+    public String getAccessionNum() {
+        try {
+            String accessionNum = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.MSH-10-1"));
             int firstDash = accessionNum.indexOf("-");
-            int secondDash = accessionNum.indexOf("-", firstDash+1);
-            return(accessionNum.substring(firstDash+1, secondDash));
-        }catch(Exception e){
-            return("");
+            int secondDash = accessionNum.indexOf("-", firstDash + 1);
+            return (accessionNum.substring(firstDash + 1, secondDash));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getDocName(){
-        try{
-            return(getFullDocName("/.PV1-8-"));
-        }catch(Exception e){
-            return("");
+    public String getDocName() {
+        try {
+            return (getFullDocName("/.PV1-8-"));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    public String getCCDocs(){
+    public String getCCDocs() {
         String docs = "";
         try {
-        	String tmp = "";
-        	int x=0;
-        	do {
-        		tmp = getFullDocName("/.PV1-9("+x+")-");
-        		if(tmp.length()>0) {
-        			if(docs.length()>0) {
-        				docs = docs+", " + tmp;
-        			} else {
-        				docs = tmp;
-        			}
-        		}
-        		x++;
-        	}while(!tmp.equals(""));
+            String tmp = "";
+            int x = 0;
+            do {
+                tmp = getFullDocName("/.PV1-9(" + x + ")-");
+                if (tmp.length() > 0) {
+                    if (docs.length() > 0) {
+                        docs = docs + ", " + tmp;
+                    } else {
+                        docs = tmp;
+                    }
+                }
+                x++;
+            } while (!tmp.equals(""));
             if (docs.equals(""))
                 docs = getFullDocName("/.PV1-17-");
             else
-                docs = docs+", "+getFullDocName("/.PV1-17-");
-            return(docs);
+                docs = docs + ", " + getFullDocName("/.PV1-17-");
+            return (docs);
         } catch (Exception e) {
-            return("");
+            return ("");
         }
     }
 
-    public ArrayList<String> getDocNums(){
+    public ArrayList<String> getDocNums() {
         ArrayList<String> nums = new ArrayList<String>();
         String docNum;
-        try{
-            if ((docNum = DynamicHapiLoaderUtils.terserGet(terser,"/.PV1-8-1")) != null){
+        try {
+            if ((docNum = DynamicHapiLoaderUtils.terserGet(terser, "/.PV1-8-1")) != null) {
                 nums.add(docNum.replace("-", ""));
             }
-            if ((docNum = DynamicHapiLoaderUtils.terserGet(terser,"/.PV1-9-1")) != null){
+            if ((docNum = DynamicHapiLoaderUtils.terserGet(terser, "/.PV1-9-1")) != null) {
                 nums.add(docNum.replace("-", ""));
             }
-            if ((docNum = DynamicHapiLoaderUtils.terserGet(terser,"/.PV1-17-1")) != null){
+            if ((docNum = DynamicHapiLoaderUtils.terserGet(terser, "/.PV1-17-1")) != null) {
                 nums.add(docNum.replace("-", ""));
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Could not retrieve doctor numbers", e);
         }
-        return(nums);
+        return (nums);
     }
 
     /**
-     *  Methods specific to the MDSHandler
+     * Methods specific to the MDSHandler
      */
-    public String getFormType(){
+    public String getFormType() {
         String retVal = "";
 
-        try{
-            String typeField = getString(DynamicHapiLoaderUtils.terserGet(terser,"/.MSH-10-1"));
-            char typeNum = typeField.charAt(typeField.indexOf('-', typeField.indexOf('-')+1)+1);
+        try {
+            String typeField = getString(DynamicHapiLoaderUtils.terserGet(terser, "/.MSH-10-1"));
+            char typeNum = typeField.charAt(typeField.indexOf('-', typeField.indexOf('-') + 1) + 1);
 
-            switch(typeNum){
-                case '1': retVal = "S"; break;
-                case '4': retVal = "X"; break;
-                case '5': retVal = "C"; break;
-                case '6': retVal = "H"; break;
-                case '7': retVal = "A"; break;
-                case '9': retVal = "M"; break;
+            switch (typeNum) {
+                case '1':
+                    retVal = "S";
+                    break;
+                case '4':
+                    retVal = "X";
+                    break;
+                case '5':
+                    retVal = "C";
+                    break;
+                case '6':
+                    retVal = "H";
+                    break;
+                case '7':
+                    retVal = "A";
+                    break;
+                case '9':
+                    retVal = "M";
+                    break;
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Could not retrieve form type", e);
 
         }
 
-        return(retVal);
+        return (retVal);
     }
 
-    public String getMsgDate(){
+    public String getMsgDate() {
 
-        try{
-            String dateString = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.MSH-7-1")));
-            return(dateString);
-        }catch(Exception e){
-            return("");
+        try {
+            String dateString = formatDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.MSH-7-1")));
+            return (dateString);
+        } catch (Exception e) {
+            return ("");
         }
 
     }
 
-    public Date getMsgDateAsDate(){
+    public Date getMsgDateAsDate() {
         Date date = null;
-        try{
-            date = getDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser,"/.MSH-7-1")));
-        }catch(Exception e){
+        try {
+            date = getDateTime(getString(DynamicHapiLoaderUtils.terserGet(terser, "/.MSH-7-1")));
+        } catch (Exception e) {
             //Not sure what to do here
             MiscUtils.getLogger().error("Error", e);
         }
         return date;
     }
 
-    private String getOBXField(String field, int i, int j){
+    private String getOBXField(String field, int i, int j) {
         ArrayList obxSegs = (ArrayList) obrGroups.get(i);
         String obxSeg = (String) obxSegs.get(j);
 
-        try{
-            return(getString(DynamicHapiLoaderUtils.terserGet(terser,obxSeg+"-"+field)));
-        }catch(Exception e){
-            return("");
+        try {
+            return (getString(DynamicHapiLoaderUtils.terserGet(terser, obxSeg + "-" + field)));
+        } catch (Exception e) {
+            return ("");
         }
     }
 
-    private String matchOBXToHeader(String obxSeg){
+    private String matchOBXToHeader(String obxSeg) {
 
-        int i=0;
+        int i = 0;
         String headerNum = "null";
-        try{
-            String zmnNum = DynamicHapiLoaderUtils.terserGet(terser,"/.ZMN(0)-8-1");
+        try {
+            String zmnNum = DynamicHapiLoaderUtils.terserGet(terser, "/.ZMN(0)-8-1");
 
-            String obxNum = DynamicHapiLoaderUtils.terserGet(terser,obxSeg+"-4-1");
+            String obxNum = DynamicHapiLoaderUtils.terserGet(terser, obxSeg + "-4-1");
             // we only need the last section of the headerNum
-            obxNum = obxNum.substring(obxNum.indexOf("-", obxNum.indexOf("-")+1)+1);
+            obxNum = obxNum.substring(obxNum.indexOf("-", obxNum.indexOf("-") + 1) + 1);
 
-            while(zmnNum != null){
-                if (zmnNum.equals(obxNum)){
-                    headerNum = DynamicHapiLoaderUtils.terserGet(terser,"/.ZMN("+i+")-10-1");
+            while (zmnNum != null) {
+                if (zmnNum.equals(obxNum)) {
+                    headerNum = DynamicHapiLoaderUtils.terserGet(terser, "/.ZMN(" + i + ")-10-1");
                     break;
                 }
                 i++;
-                zmnNum = DynamicHapiLoaderUtils.terserGet(terser,"/.ZMN("+i+")-8-1");
+                zmnNum = DynamicHapiLoaderUtils.terserGet(terser, "/.ZMN(" + i + ")-8-1");
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("error retrieving header", e);
 
         }
 
 
-        return(headerMaps.get(headerNum) );
+        return (headerMaps.get(headerNum));
 
     }
 
-    private String getFullDocName(String docSeg){
+    private String getFullDocName(String docSeg) {
         //docSeg = "/.PV1-8-"
         String docName = "";
         String temp;
 
         try {
-	        // get name prefix ie/ DR.
-	        temp = DynamicHapiLoaderUtils.terserGet(terser,docSeg+"6");
-	        if(temp != null)
-	            docName = temp;
+            // get name prefix ie/ DR.
+            temp = DynamicHapiLoaderUtils.terserGet(terser, docSeg + "6");
+            if (temp != null)
+                docName = temp;
 
-	        // get the name
-	        temp = DynamicHapiLoaderUtils.terserGet(terser,docSeg+"2");
-	        if(temp != null){
-	            if (docName.equals("")){
-	                docName = temp;
-	            }else{
-	                docName = docName +" "+ temp;
-	            }
-	        }
+            // get the name
+            temp = DynamicHapiLoaderUtils.terserGet(terser, docSeg + "2");
+            if (temp != null) {
+                if (docName.equals("")) {
+                    docName = temp;
+                } else {
+                    docName = docName + " " + temp;
+                }
+            }
         } catch (Exception e) {
-	        logger.error("Unexpected Error.", e);
+            logger.error("Unexpected Error.", e);
         }
 
         return (docName);
     }
 
-    private Date getDateTime(String plain){
+    private Date getDateTime(String plain) {
         String dateFormat = "yyyyMMddHHmmss";
         dateFormat = dateFormat.substring(0, plain.length());
         Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
         return date;
     }
 
-    private String formatDateTime(String plain){
-    	if (plain==null || plain.trim().equals("")) return "";
+    private String formatDateTime(String plain) {
+        if (plain == null || plain.trim().equals("")) return "";
 
         String dateFormat = "yyyyMMddHHmmss";
         dateFormat = dateFormat.substring(0, plain.length());
         String stringFormat = "yyyy-MM-dd HH:mm:ss";
-        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length()-1))+1);
+        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
 
         Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
         return UtilDateUtilities.DateToString(date, stringFormat);
     }
 
-    private String getString(String retrieve){
-        if (retrieve != null){
+    private String getString(String retrieve) {
+        if (retrieve != null) {
             retrieve.replaceAll("^", " ");
-            return(retrieve.trim());
-        }else{
-            return("");
+            return (retrieve.trim());
+        } else {
+            return ("");
         }
     }
 
@@ -889,80 +931,84 @@ public class MDSHandler implements MessageHandler {
     char bl = ' ';
 
 
-    public  String getAuditLine(String procDate, String procTime, String logId,String formStatus, String formType, String accession, String hcNum, String hcVerCode, String patientName,String orderingClient,String  messageDate,String messageTime){
+    public String getAuditLine(String procDate, String procTime, String logId, String formStatus, String formType, String accession, String hcNum, String hcVerCode, String patientName, String orderingClient, String messageDate, String messageTime) {
         logger.info("Getting Audit Line");
 
 
+        return getPaddedString(procDate, 11, bl) + delimiter +
+                getPaddedString(procTime, 8, bl) + delimiter +
+                getPaddedString(logId, 7, bl) + delimiter +
+                getPaddedString(formStatus, 1, bl) + delimiter +
+                getPaddedString(formType, 1, bl) + delimiter +
+                getPaddedString(accession, 9, bl) + delimiter +
+                getPaddedString(hcNum, 10, bl) + delimiter +
+                getPaddedString(hcVerCode, 2, bl) + delimiter +
+                getPaddedString(patientName, 61, bl) + delimiter +
+                getPaddedString(orderingClient, 8, bl) + delimiter +
+                getPaddedString(messageDate, 11, bl) + delimiter +
+                getPaddedString(messageTime, 8, bl) + "\n\r";
 
-        return getPaddedString(procDate,11,bl)+delimiter+
-               getPaddedString(procTime,8,bl)+delimiter+
-               getPaddedString(logId,7,bl)+delimiter+
-               getPaddedString(formStatus,1,bl)+delimiter+
-               getPaddedString(formType,1,bl)+delimiter+
-               getPaddedString(accession,9,bl)+delimiter+
-               getPaddedString(hcNum,10,bl)+delimiter+
-               getPaddedString(hcVerCode,2,bl)+delimiter+
-               getPaddedString(patientName,61,bl)+delimiter+
-               getPaddedString(orderingClient,8,bl)+delimiter+
-               getPaddedString(messageDate,11,bl)+delimiter+
-               getPaddedString(messageTime,8,bl)+"\n\r";
+    }
 
-	}
+    String getPaddedString(String originalString, int length, char paddingChar) {
+        StringBuilder str = new StringBuilder(length);
+        str.append(originalString);
 
-	String getPaddedString(String originalString, int length, char paddingChar){
-           StringBuilder str = new StringBuilder(length);
-           str.append(originalString);
-
-           for (int i = str.length(); i < length; i++){
-             str.append(paddingChar);
-           }
-
-           return str.substring(0,length);
+        for (int i = str.length(); i < length; i++) {
+            str.append(paddingChar);
         }
 
-    public String audit(){
+        return str.substring(0, length);
+    }
+
+    public String audit() {
         String retVal = "";
 
         java.util.Date date = new java.util.Date();
-        SimpleDateFormat dayFormatter =  new SimpleDateFormat("dd-MMM-yyyy");
-        SimpleDateFormat timeFormatter =  new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat dayFormatter = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 
         String procDate = dayFormatter.format(date);
         String procTime = timeFormatter.format(date);
 
         String messageDate = "";
         String messageTime = "";
-        try{
+        try {
             messageDate = dayFormatter.format(getMsgDateAsDate());
             messageTime = timeFormatter.format(getMsgDateAsDate());
-        }catch(Exception e){MiscUtils.getLogger().error("Error", e);}
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+        }
 
-        retVal = getAuditLine(procDate, procTime, "REC",getOrderStatus(), getFormType(), getAccessionNum(), getHealthNum(), getHealthNumVersion(), getUnescapedName(),getClientRef(),messageDate, messageTime);
+        retVal = getAuditLine(procDate, procTime, "REC", getOrderStatus(), getFormType(), getAccessionNum(), getHealthNum(), getHealthNumVersion(), getUnescapedName(), getClientRef(), messageDate, messageTime);
 
         return retVal;
     }
 
-    public String getFillerOrderNumber(){
-		return "";
-	}
-    public String getEncounterId(){
-    	return "";
+    public String getFillerOrderNumber() {
+        return "";
     }
-    public String getRadiologistInfo(){
-		return "";
-	}
 
-    public String getNteForOBX(int i, int j){
-
-    	return "";
+    public String getEncounterId() {
+        return "";
     }
+
+    public String getRadiologistInfo() {
+        return "";
+    }
+
+    public String getNteForOBX(int i, int j) {
+
+        return "";
+    }
+
     public String getNteForPID() {
-    	return "";
+        return "";
     }
-    
+
     //for OMD validation
     public boolean isTestResultBlocked(int i, int j) {
-    	return false;
+        return false;
     }
 
 }

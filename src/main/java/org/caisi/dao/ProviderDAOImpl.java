@@ -1,26 +1,27 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -33,10 +34,10 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 /**
  * This couldn't possibly work, it's not a spring managed bean according to the xml files.
- * But oh well, some one imports this class and tries to have it injected so I'll 
+ * But oh well, some one imports this class and tries to have it injected so I'll
  * leave the code here so it compiles. what ever...
  */
-public class ProviderDAOImpl extends HibernateDaoSupport implements ProviderDAO{
+public class ProviderDAOImpl extends HibernateDaoSupport implements ProviderDAO {
 
     @SuppressWarnings("unchecked")
     public List<Provider> getProviders() {
@@ -48,7 +49,7 @@ public class ProviderDAOImpl extends HibernateDaoSupport implements ProviderDAO{
     }
 
     public Provider getProviderByName(String lastName, String firstName) {
-        return (Provider)getHibernateTemplate().find("from Provider p where p.first_name = ? and p.last_name = ?", new Object[] {firstName, lastName}).get(0);
+        return (Provider) getHibernateTemplate().find("from Provider p where p.first_name = ?0 and p.last_name = ?1", firstName, lastName).get(0);
     }
 
 }

@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -42,9 +42,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -63,19 +63,17 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "c1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation",
-    "c2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom",
-    "c3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom",
-    "c3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo",
-    "cComments",
-    "cActions",
-    "cByWhom",
-    "cReviewDate"
+        "c1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation",
+        "c2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom",
+        "c3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom",
+        "c3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo",
+        "cComments",
+        "cActions",
+        "cByWhom",
+        "cReviewDate"
 })
 @XmlRootElement(name = "C16__Intimate_relationships__Do_you_have_a_partner__Do_you_have_problems_in_your_partnership_mar")
 public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar {
@@ -99,11 +97,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the c1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation() {
         return c1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation;
@@ -111,11 +107,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the c1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation(BigInteger value) {
         this.c1DoesThisPersonHaveAnyDifficultyInFindingAPartnerOrInMaintainingACloseRelation = value;
@@ -123,11 +117,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the c2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom() {
         return c2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom;
@@ -135,11 +127,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the c2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom(BigInteger value) {
         this.c2HowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom = value;
@@ -147,11 +137,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the c3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom() {
         return c3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom;
@@ -159,11 +147,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the c3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom(BigInteger value) {
         this.c3AHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonReceiveFrom = value;
@@ -171,11 +157,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the c3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo() {
         return c3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo;
@@ -183,11 +167,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the c3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo(BigInteger value) {
         this.c3BHowMuchHelpWithFormingAndMaintainingCloseRelationshipsDoesThePersonNeedFromLo = value;
@@ -195,11 +177,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the cComments property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CComments }
-     *     
+     *
+     * @return possible object is
+     * {@link CComments }
      */
     public CComments getCComments() {
         return cComments;
@@ -207,11 +187,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the cComments property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CComments }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CComments }
      */
     public void setCComments(CComments value) {
         this.cComments = value;
@@ -219,11 +197,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the cActions property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCActions() {
         return cActions;
@@ -231,11 +207,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the cActions property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCActions(String value) {
         this.cActions = value;
@@ -243,11 +217,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the cByWhom property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCByWhom() {
         return cByWhom;
@@ -255,11 +227,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the cByWhom property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCByWhom(String value) {
         this.cByWhom = value;
@@ -267,11 +237,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Gets the value of the cReviewDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCReviewDate() {
         return cReviewDate;
@@ -279,11 +247,9 @@ public class C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPar
 
     /**
      * Sets the value of the cReviewDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCReviewDate(String value) {
         this.cReviewDate = value;

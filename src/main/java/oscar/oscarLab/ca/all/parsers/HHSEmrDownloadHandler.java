@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -48,80 +49,81 @@ import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
- *
  * @author wrighd
  */
 public class HHSEmrDownloadHandler extends DefaultGenericHandler implements MessageHandler {
 
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     ArrayList<String> headerList = null;
- //   Message msg = null;
- //   Terser terser;
- //   ArrayList obrGroups = null;
+    //   Message msg = null;
+    //   Terser terser;
+    //   ArrayList obrGroups = null;
 
-    /** Creates a new instance of CMLHandler */
-    public HHSEmrDownloadHandler(){
+    /**
+     * Creates a new instance of CMLHandler
+     */
+    public HHSEmrDownloadHandler() {
         super();
 
 
     }
 
     @Override
-     public String getMsgType(){
-        return("HHSEMR");
+    public String getMsgType() {
+        return ("HHSEMR");
     }
 
     @Override
-    public ArrayList<String> getHeaders(){
-       headerList = new ArrayList<String>();
+    public ArrayList<String> getHeaders() {
+        headerList = new ArrayList<String>();
 
-       String[] noms = msg.getNames();
-       for(String s:noms){
-           logger.debug(s);
-       }
-
-
-       for (int i = 0; i < getOBRCount();i++){
-            headerList.add(getOBRName(i));
-            logger.debug("ADDING to header "+getOBRName(i));
-       }
-       logger.debug("AFTER");
-       try{
-
-       logger.debug("Current Group "+terser.getFinder().getCurrentGroup().getName());
-
-       Structure[] strs =   terser.getFinder().getCurrentChildReps(); //((Group) terser.getFinder().getCurrentGroup().get("RESPONSE")).getAll("ORDER_OBSERVATION");
-        for(Structure str:strs){
-            logger.debug(str.getClass().getName()+"  "+str.getName());
-            Group obrseg = (Group) str;
-
-            Structure[] structChilds = obrseg.getAll("OBX");
-            for(Structure ss:structChilds){
-                logger.debug(ss.getClass().getName()+" "+str.getName());
-            }
+        String[] noms = msg.getNames();
+        for (String s : noms) {
+            logger.debug(s);
         }
-       }catch(Exception e){
-           logger.debug("debug", e);
 
-       }
-       return headerList;
+
+        for (int i = 0; i < getOBRCount(); i++) {
+            headerList.add(getOBRName(i));
+            logger.debug("ADDING to header " + getOBRName(i));
+        }
+        logger.debug("AFTER");
+        try {
+
+            logger.debug("Current Group " + terser.getFinder().getCurrentGroup().getName());
+
+            Structure[] strs = terser.getFinder().getCurrentChildReps(); //((Group) terser.getFinder().getCurrentGroup().get("RESPONSE")).getAll("ORDER_OBSERVATION");
+            for (Structure str : strs) {
+                logger.debug(str.getClass().getName() + "  " + str.getName());
+                Group obrseg = (Group) str;
+
+                Structure[] structChilds = obrseg.getAll("OBX");
+                for (Structure ss : structChilds) {
+                    logger.debug(ss.getClass().getName() + " " + str.getName());
+                }
+            }
+        } catch (Exception e) {
+            logger.debug("debug", e);
+
+        }
+        return headerList;
     }
 
-     public String getObservationHeader(int i, int j){
-         return headerList.get(i);
-     }
+    public String getObservationHeader(int i, int j) {
+        return headerList.get(i);
+    }
 
-     private void findOBX(Group group,ArrayList<Structure> list) throws Exception{
+    private void findOBX(Group group, ArrayList<Structure> list) throws Exception {
         String[] noms = group.getNames();
-        for (String nom:noms){
+        for (String nom : noms) {
             Structure[] obxS = group.getAll(nom);
-            for(Structure ss : obxS){
-                if (ss instanceof Segment){
-                    if ("OBX".equals(ss.getName())){
+            for (Structure ss : obxS) {
+                if (ss instanceof Segment) {
+                    if ("OBX".equals(ss.getName())) {
                         list.add(ss);
                     }
-                }else{
-                    findOBX((Group) ss,list);
+                } else {
+                    findOBX((Group) ss, list);
                 }
             }
         }
@@ -135,7 +137,7 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 
         // force parsing as a generic message by changing the message structure
 
-        msg = p.parse(hl7Body.replaceAll( "\n", "\r\n"));
+        msg = p.parse(hl7Body.replaceAll("\n", "\r\n"));
 
         terser = new Terser(msg);
 
@@ -147,26 +149,25 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
          *  Fill the OBX array list for use by future methods
          */
 
-        logger.debug("Current Group "+terser.getFinder().getCurrentGroup().getName());
+        logger.debug("Current Group " + terser.getFinder().getCurrentGroup().getName());
 
 
-
-        try{
-        Structure[] strs = ((Group) terser.getFinder().getRoot().get("RESPONSE")).getAll("ORDER_OBSERVATION");
-        for (Structure str:strs){
-            logger.debug("NEW OBX");
-            ArrayList obrGroup = new ArrayList();
-            findOBX((Group) str,obrGroup);
-            obrGroups.add(obrGroup);
-        }
-        }catch(Exception e){
+        try {
+            Structure[] strs = ((Group) terser.getFinder().getRoot().get("RESPONSE")).getAll("ORDER_OBSERVATION");
+            for (Structure str : strs) {
+                logger.debug("NEW OBX");
+                ArrayList obrGroup = new ArrayList();
+                findOBX((Group) str, obrGroup);
+                obrGroups.add(obrGroup);
+            }
+        } catch (Exception e) {
             logger.error("Error in adding OBX elements to obrGroup ", e);
         }
 
 
-    //Group root = terser.getFinder().getRoot();
-    //groupDisplay(root,"");
-    logger.debug("END GROUP PRINT");
+        //Group root = terser.getFinder().getRoot();
+        //groupDisplay(root,"");
+        logger.debug("END GROUP PRINT");
 
 
 
@@ -209,7 +210,8 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
         */
 
     }
-//
+
+    //
 //    public String getMsgType(){
 //        return(null);
 //    }
@@ -256,21 +258,22 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 //        }
 //    }
 //
-      public String getOBRName(int i){
-          String addToEnd = "";
-          try{
-              addToEnd = getString(terser.get("/.OBR-19-2"));
-          }catch(Exception e){
-        	  //empty
-          }
+    public String getOBRName(int i) {
+        String addToEnd = "";
+        try {
+            addToEnd = getString(terser.get("/.OBR-19-2"));
+        } catch (Exception e) {
+            //empty
+        }
 
-          return super.getOBRName(i) + addToEnd;
-      }
+        return super.getOBRName(i) + addToEnd;
+    }
 
-      public String getOBRIdentifier(int i) {
+    public String getOBRIdentifier(int i) {
         return super.getOBRIdentifier(i);
-      }
-//
+    }
+
+    //
 //        String obrName;
 //        i++;
 //        try{
@@ -338,26 +341,28 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 //        return(getOBXField(i, j, 3, 0, 1));
 //    }
 //
-    public String getOBXName(int i, int j){
-    	if (getOBXField(i,j,2,0,1).equals("FT")) {
-    		return "";
-    	} else
-        return(getOBXField(i, j, 3, 0, 2));
+    public String getOBXName(int i, int j) {
+        if (getOBXField(i, j, 2, 0, 1).equals("FT")) {
+            return "";
+        } else
+            return (getOBXField(i, j, 3, 0, 2));
     }
-//
+
+    //
 //    public String getOBXResult(int i, int j){
 //        return(getOBXField(i, j, 5, 0, 1));
 //    }
 //
-    public String getOBXReferenceRange(int i, int j){
+    public String getOBXReferenceRange(int i, int j) {
         String tmp = getOBXField(i, j, 7, 0, 3);
-        if(tmp.equals("")) {
-        	//try the first component
-        	tmp = getOBXField(i, j, 7, 0, 1);
+        if (tmp.equals("")) {
+            //try the first component
+            tmp = getOBXField(i, j, 7, 0, 1);
         }
         return tmp;
     }
-//
+
+    //
 //    public String getOBXUnits(int i, int j){
 //        return(getOBXField(i, j, 6, 0, 1));
 //    }
@@ -510,22 +515,23 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 //        }
 //    }
 //
-    public String getDOB(){
-    	String dob = "",year="",mon="",day="";
+    public String getDOB() {
+        String dob = "", year = "", mon = "", day = "";
 
-        try{
-        	dob = getString(terser.get("/.PID-7-1"));
-        	Date date = new Date(dob);
-        	year = UtilDateUtilities.justYear(date);
-        	mon = UtilDateUtilities.justMonth(date);
-        	day = UtilDateUtilities.justDay(date);
+        try {
+            dob = getString(terser.get("/.PID-7-1"));
+            Date date = new Date(dob);
+            year = UtilDateUtilities.justYear(date);
+            mon = UtilDateUtilities.justMonth(date);
+            day = UtilDateUtilities.justDay(date);
 
-            return(formatDateTime(year+mon+day));
-        }catch(Exception e){
-            return("");
+            return (formatDateTime(year + mon + day));
+        } catch (Exception e) {
+            return ("");
         }
     }
-//
+
+    //
 //    public String getAge(){
 //        String age = "N/A";
 //        String dob = getDOB();
@@ -549,19 +555,19 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 //        }
 //    }
 //
-    public String getHealthNum(){
+    public String getHealthNum() {
         String healthNum;
-        try{
+        try {
             healthNum = getString(terser.get("/.PID-3-1"));
-                return(healthNum);
-        }catch(Exception e){
+            return (healthNum);
+        } catch (Exception e) {
             //ignore exceptions
         }
 
-        return("");
+        return ("");
     }
 
-//    public String getHomePhone(){
+    //    public String getHomePhone(){
 //        try{
 //            return(getString(terser.get("/.PID-13-1")));
 //        }catch(Exception e){
@@ -581,42 +587,43 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 //        }
 //    }
 //
-    public String getServiceDate(){
-    	String serdate = "",year="",mon="",day="", time="";
+    public String getServiceDate() {
+        String serdate = "", year = "", mon = "", day = "", time = "";
         //usually a message type specific location
-    	try{
-    		serdate = getString(terser.get("/.OBR-7-1"));
-        	Date date = new Date(serdate);
-        	year = UtilDateUtilities.justYear(date);
-        	mon = UtilDateUtilities.justMonth(date);
-        	day = UtilDateUtilities.justDay(date);
-        	time = justTime(date);
-            serdate = (year+"-"+mon+"-"+day+" "+time);
-            logger.info("serdate = "+serdate);
+        try {
+            serdate = getString(terser.get("/.OBR-7-1"));
+            Date date = new Date(serdate);
+            year = UtilDateUtilities.justYear(date);
+            mon = UtilDateUtilities.justMonth(date);
+            day = UtilDateUtilities.justDay(date);
+            time = justTime(date);
+            serdate = (year + "-" + mon + "-" + day + " " + time);
+            logger.info("serdate = " + serdate);
             return serdate.toString();
-        }catch(Exception e){
-            return("");
+        } catch (Exception e) {
+            return ("");
         }
     }
-//
+
+    //
 //    public String getOrderStatus(){
 //        //usually a message type specific location
 //        return("");
 //    }
 //
-    public String getOrderStatus(){
+    public String getOrderStatus() {
         String status = "F";
 
-        for(int x=0;x<this.getOBRCount();x++) {
-        	for(int y=0;y<this.getOBXCount(x);y++) {
-        		String val = this.getOBXResultStatus(x, y);
-        		if(!val.equals("F")) {
-        			return val;
-        		}
-        	}
+        for (int x = 0; x < this.getOBRCount(); x++) {
+            for (int y = 0; y < this.getOBXCount(x); y++) {
+                String val = this.getOBXResultStatus(x, y);
+                if (!val.equals("F")) {
+                    return val;
+                }
+            }
         }
 
-        return(status);
+        return (status);
     }
 //
 //    public String getClientRef(){
@@ -628,22 +635,22 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 //    }
 
 
-public String getAccessionNum(){
-	String useOrderNumber = OscarProperties.getInstance().getProperty("hhs.emr.handler.accession.use_order_number","false");
-	if(useOrderNumber.equals("true")) {
-		try{
-            String accessionNum = getString(terser.get("/.OBR-3-1"));
-            return accessionNum;
-        }catch(Exception e){
-            return("");
+    public String getAccessionNum() {
+        String useOrderNumber = OscarProperties.getInstance().getProperty("hhs.emr.handler.accession.use_order_number", "false");
+        if (useOrderNumber.equals("true")) {
+            try {
+                String accessionNum = getString(terser.get("/.OBR-3-1"));
+                return accessionNum;
+            } catch (Exception e) {
+                return ("");
+            }
         }
-	}
 
-        try{
+        try {
             String accessionNum = getString(terser.get("/.MSH-10-1"));
             return accessionNum;
-        }catch(Exception e){
-            return("");
+        } catch (Exception e) {
+            return ("");
         }
     }
 
@@ -687,22 +694,22 @@ public String getAccessionNum(){
      *
      */
     @Override
-    public ArrayList<String> getDocNums(){
+    public ArrayList<String> getDocNums() {
         ArrayList<String> nums = new ArrayList<String>();
         String docNum;
-        try{
-            if ((docNum = terser.get("/.Z01-1-1")) != null){
-                MiscUtils.getLogger().debug("Adding doc Num"+Misc.forwardZero(docNum, 6));
+        try {
+            if ((docNum = terser.get("/.Z01-1-1")) != null) {
+                MiscUtils.getLogger().debug("Adding doc Num" + Misc.forwardZero(docNum, 6));
                 nums.add(Misc.forwardZero(docNum, 6));
             } else {
-            	return super.getDocNums();
+                return super.getDocNums();
             }
 
-        }catch(Exception e){
-        	return super.getDocNums();
+        } catch (Exception e) {
+            return super.getDocNums();
         }
 
-        return(nums);
+        return (nums);
     }
 //
 //
@@ -801,35 +808,35 @@ public String getAccessionNum(){
 //    }
 
     public String getPatientIdByType(String type) throws HL7Exception {
-    	PatientId id = extractInternalPatientIds().get(type);
-    	if(id != null) {
-    		return id.getId();
-    	}
-    	return null;
+        PatientId id = extractInternalPatientIds().get(type);
+        if (id != null) {
+            return id.getId();
+        }
+        return null;
     }
 
-	protected Map<String,PatientId> extractInternalPatientIds() throws HL7Exception {
-		Map<String,PatientId> ids = new LinkedHashMap<String,PatientId>();
-		int x=0;
-		while(true) {
-			String identifier = terser.get("PID-3("+x+")-1");
-			String authority = terser.get("PID-3("+x+")-4");
-			String typeId = terser.get("PID-3("+x+")-5");
+    protected Map<String, PatientId> extractInternalPatientIds() throws HL7Exception {
+        Map<String, PatientId> ids = new LinkedHashMap<String, PatientId>();
+        int x = 0;
+        while (true) {
+            String identifier = terser.get("PID-3(" + x + ")-1");
+            String authority = terser.get("PID-3(" + x + ")-4");
+            String typeId = terser.get("PID-3(" + x + ")-5");
 
-			if(identifier != null) {
-				PatientId tmp = new PatientId(identifier, authority, typeId);
-				ids.put(typeId,tmp);
-			}
+            if (identifier != null) {
+                PatientId tmp = new PatientId(identifier, authority, typeId);
+                ids.put(typeId, tmp);
+            }
 
-			if(identifier == null && terser.get("PID-3("+(x+1)+")-1")==null) {
-				break;
-			}
-			x++;
-		}
-		return ids;
-	}
+            if (identifier == null && terser.get("PID-3(" + (x + 1) + ")-1") == null) {
+                break;
+            }
+            x++;
+        }
+        return ids;
+    }
 
-	private String justTime(Date date){
+    private String justTime(Date date) {
         SimpleDateFormat simpledateformat = new SimpleDateFormat("HH:mm");
         return simpledateformat.format(date);
     }

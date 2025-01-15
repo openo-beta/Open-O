@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -57,15 +57,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cStartDate",
-    "cEndDate",
-    "cWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo",
-    "cPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey"
+        "cStartDate",
+        "cEndDate",
+        "cWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo",
+        "cPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey"
 })
 @XmlRootElement(name = "CInstructions")
 public class CInstructions {
@@ -81,11 +79,9 @@ public class CInstructions {
 
     /**
      * Gets the value of the cStartDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCStartDate() {
         return cStartDate;
@@ -93,11 +89,9 @@ public class CInstructions {
 
     /**
      * Sets the value of the cStartDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCStartDate(String value) {
         this.cStartDate = value;
@@ -105,11 +99,9 @@ public class CInstructions {
 
     /**
      * Gets the value of the cEndDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCEndDate() {
         return cEndDate;
@@ -117,11 +109,9 @@ public class CInstructions {
 
     /**
      * Sets the value of the cEndDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCEndDate(String value) {
         this.cEndDate = value;
@@ -129,11 +119,9 @@ public class CInstructions {
 
     /**
      * Gets the value of the cWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo }
-     *     
+     *
+     * @return possible object is
+     * {@link CWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo }
      */
     public CWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo getCWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo() {
         return cWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo;
@@ -141,11 +129,9 @@ public class CInstructions {
 
     /**
      * Sets the value of the cWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo }
      */
     public void setCWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo(CWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo value) {
         this.cWhenYouHaveCompletedThisAssessmentYourWorkerWillHaveAConversationWithYouAboutYo = value;
@@ -153,11 +139,9 @@ public class CInstructions {
 
     /**
      * Gets the value of the cPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey }
-     *     
+     *
+     * @return possible object is
+     * {@link CPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey }
      */
     public CPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey getCPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey() {
         return cPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey;
@@ -165,11 +149,9 @@ public class CInstructions {
 
     /**
      * Sets the value of the cPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey }
      */
     public void setCPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey(CPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey value) {
         this.cPleasePleaseACheckMarkInEachRow24InTotalUsingTheFollowingKey = value;

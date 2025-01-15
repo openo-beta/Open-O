@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -47,14 +48,14 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
     /**
      * Check for the existence of a bed with this ID.
-     * 
+     *
      * @param bedId
      * @return boolean
      */
     @Override
     public boolean bedExists(Integer bedId) {
-        Query query = entityManager.createQuery("select count(*) from Bed b where b.id = ?");
-        query.setParameter(0, bedId);
+        Query query = entityManager.createQuery("select count(*) from Bed b where b.id = ?1");
+        query.setParameter(1, bedId);
 
         Long result = (Long) query.getSingleResult();
 
@@ -63,9 +64,9 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
     /**
      * Use find(bedId)
-     * 
+     * <p>
      * Return the bed associated with an id
-     * 
+     *
      * @param bedId bed id to look up
      * @return the bed
      */
@@ -77,7 +78,7 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
     /**
      * All beds for a given room
-     * 
+     *
      * @param roomId the room id to look up
      * @param active activity flag
      * @return an array of beds
@@ -115,7 +116,7 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
     /**
      * use persist()
-     * 
+     *
      * @param bed
      */
     @Deprecated
@@ -136,13 +137,11 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
     /**
      * Use remove(bed)
-     * 
+     * <p>
      * Delete bed
      *
      * @param bed
-     * 
-     * @throws BedReservedException
-     *                              bed is inactive and reserved
+     * @throws BedReservedException bed is inactive and reserved
      */
     @Deprecated
     @Override
@@ -158,9 +157,11 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
 
         queryBuilder.append(" where ");
 
+        int counter = 1;
+
         boolean andClause = false;
         if (facilityId != null) {
-            queryBuilder.append("b.facilityId = ?");
+            queryBuilder.append("b.facilityId = ?" + counter++);
             andClause = true;
         }
 
@@ -169,13 +170,13 @@ public class BedDaoImpl extends AbstractDaoImpl<Bed> implements BedDao {
                 queryBuilder.append(" and ");
             else
                 andClause = true;
-            queryBuilder.append("b.roomId = ?");
+            queryBuilder.append("b.roomId = ?" + counter++);
         }
 
         if (active != null) {
             if (andClause)
                 queryBuilder.append(" and ");
-            queryBuilder.append("b.active = ?");
+            queryBuilder.append("b.active = ?" + counter++);
         }
 
         return queryBuilder.toString();

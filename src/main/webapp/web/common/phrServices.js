@@ -24,148 +24,151 @@
 
 */
 angular.module("phrServices", [])
-	.service("phrService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-	      
-        getK2aFeed: function (startPoint,numberOfRows) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/rssproxy/rss?key=k2a&startPoint=' + startPoint + '&numberOfRows=' + numberOfRows,
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting phr content");
+    .service("phrService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+
+            getK2aFeed: function (startPoint, numberOfRows) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/rssproxy/rss?key=k2a&startPoint=' + startPoint + '&numberOfRows=' + numberOfRows,
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting phr content");
                 });
-           return deferred.promise;
-        },
-        isPHRInit: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/app/PHRActive',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting phr content");
+                return deferred.promise;
+            },
+            isPHRInit: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/app/PHRActive',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting phr content");
                 });
-           return deferred.promise;
-        },
-        isPHRConsentCheck: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/app/PHRActiveAndConsentConfigured',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting phr content");
+                return deferred.promise;
+            },
+            isPHRConsentCheck: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/app/PHRActiveAndConsentConfigured',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting phr content");
                 });
-           return deferred.promise;
-        },
-        initPHR: function(clinicName){
-           	var deferred = $q.defer();
-           	 $http.post(this.apiPath+'/app/PHRInit',clinicName,this.configHeaders).then(function(response){
-               	console.log("returned from /PHRInit",response.data);
-               	deferred.resolve(response.data);
-               },function(data, status, headers){
-               	console.log("error initializing phr",data, status, headers);
-               	deferred.reject("An error occured while trying to fetching data from  PHR");
-               });
-        
-             return deferred.promise;
-        },
-        createPHRuser: function(provider){
-           	var deferred = $q.defer();
-           	 $http.post(this.apiPath+'/app/PHRCreateUser',provider,this.configHeaders).then(function(response){
-               	console.log("returned from /PHRCreateUser",response.data);
-               	deferred.resolve(response.data);
-               },function(data, status, headers){
-               	console.log("error initializing phr",data, status, headers);
-               	deferred.reject("An error occured while trying to fetching data from  PHR");
-               });
-        
-             return deferred.promise;
-        },
-        linkPHRUser: function(provider){
-           	var deferred = $q.defer();
-           	 $http.post(this.apiPath+'/app/PHRLinkUser',provider,this.configHeaders).then(function(response){
-               	console.log("returned from /PHRInit",response.data);
-               	deferred.resolve(response.data);
-               },function(data, status, headers){
-               	console.log("error initializing phr",data, status, headers);
-               	deferred.reject("An error occured while trying to fetching data from  PHR");
-               });
-        
-             return deferred.promise;
-        },
-        createProviderPHRuser: function(provider){
-           	var deferred = $q.defer();
-           	 $http.post(this.apiPath+'/app/createPHRAccount',provider,this.configHeaders).then(function(response){
-               	console.log("returned from /createPHRAccount",response.data);
-               	deferred.resolve(response.data);
-               },function(data, status, headers){
-               	console.log("error initializing phr",data, status, headers);
-               	deferred.reject("An error occured while trying to fetching data from  PHR");
-               });
-        
-             return deferred.promise;
-        },
-        phrAbilities: function(){
-           	var deferred = $q.defer();
-           	 $http.post(this.apiPath+'/app/PHRAbilities',this.configHeaders).then(function(response){
-               	console.log("returned from /PHRAbilities",response.data);
-               	deferred.resolve(response);
-               },function(data, status, headers){
-               	console.log("error initializing phr",data, status, headers);
-               	deferred.reject("An error occured while trying to initialize k2a");
-               });
-        
-             return deferred.promise;
-        },
-        phrSetupAudit: function(){
-           	var deferred = $q.defer();
-           	 $http.post(this.apiPath+'/app/PHRAuditSetup',this.configHeaders).then(function(response){
-               	console.log("returned from /PHRAuditSetup",response.data);
-               	deferred.resolve(response);
-               },function(data, status, headers){
-               	console.log("error initializing phr",data, status, headers);
-               	deferred.reject("An error occured while trying to initialize k2a");
-               });
-        
-             return deferred.promise;
-        },
-        acceptAppointmentConsent: function(){
-           	var deferred = $q.defer();
-           	 $http.post(this.apiPath+'/app/AcceptAppointmentConsent',this.configHeaders).then(function(response){
-               	console.log("returned from /AcceptAppointmentConsent",response.data);
-               	deferred.resolve(response);
-               },function(data, status, headers){
-               	console.log("error initializing phr",data, status, headers);
-               	deferred.reject("An error occured while trying to initialize k2a");
-               });
-        
-             return deferred.promise;
-        },
-        isPHRActiveCheckAppointmentConfigured: function () {
-        		var deferred = $q.defer();
-        		$http({
-                url: this.apiPath+'/app/PHRActiveAndAppointmentConfigured',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting phr content");
+                return deferred.promise;
+            },
+            initPHR: function (clinicName) {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + '/app/PHRInit', clinicName, this.configHeaders).then(function (response) {
+                    console.log("returned from /PHRInit", response.data);
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    console.log("error initializing phr", data, status, headers);
+                    deferred.reject("An error occured while trying to fetching data from  PHR");
                 });
-           return deferred.promise;
-        }
-	
-    };
-});
+
+                return deferred.promise;
+            },
+            createPHRuser: function (provider) {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + '/app/PHRCreateUser', provider, this.configHeaders).then(function (response) {
+                    console.log("returned from /PHRCreateUser", response.data);
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    console.log("error initializing phr", data, status, headers);
+                    deferred.reject("An error occured while trying to fetching data from  PHR");
+                });
+
+                return deferred.promise;
+            },
+            linkPHRUser: function (provider) {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + '/app/PHRLinkUser', provider, this.configHeaders).then(function (response) {
+                    console.log("returned from /PHRInit", response.data);
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    console.log("error initializing phr", data, status, headers);
+                    deferred.reject("An error occured while trying to fetching data from  PHR");
+                });
+
+                return deferred.promise;
+            },
+            createProviderPHRuser: function (provider) {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + '/app/createPHRAccount', provider, this.configHeaders).then(function (response) {
+                    console.log("returned from /createPHRAccount", response.data);
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    console.log("error initializing phr", data, status, headers);
+                    deferred.reject("An error occured while trying to fetching data from  PHR");
+                });
+
+                return deferred.promise;
+            },
+            phrAbilities: function () {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + '/app/PHRAbilities', this.configHeaders).then(function (response) {
+                    console.log("returned from /PHRAbilities", response.data);
+                    deferred.resolve(response);
+                }, function (data, status, headers) {
+                    console.log("error initializing phr", data, status, headers);
+                    deferred.reject("An error occured while trying to initialize k2a");
+                });
+
+                return deferred.promise;
+            },
+            phrSetupAudit: function () {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + '/app/PHRAuditSetup', this.configHeaders).then(function (response) {
+                    console.log("returned from /PHRAuditSetup", response.data);
+                    deferred.resolve(response);
+                }, function (data, status, headers) {
+                    console.log("error initializing phr", data, status, headers);
+                    deferred.reject("An error occured while trying to initialize k2a");
+                });
+
+                return deferred.promise;
+            },
+            acceptAppointmentConsent: function () {
+                var deferred = $q.defer();
+                $http.post(this.apiPath + '/app/AcceptAppointmentConsent', this.configHeaders).then(function (response) {
+                    console.log("returned from /AcceptAppointmentConsent", response.data);
+                    deferred.resolve(response);
+                }, function (data, status, headers) {
+                    console.log("error initializing phr", data, status, headers);
+                    deferred.reject("An error occured while trying to initialize k2a");
+                });
+
+                return deferred.promise;
+            },
+            isPHRActiveCheckAppointmentConfigured: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/app/PHRActiveAndAppointmentConfigured',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting phr content");
+                });
+                return deferred.promise;
+            }
+
+        };
+    });

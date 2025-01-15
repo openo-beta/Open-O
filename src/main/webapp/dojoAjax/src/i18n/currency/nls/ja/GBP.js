@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"英国ポンド","symbol":"£"})
+({"displayName": "英国ポンド", "symbol": "£"})

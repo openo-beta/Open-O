@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -43,9 +43,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -60,15 +60,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "doctorContact",
-    "psychiatristContact",
-    "otherPractitionerContact",
-    "otherAgencyContact"
+        "doctorContact",
+        "psychiatristContact",
+        "otherPractitionerContact",
+        "otherAgencyContact"
 })
 @XmlRootElement(name = "clientContact")
 public class ClientContact {
@@ -83,11 +81,9 @@ public class ClientContact {
 
     /**
      * Gets the value of the doctorContact property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DoctorContact }
-     *     
+     *
+     * @return possible object is
+     * {@link DoctorContact }
      */
     public DoctorContact getDoctorContact() {
         return doctorContact;
@@ -95,11 +91,9 @@ public class ClientContact {
 
     /**
      * Sets the value of the doctorContact property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DoctorContact }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link DoctorContact }
      */
     public void setDoctorContact(DoctorContact value) {
         this.doctorContact = value;
@@ -107,11 +101,9 @@ public class ClientContact {
 
     /**
      * Gets the value of the psychiatristContact property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PsychiatristContact }
-     *     
+     *
+     * @return possible object is
+     * {@link PsychiatristContact }
      */
     public PsychiatristContact getPsychiatristContact() {
         return psychiatristContact;
@@ -119,11 +111,9 @@ public class ClientContact {
 
     /**
      * Sets the value of the psychiatristContact property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PsychiatristContact }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link PsychiatristContact }
      */
     public void setPsychiatristContact(PsychiatristContact value) {
         this.psychiatristContact = value;
@@ -131,25 +121,23 @@ public class ClientContact {
 
     /**
      * Gets the value of the otherPractitionerContact property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the otherPractitionerContact property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getOtherPractitionerContact().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link OtherPractitionerContact }
-     * 
-     * 
      */
     public List<OtherPractitionerContact> getOtherPractitionerContact() {
         if (otherPractitionerContact == null) {
@@ -160,11 +148,9 @@ public class ClientContact {
 
     /**
      * Gets the value of the otherAgencyContact property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link OtherAgencyContact }
-     *     
+     *
+     * @return possible object is
+     * {@link OtherAgencyContact }
      */
     public OtherAgencyContact getOtherAgencyContact() {
         return otherAgencyContact;
@@ -172,11 +158,9 @@ public class ClientContact {
 
     /**
      * Sets the value of the otherAgencyContact property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link OtherAgencyContact }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link OtherAgencyContact }
      */
     public void setOtherAgencyContact(OtherAgencyContact value) {
         this.otherAgencyContact = value;

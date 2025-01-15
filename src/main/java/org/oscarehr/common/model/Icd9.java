@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -28,25 +28,25 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="icd9")
+@Table(name = "icd9")
 public class Icd9 extends AbstractCodeSystemModel<Integer> implements java.io.Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-     private Integer id;
-     private String icd9;
-     private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String icd9;
+    private String description;
 
- 	@OneToOne(optional=true)
-    @JoinColumn(name = "icd9", referencedColumnName="dxCode", insertable=false, updatable=false) 
+    @OneToOne(optional = true)
+    @JoinColumn(name = "icd9", referencedColumnName = "dxCode", insertable = false, updatable = false)
     private Icd9Synonym synonym;
-     
+
     public Icd9() {
     }
 
     public Icd9(String icd9, String description) {
-       this.icd9 = icd9;
-       this.description = description;
+        this.icd9 = icd9;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -56,6 +56,7 @@ public class Icd9 extends AbstractCodeSystemModel<Integer> implements java.io.Se
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getIcd9() {
         return this.icd9;
     }
@@ -63,6 +64,7 @@ public class Icd9 extends AbstractCodeSystemModel<Integer> implements java.io.Se
     public void setIcd9(String icd9) {
         this.icd9 = icd9;
     }
+
     public String getDescription() {
         return this.description;
     }
@@ -73,39 +75,39 @@ public class Icd9 extends AbstractCodeSystemModel<Integer> implements java.io.Se
 
     @Transient
     public String getSynonym() {
-    	String synonym = "";
-    	if( getSynonymData() != null ) {
-    		synonym = getSynonymData().getPatientFriendly();
-    	}
-    	if( synonym == null ) {
-    		return ""; 
-    	}
-    	return synonym;
+        String synonym = "";
+        if (getSynonymData() != null) {
+            synonym = getSynonymData().getPatientFriendly();
+        }
+        if (synonym == null) {
+            return "";
+        }
+        return synonym;
     }
 
     @Transient
-	public Icd9Synonym getSynonymData() {
-		return synonym;
-	}
+    public Icd9Synonym getSynonymData() {
+        return synonym;
+    }
 
     @Transient
-	public void setSynonymData(Icd9Synonym synonym) {
-		this.synonym = synonym;
-	}
+    public void setSynonymData(Icd9Synonym synonym) {
+        this.synonym = synonym;
+    }
 
-	@Override
+    @Override
     public String getCode() {
-	    return getIcd9();
+        return getIcd9();
     }
 
-	@Override
+    @Override
     public String getCodingSystem() {
-	    return "icd9";
+        return "icd9";
     }
 
-	@Override
-	public void setCode(String code) {
-		this.setIcd9(code);
-	}
+    @Override
+    public void setCode(String code) {
+        this.setIcd9(code);
+    }
 
 }

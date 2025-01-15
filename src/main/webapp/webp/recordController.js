@@ -24,31 +24,27 @@
 
 */
 //This is an emtpy Record Controller for use with pop outs.
-oscarApp.controller('RecordCtrl', function ($rootScope,$scope,$http,$location,$stateParams,demographicService,demo,user,$state,noteService,$timeout,$interval,uxService,securityService,scheduleService,billingService,ticklerService) {
-	
-	
-	console.log("in emptypatient2 Ctrl ",demo);
-	console.log("in EmptyRecordCtrl state params ",$stateParams,$location.search());
-	
-	$scope.demographicNo = $stateParams.demographicNo;
-	$scope.demographic= demo;
-	$scope.page = {};
-	$scope.page.assignedCMIssues = [];
-	
-	
-	
-	
-	
-    
+oscarApp.controller('RecordCtrl', function ($rootScope, $scope, $http, $location, $stateParams, demographicService, demo, user, $state, noteService, $timeout, $interval, uxService, securityService, scheduleService, billingService, ticklerService) {
+
+
+    console.log("in emptypatient2 Ctrl ", demo);
+    console.log("in EmptyRecordCtrl state params ", $stateParams, $location.search());
+
+    $scope.demographicNo = $stateParams.demographicNo;
+    $scope.demographic = demo;
+    $scope.page = {};
+    $scope.page.assignedCMIssues = [];
+
+
 });
 
-function toArray(obj){ //convert single object to array
-	if (obj instanceof Array) return obj;
-	if (obj==null) return [];
-	return [obj];
+function toArray(obj) { //convert single object to array
+    if (obj instanceof Array) return obj;
+    if (obj == null) return [];
+    return [obj];
 }
 
-function zero(n){
-	if (n<10) n = "0"+n;
-	return n;
+function zero(n) {
+    if (n < 10) n = "0" + n;
+    return n;
 }

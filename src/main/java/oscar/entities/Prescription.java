@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -25,82 +26,82 @@
 package oscar.entities;
 
 /**
- *
  * SELECT *
- FROM `prescription`
- where demographic_no = 1;
-
+ * FROM `prescription`
+ * where demographic_no = 1;
  * <p>Title: </p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Company: </p>
+ *
  * @author not attributable
  * @version 1.0
  */
 public class Prescription {
-  private String scriptNo;
-  private String providerNo;
-  private String demographicNo;
-  private String datePrescribed;
-  private String datePrinted;
-  private String datesReprinted;
-  private String textView;
-  public Prescription() {
-  }
+    private String scriptNo;
+    private String providerNo;
+    private String demographicNo;
+    private String datePrescribed;
+    private String datePrinted;
+    private String datesReprinted;
+    private String textView;
 
-  public String getScriptNo() {
-    return scriptNo;
-  }
+    public Prescription() {
+    }
 
-  public void setScriptNo(String scriptNo) {
-    this.scriptNo = scriptNo;
-  }
+    public String getScriptNo() {
+        return scriptNo;
+    }
 
-  public String getProviderNo() {
-    return providerNo;
-  }
+    public void setScriptNo(String scriptNo) {
+        this.scriptNo = scriptNo;
+    }
 
-  public void setProviderNo(String providerNo) {
-    this.providerNo = providerNo;
-  }
+    public String getProviderNo() {
+        return providerNo;
+    }
 
-  public String getDemographicNo() {
-    return demographicNo;
-  }
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
 
-  public void setDemographicNo(String demographicNo) {
-    this.demographicNo = demographicNo;
-  }
+    public String getDemographicNo() {
+        return demographicNo;
+    }
 
-  public String getDatePrescribed() {
-    return datePrescribed;
-  }
+    public void setDemographicNo(String demographicNo) {
+        this.demographicNo = demographicNo;
+    }
 
-  public void setDatePrescribed(String datePrescribed) {
-    this.datePrescribed = datePrescribed;
-  }
+    public String getDatePrescribed() {
+        return datePrescribed;
+    }
 
-  public String getDatePrinted() {
-    return datePrinted;
-  }
+    public void setDatePrescribed(String datePrescribed) {
+        this.datePrescribed = datePrescribed;
+    }
 
-  public void setDatePrinted(String datePrinted) {
-    this.datePrinted = datePrinted;
-  }
+    public String getDatePrinted() {
+        return datePrinted;
+    }
 
-  public String getDatesReprinted() {
-    return datesReprinted;
-  }
+    public void setDatePrinted(String datePrinted) {
+        this.datePrinted = datePrinted;
+    }
 
-  public void setDatesReprinted(String datesReprinted) {
-    this.datesReprinted = datesReprinted;
-  }
+    public String getDatesReprinted() {
+        return datesReprinted;
+    }
 
-  public String getTextView() {
-    return textView;
-  }
+    public void setDatesReprinted(String datesReprinted) {
+        this.datesReprinted = datesReprinted;
+    }
 
-  public void setTextView(String textView) {
-    this.textView = textView;
-  }
+    public String getTextView() {
+        return textView;
+    }
+
+    public void setTextView(String textView) {
+        this.textView = textView;
+    }
 }

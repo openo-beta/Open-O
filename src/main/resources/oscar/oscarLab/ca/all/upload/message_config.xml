@@ -6,7 +6,6 @@
 	<handler name="CDL" className="CDLHandler"/>
     <handler name="CLS"		className="CLSHandler"/>
 	<handler name="CML" className="CMLHandler"/>
- 	<handler name="eaaps"   className="org.oscarehr.research.eaaps.EaapsHandler"/>
 	<handler name="EPSILON" className="EpsilonHandler" />
 	<handler name="ExcellerisON" className="ExcellerisOntarioHandler" />
 	<handler name="GDML" className="GDMLHandler"/>

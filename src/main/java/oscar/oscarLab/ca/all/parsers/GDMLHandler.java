@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -63,7 +64,6 @@ import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 /**
- *
  * @author wrighd
  */
 public class GDMLHandler implements MessageHandler {
@@ -71,29 +71,31 @@ public class GDMLHandler implements MessageHandler {
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     ORU_R01 msg = null;
     ArrayList<String> headers = null;
-    HashMap<OBR,ArrayList<OBX>> obrSegMap = null;
+    HashMap<OBR, ArrayList<OBX>> obrSegMap = null;
     ArrayList<OBR> obrSegKeySet = null;
 
-    /** Creates a new instance of CMLHandler */
-    public GDMLHandler(){
+    /**
+     * Creates a new instance of CMLHandler
+     */
+    public GDMLHandler() {
     }
 
     public void init(String hl7Body) throws HL7Exception {
 
         Parser p = new PipeParser();
         p.setValidationContext(new NoValidation());
-        msg = (ORU_R01) p.parse(hl7Body.replaceAll( "\n", "\r\n" ));
+        msg = (ORU_R01) p.parse(hl7Body.replaceAll("\n", "\r\n"));
 
         ArrayList<String> labs = getMatchingGDMLLabsByAccessionNo(hl7Body);
         headers = new ArrayList<String>();
-        obrSegMap = new LinkedHashMap<OBR,ArrayList<OBX>>();
+        obrSegMap = new LinkedHashMap<OBR, ArrayList<OBX>>();
         obrSegKeySet = new ArrayList<OBR>();
 
-        for (int i=0; i < labs.size(); i++){
-            msg = (ORU_R01) p.parse(( labs.get(i)).replaceAll("\n", "\r\n"));
+        for (int i = 0; i < labs.size(); i++) {
+            msg = (ORU_R01) p.parse((labs.get(i)).replaceAll("\n", "\r\n"));
             int obrCount = msg.getRESPONSE().getORDER_OBSERVATIONReps();
 
-            for (int j=0; j < obrCount; j++){
+            for (int j = 0; j < obrCount; j++) {
 
                 // ADD OBR SEGMENTS AND THEIR OBX SEGMENTS TO THE OBRSEGMAP
                 OBR obrSeg = msg.getRESPONSE().getORDER_OBSERVATION(j).getOBR();
@@ -104,7 +106,7 @@ public class GDMLHandler implements MessageHandler {
                     obxSegs = new ArrayList<OBX>();
 
                 int obxCount = msg.getRESPONSE().getORDER_OBSERVATION(j).getOBSERVATIONReps();
-                for (int k=0; k < obxCount; k++){
+                for (int k = 0; k < obxCount; k++) {
                     obxSegs.add(msg.getRESPONSE().getORDER_OBSERVATION(j).getOBSERVATION(k).getOBX());
                 }
 
@@ -113,7 +115,7 @@ public class GDMLHandler implements MessageHandler {
 
                 // ADD THE HEADER TO THE HEADERS ARRAYLIST
                 String header = getString(obrSeg.getUniversalServiceIdentifier().getAlternateIdentifier().getValue());
-                if (!headers.contains(header)){
+                if (!headers.contains(header)) {
                     headers.add(header);
                 }
 
@@ -122,140 +124,140 @@ public class GDMLHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information about the Observation Request
+     * Methods to get information about the Observation Request
      */
-    public int getOBRCount(){
-        return(obrSegMap.size());
+    public int getOBRCount() {
+        return (obrSegMap.size());
     }
 
-    public int getOBXCount(int i){
-        return( (obrSegMap.get(obrSegKeySet.get(i))).size() );
+    public int getOBXCount(int i) {
+        return ((obrSegMap.get(obrSegKeySet.get(i))).size());
     }
 
-    public String getOBRName(int i){
-        return (( obrSegKeySet.get(i)).getUniversalServiceIdentifier().getText().getValue());
+    public String getOBRName(int i) {
+        return ((obrSegKeySet.get(i)).getUniversalServiceIdentifier().getText().getValue());
     }
 
-    public String getOBRIdentifier(int i){
-        return (( obrSegKeySet.get(i)).getUniversalServiceIdentifier().getCe1_Identifier().getValue());
+    public String getOBRIdentifier(int i) {
+        return ((obrSegKeySet.get(i)).getUniversalServiceIdentifier().getCe1_Identifier().getValue());
     }
 
-    public String getTimeStamp(int i, int j){
-        try{
-            String ret = ( obrSegKeySet.get(i)).getResultsRptStatusChngDateTime().getTimeOfAnEvent().getValue();
+    public String getTimeStamp(int i, int j) {
+        try {
+            String ret = (obrSegKeySet.get(i)).getResultsRptStatusChngDateTime().getTimeOfAnEvent().getValue();
             if (ret == null)
-                ret = ( obrSegKeySet.get(i)).getObservationDateTime().getTimeOfAnEvent().getValue();
-            return(formatDateTime(getString(ret)));
-        }catch(Exception e){
+                ret = (obrSegKeySet.get(i)).getObservationDateTime().getTimeOfAnEvent().getValue();
+            return (formatDateTime(getString(ret)));
+        } catch (Exception e) {
             logger.error("Exception retrieving timestamp", e);
-            return("");
+            return ("");
         }
     }
 
-    public boolean isOBXAbnormal(int i, int j){
+    public boolean isOBXAbnormal(int i, int j) {
         String abnormalFlag = getOBXAbnormalFlag(i, j);
         if (abnormalFlag.equals("") || abnormalFlag.equals("N"))
-            return(false);
+            return (false);
         else
-            return(true);
+            return (true);
     }
 
 
-    public String getOBXAbnormalFlag(int i, int j){
+    public String getOBXAbnormalFlag(int i, int j) {
 
-        try{
+        try {
 
-            return(getString( ( ( obrSegMap.get(obrSegKeySet.get(i))).get(j)).getAbnormalFlags(0).getValue() ));
-        }catch(Exception e){
+            return (getString(((obrSegMap.get(obrSegKeySet.get(i))).get(j)).getAbnormalFlags(0).getValue()));
+        } catch (Exception e) {
             logger.error("Exception retrieving abnormal flag", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getObservationHeader(int i, int j){
-        try{
-            return(getString(( obrSegKeySet.get(i)).getUniversalServiceIdentifier().getAlternateIdentifier().getValue()));
-        }catch(Exception e){
+    public String getObservationHeader(int i, int j) {
+        try {
+            return (getString((obrSegKeySet.get(i)).getUniversalServiceIdentifier().getAlternateIdentifier().getValue()));
+        } catch (Exception e) {
             logger.error("Exception gettin header", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getOBXIdentifier(int i, int j){
+    public String getOBXIdentifier(int i, int j) {
 
-        try{
+        try {
 
-            Segment obxSeg = (( obrSegMap.get(obrSegKeySet.get(i))).get(j));
+            Segment obxSeg = ((obrSegMap.get(obrSegKeySet.get(i))).get(j));
             String ident = getString(getComponent(obxSeg, 3, 0, 1));
 
-            logger.debug("returning obx identifier: "+ident);
-            return(ident);
-        }catch(Exception e){
+            logger.debug("returning obx identifier: " + ident);
+            return (ident);
+        } catch (Exception e) {
             logger.error("error returning obx identifier", e);
-            return("");
+            return ("");
         }
     }
 
 
-    public String getOBXValueType(int i, int j){
+    public String getOBXValueType(int i, int j) {
         String ret = "";
-        try{
-            OBX obxSeg = ( obrSegMap.get(obrSegKeySet.get(i))).get(j);
+        try {
+            OBX obxSeg = (obrSegMap.get(obrSegKeySet.get(i))).get(j);
             ret = obxSeg.getValueType().getValue();
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Error returning OBX name", e);
         }
 
         return ret;
     }
 
-    public String getOBXName(int i, int j){
+    public String getOBXName(int i, int j) {
         String ret = "";
-        try{
+        try {
             // leave the name blank if the value type is 'FT' this is because it
             // is a comment, if the name is blank the obx segment will not be displayed
-            OBX obxSeg =  ( obrSegMap.get(obrSegKeySet.get(i))).get(j);
+            OBX obxSeg = (obrSegMap.get(obrSegKeySet.get(i))).get(j);
             if (!obxSeg.getValueType().getValue().equals("FT"))
                 ret = getString(obxSeg.getObservationIdentifier().getText().getValue());
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Error returning OBX name", e);
         }
 
         return ret;
     }
-    
 
-    public String getOBXNameLong(int i, int j){
+
+    public String getOBXNameLong(int i, int j) {
         String ret = "";
-        try{
+        try {
             ret = getString(msg.getRESPONSE().getORDER_OBSERVATION(i).getOBSERVATION(j).getOBX().getObservationIdentifier().getComponent(2).toString());
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Error returning OBX test name", e);
         }
 
         return ret;
     }
 
-    public String getOBXResult(int i, int j){
+    public String getOBXResult(int i, int j) {
 
         String result = "";
-        try{
+        try {
 
             result = getString(getComponent(((obrSegMap.get(obrSegKeySet.get(i))).get(j)), 5, 0, 1));
 
             // format the result
             if (result.endsWith("."))
-                result = result.substring(0, result.length()-1);
+                result = result.substring(0, result.length() - 1);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Exception returning result", e);
         }
         return result;
     }
 
-    public String getOBXReferenceRange(int i, int j){
+    public String getOBXReferenceRange(int i, int j) {
         String ret = "";
-        try{
+        try {
 
             OBX obxSeg = (obrSegMap.get(obrSegKeySet.get(i))).get(j);
 
@@ -267,41 +269,41 @@ public class GDMLHandler implements MessageHandler {
 
             // may have to fall back to original reference range if the second
             // component is empty
-            if (ret.equals("") ){
+            if (ret.equals("")) {
                 ret = getString(obxSeg.getReferencesRange().getValue());
-                if (!ret.equals("")){
+                if (!ret.equals("")) {
                     // format the reference range if using the unformatted one
                     String[] ranges = ret.split("-");
-                    for (int k=0; k < ranges.length; k++){
+                    for (int k = 0; k < ranges.length; k++) {
                         if (ranges[k].endsWith("."))
-                            ranges[k] = ranges[k].substring(0, ranges[k].length()-1);
+                            ranges[k] = ranges[k].substring(0, ranges[k].length() - 1);
                     }
 
-                    if (ranges.length > 1){
+                    if (ranges.length > 1) {
                         if (ranges[0].contains(">") || ranges[0].contains("<"))
-                            ret = ranges[0]+"= "+ranges[1];
+                            ret = ranges[0] + "= " + ranges[1];
                         else
-                            ret = ranges[0]+" - "+ranges[1];
-                    }else if (ranges.length == 1){
-                        ret = ranges[0]+" -";
+                            ret = ranges[0] + " - " + ranges[1];
+                    } else if (ranges.length == 1) {
+                        ret = ranges[0] + " -";
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Exception retrieving reception range", e);
         }
         return ret.replaceAll("\\\\\\.br\\\\", "");
     }
 
-    public String getOBXUnits(int i, int j){
+    public String getOBXUnits(int i, int j) {
         String ret = "";
-        try{
+        try {
             OBX obxSeg = (obrSegMap.get(obrSegKeySet.get(i))).get(j);
             ret = getString(obxSeg.getUnits().getIdentifier().getValue());
 
             // if there are no units specified check the formatted reference
             // range for the units
-            if (ret.equals("")){
+            if (ret.equals("")) {
                 ret = getString(getComponent(obxSeg, 7, 0, 2));
 
                 // only display units from the formatted reference range if they
@@ -309,49 +311,49 @@ public class GDMLHandler implements MessageHandler {
                 if (ret.contains("-") || ret.contains("<") || ret.contains(">") || ret.contains("NEGATIVE"))
                     ret = "";
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Exception retrieving units", e);
         }
         return ret.replaceAll("\\\\\\.br\\\\", "");
     }
 
-    public String getOBXResultStatus(int i, int j){
-        try{
+    public String getOBXResultStatus(int i, int j) {
+        try {
 
             // result status is stored in the wrong field.... i think
-            return(getString(( (obrSegMap.get(obrSegKeySet.get(i))).get(j)).getNatureOfAbnormalTest().getValue()));
-        }catch(Exception e){
+            return (getString(((obrSegMap.get(obrSegKeySet.get(i))).get(j)).getNatureOfAbnormalTest().getValue()));
+        } catch (Exception e) {
             logger.error("Exception retrieving results status", e);
-            return("");
+            return ("");
         }
     }
 
-    public int getOBXFinalResultCount(){
+    public int getOBXFinalResultCount() {
         int obrCount = getOBRCount();
         int count = 0;
-        for (int i=0; i < obrCount; i++){
+        for (int i = 0; i < obrCount; i++) {
             //note - this is assuming every returned OBX is FINAL in GDML labs (which is understood to be the case)
-            count += getOBXCount(i);            
-        }        
-        
+            count += getOBXCount(i);
+        }
+
         return count;
     }
 
     /**
-     *  Retrieve the possible segment headers from the OBX fields
+     * Retrieve the possible segment headers from the OBX fields
      */
-    public ArrayList<String> getHeaders(){
+    public ArrayList<String> getHeaders() {
         return headers;
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
-    public int getOBRCommentCount(int i){
+    public int getOBRCommentCount(int i) {
         int count = 0;
 
-        for (int j=0; j < getOBXCount(i); j++){
-            if (getString((( obrSegMap.get(obrSegKeySet.get(i))).get(j)).getValueType().getValue()).equals("FT"))
+        for (int j = 0; j < getOBXCount(i); j++) {
+            if (getString(((obrSegMap.get(obrSegKeySet.get(i))).get(j)).getValueType().getValue()).equals("FT"))
                 count++;
         }
 
@@ -359,7 +361,7 @@ public class GDMLHandler implements MessageHandler {
 
     }
 
-    public String getOBRComment(int i, int j){
+    public String getOBRComment(int i, int j) {
         String comment = "";
 
         // update j to the number of the comment not the index of a comment array
@@ -370,10 +372,10 @@ public class GDMLHandler implements MessageHandler {
             int l = 0;
             OBX obxSeg = null;
 
-            while ( l < obxCount && count < j){
+            while (l < obxCount && count < j) {
 
-                obxSeg = ( obrSegMap.get(obrSegKeySet.get(i))).get(l);
-                if (getString(obxSeg.getValueType().getValue()).equals("FT")){
+                obxSeg = (obrSegMap.get(obrSegKeySet.get(i))).get(l);
+                if (getString(obxSeg.getValueType().getValue()).equals("FT")) {
                     count++;
                 }
                 l++;
@@ -384,8 +386,8 @@ public class GDMLHandler implements MessageHandler {
             int k = 0;
 
             String nextComment = getComponent(obxSeg, 5, k, 1);
-            
-            while(nextComment != null){
+
+            while (nextComment != null) {
                 comment = comment + getString(nextComment).replaceAll("\\\\\\.br\\\\", "<br />");
                 k++;
                 nextComment = getComponent(obxSeg, 5, k, 1);
@@ -399,7 +401,7 @@ public class GDMLHandler implements MessageHandler {
     }
 
     /**
-     *  Methods to get information from observation notes
+     * Methods to get information from observation notes
      */
 /*
     public int getOBXCommentCount(int i, int j){
@@ -437,54 +439,53 @@ public class GDMLHandler implements MessageHandler {
         }
         return getString(comment).replaceAll("\\\\\\.br\\\\", "<br />");
     }
-  */  
-    public int getOBXCommentCount(int i, int j){
+  */
+    public int getOBXCommentCount(int i, int j) {
         try {
-            if ( !getOBXComment(i, j, 0).equals("") ){
-                return(1);
-            }else{
-                return(0);
+            if (!getOBXComment(i, j, 0).equals("")) {
+                return (1);
+            } else {
+                return (0);
             }
         } catch (Exception e) {
-            return(0);
+            return (0);
         }
     }
 
-    public String getOBXComment(int i, int j, int k){
+    public String getOBXComment(int i, int j, int k) {
         try {
-            return(getString(msg.getRESPONSE(0).getORDER_OBSERVATION(i).getOBSERVATION(j).getNTE(k).getComment(0).getValue()));
+            return (getString(msg.getRESPONSE(0).getORDER_OBSERVATION(i).getOBSERVATION(j).getNTE(k).getComment(0).getValue()));
         } catch (Exception e) {
-            return("");
+            return ("");
         }
     }
-
 
 
     /**
-     *  Methods to get information about the patient
+     * Methods to get information about the patient
      */
-    public String getPatientName(){
-        return(getFirstName()+" "+getLastName());
+    public String getPatientName() {
+        return (getFirstName() + " " + getLastName());
     }
 
-    public String getFirstName(){
-        return(getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getGivenName().getValue()));
+    public String getFirstName() {
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getGivenName().getValue()));
     }
 
-    public String getLastName(){
-        return(getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getFamilyName().getValue()));
+    public String getLastName() {
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getFamilyName().getValue()));
     }
 
-    public String getDOB(){
-        try{
-            return(formatDateTime(getString(msg.getRESPONSE().getPATIENT().getPID().getDateOfBirth().getTimeOfAnEvent().getValue())).substring(0, 10));
-        }catch(Exception e){
+    public String getDOB() {
+        try {
+            return (formatDateTime(getString(msg.getRESPONSE().getPATIENT().getPID().getDateOfBirth().getTimeOfAnEvent().getValue())).substring(0, 10));
+        } catch (Exception e) {
             logger.error("Exception retrieving DOB", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getAge(){
+    public String getAge() {
         String age = "N/A";
         String dob = getDOB();
         try {
@@ -500,91 +501,91 @@ public class GDMLHandler implements MessageHandler {
         return age;
     }
 
-    public String getSex(){
-        return(getString(msg.getRESPONSE().getPATIENT().getPID().getSex().getValue()));
+    public String getSex() {
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getSex().getValue()));
     }
 
-    public String getHealthNum(){
-        return(getString(msg.getRESPONSE().getPATIENT().getPID().getPatientIDExternalID().getID().getValue()));
+    public String getHealthNum() {
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientIDExternalID().getID().getValue()));
     }
 
-    public String getHomePhone(){
+    public String getHomePhone() {
         String phone = "";
-        int i=0;
-        try{
-            while(!getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberHome(i).get9999999X99999CAnyText().getValue()).equals("")){
-                if (i==0){
+        int i = 0;
+        try {
+            while (!getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberHome(i).get9999999X99999CAnyText().getValue()).equals("")) {
+                if (i == 0) {
                     phone = getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberHome(i).get9999999X99999CAnyText().getValue());
-                }else{
+                } else {
                     phone = phone + ", " + getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberHome(i).get9999999X99999CAnyText().getValue());
                 }
                 i++;
             }
-            return(phone);
-        }catch(Exception e){
+            return (phone);
+        } catch (Exception e) {
             logger.error("Could not return phone number", e);
 
-            return("");
+            return ("");
         }
     }
 
-    public String getWorkPhone(){
+    public String getWorkPhone() {
         String phone = "";
-        int i=0;
-        try{
-            while(!getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberBusiness(i).get9999999X99999CAnyText().getValue()).equals("")){
-                if (i==0){
+        int i = 0;
+        try {
+            while (!getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberBusiness(i).get9999999X99999CAnyText().getValue()).equals("")) {
+                if (i == 0) {
                     phone = getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberBusiness(i).get9999999X99999CAnyText().getValue());
-                }else{
+                } else {
                     phone = phone + ", " + getString(msg.getRESPONSE().getPATIENT().getPID().getPhoneNumberBusiness(i).get9999999X99999CAnyText().getValue());
                 }
                 i++;
             }
-            return(phone);
-        }catch(Exception e){
+            return (phone);
+        } catch (Exception e) {
             logger.error("Could not return phone number", e);
 
-            return("");
+            return ("");
         }
     }
 
-    public String getPatientLocation(){
-    	try {
-	    	if(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObr39_CollectorSCommentReps() != 0) {
-	            return(getString(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObr39_CollectorSComment(0).getCe1_Identifier().getValue())); 
-	    	}
-    	}catch(HL7Exception e) {
-    		logger.error("Error",e);
-    	}
-        return(getString(msg.getMSH().getSendingFacility().getNamespaceID().getValue()));
+    public String getPatientLocation() {
+        try {
+            if (msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObr39_CollectorSCommentReps() != 0) {
+                return (getString(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObr39_CollectorSComment(0).getCe1_Identifier().getValue()));
+            }
+        } catch (HL7Exception e) {
+            logger.error("Error", e);
+        }
+        return (getString(msg.getMSH().getSendingFacility().getNamespaceID().getValue()));
     }
 
-    public String getServiceDate(){
-        try{
-            return(formatDateTime(getString(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObservationDateTime().getTimeOfAnEvent().getValue())));
-        }catch(Exception e){
+    public String getServiceDate() {
+        try {
+            return (formatDateTime(getString(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObservationDateTime().getTimeOfAnEvent().getValue())));
+        } catch (Exception e) {
             logger.error("Exception retrieving service date", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getRequestDate(int i){
-        try{
-            String ret = ( obrSegKeySet.get(i)).getRequestedDateTime().getTimeOfAnEvent().getValue();
-            return(formatDateTime(getString(ret)));
-        }catch(Exception e){
+    public String getRequestDate(int i) {
+        try {
+            String ret = (obrSegKeySet.get(i)).getRequestedDateTime().getTimeOfAnEvent().getValue();
+            return (formatDateTime(getString(ret)));
+        } catch (Exception e) {
             logger.error("Exception retrieving request date", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getOrderStatus(){
+    public String getOrderStatus() {
         // gdml won't send pending labs... they'll send only the final parts of the
         // labs
-        return("F");
+        return ("F");
     }
 
-    public String getClientRef(){
+    public String getClientRef() {
         /*String docNum = "";
         int i=0;
         try{
@@ -602,44 +603,44 @@ public class GDMLHandler implements MessageHandler {
 
             return("");
         }*/
-        try{
-            return(getString(msg.getRESPONSE().getPATIENT().getPID().getPatientIDInternalID(0).getAssigningAuthority().getNamespaceID().getValue()));
-        }catch(Exception e){
+        try {
+            return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientIDInternalID(0).getAssigningAuthority().getNamespaceID().getValue()));
+        } catch (Exception e) {
             logger.error("Could not return accession num: ", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getAccessionNum(){
-        try{
-            return(getString(msg.getRESPONSE().getPATIENT().getPID().getPatientIDInternalID(0).getID().getValue()));
-        }catch(Exception e){
+    public String getAccessionNum() {
+        try {
+            return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientIDInternalID(0).getID().getValue()));
+        } catch (Exception e) {
             logger.error("Could not return accession num: ", e);
-            return("");
+            return ("");
         }
     }
 
-    public String getDocName(){
+    public String getDocName() {
         String docName = "";
-        int i=0;
-        try{
-            while(!getFullDocName(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getOrderingProvider(i)).equals("")){
-                if (i==0){
+        int i = 0;
+        try {
+            while (!getFullDocName(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getOrderingProvider(i)).equals("")) {
+                if (i == 0) {
                     docName = getFullDocName(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getOrderingProvider(i));
-                }else{
+                } else {
                     docName = docName + ", " + getFullDocName(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getOrderingProvider(i));
                 }
                 i++;
             }
-            return(docName);
-        }catch(Exception e){
+            return (docName);
+        } catch (Exception e) {
             logger.error("Could not return doctor names", e);
 
-            return("");
+            return ("");
         }
     }
 
-    public String getCCDocs(){
+    public String getCCDocs() {
 
         String docNames = "";
 
@@ -650,104 +651,104 @@ public class GDMLHandler implements MessageHandler {
             String middleName = terser.get("/.ZDR(0)-4-3");
             String familyName = terser.get("/.ZDR(0)-4-2");
 
-            int i=1;
-            while (givenName != null){
+            int i = 1;
+            while (givenName != null) {
 
-                if (i==1)
+                if (i == 1)
                     docNames = givenName;
                 else
-                    docNames = docNames+", "+givenName;
+                    docNames = docNames + ", " + givenName;
 
                 if (middleName != null)
-                    docNames = docNames+" "+middleName;
+                    docNames = docNames + " " + middleName;
                 if (familyName != null)
-                    docNames = docNames+" "+familyName;
+                    docNames = docNames + " " + familyName;
 
-                givenName = terser.get("/.ZDR("+i+")-4-1");
-                middleName = terser.get("/.ZDR("+i+")-4-3");
-                familyName = terser.get("/.ZDR("+i+")-4-2");
+                givenName = terser.get("/.ZDR(" + i + ")-4-1");
+                middleName = terser.get("/.ZDR(" + i + ")-4-3");
+                familyName = terser.get("/.ZDR(" + i + ")-4-2");
 
                 i++;
             }
 
-            return(docNames);
+            return (docNames);
 
         } catch (Exception e) {
             //ignore error... it will occur when the zdr segment is not present
             //logger.error("Could not retrieve cc'd docs", e);
-            return("");
+            return ("");
         }
 
     }
 
-    public ArrayList<String> getDocNums(){
+    public ArrayList<String> getDocNums() {
         String docNum = "";
         ArrayList<String> nums = new ArrayList<String>();
-        int i=0;
-        try{
+        int i = 0;
+        try {
 
             //requesting client number
             docNum = msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getOrderingProvider(i).getIDNumber().getValue();
-            if (docNum != null){
-               nums.add(docNum);
+            if (docNum != null) {
+                nums.add(docNum);
             }
 
             //cc'd docs numbers
             Terser terser = new Terser(msg);
             String num = terser.get("/.ZDR(0)-3-1");
-            i=1;
-            while (num != null){
+            i = 1;
+            while (num != null) {
                 if (!num.equals(docNum))
                     nums.add(num);
-                num = terser.get("/.ZDR("+i+")-3-1");
+                num = terser.get("/.ZDR(" + i + ")-3-1");
                 i++;
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             //ignore error... it will occur when the zdr segment is not present
             //logger.error("Could not return numbers", e);
         }
 
-        return(nums);
+        return (nums);
     }
 
-    public String audit(){
+    public String audit() {
         return "";
     }
-    
-    public String getFillerOrderNumber(){
-		return "";
-	}
 
-    public String getEncounterId(){
-    	return "";
-    }
-    
-    public String getRadiologistInfo(){
-		return "";
-	}
-
-    public String getNteForOBX(int i, int j){
-    	return "";
+    public String getFillerOrderNumber() {
+        return "";
     }
 
-    public String getMsgType(){
-        return("GDML");
+    public String getEncounterId() {
+        return "";
     }
 
-    public String getMsgDate(){
-        return(formatDateTime(msg.getMSH().getDateTimeOfMessage().getTimeOfAnEvent().getValue()));
+    public String getRadiologistInfo() {
+        return "";
     }
 
-    public String getMsgPriority(){
+    public String getNteForOBX(int i, int j) {
+        return "";
+    }
+
+    public String getMsgType() {
+        return ("GDML");
+    }
+
+    public String getMsgDate() {
+        return (formatDateTime(msg.getMSH().getDateTimeOfMessage().getTimeOfAnEvent().getValue()));
+    }
+
+    public String getMsgPriority() {
         String priority = "R";
-        for (int i=0; i < getOBRCount(); i++){
-            try{
-                if (getString(msg.getRESPONSE().getORDER_OBSERVATION(i).getOBR().getPriority().getValue()).equals("S")){
-                    priority="S";
+        for (int i = 0; i < getOBRCount(); i++) {
+            try {
+                if (getString(msg.getRESPONSE().getORDER_OBSERVATION(i).getOBR().getPriority().getValue()).equals("S")) {
+                    priority = "S";
                     break;
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 logger.error("Error finding priority", e);
             }
         }
@@ -755,185 +756,186 @@ public class GDMLHandler implements MessageHandler {
         return priority;
     }
 
-    
+
     private ArrayList<String> getMatchingGDMLLabsByAccessionNo(String hl7Body) {
-		Base64 base64 = new Base64(0);
-		ArrayList<String> ret = new ArrayList<String>();
-		int monthsBetween = 0;
-		Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
+        Base64 base64 = new Base64(0);
+        ArrayList<String> ret = new ArrayList<String>();
+        int monthsBetween = 0;
+        Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
-		try {
-			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	        java.util.Date dateB = formatter.parse(getServiceDate());
-			List<Hl7TextMessageInfo2> matchingLabs = hl7TextInfoDao.getMatchingLabsByAccessionNo(getAccessionNum());
-			for ( Hl7TextMessageInfo2 l: matchingLabs ) {
-				Date dateA = UtilDateUtilities.StringToDate(l.labDate_A,"yyyy-MM-dd hh:mm:ss");
-				
-				if (dateA.before(dateB)) {
-					monthsBetween = UtilDateUtilities.getNumMonths(dateA, dateB);
-				} else {
-					monthsBetween = UtilDateUtilities.getNumMonths(dateB, dateA);
-				}
-				if (monthsBetween < 4) {
-					ret.add(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"));
-				}
-				
-				if(hl7Body.equals(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"))){
-					//logger.error("same message ");
-					break;
-				}
-			}
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date dateB = formatter.parse(getServiceDate());
+            List<Hl7TextMessageInfo2> matchingLabs = hl7TextInfoDao.getMatchingLabsByAccessionNo(getAccessionNum());
+            for (Hl7TextMessageInfo2 l : matchingLabs) {
+                Date dateA = UtilDateUtilities.StringToDate(l.labDate_A, "yyyy-MM-dd hh:mm:ss");
+
+                if (dateA.before(dateB)) {
+                    monthsBetween = UtilDateUtilities.getNumMonths(dateA, dateB);
+                } else {
+                    monthsBetween = UtilDateUtilities.getNumMonths(dateB, dateA);
+                }
+                if (monthsBetween < 4) {
+                    ret.add(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"));
+                }
+
+                if (hl7Body.equals(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"))) {
+                    //logger.error("same message ");
+                    break;
+                }
+            }
 
 
-		} catch (Exception e) {
-			logger.error("Exception in HL7 getMatchingGDMLLabsByAccessionNo: ", e);
-		}
+        } catch (Exception e) {
+            logger.error("Exception in HL7 getMatchingGDMLLabsByAccessionNo: ", e);
+        }
 
-		// if there have been no labs added to the database yet just return this
-		// lab
-		if (ret.size() == 0)
-			ret.add(hl7Body);
-		return ret;
-	}    
-    
+        // if there have been no labs added to the database yet just return this
+        // lab
+        if (ret.size() == 0)
+            ret.add(hl7Body);
+        return ret;
+    }
+
     protected ArrayList<String> getMatchingGDMLLabs(String hl7Body) {
-		Base64 base64 = new Base64(0);
-		ArrayList<String> ret = new ArrayList<String>();
-		int monthsBetween = 0;
-		Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
+        Base64 base64 = new Base64(0);
+        ArrayList<String> ret = new ArrayList<String>();
+        int monthsBetween = 0;
+        Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
-		try {
-			List<Hl7TextMessageInfo> matchingLabs = hl7TextInfoDao.getMatchingLabs(hl7Body);
-			for ( Hl7TextMessageInfo l: matchingLabs ) {
-				Date dateA = UtilDateUtilities.StringToDate(l.labDate_A,"yyyy-MM-dd hh:mm:ss");
-				Date dateB = UtilDateUtilities.StringToDate(l.labDate_B,"yyyy-MM-dd hh:mm:ss");
-				if (dateA.before(dateB)) {
-					monthsBetween = UtilDateUtilities.getNumMonths(dateA, dateB);
-				} else {
-					monthsBetween = UtilDateUtilities.getNumMonths(dateB, dateA);
-				}
-				if (monthsBetween < 4) {
-					ret.add(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"));
-				}
-				if (l.lab_no_A==l.lab_no_B)
-					break;
-			}
+        try {
+            List<Hl7TextMessageInfo> matchingLabs = hl7TextInfoDao.getMatchingLabs(hl7Body);
+            for (Hl7TextMessageInfo l : matchingLabs) {
+                Date dateA = UtilDateUtilities.StringToDate(l.labDate_A, "yyyy-MM-dd hh:mm:ss");
+                Date dateB = UtilDateUtilities.StringToDate(l.labDate_B, "yyyy-MM-dd hh:mm:ss");
+                if (dateA.before(dateB)) {
+                    monthsBetween = UtilDateUtilities.getNumMonths(dateA, dateB);
+                } else {
+                    monthsBetween = UtilDateUtilities.getNumMonths(dateB, dateA);
+                }
+                if (monthsBetween < 4) {
+                    ret.add(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"));
+                }
+                if (l.lab_no_A == l.lab_no_B)
+                    break;
+            }
 
 
-		} catch (Exception e) {
-			logger.error("Exception in HL7 getMatchingLabs: ", e);
-		}
+        } catch (Exception e) {
+            logger.error("Exception in HL7 getMatchingLabs: ", e);
+        }
 
-		// if there have been no labs added to the database yet just return this
-		// lab
-		if (ret.size() == 0)
-			ret.add(hl7Body);
-		return ret;
-	}
+        // if there have been no labs added to the database yet just return this
+        // lab
+        if (ret.size() == 0)
+            ret.add(hl7Body);
+        return ret;
+    }
 
-    private String getFullDocName(XCN docSeg){
+    private String getFullDocName(XCN docSeg) {
         String docName = "";
 
-        if(docSeg.getPrefixEgDR().getValue() != null)
+        if (docSeg.getPrefixEgDR().getValue() != null)
             docName = docSeg.getPrefixEgDR().getValue();
 
-        if(docSeg.getGivenName().getValue() != null){
+        if (docSeg.getGivenName().getValue() != null) {
             if (docName.equals(""))
                 docName = docSeg.getGivenName().getValue();
             else
-                docName = docName +" "+ docSeg.getGivenName().getValue();
+                docName = docName + " " + docSeg.getGivenName().getValue();
 
         }
-        if(docSeg.getMiddleInitialOrName().getValue() != null){
+        if (docSeg.getMiddleInitialOrName().getValue() != null) {
             if (docName.equals(""))
                 docName = docSeg.getMiddleInitialOrName().getValue();
             else
-                docName = docName +" "+ docSeg.getMiddleInitialOrName().getValue();
+                docName = docName + " " + docSeg.getMiddleInitialOrName().getValue();
 
         }
-        if(docSeg.getFamilyName().getValue() != null){
+        if (docSeg.getFamilyName().getValue() != null) {
             if (docName.equals(""))
                 docName = docSeg.getFamilyName().getValue();
             else
-                docName = docName +" "+ docSeg.getFamilyName().getValue();
+                docName = docName + " " + docSeg.getFamilyName().getValue();
 
         }
-        if(docSeg.getSuffixEgJRorIII().getValue() != null){
+        if (docSeg.getSuffixEgJRorIII().getValue() != null) {
             if (docName.equals(""))
                 docName = docSeg.getSuffixEgJRorIII().getValue();
             else
-                docName = docName +" "+ docSeg.getSuffixEgJRorIII().getValue();
+                docName = docName + " " + docSeg.getSuffixEgJRorIII().getValue();
         }
-        if(docSeg.getDegreeEgMD().getValue() != null){
+        if (docSeg.getDegreeEgMD().getValue() != null) {
             if (docName.equals(""))
                 docName = docSeg.getDegreeEgMD().getValue();
             else
-                docName = docName +" "+ docSeg.getDegreeEgMD().getValue();
+                docName = docName + " " + docSeg.getDegreeEgMD().getValue();
         }
 
         return (docName);
     }
 
 
-    private String formatDateTime(String plain){
-    	if (plain==null || plain.trim().equals("")) return "";
+    private String formatDateTime(String plain) {
+        if (plain == null || plain.trim().equals("")) return "";
 
         String dateFormat = "yyyyMMddHHmmss";
         dateFormat = dateFormat.substring(0, plain.length());
         String stringFormat = "yyyy-MM-dd HH:mm:ss";
-        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length()-1))+1);
+        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
 
         Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
         return UtilDateUtilities.DateToString(date, stringFormat);
     }
 
-    private String getString(String retrieve){
-        if (retrieve != null){
-            return(retrieve.trim());
-        }else{
-            return("");
+    private String getString(String retrieve) {
+        if (retrieve != null) {
+            return (retrieve.trim());
+        } else {
+            return ("");
         }
     }
-    
-    private String getComponent(Segment seg, int i, int j, int k) throws HL7Exception{
-    	//track "&" in field and process accordingly, & = sub-component separator in HL7
-    	String field = Terser.get(seg, i, j, k, 1);
-    	
-    	if (field!=null){
+
+    private String getComponent(Segment seg, int i, int j, int k) throws HL7Exception {
+        //track "&" in field and process accordingly, & = sub-component separator in HL7
+        String field = Terser.get(seg, i, j, k, 1);
+
+        if (field != null) {
             int subIndex = 2;
-        	String nextSub = Terser.get(seg, i, j, k, subIndex);
-        	
-        	while(nextSub != null){
-        		field += "&" + getString(nextSub);
-        		nextSub = Terser.get(seg, i, j, k, ++subIndex);
-        	}
-    	}
-    	return field;
+            String nextSub = Terser.get(seg, i, j, k, subIndex);
+
+            while (nextSub != null) {
+                field += "&" + getString(nextSub);
+                nextSub = Terser.get(seg, i, j, k, ++subIndex);
+            }
+        }
+        return field;
     }
+
     public String getNteForPID() {
-    	try {
-    		String comments= new String();
-    		int commentCount = msg.getRESPONSE().getPATIENT().getNTEReps();
-    		for (int i = 0 ; i<commentCount; i++) {
-    			comments += (i+1) + "-" + msg.getRESPONSE().getPATIENT().getNTE().getSourceOfComment().getValue() + ". ";
-    		}
-    		return comments;
-    	} catch (Exception e) {
-    		logger.error("Could not generate nte segment for patient",e);
-    		return "";
-    	}
+        try {
+            String comments = new String();
+            int commentCount = msg.getRESPONSE().getPATIENT().getNTEReps();
+            for (int i = 0; i < commentCount; i++) {
+                comments += (i + 1) + "-" + msg.getRESPONSE().getPATIENT().getNTE().getSourceOfComment().getValue() + ". ";
+            }
+            return comments;
+        } catch (Exception e) {
+            logger.error("Could not generate nte segment for patient", e);
+            return "";
+        }
     }
-    
+
     /*
      * for OMD validation (imported files)
      */
-    public boolean isTestResultBlocked(int i, int j){
-        try{
-            Segment obxSeg = (( obrSegMap.get(obrSegKeySet.get(i))).get(j));
+    public boolean isTestResultBlocked(int i, int j) {
+        try {
+            Segment obxSeg = ((obrSegMap.get(obrSegKeySet.get(i))).get(j));
             String status = getString(getComponent(obxSeg, 13, 0, 1));
 
             return "BLOCKED".equals(status);
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("error returning obx identifier", e);
             return false;
         }

@@ -24,63 +24,66 @@
 
 */
 angular.module("reportByTemplateServices", [])
-	.service("reportByTemplateService", function ($http,$q,$log) {
-		return {
-		apiPath:'../../ws/rs',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-	      
-        isK2AInit: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/reportByTemplate/K2AActive',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function (response) {
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting k2a content");
+    .service("reportByTemplateService", function ($http, $q, $log) {
+        return {
+            apiPath: '../../ws/rs',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+
+            isK2AInit: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/reportByTemplate/K2AActive',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting k2a content");
                 });
-           return deferred.promise;
-        },
-	 getAllK2AReports: function() {
-		var deferred = $q.defer();
-		$http({
-		url: this.apiPath+'/reportByTemplate/allReports',
-		method: "GET",
-		headers: this.configHeaders,
-	      }).then(function (response) {
-		  deferred.resolve(response.data);
-	        },function(data, status, headers) {
-			deferred.reject("An error occured while getting k2a content");
-		});
-	    return deferred.promise;
-	 },
-	 getK2AReportById: function(id) {
-		var deferred = $q.defer();
-		$http({
-		url: this.apiPath+'/reportByTemplate/getReportById/'+id,
-		method: "POST",
-		headers: this.configHeaders,
-	      }).then(function (response) {
-		  deferred.resolve(response.data);
-	        },function(data, status, headers) {
-			deferred.reject("An error occured while getting k2a content");
-		});
-	    return deferred.promise;
-	 },
-	 getK2AUrl: function(id) {
-		var deferred = $q.defer();
-		$http({
-		url: this.apiPath+'/reportByTemplate/K2AUrl/',
-		method: "GET",
-		headers: this.configHeaders,
-	      }).then(function (response) {
-		  deferred.resolve(response.data);
-	        },function(data, status, headers) {
-			deferred.reject("An error occured while getting k2a url");
-		});
-	    return deferred.promise;
-	 }	 
-    };
-});
+                return deferred.promise;
+            },
+            getAllK2AReports: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/reportByTemplate/allReports',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting k2a content");
+                });
+                return deferred.promise;
+            },
+            getK2AReportById: function (id) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/reportByTemplate/getReportById/' + id,
+                    method: "POST",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting k2a content");
+                });
+                return deferred.promise;
+            },
+            getK2AUrl: function (id) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/reportByTemplate/K2AUrl/',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting k2a url");
+                });
+                return deferred.promise;
+            }
+        };
+    });

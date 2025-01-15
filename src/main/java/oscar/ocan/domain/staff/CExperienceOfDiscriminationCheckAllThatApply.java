@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -64,22 +64,20 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cDisability",
-    "cEthnicity",
-    "cGender",
-    "cImmigration",
-    "cMentalIllness",
-    "cRace",
-    "cReligion",
-    "cSexualOrientation",
-    "cUnknown",
-    "cClientDeclinedToAnswer",
-    "cOther"
+        "cDisability",
+        "cEthnicity",
+        "cGender",
+        "cImmigration",
+        "cMentalIllness",
+        "cRace",
+        "cReligion",
+        "cSexualOrientation",
+        "cUnknown",
+        "cClientDeclinedToAnswer",
+        "cOther"
 })
 @XmlRootElement(name = "CExperience_of_Discrimination__check_all_that_apply_")
 public class CExperienceOfDiscriminationCheckAllThatApply {
@@ -109,11 +107,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cDisability property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCDisability() {
         return cDisability;
@@ -121,11 +117,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cDisability property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCDisability(String value) {
         this.cDisability = value;
@@ -133,11 +127,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cEthnicity property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCEthnicity() {
         return cEthnicity;
@@ -145,11 +137,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cEthnicity property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCEthnicity(String value) {
         this.cEthnicity = value;
@@ -157,11 +147,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cGender property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCGender() {
         return cGender;
@@ -169,11 +157,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cGender property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCGender(String value) {
         this.cGender = value;
@@ -181,11 +167,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cImmigration property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCImmigration() {
         return cImmigration;
@@ -193,11 +177,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cImmigration property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCImmigration(String value) {
         this.cImmigration = value;
@@ -205,11 +187,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cMentalIllness property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCMentalIllness() {
         return cMentalIllness;
@@ -217,11 +197,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cMentalIllness property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCMentalIllness(String value) {
         this.cMentalIllness = value;
@@ -229,11 +207,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cRace property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCRace() {
         return cRace;
@@ -241,11 +217,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cRace property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCRace(String value) {
         this.cRace = value;
@@ -253,11 +227,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cReligion property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCReligion() {
         return cReligion;
@@ -265,11 +237,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cReligion property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCReligion(String value) {
         this.cReligion = value;
@@ -277,11 +247,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cSexualOrientation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSexualOrientation() {
         return cSexualOrientation;
@@ -289,11 +257,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cSexualOrientation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSexualOrientation(String value) {
         this.cSexualOrientation = value;
@@ -301,11 +267,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cUnknown property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -313,11 +277,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cUnknown property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -325,11 +287,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -337,11 +297,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;
@@ -349,11 +307,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Gets the value of the cOther property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOther() {
         return cOther;
@@ -361,11 +317,9 @@ public class CExperienceOfDiscriminationCheckAllThatApply {
 
     /**
      * Sets the value of the cOther property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOther(String value) {
         this.cOther = value;

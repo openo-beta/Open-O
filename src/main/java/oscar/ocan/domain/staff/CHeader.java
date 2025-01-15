@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -58,16 +58,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cServiceOrganizationName",
-    "cServiceOrganizationNumber",
-    "cProgramName",
-    "cProgramNumber",
-    "cFunctionMISFunctionalCentre"
+        "cServiceOrganizationName",
+        "cServiceOrganizationNumber",
+        "cProgramName",
+        "cProgramNumber",
+        "cFunctionMISFunctionalCentre"
 })
 @XmlRootElement(name = "CHeader")
 public class CHeader {
@@ -85,11 +83,9 @@ public class CHeader {
 
     /**
      * Gets the value of the cServiceOrganizationName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCServiceOrganizationName() {
         return cServiceOrganizationName;
@@ -97,11 +93,9 @@ public class CHeader {
 
     /**
      * Sets the value of the cServiceOrganizationName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCServiceOrganizationName(String value) {
         this.cServiceOrganizationName = value;
@@ -109,11 +103,9 @@ public class CHeader {
 
     /**
      * Gets the value of the cServiceOrganizationNumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCServiceOrganizationNumber() {
         return cServiceOrganizationNumber;
@@ -121,11 +113,9 @@ public class CHeader {
 
     /**
      * Sets the value of the cServiceOrganizationNumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCServiceOrganizationNumber(String value) {
         this.cServiceOrganizationNumber = value;
@@ -133,11 +123,9 @@ public class CHeader {
 
     /**
      * Gets the value of the cProgramName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCProgramName() {
         return cProgramName;
@@ -145,11 +133,9 @@ public class CHeader {
 
     /**
      * Sets the value of the cProgramName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCProgramName(String value) {
         this.cProgramName = value;
@@ -157,11 +143,9 @@ public class CHeader {
 
     /**
      * Gets the value of the cProgramNumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCProgramNumber() {
         return cProgramNumber;
@@ -169,11 +153,9 @@ public class CHeader {
 
     /**
      * Sets the value of the cProgramNumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCProgramNumber(String value) {
         this.cProgramNumber = value;
@@ -181,11 +163,9 @@ public class CHeader {
 
     /**
      * Gets the value of the cFunctionMISFunctionalCentre property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCFunctionMISFunctionalCentre() {
         return cFunctionMISFunctionalCentre;
@@ -193,11 +173,9 @@ public class CHeader {
 
     /**
      * Sets the value of the cFunctionMISFunctionalCentre property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCFunctionMISFunctionalCentre(String value) {
         this.cFunctionMISFunctionalCentre = value;

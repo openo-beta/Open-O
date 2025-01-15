@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"dateFormat-yearOnly":"yyyy"})
+({"dateFormat-yearOnly": "yyyy"})

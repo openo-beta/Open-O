@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -57,19 +57,19 @@ public class IntakeNode implements Serializable {
     private Set<Intake> intakes;
     private Set<IntakeAnswer> answers;
     private Integer formType;
-    private String questionId;	//user supplied label.
+    private String questionId;    //user supplied label.
     private String validations;
-    
+
 
     public String getValidations() {
-		return validations;
-	}
+        return validations;
+    }
 
-	public void setValidations(String validations) {
-		this.validations = validations;
-	}
+    public void setValidations(String validations) {
+        this.validations = validations;
+    }
 
-	// constructors
+    // constructors
     public IntakeNode() {
         initialize();
     }
@@ -145,7 +145,7 @@ public class IntakeNode implements Serializable {
     public boolean isAnswerDate() {
         return getNodeTemplate().isAnswerDate();
     }
-    
+
     public boolean isAnswerBoolean() {
         return getNodeTemplate().isAnswerBoolean();
     }
@@ -241,8 +241,8 @@ public class IntakeNode implements Serializable {
 
     /**
      * Return the unique identifier of this class
-     *
-     *  generator-class="native" column="intake_node_id"
+     * <p>
+     * generator-class="native" column="intake_node_id"
      */
     public Integer getId() {
         return id;
@@ -251,8 +251,7 @@ public class IntakeNode implements Serializable {
     /**
      * Set the unique identifier of this class
      *
-     * @param id
-     *            the new ID
+     * @param id the new ID
      */
     public void setId(Integer id) {
         this.id = id;
@@ -269,8 +268,7 @@ public class IntakeNode implements Serializable {
     /**
      * Set the value related to the column: intake_node_template_id
      *
-     * @param nodeTemplate
-     *            the intake_node_template_id value
+     * @param nodeTemplate the intake_node_template_id value
      */
     public void setNodeTemplate(IntakeNodeTemplate nodeTemplate) {
         this.nodeTemplate = nodeTemplate;
@@ -286,8 +284,7 @@ public class IntakeNode implements Serializable {
     /**
      * Set the value related to the column: intake_node_label_id
      *
-     * @param label
-     *            the intake_node_label_id value
+     * @param label the intake_node_label_id value
      */
     public void setLabel(IntakeNodeLabel label) {
         this.label = label;
@@ -303,8 +300,7 @@ public class IntakeNode implements Serializable {
     /**
      * Set the value related to the column: parent_intake_node_id
      *
-     * @param parent
-     *            the parent_intake_node_id value
+     * @param parent the parent_intake_node_id value
      */
     public void setParent(IntakeNode parent) {
         this.parent = parent;
@@ -320,8 +316,7 @@ public class IntakeNode implements Serializable {
     /**
      * Set the value related to the column: children
      *
-     * @param children
-     *            the children value
+     * @param children the children value
      */
     public void setChildren(List<IntakeNode> children) {
         this.children = children;
@@ -337,8 +332,7 @@ public class IntakeNode implements Serializable {
     /**
      * Set the value related to the column: intakes
      *
-     * @param intakes
-     *            the intakes value
+     * @param intakes the intakes value
      */
     public void setIntakes(Set<Intake> intakes) {
         this.intakes = intakes;
@@ -360,8 +354,7 @@ public class IntakeNode implements Serializable {
     /**
      * Set the value related to the column: answers
      *
-     * @param answers
-     *            the answers value
+     * @param answers the answers value
      */
     public void setAnswers(Set<IntakeAnswer> answers) {
         this.answers = answers;
@@ -372,82 +365,81 @@ public class IntakeNode implements Serializable {
             setAnswers(new TreeSet<IntakeAnswer>());
         getAnswers().add(intakeAnswer);
     }
-    
-    
-    
+
+
     public Integer getPos() {
         return pos;
     }
 
-   
+
     public void setPos(Integer pos) {
         this.pos = pos;
     }
-    
-    
+
+
     public boolean getMandatory() {
         return mandatory;
     }
 
-   
+
     public void setMandatory(boolean mandatory) {
         this.mandatory = mandatory;
     }
-    
+
     public boolean getRepeating() {
         return repeating;
     }
 
-   
+
     public void setRepeating(boolean repeating) {
         this.repeating = repeating;
     }
-    
+
     public boolean getCommonList() {
         return commonList;
     }
 
-   
+
     public void setCommonList(boolean commonList) {
         this.commonList = commonList;
-    }    
-    
-    
+    }
+
+
     public Integer getEq_to_id() {
-	return eq_to_id;
+        return eq_to_id;
     }
-    
-    
+
+
     public void setEq_to_id(Integer eq_to_id) {
-	this.eq_to_id = eq_to_id;
+        this.eq_to_id = eq_to_id;
     }
-    
-    
+
+
     public Integer getForm_version() {
-	return form_version;
+        return form_version;
     }
-    
-    
+
+
     public void setForm_version(Integer form_version) {
-	this.form_version = form_version;
+        this.form_version = form_version;
     }
-    
-    
+
+
     public Calendar getPublish_date() {
         return publish_date;
     }
-    
+
     public String getPublishDateStr() {
-    	Calendar c = getPublish_date();
-    	if(c!=null) {
-    		return DATE_FORMAT.format(c.getTime());
-    	} else {
-    		return null;
-    	}
-	//return DATE_FORMAT.format(getPublish_date().getTime());
+        Calendar c = getPublish_date();
+        if (c != null) {
+            return DATE_FORMAT.format(c.getTime());
+        } else {
+            return null;
+        }
+        //return DATE_FORMAT.format(getPublish_date().getTime());
     }
-    
-    
+
+
     public void setPublish_date(Calendar publishDate) {
         this.publish_date = publishDate;
     }
@@ -456,16 +448,16 @@ public class IntakeNode implements Serializable {
         setPublish_date(Calendar.getInstance());
     }
 
-    
+
     public String getPublish_by() {
-	return publish_by;
+        return publish_by;
     }
-    
-    
+
+
     public void setPublish_by(String publishBy) {
-	this.publish_by = publishBy;
+        this.publish_by = publishBy;
     }
-    
+
 
     public boolean equals(Object obj) {
         if (null == obj)
@@ -493,21 +485,21 @@ public class IntakeNode implements Serializable {
         return this.hashCode;
     }
 
-	public void setFormType(Integer type) {
-		this.formType = type;
-	}
-	
-	public Integer getFormType() {
-		return this.formType;
-	}
+    public void setFormType(Integer type) {
+        this.formType = type;
+    }
 
-	public String getQuestionId() {
-		return questionId;
-	}
+    public Integer getFormType() {
+        return this.formType;
+    }
 
-	public void setQuestionId(String questionId) {
-		this.questionId = questionId;
-	}
-	
-	
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
+    }
+
+
 }

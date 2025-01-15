@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,11 +33,10 @@ import javax.servlet.jsp.tagext.TagSupport;
 import oscar.OscarProperties;
 
 
-
-/** Tag class for evaulating a property from oscar properties.
- *
+/**
+ * Tag class for evaulating a property from oscar properties.
+ * <p>
  * If the value is equal, the jsp code will be included in the page.
- *
  */
 public class OscarPropertiesCheck extends TagSupport {
 
@@ -44,16 +44,16 @@ public class OscarPropertiesCheck extends TagSupport {
     protected String property = null;
     protected String defaultVal = null;
     protected String reverse = null;
-    
+
     public String getReverse() {
-		return reverse;
-	}
+        return reverse;
+    }
 
-	public void setReverse(String reverse) {
-		this.reverse = reverse;
-	}
+    public void setReverse(String reverse) {
+        this.reverse = reverse;
+    }
 
-	public String getValue() {
+    public String getValue() {
         return (this.value);
     }
 
@@ -70,37 +70,36 @@ public class OscarPropertiesCheck extends TagSupport {
     }
 
 
-
     public int doStartTag() throws JspException {
 
-        boolean conditionMet = false ;
-        
+        boolean conditionMet = false;
+
         String prop = getProperty();
-        String val  = getValue();
-        
-        boolean rev=false;
-        if(getReverse() != null && getReverse().equalsIgnoreCase("true")) {
-        	rev=true;
+        String val = getValue();
+
+        boolean rev = false;
+        if (getReverse() != null && getReverse().equalsIgnoreCase("true")) {
+            rev = true;
         }
-        
-        try{            
+
+        try {
             String oscarVal = OscarProperties.getInstance().getProperty(prop);
-            if (oscarVal.equals(val)){
+            if (oscarVal.equals(val)) {
                 conditionMet = true;
             }
-            
-            if(rev) {
-            	conditionMet = !conditionMet;
+
+            if (rev) {
+                conditionMet = !conditionMet;
             }
-        }catch(Exception invalidProp){             
-            if (defaultVal != null && defaultVal.equalsIgnoreCase("true")){
-               conditionMet = true;
+        } catch (Exception invalidProp) {
+            if (defaultVal != null && defaultVal.equalsIgnoreCase("true")) {
+                conditionMet = true;
             }
-            if(rev) {
-            	conditionMet=true;
+            if (rev) {
+                conditionMet = true;
             }
         }
-               
+
         if (conditionMet)
             return (EVAL_BODY_INCLUDE);
         else
@@ -113,29 +112,31 @@ public class OscarPropertiesCheck extends TagSupport {
         return (EVAL_PAGE);
 
     }
-   
+
     public void release() {
 
-        super.release();                
-        value = null;        
-        property = null;        
+        super.release();
+        value = null;
+        property = null;
     }
 
     /**
      * Getter for property defaultVal.
+     *
      * @return Value of property defaultVal.
      */
     public java.lang.String getDefaultVal() {
-       return defaultVal;
-    }    
+        return defaultVal;
+    }
 
     /**
      * Setter for property defaultVal.
+     *
      * @param defaultVal New value of property defaultVal.
      */
     public void setDefaultVal(java.lang.String defaultVal) {
-       this.defaultVal = defaultVal;
-    }    
+        this.defaultVal = defaultVal;
+    }
 
 
 }

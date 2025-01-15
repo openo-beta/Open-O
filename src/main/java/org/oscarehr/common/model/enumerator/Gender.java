@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.common.model.enumerator;
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,16 +7,16 @@ package org.oscarehr.common.model.enumerator;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,66 +31,65 @@ import org.oscarehr.common.model.AbstractModel;
 
 
 /**
- * Model class for the lst_gender database table. 
+ * Model class for the lst_gender database table.
  * Contains an enumerated class for Gender code.
- * 
  */
 @Entity
-@Table(name="lst_gender")
-@NamedQuery(name="Gender.findAll", query="SELECT g FROM Gender g")
+@Table(name = "lst_gender")
+@NamedQuery(name = "Gender.findAll", query = "SELECT g FROM Gender g")
 public class Gender extends AbstractModel<String> implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	
-	//@Enumerated(EnumType.STRING)
-	@Id
-	private String code;
 
-	private String description;
+    //@Enumerated(EnumType.STRING)
+    @Id
+    private String code;
 
-	private int displayorder;
+    private String description;
 
-	private byte isactive;
+    private int displayorder;
 
-	public Gender() {
-		// default
-	}
-	
-	@Override
-	public String getId() {
-		return this.code;
-	}
+    private byte isactive;
 
-	public String getCode() {
-		return this.code;
-	}
+    public Gender() {
+        // default
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    @Override
+    public String getId() {
+        return this.code;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getCode() {
+        return this.code;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public int getDisplayorder() {
-		return this.displayorder;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setDisplayorder(int displayorder) {
-		this.displayorder = displayorder;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public byte getIsactive() {
-		return this.isactive;
-	}
+    public int getDisplayorder() {
+        return this.displayorder;
+    }
 
-	public void setIsactive(byte isactive) {
-		this.isactive = isactive;
-	}
+    public void setDisplayorder(int displayorder) {
+        this.displayorder = displayorder;
+    }
+
+    public byte getIsactive() {
+        return this.isactive;
+    }
+
+    public void setIsactive(byte isactive) {
+        this.isactive = isactive;
+    }
 
 }

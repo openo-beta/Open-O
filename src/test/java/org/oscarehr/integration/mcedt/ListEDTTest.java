@@ -31,12 +31,12 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.UPLOADED, new BigInteger("1"));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
 
         printDetailList(detailList);
     }
@@ -47,12 +47,12 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_STALE_DATED_CLAIM_FILE.getType(), ResourceStatus.UPLOADED, new BigInteger("1"));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
 
         printDetailList(detailList);
     }
@@ -63,12 +63,12 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_OBEC_INBOUND_FILE.getType(), ResourceStatus.SUBMITTED, new BigInteger("1"));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
 
         printDetailList(detailList);
     }
@@ -79,12 +79,12 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, ResourceStatus.DOWNLOADABLE, new BigInteger("1"));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
 
         printDetailList(detailList);
     }
@@ -99,13 +99,13 @@ public class ListEDTTest extends EDTBaseTest {
             claimFilesDetailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.DELETED, new BigInteger("1"));
             staleDatedClaimFilesDetailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.DELETED, new BigInteger("1"));
             obecFilesDetailList = edtDelegate.list(ResourceType.UPLOAD_OBEC_INBOUND_FILE.getType(), ResourceStatus.DELETED, new BigInteger("1"));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
-		assertNull(claimFilesDetailList);
-		assertNull(staleDatedClaimFilesDetailList);
-		assertNull(obecFilesDetailList);
+        assertNull(claimFilesDetailList);
+        assertNull(staleDatedClaimFilesDetailList);
+        assertNull(obecFilesDetailList);
 
         printDetailList(claimFilesDetailList);
         printDetailList(staleDatedClaimFilesDetailList);
@@ -118,12 +118,12 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, null, null);
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
 
         printDetailList(detailList);
     }
@@ -134,13 +134,13 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list("99", ResourceStatus.UPLOADED, null);
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             assertEquals("EEDTS0003", e.getFaultInfo().getCode());
             return;
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
         assertEquals("EEDTS0003", detailList.getData().get(0).getResult().getCode());
 
         printDetailList(detailList);
@@ -153,13 +153,13 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, ResourceStatus.DOWNLOADABLE, null);
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             assertEquals("EEDTS0061", e.getFaultInfo().getCode());
             return;
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
         assertEquals("EEDTS0061", detailList.getData().get(0).getResult().getCode());
 
         printDetailList(detailList);
@@ -174,12 +174,12 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, null, new BigInteger("1"));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
         assertEquals(50, detailList.getData().size());
 
         printDetailList(detailList);
@@ -194,12 +194,12 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, null, new BigInteger("2"));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
         assertEquals(50, detailList.getData().size());
 
         printDetailList(detailList);
@@ -212,13 +212,13 @@ public class ListEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, ResourceStatus.UPLOADED, null);
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             assertEquals("EEDTS0012", e.getFaultInfo().getCode());
             return;
         }
         assertNotNull(detailList);
-		assertFalse(detailList.getData().isEmpty());
+        assertFalse(detailList.getData().isEmpty());
         assertEquals("EEDTS0012", detailList.getData().get(0).getResult().getCode());
 
         printDetailList(detailList);

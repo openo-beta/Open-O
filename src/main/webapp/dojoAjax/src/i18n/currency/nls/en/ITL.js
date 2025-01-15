@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"Italian Lira","symbol":"₤"})
+({"displayName": "Italian Lira", "symbol": "₤"})

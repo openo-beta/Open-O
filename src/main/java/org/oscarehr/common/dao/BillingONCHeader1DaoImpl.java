@@ -1,26 +1,27 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -63,7 +64,6 @@ import oscar.oscarBilling.ca.on.pageUtil.BillingStatusPrep;
 import oscar.util.ParamAppender;
 
 /**
- *
  * @author Eugene Katyukhin
  */
 
@@ -87,21 +87,21 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     @Override
     public List<BillingONCHeader1> getBillCheader1ByDemographicNo(int demographic_no) {
         Query query = entityManager
-                .createQuery("select ch from BillingONCHeader1 ch where ch.demographicNo=? AND ch.status!='D'");
-        query.setParameter(0, demographic_no);
+                .createQuery("select ch from BillingONCHeader1 ch where ch.demographicNo=?1 AND ch.status!='D'");
+        query.setParameter(1, demographic_no);
         return query.getResultList();
     }
 
     @Override
     public int getNumberOfDemographicsWithInvoicesForProvider(String providerNo, Date startDate, Date endDate,
-            boolean distinct) {
+                                                              boolean distinct) {
         String distinctStr = "distinct";
         if (distinct == false) {
             distinctStr = StringUtils.EMPTY;
         }
 
         Query query = entityManager.createNativeQuery("select count(" + distinctStr
-                + " demographic_no) from billing_on_cheader1 ch where ch.provider_no = ? and billing_date >= ? and billing_date <= ?");
+                + " demographic_no) from billing_on_cheader1 ch where ch.provider_no = ?1 and billing_date >= ?2 and billing_date <= ?3");
         query.setParameter(1, providerNo);
         query.setParameter(2, startDate);
         query.setParameter(3, endDate);
@@ -118,7 +118,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public String createBill(String provider, Integer demographic, String code, String clinicRefCode, Date serviceDate,
-            String curUser) {
+                             String curUser) {
         BillingONCHeader1 header1 = null;
         Provider prov = providerDao.getProvider(provider);
         OscarProperties properties = OscarProperties.getInstance();
@@ -139,7 +139,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public String createBill(String provider, Integer demographic, String code, String dxCode, String clinicRefCode,
-            Date serviceDate, String curUser) {
+                             Date serviceDate, String curUser) {
         BillingONCHeader1 header1 = null;
         Provider prov = providerDao.getProvider(provider);
         OscarProperties properties = OscarProperties.getInstance();
@@ -162,7 +162,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public String createBills(String provider, List<String> demographic_nos, List<String> codes, List<String> dxcodes,
-            String clinicRefCode, Date serviceDate, String curUser) {
+                              String clinicRefCode, Date serviceDate, String curUser) {
         BillingONCHeader1 header1 = null;
         Provider prov = providerDao.getProvider(provider);
         OscarProperties properties = OscarProperties.getInstance();
@@ -181,7 +181,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     }
 
     private BillingONCHeader1 assembleHeader1(Provider prov, Integer demographic, String clinicRefCode,
-            Date serviceDate, String total, String curUser, OscarProperties properties) {
+                                              Date serviceDate, String total, String curUser, OscarProperties properties) {
 
         BillingONCHeader1 header1 = new BillingONCHeader1();
         header1.setTranscId(BillingDataHlp.CLAIMHEADER1_TRANSACTIONIDENTIFIER);
@@ -316,14 +316,14 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     @Override
     public boolean billedBetweenTheseDays(String serviceCode, Integer demographicNo, Date startDate, Date endDate) {
         boolean hasBeenBilled = false;
-        String sql = "select b from BillingONCHeader1 h1, BillingONItem b where b.ch1Id = h1.id and b.serviceCode = :code and"
+        String sql = "select b from BillingONCHeader1 h1, BillingONItem b where b.ch1Id = h1.id and b.serviceCode = ?1 and"
                 +
-                " h1.demographicNo = :demo and h1.status != 'D' and h1.billingDate >= :startDate and h1.billingDate <= :endDate order by h1.billingDate desc";
+                " h1.demographicNo = ?2 and h1.status != 'D' and h1.billingDate >= ?3 and h1.billingDate <= ?4 order by h1.billingDate desc";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("code", serviceCode);
-        q.setParameter("demo", demographicNo);
-        q.setParameter("startDate", (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
-        q.setParameter("endDate", (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
+        q.setParameter(1, serviceCode);
+        q.setParameter(2, demographicNo);
+        q.setParameter(3, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
+        q.setParameter(4, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
         q.setMaxResults(1);
 
         List<BillingONItem> billingClaims = q.getResultList();
@@ -337,12 +337,12 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public int getDaysSinceBilled(String serviceCode, Integer demographicNo) {
-        String sql = "select b from BillingONCHeader1 h1, BillingONItem b where b.ch1Id = h1.id and b.serviceCode = :code and"
+        String sql = "select b from BillingONCHeader1 h1, BillingONItem b where b.ch1Id = h1.id and b.serviceCode = ?1 and"
                 +
-                " h1.demographicNo = :demo and h1.status != 'D' order by h1.billingDate desc";
+                " h1.demographicNo = ?2 and h1.status != 'D' order by h1.billingDate desc";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("code", serviceCode);
-        q.setParameter("demo", demographicNo);
+        q.setParameter(1, serviceCode);
+        q.setParameter(2, demographicNo);
         q.setMaxResults(1);
 
         List<BillingONItem> billingClaims = q.getResultList();
@@ -364,14 +364,14 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public int getDaysSincePaid(String serviceCode, Integer demographic_no) {
-        String sql = "select b from BillingONCHeader1 h1, BillingONItem b where b.ch1Id = h1.id and b.serviceCode = :code and"
+        String sql = "select b from BillingONCHeader1 h1, BillingONItem b where b.ch1Id = h1.id and b.serviceCode = ?1 and"
                 +
-                " h1.demographicNo = :demo and h1.status = 'S' order by h1.billingDate desc";
+                " h1.demographicNo = ?2 and h1.status = 'S' order by h1.billingDate desc";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("code", serviceCode);
-        q.setParameter("demo", demographic_no);
+        q.setParameter(1, serviceCode);
+        q.setParameter(2, demographic_no);
         q.setMaxResults(1);
-        
+
         List<BillingONItem> billingClaims = q.getResultList();
         int numDays = -1;
 
@@ -392,10 +392,10 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     @Override
     public List<BillingONCHeader1> getInvoices(Integer demographicNo, Integer limit) {
         String sql = "select h1 from BillingONCHeader1 h1 where " +
-                " h1.demographicNo = :demo and h1.status != 'D' order by h1.billingDate desc";
+                " h1.demographicNo = ?1 and h1.status != 'D' order by h1.billingDate desc";
         Query q = entityManager.createQuery(sql);
 
-        q.setParameter("demo", demographicNo);
+        q.setParameter(1, demographicNo);
         q.setMaxResults(limit);
 
         return q.getResultList();
@@ -404,10 +404,10 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     @Override
     public List<BillingONCHeader1> getInvoices(Integer demographicNo) {
         String sql = "select h1 from BillingONCHeader1 h1 where " +
-                " h1.demographicNo = :demo and h1.status != 'D' order by h1.billingDate desc";
+                " h1.demographicNo = ?1 and h1.status != 'D' order by h1.billingDate desc";
         Query q = entityManager.createQuery(sql);
 
-        q.setParameter("demo", demographicNo);
+        q.setParameter(1, demographicNo);
 
         return q.getResultList();
     }
@@ -417,10 +417,10 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
         if (ids.isEmpty())
             return new ArrayList<BillingONCHeader1>();
 
-        String sql = "select h1 from BillingONCHeader1 h1 where h1.id in (:ids)";
+        String sql = "select h1 from BillingONCHeader1 h1 where h1.id in (?1)";
         Query q = entityManager.createQuery(sql);
 
-        q.setParameter("ids", ids);
+        q.setParameter(1, ids);
 
         return q.getResultList();
     }
@@ -429,10 +429,10 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     public List<Map<String, Object>> getInvoicesMeta(Integer demographicNo) {
         String sql = "select new map(h1.id as id, h1.billingDate as billingDate, h1.billingTime as billing_time, h1.providerNo as provider_no) from BillingONCHeader1 h1 where "
                 +
-                " h1.demographicNo = :demo and h1.status != 'D' order by h1.billingDate desc";
+                " h1.demographicNo = ?1 and h1.status != 'D' order by h1.billingDate desc";
         Query q = entityManager.createQuery(sql);
 
-        q.setParameter("demo", demographicNo);
+        q.setParameter(1, demographicNo);
 
         return q.getResultList();
     }
@@ -449,11 +449,11 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public BillingONItem findBillingONItemByServiceCode(BillingONCHeader1 ch1, String serviceCode) {
-        String sql = "select b1 from BillingONItem b1 where b1.ch1Id = :billId and b1.serviceCode = :code";
+        String sql = "select b1 from BillingONItem b1 where b1.ch1Id = ?1 and b1.serviceCode = ?2";
 
         Query q = entityManager.createQuery(sql);
-        q.setParameter("billId", ch1.getId());
-        q.setParameter("code", serviceCode);
+        q.setParameter(1, ch1.getId());
+        q.setParameter(2, serviceCode);
 
         BillingONItem b = null;
 
@@ -470,9 +470,21 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<BillingONCHeader1> get3rdPartyInvoiceByProvider(Provider p, Date start, Date end, Locale locale) {
-        String sql = "select distinct bCh1 from BillingONPayment bPay, BillingONCHeader1 bCh1 where bPay.billingNo=bCh1.id and bCh1.providerNo=? and bPay.paymentdate >= ? and bPay.paymentdate <= ? order by bCh1.id";
+        String sql = "select distinct bCh1 from BillingONPayment bPay, BillingONCHeader1 bCh1 where bPay.billingNo=bCh1.id and bCh1.providerNo=?1 and bPay.paymentdate >= ?2 and bPay.paymentdate <= ?3 order by bCh1.id";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, p.getProviderNo());
+        query.setParameter(1, p.getProviderNo());
+        query.setParameter(2, start);
+        query.setParameter(3, end);
+
+        List<BillingONCHeader1> results = query.getResultList();
+
+        return results;
+    }
+
+    @Override
+    public List<BillingONCHeader1> get3rdPartyInvoiceByDate(Date start, Date end, Locale locale) {
+        String sql = "select distinct bCh1 from BillingONPayment bPay, BillingONCHeader1 bCh1 where bPay.billingNo=bCh1.id and bPay.paymentdate >= ?1 and bPay.paymentdate <= ?2 order by bCh1.id";
+        Query query = entityManager.createQuery(sql);
         query.setParameter(1, start);
         query.setParameter(2, end);
 
@@ -482,23 +494,11 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     }
 
     @Override
-    public List<BillingONCHeader1> get3rdPartyInvoiceByDate(Date start, Date end, Locale locale) {
-        String sql = "select distinct bCh1 from BillingONPayment bPay, BillingONCHeader1 bCh1 where bPay.billingNo=bCh1.id and bPay.paymentdate >= ? and bPay.paymentdate <= ? order by bCh1.id";
-        Query query = entityManager.createQuery(sql);
-        query.setParameter(0, start);
-        query.setParameter(1, end);
-
-        List<BillingONCHeader1> results = query.getResultList();
-
-        return results;
-    }
-
-    @Override
     public BillingONCHeader1 getLastOHIPBillingDateForServiceCode(Integer demographicNo, String serviceCode) {
-        String sql = "select b from BillingONItem i, BillingONCHeader1 b where i.ch1Id=b.id and i.status!='D' and i.serviceCode=? and b.demographicNo=?  and (b.payProgram='HCP' or b.payProgram='RMB' or b.payProgram='WCB') and (b.status='S' or b.status='O' or b.status='B') order by b.billingDate desc";
+        String sql = "select b from BillingONItem i, BillingONCHeader1 b where i.ch1Id=b.id and i.status!='D' and i.serviceCode=?1 and b.demographicNo=?2  and (b.payProgram='HCP' or b.payProgram='RMB' or b.payProgram='WCB') and (b.status='S' or b.status='O' or b.status='B') order by b.billingDate desc";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, serviceCode);
-        query.setParameter(1, demographicNo);
+        query.setParameter(1, serviceCode);
+        query.setParameter(2, demographicNo);
 
         List<BillingONCHeader1> results = query.getResultList();
         BillingONCHeader1 result = null;
@@ -510,10 +510,10 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<BillingONCHeader1> findByAppointmentNo(Integer appointmentNo) {
-        String sql = "select h1 from BillingONCHeader1 h1 where h1.appointmentNo=?";
+        String sql = "select h1 from BillingONCHeader1 h1 where h1.appointmentNo=?1";
         Query q = entityManager.createQuery(sql);
 
-        q.setParameter(0, appointmentNo);
+        q.setParameter(1, appointmentNo);
 
         return q.getResultList();
     }
@@ -523,14 +523,14 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
         String sql = "SELECT b.visitType, count(b) FROM BillingONCHeader1 b "
                 + "WHERE b.status <> 'D' "
                 + "AND b.appointmentNo <> '0' "
-                + "AND b.apptProviderNo = :providerNo "
-                + "AND b.billingDate >= :dateBegin "
-                + "AND b.billingDate <= :dateEnd "
+                + "AND b.apptProviderNo = ?1 "
+                + "AND b.billingDate >= ?2 "
+                + "AND b.billingDate <= ?3 "
                 + "GROUP BY b.visitType";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("providerNo", providerNo);
-        q.setParameter("dateBegin", (new SimpleDateFormat("yyyy-MM-dd")).format(dateBegin));
-        q.setParameter("dateEnd", (new SimpleDateFormat("yyyy-MM-dd")).format(dateEnd));
+        q.setParameter(1, providerNo);
+        q.setParameter(2, (new SimpleDateFormat("yyyy-MM-dd")).format(dateBegin));
+        q.setParameter(3, (new SimpleDateFormat("yyyy-MM-dd")).format(dateEnd));
         return q.getResultList();
     }
 
@@ -539,56 +539,39 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
         String sql = "SELECT b.visitType, count(b) FROM BillingONCHeader1 b "
                 + "WHERE b.status <> 'D' "
                 + "AND b.appointmentNo <> '0' "
-                + "AND b.creator = :providerNo "
-                + "AND b.billingDate >= :dateBegin "
-                + "AND b.billingDate <= :dateEnd "
+                + "AND b.creator = ?1 "
+                + "AND b.billingDate >= ?2 "
+                + "AND b.billingDate <= ?3 "
                 + "GROUP BY b.visitType";
         Query q = entityManager.createQuery(sql);
-        q.setParameter("providerNo", providerNo);
-        q.setParameter("dateBegin", (new SimpleDateFormat("yyyy-MM-dd")).format(dateBegin));
-        q.setParameter("dateEnd", (new SimpleDateFormat("yyyy-MM-dd")).format(dateEnd));
+        q.setParameter(1, providerNo);
+        q.setParameter(2, (new SimpleDateFormat("yyyy-MM-dd")).format(dateBegin));
+        q.setParameter(3, (new SimpleDateFormat("yyyy-MM-dd")).format(dateEnd));
         return q.getResultList();
     }
 
     @Override
     public List<Long> count_larrykain_clinic(String facilityNum, Date startDate, Date endDate) {
         Query q = entityManager.createQuery(
-                "select count(b) from BillingONCHeader1 b where b.visitType = '00' and b.faciltyNum = ? and b.status <> 'D' and b.billingDate >=? and b.billingDate <=?");
+                "select count(b) from BillingONCHeader1 b where b.visitType = '00' and b.faciltyNum = ?1 and b.status <> 'D' and b.billingDate >=?2 and b.billingDate <=?3");
 
-        q.setParameter(0, facilityNum);
-        q.setParameter(1, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
-        q.setParameter(2, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
+        q.setParameter(1, facilityNum);
+        q.setParameter(2, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
+        q.setParameter(3, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
 
         return q.getResultList();
     }
 
     @Override
     public List<Long> count_larrykain_hospital(String facilityNum1, String facilityNum2, String facilityNum3,
-            String facilityNum4, Date startDate, Date endDate) {
+                                               String facilityNum4, Date startDate, Date endDate) {
         Query q = entityManager.createQuery(
-                "select count(b) from BillingONCHeader1 b where b.visitType<>'00' and (b.faciltyNum=? or b.faciltyNum=? or b.faciltyNum=? or b.faciltyNum=?) and status<>'D' and b.billingDate >=? and b.billingDate <=?");
+                "select count(b) from BillingONCHeader1 b where b.visitType<>'00' and (b.faciltyNum=?1 or b.faciltyNum=?2 or b.faciltyNum=?3 or b.faciltyNum=?4) and status<>'D' and b.billingDate >=?5 and b.billingDate <=?6");
 
-        q.setParameter(0, facilityNum1);
-        q.setParameter(1, facilityNum2);
-        q.setParameter(2, facilityNum3);
-        q.setParameter(3, facilityNum4);
-        q.setParameter(4, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
-        q.setParameter(5, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
-
-        return q.getResultList();
-    }
-
-    @Override
-    public List<Long> count_larrykain_other(String facilityNum1, String facilityNum2, String facilityNum3,
-            String facilityNum4, String facilityNum5, Date startDate, Date endDate) {
-        Query q = entityManager.createQuery(
-                "select count(b) from BillingONCHeader1 b where b.visitType<>'00' and status<>'D' and  (b.faciltyNum<>? and b.faciltyNum<>? and b.faciltyNum<>? and b.faciltyNum<>? and b.faciltyNum<>?) and b.billingDate >=? and b.billingDate<=?");
-
-        q.setParameter(0, facilityNum1);
-        q.setParameter(1, facilityNum2);
-        q.setParameter(2, facilityNum3);
-        q.setParameter(3, facilityNum4);
-        q.setParameter(4, facilityNum5);
+        q.setParameter(1, facilityNum1);
+        q.setParameter(2, facilityNum2);
+        q.setParameter(3, facilityNum3);
+        q.setParameter(4, facilityNum4);
         q.setParameter(5, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
         q.setParameter(6, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
 
@@ -596,8 +579,25 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     }
 
     @Override
+    public List<Long> count_larrykain_other(String facilityNum1, String facilityNum2, String facilityNum3,
+                                            String facilityNum4, String facilityNum5, Date startDate, Date endDate) {
+        Query q = entityManager.createQuery(
+                "select count(b) from BillingONCHeader1 b where b.visitType<>'00' and status<>'D' and  (b.faciltyNum<>?1 and b.faciltyNum<>?2 and b.faciltyNum<>?3 and b.faciltyNum<>?4 and b.faciltyNum<>?5) and b.billingDate >=?6 and b.billingDate<=?7");
+
+        q.setParameter(1, facilityNum1);
+        q.setParameter(2, facilityNum2);
+        q.setParameter(3, facilityNum3);
+        q.setParameter(4, facilityNum4);
+        q.setParameter(5, facilityNum5);
+        q.setParameter(6, (new SimpleDateFormat("yyyy-MM-dd")).format(startDate));
+        q.setParameter(7, (new SimpleDateFormat("yyyy-MM-dd")).format(endDate));
+
+        return q.getResultList();
+    }
+
+    @Override
     public List<BillingONCHeader1> findBillingsByManyThings(String status, String providerNo, Date startDate,
-            Date endDate, Integer demoNo) {
+                                                            Date endDate, Integer demoNo) {
         Map<String, Object> params = new HashMap<String, Object>();
         StringBuilder buf = getBaseQueryBuf(null, "b").append("WHERE b.status = :status ");
         params.put("status", status);
@@ -630,44 +630,49 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     }
 
     @Override
-    public List<BillingONCHeader1> findByProviderStatusAndDateRange(String providerNo, List<String> statuses,
-            DateRange dateRange) {
-        String dateRangeSubquery = "";
-        if (dateRange.getTo() != null && dateRange.getFrom() != null) {
-            dateRangeSubquery = " AND h.billingDate > :dateBegin AND h.billingDate <= :dateEnd ";
-        } else if (dateRange.getTo() != null) {
-            dateRangeSubquery = " AND h.billingDate <= :dateEnd ";
+    public List<BillingONCHeader1> findByProviderStatusAndDateRange(String providerNo, List<String> statuses, DateRange dateRange) {
+        int counter = 1;
+        // Build query
+        StringBuilder sqlCommand = new StringBuilder("select h from ").append(BillingONCHeader1.class.getSimpleName()).append(" h WHERE ");
+        sqlCommand.append("h.providerNo = ?").append(counter++).append(" AND h.status IN (?").append(counter++).append(") ");
+        // Set date range lower/upper bounds (if date range is provided)
+        if (dateRange.getFrom() != null) {
+            sqlCommand.append(" AND h.billingDate > ?").append(counter++);
         }
-
-        Query query = createQuery("h", "h.providerNo = :providerNo AND h.status IN (:statuses) "
-                + dateRangeSubquery + " AND h.payProgram IN (:programs) ORDER BY h.billingDate, h.billingTime");
-
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("statuses", statuses);
-        query.setParameter("programs", Arrays.asList(new String[] { "HCP", "WCB", "RMB" }));
-
-        if (dateRange.getTo() != null && dateRange.getFrom() != null) {
-            query.setParameter("dateBegin", (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getFrom()));
-            query.setParameter("dateEnd", (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
-        } else if (dateRange.getTo() != null) {
-            query.setParameter("dateEnd", (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
+        if (dateRange.getTo() != null) {
+            sqlCommand.append(" AND h.billingDate <= ?").append(counter++);
         }
+        sqlCommand.append(" AND h.payProgram IN (?").append(counter++).append(") ORDER BY h.billingDate, h.billingTime");
+        Query query = entityManager.createQuery(sqlCommand.toString());
+
+        // Set date range parameters
+        counter = 1;
+        // Set providerNo, statuses, and payPrograms parameters
+        query.setParameter(counter++, providerNo);
+        query.setParameter(counter++, statuses);
+        if (dateRange.getFrom() != null) {
+            query.setParameter(counter++, new SimpleDateFormat("yyyy-MM-dd").format(dateRange.getFrom()));
+        }
+        if (dateRange.getTo() != null) {
+            query.setParameter(counter++, new SimpleDateFormat("yyyy-MM-dd").format(dateRange.getTo()));
+        }
+        query.setParameter(counter++, Arrays.asList(new String[]{"HCP", "WCB", "RMB"}));
 
         return query.getResultList();
     }
 
     @Override
     public List<Object[]> findBillingsAndDemographicsById(Integer id) {
-        String sql = "FROM BillingONCHeader1 b, Demographic d WHERE b.id = :id AND b.demographicNo = d.DemographicNo";
+        String sql = "FROM BillingONCHeader1 b, Demographic d WHERE b.id = ?1 AND b.demographicNo = d.DemographicNo";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("id", id);
+        query.setParameter(1, id);
         return query.getResultList();
     }
 
     @Override
     public List<BillingONCHeader1> findByMagic(List<String> payPrograms, String statusType, String providerNo,
-            Date startDate, Date endDate, Integer demoNo, String visitLocation, Date paymentStartDate,
-            Date paymentEndDate) {
+                                               Date startDate, Date endDate, Integer demoNo, String visitLocation, Date paymentStartDate,
+                                               Date paymentEndDate) {
         ParamAppender app = new ParamAppender("FROM BillingONCHeader1 h, BillingONPayment bp ");
         app.and("h.id = bp.billingNo");
         app.and("h.payProgram in (:payPrograms)", "payPrograms", payPrograms);
@@ -703,12 +708,10 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<BillingONCHeader1> getBillingItemByDxCode(Integer demographicNo, String dxCode) {
-        String queryStr = "select h FROM BillingONItem b, BillingONCHeader1 h WHERE h.id = b.ch1Id and h.demographicNo=? and (b.dx =? or b.dx1 = ? or b.dx2=?)";
+        String queryStr = "select h FROM BillingONItem b, BillingONCHeader1 h WHERE h.id = b.ch1Id and h.demographicNo=?1 and (b.dx =?2 or b.dx1 = ?2 or b.dx2=?2)";
         Query query = entityManager.createQuery(queryStr);
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, dxCode);
+        query.setParameter(1, demographicNo);
         query.setParameter(2, dxCode);
-        query.setParameter(3, dxCode);
 
         @SuppressWarnings("unchecked")
         List<BillingONCHeader1> rs = query.getResultList();
@@ -718,16 +721,16 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<Object[]> findByMagic2(List<String> payPrograms, String statusType, String providerNo, Date startDate,
-            Date endDate, Integer demoNo, List<String> serviceCodes, String dx, String visitType, String visitLocation,
-            Date paymentStartDate, Date paymentEndDate) {
+                                       Date endDate, Integer demoNo, List<String> serviceCodes, String dx, String visitType, String visitLocation,
+                                       Date paymentStartDate, Date paymentEndDate) {
         return findByMagic2(payPrograms, statusType, providerNo, startDate, endDate, demoNo, serviceCodes, dx,
                 visitType, visitLocation, paymentStartDate, paymentEndDate, null);
     }
 
     @Override
     public List<Object[]> findByMagic2(List<String> payPrograms, String statusType, String providerNo, Date startDate,
-            Date endDate, Integer demoNo, List<String> serviceCodes, String dx, String visitType, String visitLocation,
-            Date paymentStartDate, Date paymentEndDate, String claimNo) {
+                                       Date endDate, Integer demoNo, List<String> serviceCodes, String dx, String visitType, String visitLocation,
+                                       Date paymentStartDate, Date paymentEndDate, String claimNo) {
         String base = "FROM BillingONCHeader1 ch1, BillingONItem bi";
         if (paymentStartDate != null || paymentEndDate != null) {
             base += ", BillingONPayment bp ";
@@ -800,11 +803,11 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<BillingONCHeader1> findByDemoNo(Integer demoNo, int iOffSet, int pageSize) {
-        String sql = "FROM BillingONCHeader1 b WHERE b.demographicNo = :demoNo " +
+        String sql = "FROM BillingONCHeader1 b WHERE b.demographicNo = ?1 " +
                 "AND b.status != 'D' " +
                 "ORDER BY b.billingDate DESC, b.billingTime DESC, b.id DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demoNo", demoNo);
+        query.setParameter(1, demoNo);
         query.setFirstResult(iOffSet);
         query.setMaxResults(pageSize);
         return query.getResultList();
@@ -812,16 +815,16 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<BillingONCHeader1> findByDemoNoAndDates(Integer demoNo, DateRange dateRange, int iOffSet,
-            int pageSize) {
-        String sql = "FROM BillingONCHeader1 b WHERE b.demographicNo = :demoNo " +
-                "AND b.billingDate >= :dateStart " +
-                "AND b.billingDate <= :dateEnd " +
+                                                        int pageSize) {
+        String sql = "FROM BillingONCHeader1 b WHERE b.demographicNo = ?1 " +
+                "AND b.billingDate >= ?2 " +
+                "AND b.billingDate <= ?3 " +
                 "AND b.status != 'D' " +
                 "ORDER BY b.billingDate DESC, b.billingTime DESC, b.id DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demoNo", demoNo);
-        query.setParameter("dateStart", (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getFrom()));
-        query.setParameter("dateEnd", (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
+        query.setParameter(1, demoNo);
+        query.setParameter(2, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getFrom()));
+        query.setParameter(3, (new SimpleDateFormat("yyyy-MM-dd")).format(dateRange.getTo()));
         query.setFirstResult(iOffSet);
         query.setMaxResults(pageSize);
         return query.getResultList();
@@ -829,7 +832,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<Object[]> findBillingsAndDemographicsByDemoIdAndDates(Integer demoNo, String payProgram, Date fromDate,
-            Date toDate) {
+                                                                      Date toDate) {
         ParamAppender app = new ParamAppender("FROM BillingONCHeader1 bch, Demographic d");
         app.and("bch.demographicNo = d.DemographicNo");
         app.and("bch.demographicNo = :demoNo", "demoNo", demoNo);
@@ -848,35 +851,35 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
         String sql = "FROM Demographic d, BillingONCHeader1 bc, BillingONItem bi " +
                 "WHERE bc.demographicNo = d.DemographicNo " +
                 "AND bc.id = bi.ch1Id " +
-                "AND bi.dx in (:dxCodes) " +
-                "AND bi.serviceDate >= :from and bi.serviceDate <= :to " +
+                "AND bi.dx in (?1) " +
+                "AND bi.serviceDate >= ?2 and bi.serviceDate <= ?3 " +
                 "GROUP BY d.demographicNo, bi.dx " +
                 "ORDER BY d.demographicNo, bi.serviceDate";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("dxCodes", dxCodes);
-        query.setParameter("from", from);
-        query.setParameter("to", to);
+        query.setParameter(1, dxCodes);
+        query.setParameter(2, from);
+        query.setParameter(3, to);
         return query.getResultList();
     }
 
     @Override
     public List<BillingONCHeader1> findBillingsByDemoNoCh1HeaderServiceCodeAndDate(Integer demoNo,
-            List<String> serviceCodes, Date from, Date to) {
+                                                                                   List<String> serviceCodes, Date from, Date to) {
         String sql = "SELECT b FROM BillingONCHeader1 b, BillingONItem bd " +
-                "WHERE b.demographicNo = :demoNo " +
+                "WHERE b.demographicNo = ?1 " +
                 "AND bd.ch1Id=b.id " +
-                "AND bd.serviceCode IN (:serviceCodes) " +
-                "AND b.billingDate >= :from " +
-                "AND b.billingDate <= :to " +
+                "AND bd.serviceCode IN (?2) " +
+                "AND b.billingDate >= ?3 " +
+                "AND b.billingDate <= ?4 " +
                 "AND bd.status <> 'D' " +
                 "AND b.status <> 'D' " +
                 "ORDER BY b.billingDate DESC";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter("demoNo", demoNo);
-        query.setParameter("serviceCodes", serviceCodes);
-        query.setParameter("from", (new SimpleDateFormat("yyyy-MM-dd")).format(from));
-        query.setParameter("to", (new SimpleDateFormat("yyyy-MM-dd")).format(to));
+        query.setParameter(1, demoNo);
+        query.setParameter(2, serviceCodes);
+        query.setParameter(3, (new SimpleDateFormat("yyyy-MM-dd")).format(from));
+        query.setParameter(4, (new SimpleDateFormat("yyyy-MM-dd")).format(to));
 
         return query.getResultList();
     }
@@ -902,9 +905,9 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
 
     @Override
     public List<BillingONCHeader1> findAllByPayProgram(String payProgram, int startIndex, int limit) {
-        String sql = "select b FROM BillingONCHeader1 b where b.payProgram=? order by b.id ASC";
+        String sql = "select b FROM BillingONCHeader1 b where b.payProgram=?1 order by b.id ASC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, payProgram);
+        query.setParameter(1, payProgram);
         query.setFirstResult(startIndex);
         query.setMaxResults(limit);
 

@@ -30,8 +30,8 @@
 <body>
 
 <script>
-            top.window.close();
-        </script>
+    top.window.close();
+</script>
 
 </body>
 </html>

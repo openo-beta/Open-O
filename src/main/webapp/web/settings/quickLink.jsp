@@ -24,31 +24,35 @@
 
 --%>
 <style>
-	.field_error {color:red}
+    .field_error {
+        color: red
+    }
 </style>
-	
+
 <div class="modal-header">
     <h4>Add QuickLink</h4>
-</div>  
+</div>
 <div class="modal-body">
-  <span class="field_error" ng-show="ql.$error.required">All fields required!</span>
-  
-   	<form name="ql" novalidate>
-   		<div class="form-group">
-		  <label>Name:</label>
-		  <input ng-model="qll.name" placeholder="Name" class="form-control" type="text" ng-init="qll.name=''" required>
-		</div>
-   		<div class="form-group">
-		  <label>URL:</label>
-		  <input ng-model="qll.url" placeholder="http://..." class="form-control" type="text" ng-init="qll.url=''" required>
-		</div>
-		
-	</form>
-	
-	
+    <span class="field_error" ng-show="ql.$error.required">All fields required!</span>
+
+    <form name="ql" novalidate>
+        <div class="form-group">
+            <label>Name:</label>
+            <input ng-model="qll.name" placeholder="Name" class="form-control" type="text" ng-init="qll.name=''"
+                   required>
+        </div>
+        <div class="form-group">
+            <label>URL:</label>
+            <input ng-model="qll.url" placeholder="http://..." class="form-control" type="text" ng-init="qll.url=''"
+                   required>
+        </div>
+
+    </form>
+
+
 </div>
 <div class="modal-footer">
-    <button class="btn"  ng-click="addQuickLink(ql)">Add</button>
+    <button class="btn" ng-click="addQuickLink(ql)">Add</button>
     <button class="btn" ng-click="close()">Cancel</button>
 </div>
 

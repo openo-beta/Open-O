@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -59,20 +60,21 @@ import oscar.oscarEncounter.oscarMeasurements.data.LoincMapEntry;
 import oscar.oscarEncounter.oscarMeasurements.data.MeasurementMapConfig;
 
 /**
- *
  * @author apavel
  */
-public class PHRMeasurement extends PHRDocument{
+public class PHRMeasurement extends PHRDocument {
     static final String CODING_SERVICE_LOCATION = "oscar_internal_hardcoded";
     static final String CODING_SERVICE_NAME = "oscar_internal";
 
-    /** Creates a new instance of PHRMessage */
+    /**
+     * Creates a new instance of PHRMessage
+     */
     public PHRMeasurement() {
         //super();
     }
 
     //sending new meds to PHR
-    public PHRMeasurement(EctProviderData.Provider provider, Integer demographicNo, Long myOscarUserId, String dataType, EctMeasurementsDataBean measurement) throws JAXBException, IndivoException  {
+    public PHRMeasurement(EctProviderData.Provider provider, Integer demographicNo, Long myOscarUserId, String dataType, EctMeasurementsDataBean measurement) throws JAXBException, IndivoException {
         //super();
         IndivoDocumentType document = getPhrMeasurementDocument(provider, measurement);
         JAXBContext docContext = JAXBContext.newInstance(IndivoDocumentType.class.getPackage().getName());
@@ -123,7 +125,7 @@ public class PHRMeasurement extends PHRDocument{
         if (measurement.getType().equalsIgnoreCase("bp")) {
             //Only for BP measurements
             String systolic = dataField.substring(0, dataField.indexOf('/')).trim();
-            String diastolic = dataField.substring(dataField.indexOf('/')+1).trim();
+            String diastolic = dataField.substring(dataField.indexOf('/') + 1).trim();
 
             CodedValueType mmHg = new CodedValueType();
             mmHg.setCode("mm[Hg]");
@@ -167,14 +169,14 @@ public class PHRMeasurement extends PHRDocument{
 
             //try to obtain unit from measurementExt
             ImportExportMeasurements iem = new ImportExportMeasurements();
-                MeasurementsExt measurementExt = ImportExportMeasurements.getMeasurementsExtByKeyval(new Long(measurement.getId()), "unit");
-                if (measurementExt != null) {
-                    CodedValueType unitCVT = new CodedValueType();
-                    unitCVT.setCode(measurementExt.getVal());
-                    unitCVT.setHistoricalValue(measurementExt.getVal());
-                    unitCVT.setCodingSystem(csrt);
-                    result.setUnit(unitCVT);
-                }
+            MeasurementsExt measurementExt = ImportExportMeasurements.getMeasurementsExtByKeyval(new Long(measurement.getId()), "unit");
+            if (measurementExt != null) {
+                CodedValueType unitCVT = new CodedValueType();
+                unitCVT.setCode(measurementExt.getVal());
+                unitCVT.setHistoricalValue(measurementExt.getVal());
+                unitCVT.setCodingSystem(csrt);
+                result.setUnit(unitCVT);
+            }
 
         }
         //For all measurements
@@ -183,7 +185,8 @@ public class PHRMeasurement extends PHRDocument{
         try {
             indivoMeasurement.setDate(PHRDocument.dateToXmlGregorianCalendar(measurement.getDateObservedAsDate()));
         } catch (DatatypeConfigurationException e) {
-            MiscUtils.getLogger().error("Error", e);;
+            MiscUtils.getLogger().error("Error", e);
+            ;
         }
         indivoMeasurement.setOrigin(PHRDocument.getClinicOrigin());  //not sure what to send here, just sending clinic name for tracking puproses
         indivoMeasurement.setProvider(providerContactInfo);

@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -35,19 +35,19 @@ import org.oscarehr.util.SpringUtils;
 
 public class Hl7OrcDaoTest extends DaoTestFixtures {
 
-	public Hl7OrcDao dao = SpringUtils.getBean(Hl7OrcDao.class);
+    public Hl7OrcDao dao = SpringUtils.getBean(Hl7OrcDao.class);
 
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("hl7_orc", "hl7_pid", "hl7_link", "hl7_msh", "hl7_obr", "hl7_obx");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("hl7_orc", "hl7_pid", "hl7_link", "hl7_msh", "hl7_obr", "hl7_obx");
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		Hl7Orc entity = new Hl7Orc();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		dao.persist(entity);
-		assertNotNull(entity.getId());
-	}
+    @Test
+    public void testCreate() throws Exception {
+        Hl7Orc entity = new Hl7Orc();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        dao.persist(entity);
+        assertNotNull(entity.getId());
+    }
 }

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -60,8 +61,8 @@ public class BedDemographicDaoImpl extends AbstractDaoImpl<BedDemographic> imple
 
     @Override
     public boolean bedExists(int demographicNo) {
-        Query query = entityManager.createQuery("select count(*) from BedDemographic b where b.id.demographicNo = ?");
-        query.setParameter(0, demographicNo);
+        Query query = entityManager.createQuery("select count(*) from BedDemographic b where b.id.demographicNo = ?1");
+        query.setParameter(1, demographicNo);
 
         Long result = (Long) query.getSingleResult();
 
@@ -70,8 +71,8 @@ public class BedDemographicDaoImpl extends AbstractDaoImpl<BedDemographic> imple
 
     @Override
     public BedDemographic getBedDemographicByBed(int bedId) {
-        Query query = entityManager.createQuery("select b from BedDemographic b where b.id.bedId = ?");
-        query.setParameter(0, bedId);
+        Query query = entityManager.createQuery("select b from BedDemographic b where b.id.bedId = ?1");
+        query.setParameter(1, bedId);
 
         @SuppressWarnings("unchecked")
         List<BedDemographic> bedDemographics = query.getResultList();
@@ -89,8 +90,8 @@ public class BedDemographicDaoImpl extends AbstractDaoImpl<BedDemographic> imple
 
     @Override
     public BedDemographic getBedDemographicByDemographic(int demographicNo) {
-        Query query = entityManager.createQuery("select b from BedDemographic b where b.id.demographicNo = ?");
-        query.setParameter(0, demographicNo);
+        Query query = entityManager.createQuery("select b from BedDemographic b where b.id.demographicNo = ?1");
+        query.setParameter(1, demographicNo);
 
         @SuppressWarnings("unchecked")
         List<BedDemographic> bedDemographics = query.getResultList();
@@ -139,9 +140,9 @@ public class BedDemographicDaoImpl extends AbstractDaoImpl<BedDemographic> imple
     @Override
     public boolean bedDemographicExists(BedDemographicPK id) {
         Query query = entityManager
-                .createQuery("select count(*) from BedDemographic b where  b.id.bedId = ? and b.id.demographicNo = ?");
-        query.setParameter(0, id.getBedId());
-        query.setParameter(1, id.getDemographicNo());
+                .createQuery("select count(*) from BedDemographic b where  b.id.bedId = ?1 and b.id.demographicNo = ?2");
+        query.setParameter(1, id.getBedId());
+        query.setParameter(2, id.getDemographicNo());
 
         Long result = (Long) query.getSingleResult();
 

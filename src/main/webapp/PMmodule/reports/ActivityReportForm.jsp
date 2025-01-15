@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,45 +24,43 @@
 --%>
 
 
-
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
-	scope="request" />
+       scope="request"/>
 
 <div class="page-header">
-	<h4>Program Activity Report Generator</h4>
+    <h4>Program Activity Report Generator</h4>
 </div>
 
-<html:form action="/PMmodule/Reports/ProgramActivityReport"
-	styleId="actForm" styleClass="well form-inline">
-	<input type="hidden" name="method" value="generate" />
-	<html:text styleId="sdate" property="form.startDate" size="15"/>
-	<html:text styleId="edate" property="form.endDate" size="15"/>
-	<html:submit value="Generate Report" styleClass="btn btn-primary" />
-</html:form>
+<form action="<%=request.getContextPath() %>/PMmodule/Reports/ProgramActivityReport.do" id="actForm" class="well form-inline">
+    <input type="hidden" name="method" value="generate"/>
+    <input type="text" id="sdate" name="form.startDate" size="15"/>
+    <input type="text" id="edate" name="form.endDate" size="15"/>
+    <input type="submit" name="submit" value="Generate Report" class="btn btn-primary"/>
+</form>
 
 <script>
-	var startDt = $("#sdate").datepicker({
-		format : "yyyy-mm-dd"
-	});
+    var startDt = $("#sdate").datepicker({
+        format: "yyyy-mm-dd"
+    });
 
-	var endDt = $("#edate").datepicker({
-		format : "yyyy-mm-dd"
-	});
-	$(document).ready(function() {
-		$('#actForm').validate({
-			rules : {
-				sdate : {
-					required : true,
-					oscarDate : true
-				},
-				edate : {
-					required : true,
-					oscarDate : true
-				}
-			}
-		});
-	});
+    var endDt = $("#edate").datepicker({
+        format: "yyyy-mm-dd"
+    });
+    $(document).ready(function () {
+        $('#actForm').validate({
+            rules: {
+                sdate: {
+                    required: true,
+                    oscarDate: true
+                },
+                edate: {
+                    required: true,
+                    oscarDate: true
+                }
+            }
+        });
+    });
 
-	registerFormSubmit('actForm', 'dynamic-content');
+    registerFormSubmit('actForm', 'dynamic-content');
 </script>

@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -37,125 +37,123 @@ import javax.persistence.TemporalType;
 
 /**
  * This entity represents every time a provider fills out or updates a CDS form.
- * Note that every row / entry represents a change, so as an example if 
+ * Note that every row / entry represents a change, so as an example if
  * one provider answers the first 4 questions, then saves it. It will make a entry.
  * If another provider then updates it to answer another 2 questions, this should
- * make a 2nd row. This allows us to track who changed what on the form and when. 
+ * make a 2nd row. This allows us to track who changed what on the form and when.
  * As a result, these entities are non delete/update able, the expectation is to
  * make a new entity instead of updating an existing one.
  */
 @Entity
 public class CdsClientForm extends AbstractModel<Integer> implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String cdsFormVersion=null;
-	private String providerNo = null;
-	private boolean signed=false;
+    private String cdsFormVersion = null;
+    private String providerNo = null;
+    private boolean signed = false;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date created = new Date();
-	
-	private Integer facilityId=null;
-	private Integer clientId=null;
-	private Integer admissionId=null;
-	
-	@Temporal(TemporalType.DATE)
-	private Date initialContactDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date();
 
-	@Temporal(TemporalType.DATE)
-	private Date assessmentDate;
+    private Integer facilityId = null;
+    private Integer clientId = null;
+    private Integer admissionId = null;
 
-	@Override
+    @Temporal(TemporalType.DATE)
+    private Date initialContactDate;
+
+    @Temporal(TemporalType.DATE)
+    private Date assessmentDate;
+
+    @Override
     public Integer getId() {
-		return id;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public String getCdsFormVersion() {
-    	return cdsFormVersion;
+        return id;
     }
 
-	public void setCdsFormVersion(String cdsFormVersion) {
-    	this.cdsFormVersion = cdsFormVersion;
+    public Date getCreated() {
+        return created;
     }
 
-	public String getProviderNo() {
-    	return providerNo;
+    public String getCdsFormVersion() {
+        return cdsFormVersion;
     }
 
-	public void setProviderNo(String providerNo) {
-    	this.providerNo = providerNo;
+    public void setCdsFormVersion(String cdsFormVersion) {
+        this.cdsFormVersion = cdsFormVersion;
     }
 
-	public boolean isSigned() {
-    	return signed;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-	public void setSigned(boolean signed) {
-    	this.signed = signed;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
     }
 
-	public Integer getFacilityId() {
-    	return facilityId;
+    public boolean isSigned() {
+        return signed;
     }
 
-	public void setFacilityId(Integer facilityId) {
-    	this.facilityId = facilityId;
+    public void setSigned(boolean signed) {
+        this.signed = signed;
     }
 
-	public Integer getClientId() {
-    	return clientId;
+    public Integer getFacilityId() {
+        return facilityId;
     }
 
-	public void setClientId(Integer clientId) {
-    	this.clientId = clientId;
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
     }
 
-	public Integer getAdmissionId() {
-    	return admissionId;
+    public Integer getClientId() {
+        return clientId;
     }
 
-	public void setAdmissionId(Integer admissionId) {
-    	this.admissionId = admissionId;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
-	public Date getInitialContactDate() {
-    	return initialContactDate;
+    public Integer getAdmissionId() {
+        return admissionId;
     }
 
-	public void setInitialContactDate(Date initialContactDate) {
-    	this.initialContactDate = initialContactDate;
+    public void setAdmissionId(Integer admissionId) {
+        this.admissionId = admissionId;
     }
 
-	public Date getAssessmentDate() {
-    	return assessmentDate;
+    public Date getInitialContactDate() {
+        return initialContactDate;
     }
 
-	public void setAssessmentDate(Date assessmentDate) {
-    	this.assessmentDate = assessmentDate;
+    public void setInitialContactDate(Date initialContactDate) {
+        this.initialContactDate = initialContactDate;
     }
 
-	@Override
+    public Date getAssessmentDate() {
+        return assessmentDate;
+    }
+
+    public void setAssessmentDate(Date assessmentDate) {
+        this.assessmentDate = assessmentDate;
+    }
+
+    @Override
     public int hashCode() {
-		return (id != null ? id.hashCode() : 0);
-	}
-	
-	@PreRemove
-	protected void jpaPreventDelete()
-	{
-		throw(new UnsupportedOperationException("Remove is not allowed for this type of item."));
-	}
+        return (id != null ? id.hashCode() : 0);
+    }
 
-	@PreUpdate
-	protected void jpaPreventUpdate()
-	{
-		throw(new UnsupportedOperationException("Update is not allowed for this type of item."));
-	}
+    @PreRemove
+    protected void jpaPreventDelete() {
+        throw (new UnsupportedOperationException("Remove is not allowed for this type of item."));
+    }
+
+    @PreUpdate
+    protected void jpaPreventUpdate() {
+        throw (new UnsupportedOperationException("Update is not allowed for this type of item."));
+    }
 
 }

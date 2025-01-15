@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -47,9 +48,9 @@ public class ProviderDefaultProgramDaoImpl extends AbstractDaoImpl<ProviderDefau
 
     @Override
     public List<ProviderDefaultProgram> getProgramByProviderNo(String providerNo) {
-        String q = "SELECT pdp FROM ProviderDefaultProgram pdp WHERE pdp.providerNo=?";
+        String q = "SELECT pdp FROM ProviderDefaultProgram pdp WHERE pdp.providerNo=?1";
         Query query = entityManager.createQuery(q);
-        query.setParameter(0, providerNo);
+        query.setParameter(1, providerNo);
         @SuppressWarnings("unchecked")
         List<ProviderDefaultProgram> results = query.getResultList();
         return results;
@@ -98,9 +99,9 @@ public class ProviderDefaultProgramDaoImpl extends AbstractDaoImpl<ProviderDefau
 
     @Override
     public List<Program> findProgramsByProvider(String providerNo) {
-        String sql = "FROM Program p WHERE p.id IN (SELECT pdp.programId FROM ProviderDefaultProgram pdp WHERE pdp.providerNo = :pr)";
+        String sql = "FROM Program p WHERE p.id IN (SELECT pdp.programId FROM ProviderDefaultProgram pdp WHERE pdp.providerNo = ?1)";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("pr", providerNo);
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<Program> results = query.getResultList();
@@ -110,11 +111,11 @@ public class ProviderDefaultProgramDaoImpl extends AbstractDaoImpl<ProviderDefau
 
     @Override
     public List<Program> findProgramsByFacilityId(Integer facilityId) {
-        String sql = "from Program p where p.id in (select distinct pg.id from Program pg ,ProgramProvider pp where pp.ProgramId=pg.id and pg.facilityId=?)";
+        String sql = "from Program p where p.id in (select distinct pg.id from Program pg ,ProgramProvider pp where pp.ProgramId=pg.id and pg.facilityId=?1)";
         Query query;
         try {
             query = entityManager.createQuery(sql);
-            query.setParameter(0, facilityId);
+            query.setParameter(1, facilityId);
         } catch (Exception e) {
             MiscUtils.getLogger().error(e.getMessage(), e);
             return new ArrayList<Program>();

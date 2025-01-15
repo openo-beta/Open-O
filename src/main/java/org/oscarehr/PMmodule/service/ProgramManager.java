@@ -1,59 +1,39 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.PMmodule.service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.struts.util.LabelValueBean;
+import org.oscarehr.PMmodule.dao.*;
+import org.oscarehr.PMmodule.model.*;
 import org.oscarehr.common.dao.AdmissionDao;
-import org.oscarehr.PMmodule.dao.DefaultRoleAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramClientStatusDAO;
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.dao.ProgramFunctionalUserDAO;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.dao.ProgramSignatureDao;
-import org.oscarehr.PMmodule.dao.ProgramTeamDAO;
-import org.oscarehr.PMmodule.dao.VacancyTemplateDao;
-import org.oscarehr.PMmodule.model.AccessType;
 import org.oscarehr.common.model.Admission;
-import org.oscarehr.PMmodule.model.DefaultRoleAccess;
-import org.oscarehr.PMmodule.model.FunctionalUserType;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.PMmodule.model.ProgramClientStatus;
-import org.oscarehr.PMmodule.model.ProgramFunctionalUser;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.model.ProgramSignature;
-import org.oscarehr.PMmodule.model.ProgramTeam;
-import org.oscarehr.PMmodule.model.VacancyTemplate;
 import org.oscarehr.util.LoggedInInfo;
-import oscar.OscarProperties;
+import oscar.util.LabelValueBean;
+
+import java.util.List;
 
 public interface ProgramManager {
 
@@ -86,7 +66,7 @@ public interface ProgramManager {
     Program getProgram(Integer programId);
 
     Program getProgram(Long programId);
-    
+
     List<Program> getActiveProgramByFacility(String providerNo, Integer facilityId);
 
     String getProgramName(String programId);
@@ -224,12 +204,12 @@ public interface ProgramManager {
     List<ProgramSignature> getProgramSignatures(Integer programId);
 
     void saveProgramSignature(ProgramSignature programSignature);
-    
+
     VacancyTemplate getVacancyTemplate(Integer templateId);
 
     void setVacancyTemplateDao(VacancyTemplateDao vacancyTemplateDao);
 
     boolean hasAccessBasedOnCurrentFacility(LoggedInInfo loggedInInfo, Integer programId);
 
-    List<Program> getAllProgramsByRole(String providerNo,int roleId);
+    List<Program> getAllProgramsByRole(String providerNo, int roleId);
 }

@@ -29,50 +29,46 @@
  */%>
 <jsp:include page="../images/spinner.jsp" flush="true"/> 
 <script language="javascript" type="text/javascript">
-
 function newWindow(url) {
-	newwindow=window.open(url,'name','height=700,width=1000');
-	if (window.focus) {newwindow.focus()}
-	return false;
+    newwindow=window.open(url,'name','height=700,width=1000');
+    if (window.focus) {newwindow.focus()}
+    return false;
 }
-
-
 </script>
-
 <tr>
-	<td width="10%" height="37" bgcolor="#000000"><span class="ScreenTitle" >oscarRx</span></td>
+    <td width="10%" height="37" bgcolor="#000000"><span class="ScreenTitle" >oscarRx</span></td>
         <td width="100%" valign="bottom"  bgcolor="#000000" style="border-left: 2px solid #A9A9A9; padding-left: 5" height="0%" colspan="2">
             <table width="100%" border="0" height="100%">
                 <tr>
                     <td valign="bottom" style="color:white;" >     
-								
-					<b><bean:message key="SearchDrug.nameText" /></b> <jsp:getProperty name="patient" property="firstName" /> <jsp:getProperty name="patient" property="surname" />
-		     		<b><bean:message key="SearchDrug.ageText" /></b> <jsp:getProperty name="patient" property="age" /><br>
+<%
+    oscar.oscarRx.data.RxPatientData.Patient patient2 = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
+%>
+                    <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b> <%=patient2.getFirstName() %> <%=patient2.getSurname() %>
+                    <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.ageText"/></b> <%=patient2.getAge() %><br>
                     <b>Selected Pharmacy:</b>
                     <select id="Calcs" name="pharmacyId" onchange="populatePharmacy(this.options[this.selectedIndex].value);showpic('Layer1');"> 
                     <%
-                    	if( pharmacyList != null ) {
-                    	    ObjectMapper mapper = new ObjectMapper();
-                    	    StringWriter jsonObject;
-	        				for( PharmacyInfo pharmacyInfo : pharmacyList ) {
-	        					
-	        				    jsonObject = new StringWriter();
-	        					mapper.writeValue(jsonObject, pharmacyInfo);
-
-					%>
-								<option value='<%=jsonObject.toString().replaceAll("'", "")%>'><%=pharmacyInfo.getName() + " " + "(" + pharmacyInfo.getAddress() + ", " + pharmacyInfo.getCity() + ", Fax: " + pharmacyInfo.getFax() + ")"%></option>
-					<%
-	        				}
-	       		 		}
-					%>
+                        if( pharmacyList != null ) {
+                            ObjectMapper mapper = new ObjectMapper();
+                            StringWriter jsonObject;
+                            for( PharmacyInfo pharmacyInfo : pharmacyList ) {
+                                
+                                jsonObject = new StringWriter();
+                                mapper.writeValue(jsonObject, pharmacyInfo);
+                    %>
+                                <option value='<%=jsonObject.toString().replaceAll("'", "")%>'><%=pharmacyInfo.getName() + " " + "(" + pharmacyInfo.getAddress() + ", " + pharmacyInfo.getCity() + ", Fax: " + pharmacyInfo.getFax() + ")"%></option>
+                    <%
+                            }
+                        }
+                    %>
                     </select>        
-					<b><a style="color:white; "href="SelectPharmacy2.jsp"><span onclick="ShowSpin(true);">(Edit List)</span></a></b>
+                    <b><a style="color:white; "href="SelectPharmacy2.jsp"><span onclick="ShowSpin(true);">(Edit List)</span></a></b>
                     </td>
                     <td valign="top" align="right">
                         <span class="HelpAboutLogout" style="color:white;">
-							<a style="color:white;" href="javascript: popupFocusPage(200,700,'./drugrefInfo.jsp','Drugref Info');" >Drugref Info</a> |
-							<oscar:help keywords="&Title=Writing+Prescriptions&portal_type%3Alist=Document" key="app.top1" style="color:white;"/> |
-                            <a style="color:white;" href="<%=request.getContextPath()%>/oscarEncounter/About.jsp" target="_new"><bean:message key="global.about" /></a>
+                            <a style="color:white;" href="javascript: popupFocusPage(200,700,'./drugrefInfo.jsp','Drugref Info');" >Drugref Info</a> |
+                            <a style="color:white;" href="<%=request.getContextPath()%>/oscarEncounter/About.jsp" target="_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                             <!-- is this needed? 
                             <a style="color:white;" href="Disclaimer.htm">Disclaimer</a> 
                             -->
@@ -80,5 +76,5 @@ function newWindow(url) {
                     </td>
                 </tr>
             </table>
-	</td>
-</tr>                            
+    </td>
+</tr> 

@@ -23,25 +23,29 @@
     Ontario, Canada
 
 --%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
-String prov= (oscar.OscarProperties.getInstance().getProperty("billregion","")).trim().toUpperCase();
+    String prov = (oscar.OscarProperties.getInstance().getProperty("billregion", "")).trim().toUpperCase();
 %>
 
 <script>
-function newWindow(url) {
-    newwindow=window.open(url,'inbox','height=700,width=1000');
-    if (window.focus) {newwindow.focus()}
-    return false;
-}
+    function newWindow(url) {
+        newwindow = window.open(url, 'inbox', 'height=700,width=1000');
+        if (window.focus) {
+            newwindow.focus()
+        }
+        return false;
+    }
 
 
-newWindow('<%=request.getContextPath()%>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport');
+    newWindow('<%=request.getContextPath()%>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport');
 </script>
+<fmt:setBundle basename="uiResources" var="uiBundle"/>
 <p class="info">
-<a href="javascript:void()" onClick="newWindow('<%=request.getContextPath()%>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport');return false">
-<bean:message key="billing.panel" bundle="ui"/>
-</a>
-<bean:message key="billing.popupMessage" bundle="ui"/></p>
+    <a href="javascript:void()"
+       onClick="newWindow('<%=request.getContextPath()%>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport');return false">
+        <fmt:message key="billing.panel" bundle="${uiBundle}"/>
+    </a>
+    <fmt:message key="billing.popupMessage" bundle="${uiBundle}"/></p>
 
-<p><a href="#/dashboard"><bean:message key="global.goToDashboard" bundle="ui"/></a></p>
+<p><a href="#/dashboard"><fmt:message key="global.goToDashboard" bundle="${uiBundle}"/></a></p>

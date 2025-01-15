@@ -24,147 +24,166 @@
 
 --%>
 
-<%@page contentType="text/html"%>
-<%@ include file="/casemgmt/taglibs.jsp"%>
+<%@page contentType="text/html" %>
+<%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="java.util.*" %>
+<%@ page import="java.util.ResourceBundle"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
+<%
+    ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
-<html:html>
-	<head>
-		<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-		<html:base />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title><bean-el:message key="${providertitle}" /></title>
-		<link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
+    String providertitle = (String) request.getAttribute("providertitle");
+    String providermsgPrefs = (String) request.getAttribute("providermsgPrefs");
+    String providerbtnCancel = (String) request.getAttribute("providerbtnCancel");
+    String providerMsg = (String) request.getAttribute("providerMsg");
+    String providerbtnSubmit = (String) request.getAttribute("providerbtnSubmit");
+    String providerbtnClose = (String) request.getAttribute("providerbtnClose");
+%>
+<html>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title><%=bundle.getString(providertitle)%></title>
+        <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
 
-<style>
-input[type="radio"]{
-margin-left:20px
-}
-</style>
-	</head>
+        <style>
+            input[type="radio"] {
+                margin-left: 20px
+            }
+        </style>
+    </head>
 
-	<body class="BodyStyle" vlink="#0000FF">
-		<table class="MainTable" id="scrollNumber1" name="encounterTable">
-			<tr class="MainTableTopRow">
-				<td class="MainTableTopRowLeftColumn" style="width:135px">
-					<bean-el:message key="${providermsgPrefs}" />
-			   	</td>
-				<td style="color: white" class="MainTableTopRowRightColumn"></td>
-			</tr>
-			<tr>
-				<td class="MainTableLeftColumn"></td>
-				<td class="MainTableRightColumn">
-			<%if( request.getAttribute("status") == null ){%>
-			<html:form action="/setTicklerPreferences.do">
-				<input type="hidden" name="method" value="<c:out value="${method}"/>">
-				
-				<html:hidden property="taskAssigneeSelection.value" styleId="taskAssignee"/> 
-			           		
-				<h2>Default Tickler Task Assignee:</h2>
+    <body class="BodyStyle" vlink="#0000FF">
+    <table class="MainTable" id="scrollNumber1" name="encounterTable">
+        <tr class="MainTableTopRow">
+            <td class="MainTableTopRowLeftColumn" style="width:135px">
+                <%=bundle.getString(providermsgPrefs)%>
+            </td>
+            <td style="color: white" class="MainTableTopRowRightColumn"></td>
+        </tr>
+        <tr>
+            <td class="MainTableLeftColumn"></td>
+            <td class="MainTableRightColumn">
+                <%if (request.getAttribute("status") == null) {%>
+                <form action="${pageContext.request.contextPath}/setTicklerPreferences.do" method="post">
+                    <input type="hidden" name="method" value="<c:out value="${method}"/>">
 
-				<h3><c:out value="${providerMsg}"/></h3>
+                    <input type="hidden" name="taskAssigneeSelection.value" id="taskAssignee"/>
 
-				<html:radio property="taskAssigneeMRP.value" styleId="taskAssigneeDefault" value="default" onchange="checkAssignee()">Default</html:radio>							
-				<html:radio property="taskAssigneeMRP.value" styleId="taskAssigneeMRP" value="mrp"  onchange="checkAssignee()">MRP</html:radio>
-				<html:radio property="taskAssigneeMRP.value" styleId="taskAssigneeProvider" value="provider"  onchange="checkAssignee()">Set a provider</html:radio>
+                    <h2>Default Tickler Task Assignee:</h2>
 
+                    <h3><c:out value="${providerMsg}"/></h3>
 
-				<div style="margin-top:20px;margin-bottom:20px;padding-left:20px;height:50px">
-				  <div style="display:none;" id="taskAssigneeDefaultContainer">
-				    <h3>No preference set.</h3>
-				  </div>
-
-				  <div style="display:none;" id="taskAssigneeMRPContainer">
-				    <h3>Most Responsible Physician (MRP) as specified on the patients master record (demographics).</h3>
-				  </div>
-
-				  <div style="display:none;" id="taskAssigneeProviderContainer">
-				    <h3>Select a provider from the list to set as your default assignee:</h3>
-				    <br>
-				    <html:select property="taskAssigneeProvider.value" onchange="updateTaskAssignee(this.value)">
-					<html:options collection="providerSelect" property="value" labelProperty="label"/>
-				    </html:select>
-				  </div>
-				</div>
-
-				<input type="submit" value="<bean-el:message key="${providerbtnSubmit}"/>"/>
-				<input type="button" value="<bean-el:message key="${providerbtnCancel}"/>" onclick="window.close();"/>
-			</html:form>
-			<%}else {%>
-					<h1><bean-el:message key="${providerMsg}"/></h1>
-					<br/><br/>
-					<input type="button" value="<bean-el:message key="${providerbtnClose}"/>" onclick="window.close();"/>
-			<%}%>
-				</td>
-			</tr>
-			<tr>
-				<td class="MainTableBottomRowLeftColumn"></td>
-				<td class="MainTableBottomRowRightColumn"></td>
-			</tr>
-		</table>
-
-<script>
+                    <input type="radio" name="taskAssigneeMRP.value" id="taskAssigneeDefault" value="default"
+                                onchange="checkAssignee()"/>Default
+                    <input type="radio" name="taskAssigneeMRP.value" id="taskAssigneeMRP" value="mrp"
+                                onchange="checkAssignee()"/>MRP
+                    <input type="radio" name="taskAssigneeMRP.value" id="taskAssigneeProvider" value="provider"
+                                onchange="checkAssignee()"/>Set a provider
 
 
-function checkAssignee(){
+                    <div style="margin-top:20px;margin-bottom:20px;padding-left:20px;height:50px">
+                        <div style="display:none;" id="taskAssigneeDefaultContainer">
+                            <h3>No preference set.</h3>
+                        </div>
 
-one = document.getElementById("taskAssigneeDefault");
-divDefault = document.getElementById("taskAssigneeDefaultContainer");
+                        <div style="display:none;" id="taskAssigneeMRPContainer">
+                            <h3>Most Responsible Physician (MRP) as specified on the patients master record
+                                (demographics).</h3>
+                        </div>
 
-if(one.checked){
- divDefault.style.display="block";
- updateTaskAssignee('');//clear
-}else{
- divDefault.style.display="none";
-}
+                        <div style="display:none;" id="taskAssigneeProviderContainer">
+                            <h3>Select a provider from the list to set as your default assignee:</h3>
+                            <br>
+                            <select name="value" onchange="updateTaskAssignee(this.value)">
+                                <c:forEach var="provider" items="${providerSelect}">
+                                    <option value="${provider.value}">
+                                            ${provider.label}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
 
+                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
+                    <input type="button" value="<%=bundle.getString(providerbtnCancel)%>"
+                           onclick="window.close();"/>
+                </form>
+                <%} else {%>
+                <h1><%=bundle.getString(providerMsg)%></h1>
+                <br/><br/>
+                <input type="button" value="<%=bundle.getString(providerbtnClose)%>" onclick="window.close();"/>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <td class="MainTableBottomRowLeftColumn"></td>
+            <td class="MainTableBottomRowRightColumn"></td>
+        </tr>
+    </table>
 
-mrp = document.getElementById("taskAssigneeMRP");
-divMRP = document.getElementById("taskAssigneeMRPContainer");
-
-if(mrp.checked){
- divMRP.style.display="block";
- updateTaskAssignee('mrp');
-}else{
- divMRP.style.display="none";
-}
-
-
-provider = document.getElementById("taskAssigneeProvider");
-divProvider = document.getElementById("taskAssigneeProviderContainer");
-
-if(provider.checked){
- divProvider.style.display="block";
-}else{
- divProvider.style.display="none";
-}
-
-}
-
-
-function updateTaskAssignee(v){
-el = document.getElementById("taskAssignee");
-el.value=v;
-}
-
-
-function updateProviderSelect(){
-var savedAssignee = document.forms[0]['taskAssigneeSelection.value'].value;
-if(savedAssignee.length>0 && savedAssignee!='mrp'){
-document.forms[0]['taskAssigneeProvider.value'].value=savedAssignee;
-}else{
- 
-}
-}
-
-updateProviderSelect();
+    <script>
 
 
-checkAssignee();
-</script>
+        function checkAssignee() {
 
-	</body>
-</html:html>
+            one = document.getElementById("taskAssigneeDefault");
+            divDefault = document.getElementById("taskAssigneeDefaultContainer");
+
+            if (one.checked) {
+                divDefault.style.display = "block";
+                updateTaskAssignee('');//clear
+            } else {
+                divDefault.style.display = "none";
+            }
+
+
+            mrp = document.getElementById("taskAssigneeMRP");
+            divMRP = document.getElementById("taskAssigneeMRPContainer");
+
+            if (mrp.checked) {
+                divMRP.style.display = "block";
+                updateTaskAssignee('mrp');
+            } else {
+                divMRP.style.display = "none";
+            }
+
+
+            provider = document.getElementById("taskAssigneeProvider");
+            divProvider = document.getElementById("taskAssigneeProviderContainer");
+
+            if (provider.checked) {
+                divProvider.style.display = "block";
+            } else {
+                divProvider.style.display = "none";
+            }
+
+        }
+
+
+        function updateTaskAssignee(v) {
+            el = document.getElementById("taskAssignee");
+            el.value = v;
+        }
+
+
+        function updateProviderSelect() {
+            var savedAssignee = document.forms[0]['taskAssigneeSelection.value'].value;
+            if (savedAssignee.length > 0 && savedAssignee != 'mrp') {
+                document.forms[0]['taskAssigneeProvider.value'].value = savedAssignee;
+            } else {
+
+            }
+        }
+
+        updateProviderSelect();
+
+
+        checkAssignee();
+    </script>
+
+    </body>
+</html>

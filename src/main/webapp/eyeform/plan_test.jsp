@@ -24,45 +24,45 @@
 
 --%>
 
-<%@ include file="/taglibs.jsp"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao"%>
+<%@ include file="/taglibs.jsp" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%
-	String id = request.getParameter("id");
-	ProviderDao providerDao = (ProviderDao)SpringUtils.getBean(ProviderDao.class);
-	request.setAttribute("providers",providerDao.getActiveProviders());
+    String id = request.getParameter("id");
+    ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+    request.setAttribute("providers", providerDao.getActiveProviders());
 %>
 
 <div id="test_<%=id%>">
 
-				<input type="hidden" name="test_<%=id%>.id" value=""/>
-					
-				<a href="#" onclick="deleteTest(<%=id%>);">[Delete]</a>
-				
-				&nbsp;
-				
+    <input type="hidden" name="test_<%=id%>.id" value=""/>
 
-				<select name="test_<%=id%>.eye">
-					<option value="OU">OU</option>
-					<option value="OD">OD</option>
-					<option value="OS">OS</option>
-					<option value="n/a">n/a</option>			
-				</select>
-				
-				&nbsp;
-				Name:
-				<input type="text" name="test_<%=id%>.testname" size="30"/>
-			
-				&nbsp;				
-				<select name="test_<%=id%>.urgency">
-					<option value="routine">routine</option>
-					<option value="ASAP">ASAP</option>
-					<option value="prior to next visit">PTNV</option>
-					<option value="same day next visit">SDNV</option>					
-				</select>
-				
-				&nbsp;
-				Comment:
-				<input type="text" name="test_<%=id%>.comment"/>	
-				
+    <a href="#" onclick="deleteTest(<%=id%>);">[Delete]</a>
+
+    &nbsp;
+
+
+    <select name="test_<%=id%>.eye">
+        <option value="OU">OU</option>
+        <option value="OD">OD</option>
+        <option value="OS">OS</option>
+        <option value="n/a">n/a</option>
+    </select>
+
+    &nbsp;
+    Name:
+    <input type="text" name="test_<%=id%>.testname" size="30"/>
+
+    &nbsp;
+    <select name="test_<%=id%>.urgency">
+        <option value="routine">routine</option>
+        <option value="ASAP">ASAP</option>
+        <option value="prior to next visit">PTNV</option>
+        <option value="same day next visit">SDNV</option>
+    </select>
+
+    &nbsp;
+    Comment:
+    <input type="text" name="test_<%=id%>.comment"/>
+
 </div>

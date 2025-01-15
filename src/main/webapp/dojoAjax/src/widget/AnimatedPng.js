@@ -26,73 +26,75 @@ dojo.require("dojo.widget.HtmlWidget");
 //	var widget = dojo.widget.createWidget("AnimatedPng", params, document.getElementById("pngContainer"));
 //
 dojo.widget.defineWidget(
-	"dojo.widget.AnimatedPng",
-	dojo.widget.HtmlWidget,
-	{
-		// summary
-		//	PNGs have great tranparency, but lack animation.
-		//	This widget lets you point an img tag at an animated gif for graceful degrading,
-		//	while letting you specify a png containing a grid of cells to animate between.
+    "dojo.widget.AnimatedPng",
+    dojo.widget.HtmlWidget,
+    {
+        // summary
+        //	PNGs have great tranparency, but lack animation.
+        //	This widget lets you point an img tag at an animated gif for graceful degrading,
+        //	while letting you specify a png containing a grid of cells to animate between.
 
-		isContainer: false,
+        isContainer: false,
 
-		// width: Integer
-		//	width (of each frame) in pixels
-		width: 0,
-		
-		// height: Integer
-		//	height (of each frame) in pixels
-		height: 0,
-		
-		// aniSrc: String
-		//	pathname to png file containing frames to be animated (ie, displayed sequentially)
-		aniSrc: '',
-		
-		// interval: Integer
-		//	time to display each frame
-		interval: 100,
+        // width: Integer
+        //	width (of each frame) in pixels
+        width: 0,
 
-		_blankSrc: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),
+        // height: Integer
+        //	height (of each frame) in pixels
+        height: 0,
 
-		templateString: '<img class="dojoAnimatedPng" />',
+        // aniSrc: String
+        //	pathname to png file containing frames to be animated (ie, displayed sequentially)
+        aniSrc: '',
 
-		postCreate: function(){
-			this.cellWidth = this.width;
-			this.cellHeight = this.height;
+        // interval: Integer
+        //	time to display each frame
+        interval: 100,
 
-			var img = new Image();
-			var self = this;
+        _blankSrc: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),
 
-			img.onload = function(){ self._initAni(img.width, img.height); };
-			img.src = this.aniSrc;
-		},
+        templateString: '<img class="dojoAnimatedPng" />',
 
-		_initAni: function(w, h){
-			this.domNode.src = this._blankSrc;
-			this.domNode.width = this.cellWidth;
-			this.domNode.height = this.cellHeight;
-			this.domNode.style.backgroundImage = 'url('+this.aniSrc+')';
-			this.domNode.style.backgroundRepeat = 'no-repeat';
+        postCreate: function () {
+            this.cellWidth = this.width;
+            this.cellHeight = this.height;
 
-			this.aniCols = Math.floor(w/this.cellWidth);
-			this.aniRows = Math.floor(h/this.cellHeight);
-			this.aniCells = this.aniCols * this.aniRows;
-			this.aniFrame = 0;
+            var img = new Image();
+            var self = this;
 
-			window.setInterval(dojo.lang.hitch(this, '_tick'), this.interval);
-		},
+            img.onload = function () {
+                self._initAni(img.width, img.height);
+            };
+            img.src = this.aniSrc;
+        },
 
-		_tick: function(){
-			this.aniFrame++;
-			if (this.aniFrame == this.aniCells) this.aniFrame = 0;
+        _initAni: function (w, h) {
+            this.domNode.src = this._blankSrc;
+            this.domNode.width = this.cellWidth;
+            this.domNode.height = this.cellHeight;
+            this.domNode.style.backgroundImage = 'url(' + this.aniSrc + ')';
+            this.domNode.style.backgroundRepeat = 'no-repeat';
 
-			var col = this.aniFrame % this.aniCols;
-			var row = Math.floor(this.aniFrame / this.aniCols);
+            this.aniCols = Math.floor(w / this.cellWidth);
+            this.aniRows = Math.floor(h / this.cellHeight);
+            this.aniCells = this.aniCols * this.aniRows;
+            this.aniFrame = 0;
 
-			var bx = -1 * col * this.cellWidth;
-			var by = -1 * row * this.cellHeight;
+            window.setInterval(dojo.lang.hitch(this, '_tick'), this.interval);
+        },
 
-			this.domNode.style.backgroundPosition = bx+'px '+by+'px';
-		}
-	}
+        _tick: function () {
+            this.aniFrame++;
+            if (this.aniFrame == this.aniCells) this.aniFrame = 0;
+
+            var col = this.aniFrame % this.aniCols;
+            var row = Math.floor(this.aniFrame / this.aniCols);
+
+            var bx = -1 * col * this.cellWidth;
+            var by = -1 * row * this.cellHeight;
+
+            this.domNode.style.backgroundPosition = bx + 'px ' + by + 'px';
+        }
+    }
 );

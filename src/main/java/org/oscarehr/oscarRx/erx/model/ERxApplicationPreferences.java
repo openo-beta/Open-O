@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (C) 2011-2012  PeaceWorks Technology Solutions
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- * 
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -78,20 +79,16 @@ public class ERxApplicationPreferences {
 
     /**
      * Create an instance of an ERxApplicationPreferences object.
-     * 
-     * @param isERxEnabled
-     *            Whether or not the OSCAR ERx component is enabled. NOTE THIS
-     *            DOES NOT DEACTIVATE THE COMPONENT, it just sets the value in
-     *            this instance of this object.
-     * @param softwareName
-     *            The name of the software.
-     * @param softwareVendor
-     *            The name of the organization that produced the software.
-     * @param softwareVersion
-     *            The version of the software.
+     *
+     * @param isERxEnabled    Whether or not the OSCAR ERx component is enabled. NOTE THIS
+     *                        DOES NOT DEACTIVATE THE COMPONENT, it just sets the value in
+     *                        this instance of this object.
+     * @param softwareName    The name of the software.
+     * @param softwareVendor  The name of the organization that produced the software.
+     * @param softwareVersion The version of the software.
      */
     public ERxApplicationPreferences(boolean isERxEnabled, String softwareName,
-            String softwareVendor, String softwareVersion) {
+                                     String softwareVendor, String softwareVersion) {
         super();
         this.isERxEnabled = isERxEnabled;
         this.softwareName = softwareName;
@@ -101,7 +98,7 @@ public class ERxApplicationPreferences {
 
     /**
      * Returns the name of the software.
-     * 
+     *
      * @return The current value of softwareName.
      */
     public String getSoftwareName() {
@@ -110,7 +107,7 @@ public class ERxApplicationPreferences {
 
     /**
      * Returns the name of the organization that produced the software.
-     * 
+     *
      * @return The current value of vendor.
      */
     public String getVendor() {
@@ -119,7 +116,7 @@ public class ERxApplicationPreferences {
 
     /**
      * Returns the version of the software.
-     * 
+     *
      * @return The current value of version.
      */
     public String getVersion() {
@@ -128,7 +125,7 @@ public class ERxApplicationPreferences {
 
     /**
      * Returns whether or not the OSCAR ERx component is enabled.
-     * 
+     *
      * @return The current value of isERxEnabled.
      */
     public boolean isERxEnabled() {
@@ -137,12 +134,11 @@ public class ERxApplicationPreferences {
 
     /**
      * Changes whether or not the OSCAR ERx component is enabled.
-     * 
+     * <p>
      * NOTE THIS DOES NOT DEACTIVATE THE COMPONENT, it just sets the value in
      * this instance of this object.
-     * 
-     * @param isERxEnabled
-     *            The new isERxEnabled.
+     *
+     * @param isERxEnabled The new isERxEnabled.
      */
     public void setERxEnabled(boolean isERxEnabled) {
         this.isERxEnabled = isERxEnabled;
@@ -150,9 +146,8 @@ public class ERxApplicationPreferences {
 
     /**
      * Changes the value of the name of the software.
-     * 
-     * @param softwareName
-     *            The new softwareName.
+     *
+     * @param softwareName The new softwareName.
      */
     public void setSoftwareName(String softwareName) {
         this.softwareName = softwareName;
@@ -161,9 +156,8 @@ public class ERxApplicationPreferences {
     /**
      * Changes the value of the name of the organization that produced the
      * software.
-     * 
-     * @param vendor
-     *            The new vendor.
+     *
+     * @param vendor The new vendor.
      */
     public void setVendor(String vendor) {
         this.vendor = vendor;
@@ -171,9 +165,8 @@ public class ERxApplicationPreferences {
 
     /**
      * Changes the value of the version of the software.
-     * 
-     * @param version
-     *            The new version.
+     *
+     * @param version The new version.
      */
     public void setVersion(String version) {
         this.version = version;

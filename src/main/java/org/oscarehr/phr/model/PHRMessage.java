@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -63,10 +64,9 @@ import oscar.oscarProvider.data.ProviderData;
 import oscar.oscarProvider.data.ProviderMyOscarIdData;
 
 /**
- *
  * @author jay
  */
-public class PHRMessage  extends PHRDocument implements Serializable{
+public class PHRMessage extends PHRDocument implements Serializable {
     private static Logger log = MiscUtils.getLogger();
     //for status received msgs
     public static final int STATUS_NEW = 1;
@@ -83,31 +83,33 @@ public class PHRMessage  extends PHRDocument implements Serializable{
 
     private MessageType msg = null;
 
-    /** Creates a new instance of PHRMessage */
+    /**
+     * Creates a new instance of PHRMessage
+     */
     public PHRMessage() {
         super();
     }
 
-    public PHRMessage(PHRDocument doc ) throws Exception{
+    public PHRMessage(PHRDocument doc) throws Exception {
         super();
 
         JAXBContext docContext = JAXBContext.newInstance(IndivoDocumentType.class.getPackage().getName());
         Unmarshaller unmarshaller = docContext.createUnmarshaller();
         //IndivoDocumentType indivoDocument = (IndivoDocumentType)
         JAXBElement jaxment = (JAXBElement) unmarshaller.unmarshal(new StringReader(doc.getDocContent()));
-        IndivoDocumentType indivoDocument = (IndivoDocumentType)  jaxment.getValue();
+        IndivoDocumentType indivoDocument = (IndivoDocumentType) jaxment.getValue();
         parseDocument(indivoDocument);
         this.setStatus(doc.getStatus());
         this.setId(doc.getId());
-        log.debug("ID IS NOW SET TO "+this.getId() );
+        log.debug("ID IS NOW SET TO " + this.getId());
     }
 
-    public void setRead(){
+    public void setRead() {
         msg.setRead(true);
         addStatus(PHRMessage.STATUS_READ);
     }
 
-    public void setReplied(){
+    public void setReplied() {
         msg.setReplied(true);
         addStatus(PHRMessage.STATUS_REPLIED);
     }
@@ -125,21 +127,18 @@ public class PHRMessage  extends PHRDocument implements Serializable{
     }
 
 
-
-
-    public void reDocContent() throws Exception{
+    public void reDocContent() throws Exception {
 
         JAXBContext docContext = JAXBContext.newInstance(IndivoDocumentType.class.getPackage().getName());
         Unmarshaller unmarshaller = docContext.createUnmarshaller();
         //IndivoDocumentType indivoDocument = (IndivoDocumentType)
         JAXBElement jaxment = (JAXBElement) unmarshaller.unmarshal(new StringReader(this.getDocContent()));
-        IndivoDocumentType indivoDocument = (IndivoDocumentType)  jaxment.getValue();
+        IndivoDocumentType indivoDocument = (IndivoDocumentType) jaxment.getValue();
 
-        DocumentVersionType dvt =  indivoDocument.getDocumentVersion().get(indivoDocument.getDocumentVersion().size() -1);
+        DocumentVersionType dvt = indivoDocument.getDocumentVersion().get(indivoDocument.getDocumentVersion().size() - 1);
 
 
         JAXBContext messageContext = JAXBContext.newInstance(MessageType.class.getPackage().getName());
-
 
 
         org.indivo.xml.JAXBUtils jaxbUtils = new org.indivo.xml.JAXBUtils();
@@ -185,73 +184,66 @@ public class PHRMessage  extends PHRDocument implements Serializable{
     }
 
 
-
-
     /**
-     *Don't want to be able to add multiple statuses
+     * Don't want to be able to add multiple statuses
      * ie READ + READ != REPLIED
-     *
+     * <p>
      * logic
      * if result has status and status < 0 the if it should go
-     *   or
+     * or
      * if result does not have status and status > 0 it should go
      */
-    public void addStatus(int status ){
-        log.debug("id :"+ this.getId()+"  ST :"+this.getStatus()+ "  adding  "   +status);
+    public void addStatus(int status) {
+        log.debug("id :" + this.getId() + "  ST :" + this.getStatus() + "  adding  " + status);
 
-        if ( !hasStatus(status) && status > 0  ){
-           //log.debug("add statuss");
-           this.setStatus(this.getStatus() +status );
-        }else if (hasStatus(-status) && status < 0  ){
-           //log.debug("subtract statuss");
-           this.setStatus(this.getStatus() +status );
+        if (!hasStatus(status) && status > 0) {
+            //log.debug("add statuss");
+            this.setStatus(this.getStatus() + status);
+        } else if (hasStatus(-status) && status < 0) {
+            //log.debug("subtract statuss");
+            this.setStatus(this.getStatus() + status);
         }
 
 
-        log.debug(" new Stat :"+this.getStatus());
+        log.debug(" new Stat :" + this.getStatus());
     }
 
-    public boolean isReplied(){
+    public boolean isReplied() {
         return hasStatus(PHRMessage.STATUS_REPLIED);
     }
 
-    public boolean isRead(){
+    public boolean isRead() {
         return hasStatus(PHRMessage.STATUS_READ);
     }
 
-    public boolean isArchived(){
+    public boolean isArchived() {
         return hasStatus(PHRMessage.STATUS_ARCHIVED);
     }
 
-    public boolean isNew(){
+    public boolean isNew() {
         return hasStatus(PHRMessage.STATUS_NEW);
     }
 
 
-
-
     public boolean hasStatus(int status) {
-      return (this.getStatus() & status) == status;
+        return (this.getStatus() & status) == status;
     }
 
-    public void checkImportStatus(){
-        if(msg.isRead() ){
+    public void checkImportStatus() {
+        if (msg.isRead()) {
             addStatus(PHRMessage.STATUS_READ);
         } else {
             addStatus(PHRMessage.STATUS_NEW);
         }
-        if(msg.isReplied() ){
+        if (msg.isReplied()) {
             addStatus(PHRMessage.STATUS_REPLIED);
         }
 
-        log.debug("STATUS IS "+this.getStatus());
+        log.debug("STATUS IS " + this.getStatus());
     }
 
 
-
-
-
-    private void parseDocument(IndivoDocumentType document) throws Exception{
+    private void parseDocument(IndivoDocumentType document) throws Exception {
         JAXBContext docContext = JAXBContext.newInstance("org.indivo.xml.phr.document");
         byte[] docContentBytes = JAXBUtils.marshalToByteArray(new IndivoDocument(document), docContext);
         String docContent = new String(docContentBytes);
@@ -261,34 +253,34 @@ public class PHRMessage  extends PHRDocument implements Serializable{
         DocumentHeaderType docHeaderType = document.getDocumentHeader();
         DocumentClassificationType theType = docHeaderType.getDocumentClassification();
         String classification = theType.getClassification();
-        String documentIndex  = docHeaderType.getDocumentIndex();
+        String documentIndex = docHeaderType.getDocumentIndex();
 
         JAXBContext messageContext = JAXBContext.newInstance("org.indivo.xml.phr.message");
-         msg = (MessageType) org.indivo.xml.phr.DocumentUtils.getDocumentAnyObject(document,messageContext.createUnmarshaller());
+        msg = (MessageType) org.indivo.xml.phr.DocumentUtils.getDocumentAnyObject(document, messageContext.createUnmarshaller());
 
 
         HashMap m = new HashMap();
         String rawMessageId = msg.getId();
-        if (rawMessageId != null){
-           String indexStr =  null;
-           try {
-               if ((rawMessageId.indexOf("[") == -1 || rawMessageId.indexOf("]") == -1) && !rawMessageId.equals("")) {
-                   indexStr = rawMessageId;
-               } else {
-                   indexStr = rawMessageId.substring(rawMessageId.lastIndexOf("[")+1, rawMessageId.lastIndexOf("]"));
-               }
-           } catch (Exception e) {
-               log.error("ERROR: rawMessageId is formatted poorly: " + rawMessageId);
-               MiscUtils.getLogger().error("Error", e);
-           }
-           m.put(PHRMessage.MESSAGE_ID,indexStr);
-           this.setExts(m);
+        if (rawMessageId != null) {
+            String indexStr = null;
+            try {
+                if ((rawMessageId.indexOf("[") == -1 || rawMessageId.indexOf("]") == -1) && !rawMessageId.equals("")) {
+                    indexStr = rawMessageId;
+                } else {
+                    indexStr = rawMessageId.substring(rawMessageId.lastIndexOf("[") + 1, rawMessageId.lastIndexOf("]"));
+                }
+            } catch (Exception e) {
+                log.error("ERROR: rawMessageId is formatted poorly: " + rawMessageId);
+                MiscUtils.getLogger().error("Error", e);
+            }
+            m.put(PHRMessage.MESSAGE_ID, indexStr);
+            this.setExts(m);
         }
         if (docHeaderType.getCreationDateTime() == null)
             this.setDateSent(null);
         else {
             this.setDateSent(docHeaderType.getCreationDateTime().toGregorianCalendar().getTime());
-            log.debug("Date Created set to "+docHeaderType.getCreationDateTime().toGregorianCalendar().getTime());
+            log.debug("Date Created set to " + docHeaderType.getCreationDateTime().toGregorianCalendar().getTime());
         }
         this.setDateExchanged(new Date());
         this.setPhrClassification(classification);
@@ -303,14 +295,14 @@ public class PHRMessage  extends PHRDocument implements Serializable{
         Hashtable result = new Hashtable();
         String newOscarId;
         int newIdType;
-       //find sender oscar id
+        //find sender oscar id
 // This code can't possibly be run... it's using the wrong library
 //        result = findOscarId(this.getSenderType(), this.getSenderPhr());
         newOscarId = (String) result.get("oscarId");
         this.setSenderOscar(newOscarId);
         newIdType = ((Integer) result.get("idType")).intValue();
         this.setSenderType(newIdType);
-       //find receiver oscar id
+        //find receiver oscar id
 // This code can't possibly be run... it's using the wrong library
 //        result = findOscarId(this.getReceiverType(), this.getReceiverMyOscarUserId());
         newOscarId = (String) result.get("oscarId");
@@ -320,21 +312,21 @@ public class PHRMessage  extends PHRDocument implements Serializable{
         this.setDocContent(docContent);
     }
 
-    public PHRMessage(IndivoDocumentType document ) throws Exception{
+    public PHRMessage(IndivoDocumentType document) throws Exception {
         super();
         parseDocument(document);
     }
 
 
-    public String getBody(){
-        String  ret = msg.getMessageContent().getAny().getTextContent();
-        if ( ret == null){
+    public String getBody() {
+        String ret = msg.getMessageContent().getAny().getTextContent();
+        if (ret == null) {
             return "";
         }
         return ret;
     }
 
-    public boolean isFromDemographic(){
+    public boolean isFromDemographic() {
         return PHRDocument.TYPE_DEMOGRAPHIC == this.getSenderType();
     }
 
@@ -345,32 +337,32 @@ public class PHRMessage  extends PHRDocument implements Serializable{
 //    }
 
     public Hashtable findOscarId(LoggedInInfo loggedInInfo, int idType, String myOscarUserName) {
-       DemographicData demographicData = new DemographicData();
-       Hashtable results = new Hashtable();
-       String oscarId = "";
-       if (idType == PHRDocument.TYPE_PROVIDER) {
-           oscarId = ProviderMyOscarIdData.getProviderNo(myOscarUserName);
-           log.debug("OSCAR ID "+oscarId);
-       } else if(idType == PHRDocument.TYPE_DEMOGRAPHIC) {
-           oscarId = demographicData.getDemographicNoByIndivoId(loggedInInfo, myOscarUserName);
-       } else if (idType == PHRDocument.TYPE_NOT_SET) {
-           //try provider:
-           String searchNo = ProviderMyOscarIdData.getProviderNo(myOscarUserName);
-           if (!searchNo.equals("")) {
-               oscarId = searchNo;
-               idType = PHRDocument.TYPE_PROVIDER;
-           }
-           //try demographic
-           searchNo = demographicData.getDemographicNoByIndivoId(loggedInInfo, myOscarUserName);
-           if (!searchNo.equals("")) {
-               oscarId = searchNo;
-               idType = PHRDocument.TYPE_DEMOGRAPHIC;
-           }
-       }
-       results.put("idType", idType);
-       results.put("oscarId", oscarId);
-       return results;
-   }
+        DemographicData demographicData = new DemographicData();
+        Hashtable results = new Hashtable();
+        String oscarId = "";
+        if (idType == PHRDocument.TYPE_PROVIDER) {
+            oscarId = ProviderMyOscarIdData.getProviderNo(myOscarUserName);
+            log.debug("OSCAR ID " + oscarId);
+        } else if (idType == PHRDocument.TYPE_DEMOGRAPHIC) {
+            oscarId = demographicData.getDemographicNoByIndivoId(loggedInInfo, myOscarUserName);
+        } else if (idType == PHRDocument.TYPE_NOT_SET) {
+            //try provider:
+            String searchNo = ProviderMyOscarIdData.getProviderNo(myOscarUserName);
+            if (!searchNo.equals("")) {
+                oscarId = searchNo;
+                idType = PHRDocument.TYPE_PROVIDER;
+            }
+            //try demographic
+            searchNo = demographicData.getDemographicNoByIndivoId(loggedInInfo, myOscarUserName);
+            if (!searchNo.equals("")) {
+                oscarId = searchNo;
+                idType = PHRDocument.TYPE_DEMOGRAPHIC;
+            }
+        }
+        results.put("idType", idType);
+        results.put("oscarId", oscarId);
+        return results;
+    }
 
 
     private int indivoRoleToOscarType(String role) {
@@ -378,16 +370,16 @@ public class PHRMessage  extends PHRDocument implements Serializable{
             return PHRDocument.TYPE_PROVIDER;
         else if (role.equalsIgnoreCase("patient"))
             return PHRDocument.TYPE_DEMOGRAPHIC;
-        log.warn("Unknown role: " +role);
+        log.warn("Unknown role: " + role);
         return -1;
-   }
+    }
 
-   public String getReferenceMessage(){
-       log.debug(" GET REF FROM PHRMESSAGE "+msg.getPriorThreadMessageId());
-      return msg.getPriorThreadMessageId();
-   }
+    public String getReferenceMessage() {
+        log.debug(" GET REF FROM PHRMESSAGE " + msg.getPriorThreadMessageId());
+        return msg.getPriorThreadMessageId();
+    }
 
-   private MessageContentType toTextMessageContent(String content) {
+    private MessageContentType toTextMessageContent(String content) {
         MessageContentType msgBod = new MessageContentType();
 
 
@@ -411,13 +403,12 @@ public class PHRMessage  extends PHRDocument implements Serializable{
     }
 
 
-
     private IndivoDocumentType getPhrMessageDocument(ProviderData sender, MessageType message) throws JAXBException, IndivoException {
         String providerFullName = sender.getFirst_name() + " " + sender.getLast_name();
         return getPhrMessageDocument(sender.getMyOscarId(), providerFullName, message);
     }
 
-    public static IndivoDocumentType getPhrMessageDocument(String phrId, String providerFullName,MessageType message) throws JAXBException, IndivoException {
+    public static IndivoDocumentType getPhrMessageDocument(String phrId, String providerFullName, MessageType message) throws JAXBException, IndivoException {
         JAXBContext messageContext = JAXBContext.newInstance(MessageType.class.getPackage().getName());
         JAXBContext documentContext = JAXBContext.newInstance(IndivoDocumentType.class.getPackage().getName());
 
@@ -434,12 +425,12 @@ public class PHRMessage  extends PHRDocument implements Serializable{
     private MessageType getPhrMessage(Long myOscarUserId, String priorThreadMessage, String subject, String messageBody, List<String> attachedDocumentIds) {
         MessageType message = new MessageType();
 // this code can't possibly be run, its using the wrong client
-        message.setRecipient(""+myOscarUserId);
+        message.setRecipient("" + myOscarUserId);
         message.setPriorThreadMessageId(priorThreadMessage);
         message.setSubject(subject);
         message.setMessageContent(toTextMessageContent(messageBody));
         message.setContentType(org.indivo.xml.phr.urns.ContentTypeQNames.TEXT);
-        for (String attachedDocumentId: attachedDocumentIds) {
+        for (String attachedDocumentId : attachedDocumentIds) {
             DocumentReferenceType reference = new DocumentReferenceType();
             reference.setDocumentIndex(attachedDocumentId);
             message.getReferencedIndivoDocuments().add(reference);

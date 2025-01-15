@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -55,13 +55,11 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn",
-    "chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown"
+        "cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn",
+        "chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown"
 })
 @XmlRootElement(name = "CQuestions_and_Answer_Key")
 public class CQuestionsAndAnswerKey {
@@ -73,11 +71,9 @@ public class CQuestionsAndAnswerKey {
 
     /**
      * Gets the value of the cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
-     *     
+     *
+     * @return possible object is
+     * {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
      */
     public CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn getCNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn() {
         return cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn;
@@ -85,11 +81,9 @@ public class CQuestionsAndAnswerKey {
 
     /**
      * Sets the value of the cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn }
      */
     public void setCNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn(CNEEDQ10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn value) {
         this.cneedq10NoProblem1NoModerateProblemDueToHelpGiven2SeriousProblem9NotKn = value;
@@ -97,11 +91,9 @@ public class CQuestionsAndAnswerKey {
 
     /**
      * Gets the value of the chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
-     *     
+     *
+     * @return possible object is
+     * {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
      */
     public CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown getCHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown() {
         return chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown;
@@ -109,11 +101,9 @@ public class CQuestionsAndAnswerKey {
 
     /**
      * Sets the value of the chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown }
      */
     public void setCHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown(CHELPQ2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown value) {
         this.chelpq2And3AB0None1LowHelp2ModerateHelp3HighHelp9Unknown = value;

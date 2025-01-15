@@ -24,118 +24,121 @@
 
 */
 angular.module("personaServices", [])
-	.service("personaService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/persona',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-	    
-		getDashboardMenu: function() {
-			var deferred = $q.defer();
-			$http({
-                url: this.apiPath+'/dashboardMenu',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting the dashboard menu from persona");
+    .service("personaService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/persona',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+
+            getDashboardMenu: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/dashboardMenu',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting the dashboard menu from persona");
                 });
-           return deferred.promise;
-		},
-        getNavBar: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/navbar',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting navbar from persona");
+                return deferred.promise;
+            },
+            getNavBar: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/navbar',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting navbar from persona");
                 });
-           return deferred.promise;
-        },
-        getPatientLists: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/patientLists',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting patient lists from persona");
+                return deferred.promise;
+            },
+            getPatientLists: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/patientLists',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting patient lists from persona");
                 });
-           return deferred.promise;
-        },
-        getPatientListConfig: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/patientList/config',
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting getPatientListConfig from persona");
+                return deferred.promise;
+            },
+            getPatientListConfig: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/patientList/config',
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting getPatientListConfig from persona");
                 });
-           return deferred.promise;
-        },
-        setPatientListConfig: function (patientListConfig) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/patientList/config',
-                method: "POST",
-                data: patientListConfig,
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while setting setPatientListConfig from persona");
+                return deferred.promise;
+            },
+            setPatientListConfig: function (patientListConfig) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/patientList/config',
+                    method: "POST",
+                    data: patientListConfig,
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while setting setPatientListConfig from persona");
                 });
-           return deferred.promise;
-        },
-        setCurrentProgram: function (programId) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath + '/setDefaultProgramInDomain?programId='+programId,
-                method: "GET",
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while setting current");
+                return deferred.promise;
+            },
+            setCurrentProgram: function (programId) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/setDefaultProgramInDomain?programId=' + programId,
+                    method: "GET",
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while setting current");
                 });
-           return deferred.promise;
-        },
-        getDashboardPreferences: function () {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/preferences',
-                method: "POST",
-                data: {type:'dashboard'},
-                headers: this.configHeaders,
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers) {
-                	deferred.reject("An error occured while getting preferences from persona");
+                return deferred.promise;
+            },
+            getDashboardPreferences: function () {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/preferences',
+                    method: "POST",
+                    data: {type: 'dashboard'},
+                    headers: this.configHeaders,
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers) {
+                    deferred.reject("An error occured while getting preferences from persona");
                 });
-           return deferred.promise;
-        },
-        updateDashboardPreferences: function (prefs) {
-        	var deferred = $q.defer();
-        	$http({
-                url: this.apiPath+'/updatePreferences',
-                method: "POST",
-                data: JSON.stringify(prefs),
-                headers: {'Content-Type': 'application/json'}
-              }).then(function(response){
-            	  deferred.resolve(response.data);
-                },function (data, status, headers, config) {
-                	deferred.reject("An error occured while updating preferences");
+                return deferred.promise;
+            },
+            updateDashboardPreferences: function (prefs) {
+                var deferred = $q.defer();
+                $http({
+                    url: this.apiPath + '/updatePreferences',
+                    method: "POST",
+                    data: JSON.stringify(prefs),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while updating preferences");
                 });
-           return deferred.promise;
-        }
-    };
-});
+                return deferred.promise;
+            }
+        };
+    });

@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -43,9 +43,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -113,68 +113,66 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cHeader",
-    "cReasonForAssessmentSelectOne",
-    "cDoctor",
-    "cPsychiatrist",
-    "cOtherContact",
-    "cOtherAgency",
-    "cServiceInformation",
-    "cGenderSelectOne",
-    "cMaritalStatusSelectOne",
-    "cClientCapacityStatusCheckAllThatApply",
-    "cWhoReferredYouToThisServiceSelectOne",
-    "cWhatCultureDoYouIdentifyWith",
-    "cAboriginalOriginSelectOne",
-    "cCitizenshipStatusSelectOne",
-    "cLengthOfTimeLivedInCanada",
-    "cCanYouTellMeAboutYourImmigrationExperience",
-    "cDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply",
-    "cExperienceOfDiscriminationCheckAllThatApply",
-    "cServiceRecipientPreferredLanguage",
-    "cLanguageOfServiceProvision",
-    "cDoYouHaveAnyLegalIssuesSelectOne",
-    "cLegalStatusCheckAllThatApply",
-    "cExitDispositionSelectOneIfApplicable",
-    "cComments",
-    "cQuestionsAndAnswerKey",
-    "c1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt",
-    "c2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS",
-    "c3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou",
-    "c4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy",
-    "c5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo",
-    "c6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical",
-    "c7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn",
-    "c8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed",
-    "c9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious",
-    "c10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself",
-    "c11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver",
-    "c12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink",
-    "c13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo",
-    "c14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem",
-    "c15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers",
-    "c16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar",
-    "c17SexualExpressionHowIsYourSexLife",
-    "c18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT",
-    "c19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder",
-    "c20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl",
-    "c21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse",
-    "c22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra",
-    "c23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills",
-    "c24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo",
-    "cWhatAreYourHopesForTheFuture",
-    "cWhatDoYouThinkYouNeedInOrderToGetThere",
-    "cHowDoYouViewYourMentalHealth",
-    "cIsSpiritualityAnImportantPartOfYourLife",
-    "cIsCultureAndImportantPartOfYourLife",
-    "cPresentingIssues",
-    "cSummaryOfActions",
-    "cSummaryOfReferrals"
+        "cHeader",
+        "cReasonForAssessmentSelectOne",
+        "cDoctor",
+        "cPsychiatrist",
+        "cOtherContact",
+        "cOtherAgency",
+        "cServiceInformation",
+        "cGenderSelectOne",
+        "cMaritalStatusSelectOne",
+        "cClientCapacityStatusCheckAllThatApply",
+        "cWhoReferredYouToThisServiceSelectOne",
+        "cWhatCultureDoYouIdentifyWith",
+        "cAboriginalOriginSelectOne",
+        "cCitizenshipStatusSelectOne",
+        "cLengthOfTimeLivedInCanada",
+        "cCanYouTellMeAboutYourImmigrationExperience",
+        "cDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply",
+        "cExperienceOfDiscriminationCheckAllThatApply",
+        "cServiceRecipientPreferredLanguage",
+        "cLanguageOfServiceProvision",
+        "cDoYouHaveAnyLegalIssuesSelectOne",
+        "cLegalStatusCheckAllThatApply",
+        "cExitDispositionSelectOneIfApplicable",
+        "cComments",
+        "cQuestionsAndAnswerKey",
+        "c1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt",
+        "c2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS",
+        "c3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou",
+        "c4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy",
+        "c5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo",
+        "c6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical",
+        "c7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn",
+        "c8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed",
+        "c9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious",
+        "c10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself",
+        "c11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver",
+        "c12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink",
+        "c13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo",
+        "c14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem",
+        "c15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers",
+        "c16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar",
+        "c17SexualExpressionHowIsYourSexLife",
+        "c18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT",
+        "c19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder",
+        "c20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl",
+        "c21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse",
+        "c22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra",
+        "c23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills",
+        "c24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo",
+        "cWhatAreYourHopesForTheFuture",
+        "cWhatDoYouThinkYouNeedInOrderToGetThere",
+        "cHowDoYouViewYourMentalHealth",
+        "cIsSpiritualityAnImportantPartOfYourLife",
+        "cIsCultureAndImportantPartOfYourLife",
+        "cPresentingIssues",
+        "cSummaryOfActions",
+        "cSummaryOfReferrals"
 })
 @XmlRootElement(name = "OCAN_Staff_Assessment")
 public class OCANStaffAssessment {
@@ -296,11 +294,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cHeader property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CHeader }
-     *     
+     *
+     * @return possible object is
+     * {@link CHeader }
      */
     public CHeader getCHeader() {
         return cHeader;
@@ -308,11 +304,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cHeader property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CHeader }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CHeader }
      */
     public void setCHeader(CHeader value) {
         this.cHeader = value;
@@ -320,11 +314,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cReasonForAssessmentSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CReasonForAssessmentSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CReasonForAssessmentSelectOne }
      */
     public CReasonForAssessmentSelectOne getCReasonForAssessmentSelectOne() {
         return cReasonForAssessmentSelectOne;
@@ -332,11 +324,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cReasonForAssessmentSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CReasonForAssessmentSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CReasonForAssessmentSelectOne }
      */
     public void setCReasonForAssessmentSelectOne(CReasonForAssessmentSelectOne value) {
         this.cReasonForAssessmentSelectOne = value;
@@ -344,11 +334,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cDoctor property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CDoctor }
-     *     
+     *
+     * @return possible object is
+     * {@link CDoctor }
      */
     public CDoctor getCDoctor() {
         return cDoctor;
@@ -356,11 +344,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cDoctor property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CDoctor }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CDoctor }
      */
     public void setCDoctor(CDoctor value) {
         this.cDoctor = value;
@@ -368,11 +354,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cPsychiatrist property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CPsychiatrist }
-     *     
+     *
+     * @return possible object is
+     * {@link CPsychiatrist }
      */
     public CPsychiatrist getCPsychiatrist() {
         return cPsychiatrist;
@@ -380,11 +364,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cPsychiatrist property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CPsychiatrist }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CPsychiatrist }
      */
     public void setCPsychiatrist(CPsychiatrist value) {
         this.cPsychiatrist = value;
@@ -392,25 +374,23 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cOtherContact property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the cOtherContact property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getCOtherContact().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link COtherContact }
-     * 
-     * 
      */
     public List<COtherContact> getCOtherContact() {
         if (cOtherContact == null) {
@@ -421,11 +401,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cOtherAgency property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link COtherAgency }
-     *     
+     *
+     * @return possible object is
+     * {@link COtherAgency }
      */
     public COtherAgency getCOtherAgency() {
         return cOtherAgency;
@@ -433,11 +411,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cOtherAgency property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link COtherAgency }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link COtherAgency }
      */
     public void setCOtherAgency(COtherAgency value) {
         this.cOtherAgency = value;
@@ -445,11 +421,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cServiceInformation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CServiceInformation }
-     *     
+     *
+     * @return possible object is
+     * {@link CServiceInformation }
      */
     public CServiceInformation getCServiceInformation() {
         return cServiceInformation;
@@ -457,11 +431,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cServiceInformation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CServiceInformation }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CServiceInformation }
      */
     public void setCServiceInformation(CServiceInformation value) {
         this.cServiceInformation = value;
@@ -469,11 +441,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cGenderSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CGenderSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CGenderSelectOne }
      */
     public CGenderSelectOne getCGenderSelectOne() {
         return cGenderSelectOne;
@@ -481,11 +451,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cGenderSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CGenderSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CGenderSelectOne }
      */
     public void setCGenderSelectOne(CGenderSelectOne value) {
         this.cGenderSelectOne = value;
@@ -493,11 +461,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cMaritalStatusSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CMaritalStatusSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CMaritalStatusSelectOne }
      */
     public CMaritalStatusSelectOne getCMaritalStatusSelectOne() {
         return cMaritalStatusSelectOne;
@@ -505,11 +471,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cMaritalStatusSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CMaritalStatusSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CMaritalStatusSelectOne }
      */
     public void setCMaritalStatusSelectOne(CMaritalStatusSelectOne value) {
         this.cMaritalStatusSelectOne = value;
@@ -517,11 +481,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cClientCapacityStatusCheckAllThatApply property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CClientCapacityStatusCheckAllThatApply }
-     *     
+     *
+     * @return possible object is
+     * {@link CClientCapacityStatusCheckAllThatApply }
      */
     public CClientCapacityStatusCheckAllThatApply getCClientCapacityStatusCheckAllThatApply() {
         return cClientCapacityStatusCheckAllThatApply;
@@ -529,11 +491,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cClientCapacityStatusCheckAllThatApply property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CClientCapacityStatusCheckAllThatApply }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CClientCapacityStatusCheckAllThatApply }
      */
     public void setCClientCapacityStatusCheckAllThatApply(CClientCapacityStatusCheckAllThatApply value) {
         this.cClientCapacityStatusCheckAllThatApply = value;
@@ -541,11 +501,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cWhoReferredYouToThisServiceSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CWhoReferredYouToThisServiceSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CWhoReferredYouToThisServiceSelectOne }
      */
     public CWhoReferredYouToThisServiceSelectOne getCWhoReferredYouToThisServiceSelectOne() {
         return cWhoReferredYouToThisServiceSelectOne;
@@ -553,11 +511,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cWhoReferredYouToThisServiceSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CWhoReferredYouToThisServiceSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CWhoReferredYouToThisServiceSelectOne }
      */
     public void setCWhoReferredYouToThisServiceSelectOne(CWhoReferredYouToThisServiceSelectOne value) {
         this.cWhoReferredYouToThisServiceSelectOne = value;
@@ -565,11 +521,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cWhatCultureDoYouIdentifyWith property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CWhatCultureDoYouIdentifyWith }
-     *     
+     *
+     * @return possible object is
+     * {@link CWhatCultureDoYouIdentifyWith }
      */
     public CWhatCultureDoYouIdentifyWith getCWhatCultureDoYouIdentifyWith() {
         return cWhatCultureDoYouIdentifyWith;
@@ -577,11 +531,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cWhatCultureDoYouIdentifyWith property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CWhatCultureDoYouIdentifyWith }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CWhatCultureDoYouIdentifyWith }
      */
     public void setCWhatCultureDoYouIdentifyWith(CWhatCultureDoYouIdentifyWith value) {
         this.cWhatCultureDoYouIdentifyWith = value;
@@ -589,11 +541,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cAboriginalOriginSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CAboriginalOriginSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CAboriginalOriginSelectOne }
      */
     public CAboriginalOriginSelectOne getCAboriginalOriginSelectOne() {
         return cAboriginalOriginSelectOne;
@@ -601,11 +551,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cAboriginalOriginSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CAboriginalOriginSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CAboriginalOriginSelectOne }
      */
     public void setCAboriginalOriginSelectOne(CAboriginalOriginSelectOne value) {
         this.cAboriginalOriginSelectOne = value;
@@ -613,11 +561,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cCitizenshipStatusSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CCitizenshipStatusSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CCitizenshipStatusSelectOne }
      */
     public CCitizenshipStatusSelectOne getCCitizenshipStatusSelectOne() {
         return cCitizenshipStatusSelectOne;
@@ -625,11 +571,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cCitizenshipStatusSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CCitizenshipStatusSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CCitizenshipStatusSelectOne }
      */
     public void setCCitizenshipStatusSelectOne(CCitizenshipStatusSelectOne value) {
         this.cCitizenshipStatusSelectOne = value;
@@ -637,11 +581,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cLengthOfTimeLivedInCanada property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CLengthOfTimeLivedInCanada }
-     *     
+     *
+     * @return possible object is
+     * {@link CLengthOfTimeLivedInCanada }
      */
     public CLengthOfTimeLivedInCanada getCLengthOfTimeLivedInCanada() {
         return cLengthOfTimeLivedInCanada;
@@ -649,11 +591,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cLengthOfTimeLivedInCanada property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CLengthOfTimeLivedInCanada }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CLengthOfTimeLivedInCanada }
      */
     public void setCLengthOfTimeLivedInCanada(CLengthOfTimeLivedInCanada value) {
         this.cLengthOfTimeLivedInCanada = value;
@@ -661,11 +601,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cCanYouTellMeAboutYourImmigrationExperience property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CCanYouTellMeAboutYourImmigrationExperience }
-     *     
+     *
+     * @return possible object is
+     * {@link CCanYouTellMeAboutYourImmigrationExperience }
      */
     public CCanYouTellMeAboutYourImmigrationExperience getCCanYouTellMeAboutYourImmigrationExperience() {
         return cCanYouTellMeAboutYourImmigrationExperience;
@@ -673,11 +611,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cCanYouTellMeAboutYourImmigrationExperience property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CCanYouTellMeAboutYourImmigrationExperience }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CCanYouTellMeAboutYourImmigrationExperience }
      */
     public void setCCanYouTellMeAboutYourImmigrationExperience(CCanYouTellMeAboutYourImmigrationExperience value) {
         this.cCanYouTellMeAboutYourImmigrationExperience = value;
@@ -685,11 +621,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply }
-     *     
+     *
+     * @return possible object is
+     * {@link CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply }
      */
     public CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply getCDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply() {
         return cDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply;
@@ -697,11 +631,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply }
      */
     public void setCDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply(CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply value) {
         this.cDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply = value;
@@ -709,11 +641,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cExperienceOfDiscriminationCheckAllThatApply property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CExperienceOfDiscriminationCheckAllThatApply }
-     *     
+     *
+     * @return possible object is
+     * {@link CExperienceOfDiscriminationCheckAllThatApply }
      */
     public CExperienceOfDiscriminationCheckAllThatApply getCExperienceOfDiscriminationCheckAllThatApply() {
         return cExperienceOfDiscriminationCheckAllThatApply;
@@ -721,11 +651,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cExperienceOfDiscriminationCheckAllThatApply property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CExperienceOfDiscriminationCheckAllThatApply }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CExperienceOfDiscriminationCheckAllThatApply }
      */
     public void setCExperienceOfDiscriminationCheckAllThatApply(CExperienceOfDiscriminationCheckAllThatApply value) {
         this.cExperienceOfDiscriminationCheckAllThatApply = value;
@@ -733,11 +661,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cServiceRecipientPreferredLanguage property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CServiceRecipientPreferredLanguage }
-     *     
+     *
+     * @return possible object is
+     * {@link CServiceRecipientPreferredLanguage }
      */
     public CServiceRecipientPreferredLanguage getCServiceRecipientPreferredLanguage() {
         return cServiceRecipientPreferredLanguage;
@@ -745,11 +671,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cServiceRecipientPreferredLanguage property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CServiceRecipientPreferredLanguage }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CServiceRecipientPreferredLanguage }
      */
     public void setCServiceRecipientPreferredLanguage(CServiceRecipientPreferredLanguage value) {
         this.cServiceRecipientPreferredLanguage = value;
@@ -757,11 +681,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cLanguageOfServiceProvision property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CLanguageOfServiceProvision }
-     *     
+     *
+     * @return possible object is
+     * {@link CLanguageOfServiceProvision }
      */
     public CLanguageOfServiceProvision getCLanguageOfServiceProvision() {
         return cLanguageOfServiceProvision;
@@ -769,11 +691,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cLanguageOfServiceProvision property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CLanguageOfServiceProvision }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CLanguageOfServiceProvision }
      */
     public void setCLanguageOfServiceProvision(CLanguageOfServiceProvision value) {
         this.cLanguageOfServiceProvision = value;
@@ -781,11 +701,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cDoYouHaveAnyLegalIssuesSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CDoYouHaveAnyLegalIssuesSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CDoYouHaveAnyLegalIssuesSelectOne }
      */
     public CDoYouHaveAnyLegalIssuesSelectOne getCDoYouHaveAnyLegalIssuesSelectOne() {
         return cDoYouHaveAnyLegalIssuesSelectOne;
@@ -793,11 +711,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cDoYouHaveAnyLegalIssuesSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CDoYouHaveAnyLegalIssuesSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CDoYouHaveAnyLegalIssuesSelectOne }
      */
     public void setCDoYouHaveAnyLegalIssuesSelectOne(CDoYouHaveAnyLegalIssuesSelectOne value) {
         this.cDoYouHaveAnyLegalIssuesSelectOne = value;
@@ -805,11 +721,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cLegalStatusCheckAllThatApply property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CLegalStatusCheckAllThatApply }
-     *     
+     *
+     * @return possible object is
+     * {@link CLegalStatusCheckAllThatApply }
      */
     public CLegalStatusCheckAllThatApply getCLegalStatusCheckAllThatApply() {
         return cLegalStatusCheckAllThatApply;
@@ -817,11 +731,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cLegalStatusCheckAllThatApply property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CLegalStatusCheckAllThatApply }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CLegalStatusCheckAllThatApply }
      */
     public void setCLegalStatusCheckAllThatApply(CLegalStatusCheckAllThatApply value) {
         this.cLegalStatusCheckAllThatApply = value;
@@ -829,11 +741,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cExitDispositionSelectOneIfApplicable property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CExitDispositionSelectOneIfApplicable }
-     *     
+     *
+     * @return possible object is
+     * {@link CExitDispositionSelectOneIfApplicable }
      */
     public CExitDispositionSelectOneIfApplicable getCExitDispositionSelectOneIfApplicable() {
         return cExitDispositionSelectOneIfApplicable;
@@ -841,11 +751,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cExitDispositionSelectOneIfApplicable property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CExitDispositionSelectOneIfApplicable }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CExitDispositionSelectOneIfApplicable }
      */
     public void setCExitDispositionSelectOneIfApplicable(CExitDispositionSelectOneIfApplicable value) {
         this.cExitDispositionSelectOneIfApplicable = value;
@@ -853,11 +761,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cComments property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CComments }
-     *     
+     *
+     * @return possible object is
+     * {@link CComments }
      */
     public CComments getCComments() {
         return cComments;
@@ -865,11 +771,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cComments property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CComments }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CComments }
      */
     public void setCComments(CComments value) {
         this.cComments = value;
@@ -877,11 +781,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cQuestionsAndAnswerKey property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CQuestionsAndAnswerKey }
-     *     
+     *
+     * @return possible object is
+     * {@link CQuestionsAndAnswerKey }
      */
     public CQuestionsAndAnswerKey getCQuestionsAndAnswerKey() {
         return cQuestionsAndAnswerKey;
@@ -889,11 +791,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cQuestionsAndAnswerKey property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CQuestionsAndAnswerKey }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CQuestionsAndAnswerKey }
      */
     public void setCQuestionsAndAnswerKey(CQuestionsAndAnswerKey value) {
         this.cQuestionsAndAnswerKey = value;
@@ -901,11 +801,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt }
-     *     
+     *
+     * @return possible object is
+     * {@link C1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt }
      */
     public C1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt getC1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt() {
         return c1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt;
@@ -913,11 +811,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt }
      */
     public void setC1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt(C1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt value) {
         this.c1AccommodationWhatKindOfPlaceDoYouLiveInWhatSortOfPlaceIsIt = value;
@@ -925,11 +821,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS }
-     *     
+     *
+     * @return possible object is
+     * {@link C2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS }
      */
     public C2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS getC2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS() {
         return c2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS;
@@ -937,11 +831,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS }
      */
     public void setC2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS(C2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS value) {
         this.c2FoodWhatKindOfFoodFoYouEatAreYouAbleToPrepareYourOwnMealsAndDoYourOwnS = value;
@@ -949,11 +841,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou }
-     *     
+     *
+     * @return possible object is
+     * {@link C3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou }
      */
     public C3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou getC3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou() {
         return c3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou;
@@ -961,11 +851,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou }
      */
     public void setC3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou(C3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou value) {
         this.c3LookingAfterTheHomeAreYouAbleToLookAfterYourHomeDoesAnyoneHelpYou = value;
@@ -973,11 +861,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy }
-     *     
+     *
+     * @return possible object is
+     * {@link C4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy }
      */
     public C4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy getC4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy() {
         return c4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy;
@@ -985,11 +871,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy }
      */
     public void setC4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy(C4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy value) {
         this.c4SelfCareDoYouHaveProblemsKeepingCleanAndTidyDoYouEverNeedRemindingWhoBy = value;
@@ -997,11 +881,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo }
-     *     
+     *
+     * @return possible object is
+     * {@link C5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo }
      */
     public C5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo getC5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo() {
         return c5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo;
@@ -1009,11 +891,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo }
      */
     public void setC5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo(C5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo value) {
         this.c5DaytimeActivitiesHowDoYouSpendYourDayDoYouHaveEnoughToDo = value;
@@ -1021,11 +901,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical }
-     *     
+     *
+     * @return possible object is
+     * {@link C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical }
      */
     public C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical getC6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical() {
         return c6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical;
@@ -1033,11 +911,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical }
      */
     public void setC6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical(C6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical value) {
         this.c6PhysicalHealthHowWellDoYouFeelPhysicallyAreYouGettingAnyTreatmentForPhysical = value;
@@ -1045,11 +921,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn }
-     *     
+     *
+     * @return possible object is
+     * {@link C7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn }
      */
     public C7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn getC7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn() {
         return c7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn;
@@ -1057,11 +931,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn }
      */
     public void setC7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn(C7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn value) {
         this.c7PsychoticSymptomsDoYouEverHearVoicesOrHaveProblemsWithYourThoughtsAreYouOn = value;
@@ -1069,11 +941,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed }
-     *     
+     *
+     * @return possible object is
+     * {@link C8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed }
      */
     public C8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed getC8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed() {
         return c8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed;
@@ -1081,11 +951,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed }
      */
     public void setC8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed(C8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed value) {
         this.c8InformationOnConditionAndTreatmentHaveYouBeenGivenClearInformationAboutYourMed = value;
@@ -1093,11 +961,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious }
-     *     
+     *
+     * @return possible object is
+     * {@link C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious }
      */
     public C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious getC9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious() {
         return c9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious;
@@ -1105,11 +971,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious }
      */
     public void setC9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious(C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious value) {
         this.c9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLowHaveYouFeltOverlyAnxious = value;
@@ -1117,11 +981,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself }
-     *     
+     *
+     * @return possible object is
+     * {@link C10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself }
      */
     public C10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself getC10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself() {
         return c10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself;
@@ -1129,11 +991,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself }
      */
     public void setC10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself(C10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself value) {
         this.c10SafetyToSelfDoYouEverHaveThoughtsOfHarmingYourselfOrActuallyHarmingYourself = value;
@@ -1141,11 +1001,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver }
-     *     
+     *
+     * @return possible object is
+     * {@link C11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver }
      */
     public C11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver getC11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver() {
         return c11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver;
@@ -1153,11 +1011,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver }
      */
     public void setC11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver(C11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver value) {
         this.c11SafetyToOthersDoYouThinkYouCouldBeADangerToOtherPeopleSSafetyDoYouEver = value;
@@ -1165,11 +1021,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink }
-     *     
+     *
+     * @return possible object is
+     * {@link C12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink }
      */
     public C12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink getC12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink() {
         return c12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink;
@@ -1177,11 +1031,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink }
      */
     public void setC12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink(C12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink value) {
         this.c12AlcoholDoesDrinkingCauseYouAnyProblemsDoYouWishYouCouldCutDownOnYourDrink = value;
@@ -1189,11 +1041,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo }
-     *     
+     *
+     * @return possible object is
+     * {@link C13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo }
      */
     public C13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo getC13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo() {
         return c13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo;
@@ -1201,11 +1051,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo }
      */
     public void setC13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo(C13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo value) {
         this.c13DrugsDoYouTakeDrugsThatArenTPrescribedAreThereAnyDrugsYouWouldFindHardTo = value;
@@ -1213,11 +1061,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem }
-     *     
+     *
+     * @return possible object is
+     * {@link C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem }
      */
     public C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem getC14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem() {
         return c14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem;
@@ -1225,11 +1071,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem }
      */
     public void setC14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem(C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem value) {
         this.c14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem = value;
@@ -1237,11 +1081,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers }
-     *     
+     *
+     * @return possible object is
+     * {@link C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers }
      */
     public C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers getC15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers() {
         return c15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers;
@@ -1249,11 +1091,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers }
      */
     public void setC15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers(C15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers value) {
         this.c15CompanyAreYouHappyWithYourSocialLifeDoYouWishYouHadMoreContactWithOthers = value;
@@ -1261,11 +1101,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar }
-     *     
+     *
+     * @return possible object is
+     * {@link C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar }
      */
     public C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar getC16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar() {
         return c16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar;
@@ -1273,11 +1111,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar }
      */
     public void setC16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar(C16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar value) {
         this.c16IntimateRelationshipsDoYouHaveAPartnerDoYouHaveProblemsInYourPartnershipMar = value;
@@ -1285,11 +1121,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c17SexualExpressionHowIsYourSexLife property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C17SexualExpressionHowIsYourSexLife }
-     *     
+     *
+     * @return possible object is
+     * {@link C17SexualExpressionHowIsYourSexLife }
      */
     public C17SexualExpressionHowIsYourSexLife getC17SexualExpressionHowIsYourSexLife() {
         return c17SexualExpressionHowIsYourSexLife;
@@ -1297,11 +1131,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c17SexualExpressionHowIsYourSexLife property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C17SexualExpressionHowIsYourSexLife }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C17SexualExpressionHowIsYourSexLife }
      */
     public void setC17SexualExpressionHowIsYourSexLife(C17SexualExpressionHowIsYourSexLife value) {
         this.c17SexualExpressionHowIsYourSexLife = value;
@@ -1309,11 +1141,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT }
-     *     
+     *
+     * @return possible object is
+     * {@link C18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT }
      */
     public C18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT getC18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT() {
         return c18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT;
@@ -1321,11 +1151,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT }
      */
     public void setC18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT(C18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT value) {
         this.c18ChildCareDoYouHaveAnyChildrenUnder18DoYouHaveAnyDifficultInLookingAfterT = value;
@@ -1333,11 +1161,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder }
-     *     
+     *
+     * @return possible object is
+     * {@link C19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder }
      */
     public C19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder getC19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder() {
         return c19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder;
@@ -1345,11 +1171,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder }
      */
     public void setC19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder(C19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder value) {
         this.c19OtherDependentsDoYouHaveAnyDependentsOtherThanChildrenUnder18SuchAsAnElder = value;
@@ -1357,11 +1181,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl }
-     *     
+     *
+     * @return possible object is
+     * {@link C20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl }
      */
     public C20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl getC20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl() {
         return c20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl;
@@ -1369,11 +1191,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl }
      */
     public void setC20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl(C20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl value) {
         this.c20BasicEducationDoYouHaveDifficultyInReadingWritingSpeakingOrUnderstandingEngl = value;
@@ -1381,11 +1201,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse }
-     *     
+     *
+     * @return possible object is
+     * {@link C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse }
      */
     public C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse getC21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse() {
         return c21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse;
@@ -1393,11 +1211,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse }
      */
     public void setC21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse(C21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse value) {
         this.c21TelephoneDoYouKnowHowToUseATelephoneIsItEasyToFindOneThatYouCanUse = value;
@@ -1405,11 +1221,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra }
-     *     
+     *
+     * @return possible object is
+     * {@link C22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra }
      */
     public C22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra getC22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra() {
         return c22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra;
@@ -1417,11 +1231,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra }
      */
     public void setC22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra(C22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra value) {
         this.c22TransportDoYouHaveAccessToTransportationDoYouHaveAccessToOtherAffordableTra = value;
@@ -1429,11 +1241,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills }
-     *     
+     *
+     * @return possible object is
+     * {@link C23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills }
      */
     public C23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills getC23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills() {
         return c23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills;
@@ -1441,11 +1251,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills }
      */
     public void setC23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills(C23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills value) {
         this.c23MoneyHowDoYouFindBudgetingYourMoneyDoYouManageToPayYourBills = value;
@@ -1453,11 +1261,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the c24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo }
-     *     
+     *
+     * @return possible object is
+     * {@link C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo }
      */
     public C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo getC24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo() {
         return c24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo;
@@ -1465,11 +1271,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the c24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo }
      */
     public void setC24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo(C24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo value) {
         this.c24BenefitsAreYouSureThatYouAreGettingAllTheMoneyThatYouAreEntitledTo = value;
@@ -1477,11 +1281,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cWhatAreYourHopesForTheFuture property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CWhatAreYourHopesForTheFuture }
-     *     
+     *
+     * @return possible object is
+     * {@link CWhatAreYourHopesForTheFuture }
      */
     public CWhatAreYourHopesForTheFuture getCWhatAreYourHopesForTheFuture() {
         return cWhatAreYourHopesForTheFuture;
@@ -1489,11 +1291,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cWhatAreYourHopesForTheFuture property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CWhatAreYourHopesForTheFuture }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CWhatAreYourHopesForTheFuture }
      */
     public void setCWhatAreYourHopesForTheFuture(CWhatAreYourHopesForTheFuture value) {
         this.cWhatAreYourHopesForTheFuture = value;
@@ -1501,11 +1301,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cWhatDoYouThinkYouNeedInOrderToGetThere property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CWhatDoYouThinkYouNeedInOrderToGetThere }
-     *     
+     *
+     * @return possible object is
+     * {@link CWhatDoYouThinkYouNeedInOrderToGetThere }
      */
     public CWhatDoYouThinkYouNeedInOrderToGetThere getCWhatDoYouThinkYouNeedInOrderToGetThere() {
         return cWhatDoYouThinkYouNeedInOrderToGetThere;
@@ -1513,11 +1311,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cWhatDoYouThinkYouNeedInOrderToGetThere property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CWhatDoYouThinkYouNeedInOrderToGetThere }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CWhatDoYouThinkYouNeedInOrderToGetThere }
      */
     public void setCWhatDoYouThinkYouNeedInOrderToGetThere(CWhatDoYouThinkYouNeedInOrderToGetThere value) {
         this.cWhatDoYouThinkYouNeedInOrderToGetThere = value;
@@ -1525,11 +1321,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cHowDoYouViewYourMentalHealth property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CHowDoYouViewYourMentalHealth }
-     *     
+     *
+     * @return possible object is
+     * {@link CHowDoYouViewYourMentalHealth }
      */
     public CHowDoYouViewYourMentalHealth getCHowDoYouViewYourMentalHealth() {
         return cHowDoYouViewYourMentalHealth;
@@ -1537,11 +1331,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cHowDoYouViewYourMentalHealth property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CHowDoYouViewYourMentalHealth }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CHowDoYouViewYourMentalHealth }
      */
     public void setCHowDoYouViewYourMentalHealth(CHowDoYouViewYourMentalHealth value) {
         this.cHowDoYouViewYourMentalHealth = value;
@@ -1549,11 +1341,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cIsSpiritualityAnImportantPartOfYourLife property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CIsSpiritualityAnImportantPartOfYourLife }
-     *     
+     *
+     * @return possible object is
+     * {@link CIsSpiritualityAnImportantPartOfYourLife }
      */
     public CIsSpiritualityAnImportantPartOfYourLife getCIsSpiritualityAnImportantPartOfYourLife() {
         return cIsSpiritualityAnImportantPartOfYourLife;
@@ -1561,11 +1351,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cIsSpiritualityAnImportantPartOfYourLife property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CIsSpiritualityAnImportantPartOfYourLife }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CIsSpiritualityAnImportantPartOfYourLife }
      */
     public void setCIsSpiritualityAnImportantPartOfYourLife(CIsSpiritualityAnImportantPartOfYourLife value) {
         this.cIsSpiritualityAnImportantPartOfYourLife = value;
@@ -1573,11 +1361,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cIsCultureAndImportantPartOfYourLife property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CIsCultureAndImportantPartOfYourLife }
-     *     
+     *
+     * @return possible object is
+     * {@link CIsCultureAndImportantPartOfYourLife }
      */
     public CIsCultureAndImportantPartOfYourLife getCIsCultureAndImportantPartOfYourLife() {
         return cIsCultureAndImportantPartOfYourLife;
@@ -1585,11 +1371,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cIsCultureAndImportantPartOfYourLife property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CIsCultureAndImportantPartOfYourLife }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CIsCultureAndImportantPartOfYourLife }
      */
     public void setCIsCultureAndImportantPartOfYourLife(CIsCultureAndImportantPartOfYourLife value) {
         this.cIsCultureAndImportantPartOfYourLife = value;
@@ -1597,11 +1381,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cPresentingIssues property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CPresentingIssues }
-     *     
+     *
+     * @return possible object is
+     * {@link CPresentingIssues }
      */
     public CPresentingIssues getCPresentingIssues() {
         return cPresentingIssues;
@@ -1609,11 +1391,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cPresentingIssues property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CPresentingIssues }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CPresentingIssues }
      */
     public void setCPresentingIssues(CPresentingIssues value) {
         this.cPresentingIssues = value;
@@ -1621,11 +1401,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cSummaryOfActions property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CSummaryOfActions }
-     *     
+     *
+     * @return possible object is
+     * {@link CSummaryOfActions }
      */
     public CSummaryOfActions getCSummaryOfActions() {
         return cSummaryOfActions;
@@ -1633,11 +1411,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cSummaryOfActions property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CSummaryOfActions }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CSummaryOfActions }
      */
     public void setCSummaryOfActions(CSummaryOfActions value) {
         this.cSummaryOfActions = value;
@@ -1645,11 +1421,9 @@ public class OCANStaffAssessment {
 
     /**
      * Gets the value of the cSummaryOfReferrals property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CSummaryOfReferrals }
-     *     
+     *
+     * @return possible object is
+     * {@link CSummaryOfReferrals }
      */
     public CSummaryOfReferrals getCSummaryOfReferrals() {
         return cSummaryOfReferrals;
@@ -1657,11 +1431,9 @@ public class OCANStaffAssessment {
 
     /**
      * Sets the value of the cSummaryOfReferrals property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CSummaryOfReferrals }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CSummaryOfReferrals }
      */
     public void setCSummaryOfReferrals(CSummaryOfReferrals value) {
         this.cSummaryOfReferrals = value;

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,12 +39,12 @@ import ca.uhn.hl7v2.parser.ModelClassFactory;
 
 /**
  * ZDS custom segment
- *
+ * <p>
  * Note that custom segments extend from {@link AbstractSegment}
  */
 public class ZDS extends AbstractSegment {
 
-	Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
     /**
      * Adding a serial UID is always a good idea, but optional
@@ -65,10 +66,10 @@ public class ZDS extends AbstractSegment {
 
         // ZDS-2 - Provider
         this.add(CN.class, false, 1, 60, new Object[]{message}, "Provider");
-        
+
         // ZDS-3 - Action Date and Time
         this.add(TS.class, false, 1, 60, new Object[]{message}, "Action Date and Time");
-        
+
         // ZDS-4 - Action Status
         this.add(SI.class, false, 1, 12, new Object[]{message}, "Action Status");
 
@@ -95,32 +96,32 @@ public class ZDS extends AbstractSegment {
     public CN getProvider() throws HL7Exception {
         return (CN) super.getField(2, 0); // 1=field num(numbered from 1) 0=repetition(numbered from 0)
     }
-    
+
     /**
      * Create an accessor for each field
      */
     public TS getDateAndTime() throws HL7Exception {
         return (TS) super.getField(3, 0); // 1=field num(numbered from 1) 0=repetition(numbered from 0)
     }
-    
+
     /**
      * Create an accessor for each field
      */
     public SI getActionStatus() throws HL7Exception {
         return (SI) super.getField(4, 0); // 1=field num(numbered from 1) 0=repetition(numbered from 0)
     }
-    
+
     public String toString() {
-		String text = "";
-		try {
-			text += super.getField(1, 0).encode() + " | ";
-			text += super.getField(2, 0).encode() + " | ";
-			text += super.getField(3, 0).encode() + " | ";
-			text += super.getField(4, 0).encode() + " | ";
-		} catch (Exception e) {
-			logger.error("Error converting ZDS segment to string: " + e.toString());
-		}
-		return text;
-	}
+        String text = "";
+        try {
+            text += super.getField(1, 0).encode() + " | ";
+            text += super.getField(2, 0).encode() + " | ";
+            text += super.getField(3, 0).encode() + " | ";
+            text += super.getField(4, 0).encode() + " | ";
+        } catch (Exception e) {
+            logger.error("Error converting ZDS segment to string: " + e.toString());
+        }
+        return text;
+    }
 
 }

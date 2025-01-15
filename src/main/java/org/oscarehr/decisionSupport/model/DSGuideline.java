@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -52,48 +53,47 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
 /**
- *
  * @author apavel
  */
 @Entity
-@Table(name="dsGuidelines")
-@DiscriminatorColumn(name="engine", discriminatorType=DiscriminatorType.STRING,length=60)
+@Table(name = "dsGuidelines")
+@DiscriminatorColumn(name = "engine", discriminatorType = DiscriminatorType.STRING, length = 60)
 public abstract class DSGuideline extends AbstractModel<Integer> {
-   
+
     private static Logger _log = MiscUtils.getLogger();
-    
+
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
-    
-    @Column(length=60,nullable=false)
+
+    @Column(length = 60, nullable = false)
     protected String uuid;
-    
-    @Column(length=100,nullable=false)
+
+    @Column(length = 100, nullable = false)
     protected String title;
-    
-    @Column(nullable=true)
+
+    @Column(nullable = true)
     protected Integer version;
-    
-    @Column(length=60,nullable=false)
+
+    @Column(length = 60, nullable = false)
     protected String author;
-    
+
     @Lob
-    @Column(nullable=true)
+    @Column(nullable = true)
     protected String xml;
-    
-    @Column(length=60,nullable=false)
+
+    @Column(length = 60, nullable = false)
     protected String source;
-    
-    @Column(nullable=true)
+
+    @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date dateStart;
-    
-    @Column(nullable=true)
+
+    @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date dateDecomissioned;
-    
-    @Column(nullable=true)
+
+    @Column(nullable = true)
     protected char status = 'A';
 
 
@@ -137,8 +137,8 @@ public abstract class DSGuideline extends AbstractModel<Integer> {
     public abstract List<DSConsequence> evaluate(LoggedInInfo loggedInInfo, String demographicNo) throws DecisionSupportException;
 
     public abstract List<DSConsequence> evaluate(LoggedInInfo loggedInInfo, String demographicNo, String providerNo) throws DecisionSupportException;
-    
-    public abstract List<DSConsequence> evaluate(LoggedInInfo loggedInInfo, String demographicNo, String providerNo, List<Object>dynamicArgs) throws DecisionSupportException;
+
+    public abstract List<DSConsequence> evaluate(LoggedInInfo loggedInInfo, String demographicNo, String providerNo, List<Object> dynamicArgs) throws DecisionSupportException;
 
     public boolean evaluateBoolean(LoggedInInfo loggedInInfo, String demographicNo) throws DecisionSupportException {
         if (evaluate(loggedInInfo, demographicNo) == null) return false;

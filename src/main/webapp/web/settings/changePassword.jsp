@@ -25,12 +25,12 @@
 --%>
 <div class="modal-header">
     <h4>Change Password</h4>
-</div>  
+</div>
 <div class="modal-body">
-   	<form>
-	</form>
-	
-	
+    <form>
+    </form>
+
+
 </div>
 <div class="modal-footer">
     <button class="btn" ng-click="changePassword()">Change Password</button>

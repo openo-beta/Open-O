@@ -24,19 +24,19 @@
 
 --%>
 <%
-  if(session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
-<%@page contentType="text/xml"%>
+<%@page contentType="text/xml" %>
 <%@page
-	import="oscar.oscarEncounter.oscarMeasurements.bean.*,oscar.oscarEncounter.oscarMeasurements.data.*"%>
+        import="oscar.oscarEncounter.oscarMeasurements.bean.*,oscar.oscarEncounter.oscarMeasurements.data.*" %>
 <%
-   String mstring = request.getParameter("mType");
-   String export ="<ERROR>";
-   if (mstring != null){
-       EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
-       EctMeasurementTypesBean measurementTypesBean = mType.getMeasurementType(mstring);
+    String mstring = request.getParameter("mType");
+    String export = "<ERROR>";
+    if (mstring != null) {
+        EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
+        EctMeasurementTypesBean measurementTypesBean = mType.getMeasurementType(mstring);
 
-       ExportMeasurementType emt = new ExportMeasurementType();
-       export = emt.export(measurementTypesBean);
-   }
+        ExportMeasurementType emt = new ExportMeasurementType();
+        export = emt.export(measurementTypesBean);
+    }
 %><%=export%>

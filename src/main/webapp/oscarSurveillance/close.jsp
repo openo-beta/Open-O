@@ -24,19 +24,18 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<script language=javascript>
-        window.close();
+
+<html>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <script language=javascript>
+            window.close();
         </script>
-</head>
-<body>
-<bean:message key="oscarEncounter.close.msgClick1" />
-<a href="javascript:window.close();"><bean:message
-	key="oscarEncounter.close.btnHere" /></a>
-</body>
-</html:html>
+    </head>
+    <body>
+    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.close.msgClick1"/>
+    <a href="javascript:window.close();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.close.btnHere"/></a>
+    </body>
+</html>

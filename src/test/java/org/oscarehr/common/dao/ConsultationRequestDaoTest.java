@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,49 +39,48 @@ import oscar.util.ConversionUtils;
 
 public class ConsultationRequestDaoTest extends DaoTestFixtures {
 
-	protected ConsultationRequestDao dao = SpringUtils.getBean(ConsultationRequestDao.class);
+    protected ConsultationRequestDao dao = SpringUtils.getBean(ConsultationRequestDao.class);
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("consultationRequests","professionalSpecialists","consultationServices", "demographic", "lst_gender", "admission", "demographic_merged", "program", 
-				"health_safety", "provider", "providersite", "site", "program_team","log", "Facility","DemographicContact","LookupListItem","demographicExt");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("consultationRequests", "professionalSpecialists", "consultationServices", "demographic", "lst_gender", "admission", "demographic_merged", "program",
+                "health_safety", "provider", "providersite", "site", "program_team", "log", "Facility", "DemographicContact", "LookupListItem", "demographicExt");
+    }
 
-	@Test
-	public void testGetReferrals() {
-		Date past = ConversionUtils.fromDateString("1799-06-06");
-		ConsultationRequest cr = new ConsultationRequest();
-		cr.setProviderNo("0");
-		cr.setReferralDate(past);
-		dao.persist(cr);
-		
-		cr = new ConsultationRequest();
-		cr.setProviderNo("0");
-		cr.setReferralDate(ConversionUtils.fromDateString("1891-05-15"));
-		dao.persist(cr);
-		
-		
+    @Test
+    public void testGetReferrals() {
+        Date past = ConversionUtils.fromDateString("1799-06-06");
+        ConsultationRequest cr = new ConsultationRequest();
+        cr.setProviderNo("0");
+        cr.setReferralDate(past);
+        dao.persist(cr);
 
-		// should include both - cutoff is in the future
-		List<ConsultationRequest> crs = dao.getReferrals("1", new Date());
-		assertNotNull(crs);
-		assertTrue(crs.isEmpty());
+        cr = new ConsultationRequest();
+        cr.setProviderNo("0");
+        cr.setReferralDate(ConversionUtils.fromDateString("1891-05-15"));
+        dao.persist(cr);
 
-		// should include both - cutoff is in the future
-		crs = dao.getReferrals("0", new Date());
-		assertNotNull(crs);
-		assertTrue(crs.size() == 2);
 
-		// should include only one - current referral should not be included
-		crs = dao.getReferrals("0", ConversionUtils.fromDateString("1800-01-01"));
+        // should include both - cutoff is in the future
+        List<ConsultationRequest> crs = dao.getReferrals("1", new Date());
+        assertNotNull(crs);
+        assertTrue(crs.isEmpty());
 
-		assertNotNull(crs);
-		assertTrue(crs.size() == 1);
-	}
+        // should include both - cutoff is in the future
+        crs = dao.getReferrals("0", new Date());
+        assertNotNull(crs);
+        assertTrue(crs.size() == 2);
+
+        // should include only one - current referral should not be included
+        crs = dao.getReferrals("0", ConversionUtils.fromDateString("1800-01-01"));
+
+        assertNotNull(crs);
+        assertTrue(crs.size() == 1);
+    }
 
     @Test
     public void testFindRequestsByDemoNo() {
-	    assertNotNull(dao.findRequestsByDemoNo(100, new Date()));
+        assertNotNull(dao.findRequestsByDemoNo(100, new Date()));
     }
-	
+
 }

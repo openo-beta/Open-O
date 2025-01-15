@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,65 +40,66 @@ import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandle
 import oscar.oscarMDS.data.ProviderData;
 
 /**
- *
  * @author Jay
  */
 public class ReportEvaluator {
 
-    /** Creates a new instance of ReportEvaluator */
+    /**
+     * Creates a new instance of ReportEvaluator
+     */
     int denominatorCount = 0;
     int numeratorCount = 0;
     Denominator denominator = null;
     Numerator numerator = null;
     Numerator numerator2 = null;
     Numerator[] numerators = new Numerator[11];
-    
-    private ArrayList<Hashtable<String,Object>> reportResultList = null;
+
+    private ArrayList<Hashtable<String, Object>> reportResultList = null;
 
 
     public ReportEvaluator() {
     }
 
-    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer){
-        evaluate(loggedInInfo, deno,numer,null,null,true);
-    }
-    
-    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer, Numerator[] numer2){
-        evaluate(loggedInInfo, deno,numer,numer2,null,true);
-    }
-    
-    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer,List<KeyValue> additionalFields){
-    	evaluate(loggedInInfo,deno,numer,null,additionalFields,true);
+    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer) {
+        evaluate(loggedInInfo, deno, numer, null, null, true);
     }
 
-    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer, Numerator[] numers,List<KeyValue> additionalFields, boolean includeFalseResults){
+    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer, Numerator[] numer2) {
+        evaluate(loggedInInfo, deno, numer, numer2, null, true);
+    }
+
+    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer, List<KeyValue> additionalFields) {
+        evaluate(loggedInInfo, deno, numer, null, additionalFields, true);
+    }
+
+    public void evaluate(LoggedInInfo loggedInInfo, Denominator deno, Numerator numer, Numerator[] numers, List<KeyValue> additionalFields, boolean includeFalseResults) {
         denominator = deno;
         numerator = numer;
         this.numerators = numers;
         List demoList = deno.getDenominatorList();
         denominatorCount = demoList.size();
-        setReportResultList(new ArrayList<Hashtable<String,Object>>());
-        for (int i = 0; i < demoList.size(); i++){
+        setReportResultList(new ArrayList<Hashtable<String, Object>>());
+        for (int i = 0; i < demoList.size(); i++) {
             String demo = (String) demoList.get(i);
             boolean bool = numer.evaluate(loggedInInfo, demo);
-            
-            boolean bool2 = true;
-            for(int x=0;x<11;x++) {
-            	if(numers[x] != null) {
-            		boolean res = numers[x].evaluate(loggedInInfo, demo);
-            		if(!res) {
-            			bool2=false;
-            		}
-            	}
-            }
-            
-            //Object obj = numer.getOutputValues();  // PROBLEM IS THAT THIS WILL ALWAYS HAVE A VALUE
-            Hashtable<String,Object> h = new Hashtable<String,Object>();
-            h.put("_demographic_no",demo);
-            h.put("_report_result",new Boolean(bool && bool2));
 
-            if (additionalFields != null){
-                for(KeyValue field:additionalFields){
+            boolean bool2 = true;
+            for (int x = 0; x < 11; x++) {
+                if (numers[x] != null) {
+                    boolean res = numers[x].evaluate(loggedInInfo, demo);
+                    if (!res) {
+                        bool2 = false;
+                    }
+                }
+            }
+
+            //Object obj = numer.getOutputValues();  // PROBLEM IS THAT THIS WILL ALWAYS HAVE A VALUE
+            Hashtable<String, Object> h = new Hashtable<String, Object>();
+            h.put("_demographic_no", demo);
+            h.put("_report_result", new Boolean(bool && bool2));
+
+            if (additionalFields != null) {
+                for (KeyValue field : additionalFields) {
                     String key = (String) field.getKey();
                     String val = (String) field.getValue();
 
@@ -105,7 +107,7 @@ public class ReportEvaluator {
                     Collection<EctMeasurementsDataBean> v = ect.getMeasurementsDataVector();
                     //Execute for the value and attach it to the key in the hashtable
                     //Object obj =
-                    if(v.iterator().hasNext()){
+                    if (v.iterator().hasNext()) {
                         h.put(key, v.iterator().next());
                     }
 
@@ -113,18 +115,18 @@ public class ReportEvaluator {
             }
 
 
-            if(includeFalseResults) {
-            	getReportResultList().add(h);
+            if (includeFalseResults) {
+                getReportResultList().add(h);
             } else {
-            	if(bool && bool2) {
-            		getReportResultList().add(h);
-            	}
+                if (bool && bool2) {
+                    getReportResultList().add(h);
+                }
             }
-            
+
 //            if (obj != null){
 //                getReportResultList().add(obj);
 //            }
-            if (bool && bool2){
+            if (bool && bool2) {
                 numeratorCount++;
             }
 
@@ -132,80 +134,80 @@ public class ReportEvaluator {
 
     }
 
-    public int getDenominatorCount(){
+    public int getDenominatorCount() {
         return denominatorCount;
     }
 
-    public int getNumeratorCount(){
+    public int getNumeratorCount() {
         return numeratorCount;
     }
 
-    public float getPercentage(){
+    public float getPercentage() {
         float percentage = 0;
-        try{
-           percentage = ( (float) getNumeratorCount() / (float) getDenominatorCount() ) * 100;
-        }catch(java.lang.ArithmeticException arithEx){
-        	MiscUtils.getLogger().error("Error", arithEx);
+        try {
+            percentage = ((float) getNumeratorCount() / (float) getDenominatorCount()) * 100;
+        } catch (java.lang.ArithmeticException arithEx) {
+            MiscUtils.getLogger().error("Error", arithEx);
             //request.setAttribute("divisionByZero",denominatorId);
             percentage = 0;
         }
         return percentage;
     }
 
-    public int getPercentageInt(){
+    public int getPercentageInt() {
         return new Float(getPercentage()).intValue();
     }
 
 
     //TODO:HACK for now! replace with something more flexible
-    public  String getCSV(){
+    public String getCSV() {
         String csv = null;
-        if (denominator.hasReplaceableValues()){
+        if (denominator.hasReplaceableValues()) {
             String providerNo = (String) denominator.getReplaceableValues().get("provider_no");
-            csv = "'"+getProviderStringName(providerNo)+"','"+getNumeratorCount()+"','"+getDenominatorCount()+"','"+getPercentageInt()+"'";
-        }else{
-            csv ="'"+getNumeratorCount()+"','"+getDenominatorCount()+"','"+getPercentageInt()+"'";
+            csv = "'" + getProviderStringName(providerNo) + "','" + getNumeratorCount() + "','" + getDenominatorCount() + "','" + getPercentageInt() + "'";
+        } else {
+            csv = "'" + getNumeratorCount() + "','" + getDenominatorCount() + "','" + getPercentageInt() + "'";
         }
 
         return csv;
     }
 
 
-    public String getName(){
-        StringBuilder  name = new StringBuilder();
+    public String getName() {
+        StringBuilder name = new StringBuilder();
         name.append(numerator.getNumeratorName());
         name.append("/");
         name.append(denominator.getDenominatorName());
-        if ( denominator.hasReplaceableValues()){
-           name.append(" (");
-           String[] repKeys = denominator.getReplaceableKeys();
-           Hashtable repVals = denominator.getReplaceableValues();
-           for (int i = 0; i < repKeys.length;i++){
-               //provider_no:999998  if key is provider_no look up provider name
-               MiscUtils.getLogger().debug("repKeys "+repKeys[i]);
-               if (repKeys[i] != null && repKeys[i].equals("provider_no")){
-                  name.append("Provider: "+getProviderStringName(""+repVals.get(repKeys[i])));
-               }else{
-                  name.append(repKeys[i]+":"+repVals.get(repKeys[i]));
-               }
-           }
-           name.append(")");
+        if (denominator.hasReplaceableValues()) {
+            name.append(" (");
+            String[] repKeys = denominator.getReplaceableKeys();
+            Hashtable repVals = denominator.getReplaceableValues();
+            for (int i = 0; i < repKeys.length; i++) {
+                //provider_no:999998  if key is provider_no look up provider name
+                MiscUtils.getLogger().debug("repKeys " + repKeys[i]);
+                if (repKeys[i] != null && repKeys[i].equals("provider_no")) {
+                    name.append("Provider: " + getProviderStringName("" + repVals.get(repKeys[i])));
+                } else {
+                    name.append(repKeys[i] + ":" + repVals.get(repKeys[i]));
+                }
+            }
+            name.append(")");
         }
 
-        return  name.toString();
+        return name.toString();
     }
 
-    private String getProviderStringName(String providerNo){
-        return  ProviderData.getProviderName(providerNo);
+    private String getProviderStringName(String providerNo) {
+        return ProviderData.getProviderName(providerNo);
     }
 
     //private String getProvider
 
-    public ArrayList<Hashtable<String,Object>> getReportResultList() {
+    public ArrayList<Hashtable<String, Object>> getReportResultList() {
         return reportResultList;
     }
 
-    public void setReportResultList(ArrayList<Hashtable<String,Object>> reportResultList) {
+    public void setReportResultList(ArrayList<Hashtable<String, Object>> reportResultList) {
         this.reportResultList = reportResultList;
     }
 }

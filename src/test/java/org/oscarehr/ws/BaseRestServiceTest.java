@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -44,6 +44,7 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
 //import org.apache.cxf.jaxrs.ext.form.Form;
 import javax.ws.rs.core.Form;
+
 import org.apache.cxf.jaxrs.provider.JAXBElementProvider;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
@@ -60,14 +61,14 @@ import org.oscarehr.ws.rest.to.model.Sex1;
  * Base class for restful tests. While running these tests, it's assumed that a running version of OSCAR is available.
  * Since this falls into the category of functional tests now, all subclasses must explicitly verify if the REST WS
  * tests have been enabled.
- * 
- * This may change in the future as we figure out the best way to test the services, and we authenticate 
+ * <p>
+ * This may change in the future as we figure out the best way to test the services, and we authenticate
  * differently (oauth, tokens, etc)
- * 
+ * <p>
  * <p/>
- * 
+ * <p>
  * This test expects the following properties provided in oscar.properties file
- * 
+ *
  * <pre>
  * test.ws.rest.enabled=true
  * test.ws.rest.login.username=oscardoc
@@ -75,171 +76,168 @@ import org.oscarehr.ws.rest.to.model.Sex1;
  * test.ws.rest.login.pin=1117
  * test.ws.rest.login.host=http://localhost:8080/oscar
  * </pre>
- * 
  */
 public abstract class BaseRestServiceTest {
 
-	/**
-	 * Enables or disables WS test if no "enabling" settings can be found
-	 * in the test. This should be set to FALSE everywhere except for the 
-	 * local dev environment.
-	 */
-	private static final String ENABLED_BY_DEFAULT = Boolean.FALSE.toString();
-	
-	public static final String KEY_ENABLED = "test.ws.rest.enabled";
-	public static final String KEY_TYPE = "test.ws.rest.type";
-	public static final String KEY_USERNAME = "test.ws.rest.login.username";
-	public static final String KEY_PASSWORD = "test.ws.rest.login.password";
-	public static final String KEY_PIN = "test.ws.rest.login.pin";
-	public static final String KEY_HOST = "test.ws.rest.login.host";
-	public static final String KEY_PROPNAME = "test.ws.rest.login.propname";
+    /**
+     * Enables or disables WS test if no "enabling" settings can be found
+     * in the test. This should be set to FALSE everywhere except for the
+     * local dev environment.
+     */
+    private static final String ENABLED_BY_DEFAULT = Boolean.FALSE.toString();
 
-	public static final Integer RESPONSE_STATUS_FOUND = 302;
+    public static final String KEY_ENABLED = "test.ws.rest.enabled";
+    public static final String KEY_TYPE = "test.ws.rest.type";
+    public static final String KEY_USERNAME = "test.ws.rest.login.username";
+    public static final String KEY_PASSWORD = "test.ws.rest.login.password";
+    public static final String KEY_PIN = "test.ws.rest.login.pin";
+    public static final String KEY_HOST = "test.ws.rest.login.host";
+    public static final String KEY_PROPNAME = "test.ws.rest.login.propname";
 
-	private static final Class<?>[] TRANSFER_CLASSES = 
-		{DemographicTo1.class, DemographicMergedTo1.class, DemographicExtTo1.class,
-				PharmacyInfoTo1.class, ProviderTo1.class, Sex1.class};
+    public static final Integer RESPONSE_STATUS_FOUND = 302;
 
-	protected static WebClient client;
-	protected static Boolean enabled;
-	protected static Cookie session;
-	protected static String mediaType = MediaType.APPLICATION_XML;
+    private static final Class<?>[] TRANSFER_CLASSES =
+            {DemographicTo1.class, DemographicMergedTo1.class, DemographicExtTo1.class,
+                    PharmacyInfoTo1.class, ProviderTo1.class, Sex1.class};
 
-	private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    protected static WebClient client;
+    protected static Boolean enabled;
+    protected static Cookie session;
+    protected static String mediaType = MediaType.APPLICATION_XML;
 
-	/**
-	 * Initializes base restful settings.
-	 * 
-	 * <p/>
-	 * 
-	 * <b>Implementation notes</b>
-	 * 
-	 * <p/>
-	 * 
-	 * This method works by carrying out HTTP request to the OSCAR login form. In case
-	 * login is successful, authenticated session cookie is provided for the inheriting classes. 
-	 * This process can most likely be re-implemented using CXF's HTTP Conduit and AuthSupplier
-	 * classes, but this implementation appears to be less intrusive and easier to understand.
-	 */
-	@BeforeClass
-	public static void init() {
-		logger.info("Initializing REST settings...");
-		Properties props = new Properties();
+    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-		InputStream stream = null;
-		try {
-			stream = BaseRestServiceTest.class.getResourceAsStream("/test.properties");
-			props.load(stream);
-		} catch (Exception e) {
-			logger.info("Test properties are not loaded");
-		} finally {
-			if (stream != null) {
-				try {
-					stream.close();
-				} catch (Exception e) {
-					logger.warn("Unable to close input stream");
-				}
-			}
-		}
+    /**
+     * Initializes base restful settings.
+     * <p>
+     * <p/>
+     *
+     * <b>Implementation notes</b>
+     * <p>
+     * <p/>
+     * <p>
+     * This method works by carrying out HTTP request to the OSCAR login form. In case
+     * login is successful, authenticated session cookie is provided for the inheriting classes.
+     * This process can most likely be re-implemented using CXF's HTTP Conduit and AuthSupplier
+     * classes, but this implementation appears to be less intrusive and easier to understand.
+     */
+    @BeforeClass
+    public static void init() {
+        logger.info("Initializing REST settings...");
+        Properties props = new Properties();
 
-		enabled = Boolean.parseBoolean(props.getProperty(KEY_ENABLED, ENABLED_BY_DEFAULT));
-		if (!enabled) {
-			logger.info("Restful tests are disabled.");
-			return;
-		}
-		
-		BaseRestServiceTest.mediaType = props.getProperty(KEY_TYPE, MediaType.APPLICATION_XML);
+        InputStream stream = null;
+        try {
+            stream = BaseRestServiceTest.class.getResourceAsStream("/test.properties");
+            props.load(stream);
+        } catch (Exception e) {
+            logger.info("Test properties are not loaded");
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (Exception e) {
+                    logger.warn("Unable to close input stream");
+                }
+            }
+        }
 
-		String host = props.getProperty(KEY_HOST, "http://localhost:8080/oscar/");
-		String userName = props.getProperty(KEY_USERNAME, "oscardoc");
-		String password = props.getProperty(KEY_PASSWORD, "mac2002");
-		String pin = props.getProperty(KEY_PIN, "1117");
-		String propName = props.getProperty(KEY_PROPNAME, "oscar_mcmaster");
+        enabled = Boolean.parseBoolean(props.getProperty(KEY_ENABLED, ENABLED_BY_DEFAULT));
+        if (!enabled) {
+            logger.info("Restful tests are disabled.");
+            return;
+        }
 
-		logger.info("Authenticating against " + host + " as " + userName);
+        BaseRestServiceTest.mediaType = props.getProperty(KEY_TYPE, MediaType.APPLICATION_XML);
 
-		client = WebClient.create(host, getProviders(), true);
-		client.replacePath("/login.do");
+        String host = props.getProperty(KEY_HOST, "http://localhost:8080/oscar/");
+        String userName = props.getProperty(KEY_USERNAME, "oscardoc");
+        String password = props.getProperty(KEY_PASSWORD, "mac2002");
+        String pin = props.getProperty(KEY_PIN, "1117");
+        String propName = props.getProperty(KEY_PROPNAME, "oscar_mcmaster");
 
-		Form form = new Form();
-		form.param("username", userName);
-		form.param("password", password);
-		form.param("pin", pin);
-		form.param("propname", propName);
-		// login
-		Response response = client.post(form);
+        logger.info("Authenticating against " + host + " as " + userName);
 
-		String location = null;
-		// no location means that auth failed
-		List<Object> locations = response.getMetadata().get("Location");
-		if (locations != null && !locations.isEmpty()) {
-			for (Object o : locations) {
-				location = String.valueOf(o);
-				break;
-			}
-		}
+        client = WebClient.create(host, getProviders(), true);
+        client.replacePath("/login.do");
 
-		boolean loginFailed = response.getStatus() != RESPONSE_STATUS_FOUND || location == null || location.trim().isEmpty() || (location != null && location.contains("login=failed"));
+        Form form = new Form();
+        form.param("username", userName);
+        form.param("password", password);
+        form.param("pin", pin);
+        form.param("propname", propName);
+        // login
+        Response response = client.post(form);
 
-		if (loginFailed) {
-			logger.info("Unable to login: " + response.getMetadata());
-			fail("Unable to login");
-		}
+        String location = null;
+        // no location means that auth failed
+        List<Object> locations = response.getMetadata().get("Location");
+        if (locations != null && !locations.isEmpty()) {
+            for (Object o : locations) {
+                location = String.valueOf(o);
+                break;
+            }
+        }
 
-		logger.info("Auhtentication successful");
+        boolean loginFailed = response.getStatus() != RESPONSE_STATUS_FOUND || location == null || location.trim().isEmpty() || (location != null && location.contains("login=failed"));
 
-		HttpCookie sessionCookie = null;
-		List<Object> cookies = response.getMetadata().get("Set-Cookie");
-		if (cookies != null) {
-			for (Object o : cookies) {
-				for (HttpCookie c : HttpCookie.parse(String.valueOf(o))) {
-					sessionCookie = c;
-					break;
-				}
+        if (loginFailed) {
+            logger.info("Unable to login: " + response.getMetadata());
+            fail("Unable to login");
+        }
 
-				if (sessionCookie != null) {
-					break;
-				}
-			}
-		}
+        logger.info("Auhtentication successful");
 
-		if (sessionCookie != null) {
-			session = new Cookie(sessionCookie.getName(), sessionCookie.getValue(), sessionCookie.getPath(), sessionCookie.getDomain(), sessionCookie.getVersion());
-			client.cookie(session);
-		}
+        HttpCookie sessionCookie = null;
+        List<Object> cookies = response.getMetadata().get("Set-Cookie");
+        if (cookies != null) {
+            for (Object o : cookies) {
+                for (HttpCookie c : HttpCookie.parse(String.valueOf(o))) {
+                    sessionCookie = c;
+                    break;
+                }
 
-		logger.info("Complete initialization successfully");
-	}
+                if (sessionCookie != null) {
+                    break;
+                }
+            }
+        }
 
-	/**
-	 * Marshalls specified object into XML representation
-	 * 
-	 * @param o
-	 * 		Object to generate string for
-	 * @return
-	 * 		Returns XML representation of the specified object 
-	 */
-	protected static String toXmlString(Object o) {
-		if (o == null) {
-			return "";
-		}
+        if (sessionCookie != null) {
+            session = new Cookie(sessionCookie.getName(), sessionCookie.getValue(), sessionCookie.getPath(), sessionCookie.getDomain(), sessionCookie.getVersion());
+            client.cookie(session);
+        }
 
-		try {
-			JAXBContext context = JAXBContext.newInstance(o.getClass());
-			Marshaller m = context.createMarshaller();
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        logger.info("Complete initialization successfully");
+    }
 
-			
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			m.marshal(o, os);
-			os.flush();
-			return os.toString();
-		} catch (Exception e) {
-			logger.error("Unable to marshal " + o, e);
-		}
+    /**
+     * Marshalls specified object into XML representation
+     *
+     * @param o Object to generate string for
+     * @return Returns XML representation of the specified object
+     */
+    protected static String toXmlString(Object o) {
+        if (o == null) {
+            return "";
+        }
 
-		return "";
-	}
+        try {
+            JAXBContext context = JAXBContext.newInstance(o.getClass());
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            m.marshal(o, os);
+            os.flush();
+            return os.toString();
+        } catch (Exception e) {
+            logger.error("Unable to marshal " + o, e);
+        }
+
+        return "";
+    }
 	
 	/*
 	 * 	<bean id="jaxb" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
@@ -257,88 +255,84 @@ public abstract class BaseRestServiceTest {
 	      </property>
 	</bean>
 	 */
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static List<?> getProviders() {
-		List result = new ArrayList();
-		JAXBElementProvider provider = new JAXBElementProvider();
-		provider.setSingleJaxbContext(true);
-		provider.setExtraClass(TRANSFER_CLASSES);
-		result.add(provider);
-		return result;
-	}
+        List result = new ArrayList();
+        JAXBElementProvider provider = new JAXBElementProvider();
+        provider.setSingleJaxbContext(true);
+        provider.setExtraClass(TRANSFER_CLASSES);
+        result.add(provider);
+        return result;
+    }
 
-	/**
-	 * Creates new authenticated service for the specified service class.
-	 * 
-	 * @param resourceClass
-	 * 		Service class
-	 * @return
-	 * 		Returns the new service instance
-	 */
-	public static <T> T getResource(Class<T> resourceClass) {
-		if (client == null) {
-			fail("Null REST client");
-		}
-
-		if (session == null) {
-			fail("Not authenticated");
-		}
-
-		// go to the root of REST services
-		client.replacePath("/ws/rs");
-		
-		
-		// create service
-		T service = JAXRSClientFactory.fromClient(client, resourceClass);
-		Client newClient = WebClient.client(service);
-		// propagate session state
-		newClient.cookie(session);
-
-		// make sure we only use XML
-		newClient.type(mediaType);
-		newClient.accept(mediaType);
-		
-		return service;
-	}
-
-	@AfterClass
-	public static void close() {
-		if (client == null) {
-			logger.info("Client is not initialized, exiting...");
-			return;
-		}
-
-		client.replacePath("/logout.jsp");
-		client.get();
-
-		logger.info("Completed logout.");
-	}
-
-	/**
-	 * Generates test data for the specified instance. If the specified instance can not be populated
-	 * the method fails test.
-	 * 
-	 * @param t
-	 * 		Instance to that should be populated with the test data.
-	 * @return
-	 * 		Returns the populated instance.
-	 */
-	protected static <T> T populate(T t) {
-		try {
-			EntityDataGenerator.generateTestDataForModelClass(t);
-		} catch (Exception e) {
-			fail();
-		}
-		
-		// rest ID field
-		try {
-	        Method idSetterMethod = t.getClass().getMethod("setId", new Class[] {Integer.class});
-	        idSetterMethod.invoke(t, new Object[] {null});
-        } catch (Exception e) {
-        	logger.info("Unable to reset id on " + t);
+    /**
+     * Creates new authenticated service for the specified service class.
+     *
+     * @param resourceClass Service class
+     * @return Returns the new service instance
+     */
+    public static <T> T getResource(Class<T> resourceClass) {
+        if (client == null) {
+            fail("Null REST client");
         }
-		
-		return t;
-	}
+
+        if (session == null) {
+            fail("Not authenticated");
+        }
+
+        // go to the root of REST services
+        client.replacePath("/ws/rs");
+
+
+        // create service
+        T service = JAXRSClientFactory.fromClient(client, resourceClass);
+        Client newClient = WebClient.client(service);
+        // propagate session state
+        newClient.cookie(session);
+
+        // make sure we only use XML
+        newClient.type(mediaType);
+        newClient.accept(mediaType);
+
+        return service;
+    }
+
+    @AfterClass
+    public static void close() {
+        if (client == null) {
+            logger.info("Client is not initialized, exiting...");
+            return;
+        }
+
+        client.replacePath("/logout.jsp");
+        client.get();
+
+        logger.info("Completed logout.");
+    }
+
+    /**
+     * Generates test data for the specified instance. If the specified instance can not be populated
+     * the method fails test.
+     *
+     * @param t Instance to that should be populated with the test data.
+     * @return Returns the populated instance.
+     */
+    protected static <T> T populate(T t) {
+        try {
+            EntityDataGenerator.generateTestDataForModelClass(t);
+        } catch (Exception e) {
+            fail();
+        }
+
+        // rest ID field
+        try {
+            Method idSetterMethod = t.getClass().getMethod("setId", new Class[]{Integer.class});
+            idSetterMethod.invoke(t, new Object[]{null});
+        } catch (Exception e) {
+            logger.info("Unable to reset id on " + t);
+        }
+
+        return t;
+    }
 }

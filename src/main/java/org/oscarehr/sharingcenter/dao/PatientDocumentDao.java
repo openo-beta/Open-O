@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,9 +47,9 @@ public class PatientDocumentDao extends AbstractDaoImpl<PatientDocument> {
      * @return list of all Patient Documents
      */
     public List<PatientDocument> findPatientDocuments(int demographicId) {
-        String sql = "FROM PatientDocument e where e.demographic_no = ?";
+        String sql = "FROM PatientDocument e where e.demographic_no = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicId);
+        query.setParameter(1, demographicId);
 
         @SuppressWarnings("unchecked")
         List<PatientDocument> retVal = query.getResultList();
@@ -64,20 +65,20 @@ public class PatientDocumentDao extends AbstractDaoImpl<PatientDocument> {
      * @return boolean whether or not the document exists
      */
     public boolean documentExists(String documentUniqueId, String repositoryUniqueId) {
-        String sql = "SELECT count(*) FROM PatientDocument e where e.uniqueDocumentId = ? AND e.repositoryUniqueId = ?";
+        String sql = "SELECT count(*) FROM PatientDocument e where e.uniqueDocumentId = ?1 AND e.repositoryUniqueId = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, documentUniqueId);
-        query.setParameter(1, repositoryUniqueId);
+        query.setParameter(1, documentUniqueId);
+        query.setParameter(2, repositoryUniqueId);
 
         int retVal = ((Long) query.getSingleResult()).intValue();
         return retVal > 0;
     }
 
     public PatientDocument getDocument(String documentUniqueId, String repositoryUniqueId) {
-        String sql = "FROM PatientDocument e where e.uniqueDocumentId = ? AND e.repositoryUniqueId = ?";
+        String sql = "FROM PatientDocument e where e.uniqueDocumentId = ?1 AND e.repositoryUniqueId = ?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, documentUniqueId);
-        query.setParameter(1, repositoryUniqueId);
+        query.setParameter(1, documentUniqueId);
+        query.setParameter(2, repositoryUniqueId);
 
         query.setMaxResults(1);
         PatientDocument retVal = getSingleResultOrNull(query);
@@ -91,9 +92,9 @@ public class PatientDocumentDao extends AbstractDaoImpl<PatientDocument> {
      * @return a count of the documents.
      */
     public int getDocumentCount(int demographicId) {
-        String sql = "SELECT count(*) FROM PatientDocument e where e.demographic_no = ?";
+        String sql = "SELECT count(*) FROM PatientDocument e where e.demographic_no = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicId);
+        query.setParameter(1, demographicId);
 
         int retVal = ((Long) query.getSingleResult()).intValue();
         return retVal;
@@ -109,9 +110,9 @@ public class PatientDocumentDao extends AbstractDaoImpl<PatientDocument> {
      * @return a list of PatientDocument objects
      */
     public List<PatientDocument> findPatientDocumentsWithPagination(int demographicId, int offset, int elements) {
-        String sql = "FROM PatientDocument e where e.demographic_no = ?";
+        String sql = "FROM PatientDocument e where e.demographic_no = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographicId);
+        query.setParameter(1, demographicId);
         query.setFirstResult(offset);
         query.setMaxResults(elements);
 

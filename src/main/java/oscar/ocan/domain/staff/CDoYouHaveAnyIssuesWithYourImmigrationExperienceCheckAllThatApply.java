@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -64,22 +64,20 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cNone",
-    "cLackOfUnderstandingOfTheCanadianSystemResources",
-    "cApplyingPreviousWorkExperienceProfessionalQualifications",
-    "cSeparationFromFamilyMembersSignificantOthers",
-    "cFamilyLeftBehindInRefugeeCamp",
-    "cExperienceWithWarIncarcerationTorture",
-    "cRefugeeCamp",
-    "cExperienceWithOtherTrauma",
-    "cUnknown",
-    "cClientDeclinedToAnswer",
-    "cOther"
+        "cNone",
+        "cLackOfUnderstandingOfTheCanadianSystemResources",
+        "cApplyingPreviousWorkExperienceProfessionalQualifications",
+        "cSeparationFromFamilyMembersSignificantOthers",
+        "cFamilyLeftBehindInRefugeeCamp",
+        "cExperienceWithWarIncarcerationTorture",
+        "cRefugeeCamp",
+        "cExperienceWithOtherTrauma",
+        "cUnknown",
+        "cClientDeclinedToAnswer",
+        "cOther"
 })
 @XmlRootElement(name = "CDo_you_have_any_issues_with_your_immigration_experience___check_all_that_apply_")
 public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
@@ -109,11 +107,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cNone property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCNone() {
         return cNone;
@@ -121,11 +117,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cNone property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCNone(String value) {
         this.cNone = value;
@@ -133,11 +127,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cLackOfUnderstandingOfTheCanadianSystemResources property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCLackOfUnderstandingOfTheCanadianSystemResources() {
         return cLackOfUnderstandingOfTheCanadianSystemResources;
@@ -145,11 +137,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cLackOfUnderstandingOfTheCanadianSystemResources property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCLackOfUnderstandingOfTheCanadianSystemResources(String value) {
         this.cLackOfUnderstandingOfTheCanadianSystemResources = value;
@@ -157,11 +147,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cApplyingPreviousWorkExperienceProfessionalQualifications property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCApplyingPreviousWorkExperienceProfessionalQualifications() {
         return cApplyingPreviousWorkExperienceProfessionalQualifications;
@@ -169,11 +157,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cApplyingPreviousWorkExperienceProfessionalQualifications property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCApplyingPreviousWorkExperienceProfessionalQualifications(String value) {
         this.cApplyingPreviousWorkExperienceProfessionalQualifications = value;
@@ -181,11 +167,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cSeparationFromFamilyMembersSignificantOthers property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSeparationFromFamilyMembersSignificantOthers() {
         return cSeparationFromFamilyMembersSignificantOthers;
@@ -193,11 +177,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cSeparationFromFamilyMembersSignificantOthers property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSeparationFromFamilyMembersSignificantOthers(String value) {
         this.cSeparationFromFamilyMembersSignificantOthers = value;
@@ -205,11 +187,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cFamilyLeftBehindInRefugeeCamp property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCFamilyLeftBehindInRefugeeCamp() {
         return cFamilyLeftBehindInRefugeeCamp;
@@ -217,11 +197,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cFamilyLeftBehindInRefugeeCamp property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCFamilyLeftBehindInRefugeeCamp(String value) {
         this.cFamilyLeftBehindInRefugeeCamp = value;
@@ -229,11 +207,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cExperienceWithWarIncarcerationTorture property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCExperienceWithWarIncarcerationTorture() {
         return cExperienceWithWarIncarcerationTorture;
@@ -241,11 +217,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cExperienceWithWarIncarcerationTorture property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCExperienceWithWarIncarcerationTorture(String value) {
         this.cExperienceWithWarIncarcerationTorture = value;
@@ -253,11 +227,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cRefugeeCamp property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCRefugeeCamp() {
         return cRefugeeCamp;
@@ -265,11 +237,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cRefugeeCamp property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCRefugeeCamp(String value) {
         this.cRefugeeCamp = value;
@@ -277,11 +247,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cExperienceWithOtherTrauma property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCExperienceWithOtherTrauma() {
         return cExperienceWithOtherTrauma;
@@ -289,11 +257,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cExperienceWithOtherTrauma property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCExperienceWithOtherTrauma(String value) {
         this.cExperienceWithOtherTrauma = value;
@@ -301,11 +267,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cUnknown property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCUnknown() {
         return cUnknown;
@@ -313,11 +277,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cUnknown property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCUnknown(String value) {
         this.cUnknown = value;
@@ -325,11 +287,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cClientDeclinedToAnswer property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCClientDeclinedToAnswer() {
         return cClientDeclinedToAnswer;
@@ -337,11 +297,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cClientDeclinedToAnswer property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCClientDeclinedToAnswer(String value) {
         this.cClientDeclinedToAnswer = value;
@@ -349,11 +307,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Gets the value of the cOther property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCOther() {
         return cOther;
@@ -361,11 +317,9 @@ public class CDoYouHaveAnyIssuesWithYourImmigrationExperienceCheckAllThatApply {
 
     /**
      * Sets the value of the cOther property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOther(String value) {
         this.cOther = value;

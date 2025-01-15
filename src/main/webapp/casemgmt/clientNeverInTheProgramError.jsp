@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,24 +24,23 @@
 --%>
 
 
+<%@ include file="/casemgmt/taglibs.jsp" %>
 
-<%@ include file="/casemgmt/taglibs.jsp"%>
-
-<%@page import="org.oscarehr.PMmodule.dao.*"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
+<%@page import="org.oscarehr.PMmodule.dao.*" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
 <%
-String programId_str = (String)request.getSession().getAttribute("case_program_id");
-Integer programId;
-String programName=null;
+    String programId_str = (String) request.getSession().getAttribute("case_program_id");
+    Integer programId;
+    String programName = null;
 
-if (programId_str == null || programId_str.length() == 0) {
-	programId_str = "0";
-} else {
-	programId = Integer.valueOf(programId_str);
+    if (programId_str == null || programId_str.length() == 0) {
+        programId_str = "0";
+    } else {
+        programId = Integer.valueOf(programId_str);
 
-	ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
-	programName = programDao.getProgramName(programId);
-}
+        ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
+        programName = programDao.getProgramName(programId);
+    }
 
 %>
 
@@ -50,4 +48,4 @@ if (programId_str == null || programId_str.length() == 0) {
 <p>You cannot access this client's Encounters because he/she has never admitted in the <%=programName %>.
 </p>
 
-<input type="button" value="Close Window" onclick="self.close()" />
+<input type="button" value="Close Window" onclick="self.close()"/>

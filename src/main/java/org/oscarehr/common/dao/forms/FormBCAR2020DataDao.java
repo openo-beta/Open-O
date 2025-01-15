@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -30,32 +31,34 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class FormBCAR2020DataDao extends AbstractDaoImpl<FormBCAR2020Data> {
-    public FormBCAR2020DataDao() { super(FormBCAR2020Data.class); }
+    public FormBCAR2020DataDao() {
+        super(FormBCAR2020Data.class);
+    }
 
     public List<FormBCAR2020Data> findFields(Integer formId) {
         String sql = "select f from FormBCAR2020Data f " +
-                "where f.formId = :formId";
+                "where f.formId = ?1";
         Query query = entityManager.createQuery(sql);
-        query = query.setParameter("formId", formId);
+        query = query.setParameter(1, formId);
         return query.getResultList();
     }
 
     public List<FormBCAR2020Data> findFieldsForPage(Integer formId, Integer pageNo) {
         String sql = "select f from FormBCAR2020Data f " +
-                "where f.formId = :formId and (f.pageNo = :pageNo OR f.pageNo = 0)";
+                "where f.formId = ?1 and (f.pageNo = ?2 OR f.pageNo = 0)";
         Query query = entityManager.createQuery(sql);
-        query = query.setParameter("formId", formId);
-        query = query.setParameter("pageNo", pageNo);
+        query = query.setParameter(1, formId);
+        query = query.setParameter(2, pageNo);
         return query.getResultList();
     }
-    
+
     public FormBCAR2020Data findFieldForPage(Integer formId, Integer pageNo, String fieldName) {
         String sql = "SELECT f FROM FormBCAR2020Data f " +
-                "WHERE f.formId = :formId AND (f.pageNo = :pageNo OR f.pageNo = 0) AND f.field = :fieldName";
+                "WHERE f.formId = ?1 AND (f.pageNo = ?2 OR f.pageNo = 0) AND f.field = ?3";
         Query query = entityManager.createQuery(sql);
-        query = query.setParameter("formId", formId);
-        query = query.setParameter("pageNo", pageNo);
-        query = query.setParameter("fieldName", fieldName);
+        query = query.setParameter(1, formId);
+        query = query.setParameter(2, pageNo);
+        query = query.setParameter(3, fieldName);
 
         FormBCAR2020Data record = null;
 

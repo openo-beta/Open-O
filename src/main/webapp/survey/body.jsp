@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -23,9 +22,6 @@
     Toronto, Ontario, Canada
 
 --%>
-
-
-
 
 
 Body

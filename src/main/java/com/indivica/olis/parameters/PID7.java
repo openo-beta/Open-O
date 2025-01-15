@@ -1,6 +1,7 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2008-2012 Indivica Inc.
- *
+ * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).
  * License details are available via "indivica.ca/gplv2"
@@ -14,45 +15,45 @@ import java.util.Date;
 
 /**
  * Date of Birth (Z50 Query only)
- * @author jen
  *
+ * @author jen
  */
 public class PID7 implements Parameter {
 
-	private String value;
-	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-	
-	public PID7(String value) {
-	    this.value = value;
+    private String value;
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+
+    public PID7(String value) {
+        this.value = value;
     }
 
-	public PID7() {
-	}
+    public PID7() {
+    }
 
-	@Override
-	public String toOlisString() {
-		return getQueryCode() + "^" + (value != null ? value : "");
-	}
+    @Override
+    public String toOlisString() {
+        return getQueryCode() + "^" + (value != null ? value : "");
+    }
 
-	@Override
-	public void setValue(Object value) {
-		if (value instanceof Date)
-			this.value = dateFormatter.format((Date) value);
-	}
+    @Override
+    public void setValue(Object value) {
+        if (value instanceof Date)
+            this.value = dateFormatter.format((Date) value);
+    }
 
-	@Override
-	public void setValue(Integer part, Object value) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void setValue(Integer part, Object value) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void setValue(Integer part, Integer part2, Object value) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void setValue(Integer part, Integer part2, Object value) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public String getQueryCode() {
-		return "@PID.7";
-	}
+    @Override
+    public String getQueryCode() {
+        return "@PID.7";
+    }
 
 }

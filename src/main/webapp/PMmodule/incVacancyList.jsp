@@ -23,30 +23,30 @@
 
 --%>
 
-<%@page language="java" import="java.util.*"%>
-<%@page import="org.oscarehr.PMmodule.wlservice.ProgramQuery"%>
-<%@page import="org.oscarehr.PMmodule.wlservice.VacancyQuery"%>
-<%@page import="org.oscarehr.PMmodule.wlmatch.VacancyDisplayBO"%>
-<%@page import="org.oscarehr.PMmodule.wlmatch.MatchBO"%>
-<%@page import="org.oscarehr.PMmodule.wlservice.TopMatchesQuery"%>
-<%@page import="javax.xml.datatype.XMLGregorianCalendar"%>
-<%@page import="javax.xml.datatype.DatatypeFactory"%>
-<%@page import="org.oscarehr.PMmodule.wlservice.MatchParam"%>
-<%@page import="org.oscarehr.PMmodule.wlservice.WaitListService"%>
+<%@page language="java" import="java.util.*" %>
+<%@page import="org.oscarehr.PMmodule.wlservice.ProgramQuery" %>
+<%@page import="org.oscarehr.PMmodule.wlservice.VacancyQuery" %>
+<%@page import="org.oscarehr.PMmodule.wlmatch.VacancyDisplayBO" %>
+<%@page import="org.oscarehr.PMmodule.wlmatch.MatchBO" %>
+<%@page import="org.oscarehr.PMmodule.wlservice.TopMatchesQuery" %>
+<%@page import="javax.xml.datatype.XMLGregorianCalendar" %>
+<%@page import="javax.xml.datatype.DatatypeFactory" %>
+<%@page import="org.oscarehr.PMmodule.wlservice.MatchParam" %>
+<%@page import="org.oscarehr.PMmodule.wlservice.WaitListService" %>
 
 <%@page import="org.oscarehr.PMmodule.dao.ProgramProviderDAO" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 <%
-	String role = (String)session.getAttribute("userrole");
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
+    String role = (String) session.getAttribute("userrole");
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-	WaitListService s = new WaitListService();
-	List<VacancyDisplayBO> listVac = s.listVacanciesForAllWaitListPrograms();
-   	List<VacancyDisplayBO> filteredListVac = new ArrayList<VacancyDisplayBO>();
+    WaitListService s = new WaitListService();
+    List<VacancyDisplayBO> listVac = s.listVacanciesForAllWaitListPrograms();
+    List<VacancyDisplayBO> filteredListVac = new ArrayList<VacancyDisplayBO>();
 /* Should list vacancies based on facility, not role. So comment out the code lines below just in case we will use role again..
    	//We are filtering this list if you are an Agency Operator to only those in your program domain
     if(role.indexOf("Waitlist Agency Operator") != -1) {		
@@ -65,40 +65,43 @@
     else if (role.indexOf("Waitlist Operator") != -1) {
     	filteredListVac.addAll(listVac);
     }
-   */ 
-   int displayAllVacancies = loggedInInfo.getCurrentFacility().getDisplayAllVacancies();
-   //1 means display all vacancies in db, 0 means only display the vacancies associated with program domain.
-   if(displayAllVacancies == 1) { //display all vacancies
-	   filteredListVac.addAll(listVac);
-   } else { //display the vacancies in program domain .
-	   Integer facilityId = loggedInInfo.getCurrentFacility().getId();
-	   ProgramProviderDAO programProviderDao = (ProgramProviderDAO) SpringUtils.getBean(ProgramProviderDAO.class);
-		List<Integer> pids = new ArrayList<Integer>();
-		for(ProgramProvider pp:programProviderDao.getActiveProgramDomain(loggedInInfo.getLoggedInProviderNo())) {
-			pids.add(pp.getProgramId().intValue());
-		}
-		for(VacancyDisplayBO v: listVac) {
-			if(pids.contains(v.getProgramId().intValue()) ) {
-				filteredListVac.add(v);
-			}
-		}
-   }
+   */
+    int displayAllVacancies = loggedInInfo.getCurrentFacility().getDisplayAllVacancies();
+    //1 means display all vacancies in db, 0 means only display the vacancies associated with program domain.
+    if (displayAllVacancies == 1) { //display all vacancies
+        filteredListVac.addAll(listVac);
+    } else { //display the vacancies in program domain .
+        Integer facilityId = loggedInInfo.getCurrentFacility().getId();
+        ProgramProviderDAO programProviderDao = (ProgramProviderDAO) SpringUtils.getBean(ProgramProviderDAO.class);
+        List<Integer> pids = new ArrayList<Integer>();
+        for (ProgramProvider pp : programProviderDao.getActiveProgramDomain(loggedInInfo.getLoggedInProviderNo())) {
+            pids.add(pp.getProgramId().intValue());
+        }
+        for (VacancyDisplayBO v : listVac) {
+            if (pids.contains(v.getProgramId().intValue())) {
+                filteredListVac.add(v);
+            }
+        }
+    }
 %>
 
-<% 
-request.setAttribute("listVac", filteredListVac);
+<%
+    request.setAttribute("listVac", filteredListVac);
 %>
 
-<display:table class="simple" id="vacancyList" name="requestScope.listVac" 
- pagesize="1000"  requestURI="/PMmodule/AllVacancies.do" >
-    <display:column property="vacancyID" title="Vacancy Id" sortable="true" url="/PMmodule/VacancyClientMatch.do" paramId="vacancyId" paramProperty="vacancyID" />
-    <display:column property="programName" title="Program Name" sortable="true" url="/PMmodule/ProgramManagerView.do" paramId="id" paramProperty="programId" />
+<display:table class="simple" id="vacancyList" name="requestScope.listVac"
+               pagesize="1000" requestURI="/PMmodule/AllVacancies.do">
+    <display:column property="vacancyID" title="Vacancy Id" sortable="true" url="/PMmodule/VacancyClientMatch.do"
+                    paramId="vacancyId" paramProperty="vacancyID"/>
+    <display:column property="programName" title="Program Name" sortable="true" url="/PMmodule/ProgramManagerView.do"
+                    paramId="id" paramProperty="programId"/>
     <display:column property="vacancyName" title="Vacancy Name" sortable="true"/>
-    <display:column property="vacancyTemplateName" title="Vacancy Template" sortable="true" url="/PMmodule/VacancyClientMatch.do" paramId="vacancyId" paramProperty="vacancyID" />
+    <display:column property="vacancyTemplateName" title="Vacancy Template" sortable="true"
+                    url="/PMmodule/VacancyClientMatch.do" paramId="vacancyId" paramProperty="vacancyID"/>
     <display:column property="created" title="Created date" sortable="true"/>
     <display:column property="pendingCount" title="Forwarded" sortable="true"/>
     <display:column property="rejectedCount" title="Rejected" sortable="true"/>
     <display:column property="acceptedCount" title="Accepted" sortable="true"/>
-  </display:table>
+</display:table>
 
 

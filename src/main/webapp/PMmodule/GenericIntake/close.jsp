@@ -24,26 +24,25 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     Integer latestFrmId = (Integer) session.getAttribute("latestFrmId");
     session.removeAttribute("latestFrmId");
 %>
-<html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<script language=javascript>
-          self.close();
-<%  if (latestFrmId==null) { %>
-          self.opener.location.reload();
-<%  } else { %>
-	  self.opener.location = "EditIntake.jsp?id=<%=latestFrmId%>";
-<%  } %>
+<html>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <script language=javascript>
+            self.close();
+            <%  if (latestFrmId==null) { %>
+            self.opener.location.reload();
+            <%  } else { %>
+            self.opener.location = "EditIntake.jsp?id=<%=latestFrmId%>";
+            <%  } %>
         </script>
-</head>
-<body>
-<a href="javascript:window.close();"><bean:message
-	key="oscarEncounter.close.btnHere" /></a>
-</body>
-</html:html>
+    </head>
+    <body>
+    <a href="javascript:window.close();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.close.btnHere"/></a>
+    </body>
+</html>

@@ -138,6 +138,12 @@ CREATE TABLE IF NOT EXISTS billactivity (
   sentdate datetime
 ) ;
 
+CREATE TABLE IF NOT EXISTS billcenter (
+  billcenter_code char(2) NOT NULL DEFAULT '',
+  billcenter_desc varchar(20) default NULL,
+  primary key(billcenter_code)
+) ;
+
 --
 -- Table structure for table `billcenter`
 --
@@ -7824,7 +7830,6 @@ CREATE TABLE IF NOT EXISTS `waitingList` (
 -- Table structure for table `pharmacyInfo`
 --
 CREATE TABLE IF NOT EXISTS pharmacyInfo (
-    `uid` int(10) NOT NULL,
   `recordID` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `address` varchar(255),
@@ -13195,4 +13200,10 @@ CREATE TABLE IF NOT EXISTS emailAttachment (
     documentType VARCHAR(20),
     documentId INT,
     FOREIGN KEY (logId) REFERENCES emailLog (id)
+);
+
+CREATE TABLE IF NOT EXISTS specialty (
+  region varchar(5) default '',
+  specialty char(2) default '',
+  specialtydesc varchar(100) default ''
 );
