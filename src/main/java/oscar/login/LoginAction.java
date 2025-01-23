@@ -40,6 +40,7 @@ import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import org.oscarehr.decisionSupport.service.DSService;
 import org.oscarehr.managers.AppManager;
+import org.oscarehr.managers.SecurityManager;
 import org.oscarehr.util.*;
 import org.owasp.encoder.Encode;
 import org.springframework.context.ApplicationContext;
@@ -56,7 +57,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,6 +82,8 @@ public final class LoginAction extends DispatchAction {
 	private ProviderPreferenceDao providerPreferenceDao = SpringUtils.getBean(ProviderPreferenceDao.class);
 	private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 	private UserPropertyDAO propDao = SpringUtils.getBean(UserPropertyDAO.class);
+
+	private final SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
 
 	// remove after testing is done
 	// private SsoAuthenticationManager ssoAuthenticationManager =
@@ -151,8 +153,7 @@ public final class LoginAction extends DispatchAction {
 			String oldPassword = ((LoginForm) form).getOldPassword();
 
 			try {
-				String errorStr = errorHandling(password, newPassword, confirmPassword, encodePassword(oldPassword),
-						oldPassword);
+				String errorStr = errorHandling(password, newPassword, confirmPassword, oldPassword);
 
 				// Error Handling
 				if (errorStr != null && !errorStr.isEmpty()) {
@@ -609,7 +610,7 @@ public final class LoginAction extends DispatchAction {
 	private void setUserInfoToSession(HttpServletRequest request, String userName, String password, String pin,
 			String nextPage) throws Exception {
 		request.getSession().setAttribute("userName", userName);
-		request.getSession().setAttribute("password", encodePassword(password));
+		request.getSession().setAttribute("password", this.securityManager.encodePassword(password));
 		request.getSession().setAttribute("pin", pin);
 		request.getSession().setAttribute("nextPage", nextPage);
 
@@ -618,18 +619,18 @@ public final class LoginAction extends DispatchAction {
 	/**
 	 * Performs the error handling
 	 * 
-	 * @param password
+	 * @param oldEncodedPassword
 	 * @param newPassword
 	 * @param confirmPassword
 	 * @param oldPassword
 	 * @return
 	 */
-	private String errorHandling(String password, String newPassword, String confirmPassword, String encodedOldPassword,
+	private String errorHandling(String oldEncodedPassword, String newPassword, String confirmPassword,
 			String oldPassword) {
 
 		String newURL = "";
 
-		if (!encodedOldPassword.equals(password)) {
+		if (!this.securityManager.matchesPassword(oldPassword, oldEncodedPassword)) {
 			newURL = newURL
 					+ "?errormsg=Your old password, does NOT match the password in the system. Please enter your old password.";
 		} else if (!newPassword.equals(confirmPassword)) {
@@ -639,28 +640,7 @@ public final class LoginAction extends DispatchAction {
 			newURL = newURL
 					+ "?errormsg=Your new password, is the same as your old password. Please choose a new password.";
 		}
-
 		return newURL;
-	}
-
-	/**
-	 * This method encodes the password, before setting to session.
-	 * 
-	 * @param password
-	 * @return
-	 * @throws Exception
-	 */
-	private String encodePassword(String password) throws Exception {
-
-		MessageDigest md = MessageDigest.getInstance("SHA");
-
-		StringBuilder sbTemp = new StringBuilder();
-		byte[] btNewPasswd = md.digest(password.getBytes());
-		for (int i = 0; i < btNewPasswd.length; i++)
-			sbTemp = sbTemp.append(btNewPasswd[i]);
-
-		return sbTemp.toString();
-
 	}
 
 	/**
@@ -696,7 +676,7 @@ public final class LoginAction extends DispatchAction {
 	private void persistNewPassword(String userName, String newPassword) throws Exception {
 
 		Security security = getSecurity(userName);
-		security.setPassword(encodePassword(newPassword));
+		security.setPassword(this.securityManager.encodePassword(newPassword));
 		security.setForcePasswordReset(Boolean.FALSE);
 		SecurityDao securityDao = (SecurityDao) SpringUtils.getBean(SecurityDao.class);
 		securityDao.saveEntity(security);
