@@ -796,8 +796,8 @@ public class RxUtil {
 					durationSpec = instructionToCheck.substring(m1.start(), m.start());
 					duration = durationSpec.trim();
 					p("duration here1", duration);
+					break;
 				}
-				break;
 			}
 		}
 
