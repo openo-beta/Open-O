@@ -50,6 +50,7 @@
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties"%>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo"%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
       String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 	  boolean authed=true;
@@ -613,6 +614,20 @@ if (request.getAttribute("printError") != null && (Boolean) request.getAttribute
                                                 </div>
                                             </td>
                                         </tr>
+                                        <% if ("ExcellerisON".equals(handler.getMsgType())) { %>
+                                            <tr>
+                                                <td>
+                                                    <div class="FieldData">
+                                                        <strong>Reported on:</strong>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="FieldData" nowrap="nowrap">
+                                                        <%= ((ExcellerisOntarioHandler) handler).getReportStatusChangeDate() %>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
                                         <tr>
                                             <td>
                                                 <div class="FieldData">
@@ -960,7 +975,7 @@ if (request.getAttribute("printError") != null && (Boolean) request.getAttribute
                                     
                                     if ( !handler.getOBXResultStatus(j, k).equals("DNS") && b2 && b3){ // <<--  DNS only needed for MDS messages
                                         String obrName = handler.getOBRName(j);
-                                        if(!obrFlag && !obrName.equals("") && !(obxName.contains(obrName) && obxCount < 2)){%>
+                                        if(!obrFlag && !obrName.equals("") && !(obxName.contains(obrName) && obxCount < 2) && !handler.getMsgType().equals("ExcellerisON")){%>
                                            <%--  <tr bgcolor="<%=(linenum % 2 == 1 ? highlight : "")%>" >
                                                 <td valign="top" align="left"><%=obrName%></td>
                                                 <td colspan="6">&nbsp;</td>
@@ -1077,7 +1092,13 @@ if (request.getAttribute("printError") != null && (Boolean) request.getAttribute
 													 <%
 												} else {
 											%>
-	                                            <td align="right"><%= handler.getOBXResult( j, k) %></td><%}%>
+	                                            <td align="right">
+                                                   <% if (handler.getMsgType().equals("ExcellerisON") && !((ExcellerisOntarioHandler) handler).getOBXSubId(j, k).isEmpty()) { %>
+                                                    <em><%= ((ExcellerisOntarioHandler) handler).getOBXSubIdWithObservationValue( j, k) %></em>
+                                                    <% } else { %>
+                                                    <%= handler.getOBXResult( j, k) %>
+                                                    <% } %>
+                                                </td><%}%>
 	                                            <% } %>
 	                                            <td align="center">
 	                                                    <%= handler.getOBXAbnormalFlag(j, k)%>
