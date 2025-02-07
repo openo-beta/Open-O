@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.oscarehr.util.LoggedInInfo;
