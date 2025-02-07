@@ -1591,43 +1591,23 @@
         </dependency>
 
         <!-- AXIS2 (for OLIS) -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2</artifactId>
             <version>1.8.0</version>
             <type>pom</type>
-        </dependency>
+        </dependency> -->
         <!-- Detected as "Unused dependency" but don't remove it, caused 404 error after removing -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-transport-http</artifactId>
             <version>1.8.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpclient</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-io</groupId>
-                    <artifactId>commons-io</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-adb</artifactId>
             <version>1.8.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.axis2</groupId>
-                    <artifactId>axis2-kernel</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.ws.commons.axiom</groupId>
-                    <artifactId>axiom-dom</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        </dependency> -->
         
         <dependency>
             <groupId>org.apache.ant</groupId>
@@ -2184,6 +2164,13 @@
                     <artifactId>neethi</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- replacement for the javax.wsdl -->
+        <dependency>
+            <groupId>org.apache.woden</groupId>
+            <artifactId>woden-core</artifactId>
+            <version>1.0M10</version>
         </dependency>
 
         <dependency>
