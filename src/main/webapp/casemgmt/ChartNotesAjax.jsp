@@ -549,23 +549,23 @@ CasemgmtNoteLock casemgmtNoteLock = (CasemgmtNoteLock)session.getAttribute("case
 							url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + dispDocNo + "&providerNo=" + provNo + "');";
 							url = url + "return false;";
 
+							String editUrl = "window.open('/oscar/annotation/annotation.jsp?display=Documents&amp;table_id=" + dispDocNo + "&amp;demo=" + demographicNo + "','anwin','width=400,height=500');";
+
 							if (note.getRemoteFacilityId()==null) // only allow editing for local notes
 							{
 								if(!note.isReadOnly())
 								{
 								%>
-									<div>
 							 		<a title="<bean:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
-							 		href="javascript:void(0);" onclick="<%=editWarn?"noPrivs(event);":"editNote(event);"%> return false;" style="float: right; margin-right: 5px;">
+							 		href="javascript:void(0);" onclick="<%=editUrl%> return false;" style="<%=bgColour%> order: 1; padding: 2px 5px;">
 							 		<bean:message key="oscarEncounter.edit.msgEdit" />
 							 		</a>
-							 		</div>
 						 		<%
 								}
 							}
 			 				%>
 			                <div class="view-links" style="<%=(note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""%>">
-								<a class="links" title="<bean:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>" href="javascript:void(0)" onclick="<%=url%>" style="float: right; margin-right: 5px;"> <bean:message key="oscarEncounter.view" /> </a>
+								<a class="links" title="<bean:message key="oscarEncounter.view.docView"/>" id="view<%=globalNoteId%>" href="javascript:void(0)" onclick="<%=url%>" style="float: right;"> <bean:message key="oscarEncounter.view" /> </a>
 			                </div>
 				    <%
 			 			}
