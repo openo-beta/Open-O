@@ -657,6 +657,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>6.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- throws an compilation error when removed/commented -->
         <dependency>
@@ -822,6 +828,10 @@
                 <exclusion>
                     <groupId>com.fasterxml.woodstox</groupId>
                     <artifactId>woodstox-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.activation</groupId>
+                    <artifactId>jakarta.activation-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -1591,14 +1601,14 @@
         </dependency>
 
         <!-- AXIS2 (for OLIS) -->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2</artifactId>
             <version>1.8.0</version>
             <type>pom</type>
-        </dependency> -->
+        </dependency>
         <!-- Detected as "Unused dependency" but don't remove it, caused 404 error after removing -->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-transport-http</artifactId>
             <version>1.8.0</version>
@@ -1607,7 +1617,7 @@
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-adb</artifactId>
             <version>1.8.2</version>
-        </dependency> -->
+        </dependency>
         
         <dependency>
             <groupId>org.apache.ant</groupId>
@@ -1978,13 +1988,21 @@
                     <artifactId>jakarta.mail-api</artifactId>
                 </exclusion>
                 <exclusion>
-                   <groupId>org.opensaml</groupId>  
-                   <artifactId>opensaml-saml-impl</artifactId>                  
+                    <groupId>org.opensaml</groupId>  
+                    <artifactId>opensaml-xacml-impl</artifactId>                  
                </exclusion>
                <exclusion>
-                   <groupId>org.opensaml</groupId>
-                   <artifactId>opensaml-xacml-saml-api</artifactId>
+                    <groupId>org.opensaml</groupId>
+                    <artifactId>opensaml-xacml-saml-impl</artifactId>
                </exclusion>
+               <exclusion>
+                    <groupId>org.opensaml</groupId>
+                    <artifactId>opensaml-saml-impl</artifactId>
+               </exclusion>
+               <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk18on</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.wss4j/wss4j-ws-security-dom -->
@@ -1992,6 +2010,16 @@
             <groupId>org.apache.wss4j</groupId>
             <artifactId>wss4j-ws-security-dom</artifactId>
             <version>3.0.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.wss4j</groupId>
+                    <artifactId>wss4j-ws-security-common</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ehcache</groupId>
+                    <artifactId>ehcache</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -2346,10 +2374,29 @@
         </dependency>
 
         <!-- Apache Tika - MimeType handling for downloaded files (ie. XDS) -->
+        <!-- when updated to the latest version 3.1.0, causes 16 errors realetd to IOUtils-->
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>1.28.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.xml.bind</groupId>
+                    <artifactId>jakarta.xml.bind-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.activation</groupId>
+                    <artifactId>jakarta.activation-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -2507,7 +2554,8 @@
         </dependency>
 
         <!-- HAPI FHIR -->
-        <dependency>
+        <!-- this dependency calls on a lot of transitive dependencies that are not duplicated. no error when removed. -->
+        <!-- <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-base</artifactId>
             <version>${hapifhir.version}</version>
@@ -2521,7 +2569,7 @@
                     <artifactId>jcl-over-slf4j</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-structures-dstu2</artifactId>
