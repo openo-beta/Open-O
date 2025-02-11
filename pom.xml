@@ -1601,6 +1601,11 @@
         </dependency>
 
         <!-- AXIS2 (for OLIS) -->
+        <!-- 
+            Suggested by the Axis2 development team:
+            Since the latest published version is 1.8.2, but it's not compatible with Jakarta EE.
+            We are going to use the 2.0.0-SNAPSHOT version for now until the official 1.8.3 version is released.
+        -->
         <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-kernel</artifactId>
