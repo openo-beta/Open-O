@@ -1,0 +1,7 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Feb 11 09:31:55 EST 2025
+axis2-kernel-2.0.0-20250211.015023-90.jar>apache.snapshots=
+axis2-kernel-2.0.0-20250211.015023-90.pom>apache.snapshots=
+axis2-kernel-2.0.0-SNAPSHOT-sources.jar>=
+axis2-kernel-2.0.0-SNAPSHOT.jar>=
+axis2-kernel-2.0.0-SNAPSHOT.pom>=
