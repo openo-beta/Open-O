@@ -2360,6 +2360,10 @@
                     <groupId>org.marc.shic</groupId>
                     <artifactId>shic-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -2479,6 +2483,12 @@
             <artifactId>testng</artifactId>
             <version>7.5.1</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
@@ -2571,6 +2581,12 @@
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-structures-dstu2</artifactId>
             <version>${hapifhir.version}</version>
+             <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Detected as "Unused dependency" but don't remove it, it's using actually -->
         <dependency>

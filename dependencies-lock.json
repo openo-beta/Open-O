@@ -328,14 +328,6 @@
     "optional" : false,
     "integrity" : "sha512:3yi2ZQBJ1j+kIKrTwYSZ1QO6WU2tVjZt2uf2skRB9l0RkDd2xXRvbWyyFQ/bXplrnr8ow9U7bJfpGkagr4GwvQ=="
   }, {
-    "groupId" : "com.google.code.findbugs",
-    "artifactId" : "jsr305",
-    "version" : "3.0.1",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:zVN7dLREIfOYgy1hAULBYaKShRrTsWV8/YxTB0mx+xahOuWWq9WOQZCTsljW25Q86VNbfUoglIcaDSDSnRLECA=="
-  }, {
     "groupId" : "com.google.code.gson",
     "artifactId" : "gson",
     "version" : "2.10.1",
@@ -2208,14 +2200,6 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:v9IfI1C/C7VGpo0zA/KMahXO4eYwE4wWk0TD9l/jmhXmHG/05SOfOPLx+eSI7/TVVlpKB3QmMGSrajCqn8qu0w=="
-  }, {
-    "groupId" : "xml-apis",
-    "artifactId" : "xml-apis",
-    "version" : "1.0.b2",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:2u5R8PVkl5yUG0HienEpYXzp15Gk4cS2GKKa4z7Jx4IBrFFmhcrf0HP9olDVDrLA1lFHQQPnxFd+S/p9XyBSoQ=="
   }, {
     "groupId" : "xmlrpc",
     "artifactId" : "xmlrpc",
