@@ -33,19 +33,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.XmlCalendar;
 import org.apache.xmlbeans.XmlOptions;
 import org.apache.xmlbeans.XmlValidationError;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.BORNPathwayMappingDao;
 import org.oscarehr.common.dao.ConsultationRequestDao;
 import org.oscarehr.common.dao.ConsultationServiceDao;
-//import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.dao.DxresearchDAO;
@@ -603,11 +602,9 @@ public class BORNWbCsdXmlGenerator {
     }
 
     protected boolean isAgeLessThan7y(PatientInfo patientInfo) {
-        LocalDate date1 = new LocalDate(LocalDate.fromCalendarFields(patientInfo.getDOB()));
-        LocalDate date2 = new LocalDate(new java.util.Date());
-        PeriodType monthDay = PeriodType.months();
-        Period difference = new Period(date1, date2, monthDay);
-        int months = difference.getMonths();
+        LocalDate date1 = LocalDate.ofInstant(patientInfo.getDOB().toInstant(), ZoneId.systemDefault());
+        LocalDate date2 = LocalDate.now();
+        long months = ChronoUnit.MONTHS.between(date1, date2);
 
         if (months >= ((12 * 6) + 6)) {
             return false;
@@ -616,11 +613,9 @@ public class BORNWbCsdXmlGenerator {
     }
 
     private boolean isAgeLessThan18y(PatientInfo patientInfo) {
-        LocalDate date1 = new LocalDate(LocalDate.fromCalendarFields(patientInfo.getDOB()));
-        LocalDate date2 = new LocalDate(new java.util.Date());
-        PeriodType monthDay = PeriodType.months();
-        Period difference = new Period(date1, date2, monthDay);
-        int months = difference.getMonths();
+        LocalDate date1 = LocalDate.ofInstant(patientInfo.getDOB().toInstant(), ZoneId.systemDefault());
+        LocalDate date2 = LocalDate.now();
+        long months = ChronoUnit.MONTHS.between(date1, date2);
 
         if (months >= (12 * 18)) {
             return false;

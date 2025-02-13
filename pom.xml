@@ -1871,10 +1871,6 @@
                     <artifactId>wss4j-ws-security-common</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>cxf-rt-bindings-soap</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.apache.wss4j</groupId>
                     <artifactId>wss4j-ws-security-policy-stax</artifactId>
                 </exclusion>
@@ -2016,7 +2012,7 @@
             </exclusions>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.oscarehr</groupId>
             <artifactId>myoscar_client_utils</artifactId>
             <version>2013.07.22.TLS</version>
@@ -2186,7 +2182,7 @@
                     <artifactId>neethi</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency> -->
 
         <!-- replacement for the javax.wsdl -->
         <dependency>
@@ -2429,6 +2425,13 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-jaxrs</artifactId>
             <version>1.9.13</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.5.4</version>
         </dependency>
 
         <!-- OWASP Encoder -->

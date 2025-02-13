@@ -9,14 +9,12 @@
  */
 package org.oscarehr.olis;
 
-import java.util.TimerTask;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.olis.dao.OLISSystemPreferencesDao;
 import org.oscarehr.olis.model.OLISSystemPreferences;
@@ -24,7 +22,6 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.scheduling.concurrent.ScheduledExecutorTask;
-//import org.springframework.scheduling.timer.ScheduledTimerTask;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -35,7 +32,6 @@ public class OLISPreferences2Action extends ActionSupport {
     HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);
     HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);
 
-
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     @Override
@@ -44,18 +40,18 @@ public class OLISPreferences2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_admin)");
         }
 
-        DateTimeFormatter input = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss Z");
-        DateTimeFormatter output = DateTimeFormat.forPattern("YYYYMMddHHmmssZ");
-        DateTime date;
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss Z");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("YYYYMMddHHmmssZ");
+
         String startTime = oscar.Misc.getStr(request.getParameter("startTime"), "").trim();
         if (!startTime.equals("")) {
-            date = input.parseDateTime(startTime);
-            startTime = date.toString(output);
+            ZonedDateTime date = ZonedDateTime.parse(startTime, inputFormatter);
+            startTime = date.format(outputFormatter);
         }
         String endTime = oscar.Misc.getStr(request.getParameter("endTime"), "").trim();
         if (!endTime.equals("")) {
-            date = input.parseDateTime(endTime);
-            endTime = date.toString(output);
+            ZonedDateTime date = ZonedDateTime.parse(endTime, inputFormatter);
+            endTime = date.format(outputFormatter);
         }
 
         Integer pollFrequency = oscar.Misc.getInt(request.getParameter("pollFrequency"), 30);
@@ -74,10 +70,6 @@ public class OLISPreferences2Action extends ActionSupport {
             request.setAttribute("success", true);
 
             if (restartTimer) {
-	     		/* 	ScheduledTimerTask task = (ScheduledTimerTask)SpringUtils.getBean(ScheduledExecutorTask.class);		
-	     			TimerTask tt = task.getTimerTask();
-	     			Thread t = new Thread(tt);
-	     			t.start();*/
                 ScheduledExecutorTask task = (ScheduledExecutorTask) SpringUtils.getBean(ScheduledExecutorTask.class);
                 Runnable tt = task.getRunnable();
                 Thread t = new Thread(tt);

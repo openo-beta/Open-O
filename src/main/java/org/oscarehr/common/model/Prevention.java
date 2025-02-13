@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,8 +49,6 @@ import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.integration.fhir.interfaces.ImmunizationInterface;
 
@@ -503,10 +504,13 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
 
     @Override
     public boolean isHistorical(int days) {
-        DateTime immunizationDate = new DateTime(getImmunizationDate());
-        DateTime submissionDate = new DateTime(System.currentTimeMillis());
-        int daysBetween = Days.daysBetween(immunizationDate, submissionDate).getDays();
-        return (daysBetween > days);
+        LocalDateTime immunizationDate = getImmunizationDate().toInstant()
+                                            .atZone(ZoneId.systemDefault())
+                                            .toLocalDateTime();
+        LocalDateTime submissionDate = LocalDateTime.now();
+
+        long daysBetween = ChronoUnit.DAYS.between(immunizationDate, submissionDate);
+        return daysBetween > days;
     }
 
     @Override
