@@ -1,0 +1,7 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Feb 14 09:46:00 EST 2025
+mex-2.0.0-SNAPSHOT-classpath-module.jar>=
+mex-2.0.0-SNAPSHOT-impl.jar>=
+mex-2.0.0-SNAPSHOT-sources.jar>=
+mex-2.0.0-SNAPSHOT.mar>=
+mex-2.0.0-SNAPSHOT.pom>=

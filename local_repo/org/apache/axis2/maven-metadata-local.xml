@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <plugins>
+    <plugin>
+      <name>axis2-repo-maven-plugin</name>
+      <prefix>axis2</prefix>
+      <artifactId>axis2-repo-maven-plugin</artifactId>
+    </plugin>
+  </plugins>
+</metadata>
