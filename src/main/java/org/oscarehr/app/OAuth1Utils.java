@@ -27,15 +27,18 @@ package org.oscarehr.app;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.cxf.jaxrs.provider.json.JSONProvider;
-import org.apache.cxf.rs.security.oauth.client.OAuthClientUtils;
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.ws.oauth.OAuth1Client;
+
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.common.model.AppUser;
 import org.oscarehr.util.LoggedInInfo;
@@ -46,15 +49,6 @@ import oscar.log.LogAction;
 public class OAuth1Utils {
     private static final Logger logger = MiscUtils.getLogger();
 
-    public static List<Object> getProviderK2A() {
-        List<Object> providers = new ArrayList<Object>();
-        JSONProvider jsonProvider = new JSONProvider();
-        jsonProvider.setDropRootElement(true);
-        providers.add(jsonProvider);
-
-        return providers;
-    }
-
     public static String getOAuthGetResponse(LoggedInInfo loggedInInfo, AppDefinition app, AppUser user, String requestURI, String baseRequestURI) {
         StringBuilder sb = new StringBuilder();
         InputStream in = null;
@@ -63,17 +57,14 @@ public class OAuth1Utils {
             AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(app.getConfig());
             Map<String, String> keySecret = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
 
-            OAuthClientUtils.Consumer consumer = new OAuthClientUtils.Consumer(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret());
-            OAuthClientUtils.Token accessToken = new OAuthClientUtils.Token(keySecret.get("key"), keySecret.get("secret"));
+            OAuth1Client oauthClient = new OAuth1Client(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret(), null);
+            OAuth1AccessToken accessToken = new OAuth1AccessToken(keySecret.get("key"), keySecret.get("secret"));
 
-            requestURI = appAuthConfig.getBaseURL() + requestURI;
-            WebClient webclient = WebClient.create(requestURI);
+            OAuthRequest request = new OAuthRequest(Verb.GET, appAuthConfig.getBaseURL() + requestURI);
+            oauthClient.getService().signRequest(accessToken, request);
 
-            webclient = webclient.replaceHeader("Authorization", OAuthClientUtils.createAuthorizationHeader(consumer, accessToken, "GET", appAuthConfig.getBaseURL() + baseRequestURI));
-
-            jakarta.ws.rs.core.Response reps = webclient.get();
-
-            in = (InputStream) reps.getEntity();
+            Response response = oauthClient.getService().execute(request);
+            in = response.getStream();
             bufferedReader = new BufferedReader(new InputStreamReader(in));
 
             String line;
@@ -107,17 +98,17 @@ public class OAuth1Utils {
             AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(app.getConfig());
             Map<String, String> keySecret = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
 
-            OAuthClientUtils.Consumer consumer = new OAuthClientUtils.Consumer(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret());
-            OAuthClientUtils.Token accessToken = new OAuthClientUtils.Token(keySecret.get("key"), keySecret.get("secret"));
+            OAuth1Client oauthClient = new OAuth1Client(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret(), null);
+            OAuth1AccessToken accessToken = new OAuth1AccessToken(keySecret.get("key"), keySecret.get("secret"));
 
-            requestURI = appAuthConfig.getBaseURL() + requestURI;
-            WebClient webclient = WebClient.create(requestURI, providers);
+            OAuthRequest request = new OAuthRequest(Verb.POST, appAuthConfig.getBaseURL() + requestURI);
+            request.addHeader("Content-Type", "application/json;charset=utf-8");
+            request.setPayload(obj.toString()); 
 
-            webclient = webclient.replaceHeader("Authorization", OAuthClientUtils.createAuthorizationHeader(consumer, accessToken, "POST", appAuthConfig.getBaseURL() + baseRequestURI));
+            oauthClient.getService().signRequest(accessToken, request);
 
-            jakarta.ws.rs.core.Response reps = webclient.accept("application/json, text/plain, */*").acceptEncoding("gzip, deflate").type("application/json;charset=utf-8").post(obj);
-
-            in = (InputStream) reps.getEntity();
+            Response response = oauthClient.getService().execute(request);
+            in = response.getStream();
             bufferedReader = new BufferedReader(new InputStreamReader(in));
 
             String line;
@@ -130,7 +121,6 @@ public class OAuth1Utils {
             String demographicNo = null;
             String data = sb.toString();
             LogAction.addLog(loggedInInfo, action, content, contentId, demographicNo, data);
-
 
             return data;
         } catch (Exception e) {
@@ -150,14 +140,14 @@ public class OAuth1Utils {
             AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(app.getConfig());
             Map<String, String> keySecret = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
 
-            OAuthClientUtils.Consumer consumer = new OAuthClientUtils.Consumer(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret());
-            OAuthClientUtils.Token accessToken = new OAuthClientUtils.Token(keySecret.get("key"), keySecret.get("secret"));
+            OAuth1Client oauthClient = new OAuth1Client(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret(), null);
+            OAuth1AccessToken accessToken = new OAuth1AccessToken(keySecret.get("key"), keySecret.get("secret"));
 
-            requestURI = appAuthConfig.getBaseURL() + requestURI;
-            WebClient webclient = WebClient.create(requestURI);
+            OAuthRequest request = new OAuthRequest(Verb.DELETE, appAuthConfig.getBaseURL() + requestURI);
+            oauthClient.getService().signRequest(accessToken, request);
 
-            webclient = webclient.replaceHeader("Authorization", OAuthClientUtils.createAuthorizationHeader(consumer, accessToken, "DELETE", appAuthConfig.getBaseURL() + baseRequestURI));
-            webclient.delete();
+            oauthClient.getService().execute(request);
+            logger.debug("OAuth1 DELETE request successful: " + requestURI);
         } catch (Exception e) {
             logger.error("Error getting information from OAuth Service", e);
         } finally {
