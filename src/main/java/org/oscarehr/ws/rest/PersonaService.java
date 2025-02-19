@@ -52,7 +52,6 @@ import org.oscarehr.managers.MessagingManager;
 import org.oscarehr.managers.PreferenceManager;
 import org.oscarehr.managers.ProgramManager2;
 import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.oscarehr.ws.rest.conversion.ProgramProviderConverter;
@@ -72,9 +71,6 @@ import org.oscarehr.ws.rest.to.model.PatientListConfigTo1;
 import org.oscarehr.ws.rest.to.model.ProgramProviderTo1;
 import org.oscarehr.ws.rest.util.ClinicalConnectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.oscarehr.myoscar.client.ws_manager.MessageManager;
-import org.oscarehr.phr.util.MyOscarUtils;
-
 
 @Path("/persona")
 public class PersonaService extends AbstractServiceImpl {
@@ -203,23 +199,6 @@ public class PersonaService extends AbstractServiceImpl {
         int menuItemCounter = 0;
         messengerMenu.add(menuItemCounter++, bundle.getString("navbar.newOscarDemoMessages"), "" + messageCount, "classic");
         messengerMenu.add(menuItemCounter++, bundle.getString("navbar.newOscarMessages"), "" + ptMessageCount, "classic");
-
-
-        if (MyOscarUtils.isMyOscarEnabled(provider.getProviderNo())) {
-            String phrMessageCount = "-";
-            MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(getLoggedInInfo().getSession());
-
-            if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn()) {
-                try {
-                    int phrMCount = MessageManager.getUnreadActiveMessageCount(myOscarLoggedInInfo, myOscarLoggedInInfo.getLoggedInPersonId());
-                    phrMessageCount = "" + phrMCount;
-                } catch (Exception e) {
-                    // we'll force a re-login if this ever fails for any reason what so ever.
-                    MyOscarUtils.attemptMyOscarAutoLoginIfNotAlreadyLoggedInAsynchronously(getLoggedInInfo(), true);
-                }
-            }
-            messengerMenu.add(menuItemCounter++, bundle.getString("navbar.newMyOscarMessages"), phrMessageCount, "phr");
-        }
 
         if (appManager.isK2AEnabled()) {
             String k2aMessageCount = appManager.getK2ANotificationNumber(getLoggedInInfo());

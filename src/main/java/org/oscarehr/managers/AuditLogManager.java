@@ -30,10 +30,11 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.Logger;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 import org.oscarehr.common.dao.OscarLogDao;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
@@ -85,7 +86,7 @@ public class AuditLogManager {
 
         logger.info("Purge will be for all data BEFORE and INCLUDING " + endDateToPurge);
 
-        int numDays = Days.daysBetween(new LocalDate(endDateToPurge.getTime()), new LocalDate(new Date().getTime())).getDays();
+        int numDays = (int) ChronoUnit.DAYS.between(LocalDate.ofInstant(endDateToPurge.toInstant(), ZoneId.systemDefault()), LocalDate.now());
         if (numDays < iMinDays) {
             logger.warn("purge aborted because specified date is within " + numDays);
             throw new Exception("purge aborted because specified date is within " + numDays);

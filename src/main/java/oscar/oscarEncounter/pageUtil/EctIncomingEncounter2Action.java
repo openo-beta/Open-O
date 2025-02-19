@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -40,6 +41,7 @@ import java.util.Set;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
@@ -62,9 +64,11 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.myoscar.client.ws_manager.AccountManager;
 import org.oscarehr.myoscar.client.ws_manager.MessageManager;
 import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
+import org.oscarehr.myoscar_server.ws.Message2RecipientPersonAttributesTransfer;
 import org.oscarehr.myoscar_server.ws.MessageTransfer3;
 import org.oscarehr.myoscar_server.ws.MinimalPersonTransfer2;
-import org.oscarehr.phr.web.MyOscarMessagesHelper;
+import org.oscarehr.myoscar_server.ws.NoSuchItemException_Exception;
+import org.oscarehr.myoscar_server.ws.NotAuthorisedException_Exception;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SessionConstants;
@@ -92,6 +96,22 @@ public class EctIncomingEncounter2Action extends ActionSupport {
             .getBean(CaseManagementNoteDAO.class);
     private CaseManagementManager caseManagementMgr = SpringUtils.getBean(CaseManagementManager.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
+    public static MessageTransfer3 readMessage(HttpSession session, Long messageId) throws NotAuthorisedException_Exception, NoSuchItemException_Exception {
+        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
+        MessageTransfer3 messageTransfer = MessageManager.getMessage(myOscarLoggedInInfo, messageId);
+
+        if (messageTransfer != null) {
+            // can only mark as read if I'm the recipient.
+            if (messageTransfer.getRecipientPeopleIds().contains(myOscarLoggedInInfo.getLoggedInPersonId())) {
+                Message2RecipientPersonAttributesTransfer recipientAttributes = MessageManager.getMessageRecipientPersonAttributesTransfer(myOscarLoggedInInfo, messageId, myOscarLoggedInInfo.getLoggedInPersonId());
+                recipientAttributes.setFirstViewDate(new GregorianCalendar());
+                MessageManager.updateMessageRecipientPersonAttributesTransfer(myOscarLoggedInInfo, recipientAttributes);
+            }
+        }
+
+        return (messageTransfer);
+    }
 
     public String execute() throws IOException, ServletException {
 
@@ -192,13 +212,13 @@ public class EctIncomingEncounter2Action extends ActionSupport {
             if (request.getParameter("myoscarmsg") != null) {
                 ResourceBundle props = ResourceBundle.getBundle("oscarResources", request.getLocale());
                 try {
-                    MessageTransfer3 messageTransfer = MyOscarMessagesHelper.readMessage(request.getSession(),
+                    MessageTransfer3 messageTransfer = readMessage(request.getSession(),
                             Long.parseLong(bean.myoscarMsgId));
                     String messageBeingRepliedTo = "";
                     String dateStr = "";
 
                     if (request.getParameter("remyoscarmsg") != null) {
-                        MessageTransfer3 messageTransferOrig = MyOscarMessagesHelper.readMessage(request.getSession(),
+                        MessageTransfer3 messageTransferOrig = readMessage(request.getSession(),
                                 Long.parseLong(request.getParameter("remyoscarmsg")));
                         dateStr = StringEscapeUtils.escapeHtml(
                                 DateUtils.formatDateTime(messageTransferOrig.getSentDate(), request.getLocale()));

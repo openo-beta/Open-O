@@ -20,8 +20,7 @@ public class OAuth1Client {
         return this.service;
     }
 
-    public OAuth1AccessToken getAccessToken(String oauthVerifier) throws Exception {
-        OAuth1RequestToken requestToken = service.getRequestToken();
+    public OAuth1AccessToken getAccessToken(OAuth1RequestToken requestToken, String oauthVerifier) throws Exception {
         return service.getAccessToken(requestToken, oauthVerifier);
     }
 

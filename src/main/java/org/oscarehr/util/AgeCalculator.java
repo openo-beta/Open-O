@@ -25,17 +25,15 @@
 package org.oscarehr.util;
 
 import java.util.Calendar;
-
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
+import java.time.LocalDate;
+import java.time.Period;
 
 public class AgeCalculator {
 
     public static Age calculateAge(Calendar birthDate) {
-        LocalDate birthdate = LocalDate.fromCalendarFields(birthDate);
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+        LocalDate birthdate = birthDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = LocalDate.now(); //Today's date
+        Period period = Period.between(birthdate, now);
 
         return new Age(period.getDays(), period.getMonths(), period.getYears());
     }

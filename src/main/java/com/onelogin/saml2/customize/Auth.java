@@ -1,6 +1,7 @@
 package com.onelogin.saml2.customize;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -17,16 +18,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.onelogin.saml2.authn.AuthnRequest;
 import com.onelogin.saml2.authn.AuthnRequestParams;
-import com.onelogin.saml2.authn.SamlResponse;
+import com.onelogin.saml2.customize.authn.SamlResponse;
 import com.onelogin.saml2.exception.SettingsException;
-import com.onelogin.saml2.factory.SamlMessageFactory;
+import com.onelogin.saml2.customize.factory.SamlMessageFactory;
 import com.onelogin.saml2.exception.Error;
 import com.onelogin.saml2.http.HttpRequest;
 import com.onelogin.saml2.logout.LogoutRequest;
@@ -104,7 +103,7 @@ public class Auth {
 	/**
 	 * SessionNotOnOrAfter. When the user is logged, this stored it from the AuthnStatement of the SAML Response
 	 */
-	private DateTime sessionExpiration;
+	private Instant sessionExpiration;
 
 	/**
 	 * The ID of the last message processed
@@ -1457,7 +1456,7 @@ public class Auth {
 	/**
 	 * @return the SessionNotOnOrAfter of the assertion
 	 */
-	public final DateTime getSessionExpiration() {
+	public final Instant getSessionExpiration() {
 		return sessionExpiration;
 	}
 

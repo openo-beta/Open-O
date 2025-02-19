@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.apache.axis2</groupId>
+  <artifactId>ping</artifactId>
+  <versioning>
+    <lastUpdated>20250214144546</lastUpdated>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0.0-SNAPSHOT</value>
+        <updated>20250214144546</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>mar</extension>
+        <value>2.0.0-SNAPSHOT</value>
+        <updated>20250214144546</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar</extension>
+        <value>2.0.0-SNAPSHOT</value>
+        <updated>20250214144546</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+  <version>2.0.0-SNAPSHOT</version>
+</metadata>

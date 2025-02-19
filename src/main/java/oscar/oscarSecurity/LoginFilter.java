@@ -122,14 +122,14 @@ public class LoginFilter implements Filter {
     };
 
     /*
-     * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
+     * @see jakarta.servlet.Filter#init(jakarta.servlet.FilterConfig)
      */
     public void init(FilterConfig config) throws ServletException {
         logger.info("Starting Filter : " + getClass().getSimpleName());
     }
 
     /*
-     * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
+     * @see jakarta.servlet.Filter#doFilter(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         logger.debug("Entering LoginFilter.doFilter()");
@@ -216,7 +216,7 @@ public class LoginFilter implements Filter {
     }
 
     /*
-     * @see javax.servlet.Filter#destroy()
+     * @see jakarta.servlet.Filter#destroy()
      */
     public void destroy() {
     }

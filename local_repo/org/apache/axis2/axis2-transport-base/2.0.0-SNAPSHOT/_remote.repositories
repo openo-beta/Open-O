@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Feb 14 09:46:00 EST 2025
+axis2-transport-base-2.0.0-SNAPSHOT-sources.jar>=
+axis2-transport-base-2.0.0-SNAPSHOT.jar>=
+axis2-transport-base-2.0.0-SNAPSHOT.pom>=

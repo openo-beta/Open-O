@@ -39,14 +39,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.xmlbeans.XmlCalendar;
 import org.apache.xmlbeans.XmlOptions;
 import org.apache.xmlbeans.XmlValidationError;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.casemgmt.model.CaseManagementIssue;
 import org.oscarehr.casemgmt.model.CaseManagementNote;
@@ -1923,20 +1923,16 @@ public class BORNWbXmlGenerator {
     }
 
     private boolean isAgeLessThan7y(PatientInfo patientInfo) {
+        LocalDate date1 = patientInfo.getDOB().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate date2 = LocalDate.now();
 
-
-        LocalDate date1 = new LocalDate(LocalDate.fromCalendarFields(patientInfo.getDOB()));
-        LocalDate date2 = new LocalDate(new java.util.Date());
-        PeriodType monthDay = PeriodType.months();
-        Period difference = new Period(date1, date2, monthDay);
-        int months = difference.getMonths();
+        Period difference = Period.between(date1, date2);
+        int months = difference.getYears() * 12 + difference.getMonths();
 
         if (months >= ((12 * 6) + 6)) {
             return false;
         }
         return true;
-
-
     }
 
 	/*

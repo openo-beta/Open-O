@@ -42,9 +42,6 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.joda.time.Days;
-import org.joda.time.MutablePeriod;
-import org.joda.time.PeriodType;
 import org.oscarehr.PMmodule.utility.DateTimeFormatUtils;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Stay;
@@ -132,19 +129,17 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
         }
 
         for (Entry<Integer, Set<Stay>> entry : clientIdToStayMap.entrySet()) {
-            MutablePeriod period = new MutablePeriod(PeriodType.days());
+            long totalDurationInDays = 0;
 
             for (Stay stay : entry.getValue()) {
-                period.add(stay.getInterval());
+                totalDurationInDays += stay.getStayDuration().toDays();
             }
 
-            int days = Days.standardDaysIn(period).getDays();
-
-            if (days <= 10) {
+            if (totalDurationInDays <= 10) {
                 shelterUsages[LOW] += 1;
-            } else if (11 <= days && days <= 179) {
+            } else if (11 <= totalDurationInDays && totalDurationInDays <= 179) {
                 shelterUsages[MEDIUM] += 1;
-            } else if (180 <= days) {
+            } else if (180 <= totalDurationInDays) {
                 shelterUsages[HIGH] += 1;
             }
         }

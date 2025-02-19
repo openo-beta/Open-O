@@ -42,10 +42,6 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
 
-import org.apache.cxf.message.Message;
-import org.apache.cxf.phase.PhaseInterceptorChain;
-import org.apache.cxf.rs.security.oauth.data.OAuthContext;
-import org.apache.cxf.security.SecurityContext;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
@@ -61,6 +57,11 @@ import org.oscarehr.ws.rest.to.AbstractSearchResponse;
 import org.oscarehr.ws.rest.to.GenericRESTResponse;
 import org.oscarehr.ws.rest.to.model.ProviderTo1;
 import org.oscarehr.ws.transfer_objects.ProviderTransfer;
+import org.oscarehr.ws.oauth.OAuth1Client;
+
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuth1RequestToken;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -82,20 +83,43 @@ public class ProviderService extends AbstractServiceImpl {
     @Autowired
     DemographicManager demographicManager;
 
-
-    protected SecurityContext getSecurityContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
-        return sc;
-    }
-
-    protected OAuthContext getOAuthContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        OAuthContext sc = m.getContent(OAuthContext.class);
-        return sc;
-    }
+    @Autowired
+    OAuth1Client oauthClient; 
 
     public ProviderService() {
+    }
+
+    @GET
+    @Path("/oauth/authorize")
+    @Produces("application/json")
+    public String getOAuthAuthorizationUrl() throws Exception {
+        OAuth1RequestToken requestToken = oauthClient.getService().getRequestToken();
+        
+        String authorizationUrl = oauthClient.getAuthorizationUrl(requestToken);
+
+        return "{\"authorizationUrl\": \"" + authorizationUrl + "\"}";
+    }
+
+    @GET
+    @Path("/oauth/callback")
+    @Produces("application/json")
+    public String handleOAuthCallback(@QueryParam("oauth_token") String oauthToken, @QueryParam("oauth_verifier") String oauthVerifier) throws Exception {
+        OAuth1RequestToken requestToken = new OAuth1RequestToken(oauthToken, "");
+        
+        OAuth1AccessToken accessToken = oauthClient.getAccessToken(requestToken, oauthVerifier);
+        
+        return "{\"accessToken\": \"" + accessToken.getToken() + "\", \"tokenSecret\": \"" + accessToken.getTokenSecret() + "\"}";
+    }
+
+    @GET
+    @Path("/oauth/signedRequest")
+    @Produces("application/json")
+    public String sendSignedRequest(@QueryParam("url") String url, @QueryParam("accessToken") String accessToken, @QueryParam("tokenSecret") String tokenSecret) throws Exception {
+        OAuth1AccessToken token = new OAuth1AccessToken(accessToken, tokenSecret);
+        
+        String responseBody = oauthClient.sendSignedRequest(token, url);
+
+        return responseBody;
     }
 
     @GET
@@ -127,7 +151,6 @@ public class ProviderService extends AbstractServiceImpl {
         response.setContent(providers);
         response.setTimestamp(new Date());
         response.setTotal(response.getContent().size());
-
 
         return response;
     }
@@ -291,7 +314,6 @@ public class ProviderService extends AbstractServiceImpl {
                 break;
             }
         }
-
 
         return new GenericRESTResponse(true, suggestProviderNo);
     }

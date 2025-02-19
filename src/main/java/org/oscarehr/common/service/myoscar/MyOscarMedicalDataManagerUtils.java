@@ -52,7 +52,6 @@ import org.oscarehr.myoscar_server.ws.MedicalDataWs;
 import org.oscarehr.myoscar_server.ws.NoSuchItemException_Exception;
 import org.oscarehr.myoscar_server.ws.NotAuthorisedException_Exception;
 import org.oscarehr.myoscar_server.ws.UnsupportedEncodingException_Exception;
-import org.oscarehr.phr.util.MyOscarUtils;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
@@ -81,13 +80,7 @@ public final class MyOscarMedicalDataManagerUtils {
         cal.setTime(dateOfData);
         medicalDataTransfer.setDateOfData(cal);
 
-        Long providerMyOscarUserId = MyOscarUtils.getMyOscarUserIdFromOscarProviderNo(myOscarLoggedInInfo, providerNo);
-        medicalDataTransfer.setObserverOfDataPersonId(providerMyOscarUserId);
-
         medicalDataTransfer.setObserverOfDataPersonName(getObserverOfDataPersonName(providerNo));
-
-        Long patientMyOscarUserId = MyOscarUtils.getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demographicId);
-        medicalDataTransfer.setOwningPersonId(patientMyOscarUserId);
 
         return (medicalDataTransfer);
     }

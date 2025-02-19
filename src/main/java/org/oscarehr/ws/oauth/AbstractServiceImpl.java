@@ -31,45 +31,71 @@ package org.oscarehr.ws.oauth;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.cxf.rs.security.oauth.data.OAuthContext;
-import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.apache.cxf.message.Message;
-import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.LoggedInInfo;
+
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.oauth.OAuth10aService;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * Base class for OAuth web services
  */
 public abstract class AbstractServiceImpl {
 
+    private OAuth10aService oauthService;
+
+    /**
+     * Set the OAuth10aService instance.
+     */
+    public void setOAuthService(OAuth10aService oauthService) {
+        this.oauthService = oauthService;
+    }
+
+    /**
+     * Get the current HTTP servlet request.
+     */
     protected HttpServletRequest getHttpServletRequest() {
-        Message message = PhaseInterceptorChain.getCurrentMessage();
-        HttpServletRequest request = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
-        return (request);
+        // Get the current request from Spring's RequestContextHolder
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            throw new IllegalStateException("No current request is available.");
+        }
+        return attributes.getRequest();
     }
 
-    protected OAuthContext getOAuthContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        OAuthContext oac = m.getContent(OAuthContext.class);
-        return oac;
+    /**
+     * Get the OAuth1AccessToken from the current request.
+     */
+    protected OAuth1AccessToken getOAuthAccessToken() {
+        HttpServletRequest request = getHttpServletRequest();
+        String token = request.getParameter("oauth_token");
+        String tokenSecret = request.getParameter("oauth_token_secret");
+        if (token == null || tokenSecret == null) {
+            throw new IllegalStateException("OAuth access token is not available in the request.");
+        }
+        return new OAuth1AccessToken(token, tokenSecret);
     }
 
+    /**
+     * Get the current provider (user) from the logged-in info.
+     */
     protected Provider getCurrentProvider() {
         LoggedInInfo loggedInInfo = getLoggedInInfo();
-        return (loggedInInfo.getLoggedInProvider());
+        return loggedInInfo.getLoggedInProvider();
     }
 
+    /**
+     * Get the logged-in info from the current request.
+     */
     protected LoggedInInfo getLoggedInInfo() {
-
-        /* The OAuthInterceptor already put its loggedInInfo into the request. */
         HttpServletRequest request = getHttpServletRequest();
         LoggedInInfo info = LoggedInInfo.getLoggedInInfoFromRequest(request);
         if (info == null) {
             throw new IllegalStateException("Authentication info is not available.");
-
         }
         return info;
     }
-
 }

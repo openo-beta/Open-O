@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Feb 14 09:45:59 EST 2025
+addressing-2.0.0-SNAPSHOT-classpath-module.jar>=
+addressing-2.0.0-SNAPSHOT-sources.jar>=
+addressing-2.0.0-SNAPSHOT.mar>=
+addressing-2.0.0-SNAPSHOT.pom>=

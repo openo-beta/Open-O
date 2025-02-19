@@ -27,6 +27,7 @@ package org.oscarehr.ws.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -34,11 +35,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 
-
-import org.apache.cxf.message.Message;
-import org.apache.cxf.phase.PhaseInterceptorChain;
-import org.apache.cxf.rs.security.oauth.data.OAuthContext;
-import org.apache.cxf.security.SecurityContext;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.managers.DemographicManager;
@@ -48,9 +44,11 @@ import org.oscarehr.managers.ProviderManager2;
 import org.oscarehr.ws.rest.to.AbstractSearchResponse;
 import org.oscarehr.ws.rest.to.GenericRESTResponse;
 import org.oscarehr.ws.rest.to.model.ConsentTypeTo1;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.github.scribejava.core.model.OAuth1AccessToken;
 
 @Component("ConsentService")
 @Path("/consentService/")
@@ -72,17 +70,17 @@ public class ConsentService extends AbstractServiceImpl {
     @Autowired
     PatientConsentManager patientConsentManager;
 
-
-    protected SecurityContext getSecurityContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
-        return sc;
-    }
-
-    protected OAuthContext getOAuthContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        OAuthContext sc = m.getContent(OAuthContext.class);
-        return sc;
+    /**
+     * Get the OAuth1AccessToken from the current request.
+     */
+    protected OAuth1AccessToken getOAuthAccessToken() {
+        HttpServletRequest request = getHttpServletRequest();
+        String token = request.getParameter("oauth_token");
+        String tokenSecret = request.getParameter("oauth_token_secret");
+        if (token == null || tokenSecret == null) {
+            throw new IllegalStateException("OAuth access token is not available in the request.");
+        }
+        return new OAuth1AccessToken(token, tokenSecret);
     }
 
     public ConsentService() {

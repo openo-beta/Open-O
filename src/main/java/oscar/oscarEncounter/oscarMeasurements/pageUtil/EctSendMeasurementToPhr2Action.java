@@ -42,9 +42,6 @@ import jakarta.xml.bind.JAXBException;
 import org.apache.logging.log4j.Logger;
 import org.indivo.IndivoException;
 import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
-import org.oscarehr.phr.model.PHRMeasurement;
-import org.oscarehr.phr.service.PHRService;
-import org.oscarehr.phr.util.MyOscarUtils;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.oscarEncounter.data.EctProviderData;
@@ -65,8 +62,6 @@ public class EctSendMeasurementToPhr2Action extends ActionSupport {
 
     private Logger logger = MiscUtils.getLogger();
 
-    PHRService phrService = null;
-
     public String execute() throws IOException, ServletException, JAXBException, IndivoException {
 
         String errorMsg = null;
@@ -79,18 +74,10 @@ public class EctSendMeasurementToPhr2Action extends ActionSupport {
             EctProviderData.Provider provider = new EctProviderData().getProvider(providerNo);
 
             MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(request.getSession());
-            Long myOscarUserId = MyOscarUtils.getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demographicNo);
 
             EctMeasurementsDataBeanHandler hd = new EctMeasurementsDataBeanHandler(demographicNo);
             for (String measurementType : measurementTypeList) {
                 List<EctMeasurementsDataBean> measurements = EctMeasurementsDataBeanHandler.getMeasurementObjectByType(measurementType, demographicNo);
-                for (EctMeasurementsDataBean measurement : measurements) {
-                    if (!phrService.isIndivoRegistered(measurementType, measurement.getId() + "")) {
-                        PHRMeasurement phrMeasurement = new PHRMeasurement(provider, demographicNo, myOscarUserId, measurementType, measurement);
-                        phrService.sendAddDocument(phrMeasurement, measurement.getId() + "");
-                    }
-
-                }
             }
         } catch (Exception e) {
             errorMsg = e.getMessage();
@@ -99,9 +86,5 @@ public class EctSendMeasurementToPhr2Action extends ActionSupport {
 
         request.setAttribute("error_msg", errorMsg);
         return "finished";
-    }
-
-    public void setPhrService(PHRService pServ) {
-        this.phrService = pServ;
     }
 }

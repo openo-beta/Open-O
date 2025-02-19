@@ -47,7 +47,6 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.myoscar.client.ws_manager.AccountManager;
 import org.oscarehr.myoscar.commons.MedicalDataType;
 import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
-import org.oscarehr.phr.service.PHRService;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -69,8 +68,6 @@ public class RxSendToPhr2Action extends ActionSupport {
     HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-
-    PHRService phrService = null;
 
     /**
      * Creates a new instance of RxSendToPhr
@@ -118,12 +115,6 @@ public class RxSendToPhr2Action extends ActionSupport {
                          * phrService.getPhrIndex(PHRConstants.DOCTYPE_MEDICATION(), drug.getDrugId()+""); phrService.sendUpdateMedication(prov, demoNo, patientMyOscarId, drug, phrDrugIndex); //drug.setIndivoIdx(newIndex); } else { //if adding
                          */
 
-                        // only add new drugs, no updating old drugs because they cannot be edited
-
-                        if (!phrService.isIndivoRegistered(MedicalDataType.MEDICATION.name(), drug.getDrugId() + "")) {
-
-                            phrService.sendAddMedication(prov, demographic.getDemographicNo(), myOscarUserId, drug);
-                        }
                         // throw new Exception("Error: Cannot marshal the document");
                     } catch (Exception e) {
                         MiscUtils.getLogger().error("Error", e);
@@ -141,9 +132,4 @@ public class RxSendToPhr2Action extends ActionSupport {
         request.setAttribute("error_msg", errorMsg);
         return "finished";
     }
-
-    public void setPhrService(PHRService pServ) {
-        this.phrService = pServ;
-    }
-
 }

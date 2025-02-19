@@ -27,16 +27,13 @@ package org.oscarehr.myoscar.utils;
 import java.io.Serializable;
 import java.util.Locale;
 
-import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import org.oscarehr.myoscar.client.ws_manager.AccountManager;
-import org.oscarehr.myoscar.client.ws_manager.MyOscarLoggedInInfoInterface;
-import org.oscarehr.myoscar_server.ws.NotAuthorisedException_Exception;
-import org.oscarehr.myoscar_server.ws.PersonTransfer3;
+import jakarta.servlet.http.HttpSession;
 
 import oscar.OscarProperties;
 
-public final class MyOscarLoggedInInfo implements Serializable, MyOscarLoggedInInfoInterface {
+public final class MyOscarLoggedInInfo implements Serializable {
     private static final String myOscarServerBaseUrl = initMyOscarServerBaseUrl();
     private static final String MY_OSCAR_LOGGED_IN_INFO_SESSION_KEY = "MY_OSCAR_LOGGED_IN_INFO_SESSION_KEY";
 
@@ -44,6 +41,9 @@ public final class MyOscarLoggedInInfo implements Serializable, MyOscarLoggedInI
     private String loggedInPersonSecurityToken;
     private String loggedInSessionId;
     private Locale locale;
+
+    @Autowired
+    private PersonInfoDAO personInfoDAO;
 
     public MyOscarLoggedInInfo(Long loggedInPersonId, String loggedInPersonSecurityToken, String loggedInSessionId, Locale locale) {
         this.loggedInPersonId = loggedInPersonId;
@@ -59,11 +59,14 @@ public final class MyOscarLoggedInInfo implements Serializable, MyOscarLoggedInI
         return (temp);
     }
 
-    public PersonTransfer3 getLoggedInPerson() throws NotAuthorisedException_Exception {
-        return (AccountManager.getPerson(this, loggedInPersonId));
+    public PersonInfo getLoggedInPerson() throws SecurityException {
+        PersonInfo person = personInfoDAO.getPersonById(loggedInPersonId);
+        if (person == null) {
+            throw new SecurityException("Person not found");
+        }
+        return person;
     }
 
-    @Override
     public String getLoggedInPersonSecurityToken() {
         return (loggedInPersonSecurityToken);
     }
@@ -72,7 +75,6 @@ public final class MyOscarLoggedInInfo implements Serializable, MyOscarLoggedInI
         this.loggedInPersonSecurityToken = loggedInPersonSecurityToken;
     }
 
-    @Override
     public Long getLoggedInPersonId() {
         return (loggedInPersonId);
     }
@@ -81,7 +83,6 @@ public final class MyOscarLoggedInInfo implements Serializable, MyOscarLoggedInI
         this.loggedInPersonId = loggedInPersonId;
     }
 
-    @Override
     public String getLoggedInSessionId() {
         return (loggedInSessionId);
     }
@@ -107,7 +108,6 @@ public final class MyOscarLoggedInInfo implements Serializable, MyOscarLoggedInI
         session.setAttribute(MY_OSCAR_LOGGED_IN_INFO_SESSION_KEY, loggedInInfo);
     }
 
-    @Override
     public String getServerBaseUrl() {
         return (myOscarServerBaseUrl);
     }
@@ -121,7 +121,6 @@ public final class MyOscarLoggedInInfo implements Serializable, MyOscarLoggedInI
         return (myOscarServerBaseUrl);
     }
 
-    @Override
     public Locale getLocale() {
         return (locale);
     }

@@ -36,12 +36,15 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.dao.MeasurementTypeDao;
 import org.oscarehr.common.dao.SentToPHRTrackingDao;
+import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.SentToPHRTracking;
+import org.oscarehr.myoscar.client.ws_manager.AccountManager;
 import org.oscarehr.myoscar.commons.MedicalDataType;
 import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
 import org.oscarehr.myoscar_server.ws.InvalidRequestException_Exception;
@@ -49,7 +52,6 @@ import org.oscarehr.myoscar_server.ws.MedicalDataTransfer4;
 import org.oscarehr.myoscar_server.ws.NoSuchItemException_Exception;
 import org.oscarehr.myoscar_server.ws.NotAuthorisedException_Exception;
 import org.oscarehr.myoscar_server.ws.UnsupportedEncodingException_Exception;
-import org.oscarehr.phr.util.MyOscarUtils;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -97,12 +99,18 @@ public final class MeasurementsManager {
         }
     }
 
+    public static Long getMyOscarUserIdFromOscarDemographicId(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demographicId) {
+        DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+        Demographic demographic = demographicDao.getDemographicById(demographicId);
+        return (AccountManager.getUserId(myOscarLoggedInInfo, demographic.getMyOscarUserName()));
+    }
+
     public static Map<MedicalDataType, List<Measurement>> getMeasurementsFromMyOscar(MyOscarLoggedInInfo myOscarLoggedInInfo, Integer demoId, MedicalDataType... types) {
         if (logger.isInfoEnabled()) {
             logger.info("Loading MyOSCAR measurements for " + demoId);
         }
 
-        Long myOscarDemoId = MyOscarUtils.getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demoId);
+        Long myOscarDemoId = getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demoId);
 
         Map<MedicalDataType, List<Measurement>> result = new HashMap<MedicalDataType, List<Measurement>>();
         for (MedicalDataType type : types) {
@@ -165,7 +173,7 @@ public final class MeasurementsManager {
         SentToPHRTracking sentToPHRTracking = MyOscarMedicalDataManagerUtils.getExistingOrCreateInitialSentToPHRTracking(demographicId, OSCAR_MEASUREMENTS_DATA_TYPE, MyOscarLoggedInInfo.getMyOscarServerBaseUrl());
         logger.debug("sendMeasurementsToMyOscar : demographicId=" + demographicId + ", lastSyncTime=" + sentToPHRTracking.getSentDatetime());
 
-        Long patientMyOscarId = MyOscarUtils.getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demographicId);
+        Long patientMyOscarId = getMyOscarUserIdFromOscarDemographicId(myOscarLoggedInInfo, demographicId);
         List<Measurement> newMeasurements = measurementDao.findByDemographicIdUpdatedAfterDate(demographicId, sentToPHRTracking.getSentDatetime());
 
         // height weight is done separately so they can be paired up.

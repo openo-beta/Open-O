@@ -40,8 +40,6 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptor;
 import org.apache.cxf.phase.Phase;
-import org.apache.cxf.rs.security.oauth.filters.OAuthRequestFilter;
-import org.apache.cxf.rs.security.oauth.data.OAuthContext;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +48,20 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.oauth.OAuth10aService;
 
-public class OAuthInterceptor extends OAuthRequestFilter implements PhaseInterceptor<Message> {
+public class OAuthInterceptor implements PhaseInterceptor<Message> {
 
     @Autowired
     protected ProviderDao providerDao;
+
+
+    private final OAuth10aService service;
+
+    public OAuthInterceptor(OAuth10aService service) {
+        this.service = service;
+    }
 
     @Override
     public void handleMessage(Message message) throws Fault {
@@ -69,16 +76,13 @@ public class OAuthInterceptor extends OAuthRequestFilter implements PhaseInterce
         // Create a new LoggedInInfo
         LoggedInInfo loggedInInfo = new LoggedInInfo();
 
-        // Obtain the OAuthContext and the login (which in OSCAR is the providerNo)
-        OAuthContext oc = message.getContent(OAuthContext.class);
+        OAuth1AccessToken accessToken = getOAuthAccessTokenFromMessage(message);
 
-        if (oc == null) {
+        if (accessToken == null) {
             return;
         }
-        String providerNo = oc.getSubject().getLogin();
 
-        // Create a new provider directly from the Dao with the providerNo.
-        // We can trust this number as it was authenticated from OAuth.
+        String providerNo = accessToken.getToken(); 
         Provider provider = providerDao.getProvider(providerNo);
         loggedInInfo.setLoggedInProvider(provider);
 
@@ -95,10 +99,19 @@ public class OAuthInterceptor extends OAuthRequestFilter implements PhaseInterce
         HttpServletRequest request = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
         request.setAttribute(new LoggedInInfo().LOGGED_IN_INFO_KEY, loggedInInfo);
 
-
         return;
     }
 
+    private OAuth1AccessToken getOAuthAccessTokenFromMessage(Message message) {
+        String token = (String) message.get("oauth_token"); 
+        String tokenSecret = (String) message.get("oauth_token_secret"); 
+
+        if (token != null && tokenSecret != null) {
+            return new OAuth1AccessToken(token, tokenSecret);
+        }
+
+        return null;
+    }
 
     public Collection<PhaseInterceptor<? extends Message>> getAdditionalInterceptors() {
         return null;
@@ -122,6 +135,4 @@ public class OAuthInterceptor extends OAuthRequestFilter implements PhaseInterce
 
     public void handleFault(Message message) {
     }
-
-
 }

@@ -156,7 +156,7 @@ public class ServletUtils {
      * @return string the target URL
      * @throws IOException
      *
-     * @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
+     * @see jakarta.servlet.http.HttpServletResponse#sendRedirect(String)
      */
     public static String sendRedirect(HttpServletResponse response, String location, Map<String, String> parameters, Boolean stay) throws IOException {
         String target = location;
@@ -196,7 +196,7 @@ public class ServletUtils {
 	 *
      * @throws IOException
      *
-     * @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
+     * @see jakarta.servlet.http.HttpServletResponse#sendRedirect(String)
      */
     public static void sendRedirect(HttpServletResponse response, String location, Map<String, String> parameters) throws IOException {
     	sendRedirect(response, location, parameters, false);

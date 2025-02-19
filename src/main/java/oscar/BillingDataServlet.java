@@ -51,9 +51,6 @@ public class BillingDataServlet extends HttpServlet implements java.io.Serializa
 //          instantiate the beans and store them so they can be accessed by the called page
             BillingDataBean billingDataBean = new BillingDataBean();
 
-//      	 javax.servlet.ServletRequest.setAttribute("billingDataBean", billingDataBean);
-
-
             billingDataBean.setBilling_no(request.getParameter("billing_no"));
 
 

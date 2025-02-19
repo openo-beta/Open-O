@@ -26,12 +26,12 @@
 
 package org.oscarehr.provider.web;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.UserProperty;
 import org.oscarehr.olis.dao.OLISProviderPreferencesDao;
@@ -47,7 +47,6 @@ public class OlisPreferences2Action extends ActionSupport {
     ActionContext context = ActionContext.getContext();
     HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);
     HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);
-
 
     private UserPropertyDAO dao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
     private OLISProviderPreferencesDao olisProviderPreferencesDao = SpringUtils.getBean(OLISProviderPreferencesDao.class);
@@ -123,11 +122,11 @@ public class OlisPreferences2Action extends ActionSupport {
 
         if (providerStartTime != null) {
             //validate the time
-            DateTimeFormatter input = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss Z");
-            DateTimeFormatter output = DateTimeFormat.forPattern("YYYYMMddHHmmssZ");
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssZ");
             try {
-                DateTime date = input.parseDateTime(providerStartTime);
-                providerStartTime = date.toString(output);
+                ZonedDateTime date = ZonedDateTime.parse(providerStartTime, inputFormatter);
+                providerStartTime = date.format(outputFormatter);
                 OLISProviderPreferences pref = olisProviderPreferencesDao.findById(providerNo);
                 if (pref == null) {
                     pref = new OLISProviderPreferences();
@@ -140,11 +139,9 @@ public class OlisPreferences2Action extends ActionSupport {
                 }
 
             } catch (RuntimeException e) {
-
+                
             }
-
         }
-
 
         return view();
     }
