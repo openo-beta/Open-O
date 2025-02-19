@@ -728,6 +728,14 @@
     "optional" : false,
     "integrity" : "sha512:4VMLHGhN7sSiD3sF5QI/oF/00Ws6Oc35xtydjUkHVpurZEJXYENhQaGmarLWs6zCgi3BF2s4psL2JOaEnufp7Q=="
   }, {
+    "groupId" : "jakarta.mail",
+    "artifactId" : "jakarta.mail-api",
+    "version" : "2.1.3",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:hBqXhM/PoXI9HGNLCUKA+r5uz99kBROnamo5sa0p1ZwSB8CGzWbsjn8WH/qs2eHa0SgorExXWD6dhZPxKuZGDQ=="
+  }, {
     "groupId" : "jakarta.persistence",
     "artifactId" : "jakarta.persistence-api",
     "version" : "3.1.0",
@@ -935,7 +943,7 @@
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:kEbKXQsPkkNGKZkfdZGTetkGsaTvm72YV6ORzlt7QurI1dEZ28gRTOzkZnxrYUAmjp9d/wKuAT5wLHAbriwkeg=="
+    "integrity" : "sha512:c2YV8wpfUANSaksLGFzmitk5As8fQGgrlo1mHD+Xd7BbNauj4vo2l6sod1BoFrI+e28KjQi7vnr1zqXwljaTJA=="
   }, {
     "groupId" : "org.apache.axis2",
     "artifactId" : "axis2-transport-http",
@@ -1040,6 +1048,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:F48AMZz/Ar6M3zqLsb2wis0PcM+vcU4bJyJQRAudyUK4jKlWrWusC/kwWW/7VLJ1v5kLU86nFr43L7HprL7yHA=="
+  }, {
+    "groupId" : "org.apache.cxf",
+    "artifactId" : "cxf-rt-frontend-simple",
+    "version" : "4.1.0",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:XkazlL/VA/B1qPt2KNA0irp37wgX+C6WOkFDGoJ6QbkQnI7UXZzCYpiiNel3Z2C2+LL2Y18eHodfZypS0vN5ZQ=="
   }, {
     "groupId" : "org.apache.cxf",
     "artifactId" : "cxf-rt-rs-client",
@@ -1512,6 +1528,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:FILHWYQ8I+A0PKVUGUhi1TrBigSrRpGzvwUUWrt3KDYXAiqJXFui4z9it3ws+5BrkNDLaQYjYhsR81GUtUsRgA=="
+  }, {
+    "groupId" : "org.eclipse.angus",
+    "artifactId" : "angus-mail",
+    "version" : "2.0.3",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:FXV4cIXTY+m1yadj8oG+bs0ZLKDiiSAhmzzn/A+zqwTkHZBq1WRDMe/Qg0cHYKeUP+37gNBFss6ZyaEtW8T+uA=="
   }, {
     "groupId" : "org.eclipse.persistence",
     "artifactId" : "org.eclipse.persistence.asm",
