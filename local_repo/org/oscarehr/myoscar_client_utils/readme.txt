@@ -1,0 +1,1 @@
+The source for myoscar_client_utils is located on sourceforge under the myoscar project.

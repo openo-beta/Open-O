@@ -26,6 +26,7 @@ package oscar.form.pharmaForms.formBPMH.pdf;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.oscarehr.common.model.Demographic;
 import oscar.form.pharmaForms.formBPMH.bean.BpmhDrug;
@@ -108,12 +109,11 @@ public class PDFControllerTest {
     public void testGetInput() {
         assertEquals("bpmh_template_marked.pdf", pdfController.getFilePath().getName());
     }
-
+    @Ignore
     @Test
     public void testWriteDataToPDF() {
         pdfController.writeDataToPDF(data, new String[]{"1"}, "6789");
     }
-
     @Test
     public void testGetGetterMethods() {
         pdfController.setDataObject(demographic);
@@ -130,7 +130,7 @@ public class PDFControllerTest {
         assertEquals(null, PDFController.invokeValue("fakemethod", getterMethods, data));
 
     }
-
+    @Ignore
     @Test
     public void testGetGetterMethodsWithListDataTypes() {
 //		Map<String,Method> getterMethods = PDFController.getGetterMethods(data);

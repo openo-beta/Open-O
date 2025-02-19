@@ -47,7 +47,7 @@ Once you've built it for the first time, a subsequent full build should take abo
 minutes on Windows, as we'll have managed to cache a bunch of Maven compilation artifacts.
 
    ```zsh
-   make
+   make install
    ```
 
 Once the compilation is successful, a `target/oscar` directory full of artifacts will be created. This is a so-called "
