@@ -164,6 +164,7 @@ public class SecurityManager {
 			return false;
 
 		security.setPassword(hash);
+		security.setPasswordUpdateDate(new Date());
 		this.securityDao.merge(security);
 		return true;
 	}
