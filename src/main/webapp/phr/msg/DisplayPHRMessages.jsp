@@ -476,7 +476,7 @@
                         &nbsp;
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <a href="../phr/PhrMessage.do?orderby=0&method=${pageMethod}">
+                        <a href="<%= request.getContextPath() %>/phr/PhrMessage.do?orderby=0&method=${pageMethod}">
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.msgStatus"/>
                         </a>
                     </th>

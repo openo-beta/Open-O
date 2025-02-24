@@ -78,7 +78,7 @@ opener.refreshView();</script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="olis.olisSearch"/></title>
     <link rel="stylesheet" type="text/css" href="../../../share/css/OscarStandardLayout.css">
-    <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <script type="text/javascript" src="../../../share/javascript/Oscar.js"></script>
     <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
 
@@ -89,8 +89,8 @@ opener.refreshView();</script>
     <script type="text/javascript" src="../share/yui/js/autocomplete-min.js"></script>
     <script type="text/javascript" src="../js/demographicProviderAutocomplete.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="../share/yui/css/fonts-min.css"/>
-    <link rel="stylesheet" type="text/css" href="../share/yui/css/autocomplete.css"/>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/fonts-min.css"/>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/autocomplete.css"/>
 
 
     <script type="text/javascript">

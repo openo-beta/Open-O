@@ -59,7 +59,7 @@
 
 
 <link rel="stylesheet" type="text/css"
-      href="../oscarEncounter/encounterStyles.css">
+      href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
 <% //This could be done alot better.
     String curUser_no, userfirstname, userlastname;
     curUser_no = (String) session.getAttribute("user");
@@ -114,8 +114,8 @@
         }
     </style>
 
-    <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
     <script title="text/javascript" src="../share/calendar/calendar.js"></script>
     <script title="text/javascript"

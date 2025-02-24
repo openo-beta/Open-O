@@ -62,7 +62,7 @@
         <link rel="stylesheet" type="text/css" href="bcArStyle.css">
         <!-- calendar stylesheet -->
         <link rel="stylesheet" type="text/css" media="all"
-              href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+              href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <!-- main calendar program -->
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
@@ -74,7 +74,7 @@
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
         <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
-        <link rel="stylesheet" href="../web.css">
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/web.css">
         <script type="text/javascript">
             <!--
             function setfocus(el) {

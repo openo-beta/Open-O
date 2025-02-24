@@ -46,7 +46,7 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setColour.title"/></title>
 
         <link rel="stylesheet" type="text/css"
-              href="../oscarEncounter/encounterStyles.css">
+              href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
         <script type="text/javascript" src="../share/javascript/picker.js"></script>
         <script type="text/javascript">
             function update() {

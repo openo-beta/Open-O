@@ -297,7 +297,7 @@
         <% if (isMobileOptimized) { %>
         <meta name="viewport"
               content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width"/>
-        <link rel="stylesheet" type="text/css" href="../mobile/editdemographicstyle.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/mobile/editdemographicstyle.css">
         <% } else { %>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/oscarEncounter/encounterStyles.css">
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/share/css/searchBox.css">
@@ -1052,7 +1052,7 @@
                         %>
                         <tr>
                             <td><a
-                                    href="../oscarWaitingList/SetupDisplayPatientWaitingList.do?demographic_no=<%=demographic.getDemographicNo()%>">
+                                    href="<%= request.getContextPath() %>/oscarWaitingList/SetupDisplayPatientWaitingList.do?demographic_no=<%=demographic.getDemographicNo()%>">
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgWaitList"/></a>
                             </td>
                         </tr>
@@ -1342,11 +1342,11 @@
                         <!-- Sharing Center Links -->
                         <tr>
                             <td>
-                                <a href="../sharingcenter/networks/sharingnetworks.jsp?demographic_no=<%=demographic_no%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="sharingcenter.networks.sharingnetworks"/></a></td>
+                                <a href="<%= request.getContextPath() %>/sharingcenter/networks/sharingnetworks.jsp?demographic_no=<%=demographic_no%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="sharingcenter.networks.sharingnetworks"/></a></td>
                         </tr>
                         <tr>
                             <td>
-                                <a href="../sharingcenter/documents/SharedDocuments.do?demographic_no=<%=demographic_no%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="sharingcenter.documents.shareddocuments"/></a></td>
+                                <a href="<%= request.getContextPath() %>/sharingcenter/documents/SharedDocuments.do?demographic_no=<%=demographic_no%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="sharingcenter.documents.shareddocuments"/></a></td>
                         </tr>
                         <% } // endif isSharingCenterEnabled %>
 

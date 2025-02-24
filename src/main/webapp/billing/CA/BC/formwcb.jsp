@@ -843,7 +843,7 @@
     </form>
 
 
-    <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
     <div id="Layer1"
          style="position: absolute; left: 1px; top: 1px; width: 400px; height: 311px; visibility: hidden; z-index: 1">

@@ -44,14 +44,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../images/Oscar.ico">
+    <link rel="shortcut icon" href="<%= request.getContextPath() %>/images/Oscar.ico">
     <fmt:setBundle basename="uiResources" var="uiBundle"/>
 
     <title><fmt:message key="global.title" bundle="${uiBundle}"/></title>
 
-    <link href="../library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
-    <link href="../css/font-awesome.css" rel="stylesheet">
-    <link href="../css/loading-bar.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/css/font-awesome.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/css/loading-bar.css" rel="stylesheet">
 
 
     <!-- we'll combine/minify later -->
@@ -59,13 +59,13 @@
     <link href="css/navbar-demo-search.css" rel="stylesheet">
     <link href="css/patient-list.css" rel="stylesheet">
 
-    <link href="../library/ng-table/ng-table.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/library/ng-table/ng-table.css" rel="stylesheet">
 
-    <link href="../library/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/library/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
 
-    <link href="../css/bootstrap-timepicker.min.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/css/bootstrap-timepicker.min.css" rel="stylesheet">
 
-    <link href="../library/bootstrap/3.0.0/assets/css/bootstrap3_badge_colours.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/library/bootstrap/3.0.0/assets/css/bootstrap3_badge_colours.css" rel="stylesheet">
 
 
     <style>
@@ -292,7 +292,7 @@
             </button>
 
             <!-- link back to 'classic' view -->
-            <a href="../provider/providercontrol.jsp"><img class="navbarlogo" src="../images/Logo2.png"
+            <a href="<%= request.getContextPath() %>/provider/providercontrol.jsp"><img class="navbarlogo" src="../images/Logo2.png"
                                                            title="<fmt:message bundle="${uiBundle}" key="global.goToClassic"/>"
                                                            border="0"/></a>
         </div>
@@ -418,7 +418,7 @@
                     </li>
                 </ul>
 
-                <a href="../logout.jsp" title="<fmt:message bundle="${uiBundle}" key="navbar.logout"/>"
+                <a href="<%= request.getContextPath() %>/logout.jsp" title="<fmt:message bundle="${uiBundle}" key="navbar.logout"/>"
                    style="padding-left:10px;">
                     <span class="glyphicon glyphicon-off"></span>
                 </a>

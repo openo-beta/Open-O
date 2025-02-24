@@ -1167,7 +1167,7 @@
                     </li>
                 </ul>
                 <div>
-                    <a id="logoutButton" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnLogout"/>" href="../logout.jsp">
+                    <a id="logoutButton" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnLogout"/>" href="<%= request.getContextPath() %>/logout.jsp">
                         <span class="glyphicon glyphicon-off"></span>
                     </a>
                 </div>
@@ -2007,7 +2007,7 @@
                                                         </caisi:isModuleLoad>
                                                         <caisi:isModuleLoad
                                                                 moduleName="ticklerplus">
-                                                            <a href="../ticklerPlus/index.jsp"
+                                                            <a href="<%= request.getContextPath() %>/ticklerPlus/index.jsp"
                                                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.ticklerMsg"/>: <%=Encode.forHtmlContent(tickler_note)%>">
                                                                 <span color="red">!</span></a>
                                                         </caisi:isModuleLoad>

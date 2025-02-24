@@ -38,7 +38,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgCustomization"/></title>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script type="text/javascript">
             function popupOscarConS(vheight, vwidth, varpage) { //open a new popup window
@@ -49,7 +49,7 @@
         </script>
     </head>
 
-    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/styles.css">
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
     <% 
     java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");

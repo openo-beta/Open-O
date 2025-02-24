@@ -102,9 +102,9 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.title"/>
         </title>
 
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
 
         <script type="text/javascript">

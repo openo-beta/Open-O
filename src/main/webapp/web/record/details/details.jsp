@@ -67,7 +67,7 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicprintdemographic.btnPrint"/> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="../report/GenerateEnvelopes.do?demos={{page.demo.demographicNo}}">PDF Envelope</a></li>
+                    <li><a href="<%= request.getContextPath() %>/report/GenerateEnvelopes.do?demos={{page.demo.demographicNo}}">PDF Envelope</a></li>
                     <li><a class="hand-hover" ng-click="printLabel('PDFLabel')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFLabel"/></a></li>
                     <li><a class="hand-hover" ng-click="printLabel('PDFAddress')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFAddressLabel"/></a></li>
                     <li><a class="hand-hover" ng-click="printLabel('PDFChart')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFChartLabel"/></a></li>

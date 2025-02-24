@@ -91,7 +91,7 @@
             }
         </script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.title"/></title>
-        <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
 
         <script type="text/javascript" language="JavaScript" src="../share/javascript/Oscar.js"></script>
 

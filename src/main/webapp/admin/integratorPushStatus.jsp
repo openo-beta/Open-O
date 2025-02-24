@@ -137,7 +137,7 @@
             <title>Integrator Push Manager</title>
 
             <link rel="stylesheet" type="text/css"
-                  href="../oscarEncounter/encounterStyles.css">
+                  href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
 
         </head>
 

@@ -151,15 +151,15 @@
     <script type="text/javascript" src="../share/javascript/scriptaculous.js"></script>
 
     <link rel="stylesheet" type="text/css"
-          href="../share/css/niftyCorners.css"/>
+          href="<%= request.getContextPath() %>/share/css/niftyCorners.css"/>
     <link rel="stylesheet" type="text/css"
-          href="../share/css/OscarStandardLayout.css"/>
+          href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
 
     <link rel="stylesheet" type="text/css"
-          href="../share/css/niftyPrint.css" media="print"/>
+          href="<%= request.getContextPath() %>/share/css/niftyPrint.css" media="print"/>
     <script type="text/javascript" src="../share/javascript/nifty.js"></script>
     <link rel="stylesheet" type="text/css" media="all"
-          href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+          href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
     <style type="text/css">
         .autocomplete_style {
             background: #fff;

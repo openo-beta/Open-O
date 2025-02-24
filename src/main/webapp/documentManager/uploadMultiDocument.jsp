@@ -130,17 +130,17 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.title"/></title>
         <link rel="stylesheet" type="text/css"
-              href="../share/css/OscarStandardLayout.css"/>
+              href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
         <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
         <script type="text/javascript" src="../share/javascript/prototype.js"></script>
         <script type="text/javascript" src="../share/javascript/effects.js"></script>
         <script type="text/javascript" src="../share/javascript/controls.js"></script>
 
         <link rel="stylesheet" type="text/css"
-              href="../share/css/niftyCorners.css"/>
+              href="<%= request.getContextPath() %>/share/css/niftyCorners.css"/>
         <link rel="stylesheet" type="text/css" href="dms.css"/>
         <link rel="stylesheet" type="text/css"
-              href="../share/css/niftyPrint.css" media="print"/>
+              href="<%= request.getContextPath() %>/share/css/niftyPrint.css" media="print"/>
 
 
         <script type="text/javascript" src="../share/javascript/swfupload.js"></script>
@@ -210,7 +210,7 @@
         </script>
 
 
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
 
         <script type="text/javascript" src="../share/javascript/nifty.js"></script>

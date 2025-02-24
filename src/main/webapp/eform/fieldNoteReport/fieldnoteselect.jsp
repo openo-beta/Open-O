@@ -99,7 +99,7 @@
             %>
             <tr>
                 <td width="25%" style="padding-left: 4px;">
-                    <a href="../efmshowform_data.jsp?fid=<%=fieldNoteEform.getId()%>"
+                    <a href="<%= request.getContextPath() %>/efmshowform_data.jsp?fid=<%=fieldNoteEform.getId()%>"
                        target="_blank"><%=fieldNoteEform.getFormName()%>
                     </a>
                 </td>
@@ -132,7 +132,7 @@
             %>
             <tr style="background-color: #F2F2F2;">
                 <td width="25%" style="padding-left: 4px;">
-                    <a href="../efmshowform_data.jsp?fid=<%=fieldNoteEform.getId()%>"
+                    <a href="<%= request.getContextPath() %>/efmshowform_data.jsp?fid=<%=fieldNoteEform.getId()%>"
                        target="_blank"><%=fieldNoteEform.getFormName()%>
                     </a>
                 </td>

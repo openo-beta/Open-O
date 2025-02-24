@@ -56,7 +56,7 @@
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.title"/></title>
     <script type="text/javascript" src="../share/javascript/prototype.js"></script>
     <script type="text/javascript" src="../share/javascript/scriptaculous.js"></script>
-    <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css"/>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
 
     <%
         QueueDao queueDao = (QueueDao) SpringUtils.getBean(QueueDao.class);

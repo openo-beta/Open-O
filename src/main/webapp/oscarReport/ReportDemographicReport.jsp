@@ -46,7 +46,7 @@
 
 
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
 <script src="<%=request.getContextPath()%>/js/jquery-1.9.1.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -88,7 +88,7 @@
             Demographic Report tool
         </title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"

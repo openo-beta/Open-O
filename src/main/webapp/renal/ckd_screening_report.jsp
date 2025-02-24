@@ -135,7 +135,7 @@
 
         </script>
         <title>CKD Report</title>
-        <link rel="stylesheet" type="text/css" href="../share/css/OscarStandardLayout.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
 
 
         <style title="currentStyle" type="text/css">

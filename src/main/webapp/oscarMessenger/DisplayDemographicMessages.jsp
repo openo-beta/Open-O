@@ -106,7 +106,7 @@
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.title"/>
         </title>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
         <style>
             .TopStatusBar {
