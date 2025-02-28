@@ -261,8 +261,8 @@ TABLE {
 }
 
 .CurrentUser {
-	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .NavBarGroupHead {
@@ -272,9 +272,9 @@ TABLE {
 
 .DivNavBarHead {
 	border-bottom: 2px;
-	border-top: 0px;
-	border-left: 0px;
-	border-right: 0px;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
 	border-color: #A9A9A9;
 	border-style: solid;
 	width: 176px;
@@ -399,7 +399,7 @@ TABLE {
 	color: #000000;
 	margin-top: 14px;
 	margin-bottom: 10px;
-	border: 1px solid #eda
+	border: 1px solid #eda;
 	font-weight: bold;
 	height: 17px;
 	padding-right:10px;
@@ -451,17 +451,17 @@ TABLE {
 
 .ControlLabelSpace {
 	margin-top: 7px;
-	margin-bottom: 0px;
+	margin-bottom: 0;
 }
 
 .ControlLabelNoSpace {
-	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .Control {
-	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .DivEnableAll {
@@ -492,7 +492,7 @@ TABLE {
 	border-left-width: 1px;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 	vertical-align: bottom;
 }
 
@@ -504,10 +504,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
+	border-left-width: 0;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 	vertical-align: bottom;
 }
 
@@ -519,7 +519,7 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
+	border-left-width: 0;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
 	border-right-width: 1px;
@@ -534,9 +534,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 }
 
 .StrDataTableItem1Even {
@@ -547,9 +547,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 	background: #F5F5F5;
 	color: #000000;
 }
@@ -561,10 +561,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 }
 
 .StrDataTableItem2Even {
@@ -574,10 +574,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 	background: #F5F5F5;
 	color: #000000;
 }
@@ -590,9 +590,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 }
 
 .StrDataTableItem1EvenEnd {
@@ -603,9 +603,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 	background: #F5F5F5;
 	color: #000000;
 }
@@ -617,10 +617,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 }
 
 .StrDataTableItem2EvenEnd {
@@ -630,10 +630,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 	background: #F5F5F5;
 	color: #000000;
 }
@@ -641,8 +641,8 @@ TABLE {
 .DataTableScrollBarCell {
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
 	border-right-width: 1px;
 	border-bottom-width: 3px;
 	height: 100%;
@@ -656,9 +656,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 }
 
 .StrDataTableItem1EvenNA {
@@ -669,9 +669,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 }
 
 .StrDataTableItem2OddNA {
@@ -681,10 +681,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 }
 
 .StrDataTableItem2EvenNA {
@@ -694,10 +694,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
 }
 
 .StrDataTableItem1OddEndNA {
@@ -708,9 +708,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 }
 
 .StrDataTableItem1EvenEndNA {
@@ -721,9 +721,9 @@ TABLE {
 	border-style: solid;
 	border-color: #A9A9A9;
 	border-left-width: 1px;
-	border-top-width: 0px;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 }
 
 .StrDataTableItem2OddEndNA {
@@ -733,10 +733,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 }
 
 .StrDataTableItem2EvenEndNA {
@@ -746,10 +746,10 @@ TABLE {
 	padding-right: 5px;
 	border-style: solid;
 	border-color: #A9A9A9;
-	border-left-width: 0px;
-	border-top-width: 0px;
+	border-left-width: 0;
+	border-top-width: 0;
 	border-bottom-width: 1px;
-	border-right-width: 0px;
+	border-right-width: 0;
 }
 
 /* Controls */
