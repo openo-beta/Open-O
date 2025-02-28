@@ -52,7 +52,7 @@
               href="labReq07Style.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css">
         <script src="../share/javascript/prototype.js" type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
     </head>
 
     <%

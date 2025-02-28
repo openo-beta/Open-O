@@ -519,7 +519,7 @@
 
             <caisi:isModuleLoad moduleName="caisi">
                 <div class="goBackToSchedule">
-                    <a href="../provider/providercontrol.jsp"
+                    <a href="<%= request.getContextPath() %>/provider/providercontrol.jsp"
                        title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.btnReturnToSchedule"/>">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.btnReturnToSchedule"/>
                     </a>

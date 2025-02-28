@@ -42,7 +42,7 @@
     </script>
     <oscar:customInterface section="apptStatusList"/>
 </head>
-<link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 <body>
 <%
     String reseturl = request.getContextPath();

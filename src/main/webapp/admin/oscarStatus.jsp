@@ -62,7 +62,7 @@
         <meta http-equiv="Content-Type" content="text/html;">
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.oscarStatus.oscarStatus"/></title>
 
-        <link rel="stylesheet" type="text/css" href="../oscarEncounter/encounterStyles.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
 
     </head>

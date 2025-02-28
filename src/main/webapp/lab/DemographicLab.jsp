@@ -116,8 +116,8 @@
 
     <!-- link rel="stylesheet" type="text/css" href="encounterStyles.css" -->
     <link rel="stylesheet" type="text/css"
-          href="../share/css/OscarStandardLayout.css">
-    <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+          href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
 
     <script type="text/javascript" language=javascript>

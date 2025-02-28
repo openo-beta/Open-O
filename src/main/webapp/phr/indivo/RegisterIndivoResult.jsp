@@ -42,7 +42,7 @@
 <html>
 <head>
     <title>Indivo Registration Result</title>
-    <link rel="stylesheet" type="text/css" href="../phr.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/phr.css">
     <style type="text/css">
         div.messageDiv {
             position: absolute;

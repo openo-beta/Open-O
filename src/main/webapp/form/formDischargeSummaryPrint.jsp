@@ -87,7 +87,7 @@
             }
         </style>
 
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <!-- <link rel="stylesheet" type="text/css" href="arStyle.css">  -->
 
     </head>
