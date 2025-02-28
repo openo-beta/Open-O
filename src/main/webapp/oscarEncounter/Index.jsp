@@ -155,7 +155,7 @@
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script language="javascript" type="text/javascript"
                 src="../share/javascript/Oscar.js"></script>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <!-- This is from OscarMessenger to get the top and left borders on -->
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
         <!--<script type="application/x-javascript" language="javascript" src="/javascript/sizing.js"></script>-->
@@ -815,7 +815,7 @@
 
         </script>
 
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
     </head>
 

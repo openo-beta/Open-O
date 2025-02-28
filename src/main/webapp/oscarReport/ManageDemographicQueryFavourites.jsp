@@ -82,7 +82,7 @@
             }
         </style>
         <link rel="stylesheet" type="text/css"
-              href="../oscarEncounter/encounterStyles.css">
+              href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
     </head>
 
     <body class="BodyStyle" vlink="#0000FF">

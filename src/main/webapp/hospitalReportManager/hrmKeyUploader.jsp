@@ -61,7 +61,7 @@ opener.updateLink(<%=filePath%>, <%=type%>);</script>
     <link rel="stylesheet" type="text/css"
           href="../../../share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css"
-          href="../share/css/OscarStandardLayout.css">
+          href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <script type="text/javascript" src="../../../share/javascript/Oscar.js"></script>
     <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
     <script type="text/javascript">

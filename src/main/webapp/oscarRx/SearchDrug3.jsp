@@ -233,7 +233,7 @@
 
         <link rel="stylesheet" href="<c:out value="${ctx}/share/lightwindow/css/lightwindow.css"/>" type="text/css"
               media="screen"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <!--link rel="stylesheet" type="text/css" href="modaldbox.css"  /-->
 
         <script type="text/javascript" src="${ctx}/js/global.js"></script>

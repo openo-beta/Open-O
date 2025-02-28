@@ -93,7 +93,7 @@
 
         <script type="text/javascript" src="<c:out value="${ctx}"/>/js/messenger/messenger.js"></script>
         <script type="text/javascript" src="<c:out value="${ctx}"/>/js/messenger/messenger-theme-future.js"></script>
-        <script type="text/javascript" src="newEncounterLayout.js.jsp"></script>
+        <script type="text/javascript" src="/oscar/casemgmt/newEncounterLayout.js.jsp"></script>
 
             <%-- for popup menu of forms --%>
         <script src="<c:out value="${ctx}"/>/share/javascript/popupmenu.js" type="text/javascript"></script>

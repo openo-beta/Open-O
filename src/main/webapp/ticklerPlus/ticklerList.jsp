@@ -438,7 +438,7 @@
                 %>
                 <td><input type="checkbox" name="checkbox"
                            value="<c:out value="${tickler.id}"/>"/></td>
-                <td><a href="../Tickler.do?method=view&id=<c:out value="${tickler.id}"/>"><img
+                <td><a href="<%= request.getContextPath() %>/Tickler.do?method=view&id=<c:out value="${tickler.id}"/>"><img
                         align="right" src="<c:out value="${ctx}"/>/ticklerPlus/images/<%=view_image %>" border="0"/>
                 </a></td>
 

@@ -161,7 +161,7 @@
             String comment = (String) request.getAttribute("comment");
         %>
         <link rel="stylesheet" type="text/css" href="styles.css"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <script type="text/javascript" src="../share/javascript/prototype.js"></script>
 
         <script type="text/javascript">

@@ -47,7 +47,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Vascular Tracker (Draft)</title>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
@@ -698,7 +698,7 @@
 
     <form action="${pageContext.request.contextPath}/form/SubmitForm.do" method="post">
         <link rel="stylesheet" type="text/css"
-              href="../oscarEncounter/oscarMeasurements/styles/measurementStyle.css">
+              href="<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/styles/measurementStyle.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css"/>
         <input type="hidden" name="value(formName)" value="VTForm"/>
         <input type="hidden" name="value(formId)" id="value(formId)"/>

@@ -63,7 +63,7 @@
             src="../../../share/javascript/Oscar.js"></script>
     <link rel="stylesheet" type="text/css"
           href="../../../share/css/OscarStandardLayout.css">
-    <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 </head>
 
 <script language="JavaScript">
@@ -503,7 +503,7 @@
                     <tr bgcolor="<%=(linenum % 2 == 1 ? highlight : "")%>"
                         class="<%=lineClass%>">
                         <td valign="top" align="left">&nbsp; &nbsp; <a
-                                href="../ON/labValues.jsp?testName=<%=thisResult.testName%>&demo=<%=lab.getDemographicNo()%>&labType=BCP"><%=thisResult.testName %>
+                                href="<%= request.getContextPath() %>/ON/labValues.jsp?testName=<%=thisResult.testName%>&demo=<%=lab.getDemographicNo()%>&labType=BCP"><%=thisResult.testName %>
                         </a></td>
                         <td align="right"><%=thisResult.result %>
                         </td>

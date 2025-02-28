@@ -51,7 +51,7 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <title>ANTENATAL RECORD</title>
-    <link rel="stylesheet" href="../provider/antenatalrecord.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/provider/antenatalrecord.css">
     <script language="JavaScript">
         <!--
         var saveTemp = 0;

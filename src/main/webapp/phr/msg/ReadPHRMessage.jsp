@@ -90,8 +90,8 @@
 
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="../oscarMessenger/encounterStyles.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="../oscarMessenger/printable.css" media="print">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarMessenger/encounterStyles.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarMessenger/printable.css" media="print">
 
         <title>
             View Message

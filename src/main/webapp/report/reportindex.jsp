@@ -90,10 +90,10 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.title"/></title>
-        <link rel="stylesheet" href="../web.css"/>
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/web.css"/>
 
         <link rel="stylesheet" type="text/css" media="all"
-              href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+              href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
         <script type="text/javascript" src="../share/calendar/calendar.js"></script>
         <script type="text/javascript"
                 src="../share/calendar/lang/calendar-en.js"></script>
@@ -669,7 +669,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a href="../oscarReport/ConsultationReport.jsp"
+                <td width="300"><a href="<%= request.getContextPath() %>/oscarReport/ConsultationReport.jsp"
                                    target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnConsultationReport"/></a></td>
                 <td></td>
                 <td></td>
@@ -682,7 +682,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a href="../oscarReport/LabReqReport.jsp"
+                <td width="300"><a href="<%= request.getContextPath() %>/oscarReport/LabReqReport.jsp"
                                    target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnLaboratoryRequisition"/></a></td>
                 <td></td>
                 <td></td>
@@ -695,7 +695,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href="../oscarReport/ReportDemographicReport.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDemographicReportTool"/></a></td>
+                        href="<%= request.getContextPath() %>/oscarReport/ReportDemographicReport.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDemographicReportTool"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -718,7 +718,7 @@
                     <%j++;%>
                 </td>
                 <td width="1"></td>
-                <td width="300"><a href="../oscarReport/demographicSetEdit.jsp"
+                <td width="300"><a href="<%= request.getContextPath() %>/oscarReport/demographicSetEdit.jsp"
                                    target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDemoSetEdit"/></a></td>
                 <td></td>
                 <td></td>
@@ -733,7 +733,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href="../oscarPrevention/PreventionReporting.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnReport18n"/></a></td>
+                        href="<%= request.getContextPath() %>/oscarPrevention/PreventionReporting.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnReport18n"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -769,7 +769,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href="../oscarWaitingList/SetupDisplayWaitingList.do?waitingListId="><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnWaiting"/></a></td>
+                        href="<%= request.getContextPath() %>/oscarWaitingList/SetupDisplayWaitingList.do?waitingListId="><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnWaiting"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -813,7 +813,7 @@
             <tr>
                 <td width="2"><%=j%><%j++;%></td>
                 <td width="1"></td>
-                <td width="300"><a href="../oscarReport/InjectionReport2.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnInjectionReport"/></a></td>
+                <td width="300"><a href="<%= request.getContextPath() %>/oscarReport/InjectionReport2.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnInjectionReport"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -823,7 +823,7 @@
             <tr>
                 <td width="2"><%=j%><%j++;%></td>
                 <td width="1"></td>
-                <td width="300"><a href="../oscarReport/OSISReport.jsp"
+                <td width="300"><a href="<%= request.getContextPath() %>/oscarReport/OSISReport.jsp"
                                    title="Off Streets into Shelters (OSIS) is a report based off of a Hamilton Public Health eForm"
                                    target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnOSISReport"/></a></td>
                 <td></td>
@@ -836,7 +836,7 @@
                 <td width="1"></td>
                 <td width="300"><a
                         title="Report that is based off of a Hamilton Public Health eForm for One Time Consults"
-                        href="../oscarReport/CDSOneTimeConsultReport.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnCDSOneTimeConsultReport"/></a></td>
+                        href="<%= request.getContextPath() %>/oscarReport/CDSOneTimeConsultReport.jsp" target="_blank"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnCDSOneTimeConsultReport"/></a></td>
 
             </tr>
             <tr></tr>

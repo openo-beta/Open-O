@@ -425,7 +425,7 @@
             </ul>
         </td>
         <td>
-            <a id="logoutButton" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnLogout"/>" href="../logout.jsp">
+            <a id="logoutButton" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnLogout"/>" href="<%= request.getContextPath() %>/logout.jsp">
                 <span class="glyphicon glyphicon-off"></span>
             </a>
         </td>

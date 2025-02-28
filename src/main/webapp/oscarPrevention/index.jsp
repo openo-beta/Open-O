@@ -154,7 +154,7 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarprevention.index.oscarpreventiontitre"/></title>
         <!--I18n-->
         <link rel="stylesheet" type="text/css"
-              href="../share/css/OscarStandardLayout.css"/>
+              href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
         <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
         <script type="text/javascript" src="../share/javascript/prototype.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.9.1.min.js"></script>
@@ -166,10 +166,10 @@
         <script type="text/javascript" src="../share/yui/js/autocomplete-min.js"></script>
 
 
-        <link rel="stylesheet" type="text/css" href="../share/yui/css/fonts-min.css"/>
-        <link rel="stylesheet" type="text/css" href="../share/yui/css/autocomplete.css"/>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/fonts-min.css"/>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/autocomplete.css"/>
 
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/demographicProviderAutocomplete.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/demographicProviderAutocomplete.css"/>
 
         <script src="../share/javascript/popupmenu.js" type="text/javascript"></script>
         <script src="../share/javascript/menutility.js" type="text/javascript"></script>
@@ -231,8 +231,8 @@
             }
         </style>
 
-        <link rel="stylesheet" type="text/css" href="../share/css/niftyCorners.css"/>
-        <link rel="stylesheet" type="text/css" href="../share/css/niftyPrint.css" media="print"/>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/niftyCorners.css"/>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/niftyPrint.css" media="print"/>
         <link rel="stylesheet" type="text/css" href="preventPrint.css" media="print"/>
 
         <script type="text/javascript" src="../share/javascript/nifty.js"></script>

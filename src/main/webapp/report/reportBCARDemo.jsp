@@ -31,7 +31,7 @@
     <LINK REL="StyleSheet" HREF="../web.css" TYPE="text/css">
     <!-- calendar stylesheet -->
     <link rel="stylesheet" type="text/css" media="all"
-          href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+          href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
     <!-- main calendar program -->
     <script type="text/javascript" src="../share/calendar/calendar.js"></script>
     <!-- language for the calendar -->

@@ -123,7 +123,7 @@
            adding a calendar a matter of 1 or 2 lines of code. -->
     <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
     <!-- calendar stylesheet -->
-    <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
     <script language="javascript" type="text/javascript" src="../share/javascript/Oscar.js"></script>
     <script type="text/javascript" src="../share/javascript/prototype.js"></script>
     <script type="text/javascript" src="../share/javascript/effects.js"></script>
@@ -138,9 +138,9 @@
     <script type="text/javascript"
             src="<%= request.getContextPath() %>/share/javascript/jquery/jquery-1.4.2.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="../share/yui/css/fonts-min.css"/>
-    <link rel="stylesheet" type="text/css" href="../share/yui/css/autocomplete.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../share/css/demographicProviderAutocomplete.css"/>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/fonts-min.css"/>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/autocomplete.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/demographicProviderAutocomplete.css"/>
 
     <style type="text/css">
         .multiPage {

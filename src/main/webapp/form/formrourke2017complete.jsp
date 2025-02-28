@@ -97,7 +97,7 @@
             src="<%=request.getContextPath()%>/share/javascript/forms/forms-timed-autosave.js"></script>
     <link rel="stylesheet" type="text/css" href="rourkeStyle.css">
     <!-- calendar stylesheet -->
-    <link rel="stylesheet" type="text/css" media="all" href="../share/calendar/calendar.css" title="win2k-cold-1"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
     <!-- main calendar program -->
     <script type="text/javascript" src="../share/calendar/calendar.js"></script>

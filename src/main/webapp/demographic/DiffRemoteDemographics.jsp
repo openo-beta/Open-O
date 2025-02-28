@@ -92,7 +92,7 @@
                 src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Diff Remote Demographic</title>
         <link rel="stylesheet" type="text/css"
-              href="../share/css/OscarStandardLayout.css">
+              href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
 
         <script type="text/javascript" language="JavaScript"
                 src="../share/javascript/prototype.js"></script>
