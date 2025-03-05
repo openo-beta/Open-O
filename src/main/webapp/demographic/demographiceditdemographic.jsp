@@ -1424,26 +1424,25 @@
                                             String printEnvelope, printLbl, printAddressLbl, printChartLbl, printSexHealthLbl, printHtmlLbl, printLabLbl;
                                             printEnvelope = printLbl = printAddressLbl = printChartLbl = printSexHealthLbl = printHtmlLbl = printLabLbl = null;
 
+                                            String rootContextPath = request.getContextPath();
+                                            String demoPath = rootContextPath + "/demographic/";
+
                                             if (oscarProps.getProperty("new_label_print") != null && oscarProps.getProperty("new_label_print").equals("true")) {
-
-                                                printEnvelope = "printEnvelope.jsp?demos=";
-                                                printLbl = "printDemoLabel.jsp?demographic_no=";
-                                                printAddressLbl = "printAddressLabel.jsp?demographic_no=";
-                                                printChartLbl = "printDemoChartLabel.jsp?demographic_no=";
-                                                printSexHealthLbl = "printDemoChartLabel.jsp?labelName=SexualHealthClinicLabel&demographic_no=";
-                                                printHtmlLbl = "demographiclabelprintsetting.jsp?demographic_no=";
-                                                printLabLbl = "printClientLabLabel.jsp?demographic_no=";
-
+                                                printEnvelope = demoPath + "printEnvelope.jsp?demos=";
+                                                printLbl = demoPath + "printDemoLabel.jsp?demographic_no=";
+                                                printAddressLbl = demoPath + "printAddressLabel.jsp?demographic_no=";
+                                                printChartLbl = demoPath + "printDemoChartLabel.jsp?demographic_no=";
+                                                printSexHealthLbl = demoPath + "printDemoChartLabel.jsp?labelName=SexualHealthClinicLabel&demographic_no=";
+                                                printHtmlLbl = demoPath + "demographiclabelprintsetting.jsp?demographic_no=";
+                                                printLabLbl = demoPath + "printClientLabLabel.jsp?demographic_no=";
                                             } else {
-
-                                                printEnvelope = "../report/GenerateEnvelopes.do?demos=";
-                                                printLbl = "printDemoLabelAction.do?demographic_no=";
-                                                printAddressLbl = "printDemoAddressLabelAction.do?demographic_no=";
-                                                printChartLbl = "printDemoChartLabelAction.do?demographic_no=";
-                                                printSexHealthLbl = "printDemoChartLabelAction.do?labelName=SexualHealthClinicLabel&demographic_no=";
-                                                printHtmlLbl = "demographiclabelprintsetting.jsp?demographic_no=";
-                                                printLabLbl = "printClientLabLabelAction.do?demographic_no=";
-
+                                                printEnvelope = rootContextPath + "/report/GenerateEnvelopes.do?demos=";
+                                                printLbl = demoPath + "printDemoLabelAction.do?demographic_no=";
+                                                printAddressLbl = demoPath + "printDemoAddressLabelAction.do?demographic_no=";
+                                                printChartLbl = demoPath + "printDemoChartLabelAction.do?demographic_no=";
+                                                printSexHealthLbl = demoPath + "printDemoChartLabelAction.do?labelName=SexualHealthClinicLabel&demographic_no=";
+                                                printHtmlLbl = demoPath + "demographiclabelprintsetting.jsp?demographic_no=";
+                                                printLabLbl = demoPath + "printClientLabLabelAction.do?demographic_no=";
                                             }
 
                                         %>
@@ -1487,36 +1486,29 @@
                                                         <td width="40%" align='right' valign="top">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFEnvelope"/>"
-                                                                   onclick="popupPage(400,700,'<%=printEnvelope%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printEnvelope%><%=demographic.getDemographicNo()%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFAddressLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printAddressLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printAddressLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFChartLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printChartLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printChartLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <%
                                                                 if (oscarProps.getProperty("showSexualHealthLabel", "false").equals("true")) {
                                                             %>
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePublicHealthLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printSexHealthLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printSexHealthLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <% } %>
                                                             <input type="button" name="Button" size="110"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnPrintLabel"/>"
-                                                                   onclick="popupPage(600,800,'<%=printHtmlLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(600,800,'<%=printHtmlLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnClientLabLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printLabLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printLabLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -5093,36 +5085,29 @@
                                                             <!--input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnSwipeCard"/>" onclick="javascript:window.alert('Health Card Number Already Inuse');"-->
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFEnvelope"/>"
-                                                                   onclick="popupPage(400,700,'<%=printEnvelope%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printEnvelope%><%=demographic.getDemographicNo()%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printLbl%>
-                                                                           <%=demographic.getDemographicNo()%>&appointment_no=<%=appointment%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printLbl%><%=demographic.getDemographicNo()%>&appointment_no=<%=appointment%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFAddressLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printAddressLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printAddressLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFChartLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printChartLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printChartLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <%
                                                                 if (oscarProps.getProperty("showSexualHealthLabel", "false").equals("true")) {
                                                             %>
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePublicHealthLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printSexHealthLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printSexHealthLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <% } %>
                                                             <input type="button" name="Button" size="110"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnPrintLabel"/>"
-                                                                   onclick="popupPage(600,800,'<%=printHtmlLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(600,800,'<%=printHtmlLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnClientLabLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=printLabLbl%>
-                                                                           <%=demographic.getDemographicNo()%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=printLabLbl%><%=demographic.getDemographicNo()%>');return false;">
                                                         </td>
                                                     </tr>
                                                 </table>
