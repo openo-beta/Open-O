@@ -147,8 +147,8 @@
 <html>
 <head>
     <title>Edit Document</title>
-    <script type="text/javascript" src="../share/javascript/prototype.js"></script>
-    <script type="text/javascript" src="../share/javascript/scriptaculous.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/scriptaculous.js"></script>
 
     <link rel="stylesheet" type="text/css"
           href="<%= request.getContextPath() %>/share/css/niftyCorners.css"/>
@@ -157,7 +157,7 @@
 
     <link rel="stylesheet" type="text/css"
           href="<%= request.getContextPath() %>/share/css/niftyPrint.css" media="print"/>
-    <script type="text/javascript" src="../share/javascript/nifty.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/nifty.js"></script>
     <link rel="stylesheet" type="text/css" media="all"
           href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
     <style type="text/css">
@@ -178,10 +178,10 @@
             text-decoration: underline;
         }
     </style>
-    <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
-    <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+            src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
     <script type="text/javascript">
         window.onload = function () {
             new Autocompleter.Local('docSubClass', 'docSubClass_list', docSubClassList);
@@ -301,7 +301,7 @@
             <td>Observation Date:</td>
             <td><input id="observationDate" name="observationDate"
                        type="text" value="<%=Encode.forHtmlAttribute(formdata.getObservationDate())%>"><a
-                    id="obsdate"><img title="Calendar" src="../images/cal.gif"
+                    id="obsdate"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif"
                                       alt="Calendar" border="0"/></a></td>
         </tr>
         <tr>
@@ -370,7 +370,7 @@
             <td>Date Received:</td>
             <td><input id="receivedDate" name="receivedDate"
                        type="text" value="<%=Encode.forHtmlAttribute(formdata.getReceivedDate())%>"><a
-                    id="rdate"><img title="Calendar" src="../images/cal.gif"
+                    id="rdate"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif"
                                     alt="Calendar" border="0"/></a></td>
         </tr>
 

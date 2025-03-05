@@ -35,9 +35,9 @@
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.title"/></title>
     <link href="<%= request.getContextPath() %>/css/jquery.ui.colorPicker.css" rel="stylesheet" type="text/css"/>
-    <script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
-    <script src="../js/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
-    <script src="../js/jquery.ui.colorPicker.min.js" type="text/javascript"></script>
+    <script src="<%= request.getContextPath() %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="<%= request.getContextPath() %>/js/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
+    <script src="<%= request.getContextPath() %>/js/jquery.ui.colorPicker.min.js" type="text/javascript"></script>
     <oscar:customInterface section="apptStatusEdit"/>
 </head>
 <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>

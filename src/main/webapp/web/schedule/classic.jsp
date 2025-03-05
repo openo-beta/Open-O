@@ -33,7 +33,7 @@
 
 <br/>
 
-<h5><b>Note:</b> use the icon (<img src="../images/oscar_small.png" border="0"/> ) at the top to navigate back to the
+<h5><b>Note:</b> use the icon (<img src="<%= request.getContextPath() %>/images/oscar_small.png" border="0"/> ) at the top to navigate back to the
     new user experience.</h5>
 
 

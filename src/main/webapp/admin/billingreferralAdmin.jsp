@@ -52,7 +52,7 @@
         <title>Referral Doctor</title>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
 
-        <script type="text/javascript" language="JavaScript" src="../share/javascript/Oscar.js"></script>
+        <script type="text/javascript" language="JavaScript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
 
         <script src="<%=request.getContextPath() %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
 

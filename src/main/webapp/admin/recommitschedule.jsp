@@ -33,13 +33,13 @@
     <link rel="stylesheet" type="text/css" media="all"
           href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
     <!-- main calendar program -->
-    <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
     <!-- language for the calendar -->
     <script type="text/javascript"
-            src="../share/calendar/lang/calendar-en.js"></script>
+            src="<%= request.getContextPath() %>/share/calendar/lang/calendar-en.js"></script>
     <!-- the following script defines the Calendar.setup helper function, which makes
     adding a calendar a matter of 1 or 2 lines of code. -->
-    <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
     <script type="text/javascript">
         function setCopy() {
             document.inputForm.isCheck.value = document.inputForm.copyCheck.checked;
@@ -81,7 +81,7 @@
                 <tr>
                     <td><nested:text property="schedule_date"
                                      styleId="schedule_date" onfocus="this.blur()">
-                    </nested:text> <img src="../images/cal.gif" id="schedule_vdate_cal"> <nested:select
+                    </nested:text> <img src="<%= request.getContextPath() %>/images/cal.gif" id="schedule_vdate_cal"> <nested:select
                             property="schedule_shour">
                         <script type="text/javascript">
                             for (var i = 0; i < 24; i++) {

@@ -56,15 +56,15 @@
               href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <!-- main calendar program -->
-        <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
-        <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
@@ -254,7 +254,7 @@
                                 <td><input type="text" name="date_invoice" id="date_invoice"
                                            readonly size="8" maxlength="10"
                                            value="<%= props.getProperty("date_invoice", "") %>" @oscar.formDB
-                                           dbType="date"/> <img src="../images/cal.gif"
+                                           dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                 id="date_invoice_cal"/></td>
                             </tr>
                             <tr>
@@ -274,7 +274,7 @@
                                 <td><input type="text" name="date_service" id="date_service"
                                            readonly size="8" maxlength="10"
                                            value="<%= props.getProperty("date_service", "") %>" @oscar.formDB
-                                           dbType="date"/> <img src="../images/cal.gif"
+                                           dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                 id="date_service_cal"/></td>
                             </tr>
                             <tr>
@@ -309,7 +309,7 @@
                                 <td><input type="text" name="date_signature"
                                            id="date_signature" readonly size="8" maxlength="10"
                                            value="<%= props.getProperty("date_signature", "") %>"
-                                           @oscar.formDB dbType="date"/> <img src="../images/cal.gif"
+                                           @oscar.formDB dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                               id="date_signature_cal"/></td>
                             </tr>
                         </table>

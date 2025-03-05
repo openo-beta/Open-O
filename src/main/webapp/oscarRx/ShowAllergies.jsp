@@ -311,7 +311,7 @@
                                                 <td><b>Onset of Reaction</b></td>
                                                 <td><b>Reaction</b></td>
                                                 <td><b>Start Date</b></td>
-                                                <td><img src="../images/notes.gif" border="0" width="10" height="12"
+                                                <td><img src="<%= request.getContextPath() %>/images/notes.gif" border="0" width="10" height="12"
                                                          alt="Annotation"></td>
                                                 <td><b>Action</b></td>
                                                 <td><b>&nbsp;</b></td>
@@ -405,7 +405,7 @@
                                                         %>
                                                         <a href="#" title="Annotation"
                                                            onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=displayAllergy.getId()%>&demo=${patient.demographicNo}','anwin','width=400,height=500');"><img
-                                                                src="../images/notes.gif" border="0"></a>
+                                                                src="<%= request.getContextPath() %>/images/notes.gif" border="0"></a>
                                                         <%
                                                             }
                                                         %>

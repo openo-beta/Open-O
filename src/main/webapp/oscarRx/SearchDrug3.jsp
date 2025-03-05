@@ -2783,9 +2783,9 @@
             <% } %>
         }
     </script>
-    <script language="javascript" src="../commons/scripts/sort_table/css.js"></script>
-    <script language="javascript" src="../commons/scripts/sort_table/common.js"></script>
-    <script language="javascript" src="../commons/scripts/sort_table/standardista-table-sorting.js"></script>
+    <script language="javascript" src="<%= request.getContextPath() %>/commons/scripts/sort_table/css.js"></script>
+    <script language="javascript" src="<%= request.getContextPath() %>/commons/scripts/sort_table/common.js"></script>
+    <script language="javascript" src="<%= request.getContextPath() %>/commons/scripts/sort_table/standardista-table-sorting.js"></script>
 
     </body>
 </html>

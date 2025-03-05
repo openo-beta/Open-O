@@ -48,7 +48,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Adjust Billing Codes</title>
         <link rel="stylesheet" type="text/css"
-              href="../../../oscarEncounter/encounterStyles.css">
+              href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
         <script type="text/javascript">
 
 

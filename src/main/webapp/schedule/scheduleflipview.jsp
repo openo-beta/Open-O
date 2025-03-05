@@ -191,7 +191,7 @@
             <td width="15%" nowrap><a
                     href="scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=<%=curProvider_no%>&startDate=<%=lastMonth.get(Calendar.YEAR)+"-"+(lastMonth.get(Calendar.MONTH)+1)+"-"+lastMonth.get(Calendar.DATE)%>"
                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgLastMonth"/>"
-                    border='0'><img src="../images/previous.gif"></a> <select
+                    border='0'><img src="<%= request.getContextPath() %>/images/previous.gif"></a> <select
                     name="provider_no" onChange="selectprovider(this)">
                 <%
 
@@ -217,7 +217,7 @@
             </select><a
                     href="scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=<%=curProvider_no%>&startDate=<%=nextMonth.get(Calendar.YEAR)+"-"+(nextMonth.get(Calendar.MONTH)+1)+"-"+nextMonth.get(Calendar.DATE)%>"
                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgNextmonth"/>"
-                    border='0'><img src="../images/next.gif"></a></td>
+                    border='0'><img src="<%= request.getContextPath() %>/images/next.gif"></a></td>
             <% for (int j = 0; j < colscode; j++) { %>
             <td>
                 <% if (nStep < 60) { %> <%=j % (60 / nStep) == 0 ? "" + (j / (60 / nStep) + nStartTime) : ""%>

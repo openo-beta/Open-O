@@ -1972,7 +1972,7 @@
                                                             } else {
                                                             %>
 
-                                                            <img src="../images/<%=as.getImageName()%>"
+                                                            <img src="<%= request.getContextPath() %>/images/<%=as.getImageName()%>"
                                                                  border="0" height="10"
                                                                  alt="<c:out value='<%=(as.getTitleString(request.getLocale()).length()>0)?as.getTitleString(request.getLocale()):as.getTitle()%>' /> ">
 
@@ -1987,7 +1987,7 @@
                                                         <%
                                                             if (urgency != null && urgency.equals("critical")) {
                                                         %>
-                                                        <img src="../images/warning-icon.png" border="0"
+                                                        <img src="<%= request.getContextPath() %>/images/warning-icon.png" border="0"
                                                              width="14" height="14"
                                                              alt="Critical Appointment"/>
                                                         <% } %>

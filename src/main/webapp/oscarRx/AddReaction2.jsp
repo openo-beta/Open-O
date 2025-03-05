@@ -226,7 +226,7 @@
                                         <span class="label">Start Date:</span>
                                         <input type="text" name="startDate" id="startDate" size="10" maxlength="10"
                                                value="<%=startDate%>" onblur="checkStartDate();"/>
-                                        <img src="../images/cal.gif" id="startDateCal">(yyyy-mm-dd OR yyyy-mm OR yyyy)
+                                        <img src="<%= request.getContextPath() %>/images/cal.gif" id="startDateCal">(yyyy-mm-dd OR yyyy-mm OR yyyy)
                                     </td>
                                 </tr>
 

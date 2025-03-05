@@ -96,15 +96,15 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <!-- main calendar program -->
-        <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
        adding a calendar a matter of 1 or 2 lines of code. -->
-        <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <style type="text/css">
             <!--
             .demo {
@@ -1090,7 +1090,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                                                size="8" maxlength="10"
                                                                value="<%= props.getProperty("ar2_labRATDate1", "") %>"
                                                                @oscar.formDB dbType="date"/>
-                                                        <img src="../images/cal.gif" id="ar2_labRATDate1_cal">
+                                                        <img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_labRATDate1_cal">
                                                     </td>
                                                     <td>
                                                         <input type="text" name="ar2_labRATRes1" style="width:100%"
@@ -1106,7 +1106,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                                                size="8" maxlength="10"
                                                                value="<%= props.getProperty("ar2_labRATDate2", "") %>"
                                                                @oscar.formDB dbType="date"/>
-                                                        <img src="../images/cal.gif" id="ar2_labRATDate2_cal">
+                                                        <img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_labRATDate2_cal">
                                                     </td>
                                                     <td>
                                                         <input type="text" name="ar2_labRATRes2" style="width:100%"
@@ -1136,7 +1136,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                                                style="width:80%" size="10" maxlength="10"
                                                                value="<%= props.getProperty("ar2_labRhIgG", "") %>"
                                                                @oscar.formDB dbType="date"/>
-                                                        <img src="../images/cal.gif" id="ar2_labRhIgG_cal">
+                                                        <img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_labRhIgG_cal">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1146,7 +1146,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                                                style="width:80%" size="10" maxlength="10"
                                                                value="<%= props.getProperty("ar2_labRhIgG2", "") %>"
                                                                @oscar.formDB dbType="date"/>
-                                                        <img src="../images/cal.gif" id="ar2_labRhIgG2_cal">
+                                                        <img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_labRhIgG2_cal">
                                                     </td>
                                                 </tr>
                                             </table>
@@ -1303,7 +1303,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                     </tr>
                                     <tr>
                                         <td><span class="small8"><i>DD/MM/YYYY</i>
-                            </span><img src="../images/cal.gif" id="ar2_labHBsAgDate_cal">
+                            </span><img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_labHBsAgDate_cal">
                                         </td>
                                         <td align="center">
                                             <span class="small8"><i>Results</i></span>
@@ -1449,7 +1449,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                                 <tr>
                                                     <td><span class="small8"><i>Wks</i></span></td>
                                                     <td colspan="2"><span class="small8"><i>DD/MM/YYYY <img
-                                                            src="../images/cal.gif" id="ar2_labDiabDate_cal"> Result</i></span>
+                                                            src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_labDiabDate_cal"> Result</i></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1485,7 +1485,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                         <td colspan="2"><span class="small9">3hour GGT</span></td>
                                     </tr>
                                     <tr>
-                                        <td><span class="small8"><I>DD/MM/YYYY</I></span><img src="../images/cal.gif"
+                                        <td><span class="small8"><I>DD/MM/YYYY</I></span><img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                                               id="ar2_labGGTDate_cal">
                                         </td>
                                         <td align="center"><span class="small8"><I>Results</I></font></td>
@@ -1534,7 +1534,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span class="small8"><I>DD/MM/YYYY</I></span><img src="../images/cal.gif"
+                                        <td><span class="small8"><I>DD/MM/YYYY</I></span><img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                                               id="ar2_labGBSDate_cal">
                                         </td>
                                         <td align="center"><span class="small8"><I>Results</I></font></td>
@@ -1581,7 +1581,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                     <tr>
                                         <td width="50%"></td>
                                         <td width="50%">
-                                            <span class="small8"><i>DD/MM/YYYY</i><img src="../images/cal.gif"
+                                            <span class="small8"><i>DD/MM/YYYY</i><img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                                        id="ar2_labEdinDate_cal"></span>
                                         </td>
                                     </tr>
@@ -1643,12 +1643,12 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             <td>
                                 <input type="text" name="pg1_lmp" id="pg1_lmp" size="10" maxlength="10"
                                        value="<%= props.getProperty("pg1_lmp", "") %>" @oscar.formDB dbType="date"/>
-                                <img src="../images/cal.gif" id="pg1_lmp_cal">
+                                <img src="<%= request.getContextPath() %>/images/cal.gif" id="pg1_lmp_cal">
                             </td>
                             <td>
                                 <input type="text" name="c_EDD" id="c_EDD" size="10" maxlength="10"
                                        value="<%= props.getProperty("c_EDD", "") %>" @oscar.formDB dbType="date"/>
-                                <img src="../images/cal.gif" id="c_EDD_cal">
+                                <img src="<%= request.getContextPath() %>/images/cal.gif" id="c_EDD_cal">
                             </td>
                         </tr>
                     </table>
@@ -2885,7 +2885,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                 <input type="text" name="ar2_1USoundDate" id="ar2_1USoundDate" size="10" maxlength="10"
                                        value="<%= props.getProperty("ar2_1USoundDate", "") %>" @oscar.formDB
                                        dbType="date"/>
-                                <img src="../images/cal.gif" id="ar2_1USoundDate_cal">
+                                <img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_1USoundDate_cal">
                             </td>
                             <td>
                                 <span class="small9">GA by US</span>

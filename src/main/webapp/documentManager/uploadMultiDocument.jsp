@@ -131,10 +131,10 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.title"/></title>
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
-        <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
-        <script type="text/javascript" src="../share/javascript/prototype.js"></script>
-        <script type="text/javascript" src="../share/javascript/effects.js"></script>
-        <script type="text/javascript" src="../share/javascript/controls.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/effects.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/controls.js"></script>
 
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/share/css/niftyCorners.css"/>
@@ -143,12 +143,12 @@
               href="<%= request.getContextPath() %>/share/css/niftyPrint.css" media="print"/>
 
 
-        <script type="text/javascript" src="../share/javascript/swfupload.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/swfupload.js"></script>
 
         <script type="text/javascript"
-                src="../share/javascript/swfupload.queue.js"></script>
-        <script type="text/javascript" src="../share/javascript/fileprogress.js"></script>
-        <script type="text/javascript" src="../share/javascript/handlers.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/swfupload.queue.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/fileprogress.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/handlers.js"></script>
 
 
         <script type="text/javascript">
@@ -213,8 +213,8 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
 
-        <script type="text/javascript" src="../share/javascript/nifty.js"></script>
-        <script type="text/javascript" src="../phr/phr.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/nifty.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/phr/phr.js"></script>
         <script type="text/javascript">
 
 

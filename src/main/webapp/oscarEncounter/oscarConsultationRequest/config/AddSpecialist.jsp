@@ -311,7 +311,7 @@
                                                 <option value="0" selected>&nbsp;</option>
                                                 <c:forEach items="${ specialties }" var="specialtyType">
 
-                                                    <option value="${ specialtyType.serviceId }" ${ specialtyType.serviceId eq EctConAddSpecialistForm.specType ? 'selected' : '' } >
+                                                    <option value="${ specialtyType.serviceId }" ${ specialtyType.serviceId eq specType ? 'selected' : '' } >
                                                         <c:out value="${ specialtyType.serviceDesc }"/>
                                                     </option>
 

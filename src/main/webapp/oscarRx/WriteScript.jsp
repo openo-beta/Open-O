@@ -55,8 +55,8 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.title"/></title>
 
         <link rel="stylesheet" type="text/css" href="styles.css">
-        <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
-        <script type="text/javascript" src="../share/javascript/prototype.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${sessionScope.RxSessionBean == null}">

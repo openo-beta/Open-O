@@ -88,32 +88,32 @@
               href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <!-- main calendar program -->
-        <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
-        <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
 
         <!-- popup mouseover js code -->
-        <script type="text/javascript" src="../share/javascript/mouseover.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/mouseover.js"></script>
 
         <!--Text Area text max limit code -->
         <script type="text/javascript"
-                src="../share/javascript/txtCounter/x_core.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/txtCounter/x_core.js"></script>
         <script type="text/javascript"
-                src="../share/javascript/txtCounter/x_dom.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/txtCounter/x_dom.js"></script>
         <script type="text/javascript"
-                src="../share/javascript/txtCounter/x_event.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/txtCounter/x_event.js"></script>
         <script type="text/javascript"
-                src="../share/javascript/txtCounter/ylib.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/txtCounter/ylib.js"></script>
         <script type="text/javascript"
-                src="../share/javascript/txtCounter/y_TextCounter.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/txtCounter/y_TextCounter.js"></script>
         <script type="text/javascript"
-                src="../share/javascript/txtCounter/y_util.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/txtCounter/y_util.js"></script>
 
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
@@ -433,15 +433,15 @@
                 <td colspan="3"><input readonly type="text" id="p2_date2m"
                                        ondblclick="resetDate(this)" name="p2_date2m" size="10"
                                        value="<%=UtilMisc.htmlEscape(props.getProperty("p2_date2m", ""))%>"/>
-                    <img src="../images/cal.gif" id="p2_date2m_cal"></td>
+                    <img src="<%= request.getContextPath() %>/images/cal.gif" id="p2_date2m_cal"></td>
                 <td colspan="3"><input readonly type="text" id="p2_date4m"
                                        ondblclick="resetDate(this)" name="p2_date4m" size="10"
                                        value="<%=UtilMisc.htmlEscape(props.getProperty("p2_date4m", ""))%>"/>
-                    <img src="../images/cal.gif" id="p2_date4m_cal"></td>
+                    <img src="<%= request.getContextPath() %>/images/cal.gif" id="p2_date4m_cal"></td>
                 <td colspan="3"><input readonly type="text" id="p2_date6m"
                                        ondblclick="resetDate(this)" name="p2_date6m" size="10"
                                        value="<%=UtilMisc.htmlEscape(props.getProperty("p2_date6m", ""))%>"/>
-                    <img src="../images/cal.gif" id="p2_date6m_cal"></td>
+                    <img src="<%= request.getContextPath() %>/images/cal.gif" id="p2_date6m_cal"></td>
             </tr>
             <tr align="center">
                 <td class="column" rowspan="2"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGrowth"/>*</td>

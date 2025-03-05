@@ -162,7 +162,7 @@
         %>
         <link rel="stylesheet" type="text/css" href="styles.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
-        <script type="text/javascript" src="../share/javascript/prototype.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
 
         <script type="text/javascript">
 

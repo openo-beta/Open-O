@@ -364,9 +364,9 @@
                 %>
                 <a href="javascript:void(0);" title="Annotation"
                    onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&amp;table_id=<%=prescriptIdInt%>&amp;demo=<%=bean.getDemographicNo()%>&amp;drugSpecial=<%=StringEscapeUtils.escapeJavaScript(specialText)%>','anwin','width=400,height=500');">
-                    <%if (!isPrevAnnotation) {%> <img src="../images/notes.gif" alt="rxAnnotation" height="16"
+                    <%if (!isPrevAnnotation) {%> <img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                       width="13" border="0"><%} else {%><img
-                        src="../images/filledNotes.gif" height="16" width="13" alt="rxFilledNotes" border="0"> <%}%></a>
+                        src="<%= request.getContextPath() %>/images/filledNotes.gif" height="16" width="13" alt="rxFilledNotes" border="0"> <%}%></a>
                 <%
                     }
                 %>

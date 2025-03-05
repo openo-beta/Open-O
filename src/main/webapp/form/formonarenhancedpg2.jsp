@@ -118,11 +118,11 @@
         <script type="text/javascript" src="<%= ctx %>/js/global.js"></script>
         <link rel="stylesheet" type="text/css" href="<%=bView?"arStyleView.css" : "arStyle.css"%>">
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
-        <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
-        <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
-        <script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-1.7.1.min.js"></script>
         <script src="<%=ctx%>/js/jquery-ui-1.8.18.custom.min.js"></script>
         <script src="<%=ctx%>/js/fg.menu.js"></script>
         <script type="text/javascript" src="<%=ctx%>/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
@@ -2204,17 +2204,17 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                     <tr id="24wk_visit">
                         <td>24 week Visit<span style="float:right"><img id="24wk_visit_menu"
-                                                                        src="../images/right-circle-arrow-Icon.png"
+                                                                        src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                                         border="0"></span></td>
                     </tr>
                     <tr id="35wk_visit">
                         <td>35 week Visit<span style="float:right"><img id="35wk_visit_menu"
-                                                                        src="../images/right-circle-arrow-Icon.png"
+                                                                        src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                                         border="0"></span></td>
                     </tr>
                     <!--
 			<tr id="dd_visit">
-				<td>Due Date<span style="float:right"><img id="dd_visit_menu" src="../images/right-circle-arrow-Icon.png" border="0"></span></td>
+				<td>Due Date<span style="float:right"><img id="dd_visit_menu" src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png" border="0"></span></td>
 			</tr>
 			-->
                 </table>
@@ -2228,7 +2228,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     <tr id="graph">
                         <td>
                             <span id="fundal_graph_text">Fundus Height Graph</span><span style="float:right"><img
-                                id="graph_menu" src="../images/right-circle-arrow-Icon.png" border="0"></span>
+                                id="graph_menu" src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png" border="0"></span>
                             <div style="display:none"><a href="#" id="fundal_link">dummy link</a></div>
                         </td>
                     </tr>
@@ -2236,7 +2236,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                         <td>
                             Printing Log
                             <span style="float:right"><img id="print_log_menu"
-                                                           src="../images/right-circle-arrow-Icon.png"
+                                                           src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                            border="0"></span>
                         </td>
                     </tr>
@@ -2250,7 +2250,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                     <tr id="edb_warn" style="display:none">
                         <td>Update EDB<span style="float:right"><img id="edb_menu"
-                                                                     src="../images/right-circle-arrow-Icon.png"
+                                                                     src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                                      border="0"></span></td>
                     </tr>
                     <tr id="rh_warn" style="display:none">
@@ -2273,19 +2273,19 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 
                     <tr id="gct_warn" style="display:none">
                         <td>Perform 1hr GCT<span style="float:right"><img id="gct_menu"
-                                                                          src="../images/right-circle-arrow-Icon.png"
+                                                                          src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                                           border="0"></span></td>
                     </tr>
 
                     <tr id="gct_diabetes_warn" style="display:none">
                         <td>Gestational Diabetes<span style="float:right"><img id="gd_menu"
-                                                                               src="../images/right-circle-arrow-Icon.png"
+                                                                               src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                                                border="0"></span></td>
                     </tr>
 
                     <tr id="2hrgtt_prompt" style="display:none">
                         <td>GTT Req<span style="float:right"><img id="gtt_menu"
-                                                                  src="../images/right-circle-arrow-Icon.png"
+                                                                  src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                                   border="0"></span></td>
                     </tr>
 
@@ -2298,18 +2298,18 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
 
                     <tr id="lab_prompt">
-                        <td>Labs<span style="float:right"><img id="lab_menu" src="../images/right-circle-arrow-Icon.png"
+                        <td>Labs<span style="float:right"><img id="lab_menu" src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                                border="0"></span></td>
                     </tr>
 
                     <tr id="forms_prompt">
                         <td>Forms<span style="float:right"><img id="forms_menu"
-                                                                src="../images/right-circle-arrow-Icon.png" border="0"></span>
+                                                                src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png" border="0"></span>
                         </td>
                     </tr>
 
                     <tr id="strep_prompt" style="display:none">
-                        <td>GBS<span style="float:right"><img id="gbs_menu" src="../images/right-circle-arrow-Icon.png"
+                        <td>GBS<span style="float:right"><img id="gbs_menu" src="<%= request.getContextPath() %>/images/right-circle-arrow-Icon.png"
                                                               border="0"></span></td>
                     </tr>
 
@@ -2539,7 +2539,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 					<b>Rh IG Given:</b>
 					<input type="text" name="ar2_rhIG" id="ar2_rhIG" size="7" maxlength="10"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("ar2_rhIG", "")) %>">
-					<img src="../images/cal.gif" id="ar2_rhIG_cal">
+					<img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_rhIG_cal">
 				</span>
                         </td>
 
@@ -2978,7 +2978,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             Order 1 Hour GCT
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Labs' menu item under Prompts, and choose 1 Hour GCT"><img border="0"
-                                                                                                           src="../images/icon_help_sml.gif"/></a>
+                                                                                                           src="<%= request.getContextPath() %>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     </tbody>
@@ -2997,7 +2997,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             Order GBS Lab
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Labs' menu item under Prompts, and choose GBS"><img border="0"
-                                                                                                    src="../images/icon_help_sml.gif"/></a>
+                                                                                                    src="<%= request.getContextPath() %>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     <tr>
@@ -3005,7 +3005,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             Consider ultrasound for position
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Forms' menu item under Prompts, and choose Ultrasound"><img border="0"
-                                                                                                            src="../images/icon_help_sml.gif"/></a>
+                                                                                                            src="<%= request.getContextPath() %>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     </tbody>

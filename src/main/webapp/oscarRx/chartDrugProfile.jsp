@@ -91,7 +91,7 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
     <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.chartDrugProfile.title"/></title>
-    <link rel="stylesheet" type="text/css" href="../../../share/css/OscarStandardLayout.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 </head>
 
@@ -132,7 +132,7 @@
             </table>
 
 
-            <img src="../oscarEncounter/GraphMeasurements.do?method=ChartMeds&demographic_no=<%=demographicNo%><%=drugForGraph%>"/>
+            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=ChartMeds&demographic_no=<%=demographicNo%><%=drugForGraph%>"/>
 
 
             <fieldset>

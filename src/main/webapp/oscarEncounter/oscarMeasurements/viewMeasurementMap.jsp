@@ -35,7 +35,7 @@
 %>
 
 <link rel="stylesheet" type="text/css"
-      href="../../oscarMDS/encounterStyles.css">
+      href="<%= request.getContextPath() %>/oscarMDS/encounterStyles.css">
 
 <html>
 <head>

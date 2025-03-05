@@ -54,15 +54,15 @@
               href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <!-- main calendar program -->
-        <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
-        <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
@@ -670,7 +670,7 @@
                                                                name="pg1_menLMP" id="pg1_menLMP" size="10"
                                                                maxlength="10"
                                                                value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_menLMP", "")) %>"/>
-                                <img src="../images/cal.gif" id="pg1_menLMP_cal"></td>
+                                <img src="<%= request.getContextPath() %>/images/cal.gif" id="pg1_menLMP_cal"></td>
                             <td>Certain</td>
                             <td>Yes <input type="checkbox" name="pg1_psCertY"
                                     <%= props.getProperty("pg1_psCertY", "") %> /> No <input
@@ -702,7 +702,7 @@
                             <td><input type="text" name="pg1_lastUsed" id="pg1_lastUsed"
                                        size="10" maxlength="10"
                                        value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_lastUsed", "")) %>"/>
-                                <img src="../images/cal.gif" id="pg1_lastUsed_cal"></td>
+                                <img src="<%= request.getContextPath() %>/images/cal.gif" id="pg1_lastUsed_cal"></td>
                         </tr>
                     </table>
 
@@ -711,7 +711,7 @@
                     <input type="text" name="pg1_menEDB" id="pg1_menEDB" class="spe"
                            onDblClick="calByLMP(this);" size="10" maxlength="10"
                            value="<%= props.getProperty("pg1_menEDB", "") %>"/> <img
-                            src="../images/cal.gif" id="pg1_menEDB_cal"></td>
+                            src="<%= request.getContextPath() %>/images/cal.gif" id="pg1_menEDB_cal"></td>
 
 
                 <td valign="top" width="35%" rowspan="2">
@@ -722,7 +722,7 @@
                                 EDB</font></b></font><br>
                                 <input type="text" name="c_finalEDB" id="c_finalEDB" size="10"
                                        maxlength="10" value="<%= props.getProperty("c_finalEDB", "") %>"/>
-                                <img src="../images/cal.gif" id="c_finalEDB_cal"></td>
+                                <img src="<%= request.getContextPath() %>/images/cal.gif" id="c_finalEDB_cal"></td>
                             <td width="40%"><u>Dating Method</u></br>
                                 <input type="checkbox" name="pg1_edbByDate"
                                         <%= props.getProperty("pg1_edbByDate", "") %> />Dates<br>
@@ -1685,7 +1685,7 @@
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_labABO", "")) %>"></td>
                 </td>
                 <td valign="top" rowspan="2">Last Pap <img
-                        src="../images/cal.gif" id="pg1_labLastPapDate_cal"> </br>
+                        src="<%= request.getContextPath() %>/images/cal.gif" id="pg1_labLastPapDate_cal"> </br>
                     <input type="text" name="pg1_labLastPapDate"
                            id="pg1_labLastPapDate" size="10" maxlength="10"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_labLastPapDate", "")) %>"></td>

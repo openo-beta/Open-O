@@ -124,9 +124,9 @@
             oscar.oscarRx.data.RxPatientData.Patient patient = oscar.oscarRx.data.RxPatientData.getPatient(loggedInInfo, currentDemographicNo);
             String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP;
         %>
-        <script type="text/javascript" src="../share/javascript/prototype.js"/>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"/>
         "></script>
-        <script type="text/javascript" src="../share/javascript/scriptaculous.js"/>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/scriptaculous.js"/>
         "></script>
         <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/Oscar.js"/>"></script>
 

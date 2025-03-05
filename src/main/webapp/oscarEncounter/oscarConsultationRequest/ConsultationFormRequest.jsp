@@ -1984,7 +1984,7 @@ if (userAgent != null) {
                                         <oscar:oscarPropertiesCheck value="false"
                                                                     property="CONSULTATION_LOCK_REFERRAL_DATE">
                                             <td class="tite3">
-                                                <img alt="calendar" id="referalDate_cal" src="../../images/cal.gif"/>
+                                                <img alt="calendar" id="referalDate_cal" src="<%= request.getContextPath() %>/images/cal.gif"/>
                                                 <%
                                                     if (request.getAttribute("id") != null) {
                                                 %>
@@ -2166,7 +2166,7 @@ if (userAgent != null) {
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnAppointmentDate"/>
                                         </td>
                                         <td class="tite3"><img alt="calendar" id="appointmentDate_cal"
-                                                               src="../../images/cal.gif">
+                                                               src="<%= request.getContextPath() %>/images/cal.gif">
                                             <input type="text" id="appointmentDate" name="appointmentDate"
                                                        readonly="true" ondblclick="this.value='';"/>
                                         </td>
@@ -2327,7 +2327,7 @@ if (userAgent != null) {
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.formLastFollowup"/>
                                         </td>
                                         <td class="tite3">
-                                            <img alt="calendar" id="followUpDate_cal" src="../../images/cal.gif"/>
+                                            <img alt="calendar" id="followUpDate_cal" src="<%= request.getContextPath() %>/images/cal.gif"/>
                                             <input type="text" id="followUpDate" name="followUpDate"
                                                        ondblclick="this.value='';"/>
                                         </td>

@@ -281,7 +281,7 @@
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
        adding a calendar a matter of 1 or 2 lines of code. -->
@@ -2571,7 +2571,7 @@
                                                                 <a href="javascript:void(0);"
                                                                    title="Extra data from Import"
                                                                    onclick="window.open('../annotation/importExtra.jsp?display=<%=annotation_display %>&amp;table_id=<%=demographic_no %>&amp;demo=<%=demographic_no %>','anwin','width=400,height=250');">
-                                                                    <img src="../images/notes.gif" align="right"
+                                                                    <img src="<%= request.getContextPath() %>/images/notes.gif" align="right"
                                                                          alt="Extra data from Import" height="16"
                                                                          width="13" border="0"> </a>
                                                                 <%} %>
@@ -4343,7 +4343,7 @@
                                                                    name="paper_chart_archived_date"
                                                                    id="paper_chart_archived_date"
                                                                    value="<%=paperChartIndicatorDate%>">
-                                                            <img src="../images/cal.gif" id="archive_date_cal">
+                                                            <img src="<%= request.getContextPath() %>/images/cal.gif" id="archive_date_cal">
 
                                                             <input type="hidden" name="paper_chart_archived_program"
                                                                    id="paper_chart_archived_program"
@@ -4809,7 +4809,7 @@
                                                                                                 id="waiting_list_referral_date"
                                                                                                 size="11"
                                                                                                 value="<%=wlReferralDate%>" <%=wLReadonly%>><img
-                                                                                src="../images/cal.gif"
+                                                                                src="<%= request.getContextPath() %>/images/cal.gif"
                                                                                 id="referral_date_cal">
                                                                         </td>
                                                                         <td><!-- padding --></td>

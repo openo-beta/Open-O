@@ -239,7 +239,7 @@
                                             <c:if test="${not empty allergyResults[8]}">
                                                 <div class="DivContentSectionHead">
                                                     <a href="javascript:void(0)" onclick="toggleSection('8');return false;">
-                                                        <img border="0" id="8_img" src="../images/collapser.png"/> ATC Class
+                                                        <img border="0" id="8_img" src="<%= request.getContextPath() %>/images/collapser.png"/> ATC Class
                                                     </a>
                                                 </div>
                                                 <div id="8_content">

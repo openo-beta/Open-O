@@ -503,7 +503,7 @@
                                                 <td><b>Start Date</b></td>
                                                 <td><b>Life Stage</b></td>
                                                 <td><b>Age Of Onset</b></td>
-                                                <td><b><img src="../images/notes.gif" border="0" width="10" height="12"
+                                                <td><b><img src="<%= request.getContextPath() %>/images/notes.gif" border="0" width="10" height="12"
                                                             alt="Annotation"></b></td>
                                                 <td><b>Action</b></td>
                                             </tr>
@@ -611,9 +611,9 @@
                                                        onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=String.valueOf(allergy.getAllergyId())%>&demo=
                                                            ${patient.demographicNo}','anwin','width=400,height=500');">
                                                         <% if (existingAnnots.size() > 0) {%>
-                                                        <img src="../images/filledNotes.gif" border="0"/>
+                                                        <img src="<%= request.getContextPath() %>/images/filledNotes.gif" border="0"/>
                                                         <% } else { %>
-                                                        <img src="../images/notes.gif" border="0">
+                                                        <img src="<%= request.getContextPath() %>/images/notes.gif" border="0">
                                                         <% } %>
                                                     </a>
                                                     <% } %>

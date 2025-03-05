@@ -47,15 +47,15 @@
               href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
 
         <!-- main calendar program -->
-        <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
 
         <!-- language for the calendar -->
         <script type="text/javascript"
-                src="../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 
         <!-- the following script defines the Calendar.setup helper function, which makes
                adding a calendar a matter of 1 or 2 lines of code. -->
-        <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
 
@@ -374,7 +374,7 @@
                                 <td nowrap align="right">Expected Date of Confinement:</td>
                                 <td><input type="text" name="edc" id="edc" size="10"
                                            maxlength="10" value="<%= props.getProperty("edc", "") %>"
-                                           @oscar.formDB/> <img src="../images/cal.gif" id="edc_cal">
+                                           @oscar.formDB/> <img src="<%= request.getContextPath() %>/images/cal.gif" id="edc_cal">
                                 </td>
                             </tr>
                             <tr>
@@ -415,7 +415,7 @@
                                 <td nowrap><input type="text" name="date_<%=i%>"
                                                   id="date_<%=i%>" readonly size="8" maxlength="10"
                                                   value="<%= props.getProperty("date_"+i, "") %>" @oscar.formDB
-                                                  dbType="date"/> <img src="../images/cal.gif" id="date_<%=i%>_cal">
+                                                  dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif" id="date_<%=i%>_cal">
                                 </td>
                                 <td><input type="text" name="age_<%=i%>"
                                            onDblClick="calcAge(this)" size="1" maxlength="5"
@@ -478,7 +478,7 @@
                                 <td nowrap><input type="text" name="date_<%=i%>"
                                                   id="date_<%=i%>" readonly size="8" maxlength="10"
                                                   value="<%= props.getProperty("date_"+i, "") %>" @oscar.formDB
-                                                  dbType="date"/> <img src="../images/cal.gif" id="date_<%=i%>_cal">
+                                                  dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif" id="date_<%=i%>_cal">
                                 </td>
                                 <td><input type="text" name="age_<%=i%>"
                                            onDblClick="calcAge(this)" size="1" maxlength="5"
