@@ -1249,7 +1249,7 @@
                         </tr>
                         <tr>
                             <td><a href="#"
-                                   onclick="popup(300,300,'demographicCohort.jsp?demographic_no=<%=demographic.getDemographicNo()%>', 'cohort'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddPatientSet"/></a>
+                                   onclick="popup(300,300,'<%=request.getContextPath()%>/demographic/demographicCohort.jsp?demographic_no=<%=demographic.getDemographicNo()%>', 'cohort'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddPatientSet"/></a>
                             </td>
                         </tr>
 
