@@ -891,7 +891,7 @@
                                             String caisiSearch = oscarVariables.getProperty("caisi.search.workflow", "true");
                                             if ("true".equalsIgnoreCase(caisiSearch)) {
                                         %>
-                                        <a HREF="../PMmodule/ClientSearch2.do"
+                                        <a href="<%= request.getContextPath() %>/PMmodule/ClientSearch2.do"
                                            TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.searchPatientRecords"/>'
                                            OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.searchPatientRecords"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.search"/></a>
 

@@ -27,7 +27,7 @@
 <h3>The new scheduling module is not yet available.</h3>
 </p>
 
-<button type="button" class="btn btn-default btn-lg" onClick="location.href='../provider/providercontrol.jsp'">
+<button type="button" class="btn btn-default btn-lg" onClick="location.href="<%= request.getContextPath() %>/provider/providercontrol.jsp"">
     <span class="glyphicon glyphicon-calendar"></span> Go to classic view
 </button>
 

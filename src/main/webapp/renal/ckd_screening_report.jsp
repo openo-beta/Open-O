@@ -225,7 +225,7 @@
             %>
             <tr class="gradeB">
                 <td style="text-align:left">
-                    <%=ckd.getDemographic().getStandardIdentificationHTML() %>
+                    <%=ckd.getDemographic().getStandardIdentificationHTML(request.getContextPath()) %>
                 </td>
                 <td style="text-align:left">
                     Home: <%=ckd.getDemographic().getPhone() %><br/>

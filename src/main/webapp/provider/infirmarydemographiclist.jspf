@@ -97,7 +97,7 @@
 					</c:if>
 
 					<!-- Display demographic link -->
-					<a href="#" onclick="location.href='../PMmodule/ClientManager.do?id=${demographic_no}'">
+					<a href="#" onclick="location.href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?id=${demographic_no}"">
 						<c:out value="${de.label}"/>
 					</a>
 

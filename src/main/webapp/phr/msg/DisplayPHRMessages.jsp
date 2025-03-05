@@ -460,8 +460,8 @@
                             style="font-weight: bold; color: #339a8a;"><%= senderProvider.getFirst_name()%> <%=senderProvider.getLast_name()%></span>)
                     </span>
                 <span style="float: right;"><a
-                        href="../../phr/UserManagement.do?method=approveAction&actionId=<%=actionPendingApproval.getId()%>"><b>Approve</b></a> <a
-                        href="../../phr/UserManagement.do?method=denyAction&actionId=<%=actionPendingApproval.getId()%>"><b>Deny</b></a></span>
+                        href="<%= request.getContextPath() %>/phr/UserManagement.do?method=approveAction&actionId=<%=actionPendingApproval.getId()%>"><b>Approve</b></a> <a
+                        href="<%= request.getContextPath() %>/phr/UserManagement.do?method=denyAction&actionId=<%=actionPendingApproval.getId()%>"><b>Deny</b></a></span>
             </div>
 
             <%

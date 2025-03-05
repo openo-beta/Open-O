@@ -758,7 +758,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href='../oscarReport/oscarMeasurements/SetupSelectCDMReport.do'><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chronicDiseaseManagement"/></a></td>
+                        href="<%= request.getContextPath() %>/oscarReport/oscarMeasurements/SetupSelectCDMReport.do"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chronicDiseaseManagement"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -850,7 +850,7 @@
 
                         <div><span>CAISI Reporting Tools</span>
                             <caisi:isModuleLoad moduleName="caisi">
-                                <div><a HREF="../PMmodule/ClientManager.do?method=getGeneralFormsReport"
+                                <div><a href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?method=getGeneralFormsReport"
                                         target="generalFormsReport">General Forms Reports</a></div>
                                 <div><a href="javascript:void(0);"
                                         onclick="javascript:getIntakeReport('quick');return false;">Registration Intake
