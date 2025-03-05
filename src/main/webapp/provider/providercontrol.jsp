@@ -122,19 +122,19 @@
 
         if (caisiView != null && "true".equals(caisiView)) {
             if (viewAll_bool) {
-                response.sendRedirect("./providercontrol.jsp?GoToCaisiViewFromOscarView=true&year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1");
+                response.sendRedirect(request.getContextPath() + "/providercontrol.jsp?GoToCaisiViewFromOscarView=true&year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1");
                 return;
             } else {
-                response.sendRedirect("./providercontrol.jsp?GoToCaisiViewFromOscarView=true&year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=0");
+                response.sendRedirect(request.getContextPath() + "/providercontrol.jsp?GoToCaisiViewFromOscarView=true&year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=0");
                 return;
             }
         }
         if (viewAll_bool) {
 
-            response.sendRedirect("./providercontrol.jsp?year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1" + router);
+            response.sendRedirect(request.getContextPath() + "/providercontrol.jsp?year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1" + router);
             return;
         } else {
-            response.sendRedirect("./providercontrol.jsp?year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=0" + router);
+            response.sendRedirect(request.getContextPath() + "/providercontrol.jsp?year=" + nowYear + "&month=" + (nowMonth) + "&day=" + (nowDay) + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=0" + router);
             return;
         }
 
@@ -142,23 +142,23 @@
 
     //associate each operation with an output JSP file - displaymode
     String[][] opToFile = new String[][]{
-            {"day", "appointmentprovideradminday.jsp"},
-            {"month", "appointmentprovideradminmonth.jsp"},
-            {"addstatus", "provideraddstatus.jsp"},
-            {"updatepreference", "providerupdatepreference.jsp"},
-            {"displaymygroup", "providerdisplaymygroup.jsp"},
-            {"encounter", "providerencounter.jsp"},
-            {"encountersingle", "providerencountersingle.jsp"},
+            {"day", request.getContextPath() + "/provider/appointmentprovideradminday.jsp"},
+            {"month", request.getContextPath() + "/provider/appointmentprovideradminmonth.jsp"},
+            {"addstatus", request.getContextPath() + "/provider/provideraddstatus.jsp"},
+            {"updatepreference", request.getContextPath() + "/provider/providerupdatepreference.jsp"},
+            {"displaymygroup", request.getContextPath() + "/provider/providerdisplaymygroup.jsp"},
+            {"encounter", request.getContextPath() + "/provider/providerencounter.jsp"},
+            {"encountersingle", request.getContextPath() + "/provider/providerencountersingle.jsp"},
             {"vary", request.getParameter("displaymodevariable") == null ? "" : URLDecoder.decode(request.getParameter("displaymodevariable"))},
-            {"saveencounter", "providersaveencounter.jsp"},
-            {"savebill", "providersavebill.jsp"},
-            {"savedemographicaccessory", "providersavedemographicaccessory.jsp"},
-            {"encounterhistory", "providerencounterhistory.jsp"},
-            {"savedeletetemplate", "providertemplate.jsp"},
-            {"ar1", "formar1_99_12.jsp"},
-            {"ar2", "formar2_99_08.jsp"},
-            {"newgroup", "providernewgroup.jsp"},
-            {"savemygroup", "providersavemygroup.jsp"}
+            {"saveencounter", request.getContextPath() + "/provider/providersaveencounter.jsp"},
+            {"savebill", request.getContextPath() + "/provider/providersavebill.jsp"},
+            {"savedemographicaccessory", request.getContextPath() + "/provider/providersavedemographicaccessory.jsp"},
+            {"encounterhistory", request.getContextPath() + "/provider/providerencounterhistory.jsp"},
+            {"savedeletetemplate", request.getContextPath() + "/provider/providertemplate.jsp"},
+            {"ar1", request.getContextPath() + "/form/formar1_99_12.jsp"},
+            {"ar2", request.getContextPath() + "/form/formar2_99_08.jsp"},
+            {"newgroup", request.getContextPath() + "/provider/providernewgroup.jsp"},
+            {"savemygroup", request.getContextPath() + "/provider/providersavemygroup.jsp"}
 
     };
 
