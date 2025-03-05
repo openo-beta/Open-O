@@ -547,8 +547,9 @@ public class CaseloadContent2Action extends ActionSupport {
             if (hasPrivilege("_caseload.Age", roleName$)) {
                 String clAge = demographicResult.get(0).get("age") != null ? demographicResult.get(0).get("age").toString() : "";
                 String clBDay = demographicResult.get(0).get("month_of_birth").toString() + "-" + demographicResult.get(0).get("date_of_birth").toString();
+                String contextPath = request.getContextPath();
                 if (isBirthday(monthDay, clBDay)) {
-                    clAge += " <img src='../images/cake.gif' height='20' />";
+                    clAge += " <img src='" + contextPath + "/images/cake.gif' height='20' />";
                 }
                 entry.add(clAge);
             }
