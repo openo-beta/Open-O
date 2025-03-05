@@ -32,6 +32,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 import org.apache.struts.actions.DispatchAction;
+import org.jboss.aerogear.security.otp.Totp;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.PMmodule.web.OcanForm;
@@ -41,6 +42,7 @@ import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import org.oscarehr.decisionSupport.service.DSService;
 import org.oscarehr.managers.AppManager;
+import org.oscarehr.managers.MfaManager;
 import org.oscarehr.managers.SecurityManager;
 import org.oscarehr.managers.UserSessionManager;
 import org.oscarehr.util.*;
@@ -54,6 +56,7 @@ import oscar.util.AlertTimer;
 import oscar.util.CBIUtil;
 import oscar.util.ParameterActionForward;
 
+import javax.jms.IllegalStateException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +90,7 @@ public final class LoginAction extends DispatchAction {
     private final SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
     private final SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
 	private final UserSessionManager userSessionManager = SpringUtils.getBean(UserSessionManager.class);
+    private final MfaManager mfaManager = SpringUtils.getBean(MfaManager.class);
 
     // remove after testing is done
     // private SsoAuthenticationManager ssoAuthenticationManager =
@@ -207,12 +211,20 @@ public final class LoginAction extends DispatchAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // >> 1. Initial Checks and Mobile Detection
-        InitialChecksResult initialChecksResult = this.performInitialChecks(mapping, request);
+        InitialChecksResult initialChecksResult = this.performInitialChecks(mapping, form, request);
         if (initialChecksResult.errForward != null) {
             return initialChecksResult.errForward;
         }
+        LoginCheckLogin cl;
 
-        LoginCheckLogin cl = new LoginCheckLogin();
+        if (initialChecksResult.isMfaVerifyFlow) {
+            cl = request.getSession().getAttribute("cl") == null ? new LoginCheckLogin()
+                    : (LoginCheckLogin) request.getSession().getAttribute("cl");
+
+            return this.validateMfaCode(mapping, (ValidateMFAForm) form, request, response, cl, initialChecksResult);
+        }
+
+        cl = new LoginCheckLogin();
 
         UserLoginInfo userLoginInfo;
 
@@ -367,9 +379,96 @@ public final class LoginAction extends DispatchAction {
             return this.getLoginErrorActionForward(mapping, response, cl, initialChecksResult, userLoginInfo, where, oneIdKey);
         }
 
-        // >> Authentication Success. Continue...
-        return this.resumePostAuthenticationFlow(mapping, request, response, cl, initialChecksResult, authResult.getProviderNo());
+        GenericResult mfaCheckResult = this.isMfaEnabled(mapping, request, userLoginInfo, cl);
+        if (mfaCheckResult != null)
+            return mfaCheckResult.actionForward;
 
+        // >> Authentication Success. Continue...
+        return this.resumePostAuthenticationFlow(mapping, request, response, cl, initialChecksResult);
+
+    }
+
+    private ActionForward validateMfaCode(ActionMapping mapping, ValidateMFAForm form, HttpServletRequest request,
+                                          HttpServletResponse response, LoginCheckLogin cl,
+                                          InitialChecksResult initialChecksResult) throws IOException {
+
+        Object mfaSecret;
+        if (form.isMfaRegistrationFlow())
+            mfaSecret = request.getSession().getAttribute("mfaSecret").toString();
+        else {
+            Security security = cl.getSecurity();
+            try {
+                mfaSecret = this.mfaManager.getMfaSecret(security);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+                //todo handle error
+            }
+        }
+
+        Totp totp = new Totp(mfaSecret.toString());
+
+        if (totp.verify(form.getCode())) {
+            if (form.isMfaRegistrationFlow()) {
+                this.persistNewMfaSecret(request, cl, mfaSecret.toString());
+            }
+            return this.resumePostAuthenticationFlow(mapping, request, response, cl, initialChecksResult);
+        } else {
+            if (form.isMfaRegistrationFlow()) {
+                request.setAttribute("mfaRegistrationRequired", true);
+                request.setAttribute("qrData",
+                        this.mfaManager.getQRCodeImageData(cl.getSecurity().getId(),
+                                mfaSecret.toString()));
+            }
+            request.setAttribute("verifyCodeErr", "Invalid MFA Code");
+            return this.getMfaErrorForward(mapping, request, cl.getSecurity().getSecurityNo(), "Invalid MFA Code");
+        }
+    }
+
+    private GenericResult isMfaEnabled(ActionMapping mapping, HttpServletRequest request, UserLoginInfo userLoginInfo, LoginCheckLogin cl) {
+        Security security = this.getSecurity(userLoginInfo.username);
+        if (Objects.nonNull(security) && security.isUsingMfa()) {
+            // MFA Enabled
+            try {
+                this.setUserInfoToSession(request, userLoginInfo);
+                request.getSession().setAttribute("cl", cl);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            try {
+                if (this.mfaManager.isMfaRegistrationRequired(security.getId())) {
+                    Object mfaSecret = request.getSession().getAttribute("mfaSecret");
+                    if (mfaSecret == null) {
+                        mfaSecret = this.mfaManager.generateMfaSecret();
+                        request.getSession().setAttribute("mfaSecret", mfaSecret);
+    }
+
+                    request.setAttribute("mfaRegistrationRequired", true);
+                    request.setAttribute("qrData", this.mfaManager.getQRCodeImageData(security.getId(), mfaSecret.toString()));
+                }
+            } catch (IllegalStateException e) {
+                request.setAttribute("errMsg", "Something went wrong while processing, please try again or contact support.");
+            }
+            return new GenericResult(this.getMfaHandlerForward(mapping, request, security.getSecurityNo()));
+        }
+        return null;
+    }
+
+    private void persistNewMfaSecret(HttpServletRequest request, LoginCheckLogin cl, String mfaSecret) {
+        Security security = cl.getSecurity();
+        LoggedInInfo loggedInInfo = LoggedInUserFilter.generateLoggedInInfoFromSession(request);
+        try {
+            this.mfaManager.saveMfaSecret(loggedInInfo, security, mfaSecret);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+            //todo handle error
+        }
+    }
+
+    private ActionForward getMfaErrorForward(ActionMapping mapping, HttpServletRequest request, Integer securityNo, String errMsg) {
+        ParameterActionForward forward = new ParameterActionForward(this.getMfaHandlerForward(mapping, request, securityNo));
+        forward.addParameter("errMsg", errMsg);
+        return forward;
     }
 
     /**
@@ -380,16 +479,17 @@ public final class LoginAction extends DispatchAction {
      * @param response            The HttpServletResponse for this request.
      * @param cl                  The LoginCheckLogin object for managing login attempts.
      * @param initialChecksResult The result of initial checks performed before login.
-     * @param providerNo          The provider number of the logged-in user.
      * @return An ActionForward to the appropriate view after login.
      * @throws IOException If an I/O error occurs.
      */
     private ActionForward resumePostAuthenticationFlow(ActionMapping mapping, HttpServletRequest request, HttpServletResponse response,
-                                                       LoginCheckLogin cl, InitialChecksResult initialChecksResult, String providerNo) throws IOException {
+                                                       LoginCheckLogin cl, InitialChecksResult initialChecksResult) throws IOException {
 
         // initiate security manager
 
         HttpSession session = request.getSession();
+
+        String providerNo = session.getAttribute("providerNo").toString();
 
         String default_pmm = this.processProviderUserConfiguration(session, providerNo);
 
@@ -435,9 +535,17 @@ public final class LoginAction extends DispatchAction {
             return this.handleSuccessAjaxResponse(request, response);
         }
 
+        session.removeAttribute("providerNo");
+
         // >> 9. Standard Response Handling
         logger.debug("rendering standard response : " + where);
         return mapping.findForward(where);
+    }
+
+    private ActionForward getMfaHandlerForward(ActionMapping mapping, HttpServletRequest request, Integer securityId) {
+        ActionForward actionForward = new ActionForward(mapping.findForward("mfaHandler").getPath());
+        request.setAttribute("securityId", String.valueOf(securityId));
+        return actionForward;
     }
 
     /**
@@ -452,6 +560,7 @@ public final class LoginAction extends DispatchAction {
         session.setAttribute("userlastname", authResult.getLastname());
         session.setAttribute("userrole", authResult.getRoleName());
         session.setAttribute("expired_days", authResult.getExpiredDays());
+        session.setAttribute("providerNo", authResult.getProviderNo());
     }
 
     /**
@@ -853,7 +962,7 @@ public final class LoginAction extends DispatchAction {
      *      <li>`isForcePasswordChangeNeeded`: True if a forced password change is needed, False otherwise.</li>
      * </ul>
      */
-    private InitialChecksResult performInitialChecks(ActionMapping mapping, HttpServletRequest request) {
+    private InitialChecksResult performInitialChecks(ActionMapping mapping, ActionForm form, HttpServletRequest request) {
 
         if (!"POST".equals(request.getMethod())) {
             MiscUtils.getLogger().error("Someone is trying to login with a GET request.", new Exception());
@@ -877,10 +986,12 @@ public final class LoginAction extends DispatchAction {
             isMobileOptimized = false;
         }
 
+        boolean isMfaVerifyFlow = form instanceof ValidateMFAForm;
+
         boolean isForcePasswordChangeNeeded = request.getParameter("forcedpasswordchange") != null
                 && request.getParameter("forcedpasswordchange").equalsIgnoreCase("true");
 
-        return new InitialChecksResult(ajaxResponse, isMobileOptimized, ip, submitType, isForcePasswordChangeNeeded);
+        return new InitialChecksResult(ajaxResponse, isMobileOptimized, ip, submitType, isForcePasswordChangeNeeded, isMfaVerifyFlow);
     }
 
     /**
@@ -1148,13 +1259,15 @@ public final class LoginAction extends DispatchAction {
         public String ip;
         public String submitType;
         public boolean isForcePasswordChangeNeeded;
+        public boolean isMfaVerifyFlow;
 
-        public InitialChecksResult(boolean isAjaxResponse, boolean isMobileOptimized, String ip, String submitType, boolean isForcePasswordChangeNeeded) {
+        public InitialChecksResult(boolean isAjaxResponse, boolean isMobileOptimized, String ip, String submitType, boolean isForcePasswordChangeNeeded, boolean isMfaVerifyFlow) {
             this.isAjaxResponse = isAjaxResponse;
             this.isMobileOptimized = isMobileOptimized;
             this.ip = ip;
             this.submitType = submitType;
             this.isForcePasswordChangeNeeded = isForcePasswordChangeNeeded;
+            this.isMfaVerifyFlow = isMfaVerifyFlow;
         }
 
         public InitialChecksResult(ActionForward errorForward) {

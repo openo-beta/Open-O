@@ -837,8 +837,19 @@
 			<forward name="error" path="/logout.jsp" />
 			<forward name="ssoLoginError" path="/index.jsp" />
 		</action>
-		
-		<action input="/login/loginTest.jsp" path="/login/recordLogin" scope="request" type="oscar.login.LoginAgreementAction"></action>
+
+		<!-- MFA -->
+		<action input="/mfa/mfa_handler.jsp" name="validateMFAForm" path="/loginMfa" scope="request" type="oscar.login.LoginAction" validate="true">
+			<forward name="provider" path="/provider/providercontrol.jsp" redirect="true" />
+			<forward name="failure" path="/logout.jsp" />
+			<forward name="error" path="/loginfailed.jsp" />
+			<forward name="caisiPMM" path="/PMmodule/ProviderInfo.do" />
+			<forward name="shelterSelection" path="/shelterSelection.do" redirect="true" />
+			<forward name="forcepasswordreset" path="/forcepasswordreset.jsp" />
+			<forward name="programLocation" path="/location.jsp" redirect="true"/>
+			<forward name="ssoLogin" path="/ssoLogin.do" redirect="true" />
+			<forward name="mfaHandler" path="/mfa/mfa_handler.jsp" />
+		</action>
 
 		<action path="/securityRecord/mfa" scope="request" type="org.oscarehr.security.MfaActions" parameter="method" validate="true" />
 
