@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
-import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.dao.ProfessionalSpecialistDao;
 import org.oscarehr.common.model.ProfessionalSpecialist;
@@ -52,7 +51,6 @@ public class BillingreferralEdit2Action extends ActionSupport {
 
 
     private ProfessionalSpecialistDao psDao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
-
 
     @Override
     public String execute() throws Exception {

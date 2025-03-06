@@ -48,7 +48,7 @@ public class FollowUp2Action extends ActionSupport {
     static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     static EyeformFollowUpDao dao = (EyeformFollowUpDao) SpringUtils.getBean(EyeformFollowUpDao.class);
 
-    public String unspecified() {
+    public String execute() {
         return form();
     }
 

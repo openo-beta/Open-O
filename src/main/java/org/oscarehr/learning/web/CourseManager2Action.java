@@ -74,6 +74,10 @@ public class CourseManager2Action extends ActionSupport {
     private static ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     private static DemographicExtDao demographicExtDao = SpringUtils.getBean(DemographicExtDao.class);
 
+    public String execute() throws IOException {
+        return createCourse();
+    }
+
     public String createCourse()
             throws IOException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);

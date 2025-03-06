@@ -47,7 +47,7 @@ public class TestBook2Action extends ActionSupport {
     static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     static EyeformTestBookDao dao = SpringUtils.getBean(EyeformTestBookDao.class);
 
-    public String unspecified() {
+    public String execute() {
         return form();
     }
 

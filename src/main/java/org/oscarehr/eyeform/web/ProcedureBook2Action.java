@@ -47,7 +47,7 @@ public class ProcedureBook2Action extends ActionSupport {
     static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
     protected static EyeformProcedureBookDao procedureBookDao = SpringUtils.getBean(EyeformProcedureBookDao.class);
 
-    public String unspecified() {
+    public String execute() {
         return form();
     }
 

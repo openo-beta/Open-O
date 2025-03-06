@@ -67,6 +67,10 @@ public class GenericIntakeReport2Action extends ActionSupport {
     // Forwards
     private static final String FORWARD_REPORT = "report";
 
+    public String execute() throws Exception {
+        return report();
+    }
+
     public String report() throws SQLException {
 
         String intakeType = request.getParameter(TYPE);

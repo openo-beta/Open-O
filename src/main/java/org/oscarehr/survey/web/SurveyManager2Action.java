@@ -62,21 +62,14 @@ public class SurveyManager2Action extends ActionSupport {
     private OscarFormManager oscarFormManager = (OscarFormManager) SpringUtils.getBean(OscarFormManager.class);
     private UserManager surveyUserManager = (UserManager) SpringUtils.getBean(UserManager.class);
 
-    public void setSurveyManager(SurveyManager mgr) {
-        this.surveyManager = mgr;
-    }
 
-    public void setSurveyTestManager(SurveyTestManager mgr) {
-        this.surveyTestManager = mgr;
-    }
-
-
-    public void setQuestionTypes(QuestionTypes qt) {
-        this.questionTypes = qt;
-    }
-
-
-    public String unspecified() {
+    public String execute() {
+        if ("reportForm".equals(request.getParameter("method"))) {
+            return reportForm();
+        }
+        if ("test".equals(request.getParameter("method"))) {
+            return test();
+        }
         return list();
     }
 

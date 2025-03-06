@@ -59,6 +59,10 @@ public class DocumentUpload2Action extends ActionSupport {
     private static Logger logger = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
+    public String execute() throws Exception {
+        return executeUpload();
+    }
+
     public String executeUpload() throws Exception {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
             throw new SecurityException("missing required security object (_edoc)");

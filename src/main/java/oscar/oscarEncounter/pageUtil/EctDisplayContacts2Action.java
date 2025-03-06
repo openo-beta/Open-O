@@ -55,6 +55,10 @@ public class EctDisplayContacts2Action extends EctDisplayAction {
     ProfessionalSpecialistDao professionalSpecialistDao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
 
 
+    public String execute() {
+        return getCmd();
+    }
+
     public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
         try {
 

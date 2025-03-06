@@ -73,7 +73,7 @@ public class BedManager2Action extends ActionSupport {
         this.facilityDao = facilityDao;
     }
 
-    public String unspecified() {
+    public String execute() {
         // dispatch to correct method based on which button was selected
         // Please don't make changes that causes addRoom and addBed button not working any more!
         if ("".equals(request.getParameter("submit.saveRoom")) == false)

@@ -177,7 +177,10 @@ public class AddEditDocument2Action extends ActionSupport {
         return numOfPage;
     }
 
-    public String unspecified() {
+    public String execute() throws Exception {
+        if ("html5MultiUpload".equals(request.getParameter("method"))) {
+            return html5MultiUpload();
+        }
         return execute2();
     }
 

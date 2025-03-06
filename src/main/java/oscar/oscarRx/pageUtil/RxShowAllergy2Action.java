@@ -67,8 +67,12 @@ public final class RxShowAllergy2Action extends ActionSupport {
         return NONE;
     }
 
-    public String unspecified()
+    public String execute()
             throws IOException, ServletException {
+
+        if ("reorder".equals(request.getParameter("method"))) {
+            return reorder();
+        }
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_allergy", "r", null)) {

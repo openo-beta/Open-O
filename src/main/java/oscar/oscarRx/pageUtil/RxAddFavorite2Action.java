@@ -56,6 +56,10 @@ public final class RxAddFavorite2Action extends ActionSupport {
     public String execute()
             throws IOException, ServletException {
 
+        if ("addFav2".equals(request.getParameter("method"))) {
+            return addFav2();
+        }
+        
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "w", null)) {
             throw new RuntimeException("missing required security object (_rx)");
         }

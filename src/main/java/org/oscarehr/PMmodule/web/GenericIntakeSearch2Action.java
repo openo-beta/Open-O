@@ -107,13 +107,8 @@ public class GenericIntakeSearch2Action extends ActionSupport {
     private static final String FORWARD_SEARCH_FORM = "searchForm";
     private static final String FORWARD_INTAKE_EDIT = "intakeEdit";
 
-    private ClientImageDAO clientImageDAO = null;
-
-    public void setClientImageDAO(ClientImageDAO clientImageDAO) {
-        this.clientImageDAO = clientImageDAO;
-    }
-
-    private SurveyManager surveyManager = (SurveyManager) SpringUtils.getBean(SurveyManager.class);
+    private ClientImageDAO clientImageDAO = SpringUtils.getBean(ClientImageDAO.class);
+    private SurveyManager surveyManager = SpringUtils.getBean(SurveyManager.class);
 
 
     @Override
