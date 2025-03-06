@@ -2456,7 +2456,27 @@
             <result name="success">/episode/success.jsp</result>
         </action>
         <action name="indivica/HCSearch" class="org.oscarehr.common.web.HealthCardSearch2Action"/>
-        <action name="oscarEncounter/displayPregnancies" class="oscar.oscarEncounter.pageUtil.EctDisplayPregnancy2Action"/>
+        <action name="oscarEncounter/displayPregnancies" class="oscar.oscarEncounter.pageUtil.EctDisplayPregnancy2Action">
+            <result name="labs">/oscarEncounter/displayLabs.do</result>
+			<result name="forms">/oscarEncounter/displayForms.do</result>
+			<result name="msgs">/oscarEncounter/displayMessages.do</result>
+			<result name="eforms">/oscarEncounter/displayEForms.do</result>
+			<result name="docs">/oscarEncounter/displayDocuments.do</result>
+			<result name="measurements">/oscarEncounter/displayMeasurements.do</result>
+			<result name="tickler">/oscarEncounter/displayTickler.do</result>
+			<result name="Dx">/oscarEncounter/displayDisease.do</result>
+			<result name="preventions">/oscarEncounter/displayPrevention.do</result>
+			<result name="consultation">/oscarEncounter/displayConsultation.do</result>
+			<result name="allergies">/oscarEncounter/displayAllergy.do</result>
+			<result name="unresolvedIssues">/oscarEncounter/displayIssues.do</result>
+			<result name="resolvedIssues">/oscarEncounter/displayIssues.do</result>
+			<result name="Rx">/oscarEncounter/displayRx.do</result>
+			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
+			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
+			<result name="HRM">/oscarEncounter/displayHRM.do</result>
+			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			<result name="eams">/eaaps/displayEctEaaps.do</result>
+        </action>
         <action name="Pregnancy" class="org.oscarehr.common.web.Pregnancy2Action">
             <result name="list">/pregnancy/list.jsp</result>
             <result name="success">/pregnancy/success.jsp</result>
@@ -2495,7 +2515,7 @@
             <result name="success">/billing/CA/ON/genRADesc.jsp</result>
             <result name="failure">/failure.jsp</result>
         </action>
-        <action name="oscarEncounter/displayContacts" class="oscar.oscarEncounter.pageUtil.EctDisplayConacts2Action">
+        <action name="oscarEncounter/displayContacts" class="oscar.oscarEncounter.pageUtil.EctDisplayContacts2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
