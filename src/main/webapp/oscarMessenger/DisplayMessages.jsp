@@ -106,7 +106,7 @@
 <html>
     <head>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <link rel="stylesheet" type="text/css" href="encounterStyles.css">
+        <link rel="stylesheet" type="text/css" href="css/encounterStyles.css">
         <title>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.DisplayMessages.title"/>
         </title>
