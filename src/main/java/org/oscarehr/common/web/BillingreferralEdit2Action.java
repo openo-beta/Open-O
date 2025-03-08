@@ -54,6 +54,18 @@ public class BillingreferralEdit2Action extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
+        String method = request.getParameter("method");
+        if ("searchByNo".equals(method)) {
+            return searchByNo();
+        } else if ("searchBySpecialty".equals(method)) {
+            return searchBySpecialty();
+        } else if ("searchByName".equals(method)) {
+            return searchByName();
+        } else if ("modifyBatch".equals(method)) {
+            return modifyBatch();
+        } else if ("advancedSearch".equals(method)) {
+            return advancedSearch();
+        }
         return list();
     }
 
@@ -87,7 +99,6 @@ public class BillingreferralEdit2Action extends ActionSupport {
         return "list";
     }
 
-
     public String searchByName() {
         //DynaBean lazyForm = (DynaBean) form;
         String name = search;
@@ -108,7 +119,6 @@ public class BillingreferralEdit2Action extends ActionSupport {
 
         return "list";
     }
-
 
     public String modifyBatch() throws IOException {
         String referralId = request.getParameter("id");

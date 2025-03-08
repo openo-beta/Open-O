@@ -48,6 +48,16 @@ public class ProcedureBook2Action extends ActionSupport {
     protected static EyeformProcedureBookDao procedureBookDao = SpringUtils.getBean(EyeformProcedureBookDao.class);
 
     public String execute() {
+        String method = request.getParameter("method");
+        if ("cancel".equals(method)) {
+            return cancel();
+        } else if ("getNoteText".equals(method)) {
+            return getNoteText();
+        } else if ("save".equals(method)) {
+            return save();
+        } else if ("getTicklerText".equals(method)) {
+            return getTicklerText();
+        }
         return form();
     }
 

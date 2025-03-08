@@ -63,7 +63,7 @@ public class GenericIntakeSearch2Action extends ActionSupport {
     private static Logger LOG = MiscUtils.getLogger();
 
     private static final List<LookupCodeValue> genders = new ArrayList<LookupCodeValue>();
-    protected ClientManager clientManager;
+    protected ClientManager clientManager = SpringUtils.getBean(ClientManager.class);
 
     // Parameters
     protected static final String METHOD = "method";
@@ -113,6 +113,18 @@ public class GenericIntakeSearch2Action extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
+        String method = request.getParameter("method");
+        if ("searchFromRemoteAdmit".equals(method)) {
+            return searchFromRemoteAdmit();
+        } else if ("search".equals(method)) {
+            return search();
+        } else if ("createLocal".equals(method)) {
+            return createLocal();
+        } else if ("updateLocal".equals(method)) {
+            return updateLocal();
+        } else if ("copyRemote".equals(method)) {
+            return copyRemote();
+        } 
         request.setAttribute("genders", getGenders());
         return FORWARD_SEARCH_FORM;
     }

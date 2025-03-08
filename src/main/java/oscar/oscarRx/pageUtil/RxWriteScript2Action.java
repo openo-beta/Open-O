@@ -72,7 +72,7 @@ public final class RxWriteScript2Action extends ActionSupport {
     private static final String PRIVILEGE_WRITE = "w";
 
     private static final Logger logger = MiscUtils.getLogger();
-    private static UserPropertyDAO userPropertyDAO;
+    private static UserPropertyDAO userPropertyDAO = SpringUtils.getBean(UserPropertyDAO.class);
     private static final String DEFAULT_QUANTITY = "30";
     private static final PartialDateDao partialDateDao = (PartialDateDao) SpringUtils.getBean(PartialDateDao.class);
 

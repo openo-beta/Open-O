@@ -94,10 +94,6 @@ public class EctDisplayEpisode2Action extends EctDisplayAction {
         }
     }
 
-    public String execute() {
-        return getCmd();
-    }
-
     public String getCmd() {
         return cmd;
     }

@@ -39,8 +39,23 @@ public class AppointmentStatus2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-
     private static final Logger logger = MiscUtils.getLogger();
+
+    public String execute() {
+        String method = request.getParameter("method");
+        if ("view".equals(method)) {
+            return view();
+        } else if ("reset".equals(method)) {
+            return reset();
+        } else if ("changestatus".equals(method)) {
+            return changestatus();
+        } else if ("modify".equals(method)) {
+            return modify();
+        } else if ("update".equals(method)) {
+            return update();
+        }
+        return view();
+    }
 
     public String view() {
         logger.warn("view");

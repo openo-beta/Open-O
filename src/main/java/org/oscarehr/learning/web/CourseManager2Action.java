@@ -75,6 +75,18 @@ public class CourseManager2Action extends ActionSupport {
     private static DemographicExtDao demographicExtDao = SpringUtils.getBean(DemographicExtDao.class);
 
     public String execute() throws IOException {
+        String method = request.getParameter("method");
+        if ("getAllCourses".equals(method)) {
+            return getAllCourses();
+        } else if ("getCourseDetails".equals(method)) {
+            return getCourseDetails();
+        } else if ("getCourseStudents".equals(method)) {
+            return getCourseStudents();
+        } else if ("getCourseProviders".equals(method)) {
+            return getCourseProviders();
+        } else if ("saveCourseDetails".equals(method)) {
+            return saveCourseDetails();
+        }
         return createCourse();
     }
 

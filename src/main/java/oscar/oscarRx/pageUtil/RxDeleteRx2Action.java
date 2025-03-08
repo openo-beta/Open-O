@@ -66,7 +66,7 @@ public final class RxDeleteRx2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private DrugDao drugDao = (DrugDao) SpringUtils.getBean(DrugDao.class);
+    private DrugDao drugDao = SpringUtils.getBean(DrugDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     private static final String PRIVILEGE_UPDATE = "u";

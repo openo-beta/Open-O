@@ -45,12 +45,10 @@ public class MsgReDisplayMessages2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-
     private MessageListDao dao = SpringUtils.getBean(MessageListDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    public String execute()
-            throws IOException, ServletException {
+    public String execute() throws IOException, ServletException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "r", null)) {
             throw new SecurityException("missing required security object (_msg)");

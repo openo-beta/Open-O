@@ -1864,7 +1864,6 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public boolean isClientInProgramDomain(String providerNo, String demographicNo) {
-System.out.println("isClientInProgramDomain demographicNo = " + demographicNo);
         List providerPrograms = programProviderDao.getProgramProviderByProviderNo(providerNo);
 
         List allAdmissions = this.admissionManager.getAdmissions(Integer.valueOf(demographicNo));

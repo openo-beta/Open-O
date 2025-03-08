@@ -60,11 +60,11 @@ public class BedManager2Action extends ActionSupport {
 
     private BedManager bedManager = SpringUtils.getBean(BedManager.class);
 
-    private ProgramManager programManager;
+    private ProgramManager programManager = SpringUtils.getBean(ProgramManager.class);
 
     private RoomManager roomManager = SpringUtils.getBean(RoomManager.class);
 
-    private FacilityDao facilityDao;
+    private FacilityDao facilityDao = SpringUtils.getBean(FacilityDao.class);
 
     private BedDemographicManager bedDemographicManager = SpringUtils.getBean(BedDemographicManager.class);
     private RoomDemographicManager roomDemographicManager = SpringUtils.getBean(RoomDemographicManager.class);

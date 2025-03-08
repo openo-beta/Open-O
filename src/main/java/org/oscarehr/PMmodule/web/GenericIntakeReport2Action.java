@@ -38,6 +38,7 @@ import org.oscarehr.PMmodule.service.GenericIntakeManager;
 import org.oscarehr.PMmodule.utility.DateTimeFormatUtils;
 import org.oscarehr.common.model.ReportStatistic;
 import org.oscarehr.util.MiscUtils;
+import org.oscarehr.util.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -50,7 +51,7 @@ public class GenericIntakeReport2Action extends ActionSupport {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    protected GenericIntakeManager genericIntakeManager;
+    protected GenericIntakeManager genericIntakeManager = SpringUtils.getBean(GenericIntakeManager.class);
 
     // Parameters
     protected static final String METHOD = "method";
