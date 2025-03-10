@@ -31,6 +31,7 @@ import org.oscarehr.common.model.SystemPreferences;
 import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.SpringUtils;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,9 +41,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.Tuple;
+
 public class CategoryData {
 
 	private final SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
+
+	private final EntityManagerFactory entityManagerFactory = SpringUtils.getBean(EntityManagerFactory.class);
+	private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
 
 	private int totalDocs = 0;
 	private int totalLabs = 0;
@@ -454,51 +464,47 @@ public class CategoryData {
 		int count = 0;
 		PatientInfo info;
 
-		// String sql = " SELECT HIGH_PRIORITY demographic_no, first_name, last_name, COUNT( distinct h.id) as count "
-		// 				+ " FROM HRMDocument h "
-		// 				+ " LEFT JOIN HRMDocumentToDemographic hd ON h.id = hd.hrmDocumentId"
-		// 				+ " LEFT JOIN HRMDocumentToProvider hp ON h.id = hp.hrmDocumentId"
-		// 				+ " LEFT JOIN demographic d ON hd.demographicNo = d.demographic_no"
-		// 				+ " WHERE h.id IN (SELECT hrmDocumentId FROM HRMDocumentToDemographic hd)"
-		// 				+ " 	AND d.last_name " + (StringUtils.isEmpty(patientLastName) ? " IS NOT NULL " : " like '%"+patientLastName+"%' ")
-		// 				+ "		AND d.hin " + (StringUtils.isEmpty(patientHealthNumber) ? " IS NOT NULL " : " like '%"+patientHealthNumber+"%' ")
-		// 				+ "		AND d.first_name " + (StringUtils.isEmpty(patientFirstName) ? " IS NOT NULL " : " like '%"+patientFirstName+"%' ")
-		// 				+ hrmViewed
-		// 				+ hrmSignedOff
-		// 				+ hrmDateSql
-		// 				+ hrmProviderSql
-		// 				+ "GROUP BY demographic_no ";
-		String sql = "SELECT HIGH_PRIORITY demographic_no, first_name, last_name, COUNT(DISTINCT h.id) AS count "
-						+ " FROM HRMDocumentToDemographic hd "
-						+ " LEFT JOIN HRMDocumentToProvider hp ON hd.hrmDocumentId = hp.hrmDocumentId "
-						+ " LEFT JOIN HRMDocument h ON hd.hrmDocumentId = h.id "
-						+ " JOIN demographic d ON hd.demographicNo = d.demographic_no "
-						+ " WHERE 1=1 "
-						+ " 	AND d.last_name " + (StringUtils.isEmpty(patientLastName) ? " IS NOT NULL " : " like '%"+patientLastName+"%' ")
-						+ "		AND d.hin " + (StringUtils.isEmpty(patientHealthNumber) ? " IS NOT NULL " : " like '%"+patientHealthNumber+"%' ")
-						+ "		AND d.first_name " + (StringUtils.isEmpty(patientFirstName) ? " IS NOT NULL " : " like '%"+patientFirstName+"%' ")
-						+ hrmViewed
-						+ hrmSignedOff
-						+ hrmDateSql
-						+ hrmProviderSql
-						+ "GROUP BY demographic_no ";
+		StringBuilder sql = new StringBuilder();
+        sql.append("SELECT HIGH_PRIORITY d.demographic_no, d.first_name, d.last_name, COUNT(DISTINCT h.id) AS count ")
+           .append(" FROM HRMDocumentToDemographic hd ")
+           .append(" LEFT JOIN HRMDocumentToProvider hp ON hd.hrmDocumentId = hp.hrmDocumentId ")
+           .append(" LEFT JOIN HRMDocument h ON hd.hrmDocumentId = h.id ")
+           .append(" JOIN demographic d ON hd.demographicNo = d.demographic_no ")
+           .append(" WHERE 1=1 ")
+           .append(" AND d.last_name ").append(StringUtils.isNotEmpty(patientLastName) ? "LIKE :patientLastName " : "IS NOT NULL ")
+           .append(" AND d.hin ").append(StringUtils.isNotEmpty(patientHealthNumber) ? "LIKE :patientHealthNumber " : "IS NOT NULL ")
+           .append(" AND d.first_name ").append(StringUtils.isNotEmpty(patientFirstName) ? "LIKE :patientFirstName " : "IS NOT NULL ")
+           .append(hrmViewed).append(hrmSignedOff).append(hrmDateSql).append(hrmProviderSql)
+           .append(" GROUP BY d.demographic_no ");
 
-		Connection c  = DbConnectionFilter.getThreadLocalDbConnection();
-		PreparedStatement ps = c.prepareStatement(sql);
-		ResultSet rs= ps.executeQuery(sql);
+        Query query = entityManager.createNativeQuery(sql.toString(), Tuple.class);
 
-		while(rs.next()){
-			Integer hrmCount = rs.getInt("count");
-			int id = rs.getInt("demographic_no");
-			// Updating patient info if it already exists.
+        // Set parameters only if they are not empty
+        if (StringUtils.isNotEmpty(patientLastName)) {
+            query.setParameter("patientLastName", "%" + patientLastName + "%");
+        }
+        if (StringUtils.isNotEmpty(patientHealthNumber)) {
+            query.setParameter("patientHealthNumber", "%" + patientHealthNumber + "%");
+        }
+        if (StringUtils.isNotEmpty(patientFirstName)) {
+            query.setParameter("patientFirstName", "%" + patientFirstName + "%");
+        }
+
+        // Executing the query and processing the results
+		List<Tuple> results = query.getResultList();
+
+		for (Tuple result : results) {
+			Integer hrmCount = result.get("count", BigInteger.class).intValue(); // Extracting count as Integer
+			Integer id = result.get("demographic_no", Integer.class); // Extracting demographicNo as Integer
+
+			// Updating patient info if it already exists
 			if (patients.containsKey(id)) {
 				info = patients.get(id);
 				info.setDocCount(info.getDocCount() + hrmCount);
 				info.setHrmCount(hrmCount);
-			}
-			// Otherwise adding a new patient record.
-			else {
-				info = new PatientInfo(id, rs.getString("first_name"), rs.getString("last_name"));
+			} else {
+				// Otherwise, adding a new patient record
+				info = new PatientInfo(id, result.get("first_name", String.class), result.get("last_name", String.class));
 				info.setDocCount(hrmCount);
 				info.setHrmCount(hrmCount);
 				patients.put(info.getId(), info);
@@ -512,30 +518,28 @@ public class CategoryData {
 
 	public int getHRMDocumentCountForUnmatched() throws SQLException{
 		int count = 0;
-		// String sql = " SELECT HIGH_PRIORITY COUNT( distinct h.id) as count "
-		// 			+" FROM HRMDocument h"
-		// 			+" LEFT JOIN HRMDocumentToProvider hp ON h.id = hp.hrmDocumentId"
-		// 			+" WHERE h.id NOT IN (SELECT hrmDocumentId FROM HRMDocumentToDemographic) "
-		// 			+ hrmViewed
-		// 			+ hrmSignedOff
-		// 			+ hrmDateSql
-		// 			+ hrmProviderSql;
-		String sql = "SELECT HIGH_PRIORITY COUNT(DISTINCT h.id) AS count "
-						+ " FROM HRMDocumentToProvider hp"
-						+ " LEFT JOIN HRMDocument h ON h.id = hp.hrmDocumentId "
-						+ " LEFT JOIN HRMDocumentToDemographic hd ON hd.hrmDocumentId = hp.hrmDocumentId "
-						+ " WHERE hd.hrmDocumentId IS NULL "
-						+ hrmViewed
-						+ hrmSignedOff
-						+ hrmDateSql
-						+ hrmProviderSql;
 
-		Connection c  = DbConnectionFilter.getThreadLocalDbConnection();
-		PreparedStatement ps = c.prepareStatement(sql);
-		ResultSet rs= ps.executeQuery(sql);
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT HIGH_PRIORITY COUNT(DISTINCT h.id) AS count ")
+			.append(" FROM HRMDocumentToProvider hp ")
+			.append(" LEFT JOIN HRMDocument h ON h.id = hp.hrmDocumentId ")
+			.append(" LEFT JOIN HRMDocumentToDemographic hd ON hd.hrmDocumentId = hp.hrmDocumentId ")
+			.append(" WHERE hd.hrmDocumentId IS NULL ")
+			.append(hrmViewed)
+			.append(hrmSignedOff)
+			.append(hrmDateSql)
+			.append(hrmProviderSql);
 
-		while(rs.next()){
-			count = rs.getInt("count");
+		// Create a native query using the entity manager
+		Query query = entityManager.createNativeQuery(sql.toString(), Tuple.class);
+
+		// Execute the query and retrieve the results
+		List<Tuple> results = query.getResultList();
+
+		// Process the results
+		for (Tuple result : results) {
+			Integer hrmCount = result.get("count", BigInteger.class).intValue(); // Extracting count as Integer
+			count += hrmCount; // Accumulate the total count
 		}
 
 		return count;
