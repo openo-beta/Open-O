@@ -28,11 +28,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 </c:if>
     <c:if test="${page ge 1}">
     <c:forEach var="labResult" items="${labDocs}" varStatus="loopStatus">
-        <c:set var="labResultTitle" value="${labResult.isDocument() ? 'Document: ' : (labResult.isHRM() ? 'HRM: ' : 'Lab: ')}"/>
         <div class="document-card card mb-1 shadow-sm" id="labdoc_${labResult.segmentID}" style="height: 100%;">
             <div class="card-body">
                 <div class="card-title fw-bold">
-                    <c:out value="${labResultTitle}" />
+                    <c:out value="${labResult.labType}: " />
                     <e:forHtmlContent value='${labResult.patientName}' />
                 </div>
                 <iframe 
