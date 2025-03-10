@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
     <script type="text/javascript" charset="utf8" src="${pageContext.servletContext.contextPath}/library/DataTables/DataTables-1.13.4/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/library/DataTables/DataTables-1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/library/bootstrap-datetimepicker.min.js" ></script>
-    <script src="<%=request.getContextPath()%>/share/javascript/oscarMDSIndex.js"></script>
+    <script src="${pageContext.servletContext.contextPath}/share/javascript/oscarMDSIndex.js"></script>
     <title>Inboxhub</title>
 </head>
 <body>
