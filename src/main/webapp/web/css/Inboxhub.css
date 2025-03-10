@@ -19,11 +19,12 @@
 
 @CHARSET "UTF-8";
 body {
-    font-size: small !important;
+    font-family: Arial, "Helvetica Neue", Helvetica, FontAwesome, sans-serif !important;
+    font-size: 12px !important;
 }
 
 input {
-    font-size: small !important;
+    font-size: 12px !important;
 }
 
 .d-inline-grid {
@@ -116,7 +117,7 @@ input {
 }
 
 .inbox-table-responsive {
-    height: calc(100vh - 7em);
+    height: calc(100vh - 8em);
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -135,7 +136,7 @@ input {
 }
 
 .inbox-form {
-    height: calc(100vh - 5em);
+    height: calc(100vh - 5.5em);
     overflow-y: auto;
     overflow-x: hidden;
     min-width: 261px;
@@ -183,7 +184,7 @@ input {
 }
 
 .category-btn {
-    font-size: small !important;
+    font-size: 12px !important;
 }
 
 .collapse-btn {
@@ -199,7 +200,7 @@ input {
     top: -2px;
     transform: rotate(0deg);
     transition: transform 0.2s ease-in-out;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     cursor: pointer;
 }
