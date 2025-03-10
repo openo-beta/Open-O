@@ -5,6 +5,9 @@
 	<constant name="struts.action.extension" value="do" />
     <constant name="struts.objectFactory" value="spring"/>
     <constant name="struts.enable.SlashesInActionNames" value="true" />
+    <constant name="struts.serve.static" value="true" />
+    <constant name="struts.serve.static.browserCache" value="true" />
+    <constant name="struts.action.excludePattern" value=".*\.(css|js|png|jpg|gif)$" />
     <!-- Default package extending struts-default -->
 	<package name="default" namespace="/" extends="struts-default">
         <action name="logout" class="oscar.login.Logout2Action">
