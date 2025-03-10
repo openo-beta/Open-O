@@ -56,75 +56,73 @@ public class HRMDocumentToProviderDao extends AbstractDaoImpl<HRMDocumentToProvi
 		if (patientSearch && (demographicNumbers == null || demographicNumbers.isEmpty())) {
 			return Collections.emptyList();
 		}
+	
+		// Building the query dynamically with JOINs and conditional parameters
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT x FROM ").append(this.modelClass.getName()).append(" x JOIN HRMDocument h ON x.hrmDocumentId = h.id ");
 		
-		String hrmToDemographicTableName = "";
+		boolean hasDemographics = (demographicNumbers != null && !demographicNumbers.isEmpty());
+		if (hasDemographics && !(demographicNumbers.size() == 1 && demographicNumbers.get(0) == 0)) {
+			sql.append("JOIN HRMDocumentToDemographic d ON x.hrmDocumentId = d.hrmDocumentId ");
+		}
+	
+		sql.append("WHERE x.providerNo LIKE :providerNo ");
 		
-		StringBuilder hrmToDemographicJoinAndSearchSql = new StringBuilder();
-		if (demographicNumbers != null && !demographicNumbers.isEmpty()) {
-			// If demographicNumber is 0, then search for unmatched HRM documents (not linked to any demographic).
+		// Demographic number condition
+		if (hasDemographics) {
 			if (demographicNumbers.size() == 1 && demographicNumbers.get(0) == 0) {
-				hrmToDemographicJoinAndSearchSql.append(" AND h.id NOT IN (SELECT d.hrmDocumentId FROM HRMDocumentToDemographic d) ");
+				sql.append("AND h.id NOT IN (SELECT d.hrmDocumentId FROM HRMDocumentToDemographic d) ");
 			} else {
-				hrmToDemographicTableName = ", HRMDocumentToDemographic d";
-				hrmToDemographicJoinAndSearchSql.append(" AND x.hrmDocumentId = d.hrmDocumentId AND (");
-				for (int i = 0; i < demographicNumbers.size(); i++) { //String demographicNumber : demographicNumbers) {
-					hrmToDemographicJoinAndSearchSql.append("d.demographicNo = :demographicNumber").append(i);
-					if (i < demographicNumbers.size() - 1) {
-						hrmToDemographicJoinAndSearchSql.append(" OR ");
-					} else {
-						hrmToDemographicJoinAndSearchSql.append(") ");
-					}
-				}
+				sql.append("AND d.demographicNo IN (:demographicNumbers) ");
 			}
 		}
-
+	
+		// Retrieve date search type from system preferences
 		SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
 		String dateSearchType = "serviceObservation";
-
 		SystemPreferences systemPreferences = systemPreferencesDao.findPreferenceByName(SystemPreferences.LAB_DISPLAY_PREFERENCE_KEYS.inboxDateSearchType);
-		if (systemPreferences != null)
-		{
-			if (systemPreferences.getValue() != null && !systemPreferences.getValue().isEmpty())
-			{
-				dateSearchType = systemPreferences.getValue();
-			}
+		if (systemPreferences != null && systemPreferences.getValue() != null && !systemPreferences.getValue().isEmpty()) {
+			dateSearchType = systemPreferences.getValue();
 		}
+	
+		// Adding date filters
+		if (newestDate != null) {
+			sql.append(dateSearchType.equals("receivedCreated") ? "AND h.timeReceived <= :newest " : "AND h.reportDate <= :newest ");
+		}
+		if (oldestDate != null) {
+			sql.append(dateSearchType.equals("receivedCreated") ? "AND h.timeReceived >= :oldest " : "AND h.reportDate >= :oldest ");
+		}
+	
+		// Other filters
+		if (viewed != 2) {
+			sql.append("AND x.viewed = :viewed ");
+		}
+		if (signedOff != 2) {
+			sql.append("AND x.signedOff = :signedOff ");
+		}
+	
+		// Construct the query and set parameters
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("providerNo", providerNo);
 		
-		String sql = "select x from " + this.modelClass.getName() + " x, HRMDocument h" + hrmToDemographicTableName + " where x.hrmDocumentId=h.id AND x.providerNo like ?" + hrmToDemographicJoinAndSearchSql.toString();
-		if (newestDate != null)
-			sql += dateSearchType.equals("receivedCreated")?" and h.timeReceived <= :newest":" and h.reportDate <= :newest";
-		if (oldestDate != null)
-			sql += dateSearchType.equals("receivedCreated")?" and h.timeReceived >= :oldest":" and h.reportDate >= :oldest";
-		if (viewed != 2)
-			sql += " and x.viewed = :viewed";
-		if (signedOff != 2)
-			sql += " and x.signedOff = :signedOff";
-
-		Query query = entityManager.createQuery(sql);
-		query.setParameter(0, providerNo);
-		
-		if (demographicNumbers != null && !demographicNumbers.isEmpty()) {
-			if (demographicNumbers.size() == 1 && demographicNumbers.get(0) == 0) {
-				// No action needed, logic remains unchanged.
-			} else {
-				for (int i = 0; i < demographicNumbers.size(); i++) { //String demographicNumber : demographicNumbers) {
-					query.setParameter("demographicNumber" + i, demographicNumbers.get(i));
-				}
-			}
-        }
-		if (newestDate != null)
+		if (hasDemographics && !(demographicNumbers.size() == 1 && demographicNumbers.get(0) == 0)) {
+			query.setParameter("demographicNumbers", demographicNumbers);
+		}
+		if (newestDate != null) {
 			query.setParameter("newest", newestDate);
-
-		if (oldestDate != null)
+		}
+		if (oldestDate != null) {
 			query.setParameter("oldest", oldestDate);
-
-		if (viewed != 2)
+		}
+		if (viewed != 2) {
 			query.setParameter("viewed", viewed);
-
-		if (signedOff != 2)
+		}
+		if (signedOff != 2) {
 			query.setParameter("signedOff", signedOff);
-		if (isPaged)
-		{
+		}
+	
+		// Pagination handling
+		if (isPaged) {
 			query.setFirstResult(page * pageSize);
 			query.setMaxResults(pageSize);
 		}
