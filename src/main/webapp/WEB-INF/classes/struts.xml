@@ -8,6 +8,7 @@
     <constant name="struts.serve.static" value="true" />
     <constant name="struts.serve.static.browserCache" value="true" />
     <constant name="struts.action.excludePattern" value=".*\.(css|js|png|jpg|gif)$" />
+    <constant name="struts.custom.i18n.resources" value="oscarResources"/>
     <!-- Default package extending struts-default -->
 	<package name="default" namespace="/" extends="struts-default">
         <action name="logout" class="oscar.login.Logout2Action">
