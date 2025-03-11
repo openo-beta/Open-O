@@ -401,6 +401,14 @@ public class CommonLabResultData {
 
 		comment = comment.trim();
 
+		// if (comment != null) {
+		// 	comment = comment.trim();
+		// 	if (comment.isEmpty()) {
+		// 		comment = null;  // Convert empty comment to NULL
+		// 	}
+		// }
+		
+
 		/*
 		 * Update an existing entry
 		 */
@@ -421,6 +429,14 @@ public class CommonLabResultData {
 				if(! comment.isEmpty() && ! comment.equalsIgnoreCase(currentComment.trim())) {
 					providerLabRoutingModel.setComment(comment.replaceAll(currentComment, currentComment));
 				}
+
+
+            // Update the comment only if it's not empty
+            // if (comment != null && !comment.equalsIgnoreCase(currentComment.trim())) {
+            //     providerLabRoutingModel.setComment(comment);
+            // } else if (comment == null) {
+            //     providerLabRoutingModel.setComment(null);  // Explicitly set NULL
+            // }
 				providerLabRoutingModel.setTimestamp(new Date());
 				providerLabRoutingDao.merge(providerLabRoutingModel);
 			}
