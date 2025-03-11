@@ -379,9 +379,11 @@ public final class LoginAction extends DispatchAction {
             return this.getLoginErrorActionForward(mapping, response, cl, initialChecksResult, userLoginInfo, where, oneIdKey);
         }
 
-        GenericResult mfaCheckResult = this.isMfaEnabled(mapping, request, userLoginInfo, cl);
-        if (mfaCheckResult != null)
-            return mfaCheckResult.actionForward;
+        if (MfaManager.isOscarMfaEnabled()) {
+            GenericResult mfaCheckResult = this.isMfaEnabled(mapping, request, userLoginInfo, cl);
+            if (mfaCheckResult != null)
+                return mfaCheckResult.actionForward;
+        }
 
         // >> Authentication Success. Continue...
         return this.resumePostAuthenticationFlow(mapping, request, response, cl, initialChecksResult);
@@ -400,8 +402,8 @@ public final class LoginAction extends DispatchAction {
             try {
                 mfaSecret = this.mfaManager.getMfaSecret(security);
             } catch (Exception e) {
+                request.setAttribute("errMsg", "Something went wrong while processing, please try again or contact support.");
                 throw new RuntimeException(e);
-                //todo handle error
             }
         }
 
@@ -414,12 +416,9 @@ public final class LoginAction extends DispatchAction {
             return this.resumePostAuthenticationFlow(mapping, request, response, cl, initialChecksResult);
         } else {
             if (form.isMfaRegistrationFlow()) {
-                request.setAttribute("mfaRegistrationRequired", true);
-                request.setAttribute("qrData",
-                        this.mfaManager.getQRCodeImageData(cl.getSecurity().getId(),
-                                mfaSecret.toString()));
+                this.addMfaDataToRequest(request, cl.getSecurity().getId(), mfaSecret);
             }
-            request.setAttribute("verifyCodeErr", "Invalid MFA Code");
+            request.setAttribute("mfaValidateCodeErr", "Invalid MFA Code");
             return this.getMfaErrorForward(mapping, request, cl.getSecurity().getSecurityNo(), "Invalid MFA Code");
         }
     }
@@ -439,12 +438,10 @@ public final class LoginAction extends DispatchAction {
                 if (this.mfaManager.isMfaRegistrationRequired(security.getId())) {
                     Object mfaSecret = request.getSession().getAttribute("mfaSecret");
                     if (mfaSecret == null) {
-                        mfaSecret = this.mfaManager.generateMfaSecret();
+                        mfaSecret = MfaManager.generateMfaSecret();
                         request.getSession().setAttribute("mfaSecret", mfaSecret);
-    }
-
-                    request.setAttribute("mfaRegistrationRequired", true);
-                    request.setAttribute("qrData", this.mfaManager.getQRCodeImageData(security.getId(), mfaSecret.toString()));
+                    }
+                    this.addMfaDataToRequest(request, security.getId(), mfaSecret);
                 }
             } catch (IllegalStateException e) {
                 request.setAttribute("errMsg", "Something went wrong while processing, please try again or contact support.");
@@ -454,6 +451,11 @@ public final class LoginAction extends DispatchAction {
         return null;
     }
 
+    private void addMfaDataToRequest(HttpServletRequest request, Integer securityId, Object mfaSecret) {
+        request.setAttribute("mfaRegistrationRequired", true);
+        request.setAttribute("qrData", this.mfaManager.getQRCodeImageData(securityId, mfaSecret.toString()));
+    }
+
     private void persistNewMfaSecret(HttpServletRequest request, LoginCheckLogin cl, String mfaSecret) {
         Security security = cl.getSecurity();
         LoggedInInfo loggedInInfo = LoggedInUserFilter.generateLoggedInInfoFromSession(request);
@@ -461,7 +463,6 @@ public final class LoginAction extends DispatchAction {
             this.mfaManager.saveMfaSecret(loggedInInfo, security, mfaSecret);
         } catch (Exception e) {
             throw new RuntimeException(e);
-            //todo handle error
         }
     }
 

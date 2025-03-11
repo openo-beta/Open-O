@@ -24,20 +24,31 @@ package org.oscarehr.managers;
 
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.SecurityDao;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.util.EncryptionUtils;
 import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.QrCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import oscar.OscarProperties;
 
 import javax.jms.IllegalStateException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Base64;
 
 @Service
 public class MfaManagerImpl implements MfaManager {
+
+    private static final Logger logger = MiscUtils.getLogger();
+
+    private static final String MFA_PROVIDER_NAME_KEY = "mfa.registration.qrcode.provider.name";
+    private static final String LOGO_FILE_PATH_KEY = "mfa.registration.qrcode.logo.path";
 
     private final SecurityDao securityDao;
     private final SecurityManager securityManager;
@@ -49,7 +60,10 @@ public class MfaManagerImpl implements MfaManager {
     }
 
     @Override
-    public String getTotpUrl(String appName, String username, String secret) {
+    public String getTotpUrl(String appName, String username, String secret) throws UnsupportedEncodingException {
+        appName = URLEncoder.encode(appName, "UTF-8").replace("+", "%20");
+        username = URLEncoder.encode(username, "UTF-8");
+        secret = URLEncoder.encode(secret, "UTF-8");
         return String.format(TOTP_URL_FORMAT, appName, username, secret, appName);
     }
 
@@ -57,7 +71,7 @@ public class MfaManagerImpl implements MfaManager {
     public byte[] getQRCodeImageData(String appName, String username, String secret) {
         try {
             String totpUrl = this.getTotpUrl(appName, username, secret);
-            return QrCodeUtils.toSingleQrCodePng(totpUrl, ErrorCorrectionLevel.H, 4);
+            return QrCodeUtils.toSingleQrCodePng(totpUrl, ErrorCorrectionLevel.M, 8);
         } catch (IOException | WriterException e) {
             throw new RuntimeException("Error while generating QR code image data", e);
         }
@@ -70,7 +84,16 @@ public class MfaManagerImpl implements MfaManager {
             return null;
         }
 
-        byte[] qrCodeImageData = this.getQRCodeImageData("OpenOSP", security.getUserName(), secret);
+        byte[] qrCodeImageData = this.getQRCodeImageData(
+                OscarProperties.getInstance().getProperty(MFA_PROVIDER_NAME_KEY, "Open OSP"),
+                security.getUserName(), secret
+        );
+
+        String logoFilePath = OscarProperties.getInstance().getProperty(LOGO_FILE_PATH_KEY);
+        if (logoFilePath != null) {
+            qrCodeImageData = addLogoToQR(logoFilePath, qrCodeImageData);
+        }
+
         return "data:image/png;base64," + Base64.getEncoder().encodeToString(qrCodeImageData);
     }
 
@@ -98,6 +121,18 @@ public class MfaManagerImpl implements MfaManager {
     public void resetMfaSecret(LoggedInInfo loggedInInfo, Security security) {
         security.setMfaSecret(null);
         this.securityManager.updateSecurityRecord(loggedInInfo, security);
+    }
+
+    private byte[] addLogoToQR(String logoFilePath, byte[] qrCodeImageData) {
+        InputStream logoStream = this.getClass().getClassLoader().getResourceAsStream(logoFilePath);
+        if (logoStream != null) {
+            try {
+                qrCodeImageData = QrCodeUtils.addLogoToQRCode(qrCodeImageData, logoStream);
+            } catch (IOException e) {
+                logger.error("Error while adding logo to QR code", e);
+            }
+        }
+        return qrCodeImageData;
     }
 
 }

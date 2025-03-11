@@ -24,21 +24,22 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 
 <html>
 <body>
 <div class="card-body d-flex align-items-center justify-content-center">
 
-    <form action="loginMfa.do" method="post">
+    <form action="<%= request.getContextPath() %>/mfa/loginMfa.do" method="post">
         <input type="hidden" name="mfaRegistrationFlow" value="${requestScope.mfaRegistrationRequired}">
         <div class="">
             <div class="row mx-3 mx-md-3 mx-lg-3 px-3 px-md-3 px-lg-3 mb-3">
-                <input class="form-control form-control-sm ${not empty requestScope.verifyCodeErr ? 'is-invalid' : ''}"
+                <input class="form-control form-control-sm ${not empty requestScope.mfaValidateCodeErr ? 'is-invalid' : ''}"
                        type="text" name="code" id="otpInput" autofocus
                        placeholder="Enter code" aria-label=".form-control-sm"
                        required maxlength="6">
                 <div id="otpInputFeedback" class="invalid-feedback">
-                    <c:out value="${requestScope.verifyCodeErr}"/>
+                    <c:out value="${requestScope.mfaValidateCodeErr}"/>
                 </div>
             </div>
 
@@ -49,7 +50,7 @@
         </div>
 
         <div class="px-3 mt-3">
-            <span class="text-muted"><small>Enter the verification code from your authenticator app.</small></span>
+            <span class="text-muted"><small><bean:message key="mfa.otp.handler.instruction"/></small></span>
         </div>
     </form>
 </div>

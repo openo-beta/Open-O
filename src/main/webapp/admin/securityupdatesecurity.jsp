@@ -48,6 +48,7 @@
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="org.oscarehr.security.MfaActions" %>
+<%@ page import="org.oscarehr.managers.MfaManager" %>
 
 
 <%!
@@ -151,7 +152,7 @@
 	}
 
 	function handleResetMfa(securityId) {
-		if (confirm("Are you sure you want to reset the MFA settings for the user?")) {
+		if (confirm("<bean:message key="admin.securityAddRecord.mfa.reset.confirm"/>")) {
 			let url = "${pageContext.request.contextPath}/securityRecord/mfa.do";
 			let data = {
 				method: '<%= MfaActions.METHOD_RESET_MFA %>',
@@ -283,7 +284,7 @@
    <%} %>
 
 			<%--	MFA Setting   --%>
-		<% if (!OscarProperties.getInstance().getBooleanProperty("security.record.mfa.enabled", "false")) { %>
+		<% if (MfaManager.isOscarMfaEnabled()) { %>
 		<tr>
 			<td style="text-align: right">
 				<bean:message key="admin.securityAddRecord.mfa.title"/>:
@@ -297,7 +298,7 @@
 				<% if (security.isUsingMfa() && !security.isMfaRegistrationNeeded()) { %>
 				<a id="resetMfaLink" onclick="handleResetMfa(<%=securityId%>)"
 				   style="margin-left: 4px; font-size: small; color: blue; text-decoration:
-				   underline; cursor: pointer;">Reset MFA</a>
+				   underline; cursor: pointer;"><bean:message key="admin.securityAddRecord.mfa.reset.link"/></a>
 				<% } %>
 			</td>
 		</tr>

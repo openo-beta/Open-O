@@ -27,14 +27,16 @@
 
 <html>
 <body>
-<p>You are required to configure Multi-Factor authentication before you can continue.</p>
+<p><bean:message key="mfa.registration.title"/></p>
 <div class="row p-2">
 
     <!-- Left Section: Instructions -->
-    <div class="col-12 col-md-7 ps-4">
-        <p class="h4 text-secondary mt-3">Sync Authenticator App</p>
-        <p class="mb-4"><small>Use an app such as Microsoft Authenticator or Google Authenticator to generate a verification code.</small></p>
-        <p><small>Once the app is installed, scan the QR shown and enter a verification code to complete the setup.</small></p>
+    <div class="col-12 col-md-7">
+        <div class="mx-2">
+            <p class="h4 text-secondary mt-3"><bean:message key="mfa.registration.instruct.heading"/></p>
+            <p class="mb-4"><small><bean:message key="mfa.registration.instruct.1"/></small></p>
+            <p><small><bean:message key="mfa.registration.instruct.2"/></small></p>
+        </div>
     </div>
 
     <!-- Right Section: QR Code -->

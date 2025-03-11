@@ -839,7 +839,7 @@
 		</action>
 
 		<!-- MFA -->
-		<action input="/mfa/mfa_handler.jsp" name="validateMFAForm" path="/loginMfa" scope="request" type="oscar.login.LoginAction" validate="true">
+		<action input="/mfa/mfa_handler.jsp" name="validateMFAForm" path="/mfa/loginMfa" scope="request" type="oscar.login.LoginAction" validate="true">
 			<forward name="provider" path="/provider/providercontrol.jsp" redirect="true" />
 			<forward name="failure" path="/logout.jsp" />
 			<forward name="error" path="/loginfailed.jsp" />

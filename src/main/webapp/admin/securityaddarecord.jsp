@@ -64,6 +64,7 @@
 <%@page import="org.oscarehr.common.model.Security" %>
 <%@page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.oscarehr.managers.MfaManager" %>
 <%
 	ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 	SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
@@ -329,7 +330,7 @@ function handleMfaChange(checkbox) {
    <%} %>
 
 		<%--	MFA Setting   --%>
-	<% if (!OscarProperties.getInstance().getBooleanProperty("security.record.mfa.enabled", "false")) { %>
+	<% if (MfaManager.isOscarMfaEnabled()) { %>
 	<tr>
 		<td style="text-align: right">
 			<bean:message key="admin.securityAddRecord.mfa.title"/>:

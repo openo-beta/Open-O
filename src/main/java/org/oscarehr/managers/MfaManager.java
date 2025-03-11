@@ -25,20 +25,27 @@ package org.oscarehr.managers;
 import org.jboss.aerogear.security.otp.api.Base32;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.util.LoggedInInfo;
+import oscar.OscarProperties;
 
 import javax.jms.IllegalStateException;
+import java.io.UnsupportedEncodingException;
 
 public interface MfaManager {
 
     String TOTP_URL_FORMAT = "otpauth://totp/%s:%s?secret=%s&issuer=%s";
+    String MFA_ENABLE_PROPERTY = "mfa.enabled";
 
-    default String generateMfaSecret() {
+    static boolean isOscarMfaEnabled() {
+        return Boolean.parseBoolean(OscarProperties.getInstance().getProperty(MFA_ENABLE_PROPERTY));
+    }
+
+    static String generateMfaSecret() {
         return Base32.random();
     }
 
     boolean isMfaRegistrationRequired(Integer securityId) throws IllegalStateException;
 
-    String getTotpUrl(String email, String secret, String appName);
+    String getTotpUrl(String email, String secret, String appName) throws UnsupportedEncodingException;
 
     byte[] getQRCodeImageData(String email, String secret, String appName);
 

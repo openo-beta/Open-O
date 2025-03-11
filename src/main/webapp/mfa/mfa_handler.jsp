@@ -45,16 +45,16 @@
 </head>
 <body class="bg-light">
 
-<div class="container-lg d-flex justify-content-center align-items-center py-5">
+<div class="container-lg d-flex justify-content-center align-items-center mt-0 mt-lg-5 py-4 py-lg-5">
     <div class="row justify-content-center w-100">
 
         <!-- Main Container -->
-        <div class="col-xl-8 col-lg-8 col-md-9 col-sm-12">
+        <div class="col-xl-8 col-lg-8 col-md-9 col-sm-12 mt-0 mt-lg-5">
             <div class="card">
 
                 <!-- Card Header -->
                 <div class="card-header bg-transparent text-center">
-                    <strong>Multi-Factor Authentication (MFA)</strong>
+                    <strong><bean:message key="mfa.handler.title"/></strong>
                 </div>
 
                 <!-- Card Body -->
