@@ -179,15 +179,21 @@
 		return true;
 	}
 
-function handleMfaChange(checkbox) {
-	let mfaNote = document.getElementById('mfaNote');
 
-	if (checkbox.checked) {
-		mfaNote.style.display = 'inline';
-	} else {
-		mfaNote.style.display = 'none';
+	/**
+	 * Handles the change event of the MFA checkbox.
+	 * Shows or hides the MFA note based on the checkbox state.
+	 * @param {HTMLInputElement} checkbox - The MFA checkbox element.
+	 */
+	function handleMfaChange(checkbox) {
+		let mfaNote = document.getElementById('mfaNote');
+
+		if (checkbox.checked) {
+			mfaNote.style.display = 'inline';
+		} else {
+			mfaNote.style.display = 'none';
+		}
 	}
-}
 
 //-->
 </script>

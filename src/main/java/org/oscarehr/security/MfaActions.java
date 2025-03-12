@@ -35,6 +35,11 @@ import org.oscarehr.util.SpringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * This class handles actions related to Multi-Factor Authentication (MFA).
+ * It provides functionality to reset the MFA secret for a user.
+ */
 public final class MfaActions extends DispatchAction {
 
     public static final String METHOD_RESET_MFA = "resetMfa";
@@ -42,6 +47,15 @@ public final class MfaActions extends DispatchAction {
     private final SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
     private final MfaManager mfaManager = SpringUtils.getBean(MfaManager.class);
 
+    /**
+     * Resets the MFA secret for a specified user.
+     *
+     * @param mapping  The ActionMapping used to select this instance.
+     * @param form     The optional ActionForm bean for this request.
+     * @param request  The HTTP request we are processing.
+     * @param response The HTTP response we are creating.
+     * @return null, as this action does not forward to another page.
+     */
     public ActionForward resetMfa(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 
         String securityId = request.getParameter("securityId");

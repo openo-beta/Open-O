@@ -30,30 +30,95 @@ import oscar.OscarProperties;
 import javax.jms.IllegalStateException;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * This interface provides methods for managing Multi-Factor Authentication (MFA) within the OSCAR EMR system.
+ * It provides methods for generating MFA secrets, creating TOTP URLs, generating QR code data, and managing
+ * the association of MFA secrets with user security record.
+ */
 public interface MfaManager {
 
     String TOTP_URL_FORMAT = "otpauth://totp/%s:%s?secret=%s&issuer=%s";
     String MFA_ENABLE_PROPERTY = "mfa.enabled";
 
+    /**
+     * Checks if Multi-Factor Authentication (MFA) is enabled in the OSCAR system.
+     *
+     * @return true if MFA is enabled, false otherwise.
+     */
     static boolean isOscarMfaEnabled() {
         return Boolean.parseBoolean(OscarProperties.getInstance().getProperty(MFA_ENABLE_PROPERTY));
     }
 
+    /**
+     * Generates a random MFA secret using Base32 encoding.
+     *
+     * @return A randomly generated MFA secret string.
+     */
     static String generateMfaSecret() {
         return Base32.random();
     }
 
+    /**
+     * Determines if MFA registration is required for a given security ID.
+     *
+     * @param securityId The ID of the security record to check.
+     * @return true if MFA registration is required, false otherwise.
+     * @throws IllegalStateException if the system is in an invalid state for checking MFA registration.
+     */
     boolean isMfaRegistrationRequired(Integer securityId) throws IllegalStateException;
 
+    /**
+     * Generates a Time-based One-Time Password (TOTP) URL for a given user.
+     *
+     * @param email   The user's email address.
+     * @param secret  The MFA secret associated with the user.
+     * @param appName The name of the application or service.
+     * @return A TOTP URL string.
+     * @throws UnsupportedEncodingException if the URL encoding is not supported.
+     */
     String getTotpUrl(String email, String secret, String appName) throws UnsupportedEncodingException;
 
+    /**
+     * Generates QR code image data for a given user's MFA setup.
+     *
+     * @param email   The user's email address.
+     * @param secret  The MFA secret associated with the user.
+     * @param appName The name of the application or service.
+     * @return A byte array representing the QR code image data.
+     */
     byte[] getQRCodeImageData(String email, String secret, String appName);
 
+    /**
+     * Generates QR code image data for a given security ID and MFA secret.
+     *
+     * @param securityId The ID of the security record.
+     * @param secret     The MFA secret associated with the user.
+     * @return A string representing the QR code image data.
+     */
     String getQRCodeImageData(Integer securityId, String secret);
 
+    /**
+     * Saves an MFA secret for a given security record.
+     * @param loggedInInfo information about the logged in user
+     * @param security the security object
+     * @param mfaSecret the mfa secret
+     * @throws Exception if an error occurs
+     */
     void saveMfaSecret(LoggedInInfo loggedInInfo, Security security, String mfaSecret) throws Exception;
 
+    /**
+     * Retrieves the MFA secret associated with a given security record.
+     *
+     * @param security The security object representing the user's security record.
+     * @return The MFA secret associated with the security record.
+     * @throws Exception If an error occurs during the process of retrieving the MFA secret.
+     */
     String getMfaSecret(Security security) throws Exception;
 
+    /**
+     * Resets the MFA secret for a given security record.
+     * @param loggedInInfo Information about the logged-in user.
+     * @param security The security object representing the user's security record.
+     */
     void resetMfaSecret(LoggedInInfo loggedInInfo, Security security);
 }

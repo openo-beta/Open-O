@@ -137,10 +137,20 @@
 		return true;
 	}
 
+	/**
+	 * Handles the change event of the MFA checkbox.
+	 * @param {HTMLInputElement} checkbox - The MFA checkbox element.
+	 */
 	function handleMfaChange(checkbox) {
 		updateMfaElementsVisibility(checkbox.checked, checkbox.checked);
 	}
 
+	/**
+	 * Updates the visibility of MFA-related elements based on the provided flags.
+	 *
+	 * @param {boolean} showMfaNote - Whether to show the MFA note.
+	 * @param {boolean} showResetMfaLink - Whether to show the reset MFA link.
+	 */
 	function updateMfaElementsVisibility(showMfaNote, showResetMfaLink) {
 		let mfaNote = document.getElementById('mfaNote');
 		let resetMfa = document.getElementById('resetMfaLink');
@@ -151,6 +161,11 @@
 			mfaNote.style.display = showMfaNote ? 'inline' : 'none';
 	}
 
+	/**
+	 * Handles the reset MFA action for a given security ID.
+	 *
+	 * @param {number} securityId - The ID of the security record.
+	 */
 	function handleResetMfa(securityId) {
 		if (confirm("<bean:message key="admin.securityAddRecord.mfa.reset.confirm"/>")) {
 			let url = "${pageContext.request.contextPath}/securityRecord/mfa.do";

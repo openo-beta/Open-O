@@ -390,6 +390,25 @@ public final class LoginAction extends DispatchAction {
 
     }
 
+    /**
+     * Validates the MFA code entered by the user.
+     * <p>
+     * This method handles both MFA registration and verification flows. It retrieves the MFA secret,
+     * verifies the entered code against the secret using a TOTP (Time-based One-Time Password) algorithm,
+     * and proceeds accordingly. If the code is valid, it persists the new MFA secret (during registration)
+     * and resumes the post-authentication flow. If the code is invalid, it sets an error message and redirects
+     * to the MFA page with the error.
+     *
+     * @param mapping               The ActionMapping for this request.
+     * @param form                  The ValidateMFAForm containing the entered MFA code and flow information.
+     * @param request               The HttpServletRequest for this request.
+     * @param response              The HttpServletResponse for this request.
+     * @param cl                    The LoginCheckLogin object for managing login attempts.
+     * @param initialChecksResult   The result of initial checks performed before login.
+     * @return An ActionForward to the next page or an error message.
+     * @throws IOException If an I/O error occurs.
+     */
+
     private ActionForward validateMfaCode(ActionMapping mapping, ValidateMFAForm form, HttpServletRequest request,
                                           HttpServletResponse response, LoginCheckLogin cl,
                                           InitialChecksResult initialChecksResult) throws IOException {
@@ -423,6 +442,15 @@ public final class LoginAction extends DispatchAction {
         }
     }
 
+    /**
+     * Checks if MFA is enabled for the user and handles the MFA flow accordingly.
+     *
+     * @param mapping       The ActionMapping for this request.
+     * @param request       The HttpServletRequest for this request.
+     * @param userLoginInfo The user's login information.
+     * @param cl            The LoginCheckLogin object for managing login attempts.
+     * @return A GenericResult containing an ActionForward to the MFA handler page if MFA is enabled, or null otherwise.
+     */
     private GenericResult isMfaEnabled(ActionMapping mapping, HttpServletRequest request, UserLoginInfo userLoginInfo, LoginCheckLogin cl) {
         Security security = this.getSecurity(userLoginInfo.username);
         if (Objects.nonNull(security) && security.isUsingMfa()) {
@@ -451,11 +479,27 @@ public final class LoginAction extends DispatchAction {
         return null;
     }
 
+    /**
+     * Adds MFA-registration data to the request attributes.
+     *
+     * @param request    The HttpServletRequest object.
+     * @param securityId The ID of the security record.
+     * @param mfaSecret  The MFA secret.
+     * @see MfaManager#getQRCodeImageData(Integer, String)
+     */
     private void addMfaDataToRequest(HttpServletRequest request, Integer securityId, Object mfaSecret) {
         request.setAttribute("mfaRegistrationRequired", true);
         request.setAttribute("qrData", this.mfaManager.getQRCodeImageData(securityId, mfaSecret.toString()));
     }
 
+    /**
+     * Persists a new MFA secret for a user.
+     *
+     * @param request The HttpServletRequest object.
+     * @param cl      The LoginCheckLogin object containing the security record.
+     * @param mfaSecret The MFA secret to be persisted.
+     * @throws RuntimeException If an error occurs while saving the MFA secret.
+     */
     private void persistNewMfaSecret(HttpServletRequest request, LoginCheckLogin cl, String mfaSecret) {
         Security security = cl.getSecurity();
         LoggedInInfo loggedInInfo = LoggedInUserFilter.generateLoggedInInfoFromSession(request);
@@ -466,10 +510,33 @@ public final class LoginAction extends DispatchAction {
         }
     }
 
+    /**
+     * Returns an ActionForward to the MFA handler page with an error message.
+     *
+     * @param mapping    The ActionMapping object.
+     * @param request    The HttpServletRequest object.
+     * @param securityNo The security number.
+     * @param errMsg     The error message.
+     * @return An ActionForward to the MFA handler page with the error message.
+     */
     private ActionForward getMfaErrorForward(ActionMapping mapping, HttpServletRequest request, Integer securityNo, String errMsg) {
         ParameterActionForward forward = new ParameterActionForward(this.getMfaHandlerForward(mapping, request, securityNo));
         forward.addParameter("errMsg", errMsg);
         return forward;
+    }
+
+    /**
+     * Retrieves the ActionForward for the MFA handler page, setting the security ID as a request attribute.
+     *
+     * @param mapping    The ActionMapping for this request.
+     * @param request    The HttpServletRequest for this request.
+     * @param securityId The security ID to set as a request attribute.
+     * @return An ActionForward to the MFA handler page.
+     */
+    private ActionForward getMfaHandlerForward(ActionMapping mapping, HttpServletRequest request, Integer securityId) {
+        ActionForward actionForward = new ActionForward(mapping.findForward("mfaHandler").getPath());
+        request.setAttribute("securityId", String.valueOf(securityId));
+        return actionForward;
     }
 
     /**
@@ -541,12 +608,6 @@ public final class LoginAction extends DispatchAction {
         // >> 9. Standard Response Handling
         logger.debug("rendering standard response : " + where);
         return mapping.findForward(where);
-    }
-
-    private ActionForward getMfaHandlerForward(ActionMapping mapping, HttpServletRequest request, Integer securityId) {
-        ActionForward actionForward = new ActionForward(mapping.findForward("mfaHandler").getPath());
-        request.setAttribute("securityId", String.valueOf(securityId));
-        return actionForward;
     }
 
     /**
