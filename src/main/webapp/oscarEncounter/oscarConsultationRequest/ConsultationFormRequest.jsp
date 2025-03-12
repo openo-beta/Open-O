@@ -1567,47 +1567,53 @@ if (userAgent != null) {
                 method="post" onsubmit="alert('HTHT'); return false;">
         <%
             EctConsultationFormRequestForm thisForm = (EctConsultationFormRequestForm) request.getAttribute("EctConsultationFormRequestForm");
-
-            if (requestId != null && !"null".equals(requestId) && !requestId.isEmpty()) {
-                EctViewRequest2Action.fillFormValues(LoggedInInfo.getLoggedInInfoFromSession(request), thisForm, new Integer(requestId));
-                thisForm.setSiteName(consultUtil.siteName);
-                defaultSiteName = consultUtil.siteName;
-
-            } else if (segmentId != null) {
-                EctViewRequest2Action.fillFormValues(thisForm, segmentId);
-                thisForm.setSiteName(consultUtil.siteName);
-                defaultSiteName = consultUtil.siteName;
-            } else if (request.getAttribute("validateError") == null) {
-                //  new request
-                if (demo != null) {
-                    oscar.oscarDemographic.data.RxInformation RxInfo = new oscar.oscarDemographic.data.RxInformation();
-                    EctViewRequest2Action.fillFormValues(thisForm, consultUtil);
-
-                    if ("true".equalsIgnoreCase(props.getProperty("CONSULTATION_AUTO_INCLUDE_ALLERGIES", "true"))) {
-                        String allergies = RxInfo.getAllergies(loggedInInfo, demo);
-                        thisForm.setAllergies(allergies);
-                    }
-
-                    if ("true".equalsIgnoreCase(props.getProperty("CONSULTATION_AUTO_INCLUDE_MEDICATIONS", "true"))) {
-                        if (props.getProperty("currentMedications", "").equalsIgnoreCase("otherMedications")) {
-                            oscar.oscarDemographic.data.EctInformation EctInfo = new oscar.oscarDemographic.data.EctInformation(loggedInInfo, demo);
-                            thisForm.setCurrentMedications(EctInfo.getFamilyHistory());
-                        } else {
-                            thisForm.setCurrentMedications(RxInfo.getCurrentMedication(demo));
-                        }
-                    }
-
-                    team = consultUtil.getProviderTeam(consultUtil.mrp);
-                }
-
-                thisForm.setStatus("1");
-
-                thisForm.setSendTo(team);
-
-                if (bMultisites) {
-                    thisForm.setSiteName(defaultSiteName);
-                }
+            if (thisForm == null) {
+                thisForm = new EctConsultationFormRequestForm();
+                request.setAttribute("EctConsultationFormRequestForm", thisForm);
             }
+
+            if (thisForm != null) {
+                if (requestId != null && !"null".equals(requestId) && !requestId.isEmpty()) {
+                    EctViewRequest2Action.fillFormValues(LoggedInInfo.getLoggedInInfoFromSession(request), thisForm, new Integer(requestId));
+                    thisForm.setSiteName(consultUtil.siteName);
+                    defaultSiteName = consultUtil.siteName;
+
+                } else if (segmentId != null) {
+                    EctViewRequest2Action.fillFormValues(thisForm, segmentId);
+                    thisForm.setSiteName(consultUtil.siteName);
+                    defaultSiteName = consultUtil.siteName;
+                } else if (request.getAttribute("validateError") == null) {
+                    //  new request
+                    if (demo != null) {
+                        oscar.oscarDemographic.data.RxInformation RxInfo = new oscar.oscarDemographic.data.RxInformation();
+                        EctViewRequest2Action.fillFormValues(thisForm, consultUtil);
+
+                        if ("true".equalsIgnoreCase(props.getProperty("CONSULTATION_AUTO_INCLUDE_ALLERGIES", "true"))) {
+                            String allergies = RxInfo.getAllergies(loggedInInfo, demo);
+                            thisForm.setAllergies(allergies);
+                        }
+
+                        if ("true".equalsIgnoreCase(props.getProperty("CONSULTATION_AUTO_INCLUDE_MEDICATIONS", "true"))) {
+                            if (props.getProperty("currentMedications", "").equalsIgnoreCase("otherMedications")) {
+                                oscar.oscarDemographic.data.EctInformation EctInfo = new oscar.oscarDemographic.data.EctInformation(loggedInInfo, demo);
+                                thisForm.setCurrentMedications(EctInfo.getFamilyHistory());
+                            } else {
+                                thisForm.setCurrentMedications(RxInfo.getCurrentMedication(demo));
+                            }
+                        }
+
+                        team = consultUtil.getProviderTeam(consultUtil.mrp);
+                    }
+
+                    thisForm.setStatus("1");
+
+                    thisForm.setSendTo(team);
+
+                    if (bMultisites) {
+                        thisForm.setSiteName(defaultSiteName);
+                    }
+                }
+            }   
 
             if (thisForm.iseReferral()) {
         %>

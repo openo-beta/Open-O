@@ -49,10 +49,12 @@
         ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
         String transactionType = new String(oscarR.getString("oscarEncounter.oscarConsultationRequest.config.AddDepartment.addOperation"));
+        String id = null;
         int whichType = 1;
         if (request.getAttribute("upd") != null) {
             transactionType = new String(oscarR.getString("oscarEncounter.oscarConsultationRequest.config.AddDepartment.updateOperation"));
             whichType = 2;
+            id = (String) request.getAttribute("id");
         }
     %>
 
@@ -117,7 +119,7 @@
                         <td style="color: red;">
                             <fmt:setBundle basename="oscarResources"/>
                             <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded">
-                                <fmt:param value="${added}" />
+                                <fmt:param value="<%=added%>" />
                             </fmt:message>
                         </td>
                     </tr>
@@ -127,11 +129,10 @@
 
                             <form action="${pageContext.request.contextPath}/oscarEncounter/AddDepartment.do" method="post">
                             <table>
-                                    <input type="hidden" name="EctConAddDepartmentForm" id="EctConAddDepartmentForm" property="id"/>
+                                    <input type="hidden" name="id" id="id" value="<%=id%>"/>
                                 <tr>
                                     <td>Name</td>
                                     <td><input type="text" name="name"/></td>
-
                                 </tr>
 
                                 <td>Annotation

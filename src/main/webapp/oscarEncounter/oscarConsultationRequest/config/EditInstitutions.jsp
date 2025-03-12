@@ -125,7 +125,9 @@
                                                    value="<%=i.getId()%>"></td>
                                         <td>
                                             <%
-                                                out.print("<a href=\"../../EditInstitutions.do?id=" + i.getId() + "\"/>");
+                                                String contextPath = request.getContextPath();
+                                                String url = contextPath + "/oscarEncounter/EditInstitutions.do?id=" + i.getId();
+                                                out.print("<a href=\"" + url + "\">");
                                                 out.print(i.getName());
                                                 out.print("</a>");
                                             %>

@@ -147,7 +147,9 @@
                                                    value="<%=specId%>"></td>
                                         <td>
                                             <%
-                                                out.print("<a href=\"../../EditSpecialists.do?specId=" + specId + "\"/>");
+                                                String contextPath = request.getContextPath();
+                                                String url = contextPath + "/oscarEncounter/EditSpecialists.do?specId=" + specId;
+                                                out.print("<a href=\"" + url + "\">");
                                                 out.print(Encode.forHtmlContent(lName + " " + fName + " " + (proLetters == null ? "" : proLetters)));
                                                 out.print("</a>");
                                             %>

@@ -318,7 +318,7 @@
                 <table width="100%">
                     <tr>
                         <td style="margin: 0; padding: 0;">
-                            <form action="${pageContext.request.contextPath}/oscarEncounter/ViewConsultation" method="get">
+                            <form action="${pageContext.request.contextPath}/oscarEncounter/ViewConsultation.do" method="get">
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formSelectTeam"/>:
                                 <select name="sendTo">
                                     <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/></option>

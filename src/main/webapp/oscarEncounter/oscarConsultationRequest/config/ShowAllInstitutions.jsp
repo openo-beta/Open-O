@@ -116,8 +116,11 @@
                                                 <tr>
                                                     <td>
                                                         <%
-                                                            out.print("<a href=\"../../../oscarEncounter/ShowAllInstitutions.do?id=" + i.getId() + "&name=" + i.getName() + "\">" + i.getName() + "</a>");
-
+                                                            String contextPath = request.getContextPath();
+                                                            String url = contextPath + "/oscarEncounter/ShowAllInstitutions.do?id=" + i.getId() + "&name=" + i.getName();
+                                                            out.print("<a href=\"" + url + "\">");
+                                                            out.print(i.getName());
+                                                            out.print("</a>");
                                                         %>
                                                     </td>
                                                 </tr>
