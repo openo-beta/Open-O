@@ -185,6 +185,10 @@ public class AddEditDocument2Action extends ActionSupport {
     }
 
     public String execute2() {
+        if (this.form == null) {
+            this.form = new AddEditDocument2Form(); 
+        }
+
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
             throw new SecurityException("missing required security object (_edoc)");
         }

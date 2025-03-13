@@ -64,6 +64,9 @@ public class AddEditHtml2Action extends ActionSupport {
      * Creates a new instance of AddLinkAction
      */
     public String execute() {
+        if (this.form == null) {
+            this.form = new AddEditDocument2Form(); 
+        }
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
             throw new SecurityException("missing required security object (_edoc)");
