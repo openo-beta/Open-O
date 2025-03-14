@@ -813,12 +813,12 @@
 
         function printPDF(labid) {
             var frm = "acknowledgeForm_" + labid;
-            document.forms[frm].action = "PrintPDF.do";
+            document.forms[frm].action = "lab/CA/ALL/PrintPDF.do";
             document.forms[frm].submit();
         }
 
         function linkreq(rptId, reqId) {
-            var link = "../../LinkReq.jsp?table=hl7TextMessage&rptid=" + rptId + "&reqid=" + reqId + "<%=demographicID != null ? "&demographicNo=" + demographicID : ""%>";
+            var link = "<%= request.getContextPath() %>/lab/LinkReq.jsp?table=hl7TextMessage&rptid=" + rptId + "&reqid=" + reqId + "<%=demographicID != null ? "&demographicNo=" + demographicID : ""%>";
             window.open(link, "linkwin", "width=500, height=200");
         }
 
@@ -849,7 +849,7 @@
 
 
         function handleLab(formid, labid, action) {
-            var url = '../../../documentManager/inboxManage.do';
+            var url = '<%= request.getContextPath() %>/documentManager/inboxManage.do';
             var data = 'method=isLabLinkedToDemographic&labid=' + labid;
             new Ajax.Request(url, {
                 method: 'post', parameters: data, onSuccess: function (transport) {
@@ -1177,7 +1177,7 @@
 
                                 <% if (searchProviderNo != null) { // null if we were called from e-chart%>
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/>"
-                                       onClick="popupStart(360, 680, '../../../oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'encounter')">
+                                       onClick="popupStart(360, 680, '<%= request.getContextPath() %>/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'encounter')">
                                 <% } %>
                                 <input type="button" value="Req# <%=reqTableID%>" title="Link to Requisition"
                                        onclick="linkreq('<%=Encode.forJavaScript(segmentID)%>','<%=reqID%>');"/>
