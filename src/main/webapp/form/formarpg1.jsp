@@ -87,7 +87,7 @@
             document.forms[0].submit.value = "print"; //printAR1
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "formar1print.jsp";
+                document.forms[0].action = "/<%=project_home%>/form/formar1print.jsp";
                 document.forms[0].target = "_blank";
             }
             return ret;
