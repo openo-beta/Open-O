@@ -196,7 +196,7 @@
                                 <%}%>
                             </select>
                             <input type="submit" value="Load Query" name="query"/>
-                            <a href="ManageDemographicQueryFavourites.jsp">manage</a>
+                            <a href="oscarReport/ManageDemographicQueryFavourites.jsp">manage</a>
                         </td>
                         <td style="text-align:right">
                             <a
@@ -215,17 +215,26 @@
             <td class="MainTableRightColumn">
 
                 <%
+                    oscar.oscarReport.pageUtil.RptDemographicReport2Form thisForm = null;
+
+                    // 1. 从 request 中获取 formBean
                     if (request.getAttribute("formBean") != null) {
-                        oscar.oscarReport.pageUtil.RptDemographicReport2Form thisForm;
-                        thisForm = (oscar.oscarReport.pageUtil.RptDemographicReport2Form) request.getAttribute("RptDemographicReport2Form");
-                        thisForm.copyConstructor((oscar.oscarReport.pageUtil.RptDemographicReport2Form) request.getAttribute("formBean"));
-
+                        thisForm = (oscar.oscarReport.pageUtil.RptDemographicReport2Form) request.getAttribute("formBean");
                     }
-                    oscar.oscarReport.pageUtil.RptDemographicReport2Form thisForm;
-                    thisForm = (oscar.oscarReport.pageUtil.RptDemographicReport2Form) request.getAttribute("RptDemographicReport2Form");
 
+                    // 2. 如果 formBean 为 null，初始化一个新的对象
+                    if (thisForm == null) {
+                        thisForm = new oscar.oscarReport.pageUtil.RptDemographicReport2Form();
+                        request.setAttribute("formBean", thisForm); // 确保 formBean 被设置到 request 中
+                    }
 
-                    if (thisForm != null || thisForm.getAgeStyle() == null || thisForm.getAgeStyle().equals("2")) {
+                    // 3. 调用 copyConstructor（如果需要）
+                    if (request.getAttribute("RptDemographicReport2Form") != null) {
+                        thisForm.copyConstructor((oscar.oscarReport.pageUtil.RptDemographicReport2Form) request.getAttribute("RptDemographicReport2Form"));
+                    }
+
+                    // 4. 设置 AgeStyle
+                    if (thisForm.getAgeStyle() == null || "2".equals(thisForm.getAgeStyle())) {
                         thisForm.setAgeStyle("1");
                     }
                 %>

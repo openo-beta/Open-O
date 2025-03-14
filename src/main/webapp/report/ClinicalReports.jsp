@@ -337,18 +337,18 @@
                     ArrayList<ReportEvaluator> arrList = (ArrayList) session.getAttribute("ClinicalReports");
                     if (arrList != null) {
                 %>
-                <a href="ClinicalReports.jsp?clear=yes"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgClear"/></a>
+                <a href="report/ClinicalReports.jsp?clear=yes"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgClear"/></a>
                 <ul style="list-style-type:square; margin-left:1px;padding-left:4px;padding-top:2px;margin-top:2px;">
                     <% for (int i = 0; i < arrList.size(); i++) {
                         ReportEvaluator re = arrList.get(i);
                     %>
                     <li title="<%=re.getName()%>"><%=re.getNumeratorCount()%> / <%=re.getDenominatorCount()%>&nbsp;
-                        <a style="text-decoration:none;" target="_blank" href="reportExport.jsp?id=<%=i%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgCSV"/></a>&nbsp;
-                        <a style="text-decoration:none;" href="RemoveClinicalReport.do?id=<%=i%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgDel"/></a>
+                        <a style="text-decoration:none;" target="_blank" href="report/reportExport.jsp?id=<%=i%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgCSV"/></a>&nbsp;
+                        <a style="text-decoration:none;" href="report/RemoveClinicalReport.do?id=<%=i%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgDel"/></a>
                     </li>
                     <% }%>
                 </ul>
-                <a style="text-decoration:none;" target="_blank" href="reportExport.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgCSV"/></a>
+                <a style="text-decoration:none;" target="_blank" href="report/reportExport.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgCSV"/></a>
                 <%}%>
 
             </td>
@@ -694,7 +694,7 @@
                         session.setAttribute("clinicalReportCSV", swr.toString());
                     }
                 %>
-                <form target="_new" action="ClinicalExport.jsp">
+                <form target="_new" action="report/ClinicalExport.jsp">
                     <input type="submit" name="getCSV"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgExporttoCSV"/>">
                     <input type="submit" name="getXLS"

@@ -256,7 +256,7 @@
         </form>
         <input type="button" class="btn"
                value="I don't want to receive any more HRM outage messages for this outage instance"
-               onclick="window.location='disable_msg_action.jsp'">
+               onclick="window.location='hospitalReportManager/disable_msg_action.jsp'">
     </div>
     </body>
 </html>
