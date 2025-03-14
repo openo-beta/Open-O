@@ -137,10 +137,8 @@
     </c:if>
 </ul>
 
-<input type="hidden" id="<c:out value="${param.cmd}"/>num"
-       value="<nested:write name="num"/>">
-<input type="hidden" id="<c:out value="${param.cmd}"/>threshold"
-       value="0">
+<input type="hidden" id="<c:out value="${param.cmd}"/>num" value="${num}">
+<input type="hidden" id="<c:out value="${param.cmd}"/>threshold" value="0">
 <%!
     String getNoteExts(Long noteId, List<CaseManagementNoteExt> lcme) {
         StringBuffer strcme = new StringBuffer();
