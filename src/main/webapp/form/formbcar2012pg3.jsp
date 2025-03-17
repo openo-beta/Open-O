@@ -434,7 +434,7 @@
             document.forms[0].submit.value = "print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=British+Columbia+Antenatal+Record+Part+2&__cfgfile=bcar2PrintCfgPg2_2012&__cfgGraphicFile=bcar2PrintGraphCfgPg1_2012&__template=bcar2_2012";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Antenatal+Record+Part+2&__cfgfile=bcar2PrintCfgPg2_2012&__cfgGraphicFile=bcar2PrintGraphCfgPg1_2012&__template=bcar2_2012";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -443,7 +443,7 @@
         function onPrint12() {
             document.forms[0].submit.value = "printAll";
 
-            document.forms[0].action = "../form/formname.do?__title=British+Columbia+Antenatal+Record&__cfgfile=bcar1PrintCfgPg1_2012&__cfgfile=bcar2PrintCfgPg1_2012&__cfgGraphicFile=bcar2PrintGraphCfgPg1_2012&__graphicPage=2<%= props.getProperty("pg3_date1", "") == "" ? "&__template=bcarARs2_2012" : "&__cfgfile=bcar2PrintCfgPg2_2012&__graphicPage=3&__template=bcarARs1_2012" %>";
+            document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=British+Columbia+Antenatal+Record&__cfgfile=bcar1PrintCfgPg1_2012&__cfgfile=bcar2PrintCfgPg1_2012&__cfgGraphicFile=bcar2PrintGraphCfgPg1_2012&__graphicPage=2<%= props.getProperty("pg3_date1", "") == "" ? "&__template=bcarARs2_2012" : "&__cfgfile=bcar2PrintCfgPg2_2012&__graphicPage=3&__template=bcarARs1_2012" %>";
             document.forms[0].target = "_blank";
 
             return true;
@@ -452,7 +452,7 @@
         function onPrintAll() {
             document.forms[0].submit.value = "printAll";
 
-            document.forms[0].action = "../form/formname.do?__title=British+Columbia+Antenatal+Record&__cfgfile=bcar1PrintCfgPg1_2012&__cfgfile=bcar2PrintCfgPg1_2012&__cfgGraphicFile=bcar2PrintGraphCfgPg1_2012&__graphicPage=2<%= props.getProperty("pg3_date1", "") == "" ? "&__cfgfile=bcar1PrintCfgPg2_2012&__cfgfile=bcar2PrintCfgScores_2012&__template=bcarAll2_2012" : "&__cfgfile=bcar2PrintCfgPg2_2012&__graphicPage=3&__cfgfile=bcar1PrintCfgPg2_2012&__cfgfile=bcar2PrintCfgScores_2012&__template=bcarAll1_2012" %>";
+            document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=British+Columbia+Antenatal+Record&__cfgfile=bcar1PrintCfgPg1_2012&__cfgfile=bcar2PrintCfgPg1_2012&__cfgGraphicFile=bcar2PrintGraphCfgPg1_2012&__graphicPage=2<%= props.getProperty("pg3_date1", "") == "" ? "&__cfgfile=bcar1PrintCfgPg2_2012&__cfgfile=bcar2PrintCfgScores_2012&__template=bcarAll2_2012" : "&__cfgfile=bcar2PrintCfgPg2_2012&__graphicPage=3&__cfgfile=bcar1PrintCfgPg2_2012&__cfgfile=bcar2PrintCfgScores_2012&__template=bcarAll1_2012" %>";
             document.forms[0].target = "_blank";
 
             return true;

@@ -70,7 +70,7 @@
             //document.forms[0].submit.value="print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowthChartPrint.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowthChartPrint.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -80,7 +80,7 @@
             //document.forms[0].submit.value="print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowthChartPrint.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlBMIPrint":"growthChartBoyBMIPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphicBMI":"growthChartBoyGraphicBMI"%>&__template=<%=bGirl?"growthChartGirlBMI":"growthChartBoyBMI"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowthChartPrint.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlBMIPrint":"growthChartBoyBMIPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphicBMI":"growthChartBoyGraphicBMI"%>&__template=<%=bGirl?"growthChartGirlBMI":"growthChartBoyBMI"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -89,7 +89,7 @@
         function onPrintStatureWeight1() {
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowthChartPrint.jsp?print=1&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowthChartPrint.jsp?print=1&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -98,7 +98,7 @@
         function onPrintStatureWeight2() {
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowthChartPrint.jsp?print=2&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowthChartPrint.jsp?print=2&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;

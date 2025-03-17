@@ -141,7 +141,7 @@
             document.forms[0].submit.value = "print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=British+Columbia+Labour+and+Birth+Summary+Record+2008&__cfgfile=bclb2008PrintCfgPg1&__template=bcbirthsummary2008";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Labour+and+Birth+Summary+Record+2008&__cfgfile=bclb2008PrintCfgPg1&__template=bcbirthsummary2008";
                 document.forms[0].target = "_blank";
             }
             return ret;

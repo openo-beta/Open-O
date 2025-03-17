@@ -74,7 +74,7 @@
                 //document.forms[0].submit.value="print";
                 //var ret = checkAllDates();
                 //if(ret==true) {
-                document.forms[0].action = "../form/createpdf?__title=Rx&__cfgfile=" + cfgPage + "&__template=a6blank";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=Rx&__cfgfile=" + cfgPage + "&__template=a6blank";
                 document.forms[0].target = "_blank";
                 //}
                 return true;

@@ -98,7 +98,7 @@
                 if (document.forms[0].c_finalEDB.value == "" && !confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formOnar.msgNoEDB"/>")) {
                     ret = false;
                 } else {
-                    document.forms[0].action = "../form/createpdf?__title=Antenatal+Record+Part+2&__cfgfile=onar2PrintCfgPg3&__cfgGraphicFile=onar2PrintGraphCfgPg3&__template=onar2";
+                    document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=Antenatal+Record+Part+2&__cfgfile=onar2PrintCfgPg3&__cfgGraphicFile=onar2PrintGraphCfgPg3&__template=onar2";
                     document.forms[0].target = "_blank";
                 }
             }
@@ -606,7 +606,7 @@
                     if (!bView) {
                 %>
                 <td><a
-                        href="javascript: popPage('formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
+                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
                 </td>
 
                 <td align="right"><b>View:</b> <a
@@ -1681,7 +1681,7 @@
                     if (!bView) {
                 %>
                 <td><a
-                        href="javascript: popPage('formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
+                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
                 </td>
 
                 <td align="right"><font size="-1"><b>View:</b> <a

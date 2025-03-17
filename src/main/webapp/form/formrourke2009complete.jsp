@@ -258,7 +258,7 @@
 
         function onPrintAll() {
 
-            document.forms["frmP1"].action = "../form/formname.do?__title=Rourke+Baby+Report&__cfgfile=rourke2009printCfgPg1&__cfgfile=rourke2009printCfgPg2&__cfgfile=rourke2009printCfgPg3&__cfgfile=rourke2009printCfgPg4&__template=rourke2009";
+            document.forms["frmP1"].action = "<%= request.getContextPath() %>/form/formname.do?__title=Rourke+Baby+Report&__cfgfile=rourke2009printCfgPg1&__cfgfile=rourke2009printCfgPg2&__cfgfile=rourke2009printCfgPg3&__cfgfile=rourke2009printCfgPg4&__template=rourke2009";
             document.forms["frmP1"].action += "&submit=printAll";
             document.forms["frmP1"].target = "_blank";
 

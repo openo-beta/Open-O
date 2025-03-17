@@ -69,7 +69,7 @@
             //document.forms[0].submit.value="print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowth0_36Print.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthGirlLength0_36Print":"growthBoyLength0_36Print"%>&__cfgGraphicFile=<%=bGirl?"growthGirlLength0_36Graphic":"growthBoyLength0_36Graphic"%>&__cfgGraphicFile=<%=bGirl?"growthGirlLength0_36Graphic2":"growthBoyLength0_36Graphic2"%>&__template=<%=bGirl?"growthGirlLength0_36":"growthBoyLength0_36"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowth0_36Print.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthGirlLength0_36Print":"growthBoyLength0_36Print"%>&__cfgGraphicFile=<%=bGirl?"growthGirlLength0_36Graphic":"growthBoyLength0_36Graphic"%>&__cfgGraphicFile=<%=bGirl?"growthGirlLength0_36Graphic2":"growthBoyLength0_36Graphic2"%>&__template=<%=bGirl?"growthGirlLength0_36":"growthBoyLength0_36"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -79,7 +79,7 @@
             //document.forms[0].submit.value="print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowth0_36Print.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthGirlHead0_36Print":"growthBoyHead0_36Print"%>&__cfgGraphicFile=<%=bGirl?"growthGirlHead0_36Graphic":"growthBoyHead0_36Graphic"%>&__cfgGraphicFile=<%=bGirl?"growthGirlHead0_36Graphic2":"growthBoyHead0_36Graphic2"%>&__template=<%=bGirl?"growthGirlHead0_36":"growthBoyHead0_36"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowth0_36Print.jsp?print=" + num + "&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthGirlHead0_36Print":"growthBoyHead0_36Print"%>&__cfgGraphicFile=<%=bGirl?"growthGirlHead0_36Graphic":"growthBoyHead0_36Graphic"%>&__cfgGraphicFile=<%=bGirl?"growthGirlHead0_36Graphic2":"growthBoyHead0_36Graphic2"%>&__template=<%=bGirl?"growthGirlHead0_36":"growthBoyHead0_36"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -88,7 +88,7 @@
         function onPrintStatureWeight1() {
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowthChartPrint.jsp?print=1&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowthChartPrint.jsp?print=1&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -97,7 +97,7 @@
         function onPrintStatureWeight2() {
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/formGrowthChartPrint.jsp?print=2&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/formGrowthChartPrint.jsp?print=2&__title=GrowthCharts&__cfgfile=<%=bGirl?"growthChartGirlPrint":"growthChartBoyPrint"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic":"growthChartBoyGraphic"%>&__cfgGraphicFile=<%=bGirl?"growthChartGirlGraphic2":"growthChartBoyGraphic2"%>&__template=<%=bGirl?"growthChartGirlStatureWeight":"growthChartBoyStatureWeight"%>";
                 document.forms[0].target = "_blank";
             }
             return ret;

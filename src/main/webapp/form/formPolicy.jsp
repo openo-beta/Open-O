@@ -83,7 +83,7 @@
 
         function onPrintPDF() {
             document.forms[0].submit.value = "printall";
-            document.forms[0].action = "../form/formname.do?__title=Student+Health+Services+Policy&__cfgfile=PolicyFormPrint&__cfgfile=PolicyFormPrint&__template=PolicyForm-<%=props.getProperty("formVersion","")%>";
+            document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=Student+Health+Services+Policy&__cfgfile=PolicyFormPrint&__cfgfile=PolicyFormPrint&__template=PolicyForm-<%=props.getProperty("formVersion","")%>";
             document.forms[0].target = "_blank";
             return true;
         }

@@ -78,9 +78,9 @@
             var ret = checkAllDates();
             if (ret == true) {
                 if (document.all) {
-                    document.all.FrmForm.action = "../form/createpdf?__title=Invoice&__cfgfile=invoice&__template=invoice";
+                    document.all.FrmForm.action = "<%= request.getContextPath() %>/form/createpdf?__title=Invoice&__cfgfile=invoice&__template=invoice";
                 } else {
-                    document.forms[0].action = "../form/createpdf?__title=Invoice&__cfgfile=invoice&__template=invoice";
+                    document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=Invoice&__cfgfile=invoice&__template=invoice";
                 }
                 document.forms[0].target = "_blank";
             }

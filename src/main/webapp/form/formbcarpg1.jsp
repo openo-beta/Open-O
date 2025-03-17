@@ -208,7 +208,7 @@
             document.forms[0].submit.value = "print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=British+Columbia+Antenatal+Record+Part+1&__cfgfile=bcar1PrintCfgPg1&__template=bcar1";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Antenatal+Record+Part+1&__cfgfile=bcar1PrintCfgPg1&__template=bcar1";
                 document.forms[0].target = "_blank";
             }
             return ret;
@@ -218,7 +218,7 @@
             document.forms[0].submit.value = "print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=British+Columbia+Antenatal+Record+Part+2&__cfgfile=bcar1PrintCfgPg2&__template=bcar22";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Antenatal+Record+Part+2&__cfgfile=bcar1PrintCfgPg2&__template=bcar22";
                 document.forms[0].target = "_blank";
             }
             return ret;

@@ -303,7 +303,7 @@
             document.forms[0].submit.value = "print";
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=British+Columbia+Antenatal+Record+Part+2&__cfgfile=bcar2PrintCfgPg2&__cfgfile=bcar1PrintCfgPg2&__cfgGraphicFile=bcar2PrintGraphCfgPg2&__template=bcar2";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Antenatal+Record+Part+2&__cfgfile=bcar2PrintCfgPg2&__cfgfile=bcar1PrintCfgPg2&__cfgGraphicFile=bcar2PrintGraphCfgPg2&__template=bcar2";
                 document.forms[0].target = "_blank";
             }
             return ret;

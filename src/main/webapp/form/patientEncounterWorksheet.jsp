@@ -127,7 +127,7 @@
     <h4 style="font-weight:bold;font-size:15px;text-align:center">Patient Encounter Worksheet</h4>
 
     <div align="center">
-        <form action="../form/createpdf" method="POST">
+        <form action="<%= request.getContextPath() %>/form/createpdf" method="POST">
             <input type="hidden" name="demographic_no" value="<%=request.getParameter("demographic_no") %>"/>
             <input type="hidden" name="form_id" value="<%=request.getParameter("form_id") %>"/>
             <input type="hidden" name="__title" value="PatientEcounterWorksheet"/>

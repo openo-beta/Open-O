@@ -109,7 +109,7 @@
         }
     </script>
 
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/encounterStyles.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
     <body class="BodyStyle" vlink="#0000FF" onload="window.focus()">
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
@@ -132,7 +132,7 @@
                 <table>
                     <tr>
                         <td NOWRAP><a
-                                href="javascript:popupOscarRx(700,960,'ConsultationFormRequest.jsp?de=<%=demo%>&teamVar=<%=team%>')">
+                                href="javascript:popupOscarRx(700,960,'oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=demo%>&teamVar=<%=team%>')">
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon"/></a>
                         </td>
                     </tr>

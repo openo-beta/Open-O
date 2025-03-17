@@ -216,7 +216,7 @@
         function onPrint() {
             document.forms[0].submit.value = "print";
 
-            document.forms[0].action = "../form/createpdf?__title=Rourke+Baby+Report+Pg2&__cfgfile=rourke2006printCfgPg2&__template=rourke2006p2";
+            document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=Rourke+Baby+Report+Pg2&__cfgfile=rourke2006printCfgPg2&__template=rourke2006p2";
             document.forms[0].target = "_blank";
 
             return true;
@@ -225,7 +225,7 @@
         function onPrintAll() {
             document.forms[0].submit.value = "printAll";
 
-            document.forms[0].action = "../form/formname.do?__title=Rourke+Baby+Report&__cfgfile=rourke2006printCfgPg1&__cfgfile=rourke2006printCfgPg2&__cfgfile=rourke2006printCfgPg3&__cfgfile=rourke2006printCfgPg4&__template=rourke2006";
+            document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=Rourke+Baby+Report&__cfgfile=rourke2006printCfgPg1&__cfgfile=rourke2006printCfgPg2&__cfgfile=rourke2006printCfgPg3&__cfgfile=rourke2006printCfgPg4&__template=rourke2006";
             document.forms[0].target = "_blank";
 
             return true;
@@ -617,7 +617,7 @@
             <tr>
                 <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgEducational"/></a><br/>
                     <br/>
-                    <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.msgEducationalLegend"/></td>
+                    <img height="15" width="20" src="form/graphics/Checkmark_Lwhite.gif"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.msgEducationalLegend"/></td>
                 <td colspan="9" valign="top">
                     <table style="font-size: 8pt;" cellpadding="0" cellspacing="0"
                            width="100%">
@@ -629,22 +629,22 @@
                         </tr>
                         <tr>
                             <td style="padding-right: 5pt" valign="top"><img height="15"
-                                                                             width="20" src="graphics/Checkmark_L.gif">
+                                                                             width="20" src="form/graphics/Checkmark_L.gif">
                             </td>
                             <td class="edcol" valign="top">X</td>
                             <td>&nbsp;</td>
                             <td style="padding-right: 5pt" valign="top"><img height="15"
-                                                                             width="20" src="graphics/Checkmark_L.gif">
+                                                                             width="20" src="form/graphics/Checkmark_L.gif">
                             </td>
                             <td class="edcol" valign="top">X</td>
                             <td>&nbsp;</td>
                             <td style="padding-right: 5pt" valign="top"><img height="15"
-                                                                             width="20" src="graphics/Checkmark_L.gif">
+                                                                             width="20" src="form/graphics/Checkmark_L.gif">
                             </td>
                             <td class="edcol" valign="top">X</td>
                             <td>&nbsp;</td>
                             <td style="padding-right: 5pt" valign="top"><img height="15"
-                                                                             width="20" src="graphics/Checkmark_L.gif">
+                                                                             width="20" src="form/graphics/Checkmark_L.gif">
                             </td>
                             <td class="edcol" valign="top">X</td>
                             <td colspan="4">&nbsp;</td>
@@ -966,7 +966,7 @@
             <tr>
                 <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgDevelopment"/>**</a><br>
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.msgDevelopmentDesc"/><br/>
-                    <img height="15" width="20" src="graphics/Checkmark_Lwhite.gif"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.msgDevelopmentLegend"/></td>
+                    <img height="15" width="20" src="form/graphics/Checkmark_Lwhite.gif"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006_1.msgDevelopmentLegend"/></td>
                 <td colspan="3" valign="top" align="center">
                     <table cellpadding="0" cellspacing="0" width="100%">
                         <tr align="center">
@@ -977,7 +977,7 @@
                         </tr>
                         <tr>
                             <td style="padding-right: 5pt" valign="top"><img height="15"
-                                                                             width="20" src="graphics/Checkmark_L.gif">
+                                                                             width="20" src="form/graphics/Checkmark_L.gif">
                             </td>
                             <td class="edcol" valign="top">X</td>
                             <td>&nbsp;</td>
@@ -1086,7 +1086,7 @@
                         </tr>
                         <tr>
                             <td style="padding-right: 5pt" valign="top"><img height="15"
-                                                                             width="20" src="graphics/Checkmark_L.gif">
+                                                                             width="20" src="form/graphics/Checkmark_L.gif">
                             </td>
                             <td class="edcol" valign="top">X</td>
                             <td>&nbsp;</td>
@@ -1180,7 +1180,7 @@
                         </tr>
                         <tr>
                             <td style="padding-right: 5pt" valign="top"><img height="15"
-                                                                             width="20" src="graphics/Checkmark_L.gif">
+                                                                             width="20" src="form/graphics/Checkmark_L.gif">
                             </td>
                             <td class="edcol" valign="top">X</td>
                             <td>&nbsp;</td>
