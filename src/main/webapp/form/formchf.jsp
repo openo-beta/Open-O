@@ -497,10 +497,10 @@
                             type="submit" value="Exit" onclick="javascript:return onExit();"/>
                     <input type="button" value="Print"
                            onclick="javascript:return onPrint();"/></td>
-                <td><a href="javascript: popupFixedPage(700,960,'chf.html');">Tips</a>&nbsp;&nbsp;
+                <td><a href="javascript: popupFixedPage(700,960,'form/chf.html');">Tips</a>&nbsp;&nbsp;
 
                     <a
-                            href="javascript: popPage('formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=CHF','LabReq');">LAB</a>
+                            href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=CHF','LabReq');">LAB</a>
 
                 </td>
             </tr>

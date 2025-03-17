@@ -794,7 +794,7 @@ if(bView) {
             		urlExt.append("&multiple="+(multiple+1));
             	}
             	%>
-                        document.forms[0].action = "../form/createpdf?__title=Antenatal+Record+Part+2&__cfgfile=onar2enhancedPrintCfgPg1&__cfgGraphicFile=onar2PrintGraphCfgPg1&__template=onar2<%=urlExt.toString()%>&postProcessor=ONAR2EnhancedPostProcessor";
+                        document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=Antenatal+Record+Part+2&__cfgfile=onar2enhancedPrintCfgPg1&__cfgGraphicFile=onar2PrintGraphCfgPg1&__template=onar2<%=urlExt.toString()%>&postProcessor=ONAR2EnhancedPostProcessor";
                         document.forms[0].target = "_blank";
                     }
 
@@ -1565,7 +1565,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             if (ret == true) {
                                 document.forms[0].submit.value = "print";
                                 document.forms[0].target = "_blank";
-                                var url = "../form/createpdf?";
+                                var url = "<%= request.getContextPath() %>/form/createpdf?";
                                 var multiple = 0;
                                 if (!(typeof printAr1 == "undefined")) {
                                     url += "__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor";
@@ -3029,7 +3029,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
     <div id="lab_menu_div" class="hidden">
         <ul>
             <li><a href="javascript:void(0)"
-                   onclick="popPage('formlabreq<%=labReqVer %>.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq')">Routine
+                   onclick="popPage('form/formlabreq<%=labReqVer %>.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq')">Routine
                 Prenatal</a></li>
             <li><a href="javascript:void(0)" onclick="gbsReq();return false;">GBS</a></li>
             <li><a href="javascript:void(0)" onclick="gctReq();return false;">1 Hour GCT</a></li>

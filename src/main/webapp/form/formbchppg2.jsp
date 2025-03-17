@@ -188,7 +188,7 @@
                 var ret = checkAllDates();
 
                 if (ret == true) {
-                    document.forms[0].action = "../form/formname.do?__title=British+Columbia+Health+Passport&__cfgfile=bchpPrintCfgPg1&__cfgfile=bchpPrintCfgPg2&__template=bchp";
+                    document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=British+Columbia+Health+Passport&__cfgfile=bchpPrintCfgPg1&__cfgfile=bchpPrintCfgPg2&__template=bchp";
                     document.forms[0].target = "_blank";
                 }
                 return ret;
@@ -477,7 +477,7 @@
                 %>
 
                 <td align="right"><b>Edit:</b><a
-                        href="formbchppg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
+                        href="form/formbchppg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
                     <font size=-2>(pg.1)</font></a> | HP <font size=-2>(pg.2)</font></td>
                 <%
                     }
@@ -1123,7 +1123,7 @@
                 %>
 
                 <td align="right"><b>Edit:</b><a
-                        href="formbchppg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
+                        href="form/formbchppg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
                     <font size=-2>(pg.1)</font></a> | HP <font size=-2>(pg.2)</font></td>
                 <%
                     }

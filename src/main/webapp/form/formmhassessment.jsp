@@ -100,7 +100,7 @@
                 //if(ret==true) {
                 //ret = confirm("Do you wish to save this form and view the print preview?");
                 popupFixedPage(650, 850, '../provider/notice.htm');
-                document.forms[0].action = "formmhassessmentprint.jsp";
+                document.forms[0].action = "form/formmhassessmentprint.jsp";
                 document.forms[0].target = "planner";
                 document.forms[0].submit();
                 document.forms[0].target = "apptProviderSearch";
@@ -266,9 +266,9 @@
                     <input type="submit" value="Print"
                            onclick="javascript:return onPrint();"/></td>
                 <td align="right"><a
-                        href="formmhreferral.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Referral</a>
+                        href="form/formmhreferral.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Referral</a>
                     &nbsp;|&nbsp; Assessment &nbsp;|&nbsp; <a
-                            href="formmhoutcome.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Outcome</a>
+                            href="form/formmhoutcome.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Outcome</a>
                 </td>
             </tr>
         </table>
@@ -473,9 +473,9 @@
                     <input type="submit" value="Print"
                            onclick="javascript:return onPrint();"/></td>
                 <td align="right"><a
-                        href="formmhreferral.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Referral</a>
+                        href="form/formmhreferral.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Referral</a>
                     &nbsp;|&nbsp; Assessment &nbsp;|&nbsp; <a
-                            href="formmhoutcome.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Outcome</a>
+                            href="form/formmhoutcome.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Outcome</a>
                 </td>
             </tr>
         </table>

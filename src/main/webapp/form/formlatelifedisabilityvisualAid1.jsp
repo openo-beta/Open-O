@@ -91,19 +91,19 @@
                                             </tr>
                                             <tr bgcolor="white" height="150px">
                                                 <td width="34%" align="center"><img
-                                                        src="graphics/disabilityVisualAid/veryOften.jpg" align="center"
+                                                        src="form/graphics/disabilityVisualAid/veryoften.jpg" align="center"
                                                         border='0'/></td>
                                                 <td width="30%" align="center"><img
-                                                        src="graphics/disabilityVisualAid/often.jpg" align="center"
+                                                        src="form/graphics/disabilityVisualAid/often.jpg" align="center"
                                                         border='0'/></td>
                                                 <td width="25%" align="center"><img
-                                                        src="graphics/disabilityVisualAid/onceInAWhile.jpg"
+                                                        src="form/graphics/disabilityVisualAid/onceinawhile.jpg"
                                                         align="center" border='0'/></td>
                                                 <td width="20%" align="center"><img
-                                                        src="graphics/disabilityVisualAid/almostNever.jpg"
+                                                        src="form/graphics/disabilityVisualAid/almostnever.jpg"
                                                         align="center" border='0'/></td>
                                                 <td width="11%" align="center"><img
-                                                        src="graphics/disabilityVisualAid/never.jpg" align="center"
+                                                        src="form/graphics/disabilityVisualAid/never.jpg" align="center"
                                                         border='0'/></td>
                                             </tr>
                                             <tr bgcolor="white" height="80px">

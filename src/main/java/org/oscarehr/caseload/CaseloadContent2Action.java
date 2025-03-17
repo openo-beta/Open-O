@@ -526,7 +526,7 @@ public class CaseloadContent2Action extends ActionSupport {
 
                 // add M button to string
                 if (hasPrivilege("_masterLink", roleName$)) {
-                    buttons += "| <a href='#' onClick=\"popupPage(700,1000,'../demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&displaymode=edit&dboperation=search_detail');return false;\" title='Master File'>M</a> ";
+                    buttons += "| <a href='#' onClick=\"popupPage(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&displaymode=edit&dboperation=search_detail');return false;\" title='Master File'>M</a> ";
                 }
 
                 // add Rx button to string
@@ -567,7 +567,7 @@ public class CaseloadContent2Action extends ActionSupport {
                 if ((!lapptResult.isEmpty()) && lapptResult.get(0).get("max(appointment_date)") != null && !lapptResult.get(0).get("max(appointment_date)").toString().equals("")) {
                     String clLappt = lapptResult.get(0).get("max(appointment_date)").toString();
 
-                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '../demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&last_name=" + URLEncoder.encode(clLastName) + "&first_name=" + URLEncoder.encode(clFirstName) + "&orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25'); return false;\">" + clLappt + "</a>");
+                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&last_name=" + URLEncoder.encode(clLastName) + "&first_name=" + URLEncoder.encode(clFirstName) + "&orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25'); return false;\">" + clLappt + "</a>");
                 } else {
                     entry.add("&nbsp;");
                 }
@@ -579,7 +579,7 @@ public class CaseloadContent2Action extends ActionSupport {
                 List<Map<String, Object>> napptResult = caseloadDao.getCaseloadDemographicData(napptQuery, demographicParam);
                 if (!napptResult.isEmpty() && napptResult.get(0).get("min(appointment_date)") != null && !napptResult.get(0).get("min(appointment_date)").toString().equals("")) {
                     String clNappt = napptResult.get(0).get("min(appointment_date)").toString();
-                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '../demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&last_name=" + URLEncoder.encode(clLastName) + "&first_name=" + URLEncoder.encode(clFirstName) + "&orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25'); return false;\">" + clNappt + "</a>");
+                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&last_name=" + URLEncoder.encode(clLastName) + "&first_name=" + URLEncoder.encode(clFirstName) + "&orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25'); return false;\">" + clNappt + "</a>");
                 } else {
                     entry.add("&nbsp;");
                 }

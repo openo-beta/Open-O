@@ -284,7 +284,7 @@
 
         function onPrintAll() {
 
-            document.forms["frmP1"].action = "../form/formname.do?__title=Rourke+Baby+Report&__cfgfile=rourke2017printCfgPg1&__cfgfile=rourke2017printCfgPg2&__cfgfile=rourke2017printCfgPg3&__cfgfile=rourke2017printCfgPg4&__template=rourke2017";
+            document.forms["frmP1"].action = "<%= request.getContextPath() %>/form/formname.do?__title=Rourke+Baby+Report&__cfgfile=rourke2017printCfgPg1&__cfgfile=rourke2017printCfgPg2&__cfgfile=rourke2017printCfgPg3&__cfgfile=rourke2017printCfgPg4&__template=rourke2017";
             document.forms["frmP1"].action += "&submit=printAllJasperReport";
             document.forms["frmP1"].target = "_blank";
 

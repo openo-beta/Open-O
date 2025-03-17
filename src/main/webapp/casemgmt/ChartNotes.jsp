@@ -701,7 +701,7 @@
                 <button type="button" onclick="toggleFullViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btneExpandLoadedNotes"/></button>
                 <button type="button" onclick="toggleCollapseViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnCollapseLoadedNotes"/></button>
                 <button type="button"
-                        onclick="popupPage(500,200,'noteBrowser<%=bean.demographicNo%>','noteBrowser.jsp?demographic_no=<%=bean.demographicNo%>&FirstTime=1');">
+                        onclick="popupPage(500,200,'noteBrowser<%=bean.demographicNo%>','casemgmt/noteBrowser.jsp?demographic_no=<%=bean.demographicNo%>&FirstTime=1');">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.BrowseNotes"/></button>
             </div>
         </div>

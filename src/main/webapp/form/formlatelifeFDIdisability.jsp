@@ -91,14 +91,14 @@
             var vheight = 500;
             var vwidth = 640;
             var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
-            window.open("formlatelifedisabilityvisualAid1.jsp", "", windowprops);
+            window.open("form/formlatelifedisabilityvisualAid1.jsp", "", windowprops);
         }
 
         function goToVisualAid2() {
             var vheight = 768;
             var vwidth = 640;
             var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
-            window.open("formlatelifedisabilityvisualAid2.jsp", "", windowprops);
+            window.open("form/formlatelifedisabilityvisualAid2.jsp", "", windowprops);
         }
 
         function goToPage1() {

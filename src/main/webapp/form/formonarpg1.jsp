@@ -88,7 +88,7 @@
             var ret = checkAllDates();
             setLock(false);
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1PrintCfgPg1&__template=onar1";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1PrintCfgPg1&__template=onar1";
                 document.forms[0].target = "_blank";
             }
             setTimeout('setLock(wasLocked)', 500);
@@ -440,7 +440,7 @@
                     if (!bView) {
                 %>
                 <td><a
-                        href="javascript: popPage('formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
+                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
                 </td>
 
                 <td align="right"><b>View:</b> <a
@@ -1917,7 +1917,7 @@
                     if (!bView) {
                 %>
                 <td><a
-                        href="javascript: popPage('formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
+                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
                 </td>
                 <td align="right"><b>View:</b> <a
                         href="javascript: popupPage('formonarpg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&view=1');">AR2

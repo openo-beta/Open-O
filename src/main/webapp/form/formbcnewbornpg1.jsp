@@ -85,7 +85,7 @@
             document.forms[0].submit.value = "print"; //printAR1
             var ret = checkAllDates();
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=British+Columbia+Newborn+Record+Part+1&__cfgfile=bcnb1PrintCfgPg1&__template=bcnewborn1";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Newborn+Record+Part+1&__cfgfile=bcnb1PrintCfgPg1&__template=bcnewborn1";
                 document.forms[0].target = "_blank";
             }
             return ret;

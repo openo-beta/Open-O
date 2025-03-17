@@ -308,7 +308,7 @@
             function onPrint(cfgPage) {
                 var docF = $('printFormDD');
 
-                docF.action = "../form/createpdf?__title=Rx&__cfgfile=" + cfgPage + "&__template=a6blank";
+                docF.action = "<%= request.getContextPath() %>/form/createpdf?__title=Rx&__cfgfile=" + cfgPage + "&__template=a6blank";
                 docF.target = "_blank";
                 docF.submit();
                 return true;

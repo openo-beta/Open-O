@@ -48,7 +48,7 @@
         <title>Head Circumference Graph</title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="screen"
-              href="rourkeStyle.css">
+              href="form/rourkeStyle.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css">
     </head>
 

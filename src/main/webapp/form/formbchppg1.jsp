@@ -190,7 +190,7 @@
                 var ret = checkAllDates();
 
                 if (ret == true) {
-                    document.forms[0].action = "../form/formname.do?__title=British+Columbia+Health+Passport&__cfgfile=bchpPrintCfgPg1&__cfgfile=bchpPrintCfgPg2&__template=bchp";
+                    document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=British+Columbia+Health+Passport&__cfgfile=bchpPrintCfgPg1&__cfgfile=bchpPrintCfgPg2&__template=bchp";
                     document.forms[0].target = "_blank";
                 }
                 return ret;
@@ -503,7 +503,7 @@
                 %>
 
                 <td align="right"><b>Edit:</b>HP <font size=-2>(pg.1)</font> | <a
-                        href="formbchppg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
+                        href="form/formbchppg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
                     <font size=-2>(pg.2)</font></a></td>
                 <%
                     }
@@ -1332,7 +1332,7 @@
                     <!--a href="javascript: popPage('formlabreq.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AR','LabReq');">LAB</a-->
                 </td>
                 <td align="right"><b>Edit:</b>HP <font size=-2>(pg.1)</font> | <a
-                        href="formbchppg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
+                        href="form/formbchppg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">HP
                     <font size=-2>(pg.2)</font></a></td>
                 <%
                     }

@@ -116,7 +116,7 @@
             // var ret = checkAllDates();
             var ret = true;
             if (ret == true) {
-                document.forms[0].action = "../form/createpdf?__title=British+Columbia+Newborn+Record+2008+Part+2&__cfgfile=bcNB2008PrintCfgPg3&__template=bcNewBorn2008pg2";
+                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Newborn+Record+2008+Part+2&__cfgfile=bcNB2008PrintCfgPg3&__template=bcNewBorn2008pg2";
 
                 document.forms[0].target = "_blank";
             }
