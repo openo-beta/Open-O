@@ -362,7 +362,7 @@
                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.btnPrintAll"/>"
                             onclick="javascript:return onPrintAll();"/> <input type="button"
                                                                                value="About"
-                                                                               onclick="javascript:return popPage('formRourke2006intro.html','About Rourke');"/>
+                                                                               onclick="javascript:return popPage('form/formRourke2006intro.html','About Rourke');"/>
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"
@@ -374,9 +374,9 @@
                     &nbsp; <% } %>
                 </td>
                 <td nowrap="true"><a
-                        href="formrourke2006p1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a
-                        href="formrourke2006p2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
-                        href="formrourke2006p3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
+                        href="form/formrourke2006p1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
             </tr>
         </table>
 
@@ -1839,7 +1839,7 @@
                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.btnPrintAll"/>"
                             onclick="javascript:return onPrintAll();"/> <input type="button"
                                                                                value="About"
-                                                                               onclick="javascript:return popPage('formRourke2006intro.html','About Rourke');"/>
+                                                                               onclick="javascript:return popPage('form/formRourke2006intro.html','About Rourke');"/>
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"
@@ -1851,9 +1851,9 @@
                     &nbsp; <% } %>
                 </td>
                 <td nowrap="true"><a
-                        href="formrourke2006p1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a
-                        href="formrourke2006p2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
-                        href="formrourke2006p3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
+                        href="form/formrourke2006p1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
             </tr>
         </table>
         <p style="font-size: 8pt;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.footer"/><br/>
