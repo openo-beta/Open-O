@@ -171,7 +171,7 @@
             %>
             <tr bgcolor="<c:out value="${color}"/>">
                 <td align="right" width="20%">
-                    <b><input type="checkbox" name="filter_<c:out value="${itemId}"/>" ${checked}></b>
+                    <b><input type="checkbox" name="filter_<c:out value="${itemId}"/>" <c:if test="${checked eq 'checked'}">checked</c:if>></b>
                 </td>
                 <td><c:out value="${display}"/></td>
                 <td width="5%" align="right">
