@@ -44,13 +44,22 @@
             msg = "The report is NOT undeleted by some reasons. Please check your action.";
         }
     }
-// add action
+// add action - modified for XSS protection
     if (request.getParameter("submit") != null && request.getParameter("submit").equals("Add")) {
         // check the input data
         String report_name = request.getParameter("name");
-        reportItem.setReport_name(report_name);
-        if (!reportItem.insertRecord()) {
-            msg = "The report is NOT added by some reasons. Please check your action.";
+        
+        // Validate input before processing
+        String errorMsg = validateInput(report_name);
+        if (errorMsg != null) {
+            msg = errorMsg;
+        } else {
+            // Sanitize input BEFORE saving to database to prevent stored XSS
+            String sanitizedName = StringEscapeUtils.escapeHtml(report_name);
+            reportItem.setReport_name(sanitizedName);
+            if (!reportItem.insertRecord()) {
+                msg = "The report is NOT added by some reasons. Please check your action.";
+            }
         }
     }
 
@@ -132,19 +141,19 @@
         <form method="post" name="baseurl<%=i+1%>"
               action="reportFormRecord.jsp">
             <tr bgcolor="<%=color%>">
-                <td align="right"><b><%=i + 1%>
-                </b></td>
-                <td
-                        onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                        onMouseout="this.style.backgroundColor='<%=color%>';"
-                        onClick="goPage(<%=itemId%>)"><%=prop.getProperty(itemId)%>
+                <td align="right"><b><%=i + 1%></b></td>
+                <td onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
+                    onMouseout="this.style.backgroundColor='<%=color%>';"
+                    onClick="goPage(<%=itemId%>)">
+                    <%=prop.getProperty(itemId)%>
                 </td>
-                <td width="5%" align="right"><input type="hidden" name="id"
-                                                    value="<%=itemId%>"> <% if (!bDeletedList) { %> <input
-                        type="submit" name="submit" value="Delete"
-                        onclick="javascript:return onDelete();"> <% } else { %> <input
-                        type="submit" name="submit" value="Restore"
-                        onclick="javascript:return onRestore();"> <% } %>
+                <td align="right">
+                    <input type="hidden" name="id" value="<%=itemId%>">
+                    <% if (!bDeletedList) { %>
+                        <input type="submit" name="submit" value="Delete" onclick="javascript:return onDelete();">
+                    <% } else { %>
+                        <input type="submit" name="submit" value="Restore" onclick="javascript:return onRestore();">
+                    <% } %>
                 </td>
             </tr>
         </form>
@@ -168,3 +177,24 @@
 
     </body>
 </html>
+<%!
+    // Input validation function to prevent XSS attacks
+    private String validateInput(String input) {
+        if (input == null || input.trim().length() < 2) {
+            return "Error: Report name must be at least 2 characters long";
+        }
+        if (input.trim().length() > 100) {
+            return "Error: Report name is too long (maximum 100 characters)";
+        }
+        // Detect common XSS patterns
+        if (input.toLowerCase().contains("<script") || 
+            input.toLowerCase().contains("<svg") ||
+            input.toLowerCase().contains("<iframe") ||
+            input.toLowerCase().contains("javascript:") ||
+            input.toLowerCase().contains("onerror=") ||
+            input.toLowerCase().contains("onload=")) {
+            return "Error: Invalid characters detected in report name";
+        }
+        return null; // Valid input
+    }
+%>
