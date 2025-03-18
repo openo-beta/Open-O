@@ -526,7 +526,7 @@ public class CaseloadContent2Action extends ActionSupport {
 
                 // add M button to string
                 if (hasPrivilege("_masterLink", roleName$)) {
-                    buttons += "| <a href='#' onClick=\"popupPage(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&displaymode=edit&dboperation=search_detail');return false;\" title='Master File'>M</a> ";
+                    buttons += "| <a href='#' onClick=\"popupPage(700,1000,'../demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&displaymode=edit&dboperation=search_detail');return false;\" title='Master File'>M</a> ";
                 }
 
                 // add Rx button to string

@@ -127,7 +127,7 @@
                         <td width="3%"><input type="checkbox" name="chkSetId"
                                               value="<%=id%>"/></td>
                         <td width="70%"><a
-                                href="javascript:popupImmunizationSet(768,1024,'ImmunizationSetDisplay.do?setId=<%=id%>')">
+                                href="javascript:popupImmunizationSet(768,1024,'oscarEncounter/immunization/config/ImmunizationSetDisplay.do?setId=<%=id%>')">
                             <%=name%>
                         </a></td>
                         <td align="center"><%=createDate%>
@@ -147,13 +147,13 @@
                         </td>
                         <td align="right"><input type="button" name="Button"
                                                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnAddNew"/>"
-                                                 onClick="javascript:goURL('CreateImmunizationSetInit.jsp');">
+                                                 onClick="javascript:goURL('oscarEncounter/immunization/config/CreateImmunizationSetInit.jsp');">
                             <% if (deletedList == true) { %> <input type="button" name="action"
                                                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnSetlist"/>"
-                                                                    onClick="goURL('AdministrateImmunizationSets.jsp');"> <% } else { %>
+                                                                    onClick="goURL('oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp');"> <% } else { %>
                             <input type="button" name="action"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnDelList"/>"
-                                   onClick="goURL('AdministrateImmunizationSets.jsp?stat=2');">
+                                   onClick="goURL('oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp?stat=2');">
                             <% } %>
                         </td>
                     </tr>

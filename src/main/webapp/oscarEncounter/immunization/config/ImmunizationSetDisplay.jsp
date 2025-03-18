@@ -271,7 +271,7 @@
             }
             s += "</span>";
 
-            s += "<span style='width:100%; text-align:right'><a href=\"javascript:edit('" + id + "');\"><img border=0 src="<%= request.getContextPath() %>/img/edit.gif" /></a></span>";
+            s += "<span style='width:100%; text-align:right'><a href=\"javascript:edit('" + id + "');\"><img border=0 src='../img/edit.gif' /></a></span>";
 
             s += "</span>";
 

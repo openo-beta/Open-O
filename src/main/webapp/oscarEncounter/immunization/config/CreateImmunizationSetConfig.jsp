@@ -43,6 +43,7 @@
 %>
 
 <%
+    String setName = null;
     String co = (String) request.getAttribute("cols");
     String ro = (String) request.getAttribute("rows");
     int cols = 0;
@@ -52,12 +53,11 @@
         rows = Integer.parseInt(ro);
         rows++;
         cols++;
-
     } catch (Exception e) {
         MiscUtils.getLogger().error("there was a boo-boo co=" + co + " ro=" + ro, e);
     }
 
-    String setName = ((String) request.getAttribute("name"));
+    setName = ((String) request.getAttribute("setName"));
 %>
 
 
@@ -145,7 +145,7 @@
                     <tr>
                         <td><form action="${pageContext.request.contextPath}/oscarEncounter/immunization/config/CreateImmunizationSetConfig.do" method="post">
 
-                            <input type="hidden" name="name" id="name" value="<%=setName%>"/>
+                            <input type="hidden" name="setName" id="setName" value="<%=setName%>"/>
                             <table border=1>
                                 <%for (int i = 0; i < rows; i++) { %>
                                 <tr>
