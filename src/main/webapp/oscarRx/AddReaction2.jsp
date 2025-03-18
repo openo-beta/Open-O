@@ -124,7 +124,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td id="addAllergyDialogue"><form action="/oscarRx/addAllergy2.do"
+                        <td id="addAllergyDialogue"><form action="<%=request.getContextPath()%>/oscarRx/addAllergy2.do"
                                                                focus="reactionDescription">
 
                             <script type="text/javascript">

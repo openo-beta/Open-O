@@ -77,7 +77,7 @@
 </c:if>
 <%
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_ALLERGY;
-    oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+    oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) session.getAttribute("Patient");
     com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
 %>
 <html>
@@ -650,7 +650,7 @@
 
                     <tr id="addAllergyInterface">
                         <td>
-                            <form action="/oscarRx/searchAllergy2.do" focus="searchString" id="searchAllergy2"
+                            <form action="<%=request.getContextPath()%>/oscarRx/searchAllergy2.do" focus="searchString" id="searchAllergy2"
                                   onSubmit="return submitSearchForm()">
 
                                 <input type="hidden" name="iNKDA" value="<%=iNKDA%>"/>
