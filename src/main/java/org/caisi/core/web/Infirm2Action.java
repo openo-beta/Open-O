@@ -36,6 +36,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SecurityUtils;
 import org.oscarehr.util.SessionConstants;
 import org.oscarehr.util.SpringUtils;
+import org.oscarehr.util.WebUtils;
 import oscar.OscarProperties;
 import oscar.util.LabelValueBean;
 
@@ -83,24 +84,54 @@ public class Infirm2Action extends ActionSupport {
     }
 
     public String execute() throws Exception {
-        String mtd = request.getParameter("action");
-        if ("getProgramList".equals(mtd)) {
-            return getProgramList();
-        } else if ("getSig".equals(mtd)) {
-            return getSig();
-        } else if ("toggleSig".equals(mtd)) {
-            return toggleSig();
+        // Verify user is logged in
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo == null) {
+            logger.error("Unauthorized access attempt to execute method");
+            return "login";
         }
-        return showProgram();
+        
+        // Validate action parameter
+        String mtd = request.getParameter("action");
+        if (mtd == null) {
+            return showProgram();
+        }
+        
+        // Use a whitelist approach for action parameter
+        switch (mtd) {
+            case "getProgramList":
+                return getProgramList();
+            case "getSig":
+                return getSig();
+            case "toggleSig":
+                return toggleSig();
+            default:
+                return showProgram();
+        }
     }
 
     public String showProgram() throws Exception {
         logger.debug("====> inside showProgram action.");
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo == null) {
+            logger.error("Unauthorized access attempt to showProgram");
+            return "login";
+        }
+        
         HttpSession se = request.getSession();
+        if (se == null) {
+            logger.error("Session not found in showProgram");
+            return "login";
+        }
+        
         se.setAttribute("infirmaryView_initflag", "true");
         String providerNo = (String) se.getAttribute("user");
+        if (providerNo == null) {
+            logger.error("Provider number not found in session");
+            return "login";
+        }
+        
         String archiveView = (String) request.getSession().getAttribute("archiveView");
 
 
@@ -434,20 +465,49 @@ public class Infirm2Action extends ActionSupport {
 
     public String getSig() {
         logger.debug("====> inside getSig action.");
+        
+        // Verify user is logged in
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo == null) {
+            logger.error("Unauthorized access attempt to getSig");
+            return "login";
+        }
+        
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            logger.error("Session not found in getSig");
+            return "login";
+        }
+        
+        // Get provider number with validation
         String providerNo = request.getParameter("providerNo");
-        if (providerNo == null) providerNo = (String) request.getSession().getAttribute("user");
+        if (providerNo == null) {
+            providerNo = (String) session.getAttribute("user");
+            if (providerNo == null) {
+                logger.error("Provider number not found in session");
+                return "login";
+            }
+        } else {
+            // Validate that the requested providerNo matches the logged-in user
+            // or the user has admin privileges
+            String loggedInProviderNo = loggedInInfo.getLoggedInProviderNo();
+            if (!providerNo.equals(loggedInProviderNo) && !loggedInInfo.getCurrentProvider().hasAdminRole()) {
+                logger.warn("Attempt to access provider signature for different provider: " + providerNo);
+                return "accessDenied";
+            }
+        }
+        
         Boolean onsig = bpm.getProviderSig(providerNo);
-        request.getSession().setAttribute("signOnNote", onsig);
+        session.setAttribute("signOnNote", onsig);
         int pid = bpm.getDefaultProgramId(providerNo);
 
-        request.getSession().setAttribute("programId_oscarView", "0");
+        session.setAttribute("programId_oscarView", "0");
 
-        String ppid = (String) request.getSession().getAttribute("case_program_id");
+        String ppid = (String) session.getAttribute("case_program_id");
         if (ppid == null) {
-            request.getSession().setAttribute("case_program_id", String.valueOf(pid));
+            session.setAttribute("case_program_id", String.valueOf(pid));
         } else {
-            request.getSession().setAttribute("case_program_id", ppid);
-
+            session.setAttribute("case_program_id", ppid);
         }
 
         return null;
@@ -455,10 +515,49 @@ public class Infirm2Action extends ActionSupport {
 
     public String toggleSig() {
         logger.debug("====> inside toggleSig action.");
+        
+        // Verify user is logged in
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo == null) {
+            logger.error("Unauthorized access attempt to toggleSig");
+            return "login";
+        }
+        
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            logger.error("Session not found in toggleSig");
+            return "login";
+        }
+        
+        // Get provider number with validation
         String providerNo = request.getParameter("providerNo");
-        if (providerNo == null) providerNo = (String) request.getSession().getAttribute("user");
+        if (providerNo == null) {
+            providerNo = (String) session.getAttribute("user");
+            if (providerNo == null) {
+                logger.error("Provider number not found in session");
+                return "login";
+            }
+        } else {
+            // Validate that the requested providerNo matches the logged-in user
+            // or the user has admin privileges
+            String loggedInProviderNo = loggedInInfo.getLoggedInProviderNo();
+            if (!providerNo.equals(loggedInProviderNo) && !loggedInInfo.getCurrentProvider().hasAdminRole()) {
+                logger.warn("Attempt to toggle signature for different provider: " + providerNo);
+                return "accessDenied";
+            }
+        }
+        
         Boolean onsig = bpm.getProviderSig(providerNo);
-        request.getSession().setAttribute("signOnNote", onsig);
+        session.setAttribute("signOnNote", onsig);
+        
+        // Add CSRF token validation if this is a POST request
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            if (!WebUtils.isValidCsrfToken(request)) {
+                logger.warn("Invalid CSRF token in toggleSig request");
+                return "accessDenied";
+            }
+        }
+        
         return null;
     }
 
@@ -470,12 +569,24 @@ public class Infirm2Action extends ActionSupport {
             return null;
         }
         
+        // Add CSRF token validation if this is a POST request
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            if (!WebUtils.isValidCsrfToken(request)) {
+                logger.warn("Invalid CSRF token in getProgramList request");
+                return "accessDenied";
+            }
+        }
+        
         String providerNo = request.getParameter("providerNo");
         String facilityId = request.getParameter("facilityId");
 
         // Set content type and prevent caching
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("X-Content-Type-Options", "nosniff");
+        response.setHeader("X-Frame-Options", "DENY");
+        response.setHeader("X-XSS-Protection", "1; mode=block");
         
         String outTxt = "<option value='all'>All Programs</option>";
         PrintWriter out;
@@ -491,6 +602,11 @@ public class Infirm2Action extends ActionSupport {
         // Validate input parameters
         if (providerNo == null || facilityId == null || providerNo.isEmpty() || facilityId.isEmpty()) {
             logger.warn("Missing required parameters for getProgramList");
+            try {
+                response.getWriter().write("<option value=''>Error: Missing parameters</option>");
+            } catch (IOException e) {
+                logger.error("Error writing response", e);
+            }
             return null;
         }
         
@@ -516,9 +632,31 @@ public class Infirm2Action extends ActionSupport {
         List<LabelValueBean> programBeans = null;
         
         if (providerNo.equalsIgnoreCase("all")) {
+            // Check if user has permission to view all programs
+            if (!loggedInInfo.getCurrentProvider().hasAdminRole()) {
+                logger.warn("Non-admin user attempting to access all programs: " + loggedInInfo.getLoggedInProviderNo());
+                try {
+                    response.getWriter().write("<option value=''>Access Denied</option>");
+                    return null;
+                } catch (IOException e) {
+                    logger.error("Error writing response", e);
+                    return null;
+                }
+            }
             programBeans = manager.getProgramBeansByFacilityId(facility_id);
         } else {
-            // Validate providerNo format if needed
+            // Validate providerNo format and permissions
+            if (!providerNo.equals(loggedInInfo.getLoggedInProviderNo()) && 
+                !loggedInInfo.getCurrentProvider().hasAdminRole()) {
+                logger.warn("User attempting to access programs for different provider: " + providerNo);
+                try {
+                    response.getWriter().write("<option value=''>Access Denied</option>");
+                    return null;
+                } catch (IOException e) {
+                    logger.error("Error writing response", e);
+                    return null;
+                }
+            }
             programBeans = manager.getProgramBeans(providerNo, facility_id);
         }
         
