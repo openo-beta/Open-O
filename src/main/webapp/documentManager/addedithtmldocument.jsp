@@ -276,17 +276,17 @@
                        onsubmit="return submitUpload(this);">
     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
     <input type="hidden" name="function"
-           value="<%=formdata.getFunction()%>" size="20"/>
+           value="<%=UtilMisc.htmlEscape(formdata.getFunction())%>" size="20"/>
     <input type="hidden" name="functionId"
-           value="<%=formdata.getFunctionId()%>" size="20"/>
-    <input type="hidden" name="functionid" value="<%=moduleid%>" size="20"/>
-    <input type="hidden" name="mode" value="<%=mode%>"/>
+           value="<%=UtilMisc.htmlEscape(formdata.getFunctionId())%>" size="20"/>
+    <input type="hidden" name="functionid" value="<%=UtilMisc.htmlEscape(moduleid)%>" size="20"/>
+    <input type="hidden" name="mode" value="<%=UtilMisc.htmlEscape(mode)%>"/>
     <input type="hidden" name="docCreator"
-           value="<%=formdata.getDocCreator()%>"/>
-    <input type="hidden" name="reviewerId" value="<%=formdata.getReviewerId()%>"/>
-    <input type="hidden" name="reviewDateTime" value="<%=formdata.getReviewDateTime()%>"/>
+           value="<%=UtilMisc.htmlEscape(formdata.getDocCreator())%>"/>
+    <input type="hidden" name="reviewerId" value="<%=UtilMisc.htmlEscape(formdata.getReviewerId())%>"/>
+    <input type="hidden" name="reviewDateTime" value="<%=UtilMisc.htmlEscape(formdata.getReviewDateTime())%>"/>
     <input type="hidden" name="reviewDoc" value="false"/>
-    <input type="hidden" name="annotation_attrib" value="<%=annotation_attrib%>"/>
+    <input type="hidden" name="annotation_attrib" value="<%=UtilMisc.htmlEscape(annotation_attrib)%>"/>
 
     <table width="100%" height="100%" class="layouttable">
         <tr>
@@ -296,7 +296,7 @@
                     <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                     <% for (int i = 0; i < doctypes.size(); i++) {
                         String doctype = doctypes.get(i); %>
-                    <option value="<%= doctype%>" <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
+                    <option value="<%=UtilMisc.htmlEscape(doctype)%>" <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%=UtilMisc.htmlEscape(doctype)%>
                     </option>
                     <%}%>
                 </select>
@@ -316,7 +316,7 @@
                             consultShown = true;
                         }
                 %>
-                <option value="<%=reportClass%>" <%=reportClass.equals(formdata.getDocClass()) ? "selected" : ""%>><%=reportClass%>
+                <option value="<%=UtilMisc.htmlEscape(reportClass)%>" <%=reportClass.equals(formdata.getDocClass()) ? "selected" : ""%>><%=UtilMisc.htmlEscape(reportClass)%>
                 </option>
                 <% } %>
             </select>
@@ -324,7 +324,7 @@
         </tr>
         <tr>
             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocSubClass"/>:</td>
-            <td><input type="text" name="docSubClass" id="docSubClass" value="<%=formdata.getDocSubClass()%>"
+            <td><input type="text" name="docSubClass" id="docSubClass" value="<%=UtilMisc.htmlEscape(formdata.getDocSubClass())%>"
                        style="width:330px">
                 <div class="autocomplete_style" id="docSubClass_list"></div>
             </td>
@@ -333,11 +333,11 @@
             <td>Description:</td>
             <td><input <% if (linkhtmlerrors.containsKey("descmissing")) {%>
                     class="warning" <%}%> type="text" name="docDesc" size="30"
-                    onfocus="checkDefaultValue(this)" value="<%=formdata.getDocDesc()%>"></td>
+                    onfocus="checkDefaultValue(this)" value="<%=UtilMisc.htmlEscape(formdata.getDocDesc())%>"></td>
         </tr>
         <tr>
             <td>Added By:</td>
-            <td><%=EDocUtil.getProviderName(formdata.getDocCreator())%>
+            <td><%=UtilMisc.htmlEscape(EDocUtil.getProviderName(formdata.getDocCreator()))%>
             </td>
         </tr>
         <tr>
@@ -349,8 +349,8 @@
                         String selected = "";
                         if (formdata.getResponsibleId().equals(pd.get("providerNo"))) selected = "selected";
                     %>
-                    <option value="<%=pd.get("providerNo")%>" <%=selected%>><%=pd.get("lastName")%>
-                        , <%=pd.get("firstName")%>
+                    <option value="<%=UtilMisc.htmlEscape((String)pd.get("providerNo"))%>" <%=selected%>><%=UtilMisc.htmlEscape((String)pd.get("lastName"))%>
+                        , <%=UtilMisc.htmlEscape((String)pd.get("firstName"))%>
                     </option>
                     <% } %>
                 </select>
@@ -358,26 +358,26 @@
         </tr>
         <tr>
             <td>Date Added/Updated:</td>
-            <td><%=lastUpdate%>
+            <td><%=UtilMisc.htmlEscape(lastUpdate)%>
             </td>
         </tr>
         <tr>
             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formContentAddedUpdated"/>:</td>
-            <td><%=formdata.getContentDateTime()%>
+            <td><%=UtilMisc.htmlEscape(formdata.getContentDateTime())%>
             </td>
         </tr>
         <tr>
             <td>Source Author:</td>
-            <td><input type="text" name="source" size="15" value="<%=formdata.getSource()%>"/></td>
+            <td><input type="text" name="source" size="15" value="<%=UtilMisc.htmlEscape(formdata.getSource())%>"/></td>
         </tr>
         <tr>
             <td>Source Facility:</td>
-            <td><input type="text" name="sourceFacility" size="15" value="<%=formdata.getSourceFacility()%>"/></td>
+            <td><input type="text" name="sourceFacility" size="15" value="<%=UtilMisc.htmlEscape(formdata.getSourceFacility())%>"/></td>
         </tr>
         <tr>
             <td>Observation Date <font class="comment">(yyyy/mm/dd):</font></td>
             <td><input type="text" name="observationDate"
-                       id="observationDate" value="<%=formdata.getObservationDate()%>"><a
+                       id="observationDate" value="<%=UtilMisc.htmlEscape(formdata.getObservationDate())%>"><a
                     id="obsdate"><img title="Calendar" src="../images/cal.gif"
                                       alt="Calendar" border="0"/></a></td>
         </tr>
@@ -392,8 +392,8 @@
         <tr>
             <td colspan="2">
                 <% if (formdata.getReviewerId() != null && !formdata.getReviewerId().equals("")) { %>
-                Reviewed: &nbsp; <%=EDocUtil.getProviderName(formdata.getReviewerId())%>
-                &nbsp; [<%=formdata.getReviewDateTime()%>]
+                Reviewed: &nbsp; <%=UtilMisc.htmlEscape(EDocUtil.getProviderName(formdata.getReviewerId()))%>
+                &nbsp; [<%=UtilMisc.htmlEscape(formdata.getReviewDateTime())%>]
                 <% } else { %>
                 <input type="button" value="Reviewed" title="Click to set Reviewed" onclick="reviewed(this);"/>
                 <% } %>
@@ -403,7 +403,7 @@
         <tr>
             <td colspan="2">
                 <input type="button" value="Annotation"
-                       onclick="window.open('../annotation/annotation.jsp?atbname=<%=annotation_attrib%>&display=<%=annotation_display%>&table_id=<%=annotation_tableid%>&demo=<%=moduleid%>','anwin','width=400,height=500');"/>
+                       onclick="window.open('../annotation/annotation.jsp?atbname=<%=UtilMisc.htmlEscape(annotation_attrib)%>&display=<%=UtilMisc.htmlEscape(annotation_display)%>&table_id=<%=UtilMisc.htmlEscape(annotation_tableid)%>&demo=<%=UtilMisc.htmlEscape(moduleid)%>','anwin','width=400,height=500');"/>
             </td>
         </tr>
         <tr>
