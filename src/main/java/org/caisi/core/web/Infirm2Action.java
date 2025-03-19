@@ -33,6 +33,7 @@ import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
+import org.oscarehr.util.RateLimitUtil;
 import org.oscarehr.util.SecurityUtils;
 import org.oscarehr.util.SessionConstants;
 import org.oscarehr.util.SpringUtils;
@@ -66,6 +67,18 @@ public class Infirm2Action extends ActionSupport {
             return;
         }
         
+        // Validate provider number format
+        if (!providerNo.matches("^[0-9a-zA-Z]{6,20}$")) {
+            logger.warn("Invalid provider number format in updateCurrentProgram: " + providerNo);
+            return;
+        }
+        
+        // Validate program ID format
+        if (!StringUtils.isNumeric(programId)) {
+            logger.warn("Non-numeric program ID in updateCurrentProgram: " + programId);
+            return;
+        }
+        
         int programIdInt;
         try {
             programIdInt = Integer.parseInt(programId);
@@ -75,20 +88,34 @@ public class Infirm2Action extends ActionSupport {
         }
         
         if (programIdInt <= 0) {
-            logger.warn("Invalid program ID: " + programId);
+            logger.warn("Invalid program ID value: " + programId);
             return;
         }
         
-        logger.debug("Updating the current program to " + programId);
-        bpm.setDefaultProgramId(providerNo, programIdInt);
+        try {
+            logger.debug("Updating the current program to " + programId + " for provider " + providerNo);
+            bpm.setDefaultProgramId(providerNo, programIdInt);
+            logger.info("Successfully updated default program to " + programId + " for provider " + providerNo);
+        } catch (Exception e) {
+            logger.error("Error updating default program", e);
+        }
     }
 
     public String execute() throws Exception {
         // Verify user is logged in
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (loggedInInfo == null) {
-            logger.error("Unauthorized access attempt to execute method");
+            logger.error("Unauthorized access attempt to execute method from IP: " + request.getRemoteAddr());
             return "login";
+        }
+        
+        // Apply rate limiting for sensitive operations
+        String ipAddress = request.getRemoteAddr();
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        
+        if (!RateLimitUtil.checkRateLimit("infirm2Action", ipAddress, 100)) {
+            logger.warn("Rate limit exceeded for IP: " + ipAddress);
+            return "tooManyRequests";
         }
         
         // Validate action parameter
@@ -96,6 +123,9 @@ public class Infirm2Action extends ActionSupport {
         if (mtd == null) {
             return showProgram();
         }
+        
+        // Sanitize the action parameter
+        mtd = StringEscapeUtils.escapeHtml(mtd);
         
         // Use a whitelist approach for action parameter
         switch (mtd) {
@@ -106,6 +136,7 @@ public class Infirm2Action extends ActionSupport {
             case "toggleSig":
                 return toggleSig();
             default:
+                logger.info("Invalid action parameter: " + mtd + " from provider: " + providerNo);
                 return showProgram();
         }
     }
@@ -283,7 +314,22 @@ public class Infirm2Action extends ActionSupport {
         se.setAttribute("infirmaryView_demographicBeans", filteredDemographicBeans);
         response.getOutputStream().print(" ");
 
-        return null;
+            // Log successful operation
+            logger.debug("Program list successfully retrieved for provider: " + 
+                       (providerNo.equals("all") ? "all" : providerNo) + 
+                       ", facility: " + facility_id);
+            
+            return null;
+        } catch (Exception e) {
+            logger.error("Unexpected error in getProgramList", e);
+            try {
+                response.setStatus(500);
+                response.getWriter().write("<option value=''>Server error</option>");
+            } catch (IOException ex) {
+                logger.error("Error writing error response", ex);
+            }
+            return null;
+        }
     }
 
     public static void loadProgram(HttpServletRequest request, HttpServletResponse response) {
@@ -466,116 +512,195 @@ public class Infirm2Action extends ActionSupport {
     public String getSig() {
         logger.debug("====> inside getSig action.");
         
-        // Verify user is logged in
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        if (loggedInInfo == null) {
-            logger.error("Unauthorized access attempt to getSig");
-            return "login";
-        }
-        
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            logger.error("Session not found in getSig");
-            return "login";
-        }
-        
-        // Get provider number with validation
-        String providerNo = request.getParameter("providerNo");
-        if (providerNo == null) {
-            providerNo = (String) session.getAttribute("user");
-            if (providerNo == null) {
-                logger.error("Provider number not found in session");
+        try {
+            // Verify user is logged in
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            if (loggedInInfo == null) {
+                logger.error("Unauthorized access attempt to getSig from IP: " + request.getRemoteAddr());
                 return "login";
             }
-        } else {
-            // Validate that the requested providerNo matches the logged-in user
-            // or the user has admin privileges
-            String loggedInProviderNo = loggedInInfo.getLoggedInProviderNo();
-            if (!providerNo.equals(loggedInProviderNo) && !loggedInInfo.getCurrentProvider().hasAdminRole()) {
-                logger.warn("Attempt to access provider signature for different provider: " + providerNo);
+            
+            // Apply rate limiting
+            String ipAddress = request.getRemoteAddr();
+            if (!RateLimitUtil.checkRateLimit("getSig", ipAddress, 20)) {
+                logger.warn("Rate limit exceeded for getSig from IP: " + ipAddress);
+                return "tooManyRequests";
+            }
+            
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                logger.error("Session not found in getSig");
+                return "login";
+            }
+            
+            // Get provider number with validation
+            String providerNo = request.getParameter("providerNo");
+            if (providerNo == null) {
+                providerNo = (String) session.getAttribute("user");
+                if (providerNo == null) {
+                    logger.error("Provider number not found in session");
+                    return "login";
+                }
+            } else {
+                // Validate provider number format
+                if (!providerNo.matches("^[0-9a-zA-Z]{6,20}$")) {
+                    logger.warn("Invalid provider number format in getSig: " + providerNo);
+                    return "accessDenied";
+                }
+                
+                // Validate that the requested providerNo matches the logged-in user
+                // or the user has admin privileges
+                String loggedInProviderNo = loggedInInfo.getLoggedInProviderNo();
+                if (!providerNo.equals(loggedInProviderNo) && !loggedInInfo.getCurrentProvider().hasAdminRole()) {
+                    logger.warn("Attempt to access provider signature for different provider: " + providerNo + 
+                               " by user: " + loggedInProviderNo + " from IP: " + ipAddress);
+                    SecurityUtils.logSecurityEvent("UNAUTHORIZED_PROVIDER_ACCESS", loggedInProviderNo, 
+                                                 "Attempted to access provider: " + providerNo);
+                    return "accessDenied";
+                }
+            }
+            
+            // Add CSRF token validation
+            if (!WebUtils.isValidCsrfToken(request)) {
+                logger.warn("Invalid CSRF token in getSig request from provider: " + 
+                           loggedInInfo.getLoggedInProviderNo() + " IP: " + ipAddress);
                 return "accessDenied";
             }
+            
+            Boolean onsig = bpm.getProviderSig(providerNo);
+            session.setAttribute("signOnNote", onsig);
+            int pid = bpm.getDefaultProgramId(providerNo);
+
+            session.setAttribute("programId_oscarView", "0");
+
+            String ppid = (String) session.getAttribute("case_program_id");
+            if (ppid == null) {
+                session.setAttribute("case_program_id", String.valueOf(pid));
+            } else {
+                // Validate case_program_id is numeric
+                if (ppid != null && !StringUtils.isNumeric(ppid)) {
+                    logger.warn("Invalid non-numeric case_program_id in session: " + ppid);
+                    session.setAttribute("case_program_id", String.valueOf(pid));
+                } else {
+                    session.setAttribute("case_program_id", ppid);
+                }
+            }
+
+            // Log successful operation
+            logger.info("Provider signature retrieved successfully for provider: " + providerNo);
+            
+            return null;
+        } catch (Exception e) {
+            logger.error("Error in getSig: ", e);
+            return "error";
         }
-        
-        Boolean onsig = bpm.getProviderSig(providerNo);
-        session.setAttribute("signOnNote", onsig);
-        int pid = bpm.getDefaultProgramId(providerNo);
-
-        session.setAttribute("programId_oscarView", "0");
-
-        String ppid = (String) session.getAttribute("case_program_id");
-        if (ppid == null) {
-            session.setAttribute("case_program_id", String.valueOf(pid));
-        } else {
-            session.setAttribute("case_program_id", ppid);
-        }
-
-        return null;
     }
 
     public String toggleSig() {
         logger.debug("====> inside toggleSig action.");
         
-        // Verify user is logged in
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        if (loggedInInfo == null) {
-            logger.error("Unauthorized access attempt to toggleSig");
-            return "login";
-        }
-        
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            logger.error("Session not found in toggleSig");
-            return "login";
-        }
-        
-        // Get provider number with validation
-        String providerNo = request.getParameter("providerNo");
-        if (providerNo == null) {
-            providerNo = (String) session.getAttribute("user");
-            if (providerNo == null) {
-                logger.error("Provider number not found in session");
+        try {
+            // Verify user is logged in
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            if (loggedInInfo == null) {
+                logger.error("Unauthorized access attempt to toggleSig from IP: " + request.getRemoteAddr());
                 return "login";
             }
-        } else {
-            // Validate that the requested providerNo matches the logged-in user
-            // or the user has admin privileges
-            String loggedInProviderNo = loggedInInfo.getLoggedInProviderNo();
-            if (!providerNo.equals(loggedInProviderNo) && !loggedInInfo.getCurrentProvider().hasAdminRole()) {
-                logger.warn("Attempt to toggle signature for different provider: " + providerNo);
-                return "accessDenied";
+            
+            // Apply rate limiting for this sensitive operation
+            String ipAddress = request.getRemoteAddr();
+            if (!RateLimitUtil.checkRateLimit("toggleSig", ipAddress, 10)) {
+                logger.warn("Rate limit exceeded for toggleSig from IP: " + ipAddress);
+                return "tooManyRequests";
             }
-        }
-        
-        Boolean onsig = bpm.getProviderSig(providerNo);
-        session.setAttribute("signOnNote", onsig);
-        
-        // Add CSRF token validation if this is a POST request
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                logger.error("Session not found in toggleSig");
+                return "login";
+            }
+            
+            // Get provider number with validation
+            String providerNo = request.getParameter("providerNo");
+            if (providerNo == null) {
+                providerNo = (String) session.getAttribute("user");
+                if (providerNo == null) {
+                    logger.error("Provider number not found in session");
+                    return "login";
+                }
+            } else {
+                // Validate provider number format
+                if (!providerNo.matches("^[0-9a-zA-Z]{6,20}$")) {
+                    logger.warn("Invalid provider number format: " + providerNo);
+                    return "accessDenied";
+                }
+                
+                // Validate that the requested providerNo matches the logged-in user
+                // or the user has admin privileges
+                String loggedInProviderNo = loggedInInfo.getLoggedInProviderNo();
+                if (!providerNo.equals(loggedInProviderNo) && !loggedInInfo.getCurrentProvider().hasAdminRole()) {
+                    logger.warn("Attempt to toggle signature for different provider: " + providerNo + 
+                               " by user: " + loggedInProviderNo + " from IP: " + ipAddress);
+                    SecurityUtils.logSecurityEvent("UNAUTHORIZED_PROVIDER_ACCESS", loggedInProviderNo, 
+                                                 "Attempted to access provider: " + providerNo);
+                    return "accessDenied";
+                }
+            }
+            
+            // Add CSRF token validation for all requests
             if (!WebUtils.isValidCsrfToken(request)) {
-                logger.warn("Invalid CSRF token in toggleSig request");
+                logger.warn("Invalid CSRF token in toggleSig request from provider: " + 
+                           loggedInInfo.getLoggedInProviderNo() + " IP: " + ipAddress);
+                SecurityUtils.logSecurityEvent("CSRF_VIOLATION", loggedInInfo.getLoggedInProviderNo(), 
+                                             "Invalid CSRF token in toggleSig");
                 return "accessDenied";
             }
+            
+            Boolean onsig = bpm.getProviderSig(providerNo);
+            session.setAttribute("signOnNote", onsig);
+            
+            // Log successful operation
+            logger.info("Provider signature toggled successfully for provider: " + providerNo);
+            
+            return null;
+        } catch (Exception e) {
+            logger.error("Error in toggleSig: ", e);
+            return "error";
         }
-        
-        return null;
     }
 
     public String getProgramList() {
-        // Verify CSRF token or other security check
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        if (loggedInInfo == null) {
-            logger.error("Unauthorized access attempt to getProgramList");
-            return null;
-        }
-        
-        // Add CSRF token validation if this is a POST request
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
-            if (!WebUtils.isValidCsrfToken(request)) {
-                logger.warn("Invalid CSRF token in getProgramList request");
-                return "accessDenied";
+        try {
+            // Verify CSRF token or other security check
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            if (loggedInInfo == null) {
+                logger.error("Unauthorized access attempt to getProgramList from IP: " + request.getRemoteAddr());
+                return null;
             }
-        }
+            
+            // Apply rate limiting
+            String ipAddress = request.getRemoteAddr();
+            if (!RateLimitUtil.checkRateLimit("getProgramList", ipAddress, 50)) {
+                logger.warn("Rate limit exceeded for getProgramList from IP: " + ipAddress);
+                try {
+                    response.setStatus(429);
+                    response.getWriter().write("<option value=''>Too many requests</option>");
+                } catch (IOException e) {
+                    logger.error("Error writing rate limit response", e);
+                }
+                return null;
+            }
+            
+            // Add CSRF token validation if this is a POST request
+            if ("POST".equalsIgnoreCase(request.getMethod())) {
+                if (!WebUtils.isValidCsrfToken(request)) {
+                    logger.warn("Invalid CSRF token in getProgramList request from provider: " + 
+                               loggedInInfo.getLoggedInProviderNo() + " IP: " + ipAddress);
+                    SecurityUtils.logSecurityEvent("CSRF_VIOLATION", loggedInInfo.getLoggedInProviderNo(), 
+                                                 "Invalid CSRF token in getProgramList");
+                    return "accessDenied";
+                }
+            }
         
         String providerNo = request.getParameter("providerNo");
         String facilityId = request.getParameter("facilityId");
@@ -601,9 +726,22 @@ public class Infirm2Action extends ActionSupport {
         
         // Validate input parameters
         if (providerNo == null || facilityId == null || providerNo.isEmpty() || facilityId.isEmpty()) {
-            logger.warn("Missing required parameters for getProgramList");
+            logger.warn("Missing required parameters for getProgramList from IP: " + ipAddress);
             try {
+                response.setStatus(400);
                 response.getWriter().write("<option value=''>Error: Missing parameters</option>");
+            } catch (IOException e) {
+                logger.error("Error writing response", e);
+            }
+            return null;
+        }
+        
+        // Validate provider number format
+        if (!providerNo.equals("all") && !providerNo.matches("^[0-9a-zA-Z]{6,20}$")) {
+            logger.warn("Invalid provider number format: " + providerNo + " from IP: " + ipAddress);
+            try {
+                response.setStatus(400);
+                response.getWriter().write("<option value=''>Error: Invalid provider format</option>");
             } catch (IOException e) {
                 logger.error("Error writing response", e);
             }
@@ -625,6 +763,12 @@ public class Infirm2Action extends ActionSupport {
             }
         } catch (NumberFormatException e) {
             MiscUtils.getLogger().error("Error parsing facility ID", e);
+            try {
+                response.setStatus(400);
+                response.getWriter().write("<option value=''>Error: Invalid facility ID format</option>");
+            } catch (IOException ex) {
+                logger.error("Error writing response", ex);
+            }
             return null;
         }
         
