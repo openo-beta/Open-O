@@ -385,7 +385,7 @@
         <tr>
             <td>Public?</td>
             <td><input type="checkbox" name="docPublic"
-                    <%=formdata.getDocPublic() + " "%> value="checked"></td>
+                    <%=UtilMisc.htmlEscape(formdata.getDocPublic() + " ")%> value="checked"></td>
         </tr>
         <% }
             if (oldDoc) { %>
@@ -412,7 +412,7 @@
         <tr>
             <td colspan="2">
 			    <textarea name="html" <% if (linkhtmlerrors.containsKey("uploaderror")) {%>
-                          class="warning" <%}%> wrap="off" style="width: 98%; height: 200px;"><%=formdata.getHtml()%>
+                          class="warning" <%}%> wrap="off" style="width: 98%; height: 200px;"><%=UtilMisc.htmlEscape(formdata.getHtml())%>
 			    </textarea>
             </td>
         </tr>
