@@ -73,11 +73,11 @@
     String module = "";
     String moduleid = "";
     if (request.getParameter("function") != null) {
-        module = request.getParameter("function");
-        moduleid = request.getParameter("functionid");
+        module = UtilMisc.htmlEscape(request.getParameter("function"));
+        moduleid = UtilMisc.htmlEscape(request.getParameter("functionid"));
     } else if (request.getAttribute("function") != null) {
-        module = (String) request.getAttribute("function");
-        moduleid = (String) request.getAttribute("functionid");
+        module = UtilMisc.htmlEscape((String) request.getAttribute("function"));
+        moduleid = UtilMisc.htmlEscape((String) request.getAttribute("functionid"));
     }
 
     OscarProperties props = OscarProperties.getInstance();
