@@ -58,6 +58,15 @@ Exploded WAR".
     * Open your web browser and navigate to `http://localhost:8080`.
     * You should see the Open-OSP EMR application running.
 
+### Subsequent Compilations
+
+For developers who are not compiling for the first time in the dev container, it is recommended to clean the previous build artifacts before compiling again. This ensures a fresh build environment.
+
+   ```zsh
+   make clean
+   make install
+   ```
+
 ## Additional Notes
 
 * The `.devcontainer/development/config/shared/local.env` file contains environment variables that can be customized for
