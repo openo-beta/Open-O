@@ -23,6 +23,8 @@
 package org.caisi.core.web;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.caisi.service.InfirmBedProgramManager;
@@ -31,6 +33,7 @@ import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
+import org.oscarehr.util.SecurityUtils;
 import org.oscarehr.util.SessionConstants;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
@@ -57,17 +60,26 @@ public class Infirm2Action extends ActionSupport {
 
 
     public static void updateCurrentProgram(String programId, String providerNo) {
-        if (programId == null) {
+        if (programId == null || providerNo == null) {
+            logger.warn("Cannot update current program: null programId or providerNo");
             return;
         }
+        
+        int programIdInt;
         try {
-            Integer.parseInt(programId);
+            programIdInt = Integer.parseInt(programId);
         } catch (NumberFormatException e) {
-            logger.error("error parsing programId to set a users default program", e);
+            logger.error("Error parsing programId to set a user's default program", e);
+            return;
         }
-        logger.debug("updating the current program to " + programId);
-
-        bpm.setDefaultProgramId(providerNo, Integer.parseInt(programId));
+        
+        if (programIdInt <= 0) {
+            logger.warn("Invalid program ID: " + programId);
+            return;
+        }
+        
+        logger.debug("Updating the current program to " + programId);
+        bpm.setDefaultProgramId(providerNo, programIdInt);
     }
 
     public String execute() throws Exception {
@@ -153,17 +165,17 @@ public class Infirm2Action extends ActionSupport {
 
         String[] programInfo = bpm.getProgramInformation(programId);
         if (programInfo[0] != null) {
-            se.setAttribute("infirmaryView_programAddress", programInfo[0].replaceAll("\\n", "<br>"));
+            se.setAttribute("infirmaryView_programAddress", StringEscapeUtils.escapeHtml(programInfo[0]).replaceAll("\\n", "<br>"));
         } else {
             se.setAttribute("infirmaryView_programAddress", "");
         }
         if (programInfo[1] != null) {
-            se.setAttribute("infirmaryView_programTel", programInfo[1]);
+            se.setAttribute("infirmaryView_programTel", StringEscapeUtils.escapeHtml(programInfo[1]));
         } else {
             se.setAttribute("infirmaryView_programTel", "");
         }
         if (programInfo[2] != null) {
-            se.setAttribute("infirmaryView_programFax", programInfo[2]);
+            se.setAttribute("infirmaryView_programFax", StringEscapeUtils.escapeHtml(programInfo[2]));
         } else {
             se.setAttribute("infirmaryView_programFax", "");
         }
@@ -191,7 +203,12 @@ public class Infirm2Action extends ActionSupport {
         List<LabelValueBean> filteredDemographicBeans = new ArrayList<LabelValueBean>();
         if (request.getParameter("infirmaryView_clientStatusId") != null) {
             String statusId = request.getParameter("infirmaryView_clientStatusId");
-            if (statusId.equals("0")) {
+            // Validate statusId is numeric
+            if (!StringUtils.isNumeric(statusId)) {
+                logger.warn("Invalid non-numeric client status ID: " + statusId);
+                filteredDemographicBeans = demographicBeans;
+            }
+            else if (statusId.equals("0")) {
                 filteredDemographicBeans = demographicBeans;
             } else {
                 Admission admission = new Admission();
@@ -242,10 +259,21 @@ public class Infirm2Action extends ActionSupport {
         try {
             logger.debug("====> inside loadProgram action.");
 
+            // Verify user is logged in
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            if (loggedInInfo == null) {
+                logger.error("Unauthorized access attempt to loadProgram");
+                return;
+            }
+            
             HttpSession se = request.getSession();
             se.setAttribute("infirmaryView_initflag", "true");
             String providerNo = (String) se.getAttribute("user");
+            if (providerNo == null) {
+                logger.error("Provider number not found in session");
+                return;
+            }
+            
             String archiveView = (String) request.getSession().getAttribute("archiveView");
 
 
@@ -313,17 +341,17 @@ public class Infirm2Action extends ActionSupport {
 
             String[] programInfo = bpm.getProgramInformation(programId);
             if (programInfo[0] != null) {
-                se.setAttribute("infirmaryView_programAddress", programInfo[0].replaceAll("\\n", "<br>"));
+                se.setAttribute("infirmaryView_programAddress", StringEscapeUtils.escapeHtml(programInfo[0]).replaceAll("\\n", "<br>"));
             } else {
                 se.setAttribute("infirmaryView_programAddress", "");
             }
             if (programInfo[1] != null) {
-                se.setAttribute("infirmaryView_programTel", programInfo[1]);
+                se.setAttribute("infirmaryView_programTel", StringEscapeUtils.escapeHtml(programInfo[1]));
             } else {
                 se.setAttribute("infirmaryView_programTel", "");
             }
             if (programInfo[2] != null) {
-                se.setAttribute("infirmaryView_programFax", programInfo[2]);
+                se.setAttribute("infirmaryView_programFax", StringEscapeUtils.escapeHtml(programInfo[2]));
             } else {
                 se.setAttribute("infirmaryView_programFax", "");
             }
@@ -351,7 +379,12 @@ public class Infirm2Action extends ActionSupport {
             List<LabelValueBean> filteredDemographicBeans = new ArrayList<LabelValueBean>();
             if (request.getParameter("infirmaryView_clientStatusId") != null) {
                 String statusId = request.getParameter("infirmaryView_clientStatusId");
-                if (statusId.equals("0")) {
+                // Validate statusId is numeric
+                if (!StringUtils.isNumeric(statusId)) {
+                    logger.warn("Invalid non-numeric client status ID: " + statusId);
+                    filteredDemographicBeans = demographicBeans;
+                }
+                else if (statusId.equals("0")) {
                     filteredDemographicBeans = demographicBeans;
                 } else {
                     Admission admission = new Admission();
@@ -430,37 +463,70 @@ public class Infirm2Action extends ActionSupport {
     }
 
     public String getProgramList() {
+        // Verify CSRF token or other security check
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo == null) {
+            logger.error("Unauthorized access attempt to getProgramList");
+            return null;
+        }
+        
         String providerNo = request.getParameter("providerNo");
         String facilityId = request.getParameter("facilityId");
 
+        // Set content type and prevent caching
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        
         String outTxt = "<option value='all'>All Programs</option>";
         PrintWriter out;
         try {
             out = response.getWriter();
         } catch (IOException e) {
-            MiscUtils.getLogger().error(e.getMessage(), e);
+            MiscUtils.getLogger().error("Error getting response writer", e);
             return null;
         }
+        
         out.print(outTxt);
+        
+        // Validate input parameters
         if (providerNo == null || facilityId == null || providerNo.isEmpty() || facilityId.isEmpty()) {
+            logger.warn("Missing required parameters for getProgramList");
             return null;
         }
-        int facility_id = 1;
+        
+        // Validate facilityId is numeric
+        if (!StringUtils.isNumeric(facilityId)) {
+            logger.warn("Invalid non-numeric facility ID: " + facilityId);
+            return null;
+        }
+        
+        int facility_id;
         try {
             facility_id = Integer.parseInt(facilityId);
+            if (facility_id <= 0) {
+                logger.warn("Invalid facility ID value: " + facility_id);
+                return null;
+            }
         } catch (NumberFormatException e) {
-            MiscUtils.getLogger().error(e.getMessage(), e);
+            MiscUtils.getLogger().error("Error parsing facility ID", e);
             return null;
         }
+        
         InfirmBedProgramManager manager = bpm;
         List<LabelValueBean> programBeans = null;
+        
         if (providerNo.equalsIgnoreCase("all")) {
             programBeans = manager.getProgramBeansByFacilityId(facility_id);
         } else {
+            // Validate providerNo format if needed
             programBeans = manager.getProgramBeans(providerNo, facility_id);
         }
+        
+        // Output program options with proper HTML escaping
         for (LabelValueBean pb : programBeans) {
-            out.print(String.format("<option value='%s'>%s</option>", pb.getValue(), pb.getLabel()));
+            String value = StringEscapeUtils.escapeHtml(pb.getValue());
+            String label = StringEscapeUtils.escapeHtml(pb.getLabel());
+            out.print(String.format("<option value='%s'>%s</option>", value, label));
         }
 
         return null;
