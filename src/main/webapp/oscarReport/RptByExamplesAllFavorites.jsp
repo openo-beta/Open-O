@@ -74,7 +74,7 @@
     </script>
     <body vlink="#0000FF" class="BodyStyle">
 
-    <form action="/oscarReport/RptByExamplesFavorite.do">
+    <form action="${pageContext.request.contextPath}/oscarReport/RptByExamplesFavorite.do">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
                 <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgReport"/></td>

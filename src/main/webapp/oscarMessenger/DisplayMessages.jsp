@@ -358,9 +358,10 @@
                         </td>
                     </tr>
                     <%
-                        String strutsAction = "/oscarMessenger/DisplayMessages";
+                        String contextPath = request.getContextPath();
+                        String strutsAction = contextPath + "/oscarMessenger/DisplayMessages.jsp";
                         if (pageType == 2) {
-                            strutsAction = "/oscarMessenger/ReDisplayMessages";
+                            strutsAction = contextPath + "/oscarMessenger/ReDisplayMessages.jsp";
                         }
                     %>
 
