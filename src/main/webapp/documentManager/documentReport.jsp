@@ -533,7 +533,7 @@
                                             href="javascript:void(0);"
                                             title="<%=Encode.forHtmlAttribute(curdoc.getDescription())%>"
                                             style="word-break: break-word;overflow-wrap: anywhere;overflow: hidden;text-overflow: ellipsis;text-decoration: none;"
-                                            onclick="popupFocusPage(500,700,'<%=url%>','demographic_document');">
+                                            onclick="popupFocusPage(500,700,'<%=Encode.forJavaScriptAttribute(url)%>','demographic_document');">
                                         <%=Encode.forHtml(curdoc.getDescription())%>
                                     </a>
                                 </td>
