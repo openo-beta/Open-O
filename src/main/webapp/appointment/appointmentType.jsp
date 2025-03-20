@@ -19,11 +19,27 @@
 --%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page
-        import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*, oscar.appt.*, org.oscarehr.common.dao.AppointmentTypeDao, org.oscarehr.common.model.AppointmentType, org.oscarehr.util.SpringUtils" %>
+        import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*, oscar.appt.*, org.oscarehr.common.dao.AppointmentTypeDao, org.oscarehr.common.model.AppointmentType, org.oscarehr.util.SpringUtils, org.owasp.encoder.Encode" %>
+<%@ page errorPage="../appointment/errorpage.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
+    // Validate session and check for authentication
+    if (session == null || session.getAttribute("user") == null) {
+        response.sendRedirect("../logout.jsp");
+        return;
+    }
+
+    // Get appointment types
     AppointmentTypeDao appDao = (AppointmentTypeDao) SpringUtils.getBean(AppointmentTypeDao.class);
     List<AppointmentType> types = appDao.listAll();
+    
+    // Safely get and validate the type parameter
+    String typeParam = request.getParameter("type");
+    if (typeParam == null) {
+        typeParam = "";
+    }
+    // Sanitize the type parameter to prevent XSS
+    typeParam = Encode.forHtml(typeParam);
 %>
 <html>
 <head>
@@ -35,13 +51,20 @@
         var notes = '';
         var resources = '';
         var names = '';
-        <%   for(int j = 0;j < types.size(); j++) { %>
-        dur = dur + '<%= types.get(j).getDuration() %>' + ',';
-        reason = reason + '<%= types.get(j).getReason() %>' + ',';
-        loc = loc + '<%= types.get(j).getLocation() %>' + ',';
-        notes = notes + '<%= Encode.forHtml(types.get(j).getNotes()) %>' + ',';
-        resources = resources + '<%= types.get(j).getResources() %>' + ',';
-        names = names + '<%=StringEscapeUtils.escapeJavaScript(types.get(j).getName()) %>' + ',';
+        <%   for(int j = 0;j < types.size(); j++) { 
+              String duration = types.get(j).getDuration() != null ? types.get(j).getDuration() : "";
+              String typeReason = types.get(j).getReason() != null ? types.get(j).getReason() : "";
+              String location = types.get(j).getLocation() != null ? types.get(j).getLocation() : "";
+              String typeNotes = types.get(j).getNotes() != null ? types.get(j).getNotes() : "";
+              String typeResources = types.get(j).getResources() != null ? types.get(j).getResources() : "";
+              String typeName = types.get(j).getName() != null ? types.get(j).getName() : "";
+        %>
+        dur = dur + '<%= StringEscapeUtils.escapeJavaScript(duration) %>' + ',';
+        reason = reason + '<%= StringEscapeUtils.escapeJavaScript(typeReason) %>' + ',';
+        loc = loc + '<%= StringEscapeUtils.escapeJavaScript(location) %>' + ',';
+        notes = notes + '<%= StringEscapeUtils.escapeJavaScript(typeNotes) %>' + ',';
+        resources = resources + '<%= StringEscapeUtils.escapeJavaScript(typeResources) %>' + ',';
+        names = names + '<%= StringEscapeUtils.escapeJavaScript(typeName) %>' + ',';
         <%   } %>
         var durArray = dur.split(",");
         var reasonArray = reason.split(",");
@@ -59,12 +82,20 @@
 
         function getFields(idx) {
             if (idx > 0) {
-                typeSel = document.getElementById('durId').innerHTML = nameArray[idx - 1];
-                durSel = document.getElementById('durId').innerHTML = durArray[idx - 1];
-                reasonSel = document.getElementById('reasonId').innerHTML = reasonArray[idx - 1];
-                locSel = document.getElementById('locId').innerHTML = locArray[idx - 1];
-                notesSel = document.getElementById('notesId').innerHTML = notesArray[idx - 1];
-                resSel = document.getElementById('resId').innerHTML = resArray[idx - 1];
+                // Set values safely with proper escaping
+                typeSel = nameArray[idx - 1];
+                durSel = durArray[idx - 1];
+                reasonSel = reasonArray[idx - 1];
+                locSel = locArray[idx - 1];
+                notesSel = notesArray[idx - 1];
+                resSel = resArray[idx - 1];
+                
+                // Update display with escaped HTML
+                document.getElementById('durId').textContent = durArray[idx - 1];
+                document.getElementById('reasonId').textContent = reasonArray[idx - 1];
+                document.getElementById('locId').textContent = locArray[idx - 1];
+                document.getElementById('notesId').textContent = notesArray[idx - 1];
+                document.getElementById('resId').textContent = resArray[idx - 1];
             }
         }
     </script>
@@ -77,9 +108,10 @@
             <select id="typesId" width="25" maxsize="50" onchange="getFields(this.selectedIndex)">
                 <option value="-1">Select type</option>
                 <% for (int i = 0; i < types.size(); i++) {
+                    String typeName = types.get(i).getName() != null ? types.get(i).getName() : "";
+                    boolean isSelected = !typeParam.isEmpty() && typeParam.equals(typeName);
                 %>
-                <option value="<%= i %>" <%= (request.getParameter("type").equals(types.get(i).getName()) ? " selected" : "") %>><%= types.get(i).getName() %>
-                </option>
+                <option value="<%= i %>" <%= isSelected ? " selected" : "" %>><%= Encode.forHtmlContent(typeName) %></option>
                 <% } %>
             </select>
         </td>
@@ -94,19 +126,19 @@
     </tr>
     <tr>
         <td>Reason</td>
-        <td colspan="2"><span id="reasonId"/></td>
+        <td colspan="2"><span id="reasonId"></span></td>
     </tr>
     <tr>
         <td>Location</td>
-        <td colspan="2"><span id="locId"/></td>
+        <td colspan="2"><span id="locId"></span></td>
     </tr>
     <tr>
         <td>Notes</td>
-        <td colspan="2"><span id="notesId"/></td>
+        <td colspan="2"><span id="notesId"></span></td>
     </tr>
     <tr>
         <td>Resources</td>
-        <td colspan="2"><span id="resId"/></td>
+        <td colspan="2"><span id="resId"></span></td>
     </tr>
 </table>
 </body>
