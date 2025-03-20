@@ -70,8 +70,8 @@ public class SearchPatient2Action extends ActionSupport {
         try {
             String demographicNo = CommonLabResultData.searchPatient(labNo, labType);
             if (!demographicNo.equals("0")) {
-                newURL = "/oscarMDS/PatientSearch.jsp?search_mode=search_name&amp;limit1=0&amp;limit2=10";
-                newURL = newURL + "?demographicNo=" + demographicNo;
+                newURL = contextPath + "/oscarMDS/PatientSearch.jsp?search_mode=search_name&amp;limit1=0&amp;limit2=10";
+                newURL = newURL + "&demographicNo=" + demographicNo;
             } else {
                 newURL = contextPath + "/oscarMDS/OpenEChart.jsp";
             }
@@ -79,7 +79,13 @@ public class SearchPatient2Action extends ActionSupport {
             MiscUtils.getLogger().debug("exception in SearchPatient2Action:" + e);
             newURL = contextPath + "/oscarMDS/OpenEChart.jsp";
         }
-        newURL = newURL + "&labNo=" + labNo + "&labType=" + labType + "&keyword=" + java.net.URLEncoder.encode(name, "UTF-8");
+        
+        if (newURL.indexOf("?") == -1) {
+            newURL = newURL + "?";
+        } else {
+            newURL = newURL + "&";
+        }
+        newURL = newURL + "labNo=" + labNo + "&labType=" + labType + "&keyword=" + java.net.URLEncoder.encode(name, "UTF-8");
 
         response.sendRedirect(newURL);
         return NONE;

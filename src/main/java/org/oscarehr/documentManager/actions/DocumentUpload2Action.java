@@ -68,6 +68,10 @@ public class DocumentUpload2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_edoc)");
         }
 
+        if (this.form == null) {
+            this.form = new DocumentUpload2Form(); 
+        }
+
         HashMap<String, Object> map = new HashMap<String, Object>();
         File docFile = form.getDocFile();
         String destination = request.getParameter("destination");

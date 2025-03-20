@@ -206,7 +206,15 @@
         </div>
 
         <% if (request.getParameter("fetch") != null && request.getParameter("fetch").equalsIgnoreCase("true"))
-            new SFTPConnector(loggedInInfo).startAutoFetch(loggedInInfo);
+            if (loggedInInfo == null) {
+                System.err.println("loggedInInfo is null"); 
+            } else {
+                try {
+                    new SFTPConnector(loggedInInfo).startAutoFetch(loggedInInfo);
+                } catch (Exception e) {
+                    System.err.println("Error in startAutoFetch: " + e.getMessage()); 
+                }
+            }
         %>
         <p>
             HRM Status: <%=SFTPConnector.isFetchRunning() ? "Fetching data from HRM" : "Idle" %><br>

@@ -133,7 +133,7 @@
                 <input type="file" name="filedata" multiple>
             </label>
             <button id="start" type="submit" class="start">Start upload</button>
-            <button itd="cancel" type="reset" class="cancel">Cancel upload</button>
+            <button id="cancel" type="reset" class="cancel">Cancel upload</button>
             <br>
             <span>
 				<input type="hidden" id="provider" name="provider" value="<%=provider%>"/>
