@@ -250,7 +250,7 @@
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddLink"/>
         </a>
         <a class="btn" href="javascript:void(0);"
-           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=Encode.forHtml(module)%>&functionid=<%=Encode.forHtml(moduleid)%>&mode=addHtml', 'addhtml')">
+           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>&mode=addHtml', 'addhtml')">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddHTML"/>
         </a>
     </div>
