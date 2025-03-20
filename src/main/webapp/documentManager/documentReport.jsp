@@ -40,7 +40,7 @@
     String demographicNo = (String) session.getAttribute("casemgmt_DemoNo");
 
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
-    String appointment = UtilMisc.htmlEscape(request.getParameter("appointmentNo"));
+    String appointment = Encode.forHtml(request.getParameter("appointmentNo"));
     int appointmentNo = 0;
     if (appointment != null && !appointment.isEmpty()) {
         appointmentNo = Integer.parseInt(appointment);
@@ -82,20 +82,20 @@
 
 //if delete request is made
     if (request.getParameter("delDocumentNo") != null) {
-        EDocUtil.deleteDocument(UtilMisc.htmlEscape(request.getParameter("delDocumentNo")));
+        EDocUtil.deleteDocument(Encode.forHtml(request.getParameter("delDocumentNo")));
     }
 
 //if undelete request is made
     if (request.getParameter("undelDocumentNo") != null) {
-        EDocUtil.undeleteDocument(UtilMisc.htmlEscape(request.getParameter("undelDocumentNo")));
+        EDocUtil.undeleteDocument(Encode.forHtml(request.getParameter("undelDocumentNo")));
     }
 
 //view  - tabs
     String view = "all";
     if (request.getParameter("view") != null) {
-        view = UtilMisc.htmlEscape(request.getParameter("view"));
+        view = Encode.forHtml(request.getParameter("view"));
     } else if (request.getAttribute("view") != null) {
-        view = UtilMisc.htmlEscape((String) request.getAttribute("view"));
+        view = Encode.forHtml((String) request.getAttribute("view"));
     }
 //preliminary JSP code
 
@@ -103,11 +103,11 @@
     String module = "";
     String moduleid = "";
     if (request.getParameter("function") != null) {
-        module = UtilMisc.htmlEscape(request.getParameter("function"));
-        moduleid = UtilMisc.htmlEscape(request.getParameter("functionid"));
+        module = Encode.forHtml(request.getParameter("function"));
+        moduleid = Encode.forHtml(request.getParameter("functionid"));
     } else if (request.getAttribute("function") != null) {
-        module = UtilMisc.htmlEscape((String) request.getAttribute("function"));
-        moduleid = UtilMisc.htmlEscape((String) request.getAttribute("functionid"));
+        module = Encode.forHtml((String) request.getAttribute("function"));
+        moduleid = Encode.forHtml((String) request.getAttribute("functionid"));
     }
 
     if (!"".equalsIgnoreCase(moduleid) && (demographicNo == null || demographicNo.equalsIgnoreCase("null"))) {
@@ -130,20 +130,20 @@
 //Retrieve encounter id for updating encounter navbar if info this page changes anything
     String parentAjaxId;
     if (request.getParameter("parentAjaxId") != null)
-        parentAjaxId = UtilMisc.htmlEscape(request.getParameter("parentAjaxId"));
+        parentAjaxId = Encode.forHtml(request.getParameter("parentAjaxId"));
     else if (request.getAttribute("parentAjaxId") != null)
-        parentAjaxId = UtilMisc.htmlEscape((String) request.getAttribute("parentAjaxId"));
+        parentAjaxId = Encode.forHtml((String) request.getAttribute("parentAjaxId"));
     else
         parentAjaxId = "";
 
 
     String updateParent;
     if (request.getParameter("updateParent") != null)
-        updateParent = UtilMisc.htmlEscape(request.getParameter("updateParent"));
+        updateParent = Encode.forHtml(request.getParameter("updateParent"));
     else
         updateParent = "false";
 
-    String viewstatus = UtilMisc.htmlEscape(request.getParameter("viewstatus"));
+    String viewstatus = Encode.forHtml(request.getParameter("viewstatus"));
     if (viewstatus == null) {
         viewstatus = "active";
     }
@@ -357,7 +357,7 @@
         </h2>
 
         <% if (module.equals("demographic")) { %>
-        <oscar:nameage demographicNo="<%=UtilMisc.htmlEscape(moduleid)%>"/>
+        <oscar:nameage demographicNo="<%=Encode.forHtml(moduleid)%>"/>
         <%} %>
 
         <jsp:include page="addDocument.jsp">
@@ -367,8 +367,8 @@
 
 
         <form action="${pageContext.request.contextPath}/documentManager/combinePDFs.do" method="post">
-            <input type="hidden" name="curUser" value="<%=UtilMisc.htmlEscape(curUser)%>">
-            <input type="hidden" name="demoId" value="<%=UtilMisc.htmlEscape(moduleid)%>">
+            <input type="hidden" name="curUser" value="<%=Encode.forHtmlAttribute(curUser)%>">
+            <input type="hidden" name="demoId" value="<%=Encode.forHtmlAttribute(moduleid)%>">
             <div class="documentLists"><%-- STUFF TO DISPLAY --%> <%
                 ArrayList categories = new ArrayList();
                 ArrayList categoryKeys = new ArrayList();
