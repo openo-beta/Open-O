@@ -550,7 +550,7 @@
                                 </td>
                                 <td><%=Encode.forHtml(curdoc.getObservationDate())%>
                                 </td>
-                                <td><%=Encode.forHtml(curdoc.getContentDateTime())%>
+                                <td><%=Encode.forHtml(curdoc.getContentDateTime().toString())%>
                                 </td>
 
                                 <td style="text-align: right;">
