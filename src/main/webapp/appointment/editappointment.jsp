@@ -977,8 +977,8 @@
                     >
 
                         <input type="number" name="duration" id="duration"
-                               value="<%=request.getParameter("duration")!=null?(request.getParameter("duration").equals(" ")||request.getParameter("duration").equals("")||request.getParameter("duration").equals("null")?(""+everyMin) :request.getParameter("duration")):(""+everyMin)%>"
-                               onblur="calculateEndTime();">
+                               value="<%=request.getParameter("duration")!=null?(request.getParameter("duration").equals(" ")||request.getParameter("duration").equals("")||request.getParameter("duration").equals("null")?(""+everyMin) :Encode.forHtmlAttribute(request.getParameter("duration"))):(""+everyMin)%>"
+                               min="1" max="1440" onblur="calculateEndTime();">
                     </td>
                 </tr>
                 <tr>
@@ -1238,9 +1238,9 @@
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="global.master"/></a></label>
                     </td>
                     <td>
-                        <input type="text" name="demographic_no" id="demographic_no"
+                        <input type="hidden" name="demographic_no" id="demographic_no"
                                ONFOCUS="onBlockFieldFocus(this)" readonly
-                               value="<%=bFirstDisp?( (appt.getDemographicNo())==0?"":(""+appt.getDemographicNo()) ):request.getParameter("demographic_no")%>">
+                               value="<%=bFirstDisp?( (appt.getDemographicNo())==0?"":Encode.forHtmlAttribute(""+appt.getDemographicNo()) ):Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>">
                     </td>
                 </tr>
                 <tr>
@@ -1376,18 +1376,78 @@
                     <input type="button" name="buttoncancel" id="cancelButton" class="btn btn-inverse"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnCancelAppointment"/>"
                            onClick="onButCancel();">
-                    <input type="button"
-                           name="buttoncancel" id="noShowButton" class="btn"
+                    <input type="button" name="buttoncancel" id="noShowButton" class="btn"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnNoShow"/>"
-                           onClick="window.location='appointmentcontrol.jsp?buttoncancel=No Show&displaymode=Update Appt&appointment_no=<%=appointment_no%>'">
+                           onClick="submitNoShowForm()">
+                    <script>
+                        function submitNoShowForm() {
+                            var form = document.createElement("form");
+                            form.setAttribute("method", "post");
+                            form.setAttribute("action", "appointmentcontrol.jsp");
+                            
+                            var hiddenField1 = document.createElement("input");
+                            hiddenField1.setAttribute("type", "hidden");
+                            hiddenField1.setAttribute("name", "buttoncancel");
+                            hiddenField1.setAttribute("value", "No Show");
+                            form.appendChild(hiddenField1);
+                            
+                            var hiddenField2 = document.createElement("input");
+                            hiddenField2.setAttribute("type", "hidden");
+                            hiddenField2.setAttribute("name", "displaymode");
+                            hiddenField2.setAttribute("value", "Update Appt");
+                            form.appendChild(hiddenField2);
+                            
+                            var hiddenField3 = document.createElement("input");
+                            hiddenField3.setAttribute("type", "hidden");
+                            hiddenField3.setAttribute("name", "appointment_no");
+                            hiddenField3.setAttribute("value", "<%=appointment_no%>");
+                            form.appendChild(hiddenField3);
+                            
+                            var csrfField = document.createElement("input");
+                            csrfField.setAttribute("type", "hidden");
+                            csrfField.setAttribute("name", "csrf_token");
+                            csrfField.setAttribute("value", "<%=session.getAttribute("csrf_token")%>");
+                            form.appendChild(csrfField);
+                            
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    </script>
                     <br>
                     <a href="javascript:void(0);" title="Annotation"
                        onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=annotation_display%>&amp;table_id=<%=appointment_no%>&amp;demo='+document.EDITAPPT.demographic_no.value,'anwin','width=400,height=500');">
                         <img src="<%=request.getContextPath() %>/images/notes.gif" alt="Annotation" height="16"
                              width="13">
                     </a>
-                    <a class="btn"
-                       onClick="window.location='appointmentcontrol.jsp?displaymode=PrintCard&appointment_no=<%=appointment_no%>'">
+                    <a class="btn" onClick="submitPrintCardForm()">
+                    <script>
+                        function submitPrintCardForm() {
+                            var form = document.createElement("form");
+                            form.setAttribute("method", "post");
+                            form.setAttribute("action", "appointmentcontrol.jsp");
+                            
+                            var hiddenField1 = document.createElement("input");
+                            hiddenField1.setAttribute("type", "hidden");
+                            hiddenField1.setAttribute("name", "displaymode");
+                            hiddenField1.setAttribute("value", "PrintCard");
+                            form.appendChild(hiddenField1);
+                            
+                            var hiddenField2 = document.createElement("input");
+                            hiddenField2.setAttribute("type", "hidden");
+                            hiddenField2.setAttribute("name", "appointment_no");
+                            hiddenField2.setAttribute("value", "<%=appointment_no%>");
+                            form.appendChild(hiddenField2);
+                            
+                            var csrfField = document.createElement("input");
+                            csrfField.setAttribute("type", "hidden");
+                            csrfField.setAttribute("name", "csrf_token");
+                            csrfField.setAttribute("value", "<%=session.getAttribute("csrf_token")%>");
+                            form.appendChild(csrfField);
+                            
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    </script>
                         <i class="icon-print"></i>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnPrintCard"/></a>
                     <a class="btn"
                        onClick="window.open('<%=request.getContextPath() %>/demographic/demographiclabelprintsetting.jsp?demographic_no='+document.EDITAPPT.demographic_no.value, 'labelprint','height=550,width=700,location=no,scrollbars=yes,menubars=no,toolbars=no' )">
