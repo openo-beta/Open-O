@@ -132,7 +132,7 @@
      String userfirstname = (String) session.getAttribute("userfirstname");                                                                                                                    
      String userlastname = (String) session.getAttribute("userlastname");                                                                                                                      
      String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF";                                                                                                                                      
-     String origDate = null; 
+     String origDate = null;
 
     boolean bFirstDisp = true; //this is the first time to display the window
     if (request.getParameter("bFirstDisp") != null) bFirstDisp = ("true".equals(request.getParameter("bFirstDisp")));
@@ -830,8 +830,10 @@
     <!-- The mobile optimized page is split into two sections: viewing and editing an appointment
          In the mobile version, we only display the edit section first if we are returning from a search -->
     <div id="editAppointment" style="display:<%= (false && bFirstDisp) ? "none":"block"%>;">
-        <form name="EDITAPPT" METHOD="post" ACTION="appointmentcontrol.jsp"                                                                                                                           
-               onSubmit="return(onSub())">                                                                                                                                                     
+        <form name="EDITAPPT" METHOD="post" ACTION="appointmentcontrol.jsp"
+              onSubmit="return(onSub())">
+    <input type="hidden" name="displaymode" value="">
+    <input type="hidden" name="csrf_token" value="<%= session.getAttribute("csrf_token") %>">                                                                                                                                                     
      <input type="hidden" name="displaymode" value="">                                                                                                                                         
      <input type="hidden" name="csrf_token" value="<%= session.getAttribute("csrf_token") %>">
             <div class="header deep">
