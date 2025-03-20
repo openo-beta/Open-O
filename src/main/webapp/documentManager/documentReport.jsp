@@ -422,7 +422,7 @@
                                 <%}%>
                                 <div class="form-group">
                                         <%--          <label for="view"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgView"/></label>--%>
-                                    <select id="viewdoctype<%=i%>" name="view"
+                                    <select id="viewdoctype<%=i%>" name="view" id="view"
                                             class="input-medium form-control"
                                             onchange="window.location.href='?function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>&view='+this.options[this.selectedIndex].value;">
                                         <option value="">All</option>
