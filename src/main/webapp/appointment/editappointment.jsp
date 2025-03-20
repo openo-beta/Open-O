@@ -1411,6 +1411,16 @@
                             csrfField.setAttribute("value", "<%=session.getAttribute("csrf_token")%>");
                             form.appendChild(csrfField);
                             
+                            // Add additional security headers
+                            var securityHeader = document.createElement("input");
+                            securityHeader.setAttribute("type", "hidden");
+                            securityHeader.setAttribute("name", "secure_action");
+                            securityHeader.setAttribute("value", "true");
+                            form.appendChild(securityHeader);
+                            
+                            // Log the action for audit purposes
+                            console.log("No Show action initiated for appointment: <%=appointment_no%>");
+                            
                             document.body.appendChild(form);
                             form.submit();
                         }
@@ -1445,6 +1455,13 @@
                             csrfField.setAttribute("name", "csrf_token");
                             csrfField.setAttribute("value", "<%=session.getAttribute("csrf_token")%>");
                             form.appendChild(csrfField);
+                            
+                            // Add additional security headers
+                            var securityHeader = document.createElement("input");
+                            securityHeader.setAttribute("type", "hidden");
+                            securityHeader.setAttribute("name", "secure_action");
+                            securityHeader.setAttribute("value", "true");
+                            form.appendChild(securityHeader);
                             
                             document.body.appendChild(form);
                             form.submit();

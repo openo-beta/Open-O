@@ -122,6 +122,16 @@
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Security validation failed");
                 return;
             }
+            
+            // Additional security check for secure actions
+            String secureAction = request.getParameter("secure_action");
+            if (secureAction == null || !secureAction.equals("true")) {
+                // Log potential tampering attempt
+                oscar.OscarLogger.getInstance().log("appointment_control", "warn", 
+                    "Missing secure_action parameter for user: " + user + " IP: " + remoteAddr + 
+                    " Operation: " + Encode.forHtml(operation));
+                // Continue processing but log the event
+            }
         }
         
         // Get the target JSP file
