@@ -40,7 +40,7 @@
     String demographicNo = (String) session.getAttribute("casemgmt_DemoNo");
 
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
-    String appointment = request.getParameter("appointmentNo");
+    String appointment = UtilMisc.htmlEscape(request.getParameter("appointmentNo"));
     int appointmentNo = 0;
     if (appointment != null && !appointment.isEmpty()) {
         appointmentNo = Integer.parseInt(appointment);
@@ -82,20 +82,20 @@
 
 //if delete request is made
     if (request.getParameter("delDocumentNo") != null) {
-        EDocUtil.deleteDocument(request.getParameter("delDocumentNo"));
+        EDocUtil.deleteDocument(UtilMisc.htmlEscape(request.getParameter("delDocumentNo")));
     }
 
 //if undelete request is made
     if (request.getParameter("undelDocumentNo") != null) {
-        EDocUtil.undeleteDocument(request.getParameter("undelDocumentNo"));
+        EDocUtil.undeleteDocument(UtilMisc.htmlEscape(request.getParameter("undelDocumentNo")));
     }
 
 //view  - tabs
     String view = "all";
     if (request.getParameter("view") != null) {
-        view = request.getParameter("view");
+        view = UtilMisc.htmlEscape(request.getParameter("view"));
     } else if (request.getAttribute("view") != null) {
-        view = (String) request.getAttribute("view");
+        view = UtilMisc.htmlEscape((String) request.getAttribute("view"));
     }
 //preliminary JSP code
 
@@ -103,11 +103,11 @@
     String module = "";
     String moduleid = "";
     if (request.getParameter("function") != null) {
-        module = request.getParameter("function");
-        moduleid = request.getParameter("functionid");
+        module = UtilMisc.htmlEscape(request.getParameter("function"));
+        moduleid = UtilMisc.htmlEscape(request.getParameter("functionid"));
     } else if (request.getAttribute("function") != null) {
-        module = (String) request.getAttribute("function");
-        moduleid = (String) request.getAttribute("functionid");
+        module = UtilMisc.htmlEscape((String) request.getAttribute("function"));
+        moduleid = UtilMisc.htmlEscape((String) request.getAttribute("functionid"));
     }
 
     if (!"".equalsIgnoreCase(moduleid) && (demographicNo == null || demographicNo.equalsIgnoreCase("null"))) {
@@ -130,20 +130,20 @@
 //Retrieve encounter id for updating encounter navbar if info this page changes anything
     String parentAjaxId;
     if (request.getParameter("parentAjaxId") != null)
-        parentAjaxId = request.getParameter("parentAjaxId");
+        parentAjaxId = UtilMisc.htmlEscape(request.getParameter("parentAjaxId"));
     else if (request.getAttribute("parentAjaxId") != null)
-        parentAjaxId = (String) request.getAttribute("parentAjaxId");
+        parentAjaxId = UtilMisc.htmlEscape((String) request.getAttribute("parentAjaxId"));
     else
         parentAjaxId = "";
 
 
     String updateParent;
     if (request.getParameter("updateParent") != null)
-        updateParent = request.getParameter("updateParent");
+        updateParent = UtilMisc.htmlEscape(request.getParameter("updateParent"));
     else
         updateParent = "false";
 
-    String viewstatus = request.getParameter("viewstatus");
+    String viewstatus = UtilMisc.htmlEscape(request.getParameter("viewstatus"));
     if (viewstatus == null) {
         viewstatus = "active";
     }
@@ -357,7 +357,7 @@
         </h2>
 
         <% if (module.equals("demographic")) { %>
-        <oscar:nameage demographicNo="<%=moduleid%>"/>
+        <oscar:nameage demographicNo="<%=UtilMisc.htmlEscape(moduleid)%>"/>
         <%} %>
 
         <jsp:include page="addDocument.jsp">
@@ -367,8 +367,8 @@
 
 
         <form action="${pageContext.request.contextPath}/documentManager/combinePDFs.do" method="post">
-            <input type="hidden" name="curUser" value="<%=curUser%>">
-            <input type="hidden" name="demoId" value="<%=moduleid%>">
+            <input type="hidden" name="curUser" value="<%=UtilMisc.htmlEscape(curUser)%>">
+            <input type="hidden" name="demoId" value="<%=UtilMisc.htmlEscape(moduleid)%>">
             <div class="documentLists"><%-- STUFF TO DISPLAY --%> <%
                 ArrayList categories = new ArrayList();
                 ArrayList categoryKeys = new ArrayList();
@@ -408,7 +408,7 @@
                                 <div class="form-group">
                                         <%--      <label for="viewstatus"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgViewStatus"/></label>--%>
                                     <select class="form-control" id="viewstatus" name="viewstatus"
-                                            onchange="window.location.href='?function=<%=module%>&functionid=<%=moduleid%>&view=<%=view%>&viewstatus='+this.options[this.selectedIndex].value;">
+                                            onchange="window.location.href='?function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>&view=<%=UtilMisc.htmlEscape(view)%>&viewstatus='+this.options[this.selectedIndex].value;">
                                         <option value="all"
                                                 <%=viewstatus.equalsIgnoreCase("all") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgAll"/></option>
                                         <option value="deleted"
@@ -424,7 +424,7 @@
                                         <%--          <label for="view"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgView"/></label>--%>
                                     <select id="viewdoctype<%=i%>" name="view" id="view"
                                             class="input-medium form-control"
-                                            onchange="window.location.href='?function=<%=module%>&functionid=<%=moduleid%>&view='+this.options[this.selectedIndex].value;">
+                                            onchange="window.location.href='?function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>&view='+this.options[this.selectedIndex].value;">
                                         <option value="">All</option>
                                         <%
                                             for (int i3 = 0; i3 < doctypes.size(); i3++) {
@@ -439,7 +439,7 @@
                                 <%if (DocumentBrowserLink) {%>
                                 <div class="form-group">
                                     <a class="btn btn-link form-control"
-                                       href="${ pageContext.request.contextPath }/documentManager/documentBrowser.jsp?function=<%=module%>&functionid=<%=moduleid%>&categorykey=<%=Encode.forUri(currentkey)%>">
+                                       href="${ pageContext.request.contextPath }/documentManager/documentBrowser.jsp?function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>&categorykey=<%=Encode.forUri(currentkey)%>">
                                         <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgBrowser"/>
                                     </a>
                                 </div>
@@ -559,7 +559,7 @@
                                             if (curdoc.getRemoteFacilityId() == null) {
                                                 if (curdoc.getCreatorId().equalsIgnoreCase(user_no)) {
                                                     if (curdoc.getStatus() == 'D') { %>
-                                        <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>"
+                                        <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>&viewstatus=<%=viewstatus%>"
                                            class="btn btn-link" style="padding:0;"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnUnDelete"/>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -574,7 +574,7 @@
                                         } else { // curdoc get status
                                         %>
                                         <a style="color:red; padding:0;"
-                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
+                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=curdoc.getDocId()%>&function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>&viewstatus=<%=viewstatus%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
                                            class="btn btn-link" title="Delete">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -588,7 +588,7 @@
                                         <security:oscarSec roleName="<%=roleName$%>"
                                                            objectName="_admin,_admin.edocdelete" rights="r">
                                             <% if (curdoc.getStatus() == 'D') {%>
-                                            <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>"
+                                            <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>&viewstatus=<%=UtilMisc.htmlEscape(viewstatus)%>"
                                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnUnDelete"/>"
                                                class="btn btn-link" style="padding:0;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -601,7 +601,7 @@
                                             </a>
                                             <% } else { // curdoc get status %>
                                             <a style="color:red;padding:0;"
-                                               href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
+                                               href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=UtilMisc.htmlEscape(curdoc.getDocId())%>&function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>&viewstatus=<%=UtilMisc.htmlEscape(viewstatus)%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
                                                class="btn btn-link" title="Delete">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -617,7 +617,7 @@
                                         <% if (curdoc.getStatus() != 'D') {
                                             if (curdoc.getStatus() == 'H') { %>
                                         <a href="javascript:void(0)"
-                                           onclick="popup1(450, 600, 'addedithtmldocument.jsp?editDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>', 'EditDoc')"
+                                           onclick="popup1(450, 600, 'addedithtmldocument.jsp?editDocumentNo=<%=UtilMisc.htmlEscape(curdoc.getDocId())%>&function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>', 'EditDoc')"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnEdit"/>"
                                            class="btn btn-link" style="padding:0;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -630,7 +630,7 @@
                                         </a>
                                         <%} else {%>
                                         <a href="javascript:void(0)"
-                                           onclick="popup1(350, 500, 'editDocument.jsp?editDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>', 'EditDoc')"
+                                           onclick="popup1(350, 500, 'editDocument.jsp?editDocumentNo=<%=UtilMisc.htmlEscape(curdoc.getDocId())%>&function=<%=UtilMisc.htmlEscape(module)%>&functionid=<%=UtilMisc.htmlEscape(moduleid)%>', 'EditDoc')"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnEdit"/>"
                                            class="btn btn-link" style="padding:0;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -647,7 +647,7 @@
 
                                         <% if (module.equals("demographic")) {%>
                                         <a href="javascript:void(0)" title="Annotation"
-                                           onclick="window.open('${ pageContext.request.contextPath }/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=curdoc.getDocId()%>&demo=<%=moduleid%>','anwin','width=400,height=500');"
+                                           onclick="window.open('${ pageContext.request.contextPath }/annotation/annotation.jsp?display=<%=UtilMisc.htmlEscape(annotation_display)%>&table_id=<%=UtilMisc.htmlEscape(curdoc.getDocId())%>&demo=<%=UtilMisc.htmlEscape(moduleid)%>','anwin','width=400,height=500');"
                                            class="btn btn-link" style="padding:0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
@@ -658,11 +658,11 @@
                                         <% } %>
                                         <% if (!(moduleid.equals(session.getAttribute("user")) && module.equals("demographic"))) {
 
-                                            String tickler_url = request.getContextPath() + "/tickler/ForwardDemographicTickler.do?docType=DOC&docId=" + curdoc.getDocId() + "&demographic_no=" + moduleid;
+                                            String tickler_url = request.getContextPath() + "/tickler/ForwardDemographicTickler.do?docType=DOC&docId=" + UtilMisc.htmlEscape(curdoc.getDocId()) + "&demographic_no=" + UtilMisc.htmlEscape(moduleid);
                                         %>
                                         <a href="javascript:void(0);" title="Tickler" class="btn btn-link"
                                            style="padding: 0;"
-                                           onclick="popup1(450,600,'<%=tickler_url%>','tickler')">
+                                           onclick="popup1(450,600,'<%=UtilMisc.htmlEscape(tickler_url)%>','tickler')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-feather" viewBox="0 0 16 16">
                                                 <path d="M15.807.531c-.174-.177-.41-.289-.64-.363a3.765 3.765 0 0 0-.833-.15c-.62-.049-1.394 0-2.252.175C10.365.545 8.264 1.415 6.315 3.1c-1.95 1.686-3.168 3.724-3.758 5.423-.294.847-.44 1.634-.429 2.268.005.316.05.62.154.88.017.04.035.082.056.122A68.362 68.362 0 0 0 .08 15.198a.528.528 0 0 0 .157.72.504.504 0 0 0 .705-.16 67.606 67.606 0 0 1 2.158-3.26c.285.141.616.195.958.182.513-.02 1.098-.188 1.723-.49 1.25-.605 2.744-1.787 4.303-3.642l1.518-1.55a.528.528 0 0 0 0-.739l-.729-.744 1.311.209a.504.504 0 0 0 .443-.15c.222-.23.444-.46.663-.684.663-.68 1.292-1.325 1.763-1.892.314-.378.585-.752.754-1.107.163-.345.278-.773.112-1.188a.524.524 0 0 0-.112-.172ZM3.733 11.62C5.385 9.374 7.24 7.215 9.309 5.394l1.21 1.234-1.171 1.196a.526.526 0 0 0-.027.03c-1.5 1.789-2.891 2.867-3.977 3.393-.544.263-.99.378-1.324.39a1.282 1.282 0 0 1-.287-.018Zm6.769-7.22c1.31-1.028 2.7-1.914 4.172-2.6a6.85 6.85 0 0 1-.4.523c-.442.533-1.028 1.134-1.681 1.804l-.51.524-1.581-.25Zm3.346-3.357C9.594 3.147 6.045 6.8 3.149 10.678c.007-.464.121-1.086.37-1.806.533-1.535 1.65-3.415 3.455-4.976 1.807-1.561 3.746-2.36 5.31-2.68a7.97 7.97 0 0 1 1.564-.173Z"></path>
