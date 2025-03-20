@@ -321,7 +321,7 @@
             goToScorePage();
         }
     </script>
-    <script type="text/javascript" src="formScripts.js">
+    <script type="text/javascript" src="form/formScripts.js">
     </script>
 
 
