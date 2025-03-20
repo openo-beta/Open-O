@@ -42,7 +42,7 @@
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
     String appointment = Encode.forHtml(request.getParameter("appointmentNo"));
     int appointmentNo = 0;
-    if (appointment != null && !appointment.isEmpty()) {
+    if (appointment != null && !appointment.isEmpty() && !appointment.equalsIgnoreCase("null")) {
         appointmentNo = Integer.parseInt(appointment);
     }
 
