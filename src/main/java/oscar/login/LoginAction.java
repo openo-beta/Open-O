@@ -89,7 +89,7 @@ public final class LoginAction extends DispatchAction {
 
     private final SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
     private final SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
-	private final UserSessionManager userSessionManager = SpringUtils.getBean(UserSessionManager.class);
+	  private final UserSessionManager userSessionManager = SpringUtils.getBean(UserSessionManager.class);
     private final MfaManager mfaManager = SpringUtils.getBean(MfaManager.class);
 
     // remove after testing is done
@@ -603,6 +603,7 @@ public final class LoginAction extends DispatchAction {
             return this.handleSuccessAjaxResponse(request, response);
         }
 
+
         session.removeAttribute("providerNo");
 
         // >> 9. Standard Response Handling
@@ -906,7 +907,6 @@ public final class LoginAction extends DispatchAction {
      * @param userLoginInfo        The user's login information.
      * @param forcedpasswordchange A flag indicating if a forced password change is needed based on initial checks.
      * @return A GenericResult containing an ActionForward to the password reset page if a forced change
-     * is required, or null otherwise.
      */
     private GenericResult isForcePasswordChangeNeeded(ActionMapping mapping, HttpServletRequest request, UserLoginInfo userLoginInfo, boolean forcedpasswordchange) {
         if (this.isForcePasswordChangeRequired(userLoginInfo.username, forcedpasswordchange)) {
