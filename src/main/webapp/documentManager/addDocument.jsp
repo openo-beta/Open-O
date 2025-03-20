@@ -46,27 +46,28 @@
         import="java.util.*, oscar.util.*, oscar.OscarProperties, org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
 <%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%--This is included in documentReport.jsp - wasn't meant to be displayed as a separate page --%>
 <%
     String user_no = (String) session.getAttribute("user");
-    String appointment = request.getParameter("appointmentNo");
+    String appointment = Encode.forHtml(request.getParameter("appointmentNo"));
 
     String module = "";
     String moduleid = "";
     if (request.getParameter("function") != null) {
-        module = request.getParameter("function");
-        moduleid = request.getParameter("functionid");
+        module = Encode.forHtml(request.getParameter("function"));
+        moduleid = Encode.forHtml(request.getParameter("functionid"));
     } else if (request.getAttribute("function") != null) {
-        module = (String) request.getAttribute("function");
-        moduleid = (String) request.getAttribute("functionid");
+        module = Encode.forHtml((String) request.getAttribute("function"));
+        moduleid = Encode.forHtml((String) request.getAttribute("functionid"));
     }
 
     String curUser = "";
     if (request.getParameter("curUser") != null) {
-        curUser = request.getParameter("curUser");
+        curUser = Encode.forHtml(request.getParameter("curUser"));
     } else if (request.getAttribute("curUser") != null) {
-        curUser = (String) request.getAttribute("curUser");
+        curUser = Encode.forHtml((String) request.getAttribute("curUser"));
     }
 
     OscarProperties props = OscarProperties.getInstance();
@@ -78,23 +79,23 @@
     String defaultHtml = "Enter Link URL";
 
     if (request.getParameter("defaultDocType") != null) {
-        defaultType = request.getParameter("defaultDocType");
+        defaultType = Encode.forHtml(request.getParameter("defaultDocType"));
     }
 
 //for "add document" link from the patient master page - the "mode" variable allows the add div to open up
     String mode = "";
     if (request.getAttribute("mode") != null) {
-        mode = (String) request.getAttribute("mode");
+        mode = Encode.forHtml((String) request.getAttribute("mode"));
     } else if (request.getParameter("mode") != null) {
-        mode = request.getParameter("mode");
+        mode = Encode.forHtml(request.getParameter("mode"));
     }
 
 //Retrieve encounter id for updating encounter navbar if info this page changes anything
     String parentAjaxId;
     if (request.getParameter("parentAjaxId") != null)
-        parentAjaxId = request.getParameter("parentAjaxId");
+        parentAjaxId = Encode.forHtml(request.getParameter("parentAjaxId"));
     else if (request.getAttribute("parentAjaxId") != null)
-        parentAjaxId = (String) request.getAttribute("parentAjaxId");
+        parentAjaxId = Encode.forHtml((String) request.getAttribute("parentAjaxId"));
     else
         parentAjaxId = "";
 
@@ -249,7 +250,7 @@
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddLink"/>
         </a>
         <a class="btn" href="javascript:void(0);"
-           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=module%>&functionid=<%=moduleid%>&mode=addHtml', 'addhtml')">
+           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=Encode.forHtml(module)%>&functionid=<%=Encode.forHtml(moduleid)%>&mode=addHtml', 'addhtml')">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddHTML"/>
         </a>
     </div>
@@ -264,12 +265,12 @@
                 </div>
             </c:forEach>
 
-            <input type="hidden" name="function" value="<%=formdata.getFunction()%>">
-            <input type="hidden" name="functionId" value="<%=formdata.getFunctionId()%>">
-            <input type="hidden" name="functionid" value="<%=moduleid%>">
-            <input type="hidden" name="parentAjaxId" value="<%=parentAjaxId%>">
-            <input type="hidden" name="curUser" value="<%=curUser%>">
-            <input type="hidden" name="appointmentNo" value="<%=formdata.getAppointmentNo()%>"/>
+            <input type="hidden" name="function" value="<%=Encode.forHtml(formdata.getFunction())%>">
+            <input type="hidden" name="functionId" value="<%=Encode.forHtml(formdata.getFunctionId())%>">
+            <input type="hidden" name="functionid" value="<%=Encode.forHtml(moduleid)%>">
+            <input type="hidden" name="parentAjaxId" value="<%=Encode.forHtml(parentAjaxId)%>">
+            <input type="hidden" name="curUser" value="<%=Encode.forHtml(curUser)%>">
+            <input type="hidden" name="appointmentNo" value="<%=Encode.forHtml(formdata.getAppointmentNo())%>"/>
 
             <div class="form-group">
                 <label for="docType">Type</label>
@@ -279,8 +280,8 @@
                         <%
                             for (int i = 0; i < doctypes.size(); i++) {
                                 String doctype = (String) doctypes.get(i); %>
-                        <option value="<%= doctype%>"
-                                <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
+                        <option value="<%= Encode.forHtml(doctype)%>"
+                                <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= Encode.forHtml(doctype)%>
                         </option>
                         <%}%>
                     </select>
@@ -296,14 +297,14 @@
                 <label for="docDesc">Description</label>
                 <input type="text"
                        class="form-control <c:if test='${ docerrors["descmissing"] != null}' >alert-danger</c:if>"
-                       id="docDesc" name="docDesc" value="<%=formdata.getDocDesc()%>"
+                       id="docDesc" name="docDesc" value="<%=Encode.forHtml(formdata.getDocDesc())%>"
                        onfocus="checkDefaultValue(this)"/>
-                <input type="hidden" name="docCreator" value="<%=formdata.getDocCreator()%>"/>
+                <input type="hidden" name="docCreator" value="<%=Encode.forHtml(formdata.getDocCreator())%>"/>
             </div>
             <div class="form-group">
                 <label for="observationDate" title="Observation Date">Observation Date</label>
                 <input class="span2 form-control" type="date" name="observationDate" id="observationDate"
-                       value="<%=formdata.getObservationDate()%>"
+                       value="<%=Encode.forHtml(formdata.getObservationDate().toString())%>"
                        onclick="checkDefaultDate(this, '<%=UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd")%>')">
             </div>
 
@@ -319,7 +320,7 @@
                                 consult1Shown = true;
                             }
                     %>
-                    <option value="<%=reportClass%>"><%=reportClass%>
+                    <option value="<%=Encode.forHtml(reportClass)%>"><%=reportClass%>
                     </option>
                     <% } %>
                 </select>
@@ -337,7 +338,7 @@
             <% if (module.equals("provider")) {%>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" id="docPublic" name="docPublic" <%=formdata.getDocPublic() + " "%>
+                    <input type="checkbox" id="docPublic" name="docPublic" <%=Encode.forHtml(formdata.getDocPublic()) + " "%>
                            value="checked">
                     Public</label>
             </div>
@@ -353,7 +354,7 @@
                         <input type="submit" name="Submit" value="Add" class="btn btn-primary">
                         <input type="button" name="Button" class="btn btn-error"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
-                               onclick="window.location='documentReport.jsp?function=<%=module%>&functionid=<%=moduleid%>'">
+                               onclick="window.location='documentReport.jsp?function=<%=Encode.forHtml(module)%>&functionid=<%=Encode.forHtml(moduleid)%>'">
 
                     </div>
                 </div>
@@ -374,11 +375,11 @@
             </div>
         </c:forEach>
 
-        <input type="hidden" name="function" value="<%=formdata.getFunction()%>">
-        <input type="hidden" name="functionId" value="<%=formdata.getFunctionId()%>">
-        <input type="hidden" name="functionid" value="<%=moduleid%>">
-        <input type="hidden" name="observationDate" value="<%=formdata.getObservationDate()%>">
-        <input type="hidden" name="appointmentNo" value="<%=formdata.getAppointmentNo()%>"/>
+        <input type="hidden" name="function" value="<%=Encode.forHtml(formdata.getFunction())%>">
+        <input type="hidden" name="functionId" value="<%=Encode.forHtml(formdata.getFunctionId())%>">
+        <input type="hidden" name="functionid" value="<%=Encode.forHtml(moduleid)%>">
+        <input type="hidden" name="observationDate" value="<%=Encode.forHtml(formdata.getObservationDate().toString())%>">
+        <input type="hidden" name="appointmentNo" value="<%=Encode.forHtml(formdata.getAppointmentNo())%>"/>
 
         <div class="form-group">
             <label for="docType1">Link Type</label>
@@ -388,8 +389,8 @@
                     <%
                         for (int i1 = 0; i1 < doctypes.size(); i1++) {
                             String doctype = (String) doctypes.get(i1); %>
-                    <option value="<%= doctype%>"
-                            <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
+                    <option value="<%= Encode.forHtml(doctype)%>"
+                            <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= Encode.forHtml(doctype)%>
                     </option>
                     <%}%>
                 </select>
@@ -406,7 +407,7 @@
             <label for="docDesc2">Description</label>
             <input type="text" name="docDesc" id="docDesc2"
                    class="form-control <c:if test="${ linkhtmlerrors['descmissing'] != null }">alert-danger</c:if>"
-                   value="<%=formdata.getDocDesc()%>" onfocus="checkDefaultValue(this)">
+                   value="<%=Encode.forHtml(formdata.getDocDesc())%>" onfocus="checkDefaultValue(this)">
         </div>
 
         <div class="form-group">
@@ -421,7 +422,7 @@
                             consult2Shown = true;
                         }
                 %>
-                <option value="<%=reportClass%>"><%=reportClass%>
+                <option value="<%=Encode.forHtml(reportClass)%>"><%=reportClass%>
                 </option>
                 <% } %>
             </select>
@@ -434,7 +435,7 @@
         <% if (module.equals("provider")) {%>
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="docPublic" <%=formdata.getDocPublic() + " "%> value="checked">
+                <input type="checkbox" name="docPublic" <%=Encode.forHtml(formdata.getDocPublic()) + " "%> value="checked">
                 Public</label>
         </div>
         <% } %>
@@ -443,9 +444,9 @@
             <label for="html">Link</label>
             <div class="input-group">
                 <input type="text" id="html" name="html" class="form-control"
-                       value="<%=formdata.getHtml()%>" onfocus="checkDefaultValue(this)">
+                       value="<%=Encode.forHtml(formdata.getHtml())%>" onfocus="checkDefaultValue(this)">
                 <input type="hidden" name="docCreator"
-                       value="<%=formdata.getDocCreator()%>">
+                       value="<%=Encode.forHtml(formdata.getDocCreator())%>">
                 <input type="hidden" name="appointmentNo" value="<%=formdata.getAppointmentNo()%>"/>
                 <div class="input-group-btn">
                     <input type="hidden" name="mode" value="addLink">
