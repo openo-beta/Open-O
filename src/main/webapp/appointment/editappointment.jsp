@@ -101,15 +101,38 @@
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<%
-
-    String curProvider_no = Encode.forHtmlAttribute(request.getParameter("provider_no"));
-    String appointment_no = Encode.forHtmlAttribute(request.getParameter("appointment_no"));
-    String curUser_no = (String) session.getAttribute("user");
-    String userfirstname = (String) session.getAttribute("userfirstname");
-    String userlastname = (String) session.getAttribute("userlastname");
-    String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF";
-    String origDate = null;
+<%                                                                                                                                                                                            
+     // Validate session and check for authentication                                                                                                                                          
+     if (session == null || session.getAttribute("user") == null) {                                                                                                                            
+         response.sendRedirect("../logout.jsp");                                                                                                                                               
+         return;                                                                                                                                                                               
+     }                                                                                                                                                                                         
+                                                                                                                                                                                               
+     // Generate CSRF token if not already present                                                                                                                                             
+     if (session.getAttribute("csrf_token") == null) {                                                                                                                                         
+         java.security.SecureRandom secureRandom = new java.security.SecureRandom();                                                                                                           
+         byte[] bytes = new byte[32];                                                                                                                                                          
+         secureRandom.nextBytes(bytes);                                                                                                                                                        
+         String csrfToken = java.util.Base64.getEncoder().encodeToString(bytes);                                                                                                               
+         session.setAttribute("csrf_token", csrfToken);                                                                                                                                        
+     }                                                                                                                                                                                         
+                                                                                                                                                                                               
+     // Validate and sanitize input parameters                                                                                                                                                 
+     String curProvider_no = Encode.forHtmlAttribute(request.getParameter("provider_no"));                                                                                                     
+     String appointment_no = request.getParameter("appointment_no");                                                                                                                           
+                                                                                                                                                                                               
+     // Validate appointment_no is numeric                                                                                                                                                     
+     if (appointment_no == null || !appointment_no.matches("^\\d+$")) {                                                                                                                        
+         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid appointment number");                                                                                                 
+         return;                                                                                                                                                                               
+     }                                                                                                                                                                                         
+     appointment_no = Encode.forHtmlAttribute(appointment_no);                                                                                                                                 
+                                                                                                                                                                                               
+     String curUser_no = (String) session.getAttribute("user");                                                                                                                                
+     String userfirstname = (String) session.getAttribute("userfirstname");                                                                                                                    
+     String userlastname = (String) session.getAttribute("userlastname");                                                                                                                      
+     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF";                                                                                                                                      
+     String origDate = null; 
 
     boolean bFirstDisp = true; //this is the first time to display the window
     if (request.getParameter("bFirstDisp") != null) bFirstDisp = ("true".equals(request.getParameter("bFirstDisp")));
@@ -181,37 +204,37 @@
     String demono = "", chartno = "", phone = "", rosterstatus = "", alert = "", doctorNo = "";
     String strApptDate = bFirstDisp ? "" : request.getParameter("appointment_date");
 
-    if (bFirstDisp) {
-        appt = appointmentDao.find(Integer.parseInt(appointment_no));
-        
-        // Check if appointment exists
-        if (appt == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Appointment not found");
-            return;
-        }
-        
-        // Check if user has permission to view this appointment
-        if (!loggedInInfo.getCurrentProvider().hasAdminRole() && 
-            !appt.getProviderNo().equals(loggedInInfo.getLoggedInProviderNo())) {
-            // Check if the user is in the same group as the appointment provider
-            boolean hasAccess = false;
-            
-            // If user is in the same group, allow access
-            if (myGroupNo != null && !myGroupNo.isEmpty()) {
-                Provider apptProvider = pDao.getProvider(appt.getProviderNo());
-                if (apptProvider != null && myGroupNo.equals(providerPreference.getMyGroupNo())) {
-                    hasAccess = true;
-                }
-            }
-            
-            if (!hasAccess) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
-                return;
-            }
-        }
-        
-        pageContext.setAttribute("appointment", appt);
-    }
+    if (bFirstDisp) {                                                                                                                                                                         
+         appt = appointmentDao.find(Integer.parseInt(appointment_no));                                                                                                                         
+                                                                                                                                                                                               
+         // Check if appointment exists                                                                                                                                                        
+         if (appt == null) {                                                                                                                                                                   
+             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Appointment not found");                                                                                                    
+             return;                                                                                                                                                                           
+         }                                                                                                                                                                                     
+                                                                                                                                                                                               
+         // Check if user has permission to view this appointment                                                                                                                              
+         if (!loggedInInfo.getCurrentProvider().hasAdminRole() &&                                                                                                                              
+             !appt.getProviderNo().equals(loggedInInfo.getLoggedInProviderNo())) {                                                                                                             
+             // Check if the user is in the same group as the appointment provider                                                                                                             
+             boolean hasAccess = false;                                                                                                                                                        
+                                                                                                                                                                                               
+             // If user is in the same group, allow access                                                                                                                                     
+             if (myGroupNo != null && !myGroupNo.isEmpty()) {                                                                                                                                  
+                 Provider apptProvider = pDao.getProvider(appt.getProviderNo());                                                                                                               
+                 if (apptProvider != null && myGroupNo.equals(providerPreference.getMyGroupNo())) {                                                                                            
+                     hasAccess = true;                                                                                                                                                         
+                 }                                                                                                                                                                             
+             }                                                                                                                                                                                 
+                                                                                                                                                                                               
+             if (!hasAccess) {                                                                                                                                                                 
+                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");                                                                                                        
+                 return;                                                                                                                                                                       
+             }                                                                                                                                                                                 
+         }                                                                                                                                                                                     
+                                                                                                                                                                                               
+         pageContext.setAttribute("appointment", appt);                                                                                                                                        
+     }
 
     String statusCode = request.getParameter("status");
     String importedStatus = null;
@@ -426,68 +449,10 @@
                 if (aptStat.indexOf('B') === 0) {
                     var agree = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.msgCanceledBilledConfirmation"/>");
                     if (agree) {
-                        var form = document.createElement("form");
-                        form.setAttribute("method", "post");
-                        form.setAttribute("action", "appointmentcontrol.jsp");
-                    
-                        var hiddenField1 = document.createElement("input");
-                        hiddenField1.setAttribute("type", "hidden");
-                        hiddenField1.setAttribute("name", "buttoncancel");
-                        hiddenField1.setAttribute("value", "Cancel Appt");
-                        form.appendChild(hiddenField1);
-                    
-                        var hiddenField2 = document.createElement("input");
-                        hiddenField2.setAttribute("type", "hidden");
-                        hiddenField2.setAttribute("name", "displaymode");
-                        hiddenField2.setAttribute("value", "Update Appt");
-                        form.appendChild(hiddenField2);
-                    
-                        var hiddenField3 = document.createElement("input");
-                        hiddenField3.setAttribute("type", "hidden");
-                        hiddenField3.setAttribute("name", "appointment_no");
-                        hiddenField3.setAttribute("value", "<%=appointment_no%>");
-                        form.appendChild(hiddenField3);
-                    
-                        var csrfField = document.createElement("input");
-                        csrfField.setAttribute("type", "hidden");
-                        csrfField.setAttribute("name", "csrf_token");
-                        csrfField.setAttribute("value", "<%=session.getAttribute("csrf_token")%>");
-                        form.appendChild(csrfField);
-                    
-                        document.body.appendChild(form);
-                        form.submit();
+                        window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=appointment_no%>';
                     }
                 } else {
-                    var form = document.createElement("form");
-                    form.setAttribute("method", "post");
-                    form.setAttribute("action", "appointmentcontrol.jsp");
-                
-                    var hiddenField1 = document.createElement("input");
-                    hiddenField1.setAttribute("type", "hidden");
-                    hiddenField1.setAttribute("name", "buttoncancel");
-                    hiddenField1.setAttribute("value", "Cancel Appt");
-                    form.appendChild(hiddenField1);
-                
-                    var hiddenField2 = document.createElement("input");
-                    hiddenField2.setAttribute("type", "hidden");
-                    hiddenField2.setAttribute("name", "displaymode");
-                    hiddenField2.setAttribute("value", "Update Appt");
-                    form.appendChild(hiddenField2);
-                
-                    var hiddenField3 = document.createElement("input");
-                    hiddenField3.setAttribute("type", "hidden");
-                    hiddenField3.setAttribute("name", "appointment_no");
-                    hiddenField3.setAttribute("value", "<%=appointment_no%>");
-                    form.appendChild(hiddenField3);
-                
-                    var csrfField = document.createElement("input");
-                    csrfField.setAttribute("type", "hidden");
-                    csrfField.setAttribute("name", "csrf_token");
-                    csrfField.setAttribute("value", "<%=session.getAttribute("csrf_token")%>");
-                    form.appendChild(csrfField);
-                
-                    document.body.appendChild(form);
-                    form.submit();
+                    window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=appointment_no%>';
                 }
             }
 
@@ -865,9 +830,10 @@
     <!-- The mobile optimized page is split into two sections: viewing and editing an appointment
          In the mobile version, we only display the edit section first if we are returning from a search -->
     <div id="editAppointment" style="display:<%= (false && bFirstDisp) ? "none":"block"%>;">
-        <form name="EDITAPPT" METHOD="post" ACTION="appointmentcontrol.jsp"
-              onSubmit="return(onSub())"><input type="hidden"
-                                                name="displaymode" value="">
+        <form name="EDITAPPT" METHOD="post" ACTION="appointmentcontrol.jsp"                                                                                                                           
+               onSubmit="return(onSub())">                                                                                                                                                     
+     <input type="hidden" name="displaymode" value="">                                                                                                                                         
+     <input type="hidden" name="csrf_token" value="<%= session.getAttribute("csrf_token") %>">
             <div class="header deep">
                 <div class="time" id="header"><H4>
                     <!-- We display a shortened title for the mobile version -->
@@ -1074,7 +1040,7 @@
                     <td>
                         <textarea id="reason" name="reason" maxlength="80" rows="8"
                                   oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-                                  onfocus='this.style.height = "";this.style.height = this.scrollHeight + "px"'><%=Encode.forHtmlContent(bFirstDisp ? (appt.getReason() != null ? appt.getReason() : "") : (request.getParameter("reason") != null ? request.getParameter("reason") : ""))%></textarea>
+                                  onfocus='this.style.height = "";this.style.height = this.scrollHeight + "px"'><%=Encode.forHtmlContent(bFirstDisp ? appt.getReason() : request.getParameter("reason"))%></textarea>
 
                     </td>
                 </tr>
@@ -1129,7 +1095,7 @@
                             %>
                         </select>
                         <% } else { %>
-                        <input type="text" name="location" tabindex="4" maxlength="100"
+                        <input type="text" name="location" tabindex="4"
                                value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>">
                         <% } %>
                         <% } %>
@@ -1141,7 +1107,7 @@
                     </td>
                     <td>
                         <% String lastCreatorNo = bFirstDisp ? (appt.getCreator()) : request.getParameter("user_id"); %>
-                        <input type="text" name="user_id" value="<%=Encode.forHtmlAttribute(lastCreatorNo != null ? lastCreatorNo : "")%>" readonly>
+                        <input type="text" name="user_id" value="<%=Encode.forHtmlAttribute(lastCreatorNo)%>" readonly>
                     </td>
                 </tr>
                 <%
@@ -1284,7 +1250,7 @@
                     <td>
                         <input type="text" name="chart_no"
                                readonly
-                               value="<%=Encode.forHtmlAttribute(bFirstDisp?StringUtils.trimToEmpty(chartno):(request.getParameter("chart_no") != null ? request.getParameter("chart_no") : ""))%>"
+                               value="<%=bFirstDisp?StringUtils.trimToEmpty(chartno):request.getParameter("chart_no")%>"
                         >
                     </td>
                 </tr>
@@ -1295,7 +1261,7 @@
                     <td>
                         <textarea name="notes" maxlength="255" rows="9"
                                   oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-                                  onfocus='this.style.height = "";this.style.height = this.scrollHeight + "px"'><%=Encode.forHtmlContent(bFirstDisp ? (appt.getNotes() != null ? appt.getNotes() : "") : (request.getParameter("notes") != null ? request.getParameter("notes") : ""))%></textarea>
+                                  onfocus='this.style.height = "";this.style.height = this.scrollHeight + "px"'><%=Encode.forHtmlContent(bFirstDisp ? appt.getNotes() : request.getParameter("notes"))%></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -1303,7 +1269,7 @@
                         <label><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formResources"/>:</label>
                     </td>
                     <td>
-                        <input type="text" name="resources" tabindex="5" maxlength="100"
+                        <input type="text" name="resources" tabindex="5"
                                value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getResources():request.getParameter("resources"))%>">
                     </td>
                 </tr>
@@ -1340,8 +1306,8 @@
                         <input type="hidden" name="provider_no" value="<%=curProvider_no%>">
                         <input type="hidden" name="dboperation" value="">
                         <input type="hidden" name="creator"
-                               value="<%=Encode.forHtmlAttribute((userlastname != null ? userlastname : "") + ", " + (userfirstname != null ? userfirstname : ""))%>">
-                        <input type="hidden" name="remarks" value="<%=Encode.forHtmlAttribute(remarks != null ? remarks : "")%>">
+                               value="<%=Encode.forHtmlAttribute(userlastname+", "+userfirstname)%>">
+                        <input type="hidden" name="remarks" value="<%=Encode.forHtmlAttribute(remarks)%>">
                         <input type="hidden" name="appointment_no" value="<%=appointment_no%>">
                     </td>
                 </tr>
@@ -1420,35 +1386,8 @@
                         <img src="<%=request.getContextPath() %>/images/notes.gif" alt="Annotation" height="16"
                              width="13">
                     </a>
-                    <a class="btn" onClick="submitPrintCardForm()">
-                    <script>
-                        function submitPrintCardForm() {
-                            var form = document.createElement("form");
-                            form.setAttribute("method", "post");
-                            form.setAttribute("action", "appointmentcontrol.jsp");
-                            
-                            var hiddenField1 = document.createElement("input");
-                            hiddenField1.setAttribute("type", "hidden");
-                            hiddenField1.setAttribute("name", "displaymode");
-                            hiddenField1.setAttribute("value", "PrintCard");
-                            form.appendChild(hiddenField1);
-                            
-                            var hiddenField2 = document.createElement("input");
-                            hiddenField2.setAttribute("type", "hidden");
-                            hiddenField2.setAttribute("name", "appointment_no");
-                            hiddenField2.setAttribute("value", "<%=appointment_no%>");
-                            form.appendChild(hiddenField2);
-                            
-                            var csrfField = document.createElement("input");
-                            csrfField.setAttribute("type", "hidden");
-                            csrfField.setAttribute("name", "csrf_token");
-                            csrfField.setAttribute("value", "<%=session.getAttribute("csrf_token")%>");
-                            form.appendChild(csrfField);
-                            
-                            document.body.appendChild(form);
-                            form.submit();
-                        }
-                    </script>
+                    <a class="btn"
+                       onClick="window.location='appointmentcontrol.jsp?displaymode=PrintCard&appointment_no=<%=appointment_no%>'">
                         <i class="icon-print"></i>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnPrintCard"/></a>
                     <a class="btn"
                        onClick="window.open('<%=request.getContextPath() %>/demographic/demographiclabelprintsetting.jsp?demographic_no='+document.EDITAPPT.demographic_no.value, 'labelprint','height=550,width=700,location=no,scrollbars=yes,menubars=no,toolbars=no' )">
