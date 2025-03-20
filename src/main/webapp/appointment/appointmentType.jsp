@@ -39,7 +39,7 @@
         dur = dur + '<%= types.get(j).getDuration() %>' + ',';
         reason = reason + '<%= types.get(j).getReason() %>' + ',';
         loc = loc + '<%= types.get(j).getLocation() %>' + ',';
-        notes = notes + '<%= types.get(j).getNotes() %>' + ',';
+        notes = notes + '<%= Encode.forHtml(types.get(j).getNotes()) %>' + ',';
         resources = resources + '<%= types.get(j).getResources() %>' + ',';
         names = names + '<%=StringEscapeUtils.escapeJavaScript(types.get(j).getName()) %>' + ',';
         <%   } %>
