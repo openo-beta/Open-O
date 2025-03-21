@@ -2378,9 +2378,9 @@
         <action name="PMmodule/OcanWorkload" class="org.oscarehr.PMmodule.web.OcanWorkload2Action">
             <result name="view">/PMmodule/OcanWorkload.jsp</result>
         </action>
-        <!--action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.web.MoveMOHFiles2Action">
+        <action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.web.MoveMOHFiles2Action">
             <result name="success">/billing/CA/ON/viewMOHFiles.jsp</result>
-        </action-->
+        </action>
         <action name="billing/CA/ON/managePaymentType" class="oscar.oscarBilling.ca.on.pageUtil.PaymentType2Action" method="execute">
             <result name="success">/billing/CA/ON/manageBillingPaymentType.jsp</result>
         </action>
