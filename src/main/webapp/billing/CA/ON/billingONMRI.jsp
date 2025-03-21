@@ -479,8 +479,7 @@
     });
 
     $(document).ready(function () {
-        parent.parent.resizeIframe($('html').height());
-
+        parent.resizeIframe($('html').height());
     });
 
 </script>
