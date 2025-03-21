@@ -70,6 +70,7 @@ For developers who are not compiling for the first time in the dev container, it
 ### View Oscar error logs
 
 Currently, oscar error logs are sent to console without saving to a log file. If you need to read oscar error logs from dev container, can use this command to see real-time logs.
+
    ```zsh
    cat /tomcat.pid | xargs -I {} tail -f /proc/{}/fd/1
    ```
