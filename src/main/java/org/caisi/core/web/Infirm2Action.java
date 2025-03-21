@@ -125,7 +125,7 @@ public class Infirm2Action extends ActionSupport {
         int programId = 0;
         if (defaultprogramId != 0 && OriprogramId != 0) {
             programId = defaultprogramId;
-        } else {
+        } else {ex
             if (OriprogramId == 0) {
                 programId = 0;
             }
