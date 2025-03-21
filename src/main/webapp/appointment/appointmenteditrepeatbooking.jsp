@@ -584,6 +584,7 @@
     <form name="groupappt" method="POST"
           action="appointmenteditrepeatbooking.jsp" onSubmit="return ( onSub());">
         <INPUT TYPE="hidden" NAME="groupappt" value="">
+        <INPUT TYPE="hidden" NAME="csrf_token" value="<%= session.getAttribute("csrf_token") %>">
         <table width="100%" BGCOLOR="silver">
             <tr>
                 <TD>
