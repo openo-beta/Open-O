@@ -57,10 +57,17 @@ public final class RxShowAllergy2Action extends ActionSupport {
 
 
     public String reorder() {
+        // Validate demographic number before processing
+        String demographicNo = request.getParameter("demographicNo");
+        if (demographicNo == null || !demographicNo.matches("^\\d+$")) {
+            MiscUtils.getLogger().error("Invalid demographic number in reorder: " + demographicNo);
+            return ERROR;
+        }
+        
         reorder(request);
         //ActionForward fwd = mapping.findForward("success-redirect");
         try {
-            response.sendRedirect("/oscarRx/ShowAllergies.jsp?demographicNo=" + request.getParameter("demographicNo"));
+            response.sendRedirect("/oscarRx/ShowAllergies.jsp?demographicNo=" + demographicNo);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +98,9 @@ public final class RxShowAllergy2Action extends ActionSupport {
         String demo_no = request.getParameter("demographicNo");
         String view = request.getParameter("view");
 
-        if (demo_no == null) {
+        // Validate demographic number
+        if (demo_no == null || !demo_no.matches("^\\d+$")) {
+            MiscUtils.getLogger().error("Invalid demographic number: " + demo_no);
             return "failure";
         }
         // Setup bean
@@ -111,7 +120,9 @@ public final class RxShowAllergy2Action extends ActionSupport {
         bean.setProviderNo(user_no);
         bean.setDemographicNo(Integer.parseInt(demo_no));
         if (view != null) {
-            bean.setView(view);
+            // Sanitize view parameter before storing in session
+            String sanitizedView = view.replaceAll("[^a-zA-Z0-9_-]", "");
+            bean.setView(sanitizedView);
         }
 
         request.getSession().setAttribute("RxSessionBean", bean);
@@ -140,7 +151,25 @@ public final class RxShowAllergy2Action extends ActionSupport {
 
         String direction = request.getParameter("direction");
         String demographicNo = request.getParameter("demographicNo");
-        int allergyId = Integer.parseInt(request.getParameter("allergyId"));
+        String allergyIdStr = request.getParameter("allergyId");
+        
+        // Validate input parameters
+        if (direction == null || (!direction.equals("up") && !direction.equals("down"))) {
+            MiscUtils.getLogger().error("Invalid direction parameter: " + direction);
+            return;
+        }
+        
+        if (demographicNo == null || !demographicNo.matches("^\\d+$")) {
+            MiscUtils.getLogger().error("Invalid demographic number: " + demographicNo);
+            return;
+        }
+        
+        if (allergyIdStr == null || !allergyIdStr.matches("^\\d+$")) {
+            MiscUtils.getLogger().error("Invalid allergy ID: " + allergyIdStr);
+            return;
+        }
+        
+        int allergyId = Integer.parseInt(allergyIdStr);
         try {
             Allergy[] allergies = RxPatientData.getPatient(loggedInInfo, demographicNo).getActiveAllergies();
             for (int x = 0; x < allergies.length; x++) {
