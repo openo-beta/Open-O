@@ -23,52 +23,60 @@
  * Ontario, Canada
  */
 
+ package oscar.decision;
 
-package oscar.decision;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Properties;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.oscarehr.util.MiscUtils;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
-public class DesAntenatalPlannerChecklist_99_12 {
-
-    public String doStuff(String uri, Properties savedar1params) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            df.parse(savedar1params.getProperty("finalEDB"));
-        } catch (java.text.ParseException pe) {
-            return "Error: final EDB";
-        }
-
-        try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser saxParser = factory.newSAXParser();
-            XMLReader reader = saxParser.getXMLReader();
-
-            ContentHandler contentHandler = new DesAntenatalPlannerChecklistHandler_99_12(savedar1params);
-            reader.setContentHandler(contentHandler);
-            reader.parse(uri);
-
-            return ((DesAntenatalPlannerChecklistHandler_99_12) contentHandler).getResults();
-
-        } catch (IOException e) {
-            MiscUtils.getLogger().debug("Error reading URI: " + e.getMessage());
-        } catch (SAXException e) {
-            MiscUtils.getLogger().debug("Error in parsing: " + e.getMessage());
-        } catch (ParserConfigurationException e) {
-            MiscUtils.getLogger().debug("Error configuring parser: " + e.getMessage());
-        }
-
-        return "Error: unable to parse the checklist xml file";
-    }
-
-}
+ import java.io.IOException;
+ import java.text.SimpleDateFormat;
+ import java.util.Properties;
+ 
+ import javax.xml.parsers.ParserConfigurationException;
+ import javax.xml.parsers.SAXParser;
+ import javax.xml.parsers.SAXParserFactory;
+ 
+ import org.oscarehr.util.MiscUtils;
+ import org.xml.sax.ContentHandler;
+ import org.xml.sax.SAXException;
+ import org.xml.sax.XMLReader;
+ 
+ public class DesAntenatalPlannerChecklist_99_12 {
+ 
+     public String doStuff(String uri, Properties savedar1params) {
+         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+         try {
+             df.parse(savedar1params.getProperty("finalEDB"));
+         } catch (java.text.ParseException pe) {
+             return "Error: final EDB";
+         }
+ 
+         try {
+             // Create a secure SAXParserFactory
+             SAXParserFactory factory = SAXParserFactory.newInstance();
+ 
+             // Disable external entities to prevent XXE attacks
+             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // Disable DOCTYPE declarations
+             factory.setFeature("http://xml.org/sax/features/external-general-entities", false); // Disable external general entities
+             factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false); // Disable external parameter entities
+             factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); // Disable external DTDs
+ 
+             // Create a secure SAXParser
+             SAXParser saxParser = factory.newSAXParser();
+             XMLReader reader = saxParser.getXMLReader();
+ 
+             // Set the custom content handler
+             ContentHandler contentHandler = new DesAntenatalPlannerChecklistHandler_99_12(savedar1params);
+             reader.setContentHandler(contentHandler);
+             reader.parse(uri);
+ 
+             return ((DesAntenatalPlannerChecklistHandler_99_12) contentHandler).getResults();
+ 
+         } catch (IOException e) {
+             MiscUtils.getLogger().debug("Error reading URI: " + e.getMessage());
+         } catch (SAXException e) {
+             MiscUtils.getLogger().debug("Error in parsing: " + e.getMessage());
+         } catch (ParserConfigurationException e) {
+             MiscUtils.getLogger().debug("Error configuring parser: " + e.getMessage());
+         }
+ 
+         return "Error: unable to parse the checklist xml file";
+     }
+ }
