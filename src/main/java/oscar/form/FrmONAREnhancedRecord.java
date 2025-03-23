@@ -82,7 +82,7 @@ public class FrmONAREnhancedRecord extends FrmRecord {
             props.setProperty("pg1_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
         } else {
             //join it up so the resulting props have values from all 3 tables
-            String sql = "SELECT * FROM formONAREnhancedRecord rec, formONAREnhancedRecordExt1 ext1, formONAREnhancedRecordExt2 ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = ? AND rec.ID = ?";
+            String sql = "SELECT * FROM " + TABLE_ONAR_RECORD + " rec, " + TABLE_ONAR_EXT1 + " ext1, " + TABLE_ONAR_EXT2 + " ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = ? AND rec.ID = ?";
             props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
         }
 
@@ -91,21 +91,21 @@ public class FrmONAREnhancedRecord extends FrmRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         //get the names/types of each column in the 3 tables
-        List<String> namesA = getColumnNames("formONAREnhancedRecord");
-        List<String> namesB = getColumnNames("formONAREnhancedRecordExt1");
-        List<String> namesC = getColumnNames("formONAREnhancedRecordExt2");
+        List<String> namesA = getColumnNames(TABLE_ONAR_RECORD);
+        List<String> namesB = getColumnNames(TABLE_ONAR_EXT1);
+        List<String> namesC = getColumnNames(TABLE_ONAR_EXT2);
 
         //insert the initial record, and grab the ID to do the inserts on the other 2 tables
-        int id = addRecord(props, "formONAREnhancedRecord", namesA, null);
-        addRecord(props, "formONAREnhancedRecordExt1", namesB, id);
-        addRecord(props, "formONAREnhancedRecordExt2", namesC, id);
+        int id = addRecord(props, TABLE_ONAR_RECORD, namesA, null);
+        addRecord(props, TABLE_ONAR_EXT1, namesB, id);
+        addRecord(props, TABLE_ONAR_EXT2, namesC, id);
 
         return id;
     }
 
     public Properties getPrintRecord(int demographicNo, int existingID) throws SQLException {
         //join the 3 tables
-        String sql = "SELECT * FROM formONAREnhancedRecord rec, formONAREnhancedRecordExt1 ext1, formONAREnhancedRecordExt2 ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = ? AND rec.ID = ?";
+        String sql = "SELECT * FROM " + TABLE_ONAR_RECORD + " rec, " + TABLE_ONAR_EXT1 + " ext1, " + TABLE_ONAR_EXT2 + " ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = ? AND rec.ID = ?";
         return ((new FrmRecordHelp()).getPrintRecord(sql, demographicNo, existingID));
     }
 
@@ -133,11 +133,21 @@ public class FrmONAREnhancedRecord extends FrmRecord {
     }
 
 
+    // Define valid table names as constants to prevent SQL injection
+    private static final String TABLE_ONAR_RECORD = "formONAREnhancedRecord";
+    private static final String TABLE_ONAR_EXT1 = "formONAREnhancedRecordExt1";
+    private static final String TABLE_ONAR_EXT2 = "formONAREnhancedRecordExt2";
+    
     private List<String> getColumnNames(String table) throws SQLException {
-        // Validate table name to prevent SQL injection
-        if (!table.equals("formONAREnhancedRecord") && 
-            !table.equals("formONAREnhancedRecordExt1") && 
-            !table.equals("formONAREnhancedRecordExt2")) {
+        // Validate table name against constants to prevent SQL injection
+        String validatedTable;
+        if (TABLE_ONAR_RECORD.equals(table)) {
+            validatedTable = TABLE_ONAR_RECORD;
+        } else if (TABLE_ONAR_EXT1.equals(table)) {
+            validatedTable = TABLE_ONAR_EXT1;
+        } else if (TABLE_ONAR_EXT2.equals(table)) {
+            validatedTable = TABLE_ONAR_EXT2;
+        } else {
             throw new IllegalArgumentException("Invalid table name: " + table);
         }
         
@@ -147,7 +157,8 @@ public class FrmONAREnhancedRecord extends FrmRecord {
 
         try {
             stmt = DbConnectionFilter.getThreadLocalDbConnection().createStatement();
-            rs2 = stmt.executeQuery("SELECT * FROM " + table + " LIMIT 1");
+            // Using the validated constant table name
+            rs2 = stmt.executeQuery("SELECT * FROM " + validatedTable + " LIMIT 1");
 
             ResultSetMetaData md = rs2.getMetaData();
 
@@ -169,16 +180,21 @@ public class FrmONAREnhancedRecord extends FrmRecord {
     }
 
     int addRecord(Properties props, String table, List<String> namesA, Integer id) throws SQLException {
-        // Validate table name to prevent SQL injection
-        if (!table.equals("formONAREnhancedRecord") && 
-            !table.equals("formONAREnhancedRecordExt1") && 
-            !table.equals("formONAREnhancedRecordExt2")) {
+        // Validate table name against constants to prevent SQL injection
+        String validatedTable;
+        if (TABLE_ONAR_RECORD.equals(table)) {
+            validatedTable = TABLE_ONAR_RECORD;
+        } else if (TABLE_ONAR_EXT1.equals(table)) {
+            validatedTable = TABLE_ONAR_EXT1;
+        } else if (TABLE_ONAR_EXT2.equals(table)) {
+            validatedTable = TABLE_ONAR_EXT2;
+        } else {
             throw new IllegalArgumentException("Invalid table name: " + table);
         }
         
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO ");
-        sb.append(table);
+        sb.append(validatedTable);
         sb.append(" (");
         for (String name : namesA) {
             sb.append(name.split("\\|")[0] + ",");
