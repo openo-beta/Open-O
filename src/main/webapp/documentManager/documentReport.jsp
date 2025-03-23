@@ -82,12 +82,12 @@
 
 //if delete request is made
     if (request.getParameter("delDocumentNo") != null) {
-        EDocUtil.deleteDocument(Encode.forHtml(request.getParameter("delDocumentNo")));
+        EDocUtil.deleteDocument(request.getParameter("delDocumentNo"));
     }
 
 //if undelete request is made
     if (request.getParameter("undelDocumentNo") != null) {
-        EDocUtil.undeleteDocument(Encode.forHtml(request.getParameter("undelDocumentNo")));
+        EDocUtil.undeleteDocument(request.getParameter("undelDocumentNo"));
     }
 
 //view  - tabs
