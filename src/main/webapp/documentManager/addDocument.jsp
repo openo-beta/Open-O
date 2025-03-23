@@ -47,6 +47,8 @@
 <%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+
 
 <%--This is included in documentReport.jsp - wasn't meant to be displayed as a separate page --%>
 <%
@@ -112,6 +114,20 @@
         formdata.setAppointmentNo(appointment);
     }
     ArrayList doctypes = EDocUtil.getActiveDocTypes(formdata.getFunction());
+
+    // Get the observation date in the correct format
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String observationDateStr = "";
+    // If the observation date is not null, format it
+    if (formdata.getObservationDate() != null) {
+        try {
+            // Try to parse the observation date string into a Date object
+            observationDateStr = (String) formdata.getObservationDate();
+        } catch (Exception e) {
+            // If there's an error, set a default value
+            observationDateStr = UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd");
+        }
+    }
 
     CtlDocClassDao docClassDao = (CtlDocClassDao) SpringUtils.getBean(CtlDocClassDao.class);
     List<String> reportClasses = docClassDao.findUniqueReportClasses();
@@ -304,7 +320,7 @@
             <div class="form-group">
                 <label for="observationDate" title="Observation Date">Observation Date</label>
                 <input class="span2 form-control" type="date" name="observationDate" id="observationDate"
-                       value="<%=Encode.forHtml(formdata.getObservationDate().toString())%>"
+                value="<%= Encode.forHtml(observationDateStr) %>"
                        onclick="checkDefaultDate(this, '<%=UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd")%>')">
             </div>
 
@@ -378,7 +394,7 @@
         <input type="hidden" name="function" value="<%=Encode.forHtml(formdata.getFunction())%>">
         <input type="hidden" name="functionId" value="<%=Encode.forHtml(formdata.getFunctionId())%>">
         <input type="hidden" name="functionid" value="<%=Encode.forHtml(moduleid)%>">
-        <input type="hidden" name="observationDate" value="<%=Encode.forHtml(formdata.getObservationDate().toString())%>">
+        <input type="hidden" name="observationDate" value="<%=Encode.forHtml(observationDateStr)%>">
         <input type="hidden" name="appointmentNo" value="<%=Encode.forHtml(formdata.getAppointmentNo())%>"/>
 
         <div class="form-group">
