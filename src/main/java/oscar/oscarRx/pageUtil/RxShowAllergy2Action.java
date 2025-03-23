@@ -94,34 +94,25 @@ public final class RxShowAllergy2Action extends ActionSupport {
             useRx3 = true;
 
 
-        String user_no = (String) request.getSession().getAttribute("user");
-        String demo_no = request.getParameter("demographicNo");
-        String view = request.getParameter("view");
+        String sanitizedUserNo = StringEscapeUtils.escapeHtml4(user_no);
+        String sanitizedDemoNo = StringEscapeUtils.escapeHtml4(demo_no);
+        String sanitizedView = view != null ? StringEscapeUtils.escapeHtml4(view) : null;
 
-        // Validate demographic number
-        if (demo_no == null || !demo_no.matches("^\\d+$")) {
-            MiscUtils.getLogger().error("Invalid demographic number: " + demo_no);
-            return "failure";
-        }
         // Setup bean
         RxSessionBean bean;
 
         if (request.getSession().getAttribute("RxSessionBean") != null) {
             bean = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-            if ((bean.getProviderNo() != user_no) || (bean.getDemographicNo() != Integer.parseInt(demo_no))) {
+            if (!bean.getProviderNo().equals(sanitizedUserNo) || bean.getDemographicNo() != Integer.parseInt(sanitizedDemoNo)) {
                 bean = new RxSessionBean();
             }
-
         } else {
             bean = new RxSessionBean();
         }
 
-
-        bean.setProviderNo(user_no);
-        bean.setDemographicNo(Integer.parseInt(demo_no));
-        if (view != null) {
-            // Sanitize view parameter before storing in session
-            String sanitizedView = view.replaceAll("[^a-zA-Z0-9_-]", "");
+        bean.setProviderNo(sanitizedUserNo);
+        bean.setDemographicNo(Integer.parseInt(sanitizedDemoNo));
+        if (sanitizedView != null) {
             bean.setView(sanitizedView);
         }
 
@@ -140,7 +131,7 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (patient != null) {
             request.getSession().setAttribute("Patient", patient);
             response.sendRedirect(forward);
-        } else {//no records found
+        } else {
             response.sendRedirect("error.html");
         }
         return null;
