@@ -134,14 +134,20 @@ public class FrmONAREnhancedRecord extends FrmRecord {
 
 
     private List<String> getColumnNames(String table) throws SQLException {
+        // Validate table name to prevent SQL injection
+        if (!table.equals("formONAREnhancedRecord") && 
+            !table.equals("formONAREnhancedRecordExt1") && 
+            !table.equals("formONAREnhancedRecordExt2")) {
+            throw new IllegalArgumentException("Invalid table name: " + table);
+        }
+        
         List<String> result = new ArrayList<String>();
         ResultSet rs2 = null;
-        PreparedStatement stmt = null;
+        Statement stmt = null;
 
         try {
-            stmt = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement("select * from ? limit 1");
-            stmt.setString(1, table);
-            rs2 = stmt.executeQuery();
+            stmt = DbConnectionFilter.getThreadLocalDbConnection().createStatement();
+            rs2 = stmt.executeQuery("SELECT * FROM " + table + " LIMIT 1");
 
             ResultSetMetaData md = rs2.getMetaData();
 
@@ -151,16 +157,29 @@ public class FrmONAREnhancedRecord extends FrmRecord {
                 result.add(name + "|" + type);
             }
         } finally {
-            if (rs2 != null)
+            if (rs2 != null) {
                 rs2.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
         }
 
         return result;
     }
 
     int addRecord(Properties props, String table, List<String> namesA, Integer id) throws SQLException {
+        // Validate table name to prevent SQL injection
+        if (!table.equals("formONAREnhancedRecord") && 
+            !table.equals("formONAREnhancedRecordExt1") && 
+            !table.equals("formONAREnhancedRecordExt2")) {
+            throw new IllegalArgumentException("Invalid table name: " + table);
+        }
+        
         StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO " + table + " (");
+        sb.append("INSERT INTO ");
+        sb.append(table);
+        sb.append(" (");
         for (String name : namesA) {
             sb.append(name.split("\\|")[0] + ",");
         }
@@ -206,11 +225,17 @@ public class FrmONAREnhancedRecord extends FrmRecord {
                         MiscUtils.getLogger().info("empty value for " + theName);
                     }
                     if (value == null || value.isEmpty()) {
-                        value = "0";
+                        preparedStmt.setInt(x + 1, 0);
                     } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("checked='checked'")) {
-                        value = "1";
+                        preparedStmt.setInt(x + 1, 1);
+                    } else {
+                        try {
+                            preparedStmt.setInt(x + 1, Integer.parseInt(value));
+                        } catch (NumberFormatException e) {
+                            MiscUtils.getLogger().error("Invalid number format for " + theName + ": " + value, e);
+                            preparedStmt.setInt(x + 1, 0);
+                        }
                     }
-                    preparedStmt.setInt(x + 1, Integer.parseInt(value));
                 } else if ("DATE".equals(type)) {
                     String value = props.getProperty(theName);
                     Date d = null;
@@ -257,11 +282,18 @@ public class FrmONAREnhancedRecord extends FrmRecord {
                     if (rs.next()) {
                         id = rs.getInt(1);
                     }
+                } catch (SQLException e) {
+                    MiscUtils.getLogger().error("Error retrieving generated keys", e);
+                    throw e;
                 } finally {
-                    if (rs != null)
-                        rs.close();
+                    if (rs != null) {
+                        try {
+                            rs.close();
+                        } catch (SQLException e) {
+                            MiscUtils.getLogger().error("Error closing result set", e);
+                        }
+                    }
                 }
-
             }
         } finally {
             if (preparedStmt != null) {
