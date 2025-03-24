@@ -67,7 +67,7 @@
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
         }
-        patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+        patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
     %>
 </c:if>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>

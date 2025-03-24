@@ -118,7 +118,7 @@
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/share/javascript/prototype.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></title>
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarRx/styles.css">
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
@@ -250,7 +250,7 @@
 
     <%
         boolean showall = false;
-        oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+        oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
         if (request.getParameter("show") != null) if (request.getParameter("show").equals("all")) showall = true;
     %>
     <body topmargin="0" leftmargin="0" vlink="#0000FF" onload="load()">

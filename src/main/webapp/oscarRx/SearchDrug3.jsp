@@ -24,22 +24,20 @@
 
 --%>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
 <%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
 <%@page import="org.oscarehr.common.model.Drug" %>
-<%@ page import="org.oscarehr.common.model.PharmacyInfo" %>
+<%@page import="org.oscarehr.common.model.PharmacyInfo" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
 <%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
-<%@ page
-        import="oscar.oscarRx.data.*,oscar.oscarProvider.data.ProviderMyOscarIdData,oscar.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+<%@page import="oscar.oscarRx.data.*,oscar.oscarProvider.data.ProviderMyOscarIdData,oscar.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.*" %>
@@ -163,9 +161,7 @@
     }
 
     RxPharmacyData pharmacyData = new RxPharmacyData();
-    List<PharmacyInfo> pharmacyList;
-    pharmacyList = pharmacyData.getPharmacyFromDemographic(Integer.toString(demoNo));
-
+    List<PharmacyInfo> pharmacyList = pharmacyData.getPharmacyFromDemographic(Integer.toString(demoNo));
     String drugref_route = OscarProperties.getInstance().getProperty("drugref_route");
     if (drugref_route == null) {
         drugref_route = "";
@@ -214,10 +210,8 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
-
-
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></title>
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarRx/styles.css">
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
@@ -637,7 +631,7 @@
             //not used , represcribe a drug
             function represcribeOnLoad(drugId) {
                 var data = "drugId=" + drugId + "&rand=" + Math.floor(Math.random() * 10001);
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/rePrescribe2.do?method=saveReRxDrugIdToStash";
+                var url = '<c:out value="${ctx}"/>/oscarRx/rePrescribe2.do?method=saveReRxDrugIdToStash';
                 new Ajax.Updater('rxText', url, {
                     method: 'get', parameters: data, evalScripts: true, insertion: Insertion.Bottom,
                     onSuccess: function (transport) {
@@ -1597,7 +1591,7 @@
                 + '\n\nAre you sure you wish to use this feature?') == true) {
 
                 //call another function to bring up prescribe.jsp
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/WriteScript.do?parameterValue=normalDrugSetCustom";
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=normalDrugSetCustom';
                 var customDrugName = $("drugName_" + randomId).getValue();
                 var data = "randomId=" + randomId + "&customDrugName=" + customDrugName;
                 new Ajax.Updater('rxText', url, {
@@ -1631,7 +1625,7 @@
         }
 
         function iterateStash() {
-            var url = "<c:out value="${ctx}"/>" + "/oscarRx/WriteScript.do?parameterValue=iterateStash";
+            var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=iterateStash';
             var data = "rand=" + Math.floor(Math.random() * 10001);
             new Ajax.Updater('rxText', url, {
                 method: 'get', parameters: data, asynchronous: true, evalScripts: true,
@@ -1644,7 +1638,7 @@
 
         function rxPageSizeSelect() {
             var ran_number = Math.round(Math.random() * 1000000);
-            var url = "GetRxPageSizeInfo.do?method=view";
+            var url = "<c:out value="${ctx}"/>" + "/oscarRx/GetRxPageSizeInfo.do?method=view";
             var params = "demographicNo=<%=demoNo%>&rand=" + ran_number;  //hack to get around ie caching the page
             new Ajax.Request(url, {method: 'post', parameters: params});
         }
@@ -1662,7 +1656,6 @@
                 });
             return false;
         }
-
 
         function deletePrescribe(randomId) {
             var data = "randomId=" + randomId;
@@ -1720,7 +1713,7 @@
         function useFav2(favoriteId) {
             var randomId = Math.round(Math.random() * 1000000);
             var data = "favoriteId=" + favoriteId + "&randomId=" + randomId;
-            var url = "<c:out value="${ctx}"/>" + "/oscarRx/useFavorite.do?parameterValue=useFav2";
+            var url = '<c:out value="${ctx}"/>/oscarRx/useFavorite.do?parameterValue=useFav2';
             new Ajax.Updater('rxText', url, {
                 method: 'get',
                 parameters: data,
@@ -1814,7 +1807,6 @@
             });
         }
 
-
         function Discontinue(event, element) {
             var id_str = (element.id).split("_");
             var id = id_str[1];
@@ -1875,8 +1867,8 @@
         }
 
         /*
-	 * deprecated: causes speed and accuracy issues.
-	 */
+	     * deprecated: causes speed and accuracy issues.
+	     */
         function updateCurrentInteractions() {
             new Ajax.Request("GetmyDrugrefInfo.do?method=findInteractingDrugList&rand=" + Math.floor(Math.random() * 10001), {
                 method: 'get', onSuccess: function (transport) {
@@ -1899,7 +1891,7 @@
         function RePrescribeLongTerm() {
             var demoNo = '<%=patient.getDemographicNo()%>';
             var data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
-            var url = "<c:out value="${ctx}"/>" + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
+            var url = '<c:out value="${ctx}"/>/oscarRx/rePrescribe2.do?method=repcbAllLongTerm';
             new Ajax.Updater('rxText', url, {
                 method: 'get',
                 parameters: data,
@@ -1922,7 +1914,7 @@
                 + '\n  *  Drug Information'
                 + '\n\nAre you sure you wish to use this feature?') == true) {
                 var randomId = Math.round(Math.random() * 1000000);
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/WriteScript.do?parameterValue=newCustomNote";
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=newCustomNote';
                 var data = "randomId=" + randomId;
                 new Ajax.Updater('rxText', url, {
                     method: 'get',
@@ -1945,7 +1937,7 @@
                 //call another function to bring up prescribe.jsp
                 var randomId = Math.round(Math.random() * 1000000);
                 var searchString = $("searchString").value;
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/WriteScript.do?parameterValue=newCustomDrug&name=" + searchString;
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=newCustomDrug&name=' + searchString;
                 var data = "randomId=" + randomId;
                 new Ajax.Updater('rxText', url, {
                     method: 'get', parameters: data, asynchronous: true, evalScripts: true,
@@ -2029,7 +2021,7 @@
 
         function callTreatments(textId, id) {
             var ele = $(textId);
-            var url = "TreatmentMyD.jsp"
+            var url = '<c:out value="${ctx}"/>/oscarRx/TreatmentMyD.jsp';
             var ran_number = Math.round(Math.random() * 1000000);
             var params = "demographicNo=<%=demoNo%>&cond=" + ele.value + "&rand=" + ran_number;  //hack to get around ie caching the page
             new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
@@ -2037,6 +2029,10 @@
         }
 
         function callAdditionWebService(url, id) {
+            var contextPath = '<c:out value="${ctx}"/>';
+            if (url.indexOf(contextPath) != 0) {
+                url = contextPath + "/oscarRx/" + url;
+            }
             var ran_number = Math.round(Math.random() * 1000000);
             var params = "demographicNo=<%=demoNo%>&rand=" + ran_number;  //hack to get around ie caching the page
             var updater = new Ajax.Updater(id, url, {
@@ -2048,6 +2044,10 @@
         }
 
         function callReplacementWebService(url, id) {
+            var contextPath = '<c:out value="${ctx}"/>';
+            if (url.indexOf(contextPath) != 0) {
+                url = contextPath + "/oscarRx/" + url;
+            }
             var ran_number = Math.round(Math.random() * 1000000);
             var params = "demographicNo=<%=demoNo%>&rand=" + ran_number;  //hack to get around ie caching the page
             var updater = new Ajax.Updater(id, url, {method: 'get', parameters: params, evalScripts: true});
@@ -2086,7 +2086,7 @@
             //var myHiddenField = YAHOO.util.Dom.get("myHidden");
             var myHandler = function (type, args) {
                 var arr = args[2];
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/WriteScript.do?parameterValue=createNewRx"; //"prescribe.jsp";
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=createNewRx'; //"prescribe.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var name = encodeURIComponent(arr.name);
                 var params = "demographicNo=<%=demoNo%>&drugId=" + arr.id + "&text=" + name + "&randomId=" + ran_number;  //hack to get around ie caching the page
@@ -2211,7 +2211,6 @@
 
         // var totalHiddenResources=0;
 
-
         var addTextView = 0;
 
         function showAddText(randId) {
@@ -2231,8 +2230,8 @@
         function ShowW(id, resourceId, updated) {
 
             var params = "resId=" + resourceId + "&updatedat=" + updated
-            var url = 'GetmyDrugrefInfo.do?method=setWarningToShow&rand=' + Math.floor(Math.random() * 10001);
-            new Ajax.Updater('showHideTotal', url, {
+            var url = '<c:out value="${ctx}"/>/oscarRx/GetmyDrugrefInfo.do?method=setWarningToShow&rand=' + Math.floor(Math.random() * 10001);
+            new Ajax.Updater('<c:out value="${ctx}"/>/oscarRx/showHideTotal', url, {
                 method: 'get',
                 parameters: params,
                 asynchronous: true,
@@ -2247,11 +2246,11 @@
         }
 
         function HideW(id, resourceId, updated) {
-            var url = 'GetmyDrugrefInfo.do?method=setWarningToHide';
+            var url = '<c:out value="${ctx}"/>/oscarRx/GetmyDrugrefInfo.do?method=setWarningToHide';
             var ran_number = Math.round(Math.random() * 1000000);
             var params = "resId=" + resourceId + "&updatedat=" + updated + "&rand=" + ran_number;  //hack to get around ie caching the page
             //totalHiddenResources++;
-            new Ajax.Updater('showHideTotal', url, {
+            new Ajax.Updater('oscarRxshowHideTotal', url, {
                 method: 'get',
                 parameters: params,
                 asynchronous: true,
@@ -2265,14 +2264,12 @@
             });
         }
 
-
         function setSearchedDrug(drugId, name) {
-
-            var url = "<c:out value="${ctx}"/>" + "/oscarRx/WriteScript.do?parameterValue=createNewRx";
+            var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=createNewRx';
             var ran_number = Math.round(Math.random() * 1000000);
             name = encodeURIComponent(name);
             var params = "demographicNo=<%=demoNo%>&drugId=" + drugId + "&text=" + name + "&randomId=" + ran_number;
-            new Ajax.Updater('rxText', url, {
+            new Ajax.Updater('<c:out value="${ctx}"/>/oscarRxrxText', url, {
                 method: 'get',
                 parameters: params,
                 asynchronous: true,
@@ -2301,7 +2298,6 @@
             }
         }
 
-
         function removeReRxDrugId(drugId) {
             if (drugId != null) {
                 var data = "reRxDrugId=" + drugId + "&action=removeFromReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001);
@@ -2319,8 +2315,8 @@
             var drugId = ar[1];
             if (drugId != null && $("reRxCheckBox_" + drugId).checked == true) {
 
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/rePrescribe2.do?method=represcribeMultiple&rand=" + Math.floor(Math.random() * 10001);
-                new Ajax.Updater('rxText', url, {
+                var url = '<c:out value="${ctx}"/>/oscarRx/rePrescribe2.do?method=represcribeMultiple&rand=' + Math.floor(Math.random() * 10001);
+                new Ajax.Updater('<c:out value="${ctx}"/>/oscarRxrxText', url, {
                     method: 'get', parameters: data, asynchronous: false, evalScripts: true,
                     insertion: Insertion.Bottom, onSuccess: function (transport) {
                         // updateCurrentInteractions();
@@ -2332,8 +2328,8 @@
                 new Ajax.Request(urlUpdateId, {method: 'get', parameters: dataUpdateId});
 
                 var data = "drugId=" + drugId;
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/rePrescribe2.do?method=represcribe2&rand=" + Math.floor(Math.random() * 10001);
-                new Ajax.Updater('rxText', url, {
+                var url = '<c:out value="${ctx}"/>/oscarRx/rePrescribe2.do?method=represcribe2&rand=' + Math.floor(Math.random() * 10001);
+                new Ajax.Updater('<c:out value="${ctx}"/>/oscarRxrxText', url, {
                     method: 'get', parameters: data, evalScripts: true,
                     insertion: Insertion.Bottom, onSuccess: function (transport) {
                         // updateCurrentInteractions();
@@ -2481,7 +2477,7 @@
         }
 
         function getRenalDosingInformation(divId, atcCode) {
-            var url = "RenalDosing.jsp";
+            var url = '<c:out value="${ctx}"/>/oscarRx/RenalDosing.jsp';
             var ran_number = Math.round(Math.random() * 1000000);
             var params = "demographicNo=<%=demoNo%>&atcCode=" + atcCode + "&divId=" + divId + "&rand=" + ran_number;
             new Ajax.Updater(divId, url, {
@@ -2493,7 +2489,7 @@
         }
 
         function getLUC(divId, randomId, din) {
-            var url = "LimitedUseCode.jsp";
+            var url = '<c:out value="${ctx}"/>/oscarRx/LimitedUseCode.jsp';
             var params = "randomId=" + randomId + "&din=" + din;
             new Ajax.Updater(divId, url, {
                 method: 'get',
@@ -2554,7 +2550,6 @@
             return x;
         }
 
-
         function validateWrittenDate() {
             var x = true;
             jQuery('input[name^="writtenDate_"]').each(function () {
@@ -2606,15 +2601,14 @@
             return x;
         }
 
-
-        <%
+<%
 		ArrayList<Object> args = new ArrayList<Object>();
 		args.add(String.valueOf(bean.getDemographicNo()));
 		args.add(bean.getProviderNo());
 
 		Study myMeds = StudyFactory.getFactoryInstance().makeStudy(Study.MYMEDS, args);
 		out.write(myMeds.printInitcode());
-	%>
+%>
 
 
         function updateSaveAllDrugsPrintContinue() {

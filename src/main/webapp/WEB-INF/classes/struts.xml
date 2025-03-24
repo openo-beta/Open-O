@@ -220,9 +220,6 @@
             <result name="success">/oscarRx/ChooseDrug.jsp</result>
             <result name="error">/500.jsp</result>
         </action>
-        <action name="oscarRx/WriteScript" class="oscar.oscarRx.pageUtil.RxWriteScript2Action">
-            <result name="newRx">/oscarRx/prescribe.jsp</result>
-        </action>
         <action name="oscarEncounter/IncomingEncounter" class="oscar.oscarEncounter.pageUtil.EctIncomingEncounter2Action">
             <result name="failure">/oscarEncounter/error.jsp</result>
             <result name="success">/oscarEncounter/Index.jsp</result>
@@ -238,6 +235,13 @@
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
         <action name="oscarRx/viewScript" class="oscar.oscarRx.pageUtil.RxViewScript2Action">
+            <result name="viewScript">/oscarRx/ViewScript.jsp</result>
+        </action>
+        
+        <action name="oscarRx/WriteScript" class="oscar.oscarRx.pageUtil.RxWriteScript2Action">
+            <result name="newRx">/oscarRx/prescribe.jsp</result>
+            <result name="refresh">/oscarRx/WriteScript.jsp</result>
+            <result name="addAnother">/oscarRx/SearchDrug.jsp</result>
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
         <action name="oscarRx/writeScript" class="oscar.oscarRx.pageUtil.RxWriteScript2Action">

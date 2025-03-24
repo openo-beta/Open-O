@@ -63,7 +63,7 @@ function newWindow(url) {
                         }
                     %>
                     </select>        
-                    <b><a style="color:white; "href="SelectPharmacy2.jsp"><span onclick="ShowSpin(true);">(Edit List)</span></a></b>
+                    <b><a style="color:white;" href="oscarRx/SelectPharmacy2.jsp"><span onclick="ShowSpin(true);">(Edit List)</span></a></b>
                     </td>
                     <td valign="top" align="right">
                         <span class="HelpAboutLogout" style="color:white;">

@@ -61,10 +61,10 @@
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
         }
-        patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+        patient = (oscar.oscarRx.data.RxPatientData.Patient) session.getAttribute("Patient");
     %>
         </c:if>
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="oscarRx/styles.css">
     </head>
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
 
