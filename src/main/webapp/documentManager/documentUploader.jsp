@@ -121,6 +121,36 @@
         body {
             background-color: #c0c0c0;
         }
+        .fileinput-button {
+            position: relative;
+            overflow: hidden;
+        }
+        .fileinput-button input {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            transform: translate(-300px, 0) scale(4);
+            font-size: 23px;
+            direction: ltr;
+            cursor: pointer;
+        }
+        .files {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .files td {
+            padding: 5px;
+        }
+        .progress div {
+            background: green;
+            height: 5px;
+        }
+        .ui-state-error {
+            color: red;
+        }
     </style>
 </head>
 <body onload="setDropList();">
@@ -197,82 +227,55 @@
     </div>
 </div>
 <script id="template-upload" type="text/x-jquery-tmpl">
-    <tr class="template-upload{{if
-error}} ui-state-error{{/
-if}}">
+    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
         <td class="preview"></td>
         <td class="name">\${name}</td>
         <td class="size">\${sizef}</td>
-        {{if
-error}}
+        {{if error}}
             <td class="error" colspan="2">Error:
-                {{if
-error === 'maxFileSize'}}File is too big
-                {{else
-error === 'minFileSize'}}File is too small
-                {{else
-error === 'acceptFileTypes'}}Filetype not allowed
-                {{else
-error === 'maxNumberOfFiles'}}Max number of files exceeded
+                {{if error === 'maxFileSize'}}File is too big
+                {{else error === 'minFileSize'}}File is too small
+                {{else error === 'acceptFileTypes'}}Filetype not allowed
+                {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
                 {{else}}\${error}
-                {{/
-if}}
+                {{/if}}
             </td>
         {{else}}
             <td class="progress"><div></div></td>
             <td class="start"><button>Start</button></td>
-        {{/
-if}}
+        {{/if}}
         <td class="cancel"><button>Cancel</button></td>
     </tr>
 </script>
 <script id="template-download" type="text/x-jquery-tmpl">
-    <tr class="template-download{{if
-error}} ui-state-error{{/
-if}}">
-        {{if
-error}}
+    <tr class="template-download{{if error}} ui-state-error{{/if}}">
+        {{if error}}
             <td></td>
             <td class="name">\${name}</td>
             <td class="size">\${sizef}</td>
             <td class="error" colspan="2">Error:
-                {{if
-error === 1}}File exceeds upload_max_filesize (php.ini directive)
-                {{else
-error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
-                {{else
-error === 3}}File was only partially uploaded
-                {{else
-error === 4}}No File was uploaded
-                {{else
-error === 5}}Missing a temporary folder
-                {{else
-error === 6}}Failed to write file to disk
-                {{else
-error === 7}}File upload stopped by extension
-                {{else
-error === 'maxFileSize'}}File is too big
-                {{else
-error === 'minFileSize'}}File is too small
-                {{else
-error === 'acceptFileTypes'}}Filetype not allowed
-                {{else
-error === 'maxNumberOfFiles'}}Max number of files exceeded
-                {{else
-error === 'uploadedBytes'}}Uploaded bytes exceed file size
-                {{else
-error === 'emptyResult'}}Empty file upload result
+                {{if error === 1}}File exceeds upload_max_filesize (php.ini directive)
+                {{else error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
+                {{else error === 3}}File was only partially uploaded
+                {{else error === 4}}No File was uploaded
+                {{else error === 5}}Missing a temporary folder
+                {{else error === 6}}Failed to write file to disk
+                {{else error === 7}}File upload stopped by extension
+                {{else error === 'maxFileSize'}}File is too big
+                {{else error === 'minFileSize'}}File is too small
+                {{else error === 'acceptFileTypes'}}Filetype not allowed
+                {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+                {{else error === 'uploadedBytes'}}Uploaded bytes exceed file size
+                {{else error === 'emptyResult'}}Empty file upload result
                 {{else}}\${error}
-                {{/
-if}}
+                {{/if}}
             </td>
         {{else}}
             <td class="preview"> </td>
             <td class="name"> \${name} </td>
             <td class="size"> \${sizef} </td>
             <td colspan="2">Uploaded successfully</td>
-        {{/
-if}}
+        {{/if}}
     </tr>
 </script>
 <script src="<%=context%>/js/jquery-1.7.1.min.js"></script>
@@ -284,9 +287,69 @@ if}}
 <script type="text/javascript">
     jQuery(function () {
         'use strict';
+        
+        // Initialize the jQuery File Upload widget
         jQuery('#fileupload').fileupload({
-            sequentialUploads: true
+            url: '<%=context%>/documentManager/documentUpload.do?method=executeUpload',
+            sequentialUploads: true,
+            add: function (e, data) {
+                // When files are added
+                jQuery('.files').html(''); // Clear previous files
+                data.context = jQuery('#template-upload').tmpl(data.files);
+                jQuery('.files').append(data.context);
+                
+                // Bind start/cancel buttons for each file
+                data.context.find('.start').click(function() {
+                    data.submit();
+                });
+                data.context.find('.cancel').click(function() {
+                    data.abort();
+                    jQuery(this).closest('tr').remove();
+                });
+                
+                jQuery('#start').prop('disabled', false);
+                jQuery('#cancel').prop('disabled', false);
+            },
+            progress: function (e, data) {
+                // Update progress
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                data.context.find('.progress div').css('width', progress + '%');
+            },
+            done: function (e, data) {
+                // On upload complete
+                data.context.removeClass('uploading');
+                data.context.find('.start').remove();
+                data.context.find('.cancel').remove();
+                data.context.append('<td>Upload complete</td>');
+            },
+            fail: function (e, data) {
+                // On upload failure
+                data.context.addClass('error');
+                data.context.find('.error').text('Upload failed');
+            }
         });
+
+        // Bind button click handlers
+        jQuery('#start').on('click', function (e) {
+            e.preventDefault();
+            jQuery('.files .start').each(function() {
+                jQuery(this).click();
+            });
+        });
+
+        jQuery('#cancel').on('click', function (e) {
+            e.preventDefault();
+            jQuery('.files .cancel').each(function() {
+                jQuery(this).click();
+            });
+            jQuery('.files').html(''); // Clear file list
+            jQuery('#start').prop('disabled', true);
+            jQuery('#cancel').prop('disabled', true);
+        });
+
+        // Show buttons initially but disable start/cancel until files are added
+        jQuery('#start').prop('disabled', true);
+        jQuery('#cancel').prop('disabled', true);
     });
 </script>
 </body>
