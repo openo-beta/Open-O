@@ -4652,7 +4652,7 @@
                                                                           value="Save"
                                                                           onclick="javascript:return onSave('<%=request.getContextPath() %>/form/formname.do');"/>
                                     <input type="submit" value="Save and Exit"
-                                           onclick="javascript:return onSaveExit('<%=request.getContextPath() %>/form/formname.do"/>');"/>
+                                           onclick="javascript:return onSaveExit('<%=request.getContextPath() %>/form/formname.do');"/>
                                     <input type="submit" value="Exit"
                                            onclick="javascript:return onExit();"/> <input type="submit"
                                                                                           value="Print"

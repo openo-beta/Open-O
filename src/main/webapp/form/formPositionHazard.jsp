@@ -82,13 +82,19 @@
         temp = "";
 
         function onPrintPDF() {
-
-            temp = document.forms[0].action;
-            document.forms[0].action = "<rewrite:reWrite jspPage="formname.do?__title=Position+Hazard&__cfgfile=PositionHazardPrint_pg1&__cfgfile=PositionHazardPrint_pg2&__template=PositionHazardForm"/>";
-            document.forms[0].submit.value = "printall";
-            document.forms[0].target = "_self";
-
-            return true;
+            var form = document.forms[0];
+            var url = 'form/createpdf' +
+                    '?__title=Position+Hazard' +
+                    '&__cfgfile=PositionHazardPrint_pg1' +
+                    '&__cfgfile=PositionHazardPrint_pg2' +
+                    '&__template=PositionHazardForm';
+            
+            var params = new URLSearchParams(new FormData(form));
+            
+            var printWindow = window.open(url + '&' + params.toString(), '_blank');
+            printWindow.focus();
+            
+            return false;
         }
 
         function onSave() {
@@ -134,9 +140,7 @@
                                                                                                  value="Save and Exit"
                                                                                                  onclick="javascript:return onSaveExit();"/> <% } %>
                     <input type="submit" value="Exit"
-                           onclick="javascript:return onExit();"/> <input type="submit"
-                                                                          value="Print Pdf"
-                                                                          onclick="javascript:return onPrintPDF();"/>
+                           onclick="javascript:return onExit();"/> <input type="button" value="Print Pdf" onclick="onPrintPDF();"/>
                 </td>
             </tr>
         </table>
@@ -914,7 +918,7 @@
                     <input type="submit" value="Save and Exit" onclick="javascript:return onSaveExit();"/>
                     <% } %>
                     <input type="submit" value="Exit" onclick="javascript:return onExit();"/>
-                    <input type="submit" value="Print Pdf" onclick="javascript:return onPrintPDF();"/>
+                    <input type="button" value="Print Pdf" onclick="onPrintPDF();"/>
                 </td>
             </tr>
         </table>

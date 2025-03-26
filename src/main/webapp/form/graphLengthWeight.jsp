@@ -57,9 +57,9 @@
         FrmRecord rec = (new FrmRecordFactory()).factory(formClass);
         java.util.Properties props = ((FrmRourkeRecord) rec).getGraph(demoNo, formId);
 
-        String red = "graphics/redMark.gif";
-        String blue = "graphics/blueMark.gif";
-        String chart = ((FrmRourkeRecord) rec).isFemale(demoNo) == true ? "graphics/girlLength36m.jpg" : "graphics/boyLength36m.jpg";
+        String red = "form/graphics/redMark.gif";
+        String blue = "form/graphics/blueMark.gif";
+        String chart = ((FrmRourkeRecord) rec).isFemale(demoNo) == true ? "form/graphics/girlLength36m.jpg" : "form/graphics/boyLength36m.jpg";
     %>
 
 
