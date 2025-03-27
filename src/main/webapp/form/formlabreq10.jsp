@@ -140,7 +140,7 @@
                 //ret = confirm("Do you wish to save this form and view the print preview?");
                 //popupFixedPage(650,850,'../provider/notice.htm');
                 temp = document.forms[0].action;
-                document.forms[0].action = "<rewrite:reWrite jspPage="formname.do?__title=Lab+Request&__cfgfile=labReqPrintEncounterForm2010&__template=labReqForm2010"/>";
+                document.forms[0].action = "form/formname.do?__title=Lab+Request&__cfgfile=labReqPrintEncounterForm2010&__template=labReqForm2010";
                 document.forms[0].submit.value = "printall";
                 document.forms[0].target = "_self";
             }
