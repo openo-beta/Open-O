@@ -104,11 +104,11 @@
                 temp = document.forms[0].action;
 
                 if (pdf) {
-                    document.forms[0].action = "<rewrite:reWrite jspPage="formname.do?__title=Lab+Request&__cfgfile=labReqPrint&__template=newReqLab"/>";
+                    document.forms[0].action = '<%= request.getContextPath() %>/form/formname.do?__title=Lab+Request&__cfgfile=labReqPrint&__template=newReqLab';
                     document.forms[0].submit.value = "printall";
                     document.forms[0].target = "_self";
                 } else {
-                    document.forms[0].action = "<rewrite:reWrite jspPage="formname.do"/>";
+                    document.forms[0].action = '<%= request.getContextPath() %>/form/formname.do';
                     document.forms[0].submit.value = "printLabReq";
                     document.forms[0].target = "labReqPrint";
                 }

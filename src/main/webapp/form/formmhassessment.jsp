@@ -52,8 +52,8 @@
         <title>Mental Health Assessment and Intervention Plan</title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="screen"
-              href="mhStyles.css">
-        <link rel="stylesheet" type="text/css" media="print" href="print.css">
+              href="form/mhStyles.css">
+        <link rel="stylesheet" type="text/css" media="print" href="form/print.css">
 
         <%
             String formClass = "MentalHealth";
