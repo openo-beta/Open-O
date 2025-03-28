@@ -302,9 +302,9 @@
                         <%= type.getResources() %>
                     </th>
                     <th nowrap>
-                        <a href="appointmentTypeAction.do?oper=edit&no=<%= type.getId() %>">edit</a>
-                        &nbsp;&nbsp;<a
-                            href="javascript:delType('appointmentTypeAction.do?oper=del&no=<%= type.getId() %>')">delete</a>
+                        <a href="${pageContext.request.contextPath}/appointment/appointmentTypeAction.do?oper=edit&no=<%= type.getId() %>">edit</a>
+                        &nbsp;&nbsp;
+                        <a href="javascript:delType('<%= type.getId() %>')">delete</a>
                     </th>
                 </tr>
                 <%
@@ -317,10 +317,10 @@
 </table>
 </body>
 <script type="text/javascript">
-    function delType(url) {
+    function delType(id) {
         var answer = confirm("Type will be deleted! Are you sure?")
         if (answer) {
-            window.location = url;
+            window.location = "${pageContext.request.contextPath}/appointment/appointmentTypeAction.do?oper=del&no=" + id;
         }
     }
 </script>

@@ -2399,6 +2399,10 @@
             <result name="edit">/appointment/appointmentTypeAction.do?oper=edit</result>
             <result name="success">/appointment/appointmentTypeList.jsp</result>
             <result name="failure">/appointment/appointmentTypeList.jsp</result>
+            <result name="redirect" type="redirectAction">
+                <param name="actionName">appointmentTypeAction</param>
+                <param name="namespace">/appointment</param>
+            </result>
         </action>
         <action name="hospitalReportManager/Display" class="org.oscarehr.hospitalReportManager.HRMDisplayReport2Action">
             <result name="display">/hospitalReportManager/displayHRMReport.jsp</result>
