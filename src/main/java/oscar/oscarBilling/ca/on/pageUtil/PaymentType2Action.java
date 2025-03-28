@@ -54,24 +54,31 @@ public class PaymentType2Action extends ActionSupport {
     private BillingONPaymentDao billPaymentDao = SpringUtils.getBean(BillingONPaymentDao.class);
 
     public String execute() {
-        String method = request.getParameter("method");
-        if ("listAllType".equals(method)) {
-            return listAllType();
-        } else if ("createType".equals(method)) {
-            return createType();
-        } else if ("editType".equals(method)) {
-            return editType();
-        } else if ("removeType".equals(method)) {
-            return removeType();
-        }
+            String method = request.getParameter("method");
+            if ("listAllType".equals(method)) {
+                return listAllType();
+            } else if ("createType".equals(method)) {
+                return createType();
+            } else if ("editType".equals(method)) {
+                return editType();
+            } else if ("removeType".equals(method)) {
+                return removeType();
+            }
 
-        List<BillingPaymentType> paymentTypeList = billingPaymentTypeDao.findAll();
-        request.setAttribute("paymentTypeList", paymentTypeList);
-        return SUCCESS;
+            List<BillingPaymentType> paymentTypeList = billingPaymentTypeDao.findAll();
+            request.setAttribute("paymentTypeList", paymentTypeList);
+            return SUCCESS;
     }
 
     public String listAllType() {
-        return execute();
+        try {
+            List<BillingPaymentType> paymentTypeList = billingPaymentTypeDao.findAll();
+            request.setAttribute("paymentTypeList", paymentTypeList);
+            return SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ERROR;
+        }
     }
 
     public String createType() {
