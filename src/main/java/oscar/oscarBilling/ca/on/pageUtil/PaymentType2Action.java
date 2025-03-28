@@ -65,9 +65,7 @@ public class PaymentType2Action extends ActionSupport {
                 return removeType();
             }
 
-            List<BillingPaymentType> paymentTypeList = billingPaymentTypeDao.findAll();
-            request.setAttribute("paymentTypeList", paymentTypeList);
-            return SUCCESS;
+            return listAllType();
     }
 
     public String listAllType() {
