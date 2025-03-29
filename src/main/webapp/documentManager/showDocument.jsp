@@ -411,7 +411,10 @@
                                     </tr>
                                     <tr>
                                         <td><bean:message key="dms.documentReport.msgDocDesc" />:</td>
-                                        <td><input id="docDesc_<%=docId%>"  type="text" name="documentDescription" value="<%=curdoc.getDescription()%>" /></td>
+                                        <td><input id="docDesc_<%=docId%>" type="text" name="documentDescription"
+                                                   value="<%=curdoc.getDescription()%>"
+                                                   onfocus="this.select(); this.setAttribute('data-original-value', this.value)"
+                                                   onblur="if (this.value.trim() === '') this.value = this.getAttribute('data-original-value')"/></td>
                                     </tr>
                                     <tr>
                                         <td><bean:message key="inboxmanager.document.ObservationDateMsg" /></td>
