@@ -1055,6 +1055,13 @@
 			<version>1.78.1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>5.8.16</version>
+		</dependency>
+
 		<!-- AXIS2 (for OLIS) -->
 
                <dependency>
@@ -1473,6 +1480,13 @@
 <!--    <type>pom</type>-->
 <!--</dependency>-->
 
+
+		<!-- https://mvnrepository.com/artifact/org.jboss.aerogear/aerogear-otp-java -->
+		<dependency>
+			<groupId>org.jboss.aerogear</groupId>
+			<artifactId>aerogear-otp-java</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 
  </dependencies>

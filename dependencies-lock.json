@@ -1034,11 +1034,11 @@
   }, {
     "groupId" : "net.java.dev.jna",
     "artifactId" : "jna",
-    "version" : "5.15.0",
+    "version" : "5.16.0",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:Nfr+zgyK+pXglOfGJ4ANDOAky/1bZxEHV+sw1F3PwxB+q3Wvn+xJi2Kfm3kLKviSegk6coPTSPeyEPRTPPd8og=="
+    "integrity" : "sha512:2eGpxL6mstiqyWAdCXp3AT/TI7b1xh2D+sIZirapiLXPITkGGJM7FD3kzCVthL0qhnmPyzZ5R5zPxq7LIDQZhA=="
   }, {
     "groupId" : "net.oauth.core",
     "artifactId" : "oauth-provider",
@@ -3048,6 +3048,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:69vFpDGFVg9xxTjx/ClXNn6MBqRQesdAj+JSfEngno0dt3FhqkTBfmyt/T7DPTZI/iFvFqt1Mwbx9Oae6Y8lrg=="
+  }, {
+    "groupId" : "org.springframework.security",
+    "artifactId" : "spring-security-crypto",
+    "version" : "5.8.16",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:uuIy7D74iKO0pCZJz+3aZLYGLhE0UyiEnvUdLlsp+V+ldIzgD93YLd0HxjfAwn9DaZNyKjoQbo1G/y0RTqFtAw=="
   }, {
     "groupId" : "org.springframework",
     "artifactId" : "spring-aop",
