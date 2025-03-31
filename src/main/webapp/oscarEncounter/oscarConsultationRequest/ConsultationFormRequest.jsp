@@ -1563,7 +1563,7 @@ if (userAgent != null) {
         </ul>
     </div>
 <% } %>
-    <form style="consultationRequestForm" action="${pageContext.request.contextPath}/oscarEncounter/RequestConsultation.do"
+    <form id="EctConsultationFormRequestForm" name="EctConsultationFormRequestForm" style="consultationRequestForm" action="${pageContext.request.contextPath}/oscarEncounter/RequestConsultation.do"
                 method="post" onsubmit="alert('HTHT'); return false;">
         <%
             EctConsultationFormRequestForm thisForm = (EctConsultationFormRequestForm) request.getAttribute("EctConsultationFormRequestForm");

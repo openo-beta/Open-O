@@ -41,7 +41,6 @@ import org.oscarehr.common.dao.BillingPaymentTypeDao;
 import org.oscarehr.common.model.BillingPaymentType;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -54,18 +53,18 @@ public class PaymentType2Action extends ActionSupport {
     private BillingONPaymentDao billPaymentDao = SpringUtils.getBean(BillingONPaymentDao.class);
 
     public String execute() {
-            String method = request.getParameter("method");
-            if ("listAllType".equals(method)) {
-                return listAllType();
-            } else if ("createType".equals(method)) {
-                return createType();
-            } else if ("editType".equals(method)) {
-                return editType();
-            } else if ("removeType".equals(method)) {
-                return removeType();
-            }
-
+        String method = request.getParameter("method");
+        if ("listAllType".equals(method)) {
             return listAllType();
+        } else if ("createType".equals(method)) {
+            return createType();
+        } else if ("editType".equals(method)) {
+            return editType();
+        } else if ("removeType".equals(method)) {
+            return removeType();
+        }
+
+        return listAllType();
     }
 
     public String listAllType() {
