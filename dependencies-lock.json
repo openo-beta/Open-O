@@ -1034,11 +1034,11 @@
   }, {
     "groupId" : "net.java.dev.jna",
     "artifactId" : "jna",
-    "version" : "5.15.0",
+    "version" : "5.17.0",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:Nfr+zgyK+pXglOfGJ4ANDOAky/1bZxEHV+sw1F3PwxB+q3Wvn+xJi2Kfm3kLKviSegk6coPTSPeyEPRTPPd8og=="
+    "integrity" : "sha512:M/NSUo/HCgf/yRhP+AZHsCxR6ibOsRznDupK29lBmm+BG8EXRtxz3fQP8qIdrtvqq9NJ6QHzDsXoQaH1/G8bUg=="
   }, {
     "groupId" : "net.oauth.core",
     "artifactId" : "oauth-provider",
@@ -2831,7 +2831,7 @@
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:PvzT/NBtwvDq1wzkQbzpdtEF9Tuq+A4SHjcNo35rSZjjoJKvrF1W9EEgNMZpQGQWut4qE30/4/z10fG6rW4KJg=="
+    "integrity" : "sha512:KuYiGULJjM5+QXyYP/PbuWVkuls1Wx2pZ2wCv2aUzB2uHUdta31bz2Qhux4BtN/hrd5IB3q0nBXb80K7GAGWAw=="
   }, {
     "groupId" : "org.oscarehr.caisi_integrator",
     "artifactId" : "caisi_integrator_client_stubs",
@@ -2855,7 +2855,7 @@
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:2xrsBje+ruyGvYWUGVlyWQUigf5AkrklTZ91J17+5puAPmicjZs99s9qV4r9jkx3myupstPvc3Q8y7WTmsvBMw=="
+    "integrity" : "sha512:6IiX6yzoQZ9SEf3kdtJUI2LeFOWSrk5X51EZlIhMD4lH0G+CXoHXAeQSDxqGZsa9s5nGLFJF6EuCytSo4wWbbQ=="
   }, {
     "groupId" : "org.oscarehr.hrm",
     "artifactId" : "hrm-jaxb",
