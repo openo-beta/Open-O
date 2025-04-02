@@ -68,7 +68,7 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
     public void saveAll(List list) {
         logger.debug("saving ALL Secuserrole instances");
         // Session session = getSession();
-        Session session = currentSession();;
+        Session session = currentSession();
         try {
             for (int i = 0; i < list.size(); i++) {
                 Secuserrole obj = (Secuserrole) list.get(i);
@@ -167,9 +167,10 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
     public int deleteById(Integer id) {
         logger.debug("deleting Secuserrole by ID");
         try {
-
-            return getHibernateTemplate().bulkUpdate("delete Secuserrole as model where model.id =?", id);
-
+            Session session = currentSession();
+            Secuserrole entity = session.get(Secuserrole.class, id);
+            this.delete(entity);
+            return 1;
         } catch (RuntimeException re) {
             logger.error("delete failed", re);
             throw re;
