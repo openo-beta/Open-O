@@ -39,6 +39,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.ws.rest.to.model.RxStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import oscar.log.LogAction;
 import oscar.oscarDemographic.data.RxInformation;
@@ -691,6 +692,7 @@ import java.util.*;
     }
  
     @Override
+    @Cacheable(value = "OscarRxCache_specialInstructions", key = "#storedInstructQuery")
     public Set<String> getStoredInstructionsMatching(String storedInstructQuery) {
         if (storedInstructQuery == null || storedInstructQuery.trim().isEmpty()) {
             return Collections.emptySet();

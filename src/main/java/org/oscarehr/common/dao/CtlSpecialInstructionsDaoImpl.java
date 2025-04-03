@@ -27,11 +27,9 @@
 
 package org.oscarehr.common.dao;
 
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import org.springframework.cache.annotation.Cacheable;
 
 import org.oscarehr.common.model.CtlSpecialInstructions;
 import org.springframework.stereotype.Repository;
