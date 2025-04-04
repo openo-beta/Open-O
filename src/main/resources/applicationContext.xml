@@ -54,9 +54,15 @@
 
 	<!-- Enable Spring Cache -->
 	<cache:annotation-driven />
-	<!-- Cache Manager -->
-	<bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager">
-		<constructor-arg value="OscarRxCache_specialInstructions"/>
+
+	<!-- EhCache Cache Manager -->
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<constructor-arg ref="ehcacheManager"/>
+	</bean>
+
+	<!-- EhCache Factory Bean -->
+	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml"/>
 	</bean>
 
 	<!-- setup JPA -->
