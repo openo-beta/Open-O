@@ -76,6 +76,9 @@ public class DisplayImage2Action extends ActionSupport {
     public StreamData process() throws Exception {
 
         String fileName = request.getParameter("imagefile");
+        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+            throw new IllegalArgumentException("Invalid filename");
+        }
         String home_dir = OscarProperties.getInstance().getProperty("eform_image");
 
         File file = null;
