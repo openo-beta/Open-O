@@ -86,7 +86,7 @@
         %>
 
 
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="oscarRx/styles.css">
 
         <script language=javascript>
             function ShowDrugInfoBN(drug) {
@@ -185,7 +185,7 @@
                     <tr>
                         <td width="0%" valign="top">
                             <div class="DivCCBreadCrumbs">
-                                <a href="SearchDrug.jsp">
+                                <a href="oscarRx/SearchDrug.jsp">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a>
                                 <b><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.title"/></b>
                             </div>
@@ -316,7 +316,7 @@
                                                         <a href="javascript: void(0);"
                                                            onclick="setDrugRx2('<%=t.pKey%>','<%=brandName %>')">
                                                                     <%}else{%>
-                                                            <a href="chooseDrug.do?BN=<%=java.net.URLEncoder.encode(brandName )%>&drugId=<%= response.encodeURL(t.pKey) %>&demographicNo=<%= response.encodeURL(demoNo) %>"
+                                                            <a href="oscarRx/chooseDrug.do?BN=<%=java.net.URLEncoder.encode(brandName )%>&drugId=<%= response.encodeURL(t.pKey) %>&demographicNo=<%= response.encodeURL(demoNo) %>"
                                                                title="<%=brandName %>">
                                                                 <%}%>
                                                                 <%=brandName%>
@@ -346,7 +346,7 @@
                             <script language="javascript">
                                 function customWarning() {
                                     if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgCustomWarning"/>") == true) {
-                                        window.location.href = 'chooseDrug.do?demographicNo=<%= response.encodeURL(demoNo) %>';
+                                        window.location.href = 'oscarRx/chooseDrug.do?demographicNo=<%= response.encodeURL(demoNo) %>';
                                     }
                                 }
                             </script>

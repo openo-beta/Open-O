@@ -140,9 +140,9 @@
                                     <td align="right" class="noPrint">
                                         <div class="DivContentSectionHead">
                                             <% if (showall) { %>
-                                            <a href="PrintDrugProfile.jsp">Show Current</a>
+                                            <a href="oscarRx/PrintDrugProfile.jsp">Show Current</a>
                                             <% } else { %>
-                                            <a href="PrintDrugProfile.jsp?show=all">Show All</a>
+                                            <a href="oscarRx/PrintDrugProfile.jsp?show=all">Show All</a>
                                             <% } %>
                                             | <a href="javascript:void(0);window.print();">Print</a>
                                         </div>
@@ -201,9 +201,9 @@
                             <div class="DivContentSectionHead">
 
                                 <% if (showall) { %>
-                                <a href="PrintDrugProfile.jsp">Show Current</a>
+                                <a href="oscarRx/PrintDrugProfile.jsp">Show Current</a>
                                 <% } else { %>
-                                <a href="PrintDrugProfile.jsp?show=all">Show All</a>
+                                <a href="oscarRx/PrintDrugProfile.jsp?show=all">Show All</a>
                                 <% } %>
                                 | <a href="javascript:void(0);window.print();">Print</a>
                             </div>

@@ -75,7 +75,7 @@
         for (int j=0; j<favorites.length; j++){%>
 
     <p class="PropSheetMenuItemLevel1"><a
-            href="useFavorite.do?favoriteId=<%= favorites[j].getFavoriteId() %>"
+            href="oscarRx/useFavorite.do?favoriteId=<%= favorites[j].getFavoriteId() %>"
             title="<%= favorites[j].getFavoriteName() %>"><%if (favorites[j].getFavoriteName().length() > 13) {%>
         <%= favorites[j].getFavoriteName().substring(0, 10) + "..." %> <%} else {%>
         <%= favorites[j].getFavoriteName() %> <%}%></a></p>

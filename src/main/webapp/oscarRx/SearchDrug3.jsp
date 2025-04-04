@@ -320,7 +320,7 @@
 
                 var top = winY + 70;
                 var left = winX + 110;
-                var url = "searchDrug.do?rx2=true&searchString=" + $('searchString').value;
+                var url = "oscarRx/searchDrug.do?rx2=true&searchString=" + $('searchString').value;
                 popup2(600, 800, top, left, url, 'windowNameRxSearch<%=demoNo%>');
 
             }
@@ -719,9 +719,9 @@
                     }
                 });
                 if (ids.length > 0) {
-                    popupWindow(720, 700, 'PrintDrugProfile2.jsp?ids=' + ids.join(','), 'PrintDrugProfile');
+                    popupWindow(720, 700, 'oscarRx/PrintDrugProfile2.jsp?ids=' + ids.join(','), 'PrintDrugProfile');
                 } else {
-                    popupWindow(720, 700, 'PrintDrugProfile2.jsp', 'PrintDrugProfile');
+                    popupWindow(720, 700, 'oscarRx/PrintDrugProfile2.jsp', 'PrintDrugProfile');
                 }
             }
 

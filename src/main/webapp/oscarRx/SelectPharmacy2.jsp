@@ -390,7 +390,7 @@
                     opener.window.refresh();
                     window.close();
                 } else {
-                    window.location.href = "SearchDrug3.jsp";
+                    window.location.href = "oscarRx/SearchDrug3.jsp";
                 }
             }
 

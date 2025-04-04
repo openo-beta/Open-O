@@ -133,9 +133,9 @@
                                     <td align="right" class="noPrint">
                                         <div class="DivContentSectionHead">
                                             <% if (showall) { %>
-                                            <a href="PrintDrugProfile.jsp">Show Current</a>
+                                            <a href="oscarRx/PrintDrugProfile.jsp">Show Current</a>
                                             <% } else { %>
-                                            <a href="PrintDrugProfile.jsp?show=all">Show All</a>
+                                            <a href="oscarRx/PrintDrugProfile.jsp?show=all">Show All</a>
                                             <% } %>
                                             | <a href="javascript:void(0);window.print();">Print</a>
                                         </div>
@@ -176,12 +176,12 @@
                                             %>
                                             <tr>
                                                 <td width=20% valign="top"><a <%= styleColor%>
-                                                        href="StaticScript.jsp?regionalIdentifier=<%= drug.getRegionalIdentifier()
+                                                        href="oscarRx/StaticScript.jsp?regionalIdentifier=<%= drug.getRegionalIdentifier()
                                             %>&cn=<%= response.encodeURL(drug.getCustomName())%>&bn=<%=response.encodeURL(drug.getBrandName())%>">
                                                     <%= drug.getRxDate() %>
                                                 </a></td>
                                                 <td width=100%><a <%= styleColor%>
-                                                        href="StaticScript.jsp?regionalIdentifier=<%= drug.getRegionalIdentifier()
+                                                        href="oscarRx/StaticScript.jsp?regionalIdentifier=<%= drug.getRegionalIdentifier()
                                             %>&cn=<%= response.encodeURL(drug.getCustomName())%>&bn=<%=response.encodeURL(drug.getBrandName())%>">
                                                     <%= drug.getFullOutLine().replaceAll(";", " ") %>
                                                 </a></td>
@@ -205,9 +205,9 @@
                             <div class="DivContentSectionHead">
 
                                 <% if (showall) { %>
-                                <a href="PrintDrugProfile.jsp">Show Current</a>
+                                <a href="oscarRx/PrintDrugProfile.jsp">Show Current</a>
                                 <% } else { %>
-                                <a href="PrintDrugProfile.jsp?show=all">Show All</a>
+                                <a href="oscarRx/PrintDrugProfile.jsp?show=all">Show All</a>
                                 <% } %>
                                 | <a href="javascript:void(0);window.print();">Print</a>
                             </div>
