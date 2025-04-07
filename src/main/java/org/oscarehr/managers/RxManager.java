@@ -54,6 +54,12 @@ public interface RxManager {
     public List<Favorite> getFavorites(String pid);
     public Boolean addFavorite(Favorite f);
 
+    /**
+     * Retrieves a set of stored instructions that match the given string.
+     *
+     * @param str The string to match against stored instructions.
+     * @return A set of strings representing the matching stored instructions.
+     */
     Set<String> getStoredInstructionsMatching(String str);
 
     /**

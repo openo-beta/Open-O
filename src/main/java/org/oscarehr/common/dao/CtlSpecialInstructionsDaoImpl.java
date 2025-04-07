@@ -51,6 +51,14 @@ public class CtlSpecialInstructionsDaoImpl extends AbstractDaoImpl<CtlSpecialIns
         return results;
 	}
 
+	/**
+	 * Finds a list of descriptions from the CtlSpecialInstructions table that match a given query string.
+	 * The search is case-insensitive and uses a "like" operator with wildcards.
+	 *
+	 * @param descQuery The query string to search for within the descriptions.
+	 *                  The search will look for descriptions that contain this string.
+	 * @return A list of strings representing the matching descriptions.
+	 */
 	@Override
 	public List<String> findDescriptionsMatching(String descQuery) {
 		String query = "SELECT x.description FROM CtlSpecialInstructions x WHERE " +

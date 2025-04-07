@@ -690,7 +690,15 @@ import java.util.*;
 
         return true;
     }
- 
+
+    /**
+     * Retrieves a set of stored instructions that match the given query string.
+     * This method searches both the `ctlSpecialInstructionsDao` and `drugDao` for matching descriptions.
+     * The results are cached to improve performance.
+     *
+     * @param storedInstructQuery The query string to match against stored instructions.
+     * @return A set of strings representing the matching stored instructions. Returns an empty set if the query is null or empty.
+     */
     @Override
     @Cacheable(value = "OscarRxCache_specialInstructions", key = "#storedInstructQuery")
     public Set<String> getStoredInstructionsMatching(String storedInstructQuery) {
@@ -710,4 +718,4 @@ import java.util.*;
     }
  
  }
- 
+

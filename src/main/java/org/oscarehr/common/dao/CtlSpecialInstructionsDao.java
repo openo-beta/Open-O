@@ -34,5 +34,16 @@ import org.oscarehr.common.model.CtlSpecialInstructions;
 public interface CtlSpecialInstructionsDao extends AbstractDao<CtlSpecialInstructions> {
     List<CtlSpecialInstructions> findAll();
 
-    List<String> findDescriptionsMatching(String str);
+    /**
+     * Find all descriptions that match the given query.
+     * <p>
+     * This method searches for descriptions within the CtlSpecialInstructions
+     * that contain the provided query string. The search is case-insensitive.
+     * </p>
+     *
+     * @param descQuery The query string to search for within the descriptions.
+     *                  Must not be null.
+     * @return A list of descriptions that match the query.
+     */
+    List<String> findDescriptionsMatching(String descQuery);
 }
