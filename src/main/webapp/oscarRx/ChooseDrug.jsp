@@ -90,7 +90,7 @@
 
         <script language=javascript>
             function ShowDrugInfoBN(drug) {
-                window.open("drugInfo.do?BN=" + escape(drug), "_blank",
+                window.open("oscarRx/drugInfo.do?BN=" + escape(drug), "_blank",
                     "location=no, menubar=no, toolbar=no, scrollbars=yes, status=yes, resizable=yes");
             }
 
@@ -100,7 +100,7 @@
             }
 
             function ShowDrugInfoGN(drug) {
-                window.open("drugInfo.do?GN=" + escape(drug), "_blank",
+                window.open("oscarRx/drugInfo.do?GN=" + escape(drug), "_blank",
                     "location=no, menubar=no, toolbar=no, scrollbars=yes, status=yes, resizable=yes");
             }
 
@@ -287,7 +287,7 @@
                                                 %>
                                                 <tr>
                                                     <td bgcolor="<%=bgColor%>">
-                                                        <a href="searchDrug.do?genericSearch=<%= response.encodeURL( t.pKey ) %>&demographicNo=<%= response.encodeURL(demoNo) %>"
+                                                        <a href="oscarRx/searchDrug.do?genericSearch=<%= response.encodeURL( t.pKey ) %>&demographicNo=<%= response.encodeURL(demoNo) %>"
                                                            title="<%=t.name%>">
                                                             <%= getMaxVal(t.name)%>
                                                         </a>
@@ -372,7 +372,7 @@
                                     %>
                                     <tr>
                                         <td bgcolor="<%=bgColor%>">
-                                            <a href="searchDrug.do?genericSearch=<%= response.encodeURL(t.pKey) %>&demographicNo=<%= response.encodeURL(demoNo) %>">
+                                            <a href="oscarRx/searchDrug.do?genericSearch=<%= response.encodeURL(t.pKey) %>&demographicNo=<%= response.encodeURL(demoNo) %>">
                                                 <%= t.name%>
                                             </a>
                                             <span>&nbsp;&nbsp;(<a

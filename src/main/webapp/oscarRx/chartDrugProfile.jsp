@@ -137,7 +137,7 @@
 
             <fieldset>
                 <legend>Med List</legend>
-                <form action="chartDrugProfile.jsp">
+                <form action="oscarRx/chartDrugProfile.jsp">
                     <input type="hidden" name="labType" value="<%=labType%>"/>
                     <input type="hidden" name="demographic_no" value="<%=demographicNo%>"/>
                     <input type="hidden" name="testName" value="<%=testName%>"/>

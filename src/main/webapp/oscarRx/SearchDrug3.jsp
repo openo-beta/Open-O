@@ -976,7 +976,7 @@
                                                    style="width: 200px"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgReprescribeLongTermMed"/></a>
                                                 &nbsp;
                                                 <% } %>
-                                                <a href="javascript:popupWindow(720,920,'chartDrugProfile.jsp?demographic_no=<%=demoNo%>','PrintDrugProfile2')">Timeline
+                                                <a href="javascript:popupWindow(720,920,'oscarRx/chartDrugProfile.jsp?demographic_no=<%=demoNo%>','PrintDrugProfile2')">Timeline
                                                     Drug Profile</a>
                                                 &nbsp;
                                                 <a href="javascript: void(0);"

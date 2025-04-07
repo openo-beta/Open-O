@@ -72,7 +72,7 @@
             oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
         %>
 
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="oscarRx/styles.css">
 
 
         <script type="text/javascript">
