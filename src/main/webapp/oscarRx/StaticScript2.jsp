@@ -100,7 +100,7 @@
         %>
 
 
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="oscarRx/styles.css">
 
         <script language="javascript">
             function ShowDrugInfo(gn) {
@@ -179,7 +179,7 @@
                        width="100%" height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> &gt; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title"/></b>
+                            <div class="DivCCBreadCrumbs"><a href="oscarRx/SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> &gt; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title"/></b>
                             </div>
                         </td>
                     </tr>
@@ -351,7 +351,7 @@
             <td><br/>
                 <br/>
                 <input type="button" value="Back To Search Drug" class="ControlPushButton"
-                       onclick="javascript:window.location.href='SearchDrug3.jsp';"/></td>
+                       onclick="javascript:window.location.href='oscarRx/SearchDrug3.jsp';"/></td>
         </tr>
         <!----End new rows here-->
         <tr height="100%">

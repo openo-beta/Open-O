@@ -332,7 +332,7 @@
 
                 var top = winY + 70;
                 var left = winX + 110;
-                var url = "SelectReason.jsp?demographicNo=" + demographic + "&drugId=" + id;
+                var url = "oscarRx/SelectReason.jsp?demographicNo=" + demographic + "&drugId=" + id;
                 popup2(575, 650, top, left, url, 'windowNameRxReason<%=demoNo%>');
 
             }

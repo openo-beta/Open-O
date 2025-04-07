@@ -839,68 +839,75 @@
         // define current form
         RxWriteScriptForm thisForm = (RxWriteScriptForm) request.getAttribute("RxWriteScriptForm");
 
-        if (bean.getStashIndex() > -1) { //new way
-            RxPrescriptionData.Prescription rx = bean.getStashItem(bean.getStashIndex());
-            annotation_attrib = rx.getAtcCode() + "-" + String.valueOf(bean.getStashIndex());
-            RxDrugData drugData = new RxDrugData();
-            thisForm.setDemographicNo(bean.getDemographicNo());
-            thisForm.setRxDate(RxUtil.DateToString(rx.getRxDate(), "yyyy-MM-dd"));
-            thisForm.setEndDate(RxUtil.DateToString(rx.getEndDate(), "yyyy-MM-dd"));
-            thisForm.setWrittenDate(RxUtil.DateToString(rx.getWrittenDate(), "yyyy-MM-dd"));
-            if (thisForm.getWrittenDate().length() == 0)
-                thisForm.setWrittenDate(RxUtil.DateToString(RxUtil.Today(), "yyyy-MM-dd"));
-
-
-            if (!rx.isCustom()) {
-                thisForm.setGenericName(rx.getGenericName());
-                thisForm.setBrandName(rx.getBrandName());
-                thisForm.setGCN_SEQNO(rx.getGCN_SEQNO());
-                thisForm.setCustomName("");
-            } else {
-                thisForm.setGenericName("");
-                thisForm.setBrandName("");
-                thisForm.setGCN_SEQNO(0);
-                thisForm.setCustomName(rx.getCustomName());
-            }
-
-            quan = rx.getQuantity();
-            thisForm.setTakeMin(rx.getTakeMinString());
-            thisForm.setTakeMax(rx.getTakeMaxString());
-            thisForm.setFrequencyCode(rx.getFrequencyCode());
-            thisForm.setDuration(rx.getDuration());
-            thisForm.setDurationUnit(rx.getDurationUnit());
-            thisForm.setQuantity(rx.getQuantity());
-
-            thisForm.setDosage(rx.getDosage());
-            thisForm.setRepeat(rx.getRepeat());
-            thisForm.setLastRefillDate(RxUtil.DateToString(rx.getLastRefillDate(), "yyyy-MM-dd"));
-            if (isEmpty(thisForm.getLastRefillDate())) thisForm.setLastRefillDate("yyyy-mm-dd");
-            thisForm.setNosubs(rx.getNosubs());
-            thisForm.setPrn(rx.getPrn());
-
-            if (rx.getSpecial() == null || rx.getSpecial().length() < 6)
-                MiscUtils.getLogger().error("The drug special passed to the display of the user was already blank :" + rx.getSpecial());
-
-            thisForm.setSpecial(rx.getSpecial());
-            thisForm.setLongTerm(rx.getLongTerm());
-            thisForm.setPastMed(rx.getPastMed());
-            thisForm.setDispenseInternal(rx.getDispenseInternal());
-            thisForm.setPatientCompliance(rx.getPatientCompliance());
-            thisForm.setAtcCode(rx.getAtcCode());
-            thisForm.setRegionalIdentifier(rx.getRegionalIdentifier());
-            thisForm.setUnit(rx.getUnit());
-            thisForm.setUnitName(rx.getUnitName());
-            thisForm.setMethod(rx.getMethod());
-            thisForm.setRoute(rx.getRoute());
-            thisForm.setCustomInstr(rx.getCustomInstr());
-            thisForm.setOutsideProviderName(rx.getOutsideProviderName());
-            thisForm.setOutsideProviderOhip(rx.getOutsideProviderOhip());
-
-            atcCode = rx.getAtcCode();
+        if (thisForm == null) {
+            thisForm = new RxWriteScriptForm();
+            request.setAttribute("RxWriteScriptForm", thisForm);
         }
 
-        isCustom = thisForm.getGCN_SEQNO() == 0;
-        int drugId = thisForm.getGCN_SEQNO();
+        if (thisForm != null) {
+            if (bean.getStashIndex() > -1) { //new way
+                RxPrescriptionData.Prescription rx = bean.getStashItem(bean.getStashIndex());
+                annotation_attrib = rx.getAtcCode() + "-" + String.valueOf(bean.getStashIndex());
+                RxDrugData drugData = new RxDrugData();
+                thisForm.setDemographicNo(bean.getDemographicNo());
+                thisForm.setRxDate(RxUtil.DateToString(rx.getRxDate(), "yyyy-MM-dd"));
+                thisForm.setEndDate(RxUtil.DateToString(rx.getEndDate(), "yyyy-MM-dd"));
+                thisForm.setWrittenDate(RxUtil.DateToString(rx.getWrittenDate(), "yyyy-MM-dd"));
+                if (thisForm.getWrittenDate().length() == 0)
+                    thisForm.setWrittenDate(RxUtil.DateToString(RxUtil.Today(), "yyyy-MM-dd"));
+
+
+                if (!rx.isCustom()) {
+                    thisForm.setGenericName(rx.getGenericName());
+                    thisForm.setBrandName(rx.getBrandName());
+                    thisForm.setGCN_SEQNO(rx.getGCN_SEQNO());
+                    thisForm.setCustomName("");
+                } else {
+                    thisForm.setGenericName("");
+                    thisForm.setBrandName("");
+                    thisForm.setGCN_SEQNO(0);
+                    thisForm.setCustomName(rx.getCustomName());
+                }
+
+                quan = rx.getQuantity();
+                thisForm.setTakeMin(rx.getTakeMinString());
+                thisForm.setTakeMax(rx.getTakeMaxString());
+                thisForm.setFrequencyCode(rx.getFrequencyCode());
+                thisForm.setDuration(rx.getDuration());
+                thisForm.setDurationUnit(rx.getDurationUnit());
+                thisForm.setQuantity(rx.getQuantity());
+
+                thisForm.setDosage(rx.getDosage());
+                thisForm.setRepeat(rx.getRepeat());
+                thisForm.setLastRefillDate(RxUtil.DateToString(rx.getLastRefillDate(), "yyyy-MM-dd"));
+                if (isEmpty(thisForm.getLastRefillDate())) thisForm.setLastRefillDate("yyyy-mm-dd");
+                thisForm.setNosubs(rx.getNosubs());
+                thisForm.setPrn(rx.getPrn());
+
+                if (rx.getSpecial() == null || rx.getSpecial().length() < 6)
+                    MiscUtils.getLogger().error("The drug special passed to the display of the user was already blank :" + rx.getSpecial());
+
+                thisForm.setSpecial(rx.getSpecial());
+                thisForm.setLongTerm(rx.getLongTerm());
+                thisForm.setPastMed(rx.getPastMed());
+                thisForm.setDispenseInternal(rx.getDispenseInternal());
+                thisForm.setPatientCompliance(rx.getPatientCompliance());
+                thisForm.setAtcCode(rx.getAtcCode());
+                thisForm.setRegionalIdentifier(rx.getRegionalIdentifier());
+                thisForm.setUnit(rx.getUnit());
+                thisForm.setUnitName(rx.getUnitName());
+                thisForm.setMethod(rx.getMethod());
+                thisForm.setRoute(rx.getRoute());
+                thisForm.setCustomInstr(rx.getCustomInstr());
+                thisForm.setOutsideProviderName(rx.getOutsideProviderName());
+                thisForm.setOutsideProviderOhip(rx.getOutsideProviderOhip());
+
+                atcCode = rx.getAtcCode();
+            }
+
+            isCustom = thisForm.getGCN_SEQNO() == 0;
+            int drugId = thisForm.getGCN_SEQNO();
+        }
     %>
     <input type="hidden" name="annotation_attrib" value="<%=annotation_attrib%>"/>
     <!--
@@ -1001,7 +1008,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                     <tr>
                         <td width="0%" valign="top">
                             <div class="DivCCBreadCrumbs">
-                                <a href="SearchDrug.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> >
+                                <a href="oscarRx/SearchDrug.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> >
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.title"/> >
                                 <b><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.title"/></b>
                             </div>
