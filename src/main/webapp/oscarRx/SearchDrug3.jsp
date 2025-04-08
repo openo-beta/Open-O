@@ -2140,7 +2140,7 @@
                 var data = "randomId=" + randomId + "&favoriteName=" + favoriteName;
                 new Ajax.Request(url, {
                     method: 'get', parameters: data, onSuccess: function (transport) {
-                        window.location.href = "SearchDrug3.jsp";
+                        window.location.href = "oscarRx/SearchDrug3.jsp";
                     }
                 })
             }

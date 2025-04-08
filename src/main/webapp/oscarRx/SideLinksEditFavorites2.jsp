@@ -131,8 +131,8 @@
     </security:oscarSec>
 
     <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/>
-        <a href="oscarRx/EditFavorites2.jsp">edit</a>
-        <a href="oscarRx/CopyFavorites2.jsp">copy</a> <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgCopyFavorites"/> --%>
+        <a href="${pageContext.request.contextPath}/oscarRx/EditFavorites2.jsp">edit</a>
+        <a href="${pageContext.request.contextPath}/oscarRx/CopyFavorites2.jsp">copy</a> <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgCopyFavorites"/> --%>
     </p>
     <p class="PropSheetMenuItemLevel1">
             <%

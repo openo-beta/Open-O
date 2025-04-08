@@ -142,7 +142,7 @@
                     var data = "drugId=" + drugId + "&favoriteName=" + favoriteName;
                     new Ajax.Request(url, {
                         method: 'get', parameters: data, onSuccess: function (transport) {
-                            window.location.href = "StaticScript2.jsp?regionalIdentifier=" + '<%=regionalIdentifier%>' + "&cn=" + '<%=cn%>';
+                            window.location.href = "oscarRx/StaticScript2.jsp?regionalIdentifier=" + '<%=regionalIdentifier%>' + "&cn=" + '<%=cn%>';
                         }
                     });
                 }
@@ -299,7 +299,7 @@
                                 if (drug.isLocal) {
                             %>
                             <input type="button" value="Annotation" title="Annotation" class="ControlPushButton"
-                                   onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=drug.localDrugId%>&demo=<%=currentDemographicNo%>','anwin','width=400,height=500');">
+                                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=drug.localDrugId%>&demo=<%=currentDemographicNo%>','anwin','width=400,height=500');">
                             <%
                                 }
                             %>

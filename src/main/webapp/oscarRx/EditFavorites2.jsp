@@ -170,7 +170,7 @@
         <input type="hidden" name="customInstr" id="customInstr"/>
     </form>
 
-    <form action="${pageContext.request.contextPath}/oscarRx/deleteFavorite2.do" method="post">
+    <form name="RxDeleteFavoriteForm" action="${pageContext.request.contextPath}/oscarRx/deleteFavorite2.do" method="post">
         <input type="hidden" name="favoriteId" id="favoriteId"/>
     </form>
 
