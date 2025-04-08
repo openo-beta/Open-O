@@ -74,7 +74,7 @@ public final class RxDeleteRx2Action extends ActionSupport {
     @Override
     public String execute()
             throws IOException, ServletException {
-        String method = request.getParameter("method");
+        String method = request.getParameter("parameterValue");
         if ("Delete2".equals(method)) {
             return Delete2();
         } else if ("DeleteRxOnCloseRxBox".equals(method)) {

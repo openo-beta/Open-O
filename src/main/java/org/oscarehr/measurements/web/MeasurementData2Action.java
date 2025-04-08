@@ -65,7 +65,7 @@ public class MeasurementData2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() throws Exception {
-        String method = request.getParameter("method");
+        String method = request.getParameter("action");
         if ("getLatestValues".equals(method)) {
             return getLatestValues();
         } else if ("saveMeasurement".equals(method)) {

@@ -56,7 +56,7 @@ public final class RxAddFavorite2Action extends ActionSupport {
     public String execute()
             throws IOException, ServletException {
 
-        if ("addFav2".equals(request.getParameter("method"))) {
+        if ("addFav2".equals(request.getParameter("parameterValue"))) {
             return addFav2();
         }
         

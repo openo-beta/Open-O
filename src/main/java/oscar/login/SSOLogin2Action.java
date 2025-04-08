@@ -99,7 +99,7 @@ public final class SSOLogin2Action extends ActionSupport {
 
     public String execute() throws IOException {
 
-        String method = request.getParameter("method");
+        String method = request.getParameter("econsultLogin");
         if ("econsultLogin".equals(method)) {
             return econsultLogin();
         } else if ("ssoLogout".equals(method)) {

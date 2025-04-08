@@ -44,7 +44,7 @@ public final class RxStash2Action extends ActionSupport {
     public String execute()
             throws IOException, ServletException {
 
-        String method = request.getParameter("method");
+        String method = request.getParameter("parameterValue");
         if ("setStashIndex".equals(method)) {
             return setStashIndex();
         } else if ("deletePrescribe".equals(method)) {

@@ -84,10 +84,8 @@ public final class RxWriteScript2Action extends ActionSupport {
 
 
     public String execute() throws IOException, ServletException, Exception {
-        String method = request.getParameter("method");
-        if (method == null) {
-            method = request.getParameter("parameterValue");
-        }
+        String method = request.getParameter("parameterValue");
+        
         if ("updateReRxDrug".equals(method)) {
             return updateReRxDrug();
         } else if ("saveCustomName".equals(method)) {
