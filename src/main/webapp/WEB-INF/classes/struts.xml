@@ -2365,10 +2365,10 @@
         </action-->
         <action name="oscarRx/hideCpp" class="oscar.oscarRx.web.RxHideCpp2Action"/>
         <action name="oscarRx/reorderDrug" class="oscar.oscarRx.web.RxReorder2Action"/>
-        <!--action name="oscarRx/copyFavorite2" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">
+        <action name="oscarRx/copyFavorite2" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites2.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
-        </action-->
+        </action>
         <action name="PMmodule/Admin/SysAdmin" class="org.oscarehr.PMmodule.web.admin.AdminHome2Action" method="execute">
             <result name="admin">page.admin.home</result>
         </action>
