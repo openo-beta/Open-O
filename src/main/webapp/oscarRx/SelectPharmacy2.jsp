@@ -479,7 +479,7 @@
                         <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.title"/>
                             <span style="font-size: small;">
 						<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/>
-                        <%=surname%>}, <%=firstName%>
+                        <%=surname%>, <%=firstName%>
                     </span>
                             <input type=button class="btn btn-default pull-right" onclick="returnToRx();"
                                    value="Return to RX"/>

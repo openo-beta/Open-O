@@ -335,7 +335,9 @@
         <action name="oscarRx/managePharmacy2" class="oscar.oscarRx.pageUtil.RxManagePharmacy2Action">
             <result name="success">/oscarRx/SelectPharmacy2.jsp</result>
         </action>
-        <action name="oscarRx/managePharmacy" class="oscar.oscarRx.pageUtil.RxManagePharmacy2Action"/>
+        <action name="oscarRx/managePharmacy" class="oscar.oscarRx.pageUtil.RxManagePharmacy2Action">
+            <result name="success">/oscarRx/SelectPharmacy2.jsp</result>
+        </action>
         <action name="oscarRx/SendToPhr" class="oscar.oscarRx.pageUtil.RxSendToPhr2Action" method="execute">
             <result name="finished">/phr/response.jsp</result>
         </action>
@@ -2359,10 +2361,10 @@
         </action>
         <action name="appointment/printAppointmentReceiptAction" class="oscar.oscarReport.pageUtil.PrintAppointmentReceipt2Action"/>
         <action name="oscarRx/updateDrugrefDB" class="oscar.oscarRx.pageUtil.RxUpdateDrugref2Action"/>
-        <!--action name="oscarRx/copyFavorite" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">
+        <action name="oscarRx/copyFavorite" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
-        </action-->
+        </action>
         <action name="oscarRx/hideCpp" class="oscar.oscarRx.web.RxHideCpp2Action"/>
         <action name="oscarRx/reorderDrug" class="oscar.oscarRx.web.RxReorder2Action"/>
         <action name="oscarRx/copyFavorite2" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">

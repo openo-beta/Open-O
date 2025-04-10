@@ -63,6 +63,7 @@
             }
         %>
         <%
+            String ID = null;
             if (request.getParameter("ID") != null && request.getParameter("type") != null && request.getParameter("type").equals("Delete")) {
                 RxPharmacyData rxp = new RxPharmacyData();
                 rxp.deletePharmacy(request.getParameter("ID"));
@@ -70,6 +71,7 @@
                 response.sendRedirect(request.getContextPath() + "/oscarRx/SelectPharmacy2.jsp");
                 return;
             }
+            ID = (String) request.getParameter("ID");
         %>
 
         <link rel="stylesheet" type="text/css" href="oscarRx/styles.css">
@@ -111,7 +113,7 @@
                                     <td>
                                         <%String type = request.getParameter("type"); %>
                                         <input type="hidden" name="pharmacyAction" id="pharmacyAction" value="<%=type%>"/>
-                                        <input type="hidden" name="ID" id="ID"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
+                                        <input type="hidden" name="ID" id="ID" value="<%=ID%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
                                     </td>
                                     <td><input type="text" name="name" id="name" /></td>
                                 </tr>
