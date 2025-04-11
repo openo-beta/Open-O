@@ -2269,7 +2269,7 @@
             var ran_number = Math.round(Math.random() * 1000000);
             name = encodeURIComponent(name);
             var params = "demographicNo=<%=demoNo%>&drugId=" + drugId + "&text=" + name + "&randomId=" + ran_number;
-            new Ajax.Updater('<c:out value="${ctx}"/>/oscarRxrxText', url, {
+            new Ajax.Updater('rxText', url, {
                 method: 'get',
                 parameters: params,
                 asynchronous: true,
@@ -2308,15 +2308,13 @@
 
         //represcribe a drug
         function represcribe(element, toArchive) {
-
             skipParseInstr = true;
             var elemId = element.id;
             var ar = elemId.split("_");
             var drugId = ar[1];
             if (drugId != null && $("reRxCheckBox_" + drugId).checked == true) {
-
                 var url = '<c:out value="${ctx}"/>/oscarRx/rePrescribe2.do?method=represcribeMultiple&rand=' + Math.floor(Math.random() * 10001);
-                new Ajax.Updater('<c:out value="${ctx}"/>/oscarRxrxText', url, {
+                new Ajax.Updater('rxText', url, {
                     method: 'get', parameters: data, asynchronous: false, evalScripts: true,
                     insertion: Insertion.Bottom, onSuccess: function (transport) {
                         // updateCurrentInteractions();
@@ -2329,7 +2327,7 @@
 
                 var data = "drugId=" + drugId;
                 var url = '<c:out value="${ctx}"/>/oscarRx/rePrescribe2.do?method=represcribe2&rand=' + Math.floor(Math.random() * 10001);
-                new Ajax.Updater('<c:out value="${ctx}"/>/oscarRxrxText', url, {
+                new Ajax.Updater('rxText', url, {
                     method: 'get', parameters: data, evalScripts: true,
                     insertion: Insertion.Bottom, onSuccess: function (transport) {
                         // updateCurrentInteractions();

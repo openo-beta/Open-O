@@ -142,7 +142,7 @@
                     var data = "drugId=" + drugId + "&favoriteName=" + favoriteName;
                     new Ajax.Request(url, {
                         method: 'get', parameters: data, onSuccess: function (transport) {
-                            window.location.href = "oscarRx/StaticScript2.jsp?regionalIdentifier=" + '<%=regionalIdentifier%>' + "&cn=" + '<%=cn%>';
+                            window.location.href = "<c:out value="${ctx}"/>" + "oscarRx/StaticScript2.jsp?regionalIdentifier=" + '<%=regionalIdentifier%>' + "&cn=" + '<%=cn%>';
                         }
                     });
                 }
@@ -158,7 +158,7 @@
                 var url = "<c:out value="${ctx}"/>" + "/oscarRx/rePrescribe2.do?method=saveReRxDrugIdToStash";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, asynchronous: false, onSuccess: function (transport) {
-                        location.href = "SearchDrug3.jsp?";
+                        location.href = "<c:out value="${ctx}"/>" + "/oscarRx/SearchDrug3.jsp?";
                     }
                 });
             }
@@ -351,7 +351,7 @@
             <td><br/>
                 <br/>
                 <input type="button" value="Back To Search Drug" class="ControlPushButton"
-                       onclick="javascript:window.location.href='oscarRx/SearchDrug3.jsp';"/></td>
+                       onclick="javascript:window.location.href='<%= request.getContextPath() %>/oscarRx/SearchDrug3.jsp';"/></td>
         </tr>
         <!----End new rows here-->
         <tr height="100%">
