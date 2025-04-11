@@ -27,6 +27,8 @@
 package oscar.eform.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.struts2.ServletActionContext;
 
 import org.oscarehr.util.MiscUtils;
@@ -37,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 /**
@@ -63,7 +66,9 @@ public class DisplayImage2Action extends ActionSupport {
 
         try {
             response.setContentType(contentType);
-            return stream.toString();
+            OutputStream outputStream = response.getOutputStream();
+            IOUtils.copy(stream, outputStream);
+            return SUCCESS;
         } catch (Exception e) {
             return NONE;
         } finally {
