@@ -173,7 +173,7 @@
                     + '\n  *  Drug-Drug Interaction Information'
                     + '\n  *  Drug Information'
                     + '\n\nAre you sure you wish to use this feature?') == true) {
-                    window.location.href = 'chooseDrug.do?demographicNo=<%=response.encodeURL(Integer.toString(bean.getDemographicNo()))%>';
+                    window.location.href = '<%= request.getContextPath() %>/oscarRx/chooseDrug.do?demographicNo=<%=response.encodeURL(Integer.toString(bean.getDemographicNo()))%>';
                 }
             }
 

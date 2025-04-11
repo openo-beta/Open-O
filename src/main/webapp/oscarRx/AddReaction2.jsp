@@ -93,7 +93,7 @@
             boolean isNKDA = "No Known Drug Allergies".equals(name);
         %>
 
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="oscarRx/styles.css">
 
     </head>
     <body topmargin="0" leftmargin="0" vlink="#0000FF">

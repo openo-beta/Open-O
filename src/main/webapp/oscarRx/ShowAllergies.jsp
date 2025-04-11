@@ -439,7 +439,7 @@
                     </tr>
                     <tr>
                         <td><form action="${pageContext.request.contextPath}/oscarRx/searchAllergy.do" method="post"
-                                       focus="searchString" onsubmit="return isEmpty()">
+                                       focus="searchString" onsubmit="return isEmpty()" id="RxSearchAllergyForm" name="RxSearchAllergyForm">
                             <table>
                                 <tr valign="center">
                                     <td>Search:</td>

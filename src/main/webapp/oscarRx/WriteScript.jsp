@@ -829,7 +829,7 @@
     <body topmargin="0" leftmargin="0" vlink="#0000FF"
           onload="javascript:pageLoad();">
 
-    <form action="${pageContext.request.contextPath}/oscarRx/writeScript.do" method="post">
+    <form action="${pageContext.request.contextPath}/oscarRx/writeScript.do" method="post" id="frm" name="frm">
 
     <input type="hidden" name="action" id="action"/>
 
@@ -1513,7 +1513,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                     <td width="60%" valign="top">
                                         <table cellspacing=0 cellpadding=5 width="100%">
                                             
-                                            <c:forEach var="rx" items="${bean.stash}" varStatus="loopStatus" end="${stashSize - 1}">
+                                            <c:forEach var="rx" items="${bean.stash}" varStatus="loopStatus">
                                                 <c:set var="rx2" value="${rx}" />
                                                 <c:choose>
                                                     <c:when test="${loopStatus.index == bean.stashIndex}">
