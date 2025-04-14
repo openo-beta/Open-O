@@ -68,7 +68,7 @@
                 }
             %>
         </c:if>
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="oscarRx/styles.css">
         <script type="text/javascript" language="Javascript">
             function onPrint(cfgPage) {
                 //document.forms[0].submit.value="print";
@@ -142,7 +142,7 @@
                border=2>
             <tr>
                 <td valign=top height="100px"><input type="image"
-                                                     src="img/rx.gif" border="0" value="submit" alt="[Submit]"
+                                                     src="oscarRx/img/rx.gif" border="0" value="submit" alt="[Submit]"
                                                      name="submit" title="Print in a half letter size paper"
                                                      onclick="<%=rePrint.equalsIgnoreCase("true") ? "javascript:return onPrint('oscarRxRePrintCfgPg1');" : "javascript:return onPrint('oscarRxPrintCfgPg1');" %>">
                     <input type="hidden" name="printPageSize"
