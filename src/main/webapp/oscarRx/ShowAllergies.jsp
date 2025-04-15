@@ -40,6 +40,7 @@
     oscar.oscarRx.pageUtil.RxSessionBean bean = null;
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
+    String surname = "", firstName = "", age = "";
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_allergy" rights="r" reverse="<%=true%>">
     <%authed = false; %>
@@ -67,7 +68,12 @@
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
         }
-        patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getAttribute("Patient");
+        patient = (oscar.oscarRx.data.RxPatientData.Patient) session.getAttribute("Patient");
+        if (patient != null) {
+            surname = patient.getSurname();
+            firstName = patient.getFirstName();
+            age = patient.getAge() + "";
+        }
     %>
 </c:if>
 <%
@@ -211,11 +217,11 @@
                             <table>
                                 <tr>
                                     <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
-                                        ${patient.surname}, ${patient.firstName}<br/>
+                                        <%=surname%>, <%=firstName%><br/>
                                     </td>
                                     <td>&nbsp;</td>
                                     <td><b>Age:</b>
-                                        ${patient.age}
+                                        <%=age%>
                                     </td>
                                 </tr>
                             </table>

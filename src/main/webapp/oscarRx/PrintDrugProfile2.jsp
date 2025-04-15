@@ -55,6 +55,7 @@
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
+    String surname = "", firstName = "", address = "", city = "", province = "", postal = "";
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=true%>">
     <%authed = false; %>
@@ -111,6 +112,14 @@
             }
         }
         oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
+        if (patient != null) {
+            surname = patient.getSurname();
+            firstName = patient.getFirstName();
+            address = patient.getAddress();
+            city = patient.getCity();
+            province = patient.getProvince();
+            postal = patient.getPostal();
+        }
     %>
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
     <table border="0" cellpadding="0" cellspacing="0"
@@ -132,11 +141,9 @@
                     </tr>
                     <tr>
                         <td><!-- <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>-->
-                            ${patient.surname}, ${patient.firstName}<br/>
-                            ${patient.address}<br/>
-                            ${patient.city}, ${patient.province} ${patient.postal}
-                            <br/>
-                            <br/>
+                            <%=surname%>, <%=firstName%><br/>
+                            <%=address%><br/>
+                            <%=city%>, <%=province%> <%=postal%><br/><br/>
                         </td>
                     </tr>
                     <tr>
