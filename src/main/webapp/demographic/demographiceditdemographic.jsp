@@ -1377,7 +1377,7 @@
                         <tr>
                             <td>
                                 <form method="post" name="updatedelete" id="updatedelete"
-                                      action="demographiccontrol.jsp"
+                                      action="demographic/demographiccontrol.jsp"
                                       onSubmit="return checkTypeInEdit();" autocomplete="off">
                                     <input type="hidden" name="demographic_no"
                                            value="<%=demographic.getDemographicNo()%>">
@@ -1478,7 +1478,7 @@
                                                             <span id="swipeButton" style="display: inline;">
                                     <input type="button" name="Button"
                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnSwipeCard"/>"
-                                           onclick="window.open('zdemographicswipe.jsp','', 'scrollbars=yes,resizable=yes,width=600,height=300, top=360, left=0')">
+                                           onclick="window.open('demographic/zdemographicswipe.jsp','', 'scrollbars=yes,resizable=yes,width=600,height=300, top=360, left=0')">
                                 </span>
                                                             <!--input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnSwipeCard"/>" onclick="javascript:window.alert('Health Card Number Already Inuse');"-->
                                                             <% } %>
@@ -5080,7 +5080,7 @@
                                                                 id="swipeButton" style="display: none;"> <input
                                                                 type="button" name="Button"
                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnSwipeCard"/>"
-                                                                onclick="window.open('zdemographicswipe.jsp','', 'scrollbars=yes,resizable=yes,width=600,height=300, top=360, left=0')">
+                                                                onclick="window.open('demographic/zdemographicswipe.jsp','', 'scrollbars=yes,resizable=yes,width=600,height=300, top=360, left=0')">
 								</span>
                                                             <!--input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnSwipeCard"/>" onclick="javascript:window.alert('Health Card Number Already Inuse');"-->
                                                             <input type="button" size="110" name="Button"
