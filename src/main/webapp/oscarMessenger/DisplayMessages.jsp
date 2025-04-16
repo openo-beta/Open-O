@@ -506,7 +506,7 @@
                                             String atta = dm.getAttach();
                                             String pdfAtta = dm.getPdfAttach();
                                             if (atta.equals("1") || pdfAtta.equals("1")) { %>
-                                        <img src="img/clip4.jpg">
+                                        <img src="oscarMessenger/img/clip4.jpg">
                                         <% } %>
 
 
