@@ -108,7 +108,7 @@
                     <tr>
                         <td style="color:red">
                             <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded">
-                                <fmt:param value="${added}" />
+                                <fmt:param value="<%=added%>" />
                             </fmt:message>
                         </td>
                     </tr>

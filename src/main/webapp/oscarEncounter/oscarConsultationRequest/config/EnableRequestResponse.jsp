@@ -118,11 +118,11 @@
                                     <tr>
                                         <td>
                                             <input type="checkbox"
-                                                   name="consultRequestEnabled" <%=consultRequestEnabled ? "checked" : "" %>/>
+                                                   name="consultRequestEnabled" value="true" <%=consultRequestEnabled ? "checked" : "" %>/>
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableRequest"/>
                                             <br/>
                                             <input type="checkbox"
-                                                   name="consultResponseEnabled" <%=consultResponseEnabled ? "checked" : "" %>/>
+                                                   name="consultResponseEnabled" value="true" <%=consultResponseEnabled ? "checked" : "" %>/>
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableResponse"/>
                                         </td>
                                     </tr>
