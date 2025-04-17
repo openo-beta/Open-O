@@ -53,6 +53,7 @@
 <%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String mode = "";
     if (request.getAttribute("mode") != null) {
@@ -73,11 +74,11 @@
     String module = "";
     String moduleid = "";
     if (request.getParameter("function") != null) {
-        module = request.getParameter("function");
-        moduleid = request.getParameter("functionid");
+        module = Encode.forHtml(request.getParameter("function"));
+        moduleid = Encode.forHtml(request.getParameter("functionid"));
     } else if (request.getAttribute("function") != null) {
-        module = (String) request.getAttribute("function");
-        moduleid = (String) request.getAttribute("functionid");
+        module = Encode.forHtml((String) request.getAttribute("function"));
+        moduleid = Encode.forHtml((String) request.getAttribute("functionid"));
     }
 
     OscarProperties props = OscarProperties.getInstance();
@@ -112,7 +113,7 @@
         formdata.setReviewerId(currentDoc.getReviewerId());
         formdata.setReviewDateTime(currentDoc.getReviewDateTime());
         formdata.setContentDateTime(UtilDateUtilities.DateToString(currentDoc.getContentDateTime(), EDocUtil.CONTENT_DATETIME_FORMAT));
-        formdata.setHtml(UtilMisc.htmlEscape(currentDoc.getHtml()));
+        formdata.setHtml(Encode.forHtml(currentDoc.getHtml()));
         lastUpdate = currentDoc.getDateTimeStamp();
         fileName = currentDoc.getFileName();
     } else {
@@ -276,17 +277,17 @@
                        onsubmit="return submitUpload(this);">
     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
     <input type="hidden" name="function"
-           value="<%=formdata.getFunction()%>" size="20"/>
+           value="<%=Encode.forHtml(formdata.getFunction())%>" size="20"/>
     <input type="hidden" name="functionId"
-           value="<%=formdata.getFunctionId()%>" size="20"/>
-    <input type="hidden" name="functionid" value="<%=moduleid%>" size="20"/>
-    <input type="hidden" name="mode" value="<%=mode%>"/>
+           value="<%=Encode.forHtml(formdata.getFunctionId())%>" size="20"/>
+    <input type="hidden" name="functionid" value="<%=Encode.forHtml(moduleid)%>" size="20"/>
+    <input type="hidden" name="mode" value="<%=Encode.forHtml(mode)%>"/>
     <input type="hidden" name="docCreator"
-           value="<%=formdata.getDocCreator()%>"/>
-    <input type="hidden" name="reviewerId" value="<%=formdata.getReviewerId()%>"/>
-    <input type="hidden" name="reviewDateTime" value="<%=formdata.getReviewDateTime()%>"/>
+           value="<%=Encode.forHtml(formdata.getDocCreator())%>"/>
+    <input type="hidden" name="reviewerId" value="<%=Encode.forHtml(formdata.getReviewerId())%>"/>
+    <input type="hidden" name="reviewDateTime" value="<%=Encode.forHtml(formdata.getReviewDateTime())%>"/>
     <input type="hidden" name="reviewDoc" value="false"/>
-    <input type="hidden" name="annotation_attrib" value="<%=annotation_attrib%>"/>
+    <input type="hidden" name="annotation_attrib" value="<%=Encode.forHtml(annotation_attrib)%>"/>
 
     <table width="100%" height="100%" class="layouttable">
         <tr>
@@ -296,7 +297,7 @@
                     <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                     <% for (int i = 0; i < doctypes.size(); i++) {
                         String doctype = doctypes.get(i); %>
-                    <option value="<%= doctype%>" <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
+                    <option value="<%=Encode.forHtml(doctype)%>" <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%=Encode.forHtml(doctype)%>
                     </option>
                     <%}%>
                 </select>
@@ -316,7 +317,7 @@
                             consultShown = true;
                         }
                 %>
-                <option value="<%=reportClass%>" <%=reportClass.equals(formdata.getDocClass()) ? "selected" : ""%>><%=reportClass%>
+                <option value="<%=Encode.forHtml(reportClass)%>" <%=reportClass.equals(formdata.getDocClass()) ? "selected" : ""%>><%=Encode.forHtml(reportClass)%>
                 </option>
                 <% } %>
             </select>
@@ -324,7 +325,7 @@
         </tr>
         <tr>
             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocSubClass"/>:</td>
-            <td><input type="text" name="docSubClass" id="docSubClass" value="<%=formdata.getDocSubClass()%>"
+            <td><input type="text" name="docSubClass" id="docSubClass" value="<%=Encode.forHtml(formdata.getDocSubClass())%>"
                        style="width:330px">
                 <div class="autocomplete_style" id="docSubClass_list"></div>
             </td>
@@ -333,11 +334,11 @@
             <td>Description:</td>
             <td><input <% if (linkhtmlerrors.containsKey("descmissing")) {%>
                     class="warning" <%}%> type="text" name="docDesc" size="30"
-                    onfocus="checkDefaultValue(this)" value="<%=formdata.getDocDesc()%>"></td>
+                    onfocus="checkDefaultValue(this)" value="<%=Encode.forHtml(formdata.getDocDesc())%>"></td>
         </tr>
         <tr>
             <td>Added By:</td>
-            <td><%=EDocUtil.getProviderName(formdata.getDocCreator())%>
+            <td><%=Encode.forHtml(EDocUtil.getProviderName(formdata.getDocCreator()))%>
             </td>
         </tr>
         <tr>
@@ -349,8 +350,8 @@
                         String selected = "";
                         if (formdata.getResponsibleId().equals(pd.get("providerNo"))) selected = "selected";
                     %>
-                    <option value="<%=pd.get("providerNo")%>" <%=selected%>><%=pd.get("lastName")%>
-                        , <%=pd.get("firstName")%>
+                    <option value="<%=Encode.forHtml((String)pd.get("providerNo"))%>" <%=selected%>><%=Encode.forHtml((String)pd.get("lastName"))%>
+                        , <%=Encode.forHtml((String)pd.get("firstName"))%>
                     </option>
                     <% } %>
                 </select>
@@ -358,26 +359,26 @@
         </tr>
         <tr>
             <td>Date Added/Updated:</td>
-            <td><%=lastUpdate%>
+            <td><%=Encode.forHtml(lastUpdate)%>
             </td>
         </tr>
         <tr>
             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formContentAddedUpdated"/>:</td>
-            <td><%=formdata.getContentDateTime()%>
+            <td><%=Encode.forHtml(formdata.getContentDateTime())%>
             </td>
         </tr>
         <tr>
             <td>Source Author:</td>
-            <td><input type="text" name="source" size="15" value="<%=formdata.getSource()%>"/></td>
+            <td><input type="text" name="source" size="15" value="<%=Encode.forHtml(formdata.getSource())%>"/></td>
         </tr>
         <tr>
             <td>Source Facility:</td>
-            <td><input type="text" name="sourceFacility" size="15" value="<%=formdata.getSourceFacility()%>"/></td>
+            <td><input type="text" name="sourceFacility" size="15" value="<%=Encode.forHtml(formdata.getSourceFacility())%>"/></td>
         </tr>
         <tr>
             <td>Observation Date <font class="comment">(yyyy/mm/dd):</font></td>
             <td><input type="text" name="observationDate"
-                       id="observationDate" value="<%=formdata.getObservationDate()%>"><a
+                       id="observationDate" value="<%=Encode.forHtml(formdata.getObservationDate())%>"><a
                     id="obsdate"><img title="Calendar" src="../images/cal.gif"
                                       alt="Calendar" border="0"/></a></td>
         </tr>
@@ -385,15 +386,15 @@
         <tr>
             <td>Public?</td>
             <td><input type="checkbox" name="docPublic"
-                    <%=formdata.getDocPublic() + " "%> value="checked"></td>
+                    <%=Encode.forHtml(formdata.getDocPublic() + " ")%> value="checked"></td>
         </tr>
         <% }
             if (oldDoc) { %>
         <tr>
             <td colspan="2">
                 <% if (formdata.getReviewerId() != null && !formdata.getReviewerId().equals("")) { %>
-                Reviewed: &nbsp; <%=EDocUtil.getProviderName(formdata.getReviewerId())%>
-                &nbsp; [<%=formdata.getReviewDateTime()%>]
+                Reviewed: &nbsp; <%=Encode.forHtml(EDocUtil.getProviderName(formdata.getReviewerId()))%>
+                &nbsp; [<%=Encode.forHtml(formdata.getReviewDateTime())%>]
                 <% } else { %>
                 <input type="button" value="Reviewed" title="Click to set Reviewed" onclick="reviewed(this);"/>
                 <% } %>
@@ -403,7 +404,7 @@
         <tr>
             <td colspan="2">
                 <input type="button" value="Annotation"
-                       onclick="window.open('../annotation/annotation.jsp?atbname=<%=annotation_attrib%>&display=<%=annotation_display%>&table_id=<%=annotation_tableid%>&demo=<%=moduleid%>','anwin','width=400,height=500');"/>
+                       onclick="window.open('../annotation/annotation.jsp?atbname=<%=Encode.forHtml(annotation_attrib)%>&display=<%=Encode.forHtml(annotation_display)%>&table_id=<%=Encode.forHtml(annotation_tableid)%>&demo=<%=Encode.forHtml(moduleid)%>','anwin','width=400,height=500');"/>
             </td>
         </tr>
         <tr>
@@ -412,7 +413,7 @@
         <tr>
             <td colspan="2">
 			    <textarea name="html" <% if (linkhtmlerrors.containsKey("uploaderror")) {%>
-                          class="warning" <%}%> wrap="off" style="width: 98%; height: 200px;"><%=formdata.getHtml()%>
+                          class="warning" <%}%> wrap="off" style="width: 98%; height: 200px;"><%=Encode.forHtml(formdata.getHtml())%>
 			    </textarea>
             </td>
         </tr>
