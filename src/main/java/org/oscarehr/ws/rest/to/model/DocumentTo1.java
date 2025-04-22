@@ -55,7 +55,7 @@ public class DocumentTo1 implements Serializable {
     private Integer appointmentNo = -1;
     private Boolean abnormal = false;
     private Boolean restrictToProgram=false;
-    private int queue = -1;
+    private Integer queue;
 
     private String providerNo;
     private Integer demographicNo;
@@ -286,10 +286,10 @@ public class DocumentTo1 implements Serializable {
         this.demographicNo = demographicNo;
     }
 
-    public int getQueue() {
+    public Integer getQueue() {
         return queue;
     }
-    public void setQueue(int queue) {
+    public void setQueue(Integer queue) {
         this.queue = queue;
     }
 }

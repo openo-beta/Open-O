@@ -110,7 +110,8 @@ public class DocumentService extends AbstractServiceImpl{
         }
 
         // Validate input
-        if (isInvalidDocument(documentTo1)) { return Response.status(Response.Status.BAD_REQUEST).entity(createResponseMap(documentTo1.getFileName(), "Failed", "Missing required fields: fileName, fileContent, or contentType")).build(); }
+        if (isInvalidDocument(documentTo1)) { return Response.status(Response.Status.BAD_REQUEST).entity(createResponseMap(documentTo1.getFileName(), "Failed", "Missing required fields: fileName, fileContent, contentType, or queue")).build(); }
+        if (documentTo1.getQueue() < 1) { return Response.status(Response.Status.BAD_REQUEST).entity(createResponseMap(documentTo1.getFileName(), "Failed", "Invalid queue: must be 1 or greater")).build(); }
 
         if (StringUtils.isEmpty(documentTo1.getSource())) { documentTo1.setSource("REST API"); }
 
@@ -140,7 +141,8 @@ public class DocumentService extends AbstractServiceImpl{
         if (doc == null || 
             doc.getFileName() == null || doc.getFileName().isEmpty() || 
             doc.getFileContents() == null || doc.getFileContents().length == 0 || 
-            doc.getContentType() == null || doc.getContentType().isEmpty()) {
+            doc.getContentType() == null || doc.getContentType().isEmpty() ||
+            doc.getQueue() == null) {
             return true;
         }
     
