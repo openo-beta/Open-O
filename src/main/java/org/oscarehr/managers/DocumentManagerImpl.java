@@ -490,7 +490,7 @@ public class DocumentManagerImpl implements  DocumentManager{
 			throw new RuntimeException("Write Access Denied _edoc for provider " + loggedInInfo.getLoggedInProviderNo());
 		}
 	
-		if (queueId != null && queueId < 1) {
+		if (queueId != null && queueId > 0) {
 			queueDocumentLinkDAO.addActiveQueueDocumentLink(queueId, documentId);
 			return queueId;
 		}
