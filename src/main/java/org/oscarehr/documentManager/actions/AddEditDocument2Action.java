@@ -202,7 +202,7 @@ public class AddEditDocument2Action extends ActionSupport {
                 StringBuffer redirect = new StringBuffer(contextPath + "/documentManager/documentReport.jsp");
                 redirect.append("?docerrors=docerrors"); // Allows the JSP to check if the document was just submitted
                 redirect.append("&function=").append(request.getParameter("function"));
-                redirect.append("&functionid").append(request.getParameter("functionid"));
+                redirect.append("&functionid=").append(request.getParameter("functionid"));
                 redirect.append("&curUser").append(request.getParameter("curUser"));
                 redirect.append("&appointmentNo").append(request.getParameter("appointmentNo"));
                 String parentAjaxId = request.getParameter("parentAjaxId");
