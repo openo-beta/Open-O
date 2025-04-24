@@ -384,11 +384,11 @@ public class AddEditDocument2Action extends ActionSupport {
             boolean updateFileContent = false;
 
             if (oscar.OscarProperties.getInstance().getBooleanProperty("ALLOW_UPDATE_DOCUMENT_CONTENT", "true"))
-{
+            {
                 File docFile = this.getDocFile();
                 if (docFile != null && docFile.exists()) {
                     fileName = this.docFileFileName;
-                    updateFileContent = true;
+                    updateFileContent = true; // set update to true
                 }
             }
 
@@ -420,6 +420,7 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
             String programIdStr = (String) request.getSession().getAttribute(SessionConstants.CURRENT_PROGRAM_ID);
             if (programIdStr != null) newDoc.setProgramId(Integer.valueOf(programIdStr));
 
+            // if the update behavior is true, get the file name
             if (updateFileContent) {
                 fileName = newDoc.getFileName();
                 // save local file
