@@ -380,11 +380,16 @@ public class AddEditDocument2Action extends ActionSupport {
                 errors.put("typemissing", "dms.error.typeMissing");
                 throw new Exception();
             }
-            File docFile = this.getDocFile();
             String fileName = "";
+            boolean updateFileContent = false;
 
-            if (oscar.OscarProperties.getInstance().getBooleanProperty("ALLOW_UPDATE_DOCUMENT_CONTENT", "true")) {
-                fileName = this.docFileFileName;
+            if (oscar.OscarProperties.getInstance().getBooleanProperty("ALLOW_UPDATE_DOCUMENT_CONTENT", "true"))
+{
+                File docFile = this.getDocFile();
+                if (docFile != null && docFile.exists()) {
+                    fileName = this.docFileFileName;
+                    updateFileContent = true;
+                }
             }
 
             String reviewerId = filled(this.getReviewerId()) ? this.getReviewerId() : "";
@@ -394,13 +399,16 @@ public class AddEditDocument2Action extends ActionSupport {
                 reviewerId = (String) request.getSession().getAttribute("user");
                 reviewDateTime = UtilDateUtilities.DateToString(new Date(), EDocUtil.REVIEW_DATETIME_FORMAT);
                 if (this.getFunction() != null && this.getFunction().equals("demographic")) {
-                    LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.REVIEWED, LogConst.CON_DOCUMENT, this.getMode(), request.getRemoteAddr(), this.getFunctionId());
+                    LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.REVIEWED, LogConst.CON_DOCUMENT, this.getMode(),
+request.getRemoteAddr(), this.getFunctionId());
                 } else {
-                    LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.REVIEWED, LogConst.CON_DOCUMENT, this.getMode(), request.getRemoteAddr());
-
+                    LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.REVIEWED, LogConst.CON_DOCUMENT, this.getMode(),
+request.getRemoteAddr());
                 }
             }
-            EDoc newDoc = new EDoc(this.getDocDesc(), this.getDocType(), fileName, "", this.getDocCreator(), this.getResponsibleId(), this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, this.getFunction(), this.getFunctionId());
+
+            EDoc newDoc = new EDoc(this.getDocDesc(), this.getDocType(), fileName, "", this.getDocCreator(), this.getResponsibleId(),
+this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, this.getFunction(), this.getFunctionId());
             newDoc.setSourceFacility(this.getSourceFacility());
             newDoc.setDocId(this.getMode());
             newDoc.setDocPublic(this.getDocPublic());
@@ -412,21 +420,15 @@ public class AddEditDocument2Action extends ActionSupport {
             String programIdStr = (String) request.getSession().getAttribute(SessionConstants.CURRENT_PROGRAM_ID);
             if (programIdStr != null) newDoc.setProgramId(Integer.valueOf(programIdStr));
 
-
-            fileName = newDoc.getFileName();
-            if (docFile.length() != 0 && fileName.length() != 0) {
+            if (updateFileContent) {
+                fileName = newDoc.getFileName();
                 // save local file
-                writeLocalFile(Files.newInputStream(docFile.toPath()), fileName);
-                //newDoc.setContentType(docFile.getContentType());
+                writeLocalFile(Files.newInputStream(this.getDocFile().toPath()), fileName);
                 if (fileName.toLowerCase().endsWith(".pdf")) {
                     newDoc.setContentType("application/pdf");
                     int numberOfPages = countNumOfPages(fileName);
                     newDoc.setNumberOfPages(numberOfPages);
                 }
-                // ---
-            } else if (!docFile.getName().isEmpty()) {
-                errors.put("uploaderror", "dms.error.uploadError");
-                throw new FileNotFoundException();
             }
             if (this.getReviewDoc()) {
                 newDoc.setReviewDateTime(UtilDateUtilities.DateToString(new Date(), EDocUtil.REVIEW_DATETIME_FORMAT));
