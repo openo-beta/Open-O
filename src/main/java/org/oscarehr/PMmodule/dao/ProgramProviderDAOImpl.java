@@ -38,6 +38,7 @@ import org.oscarehr.util.QueueCache;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class ProgramProviderDAOImpl extends HibernateDaoSupport implements ProgramProviderDAO {
 
     private Logger log = MiscUtils.getLogger();
@@ -201,6 +202,7 @@ public class ProgramProviderDAOImpl extends HibernateDaoSupport implements Progr
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void deleteProgramProvider(Long id) {
         if (id == null || id.intValue() < 0) {
             throw new IllegalArgumentException();
@@ -218,6 +220,7 @@ public class ProgramProviderDAOImpl extends HibernateDaoSupport implements Progr
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void deleteProgramProviderByProgramId(Long programId) {
         if (programId == null || programId.intValue() <= 0) {
             throw new IllegalArgumentException();
