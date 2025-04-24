@@ -101,4 +101,37 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 * **Docker Compose:** https://docs.docker.com/compose**
 * **Dockerfile:** https://docs.docker.com/reference/dockerfile/
 
+## Opening the Dev-Container Environment in VS Code through WSL
+
+* **Note:** Make sure you have the Prerequisites installed and configured. 
+
+### Steps
+
+1. **Go to the command line and type wsl**
+    ```bash 
+    wsl
+    ```
+2. **Create a directory**
+    ```bash
+    mkdir softsec
+    ```
+3. **Navigate to the softsec dir**
+    ```bash
+    cd softsec
+    ```
+4. **Clone the GitHub repo Open-O**
+    ```bash
+    git clone https://github.com/cc-ar-emr/Open-O.git
+    ```
+5. **Navigate to the Open-O repo dir**
+    ```bash
+    cd Open-O
+    ```
+6. **Start VS Code**
+    ```bash
+    code ./
+    ```
+
+* This should open the Open-O repo in VS Code and prompt you to reopen the folder in the dev container environment.
+
 ## Enjoy developing with Open-OSP!
