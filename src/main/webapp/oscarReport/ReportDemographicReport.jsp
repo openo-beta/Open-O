@@ -217,23 +217,23 @@
                 <%
                     oscar.oscarReport.pageUtil.RptDemographicReport2Form thisForm = null;
 
-                    // 1. 从 request 中获取 formBean
+                    // Get the form bean from the request
                     if (request.getAttribute("formBean") != null) {
                         thisForm = (oscar.oscarReport.pageUtil.RptDemographicReport2Form) request.getAttribute("formBean");
                     }
 
-                    // 2. 如果 formBean 为 null，初始化一个新的对象
+                    // Initialize the form bean if it is null
                     if (thisForm == null) {
                         thisForm = new oscar.oscarReport.pageUtil.RptDemographicReport2Form();
-                        request.setAttribute("formBean", thisForm); // 确保 formBean 被设置到 request 中
+                        request.setAttribute("formBean", thisForm); // Ensure the form bean is set in the request
                     }
 
-                    // 3. 调用 copyConstructor（如果需要）
+                    // Call the copy constructor if the form is already in the request
                     if (request.getAttribute("RptDemographicReport2Form") != null) {
                         thisForm.copyConstructor((oscar.oscarReport.pageUtil.RptDemographicReport2Form) request.getAttribute("RptDemographicReport2Form"));
                     }
 
-                    // 4. 设置 AgeStyle
+                    // Set the default values for the form bean
                     if (thisForm.getAgeStyle() == null || "2".equals(thisForm.getAgeStyle())) {
                         thisForm.setAgeStyle("1");
                     }
