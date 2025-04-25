@@ -203,7 +203,7 @@
 
         </script>
         <script type="text/javascript" language="JavaScript"
-                src="../share/javascript/Oscar.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
     </head>
 
     <body onunload="updateAjax()" class="BodyStyle" vlink="#0000FF">

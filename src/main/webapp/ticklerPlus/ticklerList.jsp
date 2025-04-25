@@ -50,8 +50,8 @@
     int curMonth = now.get(Calendar.MONTH) + 1;
 %>
 
-<script type="text/javascript" src="../share/javascript/prototype.js"></script>
-<script type="text/javascript" src="../js/checkDate.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/checkDate.js"></script>
 
 <script>
     //filter for client - will work for other dropdowns as well

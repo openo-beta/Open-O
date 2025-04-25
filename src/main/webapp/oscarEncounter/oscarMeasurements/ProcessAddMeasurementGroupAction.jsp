@@ -69,7 +69,7 @@
     </div>
 <% } %>
     <table>
-        <form action="SetupAddMeasurementGroup.do">
+        <form action="oscarEncounter/oscarMeasurements/SetupAddMeasurementGroup.do">
             <tr>
                 <input type="hidden" name="value(groupName)"
                        value="<c:out value="${groupName}"/>"/>

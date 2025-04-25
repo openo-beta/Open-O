@@ -28,7 +28,7 @@
         billingTransactions = dao.getBillHistory(billMasterNo);
     }
 %>
-<link href="../../../share/css/oscar.css" rel="stylesheet"
+<link href="<%= request.getContextPath() %>/share/css/oscar.css" rel="stylesheet"
       type="text/css"/>
 <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 <table width="100%">

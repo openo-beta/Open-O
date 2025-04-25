@@ -38,7 +38,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/js/bootstrap.js"></script>
-        <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
         <script type="text/JavaScript">
             function popupPage(vheight, vwidth, varpage) { //open a new popup window
                 var page = "" + varpage;

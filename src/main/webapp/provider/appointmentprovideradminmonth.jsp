@@ -355,8 +355,8 @@
 
         </style>
 
-        <script type="text/javascript" src="../share/javascript/prototype.js"></script>
-        <script language="javascript" type="text/javascript" src="../share/javascript/Oscar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
+        <script language="javascript" type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
         <script language="JavaScript">
             //<!--
             function setfocus() {

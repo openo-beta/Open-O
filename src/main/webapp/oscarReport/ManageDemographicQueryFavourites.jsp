@@ -118,7 +118,7 @@
 
                 </ul>
                 <input type="submit" value="Delete"/>
-                <a href="ReportDemographicReport.jsp">cancel</a>
+                <a href="<%= request.getContextPath() %>/oscarReport/ReportDemographicReport.jsp">cancel</a>
             </form></td>
         </tr>
         <tr>

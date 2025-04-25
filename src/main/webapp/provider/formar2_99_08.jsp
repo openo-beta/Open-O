@@ -227,7 +227,7 @@
             <%=bNew ? "" : "datasrc='#xml_list'"%>>
         <tr bgcolor="#486ebd">
             <th width="25%" nowrap><!--input type="hidden" name="xml_pageno" value="<%--=pageno--%>"-->
-                <%--=bNewList?"<a href=# onClick='onSave()'><img src='../images/buttonsave.gif' align='top' width='75' height='25' ></a> ":""--%>
+                <%--=bNewList?"<a href=# onClick='onSave()'><img src="<%= request.getContextPath() %>/images/buttonsave.gif" align='top' width='75' height='25' ></a> ":""--%>
                 <%=bNewList ? "<input type='button' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
                 <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
                 <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>

@@ -60,7 +60,7 @@
               href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/eforms.css">
         <script type="text/javascript" language="JavaScript"
-                src="../share/javascript/Oscar.js"></script>
+                src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
         <script type="text/javascript" language="javascript">
             function popupPage(varpage, windowname) {
                 var page = "" + varpage;

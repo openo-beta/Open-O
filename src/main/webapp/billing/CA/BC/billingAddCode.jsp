@@ -50,7 +50,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Add Billing Code</title>
         <link rel="stylesheet" type="text/css"
-              href="../../../oscarEncounter/encounterStyles.css">
+              href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
         <script type="text/javascript">
 
             function isNumeric(strString) {

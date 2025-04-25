@@ -60,9 +60,9 @@
     <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     <title><%=lab.pName%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.title"/></title>
     <script language="javascript" type="text/javascript"
-            src="../../../share/javascript/Oscar.js"></script>
+            src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
     <link rel="stylesheet" type="text/css"
-          href="../../../share/css/OscarStandardLayout.css">
+          href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 </head>
 
