@@ -50,7 +50,6 @@ public class ManageEForm2Action extends ActionSupport {
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-
     public String execute() throws Exception {
         if ("importEForm".equals(request.getParameter("method"))) {
             return importEForm();
