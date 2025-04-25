@@ -88,8 +88,8 @@ public class EctConEnableReqResp2Action extends ActionSupport {
         return SUCCESS;
     }
 
-    boolean consultRequestEnabled;
-    boolean consultResponseEnabled;
+    boolean consultRequestEnabled = false;
+    boolean consultResponseEnabled = false;
 
     public boolean isConsultRequestEnabled() {
         return consultRequestEnabled;
