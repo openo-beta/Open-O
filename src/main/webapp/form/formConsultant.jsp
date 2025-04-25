@@ -316,11 +316,19 @@
                 setVisibility('textDiv', 'visible');
                 setVisibility('searching', 'hidden');
                 setVisibility('dating', 'hidden');
-                str1 = document.getElementById("comments").value;
-                str2 = str1.replace(/\n/g, "<br>");
 
+                const textDiv = document.getElementById("textDiv");
+                const commentText = document.getElementById("comments").value;
+                textDiv.innerHTML = "";
 
-                document.getElementById("textDiv").innerHTML = str2;
+                // Replace newlines valid <br> tags
+                commentText.split("\n").forEach((line, index, array) => {
+                    textDiv.appendChild(document.createTextNode(line));
+                    if (index < array.length - 1) {
+                        textDiv.appendChild(document.createElement("br"));
+                    }
+                });
+
                 setStyle('textDiv', 'position', 'absolute');
                 setStyle('textareaDiv', 'position', 'relative');
                 window.print();
