@@ -97,7 +97,7 @@
             View Message
         </title>
 
-        <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
         <script type="text/javascript">
             function BackToOscar() {
                 window.close();

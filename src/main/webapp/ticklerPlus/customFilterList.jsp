@@ -82,7 +82,7 @@
     -->
     <tr>
         <td><input type="button" value="New"
-                   onclick="location.href='../CustomFilter.do?method=edit'"/></td>
+                   onclick="location.href="<%= request.getContextPath() %>/CustomFilter.do?method=edit""/></td>
         <td><input type="button" value="Delete"
                    onclick="this.form.method.value='delete';this.form.submit();"/></td>
     </tr>

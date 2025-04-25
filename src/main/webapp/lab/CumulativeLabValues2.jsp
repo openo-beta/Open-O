@@ -63,8 +63,8 @@
         <!--I18n-->
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
-        <script type="text/javascript" src="../share/javascript/Oscar.js"></script>
-        <script type="text/javascript" src="../share/javascript/prototype.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
 
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
@@ -72,7 +72,7 @@
               href="<%= request.getContextPath() %>/share/css/niftyCorners.css"/>
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/share/css/niftyPrint.css" media="print"/>
-        <script type="text/javascript" src="../share/javascript/nifty.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/nifty.js"></script>
         <script type="text/javascript">
             window.onload = function () {
                 if (!NiftyCheck())
@@ -304,7 +304,7 @@
             <td class="MainTableBottomRowRightColumn" valign="top">&nbsp;</td>
         </tr>
     </table>
-    <script type="text/javascript" src="../share/javascript/boxover.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/boxover.js"></script>
     </body>
 </html>
 <%!

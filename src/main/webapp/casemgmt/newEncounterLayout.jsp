@@ -476,9 +476,11 @@
                 <%--    "<c:out value="${issueURLCPP}" />", {minChars: 3, indicator: 'busy2', afterUpdateElement: addIssue2CPP,--%>
                 <%--	    onShow: autoCompleteShowMenuCPP, onHide: autoCompleteHideMenuCPP});--%>
 
-                <nested:notEmpty name="DateError">
-                alert("<nested:write name="DateError"/>");
-                </nested:notEmpty>
+                <c:if test="${not empty DateError}">
+                    <script>
+                        alert("${DateError}");
+                    </script>
+                </c:if>
 
             })
 

@@ -1157,7 +1157,7 @@ and other liscences (MIT, LGPL etc) as indicated
                 textTop += "var ImgArray = [];\n"
                 textTop += "&lt;/script&gt;\n\n"
 
-                textTop += "&lt;script src='../eform/displayImage.do?imagefile=stamps.js'&gt;&lt;/script&gt;\n"
+                textTop += "&lt;script src="<%= request.getContextPath() %>/eform/displayImage.do?imagefile=stamps.js"&gt;&lt;/script&gt;\n"
                 textTop += "&lt;script type=&quot;text/javascript&quot;&gt;\n"
                 textTop += "//autoloading signature images\n"
                 textTop += "ImgArray.push(\n\t&quot;anonymous|BNK.png&quot;"
@@ -1864,7 +1864,7 @@ and other liscences (MIT, LGPL etc) as indicated
         show('classic');
     <% } %> ">
 
-<img id="BGImage" src="../images/transparent_icon.gif" alt="BGImage" style="position: absolute; left: 0px; top: 0px; "
+<img id="BGImage" src="<%= request.getContextPath() %>/images/transparent_icon.gif" alt="BGImage" style="position: absolute; left: 0px; top: 0px; "
      onmouseover="SetDrawOn();"
      onmouseout="SetDrawOff();"
      onmousedown="if (event.preventDefault) event.preventDefault(); SetMouseDown();SetStart();"

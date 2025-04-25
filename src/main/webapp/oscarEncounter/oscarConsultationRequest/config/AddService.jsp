@@ -69,7 +69,7 @@
         }
     </script>
 
-    <link rel="stylesheet" type="text/css" href="../../encounterStyles.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/encounterStyles.css">
     <body class="BodyStyle" vlink="#0000FF">
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
@@ -108,7 +108,7 @@
                     <tr>
                         <td style="color:red">
                             <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded">
-                                <fmt:param value="${added}" />
+                                <fmt:param value="<%=added%>" />
                             </fmt:message>
                         </td>
                     </tr>

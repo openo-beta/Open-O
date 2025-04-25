@@ -46,7 +46,7 @@
         <script>
             google.load("jquery", "1");
         </script>
-        <script src="../js/jquery.autocomplete.js"></script>
+        <script src="<%= request.getContextPath() %>/js/jquery.autocomplete.js"></script>
 
         <style>
             input {

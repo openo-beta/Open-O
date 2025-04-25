@@ -72,7 +72,7 @@
             </table>
         </td>
     </tr>
-    <form action="${pageContext.request.contextPath}/documentManager/addDocumentType" method="POST"
+    <form action="${pageContext.request.contextPath}/documentManager/addDocumentType.do" method="POST"
                enctype="multipart/form-data" class="forms"
                onsubmit="return submitUpload(this)">
         <table>

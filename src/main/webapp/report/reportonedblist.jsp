@@ -73,11 +73,11 @@
         </tr>
     </table>
     <script type="text/javascript"
-            src="../commons/scripts/sort_table/css.js"></script>
+            src="<%= request.getContextPath() %>/commons/scripts/sort_table/css.js"></script>
     <script type="text/javascript"
-            src="../commons/scripts/sort_table/common.js"></script>
+            src="<%= request.getContextPath() %>/commons/scripts/sort_table/common.js"></script>
     <script type="text/javascript"
-            src="../commons/scripts/sort_table/standardista-table-sorting.js"></script>
+            src="<%= request.getContextPath() %>/commons/scripts/sort_table/standardista-table-sorting.js"></script>
     <CENTER>
         <table class="sortable" width="100%" border="0" bgcolor="silver"
                cellspacing="2" cellpadding="2">

@@ -47,8 +47,8 @@
 <html>
     <head>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.selectEforms"/></title>
-        <link rel="stylesheet" href="../../share/css/OscarStandardLayout.css">
-        <link rel="stylesheet" href="../../share/css/eformStyle.css">
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/eformStyle.css">
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script language="javascript">
             function remove_select(fid) {

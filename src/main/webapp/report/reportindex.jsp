@@ -94,19 +94,19 @@
 
         <link rel="stylesheet" type="text/css" media="all"
               href="<%= request.getContextPath() %>/share/calendar/calendar.css" title="win2k-cold-1"/>
-        <script type="text/javascript" src="../share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="../share/calendar/lang/calendar-en.js"></script>
-        <script type="text/javascript" src="../share/calendar/calendar-setup.js"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/calendar-en.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
 
 
-        <script type="text/javascript" src="../dojoAjax/dojo.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/dojoAjax/dojo.js"></script>
         <script type="text/javascript" language="JavaScript">
             dojo.require("dojo.date.format");
             dojo.require("dojo.widget.*");
             dojo.require("dojo.validate.*");
         </script>
-        <script type="text/javascript" src="../js/caisi_report_tools.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/caisi_report_tools.js"></script>
 
 
         <script language="JavaScript">
@@ -643,7 +643,7 @@
                                                                                  id="NoShowDate" <%=NoShowEDate%>> <a
                         HREF="#"
                         onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('nsdate')[0].value")%>')"><img
-                        title=Calendar " src="../images/cal.gif" alt="Calendar" border="0"><a>
+                        title=Calendar " src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"><a>
 
 
                     <!--
@@ -758,7 +758,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a
-                        href='../oscarReport/oscarMeasurements/SetupSelectCDMReport.do'><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chronicDiseaseManagement"/></a></td>
+                        href="<%= request.getContextPath() %>/oscarReport/oscarMeasurements/SetupSelectCDMReport.do"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chronicDiseaseManagement"/></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -850,7 +850,7 @@
 
                         <div><span>CAISI Reporting Tools</span>
                             <caisi:isModuleLoad moduleName="caisi">
-                                <div><a HREF="../PMmodule/ClientManager.do?method=getGeneralFormsReport"
+                                <div><a href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?method=getGeneralFormsReport"
                                         target="generalFormsReport">General Forms Reports</a></div>
                                 <div><a href="javascript:void(0);"
                                         onclick="javascript:getIntakeReport('quick');return false;">Registration Intake

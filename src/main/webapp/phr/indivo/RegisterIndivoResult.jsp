@@ -82,7 +82,7 @@
     The user and corresponding permissions have been added.
     <br/>
     <input type="button" onclick="closeWindow()" name="closeButton" value="Close Window">
-    <a href="../../documentManager/ManageDocument.do?method=display&doc_no=<%=dispDocNo%>&providerNo=<%=user%>">Registration
+    <a href="<%= request.getContextPath() %>/documentManager/ManageDocument.do?method=display&doc_no=<%=dispDocNo%>&providerNo=<%=user%>">Registration
         Letter</a>
 </div>
 <%}%>
