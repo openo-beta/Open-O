@@ -11,6 +11,8 @@ and VS-Code.
       search for "Dev Containers" by Microsoft and click "Install".
 * **Git:** Installed
 
+## This process is faster if it's ran within the WSL file system
+
 ## Steps
 
 1. **Clone the repository if not already done:**
@@ -57,6 +59,10 @@ Exploded WAR".
 
     * Open your web browser and navigate to `http://localhost:8080`.
     * You should see the Open-OSP EMR application running.
+    * Login credentials for local development are: 
+        Username: oscardoc
+        Password: mac2002
+        PIN     : 1117
 
 ### Subsequent Compilations
 
@@ -82,6 +88,24 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 * You can find more information about the Open-OSP EMR project and its development environment in the project's
   documentation.
 
+## Switching Branches 
+
+* If you're having issues with the containers after changing branches, it may be due to the container configuration being different
+  on the new branch from the one you were on. 
+* Fix: 
+    1. Close Visual Studio Code.
+    2. Remove the containers, images, and volumes from docker so that the new containers can be loaded.
+    3. Relaunch Visual Studio Code. This will allow the new containers to be built. 
+  
+## Build Issues 
+
+* Ensure prior to every build you run
+
+    ```zsh 
+    make clean
+    ```
+* If the issue still persists remove the .m2 cache and then run the make clean command. 
+  
 ## Files Included in the Dev-Container Environment
 
 * **`.devcontainer/devcontainer.json`:** Defines the configuration for the development environment, including Docker
@@ -111,23 +135,27 @@ Currently, oscar error logs are sent to console without saving to a log file. If
     ```bash 
     wsl
     ```
-2. **Create a directory**
+2. **Navigate to the home directory** 
+    ```bash
+    cd $HOME
+    ```
+3. **Create a directory**
     ```bash
     mkdir softsec
     ```
-3. **Navigate to the softsec dir**
+4. **Navigate to the softsec dir**
     ```bash
     cd softsec
     ```
-4. **Clone the GitHub repo Open-O**
+5. **Clone the GitHub repo Open-O**
     ```bash
     git clone https://github.com/cc-ar-emr/Open-O.git
     ```
-5. **Navigate to the Open-O repo dir**
+6. **Navigate to the Open-O repo dir**
     ```bash
     cd Open-O
     ```
-6. **Start VS Code**
+7. **Start VS Code**
     ```bash
     code ./
     ```
@@ -135,3 +163,7 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 * This should open the Open-O repo in VS Code and prompt you to reopen the folder in the dev container environment.
 
 ## Enjoy developing with Open-OSP!
+
+### Checksum locks
+
+*TODO: Add a note about updating the checksum on libraries when they've been changed*
