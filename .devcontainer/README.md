@@ -49,7 +49,7 @@ and VS-Code.
 3. **Open the project in VS Code:**
     * Open VS Code and navigate to the project directory.
     ```bash
-    code ./.
+    code ./
     ```
     * VS Code should automatically detect the `.devcontainer` folder and prompt you to "Reopen in Container".
     * Click "Reopen in Container" to start the development environment.
@@ -188,8 +188,9 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 
 ### Checksum locks
 
-This project uses SHA-512 checksums to lock dependency artifacts. Whenever you update, add, or remove a library
-ensure you are updating the SHA-512 value within the dependencies-lock.json
+Whenever you update, add, or remove a library ensure that the changes are reflected in the dependencies-lock.json. 
+
+When updating a library, the integrity value needs to be updated to correspond with the change. 
 
 Keeping these locks in sync ensures reproducible builds and guards against tampered artifacts.
 
